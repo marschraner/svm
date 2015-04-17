@@ -1,3 +1,25 @@
-todo's:
+todo's hans:
 
-Test
+-Für Review (bis 18.4. an Roland für Feedback):
+ -Klassen-Beschreibungen (Martin)
+-Datenmigration: In Skope des Projekt? Wo dokumentieren?
+-Architektur-Entscheide dokumentieren (z.B. wieso Swing). Wo?
+-Anderer Name für Selektionskriterium
+
+
+------------------------------------------------------------------------------------------------------------------------
+erledigt:
+-Systemkontext: Kommunikationsarten/Interaktionen
+-Risiken überarbeiten (Massnahmen, ...)
+-Akteure beschreiben
+-Iterationen/Ausbaustufen (3-4) definieren
+-Schätzungen für Fortschrittskontrolle (Scrum-Punkte im Verhältnis zu anderen UC's, dann Annahme Zeit pro Punkt)
+-Use Cases fertig spezifizieren (wichtig für Benutzer, technisch heikel)
+-Planung überarbeiten
+-Backlog erstellen
+-Backlog-Tool
+ => Calc!
+-Durchstich (Prototyp) mit drei wichtigsten Use Cases/Risiken/Akzeptanz
+ -z.B. Listen erstellen!
+ => geplant
+
