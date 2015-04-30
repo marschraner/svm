@@ -16,7 +16,7 @@ use svmtest;
 create table person (personid integer not null auto_increment, birth datetime, firstname varchar(255), lastname varchar(255), primary key (personid));
 
 show table status where name = 'person';
-SELECT TABLE_NAME, ENGINE FROM information_schema.TABLES where TABLE_SCHEMA = 'test';
+SELECT TABLE_NAME, ENGINE FROM information_schema.TABLES where TABLE_SCHEMA = 'svmtest';
 
 describe person;
 
