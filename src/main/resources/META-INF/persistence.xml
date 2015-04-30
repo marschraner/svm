@@ -33,7 +33,7 @@
         </description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>ch.metzenthin.svm.prototyp.Person</class>
+        <class>prototyp.Person</class>
 
         <properties>
         	<!-- Database connection settings -->
