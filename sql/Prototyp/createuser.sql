@@ -1,17 +1,17 @@
 
 -- running this from command line:
--- hans@mars:~/MAS-SE/Masterarbeit/workspace/MySQL-Test$ mysql -u root -p
+-- hans@mars:.../svm/sql/Prototyp$ mysql -u root -p
 -- Enter password: admin
--- mysql> source createdb.sql
+-- mysql> source createuser.sql
 
 drop user 'svmtest'@'localhost';
 drop user 'svmtest'@'%';
 
-CREATE USER 'hanstest'@'localhost' IDENTIFIED BY 'hanstest';
+CREATE USER 'svmtest'@'localhost' IDENTIFIED BY 'svmtest';
 
-GRANT ALL PRIVILEGES ON *.* TO 'hanstest'@'localhost' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'svmtest'@'localhost' WITH GRANT OPTION;
 
-CREATE USER 'hanstest'@'%' IDENTIFIED BY 'hanstest';
+CREATE USER 'svmtest'@'%' IDENTIFIED BY 'svmtest';
 
-GRANT ALL PRIVILEGES ON *.* TO 'hanstest'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'svmtest'@'%' WITH GRANT OPTION;
 

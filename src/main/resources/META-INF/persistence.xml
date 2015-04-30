@@ -38,9 +38,9 @@
         <properties>
         	<!-- Database connection settings -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/test" />
-            <property name="javax.persistence.jdbc.user" value="hanstest" />
-            <property name="javax.persistence.jdbc.password" value="hanstest" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/svmtest" />
+            <property name="javax.persistence.jdbc.user" value="svmtest" />
+            <property name="javax.persistence.jdbc.password" value="svmtest" />
 
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="hibernate.show_sql" value="true" />

@@ -1,8 +1,8 @@
 
 -- running this from command line:
 -- mysql> quit
--- hans@mars:~/MAS-SE/Masterarbeit/workspace/MySQL-Test$ mysql -u hanstest -p
--- Enter password: hanstest
+-- hans@mars:.../svm/sql/Prototyp$ mysql -u svmtest -p
+-- Enter password: svmtest
 -- mysql> source createdb.sql
 
 SHOW DATABASES;
