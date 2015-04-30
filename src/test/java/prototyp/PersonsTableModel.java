@@ -1,4 +1,4 @@
-package ch.metzenthin.svm.prototyp;
+package prototyp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

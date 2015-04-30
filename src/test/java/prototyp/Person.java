@@ -1,4 +1,4 @@
-package ch.metzenthin.svm.prototyp;
+package prototyp;
 import java.util.Date;
 
 import javax.persistence.Column;
