@@ -1,8 +1,5 @@
 todo's hans:
 
--Für Review (bis 18.4. an Roland für Feedback):
- -Klassen-Beschreibungen (Martin)
--Datenmigration: In Skope des Projekt? Wo dokumentieren?
 -Architektur-Entscheide dokumentieren (z.B. wieso Swing). Wo?
 -Anderer Name für Selektionskriterium
 
@@ -22,4 +19,8 @@ erledigt:
 -Durchstich (Prototyp) mit drei wichtigsten Use Cases/Risiken/Akzeptanz
  -z.B. Listen erstellen!
  => geplant
-
+-Für Review (bis 18.4. an Roland für Feedback):
+ -Klassen-Beschreibungen (Martin)
+ => später
+-Datenmigration: In Skope des Projekt? Wo dokumentieren?
+=> Projektplan/Anforderungsspez.
