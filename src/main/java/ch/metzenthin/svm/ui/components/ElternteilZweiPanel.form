@@ -7,7 +7,7 @@
     <properties/>
     <border type="etched" title="Elternteil 2"/>
     <children>
-      <nested-form id="21c0c" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form">
+      <nested-form id="21c0c" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="angehoerigerPanel">
         <constraints border-constraint="Center"/>
       </nested-form>
     </children>

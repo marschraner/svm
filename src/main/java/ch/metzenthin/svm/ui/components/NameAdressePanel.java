@@ -2,7 +2,6 @@ package ch.metzenthin.svm.ui.components;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ResourceBundle;
 
 /**
  * @author hans
@@ -42,6 +41,8 @@ public class NameAdressePanel {
         panel.add(panel1, BorderLayout.WEST);
         lblNachname = new JLabel();
         lblNachname.setText("Nachname");
+        lblNachname.setDisplayedMnemonic('N');
+        lblNachname.setDisplayedMnemonicIndex(0);
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -70,6 +71,8 @@ public class NameAdressePanel {
         panel1.add(txtNachname, gbc);
         lblVorname = new JLabel();
         lblVorname.setText("Vorname");
+        lblVorname.setDisplayedMnemonic('V');
+        lblVorname.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -85,6 +88,8 @@ public class NameAdressePanel {
         panel1.add(txtVorname, gbc);
         lblStrasse = new JLabel();
         lblStrasse.setText("Strasse");
+        lblStrasse.setDisplayedMnemonic('S');
+        lblStrasse.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -105,6 +110,8 @@ public class NameAdressePanel {
         panel1.add(txtStrasse, gbc);
         lblPlz = new JLabel();
         lblPlz.setText("PLZ");
+        lblPlz.setDisplayedMnemonic('P');
+        lblPlz.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 6;
@@ -125,6 +132,8 @@ public class NameAdressePanel {
         panel1.add(spacer4, gbc);
         lblOrt = new JLabel();
         lblOrt.setText("Ort");
+        lblOrt.setDisplayedMnemonic('O');
+        lblOrt.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 8;
@@ -143,6 +152,11 @@ public class NameAdressePanel {
         gbc.gridy = 7;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel1.add(spacer5, gbc);
+        lblNachname.setLabelFor(txtNachname);
+        lblVorname.setLabelFor(txtVorname);
+        lblStrasse.setLabelFor(txtStrasse);
+        lblPlz.setLabelFor(txtPlz);
+        lblOrt.setLabelFor(txtort);
     }
 
     /**

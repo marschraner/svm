@@ -7,7 +7,7 @@
     <properties/>
     <border type="etched" title="Drittempfänger"/>
     <children>
-      <nested-form id="7a21d" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form">
+      <nested-form id="7a21d" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="angehoerigerPanel">
         <constraints border-constraint="Center"/>
       </nested-form>
     </children>

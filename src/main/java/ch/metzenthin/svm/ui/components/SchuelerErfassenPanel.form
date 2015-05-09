@@ -30,19 +30,19 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
           </vspacer>
-          <nested-form id="f81ba" form-file="ch/metzenthin/svm/ui/components/ElternteilEinsPanel.form" binding="elternteilEinsPanel">
+          <nested-form id="f81ba" form-file="ch/metzenthin/svm/ui/components/ElternteilEinsPanel.form" binding="elternteilEinsPanel" custom-create="true">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
           </nested-form>
-          <nested-form id="4dcde" form-file="ch/metzenthin/svm/ui/components/ElternteilZweiPanel.form" binding="elternteilZweiPanel">
+          <nested-form id="4dcde" form-file="ch/metzenthin/svm/ui/components/ElternteilZweiPanel.form" binding="elternteilZweiPanel" custom-create="true">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
           </nested-form>
-          <nested-form id="48df0" form-file="ch/metzenthin/svm/ui/components/DrittempfaengerPanel.form" binding="drittempfaengerPanel">
+          <nested-form id="48df0" form-file="ch/metzenthin/svm/ui/components/DrittempfaengerPanel.form" binding="drittempfaengerPanel" custom-create="true">
             <constraints>
               <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0"/>
