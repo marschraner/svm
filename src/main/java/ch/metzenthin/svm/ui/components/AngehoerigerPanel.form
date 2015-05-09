@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.AngehoerigerPanel">
+  <grid id="27dc6" binding="panel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="a1fbf" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <nested-form id="c477a" form-file="ch/metzenthin/svm/ui/components/NameAdressePanel.form" binding="nameAdressePanel">
+            <constraints border-constraint="North"/>
+          </nested-form>
+          <nested-form id="e4e89" form-file="ch/metzenthin/svm/ui/components/AdresseCheckboxPanel.form" binding="adresseCheckboxPanel">
+            <constraints border-constraint="South"/>
+          </nested-form>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

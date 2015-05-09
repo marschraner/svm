@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.SchuelerErfassenPanel">
+  <grid id="27dc6" binding="panel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="798" height="586"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="6c6ba" layout-manager="GridBagLayout">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <nested-form id="ddf0e" form-file="ch/metzenthin/svm/ui/components/SchuelerPanel.form" binding="schuelerPanel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+          </nested-form>
+          <hspacer id="7be78">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+          </hspacer>
+          <vspacer id="f72ba">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+          </vspacer>
+          <nested-form id="f81ba" form-file="ch/metzenthin/svm/ui/components/ElternteilEinsPanel.form" binding="elternteilEinsPanel" custom-create="true">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+          </nested-form>
+          <nested-form id="4dcde" form-file="ch/metzenthin/svm/ui/components/ElternteilZweiPanel.form" binding="elternteilZweiPanel" custom-create="true">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+          </nested-form>
+          <nested-form id="48df0" form-file="ch/metzenthin/svm/ui/components/DrittempfaengerPanel.form" binding="drittempfaengerPanel" custom-create="true">
+            <constraints>
+              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+          </nested-form>
+        </children>
+      </grid>
+      <grid id="74d5d" binding="btnPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="c7c18" class="javax.swing.JButton" binding="btnSpeichern">
+            <constraints/>
+            <properties>
+              <text value="&amp;Speichern"/>
+            </properties>
+          </component>
+          <component id="4343a" class="javax.swing.JButton" binding="btnAbbrechen">
+            <constraints/>
+            <properties>
+              <text value="&amp;Abbrechen"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

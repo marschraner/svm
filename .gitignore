@@ -3,3 +3,8 @@ target/
 
 # backup-Files
 *~
+
+# Intellij
+.idea/workspace.xml
+.idea/tasks.xml
+

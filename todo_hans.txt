@@ -1,8 +1,8 @@
 todo's hans:
 
 -Architektur-Entscheide dokumentieren (z.B. wieso Swing). Wo?
--Anderer Name für Selektionskriterium
-
+-Welche Artefakte erwartet Roland am Schluss für Beurteilung? (Rat von Robert Kolb)
+-Use Case E-Mail: speichern der gesendeten E-Mails?
 
 ------------------------------------------------------------------------------------------------------------------------
 erledigt:
@@ -24,3 +24,5 @@ erledigt:
  => später
 -Datenmigration: In Skope des Projekt? Wo dokumentieren?
 => Projektplan/Anforderungsspez.
+-Anderer Name für Selektionskriterium
+=> Zusatzattribut
