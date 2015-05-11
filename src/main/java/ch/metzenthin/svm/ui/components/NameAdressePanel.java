@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.domain.NameAdresseBean;
+import ch.metzenthin.svm.domain.Person;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,7 @@ public class NameAdressePanel {
     private JTextField txtPlz;
     private JTextField txtOrt;
 
-    public void setData(NameAdresseBean data) {
+    public void setData(Person data) {
         txtNachname.setText(data.getNachname());
         txtVorname.setText(data.getVorname());
         txtStrasse.setText(data.getStrasse());
@@ -24,7 +24,7 @@ public class NameAdressePanel {
         txtOrt.setText(data.getOrt());
     }
 
-    public void getData(NameAdresseBean data) {
+    public void getData(Person data) {
         data.setNachname(txtNachname.getText());
         data.setVorname(txtVorname.getText());
         data.setStrasse(txtStrasse.getText());
@@ -32,12 +32,17 @@ public class NameAdressePanel {
         data.setOrt(txtOrt.getText());
     }
 
-    public boolean isModified(NameAdresseBean data) {
-        return (txtNachname.getText() != null ? !txtNachname.getText().equals(data.getNachname()) : data.getNachname() != null) ||
-               (txtVorname.getText() != null ? !txtVorname.getText().equals(data.getVorname()) : data.getVorname() != null) ||
-               (txtStrasse.getText() != null ? !txtStrasse.getText().equals(data.getStrasse()) : data.getStrasse() != null) ||
-               (txtPlz.getText() != null ? !txtPlz.getText().equals(data.getPlz()) : data.getPlz() != null) ||
-               (txtOrt.getText() != null ? !txtOrt.getText().equals(data.getOrt()) : data.getOrt() != null);
+    @SuppressWarnings("RedundantIfStatement")
+    public boolean isModified(Person data) {
+        if (txtNachname.getText() != null ? !txtNachname.getText().equals(data.getNachname()) : data.getNachname() != null)
+            return true;
+        if (txtVorname.getText() != null ? !txtVorname.getText().equals(data.getVorname()) : data.getVorname() != null)
+            return true;
+        if (txtStrasse.getText() != null ? !txtStrasse.getText().equals(data.getStrasse()) : data.getStrasse() != null)
+            return true;
+        if (txtPlz.getText() != null ? !txtPlz.getText().equals(data.getPlz()) : data.getPlz() != null) return true;
+        if (txtOrt.getText() != null ? !txtOrt.getText().equals(data.getOrt()) : data.getOrt() != null) return true;
+        return false;
     }
 
     {
