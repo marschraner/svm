@@ -6,7 +6,7 @@
 -- mysql -u svm -psvm 
 -- mysql> source selects.sql
 
-USE svm
+USE svm;
 
 SELECT PersSchue.vorname AS 'Vorname', 
     PersSchue.nachname AS 'Nachname',
@@ -23,9 +23,9 @@ SELECT PersSchue.vorname AS 'Vorname',
     FROM Schueler Schue
     INNER JOIN Person PersSchue ON PersSchue.person_id = Schue.person_id
     INNER JOIN Adresse Adr ON Adr.adresse_id = PersSchue.adresse_id
-    INNER JOIN Angehoeriger Vater ON Vater.person_id = Schue.vater_id
+    LEFT OUTER JOIN Angehoeriger Vater ON Vater.person_id = Schue.vater_id
     INNER JOIN Person PersVater ON PersVater.person_id = Vater.person_id
-    INNER JOIN Angehoeriger Mutter ON Mutter.person_id = Schue.mutter_id
+    LEFT OUTER JOIN Angehoeriger Mutter ON Mutter.person_id = Schue.mutter_id
     INNER JOIN Person PersMutter ON PersMutter.person_id = Mutter.person_id
     INNER JOIN Angehoeriger Rechn ON Rechn.person_id = Schue.rechnungsempfaenger_id
     INNER JOIN Person PersRechn ON PersRechn.person_id = Rechn.person_id;

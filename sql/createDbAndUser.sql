@@ -7,6 +7,7 @@
 -- Enter password: 
 -- mysql> source createDbAndUser.sql
 
+DROP DATABASE IF EXISTS  svm;
 
 -- Neue Datenbank erzeugen
 -- ***********************

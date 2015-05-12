@@ -6,7 +6,7 @@
 -- mysql -u svm -psvm 
 -- mysql> source fillData.sql
 
-USE svm
+USE svm;
 
 
 -- Delete

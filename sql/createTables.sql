@@ -6,7 +6,7 @@
 -- mysql -u svm -psvm 
 -- mysql> source createTables.sql
 
-USE svm
+USE svm;
 
 
 -- Engine auf InnoDB setzen
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS Person (
     nachname                VARCHAR(50)   NOT NULL,
     geburtsdatum            DATE,
     natel                   VARCHAR(20),
-    email                   VARCHAR(20),
+    email                   VARCHAR(50),
     adresse_id              INT           NOT NULL,
     last_updated            TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id),
