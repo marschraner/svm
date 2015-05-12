@@ -1,27 +1,29 @@
-package ch.metzenthin.svm;
+package ch.metzenthin.svm.ui.components;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import ch.metzenthin.svm.common.SvmContext;
+
+import javax.swing.*;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.*;
-import javax.swing.event.InternalFrameEvent;
-import javax.swing.event.InternalFrameListener;
-
-import ch.metzenthin.svm.ui.components.*;
-
 /*
  * SVM Applikation
  */
-public class SvmApp extends JFrame implements ActionListener, InternalFrameListener {
-    private static final long serialVersionUID = 1L;
-    JDesktopPane desktop;
+public class SvmDesktop extends JFrame implements ActionListener, InternalFrameListener {
 
-    public SvmApp() {
+    private static final long serialVersionUID = 1L;
+
+    private JDesktopPane desktop;
+    private SvmContext svmContext;
+
+    public SvmDesktop(SvmContext svmContext) {
         super("SVM Schüler Verwaltung Metzenthin");
+        this.svmContext = svmContext;
 
         // Make the big window be indented 50 pixels from each edge
         // of the screen.
@@ -37,6 +39,11 @@ public class SvmApp extends JFrame implements ActionListener, InternalFrameListe
 
         // Make dragging a little faster but perhaps uglier.
         desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
+
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        // Display the window.
+        setVisible(true);
     }
 
     protected JMenuBar createMenuBar() {
@@ -73,7 +80,7 @@ public class SvmApp extends JFrame implements ActionListener, InternalFrameListe
     // React to menu selections.
     public void actionPerformed(ActionEvent e) {
         if ("schuelerErfassen".equals(e.getActionCommand())) {
-            createFrame(new SchuelerErfassenPanel().$$$getRootComponent$$$(), "Schüler erfassen", new Dimension(800, 500));
+            createFrame(new SchuelerErfassenPanel(svmContext).$$$getRootComponent$$$(), "Schüler erfassen", new Dimension(800, 500));
         } else { // beenden
             quit();
         }
@@ -94,32 +101,6 @@ public class SvmApp extends JFrame implements ActionListener, InternalFrameListe
     // Quit the application.
     protected void quit() {
         System.exit(0);
-    }
-
-    /**
-     * Create the GUI and show it. For thread safety, this method should be
-     * invoked from the event-dispatching thread.
-     */
-    private static void createAndShowGUI() {
-        // Make sure we have nice window decorations.
-        JFrame.setDefaultLookAndFeelDecorated(true);
-
-        // Create and set up the window.
-        SvmApp frame = new SvmApp();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        // Display the window.
-        frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        // Schedule a job for the event-dispatching thread:
-        // creating and showing this application's GUI.
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
     }
 
     @Override

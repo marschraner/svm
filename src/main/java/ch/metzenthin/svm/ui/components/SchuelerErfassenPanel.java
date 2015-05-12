@@ -1,5 +1,11 @@
 package ch.metzenthin.svm.ui.components;
 
+import ch.metzenthin.svm.commands.AdresseInsertCommand;
+import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.Person;
+import ch.metzenthin.svm.model.entities.Adresse;
+import ch.metzenthin.svm.model.entities.Angehoeriger;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,8 +25,10 @@ public class SchuelerErfassenPanel {
     private JPanel btnPanel;
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
+    private SvmContext svmContext;
 
-    public SchuelerErfassenPanel() {
+    public SchuelerErfassenPanel(SvmContext svmContext) {
+        this.svmContext = svmContext;
         $$$setupUI$$$();
         btnSpeichern.addActionListener(new ActionListener() {
             @Override
@@ -42,6 +50,70 @@ public class SchuelerErfassenPanel {
 
     private void onSpeichern() {
         System.out.println("Speichern gedrückt");
+
+        Person person = new Person() {
+            String nachname;
+            String vorname;
+            String strasse;
+            String plz;
+            String ort;
+            @Override
+            public String getNachname() {
+                return nachname;
+            }
+
+            @Override
+            public String getVorname() {
+                return vorname;
+            }
+
+            @Override
+            public void setNachname(String text) {
+                nachname = text;
+            }
+
+            @Override
+            public void setVorname(String text) {
+                vorname = text;
+            }
+
+            @Override
+            public String getStrasse() {
+                return strasse;
+            }
+
+            @Override
+            public String getPlz() {
+                return plz;
+            }
+
+            @Override
+            public String getOrt() {
+                return ort;
+            }
+
+            @Override
+            public void setStrasse(String text) {
+                strasse = text;
+            }
+
+            @Override
+            public void setPlz(String text) {
+                plz = text;
+            }
+
+            @Override
+            public void setOrt(String text) {
+                ort = text;
+            }
+        };
+        Angehoeriger angehoeriger = new Angehoeriger();
+        schuelerPanel.fillAngehoeriger(angehoeriger);
+        Adresse adresse = new Adresse();
+        schuelerPanel.fillAdresse(adresse);
+        AdresseInsertCommand adresseInsertCommand = new AdresseInsertCommand(adresse);
+        svmContext.getCommandInvoker().executeCommand(adresseInsertCommand);
+
     }
 
     private void createUIComponents() {

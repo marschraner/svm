@@ -1,6 +1,8 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.domain.Person;
+import ch.metzenthin.svm.model.entities.Adresse;
+import ch.metzenthin.svm.model.entities.Angehoeriger;
+import ch.metzenthin.svm.model.entities.Person;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,30 +20,21 @@ public class NameAdressePanel {
 
     public void setData(Person data) {
         txtNachname.setText(data.getNachname());
-        txtVorname.setText(data.getVorname());
+    }
+
+    public void setData(Adresse data) {
         txtStrasse.setText(data.getStrasse());
-        txtPlz.setText(data.getPlz());
-        txtOrt.setText(data.getOrt());
     }
 
-    public void getData(Person data) {
-        data.setNachname(txtNachname.getText());
-        data.setVorname(txtVorname.getText());
-        data.setStrasse(txtStrasse.getText());
-        data.setPlz(txtPlz.getText());
-        data.setOrt(txtOrt.getText());
+    public void fillAngehoeriger(Angehoeriger angehoeriger) {
+        angehoeriger.setNachname(txtNachname.getText());
     }
 
-    @SuppressWarnings("RedundantIfStatement")
+    public void fillAdresse(Adresse adresse) {
+        adresse.setStrasse(txtStrasse.getText());
+    }
+
     public boolean isModified(Person data) {
-        if (txtNachname.getText() != null ? !txtNachname.getText().equals(data.getNachname()) : data.getNachname() != null)
-            return true;
-        if (txtVorname.getText() != null ? !txtVorname.getText().equals(data.getVorname()) : data.getVorname() != null)
-            return true;
-        if (txtStrasse.getText() != null ? !txtStrasse.getText().equals(data.getStrasse()) : data.getStrasse() != null)
-            return true;
-        if (txtPlz.getText() != null ? !txtPlz.getText().equals(data.getPlz()) : data.getPlz() != null) return true;
-        if (txtOrt.getText() != null ? !txtOrt.getText().equals(data.getOrt()) : data.getOrt() != null) return true;
         return false;
     }
 

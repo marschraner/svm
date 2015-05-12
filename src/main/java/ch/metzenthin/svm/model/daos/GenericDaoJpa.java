@@ -8,7 +8,7 @@ import java.lang.reflect.ParameterizedType;
  */
 public abstract class GenericDaoJpa<T, ID> implements GenericDao<T, ID> {
     private Class<T> persistentClass;
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
     public GenericDaoJpa() {
