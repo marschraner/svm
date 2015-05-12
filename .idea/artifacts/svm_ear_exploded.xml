@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-ear" name="svm:ear exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/svm_ear_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="svm/javaeeApplication/javaEEApplication" />
+    </root>
+  </artifact>
+</component>

@@ -27,22 +27,22 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
 
-    <persistence-unit name="prototyp">
+    <persistence-unit name="svm">
         <description>
             Persistence unit for the JPA tutorial of the Hibernate Getting Started Guide
         </description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>prototyp.Person</class>
+        <class>ch.metzenthin.svm.model.Adresse</class>
 
         <properties>
-        	<!-- Database connection settings -->
+            <!-- Database connection settings -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/svmtest" />
-            <property name="javax.persistence.jdbc.user" value="svmtest" />
-            <property name="javax.persistence.jdbc.password" value="svmtest" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/svm" />
+            <property name="javax.persistence.jdbc.user" value="svm" />
+            <property name="javax.persistence.jdbc.password" value="svm" />
 
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="hibernate.show_sql" value="true" />
             <!--property name="hibernate.hbm2ddl.auto" value="create" /-->
             <property name="hibernate.hbm2ddl.auto" value="validate" />
