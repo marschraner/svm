@@ -1,5 +1,6 @@
 todo's hans:
 
+-Eigenes Projekt Prototyp
 -Architektur-Entscheide dokumentieren (z.B. wieso Swing). Wo?
 -Welche Artefakte erwartet Roland am Schluss für Beurteilung? (Rat von Robert Kolb)
 -Use Case E-Mail: speichern der gesendeten E-Mails?

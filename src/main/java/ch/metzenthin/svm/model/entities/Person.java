@@ -1,4 +1,4 @@
-package ch.metzenthin.svm.model;
+package ch.metzenthin.svm.model.entities;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
 

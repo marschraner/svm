@@ -1,11 +1,9 @@
-package ch.metzenthin.svm.model;
+package ch.metzenthin.svm.model.entities;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Elternrolle;
-import org.hibernate.annotations.CollectionId;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Calendar;
 
 /**

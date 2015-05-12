@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain;
 
-import ch.metzenthin.svm.model.Adresse;
-import ch.metzenthin.svm.model.Angehoeriger;
+import ch.metzenthin.svm.model.entities.Adresse;
+import ch.metzenthin.svm.model.entities.Angehoeriger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

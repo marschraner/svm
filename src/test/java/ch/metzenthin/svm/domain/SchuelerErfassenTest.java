@@ -2,8 +2,8 @@ package ch.metzenthin.svm.domain;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Elternrolle;
-import ch.metzenthin.svm.model.*;
-import ch.metzenthin.svm.model.Adresse;
+import ch.metzenthin.svm.model.entities.Adresse;
+import ch.metzenthin.svm.model.entities.Angehoeriger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class SchuelerErfassenTest {
     @Test
     public void  testSaveAdresse() {
 
-        ch.metzenthin.svm.model.Adresse adresse = new Adresse(strasse, hausnummer, plz, ort, festnetz);
+        Adresse adresse = new Adresse(strasse, hausnummer, plz, ort, festnetz);
 
         schuelerErfassen.saveAdresse(adresse);
     }

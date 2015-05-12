@@ -1,4 +1,4 @@
-package ch.metzenthin.svm.model;
+package ch.metzenthin.svm.model.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
