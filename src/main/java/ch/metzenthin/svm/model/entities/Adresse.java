@@ -2,6 +2,8 @@ package ch.metzenthin.svm.model.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Martin Schraner
@@ -33,6 +35,9 @@ public class Adresse {
 
     @Column(name = "festnetz")
     private String festnetz;
+
+    @OneToMany(mappedBy = "adresse")
+    private Set<Person> personen = new HashSet<>();
 
     public Adresse() {
     }
@@ -91,5 +96,9 @@ public class Adresse {
 
     public void setFestnetz(String festnetz) {
         this.festnetz = festnetz;
+    }
+
+    public Set<Person> getPersonen() {
+        return personen;
     }
 }

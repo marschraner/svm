@@ -3,7 +3,7 @@ package ch.metzenthin.svm.model.daos;
 import ch.metzenthin.svm.model.entities.Adresse;
 
 /**
- * @author hans
+ * @author Hans Stamm
  */
-public interface AdresseDao extends GenericDao<Adresse, Integer> {
+public class AdresseDao extends GenericDao<Adresse, Integer> {
 }

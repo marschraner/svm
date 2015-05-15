@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 /**
  * @author Hans Stamm
  */
-public class AdresseInsertCommandTest {
+public class SaveAdresseCommandTest {
 
     private CommandInvoker commandInvoker;
     private EntityManagerFactory entityManagerFactory;
@@ -35,9 +35,9 @@ public class AdresseInsertCommandTest {
     @Test
     public void testExecute() throws Exception {
         Adresse adresse = new Adresse("Buechackerstrasse", 4, 8234, "Stetten", "052 643 38 48");
-        AdresseInsertCommand adresseInsertCommand = new AdresseInsertCommand(adresse);
-        commandInvoker.executeCommand(adresseInsertCommand);
-        Adresse newAdresse = adresseInsertCommand.getNewAdresse();
+        SaveAdresseCommand saveAdresseCommand = new SaveAdresseCommand(adresse);
+        commandInvoker.executeCommand(saveAdresseCommand);
+        Adresse newAdresse = saveAdresseCommand.getSavedAdresse();
         assertEquals("", "Buechackerstrasse", newAdresse.getStrasse());
 
         // delete

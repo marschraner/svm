@@ -46,7 +46,7 @@ DESCRIBE Adresse;
 CREATE TABLE IF NOT EXISTS Person (
     person_id               INT           NOT NULL AUTO_INCREMENT,
     discriminator           VARCHAR(20)   NOT NULL,
-    anrede                  VARCHAR(4),
+    anrede                  VARCHAR(5),
     vorname                 VARCHAR(50)   NOT NULL,
     nachname                VARCHAR(50)   NOT NULL,
     geburtsdatum            DATE,

@@ -121,6 +121,7 @@ public abstract class Person {
     }
 
     public void setAdresse(Adresse adresse) {
+        adresse.getPersonen().add(this);
         this.adresse = adresse;
     }
 }

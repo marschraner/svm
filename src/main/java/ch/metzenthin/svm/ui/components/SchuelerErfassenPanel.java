@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.commands.AdresseInsertCommand;
+import ch.metzenthin.svm.commands.SaveAdresseCommand;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.Person;
 import ch.metzenthin.svm.model.entities.Adresse;
@@ -111,8 +111,8 @@ public class SchuelerErfassenPanel {
         schuelerPanel.fillAngehoeriger(angehoeriger);
         Adresse adresse = new Adresse();
         schuelerPanel.fillAdresse(adresse);
-        AdresseInsertCommand adresseInsertCommand = new AdresseInsertCommand(adresse);
-        svmContext.getCommandInvoker().executeCommand(adresseInsertCommand);
+        SaveAdresseCommand saveAdresseCommand = new SaveAdresseCommand(adresse);
+        svmContext.getCommandInvoker().executeCommand(saveAdresseCommand);
 
     }
 

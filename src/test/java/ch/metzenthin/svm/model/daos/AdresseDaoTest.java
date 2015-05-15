@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.model.daos;
 
-import ch.metzenthin.svm.domain.SchuelerErfassen;
 import ch.metzenthin.svm.model.entities.Adresse;
 import org.junit.After;
 import org.junit.Before;
@@ -16,17 +15,17 @@ import static org.junit.Assert.*;
 /**
  * @author Hans Stamm
  */
-public class AdresseDaoJpaTest {
+public class AdresseDaoTest {
 
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
-    private AdresseDaoJpa adresseDao;
+    private AdresseDao adresseDao;
 
     @Before
     public void setUp() throws Exception {
         entityManagerFactory = Persistence.createEntityManagerFactory("svm");
         entityManager = entityManagerFactory.createEntityManager();
-        adresseDao = new AdresseDaoJpa();
+        adresseDao = new AdresseDao();
         adresseDao.setEntityManager(entityManager);
     }
 
