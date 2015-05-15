@@ -1,10 +1,8 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.commands.SaveAdresseCommand;
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.Person;
-import ch.metzenthin.svm.model.entities.Adresse;
-import ch.metzenthin.svm.model.entities.Angehoeriger;
+import ch.metzenthin.svm.domain.SchuelerModel;
+import ch.metzenthin.svm.ui.control.CompletedListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,16 +17,16 @@ import java.awt.event.ItemListener;
 public class SchuelerErfassenPanel {
     private JPanel panel;
     private SchuelerPanel schuelerPanel;
+    private final SchuelerModel schuelerModel;
     private ElternteilEinsPanel elternteilEinsPanel;
     private ElternteilZweiPanel elternteilZweiPanel;
     private DrittempfaengerPanel drittempfaengerPanel;
     private JPanel btnPanel;
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
-    private SvmContext svmContext;
+    private ActionListener closeListener;
 
     public SchuelerErfassenPanel(SvmContext svmContext) {
-        this.svmContext = svmContext;
         $$$setupUI$$$();
         btnSpeichern.addActionListener(new ActionListener() {
             @Override
@@ -42,78 +40,37 @@ public class SchuelerErfassenPanel {
                 onAbbrechen();
             }
         });
+        schuelerPanel.addCompletedListener(new CompletedListener() {
+            @Override
+            public void completed(boolean completed) {
+                onSchuelerPanelCompleted(completed);
+            }
+        });
+        schuelerModel = svmContext.getModelFactory().createSchuelerModel();
+        schuelerPanel.setModel(schuelerModel);
+        onSchuelerPanelCompleted(false);
+    }
+
+    public void addCloseListener(ActionListener actionListener) {
+        closeListener = actionListener;
+    }
+
+    private void onSchuelerPanelCompleted(boolean completed) {
+        System.out.println("SchuelerPanel completed=" + completed);
+        btnSpeichern.setEnabled(completed);
     }
 
     private void onAbbrechen() {
-        System.out.println("Abbrechen gedrückt");
+        System.out.println("SchuelerErfassenPanel Abbrechen gedrückt");
+        closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Abbrechen"));
+        // todo Dialog, ob wirklich abgebrochen werden soll
     }
 
     private void onSpeichern() {
-        System.out.println("Speichern gedrückt");
-
-        Person person = new Person() {
-            String nachname;
-            String vorname;
-            String strasse;
-            String plz;
-            String ort;
-            @Override
-            public String getNachname() {
-                return nachname;
-            }
-
-            @Override
-            public String getVorname() {
-                return vorname;
-            }
-
-            @Override
-            public void setNachname(String text) {
-                nachname = text;
-            }
-
-            @Override
-            public void setVorname(String text) {
-                vorname = text;
-            }
-
-            @Override
-            public String getStrasse() {
-                return strasse;
-            }
-
-            @Override
-            public String getPlz() {
-                return plz;
-            }
-
-            @Override
-            public String getOrt() {
-                return ort;
-            }
-
-            @Override
-            public void setStrasse(String text) {
-                strasse = text;
-            }
-
-            @Override
-            public void setPlz(String text) {
-                plz = text;
-            }
-
-            @Override
-            public void setOrt(String text) {
-                ort = text;
-            }
-        };
-        Angehoeriger angehoeriger = new Angehoeriger();
-        schuelerPanel.fillAngehoeriger(angehoeriger);
-        Adresse adresse = new Adresse();
-        schuelerPanel.fillAdresse(adresse);
-        SaveAdresseCommand saveAdresseCommand = new SaveAdresseCommand(adresse);
-        svmContext.getCommandInvoker().executeCommand(saveAdresseCommand);
-
+        System.out.println("SchuelerErfassenPanel Speichern gedrückt");
+        schuelerModel.save();
+        // todo Dialog "erfolgreich gespeichert"
+        closeListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Close nach Speichern"));
     }
 
     private void createUIComponents() {
