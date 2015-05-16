@@ -6,102 +6,98 @@ import ch.metzenthin.svm.model.entities.Adresse;
 import ch.metzenthin.svm.model.entities.Angehoeriger;
 import ch.metzenthin.svm.model.entities.Person;
 
+import java.util.Calendar;
+
 /**
  * @author Hans Stamm
  */
-final class SchuelerModelImpl extends AbstractModel implements SchuelerModel {
+final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     private Person schueler; // todo $$$ Schueler
-    private Adresse adresse;
 
     SchuelerModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
         schueler = new Angehoeriger(); // todo $$$ Schueler
-        adresse = new Adresse();
     }
 
     @Override
-    public String getNachname() {
-        return schueler.getNachname();
-    }
-
-    private boolean checkNachname() {
-        return checkNotEmpty(schueler.getNachname());
+    Person getPerson() {
+        return schueler;
     }
 
     @Override
-    public String getVorname() {
-        return schueler.getVorname();
-    }
-
-    private boolean checkVorname() {
-        return checkNotEmpty(schueler.getVorname());
+    public Calendar getAnmeldedatum() {
+        return null; // todo $$$ schueler.getAnmeldedatum();
     }
 
     @Override
-    public void setNachname(String nachname) {
-        schueler.setNachname(nachname);
+    public Calendar getAbmeldedatum() {
+        return null; // todo $$$ schueler.getAbmeldedatum();
     }
 
     @Override
-    public void setVorname(String vorname) {
-        schueler.setVorname(vorname);
+    public Calendar getDispensationsbeginn() {
+        return null; // todo $$$ schueler.getDispensationsbeginn();
     }
 
     @Override
-    public String getStrasse() {
-        return adresse.getStrasse();
-    }
-
-    private boolean checkStrasse() {
-        return checkNotEmpty(adresse.getStrasse());
+    public Calendar getDispensationsende() {
+        return null; // todo $$$ schueler.getDispensationsende();
     }
 
     @Override
-    public Integer getPlz() {
-        return adresse.getPlz();
-    }
-
-    private boolean checkPlz() {
-        return (adresse.getPlz() != null) && (adresse.getPlz() > 0);
+    public String getBemerkungen() {
+        return null; // todo $$$ schueler.getBemerkungen();
     }
 
     @Override
-    public String getOrt() {
-        return adresse.getOrt();
-    }
-
-    private boolean checkOrt() {
-        return checkNotEmpty(adresse.getOrt());
+    public void setAnmeldedatum(String anmeldedatum) {
+        setAnmeldedatum(toCalendarIgnoreException(anmeldedatum));
     }
 
     @Override
-    public void setStrasse(String strasse) {
-        adresse.setStrasse(strasse);
+    public void setAnmeldedatum(Calendar anmeldedatum) {
+        // todo $$$ schueler.setAnmeldedatum(anmeldedatum);
     }
 
     @Override
-    public void setPlz(Integer plz) {
-        adresse.setPlz(plz);
+    public void setAbmeldedatum(String abmeldedatum) {
+        setAbmeldedatum(toCalendarIgnoreException(abmeldedatum));
     }
 
     @Override
-    public void setPlz(String plzString) {
-        Integer plz = null;
-        if (checkNumber(plzString)) {
-            plz = toInteger(plzString);
-        }
-        setPlz(plz);
+    public void setAbmeldedatum(Calendar abmeldedatum) {
+        // todo $$$ schueler.setAbmeldedatum(abmeldedatum);
     }
 
     @Override
-    public void setOrt(String ort) {
-        adresse.setOrt(ort);
+    public void setDispensationsbeginn(String dispensationsbeginn) {
+        setDispensationsbeginn(toCalendarIgnoreException(dispensationsbeginn));
+    }
+
+    @Override
+    public void setDispensationsbeginn(Calendar dispensationsbeginn) {
+        // todo $$$ schueler.setDispensationsbeginn(dispensationsbeginn);
+    }
+
+    @Override
+    public void setDispensationsende(String dispensationsende) {
+        setDispensationsende(toCalendarIgnoreException(dispensationsende));
+    }
+
+    @Override
+    public void setDispensationsende(Calendar dispensationsende) {
+        // todo $$$ schueler.setDispensationsende(dispensationsende);
+    }
+
+    @Override
+    public void setBemerkungen(String bemerkungen) {
+        // todo $$$ schueler.setBemerkungen(bemerkungen);
     }
 
     @Override
     public boolean isValid() {
-            return checkNachname() && checkVorname() && checkStrasse() && checkPlz() && checkOrt();
+        return super.isValid();
     }
 
     @Override

@@ -2,8 +2,13 @@ package ch.metzenthin.svm.domain;
 
 import ch.metzenthin.svm.commands.CommandInvoker;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * @author Hans Stamm
+ * todo Tests
  */
 abstract class AbstractModel {
 
@@ -17,8 +22,12 @@ abstract class AbstractModel {
         this.commandInvoker = commandInvoker;
     }
 
+    boolean checkNotNull(Object o) {
+        return (o != null);
+    }
+
     boolean checkNotEmpty(String s) {
-        return (s != null) && !s.isEmpty();
+        return checkNotNull(s) && !s.isEmpty();
     }
 
     boolean checkNumber(String s) {
@@ -33,8 +42,38 @@ abstract class AbstractModel {
         return false;
     }
 
+    Integer toIntegerOrNull(String s) {
+        Integer hausnummer = null;
+        if (checkNumber(s)) {
+            hausnummer = toInteger(s);
+        }
+        return hausnummer;
+    }
+
     Integer toInteger(String s) {
         return Integer.valueOf(s);
+    }
+
+    Calendar toCalendar(String s) throws ParseException {
+        if (!checkNotEmpty(s)) {
+            return null;
+        }
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        calendar.setTime(formatter.parse(s));
+        return calendar;
+    }
+
+    Calendar toCalendarIgnoreException(String s) {
+        if (!checkNotEmpty(s)) {
+            return null;
+        }
+        Calendar calendar = null;
+        try {
+            calendar = toCalendar(s);
+        } catch (ParseException ignore) {
+        }
+        return calendar;
     }
 
 }

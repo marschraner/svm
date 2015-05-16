@@ -6,13 +6,15 @@ import java.awt.event.ItemListener;
 
 /**
  * @author hans
+ * todo $$$ löschen
  */
-public class ElternteilZweiPanel {
+public class AngehoerigerPanel2 {
     private JPanel panel;
-    private AngehoerigerPanel2 angehoerigerPanel;
+    private NameAdressePanel nameAdressePanel;
+    private AdresseCheckboxPanel adresseCheckboxPanel;
 
     public void addRechnungsempfaengerAdresseItemListener(ItemListener listener) {
-        angehoerigerPanel.addRechnungsempfaengerAdresseItemListener(listener);
+        adresseCheckboxPanel.addRechnungsempfaengerAdresseItemListener(listener);
     }
 
     {
@@ -32,9 +34,13 @@ public class ElternteilZweiPanel {
     private void $$$setupUI$$$() {
         panel = new JPanel();
         panel.setLayout(new BorderLayout(0, 0));
-        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Elternteil 2"));
-        angehoerigerPanel = new AngehoerigerPanel2();
-        panel.add(angehoerigerPanel.$$$getRootComponent$$$(), BorderLayout.CENTER);
+        final JPanel panel1 = new JPanel();
+        panel1.setLayout(new BorderLayout(0, 0));
+        panel.add(panel1, BorderLayout.CENTER);
+        nameAdressePanel = new NameAdressePanel();
+        panel1.add(nameAdressePanel.$$$getRootComponent$$$(), BorderLayout.NORTH);
+        adresseCheckboxPanel = new AdresseCheckboxPanel();
+        panel1.add(adresseCheckboxPanel.$$$getRootComponent$$$(), BorderLayout.SOUTH);
     }
 
     /**

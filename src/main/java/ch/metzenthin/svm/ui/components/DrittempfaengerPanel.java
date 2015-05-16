@@ -9,7 +9,7 @@ import java.awt.event.ItemListener;
  */
 public class DrittempfaengerPanel {
     private JPanel panel;
-    private AngehoerigerPanel angehoerigerPanel;
+    private AngehoerigerPanel2 angehoerigerPanel;
 
     public void addRechnungsempfaengerAdresseItemListener(ItemListener listener) {
         angehoerigerPanel.addRechnungsempfaengerAdresseItemListener(listener);
@@ -33,7 +33,7 @@ public class DrittempfaengerPanel {
         panel = new JPanel();
         panel.setLayout(new BorderLayout(0, 0));
         panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Drittempfänger"));
-        angehoerigerPanel = new AngehoerigerPanel();
+        angehoerigerPanel = new AngehoerigerPanel2();
         panel.add(angehoerigerPanel.$$$getRootComponent$$$(), BorderLayout.CENTER);
     }
 

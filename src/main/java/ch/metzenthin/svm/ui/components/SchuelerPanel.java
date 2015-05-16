@@ -16,77 +16,209 @@ import java.util.List;
  */
 public class SchuelerPanel {
     private JPanel panel;
+    private JComboBox<Anrede> comboBoxAnrede;
     private JTextField txtNachname;
     private JTextField txtVorname;
     private JTextField txtStrasse;
+    private JTextField txtHausnummer;
     private JTextField txtPlz;
     private JTextField txtOrt;
-    private JTextField txtHausnummer;
     private JTextField txtFestnetz;
-    private JComboBox<Anrede> comboBoxAnrede;
-    private JTextField txtGeburtsdatum;
     private JTextField txtNatel;
     private JTextField txtEmail;
-    private JTextField txtAbmeldedatum;
+    private JTextField txtGeburtsdatum;
     private JTextField txtAnmeldedatum;
+    private JTextField txtAbmeldedatum;
     private JTextField txtDispensationsbeginn;
     private JTextField txtDispensationsende;
     private JTextArea textAreaBemerkungen;
+
     private SchuelerModel schuelerModel;
 
     public SchuelerPanel() {
         $$$setupUI$$$();
+        comboBoxAnrede.setModel(new DefaultComboBoxModel<>(Anrede.values()));
+        comboBoxAnrede.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onAnredeSelected();
+            }
+        });
+        txtNachname.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onNachnameEvent();
+            }
+        });
         txtNachname.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                onFocusLostNachname();
+                onNachnameEvent();
+            }
+        });
+        txtVorname.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onVornameEvent();
             }
         });
         txtVorname.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                onFocusLostVorname();
+                onVornameEvent();
+            }
+        });
+        txtStrasse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onStrasseEvent();
             }
         });
         txtStrasse.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                onFocusLostStrasse();
-            }
-        });
-        txtPlz.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onFocusLostPlz();
-            }
-        });
-        txtOrt.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onFocusLostOrt();
-            }
-        });
-        comboBoxAnrede.setModel(new DefaultComboBoxModel<>(Anrede.values()));
-        comboBoxAnrede.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onComboBoxAnredeSelected();
+                onStrasseEvent();
             }
         });
         txtHausnummer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onActionPerformedHausnummer();
+                onHausnummerEvent();
             }
         });
-    }
-
-    private void onActionPerformedHausnummer() {
-        System.out.println("Hausnummer action performed" + txtHausnummer.getText());
-    }
-
-    private void onComboBoxAnredeSelected() {
-        System.out.println("selected=" + comboBoxAnrede.getSelectedItem());
+        txtHausnummer.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onHausnummerEvent();
+            }
+        });
+        txtPlz.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onPlzEvent();
+            }
+        });
+        txtPlz.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onPlzEvent();
+            }
+        });
+        txtOrt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onOrtEvent();
+            }
+        });
+        txtOrt.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onOrtEvent();
+            }
+        });
+        txtFestnetz.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onFestnetzEvent();
+            }
+        });
+        txtFestnetz.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onFestnetzEvent();
+            }
+        });
+        txtNatel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onNatelEvent();
+            }
+        });
+        txtNatel.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onNatelEvent();
+            }
+        });
+        txtEmail.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onEmailEvent();
+            }
+        });
+        txtEmail.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onEmailEvent();
+            }
+        });
+        txtGeburtsdatum.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onGeburtsdatumEvent();
+            }
+        });
+        txtGeburtsdatum.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onGeburtsdatumEvent();
+            }
+        });
+        txtAnmeldedatum.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onAnmeldedatumEvent();
+            }
+        });
+        txtAnmeldedatum.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onAnmeldedatumEvent();
+            }
+        });
+        txtAbmeldedatum.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onAbmeldedatumEvent();
+            }
+        });
+        txtAbmeldedatum.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onAbmeldedatumEvent();
+            }
+        });
+        txtDispensationsbeginn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onDispensationsbeginnEvent();
+            }
+        });
+        txtDispensationsbeginn.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onDispensationsbeginnEvent();
+            }
+        });
+        txtDispensationsende.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onDispensationsendeEvent();
+            }
+        });
+        txtDispensationsende.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onDispensationsendeEvent();
+            }
+        });
+        // todo weitere listener?
+        textAreaBemerkungen.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onBemerkungenEvent();
+            }
+        });
     }
 
     public void setModel(SchuelerModel schuelerModel) {
@@ -99,33 +231,97 @@ public class SchuelerPanel {
         completedListeners.add(completedListener);
     }
 
-    private void onFocusLostNachname() {
-        System.out.println("Focus lost Nachname");
+    private void onAnredeSelected() {
+        System.out.println("selected=" + comboBoxAnrede.getSelectedItem());
+    }
+
+    private void onNachnameEvent() {
+        System.out.println("SchuelerPanel Event Nachname");
         schuelerModel.setNachname(txtNachname.getText());
         checkCompleted();
     }
 
-    private void onFocusLostVorname() {
-        System.out.println("Focus lost Vorname");
+    private void onVornameEvent() {
+        System.out.println("SchuelerPanel Event Vorname");
         schuelerModel.setVorname(txtVorname.getText());
         checkCompleted();
     }
 
-    private void onFocusLostStrasse() {
-        System.out.println("Focus lost Strasse");
+    private void onStrasseEvent() {
+        System.out.println("SchuelerPanel Event Strasse");
         schuelerModel.setStrasse(txtStrasse.getText());
         checkCompleted();
     }
 
-    private void onFocusLostPlz() {
-        System.out.println("Focus lost PLZ");
+    private void onHausnummerEvent() {
+        System.out.println("SchuelerPanel Event Hausnummer");
+        schuelerModel.setHausnummer(txtHausnummer.getText());
+        checkCompleted();
+    }
+
+    private void onPlzEvent() {
+        System.out.println("SchuelerPanel Event PLZ");
         schuelerModel.setPlz(txtPlz.getText());
         checkCompleted();
     }
 
-    private void onFocusLostOrt() {
-        System.out.println("Focus lost Ort");
+    private void onOrtEvent() {
+        System.out.println("SchuelerPanel Event Ort");
         schuelerModel.setOrt(txtOrt.getText());
+        checkCompleted();
+    }
+
+    private void onFestnetzEvent() {
+        System.out.println("SchuelerPanel Event Festnetz");
+        schuelerModel.setFestnetz(txtFestnetz.getText());
+        checkCompleted();
+    }
+
+    private void onNatelEvent() {
+        System.out.println("SchuelerPanel Event Natel");
+        schuelerModel.setNatel(txtNatel.getText());
+        checkCompleted();
+    }
+
+    private void onEmailEvent() {
+        System.out.println("SchuelerPanel Event Email");
+        schuelerModel.setEmail(txtEmail.getText());
+        checkCompleted();
+    }
+
+    private void onGeburtsdatumEvent() {
+        System.out.println("SchuelerPanel Event Geburtsdatum");
+        schuelerModel.setGeburtsdatum(txtGeburtsdatum.getText());
+        checkCompleted();
+    }
+
+    private void onAnmeldedatumEvent() {
+        System.out.println("SchuelerPanel Event Anmeldedatum");
+        schuelerModel.setAnmeldedatum(txtAnmeldedatum.getText());
+        checkCompleted();
+    }
+
+    private void onAbmeldedatumEvent() {
+        System.out.println("SchuelerPanel Event Abmeldedatum");
+        schuelerModel.setAbmeldedatum(txtAbmeldedatum.getText());
+        checkCompleted();
+    }
+
+    private void onDispensationsbeginnEvent() {
+        System.out.println("SchuelerPanel Event Dispensationsbeginn");
+        schuelerModel.setDispensationsbeginn(txtDispensationsbeginn.getText());
+        checkCompleted();
+    }
+
+    private void onDispensationsendeEvent() {
+        System.out.println("SchuelerPanel Event Dispensationsende");
+        schuelerModel.setDispensationsende(txtDispensationsende.getText());
+        checkCompleted();
+    }
+
+    private void onBemerkungenEvent() {
+        System.out.println("SchuelerPanel Event Bemerkungen");
+        schuelerModel.setBemerkungen(textAreaBemerkungen.getText());
         checkCompleted();
     }
 
