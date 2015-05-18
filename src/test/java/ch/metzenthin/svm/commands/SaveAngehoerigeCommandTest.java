@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.commands;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
-import ch.metzenthin.svm.dataTypes.Elternrolle;
 import ch.metzenthin.svm.model.daos.AngehoerigerDao;
 import ch.metzenthin.svm.model.entities.Adresse;
 import ch.metzenthin.svm.model.entities.Angehoeriger;
@@ -46,13 +45,13 @@ public class SaveAngehoerigeCommandTest {
 
         List<Angehoeriger> angehoerige = new ArrayList<>();
 
-        Angehoeriger angehoeriger0 = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, Elternrolle.VATER, true, "Jurist");
+        Angehoeriger angehoeriger0 = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, "Jurist");
         Adresse adresse = new Adresse("Hohenklingenstrasse", 15, 8049, "Zürich", "044 491 69 33");
         angehoeriger0.setAdresse(adresse);
         angehoerige.add(angehoeriger0);
 
         // Second Angehoeriger with the same address
-        Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null, null, Elternrolle.MUTTER, true, "Juristin");
+        Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null, null, "Juristin");
         angehoeriger1.setAdresse(adresse);
         angehoerige.add(angehoeriger1);
 
@@ -73,14 +72,13 @@ public class SaveAngehoerigeCommandTest {
         // Do both Angehoeriger have the same adresseId?
         assertTrue("Adresse_id not equal", Objects.equals(savedAngehoeriger0.getAdresse().getAdresseId(), savedAngehoeriger1.getAdresse().getAdresseId()));
 
-        // delete
+        // Delete
         EntityManager entityManager = null;
         try {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
-            angehoerigerDao.setEntityManager(entityManager);
+            AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
 
             Angehoeriger angehoerigerToBeRemoved0 = entityManager.find(Angehoeriger.class, savedAngehoeriger0.getPersonId());
             angehoerigerDao.remove(angehoerigerToBeRemoved0);

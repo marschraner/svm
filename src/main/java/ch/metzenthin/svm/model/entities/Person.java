@@ -25,27 +25,27 @@ public abstract class Person {
     private Timestamp version;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "anrede")
+    @Column(name = "anrede", nullable = false)
     private Anrede anrede;
 
-    @Column(name = "vorname")
+    @Column(name = "vorname", nullable = false)
     private String vorname;
 
-    @Column(name = "nachname")
+    @Column(name = "nachname", nullable = false)
     private String nachname;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "geburtsdatum")
+    @Column(name = "geburtsdatum", nullable = true)
     private Calendar geburtsdatum;
 
-    @Column(name = "natel")
+    @Column(name = "natel", nullable = true)
     private String natel;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = true)
     private String email;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "adresse_id")
+    @JoinColumn(name = "adresse_id", nullable = false)
     private Adresse adresse;
 
     public Person() {

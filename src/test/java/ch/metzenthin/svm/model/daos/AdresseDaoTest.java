@@ -25,8 +25,7 @@ public class AdresseDaoTest {
     public void setUp() throws Exception {
         entityManagerFactory = Persistence.createEntityManagerFactory("svm");
         entityManager = entityManagerFactory.createEntityManager();
-        adresseDao = new AdresseDao();
-        adresseDao.setEntityManager(entityManager);
+        adresseDao = new AdresseDao(entityManager);
     }
 
     @After
@@ -42,7 +41,7 @@ public class AdresseDaoTest {
     @Test
     public void testFindById() {
         Adresse adresse = adresseDao.findById(1);
-        assertEquals("Adresse not found", "Hintere Bergstrasse", adresse.getStrasse());
+        assertEquals("Adresse not correct", "Hintere Bergstrasse", adresse.getStrasse());
     }
 
     @Test
@@ -52,14 +51,43 @@ public class AdresseDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
             Adresse adresse = new Adresse("Buechackerstrasse", 4, 8234, "Stetten", "052 643 38 48");
-            Adresse result = adresseDao.save(adresse);
-            Adresse result2 = adresseDao.findById(result.getAdresseId());
-            assertEquals("Adresse not found", "Buechackerstrasse", result2.getStrasse());
+            Adresse adresseSaved = adresseDao.save(adresse);
+            Adresse adresseFound = adresseDao.findById(adresseSaved.getAdresseId());
+            assertEquals("Adresse not correct", "Buechackerstrasse", adresseFound.getStrasse());
         } finally {
             if (tx != null) {
                 tx.rollback();
             }
         }
+    }
+
+    @Test
+    public void testRemove() {
+        EntityTransaction tx = null;
+
+        try {
+            tx = entityManager.getTransaction();
+            tx.begin();
+
+            Adresse adresse = new Adresse("Buechackerstrasse", 4, 8234, "Stetten", "052 643 38 48");
+            Adresse adresseSaved = adresseDao.save(adresse);
+            int adresseId = adresseSaved.getAdresseId();
+
+            entityManager.flush();
+            assertNotNull(adresseDao.findById(adresseId));
+
+            // Delete Adresse
+            adresseDao.remove(adresseSaved);
+            entityManager.flush();
+            assertNull(adresseDao.findById(adresseId));
+
+            tx.commit();
+
+        } catch (NullPointerException e){
+            if (tx != null)
+                tx.rollback();
+        }
+
     }
 
 }

@@ -21,19 +21,19 @@ public class Adresse {
     @Column(name = "last_updated")
     private Timestamp version;
 
-    @Column(name = "strasse")
+    @Column(name = "strasse", nullable = false)
     private String strasse;
 
-    @Column(name = "hausnummer")
+    @Column(name = "hausnummer", nullable = true)
     private Integer hausnummer;
 
-    @Column(name = "plz")
+    @Column(name = "plz", nullable = false)
     private Integer plz;
 
-    @Column(name = "ort")
+    @Column(name = "ort", nullable = false)
     private String ort;
 
-    @Column(name = "festnetz")
+    @Column(name = "festnetz", nullable = true)
     private String festnetz;
 
     @OneToMany(mappedBy = "adresse")

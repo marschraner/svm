@@ -50,12 +50,12 @@ SELECT * FROM Person;
 -- Angehoeriger
 -- ************
 
-INSERT INTO Angehoeriger (person_id, elternrolle, rechnungsempfaenger, beruf) VALUES
-    (1, NULL, 1, NULL),
-    (2, 'VATER', 0, 'Wissenschaftlicher Mitarbeiter'),
-    (3, 'MUTTER', 1, 'Sportlehrerin'),
-    (5, 'VATER', 0, 'Jurist'),
-    (6, 'MUTTER', 0, NULL);
+INSERT INTO Angehoeriger (person_id, beruf) VALUES
+    (1, NULL),
+    (2, 'Wissenschaftlicher Mitarbeiter'),
+    (3, 'Sportlehrerin'),
+    (5, 'Jurist'),
+    (6, NULL);
 
 SELECT * FROM Angehoeriger;
 
@@ -63,10 +63,10 @@ SELECT * FROM Angehoeriger;
 -- Schueler
 -- ********
 
-INSERT INTO Schueler (person_id, anmeldedatum, abmeldedatum, vater_id, mutter_id, rechnungsempfaenger_id, dispensationsbeginn, dispensationsende, bemerkungen) VALUES
-    (4, '2015-05-09', NULL, 2, 3, 3, '2015-05-09', '2017-08-23', 'Eigentlich noch viel zu klein'),
-    (7, '2014-01-01', NULL, 5, 6, 1, NULL, NULL, 'Grosse Schwester von Anna'),
-    (8, '2014-01-01', NULL, 5, 6, 1, NULL, NULL, 'Grosse Schwester von Feller');
+INSERT INTO Schueler (person_id, geschlecht, anmeldedatum, abmeldedatum, vater_id, mutter_id, rechnungsempfaenger_id, dispensationsbeginn, dispensationsende, bemerkungen) VALUES
+    (4, 'M', '2015-05-09', NULL, 2, 3, 3, '2015-05-09', '2017-08-23', 'Eigentlich noch viel zu klein'),
+    (7, 'W', '2014-01-01', NULL, 5, 6, 1, NULL, NULL, 'Grosse Schwester von Anna'),
+    (8, 'W', '2014-01-01', NULL, 5, 6, 1, NULL, NULL, 'Grosse Schwester von Feller');
 
 SELECT * FROM Schueler;
 

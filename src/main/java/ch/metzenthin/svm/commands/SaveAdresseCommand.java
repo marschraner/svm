@@ -21,8 +21,7 @@ public class SaveAdresseCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        AdresseDao adresseDao = new AdresseDao();
-        adresseDao.setEntityManager(entityManager);
+        AdresseDao adresseDao = new AdresseDao(entityManager);
         savedAdresse = adresseDao.save(adresse);
     }
 

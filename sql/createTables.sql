@@ -65,8 +65,6 @@ DESCRIBE Person;
 
 CREATE TABLE IF NOT EXISTS Angehoeriger (
     person_id               INT           NOT NULL,
-    elternrolle             VARCHAR(6),
-    rechnungsempfaenger     TINYINT(1)    NOT NULL,
     beruf                   VARCHAR(50),
     last_updated            TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id),
@@ -80,6 +78,7 @@ DESCRIBE Angehoeriger;
 
 CREATE TABLE IF NOT EXISTS Schueler (
     person_id               INT           NOT NULL,
+    geschlecht              VARCHAR(1)       NOT NULL,
     anmeldedatum            DATE          NOT NULL,
     abmeldedatum            DATE,
     vater_id                INT,

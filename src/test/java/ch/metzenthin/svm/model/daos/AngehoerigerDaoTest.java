@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.model.daos;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
-import ch.metzenthin.svm.dataTypes.Elternrolle;
 import ch.metzenthin.svm.model.entities.Adresse;
 import ch.metzenthin.svm.model.entities.Angehoeriger;
 import org.junit.After;
@@ -12,8 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-
-import java.util.Objects;
 
 import static org.junit.Assert.*;
 
@@ -30,8 +27,7 @@ public class AngehoerigerDaoTest {
     public void setUp() throws Exception {
         entityManagerFactory = Persistence.createEntityManagerFactory("svm");
         entityManager = entityManagerFactory.createEntityManager();
-        angehoerigerDao = new AngehoerigerDao();
-        angehoerigerDao.setEntityManager(entityManager);
+        angehoerigerDao = new AngehoerigerDao(entityManager);
     }
 
     @After
@@ -47,7 +43,7 @@ public class AngehoerigerDaoTest {
     @Test
     public void testFindById() {
         Angehoeriger angehoeriger = angehoerigerDao.findById(3);
-        assertEquals("Beruf not found", "Sportlehrerin", angehoeriger.getBeruf());
+        assertEquals("Beruf not correct", "Sportlehrerin", angehoeriger.getBeruf());
     }
 
     @Test
@@ -59,25 +55,25 @@ public class AngehoerigerDaoTest {
             tx.begin();
 
             // Vater
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, Elternrolle.VATER, true, "Jurist");
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, "Jurist");
             Adresse adresse = new Adresse("Hohenklingenstrasse", 15, 8049, "Zürich", "044 491 69 33");
             vater.setAdresse(adresse);
             Angehoeriger vaterSaved = angehoerigerDao.save(vater);
             Angehoeriger vaterFound = angehoerigerDao.findById(vaterSaved.getPersonId());
-            assertEquals("Beruf not found", "Jurist", vaterFound.getBeruf());
-            assertEquals("Adresse not found", "Hohenklingenstrasse", vaterFound.getAdresse().getStrasse());
+            assertEquals("Beruf not correct", "Jurist", vaterFound.getBeruf());
+            assertEquals("Adresse not correct", "Hohenklingenstrasse", vaterFound.getAdresse().getStrasse());
 
             // Mutter
-            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Eugen", "Regula", null, null, null, Elternrolle.MUTTER, true, "Juristin");
+            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Eugen", "Regula", null, null, null, "Juristin");
             //mutter.setAdresse(adresse);
             mutter.setAdresse(vaterFound.getAdresse());
             Angehoeriger mutterSaved = angehoerigerDao.save(mutter);
             Angehoeriger mutterFound = angehoerigerDao.findById(mutterSaved.getPersonId());
-            assertEquals("Beruf not found", "Juristin", mutterFound.getBeruf());
-            assertEquals("Adresse not found", "Hohenklingenstrasse", mutterFound.getAdresse().getStrasse());
+            assertEquals("Beruf not correct", "Juristin", mutterFound.getBeruf());
+            assertEquals("Adresse not correct", "Hohenklingenstrasse", mutterFound.getAdresse().getStrasse());
 
             // Are adresseIds equal?
-            assertTrue("adresse_id not equal", Objects.equals(vater.getAdresse().getAdresseId(), mutter.getAdresse().getAdresseId()));
+            assertEquals("adresse_ids not equal", vaterFound.getAdresse().getAdresseId(), mutterFound.getAdresse().getAdresseId());
 
         } finally {
             if (tx != null)
@@ -88,17 +84,18 @@ public class AngehoerigerDaoTest {
 
     @Test
     public void testRemove() {
-
         EntityTransaction tx = null;
 
         try {
+
+            AdresseDao adresseDao = new AdresseDao(entityManager);
 
             // Create 2 Angehoerige with the same adress
             tx = entityManager.getTransaction();
             tx.begin();
 
             // Vater
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, Elternrolle.VATER, true, "Jurist");
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, "Jurist");
             Adresse adresse = new Adresse("Hohenklingenstrasse", 15, 8049, "Zürich", "044 491 69 33");
             vater.setAdresse(adresse);
             Angehoeriger vaterSaved = angehoerigerDao.save(vater);
@@ -106,7 +103,7 @@ public class AngehoerigerDaoTest {
             int adresseId = vaterSaved.getAdresse().getAdresseId();
 
             // Mutter
-            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Eugen", "Regula", null, null, null, Elternrolle.MUTTER, true, "Juristin");
+            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Eugen", "Regula", null, null, null, "Juristin");
             mutter.setAdresse(adresse);
             Angehoeriger mutterSaved = angehoerigerDao.save(mutter);
             int mutterId = mutterSaved.getPersonId();
@@ -115,18 +112,19 @@ public class AngehoerigerDaoTest {
 
             assertNotNull(angehoerigerDao.findById(vaterId));
             assertNotNull(angehoerigerDao.findById(mutterId));
-            assertNotNull(entityManager.find(Adresse.class, adresseId));
+            assertNotNull(adresseDao.findById(adresseId));
 
-            // Delete data
+            // Delete Vater
             angehoerigerDao.remove(vaterSaved);
             entityManager.flush();
             assertNull(angehoerigerDao.findById(vaterId));
-            assertNotNull(entityManager.find(Adresse.class, adresseId));
+            assertNotNull(adresseDao.findById(adresseId));
 
+            // Delete Mutter
             angehoerigerDao.remove(mutterSaved);
             entityManager.flush();
             assertNull(angehoerigerDao.findById(mutterId));
-            assertNull(entityManager.find(Adresse.class, adresseId));
+            assertNull(adresseDao.findById(adresseId));
 
             tx.commit();
 

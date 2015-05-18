@@ -1,10 +1,11 @@
 package ch.metzenthin.svm.model.entities;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
-import ch.metzenthin.svm.dataTypes.Elternrolle;
 
 import javax.persistence.*;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Martin Schraner
@@ -14,40 +15,24 @@ import java.util.Calendar;
 @DiscriminatorValue("Angehoeriger")
 public class Angehoeriger extends Person {
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "elternrolle", nullable = false)
-    private Elternrolle elternrolle;
-
-    @Column(name = "rechnungsempfaenger", nullable = false)
-    private boolean rechnungsempfaenger;
-
     @Column(name = "beruf", nullable = true)
     private String beruf;
+
+    @OneToMany(mappedBy = "vater")
+    private Set<Schueler> kinderVater = new HashSet<>();
+
+    @OneToMany(mappedBy = "mutter")
+    private Set<Schueler> kinderMutter = new HashSet<>();
+
+    @OneToMany(mappedBy = "rechnungsempfaenger")
+    private Set<Schueler> schuelerRechnungsempfaenger = new HashSet<>();
 
     public Angehoeriger() {
     }
 
-    public Angehoeriger(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String natel, String email, Elternrolle elternrolle, boolean rechnungsempfaenger, String beruf) {
+    public Angehoeriger(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String natel, String email, String beruf) {
         super(anrede, vorname, nachname, geburtsdatum, natel, email);
-        this.elternrolle = elternrolle;
-        this.rechnungsempfaenger = rechnungsempfaenger;
         this.beruf = beruf;
-    }
-
-    public Elternrolle getElternrolle() {
-        return elternrolle;
-    }
-
-    public void setElternrolle(Elternrolle elternrolle) {
-        this.elternrolle = elternrolle;
-    }
-
-    public boolean isRechnungsempfaenger() {
-        return rechnungsempfaenger;
-    }
-
-    public void setRechnungsempfaenger(boolean rechnungsempfaenger) {
-        this.rechnungsempfaenger = rechnungsempfaenger;
     }
 
     public String getBeruf() {
@@ -56,5 +41,17 @@ public class Angehoeriger extends Person {
 
     public void setBeruf(String beruf) {
         this.beruf = beruf;
+    }
+
+    public Set<Schueler> getKinderVater() {
+        return kinderVater;
+    }
+
+    public Set<Schueler> getKinderMutter() {
+        return kinderMutter;
+    }
+
+    public Set<Schueler> getSchuelerRechnungsempfaenger() {
+        return schuelerRechnungsempfaenger;
     }
 }

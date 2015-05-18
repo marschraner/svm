@@ -20,8 +20,7 @@ public class SaveAngehoerigeCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
-        angehoerigerDao.setEntityManager(entityManager);
+        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
 
         // Müssen alle in derselben Session bzw. vom selben Entity Manager ausgeführt werden!!!
         for (Angehoeriger angehoeriger : angehoerige) {

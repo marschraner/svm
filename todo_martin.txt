@@ -1,0 +1,7 @@
+- Geschlecht für Schüler
+- Dispensation als eigene Tabelle (1:n): dispensationsId, schuelerId, Beginn, Ende, Grund (-> bidirektional, orphan, all)
+- nullable für alle Attribute
+- SchülerErfassenCommand
+- Rabatt-Tabelle: rabattId, name, beschreibung (n:m)
+  mit Zwischentabelle Schueler_Rabatte-Tabelle: schueler_rabatte_id, schueler_id, rabatt_id
+- Enterprise-Architect nachführen

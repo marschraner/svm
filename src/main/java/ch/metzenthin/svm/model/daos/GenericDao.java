@@ -12,8 +12,9 @@ public abstract class GenericDao<T, ID> {
     protected EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
-    public GenericDao() {
+    public GenericDao(EntityManager entityManager) {
         persistentClass = (Class<T>) ( (ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        this.entityManager = entityManager;
     }
 
     public void setEntityManager(EntityManager entityManager) {
