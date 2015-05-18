@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.commands;
 
+import ch.metzenthin.svm.model.daos.AdresseDao;
 import ch.metzenthin.svm.model.entities.Adresse;
 import org.junit.After;
 import org.junit.Before;
@@ -37,16 +38,17 @@ public class SaveAdresseCommandTest {
         Adresse adresse = new Adresse("Buechackerstrasse", 4, 8234, "Stetten", "052 643 38 48");
         SaveAdresseCommand saveAdresseCommand = new SaveAdresseCommand(adresse);
         commandInvoker.executeCommand(saveAdresseCommand);
-        Adresse newAdresse = saveAdresseCommand.getSavedAdresse();
-        assertEquals("", "Buechackerstrasse", newAdresse.getStrasse());
+        Adresse adresseFound = saveAdresseCommand.getSavedAdresse();
+        assertEquals("Strasse not correct", "Buechackerstrasse", adresseFound.getStrasse());
 
         // delete
         EntityManager entityManager = null;
         try {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
-            Adresse delAdresse = entityManager.find(Adresse.class, newAdresse.getAdresseId());
-            entityManager.remove(delAdresse);
+            AdresseDao adresseDao = new AdresseDao(entityManager);
+            Adresse adresseToBeRemoved = adresseDao.findById(adresseFound.getAdresseId());
+            adresseDao.remove(adresseToBeRemoved);
             entityManager.getTransaction().commit();
         } finally {
             if (entityManager != null) {

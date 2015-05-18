@@ -18,6 +18,7 @@ SET default_storage_engine=InnoDB;
 -- Alte Tabellen löschen
 -- *********************
 
+DROP TABLE IF EXISTS Dispensation;
 DROP TABLE IF EXISTS Schueler;
 DROP TABLE IF EXISTS Angehoeriger;
 DROP TABLE IF EXISTS Person;
@@ -78,14 +79,12 @@ DESCRIBE Angehoeriger;
 
 CREATE TABLE IF NOT EXISTS Schueler (
     person_id               INT           NOT NULL,
-    geschlecht              VARCHAR(1)       NOT NULL,
+    geschlecht              VARCHAR(1)    NOT NULL,
     anmeldedatum            DATE          NOT NULL,
     abmeldedatum            DATE,
     vater_id                INT,
     mutter_id               INT,
     rechnungsempfaenger_id  INT           NOT NULL,
-    dispensationsbeginn     DATE,
-    dispensationsende       DATE,
     bemerkungen             TEXT,
     last_updated            TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id),
@@ -95,3 +94,19 @@ CREATE TABLE IF NOT EXISTS Schueler (
     FOREIGN KEY (rechnungsempfaenger_id) REFERENCES Angehoeriger (person_id));
 
 DESCRIBE Schueler;
+
+
+-- Dispensation
+-- ************
+
+CREATE TABLE IF NOT EXISTS Dispensation (
+    dispensation_id         INT           NOT NULL AUTO_INCREMENT,
+    dispensationsbeginn     DATE          NOT NULL,
+    dispensationsende       DATE,
+    grund                   TEXT          NOT NULL,
+    schueler_id             INT           NOT NULL,
+    last_updated            TIMESTAMP     NOT NULL,
+    PRIMARY KEY (dispensation_id),
+    FOREIGN KEY (schueler_id) REFERENCES Schueler (person_id));
+
+DESCRIBE Dispensation;
