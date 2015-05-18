@@ -106,6 +106,16 @@
       <exported-key name="Schueler_ibfk_3" table="Schueler" schema="" catalog="svm" columns="mutter_id"/>
       <exported-key name="Schueler_ibfk_4" table="Schueler" schema="" catalog="svm" columns="rechnungsempfaenger_id"/>
     </table>
+    <table name="Dispensation" schema="" catalog="svm" type="TABLE">
+      <column name="dispensation_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="dispensationsbeginn" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="dispensationsende" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="grund" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="schueler_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="dispensation_id"/>
+      <foreign-key name="Dispensation_ibfk_1" columns="schueler_id" ref-table="Schueler" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
     <table name="Person" schema="" catalog="svm" type="TABLE">
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="discriminator" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
@@ -124,14 +134,12 @@
     </table>
     <table name="Schueler" schema="" catalog="svm" type="TABLE">
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="geschlecht" sqlType="CHAR" precision="1" scale="0" nullable="false" jdbcType="1"/>
+      <column name="geschlecht" sqlType="VARCHAR" precision="1" scale="0" nullable="false" jdbcType="12"/>
       <column name="anmeldedatum" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="abmeldedatum" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="vater_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="mutter_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="rechnungsempfaenger_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="dispensationsbeginn" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
-      <column name="dispensationsende" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="bemerkungen" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="person_id"/>
@@ -139,6 +147,7 @@
       <foreign-key name="Schueler_ibfk_2" columns="vater_id" ref-table="Angehoeriger" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="Schueler_ibfk_3" columns="mutter_id" ref-table="Angehoeriger" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="Schueler_ibfk_4" columns="rechnungsempfaenger_id" ref-table="Angehoeriger" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="Dispensation_ibfk_1" table="Dispensation" schema="" catalog="svm" columns="schueler_id"/>
     </table>
   </data-source>
 </component>

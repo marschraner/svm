@@ -40,8 +40,19 @@ public class AdresseDaoTest {
 
     @Test
     public void testFindById() {
-        Adresse adresse = adresseDao.findById(1);
-        assertEquals("Adresse not correct", "Hintere Bergstrasse", adresse.getStrasse());
+        EntityTransaction tx = null;
+        try {
+            tx = entityManager.getTransaction();
+            tx.begin();
+            Adresse adresse = new Adresse("Buechackerstrasse", 4, 8234, "Stetten", "052 643 38 48");
+            entityManager.persist(adresse);
+            Adresse adresseFound = adresseDao.findById(adresse.getAdresseId());
+            assertEquals("Strasse not correct", "Buechackerstrasse", adresseFound.getStrasse());
+        } finally {
+            if (tx != null) {
+                tx.rollback();
+            }
+        }
     }
 
     @Test

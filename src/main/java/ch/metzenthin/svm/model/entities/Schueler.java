@@ -5,6 +5,8 @@ import ch.metzenthin.svm.dataTypes.Geschlecht;
 
 import javax.persistence.*;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Martin Schraner
@@ -26,14 +28,6 @@ public class Schueler extends Person {
     @Column(name = "abmeldedatum", nullable = true)
     private Calendar abmeldedatum;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "dispensationsbeginn", nullable = true)
-    private Calendar dispensationbeginn;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "dispensationsende", nullable = true)
-    private Calendar dispensationsende;
-
     @Lob
     @Column(name = "bemerkungen", columnDefinition = "text", nullable = true)
     private String bemerkungen;
@@ -50,16 +44,17 @@ public class Schueler extends Person {
     @JoinColumn(name = "rechnungsempfaenger_id", nullable = false)
     private Angehoeriger rechnungsempfaenger;
 
+    @OneToMany(mappedBy = "schueler", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Dispensation> dispensationen = new HashSet<>();
+
     public Schueler() {
     }
 
-    public Schueler(String vorname, String nachname, Calendar geburtsdatum, String natel, String email, Geschlecht geschlecht, Calendar anmeldedatum, Calendar abmeldedatum, Calendar dispensationbeginn, Calendar dispensationsende, String bemerkungen) {
+    public Schueler(String vorname, String nachname, Calendar geburtsdatum, String natel, String email, Geschlecht geschlecht, Calendar anmeldedatum, Calendar abmeldedatum, String bemerkungen) {
         super(Anrede.KEINE, vorname, nachname, geburtsdatum, natel, email);
         this.geschlecht = geschlecht;
         this.anmeldedatum = anmeldedatum;
         this.abmeldedatum = abmeldedatum;
-        this.dispensationbeginn = dispensationbeginn;
-        this.dispensationsende = dispensationsende;
         this.bemerkungen = bemerkungen;
     }
 
@@ -85,22 +80,6 @@ public class Schueler extends Person {
 
     public void setAbmeldedatum(Calendar abmeldedatum) {
         this.abmeldedatum = abmeldedatum;
-    }
-
-    public Calendar getDispensationbeginn() {
-        return dispensationbeginn;
-    }
-
-    public void setDispensationbeginn(Calendar dispensationbeginn) {
-        this.dispensationbeginn = dispensationbeginn;
-    }
-
-    public Calendar getDispensationsende() {
-        return dispensationsende;
-    }
-
-    public void setDispensationsende(Calendar dispensationsende) {
-        this.dispensationsende = dispensationsende;
     }
 
     public String getBemerkungen() {
@@ -136,5 +115,18 @@ public class Schueler extends Person {
     public void setRechnungsempfaenger(Angehoeriger rechnungsempfaenger) {
         rechnungsempfaenger.getSchuelerRechnungsempfaenger().add(this);
         this.rechnungsempfaenger = rechnungsempfaenger;
+    }
+
+    public void addDispensation(Dispensation dispensation) {
+        dispensation.setSchueler(this);
+        dispensationen.add(dispensation);
+    }
+
+    public void deleteDispensation(Dispensation dispensation) {
+        dispensationen.remove(dispensation);
+    }
+
+    public Set<Dispensation> getDispensationen() {
+        return dispensationen;
     }
 }

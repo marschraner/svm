@@ -12,6 +12,7 @@ USE svm;
 -- Delete
 -- ******
 
+DELETE FROM Dispensation;
 DELETE FROM Schueler;
 DELETE FROM Angehoeriger;
 DELETE FROM Person;
@@ -42,8 +43,6 @@ INSERT INTO Person (person_id, discriminator, anrede, vorname, nachname, geburts
     (7, 'Schueler', 'KEINE', 'Lilly', 'Juchli', '2008-01-13', NULL, NULL, 3),
     (8, 'Schueler', 'KEINE', 'Anna', 'Juchli', '2010-03-05', NULL, NULL, 3);
 
-
-
 SELECT * FROM Person;
 
 
@@ -63,12 +62,21 @@ SELECT * FROM Angehoeriger;
 -- Schueler
 -- ********
 
-INSERT INTO Schueler (person_id, geschlecht, anmeldedatum, abmeldedatum, vater_id, mutter_id, rechnungsempfaenger_id, dispensationsbeginn, dispensationsende, bemerkungen) VALUES
-    (4, 'M', '2015-05-09', NULL, 2, 3, 3, '2015-05-09', '2017-08-23', 'Eigentlich noch viel zu klein'),
-    (7, 'W', '2014-01-01', NULL, 5, 6, 1, NULL, NULL, 'Grosse Schwester von Anna'),
-    (8, 'W', '2014-01-01', NULL, 5, 6, 1, NULL, NULL, 'Grosse Schwester von Feller');
+INSERT INTO Schueler (person_id, geschlecht, anmeldedatum, abmeldedatum, vater_id, mutter_id, rechnungsempfaenger_id, bemerkungen) VALUES
+    (4, 'M', '2015-05-09', NULL, 2, 3, 3, NULL),
+    (7, 'W', '2014-01-01', NULL, 5, 6, 1, 'Grosse Schwester von Anna'),
+    (8, 'W', '2014-01-01', NULL, 5, 6, 1, 'Grosse Schwester von Feller');
 
 SELECT * FROM Schueler;
+
+
+-- Dispensation
+-- ************
+
+INSERT INTO Dispensation (dispensation_id, dispensationsbeginn, dispensationsende, grund, schueler_id) VALUES
+    (1, '2015-05-09', '2017-08-23', 'Noch zu klein', 4);
+
+SELECT * FROM Dispensation;
 
 
 

@@ -80,10 +80,10 @@ public class SaveAngehoerigeCommandTest {
 
             AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
 
-            Angehoeriger angehoerigerToBeRemoved0 = entityManager.find(Angehoeriger.class, savedAngehoeriger0.getPersonId());
+            Angehoeriger angehoerigerToBeRemoved0 = angehoerigerDao.findById(savedAngehoeriger0.getPersonId());
             angehoerigerDao.remove(angehoerigerToBeRemoved0);
 
-            Angehoeriger angehoerigerToBeRemoved1 = entityManager.find(Angehoeriger.class, savedAngehoeriger1.getPersonId());
+            Angehoeriger angehoerigerToBeRemoved1 = angehoerigerDao.findById(savedAngehoeriger1.getPersonId());
             angehoerigerDao.remove(angehoerigerToBeRemoved1);
 
             entityManager.getTransaction().commit();

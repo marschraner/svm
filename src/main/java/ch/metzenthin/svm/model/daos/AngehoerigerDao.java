@@ -14,7 +14,6 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
         super(entityManager);
     }
 
-    @Override
     public void remove(Angehoeriger angehoeriger) {
 
         // Remove angehoeriger from adresse

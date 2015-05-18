@@ -42,8 +42,22 @@ public class AngehoerigerDaoTest {
 
     @Test
     public void testFindById() {
-        Angehoeriger angehoeriger = angehoerigerDao.findById(3);
-        assertEquals("Beruf not correct", "Sportlehrerin", angehoeriger.getBeruf());
+        EntityTransaction tx = null;
+
+        try {
+            tx = entityManager.getTransaction();
+            tx.begin();
+            Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, "Jurist");
+            Adresse adresse = new Adresse("Hohenklingenstrasse", 15, 8049, "Zürich", "044 491 69 33");
+            angehoeriger.setAdresse(adresse);
+            entityManager.persist(angehoeriger);
+            Angehoeriger angehoerigerFound = angehoerigerDao.findById(angehoeriger.getPersonId());
+            assertEquals("Beruf not correct", "Jurist", angehoerigerFound.getBeruf());
+
+        } finally {
+            if (tx != null)
+                tx.rollback();
+        }
     }
 
     @Test
