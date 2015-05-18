@@ -9,7 +9,7 @@ import java.awt.event.ItemListener;
  */
 public class ElternteilEinsPanel {
     private JPanel panel;
-    private AngehoerigerPanel angehoerigerPanel;
+    private AngehoerigerPanel2 angehoerigerPanel;
 
     public void addRechnungsempfaengerAdresseItemListener(ItemListener listener) {
         angehoerigerPanel.addRechnungsempfaengerAdresseItemListener(listener);
@@ -33,7 +33,7 @@ public class ElternteilEinsPanel {
         panel = new JPanel();
         panel.setLayout(new BorderLayout(0, 0));
         panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Elternteil 1"));
-        angehoerigerPanel = new AngehoerigerPanel();
+        angehoerigerPanel = new AngehoerigerPanel2();
         panel.add(angehoerigerPanel.$$$getRootComponent$$$(), BorderLayout.CENTER);
     }
 

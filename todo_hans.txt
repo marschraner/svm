@@ -1,4 +1,4 @@
-todo's hans:
+zu erledigen hans:
 
 -Eigenes Projekt Prototyp
 -Architektur-Entscheide dokumentieren (z.B. wieso Swing). Wo?

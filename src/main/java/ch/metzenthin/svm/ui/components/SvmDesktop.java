@@ -18,8 +18,9 @@ public class SvmDesktop extends JFrame implements ActionListener, InternalFrameL
 
     private static final long serialVersionUID = 1L;
 
-    private JDesktopPane desktop;
-    private SvmContext svmContext;
+    private final JDesktopPane desktop;
+    private final SvmContext svmContext;
+    private SvmInternalFrame schuelerErfassenFrame;
 
     public SvmDesktop(SvmContext svmContext) {
         super("SVM Schüler Verwaltung Metzenthin");
@@ -46,7 +47,7 @@ public class SvmDesktop extends JFrame implements ActionListener, InternalFrameL
         setVisible(true);
     }
 
-    protected JMenuBar createMenuBar() {
+    private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
         // Set up the lone menu.
@@ -80,14 +81,25 @@ public class SvmDesktop extends JFrame implements ActionListener, InternalFrameL
     // React to menu selections.
     public void actionPerformed(ActionEvent e) {
         if ("schuelerErfassen".equals(e.getActionCommand())) {
-            createFrame(new SchuelerErfassenPanel(svmContext).$$$getRootComponent$$$(), "Schüler erfassen", new Dimension(800, 500));
+            SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext);
+            schuelerErfassenPanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onSchuelerErfassenFrameAbbrechen();
+                }
+            });
+            schuelerErfassenFrame = createFrame(schuelerErfassenPanel.$$$getRootComponent$$$(), "Schüler erfassen", new Dimension(1000, 800));
         } else { // beenden
             quit();
         }
     }
 
+    private void onSchuelerErfassenFrameAbbrechen() {
+        schuelerErfassenFrame.dispose();
+    }
+
     // Create a new internal frame.
-    protected void createFrame(JComponent panel, String title, Dimension dimension) {
+    private SvmInternalFrame createFrame(JComponent panel, String title, Dimension dimension) {
         SvmInternalFrame frame = new SvmInternalFrame(panel, title, dimension);
         frame.setVisible(true); // necessary as of 1.3
         frame.addInternalFrameListener(this);
@@ -96,23 +108,22 @@ public class SvmDesktop extends JFrame implements ActionListener, InternalFrameL
             frame.setSelected(true);
         } catch (java.beans.PropertyVetoException ignore) {
         }
+        return frame;
     }
 
     // Quit the application.
-    protected void quit() {
+    private void quit() {
         System.exit(0);
     }
 
     @Override
-    public void internalFrameOpened(InternalFrameEvent e) {
-        // TODO Auto-generated method stub
-        
+    public void internalFrameOpened(InternalFrameEvent ignore) {
+        // empty
     }
 
     @Override
-    public void internalFrameClosing(InternalFrameEvent e) {
-        // TODO Auto-generated method stub
-        
+    public void internalFrameClosing(InternalFrameEvent ignore) {
+        // empty
     }
 
     @Override
@@ -121,27 +132,23 @@ public class SvmDesktop extends JFrame implements ActionListener, InternalFrameL
     }
 
     @Override
-    public void internalFrameIconified(InternalFrameEvent e) {
-        // TODO Auto-generated method stub
-        
+    public void internalFrameIconified(InternalFrameEvent ignore) {
+        // empty
     }
 
     @Override
-    public void internalFrameDeiconified(InternalFrameEvent e) {
-        // TODO Auto-generated method stub
-        
+    public void internalFrameDeiconified(InternalFrameEvent ignore) {
+        // empty
     }
 
     @Override
-    public void internalFrameActivated(InternalFrameEvent e) {
-        // TODO Auto-generated method stub
-        
+    public void internalFrameActivated(InternalFrameEvent ignore) {
+        // empty
     }
 
     @Override
-    public void internalFrameDeactivated(InternalFrameEvent e) {
-        // TODO Auto-generated method stub
-        
+    public void internalFrameDeactivated(InternalFrameEvent ignore) {
+        // empty
     }
 
 }

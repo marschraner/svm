@@ -1,28 +1,20 @@
 package ch.metzenthin.svm.common;
 
-import ch.metzenthin.svm.commands.CommandInvoker;
-import ch.metzenthin.svm.commands.CommandInvokerImpl;
-
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import ch.metzenthin.svm.domain.ModelFactory;
 
 /**
  * @author Hans Stamm
  */
 public class SvmContext {
 
-    private EntityManagerFactory entityManagerFactory;
+    private final ModelFactory modelFactory;
 
-    public SvmContext() {
-        this.entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+    public SvmContext(ModelFactory modelFactory) {
+        this.modelFactory = modelFactory;
     }
 
-    public EntityManagerFactory getEntityManagerFactory() {
-        return entityManagerFactory;
+    public ModelFactory getModelFactory() {
+        return modelFactory;
     }
 
-
-    public CommandInvoker getCommandInvoker() {
-        return new CommandInvokerImpl(entityManagerFactory);
-    }
 }

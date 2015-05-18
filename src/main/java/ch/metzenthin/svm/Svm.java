@@ -1,8 +1,12 @@
 package ch.metzenthin.svm;
 
+import ch.metzenthin.svm.commands.CommandInvoker;
+import ch.metzenthin.svm.commands.CommandInvokerImpl;
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.ModelFactoryImpl;
 import ch.metzenthin.svm.ui.components.SvmDesktop;
 
+import javax.persistence.Persistence;
 import javax.swing.*;
 
 /*
@@ -23,7 +27,7 @@ public class Svm {
     }
 
     public static void main(String[] args) {
-        final SvmContext svmContext = new SvmContext();
+        final SvmContext svmContext = new SvmContext(createModelFactory());
         // Schedule a job for the event-dispatching thread:
         // creating and showing this application's GUI.
         SwingUtilities.invokeLater(new Runnable() {
@@ -31,6 +35,14 @@ public class Svm {
                 createAndShowGUI(svmContext);
             }
         });
+    }
+
+    private static ModelFactoryImpl createModelFactory() {
+        return new ModelFactoryImpl(createCommandInvoker());
+    }
+
+    private static CommandInvoker createCommandInvoker() {
+        return new CommandInvokerImpl(Persistence.createEntityManagerFactory("svm"));
     }
 
 }
