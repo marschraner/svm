@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.SchuelerErfassenTabbedPane">
+  <grid id="27dc6" binding="panel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="559" height="714"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <tabbedpane id="edd03" binding="schuelerErfassenTabbedPane">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="53618" binding="schuelerTab" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="Schüler"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <nested-form id="ac1b6" form-file="ch/metzenthin/svm/ui/components/SchuelerPanel.form" binding="schuelerPanel">
+                <constraints border-constraint="Center"/>
+              </nested-form>
+            </children>
+          </grid>
+          <grid id="2521a" binding="elternteilEinsTab" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="Elternteil 1"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <nested-form id="a6f74" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="elternteilEinsPanel" custom-create="true">
+                <constraints border-constraint="Center"/>
+              </nested-form>
+            </children>
+          </grid>
+          <grid id="a15c2" binding="elernteilZweiTab" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="Elternteil 2"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <nested-form id="d6ff4" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="elternteilZweiPanel" custom-create="true">
+                <constraints border-constraint="Center"/>
+              </nested-form>
+            </children>
+          </grid>
+          <grid id="762e" binding="drittempfaengerTab" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="Drittempfänger"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <nested-form id="1a825" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="drittempfaengerPanel" custom-create="true">
+                <constraints border-constraint="Center"/>
+              </nested-form>
+            </children>
+          </grid>
+        </children>
+      </tabbedpane>
+      <grid id="8c481" binding="btnPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="3ed96" class="javax.swing.JButton" binding="btnSpeichern">
+            <constraints/>
+            <properties>
+              <text value="&amp;Speichern"/>
+            </properties>
+          </component>
+          <component id="d3cdf" class="javax.swing.JButton" binding="btnAbbrechen">
+            <constraints/>
+            <properties>
+              <text value="&amp;Abbrechen"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

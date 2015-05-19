@@ -232,7 +232,9 @@ public class SchuelerPanel {
     }
 
     private void onAnredeSelected() {
-        System.out.println("selected=" + comboBoxAnrede.getSelectedItem());
+        System.out.println("SchuelerPanel Event Anrede selected=" + comboBoxAnrede.getSelectedItem());
+        schuelerModel.setAnrede((Anrede) comboBoxAnrede.getSelectedItem());
+        checkCompleted();
     }
 
     private void onNachnameEvent() {
@@ -353,7 +355,7 @@ public class SchuelerPanel {
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
         panel.add(panel1, BorderLayout.CENTER);
-        panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schüler"));
+        panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), null));
         final JLabel label1 = new JLabel();
         label1.setText("Nachname");
         label1.setDisplayedMnemonic('C');
@@ -362,7 +364,7 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label1, gbc);
         final JPanel spacer1 = new JPanel();
         gbc = new GridBagConstraints();
@@ -377,10 +379,10 @@ public class SchuelerPanel {
         gbc.fill = GridBagConstraints.VERTICAL;
         panel1.add(spacer2, gbc);
         txtNachname = new JTextField();
-        txtNachname.setColumns(20);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 3;
+        gbc.weightx = 0.9;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(txtNachname, gbc);
@@ -391,10 +393,9 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 5;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label2, gbc);
         txtVorname = new JTextField();
-        txtVorname.setColumns(20);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 5;
@@ -408,7 +409,7 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 7;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label3, gbc);
         final JPanel spacer3 = new JPanel();
         gbc = new GridBagConstraints();
@@ -423,10 +424,9 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 9;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label4, gbc);
         txtPlz = new JTextField();
-        txtPlz.setColumns(20);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 9;
@@ -446,10 +446,9 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 11;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label5, gbc);
         txtOrt = new JTextField();
-        txtOrt.setColumns(20);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 11;
@@ -470,10 +469,11 @@ public class SchuelerPanel {
         gbc.fill = GridBagConstraints.BOTH;
         panel1.add(panel2, gbc);
         txtStrasse = new JTextField();
-        txtStrasse.setColumns(17);
+        txtStrasse.setColumns(27);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.weightx = 0.9;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel2.add(txtStrasse, gbc);
@@ -482,6 +482,7 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 0;
+        gbc.weightx = 0.1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel2.add(txtHausnummer, gbc);
@@ -498,7 +499,7 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 13;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label6, gbc);
         final JPanel spacer7 = new JPanel();
         gbc = new GridBagConstraints();
@@ -507,7 +508,6 @@ public class SchuelerPanel {
         gbc.fill = GridBagConstraints.VERTICAL;
         panel1.add(spacer7, gbc);
         txtFestnetz = new JTextField();
-        txtFestnetz.setColumns(20);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 13;
@@ -521,7 +521,8 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.weightx = 0.1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label7, gbc);
         final JPanel spacer8 = new JPanel();
         gbc = new GridBagConstraints();
@@ -542,10 +543,9 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 19;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label8, gbc);
         txtGeburtsdatum = new JTextField();
-        txtGeburtsdatum.setColumns(20);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 19;
@@ -565,10 +565,9 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 15;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label9, gbc);
         txtNatel = new JTextField();
-        txtNatel.setColumns(20);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 15;
@@ -588,7 +587,7 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 17;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label10, gbc);
         txtEmail = new JTextField();
         gbc = new GridBagConstraints();
@@ -622,10 +621,9 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 23;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label11, gbc);
         txtAbmeldedatum = new JTextField();
-        txtAbmeldedatum.setColumns(20);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 23;
@@ -645,10 +643,9 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 21;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label12, gbc);
         txtAnmeldedatum = new JTextField();
-        txtAnmeldedatum.setColumns(20);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 21;
@@ -668,10 +665,9 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 25;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label13, gbc);
         txtDispensationsbeginn = new JTextField();
-        txtDispensationsbeginn.setColumns(20);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 25;
@@ -685,10 +681,9 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 27;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label14, gbc);
         txtDispensationsende = new JTextField();
-        txtDispensationsende.setColumns(20);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 27;
@@ -701,6 +696,21 @@ public class SchuelerPanel {
         gbc.gridy = 26;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel1.add(spacer16, gbc);
+        final JPanel spacer17 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 28;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel1.add(spacer17, gbc);
+        final JScrollPane scrollPane1 = new JScrollPane();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 29;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel1.add(scrollPane1, gbc);
+        textAreaBemerkungen = new JTextArea();
+        textAreaBemerkungen.setRows(5);
+        scrollPane1.setViewportView(textAreaBemerkungen);
         final JLabel label15 = new JLabel();
         label15.setText("Bemerkungen");
         label15.setDisplayedMnemonic('R');
@@ -708,30 +718,14 @@ public class SchuelerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 29;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(label15, gbc);
-        final JPanel spacer17 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 28;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel1.add(spacer17, gbc);
         final JPanel spacer18 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 30;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel1.add(spacer18, gbc);
-        final JScrollPane scrollPane1 = new JScrollPane();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 29;
-        gbc.fill = GridBagConstraints.BOTH;
-        panel1.add(scrollPane1, gbc);
-        textAreaBemerkungen = new JTextArea();
-        textAreaBemerkungen.setColumns(20);
-        textAreaBemerkungen.setRows(1);
-        scrollPane1.setViewportView(textAreaBemerkungen);
         label1.setLabelFor(txtNachname);
         label2.setLabelFor(txtVorname);
         label3.setLabelFor(txtHausnummer);

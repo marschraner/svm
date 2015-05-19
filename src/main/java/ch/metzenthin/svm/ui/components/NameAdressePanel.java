@@ -9,6 +9,7 @@ import java.awt.*;
 
 /**
  * @author hans
+ * todo löschen
  */
 public class NameAdressePanel {
     private JPanel panel;

@@ -81,7 +81,7 @@ public class SvmDesktop extends JFrame implements ActionListener, InternalFrameL
     // React to menu selections.
     public void actionPerformed(ActionEvent e) {
         if ("schuelerErfassen".equals(e.getActionCommand())) {
-            SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext);
+            SchuelerErfassenTabbedPane schuelerErfassenPanel = new SchuelerErfassenTabbedPane(svmContext);
             schuelerErfassenPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

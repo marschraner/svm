@@ -7,47 +7,63 @@
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="39e0" layout-manager="GridBagLayout">
+      <grid id="3db77" layout-manager="GridBagLayout">
         <constraints border-constraint="Center"/>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="92ad2" class="javax.swing.JCheckBox" binding="chckbxAbweichendeAdresse">
+          <grid id="39e0" layout-manager="GridBagLayout">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="0.0"/>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.6" weighty="0.0"/>
             </constraints>
-            <properties>
-              <text value="&amp;Abweichende Adresse"/>
-            </properties>
-          </component>
-          <hspacer id="e2e08">
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="92ad2" class="javax.swing.JCheckBox" binding="chckbxAbweichendeAdresse">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.4" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="&amp;Abweichende Adresse"/>
+                </properties>
+              </component>
+              <hspacer id="e2e08">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </hspacer>
+              <vspacer id="bd840">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </vspacer>
+              <component id="853cd" class="javax.swing.JCheckBox" binding="chckbxRechnungsempfaengerAdresse">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.4" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="&amp;Rechnungsempfänger"/>
+                </properties>
+              </component>
+              <vspacer id="fbf">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </vspacer>
+            </children>
+          </grid>
+          <hspacer id="df1f4">
             <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="0.0"/>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.4" weighty="0.0"/>
             </constraints>
           </hspacer>
-          <vspacer id="bd840">
-            <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="0.0"/>
-            </constraints>
-          </vspacer>
-          <component id="853cd" class="javax.swing.JCheckBox" binding="chckbxRechnungsempfaengerAdresse">
-            <constraints>
-              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <text value="&amp;Rechnungsempfänger"/>
-            </properties>
-          </component>
-          <vspacer id="fbf">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="0.0"/>
-            </constraints>
-          </vspacer>
         </children>
       </grid>
     </children>

@@ -1,5 +1,7 @@
 zu erledigen hans:
 
+-package model -> persistence?
+-Fehleranzeige im GUI/Exceptions?
 -Eigenes Projekt Prototyp
 -Architektur-Entscheide dokumentieren (z.B. wieso Swing). Wo?
 -Welche Artefakte erwartet Roland am Schluss für Beurteilung? (Rat von Robert Kolb)

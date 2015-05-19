@@ -8,7 +8,8 @@ import java.util.Calendar;
 
 /**
  * @author Hans Stamm
- * todo Tests
+ * todo check... und to... Methoden in Utils auslagern
+ * todo PropertyChangeSupport (Observable?)
  */
 abstract class AbstractModel {
 
@@ -43,11 +44,11 @@ abstract class AbstractModel {
     }
 
     Integer toIntegerOrNull(String s) {
-        Integer hausnummer = null;
+        Integer i = null;
         if (checkNumber(s)) {
-            hausnummer = toInteger(s);
+            i = toInteger(s);
         }
-        return hausnummer;
+        return i;
     }
 
     Integer toInteger(String s) {
