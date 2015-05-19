@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.model.AngehoerigerModel;
 import ch.metzenthin.svm.domain.model.SchuelerModel;
 import ch.metzenthin.svm.ui.control.CompletedListener;
 
@@ -20,6 +21,9 @@ public class SchuelerErfassenPanel {
     private AngehoerigerPanel mutterPanel;
     private AngehoerigerPanel rechnungsempfaengerPanel;
     private final SchuelerModel schuelerModel;
+    private final AngehoerigerModel vaterModel;
+    private final AngehoerigerModel mutterModel;
+    private final AngehoerigerModel rechnungsempfaengerModel;
     private JPanel btnPanel;
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
@@ -47,6 +51,12 @@ public class SchuelerErfassenPanel {
         });
         schuelerModel = svmContext.getModelFactory().createSchuelerModel();
         schuelerPanel.setModel(schuelerModel);
+        vaterModel = svmContext.getModelFactory().createAngehoerigerModel();
+        vaterPanel.setModel(vaterModel);
+        mutterModel = svmContext.getModelFactory().createAngehoerigerModel();
+        mutterPanel.setModel(mutterModel);
+        rechnungsempfaengerModel = svmContext.getModelFactory().createAngehoerigerModel();
+        rechnungsempfaengerPanel.setModel(rechnungsempfaengerModel);
         onSchuelerPanelCompleted(false);
     }
 

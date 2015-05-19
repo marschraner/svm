@@ -2,6 +2,7 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.domain.model.AngehoerigerModel;
+import ch.metzenthin.svm.ui.control.AngehoerigerController;
 import ch.metzenthin.svm.ui.control.CompletedListener;
 
 import javax.swing.*;
@@ -35,6 +36,23 @@ public class AngehoerigerPanel {
 
     public void setModel(AngehoerigerModel angehoerigerModel) {
         this.angehoerigerModel = angehoerigerModel;
+        createAngehoerigerController();
+    }
+
+    private void createAngehoerigerController() {
+        AngehoerigerController angehoerigerController = new AngehoerigerController(angehoerigerModel);
+        angehoerigerController.setComboBoxAnrede(comboBoxAnrede);
+        angehoerigerController.setTxtNachname(txtNachname);
+        angehoerigerController.setTxtVorname(txtVorname);
+        angehoerigerController.setTxtStrasse(txtStrasse);
+        angehoerigerController.setTxtHausnummer(txtHausnummer);
+        angehoerigerController.setTxtPlz(txtPlz);
+        angehoerigerController.setTxtOrt(txtOrt);
+        angehoerigerController.setTxtFestnetz(txtFestnetz);
+        angehoerigerController.setTxtNatel(txtNatel);
+        angehoerigerController.setTxtEmail(txtEmail);
+        angehoerigerController.setTxtGeburtsdatum(txtGeburtsdatum);
+        angehoerigerController.setTxtBeruf(txtBeruf);
     }
 
     private final java.util.List<CompletedListener> completedListeners = new ArrayList<>();
