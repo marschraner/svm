@@ -1,9 +1,9 @@
 package ch.metzenthin.svm;
 
-import ch.metzenthin.svm.commands.CommandInvoker;
-import ch.metzenthin.svm.commands.CommandInvokerImpl;
+import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.CommandInvokerImpl;
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.ModelFactoryImpl;
+import ch.metzenthin.svm.domain.model.ModelFactoryImpl;
 import ch.metzenthin.svm.ui.components.SvmDesktop;
 
 import javax.persistence.Persistence;

@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.model.entities.Adresse;
-import ch.metzenthin.svm.model.entities.Angehoeriger;
-import ch.metzenthin.svm.model.entities.Person;
+import ch.metzenthin.svm.persistence.entities.Adresse;
+import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Person;
 
 import javax.swing.*;
 import java.awt.*;

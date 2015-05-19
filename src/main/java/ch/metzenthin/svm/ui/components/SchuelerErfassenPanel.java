@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.SchuelerModel;
+import ch.metzenthin.svm.domain.model.SchuelerModel;
 import ch.metzenthin.svm.ui.control.CompletedListener;
 
 import javax.swing.*;

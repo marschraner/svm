@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.common;
 
-import ch.metzenthin.svm.domain.ModelFactory;
+import ch.metzenthin.svm.domain.model.ModelFactory;
 
 /**
  * @author Hans Stamm

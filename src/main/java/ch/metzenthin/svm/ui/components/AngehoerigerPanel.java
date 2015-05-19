@@ -1,13 +1,11 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
-import ch.metzenthin.svm.domain.AngehoerigerModel;
+import ch.metzenthin.svm.domain.model.AngehoerigerModel;
 import ch.metzenthin.svm.ui.control.CompletedListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
