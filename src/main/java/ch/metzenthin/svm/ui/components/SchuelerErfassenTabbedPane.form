@@ -26,7 +26,7 @@
           </grid>
           <grid id="2521a" binding="elternteilEinsTab" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
-              <tabbedpane title="Elternteil 1"/>
+              <tabbedpane title="Vater"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -38,7 +38,7 @@
           </grid>
           <grid id="a15c2" binding="elernteilZweiTab" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
-              <tabbedpane title="Elternteil 2"/>
+              <tabbedpane title="Mutter"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -48,14 +48,14 @@
               </nested-form>
             </children>
           </grid>
-          <grid id="762e" binding="drittempfaengerTab" layout-manager="BorderLayout" hgap="0" vgap="0">
+          <grid id="762e" binding="rechnungsempfaengerTab" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
-              <tabbedpane title="Drittempfänger"/>
+              <tabbedpane title="Rechnungsempfänger"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
-              <nested-form id="1a825" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="drittempfaengerPanel" custom-create="true">
+              <nested-form id="1a825" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="rechnungsempfaengerPanel" custom-create="true">
                 <constraints border-constraint="Center"/>
               </nested-form>
             </children>

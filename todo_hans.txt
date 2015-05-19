@@ -1,6 +1,7 @@
 zu erledigen hans:
 
--package model -> persistence?
+-GUI:
+ -...str. -> ...strasse
 -Fehleranzeige im GUI/Exceptions?
 -Eigenes Projekt Prototyp
 -Architektur-Entscheide dokumentieren (z.B. wieso Swing). Wo?
