@@ -47,13 +47,12 @@ public class AngehoerigerDaoTest {
         try {
             tx = entityManager.getTransaction();
             tx.begin();
-            Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, "Jurist");
+            Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
             Adresse adresse = new Adresse("Hohenklingenstrasse", 15, 8049, "Zürich", "044 491 69 33");
             angehoeriger.setAdresse(adresse);
             entityManager.persist(angehoeriger);
             Angehoeriger angehoerigerFound = angehoerigerDao.findById(angehoeriger.getPersonId());
-            assertEquals("Beruf not correct", "Jurist", angehoerigerFound.getBeruf());
-
+            assertEquals("Adresse not correct", "Hohenklingenstrasse", angehoerigerFound.getAdresse().getStrasse());
         } finally {
             if (tx != null)
                 tx.rollback();
@@ -69,21 +68,19 @@ public class AngehoerigerDaoTest {
             tx.begin();
 
             // Vater
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, "Jurist");
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
             Adresse adresse = new Adresse("Hohenklingenstrasse", 15, 8049, "Zürich", "044 491 69 33");
             vater.setAdresse(adresse);
             Angehoeriger vaterSaved = angehoerigerDao.save(vater);
             Angehoeriger vaterFound = angehoerigerDao.findById(vaterSaved.getPersonId());
-            assertEquals("Beruf not correct", "Jurist", vaterFound.getBeruf());
             assertEquals("Adresse not correct", "Hohenklingenstrasse", vaterFound.getAdresse().getStrasse());
 
             // Mutter
-            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Eugen", "Regula", null, null, null, "Juristin");
+            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Eugen", "Regula", null, null, null);
             //mutter.setAdresse(adresse);
             mutter.setAdresse(vaterFound.getAdresse());
             Angehoeriger mutterSaved = angehoerigerDao.save(mutter);
             Angehoeriger mutterFound = angehoerigerDao.findById(mutterSaved.getPersonId());
-            assertEquals("Beruf not correct", "Juristin", mutterFound.getBeruf());
             assertEquals("Adresse not correct", "Hohenklingenstrasse", mutterFound.getAdresse().getStrasse());
 
             // Are adresseIds equal?
@@ -109,7 +106,7 @@ public class AngehoerigerDaoTest {
             tx.begin();
 
             // Vater
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, "Jurist");
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
             Adresse adresse = new Adresse("Hohenklingenstrasse", 15, 8049, "Zürich", "044 491 69 33");
             vater.setAdresse(adresse);
             Angehoeriger vaterSaved = angehoerigerDao.save(vater);
@@ -117,7 +114,7 @@ public class AngehoerigerDaoTest {
             int adresseId = vaterSaved.getAdresse().getAdresseId();
 
             // Mutter
-            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Eugen", "Regula", null, null, null, "Juristin");
+            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Eugen", "Regula", null, null, null);
             mutter.setAdresse(adresse);
             Angehoeriger mutterSaved = angehoerigerDao.save(mutter);
             int mutterId = mutterSaved.getPersonId();
@@ -155,14 +152,11 @@ public class AngehoerigerDaoTest {
         EntityTransaction tx = null;
 
         try {
-
-            AdresseDao adresseDao = new AdresseDao(entityManager);
-
             tx = entityManager.getTransaction();
             tx.begin();
 
             // Angehoeriger
-            Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null, "Jurist");
+            Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null);
             Adresse adresse = new Adresse("Gugusweg", 16, 8049, "Zürich", "044 491 69 33");
             angehoeriger.setAdresse(adresse);
             Angehoeriger angehoerigerSaved = angehoerigerDao.save(angehoeriger);
@@ -170,7 +164,7 @@ public class AngehoerigerDaoTest {
             entityManager.flush();
 
             // Create second Angehoeriger with the same attributes
-            Angehoeriger angehoeriger2 = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null, "Jurist");
+            Angehoeriger angehoeriger2 = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null);
             Adresse adresse2 = new Adresse("Gugusweg", 16, 8049, "Zürich", "044 491 69 33");
             angehoeriger2.setAdresse(adresse2);
 
@@ -178,7 +172,7 @@ public class AngehoerigerDaoTest {
             assertNotNull("Angehörigen nicht gefunden", angehoerigerFound2);
 
             // Ditto, but Angehoeriger with another strasse:
-            Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null, "Jurist");
+            Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null);
             Adresse adresse3 = new Adresse("Gugusstrasse", 16, 8049, "Zürich", "044 491 69 33");
             angehoeriger3.setAdresse(adresse3);
 

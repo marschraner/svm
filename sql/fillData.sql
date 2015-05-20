@@ -49,12 +49,12 @@ SELECT * FROM Person;
 -- Angehoeriger
 -- ************
 
-INSERT INTO Angehoeriger (person_id, beruf) VALUES
-    (1, NULL),
-    (2, 'Wissenschaftlicher Mitarbeiter'),
-    (3, 'Sportlehrerin'),
-    (5, 'Jurist'),
-    (6, NULL);
+INSERT INTO Angehoeriger (person_id) VALUES
+    (1),
+    (2),
+    (3),
+    (5),
+    (6);
 
 SELECT * FROM Angehoeriger;
 

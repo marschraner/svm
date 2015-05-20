@@ -43,7 +43,6 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
                         " and a.adresse.ort = :ort";
 
         // Optional attributes
-        if (angehoeriger.getBeruf() != null) selectStatement = selectStatement + " and a.beruf = :beruf";
         if (angehoeriger.getNatel() != null) selectStatement = selectStatement + " and a.natel = :natel";
         if (angehoeriger.getEmail() != null) selectStatement = selectStatement + " and a.email = :email";
         if (angehoeriger.getAdresse().getHausnummer() != null) selectStatement = selectStatement + " and a.adresse.hausnummer = :hausnummer";
@@ -59,7 +58,6 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
         typedQuery.setParameter("ort", angehoeriger.getAdresse().getOrt());
 
         // Optional attributes
-        if (angehoeriger.getBeruf() != null) typedQuery.setParameter("beruf", angehoeriger.getBeruf());
         if (angehoeriger.getNatel() != null) typedQuery.setParameter("natel", angehoeriger.getNatel());
         if (angehoeriger.getEmail() != null) typedQuery.setParameter("email", angehoeriger.getEmail());
         if (angehoeriger.getAdresse().getHausnummer() != null) typedQuery.setParameter("hausnummer", angehoeriger.getAdresse().getHausnummer());
@@ -75,7 +73,6 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
             Angehoeriger angehoerigerFound = angehoerigeFound.get(0);
 
             // Check optional attributes
-            if (angehoeriger.getBeruf() == null && angehoerigerFound.getBeruf() != null) return null;
             if (angehoeriger.getNatel() == null && angehoerigerFound.getNatel() != null) return null;
             if (angehoeriger.getEmail() == null && angehoerigerFound.getEmail() != null) return null;
             if (angehoeriger.getAdresse().getHausnummer() == null && angehoerigerFound.getAdresse().getHausnummer() != null) return null;

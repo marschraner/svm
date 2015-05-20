@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.domain.model.AbstractModel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

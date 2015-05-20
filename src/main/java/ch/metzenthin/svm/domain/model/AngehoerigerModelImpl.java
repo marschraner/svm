@@ -21,13 +21,11 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
 
     @Override
     public String getBeruf() {
-        return angehoeriger.getBeruf();
-    }
+        return null;
+    }   //TODO löschen!
 
     @Override
-    public void setBeruf(String beruf) {
-        angehoeriger.setBeruf(beruf);
-    }
+    public void setBeruf(String beruf) { }  //TODO löschen!
 
     @Override
     public boolean isValid() {

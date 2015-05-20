@@ -45,13 +45,13 @@ public class SaveAngehoerigeCommandTest {
 
         List<Angehoeriger> angehoerige = new ArrayList<>();
 
-        Angehoeriger angehoeriger0 = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, "Jurist");
+        Angehoeriger angehoeriger0 = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
         Adresse adresse = new Adresse("Hohenklingenstrasse", 15, 8049, "Zürich", "044 491 69 33");
         angehoeriger0.setAdresse(adresse);
         angehoerige.add(angehoeriger0);
 
         // Second Angehoeriger with the same address
-        Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null, null, "Juristin");
+        Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null, null);
         angehoeriger1.setAdresse(adresse);
         angehoerige.add(angehoeriger1);
 
@@ -60,12 +60,10 @@ public class SaveAngehoerigeCommandTest {
         List<Angehoeriger> savedAngehoerige = saveAngehoerigeCommand.getSavedAngehoeriger();
 
         Angehoeriger savedAngehoeriger0 = savedAngehoerige.get(0);
-        assertEquals("Beruf not found", "Jurist", savedAngehoeriger0.getBeruf());
         assertEquals("Vorname not found", "Eugen", savedAngehoeriger0.getVorname());
         assertEquals("Strasse not found", "Hohenklingenstrasse", savedAngehoeriger0.getAdresse().getStrasse());
 
         Angehoeriger savedAngehoeriger1 = savedAngehoerige.get(1);
-        assertEquals("Beruf not found", "Juristin", savedAngehoeriger1.getBeruf());
         assertEquals("Vorname not found", "Regula", savedAngehoeriger1.getVorname());
         assertEquals("Strasse not found", "Hohenklingenstrasse", savedAngehoeriger1.getAdresse().getStrasse());
 

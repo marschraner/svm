@@ -15,9 +15,6 @@ import java.util.Set;
 @DiscriminatorValue("Angehoeriger")
 public class Angehoeriger extends Person {
 
-    @Column(name = "beruf", nullable = true)
-    private String beruf;
-
     @OneToMany(mappedBy = "vater")
     private Set<Schueler> kinderVater = new HashSet<>();
 
@@ -30,17 +27,8 @@ public class Angehoeriger extends Person {
     public Angehoeriger() {
     }
 
-    public Angehoeriger(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String natel, String email, String beruf) {
+    public Angehoeriger(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String natel, String email) {
         super(anrede, vorname, nachname, geburtsdatum, natel, email);
-        this.beruf = beruf;
-    }
-
-    public String getBeruf() {
-        return beruf;
-    }
-
-    public void setBeruf(String beruf) {
-        this.beruf = beruf;
     }
 
     public Set<Schueler> getKinderVater() {

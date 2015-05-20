@@ -50,7 +50,7 @@ public class SaveSchuelerCommandTest {
         schueler.setAdresse(adresse);
 
         // Set Vater
-        Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, "Jurist");
+        Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
         vater.setAdresse(adresse);
         schueler.setVater(vater);
 

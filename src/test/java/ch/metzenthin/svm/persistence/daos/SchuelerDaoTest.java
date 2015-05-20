@@ -61,7 +61,7 @@ public class SchuelerDaoTest {
             schueler.setAdresse(adresse);
 
             // Set Vater
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, "Jurist");
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
             vater.setAdresse(adresse);
             schueler.setVater(vater);
 
@@ -94,12 +94,12 @@ public class SchuelerDaoTest {
             schueler.setAdresse(adresse);
 
             // Set Vater
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, "Jurist");
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
             vater.setAdresse(adresse);
             schueler.setVater(vater);
 
             // Set Mutter
-            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null, null, "Juristin");
+            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null, null);
             mutter.setAdresse(adresse);
             schueler.setMutter(mutter);
 
@@ -181,16 +181,16 @@ public class SchuelerDaoTest {
             Adresse adresse = new Adresse("Hohenklingenstrasse", 15, 8049, "Zürich", "044 491 69 33");
             schueler1.setAdresse(adresse);
 
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, "Jurist");
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
             vater.setAdresse(adresse);
             schueler1.setVater(vater);
 
-            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null, null, "Juristin");
+            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null, null);
             mutter.setAdresse(adresse);
             schueler1.setMutter(mutter);
 
             Adresse adresseRechnungsempfaenger = new Adresse("Hintere Bergstrassse", 15, 8942, "Oberrieden", "044 720 85 51");
-            Angehoeriger rechnungsempfaenger1 = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", null, null, null, null);
+            Angehoeriger rechnungsempfaenger1 = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", null, null, null);
             rechnungsempfaenger1.setAdresse(adresseRechnungsempfaenger);
             schueler1.setRechnungsempfaenger(rechnungsempfaenger1);
 
