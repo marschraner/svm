@@ -45,7 +45,7 @@ public abstract class Person {
     private String email;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "adresse_id", nullable = false)
+    @JoinColumn(name = "adresse_id", nullable = true)
     private Adresse adresse;
 
     public Person() {

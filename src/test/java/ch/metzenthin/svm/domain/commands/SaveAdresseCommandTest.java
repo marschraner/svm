@@ -35,7 +35,7 @@ public class SaveAdresseCommandTest {
 
     @Test
     public void testExecute() throws Exception {
-        Adresse adresse = new Adresse("Buechackerstrasse", 4, 8234, "Stetten", "052 643 38 48");
+        Adresse adresse = new Adresse("Buechackerstrasse", "4", "8234", "Stetten", "052 643 38 48");
         SaveAdresseCommand saveAdresseCommand = new SaveAdresseCommand(adresse);
         commandInvoker.executeCommand(saveAdresseCommand);
         Adresse adresseFound = saveAdresseCommand.getSavedAdresse();

@@ -32,36 +32,46 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
         }
     }
 
-    public Angehoeriger findSpecificAngehoeriger(Angehoeriger angehoeriger) {
+    /**
+     * In der DB nach einem Angehörigen suchen. Zur Suche sind mindestens Vorname und Nachname erforderlich, die übrigen Attribute
+     * sind optional. Es werden alle Angehörigen ausgegeben, deren Attribute mit den in der Suche gesetzten übereinstimmen. Für die
+     * nicht gesetzten Attribute können beliebige Werte zurückgegeben werden.
+     *
+     * @param angehoeriger (not null)
+     * @return angehoerigeFound
+     */
+    public List<Angehoeriger> findAngehoerige(Angehoeriger angehoeriger) {
 
         String selectStatement = "select a from Angehoeriger a" +
-                        " where a.anrede = :anrede" +
-                        " and a.vorname = :vorname" +
-                        " and a.nachname = :nachname" +
-                        " and a.adresse.strasse = :strasse" +
-                        " and a.adresse.plz = :plz" +
-                        " and a.adresse.ort = :ort";
+                        " where a.vorname = :vorname" +
+                        " and a.nachname = :nachname";
 
         // Optional attributes
         if (angehoeriger.getNatel() != null) selectStatement = selectStatement + " and a.natel = :natel";
         if (angehoeriger.getEmail() != null) selectStatement = selectStatement + " and a.email = :email";
-        if (angehoeriger.getAdresse().getHausnummer() != null) selectStatement = selectStatement + " and a.adresse.hausnummer = :hausnummer";
-        if (angehoeriger.getAdresse().getFestnetz() != null) selectStatement = selectStatement + " and a.adresse.festnetz = :festnetz";
+        if (angehoeriger.getAdresse() != null) {
+            selectStatement = selectStatement + " and a.adresse.strasse = :strasse";
+            selectStatement = selectStatement + " and a.adresse.plz = :plz";
+            selectStatement = selectStatement + " and a.adresse.ort = :ort";
+            if (angehoeriger.getAdresse().getHausnummer() != null) selectStatement = selectStatement + " and a.adresse.hausnummer = :hausnummer";
+            if (angehoeriger.getAdresse().getFestnetz() != null) selectStatement = selectStatement + " and a.adresse.festnetz = :festnetz";
+        }
 
         TypedQuery<Angehoeriger> typedQuery = entityManager.createQuery(selectStatement, Angehoeriger.class);
 
-        typedQuery.setParameter("anrede", angehoeriger.getAnrede());
         typedQuery.setParameter("vorname", angehoeriger.getVorname());
         typedQuery.setParameter("nachname", angehoeriger.getNachname());
-        typedQuery.setParameter("strasse", angehoeriger.getAdresse().getStrasse());
-        typedQuery.setParameter("plz", angehoeriger.getAdresse().getPlz());
-        typedQuery.setParameter("ort", angehoeriger.getAdresse().getOrt());
 
         // Optional attributes
         if (angehoeriger.getNatel() != null) typedQuery.setParameter("natel", angehoeriger.getNatel());
         if (angehoeriger.getEmail() != null) typedQuery.setParameter("email", angehoeriger.getEmail());
-        if (angehoeriger.getAdresse().getHausnummer() != null) typedQuery.setParameter("hausnummer", angehoeriger.getAdresse().getHausnummer());
-        if (angehoeriger.getAdresse().getFestnetz() != null) typedQuery.setParameter("festnetz", angehoeriger.getAdresse().getFestnetz());
+        if (angehoeriger.getAdresse() != null) {
+            typedQuery.setParameter("strasse", angehoeriger.getAdresse().getStrasse());
+            typedQuery.setParameter("plz", angehoeriger.getAdresse().getPlz());
+            typedQuery.setParameter("ort", angehoeriger.getAdresse().getOrt());
+            if (angehoeriger.getAdresse().getHausnummer() != null) typedQuery.setParameter("hausnummer", angehoeriger.getAdresse().getHausnummer());
+            if (angehoeriger.getAdresse().getFestnetz() != null) typedQuery.setParameter("festnetz", angehoeriger.getAdresse().getFestnetz());
+        }
 
         List<Angehoeriger> angehoerigeFound = typedQuery.getResultList();
 
@@ -69,22 +79,7 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
             return null;
         }
 
-        else if (angehoerigeFound.size() == 1) {
-            Angehoeriger angehoerigerFound = angehoerigeFound.get(0);
-
-            // Check optional attributes
-            if (angehoeriger.getNatel() == null && angehoerigerFound.getNatel() != null) return null;
-            if (angehoeriger.getEmail() == null && angehoerigerFound.getEmail() != null) return null;
-            if (angehoeriger.getAdresse().getHausnummer() == null && angehoerigerFound.getAdresse().getHausnummer() != null) return null;
-            if (angehoeriger.getAdresse().getFestnetz() == null && angehoerigerFound.getAdresse().getFestnetz() != null) return null;
-
-            return angehoerigerFound;
-        }
-
-        else {
-           throw new NullPointerException("Mehr als ein Angehöriger gefunden");
-        }
-
+        return angehoerigeFound;
     }
 
 }

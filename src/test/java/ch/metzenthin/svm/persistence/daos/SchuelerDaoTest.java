@@ -57,7 +57,7 @@ public class SchuelerDaoTest {
 
             // Schueler
             Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, "Schwester von Valentin");
-            Adresse adresse = new Adresse("Hohenklingenstrasse", 15, 8049, "Zürich", "044 491 69 33");
+            Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich", "044 491 69 33");
             schueler.setAdresse(adresse);
 
             // Set Vater
@@ -90,7 +90,7 @@ public class SchuelerDaoTest {
 
             // Schueler
             Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, "Schwester von Valentin");
-            Adresse adresse = new Adresse("Hohenklingenstrasse", 15, 8049, "Zürich", "044 491 69 33");
+            Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich", "044 491 69 33");
             schueler.setAdresse(adresse);
 
             // Set Vater
@@ -178,7 +178,7 @@ public class SchuelerDaoTest {
 
             // Schueler1
             Schueler schueler1 = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.MAY, 15), null, "Schwester von Valentin Dan");
-            Adresse adresse = new Adresse("Hohenklingenstrasse", 15, 8049, "Zürich", "044 491 69 33");
+            Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich", "044 491 69 33");
             schueler1.setAdresse(adresse);
 
             Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
@@ -189,7 +189,7 @@ public class SchuelerDaoTest {
             mutter.setAdresse(adresse);
             schueler1.setMutter(mutter);
 
-            Adresse adresseRechnungsempfaenger = new Adresse("Hintere Bergstrassse", 15, 8942, "Oberrieden", "044 720 85 51");
+            Adresse adresseRechnungsempfaenger = new Adresse("Hintere Bergstrassse", "15", "8942", "Oberrieden", "044 720 85 51");
             Angehoeriger rechnungsempfaenger1 = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", null, null, null);
             rechnungsempfaenger1.setAdresse(adresseRechnungsempfaenger);
             schueler1.setRechnungsempfaenger(rechnungsempfaenger1);
@@ -279,11 +279,11 @@ public class SchuelerDaoTest {
 
             // Schüler
             Schueler schueler = new Schueler("Lea", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, null);
-            Adresse adresse = new Adresse("Gugusweg", 16, 8049, "Zürich", "044 491 69 33");
+            Adresse adresse = new Adresse("Gugusweg", "16", "8049", "Zürich", "044 491 69 33");
             schueler.setAdresse(adresse);
 
             Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", null, null, null);
-            Adresse adresseRechnungsempfaenger = new Adresse("Hintere Bergstrassse", 15, 8942, "Oberrieden", "044 720 85 51");
+            Adresse adresseRechnungsempfaenger = new Adresse("Hintere Bergstrassse", "15", "8942", "Oberrieden", "044 720 85 51");
             rechnungsempfaenger.setAdresse(adresseRechnungsempfaenger);
             schueler.setRechnungsempfaenger(rechnungsempfaenger);
 
@@ -293,7 +293,7 @@ public class SchuelerDaoTest {
 
             // Create second Schüler with the same attributes
             Schueler schueler2 = new Schueler("Lea", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, null);
-            Adresse adresse2 = new Adresse("Gugusweg", 16, 8049, "Zürich", "044 491 69 33");
+            Adresse adresse2 = new Adresse("Gugusweg", "16", "8049", "Zürich", "044 491 69 33");
             schueler2.setAdresse(adresse2);
             schueler2.setRechnungsempfaenger(rechnungsempfaenger);
 
@@ -302,7 +302,7 @@ public class SchuelerDaoTest {
 
             // Ditto, but Schüler with another strasse:
             Schueler schueler3 = new Schueler("Lea", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, null);
-            Adresse adresse3 = new Adresse("Gugusstrasse", 16, 8049, "Zürich", "044 491 69 33");
+            Adresse adresse3 = new Adresse("Gugusstrasse", "16", "8049", "Zürich", "044 491 69 33");
             schueler3.setAdresse(adresse3);
             schueler3.setRechnungsempfaenger(rechnungsempfaenger);
 

@@ -44,7 +44,7 @@ public class AdresseDaoTest {
         try {
             tx = entityManager.getTransaction();
             tx.begin();
-            Adresse adresse = new Adresse("Buechackerstrasse", 4, 8234, "Stetten", "052 643 38 48");
+            Adresse adresse = new Adresse("Buechackerstrasse", "4", "8234", "Stetten", "052 643 38 48");
             entityManager.persist(adresse);
             Adresse adresseFound = adresseDao.findById(adresse.getAdresseId());
             assertEquals("Strasse not correct", "Buechackerstrasse", adresseFound.getStrasse());
@@ -61,7 +61,7 @@ public class AdresseDaoTest {
         try {
             tx = entityManager.getTransaction();
             tx.begin();
-            Adresse adresse = new Adresse("Buechackerstrasse", 4, 8234, "Stetten", "052 643 38 48");
+            Adresse adresse = new Adresse("Buechackerstrasse", "4", "8234", "Stetten", "052 643 38 48");
             Adresse adresseSaved = adresseDao.save(adresse);
             Adresse adresseFound = adresseDao.findById(adresseSaved.getAdresseId());
             assertEquals("Adresse not correct", "Buechackerstrasse", adresseFound.getStrasse());
@@ -80,7 +80,7 @@ public class AdresseDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Adresse adresse = new Adresse("Buechackerstrasse", 4, 8234, "Stetten", "052 643 38 48");
+            Adresse adresse = new Adresse("Buechackerstrasse", "4", "8234", "Stetten", "052 643 38 48");
             Adresse adresseSaved = adresseDao.save(adresse);
             int adresseId = adresseSaved.getAdresseId();
 

@@ -31,8 +31,8 @@ DROP TABLE IF EXISTS Adresse;
 CREATE TABLE IF NOT EXISTS Adresse (
     adresse_id              INT           NOT NULL AUTO_INCREMENT,
     strasse                 VARCHAR(50)   NOT NULL,
-    hausnummer              INT,
-    plz                     INT           NOT NULL,
+    hausnummer              VARCHAR(10),
+    plz                     VARCHAR(10)   NOT NULL,
     ort                     VARCHAR(50)   NOT NULL,
     festnetz                VARCHAR(20),
     last_updated            TIMESTAMP     NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS Person (
     geburtsdatum            DATE,
     natel                   VARCHAR(20),
     email                   VARCHAR(50),
-    adresse_id              INT           NOT NULL,
+    adresse_id              INT,
     last_updated            TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id),
     FOREIGN KEY (adresse_id) REFERENCES Adresse (adresse_id)); 

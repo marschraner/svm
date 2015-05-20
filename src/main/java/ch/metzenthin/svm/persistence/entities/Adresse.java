@@ -25,10 +25,10 @@ public class Adresse {
     private String strasse;
 
     @Column(name = "hausnummer", nullable = true)
-    private Integer hausnummer;
+    private String hausnummer;
 
     @Column(name = "plz", nullable = false)
-    private Integer plz;
+    private String plz;
 
     @Column(name = "ort", nullable = false)
     private String ort;
@@ -42,7 +42,7 @@ public class Adresse {
     public Adresse() {
     }
 
-    public Adresse(String strasse, Integer hausnummer, Integer plz, String ort, String festnetz) {
+    public Adresse(String strasse, String hausnummer, String plz, String ort, String festnetz) {
         this.strasse = strasse;
         this.hausnummer = hausnummer;
         this.plz = plz;
@@ -74,19 +74,19 @@ public class Adresse {
         this.strasse = strasse;
     }
 
-    public Integer getHausnummer() {
+    public String getHausnummer() {
         return hausnummer;
     }
 
-    public void setHausnummer(Integer hausnummer) {
+    public void setHausnummer(String hausnummer) {
         this.hausnummer = hausnummer;
     }
 
-    public Integer getPlz() {
+    public String getPlz() {
         return plz;
     }
 
-    public void setPlz(Integer plz) {
+    public void setPlz(String plz) {
         this.plz = plz;
     }
 

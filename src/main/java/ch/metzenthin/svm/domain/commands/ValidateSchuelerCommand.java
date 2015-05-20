@@ -193,87 +193,87 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     }
 
     private void checkIfAngehoerigeAlreadyInDb() {
-        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
+        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);  //TDOD
 
-        Angehoeriger mutterFound = angehoerigerDao.findSpecificAngehoeriger(mutter);
-        Angehoeriger vaterFound = angehoerigerDao.findSpecificAngehoeriger(vater);
-        Angehoeriger rechnungsempfaengerFound = angehoerigerDao.findSpecificAngehoeriger(rechnungsempfaenger);
-
-        // 1. alle Angehörigen in DB
-        if (abweichenderRechnungsempfaenger && mutterFound != null && vaterFound != null && rechnungsempfaengerFound != null) {
-            mutter = mutterFound;
-            vater = vaterFound;
-            rechnungsempfaenger = rechnungsempfaengerFound;
-            infoBereitsInDb = "Mutter, Vater und Rechnungsempfänger bereits in Datenbank";
-            infoNeuErfasst = "Schüler wird neu erfasst";
-        }
-
-        // 2. 2 Angehörige schon in DB
-        else if (mutterFound != null && vaterFound != null) {
-            mutter = mutterFound;
-            vater = vaterFound;
-            infoBereitsInDb = "Mutter und Vater bereits in Datenbank";
-            if (abweichenderRechnungsempfaenger) {
-                infoNeuErfasst = "Schüler und Rechnungsempfänger werden neu erfasst";
-            }
-            else {
-                infoNeuErfasst = "Schüler wird neu erfasst";
-            }
-        }
-
-        else if (abweichenderRechnungsempfaenger && mutterFound != null && rechnungsempfaengerFound != null) {
-            mutter = mutterFound;
-            rechnungsempfaenger = rechnungsempfaengerFound;
-            infoBereitsInDb = "Mutter und Rechnungsempfänger bereits in Datenbank";
-            infoNeuErfasst = "Schüler und Vater werden neu erfasst";
-        }
-
-        else if (abweichenderRechnungsempfaenger && vaterFound != null && rechnungsempfaengerFound != null) {
-            vater = vaterFound;
-            rechnungsempfaenger = rechnungsempfaengerFound;
-            infoBereitsInDb = "Vater und Rechnungsempfänger bereits in Datenbank";
-            infoNeuErfasst = "Schüler und Mutter werden neu erfasst";
-        }
-
-        // 3. 1 Angehöriger schon in DB
-        else if (mutterFound != null) {
-            mutter = mutterFound;
-            infoBereitsInDb = "Mutter bereits in Datenbank";
-            if (abweichenderRechnungsempfaenger) {
-                infoNeuErfasst = "Schüler, Vater und Rechnungsempfänger werden neu erfasst";
-            }
-            else {
-                infoNeuErfasst = "Schüler und Vater werden neu erfasst";
-            }
-        }
-
-        else if (vaterFound != null) {
-            vater = vaterFound;
-            infoBereitsInDb = "Vater bereits in Datenbank";
-            if (abweichenderRechnungsempfaenger) {
-                infoNeuErfasst = "Schüler, Mutter und Rechnungsempfänger werden neu erfasst";
-            }
-            else {
-                infoNeuErfasst = "Schüler und Mutter werden neu erfasst";
-            }
-        }
-
-        else if (abweichenderRechnungsempfaenger && rechnungsempfaengerFound != null) {
-            rechnungsempfaenger = rechnungsempfaengerFound;
-            infoBereitsInDb = "Rechnungsempfänger bereits in Datenbank";
-            infoNeuErfasst = "Schüler, Mutter und Vater werden neu erfasst";
-        }
-
-        // 4. keine Angehörige in DB
-        else {
-            infoBereitsInDb = "";
-            if (abweichenderRechnungsempfaenger) {
-                infoNeuErfasst = "Schüler, Mutter, Vater und Rechnungsempfänger werden neu erfasst";
-            }
-            else {
-                infoNeuErfasst = "Schüler, Mutter und Vater werden neu erfasst";
-            }
-        }
+//        Angehoeriger mutterFound = angehoerigerDao.findSpecificAngehoeriger(mutter);
+//        Angehoeriger vaterFound = angehoerigerDao.findSpecificAngehoeriger(vater);
+//        Angehoeriger rechnungsempfaengerFound = angehoerigerDao.findSpecificAngehoeriger(rechnungsempfaenger);
+//
+//        // 1. alle Angehörigen in DB
+//        if (abweichenderRechnungsempfaenger && mutterFound != null && vaterFound != null && rechnungsempfaengerFound != null) {
+//            mutter = mutterFound;
+//            vater = vaterFound;
+//            rechnungsempfaenger = rechnungsempfaengerFound;
+//            infoBereitsInDb = "Mutter, Vater und Rechnungsempfänger bereits in Datenbank";
+//            infoNeuErfasst = "Schüler wird neu erfasst";
+//        }
+//
+//        // 2. 2 Angehörige schon in DB
+//        else if (mutterFound != null && vaterFound != null) {
+//            mutter = mutterFound;
+//            vater = vaterFound;
+//            infoBereitsInDb = "Mutter und Vater bereits in Datenbank";
+//            if (abweichenderRechnungsempfaenger) {
+//                infoNeuErfasst = "Schüler und Rechnungsempfänger werden neu erfasst";
+//            }
+//            else {
+//                infoNeuErfasst = "Schüler wird neu erfasst";
+//            }
+//        }
+//
+//        else if (abweichenderRechnungsempfaenger && mutterFound != null && rechnungsempfaengerFound != null) {
+//            mutter = mutterFound;
+//            rechnungsempfaenger = rechnungsempfaengerFound;
+//            infoBereitsInDb = "Mutter und Rechnungsempfänger bereits in Datenbank";
+//            infoNeuErfasst = "Schüler und Vater werden neu erfasst";
+//        }
+//
+//        else if (abweichenderRechnungsempfaenger && vaterFound != null && rechnungsempfaengerFound != null) {
+//            vater = vaterFound;
+//            rechnungsempfaenger = rechnungsempfaengerFound;
+//            infoBereitsInDb = "Vater und Rechnungsempfänger bereits in Datenbank";
+//            infoNeuErfasst = "Schüler und Mutter werden neu erfasst";
+//        }
+//
+//        // 3. 1 Angehöriger schon in DB
+//        else if (mutterFound != null) {
+//            mutter = mutterFound;
+//            infoBereitsInDb = "Mutter bereits in Datenbank";
+//            if (abweichenderRechnungsempfaenger) {
+//                infoNeuErfasst = "Schüler, Vater und Rechnungsempfänger werden neu erfasst";
+//            }
+//            else {
+//                infoNeuErfasst = "Schüler und Vater werden neu erfasst";
+//            }
+//        }
+//
+//        else if (vaterFound != null) {
+//            vater = vaterFound;
+//            infoBereitsInDb = "Vater bereits in Datenbank";
+//            if (abweichenderRechnungsempfaenger) {
+//                infoNeuErfasst = "Schüler, Mutter und Rechnungsempfänger werden neu erfasst";
+//            }
+//            else {
+//                infoNeuErfasst = "Schüler und Mutter werden neu erfasst";
+//            }
+//        }
+//
+//        else if (abweichenderRechnungsempfaenger && rechnungsempfaengerFound != null) {
+//            rechnungsempfaenger = rechnungsempfaengerFound;
+//            infoBereitsInDb = "Rechnungsempfänger bereits in Datenbank";
+//            infoNeuErfasst = "Schüler, Mutter und Vater werden neu erfasst";
+//        }
+//
+//        // 4. keine Angehörige in DB
+//        else {
+//            infoBereitsInDb = "";
+//            if (abweichenderRechnungsempfaenger) {
+//                infoNeuErfasst = "Schüler, Mutter, Vater und Rechnungsempfänger werden neu erfasst";
+//            }
+//            else {
+//                infoNeuErfasst = "Schüler, Mutter und Vater werden neu erfasst";
+//            }
+//        }
     }
 
     public Schueler getSchueler() {

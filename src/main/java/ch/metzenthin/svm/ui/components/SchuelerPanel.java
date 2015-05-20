@@ -402,6 +402,8 @@ public class SchuelerPanel {
         panel3.add(txtOrt, gbc);
         final JLabel label12 = new JLabel();
         label12.setText("Geschlecht");
+        label12.setDisplayedMnemonic('H');
+        label12.setDisplayedMnemonicIndex(4);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 9;

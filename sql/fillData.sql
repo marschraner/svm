@@ -23,9 +23,9 @@ DELETE FROM Adresse;
 -- *******
 
 INSERT INTO Adresse (adresse_id, strasse, hausnummer, plz, ort, festnetz) VALUES 
-    (1, 'Hintere Bergstrasse', 15, 8942, 'Oberrieden', '044 720 85 51'),
-    (2, 'Eidmattstrasse', 20, 8032, 'Zürich', '044 364 36 30'),
-    (3, 'Forchstrasse', 232, 8032, 'Zürich', '044 271 53 69');
+    (1, 'Hintere Bergstrasse', '15', '8942', 'Oberrieden', '044 720 85 51'),
+    (2, 'Eidmattstrasse', '20', '8032', 'Zürich', '044 364 36 30'),
+    (3, 'Forchstrasse', '232', '8032', 'Zürich', '044 271 53 69');
 
 SELECT * FROM Adresse;
 
@@ -38,7 +38,7 @@ INSERT INTO Person (person_id, discriminator, anrede, vorname, nachname, geburts
     (2, 'Angehoeriger', 'HERR', 'Martin', 'Schraner', NULL, '079 273 77 20', 'marschraner@gmail.ch', 2),
     (3, 'Angehoeriger', 'FRAU', 'Sibyll', 'Metzenthin', NULL, NULL, 'billa.metz@bluewin.ch', 2),
     (4, 'Schueler', 'KEINE', 'Jonas', 'Metzenthin', '2014-06-24', NULL, NULL, 2),
-    (5, 'Angehoeriger', 'HERR', 'Kurt', 'Juchli', NULL, NULL, 'kurt.juchli@zuerich.ch', 3),
+    (5, 'Angehoeriger', 'HERR', 'Kurt', 'Juchli', NULL, NULL, 'kurt.juchli@zuerich.ch', NULL),
     (6, 'Angehoeriger', 'FRAU', 'Eva', 'Juchli', NULL, NULL, 'juchlischraner@gmail.com', 3),
     (7, 'Schueler', 'KEINE', 'Lilly', 'Juchli', '2008-01-13', NULL, NULL, 3),
     (8, 'Schueler', 'KEINE', 'Anna', 'Juchli', '2010-03-05', NULL, NULL, 3);
