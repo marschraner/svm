@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.SaveAdresseCommand;
+import ch.metzenthin.svm.domain.commands.SaveSchuelerCommand;
 import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
@@ -26,13 +26,18 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     }
 
     @Override
+    public Geschlecht getGeschlecht() {
+        return schueler.getGeschlecht();
+    }
+
+    @Override
     public Calendar getAnmeldedatum() {
-        return null; // todo $$$ schueler.getAnmeldedatum();
+        return schueler.getAnmeldedatum();
     }
 
     @Override
     public Calendar getAbmeldedatum() {
-        return null; // todo $$$ schueler.getAbmeldedatum();
+        return schueler.getAbmeldedatum();
     }
 
     @Override
@@ -47,7 +52,12 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public String getBemerkungen() {
-        return null; // todo $$$ schueler.getBemerkungen();
+        return schueler.getBemerkungen();
+    }
+
+    @Override
+    public void setGeschlecht(Geschlecht geschlecht) {
+        schueler.setGeschlecht(geschlecht);
     }
 
     @Override
@@ -57,7 +67,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public void setAnmeldedatum(Calendar anmeldedatum) {
-        // todo $$$ schueler.setAnmeldedatum(anmeldedatum);
+        schueler.setAnmeldedatum(anmeldedatum);
     }
 
     @Override
@@ -67,7 +77,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public void setAbmeldedatum(Calendar abmeldedatum) {
-        // todo $$$ schueler.setAbmeldedatum(abmeldedatum);
+        schueler.setAbmeldedatum(abmeldedatum);
     }
 
     @Override
@@ -92,7 +102,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public void setBemerkungen(String bemerkungen) {
-        // todo $$$ schueler.setBemerkungen(bemerkungen);
+        schueler.setBemerkungen(bemerkungen);
     }
 
     @Override
@@ -102,8 +112,8 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public void save() {
-        SaveAdresseCommand adresseInsertCommand = new SaveAdresseCommand(adresse); // todo $$$ SaveSchuelerCommand?
-        getCommandInvoker().executeCommand(adresseInsertCommand);
+        SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
+        getCommandInvoker().executeCommand(saveSchuelerCommand);
     }
 
     @Override

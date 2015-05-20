@@ -1,7 +1,8 @@
 zu erledigen hans:
 
 -GUI:
- -...str. -> ...strasse
+ - Für den Rechnungsempfänger sollte man die Mutter annehmen, da der Vater häufiger an einer anderen Adresse wohnt
+ - ...str. -> ...strasse
 -Fehleranzeige im GUI/Exceptions?
 -Eigenes Projekt Prototyp
 -Architektur-Entscheide dokumentieren (z.B. wieso Swing). Wo?

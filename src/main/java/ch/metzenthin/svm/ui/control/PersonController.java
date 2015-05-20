@@ -5,11 +5,13 @@ import ch.metzenthin.svm.domain.model.PersonModel;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * @author Hans Stamm
  */
-public abstract class PersonController {
+public abstract class PersonController implements PropertyChangeListener {
 
     private JComboBox<Anrede> comboBoxAnrede;
     private JTextField txtNachname;
@@ -42,184 +44,162 @@ public abstract class PersonController {
 
     public void setTxtNachname(JTextField txtNachname) {
         this.txtNachname = txtNachname;
-        if (this.txtNachname != null) {
-            this.txtNachname.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onNachnameEvent();
-                }
-            });
-            this.txtNachname.addFocusListener(new FocusAdapter() {
-                @Override
-                public void focusLost(FocusEvent e) {
-                    onNachnameEvent();
-                }
-            });
-        }
+        this.txtNachname.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onNachnameEvent();
+            }
+        });
+        this.txtNachname.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onNachnameEvent();
+            }
+        });
     }
 
     public void setTxtVorname(JTextField txtVorname) {
         this.txtVorname = txtVorname;
-        if (this.txtVorname != null) {
-            this.txtVorname.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onVornameEvent();
-                }
-            });
-            this.txtVorname.addFocusListener(new FocusAdapter() {
-                @Override
-                public void focusLost(FocusEvent e) {
-                    onVornameEvent();
-                }
-            });
-
-        }
+        this.txtVorname.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onVornameEvent();
+            }
+        });
+        this.txtVorname.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onVornameEvent();
+            }
+        });
     }
 
     public void setTxtStrasse(JTextField txtStrasse) {
         this.txtStrasse = txtStrasse;
-        if (this.txtStrasse != null) {
-            this.txtStrasse.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onStrasseEvent();
-                }
-            });
-            this.txtStrasse.addFocusListener(new FocusAdapter() {
-                @Override
-                public void focusLost(FocusEvent e) {
-                    onStrasseEvent();
-                }
-            });
-        }
+        this.txtStrasse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onStrasseEvent();
+            }
+        });
+        this.txtStrasse.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onStrasseEvent();
+            }
+        });
     }
 
     public void setTxtHausnummer(JTextField txtHausnummer) {
         this.txtHausnummer = txtHausnummer;
-        if (this.txtHausnummer != null) {
-            this.txtHausnummer.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onHausnummerEvent();
-                }
-            });
-            this.txtHausnummer.addFocusListener(new FocusAdapter() {
-                @Override
-                public void focusLost(FocusEvent e) {
-                    onHausnummerEvent();
-                }
-            });
-        }
+        this.txtHausnummer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onHausnummerEvent();
+            }
+        });
+        this.txtHausnummer.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onHausnummerEvent();
+            }
+        });
     }
 
     public void setTxtPlz(JTextField txtPlz) {
         this.txtPlz = txtPlz;
-        if (this.txtPlz != null) {
-            this.txtPlz.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onPlzEvent();
-                }
-            });
-            this.txtPlz.addFocusListener(new FocusAdapter() {
-                @Override
-                public void focusLost(FocusEvent e) {
-                    onPlzEvent();
-                }
-            });
-        }
+        this.txtPlz.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onPlzEvent();
+            }
+        });
+        this.txtPlz.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onPlzEvent();
+            }
+        });
     }
 
     public void setTxtOrt(JTextField txtOrt) {
         this.txtOrt = txtOrt;
-        if (this.txtOrt != null) {
-            this.txtOrt.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onOrtEvent();
-                }
-            });
-            this.txtOrt.addFocusListener(new FocusAdapter() {
-                @Override
-                public void focusLost(FocusEvent e) {
-                    onOrtEvent();
-                }
-            });
-        }
+        this.txtOrt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onOrtEvent();
+            }
+        });
+        this.txtOrt.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onOrtEvent();
+            }
+        });
     }
 
     public void setTxtFestnetz(JTextField txtFestnetz) {
         this.txtFestnetz = txtFestnetz;
-        if (this.txtFestnetz != null) {
-            this.txtFestnetz.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFestnetzEvent();
-                }
-            });
-            this.txtFestnetz.addFocusListener(new FocusAdapter() {
-                @Override
-                public void focusLost(FocusEvent e) {
-                    onFestnetzEvent();
-                }
-            });
-        }
+        this.txtFestnetz.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onFestnetzEvent();
+            }
+        });
+        this.txtFestnetz.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onFestnetzEvent();
+            }
+        });
     }
 
     public void setTxtNatel(JTextField txtNatel) {
         this.txtNatel = txtNatel;
-        if (this.txtNatel != null) {
-            this.txtNatel.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onNatelEvent();
-                }
-            });
-            this.txtNatel.addFocusListener(new FocusAdapter() {
-                @Override
-                public void focusLost(FocusEvent e) {
-                    onNatelEvent();
-                }
-            });
-        }
+        this.txtNatel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onNatelEvent();
+            }
+        });
+        this.txtNatel.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onNatelEvent();
+            }
+        });
     }
 
     public void setTxtEmail(JTextField txtEmail) {
         this.txtEmail = txtEmail;
-        if (this.txtEmail != null) {
-            this.txtEmail.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onEmailEvent();
-                }
-            });
-            this.txtEmail.addFocusListener(new FocusAdapter() {
-                @Override
-                public void focusLost(FocusEvent e) {
-                    onEmailEvent();
-                }
-            });
-        }
+        this.txtEmail.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onEmailEvent();
+            }
+        });
+        this.txtEmail.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onEmailEvent();
+            }
+        });
     }
 
     public void setTxtGeburtsdatum(JTextField txtGeburtsdatum) {
         this.txtGeburtsdatum = txtGeburtsdatum;
-        if (this.txtEmail != null) {
-            this.txtGeburtsdatum.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onGeburtsdatumEvent();
-                }
-            });
-            this.txtGeburtsdatum.addFocusListener(new FocusAdapter() {
-                @Override
-                public void focusLost(FocusEvent e) {
-                    onGeburtsdatumEvent();
-                }
-            });
-
-        }
+        this.txtGeburtsdatum.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onGeburtsdatumEvent();
+            }
+        });
+        this.txtGeburtsdatum.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onGeburtsdatumEvent();
+            }
+        });
     }
 
     private void onAnredeSelected() {
@@ -275,6 +255,18 @@ public abstract class PersonController {
     private void onGeburtsdatumEvent() {
         System.out.println("PersonController Event Geburtsdatum");
         personModel.setGeburtsdatum(txtGeburtsdatum.getText());
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("Nachname".equals(evt.getPropertyName())) {
+            txtNachname.setText(personModel.getNachname());
+        } else if ("Vorname".equals(evt.getPropertyName())) {
+            txtVorname.setText(personModel.getVorname());
+            // todo $$$ ...
+        } else {
+            throw new RuntimeException("Unbekanntes property '" + evt.getPropertyName() + "'");
+        }
     }
 
 }

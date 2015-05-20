@@ -25,8 +25,6 @@ public class AngehoerigerPanel {
     private JTextField txtFestnetz;
     private JTextField txtNatel;
     private JTextField txtEmail;
-    private JTextField txtGeburtsdatum;
-    private JTextField txtBeruf;
 
     private AngehoerigerModel angehoerigerModel;
 
@@ -51,8 +49,6 @@ public class AngehoerigerPanel {
         angehoerigerController.setTxtFestnetz(txtFestnetz);
         angehoerigerController.setTxtNatel(txtNatel);
         angehoerigerController.setTxtEmail(txtEmail);
-        angehoerigerController.setTxtGeburtsdatum(txtGeburtsdatum);
-        angehoerigerController.setTxtBeruf(txtBeruf);
     }
 
     private final java.util.List<CompletedListener> completedListeners = new ArrayList<>();
@@ -245,37 +241,21 @@ public class AngehoerigerPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel2.add(comboBoxAnrede, gbc);
-        final JLabel label7 = new JLabel();
-        label7.setText("Geburtsdatum");
-        label7.setDisplayedMnemonic('G');
-        label7.setDisplayedMnemonicIndex(0);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 17;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(label7, gbc);
-        txtGeburtsdatum = new JTextField();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 17;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(txtGeburtsdatum, gbc);
         final JPanel spacer8 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 16;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel2.add(spacer8, gbc);
-        final JLabel label8 = new JLabel();
-        label8.setText("Natel");
-        label8.setDisplayedMnemonic('N');
-        label8.setDisplayedMnemonicIndex(0);
+        final JLabel label7 = new JLabel();
+        label7.setText("Natel");
+        label7.setDisplayedMnemonic('N');
+        label7.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 13;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(label8, gbc);
+        panel2.add(label7, gbc);
         txtNatel = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -289,15 +269,15 @@ public class AngehoerigerPanel {
         gbc.gridy = 12;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel2.add(spacer9, gbc);
-        final JLabel label9 = new JLabel();
-        label9.setText("E-Mail");
-        label9.setDisplayedMnemonic('E');
-        label9.setDisplayedMnemonicIndex(0);
+        final JLabel label8 = new JLabel();
+        label8.setText("E-Mail");
+        label8.setDisplayedMnemonic('E');
+        label8.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 15;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(label9, gbc);
+        panel2.add(label8, gbc);
         txtEmail = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -317,34 +297,6 @@ public class AngehoerigerPanel {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel2.add(spacer11, gbc);
-        final JPanel spacer12 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 18;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer12, gbc);
-        final JLabel label10 = new JLabel();
-        label10.setText("Beruf");
-        label10.setDisplayedMnemonic('B');
-        label10.setDisplayedMnemonicIndex(0);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 19;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(label10, gbc);
-        txtBeruf = new JTextField();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 19;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(txtBeruf, gbc);
-        final JPanel spacer13 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 20;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer13, gbc);
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
@@ -361,12 +313,12 @@ public class AngehoerigerPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel4.add(txtPlz, gbc);
-        final JPanel spacer14 = new JPanel();
+        final JPanel spacer12 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel4.add(spacer14, gbc);
+        panel4.add(spacer12, gbc);
         txtOrt = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -389,10 +341,8 @@ public class AngehoerigerPanel {
         label4.setLabelFor(txtPlz);
         label5.setLabelFor(txtFestnetz);
         label6.setLabelFor(comboBoxAnrede);
-        label7.setLabelFor(txtGeburtsdatum);
-        label8.setLabelFor(txtNatel);
-        label9.setLabelFor(txtEmail);
-        label10.setLabelFor(txtBeruf);
+        label7.setLabelFor(txtNatel);
+        label8.setLabelFor(txtEmail);
     }
 
     /**
