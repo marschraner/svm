@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 /**
  * @author Hans Stamm
@@ -26,8 +25,8 @@ public class SchuelerErfassenTabbedPane {
     private JButton btnAbbrechen;
     private JPanel elernteilZweiTab;
     private AngehoerigerPanel elternteilZweiPanel;
-    private JPanel drittempfaengerTab;
-    private AngehoerigerPanel drittempfaengerPanel;
+    private JPanel rechnungsempfaengerTab;
+    private AngehoerigerPanel rechnungsempfaengerPanel;
     private JPanel btnPanel;
 
     private ActionListener closeListener;
@@ -84,38 +83,8 @@ public class SchuelerErfassenTabbedPane {
 
     private void createUIComponents() {
         elternteilEinsPanel = new AngehoerigerPanel();
-        elternteilEinsPanel.addRechnungsempfaengerAdresseItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onElternteilEinsRechnungsempfaenger(e);
-            }
-        });
         elternteilZweiPanel = new AngehoerigerPanel();
-        elternteilZweiPanel.addRechnungsempfaengerAdresseItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onElternteilZweiRechnungsempfaenger(e);
-            }
-        });
-        drittempfaengerPanel = new AngehoerigerPanel();
-        drittempfaengerPanel.addRechnungsempfaengerAdresseItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onDrittempfaengerRechnungsempfaenger(e);
-            }
-        });
-    }
-
-    private void onElternteilEinsRechnungsempfaenger(ItemEvent e) {
-        System.out.println("Elternteil 1 Rechnungsempfänger. selected=" + isSelected(e));
-    }
-
-    private void onElternteilZweiRechnungsempfaenger(ItemEvent e) {
-        System.out.println("Elternteil 2 Rechnungsempfänger. selected=" + isSelected(e));
-    }
-
-    private void onDrittempfaengerRechnungsempfaenger(ItemEvent e) {
-        System.out.println("Drittempfänger Rechnungsempfänger. selected=" + isSelected(e));
+        rechnungsempfaengerPanel = new AngehoerigerPanel();
     }
 
     private boolean isSelected(ItemEvent e) {
@@ -142,16 +111,16 @@ public class SchuelerErfassenTabbedPane {
         schuelerTab.add(schuelerPanel.$$$getRootComponent$$$(), BorderLayout.CENTER);
         elternteilEinsTab = new JPanel();
         elternteilEinsTab.setLayout(new BorderLayout(0, 0));
-        schuelerErfassenTabbedPane.addTab("Elternteil 1", elternteilEinsTab);
+        schuelerErfassenTabbedPane.addTab("Vater", elternteilEinsTab);
         elternteilEinsTab.add(elternteilEinsPanel.$$$getRootComponent$$$(), BorderLayout.CENTER);
         elernteilZweiTab = new JPanel();
         elernteilZweiTab.setLayout(new BorderLayout(0, 0));
-        schuelerErfassenTabbedPane.addTab("Elternteil 2", elernteilZweiTab);
+        schuelerErfassenTabbedPane.addTab("Mutter", elernteilZweiTab);
         elernteilZweiTab.add(elternteilZweiPanel.$$$getRootComponent$$$(), BorderLayout.CENTER);
-        drittempfaengerTab = new JPanel();
-        drittempfaengerTab.setLayout(new BorderLayout(0, 0));
-        schuelerErfassenTabbedPane.addTab("Drittempfänger", drittempfaengerTab);
-        drittempfaengerTab.add(drittempfaengerPanel.$$$getRootComponent$$$(), BorderLayout.CENTER);
+        rechnungsempfaengerTab = new JPanel();
+        rechnungsempfaengerTab.setLayout(new BorderLayout(0, 0));
+        schuelerErfassenTabbedPane.addTab("Rechnungsempfänger", rechnungsempfaengerTab);
+        rechnungsempfaengerTab.add(rechnungsempfaengerPanel.$$$getRootComponent$$$(), BorderLayout.CENTER);
         btnPanel = new JPanel();
         btnPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         panel.add(btnPanel, BorderLayout.SOUTH);

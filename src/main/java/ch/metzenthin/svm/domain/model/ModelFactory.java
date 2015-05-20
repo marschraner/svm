@@ -5,4 +5,5 @@ package ch.metzenthin.svm.domain.model;
  */
 public interface ModelFactory {
     SchuelerModel createSchuelerModel();
+    AngehoerigerModel createAngehoerigerModel();
 }

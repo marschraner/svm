@@ -22,4 +22,9 @@ public class ModelFactoryImpl implements ModelFactory {
         return new SchuelerModelImpl(commandInvoker);
     }
 
+    @Override
+    public AngehoerigerModel createAngehoerigerModel() {
+        return new AngehoerigerModelImpl(commandInvoker);
+    }
+
 }
