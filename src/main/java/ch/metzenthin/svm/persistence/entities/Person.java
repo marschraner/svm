@@ -60,6 +60,16 @@ public abstract class Person {
         this.email = email;
     }
 
+    public boolean isIdenticalWith(Person otherPerson) {
+        return anrede.equals(otherPerson.getAnrede())
+                && vorname.equals(otherPerson.getVorname())
+                && nachname.equals(otherPerson.getNachname())
+                && geburtsdatum.equals(otherPerson.getGeburtsdatum())
+                && natel.equals(otherPerson.getNatel())
+                && email.equals(otherPerson.getEmail())
+                && adresse.isIdenticalWith(otherPerson.getAdresse());
+    }
+
     public Integer getPersonId() {
         return personId;
     }

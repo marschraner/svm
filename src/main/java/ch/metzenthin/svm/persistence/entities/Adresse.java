@@ -50,6 +50,14 @@ public class Adresse {
         this.festnetz = festnetz;
     }
 
+    public boolean isIdenticalWith(Adresse otherAdresse) {
+        return strasse.equals(otherAdresse.getStrasse())
+                && hausnummer.equals(otherAdresse.getHausnummer())
+                && plz.equals(otherAdresse.getPlz())
+                && ort.equals(otherAdresse.getOrt())
+                && festnetz.equals(otherAdresse.getFestnetz());
+    }
+
     public Integer getAdresseId() {
         return adresseId;
     }

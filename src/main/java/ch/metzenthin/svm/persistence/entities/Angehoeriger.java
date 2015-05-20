@@ -35,6 +35,10 @@ public class Angehoeriger extends Person {
         return kinderVater;
     }
 
+    public boolean isIdenticalWith(Angehoeriger otherAngehoeriger) {
+        return (super.isIdenticalWith(otherAngehoeriger));
+    }
+
     public Set<Schueler> getKinderMutter() {
         return kinderMutter;
     }

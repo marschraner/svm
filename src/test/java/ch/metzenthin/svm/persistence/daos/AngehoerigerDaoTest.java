@@ -148,7 +148,7 @@ public class AngehoerigerDaoTest {
     }
 
     @Test
-    public void testFindAngehoeriger() {
+    public void testFindSpecificAngehoeriger() {
         EntityTransaction tx = null;
 
         try {
@@ -168,7 +168,7 @@ public class AngehoerigerDaoTest {
             Adresse adresse2 = new Adresse("Gugusweg", 16, 8049, "Zürich", "044 491 69 33");
             angehoeriger2.setAdresse(adresse2);
 
-            Angehoeriger angehoerigerFound2 = angehoerigerDao.findAngehoeriger(angehoeriger2);
+            Angehoeriger angehoerigerFound2 = angehoerigerDao.findSpecificAngehoeriger(angehoeriger2);
             assertNotNull("Angehörigen nicht gefunden", angehoerigerFound2);
 
             // Ditto, but Angehoeriger with another strasse:
@@ -176,7 +176,7 @@ public class AngehoerigerDaoTest {
             Adresse adresse3 = new Adresse("Gugusstrasse", 16, 8049, "Zürich", "044 491 69 33");
             angehoeriger3.setAdresse(adresse3);
 
-            Angehoeriger angehoerigerFound3 = angehoerigerDao.findAngehoeriger(angehoeriger3);
+            Angehoeriger angehoerigerFound3 = angehoerigerDao.findSpecificAngehoeriger(angehoeriger3);
             assertNull("Angehörigen gefunden", angehoerigerFound3);
 
             // Delete Angehoeriger
@@ -188,7 +188,6 @@ public class AngehoerigerDaoTest {
             if (tx != null)
                 tx.rollback();
         }
-
 
     }
 }

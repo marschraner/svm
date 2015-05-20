@@ -267,5 +267,58 @@ public class SchuelerDaoTest {
         }
 
     }
+
+    @Test
+    public void testFindSpecificSchueler() {
+
+        EntityTransaction tx = null;
+
+        try {
+            tx = entityManager.getTransaction();
+            tx.begin();
+
+            // Schüler
+            Schueler schueler = new Schueler("Lea", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, null);
+            Adresse adresse = new Adresse("Gugusweg", 16, 8049, "Zürich", "044 491 69 33");
+            schueler.setAdresse(adresse);
+
+            Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", null, null, null);
+            Adresse adresseRechnungsempfaenger = new Adresse("Hintere Bergstrassse", 15, 8942, "Oberrieden", "044 720 85 51");
+            rechnungsempfaenger.setAdresse(adresseRechnungsempfaenger);
+            schueler.setRechnungsempfaenger(rechnungsempfaenger);
+
+            Schueler schuelerSaved = schuelerDao.save(schueler);
+
+            entityManager.flush();
+
+            // Create second Schüler with the same attributes
+            Schueler schueler2 = new Schueler("Lea", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, null);
+            Adresse adresse2 = new Adresse("Gugusweg", 16, 8049, "Zürich", "044 491 69 33");
+            schueler2.setAdresse(adresse2);
+            schueler2.setRechnungsempfaenger(rechnungsempfaenger);
+
+            Schueler schuelerFound2 = schuelerDao.findSpecificSchueler(schueler2);
+            assertNotNull("Schüler nicht gefunden", schuelerFound2);
+
+            // Ditto, but Schüler with another strasse:
+            Schueler schueler3 = new Schueler("Lea", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, null);
+            Adresse adresse3 = new Adresse("Gugusstrasse", 16, 8049, "Zürich", "044 491 69 33");
+            schueler3.setAdresse(adresse3);
+            schueler3.setRechnungsempfaenger(rechnungsempfaenger);
+
+            Schueler schuelerFound3 = schuelerDao.findSpecificSchueler(schueler3);
+            assertNull("Schüler gefunden", schuelerFound3);
+
+            // Delete Schüler
+            schuelerDao.remove(schuelerSaved);
+
+            tx.commit();
+
+        } catch (NullPointerException e){
+            if (tx != null)
+                tx.rollback();
+        }
+
+    }
 }
 

@@ -32,7 +32,7 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
         }
     }
 
-    public Angehoeriger findAngehoeriger(Angehoeriger angehoeriger) {
+    public Angehoeriger findSpecificAngehoeriger(Angehoeriger angehoeriger) {
 
         String selectStatement = "select a from Angehoeriger a" +
                         " where a.anrede = :anrede" +
@@ -77,11 +77,12 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
             if (angehoeriger.getEmail() == null && angehoerigerFound.getEmail() != null) return null;
             if (angehoeriger.getAdresse().getHausnummer() == null && angehoerigerFound.getAdresse().getHausnummer() != null) return null;
             if (angehoeriger.getAdresse().getFestnetz() == null && angehoerigerFound.getAdresse().getFestnetz() != null) return null;
+
             return angehoerigerFound;
         }
 
         else {
-           throw new NullPointerException("Mehr als ein Anghehöriger gefunden");
+           throw new NullPointerException("Mehr als ein Angehöriger gefunden");
         }
 
     }
