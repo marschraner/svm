@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.persistence.entities.Schueler;
+
 import java.util.Calendar;
 
 /**
@@ -11,6 +13,7 @@ public interface SchuelerModel extends PersonModel {
     Calendar getDispensationsbeginn();
     Calendar getDispensationsende();
     String getBemerkungen();
+    Schueler getSchueler();
 
     void setAnmeldedatum(String anmeldedatum);
     void setAnmeldedatum(Calendar anmeldedatum);

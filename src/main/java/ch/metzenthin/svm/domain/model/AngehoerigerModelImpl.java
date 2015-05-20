@@ -44,4 +44,9 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     Person getPerson() {
         return angehoeriger;
     }
+
+    @Override
+    public Angehoeriger getAngehoeriger() {
+        return angehoeriger;
+    }
 }

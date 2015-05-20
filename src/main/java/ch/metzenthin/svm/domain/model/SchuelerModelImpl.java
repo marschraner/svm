@@ -4,6 +4,7 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveAdresseCommand;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Person;
+import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import java.util.Calendar;
 
@@ -12,11 +13,11 @@ import java.util.Calendar;
  */
 final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
-    private Person schueler; // todo $$$ Schueler
+    private Schueler schueler;
 
     SchuelerModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
-        schueler = new Angehoeriger(); // todo $$$ Schueler
+        schueler = new Schueler();
     }
 
     @Override
@@ -103,6 +104,11 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     public void save() {
         SaveAdresseCommand adresseInsertCommand = new SaveAdresseCommand(adresse); // todo $$$ SaveSchuelerCommand?
         getCommandInvoker().executeCommand(adresseInsertCommand);
+    }
+
+    @Override
+    public Schueler getSchueler() {
+        return schueler;
     }
 
 }

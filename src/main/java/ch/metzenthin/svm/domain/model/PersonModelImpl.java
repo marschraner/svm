@@ -171,4 +171,9 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         return checkNachname() && checkVorname() && checkStrasse() && checkPlz() && checkOrt();
     }
 
+    @Override
+    public Adresse getAdresse() {
+        return adresse;
+    }
+
 }

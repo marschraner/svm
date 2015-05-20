@@ -149,5 +149,53 @@ public class AngehoerigerDaoTest {
         }
 
     }
+
+    @Test
+    public void testFindAngehoeriger() {
+        EntityTransaction tx = null;
+
+        try {
+
+            AdresseDao adresseDao = new AdresseDao(entityManager);
+
+            tx = entityManager.getTransaction();
+            tx.begin();
+
+            // Angehoeriger
+            Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null, "Jurist");
+            Adresse adresse = new Adresse("Gugusweg", 16, 8049, "Zürich", "044 491 69 33");
+            angehoeriger.setAdresse(adresse);
+            Angehoeriger angehoerigerSaved = angehoerigerDao.save(angehoeriger);
+
+            entityManager.flush();
+
+            // Create second Angehoeriger with the same attributes
+            Angehoeriger angehoeriger2 = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null, "Jurist");
+            Adresse adresse2 = new Adresse("Gugusweg", 16, 8049, "Zürich", "044 491 69 33");
+            angehoeriger2.setAdresse(adresse2);
+
+            Angehoeriger angehoerigerFound2 = angehoerigerDao.findAngehoeriger(angehoeriger2);
+            assertNotNull("Angehörigen nicht gefunden", angehoerigerFound2);
+
+            // Ditto, but Angehoeriger with another strasse:
+            Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null, "Jurist");
+            Adresse adresse3 = new Adresse("Gugusstrasse", 16, 8049, "Zürich", "044 491 69 33");
+            angehoeriger3.setAdresse(adresse3);
+
+            Angehoeriger angehoerigerFound3 = angehoerigerDao.findAngehoeriger(angehoeriger3);
+            assertNull("Angehörigen gefunden", angehoerigerFound3);
+
+            // Delete Angehoeriger
+            angehoerigerDao.remove(angehoerigerSaved);
+
+            tx.commit();
+
+        } catch (NullPointerException e){
+            if (tx != null)
+                tx.rollback();
+        }
+
+
+    }
 }
 

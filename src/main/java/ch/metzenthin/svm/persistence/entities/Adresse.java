@@ -42,7 +42,7 @@ public class Adresse {
     public Adresse() {
     }
 
-    public Adresse(String strasse, int hausnummer, int plz, String ort, String festnetz) {
+    public Adresse(String strasse, Integer hausnummer, Integer plz, String ort, String festnetz) {
         this.strasse = strasse;
         this.hausnummer = hausnummer;
         this.plz = plz;

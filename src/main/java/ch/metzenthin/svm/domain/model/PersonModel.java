@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.persistence.entities.Adresse;
 
 import java.util.Calendar;
 
@@ -14,6 +15,7 @@ public interface PersonModel extends Model, AdresseModel {
     String getNatel();
     String getEmail();
     Calendar getGeburtsdatum();
+    Adresse getAdresse();
 
     void setAnrede(Anrede anrede);
     void setNachname(String nachname);
