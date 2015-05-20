@@ -58,7 +58,9 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setNachname(String nachname) {
+        String oldValue = getPerson().getNachname();
         getPerson().setNachname(nachname);
+        firePropertyChange("Nachname", oldValue, getPerson().getNachname());
     }
 
     private boolean checkNachname() {

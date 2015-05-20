@@ -18,7 +18,12 @@ public class AbstractModelTest {
 
     @Before
     public void setUp() throws Exception {
-        abstractModel = new AbstractModel(null) {};
+        abstractModel = new AbstractModel(null) {
+            @Override
+            public boolean isValid() {
+                return false;
+            }
+        };
     }
 
     @After

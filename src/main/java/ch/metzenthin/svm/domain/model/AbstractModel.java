@@ -2,6 +2,8 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -11,17 +13,39 @@ import java.util.Calendar;
  * todo check... und to... Methoden in Utils auslagern
  * todo PropertyChangeSupport (Observable?)
  */
-abstract class AbstractModel {
+abstract class AbstractModel implements Model {
 
     private final CommandInvoker commandInvoker;
+
+    AbstractModel(CommandInvoker commandInvoker) {
+        this.commandInvoker = commandInvoker;
+    }
 
     CommandInvoker getCommandInvoker() {
         return commandInvoker;
     }
 
-    AbstractModel(CommandInvoker commandInvoker) {
-        this.commandInvoker = commandInvoker;
+    //------------------------------------------------------------------------------------------------------------------
+    // Property change support
+    //------------------------------------------------------------------------------------------------------------------
+
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.addPropertyChangeListener(listener);
     }
+
+    @Override
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.removePropertyChangeListener(listener);
+    }
+
+    void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+        this.pcs.firePropertyChange(propertyName, oldValue, newValue);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
 
     boolean checkNotNull(Object o) {
         return (o != null);
