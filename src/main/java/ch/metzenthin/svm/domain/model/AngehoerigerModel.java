@@ -6,9 +6,6 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
  * @author Hans Stamm
  */
 public interface AngehoerigerModel extends PersonModel {
-    String getBeruf();
-
-    void setBeruf(String beruf);
 
     Angehoeriger getAngehoeriger();
 

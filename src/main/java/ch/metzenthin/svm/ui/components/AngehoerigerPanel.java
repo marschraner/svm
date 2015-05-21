@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 /**
  * @author Hans Stamm
- *         todo Events kopieren von SchuelerPanel
  */
 public class AngehoerigerPanel {
     private JPanel panel;

@@ -102,14 +102,14 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     @Override
-    public Integer getHausnummer() {
-        return null;   //TODO
+    public String getHausnummer() {
+        return adresse.getStrasse();
     }
 
     @Override
-    public Integer getPlz() {
-        return null;
-    }   //TODO
+    public String getPlz() {
+        return adresse.getPlz();
+    }
 
     @Override
     public String getOrt() {
@@ -131,25 +131,17 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     @Override
-    public void setHausnummer(String hausnummerString) {
-        setHausnummer(toIntegerOrNull(hausnummerString));
+    public void setHausnummer(String hausnummer) {
+        adresse.setHausnummer(hausnummer);
     }
 
     @Override
-    public void setHausnummer(Integer hausnummer) {
-    }  //TODO
-
-    @Override
-    public void setPlz(Integer plz) {
-    }  //TODO
-
-    @Override
-    public void setPlz(String plzString) {
-        setPlz(toIntegerOrNull(plzString));
+    public void setPlz(String plz) {
+        adresse.setPlz(plz);
     }
 
     private boolean checkPlz() {
-        return (adresse.getPlz() != null); //TODO && (adresse.getPlz() > 0);
+        return checkNotEmpty(adresse.getPlz());
     }
 
     @Override
