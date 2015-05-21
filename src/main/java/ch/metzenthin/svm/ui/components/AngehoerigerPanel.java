@@ -24,6 +24,7 @@ public class AngehoerigerPanel {
     private JTextField txtFestnetz;
     private JTextField txtNatel;
     private JTextField txtEmail;
+    private JCheckBox checkBoxRechnungsempfaenger;
 
     private AngehoerigerModel angehoerigerModel;
 
@@ -48,6 +49,7 @@ public class AngehoerigerPanel {
         angehoerigerController.setTxtFestnetz(txtFestnetz);
         angehoerigerController.setTxtNatel(txtNatel);
         angehoerigerController.setTxtEmail(txtEmail);
+        angehoerigerController.setCheckBoxRechnungsempfaenger(checkBoxRechnungsempfaenger);
     }
 
     private final java.util.List<CompletedListener> completedListeners = new ArrayList<>();
@@ -326,6 +328,26 @@ public class AngehoerigerPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel4.add(txtOrt, gbc);
+        final JLabel label9 = new JLabel();
+        label9.setText("Rechnungsempfänger");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 18;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel2.add(label9, gbc);
+        final JPanel spacer13 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 17;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel2.add(spacer13, gbc);
+        checkBoxRechnungsempfaenger = new JCheckBox();
+        checkBoxRechnungsempfaenger.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 18;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel2.add(checkBoxRechnungsempfaenger, gbc);
         final JPanel panel5 = new JPanel();
         panel5.setLayout(new BorderLayout(0, 0));
         gbc = new GridBagConstraints();

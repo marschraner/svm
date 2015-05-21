@@ -9,5 +9,9 @@ public interface AngehoerigerModel extends PersonModel {
 
     Angehoeriger getAngehoeriger();
 
+    boolean isRechnungsempfaenger();
+
+    void setIsRechnungsempfaenger(boolean isSelected);
+
     void save();
 }

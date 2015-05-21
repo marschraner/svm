@@ -14,6 +14,8 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
 
     private Angehoeriger angehoeriger;
 
+    private boolean isRechnungsempfaenger;
+
     AngehoerigerModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
         angehoeriger = new Angehoeriger();
@@ -39,4 +41,26 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     public Angehoeriger getAngehoeriger() {
         return angehoeriger;
     }
+
+    @Override
+    public boolean isRechnungsempfaenger() {
+        return isRechnungsempfaenger;
+    }
+
+    /**
+     * Für Angehörige ist die Adresse obligatorisch, falls er Rechnungsempfänger ist.
+     * @return true, falls der Angehörige Rechnungsempfänger ist
+     */
+    @Override
+    public boolean isAdresseRequired() {
+        return isRechnungsempfaenger;
+    }
+
+    @Override
+    public void setIsRechnungsempfaenger(boolean isSelected) {
+        boolean oldValue = isRechnungsempfaenger;
+        isRechnungsempfaenger = isSelected;
+        firePropertyChange("Rechnungsempfaenger", oldValue, isRechnungsempfaenger);
+    }
+
 }

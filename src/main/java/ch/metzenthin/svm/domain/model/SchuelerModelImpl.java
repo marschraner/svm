@@ -41,16 +41,6 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     }
 
     @Override
-    public Calendar getDispensationsbeginn() {
-        return null; // todo $$$ schueler.getDispensationsbeginn();
-    }
-
-    @Override
-    public Calendar getDispensationsende() {
-        return null; // todo $$$ schueler.getDispensationsende();
-    }
-
-    @Override
     public String getBemerkungen() {
         return schueler.getBemerkungen();
     }
@@ -81,26 +71,6 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     }
 
     @Override
-    public void setDispensationsbeginn(String dispensationsbeginn) {
-        setDispensationsbeginn(toCalendarIgnoreException(dispensationsbeginn));
-    }
-
-    @Override
-    public void setDispensationsbeginn(Calendar dispensationsbeginn) {
-        // todo $$$ schueler.setDispensationsbeginn(dispensationsbeginn);
-    }
-
-    @Override
-    public void setDispensationsende(String dispensationsende) {
-        setDispensationsende(toCalendarIgnoreException(dispensationsende));
-    }
-
-    @Override
-    public void setDispensationsende(Calendar dispensationsende) {
-        // todo $$$ schueler.setDispensationsende(dispensationsende);
-    }
-
-    @Override
     public void setBemerkungen(String bemerkungen) {
         schueler.setBemerkungen(bemerkungen);
     }
@@ -119,6 +89,15 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     @Override
     public Schueler getSchueler() {
         return schueler;
+    }
+
+    /**
+     * Für Schüler ist die Adresse obligatorisch.
+     * @return true
+     */
+    @Override
+    public boolean isAdresseRequired() {
+        return true;
     }
 
 }

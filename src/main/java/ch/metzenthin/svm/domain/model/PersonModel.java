@@ -15,6 +15,7 @@ public interface PersonModel extends AdresseModel {
     String getNatel();
     String getEmail();
     Calendar getGeburtsdatum();
+    boolean isAdresseRequired();
     Adresse getAdresse();
 
     void setAnrede(Anrede anrede);

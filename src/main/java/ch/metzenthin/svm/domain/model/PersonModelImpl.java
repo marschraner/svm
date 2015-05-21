@@ -7,6 +7,8 @@ import ch.metzenthin.svm.persistence.entities.Person;
 
 import java.util.Calendar;
 
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
+
 /**
  * @author Hans Stamm
  */
@@ -160,7 +162,20 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public boolean isValid() {
-        return checkNachname() && checkVorname() && checkStrasse() && checkPlz() && checkOrt();
+        return checkNachname() && checkVorname() && checkAdresse();
+    }
+
+    private boolean checkAdresse() {
+        return !(isAdresseRequired() || isSetAnyAdresseElement()) || checkStrasse() && checkPlz() && checkOrt();
+    }
+
+    private boolean isSetAnyAdresseElement() {
+        return !(checkNotEmpty(adresse.getStrasse())
+                && checkNotEmpty(adresse.getHausnummer())
+                && checkNotEmpty(adresse.getPlz())
+                && checkNotEmpty(adresse.getOrt())
+                && checkNotEmpty(adresse.getFestnetz())
+        );
     }
 
     @Override

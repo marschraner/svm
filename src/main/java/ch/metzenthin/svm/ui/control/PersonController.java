@@ -264,8 +264,6 @@ public abstract class PersonController implements PropertyChangeListener {
         } else if ("Vorname".equals(evt.getPropertyName())) {
             txtVorname.setText(personModel.getVorname());
             // todo $$$ ...
-        } else {
-            throw new RuntimeException("Unbekanntes property '" + evt.getPropertyName() + "'");
         }
     }
 

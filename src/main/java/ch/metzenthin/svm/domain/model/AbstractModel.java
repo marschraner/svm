@@ -8,10 +8,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNumber;
+
 /**
  * @author Hans Stamm
- * todo check... und to... Methoden in Utils auslagern
- * todo PropertyChangeSupport (Observable?)
  */
 abstract class AbstractModel implements Model {
 
@@ -29,43 +30,24 @@ abstract class AbstractModel implements Model {
     // Property change support
     //------------------------------------------------------------------------------------------------------------------
 
-    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        this.pcs.addPropertyChangeListener(listener);
+        this.propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
-        this.pcs.removePropertyChangeListener(listener);
+        this.propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
     void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        this.pcs.firePropertyChange(propertyName, oldValue, newValue);
+        this.propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
 
     //------------------------------------------------------------------------------------------------------------------
 
-    boolean checkNotNull(Object o) {
-        return (o != null);
-    }
-
-    boolean checkNotEmpty(String s) {
-        return checkNotNull(s) && !s.isEmpty();
-    }
-
-    boolean checkNumber(String s) {
-        if (checkNotEmpty(s)) {
-            try {
-                //noinspection ResultOfMethodCallIgnored
-                Integer.valueOf(s);
-                return true;
-            } catch (NumberFormatException ignore) {
-            }
-        }
-        return false;
-    }
 
     Integer toIntegerOrNull(String s) {
         Integer i = null;
