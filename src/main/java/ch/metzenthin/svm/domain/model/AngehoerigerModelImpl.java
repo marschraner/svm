@@ -5,7 +5,7 @@ import ch.metzenthin.svm.domain.commands.SaveAngehoerigeCommand;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Person;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author Hans Stamm
@@ -28,7 +28,7 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
 
     @Override
     public void save() {
-        SaveAngehoerigeCommand saveAngehoerigeCommand = new SaveAngehoerigeCommand(Arrays.asList(angehoeriger));
+        SaveAngehoerigeCommand saveAngehoerigeCommand = new SaveAngehoerigeCommand(Collections.singletonList(angehoeriger));
         getCommandInvoker().executeCommand(saveAngehoerigeCommand);
     }
 
