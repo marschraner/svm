@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.ui.control.CompletedListener;
+
 import java.beans.PropertyChangeListener;
 
 /**
@@ -7,6 +9,8 @@ import java.beans.PropertyChangeListener;
  */
 public interface Model {
     void addPropertyChangeListener(PropertyChangeListener listener);
+    void addCompletedListener(CompletedListener listener);
     void removePropertyChangeListener(PropertyChangeListener listener);
-    boolean isValid();
+    void checkCompleted();
+    boolean isCompleted();
 }

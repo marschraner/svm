@@ -1,15 +1,12 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.ui.control.CompletedListener;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
-import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNumber;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Hans Stamm
@@ -44,43 +41,32 @@ abstract class AbstractModel implements Model {
 
     void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         this.propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+        checkCompleted();
     }
+
 
     //------------------------------------------------------------------------------------------------------------------
+    // Completed support
+    //------------------------------------------------------------------------------------------------------------------
 
+    private final List<CompletedListener> completedListeners = new ArrayList<>();
 
-    Integer toIntegerOrNull(String s) {
-        Integer i = null;
-        if (checkNumber(s)) {
-            i = toInteger(s);
-        }
-        return i;
+    public void addCompletedListener(CompletedListener completedListener) {
+        completedListeners.add(completedListener);
     }
 
-    Integer toInteger(String s) {
-        return Integer.valueOf(s);
+    public void removeCompletedListener(CompletedListener completedListener) {
+        completedListeners.remove(completedListener);
     }
 
-    Calendar toCalendar(String s) throws ParseException {
-        if (!checkNotEmpty(s)) {
-            return null;
+    void fireCompleted(boolean completed) {
+        for (CompletedListener completedListener : completedListeners) {
+            completedListener.completed(completed);
         }
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-        calendar.setTime(formatter.parse(s));
-        return calendar;
     }
 
-    Calendar toCalendarIgnoreException(String s) {
-        if (!checkNotEmpty(s)) {
-            return null;
-        }
-        Calendar calendar = null;
-        try {
-            calendar = toCalendar(s);
-        } catch (ParseException ignore) {
-        }
-        return calendar;
+    public void checkCompleted() {
+        fireCompleted(isCompleted());
     }
 
 }

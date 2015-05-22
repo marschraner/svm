@@ -10,6 +10,8 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * @author Hans Stamm
@@ -21,16 +23,25 @@ public class SchuelerErfassenPanel {
     private AngehoerigerPanel vaterPanel;
     private AngehoerigerPanel drittempfaengerPanel;
     private final SchuelerModel schuelerModel;
-    private final AngehoerigerModel vaterModel;
     private final AngehoerigerModel mutterModel;
+    private final AngehoerigerModel vaterModel;
     private final AngehoerigerModel drittempfaengerModel;
     private JPanel btnPanel;
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
 
+    private boolean isSchuelerModelCompleted;
+    private boolean isMutterModelCompleted;
+    private boolean isVaterModelCompleted;
+    private boolean isDrittempfaengerModelCompleted;
+    private boolean isMutterRechnungsempfaenger;
+    private boolean isVaterRechnungsempfaenger;
+    private boolean isDrittempfaengerRechnungsempfaenger;
+
     public SchuelerErfassenPanel(SvmContext svmContext) {
         $$$setupUI$$$();
+        // todo in controller und model auslagern?
         btnSpeichern.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -43,30 +54,139 @@ public class SchuelerErfassenPanel {
                 onAbbrechen();
             }
         });
-        schuelerPanel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onSchuelerPanelCompleted(completed);
-            }
-        });
         schuelerModel = svmContext.getModelFactory().createSchuelerModel();
         schuelerPanel.setModel(schuelerModel);
+        schuelerModel.addCompletedListener(new CompletedListener() {
+            @Override
+            public void completed(boolean completed) {
+                onSchuelerModelCompleted(completed);
+            }
+        });
         mutterModel = svmContext.getModelFactory().createAngehoerigerModel();
         mutterPanel.setModel(mutterModel);
+        mutterModel.addCompletedListener(new CompletedListener() {
+            @Override
+            public void completed(boolean completed) {
+                onMutterModelCompleted(completed);
+            }
+        });
+        mutterModel.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                onMutterModelPropertyChange(evt);
+            }
+        });
         vaterModel = svmContext.getModelFactory().createAngehoerigerModel();
         vaterPanel.setModel(vaterModel);
+        vaterModel.addCompletedListener(new CompletedListener() {
+            @Override
+            public void completed(boolean completed) {
+                onVaterModelCompleted(completed);
+            }
+        });
+        vaterModel.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                onVaterModelPropertyChange(evt);
+            }
+        });
         drittempfaengerModel = svmContext.getModelFactory().createAngehoerigerModel();
         drittempfaengerPanel.setModel(drittempfaengerModel);
-        onSchuelerPanelCompleted(false);
+        drittempfaengerModel.addCompletedListener(new CompletedListener() {
+            @Override
+            public void completed(boolean completed) {
+                onDrittempfaengerModelCompleted(completed);
+            }
+        });
+        drittempfaengerModel.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                onDrittempfaengerModelPropertyChange(evt);
+            }
+        });
+        schuelerModel.checkCompleted();
+        mutterModel.checkCompleted();
+        vaterModel.checkCompleted();
+        drittempfaengerModel.checkCompleted();
     }
 
-    public void addCloseListener(ActionListener actionListener) {
-        closeListener = actionListener;
+    // todo schöner programmieren (nächste drei methoden)
+    private void onMutterModelPropertyChange(PropertyChangeEvent evt) {
+        if (isRechnungsempfaengerPropertyChange(evt)) {
+            Boolean newValue = (Boolean) evt.getNewValue();
+            if (isBooleanNewValuePropertyChecked(newValue)) {
+                uncheckRechnungsempfaenger(vaterModel, drittempfaengerModel);
+            }
+            isMutterRechnungsempfaenger = newValue;
+        }
     }
 
-    private void onSchuelerPanelCompleted(boolean completed) {
-        System.out.println("SchuelerPanel completed=" + completed);
-        btnSpeichern.setEnabled(completed);
+    private void onVaterModelPropertyChange(PropertyChangeEvent evt) {
+        if (isRechnungsempfaengerPropertyChange(evt)) {
+            Boolean newValue = (Boolean) evt.getNewValue();
+            if (isBooleanNewValuePropertyChecked(newValue)) {
+                uncheckRechnungsempfaenger(mutterModel, drittempfaengerModel);
+            }
+            isVaterRechnungsempfaenger = newValue;
+        }
+    }
+
+    private void onDrittempfaengerModelPropertyChange(PropertyChangeEvent evt) {
+        if (isRechnungsempfaengerPropertyChange(evt)) {
+            Boolean newValue = (Boolean) evt.getNewValue();
+            if (isBooleanNewValuePropertyChecked(newValue)) {
+                uncheckRechnungsempfaenger(mutterModel, vaterModel);
+            }
+            isDrittempfaengerRechnungsempfaenger = newValue;
+        }
+    }
+
+    private boolean isRechnungsempfaengerPropertyChange(PropertyChangeEvent evt) {
+        return "Rechnungsempfaenger".equals(evt.getPropertyName());
+    }
+
+    private boolean isBooleanNewValuePropertyChecked(Boolean newValue) {
+        return (newValue != null) && newValue;
+    }
+
+    private void uncheckRechnungsempfaenger(AngehoerigerModel... angehoerigerModels) {
+        for (AngehoerigerModel angehoerigerModel : angehoerigerModels) {
+            angehoerigerModel.setIsRechnungsempfaenger(false);
+        }
+    }
+
+    private void onSchuelerModelCompleted(boolean completed) {
+        System.out.println("SchuelerModel completed=" + completed);
+        isSchuelerModelCompleted = completed;
+        setEnabledBtnSpeichern();
+    }
+
+    private void onMutterModelCompleted(boolean completed) {
+        System.out.println("MutterModel completed=" + completed);
+        isMutterModelCompleted = completed;
+        setEnabledBtnSpeichern();
+    }
+
+    private void onVaterModelCompleted(boolean completed) {
+        System.out.println("VaterModel completed=" + completed);
+        isVaterModelCompleted = completed;
+        setEnabledBtnSpeichern();
+    }
+
+    private void onDrittempfaengerModelCompleted(boolean completed) {
+        System.out.println("DrittempfaengerModel completed=" + completed);
+        isDrittempfaengerModelCompleted = completed;
+        setEnabledBtnSpeichern();
+    }
+
+    private void setEnabledBtnSpeichern() {
+        System.out.println("isSetRechnungsempfaenger=" + isSetRechnungsempfaenger() + ",isSchuelerModelCompleted=" + isSchuelerModelCompleted + ",isMutterModelCompleted=" + isMutterModelCompleted + ",isVaterModelCompleted=" + isVaterModelCompleted + ",isDrittempfaengerModelCompleted=" + isDrittempfaengerModelCompleted);
+        // todo invoke later?
+        btnSpeichern.setEnabled(isSetRechnungsempfaenger() && isSchuelerModelCompleted && isMutterModelCompleted && isVaterModelCompleted && isDrittempfaengerModelCompleted);
+    }
+
+    private boolean isSetRechnungsempfaenger() {
+        return isMutterRechnungsempfaenger || isVaterRechnungsempfaenger || isDrittempfaengerRechnungsempfaenger;
     }
 
     private void onAbbrechen() {
@@ -80,6 +200,10 @@ public class SchuelerErfassenPanel {
         schuelerModel.save();
         // todo Dialog "erfolgreich gespeichert"
         closeListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Close nach Speichern"));
+    }
+
+    public void addCloseListener(ActionListener actionListener) {
+        closeListener = actionListener;
     }
 
     /**

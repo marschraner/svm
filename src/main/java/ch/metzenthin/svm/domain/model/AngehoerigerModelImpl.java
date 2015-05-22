@@ -22,8 +22,8 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     }
 
     @Override
-    public boolean isValid() {
-        return super.isValid();
+    public boolean isCompleted() {
+        return super.isCompleted();
     }
 
     @Override

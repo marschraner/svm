@@ -3,13 +3,10 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.model.SchuelerModel;
-import ch.metzenthin.svm.ui.control.CompletedListener;
 import ch.metzenthin.svm.ui.control.SchuelerController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author hans
@@ -58,22 +55,6 @@ public class SchuelerPanel {
         schuelerController.setTxtAnmeldedatum(txtAnmeldedatum);
         schuelerController.setTxtAbmeldedatum(txtAbmeldedatum);
         schuelerController.setTextAreaBemerkungen(textAreaBemerkungen);
-    }
-
-    private final List<CompletedListener> completedListeners = new ArrayList<>();
-
-    public void addCompletedListener(CompletedListener completedListener) {
-        completedListeners.add(completedListener);
-    }
-
-    private void checkCompleted() {
-        fireCompleted(schuelerModel.isValid());
-    }
-
-    private void fireCompleted(boolean completed) {
-        for (CompletedListener completedListener : completedListeners) {
-            completedListener.completed(completed);
-        }
     }
 
     private void createUIComponents() {

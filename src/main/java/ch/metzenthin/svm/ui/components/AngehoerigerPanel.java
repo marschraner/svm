@@ -3,11 +3,9 @@ package ch.metzenthin.svm.ui.components;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.domain.model.AngehoerigerModel;
 import ch.metzenthin.svm.ui.control.AngehoerigerController;
-import ch.metzenthin.svm.ui.control.CompletedListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * @author Hans Stamm
@@ -50,22 +48,6 @@ public class AngehoerigerPanel {
         angehoerigerController.setTxtNatel(txtNatel);
         angehoerigerController.setTxtEmail(txtEmail);
         angehoerigerController.setCheckBoxRechnungsempfaenger(checkBoxRechnungsempfaenger);
-    }
-
-    private final java.util.List<CompletedListener> completedListeners = new ArrayList<>();
-
-    public void addCompletedListener(CompletedListener completedListener) {
-        completedListeners.add(completedListener);
-    }
-
-    private void checkCompleted() {
-        fireCompleted(angehoerigerModel.isValid());
-    }
-
-    private void fireCompleted(boolean completed) {
-        for (CompletedListener completedListener : completedListeners) {
-            completedListener.completed(completed);
-        }
     }
 
     private void createUIComponents() {

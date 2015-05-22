@@ -7,6 +7,7 @@ import ch.metzenthin.svm.persistence.entities.Person;
 
 import java.util.Calendar;
 
+import static ch.metzenthin.svm.common.utils.Converter.toCalendarIgnoreException;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
@@ -55,7 +56,9 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setAnrede(Anrede anrede) {
+        Anrede oldValue = getPerson().getAnrede();
         getPerson().setAnrede(anrede);
+        firePropertyChange("Anrede", oldValue, getPerson().getAnrede());
     }
 
     @Override
@@ -71,7 +74,9 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setVorname(String vorname) {
+        String oldValue = getPerson().getVorname();
         getPerson().setVorname(vorname);
+        firePropertyChange("Vorname", oldValue, getPerson().getVorname());
     }
 
     private boolean checkVorname() {
@@ -80,12 +85,16 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setNatel(String natel) {
+        String oldValue = getPerson().getNatel();
         getPerson().setNatel(natel);
+        firePropertyChange("Natel", oldValue, getPerson().getNatel());
     }
 
     @Override
     public void setEmail(String email) {
+        String oldValue = getPerson().getEmail();
         getPerson().setEmail(email);
+        firePropertyChange("Email", oldValue, getPerson().getEmail());
     }
 
     @Override
@@ -95,7 +104,9 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setGeburtsdatum(Calendar geburtsdatum) {
+        Calendar oldValue = getPerson().getGeburtsdatum();
         getPerson().setGeburtsdatum(geburtsdatum);
+        firePropertyChange("Geburtsdatum", oldValue, getPerson().getGeburtsdatum());
     }
 
     @Override
@@ -125,7 +136,9 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setStrasse(String strasse) {
+        String oldValue = adresse.getStrasse();
         adresse.setStrasse(strasse);
+        firePropertyChange("Strasse", oldValue, adresse.getStrasse());
     }
 
     private boolean checkStrasse() {
@@ -134,12 +147,16 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setHausnummer(String hausnummer) {
+        String oldValue = adresse.getHausnummer();
         adresse.setHausnummer(hausnummer);
+        firePropertyChange("Hausnummer", oldValue, adresse.getHausnummer());
     }
 
     @Override
     public void setPlz(String plz) {
+        String oldValue = adresse.getPlz();
         adresse.setPlz(plz);
+        firePropertyChange("Plz", oldValue, adresse.getPlz());
     }
 
     private boolean checkPlz() {
@@ -148,7 +165,9 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setOrt(String ort) {
+        String oldValue = adresse.getOrt();
         adresse.setOrt(ort);
+        firePropertyChange("Ort", oldValue, adresse.getOrt());
     }
 
     private boolean checkOrt() {
@@ -157,12 +176,18 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setFestnetz(String festnetz) {
+        String oldValue = adresse.getFestnetz();
         adresse.setFestnetz(festnetz);
+        firePropertyChange("Festnetz", oldValue, adresse.getFestnetz());
     }
 
     @Override
-    public boolean isValid() {
-        return checkNachname() && checkVorname() && checkAdresse();
+    public boolean isCompleted() {
+        return checkName() && checkAdresse();
+    }
+
+    private boolean checkName() {
+        return !(isAdresseRequired()) || checkNachname() && checkVorname();
     }
 
     private boolean checkAdresse() {
@@ -170,12 +195,12 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     private boolean isSetAnyAdresseElement() {
-        return !(checkNotEmpty(adresse.getStrasse())
-                && checkNotEmpty(adresse.getHausnummer())
-                && checkNotEmpty(adresse.getPlz())
-                && checkNotEmpty(adresse.getOrt())
-                && checkNotEmpty(adresse.getFestnetz())
-        );
+        return checkNotEmpty(adresse.getStrasse())
+                || checkNotEmpty(adresse.getHausnummer())
+                || checkNotEmpty(adresse.getPlz())
+                || checkNotEmpty(adresse.getOrt())
+                || checkNotEmpty(adresse.getFestnetz())
+        ;
     }
 
     @Override

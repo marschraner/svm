@@ -8,6 +8,8 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import java.util.Calendar;
 
+import static ch.metzenthin.svm.common.utils.Converter.toCalendarIgnoreException;
+
 /**
  * @author Hans Stamm
  */
@@ -47,7 +49,9 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public void setGeschlecht(Geschlecht geschlecht) {
+        Geschlecht oldValue = schueler.getGeschlecht();
         schueler.setGeschlecht(geschlecht);
+        firePropertyChange("Geschlecht", oldValue, schueler.getGeschlecht());
     }
 
     @Override
@@ -57,7 +61,9 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public void setAnmeldedatum(Calendar anmeldedatum) {
+        Calendar oldValue = schueler.getAnmeldedatum();
         schueler.setAnmeldedatum(anmeldedatum);
+        firePropertyChange("Anmeldedatum", oldValue, schueler.getAnmeldedatum());
     }
 
     @Override
@@ -67,17 +73,21 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public void setAbmeldedatum(Calendar abmeldedatum) {
+        Calendar oldValue = schueler.getAbmeldedatum();
         schueler.setAbmeldedatum(abmeldedatum);
+        firePropertyChange("Abmeldedatum", oldValue, schueler.getAbmeldedatum());
     }
 
     @Override
     public void setBemerkungen(String bemerkungen) {
+        String oldValue = schueler.getBemerkungen();
         schueler.setBemerkungen(bemerkungen);
+        firePropertyChange("Bemerkungen", oldValue, schueler.getBemerkungen());
     }
 
     @Override
-    public boolean isValid() {
-        return super.isValid();
+    public boolean isCompleted() {
+        return super.isCompleted();
     }
 
     @Override

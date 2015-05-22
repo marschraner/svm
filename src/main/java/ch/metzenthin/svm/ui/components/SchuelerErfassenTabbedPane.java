@@ -48,14 +48,14 @@ public class SchuelerErfassenTabbedPane {
                 onAbbrechen();
             }
         });
-        schuelerPanel.addCompletedListener(new CompletedListener() {
+        schuelerModel = svmContext.getModelFactory().createSchuelerModel();
+        schuelerPanel.setModel(schuelerModel);
+        schuelerModel.addCompletedListener(new CompletedListener() {
             @Override
             public void completed(boolean completed) {
                 onSchuelerPanelCompleted(completed);
             }
         });
-        schuelerModel = svmContext.getModelFactory().createSchuelerModel();
-        schuelerPanel.setModel(schuelerModel);
         onSchuelerPanelCompleted(false);
     }
 
