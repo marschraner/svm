@@ -72,6 +72,7 @@ public class SchuelerPanel {
         createUIComponents();
         panel = new JPanel();
         panel.setLayout(new BorderLayout(0, 0));
+        panel.setMinimumSize(new Dimension(597, 528));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
         panel.add(panel1, BorderLayout.CENTER);
@@ -332,9 +333,9 @@ public class SchuelerPanel {
         gbc.gridx = 2;
         gbc.gridy = 23;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.ipady = 40;
         panel1.add(scrollPane1, gbc);
         textAreaBemerkungen = new JTextArea();
-        textAreaBemerkungen.setRows(5);
         scrollPane1.setViewportView(textAreaBemerkungen);
         final JLabel label11 = new JLabel();
         label11.setText("Bemerkungen");

@@ -89,7 +89,7 @@ public class SvmDesktop extends JFrame implements ActionListener, InternalFrameL
                     onSchuelerErfassenFrameAbbrechen();
                 }
             });
-            schuelerErfassenFrame = createFrame(schuelerErfassenPanel.$$$getRootComponent$$$(), "Schüler erfassen", new Dimension(1000, 800));
+            schuelerErfassenFrame = createFrame(schuelerErfassenPanel.$$$getRootComponent$$$(), "Schüler erfassen", new Dimension(1000, 900));
         } else { // beenden
             quit();
         }
