@@ -116,7 +116,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public String getHausnummer() {
-        return adresse.getStrasse();
+        return adresse.getHausnummer();
     }
 
     @Override

@@ -1,5 +1,6 @@
 zu erledigen hans:
 
+-Adresse ohne Namen abfangen
 -Festnetz ohne Adresse möglich? z.B. für Mutter/Vater
 -ComboBoxen (Anrede, Geschlecht): Default-Values, löschen (da optional)
 -GUI:

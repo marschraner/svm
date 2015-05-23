@@ -7,10 +7,6 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
  */
 public class ModelFactoryImpl implements ModelFactory {
 
-    protected CommandInvoker getCommandInvoker() {
-        return commandInvoker;
-    }
-
     private final CommandInvoker commandInvoker;
 
     public ModelFactoryImpl(CommandInvoker commandInvoker) {
@@ -25,6 +21,11 @@ public class ModelFactoryImpl implements ModelFactory {
     @Override
     public AngehoerigerModel createAngehoerigerModel() {
         return new AngehoerigerModelImpl(commandInvoker);
+    }
+
+    @Override
+    public SchuelerErfassenModel createSchuelerErfassenModel() {
+        return new SchuelerErfassenModelImpl(commandInvoker);
     }
 
 }
