@@ -40,6 +40,9 @@ abstract class AbstractModel implements Model {
     }
 
     void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+        if ((oldValue == null) && (newValue == null)) {
+            return;
+        }
         this.propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
         checkCompleted();
     }

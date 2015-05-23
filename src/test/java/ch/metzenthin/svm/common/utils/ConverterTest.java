@@ -3,6 +3,7 @@ package ch.metzenthin.svm.common.utils;
 import org.junit.Test;
 
 import java.text.ParseException;
+import java.util.Calendar;
 
 import static ch.metzenthin.svm.common.utils.Converter.*;
 import static org.junit.Assert.*;
@@ -54,6 +55,17 @@ public class ConverterTest {
             fail("ParseException erwartet");
         } catch (ParseException ignore) {
         }
+    }
+
+    @Test
+    public void testAsString_Null() {
+        assertNull("Null erwartet", asString(null));
+    }
+
+    @Test
+    public void testAsString_NotNull() {
+        Calendar calendar = toCalendarIgnoreException("01.01.2015");
+        assertEquals("\"01.01.2015\" erwartet", "01.01.2015", asString(calendar));
     }
 
 }

@@ -10,6 +10,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 
+import static ch.metzenthin.svm.common.utils.Converter.asString;
+
 /**
  * @author Hans Stamm
  */
@@ -105,6 +107,15 @@ public class SchuelerController extends PersonController {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("SchuelerController PropertyChangeEvent '" + evt.getPropertyName() + "', oldValue='" + evt.getOldValue() + "', newValue='" + evt.getNewValue() + "'");
+        if ("Geschlecht".equals(evt.getPropertyName())) {
+            comboBoxGeschlecht.setSelectedItem(schuelerModel.getGeschlecht());
+        } else if ("Bermerkungen".equals(evt.getPropertyName())) {
+            textAreaBemerkungen.setText(schuelerModel.getBemerkungen());
+        } else if ("Anmeldedatum".equals(evt.getPropertyName())) {
+            txtAnmeldedatum.setText(asString(schuelerModel.getAnmeldedatum()));
+        } else if ("Abmeldedatum".equals(evt.getPropertyName())) {
+            txtAbmeldedatum.setText(asString(schuelerModel.getAbmeldedatum()));
+        }
         super.propertyChange(evt);
     }
 

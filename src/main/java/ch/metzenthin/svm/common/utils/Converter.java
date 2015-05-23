@@ -12,6 +12,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNumber;
  */
 public class Converter {
 
+    public static final String DATE_FORMAT_STRING = "dd.MM.yyyy";
+
     public static Integer toIntegerOrNull(String s) {
         Integer i = null;
         if (checkNumber(s)) {
@@ -29,7 +31,7 @@ public class Converter {
             return null;
         }
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT_STRING);
         calendar.setTime(formatter.parse(s));
         return calendar;
     }
@@ -44,6 +46,14 @@ public class Converter {
         } catch (ParseException ignore) {
         }
         return calendar;
+    }
+
+    public static String asString(Calendar calendar) {
+        if (calendar == null) {
+            return null;
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT_STRING);
+        return formatter.format(calendar.getTime());
     }
 
 }

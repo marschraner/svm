@@ -1,6 +1,7 @@
 zu erledigen hans:
 
 -Festnetz ohne Adresse möglich? z.B. für Mutter/Vater
+-ComboBoxen (Anrede, Geschlecht): Default-Values, löschen (da optional)
 -GUI:
  - Für den Rechnungsempfänger sollte man die Mutter annehmen, da der Vater häufiger an einer anderen Adresse wohnt
  - ...str. -> ...strasse
