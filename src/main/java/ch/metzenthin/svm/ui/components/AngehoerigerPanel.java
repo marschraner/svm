@@ -68,8 +68,8 @@ public class AngehoerigerPanel {
         panel.setLayout(new BorderLayout(0, 0));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
-        panel1.setMinimumSize(new Dimension(597, 528));
-        panel1.setPreferredSize(new Dimension(597, 528));
+        panel1.setMinimumSize(new Dimension(597, 350));
+        panel1.setPreferredSize(new Dimension(597, 350));
         panel.add(panel1, BorderLayout.CENTER);
         final JLabel label1 = new JLabel();
         label1.setText("Nachname");

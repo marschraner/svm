@@ -75,6 +75,8 @@ public class SchuelerPanel {
         panel.setMinimumSize(new Dimension(597, 528));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
+        panel1.setMinimumSize(new Dimension(550, 528));
+        panel1.setPreferredSize(new Dimension(550, 528));
         panel.add(panel1, BorderLayout.CENTER);
         final JLabel label1 = new JLabel();
         label1.setText("Nachname");

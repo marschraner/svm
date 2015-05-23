@@ -11,7 +11,10 @@
     <children>
       <grid id="bfdcb" layout-manager="GridBagLayout">
         <constraints border-constraint="Center"/>
-        <properties/>
+        <properties>
+          <minimumSize width="550" height="528"/>
+          <preferredSize width="550" height="528"/>
+        </properties>
         <border type="none"/>
         <children>
           <component id="873b8" class="javax.swing.JLabel">

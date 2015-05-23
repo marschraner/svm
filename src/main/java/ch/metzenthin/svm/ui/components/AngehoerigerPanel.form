@@ -10,8 +10,8 @@
       <grid id="bfdcb" layout-manager="GridBagLayout">
         <constraints border-constraint="Center"/>
         <properties>
-          <minimumSize width="597" height="528"/>
-          <preferredSize width="597" height="528"/>
+          <minimumSize width="597" height="350"/>
+          <preferredSize width="597" height="350"/>
         </properties>
         <border type="none"/>
         <children>
