@@ -50,6 +50,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         schueler.setMutter(mutter);
         schueler.setRechnungsempfaenger(rechnungsempfaenger);
 
+        // todo Wenn Attribute null sind, gibt es NullPointerException in den Vergleichen (...isIdentical...)
         checkRechnungsempfaenger();
         checkForIdenticalAdressen();
         checkIfAngehoerigeAlreadyInDb();

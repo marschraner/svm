@@ -91,7 +91,12 @@ public class SchuelerErfassenController {
 
     private void onSpeichern() {
         System.out.println("SchuelerErfassenPanel Speichern gedrückt");
-        schuelerErfassenModel.save();
+        try {
+            schuelerErfassenModel.save();
+        } catch (Throwable e) {
+            // todo Dialog "nicht erfolgreich gespeichert"
+            e.printStackTrace();
+        }
         // todo Dialog "erfolgreich gespeichert"
         closeListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Close nach Speichern"));
     }

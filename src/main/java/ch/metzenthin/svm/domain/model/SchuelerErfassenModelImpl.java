@@ -1,10 +1,14 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.SaveSchuelerCommand;
+import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.ui.control.CompletedListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Calendar;
 
 /**
  * @author Hans Stamm
@@ -185,8 +189,45 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public void save() {
-        System.out.println("SchuelerErfassenModel save gedrückt");
-        // todo $$$
+        System.out.println("SchuelerErfassenModel save");
+
+        // todo $$$ anfang hack
+        Calendar calendar = Converter.toCalendarIgnoreException("01.01.1965");
+        vaterModel.getAngehoeriger().setGeburtsdatum(calendar);
+        mutterModel.getAngehoeriger().setGeburtsdatum(calendar);
+        schuelerModel.getSchueler().setAdresse(schuelerModel.getAdresse());
+        vaterModel.getAngehoeriger().setAdresse(vaterModel.getAdresse());
+        mutterModel.getAngehoeriger().setAdresse(mutterModel.getAdresse());
+        // todo $$$ ende hack
+        AngehoerigerModel rechnungsempfaenger = getRechnungsempfaengerModel();
+        ValidateSchuelerCommand validateSchuelerCommand = new ValidateSchuelerCommand(
+                schuelerModel.getSchueler(),
+                (vaterModel.isCompleted()) ? vaterModel.getAngehoeriger() : null,
+                (mutterModel.isCompleted()) ? mutterModel.getAngehoeriger() : null,
+                (rechnungsempfaenger != null) ? rechnungsempfaenger.getAngehoeriger() : null
+        );
+        // todo muss das eine Transaktion sein, oder einfach validateSchuelerCommand.execute() ?
+        getCommandInvoker().executeCommand(validateSchuelerCommand);
+        System.out.println("Info AbweichendeAdressen=" + validateSchuelerCommand.getInfoAbweichendeAdressen());
+        System.out.println("Info BereitsInDb=" + validateSchuelerCommand.getInfoBereitsInDb());
+        System.out.println("Info IdentischeAdressen=" + validateSchuelerCommand.getInfoIdentischeAdressen());
+        System.out.println("Info NeuErfasst=" + validateSchuelerCommand.getInfoNeuErfasst());
+        System.out.println("Info Rechnungsempfaenger=" + validateSchuelerCommand.getInfoRechnungsempfaenger());
+
+        // todo $$$ aufteilen in validate und save Methoden aufgerufen von Controller
+        SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(validateSchuelerCommand.getSchueler());
+        getCommandInvoker().executeCommand(saveSchuelerCommand);
+    }
+
+    private AngehoerigerModel getRechnungsempfaengerModel() {
+        if (mutterModel.isRechnungsempfaenger()) {
+            return mutterModel;
+        } else if (vaterModel.isRechnungsempfaenger()) {
+            return vaterModel;
+        } else if (drittempfaengerModel.isRechnungsempfaenger()) {
+            return drittempfaengerModel;
+        }
+        return null;
     }
 
 }

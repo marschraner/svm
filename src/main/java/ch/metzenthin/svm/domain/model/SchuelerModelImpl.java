@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveSchuelerCommand;
@@ -20,6 +21,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     SchuelerModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
         schueler = new Schueler();
+        schueler.setAnrede(Anrede.KEINE); // Schueler haben keine Anrede, ist aber obligatorisch in DB
     }
 
     @Override
@@ -88,12 +90,6 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     @Override
     public boolean isCompleted() {
         return super.isCompleted();
-    }
-
-    @Override
-    public void save() {
-        SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
-        getCommandInvoker().executeCommand(saveSchuelerCommand);
     }
 
     @Override

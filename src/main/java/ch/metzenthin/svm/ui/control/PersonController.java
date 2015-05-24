@@ -282,7 +282,9 @@ public abstract class PersonController implements PropertyChangeListener {
         } else if ("Email".equals(evt.getPropertyName())) {
             txtEmail.setText(personModel.getEmail());
         } else if ("Anrede".equals(evt.getPropertyName())) {
-            comboBoxAnrede.setSelectedItem(personModel.getAnrede());
+            if (comboBoxAnrede != null) {
+                comboBoxAnrede.setSelectedItem(personModel.getAnrede());
+            }
         }
     }
 

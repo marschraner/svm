@@ -21,6 +21,4 @@ public interface SchuelerModel extends PersonModel {
     void setAbmeldedatum(String abmeldedatum);
     void setAbmeldedatum(Calendar abmeldedatum);
     void setBemerkungen(String bemerkungen);
-
-    void save();
 }

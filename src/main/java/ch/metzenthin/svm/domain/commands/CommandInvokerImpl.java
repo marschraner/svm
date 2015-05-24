@@ -36,6 +36,7 @@ public class CommandInvokerImpl implements CommandInvoker {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
+            throw e; // todo verpacken in checked Exception?
         } finally {
             if (entityManager != null) {
                 entityManager.close();
