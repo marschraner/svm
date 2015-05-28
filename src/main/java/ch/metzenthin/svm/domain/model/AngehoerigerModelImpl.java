@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveAngehoerigeCommand;
+import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Person;
 
@@ -29,7 +30,11 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     @Override
     public void save() {
         SaveAngehoerigeCommand saveAngehoerigeCommand = new SaveAngehoerigeCommand(Collections.singletonList(angehoeriger));
-        getCommandInvoker().executeCommand(saveAngehoerigeCommand);
+        try {
+            getCommandInvoker().executeCommand(saveAngehoerigeCommand);
+        } catch (SvmDbException e) {
+            e.printStackTrace();    // TODO
+        }
     }
 
     @Override

@@ -21,16 +21,16 @@ public class Adresse {
     @Column(name = "last_updated")
     private Timestamp version;
 
-    @Column(name = "strasse", nullable = false)
+    @Column(name = "strasse", nullable = true)
     private String strasse;
 
     @Column(name = "hausnummer", nullable = true)
     private String hausnummer;
 
-    @Column(name = "plz", nullable = false)
+    @Column(name = "plz", nullable = true)
     private String plz;
 
-    @Column(name = "ort", nullable = false)
+    @Column(name = "ort", nullable = true)
     private String ort;
 
     @Column(name = "festnetz", nullable = true)

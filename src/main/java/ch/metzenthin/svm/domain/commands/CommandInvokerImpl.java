@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.SvmDbException;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -10,6 +12,7 @@ import javax.persistence.EntityTransaction;
 public class CommandInvokerImpl implements CommandInvoker {
 
     private EntityManagerFactory entityManagerFactory;
+    EntityManager entityManager = null;
 
     public CommandInvokerImpl(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
@@ -22,7 +25,7 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     @Override
-    public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) {
+    public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) throws SvmDbException {
         EntityManager entityManager = null;
         EntityTransaction tx = null;
         try {
@@ -36,12 +39,63 @@ public class CommandInvokerImpl implements CommandInvoker {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
-            throw e; // todo verpacken in checked Exception?
+            throw new SvmDbException("Fehler beim Ausführen eines DB-Commands", e);
         } finally {
             if (entityManager != null) {
                 entityManager.close();
             }
         }
+        return genericDaoCommand;
+    }
+
+    public void beginTransaction() {
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+        } catch (RuntimeException e) {
+            EntityTransaction tx = entityManager.getTransaction();
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
+    public void commitTransaction() {
+        try {
+            entityManager.getTransaction().commit();
+        } catch (RuntimeException e) {
+            EntityTransaction tx = entityManager.getTransaction();
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
+    public void rollbackTransaction() {
+        try {
+            entityManager.getTransaction().rollback();
+        } catch (RuntimeException e) {
+            EntityTransaction tx = entityManager.getTransaction();
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
+    public GenericDaoCommand executeCommandWithinTransaction(GenericDaoCommand genericDaoCommand) throws SvmDbException {
+        genericDaoCommand.setEntityManager(entityManager);
+        genericDaoCommand.execute();
         return genericDaoCommand;
     }
 

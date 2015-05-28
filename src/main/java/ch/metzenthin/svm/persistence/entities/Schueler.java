@@ -94,27 +94,54 @@ public class Schueler extends Person {
         return vater;
     }
 
-    public void setVater(Angehoeriger vater) {
+    public void setNewVater(Angehoeriger vater) {
         vater.getKinderVater().add(this);
         this.vater = vater;
+    }
+
+    public void replaceVater(Angehoeriger oldVater, Angehoeriger newVater) {
+        deleteVater(oldVater);
+        setNewVater(newVater);
+    }
+
+    public void deleteVater(Angehoeriger vater) {
+        vater.getKinderVater().remove(this);
     }
 
     public Angehoeriger getMutter() {
         return mutter;
     }
 
-    public void setMutter(Angehoeriger mutter) {
+    public void setNewMutter(Angehoeriger mutter) {
         mutter.getKinderMutter().add(this);
         this.mutter = mutter;
+    }
+
+    public void replaceMutter(Angehoeriger oldMutter, Angehoeriger newMutter) {
+        deleteMutter(oldMutter);
+        setNewMutter(newMutter);
+    }
+
+    public void deleteMutter(Angehoeriger mutter) {
+        mutter.getKinderMutter().remove(this);
     }
 
     public Angehoeriger getRechnungsempfaenger() {
         return rechnungsempfaenger;
     }
 
-    public void setRechnungsempfaenger(Angehoeriger rechnungsempfaenger) {
+    public void setNewRechnungsempfaenger(Angehoeriger rechnungsempfaenger) {
         rechnungsempfaenger.getSchuelerRechnungsempfaenger().add(this);
         this.rechnungsempfaenger = rechnungsempfaenger;
+    }
+
+    public void replaceRechnungsempfaenger(Angehoeriger oldRechnungsempfaenger, Angehoeriger newRechnungsempfaenger) {
+        deleteRechnungsempfaenger(oldRechnungsempfaenger);
+        setNewRechnungsempfaenger(newRechnungsempfaenger);
+    }
+
+    public void deleteRechnungsempfaenger(Angehoeriger rechnungsempfaenger) {
+        rechnungsempfaenger.getSchuelerRechnungsempfaenger().remove(this);
     }
 
     public void addDispensation(Dispensation dispensation) {

@@ -1,20 +1,53 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Schueler;
+
+import java.util.List;
 
 /**
  * @author Hans Stamm
  */
 public class ValidateSchuelerCommand extends GenericDaoCommand {
 
+    enum Result {
+        SCHUELER_IN_DATENBANK,
+        MUTTER_NICHT_IN_DATENBANK,
+        MUTTER_EIN_EINTRAG_PASST,
+        MUTTER_MEHRERE_EINTRAEGE_PASSEN,
+        MUTTER_EIN_EINTRAG_PASST_TEILWEISE,
+        MUTTER_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE,
+        CHECK_IDENTISCHE_ADRESSEN_COMMAND_FINISHED,
+        CHECK_IDENTIFY_GESCHWISTER_COMMAND_FINISHED
+    }
+
+    enum Proceed {
+        MUTTER_NEU_ERFASSEN,
+        MUTTER_AUS_DATENBANK_UEBERNEHMEN
+    }
+
+    // input
     private Schueler schueler;
     private Angehoeriger mutter;
     private boolean mutterIsRechnungsempfaenger;
     private Angehoeriger vater;
     private boolean vaterIsRechnungsempfaenger;
     private Angehoeriger rechnungsempfaengerDrittperson;
+
+
+
+    private Proceed proceed;
+
+    private boolean skipCheckMutterBereitsInDatenbank = false;
+
+    // output:
+    private Result result;
+    private Angehoeriger mutterFound;
+    private List<Angehoeriger> mutterFoundList;
+    private String infoIdentischeAdressen = "";
+    private String infoAbweichendeAdressen = "";
+    private String infoGeschwister;
+    private String infoSchuelerRechnungsempfaenger;
 
     public ValidateSchuelerCommand(Schueler schueler, Angehoeriger mutter, boolean mutterIsRechnungsempfaenger, Angehoeriger vater, boolean vaterIsRechnungsempfaenger, Angehoeriger rechnungsempfaengerDrittperson) {
         this.schueler = schueler;
@@ -38,23 +71,24 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     @Override
     public void execute() {
 
+        howToProceed();
+
         if (mutter != null) {
-            schueler.setMutter(mutter);
+            schueler.setNewMutter(mutter);
             if (mutterIsRechnungsempfaenger) {
-                schueler.setRechnungsempfaenger(mutter);
+                schueler.setNewRechnungsempfaenger(mutter);
             }
         }
 
         if (vater != null) {
-            schueler.setVater(vater);
+            schueler.setNewVater(vater);
             if (vaterIsRechnungsempfaenger) {
-                schueler.setRechnungsempfaenger(vater);
+                schueler.setNewRechnungsempfaenger(vater);
             }
         }
 
-        
         if (rechnungsempfaengerDrittperson != null) {
-            schueler.setRechnungsempfaenger(rechnungsempfaengerDrittperson);
+            schueler.setNewRechnungsempfaenger(rechnungsempfaengerDrittperson);
         }
         
 // todo Wenn Attribute null sind, gibt es NullPointerException in den Vergleichen (...isIdentical...)
@@ -120,47 +154,58 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schueler);
         checkSchuelerBereitsInDatenbankCommand.setEntityManager(entityManager);
         checkSchuelerBereitsInDatenbankCommand.execute();
-        switch (checkSchuelerBereitsInDatenbankCommand.getResult()) {
-            case EIN_EINTRAG_PASST:
-                // GUI + Abbruch
-                break;
-            case EIN_EINTRAG_PASST_TEILWEISE:
-                // GUI + Abbruch
-                break;
-            case MEHRERE_EINTRAEGE_PASSEN_TEILWEISE:
-                // GUI + Abbruch
-                break;
+
+        // Bereits in DB
+        if (checkSchuelerBereitsInDatenbankCommand.isInDatenbank()) {
+            result = Result.SCHUELER_IN_DATENBANK;
+            schueler = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound();
+            return;
         }
 
 
-    // 2. Rechnungsempfänger Drittperson identisch? (-> CheckIfRechnungsempfaengerDrittpersonIdenticalWithMutterOrVaterCommand)
-    // ************************************************************************************************************************
 
-    // Input:  Angehoerige
-    // Output: boolean result;
-    //         String message;   siehe unten
-
-
-    // if (!skipCheck...)
-
-    // Command erzeugen
-    // command.setEntityManager(em) //eigenen Em übergeben
-    // command.execute()    // nicht mit Invoker aufrufen
-
-    // ...execute()
-    // if (....command.result) {
-    //    GUI-Model erzeugen und mit Output befüllen (u.a. this, d.h. SchuelerValidator-Instanz und em)
-    //    GUI aufrufen
-    //    return;
-    // else
-    //    skip...= true
-
-
-    // 3. Angehörige bereits in DB? (-> CheckIfAngehoerigerAlreadyinDatabaseCommand)
+    // 2. Angehörige bereits in DB? (-> CheckIfAngehoerigerAlreadyinDatabaseCommand)
     // *****************************************************************************
 
-    // 3.a Mutter
-    // 3.b Vater
+    // 2.a Mutter
+
+        if (!skipCheckMutterBereitsInDatenbank) {
+            CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(mutter);
+            checkSchuelerBereitsInDatenbankCommand.setEntityManager(entityManager);
+            checkAngehoerigerBereitsInDatenbankCommand.execute();
+
+            switch (checkAngehoerigerBereitsInDatenbankCommand.getResult()) {
+                case NICHT_IN_DATENBANK:
+                    mutterFound = null;
+                    mutterFoundList = null;
+                    result = Result.MUTTER_NICHT_IN_DATENBANK;
+                    break;
+                case EIN_EINTRAG_PASST:
+                    result = Result.MUTTER_EIN_EINTRAG_PASST;
+                    mutterFound = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
+                    mutterFoundList = null;
+                    break;
+                case MEHRERE_EINTRAEGE_PASSEN:
+                    result = Result.MUTTER_MEHRERE_EINTRAEGE_PASSEN;
+                    mutterFound = null;
+                    mutterFoundList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
+                    break;
+                case EIN_EINTRAG_PASST_TEILWEISE:
+                    result = Result.MUTTER_EIN_EINTRAG_PASST_TEILWEISE;
+                    mutterFound = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
+                    mutterFoundList = null;
+                    break;
+                case MEHRERE_EINTRAEGE_PASSEN_TEILWEISE:
+                    result = Result.MUTTER_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE;
+                    mutterFound = null;
+                    mutterFoundList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
+                    break;
+            }
+            return;
+        }
+
+
+        // 3.b Vater
     // 3.c Drittperson
 
     // Input:  Angehoerige
@@ -205,7 +250,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     // - Abbrechen
 
 
-    // 4. Adressen identisch? (-> CheckIfAdressenAreIdentical)
+    // 3. Adressen identisch? (-> CheckIfAdressenAreIdentical)
     // *******************************************************
 
     // Input:  SchuelerModel, Angehoerige
@@ -249,6 +294,27 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     // rollback und Entity Manager schliessen
 
 
+    }
+
+    private void howToProceed() {
+        if (proceed == null) {
+            return;
+        }
+
+        switch (proceed) {
+            case MUTTER_NEU_ERFASSEN:
+                skipCheckMutterBereitsInDatenbank = true;
+                break;
+            case MUTTER_AUS_DATENBANK_UEBERNEHMEN:
+                skipCheckMutterBereitsInDatenbank = true;
+                schueler.replaceMutter(mutter, mutterFound);
+                mutter = null;
+                break;
+        }
+    }
+
+    public void setProceed(Proceed proceed) {
+        this.proceed = proceed;
     }
 }
 

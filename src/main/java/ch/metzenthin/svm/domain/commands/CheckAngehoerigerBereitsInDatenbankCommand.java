@@ -12,30 +12,30 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
 
     enum Result {
         NICHT_IN_DATENBANK,                     // Mutter wird neu erfasst (noch nicht in Datenbank)
-                                                // - Ok
-                                                // - Abbrechen
+                                                // - Ok (-> bisherigen Angehoerigen verwenden)
+                                                // - Abbrechen (-> Eingabe-GUI)
         EIN_EINTRAG_PASST,                      // In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben passt: ...
-                                                // - Diesen Eintrag verwenden
-                                                // - Eingaben korrigieren
+                                                // - Diesen Eintrag verwenden (-> Angehoerigen ersetzen)
+                                                // - Eingaben korrigieren (-> Eingabe-GUI)
         MEHRERE_EINTRAEGE_PASSEN,               // In der Datenbank wurden mehrere Einträge gefunden, die auf die erfassten Angaben der Mutter passen: ...
-                                                // Mutter muss genauer erfasst werden
-                                                // - Eingaben korrigieren
+                                                // Angehöriger muss genauer erfasst werden
+                                                // - Eingaben korrigieren (-> Eingabe-GUI)
         EIN_EINTRAG_PASST_TEILWEISE,            // In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben teilweise übereinstimmt: ...
-                                                // - Diesen Eintrag verwenden und mit Eingaben aktualisieren (angehoeriger = angehoerigerMerged)
-                                                // - Nicht diesen Eintrag verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen
-                                                // - Eingaben korrigieren
+                                                // - Diesen Eintrag verwenden (-> Angehoerigen ersetzen)
+                                                // - Nicht diesen Eintrag verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen  (-> bisherigen Angehoerigen verwenden)
+                                                // - Eingaben korrigieren (-> Eingabe-GUI)
         MEHRERE_EINTRAEGE_PASSEN_TEILWEISE,     // In der Datenbank wurden mehrere Einträge gefunden, die mit den erfassten Angaben teilweise übereinstimmen: ...
-                                                // - Keinen dieser Einträge verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen (-> mutter = ...command.getAngehoerigerAnswer1(); skipCheckIfMutterAlreadyinDatabase = True, Fenster schliessen und wieder onSaveClicked des GUI aufrufen)
-                                                // - Eingaben korrigieren korrigieren (-> mutter = ...command.getAngehoerigerAnswer2(), skipCheckIfMutterAlreadyinDatabase = False und Fenster schliessen (-> Gui))
+                                                // - Keinen dieser Einträge verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen  (-> bisherigen Angehoerigen verwenden)
+                                                // - Eingaben korrigieren korrigieren (-> Eingabe-GUI)
     }
 
-    // input + output
+    // input
     private Angehoeriger angehoeriger;
 
     // output
     private Result result;
-    private List<Angehoeriger> angehoerigeFound;
-    private Angehoeriger angehoerigerMerged;
+    private List<Angehoeriger> angehoerigerFoundList;
+    private Angehoeriger angehoerigerFound;
 
     public CheckAngehoerigerBereitsInDatenbankCommand(Angehoeriger angehoeriger) {
         this.angehoeriger = angehoeriger;
@@ -47,14 +47,14 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
         AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
 
         // Suche mit allen gesetzten Attributen
-        angehoerigeFound = angehoerigerDao.findAngehoerige(angehoeriger);
-        if (angehoerigeFound != null && angehoerigeFound.size() == 1) {
-            angehoeriger = angehoerigeFound.get(0);
+        angehoerigerFoundList = angehoerigerDao.findAngehoerige(angehoeriger);
+        if (angehoerigerFoundList != null && angehoerigerFoundList.size() == 1) {
+            angehoerigerFound = angehoerigerFoundList.get(0);
             result = Result.EIN_EINTRAG_PASST;
             return;
         }
 
-        else if (angehoerigeFound != null && angehoerigeFound.size() > 1) {
+        else if (angehoerigerFoundList != null && angehoerigerFoundList.size() > 1) {
             result = Result.MEHRERE_EINTRAEGE_PASSEN;
             return;
         }
@@ -62,27 +62,14 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
         // Suche nur mit Vorname und Nachname
         Angehoeriger angehoerigerNurVornameNachname = new Angehoeriger(null, angehoeriger.getVorname(), angehoeriger.getNachname(), null, null, null);
 
-        angehoerigeFound = angehoerigerDao.findAngehoerige(angehoerigerNurVornameNachname);
-        if (angehoerigeFound != null && angehoerigeFound.size() == 1) {
-            angehoerigerMerged = angehoerigeFound.get(0);
-            // Verwende aktuelle Attribute von Angehöriger falls vorhanden
-            if (angehoeriger.getGeburtsdatum() != null) {
-                angehoerigerMerged.setGeburtsdatum(angehoeriger.getGeburtsdatum());
-            }
-            if (angehoeriger.getNatel() != null) {
-                angehoerigerMerged.setNatel(angehoeriger.getNatel());
-            }
-            if (angehoeriger.getEmail() != null) {
-                angehoerigerMerged.setEmail(angehoeriger.getEmail());
-            }
-            if (angehoeriger.getAdresse() != null) {
-                angehoerigerMerged.setAdresse(angehoeriger.getAdresse());
-            }
+        angehoerigerFoundList = angehoerigerDao.findAngehoerige(angehoerigerNurVornameNachname);
+        if (angehoerigerFoundList != null && angehoerigerFoundList.size() == 1) {
+            angehoerigerFound = angehoerigerFoundList.get(0);
             result = Result.EIN_EINTRAG_PASST_TEILWEISE;
             return;
         }
 
-        else if (angehoerigeFound != null && angehoerigeFound.size() > 1) {
+        else if (angehoerigerFoundList != null && angehoerigerFoundList.size() > 1) {
             result = Result.MEHRERE_EINTRAEGE_PASSEN_TEILWEISE;
             return;
         }
@@ -91,19 +78,15 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
         result = Result.NICHT_IN_DATENBANK;
     }
 
-    public Angehoeriger getAngehoeriger() {
-        return angehoeriger;
+    public Angehoeriger getAngehoerigerFound() {
+        return angehoerigerFound;
     }
 
     public Result getResult() {
         return result;
     }
 
-    public List<Angehoeriger> getAngehoerigeFound() {
-        return angehoerigeFound;
-    }
-
-    public Angehoeriger getAngehoerigerMerged() {
-        return angehoerigerMerged;
+    public List<Angehoeriger> getAngehoerigerFoundList() {
+        return angehoerigerFoundList;
     }
 }

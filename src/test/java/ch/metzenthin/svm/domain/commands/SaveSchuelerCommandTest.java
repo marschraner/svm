@@ -47,15 +47,15 @@ public class SaveSchuelerCommandTest {
         // Schueler
         Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, "Schwester von Valentin");
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich", "044 491 69 33");
-        schueler.setAdresse(adresse);
+        schueler.setNewAdresse(adresse);
 
         // Set Vater
         Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
-        vater.setAdresse(adresse);
-        schueler.setVater(vater);
+        vater.setNewAdresse(adresse);
+        schueler.setNewVater(vater);
 
         // Set Rechnungsempfänger
-        schueler.setRechnungsempfaenger(vater);
+        schueler.setNewRechnungsempfaenger(vater);
 
         Dispensation dispensation = new Dispensation(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2015, Calendar.MARCH, 31), "Zu klein");
         schueler.addDispensation(dispensation);

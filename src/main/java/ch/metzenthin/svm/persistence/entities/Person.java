@@ -168,8 +168,17 @@ public abstract class Person {
         return adresse;
     }
 
-    public void setAdresse(Adresse adresse) {
+    public void setNewAdresse(Adresse adresse) {
         adresse.getPersonen().add(this);
         this.adresse = adresse;
+    }
+
+    public void replaceAdresse(Adresse oldAdresse, Adresse newAdresse) {
+        deleteAdresse(oldAdresse);
+        setNewAdresse(newAdresse);
+    }
+
+    public void deleteAdresse(Adresse adresse) {
+        adresse.getPersonen().remove(this);
     }
 }
