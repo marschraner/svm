@@ -61,6 +61,9 @@ public abstract class Person {
     }
 
     public boolean isIdenticalWith(Person otherPerson) {
+        if (otherPerson == null) {
+            return false;
+        }
         return anrede.equals(otherPerson.getAnrede())
                 && vorname.equals(otherPerson.getVorname())
                 && nachname.equals(otherPerson.getNachname())
@@ -68,6 +71,41 @@ public abstract class Person {
                 && natel.equals(otherPerson.getNatel())
                 && email.equals(otherPerson.getEmail())
                 && adresse.isIdenticalWith(otherPerson.getAdresse());
+    }
+
+    public boolean isPartOf(Person otherPerson) {
+        if (otherPerson == null) {
+            return false;
+        }
+        return vorname.equals(otherPerson.getVorname())
+                && nachname.equals(otherPerson.getNachname())
+                && (geburtsdatum == null || geburtsdatum.equals(otherPerson.getGeburtsdatum()))
+                && (natel == null || natel.trim().isEmpty() || natel.equals(otherPerson.getNatel()))
+                && (email == null || email.trim().isEmpty() || email.equals(otherPerson.getEmail()))
+                && (adresse == null || adresse.isPartOf(otherPerson.getAdresse()));
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder personSb = new StringBuilder();
+        if (anrede != Anrede.KEINE) {
+            personSb.append(anrede + " ");
+        }
+        personSb.append(vorname);
+        personSb.append(" " + nachname);
+        if (geburtsdatum != null) {
+            personSb.append(", " + String.format("%1$td.%1$tm.%1$tY", geburtsdatum));
+        }
+        if (adresse != null) {
+            personSb.append(", " + adresse.toString());
+        }
+        if (natel != null) {
+            personSb.append(", " + natel);
+        }
+        if (email != null) {
+            personSb.append(", " + email);
+        }
+        return personSb.toString();
     }
 
     public Integer getPersonId() {

@@ -60,50 +60,77 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
         }
     }
 
-    public Schueler findSpecificSchueler(Schueler schueler) {
+    /**
+     * In der DB nach Schüler suchen. Sämtliche Attribute sind optional.
+     * Es werden alle Schüler ausgegeben, deren Attribute mit den in der Suche gesetzten übereinstimmen.
+     *
+     * @param schueler (not null)
+     * @return schuelerFound
+     */
+    public List<Schueler> findSchueler(Schueler schueler) {
 
-        String selectStatement = "select s from Schueler s" +
-                " where s.vorname = :vorname" +
-                " and s.nachname = :nachname" +
-                " and s.geburtsdatum = :geburtsdatum" +
-                " and s.adresse.strasse = :strasse" +
-                " and s.adresse.plz = :plz" +
-                " and s.adresse.ort = :ort";
+        StringBuilder selectStatementSb = new StringBuilder("select s from Schueler s where");
 
-        // Optional
-        if (schueler.getAdresse().getHausnummer() != null) selectStatement = selectStatement + " and s.adresse.hausnummer = :hausnummer";
+        if (schueler.getVorname() != null) {
+            selectStatementSb.append(" s.vorname = :vorname and");
+        }
+        if (schueler.getNachname() != null) {
+            selectStatementSb.append(" s.nachname = :nachname and");
+        }
+        if (schueler.getNatel() != null) {
+            selectStatementSb.append(" s.natel = :natel and");
+        }
+        if (schueler.getEmail() != null) {
+            selectStatementSb.append(" s.email = :email and");
+        }
+        if (schueler.getAdresse() != null) {
+            selectStatementSb.append(" s.adresse.strasse = :strasse and");
+            selectStatementSb.append(" s.adresse.plz = :plz and");
+            selectStatementSb.append(" s.adresse.ort = :ort and");
+            if (schueler.getAdresse().getHausnummer() != null) {
+                selectStatementSb.append(" s.adresse.hausnummer = :hausnummer and");
+            }
+            if (schueler.getAdresse().getFestnetz() != null) {
+                selectStatementSb.append(" s.adresse.festnetz = :festnetz and");
+            }
+        }
 
-        TypedQuery<Schueler> typedQuery = entityManager.createQuery(selectStatement, Schueler.class);
+        // Letztes " and" löschen
+        selectStatementSb.setLength(selectStatementSb.length() - 4);
 
-        typedQuery.setParameter("vorname", schueler.getVorname());
-        typedQuery.setParameter("nachname", schueler.getNachname());
-        typedQuery.setParameter("geburtsdatum", schueler.getGeburtsdatum());
-        typedQuery.setParameter("strasse", schueler.getAdresse().getStrasse());
-        typedQuery.setParameter("plz", schueler.getAdresse().getPlz());
-        typedQuery.setParameter("ort", schueler.getAdresse().getOrt());
+        TypedQuery<Schueler> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Schueler.class);
 
-        // Optional attributes
-        if (schueler.getAdresse().getHausnummer() != null) typedQuery.setParameter("hausnummer", schueler.getAdresse().getHausnummer());
+        if (schueler.getVorname() != null) {
+            typedQuery.setParameter("vorname", schueler.getVorname());
+        }
+        if (schueler.getVorname() != null) {
+            typedQuery.setParameter("nachname", schueler.getNachname());
+        }
+        if (schueler.getNatel() != null) {
+            typedQuery.setParameter("natel", schueler.getNatel());
+        }
+        if (schueler.getEmail() != null) {
+            typedQuery.setParameter("email", schueler.getEmail());
+        }
+        if (schueler.getAdresse() != null) {
+            typedQuery.setParameter("strasse", schueler.getAdresse().getStrasse());
+            typedQuery.setParameter("plz", schueler.getAdresse().getPlz());
+            typedQuery.setParameter("ort", schueler.getAdresse().getOrt());
+            if (schueler.getAdresse().getHausnummer() != null) {
+                typedQuery.setParameter("hausnummer", schueler.getAdresse().getHausnummer());
+            }
+            if (schueler.getAdresse().getFestnetz() != null) {
+                typedQuery.setParameter("festnetz", schueler.getAdresse().getFestnetz());
+            }
+        }
 
-        List<Schueler> schuelerListFound = typedQuery.getResultList();
+        List<Schueler> schuelerFound = typedQuery.getResultList();
 
-        if (schuelerListFound == null || schuelerListFound.size() == 0) {
+        if (schuelerFound == null || schuelerFound.size() == 0) {
             return null;
         }
 
-        else if (schuelerListFound.size() == 1) {
-            Schueler schuelerFound = schuelerListFound.get(0);
-
-            // Check optional attributes
-            if (schueler.getAdresse().getHausnummer() == null && schuelerFound.getAdresse().getHausnummer() != null) return null;
-
-            return schuelerFound;
-        }
-
-        else {
-            throw new NullPointerException("Mehr als ein Schüler gefunden");
-        }
-
+        return schuelerFound;
     }
 
 

@@ -10,17 +10,20 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 public class ValidateSchuelerCommand extends GenericDaoCommand {
 
     private Schueler schueler;
-    private Angehoeriger vater;
     private Angehoeriger mutter;
-    private Angehoeriger rechnungsempfaenger;
-    private boolean schülerBereitsErfasst;
-    private boolean abweichenderRechnungsempfaenger;
-    private String infoRechnungsempfaenger;
-    private String infoIdentischeAdressen;
-    private String infoAbweichendeAdressen;
-    private String infoBereitsInDb;
-    private String infoNeuErfasst;
+    private boolean mutterIsRechnungsempfaenger;
+    private Angehoeriger vater;
+    private boolean vaterIsRechnungsempfaenger;
+    private Angehoeriger rechnungsempfaengerDrittperson;
 
+    public ValidateSchuelerCommand(Schueler schueler, Angehoeriger mutter, boolean mutterIsRechnungsempfaenger, Angehoeriger vater, boolean vaterIsRechnungsempfaenger, Angehoeriger rechnungsempfaengerDrittperson) {
+        this.schueler = schueler;
+        this.mutter = mutter;
+        this.mutterIsRechnungsempfaenger = mutterIsRechnungsempfaenger;
+        this.vater = vater;
+        this.vaterIsRechnungsempfaenger = vaterIsRechnungsempfaenger;
+        this.rechnungsempfaengerDrittperson = rechnungsempfaengerDrittperson;
+    }
 
     // Rechnungsempfänger identisch mit...
     // Separater Rechnungsempfänger
@@ -32,280 +35,218 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     // Keine andere Geschwister erfasst.
 
 
-    public ValidateSchuelerCommand(Schueler schueler, Angehoeriger vater, Angehoeriger mutter, Angehoeriger rechnungsempfaenger) {
-        this.schueler = schueler;
-        this.vater = vater;
-        this.mutter = mutter;
-        this.rechnungsempfaenger = rechnungsempfaenger;
-    }
-
     @Override
     public void execute() {
 
-        if (checkIfSchuelerAlreadyInDb()) {
-            return;
-        }
-
-        schueler.setVater(vater);
-        schueler.setMutter(mutter);
-        schueler.setRechnungsempfaenger(rechnungsempfaenger);
-
-        checkRechnungsempfaenger();
-        checkForIdenticalAdressen();
-        checkIfAngehoerigeAlreadyInDb();
-
-    }
-
-    private void checkRechnungsempfaenger() {
-        if (rechnungsempfaenger.isIdenticalWith(mutter)) {
-            infoRechnungsempfaenger = "Rechnungsempfänger identisch mit Mutter";
-            schueler.setRechnungsempfaenger(mutter);
-            abweichenderRechnungsempfaenger = false;
-        }
-        else if (rechnungsempfaenger.isIdenticalWith(vater)) {
-            infoRechnungsempfaenger = "Rechnungsempfänger identisch mit Vater";
-            schueler.setRechnungsempfaenger(vater);
-            abweichenderRechnungsempfaenger = false;
-        }
-        else {
-            infoRechnungsempfaenger = "Separater Rechnungsempfänger";
-            abweichenderRechnungsempfaenger = true;
-        }
-    }
-
-    private boolean checkIfSchuelerAlreadyInDb() {
-        return false;   //TODO
-    }
-
-    private void checkForIdenticalAdressen() {
-
-        // 1. Alle 4 Adressen identisch
-        if (abweichenderRechnungsempfaenger && schueler.getAdresse().isIdenticalWith(mutter.getAdresse())
-                && schueler.getAdresse().isIdenticalWith(vater.getAdresse())
-                && schueler.getAdresse().isIdenticalWith(rechnungsempfaenger.getAdresse())) {
-            schueler.setAdresse(mutter.getAdresse());
-            vater.setAdresse(mutter.getAdresse());
-            rechnungsempfaenger.setAdresse(mutter.getAdresse());
-            infoIdentischeAdressen = "Schüler, Mutter, Vater und Rechnungsempfänger haben identische Adressen";
-            infoAbweichendeAdressen = "";
-        }
-
-        // 2. 3 Adressen identisch
-        else if (schueler.getAdresse().isIdenticalWith(mutter.getAdresse())
-                && schueler.getAdresse().isIdenticalWith(vater.getAdresse())) {
-            schueler.setAdresse(mutter.getAdresse());
-            vater.setAdresse(mutter.getAdresse());
-            infoIdentischeAdressen = "Schüler, Mutter und Vater haben identische Adressen";
-            if (abweichenderRechnungsempfaenger) {
-                infoAbweichendeAdressen = "Rechnungsempfänger hat abweichende Adresse";
-            }
-            else {
-                infoAbweichendeAdressen = "";
+        if (mutter != null) {
+            schueler.setMutter(mutter);
+            if (mutterIsRechnungsempfaenger) {
+                schueler.setRechnungsempfaenger(mutter);
             }
         }
 
-        else if (abweichenderRechnungsempfaenger && schueler.getAdresse().isIdenticalWith(mutter.getAdresse())
-                && schueler.getAdresse().isIdenticalWith(rechnungsempfaenger.getAdresse())) {
-            schueler.setAdresse(mutter.getAdresse());
-            rechnungsempfaenger.setAdresse(mutter.getAdresse());
-            infoIdentischeAdressen = "Schüler, Mutter und Rechnungsempfänger haben identische Adressen";
-            infoAbweichendeAdressen = "Vater hat abweichende Adresse";
-        }
-
-        else if (abweichenderRechnungsempfaenger && schueler.getAdresse().isIdenticalWith(vater.getAdresse())
-                && schueler.getAdresse().isIdenticalWith(rechnungsempfaenger.getAdresse())) {
-            schueler.setAdresse(vater.getAdresse());
-            rechnungsempfaenger.setAdresse(vater.getAdresse());
-            infoIdentischeAdressen = "Schüler, Vater und Rechnungsempfänger haben identische Adressen";
-            infoAbweichendeAdressen = "Mutter hat abweichende Adresse";
-        }
-
-        else if (abweichenderRechnungsempfaenger && mutter.getAdresse().isIdenticalWith(vater.getAdresse())
-                && mutter.getAdresse().isIdenticalWith(rechnungsempfaenger.getAdresse())) {
-            vater.setAdresse(mutter.getAdresse());
-            rechnungsempfaenger.setAdresse(mutter.getAdresse());
-            infoIdentischeAdressen = "Mutter, Vater und Rechnungsempfänger haben identische Adressen";
-            infoAbweichendeAdressen = "Schüler hat abweichende Adresse";
-        }
-
-        // 3. 2 Adressen identisch
-        else if (schueler.getAdresse().isIdenticalWith(mutter.getAdresse())) {
-            schueler.setAdresse(mutter.getAdresse());
-            infoIdentischeAdressen = "Schüler und Mutter haben identische Adressen";
-            if (abweichenderRechnungsempfaenger) {
-                infoAbweichendeAdressen = "Vater und Rechnungsempfänger haben abweichende Adressen";
-            }
-            else {
-                infoAbweichendeAdressen = "Vater hat abweichende Adresse";
+        if (vater != null) {
+            schueler.setVater(vater);
+            if (vaterIsRechnungsempfaenger) {
+                schueler.setRechnungsempfaenger(vater);
             }
         }
 
-        else if (schueler.getAdresse().isIdenticalWith(vater.getAdresse())) {
-            schueler.setAdresse(vater.getAdresse());
-            infoIdentischeAdressen = "Schüler und Vater haben identische Adressen";
-            if (abweichenderRechnungsempfaenger) {
-                infoAbweichendeAdressen = "Mutter und Rechnungsempfänger haben abweichende Adressen";
-            }
-            else {
-                infoAbweichendeAdressen = "Mutter hat abweichende Adresse";
-            }
+        if (rechnungsempfaengerDrittperson != null) {
+            schueler.setRechnungsempfaenger(rechnungsempfaengerDrittperson);
         }
 
-        else if (abweichenderRechnungsempfaenger && schueler.getAdresse().isIdenticalWith(rechnungsempfaenger.getAdresse())) {
-            schueler.setAdresse(rechnungsempfaenger.getAdresse());
-            infoIdentischeAdressen = "Schüler und Rechnungsempfänger haben identische Adressen";
-            infoAbweichendeAdressen = "Mutter und Vater haben abweichende Adressen";
+    //
+    // !!! NICHT durch commandInvoker aufrufen, weil immer derselbe EntityManager verwendet werden soll
+    // Aufruf:
+    // (0. Konstruktor)
+    // (1. SchuelerValidatorCommand.setEntityManager)
+
+
+    // Instanzvariablen:
+
+    // EntityManager entityMangager;
+    // SchuelerModel schuelerModel
+    // AngehoerigeModel mutterModel
+    // AngehoerigeModel vaterModel
+    // AngehoerigeModel rechnungsempfaengerDrittpersonModel
+    // Schueler schueler
+    // Angehoeriger mutter
+    // Angehoeriger vater
+    // Angehoeriger rechnungsempfaenger
+    // skip.... = false;
+    // skip...
+    // ...
+    //
+    // Konstruktor:
+    //
+    // Argumente: EntityManagerFactory emf, SchuelerModel schuelerModel, AngehoerigerModel mutterModel, AngehoerigerModel vaterModel, AngehoerigerModel rechnungsempfaengerDrittpersonModel
+    // setzt EntityManager und
+
+    // Methoden:
+
+    // execute() //aufgerufen bei onValidateClicked und untenstehende GUIs
+
+    // setAngehoeriger()   // um diese von Gui aus zu aktualisieren
+    // setSchueler()
+    //
+    // ruft 1.-6. auf (mit <commandName>.execute(), NICHT vom Invoker
+
+
+    // 1. Schüler schon in DB? (-> CheckIfSchuelerAlreadyinDatabaseCommand extends GenericDaoCommand)
+    // ********************************************************************
+    //
+    // if (!skipCheckIfSchuelerAlreadyinDatabase)...  -> SchuelerModelImpl)
+
+    // Command erzeugen
+    // command.setEntityManager(em) //eigenen Em übergeben
+    // command.execute()    // nicht mit Invoker aufrufen
+
+    // analoge Checks wie unten
+
+    // Input:  Schueler
+    // Output: DatabaseSearchResult result;
+    //         String message;
+
+    // falls !no-entry_fits
+    //    em close
+    //    show Dialog
+    //    return;
+    // else
+    //    skipCheckIfSchuelerAlreadyinDatabase = true;
+    //
+        CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schueler);
+        checkSchuelerBereitsInDatenbankCommand.setEntityManager(entityManager);
+        checkSchuelerBereitsInDatenbankCommand.execute();
+        switch (checkSchuelerBereitsInDatenbankCommand.getResult()) {
+            case EIN_EINTRAG_PASST:
+                // GUI + Abbruch
+                break;
+            case EIN_EINTRAG_PASST_TEILWEISE:
+                // GUI + Abbruch
+                break;
+            case MEHRERE_EINTRAEGE_PASSEN_TEILWEISE:
+                // GUI + Abbruch
+                break;
         }
 
-        else if (mutter.getAdresse().isIdenticalWith(vater.getAdresse())) {
-            vater.setAdresse(mutter.getAdresse());
-            infoIdentischeAdressen = "Mutter und Vater haben identische Adressen";
-            if (abweichenderRechnungsempfaenger) {
-                infoAbweichendeAdressen = "Schüler und Rechnungsempfänger haben abweichende Adressen";
-            }
-            else {
-                infoAbweichendeAdressen = "Schüler hat abweichende Adresse";
-            }
-        }
 
-        else if (abweichenderRechnungsempfaenger && mutter.getAdresse().isIdenticalWith(rechnungsempfaenger.getAdresse())) {
-            rechnungsempfaenger.setAdresse(mutter.getAdresse());
-            infoIdentischeAdressen = "Mutter und Rechnungsempfänger haben identische Adressen";
-            infoAbweichendeAdressen = "Schüler und Vater haben abweichende Adressen";
-        }
+    // 2. Rechnungsempfänger Drittperson identisch? (-> CheckIfRechnungsempfaengerDrittpersonIdenticalWithMutterOrVaterCommand)
+    // ************************************************************************************************************************
 
-        else if (abweichenderRechnungsempfaenger && vater.getAdresse().isIdenticalWith(rechnungsempfaenger.getAdresse())) {
-            rechnungsempfaenger.setAdresse(vater.getAdresse());
-            infoIdentischeAdressen = "Vater und Rechnungsempfänger haben identische Adressen";
-            infoAbweichendeAdressen = "Schüler und Mutter haben abweichende Adressen";
-        }
+    // Input:  Angehoerige
+    // Output: boolean result;
+    //         String message;   siehe unten
 
-        // 4. alle Adressen verschieden
-        else {
-           if (abweichenderRechnungsempfaenger) {
-                infoAbweichendeAdressen = "Schüler, Mutter, Vater und Rechnungsempfänger haben abweichende Adressen";
-            }
-            else {
-                infoAbweichendeAdressen = "Schüler, Mutter und Vater haben abweichende Adressen";
-            }
-        }
 
-    }
+    // if (!skipCheck...)
 
-    private void checkIfAngehoerigeAlreadyInDb() {
-        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);  //TDOD
+    // Command erzeugen
+    // command.setEntityManager(em) //eigenen Em übergeben
+    // command.execute()    // nicht mit Invoker aufrufen
 
-//        Angehoeriger mutterFound = angehoerigerDao.findSpecificAngehoeriger(mutter);
-//        Angehoeriger vaterFound = angehoerigerDao.findSpecificAngehoeriger(vater);
-//        Angehoeriger rechnungsempfaengerFound = angehoerigerDao.findSpecificAngehoeriger(rechnungsempfaenger);
-//
-//        // 1. alle Angehörigen in DB
-//        if (abweichenderRechnungsempfaenger && mutterFound != null && vaterFound != null && rechnungsempfaengerFound != null) {
-//            mutter = mutterFound;
-//            vater = vaterFound;
-//            rechnungsempfaenger = rechnungsempfaengerFound;
-//            infoBereitsInDb = "Mutter, Vater und Rechnungsempfänger bereits in Datenbank";
-//            infoNeuErfasst = "Schüler wird neu erfasst";
-//        }
-//
-//        // 2. 2 Angehörige schon in DB
-//        else if (mutterFound != null && vaterFound != null) {
-//            mutter = mutterFound;
-//            vater = vaterFound;
-//            infoBereitsInDb = "Mutter und Vater bereits in Datenbank";
-//            if (abweichenderRechnungsempfaenger) {
-//                infoNeuErfasst = "Schüler und Rechnungsempfänger werden neu erfasst";
-//            }
-//            else {
-//                infoNeuErfasst = "Schüler wird neu erfasst";
-//            }
-//        }
-//
-//        else if (abweichenderRechnungsempfaenger && mutterFound != null && rechnungsempfaengerFound != null) {
-//            mutter = mutterFound;
-//            rechnungsempfaenger = rechnungsempfaengerFound;
-//            infoBereitsInDb = "Mutter und Rechnungsempfänger bereits in Datenbank";
-//            infoNeuErfasst = "Schüler und Vater werden neu erfasst";
-//        }
-//
-//        else if (abweichenderRechnungsempfaenger && vaterFound != null && rechnungsempfaengerFound != null) {
-//            vater = vaterFound;
-//            rechnungsempfaenger = rechnungsempfaengerFound;
-//            infoBereitsInDb = "Vater und Rechnungsempfänger bereits in Datenbank";
-//            infoNeuErfasst = "Schüler und Mutter werden neu erfasst";
-//        }
-//
-//        // 3. 1 Angehöriger schon in DB
-//        else if (mutterFound != null) {
-//            mutter = mutterFound;
-//            infoBereitsInDb = "Mutter bereits in Datenbank";
-//            if (abweichenderRechnungsempfaenger) {
-//                infoNeuErfasst = "Schüler, Vater und Rechnungsempfänger werden neu erfasst";
-//            }
-//            else {
-//                infoNeuErfasst = "Schüler und Vater werden neu erfasst";
-//            }
-//        }
-//
-//        else if (vaterFound != null) {
-//            vater = vaterFound;
-//            infoBereitsInDb = "Vater bereits in Datenbank";
-//            if (abweichenderRechnungsempfaenger) {
-//                infoNeuErfasst = "Schüler, Mutter und Rechnungsempfänger werden neu erfasst";
-//            }
-//            else {
-//                infoNeuErfasst = "Schüler und Mutter werden neu erfasst";
-//            }
-//        }
-//
-//        else if (abweichenderRechnungsempfaenger && rechnungsempfaengerFound != null) {
-//            rechnungsempfaenger = rechnungsempfaengerFound;
-//            infoBereitsInDb = "Rechnungsempfänger bereits in Datenbank";
-//            infoNeuErfasst = "Schüler, Mutter und Vater werden neu erfasst";
-//        }
-//
-//        // 4. keine Angehörige in DB
-//        else {
-//            infoBereitsInDb = "";
-//            if (abweichenderRechnungsempfaenger) {
-//                infoNeuErfasst = "Schüler, Mutter, Vater und Rechnungsempfänger werden neu erfasst";
-//            }
-//            else {
-//                infoNeuErfasst = "Schüler, Mutter und Vater werden neu erfasst";
-//            }
-//        }
-    }
+    // ...execute()
+    // if (....command.result) {
+    //    GUI-Model erzeugen und mit Output befüllen (u.a. this, d.h. SchuelerValidator-Instanz und em)
+    //    GUI aufrufen
+    //    return;
+    // else
+    //    skip...= true
 
-    public Schueler getSchueler() {
-        return schueler;
-    }
 
-    public boolean isSchülerBereitsErfasst() {
-        return schülerBereitsErfasst;
-    }
+    // 3. Angehörige bereits in DB? (-> CheckIfAngehoerigerAlreadyinDatabaseCommand)
+    // *****************************************************************************
 
-    public boolean isAbweichenderRechnungsempfaenger() {
-        return abweichenderRechnungsempfaenger;
-    }
+    // 3.a Mutter
+    // 3.b Vater
+    // 3.c Drittperson
 
-    public String getInfoRechnungsempfaenger() {
-        return infoRechnungsempfaenger;
-    }
+    // Input:  Angehoerige
+    // Output: DatabaseSearchResult result;
+    //         String message;
+    //         Angehoeriger angehoerigerAnswer1;
+    //         Angehoeriger angehoerigerAnswer2;
+    //         Angehoeriger angehoerigerAnswer3;
 
-    public String getInfoIdentischeAdressen() {
-        return infoIdentischeAdressen;
-    }
+    // if (!skipCheckIfMutterAlreadyinDatabase) {
 
-    public String getInfoAbweichendeAdressen() {
-        return infoAbweichendeAdressen;
-    }
+    // Command erzeugen
+    // command.setEntityManager(em) //eigenen Em übergeben
+    // command.execute()    // nicht mit Invoker aufrufen
 
-    public String getInfoBereitsInDb() {
-        return infoBereitsInDb;
-    }
+    //    CheckIfAngehoerigerAlreadyinDatabaseCommand checkIfMutterAlreadyInDatabaseCommand = new CheckIfAngehoerigerAlreadyinDatabaseCommand(mutter);
+    //
+    //    GUI-Model erzeugen und mit Output befüllen (u.a. this, d.h. SchuelerValidator-Instanz)
+    //    In jedem Fall eines der GUIs aufgerufen
+    // }
 
-    public String getInfoNeuErfasst() {
-        return infoNeuErfasst;
+    // ditto für Vater und Rechnungsempfänger Drittperson
+
+    // TITEL: Mutter bereits in der Datenbank erfasst? (vgl. Ubuntu-Buch S.47)
+    // Mögliche Resultate (Key / Value) und Reaktionen im GUI:
+    // MULTIPLE_ENTRIES_FIT_PARTIALLY: In der Datenbank wurden mehrere Einträge gefunden, die mit den erfassten Angaben teilweise übereinstimmen: ...
+    // - Keinen dieser Einträge verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen (-> mutter = ...command.getAngehoerigerAnswer1(); skipCheckIfMutterAlreadyinDatabase = True, Fenster schliessen und wieder onSaveClicked des GUI aufrufen)
+    // - Zurück und Mutter genauer erfassen und/oder erfasste Einträge korrigieren (-> mutter = ...command.getAngehoerigerAnswer2(), skipCheckIfMutterAlreadyinDatabase = False und Fenster schliessen (-> Gui))
+    // ONE_ENTRY_FITS_PARTIALLY: In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben teilweise übereinstimmt: ...
+    // - Diesen Eintrag verwenden und mit geänderten Angaben aktualisieren (angehoeriger = angehoerigerUpdated)
+    // - Nicht diesen Eintrag verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen
+    // - Erfasste Einträge korrigieren
+    // ONE_ENTRY_FIT: In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben passt: ...
+    // - Diesen Eintrag verwenden (angehoeriger = angehoerigerUpdated)
+    // - Erfasste Einträge korrigieren
+    // MULTIPLE_ENTRIES_FIT: In der Datenbank wurden mehrere Eintäge gefunden, die auf die erfassten Angaben der Mutter passen: ...
+    // Mutter muss genauer erfasst werden.
+    // - Ok
+    // NO_ENTRY_FITS;
+    // Mutter wird neu erfasst (noch nicht in Datenbank)
+    // - Ok
+    // - Abbrechen
+
+
+    // 4. Adressen identisch? (-> CheckIfAdressenAreIdentical)
+    // *******************************************************
+
+    // Input:  SchuelerModel, Angehoerige
+    // Output: String message;
+    //         Schueler schueler;
+
+    // if (!skipCheck...)
+    // GUI: zeigt Message an
+    // - Zurück (skipCheckMutter,..Vater,.. Ange AlreadInDb =false)
+    // - Weiter (skipCheckIfAdressenAreIdentical = true)
+
+
+    // 5. gefundene Geschwister / Kinder des Rechnungsempfängers
+    // *********
+
+    // Input/Output: schueler
+    // Output: boolean result (gefunden / nicht gefunden)
+    //         String message
+
+    // Gefunden:
+
+    // zurück (skipCheckAdressen = false)
+    // weiter (skipCheckIfAdressenAreIdentical = true)
+
+
+    // 6. Zusammenfassung  weglassen!!!!!!!!!!!!!!!¨
+    // ******************
+
+    // - zurück / Beenden und speichern
+
+
+    // 7. SaveCommand
+    // ***************
+
+    // em.getTransaction().begin()
+    // em.persist(schueler)
+    // em.getTransaction().commit
+    // em.close();
+
+    // catch {
+    // rollback und Entity Manager schliessen
+
+
     }
 }
 

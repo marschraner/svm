@@ -14,10 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -269,7 +266,7 @@ public class SchuelerDaoTest {
     }
 
     @Test
-    public void testFindSpecificSchueler() {
+    public void testFindSchueler() {
 
         EntityTransaction tx = null;
 
@@ -297,7 +294,9 @@ public class SchuelerDaoTest {
             schueler2.setAdresse(adresse2);
             schueler2.setRechnungsempfaenger(rechnungsempfaenger);
 
-            Schueler schuelerFound2 = schuelerDao.findSpecificSchueler(schueler2);
+            List<Schueler> schuelerList2 = schuelerDao.findSchueler(schueler2);
+            assertEquals("Mehr als ein Schüler gefunden", 1, schuelerList2.size());
+            Schueler schuelerFound2 = schuelerList2.get(0);
             assertNotNull("Schüler nicht gefunden", schuelerFound2);
 
             // Ditto, but Schüler with another strasse:
@@ -306,8 +305,8 @@ public class SchuelerDaoTest {
             schueler3.setAdresse(adresse3);
             schueler3.setRechnungsempfaenger(rechnungsempfaenger);
 
-            Schueler schuelerFound3 = schuelerDao.findSpecificSchueler(schueler3);
-            assertNull("Schüler gefunden", schuelerFound3);
+            List<Schueler> schuelerList3 = schuelerDao.findSchueler(schueler3);
+            assertNull("Schüler gefunden", schuelerList3);
 
             // Delete Schüler
             schuelerDao.remove(schuelerSaved);

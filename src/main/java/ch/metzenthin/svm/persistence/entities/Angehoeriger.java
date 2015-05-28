@@ -39,6 +39,10 @@ public class Angehoeriger extends Person {
         return (super.isIdenticalWith(otherAngehoeriger));
     }
 
+    public boolean isPartOf(Angehoeriger otherAngehoeriger) {
+        return (super.isPartOf(otherAngehoeriger));
+    }
+
     public Set<Schueler> getKinderMutter() {
         return kinderMutter;
     }
@@ -46,4 +50,10 @@ public class Angehoeriger extends Person {
     public Set<Schueler> getSchuelerRechnungsempfaenger() {
         return schuelerRechnungsempfaenger;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
 }

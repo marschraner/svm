@@ -33,44 +33,67 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
     }
 
     /**
-     * In der DB nach einem Angehörigen suchen. Zur Suche sind mindestens Vorname und Nachname erforderlich, die übrigen Attribute
-     * sind optional. Es werden alle Angehörigen ausgegeben, deren Attribute mit den in der Suche gesetzten übereinstimmen. Für die
-     * nicht gesetzten Attribute können beliebige Werte zurückgegeben werden.
+     * In der DB nach Angehörigen suchen. Sämtliche Attribute sind optional.
+     * Es werden alle Angehörigen ausgegeben, deren Attribute mit den in der Suche gesetzten übereinstimmen.
      *
      * @param angehoeriger (not null)
      * @return angehoerigeFound
      */
     public List<Angehoeriger> findAngehoerige(Angehoeriger angehoeriger) {
 
-        String selectStatement = "select a from Angehoeriger a" +
-                        " where a.vorname = :vorname" +
-                        " and a.nachname = :nachname";
+        StringBuilder selectStatementSb = new StringBuilder("select a from Angehoeriger a where");
 
-        // Optional attributes
-        if (angehoeriger.getNatel() != null) selectStatement = selectStatement + " and a.natel = :natel";
-        if (angehoeriger.getEmail() != null) selectStatement = selectStatement + " and a.email = :email";
+        if (angehoeriger.getVorname() != null) {
+            selectStatementSb.append(" a.vorname = :vorname and");
+        }
+        if (angehoeriger.getNachname() != null) {
+            selectStatementSb.append(" a.nachname = :nachname and");
+        }
+        if (angehoeriger.getNatel() != null) {
+            selectStatementSb.append(" a.natel = :natel and");
+        }
+        if (angehoeriger.getEmail() != null) {
+            selectStatementSb.append(" a.email = :email and");
+        }
         if (angehoeriger.getAdresse() != null) {
-            selectStatement = selectStatement + " and a.adresse.strasse = :strasse";
-            selectStatement = selectStatement + " and a.adresse.plz = :plz";
-            selectStatement = selectStatement + " and a.adresse.ort = :ort";
-            if (angehoeriger.getAdresse().getHausnummer() != null) selectStatement = selectStatement + " and a.adresse.hausnummer = :hausnummer";
-            if (angehoeriger.getAdresse().getFestnetz() != null) selectStatement = selectStatement + " and a.adresse.festnetz = :festnetz";
+            selectStatementSb.append(" a.adresse.strasse = :strasse and");
+            selectStatementSb.append(" a.adresse.plz = :plz and");
+            selectStatementSb.append(" a.adresse.ort = :ort and");
+            if (angehoeriger.getAdresse().getHausnummer() != null) {
+                selectStatementSb.append(" a.adresse.hausnummer = :hausnummer and");
+            }
+            if (angehoeriger.getAdresse().getFestnetz() != null) {
+                selectStatementSb.append(" a.adresse.festnetz = :festnetz and");
+            }
         }
 
-        TypedQuery<Angehoeriger> typedQuery = entityManager.createQuery(selectStatement, Angehoeriger.class);
+        // Letztes " and" löschen
+        selectStatementSb.setLength(selectStatementSb.length() - 4);
 
-        typedQuery.setParameter("vorname", angehoeriger.getVorname());
-        typedQuery.setParameter("nachname", angehoeriger.getNachname());
+        TypedQuery<Angehoeriger> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Angehoeriger.class);
 
-        // Optional attributes
-        if (angehoeriger.getNatel() != null) typedQuery.setParameter("natel", angehoeriger.getNatel());
-        if (angehoeriger.getEmail() != null) typedQuery.setParameter("email", angehoeriger.getEmail());
+        if (angehoeriger.getVorname() != null) {
+            typedQuery.setParameter("vorname", angehoeriger.getVorname());
+        }
+        if (angehoeriger.getVorname() != null) {
+            typedQuery.setParameter("nachname", angehoeriger.getNachname());
+        }
+        if (angehoeriger.getNatel() != null) {
+            typedQuery.setParameter("natel", angehoeriger.getNatel());
+        }
+        if (angehoeriger.getEmail() != null) {
+            typedQuery.setParameter("email", angehoeriger.getEmail());
+        }
         if (angehoeriger.getAdresse() != null) {
             typedQuery.setParameter("strasse", angehoeriger.getAdresse().getStrasse());
             typedQuery.setParameter("plz", angehoeriger.getAdresse().getPlz());
             typedQuery.setParameter("ort", angehoeriger.getAdresse().getOrt());
-            if (angehoeriger.getAdresse().getHausnummer() != null) typedQuery.setParameter("hausnummer", angehoeriger.getAdresse().getHausnummer());
-            if (angehoeriger.getAdresse().getFestnetz() != null) typedQuery.setParameter("festnetz", angehoeriger.getAdresse().getFestnetz());
+            if (angehoeriger.getAdresse().getHausnummer() != null) {
+                typedQuery.setParameter("hausnummer", angehoeriger.getAdresse().getHausnummer());
+            }
+            if (angehoeriger.getAdresse().getFestnetz() != null) {
+                typedQuery.setParameter("festnetz", angehoeriger.getAdresse().getFestnetz());
+            }
         }
 
         List<Angehoeriger> angehoerigeFound = typedQuery.getResultList();

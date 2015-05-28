@@ -51,11 +51,40 @@ public class Adresse {
     }
 
     public boolean isIdenticalWith(Adresse otherAdresse) {
+        if (otherAdresse == null) {
+            return false;
+        }
         return strasse.equals(otherAdresse.getStrasse())
                 && hausnummer.equals(otherAdresse.getHausnummer())
                 && plz.equals(otherAdresse.getPlz())
                 && ort.equals(otherAdresse.getOrt())
                 && festnetz.equals(otherAdresse.getFestnetz());
+    }
+
+    public boolean isPartOf(Adresse otherAdresse) {
+        if (otherAdresse == null) {
+            return false;
+        }
+        return strasse.equals(otherAdresse.getStrasse())
+                && plz.equals(otherAdresse.getPlz())
+                && ort.equals(otherAdresse.getOrt())
+                && (hausnummer == null || hausnummer.trim().isEmpty() || hausnummer.equals(otherAdresse.getHausnummer()))
+                && (festnetz == null || festnetz.trim().isEmpty() || festnetz.equals(otherAdresse.getFestnetz()));
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder adresseSb = new StringBuilder();
+        adresseSb.append(strasse);
+        if (hausnummer != null && !hausnummer.trim().isEmpty()) {
+            adresseSb.append(" " + hausnummer);
+        }
+        adresseSb.append(", " + plz);
+        adresseSb.append(" " + ort);
+        if (festnetz != null && !festnetz.isEmpty()) {
+            adresseSb.append(", " + festnetz);
+        }
+        return adresseSb.toString();
     }
 
     public Integer getAdresseId() {

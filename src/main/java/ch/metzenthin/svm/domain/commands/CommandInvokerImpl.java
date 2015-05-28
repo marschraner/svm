@@ -32,7 +32,7 @@ public class CommandInvokerImpl implements CommandInvoker {
             genericDaoCommand.setEntityManager(entityManager);
             genericDaoCommand.execute();
             tx.commit();
-        } catch(RuntimeException e) {
+        } catch (RuntimeException e) {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
