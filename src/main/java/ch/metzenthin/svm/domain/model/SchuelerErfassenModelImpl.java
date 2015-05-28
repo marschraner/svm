@@ -202,21 +202,21 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         AngehoerigerModel rechnungsempfaenger = getRechnungsempfaengerModel();
         ValidateSchuelerCommand validateSchuelerCommand = new ValidateSchuelerCommand(
                 schuelerModel.getSchueler(),
-                (vaterModel.isCompleted()) ? vaterModel.getAngehoeriger() : null,
-                (mutterModel.isCompleted()) ? mutterModel.getAngehoeriger() : null,
+                (mutterModel.isCompleted()) ? mutterModel.getAngehoeriger() : null, true, // todo $$$ hack
+                (vaterModel.isCompleted()) ? vaterModel.getAngehoeriger() : null, false, // todo $$$ hack
                 (rechnungsempfaenger != null) ? rechnungsempfaenger.getAngehoeriger() : null
         );
-        // todo muss das eine Transaktion sein, oder einfach validateSchuelerCommand.execute() ?
-        getCommandInvoker().executeCommand(validateSchuelerCommand);
-        System.out.println("Info AbweichendeAdressen=" + validateSchuelerCommand.getInfoAbweichendeAdressen());
-        System.out.println("Info BereitsInDb=" + validateSchuelerCommand.getInfoBereitsInDb());
-        System.out.println("Info IdentischeAdressen=" + validateSchuelerCommand.getInfoIdentischeAdressen());
-        System.out.println("Info NeuErfasst=" + validateSchuelerCommand.getInfoNeuErfasst());
-        System.out.println("Info Rechnungsempfaenger=" + validateSchuelerCommand.getInfoRechnungsempfaenger());
-
-        // todo $$$ aufteilen in validate und save Methoden aufgerufen von Controller
-        SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(validateSchuelerCommand.getSchueler());
-        getCommandInvoker().executeCommand(saveSchuelerCommand);
+//        // todo muss das eine Transaktion sein, oder einfach validateSchuelerCommand.execute() ?
+//        getCommandInvoker().executeCommand(validateSchuelerCommand);
+//        System.out.println("Info AbweichendeAdressen=" + validateSchuelerCommand.getInfoAbweichendeAdressen());
+//        System.out.println("Info BereitsInDb=" + validateSchuelerCommand.getInfoBereitsInDb());
+//        System.out.println("Info IdentischeAdressen=" + validateSchuelerCommand.getInfoIdentischeAdressen());
+//        System.out.println("Info NeuErfasst=" + validateSchuelerCommand.getInfoNeuErfasst());
+//        System.out.println("Info Rechnungsempfaenger=" + validateSchuelerCommand.getInfoRechnungsempfaenger());
+//
+//        // todo $$$ aufteilen in validate und save Methoden aufgerufen von Controller
+//        SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(validateSchuelerCommand.getSchueler());
+//        getCommandInvoker().executeCommand(saveSchuelerCommand);
     }
 
     private AngehoerigerModel getRechnungsempfaengerModel() {
