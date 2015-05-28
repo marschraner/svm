@@ -3,13 +3,10 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.model.SchuelerModel;
-import ch.metzenthin.svm.ui.control.CompletedListener;
 import ch.metzenthin.svm.ui.control.SchuelerController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author hans
@@ -60,22 +57,6 @@ public class SchuelerPanel {
         schuelerController.setTextAreaBemerkungen(textAreaBemerkungen);
     }
 
-    private final List<CompletedListener> completedListeners = new ArrayList<>();
-
-    public void addCompletedListener(CompletedListener completedListener) {
-        completedListeners.add(completedListener);
-    }
-
-    private void checkCompleted() {
-        fireCompleted(schuelerModel.isValid());
-    }
-
-    private void fireCompleted(boolean completed) {
-        for (CompletedListener completedListener : completedListeners) {
-            completedListener.completed(completed);
-        }
-    }
-
     private void createUIComponents() {
         comboBoxGeschlecht = new JComboBox<>();
     }
@@ -91,8 +72,11 @@ public class SchuelerPanel {
         createUIComponents();
         panel = new JPanel();
         panel.setLayout(new BorderLayout(0, 0));
+        panel.setMinimumSize(new Dimension(597, 528));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
+        panel1.setMinimumSize(new Dimension(550, 528));
+        panel1.setPreferredSize(new Dimension(550, 528));
         panel.add(panel1, BorderLayout.CENTER);
         final JLabel label1 = new JLabel();
         label1.setText("Nachname");
@@ -351,9 +335,9 @@ public class SchuelerPanel {
         gbc.gridx = 2;
         gbc.gridy = 23;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.ipady = 40;
         panel1.add(scrollPane1, gbc);
         textAreaBemerkungen = new JTextArea();
-        textAreaBemerkungen.setRows(5);
         scrollPane1.setViewportView(textAreaBemerkungen);
         final JLabel label11 = new JLabel();
         label11.setText("Bemerkungen");

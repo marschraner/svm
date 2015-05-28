@@ -1,85 +1,47 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.model.AngehoerigerModel;
-import ch.metzenthin.svm.domain.model.SchuelerModel;
-import ch.metzenthin.svm.ui.control.CompletedListener;
+import ch.metzenthin.svm.ui.control.SchuelerErfassenController;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
  * @author Hans Stamm
  */
 public class SchuelerErfassenPanel {
+
     private JPanel panel;
     private SchuelerPanel schuelerPanel;
     private AngehoerigerPanel mutterPanel;
     private AngehoerigerPanel vaterPanel;
     private AngehoerigerPanel drittempfaengerPanel;
-    private final SchuelerModel schuelerModel;
-    private final AngehoerigerModel vaterModel;
-    private final AngehoerigerModel mutterModel;
-    private final AngehoerigerModel drittempfaengerModel;
     private JPanel btnPanel;
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
-    private ActionListener closeListener;
 
     public SchuelerErfassenPanel(SvmContext svmContext) {
         $$$setupUI$$$();
-        btnSpeichern.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSpeichern();
-            }
-        });
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
-        schuelerPanel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onSchuelerPanelCompleted(completed);
-            }
-        });
-        schuelerModel = svmContext.getModelFactory().createSchuelerModel();
-        schuelerPanel.setModel(schuelerModel);
-        mutterModel = svmContext.getModelFactory().createAngehoerigerModel();
-        mutterPanel.setModel(mutterModel);
-        vaterModel = svmContext.getModelFactory().createAngehoerigerModel();
-        vaterPanel.setModel(vaterModel);
-        drittempfaengerModel = svmContext.getModelFactory().createAngehoerigerModel();
-        drittempfaengerPanel.setModel(drittempfaengerModel);
-        onSchuelerPanelCompleted(false);
+        createSchuelerErfassenController(svmContext);
+    }
+
+    private SchuelerErfassenController schuelerErfassenController;
+
+    private void createSchuelerErfassenController(SvmContext svmContext) {
+        schuelerErfassenController = new SchuelerErfassenController(svmContext.getModelFactory().createSchuelerErfassenModel());
+        schuelerErfassenController.setSchuelerPanel(schuelerPanel, svmContext.getModelFactory().createSchuelerModel());
+        schuelerErfassenController.setMutterPanel(mutterPanel, svmContext.getModelFactory().createAngehoerigerModel());
+        schuelerErfassenController.setVaterPanel(vaterPanel, svmContext.getModelFactory().createAngehoerigerModel());
+        schuelerErfassenController.setDrittempfaengerPanel(drittempfaengerPanel, svmContext.getModelFactory().createAngehoerigerModel());
+        schuelerErfassenController.setBtnSpeichern(btnSpeichern);
+        schuelerErfassenController.setBtnAbbrechen(btnAbbrechen);
+        schuelerErfassenController.constructionDone();
     }
 
     public void addCloseListener(ActionListener actionListener) {
-        closeListener = actionListener;
-    }
-
-    private void onSchuelerPanelCompleted(boolean completed) {
-        System.out.println("SchuelerPanel completed=" + completed);
-        btnSpeichern.setEnabled(completed);
-    }
-
-    private void onAbbrechen() {
-        System.out.println("SchuelerErfassenPanel Abbrechen gedrückt");
-        closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Abbrechen"));
-        // todo Dialog, ob wirklich abgebrochen werden soll
-    }
-
-    private void onSpeichern() {
-        System.out.println("SchuelerErfassenPanel Speichern gedrückt");
-        schuelerModel.save();
-        // todo Dialog "erfolgreich gespeichert"
-        closeListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Close nach Speichern"));
+        schuelerErfassenController.addCloseListener(actionListener);
     }
 
     /**

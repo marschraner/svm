@@ -81,7 +81,6 @@ public class SvmDesktop extends JFrame implements ActionListener, InternalFrameL
     // React to menu selections.
     public void actionPerformed(ActionEvent e) {
         if ("schuelerErfassen".equals(e.getActionCommand())) {
-//            SchuelerErfassenTabbedPane schuelerErfassenPanel = new SchuelerErfassenTabbedPane(svmContext);
             SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext);
             schuelerErfassenPanel.addCloseListener(new ActionListener() {
                 @Override
@@ -89,7 +88,7 @@ public class SvmDesktop extends JFrame implements ActionListener, InternalFrameL
                     onSchuelerErfassenFrameAbbrechen();
                 }
             });
-            schuelerErfassenFrame = createFrame(schuelerErfassenPanel.$$$getRootComponent$$$(), "Schüler erfassen", new Dimension(1000, 800));
+            schuelerErfassenFrame = createFrame(schuelerErfassenPanel.$$$getRootComponent$$$(), "Schüler erfassen", new Dimension(1000, 900));
         } else { // beenden
             quit();
         }

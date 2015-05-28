@@ -52,10 +52,12 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             }
         }
 
+        
         if (rechnungsempfaengerDrittperson != null) {
             schueler.setRechnungsempfaenger(rechnungsempfaengerDrittperson);
         }
-
+        
+// todo Wenn Attribute null sind, gibt es NullPointerException in den Vergleichen (...isIdentical...)
     //
     // !!! NICHT durch commandInvoker aufrufen, weil immer derselbe EntityManager verwendet werden soll
     // Aufruf:

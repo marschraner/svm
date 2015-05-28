@@ -1,17 +1,15 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.ui.control.CompletedListener;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Hans Stamm
- * todo check... und to... Methoden in Utils auslagern
- * todo PropertyChangeSupport (Observable?)
  */
 abstract class AbstractModel implements Model {
 
@@ -29,76 +27,49 @@ abstract class AbstractModel implements Model {
     // Property change support
     //------------------------------------------------------------------------------------------------------------------
 
-    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        this.pcs.addPropertyChangeListener(listener);
+        this.propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
-        this.pcs.removePropertyChangeListener(listener);
+        this.propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
     void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        this.pcs.firePropertyChange(propertyName, oldValue, newValue);
+        if ((oldValue == null) && (newValue == null)) {
+            return;
+        }
+        this.propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+        checkCompleted();
     }
+
 
     //------------------------------------------------------------------------------------------------------------------
+    // Completed support
+    //------------------------------------------------------------------------------------------------------------------
 
-    boolean checkNotNull(Object o) {
-        return (o != null);
+    private final List<CompletedListener> completedListeners = new ArrayList<>();
+
+    public void addCompletedListener(CompletedListener completedListener) {
+        completedListeners.add(completedListener);
     }
 
-    boolean checkNotEmpty(String s) {
-        return checkNotNull(s) && !s.isEmpty();
+    public void removeCompletedListener(CompletedListener completedListener) {
+        completedListeners.remove(completedListener);
     }
 
-    boolean checkNumber(String s) {
-        if (checkNotEmpty(s)) {
-            try {
-                //noinspection ResultOfMethodCallIgnored
-                Integer.valueOf(s);
-                return true;
-            } catch (NumberFormatException ignore) {
-            }
+    void fireCompleted(boolean completed) {
+        for (CompletedListener completedListener : completedListeners) {
+            completedListener.completed(completed);
         }
-        return false;
     }
 
-    Integer toIntegerOrNull(String s) {
-        Integer i = null;
-        if (checkNumber(s)) {
-            i = toInteger(s);
-        }
-        return i;
-    }
-
-    Integer toInteger(String s) {
-        return Integer.valueOf(s);
-    }
-
-    Calendar toCalendar(String s) throws ParseException {
-        if (!checkNotEmpty(s)) {
-            return null;
-        }
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-        calendar.setTime(formatter.parse(s));
-        return calendar;
-    }
-
-    Calendar toCalendarIgnoreException(String s) {
-        if (!checkNotEmpty(s)) {
-            return null;
-        }
-        Calendar calendar = null;
-        try {
-            calendar = toCalendar(s);
-        } catch (ParseException ignore) {
-        }
-        return calendar;
+    public void checkCompleted() {
+        fireCompleted(isCompleted());
     }
 
 }

@@ -8,6 +8,8 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import static ch.metzenthin.svm.common.utils.Converter.asString;
+
 /**
  * @author Hans Stamm
  */
@@ -263,9 +265,26 @@ public abstract class PersonController implements PropertyChangeListener {
             txtNachname.setText(personModel.getNachname());
         } else if ("Vorname".equals(evt.getPropertyName())) {
             txtVorname.setText(personModel.getVorname());
-            // todo $$$ ...
-        } else {
-            throw new RuntimeException("Unbekanntes property '" + evt.getPropertyName() + "'");
+        } else if ("Strasse".equals(evt.getPropertyName())) {
+            txtStrasse.setText(personModel.getStrasse());
+        } else if ("Hausnummer".equals(evt.getPropertyName())) {
+            txtHausnummer.setText(personModel.getHausnummer());
+        } else if ("Plz".equals(evt.getPropertyName())) {
+            txtPlz.setText(personModel.getPlz());
+        } else if ("Ort".equals(evt.getPropertyName())) {
+            txtOrt.setText(personModel.getOrt());
+        } else if ("Geburtsdatum".equals(evt.getPropertyName())) {
+            txtGeburtsdatum.setText(asString(personModel.getGeburtsdatum()));
+        } else if ("Festnetz".equals(evt.getPropertyName())) {
+            txtFestnetz.setText(personModel.getFestnetz());
+        } else if ("Natel".equals(evt.getPropertyName())) {
+            txtNatel.setText(personModel.getNatel());
+        } else if ("Email".equals(evt.getPropertyName())) {
+            txtEmail.setText(personModel.getEmail());
+        } else if ("Anrede".equals(evt.getPropertyName())) {
+            if (comboBoxAnrede != null) {
+                comboBoxAnrede.setSelectedItem(personModel.getAnrede());
+            }
         }
     }
 

@@ -12,8 +12,6 @@ public interface SchuelerModel extends PersonModel {
     Geschlecht getGeschlecht();
     Calendar getAnmeldedatum();
     Calendar getAbmeldedatum();
-    Calendar getDispensationsbeginn();
-    Calendar getDispensationsende();
     String getBemerkungen();
     Schueler getSchueler();
 
@@ -22,11 +20,5 @@ public interface SchuelerModel extends PersonModel {
     void setAnmeldedatum(Calendar anmeldedatum);
     void setAbmeldedatum(String abmeldedatum);
     void setAbmeldedatum(Calendar abmeldedatum);
-    void setDispensationsbeginn(String dispensationsbeginn);
-    void setDispensationsbeginn(Calendar dispensationsbeginn);
-    void setDispensationsende(String dispensationsende);
-    void setDispensationsende(Calendar dispensationsende);
     void setBemerkungen(String bemerkungen);
-
-    void save();
 }

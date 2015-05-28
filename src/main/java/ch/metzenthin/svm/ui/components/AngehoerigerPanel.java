@@ -3,15 +3,12 @@ package ch.metzenthin.svm.ui.components;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.domain.model.AngehoerigerModel;
 import ch.metzenthin.svm.ui.control.AngehoerigerController;
-import ch.metzenthin.svm.ui.control.CompletedListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * @author Hans Stamm
- *         todo Events kopieren von SchuelerPanel
  */
 public class AngehoerigerPanel {
     private JPanel panel;
@@ -25,6 +22,7 @@ public class AngehoerigerPanel {
     private JTextField txtFestnetz;
     private JTextField txtNatel;
     private JTextField txtEmail;
+    private JCheckBox checkBoxRechnungsempfaenger;
 
     private AngehoerigerModel angehoerigerModel;
 
@@ -49,22 +47,7 @@ public class AngehoerigerPanel {
         angehoerigerController.setTxtFestnetz(txtFestnetz);
         angehoerigerController.setTxtNatel(txtNatel);
         angehoerigerController.setTxtEmail(txtEmail);
-    }
-
-    private final java.util.List<CompletedListener> completedListeners = new ArrayList<>();
-
-    public void addCompletedListener(CompletedListener completedListener) {
-        completedListeners.add(completedListener);
-    }
-
-    private void checkCompleted() {
-        fireCompleted(angehoerigerModel.isValid());
-    }
-
-    private void fireCompleted(boolean completed) {
-        for (CompletedListener completedListener : completedListeners) {
-            completedListener.completed(completed);
-        }
+        angehoerigerController.setCheckBoxRechnungsempfaenger(checkBoxRechnungsempfaenger);
     }
 
     private void createUIComponents() {
@@ -85,36 +68,31 @@ public class AngehoerigerPanel {
         panel.setLayout(new BorderLayout(0, 0));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
+        panel1.setMinimumSize(new Dimension(597, 350));
+        panel1.setPreferredSize(new Dimension(597, 350));
         panel.add(panel1, BorderLayout.CENTER);
-        final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridBagLayout());
-        GridBagConstraints gbc;
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel1.add(panel2, gbc);
         final JLabel label1 = new JLabel();
         label1.setText("Nachname");
         label1.setDisplayedMnemonic('C');
         label1.setDisplayedMnemonicIndex(2);
+        GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(label1, gbc);
+        panel1.add(label1, gbc);
         final JPanel spacer1 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(spacer1, gbc);
+        panel1.add(spacer1, gbc);
         final JPanel spacer2 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer2, gbc);
+        panel1.add(spacer2, gbc);
         txtNachname = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -122,7 +100,7 @@ public class AngehoerigerPanel {
         gbc.weightx = 0.9;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(txtNachname, gbc);
+        panel1.add(txtNachname, gbc);
         final JLabel label2 = new JLabel();
         label2.setText("Vorname");
         label2.setDisplayedMnemonic('V');
@@ -131,14 +109,14 @@ public class AngehoerigerPanel {
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(label2, gbc);
+        panel1.add(label2, gbc);
         txtVorname = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 5;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(txtVorname, gbc);
+        panel1.add(txtVorname, gbc);
         final JLabel label3 = new JLabel();
         label3.setText("Strasse/Hausnummer");
         label3.setDisplayedMnemonic('S');
@@ -147,13 +125,13 @@ public class AngehoerigerPanel {
         gbc.gridx = 0;
         gbc.gridy = 7;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(label3, gbc);
+        panel1.add(label3, gbc);
         final JPanel spacer3 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 6;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer3, gbc);
+        panel1.add(spacer3, gbc);
         final JLabel label4 = new JLabel();
         label4.setText("PLZ/Ort");
         label4.setDisplayedMnemonic('P');
@@ -162,46 +140,46 @@ public class AngehoerigerPanel {
         gbc.gridx = 0;
         gbc.gridy = 9;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(label4, gbc);
+        panel1.add(label4, gbc);
         final JPanel spacer4 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 8;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer4, gbc);
+        panel1.add(spacer4, gbc);
         final JPanel spacer5 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 10;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer5, gbc);
-        final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridBagLayout());
+        panel1.add(spacer5, gbc);
+        final JPanel panel2 = new JPanel();
+        panel2.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 7;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(panel3, gbc);
+        panel1.add(panel2, gbc);
         txtStrasse = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0.9;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel3.add(txtStrasse, gbc);
+        panel2.add(txtStrasse, gbc);
         txtHausnummer = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.weightx = 0.1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel3.add(txtHausnummer, gbc);
+        panel2.add(txtHausnummer, gbc);
         final JPanel spacer6 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel3.add(spacer6, gbc);
+        panel2.add(spacer6, gbc);
         final JLabel label5 = new JLabel();
         label5.setText("Festnetz");
         label5.setDisplayedMnemonic('F');
@@ -210,14 +188,14 @@ public class AngehoerigerPanel {
         gbc.gridx = 0;
         gbc.gridy = 11;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(label5, gbc);
+        panel1.add(label5, gbc);
         txtFestnetz = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 11;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(txtFestnetz, gbc);
+        panel1.add(txtFestnetz, gbc);
         final JLabel label6 = new JLabel();
         label6.setText("Anrede");
         label6.setDisplayedMnemonic('A');
@@ -227,26 +205,26 @@ public class AngehoerigerPanel {
         gbc.gridy = 1;
         gbc.weightx = 0.1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(label6, gbc);
+        panel1.add(label6, gbc);
         final JPanel spacer7 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer7, gbc);
+        panel1.add(spacer7, gbc);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.weightx = 0.9;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(comboBoxAnrede, gbc);
+        panel1.add(comboBoxAnrede, gbc);
         final JPanel spacer8 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 16;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer8, gbc);
+        panel1.add(spacer8, gbc);
         final JLabel label7 = new JLabel();
         label7.setText("Natel");
         label7.setDisplayedMnemonic('N');
@@ -255,20 +233,20 @@ public class AngehoerigerPanel {
         gbc.gridx = 0;
         gbc.gridy = 13;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(label7, gbc);
+        panel1.add(label7, gbc);
         txtNatel = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 13;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(txtNatel, gbc);
+        panel1.add(txtNatel, gbc);
         final JPanel spacer9 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 12;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer9, gbc);
+        panel1.add(spacer9, gbc);
         final JLabel label8 = new JLabel();
         label8.setText("E-Mail");
         label8.setDisplayedMnemonic('E');
@@ -277,34 +255,34 @@ public class AngehoerigerPanel {
         gbc.gridx = 0;
         gbc.gridy = 15;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(label8, gbc);
+        panel1.add(label8, gbc);
         txtEmail = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 15;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(txtEmail, gbc);
+        panel1.add(txtEmail, gbc);
         final JPanel spacer10 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 14;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer10, gbc);
+        panel1.add(spacer10, gbc);
         final JPanel spacer11 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer11, gbc);
-        final JPanel panel4 = new JPanel();
-        panel4.setLayout(new GridBagLayout());
+        panel1.add(spacer11, gbc);
+        final JPanel panel3 = new JPanel();
+        panel3.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 9;
         gbc.weightx = 0.1;
         gbc.fill = GridBagConstraints.BOTH;
-        panel2.add(panel4, gbc);
+        panel1.add(panel3, gbc);
         txtPlz = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -312,13 +290,13 @@ public class AngehoerigerPanel {
         gbc.weightx = 0.2;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel4.add(txtPlz, gbc);
+        panel3.add(txtPlz, gbc);
         final JPanel spacer12 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel4.add(spacer12, gbc);
+        panel3.add(spacer12, gbc);
         txtOrt = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -326,15 +304,27 @@ public class AngehoerigerPanel {
         gbc.weightx = 0.8;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel4.add(txtOrt, gbc);
-        final JPanel panel5 = new JPanel();
-        panel5.setLayout(new BorderLayout(0, 0));
+        panel3.add(txtOrt, gbc);
+        final JLabel label9 = new JLabel();
+        label9.setText("Rechnungsempfänger");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.weightx = 1.0;
+        gbc.gridy = 18;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel1.add(panel5, gbc);
+        panel1.add(label9, gbc);
+        final JPanel spacer13 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 17;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel1.add(spacer13, gbc);
+        checkBoxRechnungsempfaenger = new JCheckBox();
+        checkBoxRechnungsempfaenger.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 18;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel1.add(checkBoxRechnungsempfaenger, gbc);
         label1.setLabelFor(txtNachname);
         label2.setLabelFor(txtVorname);
         label3.setLabelFor(txtHausnummer);

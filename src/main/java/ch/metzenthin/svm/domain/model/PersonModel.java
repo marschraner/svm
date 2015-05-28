@@ -8,13 +8,14 @@ import java.util.Calendar;
 /**
  * @author hans
  */
-public interface PersonModel extends Model, AdresseModel {
+public interface PersonModel extends AdresseModel {
     Anrede getAnrede();
     String getNachname();
     String getVorname();
     String getNatel();
     String getEmail();
     Calendar getGeburtsdatum();
+    boolean isAdresseRequired();
     Adresse getAdresse();
 
     void setAnrede(Anrede anrede);
