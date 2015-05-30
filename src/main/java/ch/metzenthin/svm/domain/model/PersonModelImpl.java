@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.domain.SvmRequiredException;
+import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -62,7 +64,15 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     @Override
-    public void setNachname(String nachname) {
+    public void setNachname(String nachname) throws SvmValidationException {
+        if (isAdresseRequired() && !checkNotEmpty(nachname)) {
+            invalidate();
+            throw new SvmRequiredException("Nachname");
+        }
+        if (checkNotEmpty(nachname) && nachname.length() < 2) {
+            invalidate();
+            throw new SvmValidationException(1100, "Länge muss mindestens " + 2 + " sein");
+        }
         String oldValue = getPerson().getNachname();
         getPerson().setNachname(nachname);
         firePropertyChange("Nachname", oldValue, getPerson().getNachname());
@@ -73,7 +83,15 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     @Override
-    public void setVorname(String vorname) {
+    public void setVorname(String vorname) throws SvmValidationException {
+        if (isAdresseRequired() && !checkNotEmpty(vorname)) {
+            invalidate();
+            throw new SvmRequiredException("Vorname");
+        }
+        if (checkNotEmpty(vorname) && vorname.length() < 2) {
+            invalidate();
+            throw new SvmValidationException(1100, "Länge muss mindestens " + 2 + " sein");
+        }
         String oldValue = getPerson().getVorname();
         getPerson().setVorname(vorname);
         firePropertyChange("Vorname", oldValue, getPerson().getVorname());
@@ -135,7 +153,11 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     @Override
-    public void setStrasse(String strasse) {
+    public void setStrasse(String strasse) throws SvmRequiredException {
+        if (isAdresseRequired() && !checkNotEmpty(strasse)) {
+            invalidate();
+            throw new SvmRequiredException("Strasse");
+        }
         String oldValue = adresse.getStrasse();
         adresse.setStrasse(strasse);
         firePropertyChange("Strasse", oldValue, adresse.getStrasse());
@@ -153,7 +175,11 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     @Override
-    public void setPlz(String plz) {
+    public void setPlz(String plz) throws SvmRequiredException {
+        if (isAdresseRequired() && !checkNotEmpty(plz)) {
+            invalidate();
+            throw new SvmRequiredException("Plz");
+        }
         String oldValue = adresse.getPlz();
         adresse.setPlz(plz);
         firePropertyChange("Plz", oldValue, adresse.getPlz());
@@ -164,7 +190,11 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     @Override
-    public void setOrt(String ort) {
+    public void setOrt(String ort) throws SvmRequiredException {
+        if (isAdresseRequired() && !checkNotEmpty(ort)) {
+            invalidate();
+            throw new SvmRequiredException("Ort");
+        }
         String oldValue = adresse.getOrt();
         adresse.setOrt(ort);
         firePropertyChange("Ort", oldValue, adresse.getOrt());
@@ -186,6 +216,16 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         return checkName() && checkAdresse();
     }
 
+    @Override
+    public void doValidate() throws SvmValidationException {
+        if (!checkName()) {
+            throw new SvmValidationException(2000, "Name und Vorname obligatorisch", "Name", "Vorname");
+        }
+        if (!checkAdresse()) {
+            throw new SvmValidationException(2001, "Adresse obligatorisch oder unvollständig", "Strasse", "Hausnummer", "Plz", "Ort", "Festnetz");
+        }
+    }
+
     private boolean checkName() {
         return !(isAdresseRequired()) || checkNachname() && checkVorname();
     }
@@ -200,7 +240,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
                 || checkNotEmpty(adresse.getPlz())
                 || checkNotEmpty(adresse.getOrt())
                 || checkNotEmpty(adresse.getFestnetz())
-        ;
+                ;
     }
 
     @Override

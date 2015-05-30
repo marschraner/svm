@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.utils.Converter;
+import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.ui.control.CompletedListener;
@@ -10,6 +11,8 @@ import java.beans.PropertyChangeListener;
 import java.util.Calendar;
 
 /**
+ * Dieses Model ist eigentlich Model und Controller (verwaltet die Submodels Schüler, Mutter, Vater, Rechnungsempfänger).
+ *
  * @author Hans Stamm
  */
 public class SchuelerErfassenModelImpl extends AbstractModel implements SchuelerErfassenModel {
@@ -33,18 +36,41 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     }
 
     @Override
-    public void checkCompleted() {
-        schuelerModel.checkCompleted();
-        mutterModel.checkCompleted();
-        vaterModel.checkCompleted();
-        drittempfaengerModel.checkCompleted();
+    public void initializeCompleted() {
+        schuelerModel.initializeCompleted();
+        mutterModel.initializeCompleted();
+        vaterModel.initializeCompleted();
+        drittempfaengerModel.initializeCompleted();
     }
 
     @Override
     public boolean isCompleted() {
-        boolean completed = isSetRechnungsempfaenger() && isSchuelerModelCompleted && isMutterModelCompleted && isVaterModelCompleted && isDrittempfaengerModelCompleted;
-        System.out.println("SchuelerErfassenModel completed=" + completed);
+        boolean completed = isSubModelsCompleted();
+        System.out.println("SchuelerErfassenModel isCompleted=" + completed);
         return completed;
+    }
+
+    private boolean isSubModelsCompleted() {
+        return isSchuelerModelCompleted && isMutterModelCompleted && isVaterModelCompleted && isDrittempfaengerModelCompleted;
+    }
+
+    /**
+     * Überschrieben, damit Observer dieses Modells nicht informiert wird. Er muss die Exception fangen und entsprechend handeln.
+     *
+     * @throws SvmValidationException
+     */
+    @Override
+    public void validate() throws SvmValidationException {
+        doValidate();
+    }
+
+    @Override
+    public void doValidate() throws SvmValidationException {
+        if (isSubModelsCompleted()) {
+            if (!isSetRechnungsempfaenger()) {
+                throw new SvmValidationException(3000, "Rechnungsempfänger ist nicht gesetzt", "Rechnungsempfaenger");
+            }
+        }
     }
 
     private boolean isSetRechnungsempfaenger() {
@@ -122,6 +148,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             }
             isMutterRechnungsempfaenger = newValue;
         }
+        fireCompletedChange();
     }
 
     private void onVaterModelPropertyChange(PropertyChangeEvent evt) {
@@ -132,6 +159,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             }
             isVaterRechnungsempfaenger = newValue;
         }
+        fireCompletedChange();
     }
 
     private void onDrittempfaengerModelPropertyChange(PropertyChangeEvent evt) {
@@ -142,6 +170,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             }
             isDrittempfaengerRechnungsempfaenger = newValue;
         }
+        fireCompletedChange();
     }
 
     private boolean isRechnungsempfaengerPropertyChange(PropertyChangeEvent evt) {

@@ -68,4 +68,39 @@ public class SimpleValidatorTest {
         assertTrue("True erwartet (number)", checkNumber("5"));
     }
 
+    @Test
+    public void testEqualsNullSafe_Equals() throws Exception {
+        assertTrue(equalsNullSafe("1", "1"));
+    }
+
+    @Test
+    public void testEqualsNullSafe_EqualsNullStrings() throws Exception {
+        assertTrue(equalsNullSafe("", ""));
+    }
+
+    @Test
+    public void testEqualsNullSafe_NotEquals() throws Exception {
+        assertFalse(equalsNullSafe("1", "2"));
+    }
+
+    @Test
+    public void testEqualsNullSafe_NotEqualsDifferentObjects() throws Exception {
+        assertFalse(equalsNullSafe("1", 1));
+    }
+
+    @Test
+    public void testEqualsNullSafe_NotEqualsFirstNull() throws Exception {
+        assertFalse(equalsNullSafe(null, "2"));
+    }
+
+    @Test
+    public void testEqualsNullSafe_NotEqualsSecondNull() throws Exception {
+        assertFalse(equalsNullSafe("1", null));
+    }
+
+    @Test
+    public void testEqualsNullSafe_EqualsBothNull() throws Exception {
+        assertTrue(equalsNullSafe(null, null));
+    }
+
 }

@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.AngehoerigerModel;
 
 import javax.swing.*;
@@ -34,16 +35,39 @@ public class AngehoerigerController extends PersonController {
 
     private void onRechnungsempfaengerEvent() {
         System.out.println("AngehoerigerController Event Rechnungsempfaenger. Selected=" + checkBoxRechnungsempfaenger.isSelected());
+        setModelRechnungsempfaenger();
+    }
+
+    private boolean setModelRechnungsempfaenger() {
         angehoerigerModel.setIsRechnungsempfaenger(checkBoxRechnungsempfaenger.isSelected());
+        return true;
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    void doPropertyChange(PropertyChangeEvent evt) {
         System.out.println("AngehoerigerController PropertyChangeEvent '" + evt.getPropertyName() + "', oldValue='" + evt.getOldValue() + "', newValue='" + evt.getNewValue() + "'");
         if ("Rechnungsempfaenger".equals(evt.getPropertyName())) {
             checkBoxRechnungsempfaenger.setSelected(angehoerigerModel.isRechnungsempfaenger());
         }
-        super.propertyChange(evt);
+        super.doPropertyChange(evt);
+    }
+
+    @Override
+    boolean validateFields() {
+        if (!super.validateFields()) {
+            return false;
+        }
+        System.out.println("Validate field Rechnungsempfaenger");
+        if (!setModelRechnungsempfaenger()) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    void show(SvmValidationException e) {
+        super.show(e);
+        // todo $$$
     }
 
 }

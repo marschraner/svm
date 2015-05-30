@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveAngehoerigeCommand;
 import ch.metzenthin.svm.persistence.SvmDbException;
@@ -25,6 +26,11 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     @Override
     public boolean isCompleted() {
         return super.isCompleted();
+    }
+
+    @Override
+    public void doValidate() throws SvmValidationException {
+        super.doValidate();
     }
 
     @Override
