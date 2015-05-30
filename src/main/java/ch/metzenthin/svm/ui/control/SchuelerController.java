@@ -91,51 +91,58 @@ public class SchuelerController extends PersonController {
         setModelGeschlecht();
     }
 
-    private boolean setModelGeschlecht() {
+    private void setModelGeschlecht() {
         schuelerModel.setGeschlecht((Geschlecht) comboBoxGeschlecht.getSelectedItem());
-        return true;
     }
 
     private void onAnmeldedatumEvent() {
         System.out.println("SchuelerController Event Anmeldedatum");
         boolean equalFieldAndModelValue = equalsNullSafe(txtAnmeldedatum.getText(), schuelerModel.getAnmeldedatum());
-        if (setModelAnmeldedatum() && equalFieldAndModelValue) {
+        try {
+            setModelAnmeldedatum();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             System.out.println("Validierung wegen equalFieldAndModelValue");
             validate();
         }
     }
 
-    private boolean setModelAnmeldedatum() {
+    private void setModelAnmeldedatum() throws SvmValidationException {
         try {
             schuelerModel.setAnmeldedatum(txtAnmeldedatum.getText());
         } catch (SvmValidationException e) {
             System.out.println("SchuelerController setModelAnmeldedatum Exception=" + e.getMessage());
-            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
-            return false;
+            // todo $$$ Fehler anzeigen
+            throw e;
         }
-        return true;
     }
 
     private void onAbmeldedatumEvent() {
         System.out.println("SchuelerController Event Abmeldedatum");
         boolean equalFieldAndModelValue = equalsNullSafe(txtAbmeldedatum.getText(), schuelerModel.getAbmeldedatum());
-        if (setModelAbmeldedatum() && equalFieldAndModelValue) {
+        try {
+            setModelAbmeldedatum();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             System.out.println("Validierung wegen equalFieldAndModelValue");
             validate();
         }
     }
 
-    private boolean setModelAbmeldedatum() {
+    private void setModelAbmeldedatum() throws SvmValidationException {
         try {
             schuelerModel.setAbmeldedatum(txtAbmeldedatum.getText());
         } catch (SvmValidationException e) {
             System.out.println("SchuelerController setModelAbmeldedatum Exception=" + e.getMessage());
-            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
-            return false;
+            // todo $$$ Fehler anzeigen
+            throw e;
         }
-        return true;
     }
 
     private void onBemerkungenEvent() {
@@ -143,9 +150,8 @@ public class SchuelerController extends PersonController {
         setModelBemerkungen();
     }
 
-    private boolean setModelBemerkungen() {
+    private void setModelBemerkungen() {
         schuelerModel.setBemerkungen(textAreaBemerkungen.getText());
-        return true;
     }
 
     @Override
@@ -164,27 +170,16 @@ public class SchuelerController extends PersonController {
     }
 
     @Override
-    boolean validateFields() {
-        if (!super.validateFields()) {
-            return false;
-        }
+    void validateFields() throws SvmValidationException {
+        super.validateFields();
         System.out.println("Validate field Geschlecht");
-        if (!setModelGeschlecht()) {
-            return false;
-        }
+        setModelGeschlecht();
         System.out.println("Validate field Anmeldedatum");
-        if (!setModelAnmeldedatum()) {
-            return false;
-        }
+        setModelAnmeldedatum();
         System.out.println("Validate field Abmeldedatum");
-        if (!setModelAbmeldedatum()) {
-            return false;
-        }
+        setModelAbmeldedatum();
         System.out.println("Validate field Bemerkungen");
-        if (!setModelBemerkungen()) {
-            return false;
-        }
-        return true;
+        setModelBemerkungen();
     }
 
     @Override

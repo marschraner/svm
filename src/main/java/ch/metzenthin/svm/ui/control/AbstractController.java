@@ -36,16 +36,19 @@ public abstract class AbstractController implements PropertyChangeListener{
     abstract void doPropertyChange(PropertyChangeEvent evt);
 
     protected void validate() {
-        if (validateFields()) { // todo $$$ besser mit Exceptions!
-            try {
-                model.validate();
-            } catch (SvmValidationException e) {
-                show(e);
-            }
+        try {
+            validateFields();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        try {
+            model.validate();
+        } catch (SvmValidationException e) {
+            show(e);
         }
     }
 
-    abstract boolean validateFields();
+    abstract void validateFields() throws SvmValidationException;
 
     abstract void show(SvmValidationException e);
 

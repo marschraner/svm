@@ -38,9 +38,8 @@ public class AngehoerigerController extends PersonController {
         setModelRechnungsempfaenger();
     }
 
-    private boolean setModelRechnungsempfaenger() {
+    private void setModelRechnungsempfaenger() {
         angehoerigerModel.setIsRechnungsempfaenger(checkBoxRechnungsempfaenger.isSelected());
-        return true;
     }
 
     @Override
@@ -53,15 +52,10 @@ public class AngehoerigerController extends PersonController {
     }
 
     @Override
-    boolean validateFields() {
-        if (!super.validateFields()) {
-            return false;
-        }
+    void validateFields() throws SvmValidationException {
+        super.validateFields();
         System.out.println("Validate field Rechnungsempfaenger");
-        if (!setModelRechnungsempfaenger()) {
-            return false;
-        }
-        return true;
+        setModelRechnungsempfaenger();
     }
 
     @Override
