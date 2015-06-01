@@ -25,4 +25,11 @@ public class SimpleValidator {
         return false;
     }
 
+    public static boolean equalsNullSafe(Object anO, Object anotherO) {
+        if (anO == null) {
+            return anotherO == null;
+        }
+        return anO.equals(anotherO);
+    }
+
 }

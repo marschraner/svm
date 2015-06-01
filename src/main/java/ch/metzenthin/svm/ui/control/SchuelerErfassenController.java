@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.AngehoerigerModel;
 import ch.metzenthin.svm.domain.model.SchuelerErfassenModel;
 import ch.metzenthin.svm.domain.model.SchuelerModel;
@@ -11,6 +12,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * Controller, der die Models von Schüler erfassen überwacht.
+ *
+ * Nicht abgeleitet von AbstractController, da dieser Controller keine eigenen Eingabe-Felder hat.
+ *
  * @author Hans Stamm
  */
 public class SchuelerErfassenController {
@@ -32,11 +37,22 @@ public class SchuelerErfassenController {
     }
 
     public void constructionDone() {
-        schuelerErfassenModel.checkCompleted();
+        schuelerErfassenModel.initializeCompleted(); // todo $$$ besser init-Methode in Controller?
     }
 
     private void onSchuelerErfassenModelCompleted(boolean completed) {
-        btnSpeichern.setEnabled(completed);
+        System.out.println("SchuelerErfassenController completed=" + completed);
+        if (completed) {
+            try {
+                schuelerErfassenModel.validate();
+                btnSpeichern.setEnabled(true);
+            } catch (SvmValidationException e) {
+                System.out.println("SchuelerErfassenController Exception=" + e.getMessage());
+                btnSpeichern.setEnabled(false);
+            }
+        } else {
+            btnSpeichern.setEnabled(false);
+        }
     }
 
     public void setSchuelerPanel(SchuelerPanel schuelerPanel, SchuelerModel schuelerModel) {

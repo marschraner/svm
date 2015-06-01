@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.dataTypes.Geschlecht;
+import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.SchuelerModel;
 
 import javax.swing.*;
@@ -11,6 +12,7 @@ import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
+import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 
 /**
  * @author Hans Stamm
@@ -86,26 +88,74 @@ public class SchuelerController extends PersonController {
 
     private void onGeschlechtSelected() {
         System.out.println("SchuelerController Event Geschlecht selected=" + comboBoxGeschlecht.getSelectedItem());
+        setModelGeschlecht();
+    }
+
+    private void setModelGeschlecht() {
         schuelerModel.setGeschlecht((Geschlecht) comboBoxGeschlecht.getSelectedItem());
     }
 
     private void onAnmeldedatumEvent() {
         System.out.println("SchuelerController Event Anmeldedatum");
-        schuelerModel.setAnmeldedatum(txtAnmeldedatum.getText());
+        boolean equalFieldAndModelValue = equalsNullSafe(txtAnmeldedatum.getText(), schuelerModel.getAnmeldedatum());
+        try {
+            setModelAnmeldedatum();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            System.out.println("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelAnmeldedatum() throws SvmValidationException {
+        try {
+            schuelerModel.setAnmeldedatum(txtAnmeldedatum.getText());
+        } catch (SvmValidationException e) {
+            System.out.println("SchuelerController setModelAnmeldedatum Exception=" + e.getMessage());
+            // todo $$$ Fehler anzeigen
+            throw e;
+        }
     }
 
     private void onAbmeldedatumEvent() {
         System.out.println("SchuelerController Event Abmeldedatum");
-        schuelerModel.setAbmeldedatum(txtAbmeldedatum.getText());
+        boolean equalFieldAndModelValue = equalsNullSafe(txtAbmeldedatum.getText(), schuelerModel.getAbmeldedatum());
+        try {
+            setModelAbmeldedatum();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            System.out.println("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelAbmeldedatum() throws SvmValidationException {
+        try {
+            schuelerModel.setAbmeldedatum(txtAbmeldedatum.getText());
+        } catch (SvmValidationException e) {
+            System.out.println("SchuelerController setModelAbmeldedatum Exception=" + e.getMessage());
+            // todo $$$ Fehler anzeigen
+            throw e;
+        }
     }
 
     private void onBemerkungenEvent() {
         System.out.println("SchuelerController Event Bemerkungen");
+        setModelBemerkungen();
+    }
+
+    private void setModelBemerkungen() {
         schuelerModel.setBemerkungen(textAreaBemerkungen.getText());
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    void doPropertyChange(PropertyChangeEvent evt) {
         System.out.println("SchuelerController PropertyChangeEvent '" + evt.getPropertyName() + "', oldValue='" + evt.getOldValue() + "', newValue='" + evt.getNewValue() + "'");
         if ("Geschlecht".equals(evt.getPropertyName())) {
             comboBoxGeschlecht.setSelectedItem(schuelerModel.getGeschlecht());
@@ -116,7 +166,26 @@ public class SchuelerController extends PersonController {
         } else if ("Abmeldedatum".equals(evt.getPropertyName())) {
             txtAbmeldedatum.setText(asString(schuelerModel.getAbmeldedatum()));
         }
-        super.propertyChange(evt);
+        super.doPropertyChange(evt);
+    }
+
+    @Override
+    void validateFields() throws SvmValidationException {
+        super.validateFields();
+        System.out.println("Validate field Geschlecht");
+        setModelGeschlecht();
+        System.out.println("Validate field Anmeldedatum");
+        setModelAnmeldedatum();
+        System.out.println("Validate field Abmeldedatum");
+        setModelAbmeldedatum();
+        System.out.println("Validate field Bemerkungen");
+        setModelBemerkungen();
+    }
+
+    @Override
+    void show(SvmValidationException e) {
+        super.show(e);
+        // todo $$$
     }
 
 }

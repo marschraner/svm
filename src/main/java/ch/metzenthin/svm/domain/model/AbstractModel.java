@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.ui.control.CompletedListener;
 
@@ -44,7 +45,6 @@ abstract class AbstractModel implements Model {
             return;
         }
         this.propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
-        checkCompleted();
     }
 
 
@@ -68,8 +68,40 @@ abstract class AbstractModel implements Model {
         }
     }
 
-    public void checkCompleted() {
+    public void initializeCompleted() {
         fireCompleted(isCompleted());
     }
+
+    void invalidate() {
+        fireCompleted(false);
+    }
+
+    private void setValid() {
+        fireCompleted(true);
+    }
+
+    /**
+     * Template Method für die Validierung des Models.
+     *
+     * @throws SvmValidationException
+     */
+    @Override
+    public void validate() throws SvmValidationException {
+        try {
+            doValidate();
+        } catch (SvmValidationException e) {
+            invalidate();
+            throw e;
+        }
+        setValid();
+    }
+
+    /**
+     * Subklassen prüfen ihren Teil des Models und schmeissen eine von SvmValidationException abgeleitete Exception
+     * bei Fehler. Die Invalidierung des Models erfolgt in der Template Method.
+     *
+     * @throws SvmValidationException
+     */
+    abstract void doValidate() throws SvmValidationException;
 
 }
