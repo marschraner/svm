@@ -11,13 +11,13 @@ import java.util.List;
 public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoCommand {
 
     enum Result {
-        NICHT_IN_DATENBANK,                     // Mutter wird neu erfasst (noch nicht in Datenbank)
+        NICHT_IN_DATENBANK,                     // Angehöriger wird neu erfasst (noch nicht in Datenbank)
                                                 // - Ok (-> bisherigen Angehoerigen verwenden)
                                                 // - Abbrechen (-> Eingabe-GUI)
         EIN_EINTRAG_PASST,                      // In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben passt: ...
                                                 // - Diesen Eintrag verwenden (-> Angehoerigen ersetzen)
                                                 // - Eingaben korrigieren (-> Eingabe-GUI)
-        MEHRERE_EINTRAEGE_PASSEN,               // In der Datenbank wurden mehrere Einträge gefunden, die auf die erfassten Angaben der Mutter passen: ...
+        MEHRERE_EINTRAEGE_PASSEN,               // In der Datenbank wurden mehrere Einträge gefunden, die auf die erfassten Angaben passen: ...
                                                 // Angehöriger muss genauer erfasst werden
                                                 // - Eingaben korrigieren (-> Eingabe-GUI)
         EIN_EINTRAG_PASST_TEILWEISE,            // In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben teilweise übereinstimmt: ...
@@ -60,7 +60,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
         }
 
         // Suche nur mit Vorname und Nachname
-        Angehoeriger angehoerigerNurVornameNachname = new Angehoeriger(null, angehoeriger.getVorname(), angehoeriger.getNachname(), null, null, null);
+        Angehoeriger angehoerigerNurVornameNachname = new Angehoeriger(null, angehoeriger.getVorname(), angehoeriger.getNachname(), null, null);
 
         angehoerigerFoundList = angehoerigerDao.findAngehoerige(angehoerigerNurVornameNachname);
         if (angehoerigerFoundList != null && angehoerigerFoundList.size() == 1) {

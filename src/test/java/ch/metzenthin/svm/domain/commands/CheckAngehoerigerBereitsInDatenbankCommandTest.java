@@ -13,6 +13,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -43,11 +45,11 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
     @Test
     public void testExecute_NICHT_IN_DATENBANK() {
-        Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.HERR, "Armin", "Bruggisser", null, null, null);
-        Adresse adresse1 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", "056 426 69 15");
-        angehoeriger1.setNewAdresse(adresse1);
+        Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Armin", "Bruggisser", null, null);
+        Adresse adresse = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", "056 426 69 15");
+        angehoeriger.setNewAdresse(adresse);
 
-        CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger1);
+        CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
         try {
             commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
         } catch (SvmDbException e) {
@@ -59,11 +61,11 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
     @Test
     public void testExecute_EIN_EINTRAG_PASST() {
-        Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null, null);
-        Adresse adresse1 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", null);  // ohne Festnetz
-        angehoeriger1.setNewAdresse(adresse1);
+        Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
+        Adresse adresse = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", null);  // ohne Festnetz
+        angehoeriger.setNewAdresse(adresse);
 
-        CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger1);
+        CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
         try {
             commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
         } catch (SvmDbException e) {
@@ -71,16 +73,38 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         }
 
         assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.EIN_EINTRAG_PASST, checkAngehoerigerBereitsInDatenbankCommand.getResult());
-        System.out.println("In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben passt: " + checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound());
+        Angehoeriger angehoerigerFound = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
+        assertNotNull(angehoerigerFound);
+        System.out.println("In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben passt: " + angehoerigerFound);
+    }
+
+    @Test
+    public void testExecute_MEHRERE_EINTRAEGE_PASSEN() {
+        Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);  // ohne Adresse
+
+        CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
+        try {
+            commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
+        } catch (SvmDbException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.MEHRERE_EINTRAEGE_PASSEN, checkAngehoerigerBereitsInDatenbankCommand.getResult());
+        List<Angehoeriger> angehoerigerFoundList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
+        assertNotNull(angehoerigerFoundList);
+        System.out.println("In der Datenbank wurden mehrere Einträge gefunden, die auf die erfassten Angaben passen: ");
+        for (Angehoeriger ang : angehoerigerFoundList) {
+            System.out.println(ang);
+        }
     }
 
     @Test
     public void testExecute_EIN_EINTRAG_PASST_TEILWEISE() {
-        Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.HERR, "Hanny", "Bruggisser", null, null, null);
+        Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Hanny", "Bruggisser", null, null);
         Adresse adresse1 = new Adresse("Wiesenstrasse", "55", "5430", "Wettingen", "056 426 69 15");   // andere Hausnummer
-        angehoeriger1.setNewAdresse(adresse1);
+        angehoeriger.setNewAdresse(adresse1);
 
-        CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger1);
+        CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
         try {
             commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
         } catch (SvmDbException e) {
@@ -88,11 +112,32 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         }
 
         assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.EIN_EINTRAG_PASST_TEILWEISE, checkAngehoerigerBereitsInDatenbankCommand.getResult());
-        System.out.println("In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben teilweise übereinstimmt: " + checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound());
+        Angehoeriger angehoerigerFound = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
+        assertNotNull(angehoerigerFound);
+        System.out.println("In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben teilweise übereinstimmt: " + angehoerigerFound);
     }
 
-    //TODO restliche Tests
+    @Test
+    public void testExecute_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE() {
+        Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
+        Adresse adresse1 = new Adresse("Wiesenstrasse", "5", "8803", "Rüschlikon", null);  // anderer Ort
+        angehoeriger.setNewAdresse(adresse1);
 
+        CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
+        try {
+            commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
+        } catch (SvmDbException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.MEHRERE_EINTRAEGE_PASSEN_TEILWEISE, checkAngehoerigerBereitsInDatenbankCommand.getResult());
+        List<Angehoeriger> angehoerigerFoundList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
+        assertNotNull(angehoerigerFoundList);
+        System.out.println("In der Datenbank wurden mehrere Einträge gefunden, die mit den erfassten Angaben teilweise übereinstimmen: ");
+        for (Angehoeriger ang : angehoerigerFoundList) {
+            System.out.println(ang);
+        }
+    }
 
     private void createTestdata() {
         EntityManager entityManager = null;
@@ -102,17 +147,17 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
             AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
 
-            Angehoeriger angehoeriger0 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null, null);
+            Angehoeriger angehoeriger0 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
             Adresse adresse0 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", "056 426 69 15");
             angehoeriger0.setNewAdresse(adresse0);
             angehoerigerTestdata0 = angehoerigerDao.save(angehoeriger0);
 
-            Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null, null);
+            Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
             Adresse adresse1 = new Adresse("Freudenbergstrasse", "5", "8002", "Zürich", "056 426 69 15");
             angehoeriger1.setNewAdresse(adresse1);
             angehoerigerTestdata1 = angehoerigerDao.save(angehoeriger1);
 
-            Angehoeriger angehoeriger2 = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", null, null, null);
+            Angehoeriger angehoeriger2 = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", null, null);
             angehoeriger2.setNewAdresse(adresse0);
             angehoerigerTestdata2 = angehoerigerDao.save(angehoeriger2);
 
@@ -124,7 +169,6 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
             }
         }
     }
-
 
     private void deleteTestdata() {
         EntityManager entityManager = null;

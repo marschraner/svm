@@ -58,7 +58,7 @@ public class SchuelerDaoTest {
             schueler.setNewAdresse(adresse);
 
             // Set Vater
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null);
             vater.setNewAdresse(adresse);
             schueler.setNewVater(vater);
 
@@ -91,12 +91,12 @@ public class SchuelerDaoTest {
             schueler.setNewAdresse(adresse);
 
             // Set Vater
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null);
             vater.setNewAdresse(adresse);
             schueler.setNewVater(vater);
 
             // Set Mutter
-            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null, null);
+            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null);
             mutter.setNewAdresse(adresse);
             schueler.setNewMutter(mutter);
 
@@ -178,16 +178,16 @@ public class SchuelerDaoTest {
             Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich", "044 491 69 33");
             schueler1.setNewAdresse(adresse);
 
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null);
             vater.setNewAdresse(adresse);
             schueler1.setNewVater(vater);
 
-            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null, null);
+            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null);
             mutter.setNewAdresse(adresse);
             schueler1.setNewMutter(mutter);
 
             Adresse adresseRechnungsempfaenger = new Adresse("Hintere Bergstrassse", "15", "8942", "Oberrieden", "044 720 85 51");
-            Angehoeriger rechnungsempfaenger1 = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", null, null, null);
+            Angehoeriger rechnungsempfaenger1 = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", null, null);
             rechnungsempfaenger1.setNewAdresse(adresseRechnungsempfaenger);
             schueler1.setNewRechnungsempfaenger(rechnungsempfaenger1);
 
@@ -279,7 +279,7 @@ public class SchuelerDaoTest {
             Adresse adresse = new Adresse("Gugusweg", "16", "8049", "Zürich", "044 491 69 33");
             schueler.setNewAdresse(adresse);
 
-            Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", null, null, null);
+            Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", null, null);
             Adresse adresseRechnungsempfaenger = new Adresse("Hintere Bergstrassse", "15", "8942", "Oberrieden", "044 720 85 51");
             rechnungsempfaenger.setNewAdresse(adresseRechnungsempfaenger);
             schueler.setNewRechnungsempfaenger(rechnungsempfaenger);

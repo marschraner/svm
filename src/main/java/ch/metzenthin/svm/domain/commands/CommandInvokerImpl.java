@@ -14,6 +14,9 @@ public class CommandInvokerImpl implements CommandInvoker {
     private EntityManagerFactory entityManagerFactory;
     EntityManager entityManager = null;
 
+    public CommandInvokerImpl() {
+    }
+
     public CommandInvokerImpl(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }

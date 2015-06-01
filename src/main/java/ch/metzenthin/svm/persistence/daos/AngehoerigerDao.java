@@ -86,7 +86,10 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
         if (selectStatementSb.substring(selectStatementSb.length() - 5).equals("where")) {
             selectStatementSb.setLength(selectStatementSb.length() - 5);
         }
-        System.out.println("selectStatement: " + selectStatementSb.toString());
+
+        // Sortierung
+        selectStatementSb.append(" order by a.nachname, a.vorname, a.adresse.ort, a.adresse.strasse");
+
         TypedQuery<Angehoeriger> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Angehoeriger.class);
 
         if (angehoeriger != null) {

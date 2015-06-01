@@ -115,6 +115,9 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
             selectStatementSb.setLength(selectStatementSb.length() - 5);
         }
 
+        // Sortierung
+        selectStatementSb.append(" order by s.nachname, s.vorname, s.adresse.ort, s.adresse.strasse");
+
         TypedQuery<Schueler> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Schueler.class);
 
         if (schueler != null) {

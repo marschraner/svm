@@ -6,7 +6,7 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 /**
  * @author Martin Schraner
  */
-public class CheckIdentischeAdressenCommand extends GenericDaoCommand {
+public class CheckIdentischeAdressenCommand implements Command {
 
     // input + output
     private Schueler schueler;
@@ -42,9 +42,9 @@ public class CheckIdentischeAdressenCommand extends GenericDaoCommand {
                 && schueler.getAdresse().isIdenticalWith(mutter.getAdresse())
                 && schueler.getAdresse().isIdenticalWith(vater.getAdresse())
                 && schueler.getAdresse().isIdenticalWith(rechnungsempfaengerDrittperson.getAdresse())) {
-            schueler.setNewAdresse(mutter.getAdresse());
-            vater.setNewAdresse(mutter.getAdresse());
-            rechnungsempfaengerDrittperson.setNewAdresse(mutter.getAdresse());
+            schueler.replaceAdresse(schueler.getAdresse(), mutter.getAdresse());
+            vater.replaceAdresse(vater.getAdresse(), mutter.getAdresse());
+            rechnungsempfaengerDrittperson.replaceAdresse(rechnungsempfaengerDrittperson.getAdresse(), mutter.getAdresse());
             infoIdentischeAdressen = "Schüler, Mutter, Vater und Rechnungsempfänger Drittperson haben identische Adressen";
         }
 
@@ -52,8 +52,8 @@ public class CheckIdentischeAdressenCommand extends GenericDaoCommand {
         else if (mutterHasAdresse && vaterHasAdresse
                 && schueler.getAdresse().isIdenticalWith(mutter.getAdresse())
                 && schueler.getAdresse().isIdenticalWith(vater.getAdresse())) {
-            schueler.setNewAdresse(mutter.getAdresse());
-            vater.setNewAdresse(mutter.getAdresse());
+            schueler.replaceAdresse(schueler.getAdresse(), mutter.getAdresse());
+            vater.replaceAdresse(vater.getAdresse(), mutter.getAdresse());
             infoIdentischeAdressen = "Schüler, Mutter und Vater haben identische Adressen";
             if (rechnungsempfaengerDrittperson != null) {
                 infoAbweichendeAdressen = "Rechnungsempfänger Drittperson hat abweichende Adresse";
@@ -63,8 +63,8 @@ public class CheckIdentischeAdressenCommand extends GenericDaoCommand {
         else if (rechnungsempfaengerDrittperson != null && mutterHasAdresse
                 && schueler.getAdresse().isIdenticalWith(mutter.getAdresse())
                 && schueler.getAdresse().isIdenticalWith(rechnungsempfaengerDrittperson.getAdresse())) {
-            schueler.setNewAdresse(mutter.getAdresse());
-            rechnungsempfaengerDrittperson.setNewAdresse(mutter.getAdresse());
+            schueler.replaceAdresse(schueler.getAdresse(), mutter.getAdresse());
+            rechnungsempfaengerDrittperson.replaceAdresse(rechnungsempfaengerDrittperson.getAdresse(), mutter.getAdresse());
             infoIdentischeAdressen = "Schüler, Mutter und Rechnungsempfänger Drittperson haben identische Adressen";
             if (vaterHasAdresse) {
                 infoAbweichendeAdressen = "Vater hat abweichende Adresse";
@@ -74,8 +74,8 @@ public class CheckIdentischeAdressenCommand extends GenericDaoCommand {
         else if (rechnungsempfaengerDrittperson != null && vaterHasAdresse
                 && schueler.getAdresse().isIdenticalWith(vater.getAdresse())
                 && schueler.getAdresse().isIdenticalWith(rechnungsempfaengerDrittperson.getAdresse())) {
-            schueler.setNewAdresse(vater.getAdresse());
-            rechnungsempfaengerDrittperson.setNewAdresse(vater.getAdresse());
+            schueler.replaceAdresse(schueler.getAdresse(), vater.getAdresse());
+            rechnungsempfaengerDrittperson.replaceAdresse(vater.getAdresse(), vater.getAdresse());
             infoIdentischeAdressen = "Schüler, Vater und Rechnungsempfänger Drittperson haben identische Adressen";
             if (mutterHasAdresse) {
                 infoAbweichendeAdressen = "Mutter hat abweichende Adresse";
@@ -85,15 +85,15 @@ public class CheckIdentischeAdressenCommand extends GenericDaoCommand {
         else if (rechnungsempfaengerDrittperson != null && mutterHasAdresse && vaterHasAdresse
                 && mutter.getAdresse().isIdenticalWith(vater.getAdresse())
                 && mutter.getAdresse().isIdenticalWith(rechnungsempfaengerDrittperson.getAdresse())) {
-            vater.setNewAdresse(mutter.getAdresse());
-            rechnungsempfaengerDrittperson.setNewAdresse(mutter.getAdresse());
+            vater.replaceAdresse(vater.getAdresse(), mutter.getAdresse());
+            rechnungsempfaengerDrittperson.replaceAdresse(rechnungsempfaengerDrittperson.getAdresse(), mutter.getAdresse());
             infoIdentischeAdressen = "Mutter, Vater und Rechnungsempfänger Drittperson haben identische Adressen";
             infoAbweichendeAdressen = "Schüler hat abweichende Adresse";
         }
 
         // 3. 2 Adressen identisch
         else if (mutterHasAdresse && schueler.getAdresse().isIdenticalWith(mutter.getAdresse())) {
-            schueler.setNewAdresse(mutter.getAdresse());
+            schueler.replaceAdresse(schueler.getAdresse(), mutter.getAdresse());
             infoIdentischeAdressen = "Schüler und Mutter haben identische Adressen";
             if (rechnungsempfaengerDrittperson != null && vaterHasAdresse) {
                 infoAbweichendeAdressen = "Vater und Rechnungsempfänger Drittperson haben abweichende Adressen";
@@ -105,7 +105,7 @@ public class CheckIdentischeAdressenCommand extends GenericDaoCommand {
         }
 
         else if (vaterHasAdresse && schueler.getAdresse().isIdenticalWith(vater.getAdresse())) {
-            schueler.setNewAdresse(vater.getAdresse());
+            schueler.replaceAdresse(schueler.getAdresse(), vater.getAdresse());
             infoIdentischeAdressen = "Schüler und Vater haben identische Adressen";
             if (rechnungsempfaengerDrittperson != null && mutterHasAdresse) {
                 infoAbweichendeAdressen = "Mutter und Rechnungsempfänger Drittperson haben abweichende Adressen";
@@ -119,14 +119,14 @@ public class CheckIdentischeAdressenCommand extends GenericDaoCommand {
         }
 
         else if (rechnungsempfaengerDrittperson != null && schueler.getAdresse().isIdenticalWith(rechnungsempfaengerDrittperson.getAdresse())) {
-            schueler.setNewAdresse(rechnungsempfaengerDrittperson.getAdresse());
+            schueler.replaceAdresse(schueler.getAdresse(), rechnungsempfaengerDrittperson.getAdresse());
             infoIdentischeAdressen = "Schüler und Rechnungsempfänger haben identische Adressen";
             if (mutter.getAdresse() != null)
                 infoAbweichendeAdressen = "Mutter und Vater haben abweichende Adressen";
         }
 
         else if (mutterHasAdresse && vaterHasAdresse && mutter.getAdresse().isIdenticalWith(vater.getAdresse())) {
-            vater.setNewAdresse(mutter.getAdresse());
+            vater.replaceAdresse(vater.getAdresse(), mutter.getAdresse());
             infoIdentischeAdressen = "Mutter und Vater haben identische Adressen";
             if (rechnungsempfaengerDrittperson != null) {
                 infoAbweichendeAdressen = "Schüler und Rechnungsempfänger Drittperson haben abweichende Adressen";
@@ -137,7 +137,7 @@ public class CheckIdentischeAdressenCommand extends GenericDaoCommand {
         }
 
         else if (rechnungsempfaengerDrittperson != null && mutterHasAdresse && mutter.getAdresse().isIdenticalWith(rechnungsempfaengerDrittperson.getAdresse())) {
-            rechnungsempfaengerDrittperson.setNewAdresse(mutter.getAdresse());
+            rechnungsempfaengerDrittperson.replaceAdresse(rechnungsempfaengerDrittperson.getAdresse(), mutter.getAdresse());
             infoIdentischeAdressen = "Mutter und Rechnungsempfänger Drittperson haben identische Adressen";
             if (vaterHasAdresse) {
                 infoAbweichendeAdressen = "Schüler und Vater haben abweichende Adressen";
@@ -148,7 +148,7 @@ public class CheckIdentischeAdressenCommand extends GenericDaoCommand {
         }
 
         else if (rechnungsempfaengerDrittperson != null && vaterHasAdresse && vater.getAdresse().isIdenticalWith(rechnungsempfaengerDrittperson.getAdresse())) {
-            rechnungsempfaengerDrittperson.setNewAdresse(vater.getAdresse());
+            rechnungsempfaengerDrittperson.replaceAdresse(rechnungsempfaengerDrittperson.getAdresse(), vater.getAdresse());
             infoIdentischeAdressen = "Vater und Rechnungsempfänger Drittperson haben identische Adressen";
             if (mutterHasAdresse) {
                 infoAbweichendeAdressen = "Schüler und Mutter haben abweichende Adressen";
