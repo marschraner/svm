@@ -71,56 +71,81 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
 
         StringBuilder selectStatementSb = new StringBuilder("select s from Schueler s where");
 
-        if (schueler.getVorname() != null) {
-            selectStatementSb.append(" s.vorname = :vorname and");
-        }
-        if (schueler.getNachname() != null) {
-            selectStatementSb.append(" s.nachname = :nachname and");
-        }
-        if (schueler.getNatel() != null) {
-            selectStatementSb.append(" s.natel = :natel and");
-        }
-        if (schueler.getEmail() != null) {
-            selectStatementSb.append(" s.email = :email and");
-        }
-        if (schueler.getAdresse() != null) {
-            selectStatementSb.append(" s.adresse.strasse = :strasse and");
-            selectStatementSb.append(" s.adresse.plz = :plz and");
-            selectStatementSb.append(" s.adresse.ort = :ort and");
-            if (schueler.getAdresse().getHausnummer() != null) {
-                selectStatementSb.append(" s.adresse.hausnummer = :hausnummer and");
+        if (schueler != null) {
+
+            if (schueler.getVorname() != null) {
+                selectStatementSb.append(" s.vorname = :vorname and");
             }
-            if (schueler.getAdresse().getFestnetz() != null) {
-                selectStatementSb.append(" s.adresse.festnetz = :festnetz and");
+            if (schueler.getNachname() != null) {
+                selectStatementSb.append(" s.nachname = :nachname and");
             }
+            if (schueler.getNatel() != null) {
+                selectStatementSb.append(" s.natel = :natel and");
+            }
+            if (schueler.getEmail() != null) {
+                selectStatementSb.append(" s.email = :email and");
+            }
+            if (schueler.getAdresse() != null) {
+                if (schueler.getAdresse().getStrasse() != null) {
+                    selectStatementSb.append(" s.adresse.strasse = :strasse and");
+                }
+                if (schueler.getAdresse().getHausnummer() != null) {
+                    selectStatementSb.append(" s.adresse.hausnummer = :hausnummer and");
+                }
+                if (schueler.getAdresse().getPlz() != null) {
+                    selectStatementSb.append(" s.adresse.plz = :plz and");
+                }
+                if (schueler.getAdresse().getOrt() != null) {
+                    selectStatementSb.append(" s.adresse.ort = :ort and");
+                }
+                if (schueler.getAdresse().getFestnetz() != null) {
+                    selectStatementSb.append(" s.adresse.festnetz = :festnetz and");
+                }
+            }
+
+            // Letztes " and" löschen
+            if (selectStatementSb.substring(selectStatementSb.length() - 4).equals(" and")) {
+                selectStatementSb.setLength(selectStatementSb.length() - 4);
+            }
+
         }
 
-        // Letztes " and" löschen
-        selectStatementSb.setLength(selectStatementSb.length() - 4);
+        // "where" löschen, falls dieses am Schluss steht
+        if (selectStatementSb.substring(selectStatementSb.length() - 5).equals("where")) {
+            selectStatementSb.setLength(selectStatementSb.length() - 5);
+        }
 
         TypedQuery<Schueler> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Schueler.class);
 
-        if (schueler.getVorname() != null) {
-            typedQuery.setParameter("vorname", schueler.getVorname());
-        }
-        if (schueler.getVorname() != null) {
-            typedQuery.setParameter("nachname", schueler.getNachname());
-        }
-        if (schueler.getNatel() != null) {
-            typedQuery.setParameter("natel", schueler.getNatel());
-        }
-        if (schueler.getEmail() != null) {
-            typedQuery.setParameter("email", schueler.getEmail());
-        }
-        if (schueler.getAdresse() != null) {
-            typedQuery.setParameter("strasse", schueler.getAdresse().getStrasse());
-            typedQuery.setParameter("plz", schueler.getAdresse().getPlz());
-            typedQuery.setParameter("ort", schueler.getAdresse().getOrt());
-            if (schueler.getAdresse().getHausnummer() != null) {
-                typedQuery.setParameter("hausnummer", schueler.getAdresse().getHausnummer());
+        if (schueler != null) {
+            if (schueler.getVorname() != null) {
+                typedQuery.setParameter("vorname", schueler.getVorname());
             }
-            if (schueler.getAdresse().getFestnetz() != null) {
-                typedQuery.setParameter("festnetz", schueler.getAdresse().getFestnetz());
+            if (schueler.getVorname() != null) {
+                typedQuery.setParameter("nachname", schueler.getNachname());
+            }
+            if (schueler.getNatel() != null) {
+                typedQuery.setParameter("natel", schueler.getNatel());
+            }
+            if (schueler.getEmail() != null) {
+                typedQuery.setParameter("email", schueler.getEmail());
+            }
+            if (schueler.getAdresse() != null) {
+                if (schueler.getAdresse().getStrasse() != null) {
+                    typedQuery.setParameter("strasse", schueler.getAdresse().getStrasse());
+                }
+                if (schueler.getAdresse().getHausnummer() != null) {
+                    typedQuery.setParameter("hausnummer", schueler.getAdresse().getHausnummer());
+                }
+                if (schueler.getAdresse().getPlz() != null) {
+                    typedQuery.setParameter("plz", schueler.getAdresse().getPlz());
+                }
+                if (schueler.getAdresse().getOrt() != null) {
+                    typedQuery.setParameter("ort", schueler.getAdresse().getOrt());
+                }
+                if (schueler.getAdresse().getFestnetz() != null) {
+                    typedQuery.setParameter("festnetz", schueler.getAdresse().getFestnetz());
+                }
             }
         }
 

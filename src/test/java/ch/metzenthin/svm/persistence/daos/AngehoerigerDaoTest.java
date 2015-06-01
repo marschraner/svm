@@ -162,7 +162,7 @@ public class AngehoerigerDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            // Angehoeriger
+            // Angehörigen einfügen
             Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null);
             Adresse adresse = new Adresse("Gugusweg", "16", "8049", "Zürich", "044 491 69 33");
             angehoeriger.setNewAdresse(adresse);
@@ -170,7 +170,7 @@ public class AngehoerigerDaoTest {
 
             entityManager.flush();
 
-            // Create second Angehoeriger with the same attributes
+            // Zweiten Angehörigen mit denselben Attributen einfügen
             Angehoeriger angehoeriger2 = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null);
             Adresse adresse2 = new Adresse("Gugusweg", "16", "8049", "Zürich", "044 491 69 33");
             angehoeriger2.setNewAdresse(adresse2);
@@ -179,7 +179,7 @@ public class AngehoerigerDaoTest {
             assertNotNull("Angehörigen nicht gefunden", angehoerigeFound2);
             assertEquals("Mehr als 1 Angehörigen gefunden", 1, angehoerigeFound2.size());
 
-            // Ditto, aber Angehoeriger ohne Adresse;
+            // Ditto, aber ohne Adresse;
             Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null);
 
             List<Angehoeriger> angehoerigeFound3 = angehoerigerDao.findAngehoerige(angehoeriger3);
@@ -189,7 +189,7 @@ public class AngehoerigerDaoTest {
             assertNotNull("Hat keine Adresse", angehoerigeFound3.get(0).getAdresse());
             assertEquals("Strasse nicht korrekt", "Gugusweg", angehoerigeFound3.get(0).getAdresse().getStrasse());
 
-            // Ditto, aber Angehoeriger mit anderer strasse:
+            // Ditto, aber andere Strasse:
             Angehoeriger angehoeriger4 = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null);
             Adresse adresse4 = new Adresse("Gugusstrasse", "16", "8049", "Zürich", "044 491 69 33");
             angehoeriger4.setNewAdresse(adresse4);
@@ -197,7 +197,11 @@ public class AngehoerigerDaoTest {
             List<Angehoeriger> angehoerigeFound4 = angehoerigerDao.findAngehoerige(angehoeriger4);
             assertNull("Angehörigen gefunden", angehoerigeFound4);
 
-            // Delete Angehoeriger
+            // Sämtliche Angehörige suchen
+            List<Angehoeriger> angehoerigeFound5 = angehoerigerDao.findAngehoerige(null);
+            assertNotNull("Keine Angehörigen gefunden", angehoerigeFound5);
+
+            // Angehörigen löschen
             angehoerigerDao.remove(angehoerigerSaved);
 
             tx.commit();

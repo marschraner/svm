@@ -43,56 +43,81 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
 
         StringBuilder selectStatementSb = new StringBuilder("select a from Angehoeriger a where");
 
-        if (angehoeriger.getVorname() != null) {
-            selectStatementSb.append(" a.vorname = :vorname and");
-        }
-        if (angehoeriger.getNachname() != null) {
-            selectStatementSb.append(" a.nachname = :nachname and");
-        }
-        if (angehoeriger.getNatel() != null) {
-            selectStatementSb.append(" a.natel = :natel and");
-        }
-        if (angehoeriger.getEmail() != null) {
-            selectStatementSb.append(" a.email = :email and");
-        }
-        if (angehoeriger.getAdresse() != null) {
-            selectStatementSb.append(" a.adresse.strasse = :strasse and");
-            selectStatementSb.append(" a.adresse.plz = :plz and");
-            selectStatementSb.append(" a.adresse.ort = :ort and");
-            if (angehoeriger.getAdresse().getHausnummer() != null) {
-                selectStatementSb.append(" a.adresse.hausnummer = :hausnummer and");
+        if (angehoeriger != null) {
+
+            if (angehoeriger.getVorname() != null) {
+                selectStatementSb.append(" a.vorname = :vorname and");
             }
-            if (angehoeriger.getAdresse().getFestnetz() != null) {
-                selectStatementSb.append(" a.adresse.festnetz = :festnetz and");
+            if (angehoeriger.getNachname() != null) {
+                selectStatementSb.append(" a.nachname = :nachname and");
             }
+            if (angehoeriger.getNatel() != null) {
+                selectStatementSb.append(" a.natel = :natel and");
+            }
+            if (angehoeriger.getEmail() != null) {
+                selectStatementSb.append(" a.email = :email and");
+            }
+            if (angehoeriger.getAdresse() != null) {
+                if (angehoeriger.getAdresse().getStrasse() != null) {
+                    selectStatementSb.append(" a.adresse.strasse = :strasse and");
+                }
+                if (angehoeriger.getAdresse().getHausnummer() != null) {
+                    selectStatementSb.append(" a.adresse.hausnummer = :hausnummer and");
+                }
+                if (angehoeriger.getAdresse().getPlz() != null) {
+                    selectStatementSb.append(" a.adresse.plz = :plz and");
+                }
+                if (angehoeriger.getAdresse().getOrt() != null) {
+                    selectStatementSb.append(" a.adresse.ort = :ort and");
+                }
+                if (angehoeriger.getAdresse().getFestnetz() != null) {
+                    selectStatementSb.append(" a.adresse.festnetz = :festnetz and");
+                }
+            }
+
+            // Letztes " and" löschen
+            if (selectStatementSb.substring(selectStatementSb.length() - 4).equals(" and")) {
+                selectStatementSb.setLength(selectStatementSb.length() - 4);
+            }
+
         }
 
-        // Letztes " and" löschen
-        selectStatementSb.setLength(selectStatementSb.length() - 4);
-
+        // "where" löschen, falls dieses am Schluss steht
+        if (selectStatementSb.substring(selectStatementSb.length() - 5).equals("where")) {
+            selectStatementSb.setLength(selectStatementSb.length() - 5);
+        }
+        System.out.println("selectStatement: " + selectStatementSb.toString());
         TypedQuery<Angehoeriger> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Angehoeriger.class);
 
-        if (angehoeriger.getVorname() != null) {
-            typedQuery.setParameter("vorname", angehoeriger.getVorname());
-        }
-        if (angehoeriger.getVorname() != null) {
-            typedQuery.setParameter("nachname", angehoeriger.getNachname());
-        }
-        if (angehoeriger.getNatel() != null) {
-            typedQuery.setParameter("natel", angehoeriger.getNatel());
-        }
-        if (angehoeriger.getEmail() != null) {
-            typedQuery.setParameter("email", angehoeriger.getEmail());
-        }
-        if (angehoeriger.getAdresse() != null) {
-            typedQuery.setParameter("strasse", angehoeriger.getAdresse().getStrasse());
-            typedQuery.setParameter("plz", angehoeriger.getAdresse().getPlz());
-            typedQuery.setParameter("ort", angehoeriger.getAdresse().getOrt());
-            if (angehoeriger.getAdresse().getHausnummer() != null) {
-                typedQuery.setParameter("hausnummer", angehoeriger.getAdresse().getHausnummer());
+        if (angehoeriger != null) {
+            if (angehoeriger.getVorname() != null) {
+                typedQuery.setParameter("vorname", angehoeriger.getVorname());
             }
-            if (angehoeriger.getAdresse().getFestnetz() != null) {
-                typedQuery.setParameter("festnetz", angehoeriger.getAdresse().getFestnetz());
+            if (angehoeriger.getVorname() != null) {
+                typedQuery.setParameter("nachname", angehoeriger.getNachname());
+            }
+            if (angehoeriger.getNatel() != null) {
+                typedQuery.setParameter("natel", angehoeriger.getNatel());
+            }
+            if (angehoeriger.getEmail() != null) {
+                typedQuery.setParameter("email", angehoeriger.getEmail());
+            }
+            if (angehoeriger.getAdresse() != null) {
+                if (angehoeriger.getAdresse().getStrasse() != null) {
+                    typedQuery.setParameter("strasse", angehoeriger.getAdresse().getStrasse());
+                }
+                if (angehoeriger.getAdresse().getHausnummer() != null) {
+                    typedQuery.setParameter("hausnummer", angehoeriger.getAdresse().getHausnummer());
+                }
+                if (angehoeriger.getAdresse().getPlz() != null) {
+                    typedQuery.setParameter("plz", angehoeriger.getAdresse().getPlz());
+                }
+                if (angehoeriger.getAdresse().getOrt() != null) {
+                    typedQuery.setParameter("ort", angehoeriger.getAdresse().getOrt());
+                }
+                if (angehoeriger.getAdresse().getFestnetz() != null) {
+                    typedQuery.setParameter("festnetz", angehoeriger.getAdresse().getFestnetz());
+                }
             }
         }
 

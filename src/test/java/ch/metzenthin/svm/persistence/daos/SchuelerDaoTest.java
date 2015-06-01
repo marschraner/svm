@@ -274,7 +274,7 @@ public class SchuelerDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            // Schüler
+            // Schüler einfügen
             Schueler schueler = new Schueler("Lea", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, null);
             Adresse adresse = new Adresse("Gugusweg", "16", "8049", "Zürich", "044 491 69 33");
             schueler.setNewAdresse(adresse);
@@ -288,7 +288,7 @@ public class SchuelerDaoTest {
 
             entityManager.flush();
 
-            // Create second Schüler with the same attributes
+            // Zweiten Schüler mit denselben Attributen einfügen
             Schueler schueler2 = new Schueler("Lea", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, null);
             Adresse adresse2 = new Adresse("Gugusweg", "16", "8049", "Zürich", "044 491 69 33");
             schueler2.setNewAdresse(adresse2);
@@ -299,7 +299,7 @@ public class SchuelerDaoTest {
             Schueler schuelerFound2 = schuelerList2.get(0);
             assertNotNull("Schüler nicht gefunden", schuelerFound2);
 
-            // Ditto, but Schüler with another strasse:
+            // Ditto, aber andere Strasse:
             Schueler schueler3 = new Schueler("Lea", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, null);
             Adresse adresse3 = new Adresse("Gugusstrasse", "16", "8049", "Zürich", "044 491 69 33");
             schueler3.setNewAdresse(adresse3);
@@ -308,7 +308,11 @@ public class SchuelerDaoTest {
             List<Schueler> schuelerList3 = schuelerDao.findSchueler(schueler3);
             assertNull("Schüler gefunden", schuelerList3);
 
-            // Delete Schüler
+            // Sämtliche Schüler suchen
+            List<Schueler> schuelerList4 = schuelerDao.findSchueler(null);
+            assertNotNull("Keine Schüler gefunden", schuelerList4);
+
+            // Schüler löschen
             schuelerDao.remove(schuelerSaved);
 
             tx.commit();
