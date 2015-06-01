@@ -61,23 +61,19 @@ public abstract class Person {
     }
 
     public boolean isIdenticalWith(Person otherPerson) {
-        if (otherPerson == null) {
-            return false;
-        }
-        return anrede.equals(otherPerson.getAnrede())
+        return otherPerson != null
+                && anrede.equals(otherPerson.getAnrede())
                 && vorname.equals(otherPerson.getVorname())
                 && nachname.equals(otherPerson.getNachname())
-                && geburtsdatum.equals(otherPerson.getGeburtsdatum())
-                && natel.equals(otherPerson.getNatel())
-                && email.equals(otherPerson.getEmail())
-                && adresse.isIdenticalWith(otherPerson.getAdresse());
+                && ((geburtsdatum == null && otherPerson.getGeburtsdatum() == null) || (geburtsdatum != null && geburtsdatum.equals(otherPerson.getGeburtsdatum())))
+                && ((natel == null && otherPerson.getNatel() == null) || (natel != null && natel.equals(otherPerson.getNatel())))
+                && ((email == null && otherPerson.getEmail() == null) || (email != null && email.equals(otherPerson.getEmail())))
+                && ((adresse == null && otherPerson.getAdresse() == null) || (adresse != null && adresse.isIdenticalWith(otherPerson.getAdresse())));
     }
 
     public boolean isPartOf(Person otherPerson) {
-        if (otherPerson == null) {
-            return false;
-        }
-        return vorname.equals(otherPerson.getVorname())
+        return otherPerson != null
+                && vorname.equals(otherPerson.getVorname())
                 && nachname.equals(otherPerson.getNachname())
                 && (geburtsdatum == null || geburtsdatum.equals(otherPerson.getGeburtsdatum()))
                 && (natel == null || natel.trim().isEmpty() || natel.equals(otherPerson.getNatel()))
@@ -89,21 +85,21 @@ public abstract class Person {
     public String toString() {
         StringBuilder personSb = new StringBuilder();
         if (anrede != Anrede.KEINE) {
-            personSb.append(anrede + " ");
+            personSb.append(anrede).append(" ");
         }
         personSb.append(vorname);
-        personSb.append(" " + nachname);
+        personSb.append(" ").append(nachname);
         if (geburtsdatum != null) {
-            personSb.append(", " + String.format("%1$td.%1$tm.%1$tY", geburtsdatum));
+            personSb.append(", ").append(String.format("%1$td.%1$tm.%1$tY", geburtsdatum));
         }
         if (adresse != null) {
-            personSb.append(", " + adresse.toString());
+            personSb.append(", ").append(adresse.toString());
         }
         if (natel != null) {
-            personSb.append(", " + natel);
+            personSb.append(", ").append(natel);
         }
         if (email != null) {
-            personSb.append(", " + email);
+            personSb.append(", ").append(email);
         }
         return personSb.toString();
     }

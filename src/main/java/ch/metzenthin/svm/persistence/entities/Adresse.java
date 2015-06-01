@@ -51,38 +51,40 @@ public class Adresse {
     }
 
     public boolean isIdenticalWith(Adresse otherAdresse) {
-        if (otherAdresse == null) {
-            return false;
-        }
-        return strasse.equals(otherAdresse.getStrasse())
-                && hausnummer.equals(otherAdresse.getHausnummer())
-                && plz.equals(otherAdresse.getPlz())
-                && ort.equals(otherAdresse.getOrt())
-                && festnetz.equals(otherAdresse.getFestnetz());
+        return otherAdresse != null
+                && ((strasse == null && otherAdresse.getStrasse() == null) || (strasse != null && strasse.equals(otherAdresse.getStrasse())))
+                && ((hausnummer == null && otherAdresse.getHausnummer() == null) || (hausnummer != null && hausnummer.equals(otherAdresse.getHausnummer())))
+                && ((plz == null && otherAdresse.getPlz() == null) || (plz != null && plz.equals(otherAdresse.getPlz())))
+                && ((ort == null && otherAdresse.getOrt() == null) || (ort != null && ort.equals(otherAdresse.getOrt())))
+                && ((festnetz == null && otherAdresse.getFestnetz() == null) || (festnetz != null && festnetz.equals(otherAdresse.getFestnetz())));
     }
 
     public boolean isPartOf(Adresse otherAdresse) {
-        if (otherAdresse == null) {
-            return false;
-        }
-        return strasse.equals(otherAdresse.getStrasse())
-                && plz.equals(otherAdresse.getPlz())
-                && ort.equals(otherAdresse.getOrt())
+        return otherAdresse != null
+                && (strasse == null || strasse.trim().isEmpty() || strasse.equals(otherAdresse.getStrasse()))
                 && (hausnummer == null || hausnummer.trim().isEmpty() || hausnummer.equals(otherAdresse.getHausnummer()))
+                && (plz == null || plz.trim().isEmpty() || plz.equals(otherAdresse.getPlz()))
+                && (ort == null || ort.trim().isEmpty() || ort.equals(otherAdresse.getOrt()))
                 && (festnetz == null || festnetz.trim().isEmpty() || festnetz.equals(otherAdresse.getFestnetz()));
     }
 
     @Override
     public String toString() {
         StringBuilder adresseSb = new StringBuilder();
-        adresseSb.append(strasse);
-        if (hausnummer != null && !hausnummer.trim().isEmpty()) {
-            adresseSb.append(" " + hausnummer);
+        if (strasse != null && !strasse.trim().isEmpty()) {
+            adresseSb.append(strasse);
         }
-        adresseSb.append(", " + plz);
-        adresseSb.append(" " + ort);
+        if (hausnummer != null && !hausnummer.trim().isEmpty()) {
+            adresseSb.append(" ").append(hausnummer);
+        }
+        if (plz != null && !plz.trim().isEmpty()) {
+            adresseSb.append(", ").append(plz);
+        }
+        if (ort != null && !ort.trim().isEmpty()) {
+            adresseSb.append(" ").append(ort);
+        }
         if (festnetz != null && !festnetz.isEmpty()) {
-            adresseSb.append(", " + festnetz);
+            adresseSb.append(", ").append(festnetz);
         }
         return adresseSb.toString();
     }

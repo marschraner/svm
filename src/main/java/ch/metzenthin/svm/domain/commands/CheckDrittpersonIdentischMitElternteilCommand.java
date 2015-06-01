@@ -5,15 +5,20 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 /**
  * @author Martin Schraner
  */
-public class CheckDrittpersonIdentischMitElternteilCommand extends GenericDaoCommand {
+public class CheckDrittpersonIdentischMitElternteilCommand implements Command {
 
     private Angehoeriger mutter;
     private Angehoeriger vater;
     private Angehoeriger rechnungsempfaengerDrittperson;
 
+    public static String ERROR_IDENTISCH_MIT_MUTTER = "Rechnungsempfänger Drittperson ist identisch mit Mutter. Setze Mutter als Rechnungsempfängerin.";
+    public static String ERROR_WAHRSCHEINLICH_IDENTISCH_MIT_MUTTER = "Rechnungsempfänger Drittperson und Mutter scheinen identisch zu sein. Setze Mutter als Rechnungsempfängerin oder präzisiere Mutter.";
+    public static String ERROR_IDENTISCH_MIT_VATER = "Rechnungsempfänger Drittperson ist identisch mit Vater. Setze Vater als Rechnungsempfänger.";
+    public static String ERROR_WAHRSCHEINLICH_IDENTISCH_MIT_VATER = "Rechnungsempfänger Drittperson und Vater scheinen identisch zu sein. Setze Vater als Rechnungsempfänger oder präzisiere Vater.";
+
     // output
     private boolean identical;
-    private String resultMessage;
+    private String errorDrittpersonIdentischMitElternteil;
 
     public CheckDrittpersonIdentischMitElternteilCommand(Angehoeriger mutter, Angehoeriger vater, Angehoeriger rechnungsempfaengerDrittperson) {
         this.mutter = mutter;
@@ -26,32 +31,32 @@ public class CheckDrittpersonIdentischMitElternteilCommand extends GenericDaoCom
 
         if (rechnungsempfaengerDrittperson == null) {
             identical = false;
-            resultMessage = "";
+            errorDrittpersonIdentischMitElternteil = "";
         }
 
-        else if (rechnungsempfaengerDrittperson.isIdenticalWith(mutter)) {
+        else if (mutter.isIdenticalWith(rechnungsempfaengerDrittperson)) {
             identical = true;
-            resultMessage = "FEHLER: Rechnungsempfänger Drittperson ist identisch mit Mutter. Setze Mutter als Rechnungsempfängerin.";
+            errorDrittpersonIdentischMitElternteil = ERROR_IDENTISCH_MIT_MUTTER;
         }
 
-        else if (rechnungsempfaengerDrittperson.isPartOf(mutter) || mutter.isPartOf(rechnungsempfaengerDrittperson)) {
+        else if (mutter.isPartOf(rechnungsempfaengerDrittperson)) {
             identical = true;
-            resultMessage = "FEHLER: Rechnungsempfänger Drittperson und Mutter scheinen identisch zu sein. Setze Mutter als Rechnungsempfängerin.";
+            errorDrittpersonIdentischMitElternteil = ERROR_WAHRSCHEINLICH_IDENTISCH_MIT_MUTTER;
         }
 
-        else if (rechnungsempfaengerDrittperson.isIdenticalWith(vater)) {
+        else if (vater.isIdenticalWith(rechnungsempfaengerDrittperson)) {
             identical = true;
-            resultMessage = "FEHLER: Rechnungsempfänger Drittperson ist identisch mit Vater. Setze Vater als Rechnungsempfänger.";
+            errorDrittpersonIdentischMitElternteil = ERROR_IDENTISCH_MIT_VATER;
         }
 
-        else if (rechnungsempfaengerDrittperson.isPartOf(vater) || vater.isPartOf(rechnungsempfaengerDrittperson)) {
+        else if (vater.isPartOf(rechnungsempfaengerDrittperson)) {
             identical = true;
-            resultMessage = "FEHLER: Rechnungsempfänger Drittperson und Vater scheinen identisch zu sein. Setze Vater als Rechnungsempfänger.";
+            errorDrittpersonIdentischMitElternteil = ERROR_WAHRSCHEINLICH_IDENTISCH_MIT_VATER;
         }
 
         else {
             identical = false;
-            resultMessage = "";
+            errorDrittpersonIdentischMitElternteil = "";
         }
 
     }
@@ -60,7 +65,7 @@ public class CheckDrittpersonIdentischMitElternteilCommand extends GenericDaoCom
         return identical;
     }
 
-    public String getResultMessage() {
-        return resultMessage;
+    public String getErrorDrittpersonIdentischMitElternteil() {
+        return errorDrittpersonIdentischMitElternteil;
     }
 }

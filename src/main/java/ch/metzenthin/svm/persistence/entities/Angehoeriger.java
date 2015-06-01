@@ -3,7 +3,6 @@ package ch.metzenthin.svm.persistence.entities;
 import ch.metzenthin.svm.dataTypes.Anrede;
 
 import javax.persistence.*;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,8 +26,8 @@ public class Angehoeriger extends Person {
     public Angehoeriger() {
     }
 
-    public Angehoeriger(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String natel, String email) {
-        super(anrede, vorname, nachname, geburtsdatum, natel, email);
+    public Angehoeriger(Anrede anrede, String vorname, String nachname, String natel, String email) {
+        super(anrede, vorname, nachname, null, natel, email);
     }
 
     public Set<Schueler> getKinderVater() {
