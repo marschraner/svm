@@ -94,14 +94,12 @@ public class Schueler extends Person {
         return vater;
     }
 
-    public void setNewVater(Angehoeriger vater) {
+    public void setVater(Angehoeriger vater) {
+        if (this.vater != null) {
+            deleteVater(this.vater);
+        }
         vater.getKinderVater().add(this);
         this.vater = vater;
-    }
-
-    public void replaceVater(Angehoeriger oldVater, Angehoeriger newVater) {
-        deleteVater(oldVater);
-        setNewVater(newVater);
     }
 
     public void deleteVater(Angehoeriger vater) {
@@ -112,14 +110,12 @@ public class Schueler extends Person {
         return mutter;
     }
 
-    public void setNewMutter(Angehoeriger mutter) {
+    public void setMutter(Angehoeriger mutter) {
+        if (this.mutter != null) {
+            deleteMutter(this.mutter);
+        }
         mutter.getKinderMutter().add(this);
         this.mutter = mutter;
-    }
-
-    public void replaceMutter(Angehoeriger oldMutter, Angehoeriger newMutter) {
-        deleteMutter(oldMutter);
-        setNewMutter(newMutter);
     }
 
     public void deleteMutter(Angehoeriger mutter) {
@@ -130,14 +126,12 @@ public class Schueler extends Person {
         return rechnungsempfaenger;
     }
 
-    public void setNewRechnungsempfaenger(Angehoeriger rechnungsempfaenger) {
+    public void setRechnungsempfaenger(Angehoeriger rechnungsempfaenger) {
+        if (this.rechnungsempfaenger != null) {
+            deleteRechnungsempfaenger(this.rechnungsempfaenger);
+        }
         rechnungsempfaenger.getSchuelerRechnungsempfaenger().add(this);
         this.rechnungsempfaenger = rechnungsempfaenger;
-    }
-
-    public void replaceRechnungsempfaenger(Angehoeriger oldRechnungsempfaenger, Angehoeriger newRechnungsempfaenger) {
-        deleteRechnungsempfaenger(oldRechnungsempfaenger);
-        setNewRechnungsempfaenger(newRechnungsempfaenger);
     }
 
     public void deleteRechnungsempfaenger(Angehoeriger rechnungsempfaenger) {

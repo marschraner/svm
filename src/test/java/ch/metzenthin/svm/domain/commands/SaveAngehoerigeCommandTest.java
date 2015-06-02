@@ -47,12 +47,12 @@ public class SaveAngehoerigeCommandTest {
 
         Angehoeriger angehoeriger0 = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null);
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich", "044 491 69 33");
-        angehoeriger0.setNewAdresse(adresse);
+        angehoeriger0.setAdresse(adresse);
         angehoerige.add(angehoeriger0);
 
         // Second Angehoeriger with the same address
         Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null);
-        angehoeriger1.setNewAdresse(adresse);
+        angehoeriger1.setAdresse(adresse);
         angehoerige.add(angehoeriger1);
 
         SaveAngehoerigeCommand saveAngehoerigeCommand = new SaveAngehoerigeCommand(angehoerige);

@@ -74,21 +74,21 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         howToProceed();
 
         if (mutter != null) {
-            schueler.setNewMutter(mutter);
+            schueler.setMutter(mutter);
             if (mutterIsRechnungsempfaenger) {
-                schueler.setNewRechnungsempfaenger(mutter);
+                schueler.setRechnungsempfaenger(mutter);
             }
         }
 
         if (vater != null) {
-            schueler.setNewVater(vater);
+            schueler.setVater(vater);
             if (vaterIsRechnungsempfaenger) {
-                schueler.setNewRechnungsempfaenger(vater);
+                schueler.setRechnungsempfaenger(vater);
             }
         }
 
         if (rechnungsempfaengerDrittperson != null) {
-            schueler.setNewRechnungsempfaenger(rechnungsempfaengerDrittperson);
+            schueler.setRechnungsempfaenger(rechnungsempfaengerDrittperson);
         }
         
 // todo Wenn Attribute null sind, gibt es NullPointerException in den Vergleichen (...isIdentical...)
@@ -201,7 +201,6 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                     mutterFoundList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
                     break;
             }
-            return;
         }
 
 
@@ -307,7 +306,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                 break;
             case MUTTER_AUS_DATENBANK_UEBERNEHMEN:
                 skipCheckMutterBereitsInDatenbank = true;
-                schueler.replaceMutter(mutter, mutterFound);
+                schueler.setMutter(mutterFound);
                 mutter = null;
                 break;
         }

@@ -223,9 +223,9 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         Calendar calendar = Converter.toCalendarIgnoreException("01.01.1965");
         vaterModel.getAngehoeriger().setGeburtsdatum(calendar);
         mutterModel.getAngehoeriger().setGeburtsdatum(calendar);
-        schuelerModel.getSchueler().setNewAdresse(schuelerModel.getAdresse());
-        vaterModel.getAngehoeriger().setNewAdresse(vaterModel.getAdresse());
-        mutterModel.getAngehoeriger().setNewAdresse(mutterModel.getAdresse());
+        schuelerModel.getSchueler().setAdresse(schuelerModel.getAdresse());
+        vaterModel.getAngehoeriger().setAdresse(vaterModel.getAdresse());
+        mutterModel.getAngehoeriger().setAdresse(mutterModel.getAdresse());
         // todo $$$ ende hack
         AngehoerigerModel rechnungsempfaenger = getRechnungsempfaengerModel();
         ValidateSchuelerCommand validateSchuelerCommand = new ValidateSchuelerCommand(
