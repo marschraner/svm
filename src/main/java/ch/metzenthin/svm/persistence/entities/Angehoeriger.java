@@ -15,12 +15,15 @@ import java.util.Set;
 public class Angehoeriger extends Person {
 
     @OneToMany(mappedBy = "vater")
+    @OrderBy("nachname, vorname")
     private Set<Schueler> kinderVater = new HashSet<>();
 
     @OneToMany(mappedBy = "mutter")
+    @OrderBy("nachname, vorname")
     private Set<Schueler> kinderMutter = new HashSet<>();
 
     @OneToMany(mappedBy = "rechnungsempfaenger")
+    @OrderBy("nachname, vorname")
     private Set<Schueler> schuelerRechnungsempfaenger = new HashSet<>();
 
     public Angehoeriger() {

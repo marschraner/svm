@@ -591,7 +591,7 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getInfoIdentischeAdressen().isEmpty());
         assertTrue(checkIdentischeAdressenCommand.getInfoAbweichendeAdressen().contains("Schüler und Vater"));
-        assertNotEquals(schueler3.getAdresse(), vater3.getAdresse());
+        assertNotEquals(schueler3.getAdresse(), mutter3.getAdresse());
 
         // ohne Mutter
         checkIdentischeAdressenCommand = new CheckIdentischeAdressenCommand(schueler3, null, vater3, null);
