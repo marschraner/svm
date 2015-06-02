@@ -89,9 +89,6 @@ public abstract class Person {
         }
         personSb.append(vorname);
         personSb.append(" ").append(nachname);
-        if (geburtsdatum != null) {
-            personSb.append(", ").append(String.format("%1$td.%1$tm.%1$tY", geburtsdatum));
-        }
         if (adresse != null) {
             personSb.append(", ").append(adresse.toString());
         }
@@ -100,6 +97,9 @@ public abstract class Person {
         }
         if (email != null) {
             personSb.append(", ").append(email);
+        }
+        if (geburtsdatum != null) {
+            personSb.append(", ").append(String.format("%1$td.%1$tm.%1$tY", geburtsdatum));
         }
         return personSb.toString();
     }
@@ -164,14 +164,12 @@ public abstract class Person {
         return adresse;
     }
 
-    public void setNewAdresse(Adresse adresse) {
+    public void setAdresse(Adresse adresse) {
+        if (this.adresse != null) {
+            deleteAdresse(this.adresse);
+        }
         adresse.getPersonen().add(this);
         this.adresse = adresse;
-    }
-
-    public void replaceAdresse(Adresse oldAdresse, Adresse newAdresse) {
-        deleteAdresse(oldAdresse);
-        setNewAdresse(newAdresse);
     }
 
     public void deleteAdresse(Adresse adresse) {

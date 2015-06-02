@@ -49,9 +49,9 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         Schueler schueler = new Schueler("Yolanda", "Bruggisser", new GregorianCalendar(2000, Calendar.JANUARY, 20), null, null, Geschlecht.W, new GregorianCalendar(2000, Calendar.JANUARY, 20), null, null);
         Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
         Adresse adresse = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", "056 426 69 15");
-        rechnungsempfaenger.setNewAdresse(adresse);
-        schueler.setNewAdresse(adresse);
-        schueler.setNewRechnungsempfaenger(rechnungsempfaenger);
+        rechnungsempfaenger.setAdresse(adresse);
+        schueler.setAdresse(adresse);
+        schueler.setRechnungsempfaenger(rechnungsempfaenger);
 
         CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schueler);
         try {
@@ -69,9 +69,9 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         Schueler schueler = new Schueler("Carla", "Bruggisser", new GregorianCalendar(2000, Calendar.JANUARY, 20), null, null, Geschlecht.W, new GregorianCalendar(2000, Calendar.JANUARY, 20), null, null);
         Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
         Adresse adresse = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", "056 426 69 15");
-        rechnungsempfaenger.setNewAdresse(adresse);
-        schueler.setNewAdresse(adresse);
-        schueler.setNewRechnungsempfaenger(rechnungsempfaenger);
+        rechnungsempfaenger.setAdresse(adresse);
+        schueler.setAdresse(adresse);
+        schueler.setRechnungsempfaenger(rechnungsempfaenger);
 
         CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schueler);
         try {
@@ -97,9 +97,9 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
             Schueler schueler = new Schueler("Carla", "Bruggisser", new GregorianCalendar(2000, Calendar.JANUARY, 20), null, null, Geschlecht.W, new GregorianCalendar(2000, Calendar.JANUARY, 20), null, null);
             Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
             Adresse adresse = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", "056 426 69 15");
-            rechnungsempfaenger.setNewAdresse(adresse);
-            schueler.setNewAdresse(adresse);
-            schueler.setNewRechnungsempfaenger(rechnungsempfaenger);
+            rechnungsempfaenger.setAdresse(adresse);
+            schueler.setAdresse(adresse);
+            schueler.setRechnungsempfaenger(rechnungsempfaenger);
             schuelerTestdata = schuelerDao.save(schueler);
 
             entityManager.getTransaction().commit();
