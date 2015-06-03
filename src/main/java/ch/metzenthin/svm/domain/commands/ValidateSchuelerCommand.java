@@ -11,19 +11,33 @@ import java.util.List;
 public class ValidateSchuelerCommand extends GenericDaoCommand {
 
     enum Result {
-        SCHUELER_IN_DATENBANK,
+        SCHUELER_BEREITS_IN_DATENBANK,
         MUTTER_NICHT_IN_DATENBANK,
         MUTTER_EIN_EINTRAG_PASST,
         MUTTER_MEHRERE_EINTRAEGE_PASSEN,
         MUTTER_EIN_EINTRAG_PASST_TEILWEISE,
         MUTTER_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE,
+        VATER_NICHT_IN_DATENBANK,
+        VATER_EIN_EINTRAG_PASST,
+        VATER_MEHRERE_EINTRAEGE_PASSEN,
+        VATER_EIN_EINTRAG_PASST_TEILWEISE,
+        VATER_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE,
+        RECHNUNGSEMPFAENGER_DRITTPERSON_NICHT_IN_DATENBANK,
+        RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_PASST,
+        RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_PASSEN,
+        RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_PASST_TEILWEISE,
+        RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE,
         CHECK_IDENTISCHE_ADRESSEN_COMMAND_FINISHED,
-        CHECK_IDENTIFY_GESCHWISTER_COMMAND_FINISHED
+        CHECK_GESCHWISTER_SCHUELER_RECHNUGSEMFPAENGER_COMMAND_FINISHED
     }
 
-    enum Proceed {
-        MUTTER_NEU_ERFASSEN,
-        MUTTER_AUS_DATENBANK_UEBERNEHMEN
+    enum Entry {
+        NEU_ERFASSTEN_SCHUELER_VALIDIEREN,
+        BEARBEITETEN_SCHUELER_VALIDIEREN,
+        MUTTER_AUS_DATENBANK_UEBERNEHMEN,
+        VATER_AUS_DATENBANK_UEBERNEHMEN,
+        RECHNUNGSEMPFAENGER_DRITTPERSON_AUS_DATENBANK_UEBERNEHMEN,
+        SUMMARY_BESTAETIGT
     }
 
     // input
@@ -33,21 +47,33 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     private Angehoeriger vater;
     private boolean vaterIsRechnungsempfaenger;
     private Angehoeriger rechnungsempfaengerDrittperson;
+    private Entry entry;
 
-
-
-    private Proceed proceed;
-
-    private boolean skipCheckMutterBereitsInDatenbank = false;
-
-    // output:
+    // output
     private Result result;
-    private Angehoeriger mutterFound;
-    private List<Angehoeriger> mutterFoundList;
-    private String infoIdentischeAdressen = "";
-    private String infoAbweichendeAdressen = "";
-    private String infoGeschwister;
-    private String infoSchuelerRechnungsempfaenger;
+    private Result resultCheckMutterBereitsInDatenbank;
+    private Result resultCheckVaterBereitsInDatenbank;
+    private Result resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
+    private Schueler schuelerFoundInDatabase;
+    private Angehoeriger mutterFoundInDatabase;
+    private List<Angehoeriger> mutterFoundInDatabaseList;
+    private Angehoeriger vaterFoundInDatabase;
+    private List<Angehoeriger> vaterFoundInDatabaseList;
+    private Angehoeriger rechnungsempfaengerDrittpersonFoundInDatabase;
+    private List<Angehoeriger> rechnungsempfaengerDrittpersonFoundInDatabaseList;
+    private String identischeAdressen;
+    private String abweichendeAdressen;
+    private List<Schueler> angemeldeteGeschwisterList;
+    private List<Schueler> andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList;
+
+    // skip-Variablen
+    private boolean skipMutterVaterDrittpersonAusGuiUebernehmen = false;
+    private boolean skipCheckSchuelerBereitsInDatenbank = false;
+    private boolean skipCheckMutterBereitsInDatenbank = false;
+    private boolean skipCheckVaterBereitsInDatenbank = false;
+    private boolean skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank = false;
+    private boolean skipCheckIdentischeAdressen = false;
+    private boolean skipCheckGeschwisterSchuelerRechnungsempfaenger = false;
 
     public ValidateSchuelerCommand(Schueler schueler, Angehoeriger mutter, boolean mutterIsRechnungsempfaenger, Angehoeriger vater, boolean vaterIsRechnungsempfaenger, Angehoeriger rechnungsempfaengerDrittperson) {
         this.schueler = schueler;
@@ -58,262 +84,296 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         this.rechnungsempfaengerDrittperson = rechnungsempfaengerDrittperson;
     }
 
-    // Rechnungsempfänger identisch mit...
-    // Separater Rechnungsempfänger
-    // Adressen von .... identisch
-    // Adressen von ... verschieden
-    // Vater, Mutter, ... bereits in Datenbank vorhanden
-    // Vater, .... wird neu angelegt
-    // In DB erfasste Geschwister gefunden: ...
-    // Keine andere Geschwister erfasst.
-
-
     @Override
     public void execute() {
 
-        howToProceed();
+        determineHowToProceed();
 
-        if (mutter != null) {
-            schueler.setMutter(mutter);
-            if (mutterIsRechnungsempfaenger) {
-                schueler.setRechnungsempfaenger(mutter);
+        // 1. Mutter, Vater und Drittperson aus GUI übernehmen
+        if (!skipMutterVaterDrittpersonAusGuiUebernehmen) {
+            skipMutterVaterDrittpersonAusGuiUebernehmen = true;
+            if (mutter != null) {
+                schueler.setMutter(mutter);
+                if (mutterIsRechnungsempfaenger) {
+                    schueler.setRechnungsempfaenger(mutter);
+                }
+            }
+            if (vater != null) {
+                schueler.setVater(vater);
+                if (vaterIsRechnungsempfaenger) {
+                    schueler.setRechnungsempfaenger(vater);
+                }
+            }
+            if (rechnungsempfaengerDrittperson != null) {
+                schueler.setRechnungsempfaenger(rechnungsempfaengerDrittperson);
             }
         }
 
-        if (vater != null) {
-            schueler.setVater(vater);
-            if (vaterIsRechnungsempfaenger) {
-                schueler.setRechnungsempfaenger(vater);
-            }
-        }
-
-        if (rechnungsempfaengerDrittperson != null) {
-            schueler.setRechnungsempfaenger(rechnungsempfaengerDrittperson);
-        }
-        
-// todo Wenn Attribute null sind, gibt es NullPointerException in den Vergleichen (...isIdentical...)
-    //
-    // !!! NICHT durch commandInvoker aufrufen, weil immer derselbe EntityManager verwendet werden soll
-    // Aufruf:
-    // (0. Konstruktor)
-    // (1. SchuelerValidatorCommand.setEntityManager)
-
-
-    // Instanzvariablen:
-
-    // EntityManager entityMangager;
-    // SchuelerModel schuelerModel
-    // AngehoerigeModel mutterModel
-    // AngehoerigeModel vaterModel
-    // AngehoerigeModel rechnungsempfaengerDrittpersonModel
-    // Schueler schueler
-    // Angehoeriger mutter
-    // Angehoeriger vater
-    // Angehoeriger rechnungsempfaenger
-    // skip.... = false;
-    // skip...
-    // ...
-    //
-    // Konstruktor:
-    //
-    // Argumente: EntityManagerFactory emf, SchuelerModel schuelerModel, AngehoerigerModel mutterModel, AngehoerigerModel vaterModel, AngehoerigerModel rechnungsempfaengerDrittpersonModel
-    // setzt EntityManager und
-
-    // Methoden:
-
-    // execute() //aufgerufen bei onValidateClicked und untenstehende GUIs
-
-    // setAngehoeriger()   // um diese von Gui aus zu aktualisieren
-    // setSchueler()
-    //
-    // ruft 1.-6. auf (mit <commandName>.execute(), NICHT vom Invoker
-
-
-    // 1. Schüler schon in DB? (-> CheckIfSchuelerAlreadyinDatabaseCommand extends GenericDaoCommand)
-    // ********************************************************************
-    //
-    // if (!skipCheckIfSchuelerAlreadyinDatabase)...  -> SchuelerModelImpl)
-
-    // Command erzeugen
-    // command.setEntityManager(em) //eigenen Em übergeben
-    // command.execute()    // nicht mit Invoker aufrufen
-
-    // analoge Checks wie unten
-
-    // Input:  Schueler
-    // Output: DatabaseSearchResult result;
-    //         String message;
-
-    // falls !no-entry_fits
-    //    em close
-    //    show Dialog
-    //    return;
-    // else
-    //    skipCheckIfSchuelerAlreadyinDatabase = true;
-    //
-        CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schueler);
-        checkSchuelerBereitsInDatenbankCommand.setEntityManager(entityManager);
-        checkSchuelerBereitsInDatenbankCommand.execute();
-
-        // Bereits in DB
-        if (checkSchuelerBereitsInDatenbankCommand.isInDatenbank()) {
-            result = Result.SCHUELER_IN_DATENBANK;
-            schueler = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound();
-            return;
-        }
-
-
-
-    // 2. Angehörige bereits in DB? (-> CheckIfAngehoerigerAlreadyinDatabaseCommand)
-    // *****************************************************************************
-
-    // 2.a Mutter
-
-        if (!skipCheckMutterBereitsInDatenbank) {
-            CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(mutter);
+        // 2. Schüler bereits in Datenbank?
+        if (!skipCheckSchuelerBereitsInDatenbank) {
+            skipCheckSchuelerBereitsInDatenbank = true;
+            CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schueler);
             checkSchuelerBereitsInDatenbankCommand.setEntityManager(entityManager);
-            checkAngehoerigerBereitsInDatenbankCommand.execute();
+            checkSchuelerBereitsInDatenbankCommand.execute();
+            if (checkSchuelerBereitsInDatenbankCommand.isInDatenbank()) {
+                result = Result.SCHUELER_BEREITS_IN_DATENBANK;
+                schuelerFoundInDatabase = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound();
+                return;
+            }
+        }
 
+        // 3.a Mutter bereits in Datenbank?
+        if (schueler.getMutter() != null && !skipCheckMutterBereitsInDatenbank) {
+            skipCheckMutterBereitsInDatenbank = true;
+            CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getMutter());
+            checkAngehoerigerBereitsInDatenbankCommand.setEntityManager(entityManager);
+            checkAngehoerigerBereitsInDatenbankCommand.execute();
             switch (checkAngehoerigerBereitsInDatenbankCommand.getResult()) {
                 case NICHT_IN_DATENBANK:
-                    mutterFound = null;
-                    mutterFoundList = null;
-                    result = Result.MUTTER_NICHT_IN_DATENBANK;
+                    mutterFoundInDatabase = null;
+                    mutterFoundInDatabaseList = null;
+                    resultCheckMutterBereitsInDatenbank = Result.MUTTER_NICHT_IN_DATENBANK;
                     break;
                 case EIN_EINTRAG_PASST:
-                    result = Result.MUTTER_EIN_EINTRAG_PASST;
-                    mutterFound = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
-                    mutterFoundList = null;
-                    break;
+                    mutterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
+                    mutterFoundInDatabaseList = null;
+                    resultCheckMutterBereitsInDatenbank = Result.MUTTER_EIN_EINTRAG_PASST;
+                    result = resultCheckMutterBereitsInDatenbank;
+                    return;
                 case MEHRERE_EINTRAEGE_PASSEN:
-                    result = Result.MUTTER_MEHRERE_EINTRAEGE_PASSEN;
-                    mutterFound = null;
-                    mutterFoundList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
-                    break;
+                    mutterFoundInDatabase = null;
+                    mutterFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
+                    resultCheckMutterBereitsInDatenbank = Result.MUTTER_MEHRERE_EINTRAEGE_PASSEN;
+                    result = resultCheckMutterBereitsInDatenbank;
+                    return;
                 case EIN_EINTRAG_PASST_TEILWEISE:
-                    result = Result.MUTTER_EIN_EINTRAG_PASST_TEILWEISE;
-                    mutterFound = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
-                    mutterFoundList = null;
-                    break;
+                    mutterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
+                    mutterFoundInDatabaseList = null;
+                    resultCheckMutterBereitsInDatenbank = Result.MUTTER_EIN_EINTRAG_PASST_TEILWEISE;
+                    result = resultCheckMutterBereitsInDatenbank;
+                    return;
                 case MEHRERE_EINTRAEGE_PASSEN_TEILWEISE:
-                    result = Result.MUTTER_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE;
-                    mutterFound = null;
-                    mutterFoundList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
-                    break;
+                    mutterFoundInDatabase = null;
+                    mutterFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
+                    resultCheckMutterBereitsInDatenbank = Result.MUTTER_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE;
+                    result = resultCheckMutterBereitsInDatenbank;
+                    return;
             }
         }
 
+        // 3.b Vater bereits in Datenbank?
+        if (schueler.getVater() != null && !skipCheckVaterBereitsInDatenbank) {
+            skipCheckVaterBereitsInDatenbank = true;
+            CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getVater());
+            checkAngehoerigerBereitsInDatenbankCommand.setEntityManager(entityManager);
+            checkAngehoerigerBereitsInDatenbankCommand.execute();
+            switch (checkAngehoerigerBereitsInDatenbankCommand.getResult()) {
+                case NICHT_IN_DATENBANK:
+                    vaterFoundInDatabase = null;
+                    vaterFoundInDatabaseList = null;
+                    resultCheckVaterBereitsInDatenbank = Result.VATER_NICHT_IN_DATENBANK;
+                    break;
+                case EIN_EINTRAG_PASST:
+                    vaterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
+                    vaterFoundInDatabaseList = null;
+                    resultCheckVaterBereitsInDatenbank = Result.VATER_EIN_EINTRAG_PASST;
+                    result = resultCheckVaterBereitsInDatenbank;
+                    return;
+                case MEHRERE_EINTRAEGE_PASSEN:
+                    vaterFoundInDatabase = null;
+                    vaterFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
+                    resultCheckVaterBereitsInDatenbank = Result.VATER_MEHRERE_EINTRAEGE_PASSEN;
+                    result = resultCheckVaterBereitsInDatenbank;
+                    return;
+                case EIN_EINTRAG_PASST_TEILWEISE:
+                    vaterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
+                    vaterFoundInDatabaseList = null;
+                    resultCheckVaterBereitsInDatenbank = Result.VATER_EIN_EINTRAG_PASST_TEILWEISE;
+                    result = resultCheckVaterBereitsInDatenbank;
+                    return;
+                case MEHRERE_EINTRAEGE_PASSEN_TEILWEISE:
+                    vaterFoundInDatabase = null;
+                    vaterFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
+                    resultCheckVaterBereitsInDatenbank = Result.VATER_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE;
+                    result = resultCheckVaterBereitsInDatenbank;
+                    return;
+            }
+        }
 
-        // 3.b Vater
-    // 3.c Drittperson
+        // 3.c Rechnungsempfänger Drittperson bereits in Datenbank?
+        if (!mutterIsRechnungsempfaenger && !vaterIsRechnungsempfaenger && !skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank) {
+            skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank = true;
+            CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getRechnungsempfaenger());
+            checkAngehoerigerBereitsInDatenbankCommand.setEntityManager(entityManager);
+            checkAngehoerigerBereitsInDatenbankCommand.execute();
+            switch (checkAngehoerigerBereitsInDatenbankCommand.getResult()) {
+                case NICHT_IN_DATENBANK:
+                    rechnungsempfaengerDrittpersonFoundInDatabase = null;
+                    rechnungsempfaengerDrittpersonFoundInDatabaseList = null;
+                    resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_NICHT_IN_DATENBANK;
+                case EIN_EINTRAG_PASST:
+                    rechnungsempfaengerDrittpersonFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
+                    rechnungsempfaengerDrittpersonFoundInDatabaseList = null;
+                    resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_PASST;
+                    result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
+                    return;
+                case MEHRERE_EINTRAEGE_PASSEN:
+                    rechnungsempfaengerDrittpersonFoundInDatabase = null;
+                    rechnungsempfaengerDrittpersonFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
+                    resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_PASSEN;
+                    result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
+                    return;
+                case EIN_EINTRAG_PASST_TEILWEISE:
+                    rechnungsempfaengerDrittpersonFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
+                    rechnungsempfaengerDrittpersonFoundInDatabaseList = null;
+                    resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_PASST_TEILWEISE;
+                    result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
+                    return;
+                case MEHRERE_EINTRAEGE_PASSEN_TEILWEISE:
+                    rechnungsempfaengerDrittpersonFoundInDatabase = null;
+                    rechnungsempfaengerDrittpersonFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
+                    resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE;
+                    result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
+                    return;
+            }
+        }
 
-    // Input:  Angehoerige
-    // Output: DatabaseSearchResult result;
-    //         String message;
-    //         Angehoeriger angehoerigerAnswer1;
-    //         Angehoeriger angehoerigerAnswer2;
-    //         Angehoeriger angehoerigerAnswer3;
+        // 4. Identische Adressen?
+        if (!skipCheckIdentischeAdressen) {
+            skipCheckIdentischeAdressen = true;
+            CheckIdentischeAdressenCommand checkIdentischeAdressenCommand = new CheckIdentischeAdressenCommand(schueler);
+            checkIdentischeAdressenCommand.execute();
+            identischeAdressen = checkIdentischeAdressenCommand.getIdentischeAdressen();
+            abweichendeAdressen = checkIdentischeAdressenCommand.getAbweichendeAdressen();
+            result = Result.CHECK_IDENTISCHE_ADRESSEN_COMMAND_FINISHED;
+        }
 
-    // if (!skipCheckIfMutterAlreadyinDatabase) {
+        // 5. Nach Geschwistern suchen
+        if (!skipCheckGeschwisterSchuelerRechnungsempfaenger) {
+            skipCheckGeschwisterSchuelerRechnungsempfaenger = true;
+            CheckGeschwisterSchuelerRechnungempfaengerCommand checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler);
+            checkGeschwisterSchuelerRechnungempfaengerCommand.execute();
+            angemeldeteGeschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAngemeldeteGeschwisterList();
+            andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList();
+            result = Result.CHECK_GESCHWISTER_SCHUELER_RECHNUGSEMFPAENGER_COMMAND_FINISHED;
+            return;   // -> Summary-Dialog
+        }
 
-    // Command erzeugen
-    // command.setEntityManager(em) //eigenen Em übergeben
-    // command.execute()    // nicht mit Invoker aufrufen
-
-    //    CheckIfAngehoerigerAlreadyinDatabaseCommand checkIfMutterAlreadyInDatabaseCommand = new CheckIfAngehoerigerAlreadyinDatabaseCommand(mutter);
-    //
-    //    GUI-Model erzeugen und mit Output befüllen (u.a. this, d.h. SchuelerValidator-Instanz)
-    //    In jedem Fall eines der GUIs aufgerufen
-    // }
-
-    // ditto für Vater und Rechnungsempfänger Drittperson
-
-    // TITEL: Mutter bereits in der Datenbank erfasst? (vgl. Ubuntu-Buch S.47)
-    // Mögliche Resultate (Key / Value) und Reaktionen im GUI:
-    // MULTIPLE_ENTRIES_FIT_PARTIALLY: In der Datenbank wurden mehrere Einträge gefunden, die mit den erfassten Angaben teilweise übereinstimmen: ...
-    // - Keinen dieser Einträge verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen (-> mutter = ...command.getAngehoerigerAnswer1(); skipCheckIfMutterAlreadyinDatabase = True, Fenster schliessen und wieder onSaveClicked des GUI aufrufen)
-    // - Zurück und Mutter genauer erfassen und/oder erfasste Einträge korrigieren (-> mutter = ...command.getAngehoerigerAnswer2(), skipCheckIfMutterAlreadyinDatabase = False und Fenster schliessen (-> Gui))
-    // ONE_ENTRY_FITS_PARTIALLY: In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben teilweise übereinstimmt: ...
-    // - Diesen Eintrag verwenden und mit geänderten Angaben aktualisieren (angehoeriger = angehoerigerUpdated)
-    // - Nicht diesen Eintrag verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen
-    // - Erfasste Einträge korrigieren
-    // ONE_ENTRY_FIT: In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben passt: ...
-    // - Diesen Eintrag verwenden (angehoeriger = angehoerigerUpdated)
-    // - Erfasste Einträge korrigieren
-    // MULTIPLE_ENTRIES_FIT: In der Datenbank wurden mehrere Eintäge gefunden, die auf die erfassten Angaben der Mutter passen: ...
-    // Mutter muss genauer erfasst werden.
-    // - Ok
-    // NO_ENTRY_FITS;
-    // Mutter wird neu erfasst (noch nicht in Datenbank)
-    // - Ok
-    // - Abbrechen
-
-
-    // 3. Adressen identisch? (-> CheckIfAdressenAreIdentical)
-    // *******************************************************
-
-    // Input:  SchuelerModel, Angehoerige
-    // Output: String message;
-    //         Schueler schueler;
-
-    // if (!skipCheck...)
-    // GUI: zeigt Message an
-    // - Zurück (skipCheckMutter,..Vater,.. Ange AlreadInDb =false)
-    // - Weiter (skipCheckIfAdressenAreIdentical = true)
-
-
-    // 5. gefundene Geschwister / Kinder des Rechnungsempfängers
-    // *********
-
-    // Input/Output: schueler
-    // Output: boolean result (gefunden / nicht gefunden)
-    //         String message
-
-    // Gefunden:
-
-    // zurück (skipCheckAdressen = false)
-    // weiter (skipCheckIfAdressenAreIdentical = true)
-
-
-    // 6. Zusammenfassung  weglassen!!!!!!!!!!!!!!!¨
-    // ******************
-
-    // - zurück / Beenden und speichern
-
-
-    // 7. SaveCommand
-    // ***************
-
-    // em.getTransaction().begin()
-    // em.persist(schueler)
-    // em.getTransaction().commit
-    // em.close();
-
-    // catch {
-    // rollback und Entity Manager schliessen
-
+        // 6. Schüler speichern
+        SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
+        saveSchuelerCommand.setEntityManager(entityManager);
+        saveSchuelerCommand.execute();
 
     }
 
-    private void howToProceed() {
-        if (proceed == null) {
-            return;
+    /**
+     * Aktionen, die am Beginn durchgeführt werden sollen, abhängig vom Wert von entry.
+     */
+    private void determineHowToProceed() {
+        if (entry == null) {
+           throw new RuntimeException("Eintrittspunkt nicht gesetzt!");
         }
 
-        switch (proceed) {
-            case MUTTER_NEU_ERFASSEN:
-                skipCheckMutterBereitsInDatenbank = true;
+        switch (entry) {
+
+            case NEU_ERFASSTEN_SCHUELER_VALIDIEREN:
                 break;
+
+            case BEARBEITETEN_SCHUELER_VALIDIEREN:
+                skipCheckSchuelerBereitsInDatenbank = true;
+                break;
+
             case MUTTER_AUS_DATENBANK_UEBERNEHMEN:
-                skipCheckMutterBereitsInDatenbank = true;
-                schueler.setMutter(mutterFound);
+                schueler.setMutter(mutterFoundInDatabase);
+                if (mutterIsRechnungsempfaenger) {
+                    schueler.setRechnungsempfaenger(mutterFoundInDatabase);
+                }
                 mutter = null;
                 break;
+
+            case VATER_AUS_DATENBANK_UEBERNEHMEN:
+                schueler.setVater(vaterFoundInDatabase);
+                if (vaterIsRechnungsempfaenger) {
+                    schueler.setRechnungsempfaenger(vaterFoundInDatabase);
+                }
+                vater = null;
+                break;
+
+            case RECHNUNGSEMPFAENGER_DRITTPERSON_AUS_DATENBANK_UEBERNEHMEN:
+                schueler.setRechnungsempfaenger(rechnungsempfaengerDrittpersonFoundInDatabase);
+                rechnungsempfaengerDrittperson = null;
+                break;
+
+            case SUMMARY_BESTAETIGT:
+                break;
+
+            default:
+                throw new RuntimeException("Verhalten des Eintrittspunkts " + entry + " nicht definiert.");
         }
     }
 
-    public void setProceed(Proceed proceed) {
-        this.proceed = proceed;
+    public void setEntry(Entry entry) {
+        this.entry = entry;
+    }
+
+    public Result getResult() {
+        return result;
+    }
+
+    public Result getResultCheckMutterBereitsInDatenbank() {
+        return resultCheckMutterBereitsInDatenbank;
+    }
+
+    public Result getResultCheckVaterBereitsInDatenbank() {
+        return resultCheckVaterBereitsInDatenbank;
+    }
+
+    public Result getResultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank() {
+        return resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
+    }
+
+    public Schueler getSchuelerFoundInDatabase() {
+        return schuelerFoundInDatabase;
+    }
+
+    public Angehoeriger getMutterFoundInDatabase() {
+        return mutterFoundInDatabase;
+    }
+
+    public List<Angehoeriger> getMutterFoundInDatabaseList() {
+        return mutterFoundInDatabaseList;
+    }
+
+    public Angehoeriger getVaterFoundInDatabase() {
+        return vaterFoundInDatabase;
+    }
+
+    public List<Angehoeriger> getVaterFoundInDatabaseList() {
+        return vaterFoundInDatabaseList;
+    }
+
+    public Angehoeriger getRechnungsempfaengerDrittpersonFoundInDatabase() {
+        return rechnungsempfaengerDrittpersonFoundInDatabase;
+    }
+
+    public List<Angehoeriger> getRechnungsempfaengerDrittpersonFoundInDatabaseList() {
+        return rechnungsempfaengerDrittpersonFoundInDatabaseList;
+    }
+
+    public String getIdentischeAdressen() {
+        return identischeAdressen;
+    }
+
+    public String getAbweichendeAdressen() {
+        return abweichendeAdressen;
+    }
+
+    public List<Schueler> getAngemeldeteGeschwisterList() {
+        return angemeldeteGeschwisterList;
+    }
+
+    public List<Schueler> getAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList() {
+        return andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList;
     }
 }
 

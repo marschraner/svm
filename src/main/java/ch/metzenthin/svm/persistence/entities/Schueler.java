@@ -98,12 +98,15 @@ public class Schueler extends Person {
         if (this.vater != null) {
             deleteVater(this.vater);
         }
-        vater.getKinderVater().add(this);
+        if (vater != null) {
+            vater.getKinderVater().add(this);
+        }
         this.vater = vater;
     }
 
     public void deleteVater(Angehoeriger vater) {
         vater.getKinderVater().remove(this);
+        this.vater = null;
     }
 
     public Angehoeriger getMutter() {
@@ -114,12 +117,15 @@ public class Schueler extends Person {
         if (this.mutter != null) {
             deleteMutter(this.mutter);
         }
-        mutter.getKinderMutter().add(this);
+        if (mutter != null) {
+            mutter.getKinderMutter().add(this);
+        }
         this.mutter = mutter;
     }
 
     public void deleteMutter(Angehoeriger mutter) {
         mutter.getKinderMutter().remove(this);
+        this.mutter = null;
     }
 
     public Angehoeriger getRechnungsempfaenger() {
@@ -130,12 +136,15 @@ public class Schueler extends Person {
         if (this.rechnungsempfaenger != null) {
             deleteRechnungsempfaenger(this.rechnungsempfaenger);
         }
-        rechnungsempfaenger.getSchuelerRechnungsempfaenger().add(this);
+        if (rechnungsempfaenger != null) {
+            rechnungsempfaenger.getSchuelerRechnungsempfaenger().add(this);
+        }
         this.rechnungsempfaenger = rechnungsempfaenger;
     }
 
     public void deleteRechnungsempfaenger(Angehoeriger rechnungsempfaenger) {
         rechnungsempfaenger.getSchuelerRechnungsempfaenger().remove(this);
+        this.rechnungsempfaenger = null;
     }
 
     public void addDispensation(Dispensation dispensation) {

@@ -168,11 +168,14 @@ public abstract class Person {
         if (this.adresse != null) {
             deleteAdresse(this.adresse);
         }
-        adresse.getPersonen().add(this);
+        if (adresse != null) {
+            adresse.getPersonen().add(this);
+        }
         this.adresse = adresse;
     }
 
     public void deleteAdresse(Adresse adresse) {
         adresse.getPersonen().remove(this);
+        this.adresse = null;
     }
 }
