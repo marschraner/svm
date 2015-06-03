@@ -24,19 +24,19 @@ public class AngehoerigerModelImplTest {
     }
 
     @Test
-    public void testSetGeschlecht() {
+    public void testSetIsRechnungsempfaenger() {
         angehoerigerModel.setIsRechnungsempfaenger(true);
         assertTrue("IsRechnungsempfaenger true erwartet", angehoerigerModel.isRechnungsempfaenger());
     }
 
     @Test
-    public void testSetGeschlecht_False() {
+    public void testSetIsRechnungsempfaenger_False() {
         angehoerigerModel.setIsRechnungsempfaenger(false);
         assertFalse("IsRechnungsempfaenger false erwartet", angehoerigerModel.isRechnungsempfaenger());
     }
 
     @Test
-    public void testSetGeschlecht_FalseAgain() {
+    public void testSetIsRechnungsempfaenger_FalseAgain() {
         angehoerigerModel.setIsRechnungsempfaenger(true);
         angehoerigerModel.setIsRechnungsempfaenger(false);
         assertFalse("IsRechnungsempfaenger false erwartet", angehoerigerModel.isRechnungsempfaenger());
