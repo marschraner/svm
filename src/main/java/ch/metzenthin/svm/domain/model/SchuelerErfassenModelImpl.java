@@ -236,9 +236,9 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         );
 //        // todo muss das eine Transaktion sein, oder einfach validateSchuelerCommand.execute() ?
 //        getCommandInvoker().executeCommand(validateSchuelerCommand);
-//        System.out.println("Info AbweichendeAdressen=" + validateSchuelerCommand.getInfoAbweichendeAdressen());
+//        System.out.println("Info AbweichendeAdressen=" + validateSchuelerCommand.getAbweichendeAdressen());
 //        System.out.println("Info BereitsInDb=" + validateSchuelerCommand.getInfoBereitsInDb());
-//        System.out.println("Info IdentischeAdressen=" + validateSchuelerCommand.getInfoIdentischeAdressen());
+//        System.out.println("Info IdentischeAdressen=" + validateSchuelerCommand.getIdentischeAdressen());
 //        System.out.println("Info NeuErfasst=" + validateSchuelerCommand.getInfoNeuErfasst());
 //        System.out.println("Info Rechnungsempfaenger=" + validateSchuelerCommand.getInfoRechnungsempfaenger());
 //
