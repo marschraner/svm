@@ -24,6 +24,6 @@ public interface PersonModel extends AdresseModel {
     void setVorname(String vorname) throws SvmValidationException;
     void setNatel(String natel);
     void setEmail(String email);
-    void setGeburtsdatum(String geburtsdatum);
+    void setGeburtsdatum(String geburtsdatum) throws SvmValidationException;
     void setGeburtsdatum(Calendar geburtsdatum);
 }

@@ -1,15 +1,16 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Person;
 
+import java.text.ParseException;
 import java.util.Calendar;
 
-import static ch.metzenthin.svm.common.utils.Converter.toCalendarIgnoreException;
+import static ch.metzenthin.svm.common.utils.Converter.toCalendar;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
@@ -116,8 +117,12 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     @Override
-    public void setGeburtsdatum(String geburtsdatum) {
-        setGeburtsdatum(toCalendarIgnoreException(geburtsdatum));
+    public void setGeburtsdatum(String geburtsdatum) throws SvmValidationException {
+        try {
+            setGeburtsdatum(toCalendar(geburtsdatum));
+        } catch (ParseException e) {
+            throw new SvmValidationException(1200, "Geburtsdatum ist falsch formatiert. Es wird TT.MM.JJJJ erwartet");
+        }
     }
 
     @Override

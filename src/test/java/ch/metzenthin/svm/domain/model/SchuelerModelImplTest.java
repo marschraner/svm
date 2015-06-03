@@ -2,18 +2,12 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.Command;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.GenericDaoCommand;
-import ch.metzenthin.svm.persistence.SvmDbException;
-import ch.metzenthin.svm.ui.control.CompletedListener;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
+import test.DummyCommandInvoker;
+import test.TestCompletedListener;
+import test.TestPropertyChangeListener;
 
 import static org.junit.Assert.*;
 
@@ -22,16 +16,7 @@ import static org.junit.Assert.*;
  */
 public class SchuelerModelImplTest {
 
-    private static final CommandInvoker DUMMY_COMMAND_INVOKER = new CommandInvoker() {
-        @Override
-        public Command executeCommand(Command c) {
-            return null;
-        }
-        @Override
-        public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) throws SvmDbException {
-            return null;
-        }
-    };
+    private static final CommandInvoker DUMMY_COMMAND_INVOKER = new DummyCommandInvoker();
 
     private SchuelerModel schuelerModel;
 
@@ -107,6 +92,36 @@ public class SchuelerModelImplTest {
     }
 
     @Test
+    public void testSetGeburtsdatum() {
+        try {
+            schuelerModel.setGeburtsdatum("12.06.1999");
+        } catch (SvmValidationException e) {
+            e.printStackTrace(System.err);
+            fail("Keine Exception erwartet");
+        }
+    }
+
+    @Test
+    public void testSetGeburtsdatum_BadFormatNoException() {
+        try {
+            schuelerModel.setGeburtsdatum("12.06.1999");
+        } catch (SvmValidationException e) {
+            e.printStackTrace(System.err);
+            fail("Keine Exception erwartet");
+        }
+    }
+
+    @Test
+    public void testSetGeburtsdatum_BadFormatException() {
+        try {
+            schuelerModel.setGeburtsdatum("1999-06-12");
+            fail("Exception erwartet");
+        } catch (SvmValidationException e) {
+            e.printStackTrace(System.out);
+        }
+    }
+
+    @Test
     public void testGetSchueler() {
         assertNotNull("Schueler nicht null erwartet", schuelerModel.getSchueler());
     }
@@ -137,7 +152,7 @@ public class SchuelerModelImplTest {
             e.printStackTrace();
             fail("Keine Exception erwartet");
         }
-        assertEquals("Aufruf von CompletedListener einmal erwartet", 1, testCompletedListener.counter);
+        assertEquals("Aufruf von CompletedListener einmal erwartet", 1, testCompletedListener.getCounter());
     }
 
     @Test
@@ -145,24 +160,4 @@ public class SchuelerModelImplTest {
         assertFalse("IsCompleted false erwartet", schuelerModel.isCompleted());
     }
 
-    //------------------------------------------------------------------------------------------------------------------
-
-    private class TestPropertyChangeListener implements PropertyChangeListener {
-        private List<PropertyChangeEvent> events = new ArrayList<>();
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            events.add(evt);
-        }
-        private int eventsSize() {
-            return events.size();
-        }
-    }
-
-    private class TestCompletedListener implements CompletedListener {
-        private int counter;
-        @Override
-        public void completed(boolean completed) {
-            counter++;
-        }
-    }
 }

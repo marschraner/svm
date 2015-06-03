@@ -418,11 +418,27 @@ public abstract class PersonController extends AbstractController {
 
     private void onGeburtsdatumEvent() {
         System.out.println("PersonController Event Geburtsdatum");
-        setModelGeburtsdatum();
+        boolean equalFieldAndModelValue = equalsNullSafe(txtGeburtsdatum.getText(), personModel.getGeburtsdatum());
+        try {
+            setModelGeburtsdatum();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            System.out.println("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
     }
 
-    private void setModelGeburtsdatum() {
-        personModel.setGeburtsdatum(txtGeburtsdatum.getText());
+    private void setModelGeburtsdatum() throws SvmValidationException {
+        try {
+            personModel.setGeburtsdatum(txtGeburtsdatum.getText());
+        } catch (SvmValidationException e) {
+            System.out.println("PersonController setModelGeburtsdatum Exception=" + e.getMessage());
+            // todo $$$ Fehler anzeigen
+            throw e;
+        }
     }
 
     @Override
