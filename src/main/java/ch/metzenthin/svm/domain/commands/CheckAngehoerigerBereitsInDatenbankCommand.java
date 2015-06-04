@@ -12,21 +12,19 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
 
     enum Result {
         NICHT_IN_DATENBANK,                     // Angehöriger wird neu erfasst (noch nicht in Datenbank)
-                                                // - Ok (-> bisherigen Angehoerigen verwenden)
-                                                // - Abbrechen (-> Eingabe-GUI)
         EIN_EINTRAG_PASST,                      // In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben passt: ...
-                                                // - Diesen Eintrag verwenden (-> Angehoerigen ersetzen)
-                                                // - Eingaben korrigieren (-> Eingabe-GUI)
+                                                // - Diesen Eintrag übernehmen (-> Angehoerigen ersetzen)
+                                                // - Abbrechen (-> Eingabe-GUI)
         MEHRERE_EINTRAEGE_PASSEN,               // In der Datenbank wurden mehrere Einträge gefunden, die auf die erfassten Angaben passen: ...
                                                 // Angehöriger muss genauer erfasst werden
                                                 // - Eingaben korrigieren (-> Eingabe-GUI)
-        EIN_EINTRAG_PASST_TEILWEISE,            // In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben teilweise übereinstimmt: ...
-                                                // - Diesen Eintrag verwenden (-> Angehoerigen ersetzen)
+        EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE,  // In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben teilweise übereinstimmt: ...
+                                                // - Diesen Eintrag übernehmen (-> Angehoerigen ersetzen)
                                                 // - Nicht diesen Eintrag verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen  (-> bisherigen Angehoerigen verwenden)
-                                                // - Eingaben korrigieren (-> Eingabe-GUI)
-        MEHRERE_EINTRAEGE_PASSEN_TEILWEISE,     // In der Datenbank wurden mehrere Einträge gefunden, die mit den erfassten Angaben teilweise übereinstimmen: ...
+                                                // - Abbrechen (-> Eingabe-GUI)
+        MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE,     // In der Datenbank wurden mehrere Einträge gefunden, die mit den erfassten Angaben teilweise übereinstimmen: ...
                                                 // - Keinen dieser Einträge verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen  (-> bisherigen Angehoerigen verwenden)
-                                                // - Eingaben korrigieren korrigieren (-> Eingabe-GUI)
+                                                // - Abbrechen (-> Eingabe-GUI)
     }
 
     // input
@@ -65,12 +63,12 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
         angehoerigerFoundList = angehoerigerDao.findAngehoerige(angehoerigerNurVornameNachname);
         if (angehoerigerFoundList != null && angehoerigerFoundList.size() == 1) {
             angehoerigerFound = angehoerigerFoundList.get(0);
-            result = Result.EIN_EINTRAG_PASST_TEILWEISE;
+            result = Result.EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE;
             return;
         }
 
         else if (angehoerigerFoundList != null && angehoerigerFoundList.size() > 1) {
-            result = Result.MEHRERE_EINTRAEGE_PASSEN_TEILWEISE;
+            result = Result.MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE;
             return;
         }
 

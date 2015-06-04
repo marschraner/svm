@@ -228,12 +228,12 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         mutterModel.getAngehoeriger().setAdresse(mutterModel.getAdresse());
         // todo $$$ ende hack
         AngehoerigerModel rechnungsempfaenger = getRechnungsempfaengerModel();
-        ValidateSchuelerCommand validateSchuelerCommand = new ValidateSchuelerCommand(
-                schuelerModel.getSchueler(),
-                (mutterModel.isCompleted()) ? mutterModel.getAngehoeriger() : null, true, // todo $$$ hack
-                (vaterModel.isCompleted()) ? vaterModel.getAngehoeriger() : null, false, // todo $$$ hack
-                (rechnungsempfaenger != null) ? rechnungsempfaenger.getAngehoeriger() : null
-        );
+//        ValidateSchuelerCommand validateSchuelerCommand = new ValidateSchuelerCommand(
+//                schuelerModel.getSchueler(),
+//                (mutterModel.isCompleted()) ? mutterModel.getAngehoeriger() : null, true, // todo $$$ hack
+//                (vaterModel.isCompleted()) ? vaterModel.getAngehoeriger() : null, false, // todo $$$ hack
+//                (rechnungsempfaenger != null) ? rechnungsempfaenger.getAngehoeriger() : null
+//        );
 //        // todo muss das eine Transaktion sein, oder einfach validateSchuelerCommand.execute() ?
 //        getCommandInvoker().executeCommand(validateSchuelerCommand);
 //        System.out.println("Info AbweichendeAdressen=" + validateSchuelerCommand.getAbweichendeAdressen());

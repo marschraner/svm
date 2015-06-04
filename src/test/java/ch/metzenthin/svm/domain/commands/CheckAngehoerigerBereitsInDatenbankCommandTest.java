@@ -100,7 +100,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
     @Test
     public void testExecute_EIN_EINTRAG_PASST_TEILWEISE() {
-        Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Hanny", "Bruggisser", null, null);
+        Angehoeriger angehoeriger = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", null, null);
         Adresse adresse1 = new Adresse("Wiesenstrasse", "55", "5430", "Wettingen", "056 426 69 15");   // andere Hausnummer
         angehoeriger.setAdresse(adresse1);
 
@@ -111,7 +111,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
             e.printStackTrace();
         }
 
-        assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.EIN_EINTRAG_PASST_TEILWEISE, checkAngehoerigerBereitsInDatenbankCommand.getResult());
+        assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE, checkAngehoerigerBereitsInDatenbankCommand.getResult());
         Angehoeriger angehoerigerFound = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
         assertNotNull(angehoerigerFound);
         System.out.println("In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben teilweise übereinstimmt: " + angehoerigerFound);
@@ -130,7 +130,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
             e.printStackTrace();
         }
 
-        assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.MEHRERE_EINTRAEGE_PASSEN_TEILWEISE, checkAngehoerigerBereitsInDatenbankCommand.getResult());
+        assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE, checkAngehoerigerBereitsInDatenbankCommand.getResult());
         List<Angehoeriger> angehoerigerFoundList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
         assertNotNull(angehoerigerFoundList);
         System.out.println("In der Datenbank wurden mehrere Einträge gefunden, die mit den erfassten Angaben teilweise übereinstimmen: ");

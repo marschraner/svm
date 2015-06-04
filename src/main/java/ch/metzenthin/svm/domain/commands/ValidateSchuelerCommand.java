@@ -16,28 +16,32 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         MUTTER_NICHT_IN_DATENBANK,
         MUTTER_EIN_EINTRAG_PASST,
         MUTTER_MEHRERE_EINTRAEGE_PASSEN,
-        MUTTER_EIN_EINTRAG_PASST_TEILWEISE,
-        MUTTER_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE,
+        MUTTER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE,
+        MUTTER_MEHRERE_EINTAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE,
         VATER_NICHT_IN_DATENBANK,
         VATER_EIN_EINTRAG_PASST,
         VATER_MEHRERE_EINTRAEGE_PASSEN,
-        VATER_EIN_EINTRAG_PASST_TEILWEISE,
-        VATER_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE,
+        VATER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE,
+        VATER_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE,
         RECHNUNGSEMPFAENGER_DRITTPERSON_NICHT_IN_DATENBANK,
         RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_PASST,
         RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_PASSEN,
-        RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_PASST_TEILWEISE,
-        RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE,
+        RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE,
+        RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE,
         CHECK_IDENTISCHE_ADRESSEN_COMMAND_FINISHED,
-        CHECK_GESCHWISTER_SCHUELER_RECHNUGSEMFPAENGER_COMMAND_FINISHED
+        CHECK_GESCHWISTER_SCHUELER_RECHNUGSEMFPAENGER_COMMAND_FINISHED,
+        SCHUELER_SAVED
     }
 
     enum Entry {
         NEU_ERFASSTEN_SCHUELER_VALIDIEREN,
         BEARBEITETEN_SCHUELER_VALIDIEREN,
         MUTTER_AUS_DATENBANK_UEBERNEHMEN,
+        MIT_BISHERIGER_MUTTER_WEITERFAHREN,
         VATER_AUS_DATENBANK_UEBERNEHMEN,
+        MIT_BISHERIGEM_VATER_WEITERFAHREN,
         RECHNUNGSEMPFAENGER_DRITTPERSON_AUS_DATENBANK_UEBERNEHMEN,
+        MIT_BISHERIGEM_RECHNUNGSEMPFAENGER_DRITTPERSON_WEITERFAHREN,
         SUMMARY_BESTAETIGT
     }
 
@@ -163,16 +167,16 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                     resultCheckMutterBereitsInDatenbank = Result.MUTTER_MEHRERE_EINTRAEGE_PASSEN;
                     result = resultCheckMutterBereitsInDatenbank;
                     return;
-                case EIN_EINTRAG_PASST_TEILWEISE:
+                case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     mutterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     mutterFoundInDatabaseList = null;
-                    resultCheckMutterBereitsInDatenbank = Result.MUTTER_EIN_EINTRAG_PASST_TEILWEISE;
+                    resultCheckMutterBereitsInDatenbank = Result.MUTTER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE;
                     result = resultCheckMutterBereitsInDatenbank;
                     return;
-                case MEHRERE_EINTRAEGE_PASSEN_TEILWEISE:
+                case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     mutterFoundInDatabase = null;
                     mutterFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
-                    resultCheckMutterBereitsInDatenbank = Result.MUTTER_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE;
+                    resultCheckMutterBereitsInDatenbank = Result.MUTTER_MEHRERE_EINTAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE;
                     result = resultCheckMutterBereitsInDatenbank;
                     return;
             }
@@ -202,16 +206,16 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                     resultCheckVaterBereitsInDatenbank = Result.VATER_MEHRERE_EINTRAEGE_PASSEN;
                     result = resultCheckVaterBereitsInDatenbank;
                     return;
-                case EIN_EINTRAG_PASST_TEILWEISE:
+                case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     vaterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     vaterFoundInDatabaseList = null;
-                    resultCheckVaterBereitsInDatenbank = Result.VATER_EIN_EINTRAG_PASST_TEILWEISE;
+                    resultCheckVaterBereitsInDatenbank = Result.VATER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE;
                     result = resultCheckVaterBereitsInDatenbank;
                     return;
-                case MEHRERE_EINTRAEGE_PASSEN_TEILWEISE:
+                case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     vaterFoundInDatabase = null;
                     vaterFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
-                    resultCheckVaterBereitsInDatenbank = Result.VATER_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE;
+                    resultCheckVaterBereitsInDatenbank = Result.VATER_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE;
                     result = resultCheckVaterBereitsInDatenbank;
                     return;
             }
@@ -240,16 +244,16 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                     resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_PASSEN;
                     result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
                     return;
-                case EIN_EINTRAG_PASST_TEILWEISE:
+                case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     rechnungsempfaengerDrittpersonFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     rechnungsempfaengerDrittpersonFoundInDatabaseList = null;
-                    resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_PASST_TEILWEISE;
+                    resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE;
                     result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
                     return;
-                case MEHRERE_EINTRAEGE_PASSEN_TEILWEISE:
+                case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     rechnungsempfaengerDrittpersonFoundInDatabase = null;
                     rechnungsempfaengerDrittpersonFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
-                    resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE;
+                    resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE;
                     result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
                     return;
             }
@@ -280,6 +284,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
         saveSchuelerCommand.setEntityManager(entityManager);
         saveSchuelerCommand.execute();
+        result = Result.SCHUELER_SAVED;
 
     }
 
@@ -308,6 +313,9 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                 mutter = null;
                 break;
 
+            case MIT_BISHERIGER_MUTTER_WEITERFAHREN:
+                break;
+
             case VATER_AUS_DATENBANK_UEBERNEHMEN:
                 schueler.setVater(vaterFoundInDatabase);
                 if (isRechnungsempfaengerVater) {
@@ -316,9 +324,15 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                 vater = null;
                 break;
 
+            case MIT_BISHERIGEM_VATER_WEITERFAHREN:
+                break;
+
             case RECHNUNGSEMPFAENGER_DRITTPERSON_AUS_DATENBANK_UEBERNEHMEN:
                 schueler.setRechnungsempfaenger(rechnungsempfaengerDrittpersonFoundInDatabase);
                 rechnungsempfaengerDrittperson = null;
+                break;
+
+            case MIT_BISHERIGEM_RECHNUNGSEMPFAENGER_DRITTPERSON_WEITERFAHREN:
                 break;
 
             case SUMMARY_BESTAETIGT:
