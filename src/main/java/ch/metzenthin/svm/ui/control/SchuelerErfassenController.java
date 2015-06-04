@@ -1,9 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.AngehoerigerModel;
-import ch.metzenthin.svm.domain.model.SchuelerErfassenModel;
-import ch.metzenthin.svm.domain.model.SchuelerModel;
+import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.ui.components.AngehoerigerPanel;
 import ch.metzenthin.svm.ui.components.SchuelerPanel;
 
@@ -108,7 +106,25 @@ public class SchuelerErfassenController {
     private void onSpeichern() {
         System.out.println("SchuelerErfassenPanel Speichern gedrückt");
         try {
-            schuelerErfassenModel.save();
+            SchuelerErfassenSaveResult schuelerErfassenSaveResult = schuelerErfassenModel.validieren();
+            if (schuelerErfassenSaveResult instanceof SchuelerBereitsInDatenbankResult) {
+                System.out.println("SchuelerErfassenController SchuelerBereitsInDatenbankResult");
+                schuelerErfassenModel.abbrechen(); // todo dialog
+            } else if (schuelerErfassenSaveResult instanceof AngehoerigerEinEintragPasstResult) {
+                System.out.println("SchuelerErfassenController AngehoerigerEinEintragPasstResult");
+                SchuelerErfassenSaveResult schuelerErfassenSaveResult2 = schuelerErfassenModel.proceedUebernehmen(schuelerErfassenSaveResult); // todo dialog
+                if (schuelerErfassenSaveResult2 instanceof ValidateSchuelerSummaryResult) {
+                    System.out.println("SchuelerErfassenController ValidateSchuelerSummaryResult");
+                    SchuelerErfassenSaveResult schuelerErfassenSaveResult3 = schuelerErfassenModel.proceedWeiterfahren(schuelerErfassenSaveResult2); // todo dialog
+                    schuelerErfassenModel.speichern(schuelerErfassenSaveResult3);
+                }
+            } else {
+                if (schuelerErfassenSaveResult instanceof ValidateSchuelerSummaryResult) {
+                    System.out.println("SchuelerErfassenController ValidateSchuelerSummaryResult");
+                    SchuelerErfassenSaveResult schuelerErfassenSaveResult3 = schuelerErfassenModel.proceedWeiterfahren(schuelerErfassenSaveResult); // todo dialog
+                    schuelerErfassenModel.speichern(schuelerErfassenSaveResult3);
+                }
+            }
         } catch (Throwable e) {
             // todo Dialog "nicht erfolgreich gespeichert"
             e.printStackTrace();

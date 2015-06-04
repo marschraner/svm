@@ -17,4 +17,25 @@ public class DummyCommandInvoker implements CommandInvoker {
     public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) throws SvmDbException {
         return null;
     }
+
+    @Override
+    public void beginTransaction() {
+
+    }
+
+    @Override
+    public GenericDaoCommand executeCommandWithinTransaction(GenericDaoCommand genericDaoCommand) throws SvmDbException {
+        return null;
+    }
+
+    @Override
+    public void commitTransaction() {
+
+    }
+
+    @Override
+    public void rollbackTransaction() {
+
+    }
+
 }

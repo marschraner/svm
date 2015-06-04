@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Schueler;
@@ -11,29 +12,96 @@ import java.util.List;
  */
 public class ValidateSchuelerCommand extends GenericDaoCommand {
 
-    enum Result {
+    public enum Result {
         SCHUELER_BEREITS_IN_DATENBANK,
         MUTTER_NICHT_IN_DATENBANK,
-        MUTTER_EIN_EINTRAG_PASST,
+        MUTTER_EIN_EINTRAG_PASST {
+            @Override
+            public Entry proceedUebernehmen() {
+                return Entry.MUTTER_AUS_DATENBANK_UEBERNEHMEN;
+            }
+        },
         MUTTER_MEHRERE_EINTRAEGE_PASSEN,
-        MUTTER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE,
-        MUTTER_MEHRERE_EINTAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE,
+        MUTTER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE {
+            @Override
+            public Entry proceedUebernehmen() {
+                return Entry.MUTTER_AUS_DATENBANK_UEBERNEHMEN;
+            }
+            @Override
+            public Entry proceedWeiterfahren() {
+                return Entry.MIT_BISHERIGER_MUTTER_WEITERFAHREN;
+            }
+        },
+        MUTTER_MEHRERE_EINTAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE {
+            @Override
+            public Entry proceedWeiterfahren() {
+                return Entry.MIT_BISHERIGER_MUTTER_WEITERFAHREN;
+            }
+        },
         VATER_NICHT_IN_DATENBANK,
-        VATER_EIN_EINTRAG_PASST,
+        VATER_EIN_EINTRAG_PASST {
+            @Override
+            public Entry proceedUebernehmen() {
+                return Entry.VATER_AUS_DATENBANK_UEBERNEHMEN;
+            }
+        },
         VATER_MEHRERE_EINTRAEGE_PASSEN,
-        VATER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE,
-        VATER_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE,
+        VATER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE {
+            @Override
+            public Entry proceedUebernehmen() {
+                return Entry.VATER_AUS_DATENBANK_UEBERNEHMEN;
+            }
+            @Override
+            public Entry proceedWeiterfahren() {
+                return Entry.MIT_BISHERIGEM_VATER_WEITERFAHREN;
+            }
+        },
+        VATER_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE {
+            @Override
+            public Entry proceedWeiterfahren() {
+                return Entry.MIT_BISHERIGEM_VATER_WEITERFAHREN;
+            }
+        },
         RECHNUNGSEMPFAENGER_DRITTPERSON_NICHT_IN_DATENBANK,
-        RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_PASST,
+        RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_PASST {
+            @Override
+            public Entry proceedUebernehmen() {
+                return Entry.RECHNUNGSEMPFAENGER_DRITTPERSON_AUS_DATENBANK_UEBERNEHMEN;
+            }
+        },
         RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_PASSEN,
-        RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE,
-        RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE,
-        CHECK_IDENTISCHE_ADRESSEN_COMMAND_FINISHED,
-        CHECK_GESCHWISTER_SCHUELER_RECHNUGSEMFPAENGER_COMMAND_FINISHED,
-        SCHUELER_SAVED
+        RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE {
+            @Override
+            public Entry proceedUebernehmen() {
+                return Entry.RECHNUNGSEMPFAENGER_DRITTPERSON_AUS_DATENBANK_UEBERNEHMEN;
+            }
+            @Override
+            public Entry proceedWeiterfahren() {
+                return Entry.MIT_BISHERIGEM_RECHNUNGSEMPFAENGER_DRITTPERSON_WEITERFAHREN;
+            }
+        },
+        RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE {
+            @Override
+            public Entry proceedWeiterfahren() {
+                return Entry.MIT_BISHERIGEM_RECHNUNGSEMPFAENGER_DRITTPERSON_WEITERFAHREN;
+            }
+        },
+        CHECK_GESCHWISTER_SCHUELER_RECHNUGSEMFPAENGER_COMMAND_FINISHED {
+            @Override
+            public Entry proceedWeiterfahren() {
+                return Entry.SUMMARY_BESTAETIGT;
+            }
+        };
+
+        public Entry proceedUebernehmen() {
+            return null;
+        }
+        public Entry proceedWeiterfahren() {
+            return null;
+        }
     }
 
-    enum Entry {
+    public enum Entry {
         NEU_ERFASSTEN_SCHUELER_VALIDIEREN,
         BEARBEITETEN_SCHUELER_VALIDIEREN,
         MUTTER_AUS_DATENBANK_UEBERNEHMEN,
@@ -59,7 +127,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     private Entry entry;
 
     // output
-    private Result result;
+    private SchuelerErfassenSaveResult result = null;
     private Result resultCheckMutterBereitsInDatenbank;
     private Result resultCheckVaterBereitsInDatenbank;
     private Result resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
@@ -74,6 +142,9 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     private String abweichendeAdressen;
     private List<Schueler> angemeldeteGeschwisterList;
     private List<Schueler> andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList;
+    private boolean isMutterNeu;
+    private boolean isVaterNeu;
+    private boolean isRechnungsempfaengerDrittpersonNeu;
 
     // skip-Variablen
     private boolean skipMutterVaterDrittpersonAusGuiUebernehmen = false;
@@ -89,10 +160,10 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         this.adresseSchueler = validateSchuelerModel.getAdresseSchueler();
         this.mutter = validateSchuelerModel.getMutter();
         this.adresseMutter = validateSchuelerModel.getAdresseMutter();
-        this.isRechnungsempfaengerMutter = validateSchuelerModel.isRechnungsemfpaengerMutter();
+        this.isRechnungsempfaengerMutter = validateSchuelerModel.isRechnungsempfaengerMutter();
         this.vater = validateSchuelerModel.getVater();
         this.adresseVater = validateSchuelerModel.getAdresseVater();
-        this.isRechnungsempfaengerVater = validateSchuelerModel.isRechnungsemfpaengerVater();
+        this.isRechnungsempfaengerVater = validateSchuelerModel.isRechnungsempfaengerVater();
         this.rechnungsempfaengerDrittperson = validateSchuelerModel.getRechnungsempfaengerDrittperson();
         this.adresseRechnungsempfaengerDrittperson= validateSchuelerModel.getAdresseRechnungsempfaengerDrittperson();
     }
@@ -137,7 +208,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             checkSchuelerBereitsInDatenbankCommand.setEntityManager(entityManager);
             checkSchuelerBereitsInDatenbankCommand.execute();
             if (checkSchuelerBereitsInDatenbankCommand.isInDatenbank()) {
-                result = Result.SCHUELER_BEREITS_IN_DATENBANK;
+                result = new SchuelerBereitsInDatenbankResult(getSchuelerFoundInDatabase());
                 schuelerFoundInDatabase = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound();
                 return;
             }
@@ -154,30 +225,31 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                     mutterFoundInDatabase = null;
                     mutterFoundInDatabaseList = null;
                     resultCheckMutterBereitsInDatenbank = Result.MUTTER_NICHT_IN_DATENBANK;
+                    isMutterNeu = true;
                     break;
                 case EIN_EINTRAG_PASST:
                     mutterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     mutterFoundInDatabaseList = null;
                     resultCheckMutterBereitsInDatenbank = Result.MUTTER_EIN_EINTRAG_PASST;
-                    result = resultCheckMutterBereitsInDatenbank;
+                    result = new AngehoerigerEinEintragPasstResult(mutterFoundInDatabase, resultCheckMutterBereitsInDatenbank);
                     return;
                 case MEHRERE_EINTRAEGE_PASSEN:
                     mutterFoundInDatabase = null;
                     mutterFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
                     resultCheckMutterBereitsInDatenbank = Result.MUTTER_MEHRERE_EINTRAEGE_PASSEN;
-                    result = resultCheckMutterBereitsInDatenbank;
+                    result = new AngehoerigerMehrereEintraegePassenResult(mutterFoundInDatabaseList, resultCheckMutterBereitsInDatenbank);
                     return;
                 case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     mutterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     mutterFoundInDatabaseList = null;
                     resultCheckMutterBereitsInDatenbank = Result.MUTTER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE;
-                    result = resultCheckMutterBereitsInDatenbank;
+                    result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(mutterFoundInDatabase, resultCheckMutterBereitsInDatenbank);
                     return;
                 case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     mutterFoundInDatabase = null;
                     mutterFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
                     resultCheckMutterBereitsInDatenbank = Result.MUTTER_MEHRERE_EINTAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE;
-                    result = resultCheckMutterBereitsInDatenbank;
+                    result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(mutterFoundInDatabaseList, resultCheckMutterBereitsInDatenbank);
                     return;
             }
         }
@@ -193,30 +265,31 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                     vaterFoundInDatabase = null;
                     vaterFoundInDatabaseList = null;
                     resultCheckVaterBereitsInDatenbank = Result.VATER_NICHT_IN_DATENBANK;
+                    isVaterNeu = true;
                     break;
                 case EIN_EINTRAG_PASST:
                     vaterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     vaterFoundInDatabaseList = null;
                     resultCheckVaterBereitsInDatenbank = Result.VATER_EIN_EINTRAG_PASST;
-                    result = resultCheckVaterBereitsInDatenbank;
+                    // result = resultCheckVaterBereitsInDatenbank;
                     return;
                 case MEHRERE_EINTRAEGE_PASSEN:
                     vaterFoundInDatabase = null;
                     vaterFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
                     resultCheckVaterBereitsInDatenbank = Result.VATER_MEHRERE_EINTRAEGE_PASSEN;
-                    result = resultCheckVaterBereitsInDatenbank;
+                    // result = resultCheckVaterBereitsInDatenbank;
                     return;
                 case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     vaterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     vaterFoundInDatabaseList = null;
                     resultCheckVaterBereitsInDatenbank = Result.VATER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE;
-                    result = resultCheckVaterBereitsInDatenbank;
+                    // result = resultCheckVaterBereitsInDatenbank;
                     return;
                 case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     vaterFoundInDatabase = null;
                     vaterFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
                     resultCheckVaterBereitsInDatenbank = Result.VATER_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE;
-                    result = resultCheckVaterBereitsInDatenbank;
+                    // result = resultCheckVaterBereitsInDatenbank;
                     return;
             }
         }
@@ -232,29 +305,30 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                     rechnungsempfaengerDrittpersonFoundInDatabase = null;
                     rechnungsempfaengerDrittpersonFoundInDatabaseList = null;
                     resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_NICHT_IN_DATENBANK;
+                    isRechnungsempfaengerDrittpersonNeu = true;
                 case EIN_EINTRAG_PASST:
                     rechnungsempfaengerDrittpersonFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     rechnungsempfaengerDrittpersonFoundInDatabaseList = null;
                     resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_PASST;
-                    result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
+                    // result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
                     return;
                 case MEHRERE_EINTRAEGE_PASSEN:
                     rechnungsempfaengerDrittpersonFoundInDatabase = null;
                     rechnungsempfaengerDrittpersonFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
                     resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_PASSEN;
-                    result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
+                    // result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
                     return;
                 case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     rechnungsempfaengerDrittpersonFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     rechnungsempfaengerDrittpersonFoundInDatabaseList = null;
                     resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE;
-                    result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
+                    // result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
                     return;
                 case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     rechnungsempfaengerDrittpersonFoundInDatabase = null;
                     rechnungsempfaengerDrittpersonFoundInDatabaseList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
                     resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank = Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE;
-                    result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
+                    // result = resultCheckRechnungsempfaengerDrittpersonBereitsInDatenbank;
                     return;
             }
         }
@@ -266,7 +340,6 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             checkIdentischeAdressenCommand.execute();
             identischeAdressen = checkIdentischeAdressenCommand.getIdentischeAdressen();
             abweichendeAdressen = checkIdentischeAdressenCommand.getAbweichendeAdressen();
-            result = Result.CHECK_IDENTISCHE_ADRESSEN_COMMAND_FINISHED;
         }
 
         // 5. Nach Geschwistern suchen
@@ -276,7 +349,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             checkGeschwisterSchuelerRechnungempfaengerCommand.execute();
             angemeldeteGeschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAngemeldeteGeschwisterList();
             andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList();
-            result = Result.CHECK_GESCHWISTER_SCHUELER_RECHNUGSEMFPAENGER_COMMAND_FINISHED;
+            result = new ValidateSchuelerSummaryResult(schueler, angemeldeteGeschwisterList, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList, identischeAdressen, abweichendeAdressen, isMutterNeu, isVaterNeu, isRechnungsempfaengerDrittpersonNeu);
             return;   // -> Summary-Dialog
         }
 
@@ -284,7 +357,6 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
         saveSchuelerCommand.setEntityManager(entityManager);
         saveSchuelerCommand.execute();
-        result = Result.SCHUELER_SAVED;
 
     }
 
@@ -347,8 +419,12 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         this.entry = entry;
     }
 
-    public Result getResult() {
+    public SchuelerErfassenSaveResult getResult() {
         return result;
+    }
+
+    public Schueler getSchueler() {
+        return schueler;
     }
 
     public Result getResultCheckMutterBereitsInDatenbank() {
@@ -406,5 +482,18 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     public List<Schueler> getAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList() {
         return andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList;
     }
+
+    public boolean isMutterNeu() {
+        return isMutterNeu;
+    }
+
+    public boolean isVaterNeu() {
+        return isVaterNeu;
+    }
+
+    public boolean isRechnungsempfaengerDrittpersonNeu() {
+        return isRechnungsempfaengerDrittpersonNeu;
+    }
+
 }
 

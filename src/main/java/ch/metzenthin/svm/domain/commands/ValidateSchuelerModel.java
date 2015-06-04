@@ -12,11 +12,11 @@ public interface ValidateSchuelerModel {
     Adresse getAdresseSchueler();
     Angehoeriger getMutter();
     Adresse getAdresseMutter();
-    boolean isRechnungsemfpaengerMutter();
+    boolean isRechnungsempfaengerMutter();
     Angehoeriger getVater();
     Adresse getAdresseVater();
-    boolean isRechnungsemfpaengerVater();
+    boolean isRechnungsempfaengerVater();
     Angehoeriger getRechnungsempfaengerDrittperson();
     Adresse getAdresseRechnungsempfaengerDrittperson();
-    boolean isRechnungsemfpaengerDrittperson();
+    boolean isRechnungsempfaengerDrittperson();
 }

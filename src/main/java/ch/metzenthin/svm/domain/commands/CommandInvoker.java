@@ -11,4 +11,11 @@ public interface CommandInvoker {
 
     GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) throws SvmDbException;
 
+    void beginTransaction();
+
+    GenericDaoCommand executeCommandWithinTransaction(GenericDaoCommand genericDaoCommand) throws SvmDbException;
+
+    void commitTransaction();
+
+    void rollbackTransaction();
 }

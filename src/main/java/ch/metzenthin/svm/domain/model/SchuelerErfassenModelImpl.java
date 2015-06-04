@@ -1,21 +1,26 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
+import ch.metzenthin.svm.domain.commands.ValidateSchuelerModel;
+import ch.metzenthin.svm.persistence.SvmDbException;
+import ch.metzenthin.svm.persistence.entities.Adresse;
+import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.control.CompletedListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Calendar;
+
+import static ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand.Entry.NEU_ERFASSTEN_SCHUELER_VALIDIEREN;
 
 /**
  * Dieses Model ist eigentlich Model und Controller (verwaltet die Submodels Schüler, Mutter, Vater, Rechnungsempfänger).
  *
  * @author Hans Stamm
  */
-public class SchuelerErfassenModelImpl extends AbstractModel implements SchuelerErfassenModel {
+public class SchuelerErfassenModelImpl extends AbstractModel implements SchuelerErfassenModel, ValidateSchuelerModel {
 
     private SchuelerModel schuelerModel;
     private AngehoerigerModel mutterModel;
@@ -215,36 +220,65 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         fireCompleted(isCompleted());
     }
 
-    @Override
-    public void save() {
-        System.out.println("SchuelerErfassenModel save");
+    private ValidateSchuelerCommand validateSchuelerCommand;
 
-        // todo $$$ anfang hack
-        Calendar calendar = Converter.toCalendarIgnoreException("01.01.1965");
-        vaterModel.getAngehoeriger().setGeburtsdatum(calendar);
-        mutterModel.getAngehoeriger().setGeburtsdatum(calendar);
-        schuelerModel.getSchueler().setAdresse(schuelerModel.getAdresse());
-        vaterModel.getAngehoeriger().setAdresse(vaterModel.getAdresse());
-        mutterModel.getAngehoeriger().setAdresse(mutterModel.getAdresse());
-        // todo $$$ ende hack
-        AngehoerigerModel rechnungsempfaenger = getRechnungsempfaengerModel();
-//        ValidateSchuelerCommand validateSchuelerCommand = new ValidateSchuelerCommand(
-//                schuelerModel.getSchueler(),
-//                (mutterModel.isCompleted()) ? mutterModel.getAngehoeriger() : null, true, // todo $$$ hack
-//                (vaterModel.isCompleted()) ? vaterModel.getAngehoeriger() : null, false, // todo $$$ hack
-//                (rechnungsempfaenger != null) ? rechnungsempfaenger.getAngehoeriger() : null
-//        );
-//        // todo muss das eine Transaktion sein, oder einfach validateSchuelerCommand.execute() ?
-//        getCommandInvoker().executeCommand(validateSchuelerCommand);
-//        System.out.println("Info AbweichendeAdressen=" + validateSchuelerCommand.getAbweichendeAdressen());
-//        System.out.println("Info BereitsInDb=" + validateSchuelerCommand.getInfoBereitsInDb());
-//        System.out.println("Info IdentischeAdressen=" + validateSchuelerCommand.getIdentischeAdressen());
-//        System.out.println("Info NeuErfasst=" + validateSchuelerCommand.getInfoNeuErfasst());
-//        System.out.println("Info Rechnungsempfaenger=" + validateSchuelerCommand.getInfoRechnungsempfaenger());
-//
-//        // todo $$$ aufteilen in validate und save Methoden aufgerufen von Controller
-//        SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(validateSchuelerCommand.getSchueler());
-//        getCommandInvoker().executeCommand(saveSchuelerCommand);
+    @Override
+    public SchuelerErfassenSaveResult validieren() {
+        System.out.println("SchuelerErfassenModel validieren");
+
+        CommandInvoker commandInvoker = getCommandInvoker();
+        commandInvoker.beginTransaction();
+        validateSchuelerCommand = new ValidateSchuelerCommand(this);
+        validateSchuelerCommand.setEntry(NEU_ERFASSTEN_SCHUELER_VALIDIEREN);
+        try {
+            commandInvoker.executeCommandWithinTransaction(validateSchuelerCommand);
+        } catch (SvmDbException e) {
+            e.printStackTrace();
+        }
+        return validateSchuelerCommand.getResult();
+    }
+
+    @Override
+    public SchuelerErfassenSaveResult proceedUebernehmen(SchuelerErfassenSaveResult schuelerErfassenSaveResult) {
+        validateSchuelerCommand.setEntry(schuelerErfassenSaveResult.getResult().proceedUebernehmen());
+        try {
+            getCommandInvoker().executeCommandWithinTransaction(validateSchuelerCommand);
+        } catch (SvmDbException e) {
+            e.printStackTrace();
+        }
+        return validateSchuelerCommand.getResult();
+    }
+
+    @Override
+    public SchuelerErfassenSaveResult proceedWeiterfahren(SchuelerErfassenSaveResult schuelerErfassenSaveResult) {
+        validateSchuelerCommand.setEntry(schuelerErfassenSaveResult.getResult().proceedWeiterfahren());
+        try {
+            getCommandInvoker().executeCommandWithinTransaction(validateSchuelerCommand);
+        } catch (SvmDbException e) {
+            e.printStackTrace();
+        }
+        return validateSchuelerCommand.getResult();
+    }
+
+    @Override
+    public void speichern(SchuelerErfassenSaveResult schuelerErfassenSaveResult) { // todo Summary entfernen
+        //validateSchuelerCommand.setEntry(schuelerErfassenSaveResult.getResult().proceedWeiterfahren());
+        validateSchuelerCommand.setEntry(ValidateSchuelerCommand.Entry.SUMMARY_BESTAETIGT);
+        try {
+            getCommandInvoker().executeCommandWithinTransaction(validateSchuelerCommand);
+        } catch (SvmDbException e) {
+            e.printStackTrace();
+        }
+        CommandInvoker commandInvoker = getCommandInvoker();
+        commandInvoker.commitTransaction();
+        validateSchuelerCommand = null;
+    }
+
+    @Override
+    public void abbrechen() {
+        CommandInvoker commandInvoker = getCommandInvoker();
+        commandInvoker.rollbackTransaction();
+        validateSchuelerCommand = null;
     }
 
     private AngehoerigerModel getRechnungsempfaengerModel() {
@@ -258,4 +292,60 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         return null;
     }
 
+    // todo null wenn nicht gefüllt (Mutter, Vater, Rechnungempfaenger)
+
+    @Override
+    public Schueler getSchueler() {
+        return schuelerModel.getSchueler();
+    }
+
+    @Override
+    public Adresse getAdresseSchueler() {
+        return schuelerModel.getAdresse();
+    }
+
+    @Override
+    public Angehoeriger getMutter() {
+        return mutterModel.getAngehoeriger();
+    }
+
+    @Override
+    public Adresse getAdresseMutter() {
+        return mutterModel.getAdresse();
+    }
+
+    @Override
+    public boolean isRechnungsempfaengerMutter() {
+        return mutterModel.isRechnungsempfaenger();
+    }
+
+    @Override
+    public Angehoeriger getVater() {
+        return null; /*vaterModel.getAngehoeriger();*/ // todo
+    }
+
+    @Override
+    public Adresse getAdresseVater() {
+        return vaterModel.getAdresse();
+    }
+
+    @Override
+    public boolean isRechnungsempfaengerVater() {
+        return vaterModel.isRechnungsempfaenger();
+    }
+
+    @Override
+    public Angehoeriger getRechnungsempfaengerDrittperson() {
+        return null; /*drittempfaengerModel.getAngehoeriger();*/ // todo
+    }
+
+    @Override
+    public Adresse getAdresseRechnungsempfaengerDrittperson() {
+        return drittempfaengerModel.getAdresse();
+    }
+
+    @Override
+    public boolean isRechnungsempfaengerDrittperson() {
+        return drittempfaengerModel.isRechnungsempfaenger();
+    }
 }
