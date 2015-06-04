@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.ui.components.AngehoerigerPanel;
+import ch.metzenthin.svm.ui.components.SchuelerBereitsInDatenbankDialog;
 import ch.metzenthin.svm.ui.components.SchuelerPanel;
 
 import javax.swing.*;
@@ -109,7 +110,9 @@ public class SchuelerErfassenController {
             SchuelerErfassenSaveResult schuelerErfassenSaveResult = schuelerErfassenModel.validieren();
             if (schuelerErfassenSaveResult instanceof SchuelerBereitsInDatenbankResult) {
                 System.out.println("SchuelerErfassenController SchuelerBereitsInDatenbankResult");
-                schuelerErfassenModel.abbrechen(); // todo dialog
+                SchuelerBereitsInDatenbankDialog dialog = new SchuelerBereitsInDatenbankDialog((SchuelerBereitsInDatenbankResult) schuelerErfassenSaveResult, schuelerErfassenModel);
+                dialog.pack();
+                dialog.setVisible(true);
             } else if (schuelerErfassenSaveResult instanceof AngehoerigerEinEintragPasstResult) {
                 System.out.println("SchuelerErfassenController AngehoerigerEinEintragPasstResult");
                 SchuelerErfassenSaveResult schuelerErfassenSaveResult2 = schuelerErfassenModel.proceedUebernehmen(schuelerErfassenSaveResult); // todo dialog
@@ -130,7 +133,7 @@ public class SchuelerErfassenController {
             e.printStackTrace();
         }
         // todo Dialog "erfolgreich gespeichert"
-        closeListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Close nach Speichern"));
+        // closeListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Close nach Speichern"));
     }
 
 }

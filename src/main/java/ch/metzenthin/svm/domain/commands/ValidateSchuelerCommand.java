@@ -208,8 +208,8 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             checkSchuelerBereitsInDatenbankCommand.setEntityManager(entityManager);
             checkSchuelerBereitsInDatenbankCommand.execute();
             if (checkSchuelerBereitsInDatenbankCommand.isInDatenbank()) {
-                result = new SchuelerBereitsInDatenbankResult(getSchuelerFoundInDatabase());
                 schuelerFoundInDatabase = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound();
+                result = new SchuelerBereitsInDatenbankResult(schuelerFoundInDatabase);
                 return;
             }
         }
