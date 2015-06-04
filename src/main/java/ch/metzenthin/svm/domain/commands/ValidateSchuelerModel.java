@@ -16,7 +16,7 @@ public interface ValidateSchuelerModel {
     Angehoeriger getVater();
     Adresse getAdresseVater();
     boolean isRechnungsemfpaengerVater();
-    Angehoeriger rechnungsempfaengerDrittperson();
+    Angehoeriger getRechnungsempfaengerDrittperson();
     Adresse getAdresseRechnungsempfaengerDrittperson();
     boolean isRechnungsemfpaengerDrittperson();
 }

@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
@@ -42,11 +43,15 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
 
     // input
     private Schueler schueler;
+    private Adresse adresseSchueler;
     private Angehoeriger mutter;
-    private boolean mutterIsRechnungsempfaenger;
+    private Adresse adresseMutter;
+    private boolean isRechnungsempfaengerMutter;
     private Angehoeriger vater;
-    private boolean vaterIsRechnungsempfaenger;
+    private Adresse adresseVater;
+    private boolean isRechnungsempfaengerVater;
     private Angehoeriger rechnungsempfaengerDrittperson;
+    private Adresse adresseRechnungsempfaengerDrittperson;
     private Entry entry;
 
     // output
@@ -75,13 +80,17 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     private boolean skipCheckIdentischeAdressen = false;
     private boolean skipCheckGeschwisterSchuelerRechnungsempfaenger = false;
 
-    public ValidateSchuelerCommand(Schueler schueler, Angehoeriger mutter, boolean mutterIsRechnungsempfaenger, Angehoeriger vater, boolean vaterIsRechnungsempfaenger, Angehoeriger rechnungsempfaengerDrittperson) {
-        this.schueler = schueler;
-        this.mutter = mutter;
-        this.mutterIsRechnungsempfaenger = mutterIsRechnungsempfaenger;
-        this.vater = vater;
-        this.vaterIsRechnungsempfaenger = vaterIsRechnungsempfaenger;
-        this.rechnungsempfaengerDrittperson = rechnungsempfaengerDrittperson;
+    public ValidateSchuelerCommand(ValidateSchuelerModel validateSchuelerModel) {
+        this.schueler = validateSchuelerModel.getSchueler();
+        this.adresseSchueler = validateSchuelerModel.getAdresseSchueler();
+        this.mutter = validateSchuelerModel.getMutter();
+        this.adresseMutter = validateSchuelerModel.getAdresseMutter();
+        this.isRechnungsempfaengerMutter = validateSchuelerModel.isRechnungsemfpaengerMutter();
+        this.vater = validateSchuelerModel.getVater();
+        this.adresseVater = validateSchuelerModel.getAdresseVater();
+        this.isRechnungsempfaengerVater = validateSchuelerModel.isRechnungsemfpaengerVater();
+        this.rechnungsempfaengerDrittperson = validateSchuelerModel.getRechnungsempfaengerDrittperson();
+        this.adresseRechnungsempfaengerDrittperson= validateSchuelerModel.getAdresseRechnungsempfaengerDrittperson();
     }
 
     @Override
@@ -92,20 +101,28 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         // 1. Mutter, Vater und Drittperson aus GUI übernehmen
         if (!skipMutterVaterDrittpersonAusGuiUebernehmen) {
             skipMutterVaterDrittpersonAusGuiUebernehmen = true;
+            schueler.setAdresse(adresseSchueler);
             if (mutter != null) {
                 schueler.setMutter(mutter);
-                if (mutterIsRechnungsempfaenger) {
+                if (adresseMutter != null) {
+                    mutter.setAdresse(adresseMutter);
+                }
+                if (isRechnungsempfaengerMutter) {
                     schueler.setRechnungsempfaenger(mutter);
                 }
             }
             if (vater != null) {
                 schueler.setVater(vater);
-                if (vaterIsRechnungsempfaenger) {
+                if (adresseVater != null) {
+                    vater.setAdresse(adresseVater);
+                }
+                if (isRechnungsempfaengerVater) {
                     schueler.setRechnungsempfaenger(vater);
                 }
             }
             if (rechnungsempfaengerDrittperson != null) {
                 schueler.setRechnungsempfaenger(rechnungsempfaengerDrittperson);
+                rechnungsempfaengerDrittperson.setAdresse(adresseRechnungsempfaengerDrittperson);
             }
         }
 
@@ -201,7 +218,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         }
 
         // 3.c Rechnungsempfänger Drittperson bereits in Datenbank?
-        if (!mutterIsRechnungsempfaenger && !vaterIsRechnungsempfaenger && !skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank) {
+        if (!isRechnungsempfaengerMutter && !isRechnungsempfaengerVater && !skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank) {
             skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank = true;
             CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getRechnungsempfaenger());
             checkAngehoerigerBereitsInDatenbankCommand.setEntityManager(entityManager);
@@ -285,7 +302,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
 
             case MUTTER_AUS_DATENBANK_UEBERNEHMEN:
                 schueler.setMutter(mutterFoundInDatabase);
-                if (mutterIsRechnungsempfaenger) {
+                if (isRechnungsempfaengerMutter) {
                     schueler.setRechnungsempfaenger(mutterFoundInDatabase);
                 }
                 mutter = null;
@@ -293,7 +310,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
 
             case VATER_AUS_DATENBANK_UEBERNEHMEN:
                 schueler.setVater(vaterFoundInDatabase);
-                if (vaterIsRechnungsempfaenger) {
+                if (isRechnungsempfaengerVater) {
                     schueler.setRechnungsempfaenger(vaterFoundInDatabase);
                 }
                 vater = null;
