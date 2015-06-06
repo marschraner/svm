@@ -32,7 +32,7 @@ public class ValidateSchuelerSummaryResult extends SchuelerErfassenSaveResult {
         this.isRechnungsempfaengerNeu = isRechnungsempfaengerNeu;
     }
 
-    public static String getBESCHREIBUNG() {
+    public String getBeschreibung() {
         return BESCHREIBUNG;
     }
 
@@ -66,6 +66,11 @@ public class ValidateSchuelerSummaryResult extends SchuelerErfassenSaveResult {
 
     public boolean isRechnungsempfaengerNeu() {
         return isRechnungsempfaengerNeu;
+    }
+
+    @Override
+    public void accept(SchuelerErfassenSaveResultVisitor visitor) {
+        visitor.visit(this);
     }
 
 }

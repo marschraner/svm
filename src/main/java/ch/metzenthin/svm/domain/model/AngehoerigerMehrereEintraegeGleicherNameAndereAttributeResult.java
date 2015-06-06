@@ -25,8 +25,13 @@ public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult exten
         return angehoerigeStrings;
     }
 
-    public static String getBESCHREIBUNG() {
+    public String getBeschreibung() {
         return BESCHREIBUNG;
+    }
+
+    @Override
+    public void accept(SchuelerErfassenSaveResultVisitor visitor) {
+        visitor.visit(this);
     }
 
 }

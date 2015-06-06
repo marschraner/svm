@@ -17,4 +17,6 @@ public abstract class SchuelerErfassenSaveResult {
         return result;
     }
 
+    public abstract void accept(SchuelerErfassenSaveResultVisitor visitor);
+
 }

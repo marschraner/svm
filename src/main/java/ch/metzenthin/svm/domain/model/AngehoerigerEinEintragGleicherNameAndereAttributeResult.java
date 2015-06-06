@@ -23,8 +23,13 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeResult extends Sch
         return angehoeriger.toString();
     }
 
-    public static String getBESCHREIBUNG() {
+    public String getBeschreibung() {
         return BESCHREIBUNG;
+    }
+
+    @Override
+    public void accept(SchuelerErfassenSaveResultVisitor visitor) {
+        visitor.visit(this);
     }
 
 }

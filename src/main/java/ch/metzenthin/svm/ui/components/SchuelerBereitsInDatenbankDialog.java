@@ -2,17 +2,19 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.domain.model.SchuelerBereitsInDatenbankResult;
 import ch.metzenthin.svm.domain.model.SchuelerErfassenModel;
+import ch.metzenthin.svm.domain.model.SchuelerErfassenSaveResult;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class SchuelerBereitsInDatenbankDialog extends JDialog {
+public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
     private final SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
     private JButton buttonOK;
     private JLabel lblBeschreibung;
     private JLabel lblSchueler;
+    private SchuelerErfassenSaveResult result;
 
     public SchuelerBereitsInDatenbankDialog(SchuelerBereitsInDatenbankResult schuelerBereitsInDatenbankResult, SchuelerErfassenModel schuelerErfassenModel) {
         this.schuelerErfassenModel = schuelerErfassenModel;
@@ -21,7 +23,7 @@ public class SchuelerBereitsInDatenbankDialog extends JDialog {
         getRootPane().setDefaultButton(buttonOK);
         if (schuelerBereitsInDatenbankResult != null) {
             lblSchueler.setText(schuelerBereitsInDatenbankResult.getSchuelerToString());
-            lblBeschreibung.setText(schuelerBereitsInDatenbankResult.getBESCHREIBUNG());
+            lblBeschreibung.setText(schuelerBereitsInDatenbankResult.getBeschreibung());
         }
 
         buttonOK.addActionListener(new ActionListener() {
@@ -46,7 +48,12 @@ public class SchuelerBereitsInDatenbankDialog extends JDialog {
 
     private void onOK() {
         schuelerErfassenModel.abbrechen();
+        result = null;
         dispose();
+    }
+
+    public SchuelerErfassenSaveResult getResult() {
+        return result;
     }
 
     public static void main(String[] args) {

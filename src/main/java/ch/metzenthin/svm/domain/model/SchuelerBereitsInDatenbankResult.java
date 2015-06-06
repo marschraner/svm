@@ -22,8 +22,13 @@ public class SchuelerBereitsInDatenbankResult extends SchuelerErfassenSaveResult
         return schueler.toString();
     }
 
-    public static String getBESCHREIBUNG() {
+    public String getBeschreibung() {
         return BESCHREIBUNG;
+    }
+
+    @Override
+    public void accept(SchuelerErfassenSaveResultVisitor visitor) {
+        visitor.visit(this);
     }
 
 }
