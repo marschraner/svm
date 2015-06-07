@@ -12,11 +12,13 @@ import static ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand.Result.S
 public class AngehoerigerEinEintragPasstResult extends SchuelerErfassenSaveResult {
 
     private Angehoeriger angehoeriger;
+    private final ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt;
     private final static String BESCHREIBUNG = "Angehöriger ist bereits in Datenbank"; // todo
 
-    public AngehoerigerEinEintragPasstResult(Angehoeriger angehoeriger, ValidateSchuelerCommand.Result result) {
+    public AngehoerigerEinEintragPasstResult(Angehoeriger angehoeriger, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
         super(result);
         this.angehoeriger = angehoeriger;
+        this.angehoerigenArt = angehoerigenArt;
     }
 
     public String getAngehoerigerToString() {
@@ -32,4 +34,7 @@ public class AngehoerigerEinEintragPasstResult extends SchuelerErfassenSaveResul
         visitor.visit(this);
     }
 
+    public ValidateSchuelerCommand.AngehoerigenArt getAngehoerigenArt() {
+        return angehoerigenArt;
+    }
 }

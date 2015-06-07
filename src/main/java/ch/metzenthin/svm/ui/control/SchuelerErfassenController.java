@@ -2,10 +2,7 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.*;
-import ch.metzenthin.svm.ui.components.AngehoerigerPanel;
-import ch.metzenthin.svm.ui.components.SchuelerBereitsInDatenbankDialog;
-import ch.metzenthin.svm.ui.components.SchuelerErfassenDialog;
-import ch.metzenthin.svm.ui.components.SchuelerPanel;
+import ch.metzenthin.svm.ui.components.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -108,42 +105,22 @@ public class SchuelerErfassenController {
     private void onSpeichern() {
         System.out.println("SchuelerErfassenPanel Speichern gedrückt");
         try {
+            SchuelerErfassenDialog dialog = null;
             SchuelerErfassenSaveResult schuelerErfassenSaveResult = schuelerErfassenModel.validieren();
-// todo könnte das so aussehen (statt dem if-Block unten)?
-// der Dialog weiss, wie es weiter geht, macht den nächsten Schritt und stellt das Resultat bereit
-// Result == null: Abbrechen. Wie erkennen wir das Ende?
-//            while (schuelerErfassenSaveResult != null) {
-//                SchuelerErfassenDialog dialog = createDialog(schuelerErfassenSaveResult);
-//                dialog.pack();
-//                dialog.setVisible(true);
-//                schuelerErfassenSaveResult = dialog.getResult();
-//            }
-            if (schuelerErfassenSaveResult instanceof SchuelerBereitsInDatenbankResult) {
-                System.out.println("SchuelerErfassenController SchuelerBereitsInDatenbankResult");
-                SchuelerErfassenDialog dialog = createDialog(schuelerErfassenSaveResult);
+            while (schuelerErfassenSaveResult != null) { // Wenn null: kein weiterer Dialog
+                dialog = createDialog(schuelerErfassenSaveResult);
                 dialog.pack();
                 dialog.setVisible(true);
-            } else if (schuelerErfassenSaveResult instanceof AngehoerigerEinEintragPasstResult) {
-                System.out.println("SchuelerErfassenController AngehoerigerEinEintragPasstResult");
-                SchuelerErfassenSaveResult schuelerErfassenSaveResult2 = schuelerErfassenModel.proceedUebernehmen(schuelerErfassenSaveResult); // todo dialog
-                if (schuelerErfassenSaveResult2 instanceof ValidateSchuelerSummaryResult) {
-                    System.out.println("SchuelerErfassenController ValidateSchuelerSummaryResult");
-                    SchuelerErfassenSaveResult schuelerErfassenSaveResult3 = schuelerErfassenModel.proceedWeiterfahren(schuelerErfassenSaveResult2); // todo dialog
-                    schuelerErfassenModel.speichern(schuelerErfassenSaveResult3);
-                }
-            } else {
-                if (schuelerErfassenSaveResult instanceof ValidateSchuelerSummaryResult) {
-                    System.out.println("SchuelerErfassenController ValidateSchuelerSummaryResult");
-                    SchuelerErfassenSaveResult schuelerErfassenSaveResult3 = schuelerErfassenModel.proceedWeiterfahren(schuelerErfassenSaveResult); // todo dialog
-                    schuelerErfassenModel.speichern(schuelerErfassenSaveResult3);
-                }
+                schuelerErfassenSaveResult = dialog.getResult();
+            }
+            // Wenn isAbbrechen() zurück zur Eingabemaske, sonst Eingabemaske schliessen
+            if ((dialog == null) || !dialog.isAbbrechen()) {
+                closeListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Close nach Speichern"));
             }
         } catch (Throwable e) {
             // todo Dialog "nicht erfolgreich gespeichert"
             e.printStackTrace();
         }
-        // todo Dialog "erfolgreich gespeichert"
-        // closeListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Close nach Speichern"));
     }
 
     private SchuelerErfassenDialog createDialog(SchuelerErfassenSaveResult schuelerErfassenSaveResult) {
@@ -151,32 +128,37 @@ public class SchuelerErfassenController {
         schuelerErfassenSaveResult.accept(new SchuelerErfassenSaveResultVisitor() {
             @Override
             public void visit(ValidateSchuelerSummaryResult validateSchuelerSummaryResult) {
-
+                dialog[0] = new ValidateSchuelerSummaryDialog(validateSchuelerSummaryResult, schuelerErfassenModel);
             }
 
             @Override
             public void visit(AngehoerigerMehrereEintraegePassenResult angehoerigerMehrereEintraegePassenResult) {
-
+                dialog[0] = new AngehoerigerMehrereEintraegePassenDialog(angehoerigerMehrereEintraegePassenResult, schuelerErfassenModel);
             }
 
             @Override
             public void visit(AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult) {
-
+                dialog[0] = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog(angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult, schuelerErfassenModel);
             }
 
             @Override
             public void visit(AngehoerigerEinEintragGleicherNameAndereAttributeResult angehoerigerEinEintragGleicherNameAndereAttributeResult) {
-
+                dialog[0] = new AngehoerigerEinEintragGleicherNameAndereAttributeDialog(angehoerigerEinEintragGleicherNameAndereAttributeResult, schuelerErfassenModel);
             }
 
             @Override
             public void visit(AngehoerigerEinEintragPasstResult angehoerigerEinEintragPasstResult) {
-
+                dialog[0] = new AngehoerigerEinEintragPasstDialog(angehoerigerEinEintragPasstResult, schuelerErfassenModel);
             }
 
             @Override
             public void visit(SchuelerBereitsInDatenbankResult schuelerBereitsInDatenbankResult) {
                 dialog[0] = new SchuelerBereitsInDatenbankDialog(schuelerBereitsInDatenbankResult, schuelerErfassenModel);
+            }
+
+            @Override
+            public void visit(SchuelerErfassenSaveOkResult schuelerErfassenSaveOkResult) {
+                dialog[0] = new SchuelerErfassenSaveOkDialog(schuelerErfassenSaveOkResult, schuelerErfassenModel);
             }
         });
         return dialog[0];

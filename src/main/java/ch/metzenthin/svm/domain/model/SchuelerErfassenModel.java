@@ -9,7 +9,7 @@ public interface SchuelerErfassenModel extends Model {
     void setVaterModel(AngehoerigerModel vaterModel);
     void setDrittempfaengerModel(AngehoerigerModel drittempfaengerModel);
     SchuelerErfassenSaveResult validieren();
-    void speichern(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
+    SchuelerErfassenSaveResult speichern(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
     SchuelerErfassenSaveResult proceedUebernehmen(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
     SchuelerErfassenSaveResult proceedWeiterfahren(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
     void abbrechen();

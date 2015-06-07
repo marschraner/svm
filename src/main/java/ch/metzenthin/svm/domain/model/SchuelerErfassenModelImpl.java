@@ -261,17 +261,19 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     }
 
     @Override
-    public void speichern(SchuelerErfassenSaveResult schuelerErfassenSaveResult) { // todo Summary entfernen
+    public SchuelerErfassenSaveResult speichern(SchuelerErfassenSaveResult schuelerErfassenSaveResult) { // todo Summary entfernen
         //validateSchuelerCommand.setEntry(schuelerErfassenSaveResult.getResult().proceedWeiterfahren());
         validateSchuelerCommand.setEntry(ValidateSchuelerCommand.Entry.SUMMARY_BESTAETIGT);
+        CommandInvoker commandInvoker = getCommandInvoker();
         try {
-            getCommandInvoker().executeCommandWithinTransaction(validateSchuelerCommand);
+            commandInvoker.executeCommandWithinTransaction(validateSchuelerCommand);
         } catch (SvmDbException e) {
             e.printStackTrace();
         }
-        CommandInvoker commandInvoker = getCommandInvoker();
         commandInvoker.commitTransaction();
+        SchuelerErfassenSaveResult result = validateSchuelerCommand.getResult();
         validateSchuelerCommand = null;
+        return result;
     }
 
     @Override

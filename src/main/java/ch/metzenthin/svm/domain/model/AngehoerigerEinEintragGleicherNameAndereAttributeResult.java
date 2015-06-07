@@ -13,10 +13,12 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeResult extends Sch
 
     private final static String BESCHREIBUNG = "Ein Eintrag passt teilweise"; // todo
     private Angehoeriger angehoeriger;
+    private final ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt;
 
-    public AngehoerigerEinEintragGleicherNameAndereAttributeResult(Angehoeriger angehoeriger, ValidateSchuelerCommand.Result result) {
+    public AngehoerigerEinEintragGleicherNameAndereAttributeResult(Angehoeriger angehoeriger, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
         super(result);
         this.angehoeriger = angehoeriger;
+        this.angehoerigenArt = angehoerigenArt;
     }
 
     public String getAngehoerigerToString() {
@@ -32,4 +34,7 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeResult extends Sch
         visitor.visit(this);
     }
 
+    public ValidateSchuelerCommand.AngehoerigenArt getAngehoerigenArt() {
+        return angehoerigenArt;
+    }
 }

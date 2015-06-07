@@ -10,4 +10,5 @@ public interface SchuelerErfassenSaveResultVisitor {
     void visit(AngehoerigerEinEintragGleicherNameAndereAttributeResult angehoerigerEinEintragGleicherNameAndereAttributeResult);
     void visit(AngehoerigerEinEintragPasstResult angehoerigerEinEintragPasstResult);
     void visit(SchuelerBereitsInDatenbankResult schuelerBereitsInDatenbankResult);
+    void visit(SchuelerErfassenSaveOkResult schuelerErfassenSaveOkResult);
 }

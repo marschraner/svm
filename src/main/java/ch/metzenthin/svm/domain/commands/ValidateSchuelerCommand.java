@@ -88,7 +88,8 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             public Entry proceedWeiterfahren() {
                 return Entry.SUMMARY_BESTAETIGT;
             }
-        };
+        },
+        SPEICHERUNG_ERFOLGREICH;
 
         public Entry proceedUebernehmen() {
             return null;
@@ -108,6 +109,12 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         RECHNUNGSEMPFAENGER_DRITTPERSON_AUS_DATENBANK_UEBERNEHMEN,
         MIT_BISHERIGEM_RECHNUNGSEMPFAENGER_DRITTPERSON_WEITERFAHREN,
         SUMMARY_BESTAETIGT
+    }
+
+    public enum AngehoerigenArt {
+        MUTTER,
+        VATER,
+        RECHNUNGSEMPFAENGER_DRITTPERSON
     }
 
     // input
@@ -211,17 +218,17 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                     break;
                 case EIN_EINTRAG_PASST:
                     mutterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
-                    result = new AngehoerigerEinEintragPasstResult(mutterFoundInDatabase, Result.MUTTER_EIN_EINTRAG_PASST);
+                    result = new AngehoerigerEinEintragPasstResult(mutterFoundInDatabase, AngehoerigenArt.MUTTER, Result.MUTTER_EIN_EINTRAG_PASST);
                     return;
                 case MEHRERE_EINTRAEGE_PASSEN:
-                    result = new AngehoerigerMehrereEintraegePassenResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), Result.MUTTER_MEHRERE_EINTRAEGE_PASSEN);
+                    result = new AngehoerigerMehrereEintraegePassenResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.MUTTER, Result.MUTTER_MEHRERE_EINTRAEGE_PASSEN);
                     return;
                 case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     mutterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
-                    result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(mutterFoundInDatabase, Result.MUTTER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
+                    result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(mutterFoundInDatabase, AngehoerigenArt.MUTTER, Result.MUTTER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
                 case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
-                    result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), Result.MUTTER_MEHRERE_EINTAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
+                    result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.MUTTER, Result.MUTTER_MEHRERE_EINTAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
             }
         }
@@ -238,17 +245,17 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                     break;
                 case EIN_EINTRAG_PASST:
                     vaterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
-                    result = new AngehoerigerEinEintragPasstResult(vaterFoundInDatabase, Result.VATER_EIN_EINTRAG_PASST);
+                    result = new AngehoerigerEinEintragPasstResult(vaterFoundInDatabase, AngehoerigenArt.VATER, Result.VATER_EIN_EINTRAG_PASST);
                     return;
                 case MEHRERE_EINTRAEGE_PASSEN:
-                    result = new AngehoerigerMehrereEintraegePassenResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), Result.VATER_MEHRERE_EINTRAEGE_PASSEN);
+                    result = new AngehoerigerMehrereEintraegePassenResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.VATER, Result.VATER_MEHRERE_EINTRAEGE_PASSEN);
                     return;
                 case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     vaterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
-                    result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(vaterFoundInDatabase, Result.VATER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
+                    result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(vaterFoundInDatabase, AngehoerigenArt.VATER, Result.VATER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
                 case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
-                    result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), Result.VATER_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
+                    result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.VATER, Result.VATER_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
             }
         }
@@ -264,17 +271,17 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                     isRechnungsempfaengerDrittpersonNeu = true;
                 case EIN_EINTRAG_PASST:
                     rechnungsempfaengerDrittpersonFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
-                    result = new AngehoerigerEinEintragPasstResult(rechnungsempfaengerDrittpersonFoundInDatabase, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_PASST);
+                    result = new AngehoerigerEinEintragPasstResult(rechnungsempfaengerDrittpersonFoundInDatabase, AngehoerigenArt.RECHNUNGSEMPFAENGER_DRITTPERSON, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_PASST);
                     return;
                 case MEHRERE_EINTRAEGE_PASSEN:
-                    result = new AngehoerigerMehrereEintraegePassenResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_PASSEN);
+                    result = new AngehoerigerMehrereEintraegePassenResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.RECHNUNGSEMPFAENGER_DRITTPERSON, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_PASSEN);
                     return;
                 case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     rechnungsempfaengerDrittpersonFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
-                    result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(rechnungsempfaengerDrittpersonFoundInDatabase, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
+                    result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(rechnungsempfaengerDrittpersonFoundInDatabase, AngehoerigenArt.RECHNUNGSEMPFAENGER_DRITTPERSON, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
                 case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
-                    result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
+                    result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.RECHNUNGSEMPFAENGER_DRITTPERSON, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
             }
         }
@@ -300,6 +307,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
         saveSchuelerCommand.setEntityManager(entityManager);
         saveSchuelerCommand.execute();
+        result = new SchuelerErfassenSaveOkResult(Result.SPEICHERUNG_ERFOLGREICH);
 
     }
 

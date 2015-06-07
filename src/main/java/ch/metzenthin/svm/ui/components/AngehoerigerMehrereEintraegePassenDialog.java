@@ -1,30 +1,29 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.domain.model.SchuelerBereitsInDatenbankResult;
+import ch.metzenthin.svm.domain.model.AngehoerigerMehrereEintraegePassenResult;
 import ch.metzenthin.svm.domain.model.SchuelerErfassenModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
+public class AngehoerigerMehrereEintraegePassenDialog extends SchuelerErfassenDialog {
+    private final AngehoerigerMehrereEintraegePassenResult angehoerigerMehrereEintraegePassenResult;
     private final SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
     private JButton buttonZurueck;
-    private JLabel lblBeschreibung;
-    private JLabel lblSchueler;
 
-    public SchuelerBereitsInDatenbankDialog(SchuelerBereitsInDatenbankResult schuelerBereitsInDatenbankResult, SchuelerErfassenModel schuelerErfassenModel) {
+    public AngehoerigerMehrereEintraegePassenDialog(
+            AngehoerigerMehrereEintraegePassenResult angehoerigerMehrereEintraegePassenResult,
+            SchuelerErfassenModel schuelerErfassenModel
+    ) {
+        this.angehoerigerMehrereEintraegePassenResult = angehoerigerMehrereEintraegePassenResult;
         this.schuelerErfassenModel = schuelerErfassenModel;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonZurueck);
-        if (schuelerBereitsInDatenbankResult != null) {
-            lblSchueler.setText(schuelerBereitsInDatenbankResult.getSchuelerToString());
-            lblBeschreibung.setText(schuelerBereitsInDatenbankResult.getBeschreibung());
-        }
 
-        setTitle("SchuelerBereitsInDatenbankDialog");
+        setTitle("AngehoerigerMehrereEintraegePassenDialog " + angehoerigerMehrereEintraegePassenResult.getAngehoerigenArt());
 
         buttonZurueck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -32,6 +31,7 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
             }
         });
 
+        // call onZurueck() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -39,6 +39,7 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
             }
         });
 
+        // call onZurueck() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onZurueck();
@@ -53,8 +54,7 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
     }
 
     public static void main(String[] args) {
-        SchuelerBereitsInDatenbankDialog dialog = new SchuelerBereitsInDatenbankDialog(null, null);
-        dialog.lblSchueler.setText("söldfkjaö");
+        AngehoerigerMehrereEintraegePassenDialog dialog = new AngehoerigerMehrereEintraegePassenDialog(null, null);
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);
@@ -110,35 +110,8 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
         gbc.gridy = 0;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.fill = GridBagConstraints.BOTH;
         contentPane.add(panel3, gbc);
-        lblBeschreibung = new JLabel();
-        lblBeschreibung.setText("Label");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel3.add(lblBeschreibung, gbc);
-        final JPanel spacer1 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel3.add(spacer1, gbc);
-        final JPanel spacer2 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel3.add(spacer2, gbc);
-        lblSchueler = new JLabel();
-        lblSchueler.setText("Label");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel3.add(lblSchueler, gbc);
     }
 
     /**

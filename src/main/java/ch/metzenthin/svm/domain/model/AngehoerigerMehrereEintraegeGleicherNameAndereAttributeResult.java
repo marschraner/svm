@@ -11,11 +11,13 @@ import java.util.List;
  */
 public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult extends SchuelerErfassenSaveResult {
 
+    private final ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt;
     private List<String> angehoerigeStrings = new ArrayList<>();
     private final static String BESCHREIBUNG = "Mehrere Einträge passen teilweise"; // todo
 
-    public AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(List<Angehoeriger> angehoerige, ValidateSchuelerCommand.Result result) {
+    public AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(List<Angehoeriger> angehoerige, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
         super(result);
+        this.angehoerigenArt = angehoerigenArt;
         for (Angehoeriger angehoeriger : angehoerige) {
             this.angehoerigeStrings.add(angehoeriger.toString());
         }
@@ -34,4 +36,7 @@ public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult exten
         visitor.visit(this);
     }
 
+    public ValidateSchuelerCommand.AngehoerigenArt getAngehoerigenArt() {
+        return angehoerigenArt;
+    }
 }

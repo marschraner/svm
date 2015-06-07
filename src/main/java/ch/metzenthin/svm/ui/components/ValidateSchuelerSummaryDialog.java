@@ -1,30 +1,36 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.domain.model.SchuelerBereitsInDatenbankResult;
 import ch.metzenthin.svm.domain.model.SchuelerErfassenModel;
+import ch.metzenthin.svm.domain.model.ValidateSchuelerSummaryResult;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
+public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
+    private final ValidateSchuelerSummaryResult validateSchuelerSummaryResult;
     private final SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
+    private JButton buttonSpeichern;
     private JButton buttonZurueck;
-    private JLabel lblBeschreibung;
-    private JLabel lblSchueler;
 
-    public SchuelerBereitsInDatenbankDialog(SchuelerBereitsInDatenbankResult schuelerBereitsInDatenbankResult, SchuelerErfassenModel schuelerErfassenModel) {
+    public ValidateSchuelerSummaryDialog(
+            ValidateSchuelerSummaryResult validateSchuelerSummaryResult,
+            SchuelerErfassenModel schuelerErfassenModel
+    ) {
+        this.validateSchuelerSummaryResult = validateSchuelerSummaryResult;
         this.schuelerErfassenModel = schuelerErfassenModel;
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(buttonZurueck);
-        if (schuelerBereitsInDatenbankResult != null) {
-            lblSchueler.setText(schuelerBereitsInDatenbankResult.getSchuelerToString());
-            lblBeschreibung.setText(schuelerBereitsInDatenbankResult.getBeschreibung());
-        }
+        getRootPane().setDefaultButton(buttonSpeichern);
 
-        setTitle("SchuelerBereitsInDatenbankDialog");
+        setTitle("ValidateSchuelerSummaryDialog");
+
+        buttonSpeichern.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onSpeichern();
+            }
+        });
 
         buttonZurueck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -32,6 +38,7 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
             }
         });
 
+        // call onZurueck() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -39,11 +46,17 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
             }
         });
 
+        // call onZurueck() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onZurueck();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    }
+
+    private void onSpeichern() {
+        setResult(schuelerErfassenModel.speichern(validateSchuelerSummaryResult));
+        dispose();
     }
 
     private void onZurueck() {
@@ -53,8 +66,7 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
     }
 
     public static void main(String[] args) {
-        SchuelerBereitsInDatenbankDialog dialog = new SchuelerBereitsInDatenbankDialog(null, null);
-        dialog.lblSchueler.setText("söldfkjaö");
+        ValidateSchuelerSummaryDialog dialog = new ValidateSchuelerSummaryDialog(null, null);
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);
@@ -94,10 +106,19 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
         panel1.add(panel2, gbc);
+        buttonSpeichern = new JButton();
+        buttonSpeichern.setText("Speichern");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel2.add(buttonSpeichern, gbc);
         buttonZurueck = new JButton();
         buttonZurueck.setText("Zurück");
         gbc = new GridBagConstraints();
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
@@ -110,35 +131,8 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
         gbc.gridy = 0;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.fill = GridBagConstraints.BOTH;
         contentPane.add(panel3, gbc);
-        lblBeschreibung = new JLabel();
-        lblBeschreibung.setText("Label");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel3.add(lblBeschreibung, gbc);
-        final JPanel spacer1 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel3.add(spacer1, gbc);
-        final JPanel spacer2 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel3.add(spacer2, gbc);
-        lblSchueler = new JLabel();
-        lblSchueler.setText("Label");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel3.add(lblSchueler, gbc);
     }
 
     /**
