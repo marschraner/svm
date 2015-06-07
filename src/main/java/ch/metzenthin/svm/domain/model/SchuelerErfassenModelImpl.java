@@ -233,7 +233,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         try {
             commandInvoker.executeCommandWithinTransaction(validateSchuelerCommand);
         } catch (SvmDbException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // todo $$$
         }
         return validateSchuelerCommand.getResult();
     }
@@ -244,7 +244,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         try {
             getCommandInvoker().executeCommandWithinTransaction(validateSchuelerCommand);
         } catch (SvmDbException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // todo $$$
         }
         return validateSchuelerCommand.getResult();
     }
@@ -255,7 +255,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         try {
             getCommandInvoker().executeCommandWithinTransaction(validateSchuelerCommand);
         } catch (SvmDbException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // todo $$$
         }
         return validateSchuelerCommand.getResult();
     }
@@ -268,7 +268,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         try {
             commandInvoker.executeCommandWithinTransaction(validateSchuelerCommand);
         } catch (SvmDbException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // todo $$$
         }
         commandInvoker.commitTransaction();
         SchuelerErfassenSaveResult result = validateSchuelerCommand.getResult();
