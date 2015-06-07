@@ -294,8 +294,6 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         return null;
     }
 
-    // todo null wenn nicht gefüllt (Mutter, Vater, Rechnungempfaenger)
-
     @Override
     public Schueler getSchueler() {
         return schuelerModel.getSchueler();
@@ -308,6 +306,9 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public Angehoeriger getMutter() {
+        if (!mutterModel.isCompleted()) {
+            return null;
+        }
         return mutterModel.getAngehoeriger();
     }
 
@@ -323,7 +324,10 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public Angehoeriger getVater() {
-        return null; /*vaterModel.getAngehoeriger();*/ // todo
+        if (!vaterModel.isCompleted()) {
+            return null;
+        }
+        return vaterModel.getAngehoeriger();
     }
 
     @Override
@@ -338,7 +342,10 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public Angehoeriger getRechnungsempfaengerDrittperson() {
-        return null; /*drittempfaengerModel.getAngehoeriger();*/ // todo
+        if (!drittempfaengerModel.isCompleted()) {
+            return null;
+        }
+        return drittempfaengerModel.getAngehoeriger();
     }
 
     @Override
