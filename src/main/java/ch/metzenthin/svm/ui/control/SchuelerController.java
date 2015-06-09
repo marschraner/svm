@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.dataTypes.Geschlecht;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.SchuelerModel;
 
@@ -113,6 +114,10 @@ public class SchuelerController extends PersonController {
     private void setModelAnmeldedatum() throws SvmValidationException {
         try {
             schuelerModel.setAnmeldedatum(txtAnmeldedatum.getText());
+        } catch (SvmRequiredException e) {
+            System.out.println("SchuelerController setModelAnmeldedatum RequiredException=" + e.getMessage());
+            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            throw e;
         } catch (SvmValidationException e) {
             System.out.println("SchuelerController setModelAnmeldedatum Exception=" + e.getMessage());
             // todo $$$ Fehler anzeigen

@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveSchuelerCommand;
@@ -13,6 +14,7 @@ import java.util.Calendar;
 
 import static ch.metzenthin.svm.common.utils.Converter.toCalendar;
 import static ch.metzenthin.svm.common.utils.Converter.toCalendarIgnoreException;
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
  * @author Hans Stamm
@@ -61,6 +63,10 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public void setAnmeldedatum(String anmeldedatum) throws SvmValidationException {
+        if (!checkNotEmpty(anmeldedatum)) {
+            invalidate();
+            throw new SvmRequiredException("Anmeldedatum");
+        }
         try {
             setAnmeldedatum(toCalendar(anmeldedatum));
         } catch (ParseException e) {

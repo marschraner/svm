@@ -18,6 +18,7 @@ public interface PersonModel extends AdresseModel {
     Calendar getGeburtsdatum();
     boolean isAdresseRequired();
     Adresse getAdresse();
+    boolean isEmpty();
 
     void setAnrede(Anrede anrede) throws SvmValidationException;
     void setNachname(String nachname) throws SvmValidationException;

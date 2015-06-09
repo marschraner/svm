@@ -306,7 +306,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public Angehoeriger getMutter() {
-        if (!mutterModel.isCompleted()) {
+        if (mutterModel.isEmpty()) {
             return null;
         }
         return mutterModel.getAngehoeriger();
@@ -324,7 +324,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public Angehoeriger getVater() {
-        if (!vaterModel.isCompleted()) {
+        if (vaterModel.isEmpty()) {
             return null;
         }
         return vaterModel.getAngehoeriger();
@@ -342,7 +342,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public Angehoeriger getRechnungsempfaengerDrittperson() {
-        if (!drittempfaengerModel.isCompleted()) {
+        if (drittempfaengerModel.isEmpty()) {
             return null;
         }
         return drittempfaengerModel.getAngehoeriger();

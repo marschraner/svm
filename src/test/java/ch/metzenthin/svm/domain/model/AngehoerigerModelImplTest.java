@@ -101,4 +101,37 @@ public class AngehoerigerModelImplTest {
         assertEquals("Aufruf von CompletedListener einmal erwartet", 1, testCompletedListener.getCounter());
     }
 
+    @Test
+    public void testIsEmpty() {
+        assertTrue("Empty erwartet", angehoerigerModel.isEmpty());
+    }
+
+    @Test
+    public void testIsEmpty_FalseNachname() throws SvmValidationException {
+        angehoerigerModel.setNachname("Nachname");
+        assertFalse("Not Empty erwartet (Nachname)", angehoerigerModel.isEmpty());
+    }
+
+    @Test
+    public void testIsEmpty_FalseVorname() throws SvmValidationException {
+        angehoerigerModel.setVorname("Vorname");
+        assertFalse("Not Empty erwartet (Vorname)", angehoerigerModel.isEmpty());
+    }
+
+    @Test
+    public void testIsEmpty_FalseStrasse() throws SvmValidationException {
+        angehoerigerModel.setStrasse("Strasse");
+        assertFalse("Not Empty erwartet (Strasse)", angehoerigerModel.isEmpty());
+    }
+
+    @Test
+    public void testIsEmpty_FalseNameAdresse() throws SvmValidationException {
+        angehoerigerModel.setNachname("Nachname");
+        angehoerigerModel.setVorname("Vorname");
+        angehoerigerModel.setStrasse("Strasse");
+        angehoerigerModel.setPlz("Plz");
+        angehoerigerModel.setOrt("Ort");
+        assertFalse("Not Empty erwartet (Name, Adresse)", angehoerigerModel.isEmpty());
+    }
+
 }
