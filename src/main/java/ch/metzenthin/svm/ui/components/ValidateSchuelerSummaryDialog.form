@@ -1,58 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.ValidateSchuelerSummaryDialog">
-  <grid id="cbd77" binding="contentPane" layout-manager="GridBagLayout">
+  <grid id="cbd77" binding="contentPane" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="48" y="54" width="436" height="297"/>
+      <xy x="577" y="305" width="610" height="323"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="94766" layout-manager="GridBagLayout">
-        <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="1.0" weighty="0.0"/>
-        </constraints>
+      <grid id="e3588" layout-manager="GridBagLayout">
+        <constraints border-constraint="Center"/>
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="9538f" layout-manager="GridBagLayout">
+          <component id="3b9ea" class="javax.swing.JLabel" binding="lblSchueler">
             <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="1.0"/>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="5" left="5" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
             </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="e7465" class="javax.swing.JButton" binding="buttonSpeichern">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="1.0" weighty="1.0"/>
-                </constraints>
-                <properties>
-                  <text value="Speichern"/>
-                </properties>
-              </component>
-              <component id="5723f" class="javax.swing.JButton" binding="buttonZurueck">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="1.0" weighty="1.0"/>
-                </constraints>
-                <properties>
-                  <text value="Zurück"/>
-                </properties>
-              </component>
-            </children>
-          </grid>
+            <properties>
+              <text value="Schüler:"/>
+            </properties>
+          </component>
+          <component id="fae7a" class="javax.swing.JLabel" binding="lblMutter">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="5" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="Mutter:"/>
+            </properties>
+          </component>
+          <component id="3f22a" class="javax.swing.JLabel" binding="schuelerValue">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="5" left="5" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="SchuelerValue"/>
+              <verticalAlignment value="0"/>
+            </properties>
+          </component>
+          <component id="35369" class="javax.swing.JLabel" binding="mutterValue">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="5" bottom="0" right="5" weightx="1.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="MutterValue"/>
+            </properties>
+          </component>
+          <component id="aaff" class="javax.swing.JLabel" binding="lblVater">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="5" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="Vater:"/>
+            </properties>
+          </component>
+          <component id="8d9e6" class="javax.swing.JLabel" binding="vaterValue">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="5" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="VaterValue"/>
+            </properties>
+          </component>
+          <component id="b3dc" class="javax.swing.JLabel" binding="lblRechnungsempfaenger">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="5" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="Rechnungsempfänger:"/>
+            </properties>
+          </component>
+          <component id="64ff7" class="javax.swing.JLabel" binding="rechnungsempfaengerValue">
+            <constraints>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="5" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="10"/>
+              <horizontalTextPosition value="11"/>
+              <text value="RechnungsempfaengerValue"/>
+            </properties>
+          </component>
+          <component id="cc54d" class="javax.swing.JLabel" binding="infoIdentischeAdressen">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="10" left="5" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="Info identische Adressen"/>
+            </properties>
+          </component>
+          <component id="f1c13" class="javax.swing.JLabel" binding="infoGeschwister">
+            <constraints>
+              <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="10" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="Info Geschwister"/>
+            </properties>
+          </component>
         </children>
       </grid>
-      <grid id="e3588" layout-manager="GridBagLayout">
-        <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="1.0" weighty="1.0"/>
-        </constraints>
+      <grid id="94766" layout-manager="GridBagLayout">
+        <constraints border-constraint="South"/>
         <properties/>
         <border type="none"/>
-        <children/>
+        <children>
+          <component id="fddb0" class="javax.swing.JButton" binding="buttonAbbrechen">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="Abbrechen"/>
+            </properties>
+          </component>
+          <component id="12ed3" class="javax.swing.JButton" binding="buttonSpeichern">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="11"/>
+              <text value="Speichern"/>
+            </properties>
+          </component>
+        </children>
       </grid>
     </children>
   </grid>

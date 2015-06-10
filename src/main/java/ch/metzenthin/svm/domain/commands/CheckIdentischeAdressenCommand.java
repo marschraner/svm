@@ -124,7 +124,7 @@ public class CheckIdentischeAdressenCommand implements Command {
             if (rechnungsempfaengerDrittperson != null && vaterHasAdresse) {
                 abweichendeAdressen = "Vater und Rechnungsempfänger Drittperson haben abweichende Adressen";
             } else if (rechnungsempfaengerDrittperson != null) {
-                abweichendeAdressen = "Rechnungsempfänger Drittperson hat abweichende Adressen";
+                abweichendeAdressen = "Rechnungsempfänger Drittperson hat abweichende Adresse";
             } else if (vaterHasAdresse) {
                 abweichendeAdressen = "Vater hat abweichende Adresse";
             }
@@ -137,7 +137,7 @@ public class CheckIdentischeAdressenCommand implements Command {
                 abweichendeAdressen = "Mutter und Rechnungsempfänger Drittperson haben abweichende Adressen";
             }
             else if (rechnungsempfaengerDrittperson != null) {
-                abweichendeAdressen = "Rechnungsempfänger Drittperson hat abweichende Adressen";
+                abweichendeAdressen = "Rechnungsempfänger Drittperson hat abweichende Adresse";
             }
             else if (mutterHasAdresse) {
                 abweichendeAdressen = "Mutter hat abweichende Adresse";

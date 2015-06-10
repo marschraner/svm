@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.ui.control.SchuelerErfassenController;
 
 import javax.swing.*;

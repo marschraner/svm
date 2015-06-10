@@ -11,6 +11,7 @@ import java.util.List;
 public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoCommand {
 
     enum Result {
+        VORNAME_NACHNAME_FEHLEN,
         NICHT_IN_DATENBANK,                     // Angehöriger wird neu erfasst (noch nicht in Datenbank)
         EIN_EINTRAG_PASST,                      // In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben passt: ...
                                                 // - Diesen Eintrag übernehmen (-> Angehoerigen ersetzen)
@@ -43,6 +44,12 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
     public void execute() {
 
         AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
+
+        // Abbruch, falls Vor- und/oder Nachname nicht gesetzt
+        if (angehoeriger.getVorname() == null || angehoeriger.getVorname().trim().isEmpty() || angehoeriger.getNachname() == null || angehoeriger.getNachname().trim().isEmpty()) {
+            result = Result.VORNAME_NACHNAME_FEHLEN;
+            return;
+        }
 
         // Suche mit allen gesetzten Attributen
         angehoerigerFoundList = angehoerigerDao.findAngehoerige(angehoeriger);

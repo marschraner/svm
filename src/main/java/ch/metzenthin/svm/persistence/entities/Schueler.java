@@ -58,6 +58,13 @@ public class Schueler extends Person {
         this.bemerkungen = bemerkungen;
     }
 
+    public boolean isEmpty() {
+        return super.isEmpty()
+                && anmeldedatum == null
+                && abmeldedatum == null
+                && (bemerkungen == null || bemerkungen.trim().isEmpty());
+    }
+
     public Geschlecht getGeschlecht() {
         return geschlecht;
     }

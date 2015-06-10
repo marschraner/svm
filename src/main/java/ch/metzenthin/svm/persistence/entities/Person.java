@@ -81,6 +81,15 @@ public abstract class Person {
                 && (adresse == null || adresse.isPartOf(otherPerson.getAdresse()));
     }
 
+    public boolean isEmpty() {
+        return (vorname == null || vorname.trim().isEmpty())
+                && (nachname == null || nachname.trim().isEmpty())
+                && geburtsdatum == null
+                && (natel == null || natel.trim().isEmpty())
+                && (email ==  null || email.trim().isEmpty())
+                && (adresse == null || adresse.isEmpty());
+    }
+
     @Override
     public String toString() {
         StringBuilder personSb = new StringBuilder();
@@ -90,12 +99,12 @@ public abstract class Person {
         personSb.append(vorname);
         personSb.append(" ").append(nachname);
         if (adresse != null) {
-            personSb.append(", ").append(adresse.toString());
+            personSb.append(adresse.toString());
         }
-        if (natel != null) {
+        if (natel != null && !natel.trim().isEmpty()) {
             personSb.append(", ").append(natel);
         }
-        if (email != null) {
+        if (email != null && !email.trim().isEmpty()) {
             personSb.append(", ").append(email);
         }
         if (geburtsdatum != null) {

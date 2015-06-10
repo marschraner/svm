@@ -45,6 +45,10 @@ public class Angehoeriger extends Person {
         return (super.isPartOf(otherAngehoeriger));
     }
 
+    public boolean isEmpty() {
+        return super.isEmpty();
+    }
+
     public Set<Schueler> getKinderMutter() {
         return kinderMutter;
     }

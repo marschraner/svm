@@ -68,11 +68,19 @@ public class Adresse {
                 && (festnetz == null || festnetz.trim().isEmpty() || festnetz.equals(otherAdresse.getFestnetz()));
     }
 
+    public boolean isEmpty() {
+        return (strasse == null || strasse.trim().isEmpty())
+                && (hausnummer == null || hausnummer.trim().isEmpty())
+                && (plz == null || plz.trim().isEmpty())
+                && (ort == null || ort.trim().isEmpty())
+                && (festnetz == null || festnetz.trim().isEmpty());
+    }
+
     @Override
     public String toString() {
         StringBuilder adresseSb = new StringBuilder();
         if (strasse != null && !strasse.trim().isEmpty()) {
-            adresseSb.append(strasse);
+            adresseSb.append(", ").append(strasse);
         }
         if (hausnummer != null && !hausnummer.trim().isEmpty()) {
             adresseSb.append(" ").append(hausnummer);

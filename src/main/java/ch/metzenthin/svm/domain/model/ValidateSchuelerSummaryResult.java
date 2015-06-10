@@ -11,6 +11,8 @@ import java.util.List;
 public class ValidateSchuelerSummaryResult extends SchuelerErfassenSaveResult {
 
     private final Schueler schueler;
+    private boolean isRechnungsempfaengerMutter;
+    private boolean isRechnungsempfaengerVater;
     private final List<Schueler> geschwister;
     private final List<Schueler> andereSchueler;
     private final String identischeAdressen;
@@ -20,9 +22,11 @@ public class ValidateSchuelerSummaryResult extends SchuelerErfassenSaveResult {
     private final boolean isRechnungsempfaengerNeu;
     private final static String BESCHREIBUNG = "Summary"; // todo
 
-    public ValidateSchuelerSummaryResult(Schueler schueler, List<Schueler> geschwister, List<Schueler> andereSchueler, String identischeAdressen, String abweichendeAdressen, boolean isMutterNeu, boolean isVaterNeu, boolean isRechnungsempfaengerNeu) {
+    public ValidateSchuelerSummaryResult(Schueler schueler, boolean isRechnungsempfaengerMutter, boolean isRechnungsempfaengerVater, List<Schueler> geschwister, List<Schueler> andereSchueler, String identischeAdressen, String abweichendeAdressen, boolean isMutterNeu, boolean isVaterNeu, boolean isRechnungsempfaengerNeu) {
         super(ValidateSchuelerCommand.Result.CHECK_GESCHWISTER_SCHUELER_RECHNUGSEMFPAENGER_COMMAND_FINISHED);
         this.schueler = schueler;
+        this.isRechnungsempfaengerMutter = isRechnungsempfaengerMutter;
+        this.isRechnungsempfaengerVater = isRechnungsempfaengerVater;
         this.geschwister = geschwister;
         this.andereSchueler = andereSchueler;
         this.identischeAdressen = identischeAdressen;
@@ -38,6 +42,14 @@ public class ValidateSchuelerSummaryResult extends SchuelerErfassenSaveResult {
 
     public Schueler getSchueler() {
         return schueler;
+    }
+
+    public boolean isRechnungsempfaengerMutter() {
+        return isRechnungsempfaengerMutter;
+    }
+
+    public boolean isRechnungsempfaengerVater() {
+        return isRechnungsempfaengerVater;
     }
 
     public List<Schueler> getGeschwister() {

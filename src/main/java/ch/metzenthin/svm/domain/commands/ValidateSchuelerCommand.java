@@ -169,25 +169,25 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         if (!skipMutterVaterDrittpersonAusGuiUebernehmen) {
             skipMutterVaterDrittpersonAusGuiUebernehmen = true;
             schueler.setAdresse(adresseSchueler);
-            if (mutter != null) {
+            if (mutter != null && !mutter.isEmpty()) {
                 schueler.setMutter(mutter);
-                if (adresseMutter != null) {
+                if (adresseMutter != null && !adresseMutter.isEmpty()) {
                     mutter.setAdresse(adresseMutter);
                 }
                 if (isRechnungsempfaengerMutter) {
                     schueler.setRechnungsempfaenger(mutter);
                 }
             }
-            if (vater != null) {
+            if (vater != null && !vater.isEmpty()) {
                 schueler.setVater(vater);
-                if (adresseVater != null) {
+                if (adresseVater != null && !adresseVater.isEmpty()) {
                     vater.setAdresse(adresseVater);
                 }
                 if (isRechnungsempfaengerVater) {
                     schueler.setRechnungsempfaenger(vater);
                 }
             }
-            if (rechnungsempfaengerDrittperson != null) {
+            if (!isRechnungsempfaengerMutter && !isRechnungsempfaengerVater) {
                 schueler.setRechnungsempfaenger(rechnungsempfaengerDrittperson);
                 rechnungsempfaengerDrittperson.setAdresse(adresseRechnungsempfaengerDrittperson);
             }
@@ -299,7 +299,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             checkGeschwisterSchuelerRechnungempfaengerCommand.execute();
             List<Schueler> angemeldeteGeschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAngemeldeteGeschwisterList();
             List<Schueler> andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList();
-            result = new ValidateSchuelerSummaryResult(schueler, angemeldeteGeschwisterList, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList, identischeAdressen, abweichendeAdressen, isMutterNeu, isVaterNeu, isRechnungsempfaengerDrittpersonNeu);
+            result = new ValidateSchuelerSummaryResult(schueler, isRechnungsempfaengerMutter, isRechnungsempfaengerVater, angemeldeteGeschwisterList, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList, identischeAdressen, abweichendeAdressen, isMutterNeu, isVaterNeu, isRechnungsempfaengerDrittpersonNeu);
             return;   // -> Summary-Dialog
         }
 
