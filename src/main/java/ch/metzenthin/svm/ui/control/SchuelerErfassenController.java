@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.ui.components.*;
@@ -59,16 +60,28 @@ public class SchuelerErfassenController {
 
     public void setMutterPanel(AngehoerigerPanel mutterPanel, AngehoerigerModel mutterModel) {
         mutterPanel.setModel(mutterModel);
+        try {
+            mutterModel.setAnrede(Anrede.FRAU);
+        } catch (SvmValidationException ignore) {
+        }
         schuelerErfassenModel.setMutterModel(mutterModel);
     }
 
     public void setVaterPanel(AngehoerigerPanel vaterPanel, AngehoerigerModel vaterModel) {
         vaterPanel.setModel(vaterModel);
+        try {
+            vaterModel.setAnrede(Anrede.HERR);
+        } catch (SvmValidationException ignore) {
+        }
         schuelerErfassenModel.setVaterModel(vaterModel);
     }
 
     public void setDrittempfaengerPanel(AngehoerigerPanel drittempfaengerPanel, AngehoerigerModel drittempfaengerModel) {
         drittempfaengerPanel.setModel(drittempfaengerModel);
+        try {
+            drittempfaengerModel.setAnrede(Anrede.FRAU);
+        } catch (SvmValidationException ignore) {
+        }
         schuelerErfassenModel.setDrittempfaengerModel(drittempfaengerModel);
     }
 

@@ -248,9 +248,20 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
                 ;
     }
 
+    private boolean isSetAnyNameElement() {
+        return checkNotEmpty(getPerson().getNachname())
+                || checkNotEmpty(getPerson().getVorname())
+                ;
+    }
+
     @Override
     public Adresse getAdresse() {
         return adresse;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return !(isSetAnyNameElement() || isSetAnyAdresseElement());
     }
 
 }
