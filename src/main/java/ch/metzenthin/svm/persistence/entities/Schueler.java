@@ -65,6 +65,20 @@ public class Schueler extends Person {
                 && (bemerkungen == null || bemerkungen.trim().isEmpty());
     }
 
+    @Override
+    public String toString() {
+        StringBuilder personSb = new StringBuilder();
+        personSb.append(super.toString());
+        if (anmeldedatum != null) {
+            personSb.append(", Anmeldedatum: ").append(String.format("%1$td.%1$tm.%1$tY", anmeldedatum));
+        }
+        if (abmeldedatum != null) {
+            personSb.append(", Abmeldedatum: ").append(String.format("%1$td.%1$tm.%1$tY", abmeldedatum));
+        }
+        return personSb.toString();
+    }
+
+
     public Geschlecht getGeschlecht() {
         return geschlecht;
     }

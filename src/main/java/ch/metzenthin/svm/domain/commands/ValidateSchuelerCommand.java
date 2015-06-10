@@ -307,7 +307,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
         saveSchuelerCommand.setEntityManager(entityManager);
         saveSchuelerCommand.execute();
-        result = new SchuelerErfassenSaveOkResult(Result.SPEICHERUNG_ERFOLGREICH);
+        result = new SchuelerErfassenSaveOkResult(Result.SPEICHERUNG_ERFOLGREICH, schueler.getGeschlecht());
 
     }
 

@@ -171,7 +171,7 @@ public class SchuelerErfassenController {
 
             @Override
             public void visit(SchuelerErfassenSaveOkResult schuelerErfassenSaveOkResult) {
-                dialog[0] = new SchuelerErfassenSaveOkDialog(schuelerErfassenSaveOkResult, schuelerErfassenModel);
+                dialog[0] = new SchuelerErfassenSaveOkDialog(schuelerErfassenSaveOkResult);
             }
         });
         return dialog[0];

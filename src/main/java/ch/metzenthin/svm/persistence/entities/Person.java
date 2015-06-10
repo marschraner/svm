@@ -108,7 +108,7 @@ public abstract class Person {
             personSb.append(", ").append(email);
         }
         if (geburtsdatum != null) {
-            personSb.append(", ").append(String.format("%1$td.%1$tm.%1$tY", geburtsdatum));
+            personSb.append(", Geburtsdatum: ").append(String.format("%1$td.%1$tm.%1$tY", geburtsdatum));
         }
         return personSb.toString();
     }

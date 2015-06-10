@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 
 /**
@@ -7,8 +8,11 @@ import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
  */
 public class SchuelerErfassenSaveOkResult extends SchuelerErfassenSaveResult {
 
-    public SchuelerErfassenSaveOkResult(ValidateSchuelerCommand.Result result) {
+    private Geschlecht geschlecht;
+
+    public SchuelerErfassenSaveOkResult(ValidateSchuelerCommand.Result result, Geschlecht geschlecht) {
         super(result);
+        this.geschlecht = geschlecht;
     }
 
     @Override
@@ -17,7 +21,8 @@ public class SchuelerErfassenSaveOkResult extends SchuelerErfassenSaveResult {
     }
 
     public String getBeschreibung() {
-        return "Der Schüler wurde erfolgreich in der Datenbank gespeichert.";
+        String schuelerStr = (geschlecht == Geschlecht.W ? "Die Schülerin" : "Der Schüler");
+        return schuelerStr + " wurde erfolgreich in der Datenbank gespeichert.";
     }
 
 }
