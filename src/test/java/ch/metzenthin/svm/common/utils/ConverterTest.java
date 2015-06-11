@@ -68,4 +68,14 @@ public class ConverterTest {
         assertEquals("\"01.01.2015\" erwartet", "01.01.2015", asString(calendar));
     }
 
+   @Test(expected = ParseException.class)
+    public void test_Lenient_Order() throws ParseException {
+        toCalendar("2015.01.01");
+    }
+
+   @Test(expected = ParseException.class)
+    public void test_Lenient_Month() throws ParseException {
+        toCalendar("31.04.2001");
+    }
+
 }

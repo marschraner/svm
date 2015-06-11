@@ -32,7 +32,9 @@ public class Converter {
         }
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT_STRING);
+        formatter.setLenient(false);
         calendar.setTime(formatter.parse(s));
+        formatter.setLenient(true);
         return calendar;
     }
 
