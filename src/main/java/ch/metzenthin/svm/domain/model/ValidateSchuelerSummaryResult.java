@@ -20,7 +20,6 @@ public class ValidateSchuelerSummaryResult extends SchuelerErfassenSaveResult {
     private final boolean isMutterNeu;
     private final boolean isVaterNeu;
     private final boolean isRechnungsempfaengerNeu;
-    private final static String BESCHREIBUNG = "Summary"; // todo
 
     public ValidateSchuelerSummaryResult(Schueler schueler, boolean isRechnungsempfaengerMutter, boolean isRechnungsempfaengerVater, List<Schueler> geschwister, List<Schueler> andereSchueler, String identischeAdressen, String abweichendeAdressen, boolean isMutterNeu, boolean isVaterNeu, boolean isRechnungsempfaengerNeu) {
         super(ValidateSchuelerCommand.Result.CHECK_GESCHWISTER_SCHUELER_RECHNUGSEMFPAENGER_COMMAND_FINISHED);
@@ -34,10 +33,6 @@ public class ValidateSchuelerSummaryResult extends SchuelerErfassenSaveResult {
         this.isMutterNeu = isMutterNeu;
         this.isVaterNeu = isVaterNeu;
         this.isRechnungsempfaengerNeu = isRechnungsempfaengerNeu;
-    }
-
-    public String getBeschreibung() {
-        return BESCHREIBUNG;
     }
 
     public Schueler getSchueler() {

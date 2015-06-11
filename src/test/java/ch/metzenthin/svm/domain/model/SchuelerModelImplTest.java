@@ -75,9 +75,9 @@ public class SchuelerModelImplTest {
     public void testSetAnmeldedatum_BadFormatNoException() {
         try {
             schuelerModel.setAnmeldedatum("12.16.2015");
+            fail("Exception erwartet");
         } catch (SvmValidationException e) {
-            e.printStackTrace(System.err);
-            fail("Keine Exception erwartet");
+            e.printStackTrace(System.out);
         }
     }
 

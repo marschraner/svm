@@ -76,7 +76,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             if (!isSetRechnungsempfaenger()) {
                 throw new SvmValidationException(3000, "Rechnungsempfänger ist nicht gesetzt", "Rechnungsempfaenger");
             }
-            CheckDrittpersonIdentischMitElternteilCommand drittpersonIdentischMitElternteilCommand = new CheckDrittpersonIdentischMitElternteilCommand(mutterModel.getAngehoeriger(), vaterModel.getAngehoeriger(), drittempfaengerModel.getAngehoeriger());
+            CheckDrittpersonIdentischMitElternteilCommand drittpersonIdentischMitElternteilCommand = new CheckDrittpersonIdentischMitElternteilCommand(mutterModel, vaterModel, drittempfaengerModel);
             drittpersonIdentischMitElternteilCommand.execute();
             if (checkNotEmpty(drittpersonIdentischMitElternteilCommand.getErrorDrittpersonIdentischMitElternteil())) {
                 throw new SvmValidationException(3010, drittpersonIdentischMitElternteilCommand.getErrorDrittpersonIdentischMitElternteil());

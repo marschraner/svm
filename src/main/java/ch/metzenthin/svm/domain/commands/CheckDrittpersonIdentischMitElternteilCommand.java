@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.domain.model.AngehoerigerModel;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 
 /**
@@ -10,6 +11,7 @@ public class CheckDrittpersonIdentischMitElternteilCommand implements Command {
     private Angehoeriger mutter;
     private Angehoeriger vater;
     private Angehoeriger rechnungsempfaengerDrittperson;
+    private boolean isDrittpersonRechungsempfaenger;
 
     public static String ERROR_IDENTISCH_MIT_MUTTER = "Rechnungsempfänger Drittperson ist identisch mit Mutter. Setze Mutter als Rechnungsempfängerin.";
     public static String ERROR_WAHRSCHEINLICH_IDENTISCH_MIT_MUTTER = "Rechnungsempfänger Drittperson und Mutter scheinen identisch zu sein. Setze Mutter als Rechnungsempfängerin oder präzisiere Mutter.";
@@ -20,16 +22,26 @@ public class CheckDrittpersonIdentischMitElternteilCommand implements Command {
     private boolean identical;
     private String errorDrittpersonIdentischMitElternteil;
 
-    public CheckDrittpersonIdentischMitElternteilCommand(Angehoeriger mutter, Angehoeriger vater, Angehoeriger rechnungsempfaengerDrittperson) {
-        this.mutter = mutter;
-        this.vater = vater;
-        this.rechnungsempfaengerDrittperson = rechnungsempfaengerDrittperson;
+    public CheckDrittpersonIdentischMitElternteilCommand(AngehoerigerModel mutterModel, AngehoerigerModel vaterModel, AngehoerigerModel rechnungsempfaengerDrittpersonModel) {
+        mutter = mutterModel.getAngehoeriger();
+        if (mutter != null) {
+            mutter.setAdresse(mutterModel.getAdresse());
+        }
+        vater = vaterModel.getAngehoeriger();
+        if (vater != null) {
+            vater.setAdresse(vaterModel.getAdresse());
+        }
+        rechnungsempfaengerDrittperson = rechnungsempfaengerDrittpersonModel.getAngehoeriger();
+        if (rechnungsempfaengerDrittperson != null) {
+            rechnungsempfaengerDrittperson.setAdresse(rechnungsempfaengerDrittpersonModel.getAdresse());
+        }
+        isDrittpersonRechungsempfaenger = rechnungsempfaengerDrittpersonModel.isRechnungsempfaenger();
     }
 
     @Override
     public void execute() {
 
-        if (rechnungsempfaengerDrittperson == null) {
+        if (rechnungsempfaengerDrittperson == null || rechnungsempfaengerDrittperson.isEmpty() || !isDrittpersonRechungsempfaenger) {
             identical = false;
             errorDrittpersonIdentischMitElternteil = "";
         }

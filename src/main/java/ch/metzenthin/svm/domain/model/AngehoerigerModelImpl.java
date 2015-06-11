@@ -18,7 +18,7 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
 
     private boolean isRechnungsempfaenger;
 
-    AngehoerigerModelImpl(CommandInvoker commandInvoker) {
+    public AngehoerigerModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
         angehoeriger = new Angehoeriger();
     }
