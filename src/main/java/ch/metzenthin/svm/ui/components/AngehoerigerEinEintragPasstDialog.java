@@ -12,7 +12,9 @@ public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
     private final SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
     private JButton buttonUebernehmen;
-    private JButton buttonZurueck;
+    private JButton buttonKorrigieren;
+    private JLabel lblBeschreibung;
+    private JLabel lblAngehoeriger;
 
     public AngehoerigerEinEintragPasstDialog(
             AngehoerigerEinEintragPasstResult angehoerigerEinEintragPasstResult,
@@ -24,7 +26,11 @@ public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonUebernehmen);
 
-        setTitle("AngehoerigerEinEintragPasstDialog " + angehoerigerEinEintragPasstResult.getAngehoerigenArt());
+        if (angehoerigerEinEintragPasstResult != null) {
+            setTitle(angehoerigerEinEintragPasstResult.getAngehoerigenArt() + " bereits in Datenbank");
+            lblBeschreibung.setText("In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben passt:");
+            lblAngehoeriger.setText(angehoerigerEinEintragPasstResult.getAngehoeriger().toString());
+        }
 
         buttonUebernehmen.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -32,7 +38,7 @@ public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
             }
         });
 
-        buttonZurueck.addActionListener(new ActionListener() {
+        buttonKorrigieren.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onZurueck();
             }
@@ -88,51 +94,46 @@ public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
      */
     private void $$$setupUI$$$() {
         contentPane = new JPanel();
-        contentPane.setLayout(new GridBagLayout());
+        contentPane.setLayout(new BorderLayout(0, 0));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
+        contentPane.add(panel1, BorderLayout.CENTER);
+        lblBeschreibung = new JLabel();
+        lblBeschreibung.setText("Beschreibung");
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        panel1.add(lblBeschreibung, gbc);
+        lblAngehoeriger = new JLabel();
+        lblAngehoeriger.setText("Angehöriger");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.weightx = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        contentPane.add(panel1, gbc);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 5, 5, 5);
+        panel1.add(lblAngehoeriger, gbc);
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        panel1.add(panel2, gbc);
+        contentPane.add(panel2, BorderLayout.SOUTH);
         buttonUebernehmen = new JButton();
-        buttonUebernehmen.setText("Übernehmen");
+        buttonUebernehmen.setText("Eintrag übernehmen");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.insets = new Insets(5, 5, 5, 5);
         panel2.add(buttonUebernehmen, gbc);
-        buttonZurueck = new JButton();
-        buttonZurueck.setText("Zurück");
+        buttonKorrigieren = new JButton();
+        buttonKorrigieren.setText("Eingabe korrigieren");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(buttonZurueck, gbc);
-        final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        contentPane.add(panel3, gbc);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        panel2.add(buttonKorrigieren, gbc);
     }
 
     /**

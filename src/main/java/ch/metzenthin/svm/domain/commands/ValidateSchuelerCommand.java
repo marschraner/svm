@@ -112,9 +112,20 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     }
 
     public enum AngehoerigenArt {
-        MUTTER,
-        VATER,
-        RECHNUNGSEMPFAENGER_DRITTPERSON
+        MUTTER("Mutter"),
+        VATER("Vater"),
+        RECHNUNGSEMPFAENGER_DRITTPERSON("Rechnungsempfänger Drittperson");
+
+        private String name;
+
+        AngehoerigenArt(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 
     // input
