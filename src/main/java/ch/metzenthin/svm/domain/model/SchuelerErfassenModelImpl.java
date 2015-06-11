@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.commands.CheckDrittpersonIdentischMitElternteilCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerModel;
@@ -12,6 +13,7 @@ import ch.metzenthin.svm.ui.control.CompletedListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 import static ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand.Entry.NEU_ERFASSTEN_SCHUELER_VALIDIEREN;
 
 /**
@@ -73,6 +75,11 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         if (isSubModelsCompleted()) {
             if (!isSetRechnungsempfaenger()) {
                 throw new SvmValidationException(3000, "Rechnungsempfänger ist nicht gesetzt", "Rechnungsempfaenger");
+            }
+            CheckDrittpersonIdentischMitElternteilCommand drittpersonIdentischMitElternteilCommand = new CheckDrittpersonIdentischMitElternteilCommand(mutterModel.getAngehoeriger(), vaterModel.getAngehoeriger(), drittempfaengerModel.getAngehoeriger());
+            drittpersonIdentischMitElternteilCommand.execute();
+            if (checkNotEmpty(drittpersonIdentischMitElternteilCommand.getErrorDrittpersonIdentischMitElternteil())) {
+                throw new SvmValidationException(3010, drittpersonIdentischMitElternteilCommand.getErrorDrittpersonIdentischMitElternteil());
             }
         }
     }

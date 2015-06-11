@@ -87,6 +87,8 @@ public class SchuelerErfassenUnerwarteterFehlerDialog extends SchuelerErfassenDi
         contentPane.add(panel2, BorderLayout.SOUTH);
         buttonOK = new JButton();
         buttonOK.setText("OK");
+        buttonOK.setMnemonic('O');
+        buttonOK.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
