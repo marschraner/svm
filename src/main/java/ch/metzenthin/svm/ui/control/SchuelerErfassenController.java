@@ -173,6 +173,11 @@ public class SchuelerErfassenController {
             public void visit(SchuelerErfassenSaveOkResult schuelerErfassenSaveOkResult) {
                 dialog[0] = new SchuelerErfassenSaveOkDialog(schuelerErfassenSaveOkResult);
             }
+
+            @Override
+            public void visit(SchuelerErfassenUnerwarteterFehlerResult schuelerErfassenUnerwarteterFehlerResult) {
+                dialog[0] = new SchuelerErfassenUnerwarteterFehlerDialog(schuelerErfassenUnerwarteterFehlerResult);
+            }
         });
         return dialog[0];
     }

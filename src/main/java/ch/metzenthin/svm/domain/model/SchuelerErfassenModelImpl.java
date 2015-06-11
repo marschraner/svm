@@ -4,7 +4,6 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerModel;
-import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Schueler;
@@ -226,14 +225,15 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     public SchuelerErfassenSaveResult validieren() {
         System.out.println("SchuelerErfassenModel validieren");
 
-        CommandInvoker commandInvoker = getCommandInvoker();
-        commandInvoker.beginTransaction();
         validateSchuelerCommand = new ValidateSchuelerCommand(this);
         validateSchuelerCommand.setEntry(NEU_ERFASSTEN_SCHUELER_VALIDIEREN);
+        CommandInvoker commandInvoker = getCommandInvoker();
         try {
+            commandInvoker.beginTransaction();
             commandInvoker.executeCommandWithinTransaction(validateSchuelerCommand);
-        } catch (SvmDbException e) {
-            e.printStackTrace(); // todo $$$
+        } catch (Throwable e) {
+            commandInvoker.rollbackTransaction();
+            return new SchuelerErfassenUnerwarteterFehlerResult(ValidateSchuelerCommand.Result.UNERWARTETER_FEHLER, e);
         }
         return validateSchuelerCommand.getResult();
     }
@@ -241,39 +241,39 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     @Override
     public SchuelerErfassenSaveResult proceedUebernehmen(SchuelerErfassenSaveResult schuelerErfassenSaveResult) {
         validateSchuelerCommand.setEntry(schuelerErfassenSaveResult.getResult().proceedUebernehmen());
-        try {
-            getCommandInvoker().executeCommandWithinTransaction(validateSchuelerCommand);
-        } catch (SvmDbException e) {
-            e.printStackTrace(); // todo $$$
-        }
-        return validateSchuelerCommand.getResult();
+        return executeCommandWithinTransaction();
     }
 
     @Override
     public SchuelerErfassenSaveResult proceedWeiterfahren(SchuelerErfassenSaveResult schuelerErfassenSaveResult) {
         validateSchuelerCommand.setEntry(schuelerErfassenSaveResult.getResult().proceedWeiterfahren());
+        return executeCommandWithinTransaction();
+    }
+
+    private SchuelerErfassenSaveResult executeCommandWithinTransaction() {
         try {
             getCommandInvoker().executeCommandWithinTransaction(validateSchuelerCommand);
-        } catch (SvmDbException e) {
-            e.printStackTrace(); // todo $$$
+        } catch (Throwable e) {
+            getCommandInvoker().rollbackTransaction();
+            return new SchuelerErfassenUnerwarteterFehlerResult(ValidateSchuelerCommand.Result.UNERWARTETER_FEHLER, e);
         }
         return validateSchuelerCommand.getResult();
     }
 
     @Override
-    public SchuelerErfassenSaveResult speichern(SchuelerErfassenSaveResult schuelerErfassenSaveResult) { // todo Summary entfernen
-        //validateSchuelerCommand.setEntry(schuelerErfassenSaveResult.getResult().proceedWeiterfahren());
+    public SchuelerErfassenSaveResult speichern(SchuelerErfassenSaveResult schuelerErfassenSaveResult) {
         validateSchuelerCommand.setEntry(ValidateSchuelerCommand.Entry.SUMMARY_BESTAETIGT);
         CommandInvoker commandInvoker = getCommandInvoker();
         try {
             commandInvoker.executeCommandWithinTransaction(validateSchuelerCommand);
-        } catch (SvmDbException e) {
-            e.printStackTrace(); // todo $$$
+            commandInvoker.commitTransaction();
+            return validateSchuelerCommand.getResult();
+        } catch (Throwable e) {
+            commandInvoker.rollbackTransaction();
+            return new SchuelerErfassenUnerwarteterFehlerResult(ValidateSchuelerCommand.Result.UNERWARTETER_FEHLER, e);
+        } finally {
+            validateSchuelerCommand = null;
         }
-        commandInvoker.commitTransaction();
-        SchuelerErfassenSaveResult result = validateSchuelerCommand.getResult();
-        validateSchuelerCommand = null;
-        return result;
     }
 
     @Override

@@ -96,9 +96,14 @@ public class CommandInvokerImpl implements CommandInvoker {
         }
     }
 
-    public GenericDaoCommand executeCommandWithinTransaction(GenericDaoCommand genericDaoCommand) throws SvmDbException {
-        genericDaoCommand.setEntityManager(entityManager);
-        genericDaoCommand.execute();
+    public GenericDaoCommand executeCommandWithinTransaction(GenericDaoCommand genericDaoCommand) {
+        try {
+            genericDaoCommand.setEntityManager(entityManager);
+            genericDaoCommand.execute();
+        } catch (Throwable e) {
+            rollbackTransaction();
+            throw e;
+        }
         return genericDaoCommand;
     }
 

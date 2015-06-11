@@ -89,7 +89,8 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                 return Entry.SUMMARY_BESTAETIGT;
             }
         },
-        SPEICHERUNG_ERFOLGREICH;
+        SPEICHERUNG_ERFOLGREICH,
+        UNERWARTETER_FEHLER;
 
         public Entry proceedUebernehmen() {
             return null;
