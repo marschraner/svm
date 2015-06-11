@@ -16,11 +16,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 1L;
 
+    private final static String TITLE_DEFAULT = "SVM Schüler Verwaltung Metzenthin";
+
     private final SvmContext svmContext;
     private SchuelerErfassenPanel schuelerErfassenPanel;
 
     public SvmDesktop(SvmContext svmContext) {
-        super("SVM Schüler Verwaltung Metzenthin");
+        super(TITLE_DEFAULT);
         this.svmContext = svmContext;
 
         // Make the big window be indented 50 pixels from each edge
@@ -51,7 +53,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuBar.add(menuSchueler);
 
         // Set up the first menu item.
-        JMenuItem menuItem = new JMenuItem("Schüler erfassen");
+        JMenuItem menuItem = new JMenuItem("Neuen Schüler erfassen");
         menuItem.setMnemonic(KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_MASK));
         menuItem.setActionCommand("schuelerErfassen");
@@ -81,6 +83,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             });
             getContentPane().add(schuelerErfassenPanel.$$$getRootComponent$$$());
             schuelerErfassenPanel.$$$getRootComponent$$$().setVisible(true);
+            setTitle("Neuen Schüler erfassen");
             revalidate();
         } else { // beenden
             quit();
@@ -90,6 +93,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
     private void onSchuelerErfassenFrameAbbrechen() {
         schuelerErfassenPanel.$$$getRootComponent$$$().setVisible(false);
         getContentPane().remove(schuelerErfassenPanel.$$$getRootComponent$$$());
+        setTitle(TITLE_DEFAULT);
     }
 
     // Quit the application.
