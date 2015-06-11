@@ -240,6 +240,8 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public SchuelerErfassenSaveResult proceedUebernehmen(SchuelerErfassenSaveResult schuelerErfassenSaveResult) {
+        // Eigentlich müsste man das Model durch das neue Objekt, das übernommen wird, ersetzen. Darauf verzichten
+        // wir im Moment.
         validateSchuelerCommand.setEntry(schuelerErfassenSaveResult.getResult().proceedUebernehmen());
         return executeCommandWithinTransaction();
     }
