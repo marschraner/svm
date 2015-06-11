@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
+import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import java.util.List;
@@ -26,8 +27,11 @@ public class CheckSchuelerBereitsInDatenbankCommand extends GenericDaoCommand {
 
         SchuelerDao schuelerDao = new SchuelerDao(entityManager);
 
-        // Suche mit allen gesetzten Attributen
-        List<Schueler> schuelerListFound = schuelerDao.findSchueler(schueler);
+        // Suche nach Vorname, Nachname, Geburstdatum, Strasse, Hausnummer, PLZ, Ort
+        Schueler schuelerToBeFound = new Schueler(schueler.getVorname(), schueler.getNachname(), schueler.getGeburtsdatum(), null, null, null, null, null, null);
+        Adresse adresseToBeFound = new Adresse(schueler.getAdresse().getStrasse(), schueler.getAdresse().getHausnummer(), schueler.getAdresse().getPlz(), schueler.getAdresse().getOrt(), null);
+        schuelerToBeFound.setAdresse(adresseToBeFound);
+        List<Schueler> schuelerListFound = schuelerDao.findSchueler(schuelerToBeFound);
 
         if (schuelerListFound != null) {
             schuelerFound = schuelerListFound.get(0);
