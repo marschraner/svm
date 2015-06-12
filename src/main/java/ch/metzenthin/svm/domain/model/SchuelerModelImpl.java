@@ -62,6 +62,15 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     }
 
     @Override
+    public void setGeburtsdatum(String geburtsdatum) throws SvmValidationException {
+        if (!checkNotEmpty(geburtsdatum)) {
+            invalidate();
+            throw new SvmRequiredException("Geburtsdatum");
+        }
+        super.setGeburtsdatum(geburtsdatum);
+    }
+
+    @Override
     public void setAnmeldedatum(String anmeldedatum) throws SvmValidationException {
         if (!checkNotEmpty(anmeldedatum)) {
             invalidate();

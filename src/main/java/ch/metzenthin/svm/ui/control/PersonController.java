@@ -434,6 +434,10 @@ public abstract class PersonController extends AbstractController {
     private void setModelGeburtsdatum() throws SvmValidationException {
         try {
             personModel.setGeburtsdatum(txtGeburtsdatum.getText());
+        } catch (SvmRequiredException e) {
+            System.out.println("PersonController setModelGeburtsdatum RequiredException=" + e.getMessage());
+            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            throw e;
         } catch (SvmValidationException e) {
             System.out.println("PersonController setModelGeburtsdatum Exception=" + e.getMessage());
             // todo $$$ Fehler anzeigen
