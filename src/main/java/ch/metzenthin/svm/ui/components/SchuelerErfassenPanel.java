@@ -113,7 +113,7 @@ public class SchuelerErfassenPanel {
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel2.add(panel4, gbc);
-        panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Drittperson Rechnungsempfänger"));
+        panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Rechnungsempfänger Drittperson"));
         drittempfaengerPanel = new AngehoerigerPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;

@@ -63,7 +63,7 @@
                   <gridbag weightx="0.5" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="etched" title="Drittperson Rechnungsempfänger"/>
+                <border type="etched" title="Rechnungsempfänger Drittperson"/>
                 <children>
                   <nested-form id="258f0" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="drittempfaengerPanel">
                     <constraints>

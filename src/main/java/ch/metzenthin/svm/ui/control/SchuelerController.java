@@ -193,4 +193,17 @@ public class SchuelerController extends PersonController {
         // todo $$$
     }
 
+    @Override
+    public void disableFields(boolean disable) {
+        super.disableFields(disable);
+        if (disable) {
+            txtAnmeldedatum.setEnabled(false);
+            txtAbmeldedatum.setEnabled(false);
+            textAreaBemerkungen.setEnabled(false);
+        } else {
+            txtAnmeldedatum.setEnabled(true);
+            txtAbmeldedatum.setEnabled(true);
+            textAreaBemerkungen.setEnabled(true);
+        }
+    }
 }

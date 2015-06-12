@@ -9,7 +9,7 @@ import java.beans.PropertyChangeListener;
 /**
  * @author Hans Stamm
  */
-public abstract class AbstractController implements PropertyChangeListener{
+public abstract class AbstractController implements PropertyChangeListener, DisableFieldsListener {
 
     private final Model model;
 

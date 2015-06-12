@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
@@ -21,7 +22,7 @@ public class CheckIdentischeAdressenCommand implements Command {
 
     @Override
     public void execute() {
-
+        
         Angehoeriger mutter = schueler.getMutter();
         Angehoeriger vater = schueler.getVater();
         Angehoeriger rechnungsempfaengerDrittperson = null;
@@ -37,6 +38,8 @@ public class CheckIdentischeAdressenCommand implements Command {
         if (vater != null) {
             vaterHasAdresse = vater.getAdresse() != null;
         }
+        
+        String schuelerStr = (schueler.getGeschlecht() == Geschlecht.W ? "Schülerin" : "Schüler");
 
         // 1. Alle 4 Adressen identisch
         if (rechnungsempfaengerDrittperson != null && mutterHasAdresse && vaterHasAdresse
@@ -46,7 +49,7 @@ public class CheckIdentischeAdressenCommand implements Command {
             schueler.setAdresse(mutter.getAdresse());
             vater.setAdresse(mutter.getAdresse());
             rechnungsempfaengerDrittperson.setAdresse(mutter.getAdresse());
-            identischeAdressen = "Schüler, Mutter, Vater und Rechnungsempfänger Drittperson haben identische Adressen";
+            identischeAdressen = schuelerStr + ", Mutter, Vater und Rechnungsempfänger Drittperson haben identische Adressen";
         }
 
         // 2. 3 Adressen identisch
@@ -55,7 +58,7 @@ public class CheckIdentischeAdressenCommand implements Command {
                 && schueler.getAdresse().isIdenticalWith(vater.getAdresse())) {
             schueler.setAdresse(mutter.getAdresse());
             vater.setAdresse(mutter.getAdresse());
-            identischeAdressen = "Schüler, Mutter und Vater haben identische Adressen";
+            identischeAdressen = schuelerStr + ", Mutter und Vater haben identische Adressen";
             if (rechnungsempfaengerDrittperson != null) {
                 abweichendeAdressen = "Rechnungsempfänger Drittperson hat abweichende Adresse";
             }
@@ -66,7 +69,7 @@ public class CheckIdentischeAdressenCommand implements Command {
                 && schueler.getAdresse().isIdenticalWith(rechnungsempfaengerDrittperson.getAdresse())) {
             schueler.setAdresse(mutter.getAdresse());
             rechnungsempfaengerDrittperson.setAdresse(mutter.getAdresse());
-            identischeAdressen = "Schüler, Mutter und Rechnungsempfänger Drittperson haben identische Adressen";
+            identischeAdressen = schuelerStr + ", Mutter und Rechnungsempfänger Drittperson haben identische Adressen";
             if (vaterHasAdresse) {
                 abweichendeAdressen = "Vater hat abweichende Adresse";
             }
@@ -77,7 +80,7 @@ public class CheckIdentischeAdressenCommand implements Command {
                 && schueler.getAdresse().isIdenticalWith(rechnungsempfaengerDrittperson.getAdresse())) {
             schueler.setAdresse(vater.getAdresse());
             rechnungsempfaengerDrittperson.setAdresse(vater.getAdresse());
-            identischeAdressen = "Schüler, Vater und Rechnungsempfänger Drittperson haben identische Adressen";
+            identischeAdressen = schuelerStr + ", Vater und Rechnungsempfänger Drittperson haben identische Adressen";
             if (mutterHasAdresse) {
                 abweichendeAdressen = "Mutter hat abweichende Adresse";
             }
@@ -89,7 +92,7 @@ public class CheckIdentischeAdressenCommand implements Command {
             vater.setAdresse(mutter.getAdresse());
             rechnungsempfaengerDrittperson.setAdresse(mutter.getAdresse());
             identischeAdressen = "Mutter, Vater und Rechnungsempfänger Drittperson haben identische Adressen";
-            abweichendeAdressen = "Schüler hat abweichende Adresse";
+            abweichendeAdressen = schuelerStr + " hat abweichende Adresse";
         }
 
         // 3.a 2 Adressen paarweise identisch
@@ -98,7 +101,7 @@ public class CheckIdentischeAdressenCommand implements Command {
             && rechnungsempfaengerDrittperson.getAdresse().isIdenticalWith(vater.getAdresse())) {
             schueler.setAdresse(mutter.getAdresse());
             rechnungsempfaengerDrittperson.setAdresse(vater.getAdresse());
-            identischeAdressen = "Schüler und Mutter haben identische Adressen, Vater und Rechnungsempfänger Drittperson haben identische Adressen";
+            identischeAdressen = schuelerStr + " und Mutter haben identische Adressen, Vater und Rechnungsempfänger Drittperson haben identische Adressen";
         }
 
         else if (rechnungsempfaengerDrittperson != null && mutterHasAdresse && vaterHasAdresse
@@ -106,7 +109,7 @@ public class CheckIdentischeAdressenCommand implements Command {
             && rechnungsempfaengerDrittperson.getAdresse().isIdenticalWith(mutter.getAdresse())) {
             schueler.setAdresse(vater.getAdresse());
             rechnungsempfaengerDrittperson.setAdresse(mutter.getAdresse());
-            identischeAdressen = "Schüler und Vater haben identische Adressen, Mutter und Rechnungsempfänger Drittperson haben identische Adressen";
+            identischeAdressen = schuelerStr + " und Vater haben identische Adressen, Mutter und Rechnungsempfänger Drittperson haben identische Adressen";
         }
 
         else if (rechnungsempfaengerDrittperson != null && mutterHasAdresse && vaterHasAdresse
@@ -114,13 +117,13 @@ public class CheckIdentischeAdressenCommand implements Command {
             && vater.getAdresse().isIdenticalWith(mutter.getAdresse())) {
             schueler.setAdresse(rechnungsempfaengerDrittperson.getAdresse());
             vater.setAdresse(mutter.getAdresse());
-            identischeAdressen = "Schüler und Rechnungsempfänger Drittperson haben identische Adressen, Mutter und Vater haben identische Adressen";
+            identischeAdressen = schuelerStr + " und Rechnungsempfänger Drittperson haben identische Adressen, Mutter und Vater haben identische Adressen";
         }
 
         // 3.b 2 Adressen identisch, restliche verschieden
         else if (mutterHasAdresse && schueler.getAdresse().isIdenticalWith(mutter.getAdresse())) {
             schueler.setAdresse(mutter.getAdresse());
-            identischeAdressen = "Schüler und Mutter haben identische Adressen";
+            identischeAdressen = schuelerStr + " und Mutter haben identische Adressen";
             if (rechnungsempfaengerDrittperson != null && vaterHasAdresse) {
                 abweichendeAdressen = "Vater und Rechnungsempfänger Drittperson haben abweichende Adressen";
             } else if (rechnungsempfaengerDrittperson != null) {
@@ -132,7 +135,7 @@ public class CheckIdentischeAdressenCommand implements Command {
 
         else if (vaterHasAdresse && schueler.getAdresse().isIdenticalWith(vater.getAdresse())) {
             schueler.setAdresse(vater.getAdresse());
-            identischeAdressen = "Schüler und Vater haben identische Adressen";
+            identischeAdressen = schuelerStr + " und Vater haben identische Adressen";
             if (rechnungsempfaengerDrittperson != null && mutterHasAdresse) {
                 abweichendeAdressen = "Mutter und Rechnungsempfänger Drittperson haben abweichende Adressen";
             }
@@ -146,7 +149,7 @@ public class CheckIdentischeAdressenCommand implements Command {
 
         else if (rechnungsempfaengerDrittperson != null && schueler.getAdresse().isIdenticalWith(rechnungsempfaengerDrittperson.getAdresse())) {
             schueler.setAdresse(rechnungsempfaengerDrittperson.getAdresse());
-            identischeAdressen = "Schüler und Rechnungsempfänger haben identische Adressen";
+            identischeAdressen = schuelerStr + " und Rechnungsempfänger Drittperson haben identische Adressen";
             if (mutterHasAdresse && vaterHasAdresse) {
                 abweichendeAdressen = "Mutter und Vater haben abweichende Adressen";
             }
@@ -162,10 +165,10 @@ public class CheckIdentischeAdressenCommand implements Command {
             vater.setAdresse(mutter.getAdresse());
             identischeAdressen = "Mutter und Vater haben identische Adressen";
             if (rechnungsempfaengerDrittperson != null) {
-                abweichendeAdressen = "Schüler und Rechnungsempfänger Drittperson haben abweichende Adressen";
+                abweichendeAdressen = schuelerStr + " und Rechnungsempfänger Drittperson haben abweichende Adressen";
             }
             else {
-                abweichendeAdressen = "Schüler hat abweichende Adresse";
+                abweichendeAdressen = schuelerStr + " hat abweichende Adresse";
             }
         }
 
@@ -173,10 +176,10 @@ public class CheckIdentischeAdressenCommand implements Command {
             rechnungsempfaengerDrittperson.setAdresse(mutter.getAdresse());
             identischeAdressen = "Mutter und Rechnungsempfänger Drittperson haben identische Adressen";
             if (vaterHasAdresse) {
-                abweichendeAdressen = "Schüler und Vater haben abweichende Adressen";
+                abweichendeAdressen = schuelerStr + " und Vater haben abweichende Adressen";
             }
             else {
-                abweichendeAdressen = "Schüler hat abweichende Adresse";
+                abweichendeAdressen = schuelerStr + " hat abweichende Adresse";
             }
         }
 
@@ -184,35 +187,35 @@ public class CheckIdentischeAdressenCommand implements Command {
             rechnungsempfaengerDrittperson.setAdresse(vater.getAdresse());
             identischeAdressen = "Vater und Rechnungsempfänger Drittperson haben identische Adressen";
             if (mutterHasAdresse) {
-                abweichendeAdressen = "Schüler und Mutter haben abweichende Adressen";
+                abweichendeAdressen = schuelerStr + " und Mutter haben abweichende Adressen";
             }
             else {
-                abweichendeAdressen = "Schüler hat abweichende Adresse";
+                abweichendeAdressen = schuelerStr + " hat abweichende Adresse";
             }
         }
 
         // 4. alle Adressen verschieden
         else {
             if (rechnungsempfaengerDrittperson != null && vaterHasAdresse && mutterHasAdresse) {
-                abweichendeAdressen = "Schüler, Mutter, Vater und Rechnungsempfänger Drittperson haben abweichende Adressen";
+                abweichendeAdressen = schuelerStr + ", Mutter, Vater und Rechnungsempfänger Drittperson haben abweichende Adressen";
             }
             else if (rechnungsempfaengerDrittperson != null && !vaterHasAdresse && mutterHasAdresse) {
-                abweichendeAdressen = "Schüler, Mutter und Rechnungsempfänger Drittperson haben abweichende Adressen";
+                abweichendeAdressen = schuelerStr + ", Mutter und Rechnungsempfänger Drittperson haben abweichende Adressen";
             }
             else if (rechnungsempfaengerDrittperson != null && vaterHasAdresse) {
-                abweichendeAdressen = "Schüler, Vater und Rechnungsempfänger Drittperson haben abweichende Adressen";
+                abweichendeAdressen = schuelerStr + ", Vater und Rechnungsempfänger Drittperson haben abweichende Adressen";
             }
             else if (rechnungsempfaengerDrittperson != null) {
-                abweichendeAdressen = "Schüler und Rechnungsempfänger Drittperson haben abweichende Adressen";
+                abweichendeAdressen = schuelerStr + " und Rechnungsempfänger Drittperson haben abweichende Adressen";
             }
             else if (vaterHasAdresse && mutterHasAdresse) {
-                abweichendeAdressen = "Schüler, Mutter und Vater haben abweichende Adressen";
+                abweichendeAdressen = schuelerStr + ", Mutter und Vater haben abweichende Adressen";
             }
             else if (!vaterHasAdresse && mutterHasAdresse) {
-                abweichendeAdressen = "Schüler und Mutter haben abweichende Adressen";
+                abweichendeAdressen = schuelerStr + " und Mutter haben abweichende Adressen";
             }
             else if (vaterHasAdresse) {
-                abweichendeAdressen = "Schüler und Vater haben abweichende Adressen";
+                abweichendeAdressen = schuelerStr + " und Vater haben abweichende Adressen";
             }
         }
 

@@ -21,6 +21,7 @@ public class AngehoerigerController extends PersonController {
         super(angehoerigerModel);
         this.angehoerigerModel = angehoerigerModel;
         this.angehoerigerModel.addPropertyChangeListener(this);
+        this.angehoerigerModel.addDisableFieldsListener(this);
     }
 
     public void setCheckBoxRechnungsempfaenger(JCheckBox checkBoxRechnungsempfaenger) {
@@ -64,4 +65,15 @@ public class AngehoerigerController extends PersonController {
         // todo $$$
     }
 
+    @Override
+    public void disableFields(boolean disable) {
+        super.disableFields(disable);
+        if (disable) {
+            checkBoxRechnungsempfaenger.setEnabled(false);
+            System.out.println("Disable Angehöriger Panel");
+        } else {
+            checkBoxRechnungsempfaenger.setEnabled(true);
+            System.out.println("Enable Angehöriger Panel");
+        }
+    }
 }

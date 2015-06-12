@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.ui.control.CompletedListener;
+import ch.metzenthin.svm.ui.control.DisableFieldsListener;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -47,6 +48,34 @@ abstract class AbstractModel implements Model {
         this.propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
 
+
+    //------------------------------------------------------------------------------------------------------------------
+    // DisableFields support
+    //------------------------------------------------------------------------------------------------------------------
+
+    private final List<DisableFieldsListener> disableFieldsListeners = new ArrayList<>();
+
+    public void addDisableFieldsListener(DisableFieldsListener disableFieldsListener) {
+        disableFieldsListeners.add(disableFieldsListener);
+    }
+
+    public void removeDisableFieldsListener(DisableFieldsListener disableFieldsListener) {
+        disableFieldsListeners.remove(disableFieldsListener);
+    }
+
+    void fireDisableFields(boolean disable) {
+        for (DisableFieldsListener disableFieldsListener : disableFieldsListeners) {
+            disableFieldsListener.disableFields(disable);
+        }
+    }
+
+    public void disableFields() {
+        fireDisableFields(true);
+    }
+
+    public void enableFields() {
+        fireDisableFields(false);
+    }
 
     //------------------------------------------------------------------------------------------------------------------
     // Completed support

@@ -25,6 +25,7 @@ public class AngehoerigerPanel {
     private JCheckBox checkBoxRechnungsempfaenger;
     private JLabel lblAnrede;
     private JPanel mainPanel;
+    private JLabel lblRechnungsempfaenger;
 
     private AngehoerigerModel angehoerigerModel;
 
@@ -66,6 +67,14 @@ public class AngehoerigerPanel {
 
     public JComboBox<Anrede> getComboBoxAnrede() {
         return comboBoxAnrede;
+    }
+
+    public JLabel getLblRechnungsempfaenger() {
+        return lblRechnungsempfaenger;
+    }
+
+    public JCheckBox getCheckBoxRechnungsempfaenger() {
+        return checkBoxRechnungsempfaenger;
     }
 
     /**
@@ -318,13 +327,13 @@ public class AngehoerigerPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel2.add(txtOrt, gbc);
-        final JLabel label8 = new JLabel();
-        label8.setText("Rechnungsempfänger");
+        lblRechnungsempfaenger = new JLabel();
+        lblRechnungsempfaenger.setText("Rechnungsempfänger");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 18;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        mainPanel.add(label8, gbc);
+        mainPanel.add(lblRechnungsempfaenger, gbc);
         final JPanel spacer13 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;

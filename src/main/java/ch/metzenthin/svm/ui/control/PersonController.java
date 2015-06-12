@@ -509,4 +509,37 @@ public abstract class PersonController extends AbstractController {
         // todo $$$
     }
 
+    @Override
+    public void disableFields(boolean disable) {
+        if (disable) {
+            comboBoxAnrede.setEnabled(false);
+            txtNachname.setEnabled(false);
+            txtVorname.setEnabled(false);
+            txtStrasse.setEnabled(false);
+            txtHausnummer.setEnabled(false);
+            txtPlz.setEnabled(false);
+            txtOrt.setEnabled(false);
+            txtFestnetz.setEnabled(false);
+            txtNatel.setEnabled(false);
+            txtEmail.setEnabled(false);
+            if (txtGeburtsdatum != null) {
+                txtGeburtsdatum.setEnabled(false);
+            }
+        } else {
+            comboBoxAnrede.setEnabled(true);
+            txtNachname.setEnabled(true);
+            txtVorname.setEnabled(true);
+            txtStrasse.setEnabled(true);
+            txtHausnummer.setEnabled(true);
+            txtPlz.setEnabled(true);
+            txtOrt.setEnabled(true);
+            txtFestnetz.setEnabled(true);
+            txtNatel.setEnabled(true);
+            txtEmail.setEnabled(true);
+            if (txtGeburtsdatum != null) {
+                txtGeburtsdatum.setEnabled(true);
+            }
+        }
+    }
+
 }

@@ -58,8 +58,8 @@ public class SchuelerErfassenController {
     public void setSchuelerPanel(SchuelerPanel schuelerPanel, SchuelerModel schuelerModel) {
         schuelerPanel.setModel(schuelerModel);
         // Panelgrösse überschreiben
-        schuelerPanel.getMainPanel().setMinimumSize(new Dimension(597, 410));
-        schuelerPanel.getMainPanel().setPreferredSize(new Dimension(597, 410));
+        schuelerPanel.getMainPanel().setMinimumSize(new Dimension(597, 420));
+        schuelerPanel.getMainPanel().setPreferredSize(new Dimension(597, 420));
         // Geschlecht-Voreinstellung
         schuelerModel.setGeschlecht(Geschlecht.W);
         schuelerErfassenModel.setSchuelerModel(schuelerModel);
@@ -68,14 +68,18 @@ public class SchuelerErfassenController {
     public void setMutterPanel(AngehoerigerPanel mutterPanel, AngehoerigerModel mutterModel) {
         mutterPanel.setModel(mutterModel);
         // Panelgrösse überschreiben
-        mutterPanel.getMainPanel().setMinimumSize(new Dimension(597, 260));
-        mutterPanel.getMainPanel().setPreferredSize(new Dimension(597, 260));
+        mutterPanel.getMainPanel().setMinimumSize(new Dimension(597, 270));
+        mutterPanel.getMainPanel().setPreferredSize(new Dimension(597, 270));
+        // Rechnungsempfänger-Label überschreiben
+        mutterPanel.getLblRechnungsempfaenger().setText("Rechnungsempfängerin");
         // Keine Anrede anzeigen
         mutterPanel.getLblAnrede().setVisible(false);
         mutterPanel.getComboBoxAnrede().setVisible(false);
         // Anrede immer auf Frau setzen
         try {
             mutterModel.setAnrede(Anrede.FRAU);
+            // Default Rechungsempfängerin
+            mutterModel.setIsRechnungsempfaenger(true);
         } catch (SvmValidationException ignore) {
         }
         schuelerErfassenModel.setMutterModel(mutterModel);
@@ -84,8 +88,8 @@ public class SchuelerErfassenController {
     public void setVaterPanel(AngehoerigerPanel vaterPanel, AngehoerigerModel vaterModel) {
         vaterPanel.setModel(vaterModel);
         // Panelgrösse überschreiben
-        vaterPanel.getMainPanel().setMinimumSize(new Dimension(597, 260));
-        vaterPanel.getMainPanel().setPreferredSize(new Dimension(597, 260));
+        vaterPanel.getMainPanel().setMinimumSize(new Dimension(597, 270));
+        vaterPanel.getMainPanel().setPreferredSize(new Dimension(597, 270));
         // Keine Anrede anzeigen
         vaterPanel.getLblAnrede().setVisible(false);
         vaterPanel.getComboBoxAnrede().setVisible(false);
@@ -100,12 +104,17 @@ public class SchuelerErfassenController {
     public void setDrittempfaengerPanel(AngehoerigerPanel drittempfaengerPanel, AngehoerigerModel drittempfaengerModel) {
         drittempfaengerPanel.setModel(drittempfaengerModel);
         // Panelgrösse überschreiben
-        drittempfaengerPanel.getMainPanel().setMinimumSize(new Dimension(597, 290));
-        drittempfaengerPanel.getMainPanel().setPreferredSize(new Dimension(597, 290));
+        drittempfaengerPanel.getMainPanel().setMinimumSize(new Dimension(597, 270));
+        drittempfaengerPanel.getMainPanel().setPreferredSize(new Dimension(597, 270));
+        // Keine Rechnungsempfänger-Checkbox anzeigen
+        drittempfaengerPanel.getLblRechnungsempfaenger().setVisible(false);
+        drittempfaengerPanel.getCheckBoxRechnungsempfaenger().setVisible(false);
         try {
             drittempfaengerModel.setAnrede(Anrede.FRAU);
         } catch (SvmValidationException ignore) {
         }
+        // Default deaktiviert
+        drittempfaengerModel.disableFields();
         schuelerErfassenModel.setDrittempfaengerModel(drittempfaengerModel);
     }
 

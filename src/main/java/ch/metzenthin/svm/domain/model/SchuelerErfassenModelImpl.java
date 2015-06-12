@@ -33,10 +33,6 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     private boolean isVaterModelCompleted;
     private boolean isDrittempfaengerModelCompleted;
 
-    private boolean isMutterRechnungsempfaenger;
-    private boolean isVaterRechnungsempfaenger;
-    private boolean isDrittempfaengerRechnungsempfaenger;
-
     SchuelerErfassenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
     }
@@ -85,7 +81,8 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     }
 
     private boolean isSetRechnungsempfaenger() {
-        return isMutterRechnungsempfaenger || isVaterRechnungsempfaenger || isDrittempfaengerRechnungsempfaenger;
+        return mutterModel.isRechnungsempfaenger() || vaterModel.isRechnungsempfaenger() || drittempfaengerModel.isRechnungsempfaenger();
+        //return isMutterRechnungsempfaenger || isVaterRechnungsempfaenger || isDrittempfaengerRechnungsempfaenger;
     }
 
     @Override
@@ -156,8 +153,13 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             Boolean newValue = (Boolean) evt.getNewValue();
             if (isBooleanNewValuePropertyChecked(newValue)) {
                 uncheckRechnungsempfaenger(vaterModel, drittempfaengerModel);
+                drittempfaengerModel.disableFields();
+            } else {
+                if (!vaterModel.isRechnungsempfaenger()) {
+                    drittempfaengerModel.setIsRechnungsempfaenger(true);
+                    drittempfaengerModel.enableFields();
+                }
             }
-            isMutterRechnungsempfaenger = newValue;
         }
         fireCompletedChange();
     }
@@ -167,8 +169,13 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             Boolean newValue = (Boolean) evt.getNewValue();
             if (isBooleanNewValuePropertyChecked(newValue)) {
                 uncheckRechnungsempfaenger(mutterModel, drittempfaengerModel);
+                drittempfaengerModel.disableFields();
+            } else {
+                if (!mutterModel.isRechnungsempfaenger()) {
+                    drittempfaengerModel.setIsRechnungsempfaenger(true);
+                    drittempfaengerModel.enableFields();
+                }
             }
-            isVaterRechnungsempfaenger = newValue;
         }
         fireCompletedChange();
     }
@@ -179,7 +186,6 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             if (isBooleanNewValuePropertyChecked(newValue)) {
                 uncheckRechnungsempfaenger(mutterModel, vaterModel);
             }
-            isDrittempfaengerRechnungsempfaenger = newValue;
         }
         fireCompletedChange();
     }
@@ -290,17 +296,6 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         CommandInvoker commandInvoker = getCommandInvoker();
         commandInvoker.rollbackTransaction();
         validateSchuelerCommand = null;
-    }
-
-    private AngehoerigerModel getRechnungsempfaengerModel() {
-        if (mutterModel.isRechnungsempfaenger()) {
-            return mutterModel;
-        } else if (vaterModel.isRechnungsempfaenger()) {
-            return vaterModel;
-        } else if (drittempfaengerModel.isRechnungsempfaenger()) {
-            return drittempfaengerModel;
-        }
-        return null;
     }
 
     @Override

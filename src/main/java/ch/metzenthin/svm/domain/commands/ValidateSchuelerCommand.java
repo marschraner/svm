@@ -281,6 +281,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             switch (checkAngehoerigerBereitsInDatenbankCommand.getResult()) {
                 case NICHT_IN_DATENBANK:
                     isRechnungsempfaengerDrittpersonNeu = true;
+                    break;
                 case EIN_EINTRAG_PASST:
                     rechnungsempfaengerDrittpersonFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     result = new AngehoerigerEinEintragPasstResult(rechnungsempfaengerDrittpersonFoundInDatabase, AngehoerigenArt.RECHNUNGSEMPFAENGER_DRITTPERSON, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_PASST);
