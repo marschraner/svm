@@ -103,4 +103,24 @@ public class SimpleValidatorTest {
         assertTrue(equalsNullSafe(null, null));
     }
 
+    @Test
+    public void testEqualsNullSafe_EqualsStringEqualsCalendar() throws Exception {
+        assertTrue(equalsNullSafe("01.01.2015", Converter.toCalendar("01.01.2015")));
+    }
+
+    @Test
+    public void testEqualsNullSafe_NotEqualsStringEqualsCalendar() throws Exception {
+        assertFalse(equalsNullSafe("01.01.2015", Converter.toCalendar("01.02.2015")));
+    }
+
+    @Test
+    public void testEqualsNullSafe_NotEqualsStringEqualsNull() throws Exception {
+        assertFalse(equalsNullSafe("01.01.2015", null));
+    }
+
+    @Test
+    public void testEqualsNullSafe_NotEqualsNullEqualsCalendar() throws Exception {
+        assertFalse(equalsNullSafe(null, Converter.toCalendar("01.01.2015")));
+    }
+
 }
