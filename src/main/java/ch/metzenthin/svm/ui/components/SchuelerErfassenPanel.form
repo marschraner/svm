@@ -2,152 +2,193 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.SchuelerErfassenPanel">
   <grid id="27dc6" binding="panel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="826" height="990"/>
+      <xy x="20" y="20" width="2528" height="1372"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="6c6ba" layout-manager="GridBagLayout">
+      <grid id="aadac" layout-manager="GridBagLayout">
         <constraints border-constraint="Center"/>
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="39397" layout-manager="GridBagLayout">
+          <grid id="68e13" layout-manager="GridBagLayout">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.5" weighty="0.5"/>
+              <gridbag top="5" left="5" bottom="5" right="5" weightx="0.5" weighty="0.5"/>
             </constraints>
             <properties/>
-            <border type="etched" title="Schüler">
-              <font style="1"/>
-              <title-color color="-16777216"/>
-            </border>
+            <border type="none"/>
             <children>
-              <nested-form id="c2e9d" form-file="ch/metzenthin/svm/ui/components/SchuelerPanel.form" binding="schuelerPanel">
+              <grid id="39397" layout-manager="GridBagLayout">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.5" weighty="0.5"/>
+                  <gridbag weightx="0.5" weighty="0.0"/>
                 </constraints>
-              </nested-form>
-              <hspacer id="60b6d">
+                <properties/>
+                <border type="etched" title="Schüler">
+                  <font style="1"/>
+                  <title-color color="-16777216"/>
+                </border>
+                <children>
+                  <nested-form id="c2e9d" form-file="ch/metzenthin/svm/ui/components/SchuelerPanel.form" binding="schuelerPanel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.5" weighty="0.0"/>
+                    </constraints>
+                  </nested-form>
+                  <hspacer id="60b6d">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </hspacer>
+                  <vspacer id="b2be">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
+                </children>
+              </grid>
+              <vspacer id="403b4">
                 <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-              </hspacer>
-              <vspacer id="b2be">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
               </vspacer>
+              <grid id="f8dfd" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.5" weighty="0.0"/>
+                </constraints>
+                <properties/>
+                <border type="etched" title="Drittperson Rechnungsempfänger"/>
+                <children>
+                  <nested-form id="258f0" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="drittempfaengerPanel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.5" weighty="0.0"/>
+                    </constraints>
+                  </nested-form>
+                  <hspacer id="8c016">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </hspacer>
+                  <vspacer id="268ad">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
+                </children>
+              </grid>
             </children>
           </grid>
-          <grid id="9280" layout-manager="GridBagLayout">
+          <grid id="571b5" layout-manager="GridBagLayout">
             <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.5" weighty="0.5"/>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <gridbag top="5" left="0" bottom="5" right="5" weightx="0.5" weighty="0.5"/>
             </constraints>
             <properties/>
-            <border type="etched" title="Mutter">
-              <font style="1"/>
-            </border>
+            <border type="none"/>
             <children>
-              <nested-form id="83098" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="mutterPanel">
+              <grid id="9280" layout-manager="GridBagLayout">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.5" weighty="0.5"/>
+                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.5" weighty="0.0"/>
                 </constraints>
-              </nested-form>
-              <vspacer id="5bdbf">
+                <properties/>
+                <border type="etched" title="Mutter">
+                  <font style="1"/>
+                </border>
+                <children>
+                  <vspacer id="5bdbf">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
+                  <hspacer id="ac74">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </hspacer>
+                  <nested-form id="83098" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="mutterPanel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.5" weighty="0.0"/>
+                    </constraints>
+                  </nested-form>
+                </children>
+              </grid>
+              <vspacer id="6db7f">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
               </vspacer>
-              <hspacer id="ac74">
+              <grid id="3e1da" layout-manager="GridBagLayout">
                 <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.5" weighty="0.0"/>
                 </constraints>
-              </hspacer>
+                <properties/>
+                <border type="etched" title="Vater"/>
+                <children>
+                  <nested-form id="94d28" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="vaterPanel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.5" weighty="0.0"/>
+                    </constraints>
+                  </nested-form>
+                  <hspacer id="f8f41">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </hspacer>
+                  <vspacer id="483f7">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
+                </children>
+              </grid>
+              <grid id="74d5d" binding="btnPanel" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="6" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="1.0"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="4343a" class="javax.swing.JButton" binding="btnAbbrechen">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="&amp;Abbrechen"/>
+                    </properties>
+                  </component>
+                  <component id="c7c18" class="javax.swing.JButton" binding="btnSpeichern">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="&amp;Speichern"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
             </children>
           </grid>
-          <grid id="3e1da" layout-manager="GridBagLayout">
-            <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.5" weighty="0.5"/>
-            </constraints>
-            <properties/>
-            <border type="etched" title="Vater"/>
-            <children>
-              <nested-form id="94d28" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="vaterPanel">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.5" weighty="0.5"/>
-                </constraints>
-              </nested-form>
-              <hspacer id="f8f41">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-              </hspacer>
-              <vspacer id="483f7">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-              </vspacer>
-            </children>
-          </grid>
-          <grid id="f8dfd" layout-manager="GridBagLayout">
-            <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.5" weighty="0.5"/>
-            </constraints>
-            <properties/>
-            <border type="etched" title="Drittperson Rechnungsempfänger"/>
-            <children>
-              <nested-form id="258f0" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="drittempfaengerPanel">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.5" weighty="0.5"/>
-                </constraints>
-              </nested-form>
-              <hspacer id="8c016">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-              </hspacer>
-              <vspacer id="268ad">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-              </vspacer>
-            </children>
-          </grid>
-        </children>
-      </grid>
-      <grid id="74d5d" binding="btnPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
-        <constraints border-constraint="South"/>
-        <properties/>
-        <border type="none"/>
-        <children>
-          <component id="c7c18" class="javax.swing.JButton" binding="btnSpeichern">
-            <constraints/>
-            <properties>
-              <text value="&amp;Speichern"/>
-            </properties>
-          </component>
-          <component id="4343a" class="javax.swing.JButton" binding="btnAbbrechen">
-            <constraints/>
-            <properties>
-              <text value="&amp;Abbrechen"/>
-            </properties>
-          </component>
         </children>
       </grid>
     </children>

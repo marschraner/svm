@@ -7,11 +7,11 @@
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="bfdcb" layout-manager="GridBagLayout">
+      <grid id="bfdcb" binding="mainPanel" layout-manager="GridBagLayout">
         <constraints border-constraint="Center"/>
         <properties>
-          <minimumSize width="597" height="350"/>
-          <preferredSize width="597" height="350"/>
+          <minimumSize width="597" height="250"/>
+          <preferredSize width="597" height="250"/>
         </properties>
         <border type="none"/>
         <children>

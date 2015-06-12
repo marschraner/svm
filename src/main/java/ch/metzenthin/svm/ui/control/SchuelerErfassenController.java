@@ -7,6 +7,7 @@ import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.ui.components.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -56,12 +57,19 @@ public class SchuelerErfassenController {
 
     public void setSchuelerPanel(SchuelerPanel schuelerPanel, SchuelerModel schuelerModel) {
         schuelerPanel.setModel(schuelerModel);
+        // Panelgrösse überschreiben
+        schuelerPanel.getMainPanel().setMinimumSize(new Dimension(597, 410));
+        schuelerPanel.getMainPanel().setPreferredSize(new Dimension(597, 410));
+        // Geschlecht-Voreinstellung
         schuelerModel.setGeschlecht(Geschlecht.W);
         schuelerErfassenModel.setSchuelerModel(schuelerModel);
     }
 
     public void setMutterPanel(AngehoerigerPanel mutterPanel, AngehoerigerModel mutterModel) {
         mutterPanel.setModel(mutterModel);
+        // Panelgrösse überschreiben
+        mutterPanel.getMainPanel().setMinimumSize(new Dimension(597, 260));
+        mutterPanel.getMainPanel().setPreferredSize(new Dimension(597, 260));
         // Keine Anrede anzeigen
         mutterPanel.getLblAnrede().setVisible(false);
         mutterPanel.getComboBoxAnrede().setVisible(false);
@@ -75,6 +83,9 @@ public class SchuelerErfassenController {
 
     public void setVaterPanel(AngehoerigerPanel vaterPanel, AngehoerigerModel vaterModel) {
         vaterPanel.setModel(vaterModel);
+        // Panelgrösse überschreiben
+        vaterPanel.getMainPanel().setMinimumSize(new Dimension(597, 260));
+        vaterPanel.getMainPanel().setPreferredSize(new Dimension(597, 260));
         // Keine Anrede anzeigen
         vaterPanel.getLblAnrede().setVisible(false);
         vaterPanel.getComboBoxAnrede().setVisible(false);
@@ -88,6 +99,9 @@ public class SchuelerErfassenController {
 
     public void setDrittempfaengerPanel(AngehoerigerPanel drittempfaengerPanel, AngehoerigerModel drittempfaengerModel) {
         drittempfaengerPanel.setModel(drittempfaengerModel);
+        // Panelgrösse überschreiben
+        drittempfaengerPanel.getMainPanel().setMinimumSize(new Dimension(597, 290));
+        drittempfaengerPanel.getMainPanel().setPreferredSize(new Dimension(597, 290));
         try {
             drittempfaengerModel.setAnrede(Anrede.FRAU);
         } catch (SvmValidationException ignore) {
