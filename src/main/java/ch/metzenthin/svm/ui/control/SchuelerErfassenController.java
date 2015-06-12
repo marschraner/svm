@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.ui.components.*;
@@ -55,11 +56,16 @@ public class SchuelerErfassenController {
 
     public void setSchuelerPanel(SchuelerPanel schuelerPanel, SchuelerModel schuelerModel) {
         schuelerPanel.setModel(schuelerModel);
+        schuelerModel.setGeschlecht(Geschlecht.W);
         schuelerErfassenModel.setSchuelerModel(schuelerModel);
     }
 
     public void setMutterPanel(AngehoerigerPanel mutterPanel, AngehoerigerModel mutterModel) {
         mutterPanel.setModel(mutterModel);
+        // Keine Anrede anzeigen
+        mutterPanel.getLblAnrede().setVisible(false);
+        mutterPanel.getComboBoxAnrede().setVisible(false);
+        // Anrede immer auf Frau setzen
         try {
             mutterModel.setAnrede(Anrede.FRAU);
         } catch (SvmValidationException ignore) {
@@ -69,6 +75,10 @@ public class SchuelerErfassenController {
 
     public void setVaterPanel(AngehoerigerPanel vaterPanel, AngehoerigerModel vaterModel) {
         vaterPanel.setModel(vaterModel);
+        // Keine Anrede anzeigen
+        vaterPanel.getLblAnrede().setVisible(false);
+        vaterPanel.getComboBoxAnrede().setVisible(false);
+        // Anrede immer auf Herr setzen
         try {
             vaterModel.setAnrede(Anrede.HERR);
         } catch (SvmValidationException ignore) {

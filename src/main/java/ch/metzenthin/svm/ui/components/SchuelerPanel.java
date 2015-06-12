@@ -37,7 +37,6 @@ public class SchuelerPanel {
     public void setModel(SchuelerModel schuelerModel) {
         this.schuelerModel = schuelerModel;
         createSchuelerController();
-        comboBoxGeschlecht.setSelectedItem(Geschlecht.W);
     }
 
     private void createSchuelerController() {

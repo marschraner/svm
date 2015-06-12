@@ -12,7 +12,6 @@ import java.awt.*;
  */
 public class AngehoerigerPanel {
     private JPanel panel;
-
     private JComboBox<Anrede> comboBoxAnrede;
     private JTextField txtNachname;
     private JTextField txtVorname;
@@ -24,6 +23,7 @@ public class AngehoerigerPanel {
     private JTextField txtNatel;
     private JTextField txtEmail;
     private JCheckBox checkBoxRechnungsempfaenger;
+    private JLabel lblAnrede;
 
     private AngehoerigerModel angehoerigerModel;
 
@@ -53,6 +53,14 @@ public class AngehoerigerPanel {
 
     private void createUIComponents() {
         comboBoxAnrede = new JComboBox<>();
+    }
+
+    public JLabel getLblAnrede() {
+        return lblAnrede;
+    }
+
+    public JComboBox<Anrede> getComboBoxAnrede() {
+        return comboBoxAnrede;
     }
 
     /**
@@ -196,16 +204,16 @@ public class AngehoerigerPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(txtFestnetz, gbc);
-        final JLabel label6 = new JLabel();
-        label6.setText("Anrede");
-        label6.setDisplayedMnemonic('A');
-        label6.setDisplayedMnemonicIndex(0);
+        lblAnrede = new JLabel();
+        lblAnrede.setText("Anrede");
+        lblAnrede.setDisplayedMnemonic('A');
+        lblAnrede.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 0.1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel1.add(label6, gbc);
+        panel1.add(lblAnrede, gbc);
         final JPanel spacer7 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -225,15 +233,15 @@ public class AngehoerigerPanel {
         gbc.gridy = 16;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel1.add(spacer8, gbc);
-        final JLabel label7 = new JLabel();
-        label7.setText("Natel");
-        label7.setDisplayedMnemonic('N');
-        label7.setDisplayedMnemonicIndex(0);
+        final JLabel label6 = new JLabel();
+        label6.setText("Natel");
+        label6.setDisplayedMnemonic('N');
+        label6.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 13;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel1.add(label7, gbc);
+        panel1.add(label6, gbc);
         txtNatel = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -247,15 +255,15 @@ public class AngehoerigerPanel {
         gbc.gridy = 12;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel1.add(spacer9, gbc);
-        final JLabel label8 = new JLabel();
-        label8.setText("E-Mail");
-        label8.setDisplayedMnemonic('E');
-        label8.setDisplayedMnemonicIndex(0);
+        final JLabel label7 = new JLabel();
+        label7.setText("E-Mail");
+        label7.setDisplayedMnemonic('E');
+        label7.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 15;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel1.add(label8, gbc);
+        panel1.add(label7, gbc);
         txtEmail = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -305,13 +313,13 @@ public class AngehoerigerPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel3.add(txtOrt, gbc);
-        final JLabel label9 = new JLabel();
-        label9.setText("Rechnungsempfänger");
+        final JLabel label8 = new JLabel();
+        label8.setText("Rechnungsempfänger");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 18;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel1.add(label9, gbc);
+        panel1.add(label8, gbc);
         final JPanel spacer13 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -330,9 +338,9 @@ public class AngehoerigerPanel {
         label3.setLabelFor(txtHausnummer);
         label4.setLabelFor(txtPlz);
         label5.setLabelFor(txtFestnetz);
-        label6.setLabelFor(comboBoxAnrede);
-        label7.setLabelFor(txtNatel);
-        label8.setLabelFor(txtEmail);
+        lblAnrede.setLabelFor(comboBoxAnrede);
+        label6.setLabelFor(txtNatel);
+        label7.setLabelFor(txtEmail);
     }
 
     /**
