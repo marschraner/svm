@@ -28,6 +28,8 @@ public class Svm {
 
     public static void main(String[] args) {
         final SvmContext svmContext = new SvmContext(createModelFactory());
+        // Fängt alle unbehandelten Exceptions und beendet die Applikation.
+        Thread.setDefaultUncaughtExceptionHandler(new SwingExceptionHandler());
         // Schedule a job for the event-dispatching thread:
         // creating and showing this application's GUI.
         SwingUtilities.invokeLater(new Runnable() {
