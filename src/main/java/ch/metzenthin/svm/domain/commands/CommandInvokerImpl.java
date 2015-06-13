@@ -52,6 +52,7 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     public void beginTransaction() {
+        System.out.println("commitTransaction aufgerufen");
         try {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
@@ -67,8 +68,10 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     public void commitTransaction() {
+        System.out.println("commitTransaction aufgerufen");
         try {
             entityManager.getTransaction().commit();
+            System.out.println("commitTransaction durchgeführt");
         } catch (RuntimeException e) {
             EntityTransaction tx = entityManager.getTransaction();
             if (tx != null && tx.isActive()) {
@@ -82,24 +85,28 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     public void rollbackTransaction() {
+        System.out.println("rollbackTransaction aufgerufen");
         try {
             entityManager.getTransaction().rollback();
+            System.out.println("rollbackTransaction durchgeführt");
         } catch (RuntimeException e) {
             EntityTransaction tx = entityManager.getTransaction();
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
         } finally {
-            if (entityManager != null) {
+            if ((entityManager != null) && entityManager.isOpen()) {
                 entityManager.close();
             }
         }
     }
 
     public GenericDaoCommand executeCommandWithinTransaction(GenericDaoCommand genericDaoCommand) {
+        System.out.println("executeCommandWithinTransaction aufgerufen");
         try {
             genericDaoCommand.setEntityManager(entityManager);
             genericDaoCommand.execute();
+            System.out.println("executeCommandWithinTransaction durchgeführt");
         } catch (Throwable e) {
             rollbackTransaction();
             throw e;
