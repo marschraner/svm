@@ -18,7 +18,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
-    Adresse adresse;
+    private final Adresse adresse;
 
     PersonModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -79,10 +79,6 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         firePropertyChange("Nachname", oldValue, getPerson().getNachname());
     }
 
-    private boolean checkNachname() {
-        return checkNotEmpty(getPerson().getNachname());
-    }
-
     @Override
     public void setVorname(String vorname) throws SvmValidationException {
         if (isAdresseRequired() && !checkNotEmpty(vorname)) {
@@ -96,10 +92,6 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         String oldValue = getPerson().getVorname();
         getPerson().setVorname(vorname);
         firePropertyChange("Vorname", oldValue, getPerson().getVorname());
-    }
-
-    private boolean checkVorname() {
-        return checkNotEmpty(getPerson().getVorname());
     }
 
     @Override
@@ -168,10 +160,6 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         firePropertyChange("Strasse", oldValue, adresse.getStrasse());
     }
 
-    private boolean checkStrasse() {
-        return checkNotEmpty(adresse.getStrasse());
-    }
-
     @Override
     public void setHausnummer(String hausnummer) {
         String oldValue = adresse.getHausnummer();
@@ -190,10 +178,6 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         firePropertyChange("Plz", oldValue, adresse.getPlz());
     }
 
-    private boolean checkPlz() {
-        return checkNotEmpty(adresse.getPlz());
-    }
-
     @Override
     public void setOrt(String ort) throws SvmRequiredException {
         if (isAdresseRequired() && !checkNotEmpty(ort)) {
@@ -205,10 +189,6 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         firePropertyChange("Ort", oldValue, adresse.getOrt());
     }
 
-    private boolean checkOrt() {
-        return checkNotEmpty(adresse.getOrt());
-    }
-
     @Override
     public void setFestnetz(String festnetz) {
         String oldValue = adresse.getFestnetz();
@@ -218,39 +198,71 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public boolean isCompleted() {
-        return checkName() && checkAdresse();
+        if (isAdresseRequired()) {
+            return isSetName() && isSetAnschrift();
+        }
+        return (!isSetAnyNameElement() || isSetName()) && (!isSetAnyAnschriftElement() || (isSetName() && isSetAnschrift()));
     }
 
     @Override
     public void doValidate() throws SvmValidationException {
-        if (!checkName()) {
-            throw new SvmValidationException(2000, "Name und Vorname obligatorisch", "Name", "Vorname");
+        if (isAdresseRequired()) {
+            if (!isSetName()) {
+                throw new SvmValidationException(2000, "Nachname und Vorname obligatorisch", "Nachname", "Vorname");
+            }
+            if (!isSetAnschrift()) {
+                throw new SvmValidationException(2001, "Anschrift ist obligatorisch", "Strasse", "Hausnummer", "Plz", "Ort", "Festnetz");
+            }
+        } else {
+            if (isSetAnyNameElement() && !isSetName()) {
+                throw new SvmValidationException(2002, "Nachname und Vorname müssen zusammen angegeben werden", "Nachname", "Vorname");
+            }
+            if (isSetAnyAnschriftElement()) {
+                if (!isSetName()) {
+                    throw new SvmValidationException(2003, "Nachname und Vorname müssen angegeben werden, wenn eine Anschrift vorhanden ist", "Nachname", "Vorname");
+                }
+                if (!isSetAnschrift()) {
+                    throw new SvmValidationException(2004, "Anschrift ist unvollständig", "Strasse", "Hausnummer", "Plz", "Ort", "Festnetz");
+                }
+            }
         }
-        if (!checkAdresse()) {
-            throw new SvmValidationException(2001, "Adresse obligatorisch oder unvollständig", "Strasse", "Hausnummer", "Plz", "Ort", "Festnetz");
-        }
-    }
-
-    private boolean checkName() {
-        return !(isAdresseRequired()) || checkNachname() && checkVorname();
-    }
-
-    private boolean checkAdresse() {
-        return !(isAdresseRequired() || isSetAnyAdresseElement()) || checkStrasse() && checkPlz() && checkOrt();
     }
 
     private boolean isSetAnyAdresseElement() {
+        return isSetAnyAnschriftElement() || isSetFestnetz();
+    }
+
+    /**
+     * Anschrift: Adresse ohne Festnetz
+     */
+    private boolean isSetAnyAnschriftElement() {
         return checkNotEmpty(adresse.getStrasse())
                 || checkNotEmpty(adresse.getHausnummer())
                 || checkNotEmpty(adresse.getPlz())
                 || checkNotEmpty(adresse.getOrt())
-                || checkNotEmpty(adresse.getFestnetz())
                 ;
     }
 
     private boolean isSetAnyNameElement() {
         return checkNotEmpty(getPerson().getNachname())
                 || checkNotEmpty(getPerson().getVorname())
+                ;
+    }
+
+    private boolean isSetName() {
+        return checkNotEmpty(getPerson().getNachname())
+                && checkNotEmpty(getPerson().getVorname())
+                ;
+    }
+
+    private boolean isSetFestnetz() {
+        return checkNotEmpty(adresse.getFestnetz());
+    }
+
+    private boolean isSetAnschrift() {
+        return checkNotEmpty(adresse.getStrasse())
+                && checkNotEmpty(adresse.getPlz())
+                && checkNotEmpty(adresse.getOrt())
                 ;
     }
 
