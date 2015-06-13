@@ -12,6 +12,4 @@ public interface AngehoerigerModel extends PersonModel {
     boolean isRechnungsempfaenger();
 
     void setIsRechnungsempfaenger(boolean isSelected);
-
-    void save();
 }

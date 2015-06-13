@@ -34,16 +34,6 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     }
 
     @Override
-    public void save() {
-        SaveAngehoerigeCommand saveAngehoerigeCommand = new SaveAngehoerigeCommand(Collections.singletonList(angehoeriger));
-        try {
-            getCommandInvoker().executeCommand(saveAngehoerigeCommand);
-        } catch (SvmDbException e) {
-            e.printStackTrace();    // TODO
-        }
-    }
-
-    @Override
     Person getPerson() {
         return angehoeriger;
     }
