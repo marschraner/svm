@@ -44,6 +44,7 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
         try {
             model.validate();
         } catch (SvmValidationException e) {
+            System.out.println("AbstractController model.validate " + e.getMessage());
             show(e);
         }
     }
