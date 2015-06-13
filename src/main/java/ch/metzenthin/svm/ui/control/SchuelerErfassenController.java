@@ -144,28 +144,34 @@ public class SchuelerErfassenController {
 
     private void onAbbrechen() {
         System.out.println("SchuelerErfassenPanel Abbrechen gedrückt");
-        closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Abbrechen"));
-        // todo Dialog, ob wirklich abgebrochen werden soll
+        Object[] options = {"Ja", "Nein"};
+        int n = JOptionPane.showOptionDialog(
+                btnAbbrechen.getParent().getParent(),
+                "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. Allfällig erfasste Daten gehen verloren.",
+                "Soll die Eingabemaske geschlossen werden?",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,     //do not use a custom Icon
+                options,  //the titles of buttons
+                options[0]); //default button title
+        if (n == 0) {
+            closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Abbrechen"));
+        }
     }
 
     private void onSpeichern() {
         System.out.println("SchuelerErfassenPanel Speichern gedrückt");
-        try {
-            SchuelerErfassenDialog dialog = null;
-            SchuelerErfassenSaveResult schuelerErfassenSaveResult = schuelerErfassenModel.validieren();
-            while (schuelerErfassenSaveResult != null) { // Wenn null: kein weiterer Dialog
-                dialog = createDialog(schuelerErfassenSaveResult);
-                dialog.pack();
-                dialog.setVisible(true);
-                schuelerErfassenSaveResult = dialog.getResult();
-            }
-            // Wenn isAbbrechen() zurück zur Eingabemaske, sonst Eingabemaske schliessen
-            if ((dialog == null) || !dialog.isAbbrechen()) {
-                closeListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Close nach Speichern"));
-            }
-        } catch (Throwable e) {
-            // todo Dialog "nicht erfolgreich gespeichert"
-            e.printStackTrace();
+        SchuelerErfassenDialog dialog = null;
+        SchuelerErfassenSaveResult schuelerErfassenSaveResult = schuelerErfassenModel.validieren();
+        while (schuelerErfassenSaveResult != null) { // Wenn null: kein weiterer Dialog
+            dialog = createDialog(schuelerErfassenSaveResult);
+            dialog.pack();
+            dialog.setVisible(true);
+            schuelerErfassenSaveResult = dialog.getResult();
+        }
+        // Wenn isAbbrechen() zurück zur Eingabemaske, sonst Eingabemaske schliessen
+        if ((dialog == null) || !dialog.isAbbrechen()) {
+            closeListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Close nach Speichern"));
         }
     }
 
