@@ -4,10 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 /*
  * SVM Applikation
@@ -19,7 +16,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
     private final static String TITLE_DEFAULT = "SVM Schüler Verwaltung Metzenthin";
 
     private final SvmContext svmContext;
-    private SchuelerErfassenPanel schuelerErfassenPanel;
+    private JComponent activeComponent;
 
     public SvmDesktop(SvmContext svmContext) {
         super(TITLE_DEFAULT);
@@ -34,7 +31,14 @@ public class SvmDesktop extends JFrame implements ActionListener {
         // Set up the GUI.
         setJMenuBar(createMenuBar());
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // call quit() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                quit();
+            }
+        });
 
         // Display the window.
         setVisible(true);
@@ -74,15 +78,16 @@ public class SvmDesktop extends JFrame implements ActionListener {
     // React to menu selections.
     public void actionPerformed(ActionEvent e) {
         if ("schuelerErfassen".equals(e.getActionCommand())) {
-            schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext);
+            SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext);
             schuelerErfassenPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     onSchuelerErfassenFrameAbbrechen();
                 }
             });
-            getContentPane().add(schuelerErfassenPanel.$$$getRootComponent$$$());
-            schuelerErfassenPanel.$$$getRootComponent$$$().setVisible(true);
+            activeComponent = schuelerErfassenPanel.$$$getRootComponent$$$();
+            getContentPane().add(activeComponent);
+            activeComponent.setVisible(true);
             setTitle("Neuen Schüler erfassen");
             revalidate();
         } else { // beenden
@@ -91,14 +96,30 @@ public class SvmDesktop extends JFrame implements ActionListener {
     }
 
     private void onSchuelerErfassenFrameAbbrechen() {
-        schuelerErfassenPanel.$$$getRootComponent$$$().setVisible(false);
-        getContentPane().remove(schuelerErfassenPanel.$$$getRootComponent$$$());
+        activeComponent.setVisible(false);
+        getContentPane().remove(activeComponent);
+        activeComponent = null;
         setTitle(TITLE_DEFAULT);
     }
 
     // Quit the application.
     private void quit() {
-        System.exit(0);
+        int n = 0; //default button title
+        if (activeComponent != null) {
+            Object[] options = {"Ja", "Nein"};
+            n = JOptionPane.showOptionDialog(
+                    this,
+                    "Durch Drücken des Ja-Buttons wird die Applikation beendet. Allfällig erfasste Daten gehen verloren.",
+                    "Soll die Applikation beendet werden?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,     //do not use a custom Icon
+                    options,  //the titles of buttons
+                    options[0]);
+        }
+        if (n == 0) {
+            System.exit(0);
+        }
     }
 
 }
