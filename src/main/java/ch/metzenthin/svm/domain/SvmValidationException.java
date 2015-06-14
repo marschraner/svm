@@ -5,7 +5,7 @@ package ch.metzenthin.svm.domain;
  */
 public class SvmValidationException extends SvmException {
 
-    private String[] affectedProperties;
+    private final String[] affectedProperties;
 
     public SvmValidationException(int errorId, String errorMsg, String... affectedProperties) {
         super(errorId, errorMsg);
@@ -13,7 +13,7 @@ public class SvmValidationException extends SvmException {
     }
 
     public String[] getAffectedProperties() {
-        return affectedProperties;
+        return affectedProperties.clone();
     }
 
 }
