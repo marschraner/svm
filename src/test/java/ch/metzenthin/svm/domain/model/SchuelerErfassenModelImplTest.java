@@ -52,7 +52,7 @@ public class SchuelerErfassenModelImplTest {
             schuelerModel.setNachname("Nachname");
             schuelerModel.setVorname("Vorname");
             schuelerModel.setStrasse("Strasse");
-            schuelerModel.setPlz("Plz");
+            schuelerModel.setPlz("Plzz");
             schuelerModel.setOrt("Ort");
             schuelerModel.validate();
             mutterModel.setIsRechnungsempfaenger(true);
@@ -65,7 +65,7 @@ public class SchuelerErfassenModelImplTest {
             mutterModel.setNachname("Nachname");
             mutterModel.setVorname("Vorname");
             mutterModel.setStrasse("Strasse");
-            mutterModel.setPlz("Plz");
+            mutterModel.setPlz("Plzz");
             mutterModel.setOrt("Ort");
             mutterModel.validate();
         } catch (SvmValidationException e) {

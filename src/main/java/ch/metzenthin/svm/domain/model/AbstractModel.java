@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Hans Stamm
  */
-abstract class AbstractModel implements Model {
+abstract class AbstractModel implements Model, ModelAttributeListener {
 
     private final CommandInvoker commandInvoker;
 
@@ -41,7 +41,8 @@ abstract class AbstractModel implements Model {
         this.propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
-    void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+    @Override
+    public final void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         if ((oldValue == null) && (newValue == null)) {
             return;
         }
@@ -101,7 +102,8 @@ abstract class AbstractModel implements Model {
         fireCompleted(isCompleted());
     }
 
-    void invalidate() {
+    @Override
+    public final void invalidate() {
         fireCompleted(false);
     }
 

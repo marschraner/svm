@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
-import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -33,79 +32,120 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     @Override
-    public String getNachname() {
-        return getPerson().getNachname();
-    }
-
-    @Override
-    public String getVorname() {
-        return getPerson().getVorname();
-    }
-
-    @Override
-    public String getNatel() {
-        return getPerson().getNatel();
-    }
-
-    @Override
-    public String getEmail() {
-        return getPerson().getEmail();
-    }
-
-    @Override
-    public Calendar getGeburtsdatum() {
-        return getPerson().getGeburtsdatum();
-    }
-
-    @Override
     public void setAnrede(Anrede anrede) {
         Anrede oldValue = getPerson().getAnrede();
         getPerson().setAnrede(anrede);
         firePropertyChange("Anrede", oldValue, getPerson().getAnrede());
     }
 
+    private final StringModelAttribute nachnameModelAttribute = new StringModelAttribute(
+            this,
+            "Nachname", 2, 50,
+            new AttributeAccessor<String>() {
+                @Override
+                public String getValue() {
+                    return getPerson().getNachname();
+                }
+
+                @Override
+                public void setValue(String value) {
+                    getPerson().setNachname(value);
+                }
+            }
+    );
+
+    @Override
+    public String getNachname() {
+        return nachnameModelAttribute.getValue();
+    }
+
     @Override
     public void setNachname(String nachname) throws SvmValidationException {
-        if (isAdresseRequired() && !checkNotEmpty(nachname)) {
-            invalidate();
-            throw new SvmRequiredException("Nachname");
-        }
-        if (checkNotEmpty(nachname) && nachname.length() < 2) {
-            invalidate();
-            throw new SvmValidationException(1100, "Länge muss mindestens " + 2 + " sein");
-        }
-        String oldValue = getPerson().getNachname();
-        getPerson().setNachname(nachname);
-        firePropertyChange("Nachname", oldValue, getPerson().getNachname());
+        nachnameModelAttribute.setNewValue(isAdresseRequired(), nachname);
+    }
+
+    private final StringModelAttribute vornameModelAttribute = new StringModelAttribute(
+            this,
+            "Vorname", 2, 50,
+            new AttributeAccessor<String>() {
+                @Override
+                public String getValue() {
+                    return getPerson().getVorname();
+                }
+
+                @Override
+                public void setValue(String value) {
+                    getPerson().setVorname(value);
+                }
+            }
+    );
+
+    @Override
+    public String getVorname() {
+        return vornameModelAttribute.getValue();
     }
 
     @Override
     public void setVorname(String vorname) throws SvmValidationException {
-        if (isAdresseRequired() && !checkNotEmpty(vorname)) {
-            invalidate();
-            throw new SvmRequiredException("Vorname");
-        }
-        if (checkNotEmpty(vorname) && vorname.length() < 2) {
-            invalidate();
-            throw new SvmValidationException(1100, "Länge muss mindestens " + 2 + " sein");
-        }
-        String oldValue = getPerson().getVorname();
-        getPerson().setVorname(vorname);
-        firePropertyChange("Vorname", oldValue, getPerson().getVorname());
+        vornameModelAttribute.setNewValue(isAdresseRequired(), vorname);
+    }
+
+    private final StringModelAttribute natelModelAttribute = new StringModelAttribute(
+            this,
+            "Natel", 0, 20,
+            new AttributeAccessor<String>() {
+                @Override
+                public String getValue() {
+                    return getPerson().getNatel();
+                }
+
+                @Override
+                public void setValue(String value) {
+                    getPerson().setNatel(value);
+                }
+            }
+    );
+
+    @Override
+    public String getNatel() {
+        return natelModelAttribute.getValue();
     }
 
     @Override
-    public void setNatel(String natel) {
-        String oldValue = getPerson().getNatel();
-        getPerson().setNatel(natel);
-        firePropertyChange("Natel", oldValue, getPerson().getNatel());
+    public void setNatel(String natel) throws SvmValidationException {
+        natelModelAttribute.setNewValue(false, natel);
+    }
+
+    private final StringModelAttribute emailModelAttribute = new StringModelAttribute(
+            this,
+            "Email", 0, 50,
+            new AttributeAccessor<String>() {
+                @Override
+                public String getValue() {
+                    return getPerson().getEmail();
+                }
+
+                @Override
+                public void setValue(String value) {
+                    getPerson().setEmail(value);
+                }
+            }
+    );
+
+    @Override
+
+    public String getEmail() {
+        return emailModelAttribute.getValue();
     }
 
     @Override
-    public void setEmail(String email) {
-        String oldValue = getPerson().getEmail();
-        getPerson().setEmail(email);
-        firePropertyChange("Email", oldValue, getPerson().getEmail());
+    public void setEmail(String email) throws SvmValidationException {
+        emailModelAttribute.setNewValue(false, email);
+    }
+
+    @Override
+    public Calendar getGeburtsdatum() {
+        return getPerson().getGeburtsdatum();
     }
 
     @Override
@@ -124,76 +164,134 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         firePropertyChange("Geburtsdatum", oldValue, getPerson().getGeburtsdatum());
     }
 
+    private final StringModelAttribute strasseModelAttribute = new StringModelAttribute(
+            this,
+            "Strasse", 0, 50,
+            new AttributeAccessor<String>() {
+                @Override
+                public String getValue() {
+                    return adresse.getStrasse();
+                }
+
+                @Override
+                public void setValue(String value) {
+                    adresse.setStrasse(value);
+                }
+            }
+    );
+
     @Override
     public String getStrasse() {
-        return adresse.getStrasse();
+        return strasseModelAttribute.getValue();
     }
+
+    @Override
+    public void setStrasse(String strasse) throws SvmValidationException {
+        strasseModelAttribute.setNewValue(isAdresseRequired(), strasse);
+    }
+
+    private final StringModelAttribute hausnummerModelAttribute = new StringModelAttribute(
+            this,
+            "Hausnummer", 0, 10,
+            new AttributeAccessor<String>() {
+                @Override
+                public String getValue() {
+                    return adresse.getHausnummer();
+                }
+
+                @Override
+                public void setValue(String value) {
+                    adresse.setHausnummer(value);
+                }
+            }
+    );
 
     @Override
     public String getHausnummer() {
-        return adresse.getHausnummer();
+        return hausnummerModelAttribute.getValue();
     }
+
+    @Override
+    public void setHausnummer(String hausnummer) throws SvmValidationException {
+        hausnummerModelAttribute.setNewValue(false, hausnummer);
+    }
+
+    private final StringModelAttribute plzModelAttribute = new StringModelAttribute(
+            this,
+            "Plz", 4, 10,
+            new AttributeAccessor<String>() {
+                @Override
+                public String getValue() {
+                    return adresse.getPlz();
+                }
+
+                @Override
+                public void setValue(String value) {
+                    adresse.setPlz(value);
+                }
+            }
+    );
 
     @Override
     public String getPlz() {
-        return adresse.getPlz();
+        return plzModelAttribute.getValue();
     }
+
+    @Override
+    public void setPlz(String plz) throws SvmValidationException {
+        plzModelAttribute.setNewValue(isAdresseRequired(), plz);
+    }
+
+    private final StringModelAttribute ortModelAttribute = new StringModelAttribute(
+            this,
+            "Ort", 0, 50,
+            new AttributeAccessor<String>() {
+                @Override
+                public String getValue() {
+                    return adresse.getOrt();
+                }
+
+                @Override
+                public void setValue(String value) {
+                    adresse.setOrt(value);
+                }
+            }
+    );
 
     @Override
     public String getOrt() {
-        return adresse.getOrt();
+        return ortModelAttribute.getValue();
     }
+
+    @Override
+    public void setOrt(String ort) throws SvmValidationException {
+        ortModelAttribute.setNewValue(isAdresseRequired(), ort);
+    }
+
+    private final StringModelAttribute festnetzModelAttribute = new StringModelAttribute(
+            this,
+            "Festnetz", 0, 20,
+            new AttributeAccessor<String>() {
+                @Override
+                public String getValue() {
+                    return adresse.getFestnetz();
+                }
+
+                @Override
+                public void setValue(String value) {
+                    adresse.setFestnetz(value);
+                }
+            }
+    );
 
     @Override
     public String getFestnetz() {
-        return adresse.getFestnetz();
+        return festnetzModelAttribute.getValue();
     }
 
     @Override
-    public void setStrasse(String strasse) throws SvmRequiredException {
-        if (isAdresseRequired() && !checkNotEmpty(strasse)) {
-            invalidate();
-            throw new SvmRequiredException("Strasse");
-        }
-        String oldValue = adresse.getStrasse();
-        adresse.setStrasse(strasse);
-        firePropertyChange("Strasse", oldValue, adresse.getStrasse());
-    }
-
-    @Override
-    public void setHausnummer(String hausnummer) {
-        String oldValue = adresse.getHausnummer();
-        adresse.setHausnummer(hausnummer);
-        firePropertyChange("Hausnummer", oldValue, adresse.getHausnummer());
-    }
-
-    @Override
-    public void setPlz(String plz) throws SvmRequiredException {
-        if (isAdresseRequired() && !checkNotEmpty(plz)) {
-            invalidate();
-            throw new SvmRequiredException("Plz");
-        }
-        String oldValue = adresse.getPlz();
-        adresse.setPlz(plz);
-        firePropertyChange("Plz", oldValue, adresse.getPlz());
-    }
-
-    @Override
-    public void setOrt(String ort) throws SvmRequiredException {
-        if (isAdresseRequired() && !checkNotEmpty(ort)) {
-            invalidate();
-            throw new SvmRequiredException("Ort");
-        }
-        String oldValue = adresse.getOrt();
-        adresse.setOrt(ort);
-        firePropertyChange("Ort", oldValue, adresse.getOrt());
-    }
-
-    @Override
-    public void setFestnetz(String festnetz) {
-        String oldValue = adresse.getFestnetz();
-        adresse.setFestnetz(festnetz);
-        firePropertyChange("Festnetz", oldValue, adresse.getFestnetz());
+    public void setFestnetz(String festnetz) throws SvmValidationException {
+        festnetzModelAttribute.setNewValue(false, festnetz);
     }
 
     @Override

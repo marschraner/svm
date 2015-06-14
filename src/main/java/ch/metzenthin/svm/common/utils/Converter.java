@@ -58,4 +58,18 @@ public class Converter {
         return formatter.format(calendar.getTime());
     }
 
+    public static String emptyStringAsNull(String s) {
+        if ((s == null) || s.isEmpty()) {
+            return null;
+        }
+        return s;
+    }
+
+    public static String nullAsEmptyString(String s) {
+        if (s == null) {
+            return "";
+        }
+        return s;
+    }
+
 }

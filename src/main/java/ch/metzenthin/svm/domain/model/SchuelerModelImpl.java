@@ -5,7 +5,6 @@ import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.SaveSchuelerCommand;
 import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
@@ -13,7 +12,6 @@ import java.text.ParseException;
 import java.util.Calendar;
 
 import static ch.metzenthin.svm.common.utils.Converter.toCalendar;
-import static ch.metzenthin.svm.common.utils.Converter.toCalendarIgnoreException;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
@@ -21,7 +19,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
-    private Schueler schueler;
+    private final Schueler schueler;
 
     SchuelerModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -40,21 +38,6 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     }
 
     @Override
-    public Calendar getAnmeldedatum() {
-        return schueler.getAnmeldedatum();
-    }
-
-    @Override
-    public Calendar getAbmeldedatum() {
-        return schueler.getAbmeldedatum();
-    }
-
-    @Override
-    public String getBemerkungen() {
-        return schueler.getBemerkungen();
-    }
-
-    @Override
     public void setGeschlecht(Geschlecht geschlecht) {
         Geschlecht oldValue = schueler.getGeschlecht();
         schueler.setGeschlecht(geschlecht);
@@ -68,6 +51,11 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
             throw new SvmRequiredException("Geburtsdatum");
         }
         super.setGeburtsdatum(geburtsdatum);
+    }
+
+    @Override
+    public Calendar getAnmeldedatum() {
+        return schueler.getAnmeldedatum();
     }
 
     @Override
@@ -91,6 +79,11 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     }
 
     @Override
+    public Calendar getAbmeldedatum() {
+        return schueler.getAbmeldedatum();
+    }
+
+    @Override
     public void setAbmeldedatum(String abmeldedatum) throws SvmValidationException {
         try {
             setAbmeldedatum(toCalendar(abmeldedatum));
@@ -106,11 +99,30 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
         firePropertyChange("Abmeldedatum", oldValue, schueler.getAbmeldedatum());
     }
 
+    private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(
+            this,
+            "Bemerkungen", 0, 1000,
+            new AttributeAccessor<String>() {
+                @Override
+                public String getValue() {
+                    return schueler.getBemerkungen();
+                }
+
+                @Override
+                public void setValue(String value) {
+                    schueler.setBemerkungen(value);
+                }
+            }
+    );
+
     @Override
-    public void setBemerkungen(String bemerkungen) {
-        String oldValue = schueler.getBemerkungen();
-        schueler.setBemerkungen(bemerkungen);
-        firePropertyChange("Bemerkungen", oldValue, schueler.getBemerkungen());
+    public String getBemerkungen() {
+        return bemerkungenModelAttribute.getValue();
+    }
+
+    @Override
+    public void setBemerkungen(String bemerkungen) throws SvmValidationException {
+        bemerkungenModelAttribute.setNewValue(false, bemerkungen);
     }
 
     @Override

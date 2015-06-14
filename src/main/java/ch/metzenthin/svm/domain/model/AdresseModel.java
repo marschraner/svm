@@ -13,8 +13,8 @@ public interface AdresseModel extends Model {
     String getFestnetz();
 
     void setStrasse(String strasse) throws SvmValidationException;
-    void setHausnummer(String hausnummer);
+    void setHausnummer(String hausnummer) throws SvmValidationException;
     void setPlz(String plz) throws SvmValidationException;
     void setOrt(String ort) throws SvmValidationException;
-    void setFestnetz(String festnetz);
+    void setFestnetz(String festnetz) throws SvmValidationException;
 }

@@ -10,7 +10,7 @@ import ch.metzenthin.svm.persistence.entities.Person;
  */
 public class AngehoerigerModelImpl extends PersonModelImpl implements AngehoerigerModel {
 
-    private Angehoeriger angehoeriger;
+    private final Angehoeriger angehoeriger;
 
     private boolean isRechnungsempfaenger;
 

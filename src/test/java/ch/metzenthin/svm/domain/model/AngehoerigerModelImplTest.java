@@ -60,7 +60,7 @@ public class AngehoerigerModelImplTest {
             angehoerigerModel.setNachname("Nachname");
             angehoerigerModel.setVorname("Vorname");
             angehoerigerModel.setStrasse("Strasse");
-            angehoerigerModel.setPlz("Plz");
+            angehoerigerModel.setPlz("Plzz");
             angehoerigerModel.setOrt("Ort");
         } catch (SvmValidationException e) {
             e.printStackTrace(System.err);
@@ -129,7 +129,7 @@ public class AngehoerigerModelImplTest {
         angehoerigerModel.setNachname("Nachname");
         angehoerigerModel.setVorname("Vorname");
         angehoerigerModel.setStrasse("Strasse");
-        angehoerigerModel.setPlz("Plz");
+        angehoerigerModel.setPlz("Plzz");
         angehoerigerModel.setOrt("Ort");
         assertFalse("Not Empty erwartet (Name, Adresse)", angehoerigerModel.isEmpty());
     }

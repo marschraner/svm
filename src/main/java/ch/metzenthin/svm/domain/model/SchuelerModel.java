@@ -21,5 +21,5 @@ public interface SchuelerModel extends PersonModel {
     void setAnmeldedatum(Calendar anmeldedatum);
     void setAbmeldedatum(String abmeldedatum) throws SvmValidationException;
     void setAbmeldedatum(Calendar abmeldedatum);
-    void setBemerkungen(String bemerkungen);
+    void setBemerkungen(String bemerkungen) throws SvmValidationException;
 }

@@ -139,7 +139,7 @@ public class SchuelerModelImplTest {
             schuelerModel.setNachname("Nachname");
             schuelerModel.setVorname("Vorname");
             schuelerModel.setStrasse("Strasse");
-            schuelerModel.setPlz("Plz");
+            schuelerModel.setPlz("Plzz");
             schuelerModel.setOrt("Ort");
         } catch (SvmValidationException e) {
             e.printStackTrace(System.err);

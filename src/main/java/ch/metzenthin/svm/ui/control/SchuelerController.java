@@ -152,11 +152,27 @@ public class SchuelerController extends PersonController {
 
     private void onBemerkungenEvent() {
         System.out.println("SchuelerController Event Bemerkungen");
-        setModelBemerkungen();
+        boolean equalFieldAndModelValue = equalsNullSafe(textAreaBemerkungen.getText(), schuelerModel.getBemerkungen());
+        try {
+            setModelBemerkungen();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            System.out.println("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
     }
 
-    private void setModelBemerkungen() {
-        schuelerModel.setBemerkungen(textAreaBemerkungen.getText());
+    private void setModelBemerkungen() throws SvmValidationException {
+        try {
+            schuelerModel.setBemerkungen(textAreaBemerkungen.getText());
+        } catch (SvmValidationException e) {
+            System.out.println("SchuelerController setModelBemerkungen Exception=" + e.getMessage());
+            // todo $$$ Fehler anzeigen
+            throw e;
+        }
     }
 
     @Override

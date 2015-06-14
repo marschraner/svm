@@ -78,4 +78,35 @@ public class ConverterTest {
         toCalendar("31.04.2001");
     }
 
+    @Test
+    public void testEmptyStringAsNull_NotEmpty() {
+        assertEquals("abc", emptyStringAsNull("abc"));
+    }
+
+    @Test
+    public void testEmptyStringAsNull_Null() {
+        assertNull(emptyStringAsNull(null));
+    }
+
+    @Test
+    public void testEmptyStringAsNull_Empty() {
+        assertNull(emptyStringAsNull(""));
+    }
+
+    @Test
+    public void testNullAsEmptyString_NotEmpty() {
+        assertEquals("abc", nullAsEmptyString("abc"));
+    }
+
+    @Test
+    public void testNullAsEmptyString_Null() {
+        //noinspection ConstantConditions
+        assertTrue(nullAsEmptyString(null).isEmpty());
+    }
+
+    @Test
+    public void testNullAsEmptyString_Empty() {
+        assertTrue(nullAsEmptyString("").isEmpty());
+    }
+
 }
