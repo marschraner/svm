@@ -226,6 +226,20 @@ public class StringModelAttributeTest {
         assertEquals(1, testModelAttributeListener.getFireCounter());
     }
 
+    @Test
+    public void testSetNewValue_Trim() throws SvmValidationException {
+        TestAttributeAccessor  testAttributeAccessor = new TestAttributeAccessor(null);
+        StringModelAttribute stringModelAttribute = new StringModelAttribute(
+                testModelAttributeListener,
+                "Property", 0, 10,
+                testAttributeAccessor
+        );
+        stringModelAttribute.setNewValue(true, "  abc  ");
+        assertEquals("abc", testAttributeAccessor.settedValue);
+        assertEquals(0, testModelAttributeListener.getInvalidateCounter());
+        assertEquals(1, testModelAttributeListener.getFireCounter());
+    }
+
     private static class TestModelAttributeListener implements ModelAttributeListener {
 
         private int invalidateCounter;
@@ -253,6 +267,7 @@ public class StringModelAttributeTest {
 
     private static class TestAttributeAccessor implements AttributeAccessor<String> {
         private String getValue;
+        private String settedValue;
         private TestAttributeAccessor(String getValue) {
             this.getValue = getValue;
         }
@@ -263,7 +278,7 @@ public class StringModelAttributeTest {
 
         @Override
         public void setValue(String value) {
-            // empty
+            settedValue = value;
         }
     }
 
