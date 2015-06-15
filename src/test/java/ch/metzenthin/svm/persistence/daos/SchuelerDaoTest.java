@@ -294,6 +294,11 @@ public class SchuelerDaoTest {
             schueler2.setAdresse(adresse2);
             schueler2.setRechnungsempfaenger(rechnungsempfaenger);
 
+            Angehoeriger rechnungsempfaenger2 = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", null, null);
+            Adresse adresseRechnungsempfaenger2 = new Adresse("Hintere Bergstrassse", "15", "8942", "Oberrieden", "044 720 85 51");
+            rechnungsempfaenger2.setAdresse(adresseRechnungsempfaenger2);
+            schueler2.setRechnungsempfaenger(rechnungsempfaenger2);
+
             List<Schueler> schuelerList2 = schuelerDao.findSchueler(schueler2);
             assertEquals("Mehr als ein Schüler gefunden", 1, schuelerList2.size());
             Schueler schuelerFound2 = schuelerList2.get(0);
@@ -303,7 +308,7 @@ public class SchuelerDaoTest {
             Schueler schueler3 = new Schueler("Lea", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, null);
             Adresse adresse3 = new Adresse("Gugusstrasse", "16", "8049", "Zürich", "044 491 69 33");
             schueler3.setAdresse(adresse3);
-            schueler3.setRechnungsempfaenger(rechnungsempfaenger);
+            schueler3.setRechnungsempfaenger(rechnungsempfaenger2);
 
             List<Schueler> schuelerList3 = schuelerDao.findSchueler(schueler3);
             assertNull("Schüler gefunden", schuelerList3);
