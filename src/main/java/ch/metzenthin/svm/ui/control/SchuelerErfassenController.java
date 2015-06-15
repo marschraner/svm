@@ -106,6 +106,8 @@ public class SchuelerErfassenController {
         // Panelgrösse überschreiben
         drittempfaengerPanel.getMainPanel().setMinimumSize(new Dimension(597, 270));
         drittempfaengerPanel.getMainPanel().setPreferredSize(new Dimension(597, 270));
+        // Anrede: KEINE nicht anzeigen:
+        drittempfaengerPanel.getComboBoxAnrede().removeItem(Anrede.KEINE);
         // Keine Rechnungsempfänger-Checkbox anzeigen
         drittempfaengerPanel.getLblRechnungsempfaenger().setVisible(false);
         drittempfaengerPanel.getCheckBoxRechnungsempfaenger().setVisible(false);
