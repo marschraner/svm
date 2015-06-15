@@ -23,19 +23,25 @@ public class CheckDrittpersonIdentischMitElternteilCommand implements Command {
     private String errorDrittpersonIdentischMitElternteil;
 
     public CheckDrittpersonIdentischMitElternteilCommand(AngehoerigerModel mutterModel, AngehoerigerModel vaterModel, AngehoerigerModel rechnungsempfaengerDrittpersonModel) {
-        mutter = mutterModel.getAngehoeriger();
-        if (mutter != null) {
-            mutter.setAdresse(mutterModel.getAdresse());
+        if (mutterModel.getAngehoeriger() != null && !mutterModel.getAngehoeriger().isEmpty()) {
+            mutter = mutterModel.getAngehoeriger();
+            if (mutterModel.getAdresse() != null && !mutterModel.getAdresse().isEmpty()) {
+                mutter.setAdresse(mutterModel.getAdresse());
+            }
         }
-        vater = vaterModel.getAngehoeriger();
-        if (vater != null) {
-            vater.setAdresse(vaterModel.getAdresse());
+        if (vaterModel.getAngehoeriger() != null && !vaterModel.getAngehoeriger().isEmpty()) {
+            vater = vaterModel.getAngehoeriger();
+            if (vaterModel.getAdresse() != null && !vaterModel.getAdresse().isEmpty()) {
+                vater.setAdresse(vaterModel.getAdresse());
+            }
         }
-        rechnungsempfaengerDrittperson = rechnungsempfaengerDrittpersonModel.getAngehoeriger();
-        if (rechnungsempfaengerDrittperson != null) {
-            rechnungsempfaengerDrittperson.setAdresse(rechnungsempfaengerDrittpersonModel.getAdresse());
+        if (rechnungsempfaengerDrittpersonModel.getAngehoeriger() != null && !rechnungsempfaengerDrittpersonModel.getAngehoeriger().isEmpty()) {
+            rechnungsempfaengerDrittperson = rechnungsempfaengerDrittpersonModel.getAngehoeriger();
+            if (rechnungsempfaengerDrittpersonModel.getAdresse() != null && !rechnungsempfaengerDrittpersonModel.getAdresse().isEmpty()) {
+                rechnungsempfaengerDrittperson.setAdresse(rechnungsempfaengerDrittpersonModel.getAdresse());
+            }
+            isDrittpersonRechungsempfaenger = rechnungsempfaengerDrittpersonModel.isRechnungsempfaenger();
         }
-        isDrittpersonRechungsempfaenger = rechnungsempfaengerDrittpersonModel.isRechnungsempfaenger();
     }
 
     @Override
