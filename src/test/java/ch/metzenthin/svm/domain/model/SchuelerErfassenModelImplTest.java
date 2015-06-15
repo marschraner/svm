@@ -51,7 +51,7 @@ public class SchuelerErfassenModelImplTest {
         try {
             schuelerModel.setNachname("Nachname");
             schuelerModel.setVorname("Vorname");
-            schuelerModel.setStrasse("Strasse");
+            schuelerModel.setStrasseHausnummer("Strasse");
             schuelerModel.setPlz("Plzz");
             schuelerModel.setOrt("Ort");
             schuelerModel.validate();
@@ -64,7 +64,7 @@ public class SchuelerErfassenModelImplTest {
             }
             mutterModel.setNachname("Nachname");
             mutterModel.setVorname("Vorname");
-            mutterModel.setStrasse("Strasse");
+            mutterModel.setStrasseHausnummer("Strasse");
             mutterModel.setPlz("Plzz");
             mutterModel.setOrt("Ort");
             mutterModel.validate();

@@ -28,8 +28,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
             mutter1.setAnrede(Anrede.FRAU);
             mutter1.setVorname("Susanne");
             mutter1.setNachname("Müller");
-            mutter1.setStrasse("Wiesenstrasse");
-            mutter1.setHausnummer("5");
+            mutter1.setStrasseHausnummer("Wiesenstrasse 5");
             mutter1.setPlz("5430");
             mutter1.setOrt("Wettingen");
             mutter1.setFestnetz("056 426 69 15");
@@ -41,8 +40,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
             vater1.setAnrede(Anrede.HERR);
             vater1.setVorname("Andreas");
             vater1.setNachname("Bruggisser");
-            vater1.setStrasse("Wiesenstrasse");
-            vater1.setHausnummer("5");
+            vater1.setStrasseHausnummer("Wiesenstrasse 5");
             vater1.setPlz("5430");
             vater1.setOrt("Wettingen");
             vater1.setFestnetz("056 426 69 15");
@@ -72,8 +70,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
         rechnungsempfaenger.setAnrede(Anrede.FRAU);
         rechnungsempfaenger.setVorname("Susanne");
         rechnungsempfaenger.setNachname("Müller");
-        rechnungsempfaenger.setStrasse("Wiesenstrasse");
-        rechnungsempfaenger.setHausnummer("5");
+        rechnungsempfaenger.setStrasseHausnummer("Wiesenstrasse 5");
         rechnungsempfaenger.setPlz("5430");
         rechnungsempfaenger.setOrt("Wettingen");
         rechnungsempfaenger.setFestnetz("056 426 69 15");
@@ -91,8 +88,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
         rechnungsempfaenger.setAnrede(Anrede.FRAU);
         rechnungsempfaenger.setVorname("Susanne");
         rechnungsempfaenger.setNachname("Müller");
-        rechnungsempfaenger.setStrasse("Wiesenstrasse");
-        rechnungsempfaenger.setHausnummer("5");
+        rechnungsempfaenger.setStrasseHausnummer("Wiesenstrasse 5");
         rechnungsempfaenger.setPlz("5430");
         rechnungsempfaenger.setOrt("Wettingen");
         rechnungsempfaenger.setFestnetz("056 426 69 15");
@@ -110,8 +106,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
         rechnungsempfaenger.setAnrede(Anrede.HERR);
         rechnungsempfaenger.setVorname("Andreas");
         rechnungsempfaenger.setNachname("Bruggisser");
-        rechnungsempfaenger.setStrasse("Wiesenstrasse");
-        rechnungsempfaenger.setHausnummer("5");
+        rechnungsempfaenger.setStrasseHausnummer("Wiesenstrasse 5");
         rechnungsempfaenger.setPlz("5430");
         rechnungsempfaenger.setOrt("Wettingen");
         rechnungsempfaenger.setFestnetz("056 426 69 15");
@@ -129,8 +124,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
         rechnungsempfaenger.setAnrede(Anrede.HERR);
         rechnungsempfaenger.setVorname("Andreas");
         rechnungsempfaenger.setNachname("Bruggisser");
-        rechnungsempfaenger.setStrasse("Wiesenstrasse");
-        rechnungsempfaenger.setHausnummer("5");
+        rechnungsempfaenger.setStrasseHausnummer("Wiesenstrasse 5");
         rechnungsempfaenger.setPlz("5430");
         rechnungsempfaenger.setOrt("Wettingen");
         rechnungsempfaenger.setFestnetz("056 426 69 15");

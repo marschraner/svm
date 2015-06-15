@@ -57,7 +57,7 @@ public class PersonModelImplTest {
     @Test
     public void test_SchuelerWithStrasse() throws SvmValidationException {
         PersonModel personModel = createSchuelerModel();
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         assertFalse(personModel.isEmpty());
         assertFalse(personModel.isCompleted());
         validate(personModel, 2000);
@@ -66,7 +66,7 @@ public class PersonModelImplTest {
     @Test
     public void test_SchuelerWithAnschrift() throws SvmValidationException {
         PersonModel personModel = createSchuelerModel();
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         personModel.setOrt("Ort");
         assertFalse(personModel.isEmpty());
@@ -79,7 +79,7 @@ public class PersonModelImplTest {
         PersonModel personModel = createSchuelerModel();
         personModel.setNachname("Nachname");
         personModel.setVorname("Vorname");
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         personModel.setOrt("Ort");
         assertFalse(personModel.isEmpty());
@@ -92,7 +92,7 @@ public class PersonModelImplTest {
         PersonModel personModel = createSchuelerModel();
         personModel.setNachname("Nachname");
         personModel.setVorname("Vorname");
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         personModel.setOrt("Ort");
         personModel.setFestnetz("052 555 33 44");
@@ -126,7 +126,7 @@ public class PersonModelImplTest {
     public void test_SchuelerWithNameAnschriftNachnameMissing() throws SvmValidationException {
         PersonModel personModel = createSchuelerModel();
         personModel.setVorname("Vorname");
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         personModel.setOrt("Ort");
         assertFalse(personModel.isEmpty());
@@ -139,7 +139,7 @@ public class PersonModelImplTest {
         PersonModel personModel = createSchuelerModel();
         personModel.setNachname("Nachname");
         personModel.setVorname("Vorname");
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         assertFalse(personModel.isEmpty());
         assertFalse(personModel.isCompleted());
@@ -189,7 +189,7 @@ public class PersonModelImplTest {
     @Test
     public void test_AngehoerigerWithStrasse() throws SvmValidationException {
         PersonModel personModel = createAngehoerigerModel();
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         assertFalse(personModel.isEmpty());
         assertFalse(personModel.isCompleted());
         validate(personModel, 2003);
@@ -198,7 +198,7 @@ public class PersonModelImplTest {
     @Test
     public void test_AngehoerigerWithAnschrift() throws SvmValidationException {
         PersonModel personModel = createAngehoerigerModel();
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         personModel.setOrt("Ort");
         assertFalse(personModel.isEmpty());
@@ -211,7 +211,7 @@ public class PersonModelImplTest {
         PersonModel personModel = createAngehoerigerModel();
         personModel.setNachname("Nachname");
         personModel.setVorname("Vorname");
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         personModel.setOrt("Ort");
         assertFalse(personModel.isEmpty());
@@ -224,7 +224,7 @@ public class PersonModelImplTest {
         PersonModel personModel = createAngehoerigerModel();
         personModel.setNachname("Nachname");
         personModel.setVorname("Vorname");
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         personModel.setOrt("Ort");
         personModel.setFestnetz("052 555 33 44");
@@ -258,7 +258,7 @@ public class PersonModelImplTest {
     public void test_AngehoerigerWithNameAnschriftNachnameMissing() throws SvmValidationException {
         PersonModel personModel = createAngehoerigerModel();
         personModel.setVorname("Vorname");
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         personModel.setOrt("Ort");
         assertFalse(personModel.isEmpty());
@@ -271,7 +271,7 @@ public class PersonModelImplTest {
         PersonModel personModel = createAngehoerigerModel();
         personModel.setNachname("Nachname");
         personModel.setVorname("Vorname");
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         assertFalse(personModel.isEmpty());
         assertFalse(personModel.isCompleted());
@@ -321,7 +321,7 @@ public class PersonModelImplTest {
     @Test
     public void test_AngehoerigerRechnungsempfaengerWithStrasse() throws SvmValidationException {
         PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         assertFalse(personModel.isEmpty());
         assertFalse(personModel.isCompleted());
         validate(personModel, 2000);
@@ -330,7 +330,7 @@ public class PersonModelImplTest {
     @Test
     public void test_AngehoerigerRechnungsempfaengerWithAnschrift() throws SvmValidationException {
         PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         personModel.setOrt("Ort");
         assertFalse(personModel.isEmpty());
@@ -343,7 +343,7 @@ public class PersonModelImplTest {
         PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
         personModel.setNachname("Nachname");
         personModel.setVorname("Vorname");
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         personModel.setOrt("Ort");
         assertFalse(personModel.isEmpty());
@@ -356,7 +356,7 @@ public class PersonModelImplTest {
         PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
         personModel.setNachname("Nachname");
         personModel.setVorname("Vorname");
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         personModel.setOrt("Ort");
         personModel.setFestnetz("052 555 33 44");
@@ -390,7 +390,7 @@ public class PersonModelImplTest {
     public void test_AngehoerigerRechnungsempfaengerWithNameAnschriftNachnameMissing() throws SvmValidationException {
         PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
         personModel.setVorname("Vorname");
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         personModel.setOrt("Ort");
         assertFalse(personModel.isEmpty());
@@ -403,7 +403,7 @@ public class PersonModelImplTest {
         PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
         personModel.setNachname("Nachname");
         personModel.setVorname("Vorname");
-        personModel.setStrasse("Strasse");
+        personModel.setStrasseHausnummer("Strasse");
         personModel.setPlz("Plzz");
         assertFalse(personModel.isEmpty());
         assertFalse(personModel.isCompleted());

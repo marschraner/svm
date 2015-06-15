@@ -59,7 +59,7 @@ public class AngehoerigerModelImplTest {
         try {
             angehoerigerModel.setNachname("Nachname");
             angehoerigerModel.setVorname("Vorname");
-            angehoerigerModel.setStrasse("Strasse");
+            angehoerigerModel.setStrasseHausnummer("StrasseHausnummer");
             angehoerigerModel.setPlz("Plzz");
             angehoerigerModel.setOrt("Ort");
         } catch (SvmValidationException e) {
@@ -86,7 +86,7 @@ public class AngehoerigerModelImplTest {
         TestCompletedListener testCompletedListener = new TestCompletedListener();
         angehoerigerModel.addCompletedListener(testCompletedListener);
         try {
-            angehoerigerModel.setStrasse("Strasse");
+            angehoerigerModel.setStrasseHausnummer("StrasseHausnummer");
         } catch (SvmValidationException e) {
             e.printStackTrace();
             fail("Keine Exception erwartet");
@@ -120,15 +120,15 @@ public class AngehoerigerModelImplTest {
 
     @Test
     public void testIsEmpty_FalseStrasse() throws SvmValidationException {
-        angehoerigerModel.setStrasse("Strasse");
-        assertFalse("Not Empty erwartet (Strasse)", angehoerigerModel.isEmpty());
+        angehoerigerModel.setStrasseHausnummer("StrasseHausnummer");
+        assertFalse("Not Empty erwartet (StrasseHausnummer)", angehoerigerModel.isEmpty());
     }
 
     @Test
     public void testIsEmpty_FalseNameAdresse() throws SvmValidationException {
         angehoerigerModel.setNachname("Nachname");
         angehoerigerModel.setVorname("Vorname");
-        angehoerigerModel.setStrasse("Strasse");
+        angehoerigerModel.setStrasseHausnummer("StrasseHausnummer");
         angehoerigerModel.setPlz("Plzz");
         angehoerigerModel.setOrt("Ort");
         assertFalse("Not Empty erwartet (Name, Adresse)", angehoerigerModel.isEmpty());

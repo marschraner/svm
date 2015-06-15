@@ -23,8 +23,7 @@ public abstract class PersonController extends AbstractController {
     private JComboBox<Anrede> comboBoxAnrede;
     private JTextField txtNachname;
     private JTextField txtVorname;
-    private JTextField txtStrasse;
-    private JTextField txtHausnummer;
+    private JTextField txtStrasseHausnummer;
     private JTextField txtPlz;
     private JTextField txtOrt;
     private JTextField txtFestnetz;
@@ -82,34 +81,18 @@ public abstract class PersonController extends AbstractController {
         });
     }
 
-    public void setTxtStrasse(JTextField txtStrasse) {
-        this.txtStrasse = txtStrasse;
-        this.txtStrasse.addActionListener(new ActionListener() {
+    public void setTxtStrasseHausnummer(JTextField txtStrasseHausnummer) {
+        this.txtStrasseHausnummer = txtStrasseHausnummer;
+        this.txtStrasseHausnummer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onStrasseEvent();
+                onStrasseHausnummerEvent();
             }
         });
-        this.txtStrasse.addFocusListener(new FocusAdapter() {
+        this.txtStrasseHausnummer.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                onStrasseEvent();
-            }
-        });
-    }
-
-    public void setTxtHausnummer(JTextField txtHausnummer) {
-        this.txtHausnummer = txtHausnummer;
-        this.txtHausnummer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onHausnummerEvent();
-            }
-        });
-        this.txtHausnummer.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onHausnummerEvent();
+                onStrasseHausnummerEvent();
             }
         });
     }
@@ -293,11 +276,11 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    private void onStrasseEvent() {
-        System.out.println("PersonController Event Strasse");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtStrasse.getText(), personModel.getStrasse());
+    private void onStrasseHausnummerEvent() {
+        System.out.println("PersonController Event StrasseHausnummer");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtStrasseHausnummer.getText(), personModel.getStrasseHausnummer());
         try {
-            setModelStrasse();
+            setModelStrasseHausnummer();
         } catch (SvmValidationException e) {
             return;
         }
@@ -308,40 +291,15 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    private void setModelStrasse() throws SvmValidationException {
+    private void setModelStrasseHausnummer() throws SvmValidationException {
         try {
-            personModel.setStrasse(txtStrasse.getText());
+            personModel.setStrasseHausnummer(txtStrasseHausnummer.getText());
         } catch (SvmRequiredException e) {
-            System.out.println("PersonController setModelStrasse RequiredException=" + e.getMessage());
+            System.out.println("PersonController setModelStrasseHausnummer RequiredException=" + e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             throw e;
         } catch (SvmValidationException e) {
-            System.out.println("PersonController setModelStrasse Exception=" + e.getMessage());
-            // todo $$$ Fehler anzeigen
-            throw e;
-        }
-    }
-
-    private void onHausnummerEvent() {
-        System.out.println("PersonController Event Hausnummer");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtHausnummer.getText(), personModel.getHausnummer());
-        try {
-            setModelHausnummer();
-        } catch (SvmValidationException e) {
-            return;
-        }
-        if (equalFieldAndModelValue) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            System.out.println("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
-    }
-
-    private void setModelHausnummer() throws SvmValidationException {
-        try {
-            personModel.setHausnummer(txtHausnummer.getText());
-        } catch (SvmValidationException e) {
-            System.out.println("PersonController setModelHausnummer Exception=" + e.getMessage());
+            System.out.println("PersonController setModelStrasseHausnummer Exception=" + e.getMessage());
             // todo $$$ Fehler anzeigen
             throw e;
         }
@@ -515,10 +473,8 @@ public abstract class PersonController extends AbstractController {
             txtNachname.setText(personModel.getNachname());
         } else if ("Vorname".equals(evt.getPropertyName())) {
             txtVorname.setText(personModel.getVorname());
-        } else if ("Strasse".equals(evt.getPropertyName())) {
-            txtStrasse.setText(personModel.getStrasse());
-        } else if ("Hausnummer".equals(evt.getPropertyName())) {
-            txtHausnummer.setText(personModel.getHausnummer());
+        } else if ("StrasseHausnummer".equals(evt.getPropertyName())) {
+            txtStrasseHausnummer.setText(personModel.getStrasseHausnummer());
         } else if ("Plz".equals(evt.getPropertyName())) {
             txtPlz.setText(personModel.getPlz());
         } else if ("Ort".equals(evt.getPropertyName())) {
@@ -552,10 +508,8 @@ public abstract class PersonController extends AbstractController {
         setModelNachname();
         System.out.println("Validate field Vorname");
         setModelVorname();
-        System.out.println("Validate field Strasse");
-        setModelStrasse();
-        System.out.println("Validate field Hausnummer");
-        setModelHausnummer();
+        System.out.println("Validate field StrasseHausnummer");
+        setModelStrasseHausnummer();
         System.out.println("Validate field Plz");
         setModelPlz();
         System.out.println("Validate field Ort");
@@ -583,8 +537,7 @@ public abstract class PersonController extends AbstractController {
             comboBoxAnrede.setEnabled(false);
             txtNachname.setEnabled(false);
             txtVorname.setEnabled(false);
-            txtStrasse.setEnabled(false);
-            txtHausnummer.setEnabled(false);
+            txtStrasseHausnummer.setEnabled(false);
             txtPlz.setEnabled(false);
             txtOrt.setEnabled(false);
             txtFestnetz.setEnabled(false);
@@ -597,8 +550,7 @@ public abstract class PersonController extends AbstractController {
             comboBoxAnrede.setEnabled(true);
             txtNachname.setEnabled(true);
             txtVorname.setEnabled(true);
-            txtStrasse.setEnabled(true);
-            txtHausnummer.setEnabled(true);
+            txtStrasseHausnummer.setEnabled(true);
             txtPlz.setEnabled(true);
             txtOrt.setEnabled(true);
             txtFestnetz.setEnabled(true);

@@ -164,56 +164,59 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         firePropertyChange("Geburtsdatum", oldValue, getPerson().getGeburtsdatum());
     }
 
-    private final StringModelAttribute strasseModelAttribute = new StringModelAttribute(
+    private final StringModelAttribute strasseHausnummerModelAttribute = new StringModelAttribute(
             this,
-            "Strasse", 0, 50,
+            "StrasseHausnummer", 0, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return adresse.getStrasse();
+                    return adresse.getStrasse() + " " + adresse.getHausnummer();
                 }
 
                 @Override
-                public void setValue(String value) {
-                    adresse.setStrasse(value);
+                public void setValue(String strasseHausnummer) {
+                    adresse.setStrasse(strasseHausnummerGetStrasse(strasseHausnummer));
+                    adresse.setHausnummer(strasseHausnummerGetHausnummer(strasseHausnummer));
                 }
             }
     );
 
-    @Override
-    public String getStrasse() {
-        return strasseModelAttribute.getValue();
-    }
-
-    @Override
-    public void setStrasse(String strasse) throws SvmValidationException {
-        strasseModelAttribute.setNewValue(isAdresseRequired(), strasse);
-    }
-
-    private final StringModelAttribute hausnummerModelAttribute = new StringModelAttribute(
-            this,
-            "Hausnummer", 0, 10,
-            new AttributeAccessor<String>() {
-                @Override
-                public String getValue() {
-                    return adresse.getHausnummer();
-                }
-
-                @Override
-                public void setValue(String value) {
-                    adresse.setHausnummer(value);
-                }
+    private String[] splitStrasseHausnummer(String strasseHausnummer) {
+        if (strasseHausnummer == null) {
+            return null;
+        }
+        String[] splitted = strasseHausnummer.trim().split("\\s+");
+        // Prüfen, ob mindestens 2 Felder und ob letztes mit Zahlen beginnt
+        if (splitted.length > 1 && splitted[splitted.length - 1].matches("\\d+.*")) {
+            String strasse = splitted[0];
+            for (int i = 1; i < splitted.length - 1; i++) {
+                strasse = strasse + " " + splitted[i];
             }
-    );
+            return new String[]{strasse, splitted[splitted.length - 1]};
+        } else {
+            return new String[]{strasseHausnummer};
+        }
+    }
 
-    @Override
-    public String getHausnummer() {
-        return hausnummerModelAttribute.getValue();
+    private String strasseHausnummerGetStrasse(String strasseHausnummer) {
+        return (splitStrasseHausnummer(strasseHausnummer) == null ? null : splitStrasseHausnummer(strasseHausnummer)[0]);
+    }
+
+    private String strasseHausnummerGetHausnummer(String strasseHausnummer) {
+        if (splitStrasseHausnummer(strasseHausnummer) == null) {
+            return null;
+        }
+        return (splitStrasseHausnummer(strasseHausnummer).length > 1 ? splitStrasseHausnummer(strasseHausnummer)[1] : "");
     }
 
     @Override
-    public void setHausnummer(String hausnummer) throws SvmValidationException {
-        hausnummerModelAttribute.setNewValue(false, hausnummer);
+    public String getStrasseHausnummer() {
+        return strasseHausnummerModelAttribute.getValue();
+    }
+
+    @Override
+    public void setStrasseHausnummer(String strasseHausnummer) throws SvmValidationException {
+        strasseHausnummerModelAttribute.setNewValue(isAdresseRequired(), strasseHausnummer);
     }
 
     private final StringModelAttribute plzModelAttribute = new StringModelAttribute(
@@ -309,7 +312,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
                 throw new SvmValidationException(2000, "Nachname und Vorname obligatorisch", "Nachname", "Vorname");
             }
             if (!isSetAnschrift()) {
-                throw new SvmValidationException(2001, "Anschrift ist obligatorisch", "Strasse", "Hausnummer", "Plz", "Ort", "Festnetz");
+                throw new SvmValidationException(2001, "Anschrift ist obligatorisch", "StrasseHausnummer", "Plz", "Ort", "Festnetz");
             }
         } else {
             if (isSetAnyNameElement() && !isSetName()) {
@@ -320,7 +323,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
                     throw new SvmValidationException(2003, "Nachname und Vorname müssen angegeben werden, wenn eine Anschrift vorhanden ist", "Nachname", "Vorname");
                 }
                 if (!isSetAnschrift()) {
-                    throw new SvmValidationException(2004, "Anschrift ist unvollständig", "Strasse", "Hausnummer", "Plz", "Ort", "Festnetz");
+                    throw new SvmValidationException(2004, "Anschrift ist unvollständig", "StrasseHausnummer", "Plz", "Ort", "Festnetz");
                 }
             }
         }
