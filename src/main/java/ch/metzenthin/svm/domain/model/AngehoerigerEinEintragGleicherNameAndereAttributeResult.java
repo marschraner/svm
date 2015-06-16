@@ -3,35 +3,33 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Hans Stamm
  */
 public class AngehoerigerEinEintragGleicherNameAndereAttributeResult extends SchuelerErfassenSaveResult {
 
-    private final static String BESCHREIBUNG = "Ein Eintrag passt teilweise"; // todo
-    private Angehoeriger angehoeriger;
+    private Angehoeriger angehoerigerErfasst;
+    private Angehoeriger angehoerigerFoundInDatabase;
     private final ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt;
 
-    public AngehoerigerEinEintragGleicherNameAndereAttributeResult(Angehoeriger angehoeriger, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
+    public AngehoerigerEinEintragGleicherNameAndereAttributeResult(Angehoeriger angehoerigerErfasst, Angehoeriger angehoerigerFoundInDatabase, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
         super(result);
-        this.angehoeriger = angehoeriger;
+        this.angehoerigerErfasst = angehoerigerErfasst;
+        this.angehoerigerFoundInDatabase = angehoerigerFoundInDatabase;
         this.angehoerigenArt = angehoerigenArt;
-    }
-
-    public String getAngehoerigerToString() {
-        return angehoeriger.toString();
-    }
-
-    public String getBeschreibung() {
-        return BESCHREIBUNG;
     }
 
     @Override
     public void accept(SchuelerErfassenSaveResultVisitor visitor) {
         visitor.visit(this);
+    }
+
+    public Angehoeriger getAngehoerigerErfasst() {
+        return angehoerigerErfasst;
+    }
+
+    public Angehoeriger getAngehoerigerFoundInDatabase() {
+        return angehoerigerFoundInDatabase;
     }
 
     public ValidateSchuelerCommand.AngehoerigenArt getAngehoerigenArt() {

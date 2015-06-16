@@ -11,8 +11,12 @@ public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog exten
     private final AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult;
     private final SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
-    private JButton buttonWeiterfahren;
-    private JButton buttonZurueck;
+    private JButton buttonNeuErfasstenEintragVerwenden;
+    private JButton buttonKorrigieren;
+    private JLabel lblBeschreibung1;
+    private JLabel lblAngehoerigerErfasst;
+    private JLabel lblBeschreibung2;
+    private JLabel lblAngehoerigeFound;
 
     public AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog(
             AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult,
@@ -22,54 +26,62 @@ public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog exten
         this.schuelerErfassenModel = schuelerErfassenModel;
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(buttonWeiterfahren);
+        getRootPane().setDefaultButton(buttonNeuErfasstenEintragVerwenden);
 
-        setTitle("AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog " + angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult.getAngehoerigenArt());
+        setTitle(angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult.getAngehoerigenArt() + " möglicherweise bereits in Datenbank");
 
-        buttonWeiterfahren.addActionListener(new ActionListener() {
+        lblBeschreibung1.setText("In der Datenbank wurden mehrere Einträge gefunden, der mit den erfassten Angaben für " + angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult.getAngehoerigenArt());
+        lblAngehoerigerErfasst.setText(angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult.getAngehoerigerErfasst().toString());
+        lblBeschreibung2.setText("teilweise übereinstimmen:");
+        setAngehoerigeFound();
+
+        buttonNeuErfasstenEintragVerwenden.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onWeiterfahren();
+                onNeuErfasstenEintragVerwenden();
             }
         });
 
-        buttonZurueck.addActionListener(new ActionListener() {
+        buttonKorrigieren.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onZurueck();
+                onKorrigieren();
             }
         });
 
-        // call onZurueck() when cross is clicked
+        // call onKorrigieren() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                onZurueck();
+                onKorrigieren();
             }
         });
 
-        // call onZurueck() on ESCAPE
+        // call onKorrigieren() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onZurueck();
+                onKorrigieren();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private void onWeiterfahren() {
+    private void setAngehoerigeFound() {
+        StringBuilder angehoerigeFoundStb = new StringBuilder("<html>");
+        angehoerigeFoundStb.append(angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult.getAngehoerigeFoundInDatabase().get(0));
+        for (int i = 1; i < angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult.getAngehoerigeFoundInDatabase().size(); i++) {
+            angehoerigeFoundStb.append("<br>").append(angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult.getAngehoerigeFoundInDatabase().get(i));
+        }
+        angehoerigeFoundStb.append("</html>");
+        lblAngehoerigeFound.setText(angehoerigeFoundStb.toString());
+    }
+
+    private void onNeuErfasstenEintragVerwenden() {
         setResult(schuelerErfassenModel.proceedWeiterfahren(angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult));
         dispose();
     }
 
-    private void onZurueck() {
+    private void onKorrigieren() {
         schuelerErfassenModel.abbrechen();
         abbrechen();
         dispose();
-    }
-
-    public static void main(String[] args) {
-        AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog dialog = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog(null, null);
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
     }
 
     {
@@ -88,51 +100,66 @@ public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog exten
      */
     private void $$$setupUI$$$() {
         contentPane = new JPanel();
-        contentPane.setLayout(new GridBagLayout());
+        contentPane.setLayout(new BorderLayout(0, 0));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
+        contentPane.add(panel1, BorderLayout.CENTER);
+        lblBeschreibung1 = new JLabel();
+        lblBeschreibung1.setText("Beschreibung1");
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        panel1.add(lblBeschreibung1, gbc);
+        lblAngehoerigerErfasst = new JLabel();
+        lblAngehoerigerErfasst.setText("AngehoerigerErfasst");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.weightx = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        contentPane.add(panel1, gbc);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 30, 5, 5);
+        panel1.add(lblAngehoerigerErfasst, gbc);
+        lblBeschreibung2 = new JLabel();
+        lblBeschreibung2.setText("Beschreibung2");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 5, 5, 5);
+        panel1.add(lblBeschreibung2, gbc);
+        lblAngehoerigeFound = new JLabel();
+        lblAngehoerigeFound.setText("AngehoerigeFoundInDatabase");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 30, 5, 5);
+        panel1.add(lblAngehoerigeFound, gbc);
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridBagLayout());
+        contentPane.add(panel2, BorderLayout.SOUTH);
+        buttonKorrigieren = new JButton();
+        buttonKorrigieren.setText("Eingabe korrigieren");
+        buttonKorrigieren.setMnemonic('E');
+        buttonKorrigieren.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        panel1.add(panel2, gbc);
-        buttonWeiterfahren = new JButton();
-        buttonWeiterfahren.setText("Weiterfahren");
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        panel2.add(buttonKorrigieren, gbc);
+        buttonNeuErfasstenEintragVerwenden = new JButton();
+        buttonNeuErfasstenEintragVerwenden.setText("Neu erfassten Eintrag verwenden");
+        buttonNeuErfasstenEintragVerwenden.setMnemonic('N');
+        buttonNeuErfasstenEintragVerwenden.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(buttonWeiterfahren, gbc);
-        buttonZurueck = new JButton();
-        buttonZurueck.setText("Zurück");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(buttonZurueck, gbc);
-        final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        contentPane.add(panel3, gbc);
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        panel2.add(buttonNeuErfasstenEintragVerwenden, gbc);
     }
 
     /**

@@ -12,23 +12,15 @@ import java.util.List;
 public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult extends SchuelerErfassenSaveResult {
 
     private final ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt;
-    private List<String> angehoerigeStrings = new ArrayList<>();
-    private final static String BESCHREIBUNG = "Mehrere Einträge passen teilweise"; // todo
+    private Angehoeriger angehoerigerErfasst;
+    private List<Angehoeriger> angehoerigeFoundInDatabase = new ArrayList<>();
 
-    public AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(List<Angehoeriger> angehoerige, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
+    public AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(Angehoeriger angehoerigerErfasst, List<Angehoeriger> angehoerigeFoundInDatabase, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
         super(result);
+        this.angehoerigerErfasst = angehoerigerErfasst;
+        this.angehoerigeFoundInDatabase = angehoerigeFoundInDatabase;
         this.angehoerigenArt = angehoerigenArt;
-        for (Angehoeriger angehoeriger : angehoerige) {
-            this.angehoerigeStrings.add(angehoeriger.toString());
-        }
-    }
 
-    public List<String> getAngehoerigeStrings() {
-        return angehoerigeStrings;
-    }
-
-    public String getBeschreibung() {
-        return BESCHREIBUNG;
     }
 
     @Override
@@ -38,5 +30,13 @@ public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult exten
 
     public ValidateSchuelerCommand.AngehoerigenArt getAngehoerigenArt() {
         return angehoerigenArt;
+    }
+
+    public Angehoeriger getAngehoerigerErfasst() {
+        return angehoerigerErfasst;
+    }
+
+    public List<Angehoeriger> getAngehoerigeFoundInDatabase() {
+        return angehoerigeFoundInDatabase;
     }
 }

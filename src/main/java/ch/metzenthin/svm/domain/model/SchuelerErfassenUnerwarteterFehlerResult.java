@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 
 /**

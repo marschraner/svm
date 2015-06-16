@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
+import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.domain.model.AngehoerigerMehrereEintraegePassenResult;
 import ch.metzenthin.svm.domain.model.SchuelerErfassenModel;
 
@@ -11,7 +12,10 @@ public class AngehoerigerMehrereEintraegePassenDialog extends SchuelerErfassenDi
     private final AngehoerigerMehrereEintraegePassenResult angehoerigerMehrereEintraegePassenResult;
     private final SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
-    private JButton buttonZurueck;
+    private JButton buttonOk;
+    private JLabel lblBeschreibung1;
+    private JLabel lblAngehoerigeFound;
+    private JLabel lblBeschreibung2;
 
     public AngehoerigerMehrereEintraegePassenDialog(
             AngehoerigerMehrereEintraegePassenResult angehoerigerMehrereEintraegePassenResult,
@@ -21,43 +25,59 @@ public class AngehoerigerMehrereEintraegePassenDialog extends SchuelerErfassenDi
         this.schuelerErfassenModel = schuelerErfassenModel;
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(buttonZurueck);
+        getRootPane().setDefaultButton(buttonOk);
 
-        setTitle("AngehoerigerMehrereEintraegePassenDialog " + angehoerigerMehrereEintraegePassenResult.getAngehoerigenArt());
+        setTitle("Fehler");
+        lblBeschreibung1.setText("In der Datenbank wurden mehrere Einträge gefunden, die auf die erfassten Eingaben für " + angehoerigerMehrereEintraegePassenResult.getAngehoerigenArt() + " passen:");
+        setAngehoerigeFound();
+        setBeschreibung2();
 
-        buttonZurueck.addActionListener(new ActionListener() {
+        buttonOk.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onZurueck();
+                onOk();
             }
         });
 
-        // call onZurueck() when cross is clicked
+        // call onOk() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                onZurueck();
+                onOk();
             }
         });
 
-        // call onZurueck() on ESCAPE
+        // call onOk() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onZurueck();
+                onOk();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private void onZurueck() {
+    private void setAngehoerigeFound() {
+        StringBuilder angehoerigeFoundStb = new StringBuilder("<html>");
+        angehoerigeFoundStb.append(angehoerigerMehrereEintraegePassenResult.getAngehoerigeFound().get(0));
+        for (int i = 1; i < angehoerigerMehrereEintraegePassenResult.getAngehoerigeFound().size(); i++) {
+            angehoerigeFoundStb.append("<br>").append(angehoerigerMehrereEintraegePassenResult.getAngehoerigeFound().get(i));
+        }
+        angehoerigeFoundStb.append("</html>");
+        lblAngehoerigeFound.setText(angehoerigeFoundStb.toString());
+    }
+
+    private void setBeschreibung2() {
+        String angehoerigerArtikel;
+        if (angehoerigerMehrereEintraegePassenResult.getAngehoerigenArt() == ValidateSchuelerCommand.AngehoerigenArt.MUTTER) {
+            angehoerigerArtikel = "Die ";
+        } else {
+            angehoerigerArtikel = "Der ";
+        }
+        lblBeschreibung2.setText(angehoerigerArtikel + angehoerigerMehrereEintraegePassenResult.getAngehoerigenArt() + " muss genauer erfasst werden.");
+    }
+
+    private void onOk() {
         schuelerErfassenModel.abbrechen();
         abbrechen();
         dispose();
-    }
-
-    public static void main(String[] args) {
-        AngehoerigerMehrereEintraegePassenDialog dialog = new AngehoerigerMehrereEintraegePassenDialog(null, null);
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
     }
 
     {
@@ -76,42 +96,47 @@ public class AngehoerigerMehrereEintraegePassenDialog extends SchuelerErfassenDi
      */
     private void $$$setupUI$$$() {
         contentPane = new JPanel();
-        contentPane.setLayout(new GridBagLayout());
+        contentPane.setLayout(new BorderLayout(0, 0));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
+        contentPane.add(panel1, BorderLayout.CENTER);
+        lblBeschreibung1 = new JLabel();
+        lblBeschreibung1.setText("Beschreibung1");
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        panel1.add(lblBeschreibung1, gbc);
+        lblAngehoerigeFound = new JLabel();
+        lblAngehoerigeFound.setText("AngehoerigeFound");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.weightx = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        contentPane.add(panel1, gbc);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 30, 5, 5);
+        panel1.add(lblAngehoerigeFound, gbc);
+        lblBeschreibung2 = new JLabel();
+        lblBeschreibung2.setText("Beschreibung2");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 5, 5, 5);
+        panel1.add(lblBeschreibung2, gbc);
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        panel1.add(panel2, gbc);
-        buttonZurueck = new JButton();
-        buttonZurueck.setText("Zurück");
+        contentPane.add(panel2, BorderLayout.SOUTH);
+        buttonOk = new JButton();
+        buttonOk.setText("OK");
+        buttonOk.setMnemonic('O');
+        buttonOk.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(buttonZurueck, gbc);
-        final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        contentPane.add(panel3, gbc);
+        gbc.insets = new Insets(5, 5, 5, 5);
+        panel2.add(buttonOk, gbc);
     }
 
     /**

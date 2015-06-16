@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.domain.model.SchuelerErfassenUnerwarteterFehlerResult;
 
 import javax.swing.*;
@@ -35,14 +34,6 @@ public class SchuelerErfassenUnerwarteterFehlerDialog extends SchuelerErfassenDi
         // keine weiteren Schritte
         setResult(null);
         dispose();
-    }
-
-    public static void main(String[] args) {
-        SchuelerErfassenUnerwarteterFehlerResult schuelerErfassenUnerwarteterFehlerResult = new SchuelerErfassenUnerwarteterFehlerResult(ValidateSchuelerCommand.Result.UNERWARTETER_FEHLER, new RuntimeException("Test"));
-        SchuelerErfassenUnerwarteterFehlerDialog dialog = new SchuelerErfassenUnerwarteterFehlerDialog(schuelerErfassenUnerwarteterFehlerResult);
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
     }
 
     {

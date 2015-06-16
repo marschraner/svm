@@ -237,10 +237,10 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                     return;
                 case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     mutterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
-                    result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(mutterFoundInDatabase, AngehoerigenArt.MUTTER, Result.MUTTER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
+                    result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(mutter, mutterFoundInDatabase, AngehoerigenArt.MUTTER, Result.MUTTER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
                 case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
-                    result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.MUTTER, Result.MUTTER_MEHRERE_EINTAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
+                    result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(mutter, checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.MUTTER, Result.MUTTER_MEHRERE_EINTAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
             }
         }
@@ -264,10 +264,10 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                     return;
                 case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     vaterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
-                    result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(vaterFoundInDatabase, AngehoerigenArt.VATER, Result.VATER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
+                    result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(vater, vaterFoundInDatabase, AngehoerigenArt.VATER, Result.VATER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
                 case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
-                    result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.VATER, Result.VATER_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
+                    result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(vater, checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.VATER, Result.VATER_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
             }
         }
@@ -291,10 +291,10 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                     return;
                 case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
                     rechnungsempfaengerDrittpersonFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
-                    result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(rechnungsempfaengerDrittpersonFoundInDatabase, AngehoerigenArt.RECHNUNGSEMPFAENGER_DRITTPERSON, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
+                    result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(rechnungsempfaengerDrittperson, rechnungsempfaengerDrittpersonFoundInDatabase, AngehoerigenArt.RECHNUNGSEMPFAENGER_DRITTPERSON, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
                 case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
-                    result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.RECHNUNGSEMPFAENGER_DRITTPERSON, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
+                    result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(rechnungsempfaengerDrittperson, checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.RECHNUNGSEMPFAENGER_DRITTPERSON, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
             }
         }

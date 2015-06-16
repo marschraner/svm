@@ -25,10 +25,8 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
 
         setTitle("Fehler");
 
-        if (schuelerBereitsInDatenbankResult != null) {
-            setLblBeschreibung();
-            lblSchueler.setText(schuelerBereitsInDatenbankResult.getSchueler().toString());
-        }
+        setLblBeschreibung();
+        lblSchueler.setText(schuelerBereitsInDatenbankResult.getSchueler().toString());
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -60,14 +58,6 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
         schuelerErfassenModel.abbrechen();
         abbrechen();
         dispose();
-    }
-
-    public static void main(String[] args) {
-        SchuelerBereitsInDatenbankDialog dialog = new SchuelerBereitsInDatenbankDialog(null, null);
-        dialog.lblSchueler.setText("söldfkjaö");
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
     }
 
     {
@@ -105,13 +95,15 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 5, 5, 5);
+        gbc.insets = new Insets(0, 30, 5, 5);
         panel1.add(lblSchueler, gbc);
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridBagLayout());
         contentPane.add(panel2, BorderLayout.SOUTH);
         buttonOK = new JButton();
         buttonOK.setText("OK");
+        buttonOK.setMnemonic('O');
+        buttonOK.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;

@@ -8,17 +8,17 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
  */
 public class AngehoerigerEinEintragPasstResult extends SchuelerErfassenSaveResult {
 
-    private Angehoeriger angehoeriger;
+    private Angehoeriger angehoerigerFound;
     private final ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt;
 
-    public AngehoerigerEinEintragPasstResult(Angehoeriger angehoeriger, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
+    public AngehoerigerEinEintragPasstResult(Angehoeriger angehoerigerFound, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
         super(result);
-        this.angehoeriger = angehoeriger;
+        this.angehoerigerFound = angehoerigerFound;
         this.angehoerigenArt = angehoerigenArt;
     }
 
-    public Angehoeriger getAngehoeriger() {
-        return angehoeriger;
+    public Angehoeriger getAngehoerigerFound() {
+        return angehoerigerFound;
     }
 
     @Override

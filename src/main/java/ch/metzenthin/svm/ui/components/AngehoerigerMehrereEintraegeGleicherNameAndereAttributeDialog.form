@@ -1,58 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog">
-  <grid id="cbd77" binding="contentPane" layout-manager="GridBagLayout">
+  <grid id="cbd77" binding="contentPane" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="48" y="54" width="436" height="297"/>
+      <xy x="48" y="54" width="515" height="297"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="94766" layout-manager="GridBagLayout">
-        <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="1.0" weighty="0.0"/>
-        </constraints>
+      <grid id="e3588" layout-manager="GridBagLayout">
+        <constraints border-constraint="Center"/>
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="9538f" layout-manager="GridBagLayout">
+          <component id="4b1f2" class="javax.swing.JLabel" binding="lblBeschreibung1">
             <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="1.0"/>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
             </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="e7465" class="javax.swing.JButton" binding="buttonWeiterfahren">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="1.0" weighty="1.0"/>
-                </constraints>
-                <properties>
-                  <text value="Weiterfahren"/>
-                </properties>
-              </component>
-              <component id="5723f" class="javax.swing.JButton" binding="buttonZurueck">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="1.0" weighty="1.0"/>
-                </constraints>
-                <properties>
-                  <text value="Zurück"/>
-                </properties>
-              </component>
-            </children>
-          </grid>
+            <properties>
+              <text value="Beschreibung1"/>
+            </properties>
+          </component>
+          <component id="d810e" class="javax.swing.JLabel" binding="lblAngehoerigerErfasst">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="30" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="AngehoerigerErfasst"/>
+            </properties>
+          </component>
+          <component id="90eae" class="javax.swing.JLabel" binding="lblBeschreibung2">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="Beschreibung2"/>
+            </properties>
+          </component>
+          <component id="143de" class="javax.swing.JLabel" binding="lblAngehoerigeFound">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="30" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="AngehoerigeFoundInDatabase"/>
+            </properties>
+          </component>
         </children>
       </grid>
-      <grid id="e3588" layout-manager="GridBagLayout">
-        <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="1.0" weighty="1.0"/>
-        </constraints>
+      <grid id="94766" layout-manager="GridBagLayout">
+        <constraints border-constraint="South"/>
         <properties/>
         <border type="none"/>
-        <children/>
+        <children>
+          <component id="5723f" class="javax.swing.JButton" binding="buttonKorrigieren">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="&amp;Eingabe korrigieren"/>
+            </properties>
+          </component>
+          <component id="e7465" class="javax.swing.JButton" binding="buttonNeuErfasstenEintragVerwenden">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="&amp;Neu erfassten Eintrag verwenden"/>
+            </properties>
+          </component>
+        </children>
       </grid>
     </children>
   </grid>

@@ -20,9 +20,8 @@ public class SchuelerErfassenSaveOkResult extends SchuelerErfassenSaveResult {
         visitor.visit(this);
     }
 
-    public String getBeschreibung() {
-        String schuelerStr = (geschlecht == Geschlecht.W ? "Die Schülerin" : "Der Schüler");
-        return schuelerStr + " wurde erfolgreich in der Datenbank gespeichert.";
+    public Geschlecht getGeschlecht() {
+        return geschlecht;
     }
 
 }

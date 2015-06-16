@@ -12,23 +12,12 @@ import java.util.List;
 public class AngehoerigerMehrereEintraegePassenResult extends SchuelerErfassenSaveResult {
 
     private final ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt;
-    private List<String> angehoerigeStrings = new ArrayList<>();
-    private final static String BESCHREIBUNG = "Mehrere Einträge passen"; // todo
+    private List<Angehoeriger> angehoerigeFound = new ArrayList<>();
 
-    public AngehoerigerMehrereEintraegePassenResult(List<Angehoeriger> angehoerige, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
+    public AngehoerigerMehrereEintraegePassenResult(List<Angehoeriger> angehoerigeFound, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
         super(result);
         this.angehoerigenArt = angehoerigenArt;
-        for (Angehoeriger angehoeriger : angehoerige) {
-            this.angehoerigeStrings.add(angehoeriger.toString());
-        }
-    }
-
-    public List<String> getAngehoerigeStrings() {
-        return angehoerigeStrings;
-    }
-
-    public String getBeschreibung() {
-        return BESCHREIBUNG;
+        this.angehoerigeFound = angehoerigeFound;
     }
 
     @Override
@@ -38,6 +27,10 @@ public class AngehoerigerMehrereEintraegePassenResult extends SchuelerErfassenSa
 
     public ValidateSchuelerCommand.AngehoerigenArt getAngehoerigenArt() {
         return angehoerigenArt;
+    }
+
+    public List<Angehoeriger> getAngehoerigeFound() {
+        return angehoerigeFound;
     }
 
 }

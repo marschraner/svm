@@ -104,7 +104,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         String identischeAdressen = validateSchuelerSummaryResult.getIdentischeAdressen();
         String abweichendeAdressen = validateSchuelerSummaryResult.getAbweichendeAdressen();
         if (identischeAdressen != null && !identischeAdressen.isEmpty() && abweichendeAdressen != null && !abweichendeAdressen.isEmpty()) {
-            infoIdentischeAdressenText = "<html>" + identischeAdressen + ",<br>" + abweichendeAdressen + ".</html>";
+            infoIdentischeAdressenText = identischeAdressen + ", " + abweichendeAdressen + ".";
         } else if (identischeAdressen != null && !identischeAdressen.isEmpty()) {
             infoIdentischeAdressenText = identischeAdressen + ".";
         } else {

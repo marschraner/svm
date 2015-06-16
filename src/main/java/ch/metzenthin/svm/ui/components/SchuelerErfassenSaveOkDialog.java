@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
+import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.model.SchuelerErfassenSaveOkResult;
 
 import javax.swing.*;
@@ -10,7 +11,7 @@ import java.awt.event.ActionListener;
 public class SchuelerErfassenSaveOkDialog extends SchuelerErfassenDialog {
     private JPanel contentPane;
     private JButton buttonOK;
-    private JLabel beschreibung;
+    private JLabel lblBeschreibung;
 
     public SchuelerErfassenSaveOkDialog(SchuelerErfassenSaveOkResult schuelerErfassenSaveOkResult) {
         setContentPane(contentPane);
@@ -18,7 +19,8 @@ public class SchuelerErfassenSaveOkDialog extends SchuelerErfassenDialog {
         getRootPane().setDefaultButton(buttonOK);
 
         setTitle("Speichern erfolgreich");
-        beschreibung.setText(schuelerErfassenSaveOkResult.getBeschreibung());
+        String schuelerStr = (schuelerErfassenSaveOkResult.getGeschlecht() == Geschlecht.W ? "Die Schülerin" : "Der Schüler");
+        lblBeschreibung.setText(schuelerStr + " wurde erfolgreich in der Datenbank gespeichert.");
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -31,13 +33,6 @@ public class SchuelerErfassenSaveOkDialog extends SchuelerErfassenDialog {
         // keine weiteren Schritte
         setResult(null);
         dispose();
-    }
-
-    public static void main(String[] args) {
-        SchuelerErfassenSaveOkDialog dialog = new SchuelerErfassenSaveOkDialog(null);
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
     }
 
     {
@@ -60,20 +55,22 @@ public class SchuelerErfassenSaveOkDialog extends SchuelerErfassenDialog {
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
         contentPane.add(panel1, BorderLayout.CENTER);
-        beschreibung = new JLabel();
-        beschreibung.setText("Beschreibung");
+        lblBeschreibung = new JLabel();
+        lblBeschreibung.setText("Beschreibung");
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(5, 5, 5, 5);
-        panel1.add(beschreibung, gbc);
+        panel1.add(lblBeschreibung, gbc);
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridBagLayout());
         contentPane.add(panel2, BorderLayout.SOUTH);
         buttonOK = new JButton();
         buttonOK.setText("OK");
+        buttonOK.setMnemonic('O');
+        buttonOK.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
