@@ -14,6 +14,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
 
     public enum Result {
         SCHUELER_BEREITS_IN_DATENBANK,
+        DRITTPERSON_IDENTISCH_MIT_ELTERNTEIL,
         MUTTER_EIN_EINTRAG_PASST {
             @Override
             public Entry proceedUebernehmen() {
@@ -153,6 +154,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
 
     // skip-Variablen
     private boolean skipMutterVaterDrittpersonAusGuiUebernehmen = false;
+    private boolean skipCheckRechungsempfaengerDrittpersonIdentischMitElternteil = false;
     private boolean skipCheckSchuelerBereitsInDatenbank = false;
     private boolean skipCheckMutterBereitsInDatenbank = false;
     private boolean skipCheckVaterBereitsInDatenbank = false;
@@ -218,7 +220,18 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             }
         }
 
-        // 3.a Mutter bereits in Datenbank?
+        // 3. Rechnungsempfänger Drittperson identisch mit Mutter oder Vater?
+        if (!isRechnungsempfaengerMutter && !isRechnungsempfaengerVater && !skipCheckRechungsempfaengerDrittpersonIdentischMitElternteil) {
+            skipCheckRechungsempfaengerDrittpersonIdentischMitElternteil = true;
+            CheckDrittpersonIdentischMitElternteilCommand checkDrittpersonIdentischMitElternteilCommand = new CheckDrittpersonIdentischMitElternteilCommand(schueler.getMutter(), schueler.getVater(), schueler.getRechnungsempfaenger());
+            checkDrittpersonIdentischMitElternteilCommand.execute();
+            if (checkDrittpersonIdentischMitElternteilCommand.isIdentical()) {
+                result = new DrittpersonIdentischMitElternteilResult(checkDrittpersonIdentischMitElternteilCommand.getErrorMessage());
+                return;
+            }
+        }
+
+        // 4.a Mutter bereits in Datenbank?
         if (schueler.getMutter() != null && !skipCheckMutterBereitsInDatenbank) {
             skipCheckMutterBereitsInDatenbank = true;
             CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getMutter());
@@ -245,7 +258,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             }
         }
 
-        // 3.b Vater bereits in Datenbank?
+        // 4.b Vater bereits in Datenbank?
         if (schueler.getVater() != null && !skipCheckVaterBereitsInDatenbank) {
             skipCheckVaterBereitsInDatenbank = true;
             CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getVater());
@@ -272,7 +285,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             }
         }
 
-        // 3.c Rechnungsempfänger Drittperson bereits in Datenbank?
+        // 4.c Rechnungsempfänger Drittperson bereits in Datenbank?
         if (!isRechnungsempfaengerMutter && !isRechnungsempfaengerVater && !skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank) {
             skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank = true;
             CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getRechnungsempfaenger());
@@ -301,13 +314,13 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
 
         if (!skipPrepareSummary) {
             skipPrepareSummary = true;
-            // 4. Identische Adressen?
+            // 5. Identische Adressen?
             CheckIdentischeAdressenCommand checkIdentischeAdressenCommand = new CheckIdentischeAdressenCommand(schueler);
             checkIdentischeAdressenCommand.execute();
             String identischeAdressen = checkIdentischeAdressenCommand.getIdentischeAdressen();
             String abweichendeAdressen = checkIdentischeAdressenCommand.getAbweichendeAdressen();
 
-            // 5. Nach Geschwistern suchen
+            // 6. Nach Geschwistern suchen
             CheckGeschwisterSchuelerRechnungempfaengerCommand checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler);
             checkGeschwisterSchuelerRechnungempfaengerCommand.execute();
             List<Schueler> angemeldeteGeschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAngemeldeteGeschwisterList();
@@ -316,7 +329,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             return;   // -> Summary-Dialog
         }
 
-        // 6. Schüler speichern
+        // 7. Schüler speichern
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
         saveSchuelerCommand.setEntityManager(entityManager);
         saveSchuelerCommand.execute();

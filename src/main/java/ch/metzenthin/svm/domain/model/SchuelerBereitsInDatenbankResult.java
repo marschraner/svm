@@ -18,13 +18,13 @@ public class SchuelerBereitsInDatenbankResult extends SchuelerErfassenSaveResult
         this.schueler = schueler;
     }
 
-    public Schueler getSchueler() {
-        return schueler;
-    }
-
     @Override
     public void accept(SchuelerErfassenSaveResultVisitor visitor) {
         visitor.visit(this);
+    }
+
+    public Schueler getSchueler() {
+        return schueler;
     }
 
 }

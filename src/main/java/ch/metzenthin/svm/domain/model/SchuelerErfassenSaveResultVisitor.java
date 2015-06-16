@@ -12,4 +12,5 @@ public interface SchuelerErfassenSaveResultVisitor {
     void visit(SchuelerBereitsInDatenbankResult schuelerBereitsInDatenbankResult);
     void visit(SchuelerErfassenSaveOkResult schuelerErfassenSaveOkResult);
     void visit(SchuelerErfassenUnerwarteterFehlerResult schuelerErfassenUnerwarteterFehlerResult);
+    void visit(DrittpersonIdentischMitElternteilResult drittpersonIdentischMitElternteilResult);
 }

@@ -1,34 +1,29 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.dataTypes.Geschlecht;
-import ch.metzenthin.svm.domain.model.SchuelerBereitsInDatenbankResult;
+import ch.metzenthin.svm.domain.model.DrittpersonIdentischMitElternteilResult;
 import ch.metzenthin.svm.domain.model.SchuelerErfassenModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
-    private SchuelerBereitsInDatenbankResult schuelerBereitsInDatenbankResult;
+public class DrittpersonIdentischMitElternteilDialog extends SchuelerErfassenDialog {
     private final SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
-    private JButton buttonOK;
-    private JLabel lblBeschreibung;
-    private JLabel lblSchueler;
+    private JButton buttonOk;
+    private JLabel lblErrorMessage;
 
-    public SchuelerBereitsInDatenbankDialog(SchuelerBereitsInDatenbankResult schuelerBereitsInDatenbankResult, SchuelerErfassenModel schuelerErfassenModel) {
-        this.schuelerBereitsInDatenbankResult = schuelerBereitsInDatenbankResult;
+    public DrittpersonIdentischMitElternteilDialog(DrittpersonIdentischMitElternteilResult drittpersonIdentischMitElternteilResult, SchuelerErfassenModel schuelerErfassenModel) {
         this.schuelerErfassenModel = schuelerErfassenModel;
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+        getRootPane().setDefaultButton(buttonOk);
 
         setTitle("Fehler");
 
-        setLblBeschreibung();
-        lblSchueler.setText(schuelerBereitsInDatenbankResult.getSchueler().toString());
+        lblErrorMessage.setText(drittpersonIdentischMitElternteilResult.getErrorMessage());
 
-        buttonOK.addActionListener(new ActionListener() {
+        buttonOk.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOk();
             }
@@ -46,12 +41,6 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
                 onOk();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    }
-
-    private void setLblBeschreibung() {
-        String schuelerStr = (schuelerBereitsInDatenbankResult.getSchueler().getGeschlecht() == Geschlecht.W ? "Die Schülerin" : "Der Schüler");
-        String beschreibungStr = schuelerStr + " ist bereits in der Datenbank gespeichert und kann nicht ein weiteres Mal erfasst werden:";
-        lblBeschreibung.setText(beschreibungStr);
     }
 
     private void onOk() {
@@ -80,35 +69,27 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
         contentPane.add(panel1, BorderLayout.CENTER);
-        lblBeschreibung = new JLabel();
-        lblBeschreibung.setText("Label");
+        lblErrorMessage = new JLabel();
+        lblErrorMessage.setText("ErrorMessage");
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(5, 5, 5, 5);
-        panel1.add(lblBeschreibung, gbc);
-        lblSchueler = new JLabel();
-        lblSchueler.setText("Schüler");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 30, 5, 5);
-        panel1.add(lblSchueler, gbc);
+        panel1.add(lblErrorMessage, gbc);
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridBagLayout());
         contentPane.add(panel2, BorderLayout.SOUTH);
-        buttonOK = new JButton();
-        buttonOK.setText("OK");
-        buttonOK.setMnemonic('O');
-        buttonOK.setDisplayedMnemonicIndex(0);
+        buttonOk = new JButton();
+        buttonOk.setText("OK");
+        buttonOk.setMnemonic('O');
+        buttonOk.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.insets = new Insets(5, 5, 5, 5);
-        panel2.add(buttonOK, gbc);
+        panel2.add(buttonOk, gbc);
     }
 
     /**

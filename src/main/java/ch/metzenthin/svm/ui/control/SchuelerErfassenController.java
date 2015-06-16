@@ -219,6 +219,11 @@ public class SchuelerErfassenController {
             public void visit(SchuelerErfassenUnerwarteterFehlerResult schuelerErfassenUnerwarteterFehlerResult) {
                 dialog[0] = new SchuelerErfassenUnerwarteterFehlerDialog(schuelerErfassenUnerwarteterFehlerResult);
             }
+
+            @Override
+            public void visit(DrittpersonIdentischMitElternteilResult drittpersonIdentischMitElternteilResult) {
+                dialog[0] = new DrittpersonIdentischMitElternteilDialog(drittpersonIdentischMitElternteilResult, schuelerErfassenModel);
+            }
         });
         return dialog[0];
     }
