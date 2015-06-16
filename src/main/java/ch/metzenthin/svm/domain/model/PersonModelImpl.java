@@ -175,7 +175,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
                 @Override
                 public void setValue(String strasseHausnummer) {
-                    adresse.setStrasse(strasseHausnummerGetStrasse(strasseHausnummer));
+                    adresse.setStrasse(replaceStrByStrasse(strasseHausnummerGetStrasse(strasseHausnummer)));
                     adresse.setHausnummer(strasseHausnummerGetHausnummer(strasseHausnummer));
                 }
             }
@@ -207,6 +207,13 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
             return null;
         }
         return (splitStrasseHausnummer(strasseHausnummer).length > 1 ? splitStrasseHausnummer(strasseHausnummer)[1] : "");
+    }
+
+    private String replaceStrByStrasse(String strasse) {
+        if (strasse == null) {
+            return null;
+        }
+        return strasse.replace("str.", "strasse");
     }
 
     @Override
