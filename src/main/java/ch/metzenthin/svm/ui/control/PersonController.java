@@ -480,28 +480,28 @@ public abstract class PersonController extends AbstractController {
 
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
-        if ("Nachname".equals(evt.getPropertyName())) {
+        if (checkIsFieldNameChange(FieldName.NACHNAME, evt)) {
             txtNachname.setText(personModel.getNachname());
-        } else if ("Vorname".equals(evt.getPropertyName())) {
+        } else if (checkIsFieldNameChange(FieldName.VORNAME, evt)) {
             txtVorname.setText(personModel.getVorname());
-        } else if ("StrasseHausnummer".equals(evt.getPropertyName())) {
+        } else if (checkIsFieldNameChange(FieldName.STRASSE_HAUSNUMMER, evt)) {
             txtStrasseHausnummer.setText(personModel.getStrasseHausnummer());
-        } else if ("Plz".equals(evt.getPropertyName())) {
+        } else if (checkIsFieldNameChange(FieldName.PLZ, evt)) {
             txtPlz.setText(personModel.getPlz());
-        } else if ("Ort".equals(evt.getPropertyName())) {
+        } else if (checkIsFieldNameChange(FieldName.ORT, evt)) {
             txtOrt.setText(personModel.getOrt());
-        } else if ("Geburtsdatum".equals(evt.getPropertyName())) {
+        } else if (checkIsFieldNameChange(FieldName.GEBURTSDATUM, evt)) {
             // nicht alle Subklassen von Person haben ein Geburtsdatum
             if (txtGeburtsdatum != null) {
                 txtGeburtsdatum.setText(asString(personModel.getGeburtsdatum()));
             }
-        } else if ("Festnetz".equals(evt.getPropertyName())) {
+        } else if (checkIsFieldNameChange(FieldName.FESTNETZ, evt)) {
             txtFestnetz.setText(personModel.getFestnetz());
-        } else if ("Natel".equals(evt.getPropertyName())) {
+        } else if (checkIsFieldNameChange(FieldName.NATEL, evt)) {
             txtNatel.setText(personModel.getNatel());
-        } else if ("Email".equals(evt.getPropertyName())) {
+        } else if (checkIsFieldNameChange(FieldName.EMAIL, evt)) {
             txtEmail.setText(personModel.getEmail());
-        } else if ("Anrede".equals(evt.getPropertyName())) {
+        } else if (checkIsFieldNameChange(FieldName.ANREDE, evt)) {
             // nicht alle Subklassen von Person haben eine Anrede
             if (comboBoxAnrede != null) {
                 comboBoxAnrede.setSelectedItem(personModel.getAnrede());

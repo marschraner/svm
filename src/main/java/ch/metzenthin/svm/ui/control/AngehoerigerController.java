@@ -68,10 +68,10 @@ public class AngehoerigerController extends PersonController {
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         System.out.println("AngehoerigerController PropertyChangeEvent '" + evt.getPropertyName() + "', oldValue='" + evt.getOldValue() + "', newValue='" + evt.getNewValue() + "'");
-        if ("GleicheAdresseWieSchueler".equals(evt.getPropertyName())) {
+        if (checkIsFieldNameChange(FieldName.GLEICHE_ADRESSE_WIE_SCHUELER, evt)) {
             checkBoxGleicheAdresseWieSchueler.setSelected(angehoerigerModel.isGleicheAdresseWieSchueler());
         }
-        else if ("Rechnungsempfaenger".equals(evt.getPropertyName())) {
+        else if (checkIsFieldNameChange(FieldName.RECHNUNGSEMPFAENGER, evt)) {
             checkBoxRechnungsempfaenger.setSelected(angehoerigerModel.isRechnungsempfaenger());
         }
         super.doPropertyChange(evt);

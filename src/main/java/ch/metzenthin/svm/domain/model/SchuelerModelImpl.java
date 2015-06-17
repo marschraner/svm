@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.dataTypes.FieldName;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -41,7 +42,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     public void setGeschlecht(Geschlecht geschlecht) {
         Geschlecht oldValue = schueler.getGeschlecht();
         schueler.setGeschlecht(geschlecht);
-        firePropertyChange("Geschlecht", oldValue, schueler.getGeschlecht());
+        firePropertyChange(FieldName.GESCHLECHT, oldValue, schueler.getGeschlecht());
     }
 
     @Override
@@ -75,7 +76,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     public void setAnmeldedatum(Calendar anmeldedatum) {
         Calendar oldValue = schueler.getAnmeldedatum();
         schueler.setAnmeldedatum(anmeldedatum);
-        firePropertyChange("Anmeldedatum", oldValue, schueler.getAnmeldedatum());
+        firePropertyChange(FieldName.ANMELDEDATUM, oldValue, schueler.getAnmeldedatum());
     }
 
     @Override
@@ -96,12 +97,12 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     public void setAbmeldedatum(Calendar abmeldedatum) {
         Calendar oldValue = schueler.getAbmeldedatum();
         schueler.setAbmeldedatum(abmeldedatum);
-        firePropertyChange("Abmeldedatum", oldValue, schueler.getAbmeldedatum());
+        firePropertyChange(FieldName.ABMELDEDATUM, oldValue, schueler.getAbmeldedatum());
     }
 
     private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(
             this,
-            "Bemerkungen", 0, 1000,
+            FieldName.BEMERKUNGEN, 0, 1000,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {

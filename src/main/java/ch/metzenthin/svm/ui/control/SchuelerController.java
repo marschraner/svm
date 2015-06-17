@@ -180,13 +180,13 @@ public class SchuelerController extends PersonController {
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         System.out.println("SchuelerController PropertyChangeEvent '" + evt.getPropertyName() + "', oldValue='" + evt.getOldValue() + "', newValue='" + evt.getNewValue() + "'");
-        if ("Geschlecht".equals(evt.getPropertyName())) {
+        if (checkIsFieldNameChange(FieldName.GESCHLECHT, evt)) {
             comboBoxGeschlecht.setSelectedItem(schuelerModel.getGeschlecht());
-        } else if ("Bemerkungen".equals(evt.getPropertyName())) {
+        } else if (checkIsFieldNameChange(FieldName.BEMERKUNGEN, evt)) {
             textAreaBemerkungen.setText(schuelerModel.getBemerkungen());
-        } else if ("Anmeldedatum".equals(evt.getPropertyName())) {
+        } else if (checkIsFieldNameChange(FieldName.ANMELDEDATUM, evt)) {
             txtAnmeldedatum.setText(asString(schuelerModel.getAnmeldedatum()));
-        } else if ("Abmeldedatum".equals(evt.getPropertyName())) {
+        } else if (checkIsFieldNameChange(FieldName.ABMELDEDATUM, evt)) {
             txtAbmeldedatum.setText(asString(schuelerModel.getAbmeldedatum()));
         }
         super.doPropertyChange(evt);

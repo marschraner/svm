@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.dataTypes.FieldName;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.Model;
 
@@ -26,6 +27,10 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
     public final void propertyChange(PropertyChangeEvent evt) {
         doPropertyChange(evt);
         validate();
+    }
+
+    public boolean checkIsFieldNameChange(FieldName fieldName, PropertyChangeEvent evt) {
+        return fieldName.toString().equals(evt.getPropertyName());
     }
 
     /**

@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.dataTypes.FieldName;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import org.junit.Before;
@@ -24,7 +25,7 @@ public class StringModelAttributeTest {
     public void testGetValue_Null() throws Exception {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 0, 8,
+                FieldName.NACHNAME, 0, 8,
                 new TestAttributeAccessor(null)
         );
         assertEquals("", stringModelAttribute.getValue());
@@ -34,7 +35,7 @@ public class StringModelAttributeTest {
     public void testGetValue_NotNull() throws Exception {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 0, 8,
+                FieldName.NACHNAME, 0, 8,
                 new TestAttributeAccessor("abc")
         );
         assertEquals("abc", stringModelAttribute.getValue());
@@ -44,7 +45,7 @@ public class StringModelAttributeTest {
     public void testGetValue_Empty() throws Exception {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 0, 8,
+                FieldName.NACHNAME, 0, 8,
                 new TestAttributeAccessor("")
         );
         assertEquals("", stringModelAttribute.getValue());
@@ -54,7 +55,7 @@ public class StringModelAttributeTest {
     public void testSetNewValue_IsRequired_Null() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 0, 8,
+                FieldName.NACHNAME, 0, 8,
                 new TestAttributeAccessor(null)
         );
         try {
@@ -71,7 +72,7 @@ public class StringModelAttributeTest {
     public void testSetNewValue_IsRequired_Empty() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 0, 8,
+                FieldName.NACHNAME, 0, 8,
                 new TestAttributeAccessor(null)
         );
         try {
@@ -88,7 +89,7 @@ public class StringModelAttributeTest {
     public void testSetNewValue_IsRequired_NotEmpty() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 0, 8,
+                FieldName.NACHNAME, 0, 8,
                 new TestAttributeAccessor(null)
         );
         stringModelAttribute.setNewValue(true, "abc");
@@ -100,7 +101,7 @@ public class StringModelAttributeTest {
     public void testSetNewValue_IsNotRequired_Null() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 0, 8,
+                FieldName.NACHNAME, 0, 8,
                 new TestAttributeAccessor(null)
         );
         stringModelAttribute.setNewValue(false, null);
@@ -112,7 +113,7 @@ public class StringModelAttributeTest {
     public void testSetNewValue_IsNotRequired_Empty() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 0, 8,
+                FieldName.NACHNAME, 0, 8,
                 new TestAttributeAccessor(null)
         );
         stringModelAttribute.setNewValue(false, "");
@@ -124,7 +125,7 @@ public class StringModelAttributeTest {
     public void testSetNewValue_IsNotRequired_NotEmpty() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 0, 8,
+                FieldName.NACHNAME, 0, 8,
                 new TestAttributeAccessor(null)
         );
         stringModelAttribute.setNewValue(false, "abc");
@@ -136,7 +137,7 @@ public class StringModelAttributeTest {
     public void testSetNewValue_MinLength_Greater() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 2, 8,
+                FieldName.NACHNAME, 2, 8,
                 new TestAttributeAccessor(null)
         );
         try {
@@ -153,7 +154,7 @@ public class StringModelAttributeTest {
     public void testSetNewValue_MinLength_Equal() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 2, 8,
+                FieldName.NACHNAME, 2, 8,
                 new TestAttributeAccessor(null)
         );
         stringModelAttribute.setNewValue(true, "ab");
@@ -165,7 +166,7 @@ public class StringModelAttributeTest {
     public void testSetNewValue_MinLength_Lesser() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 2, 8,
+                FieldName.NACHNAME, 2, 8,
                 new TestAttributeAccessor(null)
         );
         stringModelAttribute.setNewValue(true, "abc");
@@ -177,7 +178,7 @@ public class StringModelAttributeTest {
     public void testSetNewValue_MinLength_Zero() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 0, 8,
+                FieldName.NACHNAME, 0, 8,
                 new TestAttributeAccessor(null)
         );
         stringModelAttribute.setNewValue(true, "abc");
@@ -189,7 +190,7 @@ public class StringModelAttributeTest {
     public void testSetNewValue_MaxLength_Lesser() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 2, 4,
+                FieldName.NACHNAME, 2, 4,
                 new TestAttributeAccessor(null)
         );
         try {
@@ -206,7 +207,7 @@ public class StringModelAttributeTest {
     public void testSetNewValue_MaxLength_Equal() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 2, 4,
+                FieldName.NACHNAME, 2, 4,
                 new TestAttributeAccessor(null)
         );
         stringModelAttribute.setNewValue(true, "abcd");
@@ -218,7 +219,7 @@ public class StringModelAttributeTest {
     public void testSetNewValue_MaxLength_Greater() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 2, 4,
+                FieldName.NACHNAME, 2, 4,
                 new TestAttributeAccessor(null)
         );
         stringModelAttribute.setNewValue(true, "abc");
@@ -231,7 +232,7 @@ public class StringModelAttributeTest {
         TestAttributeAccessor  testAttributeAccessor = new TestAttributeAccessor(null);
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
-                "Property", 0, 10,
+                FieldName.NACHNAME, 0, 10,
                 testAttributeAccessor
         );
         stringModelAttribute.setNewValue(true, "  abc  ");
@@ -259,7 +260,7 @@ public class StringModelAttributeTest {
         }
 
         @Override
-        public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+        public void firePropertyChange(FieldName fieldName, Object oldValue, Object newValue) {
             fireCounter++;
         }
 

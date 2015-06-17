@@ -1,9 +1,11 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.dataTypes.FieldName;
+
 /**
  * @author Hans Stamm
  */
 public interface ModelAttributeListener {
     void invalidate();
-    void firePropertyChange(String propertyName, Object oldValue, Object newValue);
+    void firePropertyChange(FieldName fieldName, Object oldValue, Object newValue);
 }

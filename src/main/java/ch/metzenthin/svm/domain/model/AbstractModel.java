@@ -6,12 +6,14 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.ui.control.CompletedListener;
 import ch.metzenthin.svm.ui.control.DisableFieldsListener;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.prefs.PreferenceChangeEvent;
 
 /**
  * @author Hans Stamm
@@ -45,11 +47,16 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
     }
 
     @Override
-    public final void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+    public final void firePropertyChange(FieldName fieldName, Object oldValue, Object newValue) {
         if ((oldValue == null) && (newValue == null)) {
             return;
         }
-        this.propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+        this.propertyChangeSupport.firePropertyChange(fieldName.toString(), oldValue, newValue);
+    }
+
+    @Override
+    public boolean checkIsFieldNameChange(FieldName fieldName, PropertyChangeEvent evt) {
+        return fieldName.toString().equals(evt.getPropertyName());
     }
 
 

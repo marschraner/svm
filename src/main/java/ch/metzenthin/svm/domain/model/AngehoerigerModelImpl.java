@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.dataTypes.FieldName;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
@@ -63,14 +64,14 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     public void setIsGleicheAdresseWieSchueler(boolean isSelected) {
         boolean oldValue = isGleicheAdresseWieSchueler;
         isGleicheAdresseWieSchueler = isSelected;
-        firePropertyChange("GleicheAdresseWieSchueler", oldValue, isGleicheAdresseWieSchueler);
+        firePropertyChange(FieldName.GLEICHE_ADRESSE_WIE_SCHUELER, oldValue, isGleicheAdresseWieSchueler);
     }
 
     @Override
     public void setIsRechnungsempfaenger(boolean isSelected) {
         boolean oldValue = isRechnungsempfaenger;
         isRechnungsempfaenger = isSelected;
-        firePropertyChange("Rechnungsempfaenger", oldValue, isRechnungsempfaenger);
+        firePropertyChange(FieldName.RECHNUNGSEMPFAENGER, oldValue, isRechnungsempfaenger);
     }
 
 

@@ -79,7 +79,6 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     private boolean isSetRechnungsempfaenger() {
         return mutterModel.isRechnungsempfaenger() || vaterModel.isRechnungsempfaenger() || drittempfaengerModel.isRechnungsempfaenger();
-        //return isMutterRechnungsempfaenger || isVaterRechnungsempfaenger || isDrittempfaengerRechnungsempfaenger;
     }
 
     @Override
@@ -247,27 +246,27 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     }
 
     private boolean isStrasseHausnummerPropertyChange(PropertyChangeEvent evt) {
-        return "StrasseHausnummer".equals(evt.getPropertyName());
+        return checkIsFieldNameChange(FieldName.STRASSE_HAUSNUMMER, evt);
     }
 
     private boolean isPlzPropertyChange(PropertyChangeEvent evt) {
-        return "Plz".equals(evt.getPropertyName());
+        return checkIsFieldNameChange(FieldName.PLZ, evt);
     }
 
     private boolean isOrtPropertyChange(PropertyChangeEvent evt) {
-        return "Ort".equals(evt.getPropertyName());
+        return checkIsFieldNameChange(FieldName.ORT, evt);
     }
 
     private boolean isFestnetzPropertyChange(PropertyChangeEvent evt) {
-        return "Festnetz".equals(evt.getPropertyName());
+        return checkIsFieldNameChange(FieldName.FESTNETZ, evt);
     }
 
     private boolean isRechnungsempfaengerPropertyChange(PropertyChangeEvent evt) {
-        return "Rechnungsempfaenger".equals(evt.getPropertyName());
+        return checkIsFieldNameChange(FieldName.RECHNUNGSEMPFAENGER, evt);
     }
 
     private boolean isGleicheAdresseWieSchuelerPropertyChange(PropertyChangeEvent evt) {
-        return "GleicheAdresseWieSchueler".equals(evt.getPropertyName());
+        return checkIsFieldNameChange(FieldName.GLEICHE_ADRESSE_WIE_SCHUELER, evt);
     }
 
     private boolean isBooleanNewValuePropertyChecked(Boolean newValue) {

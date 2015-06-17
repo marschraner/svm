@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.dataTypes.FieldName;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -35,12 +36,12 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     public void setAnrede(Anrede anrede) {
         Anrede oldValue = getPerson().getAnrede();
         getPerson().setAnrede(anrede);
-        firePropertyChange("Anrede", oldValue, getPerson().getAnrede());
+        firePropertyChange(FieldName.ANREDE, oldValue, getPerson().getAnrede());
     }
 
     private final StringModelAttribute nachnameModelAttribute = new StringModelAttribute(
             this,
-            "Nachname", 2, 50,
+            FieldName.NACHNAME, 2, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -66,7 +67,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute vornameModelAttribute = new StringModelAttribute(
             this,
-            "Vorname", 2, 50,
+            FieldName.VORNAME, 2, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -92,7 +93,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute natelModelAttribute = new StringModelAttribute(
             this,
-            "Natel", 0, 20,
+            FieldName.NATEL, 0, 20,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -118,7 +119,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute emailModelAttribute = new StringModelAttribute(
             this,
-            "Email", 0, 50,
+            FieldName.EMAIL, 0, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -161,12 +162,12 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     public void setGeburtsdatum(Calendar geburtsdatum) {
         Calendar oldValue = getPerson().getGeburtsdatum();
         getPerson().setGeburtsdatum(geburtsdatum);
-        firePropertyChange("Geburtsdatum", oldValue, getPerson().getGeburtsdatum());
+        firePropertyChange(FieldName.GEBURTSDATUM, oldValue, getPerson().getGeburtsdatum());
     }
 
     private final StringModelAttribute strasseHausnummerModelAttribute = new StringModelAttribute(
             this,
-            "StrasseHausnummer", 2, 50,
+            FieldName.STRASSE_HAUSNUMMER, 2, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -229,7 +230,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute plzModelAttribute = new StringModelAttribute(
             this,
-            "Plz", 4, 10,
+            FieldName.PLZ, 4, 10,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -255,7 +256,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute ortModelAttribute = new StringModelAttribute(
             this,
-            "Ort", 2, 50,
+            FieldName.ORT, 2, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -281,7 +282,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute festnetzModelAttribute = new StringModelAttribute(
             this,
-            "Festnetz", 0, 20,
+            FieldName.FESTNETZ, 0, 20,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
