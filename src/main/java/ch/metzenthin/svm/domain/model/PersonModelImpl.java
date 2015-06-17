@@ -166,16 +166,24 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute strasseHausnummerModelAttribute = new StringModelAttribute(
             this,
-            "StrasseHausnummer", 0, 50,
+            "StrasseHausnummer", 2, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return adresse.getStrasse() + " " + adresse.getHausnummer();
+                    if (adresse.getStrasse() == null && adresse.getHausnummer() == null) {
+                        return null;
+                    } else if (adresse.getHausnummer() == null) {
+                        return adresse.getStrasse();
+                    } else if (adresse.getStrasse() == null) {
+                        return adresse.getHausnummer();
+                    } else {
+                        return adresse.getStrasse() + " " + adresse.getHausnummer();
+                    }
                 }
 
                 @Override
                 public void setValue(String strasseHausnummer) {
-                    adresse.setStrasse(replaceStrByStrasse(strasseHausnummerGetStrasse(strasseHausnummer)));
+                    adresse.setStrasse(strasseHausnummerGetStrasse(strasseHausnummer));
                     adresse.setHausnummer(strasseHausnummerGetHausnummer(strasseHausnummer));
                 }
             }
@@ -207,13 +215,6 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
             return null;
         }
         return (splitStrasseHausnummer(strasseHausnummer).length > 1 ? splitStrasseHausnummer(strasseHausnummer)[1] : "");
-    }
-
-    private String replaceStrByStrasse(String strasse) {
-        if (strasse == null) {
-            return null;
-        }
-        return strasse.replace("str.", "strasse");
     }
 
     @Override
@@ -254,7 +255,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute ortModelAttribute = new StringModelAttribute(
             this,
-            "Ort", 0, 50,
+            "Ort", 2, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {

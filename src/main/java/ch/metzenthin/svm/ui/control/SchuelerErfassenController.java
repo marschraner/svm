@@ -68,8 +68,8 @@ public class SchuelerErfassenController {
     public void setMutterPanel(AngehoerigerPanel mutterPanel, AngehoerigerModel mutterModel) {
         mutterPanel.setModel(mutterModel);
         // Panelgrösse überschreiben
-        mutterPanel.getMainPanel().setMinimumSize(new Dimension(597, 270));
-        mutterPanel.getMainPanel().setPreferredSize(new Dimension(597, 270));
+        mutterPanel.getMainPanel().setMinimumSize(new Dimension(597, 290));
+        mutterPanel.getMainPanel().setPreferredSize(new Dimension(597, 290));
         // Rechnungsempfänger-Label überschreiben
         mutterPanel.getLblRechnungsempfaenger().setText("Rechnungsempfängerin");
         // Keine Anrede anzeigen
@@ -88,8 +88,8 @@ public class SchuelerErfassenController {
     public void setVaterPanel(AngehoerigerPanel vaterPanel, AngehoerigerModel vaterModel) {
         vaterPanel.setModel(vaterModel);
         // Panelgrösse überschreiben
-        vaterPanel.getMainPanel().setMinimumSize(new Dimension(597, 270));
-        vaterPanel.getMainPanel().setPreferredSize(new Dimension(597, 270));
+        vaterPanel.getMainPanel().setMinimumSize(new Dimension(597, 290));
+        vaterPanel.getMainPanel().setPreferredSize(new Dimension(597, 290));
         // Keine Anrede anzeigen
         vaterPanel.getLblAnrede().setVisible(false);
         vaterPanel.getComboBoxAnrede().setVisible(false);
@@ -108,6 +108,9 @@ public class SchuelerErfassenController {
         drittempfaengerPanel.getMainPanel().setPreferredSize(new Dimension(597, 270));
         // Anrede: KEINE nicht anzeigen:
         drittempfaengerPanel.getComboBoxAnrede().removeItem(Anrede.KEINE);
+        // Keine Adresse Schüler übernehmen-Checkbox anzeigen
+        drittempfaengerPanel.getLblGleicheAdresseWieSchueler().setVisible(false);
+        drittempfaengerPanel.getCheckBoxGleicheAdresseWieSchueler().setVisible(false);
         // Keine Rechnungsempfänger-Checkbox anzeigen
         drittempfaengerPanel.getLblRechnungsempfaenger().setVisible(false);
         drittempfaengerPanel.getCheckBoxRechnungsempfaenger().setVisible(false);

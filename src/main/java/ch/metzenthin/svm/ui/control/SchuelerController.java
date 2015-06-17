@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.dataTypes.FieldName;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -11,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
@@ -180,7 +182,7 @@ public class SchuelerController extends PersonController {
         System.out.println("SchuelerController PropertyChangeEvent '" + evt.getPropertyName() + "', oldValue='" + evt.getOldValue() + "', newValue='" + evt.getNewValue() + "'");
         if ("Geschlecht".equals(evt.getPropertyName())) {
             comboBoxGeschlecht.setSelectedItem(schuelerModel.getGeschlecht());
-        } else if ("Bermerkungen".equals(evt.getPropertyName())) {
+        } else if ("Bemerkungen".equals(evt.getPropertyName())) {
             textAreaBemerkungen.setText(schuelerModel.getBemerkungen());
         } else if ("Anmeldedatum".equals(evt.getPropertyName())) {
             txtAnmeldedatum.setText(asString(schuelerModel.getAnmeldedatum()));
@@ -210,16 +212,19 @@ public class SchuelerController extends PersonController {
     }
 
     @Override
-    public void disableFields(boolean disable) {
-        super.disableFields(disable);
-        if (disable) {
-            txtAnmeldedatum.setEnabled(false);
-            txtAbmeldedatum.setEnabled(false);
-            textAreaBemerkungen.setEnabled(false);
-        } else {
-            txtAnmeldedatum.setEnabled(true);
-            txtAbmeldedatum.setEnabled(true);
-            textAreaBemerkungen.setEnabled(true);
+    public void disableFields(boolean disable, Set<FieldName> fieldNames) {
+        super.disableFields(disable, fieldNames);
+        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.GESCHLECHT)) {
+            comboBoxGeschlecht.setEnabled(!disable);
+        }
+        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.ANMELDEDATUM)) {
+            txtAnmeldedatum.setEnabled(!disable);
+        }
+        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.ABMELDEDATUM)) {
+            txtAbmeldedatum.setEnabled(!disable);
+        }
+        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.BEMERKUNGEN)) {
+            textAreaBemerkungen.setEnabled(!disable);
         }
     }
 }

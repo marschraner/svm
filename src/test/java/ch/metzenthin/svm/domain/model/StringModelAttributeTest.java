@@ -144,7 +144,7 @@ public class StringModelAttributeTest {
             fail("SvmValidationException erwartet");
         } catch (SvmValidationException e) {
             assertEquals(1, testModelAttributeListener.getInvalidateCounter());
-            assertEquals(0, testModelAttributeListener.getFireCounter());
+            assertEquals(1, testModelAttributeListener.getFireCounter());
             throw e;
         }
     }
@@ -197,7 +197,7 @@ public class StringModelAttributeTest {
             fail("SvmValidationException erwartet");
         } catch (SvmValidationException e) {
             assertEquals(1, testModelAttributeListener.getInvalidateCounter());
-            assertEquals(0, testModelAttributeListener.getFireCounter());
+            assertEquals(1, testModelAttributeListener.getFireCounter());
             throw e;
         }
     }

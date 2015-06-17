@@ -44,6 +44,9 @@ public class StringModelAttribute {
 
     private void checkMaxLength(String newValue) throws SvmValidationException {
         if (newValue.length() > maxLength) {
+            // Für Gleiche Adresse wie Schüler-Funktionalität
+            attributeAccessor.setValue(null);
+            modelAttributeListener.firePropertyChange(property, getValue(), null);
             modelAttributeListener.invalidate();
             throw new SvmValidationException(1100, "Länge darf höchstens " + maxLength + " sein", property);
         }
@@ -51,6 +54,9 @@ public class StringModelAttribute {
 
     private void checkMinLength(String newValue) throws SvmValidationException {
         if (newValue.length() < minLength) {
+            // Für Gleiche Adresse wie Schüler-Funktionalität
+            attributeAccessor.setValue(null);
+            modelAttributeListener.firePropertyChange(property, getValue(), null);
             modelAttributeListener.invalidate();
             throw new SvmValidationException(1100, "Länge muss mindestens " + minLength + " sein", property);
         }
@@ -58,6 +64,11 @@ public class StringModelAttribute {
 
     private void checkRequired(boolean isRequired, String newValue) throws SvmRequiredException {
         if (isRequired && !checkNotEmpty(newValue)) {
+            if (getValue() != null && !getValue().isEmpty()) {
+                // Für Gleiche Adresse wie Schüler-Funktionalität
+                attributeAccessor.setValue(null);
+                modelAttributeListener.firePropertyChange(property, getValue(), null);
+            }
             modelAttributeListener.invalidate();
             throw new SvmRequiredException(property);
         }

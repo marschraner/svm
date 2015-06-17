@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.dataTypes.FieldName;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
@@ -11,6 +13,8 @@ import ch.metzenthin.svm.ui.control.CompletedListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashSet;
+import java.util.Set;
 
 import static ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand.Entry.NEU_ERFASSTEN_SCHUELER_VALIDIEREN;
 
@@ -87,6 +91,12 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
                 onSchuelerModelCompleted(completed);
             }
         });
+        this.schuelerModel.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                onSchuelerModelPropertyChange(evt);
+            }
+        });
     }
 
     @Override
@@ -140,7 +150,42 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         });
     }
 
-    // todo schöner programmieren (nächste drei methoden)
+    // todo schöner programmieren (nächste vier methoden)
+    private void onSchuelerModelPropertyChange(PropertyChangeEvent evt) {
+        if (isStrasseHausnummerPropertyChange(evt)) {
+            if (mutterModel.isGleicheAdresseWieSchueler()) {
+                replaceByStrasseHausnummerSchueler(mutterModel);
+            }
+            if (vaterModel.isGleicheAdresseWieSchueler()) {
+                replaceByStrasseHausnummerSchueler(vaterModel);
+            }
+        }
+        if (isPlzPropertyChange(evt)) {
+            if (mutterModel.isGleicheAdresseWieSchueler()) {
+                replaceByPlzSchueler(mutterModel);
+            }
+            if (vaterModel.isGleicheAdresseWieSchueler()) {
+                replaceByPlzSchueler(vaterModel);
+            }
+        }
+        if (isOrtPropertyChange(evt)) {
+            if (mutterModel.isGleicheAdresseWieSchueler()) {
+                replaceByOrtSchueler(mutterModel);
+            }
+            if (vaterModel.isGleicheAdresseWieSchueler()) {
+                replaceByOrtSchueler(vaterModel);
+            }
+        }
+        if (isFestnetzPropertyChange(evt)) {
+            if (mutterModel.isGleicheAdresseWieSchueler()) {
+                replaceByFestnetzSchueler(mutterModel);
+            }
+            if (vaterModel.isGleicheAdresseWieSchueler()) {
+                replaceByFestnetzSchueler(vaterModel);
+            }
+        }
+    }
+
     private void onMutterModelPropertyChange(PropertyChangeEvent evt) {
         if (isRechnungsempfaengerPropertyChange(evt)) {
             Boolean newValue = (Boolean) evt.getNewValue();
@@ -152,6 +197,15 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
                     drittempfaengerModel.setIsRechnungsempfaenger(true);
                     drittempfaengerModel.enableFields();
                 }
+            }
+        } else if (isGleicheAdresseWieSchuelerPropertyChange(evt)) {
+            Boolean newValue = (Boolean) evt.getNewValue();
+            if (isBooleanNewValuePropertyChecked(newValue)) {
+                replaceByAdresseSchueler(mutterModel);
+                mutterModel.disableFields(getAdresseFields());
+            } else {
+                invalidateAdresse(mutterModel);
+                mutterModel.enableFields(getAdresseFields());
             }
         }
         fireCompletedChange();
@@ -169,6 +223,15 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
                     drittempfaengerModel.enableFields();
                 }
             }
+        } else if (isGleicheAdresseWieSchuelerPropertyChange(evt)) {
+            Boolean newValue = (Boolean) evt.getNewValue();
+            if (isBooleanNewValuePropertyChecked(newValue)) {
+                replaceByAdresseSchueler(vaterModel);
+                vaterModel.disableFields(getAdresseFields());
+            } else {
+                invalidateAdresse(vaterModel);
+                vaterModel.enableFields(getAdresseFields());
+            }
         }
         fireCompletedChange();
     }
@@ -183,8 +246,28 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         fireCompletedChange();
     }
 
+    private boolean isStrasseHausnummerPropertyChange(PropertyChangeEvent evt) {
+        return "StrasseHausnummer".equals(evt.getPropertyName());
+    }
+
+    private boolean isPlzPropertyChange(PropertyChangeEvent evt) {
+        return "Plz".equals(evt.getPropertyName());
+    }
+
+    private boolean isOrtPropertyChange(PropertyChangeEvent evt) {
+        return "Ort".equals(evt.getPropertyName());
+    }
+
+    private boolean isFestnetzPropertyChange(PropertyChangeEvent evt) {
+        return "Festnetz".equals(evt.getPropertyName());
+    }
+
     private boolean isRechnungsempfaengerPropertyChange(PropertyChangeEvent evt) {
         return "Rechnungsempfaenger".equals(evt.getPropertyName());
+    }
+
+    private boolean isGleicheAdresseWieSchuelerPropertyChange(PropertyChangeEvent evt) {
+        return "GleicheAdresseWieSchueler".equals(evt.getPropertyName());
     }
 
     private boolean isBooleanNewValuePropertyChecked(Boolean newValue) {
@@ -194,6 +277,105 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     private void uncheckRechnungsempfaenger(AngehoerigerModel... angehoerigerModels) {
         for (AngehoerigerModel angehoerigerModel : angehoerigerModels) {
             angehoerigerModel.setIsRechnungsempfaenger(false);
+        }
+    }
+
+    private void replaceByAdresseSchueler(AngehoerigerModel angehoerigerModel) {
+        replaceByStrasseHausnummerSchueler(angehoerigerModel);
+        replaceByPlzSchueler(angehoerigerModel);
+        replaceByOrtSchueler(angehoerigerModel);
+        replaceByFestnetzSchueler(angehoerigerModel);
+    }
+
+    private void invalidateAdresse(AngehoerigerModel angehoerigerModel) {
+        invalidateStrasseHausnummer(angehoerigerModel);
+        invalidatePlz(angehoerigerModel);
+        invalidateOrt(angehoerigerModel);
+        invalidateFestnetz(angehoerigerModel);
+    }
+
+    private Set<FieldName> getAdresseFields() {
+        Set<FieldName> adresseFields = new HashSet<>();
+        adresseFields.add(FieldName.STRASSE_HAUSNUMMER);
+        adresseFields.add(FieldName.PLZ);
+        adresseFields.add(FieldName.ORT);
+        adresseFields.add(FieldName.FESTNETZ);
+        return adresseFields;
+    }
+
+    private void replaceByStrasseHausnummerSchueler(AngehoerigerModel angehoerigerModel) {
+        try {
+            angehoerigerModel.setStrasseHausnummer(schuelerModel.getStrasseHausnummer());
+        } catch (SvmRequiredException e) {
+            System.out.println("SchuelerErfassenController replaceByStrasseHausnummerSchueler RequiredException=" + e.getMessage());
+            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+        } catch (SvmValidationException e) {
+            // Tritt nie ein, da Validierung bereits beim Schüler
+        }
+    }
+
+    private void replaceByPlzSchueler(AngehoerigerModel angehoerigerModel) {
+        try {
+            angehoerigerModel.setPlz(schuelerModel.getPlz());
+        } catch (SvmRequiredException e) {
+            System.out.println("SchuelerErfassenController replaceByPlzSchueler RequiredException=" + e.getMessage());
+            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+        } catch (SvmValidationException e) {
+            // Tritt nie ein, da Validierung bereits beim Schüler
+        }
+    }
+
+    private void replaceByOrtSchueler(AngehoerigerModel angehoerigerModel) {
+        try {
+            angehoerigerModel.setOrt(schuelerModel.getOrt());
+        } catch (SvmRequiredException e) {
+            System.out.println("SchuelerErfassenController replaceByOrtSchueler RequiredException=" + e.getMessage());
+            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+        } catch (SvmValidationException e) {
+            // Tritt nie ein, da Validierung bereits beim Schüler
+        }
+    }
+
+    private void replaceByFestnetzSchueler(AngehoerigerModel angehoerigerModel) {
+        try {
+            angehoerigerModel.setFestnetz(schuelerModel.getFestnetz());
+        } catch (SvmRequiredException e) {
+            System.out.println("SchuelerErfassenController replaceByFestnetzSchueler RequiredException=" + e.getMessage());
+            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+        } catch (SvmValidationException e) {
+            // Tritt nie ein, da Validierung bereits beim Schüler
+        }
+    }
+
+    private void invalidateStrasseHausnummer(AngehoerigerModel angehoerigerModel) {
+        try {
+            angehoerigerModel.setStrasseHausnummer(null);
+        } catch (SvmValidationException e) {
+            // Nicht weiter behandeln
+        }
+    }
+
+    private void invalidatePlz(AngehoerigerModel angehoerigerModel) {
+        try {
+            angehoerigerModel.setPlz(null);
+        } catch (SvmValidationException e) {
+            // Nicht weiter behandeln
+        }
+    }
+
+    private void invalidateOrt(AngehoerigerModel angehoerigerModel) {
+        try {
+            angehoerigerModel.setOrt(null);
+        } catch (SvmValidationException e) {
+            // Nicht weiter behandeln
+        }
+    }
+
+    private void invalidateFestnetz(AngehoerigerModel angehoerigerModel) {
+        try {
+            angehoerigerModel.setFestnetz(null);
+        } catch (SvmValidationException e) {
+            // Nicht weiter behandeln
         }
     }
 

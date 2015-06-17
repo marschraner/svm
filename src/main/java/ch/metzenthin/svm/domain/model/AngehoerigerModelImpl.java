@@ -12,6 +12,7 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
 
     private final Angehoeriger angehoeriger;
 
+    private boolean isGleicheAdresseWieSchueler;
     private boolean isRechnungsempfaenger;
 
     public AngehoerigerModelImpl(CommandInvoker commandInvoker) {
@@ -40,6 +41,11 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     }
 
     @Override
+    public boolean isGleicheAdresseWieSchueler() {
+        return isGleicheAdresseWieSchueler;
+    }
+
+    @Override
     public boolean isRechnungsempfaenger() {
         return isRechnungsempfaenger;
     }
@@ -54,10 +60,19 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     }
 
     @Override
+    public void setIsGleicheAdresseWieSchueler(boolean isSelected) {
+        boolean oldValue = isGleicheAdresseWieSchueler;
+        isGleicheAdresseWieSchueler = isSelected;
+        firePropertyChange("GleicheAdresseWieSchueler", oldValue, isGleicheAdresseWieSchueler);
+    }
+
+    @Override
     public void setIsRechnungsempfaenger(boolean isSelected) {
         boolean oldValue = isRechnungsempfaenger;
         isRechnungsempfaenger = isSelected;
         firePropertyChange("Rechnungsempfaenger", oldValue, isRechnungsempfaenger);
     }
+
+
 
 }

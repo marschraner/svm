@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.dataTypes.FieldName;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.ui.control.CompletedListener;
@@ -8,7 +9,9 @@ import ch.metzenthin.svm.ui.control.DisableFieldsListener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Hans Stamm
@@ -64,18 +67,30 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
         disableFieldsListeners.remove(disableFieldsListener);
     }
 
-    void fireDisableFields(boolean disable) {
+    void fireDisableFields(boolean disable, Set<FieldName> fieldNames) {
         for (DisableFieldsListener disableFieldsListener : disableFieldsListeners) {
-            disableFieldsListener.disableFields(disable);
+            disableFieldsListener.disableFields(disable, fieldNames);
         }
     }
 
     public void disableFields() {
-        fireDisableFields(true);
+        Set<FieldName> fieldNames = new HashSet<>();
+        fieldNames.add(FieldName.ALLE);
+        disableFields(fieldNames);
     }
 
     public void enableFields() {
-        fireDisableFields(false);
+        Set<FieldName> fieldNames = new HashSet<>();
+        fieldNames.add(FieldName.ALLE);
+        enableFields(fieldNames);
+    }
+
+    public void disableFields(Set<FieldName> fieldNames) {
+        fireDisableFields(true, fieldNames);
+    }
+
+    public void enableFields(Set<FieldName> fieldNames) {
+        fireDisableFields(false, fieldNames);
     }
 
     //------------------------------------------------------------------------------------------------------------------

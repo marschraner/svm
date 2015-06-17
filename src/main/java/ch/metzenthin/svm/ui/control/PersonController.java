@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.dataTypes.FieldName;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.PersonModel;
@@ -11,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
@@ -278,6 +280,8 @@ public abstract class PersonController extends AbstractController {
 
     private void onStrasseHausnummerEvent() {
         System.out.println("PersonController Event StrasseHausnummer");
+        // Substitution hier, damit neuer Wert auf jeden Fall im Textfeld angezeigt wird!
+        txtStrasseHausnummer.setText(replaceStrByStrasse(txtStrasseHausnummer.getText()));
         boolean equalFieldAndModelValue = equalsNullSafe(txtStrasseHausnummer.getText(), personModel.getStrasseHausnummer());
         try {
             setModelStrasseHausnummer();
@@ -289,6 +293,13 @@ public abstract class PersonController extends AbstractController {
             System.out.println("Validierung wegen equalFieldAndModelValue");
             validate();
         }
+    }
+
+    private String replaceStrByStrasse(String strasse) {
+        if (strasse == null) {
+            return null;
+        }
+        return strasse.replace("str.", "strasse");
     }
 
     private void setModelStrasseHausnummer() throws SvmValidationException {
@@ -532,33 +543,36 @@ public abstract class PersonController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable) {
-        if (disable) {
-            comboBoxAnrede.setEnabled(false);
-            txtNachname.setEnabled(false);
-            txtVorname.setEnabled(false);
-            txtStrasseHausnummer.setEnabled(false);
-            txtPlz.setEnabled(false);
-            txtOrt.setEnabled(false);
-            txtFestnetz.setEnabled(false);
-            txtNatel.setEnabled(false);
-            txtEmail.setEnabled(false);
-            if (txtGeburtsdatum != null) {
-                txtGeburtsdatum.setEnabled(false);
-            }
-        } else {
-            comboBoxAnrede.setEnabled(true);
-            txtNachname.setEnabled(true);
-            txtVorname.setEnabled(true);
-            txtStrasseHausnummer.setEnabled(true);
-            txtPlz.setEnabled(true);
-            txtOrt.setEnabled(true);
-            txtFestnetz.setEnabled(true);
-            txtNatel.setEnabled(true);
-            txtEmail.setEnabled(true);
-            if (txtGeburtsdatum != null) {
-                txtGeburtsdatum.setEnabled(true);
-            }
+    public void disableFields(boolean disable, Set<FieldName> fieldNames) {
+        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.ANREDE)) {
+            comboBoxAnrede.setEnabled(!disable);
+        }
+        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.NACHNAME)) {
+            txtNachname.setEnabled(!disable);
+        }
+        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.VORNAME)) {
+            txtVorname.setEnabled(!disable);
+        }
+        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.STRASSE_HAUSNUMMER)) {
+            txtStrasseHausnummer.setEnabled(!disable);
+        }
+        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.PLZ)) {
+            txtPlz.setEnabled(!disable);
+        }
+        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.ORT)) {
+            txtOrt.setEnabled(!disable);
+        }
+        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.FESTNETZ)) {
+            txtFestnetz.setEnabled(!disable);
+        }
+        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.NATEL)) {
+            txtNatel.setEnabled(!disable);
+        }
+        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.EMAIL)) {
+            txtEmail.setEnabled(!disable);
+        }
+        if ((fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.GEBURTSDATUM)) && txtGeburtsdatum != null) {
+            txtGeburtsdatum.setEnabled(!disable);
         }
     }
 

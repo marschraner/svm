@@ -22,9 +22,11 @@ public class AngehoerigerPanel {
     private JTextField txtNatel;
     private JTextField txtEmail;
     private JCheckBox checkBoxRechnungsempfaenger;
+    private JCheckBox checkBoxGleicheAdresseWieSchueler;
     private JLabel lblAnrede;
     private JPanel mainPanel;
     private JLabel lblRechnungsempfaenger;
+    private JLabel lblGleicheAdresseWieSchueler;
 
     private AngehoerigerModel angehoerigerModel;
 
@@ -48,6 +50,7 @@ public class AngehoerigerPanel {
         angehoerigerController.setTxtFestnetz(txtFestnetz);
         angehoerigerController.setTxtNatel(txtNatel);
         angehoerigerController.setTxtEmail(txtEmail);
+        angehoerigerController.setCheckBoxGleicheAdresseWieSchueler(checkBoxGleicheAdresseWieSchueler);
         angehoerigerController.setCheckBoxRechnungsempfaenger(checkBoxRechnungsempfaenger);
     }
 
@@ -65,6 +68,14 @@ public class AngehoerigerPanel {
 
     public JComboBox<Anrede> getComboBoxAnrede() {
         return comboBoxAnrede;
+    }
+
+    public JLabel getLblGleicheAdresseWieSchueler() {
+        return lblGleicheAdresseWieSchueler;
+    }
+
+    public JCheckBox getCheckBoxGleicheAdresseWieSchueler() {
+        return checkBoxGleicheAdresseWieSchueler;
     }
 
     public JLabel getLblRechnungsempfaenger() {
@@ -319,12 +330,6 @@ public class AngehoerigerPanel {
         gbc.gridy = 18;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         mainPanel.add(lblRechnungsempfaenger, gbc);
-        final JPanel spacer12 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 17;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        mainPanel.add(spacer12, gbc);
         checkBoxRechnungsempfaenger = new JCheckBox();
         checkBoxRechnungsempfaenger.setText("");
         gbc = new GridBagConstraints();
@@ -332,6 +337,26 @@ public class AngehoerigerPanel {
         gbc.gridy = 18;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         mainPanel.add(checkBoxRechnungsempfaenger, gbc);
+        final JPanel spacer12 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 17;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        mainPanel.add(spacer12, gbc);
+        lblGleicheAdresseWieSchueler = new JLabel();
+        lblGleicheAdresseWieSchueler.setText("Gleiche Adresse wie Schüler");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 19;
+        gbc.anchor = GridBagConstraints.WEST;
+        mainPanel.add(lblGleicheAdresseWieSchueler, gbc);
+        checkBoxGleicheAdresseWieSchueler = new JCheckBox();
+        checkBoxGleicheAdresseWieSchueler.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 19;
+        gbc.anchor = GridBagConstraints.WEST;
+        mainPanel.add(checkBoxGleicheAdresseWieSchueler, gbc);
         label1.setLabelFor(txtNachname);
         label2.setLabelFor(txtVorname);
         label4.setLabelFor(txtPlz);
