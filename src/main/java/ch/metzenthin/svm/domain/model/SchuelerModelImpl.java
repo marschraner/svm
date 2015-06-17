@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
-import ch.metzenthin.svm.dataTypes.FieldName;
+import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -42,14 +42,14 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     public void setGeschlecht(Geschlecht geschlecht) {
         Geschlecht oldValue = schueler.getGeschlecht();
         schueler.setGeschlecht(geschlecht);
-        firePropertyChange(FieldName.GESCHLECHT, oldValue, schueler.getGeschlecht());
+        firePropertyChange(Field.GESCHLECHT, oldValue, schueler.getGeschlecht());
     }
 
     @Override
     public void setGeburtsdatum(String geburtsdatum) throws SvmValidationException {
         if (!checkNotEmpty(geburtsdatum)) {
             invalidate();
-            throw new SvmRequiredException("Geburtsdatum");
+            throw new SvmRequiredException(Field.GEBURTSDATUM);
         }
         super.setGeburtsdatum(geburtsdatum);
     }
@@ -63,12 +63,12 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     public void setAnmeldedatum(String anmeldedatum) throws SvmValidationException {
         if (!checkNotEmpty(anmeldedatum)) {
             invalidate();
-            throw new SvmRequiredException("Anmeldedatum");
+            throw new SvmRequiredException(Field.ANMELDEDATUM);
         }
         try {
             setAnmeldedatum(toCalendar(anmeldedatum));
         } catch (ParseException e) {
-            throw new SvmValidationException(1200, "Anmeldedatum ist falsch formatiert. Es wird TT.MM.JJJJ erwartet");
+            throw new SvmValidationException(1200, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.ANMELDEDATUM);
         }
     }
 
@@ -76,7 +76,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     public void setAnmeldedatum(Calendar anmeldedatum) {
         Calendar oldValue = schueler.getAnmeldedatum();
         schueler.setAnmeldedatum(anmeldedatum);
-        firePropertyChange(FieldName.ANMELDEDATUM, oldValue, schueler.getAnmeldedatum());
+        firePropertyChange(Field.ANMELDEDATUM, oldValue, schueler.getAnmeldedatum());
     }
 
     @Override
@@ -89,7 +89,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
         try {
             setAbmeldedatum(toCalendar(abmeldedatum));
         } catch (ParseException e) {
-            throw new SvmValidationException(1201, "Abmeldedatum ist falsch formatiert. Es wird TT.MM.JJJJ erwartet");
+            throw new SvmValidationException(1201, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.ABMELDEDATUM);
         }
     }
 
@@ -97,12 +97,12 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     public void setAbmeldedatum(Calendar abmeldedatum) {
         Calendar oldValue = schueler.getAbmeldedatum();
         schueler.setAbmeldedatum(abmeldedatum);
-        firePropertyChange(FieldName.ABMELDEDATUM, oldValue, schueler.getAbmeldedatum());
+        firePropertyChange(Field.ABMELDEDATUM, oldValue, schueler.getAbmeldedatum());
     }
 
     private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(
             this,
-            FieldName.BEMERKUNGEN, 0, 1000,
+            Field.BEMERKUNGEN, 0, 1000,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {

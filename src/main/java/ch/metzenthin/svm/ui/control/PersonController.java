@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
-import ch.metzenthin.svm.dataTypes.FieldName;
+import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.PersonModel;
@@ -32,6 +32,16 @@ public abstract class PersonController extends AbstractController {
     private JTextField txtNatel;
     private JTextField txtEmail;
     private JTextField txtGeburtsdatum;
+    private JLabel errLblAnrede;
+    private JLabel errLblNachname;
+    private JLabel errLblVorname;
+    private JLabel errLblStrasseHausnummer;
+    private JLabel errLblPlz;
+    private JLabel errLblOrt;
+    private JLabel errLblFestnetz;
+    private JLabel errLblNatel;
+    private JLabel errLblEmail;
+    private JLabel errLblGeburtsdatum;
 
     private PersonModel personModel;
 
@@ -211,11 +221,12 @@ public abstract class PersonController extends AbstractController {
     }
 
     private void setModelAnrede() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.ANREDE);
         try {
             personModel.setAnrede((Anrede) comboBoxAnrede.getSelectedItem());
         } catch (SvmValidationException e) {
             System.out.println("PersonController setModelAnrede Exception=" + e.getMessage());
-            // todo $$$ Fehler anzeigen
+            showErrMsg(e);
             throw e;
         }
     }
@@ -236,6 +247,7 @@ public abstract class PersonController extends AbstractController {
     }
 
     private void setModelNachname() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.NACHNAME);
         try {
             personModel.setNachname(txtNachname.getText());
         } catch (SvmRequiredException e) {
@@ -244,7 +256,7 @@ public abstract class PersonController extends AbstractController {
             throw e;
         } catch (SvmValidationException e) {
             System.out.println("PersonController setModelNachname Exception=" + e.getMessage());
-            // todo $$$ Fehler anzeigen
+            showErrMsg(e);
             throw e;
         }
     }
@@ -265,6 +277,7 @@ public abstract class PersonController extends AbstractController {
     }
 
     private void setModelVorname() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.VORNAME);
         try {
             personModel.setVorname(txtVorname.getText());
         } catch (SvmRequiredException e) {
@@ -273,7 +286,7 @@ public abstract class PersonController extends AbstractController {
             throw e;
         } catch (SvmValidationException e) {
             System.out.println("PersonController setModelVorname Exception=" + e.getMessage());
-            // todo $$$ Fehler anzeigen
+            showErrMsg(e);
             throw e;
         }
     }
@@ -303,6 +316,7 @@ public abstract class PersonController extends AbstractController {
     }
 
     private void setModelStrasseHausnummer() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.STRASSE_HAUSNUMMER);
         try {
             personModel.setStrasseHausnummer(txtStrasseHausnummer.getText());
         } catch (SvmRequiredException e) {
@@ -311,7 +325,7 @@ public abstract class PersonController extends AbstractController {
             throw e;
         } catch (SvmValidationException e) {
             System.out.println("PersonController setModelStrasseHausnummer Exception=" + e.getMessage());
-            // todo $$$ Fehler anzeigen
+            showErrMsg(e);
             throw e;
         }
     }
@@ -332,6 +346,7 @@ public abstract class PersonController extends AbstractController {
     }
 
     private void setModelPlz() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.PLZ);
         try {
             personModel.setPlz(txtPlz.getText());
         } catch (SvmRequiredException e) {
@@ -340,7 +355,7 @@ public abstract class PersonController extends AbstractController {
             throw e;
         } catch (SvmValidationException e) {
             System.out.println("PersonController setModelPlz Exception=" + e.getMessage());
-            // todo $$$ Fehler anzeigen
+            showErrMsg(e);
             throw e;
         }
     }
@@ -361,6 +376,7 @@ public abstract class PersonController extends AbstractController {
     }
 
     private void setModelOrt() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.ORT);
         try {
             personModel.setOrt(txtOrt.getText());
         } catch (SvmRequiredException e) {
@@ -369,7 +385,7 @@ public abstract class PersonController extends AbstractController {
             throw e;
         } catch (SvmValidationException e) {
             System.out.println("PersonController setModelOrt Exception=" + e.getMessage());
-            // todo $$$ Fehler anzeigen
+            showErrMsg(e);
             throw e;
         }
     }
@@ -390,11 +406,12 @@ public abstract class PersonController extends AbstractController {
     }
 
     private void setModelFestnetz() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.FESTNETZ);
         try {
             personModel.setFestnetz(txtFestnetz.getText());
         } catch (SvmValidationException e) {
             System.out.println("PersonController setModelFestnetz Exception=" + e.getMessage());
-            // todo $$$ Fehler anzeigen
+            showErrMsg(e);
             throw e;
         }
     }
@@ -415,11 +432,12 @@ public abstract class PersonController extends AbstractController {
     }
 
     private void setModelNatel() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.NATEL);
         try {
             personModel.setNatel(txtNatel.getText());
         } catch (SvmValidationException e) {
             System.out.println("PersonController setModelNatel Exception=" + e.getMessage());
-            // todo $$$ Fehler anzeigen
+            showErrMsg(e);
             throw e;
         }
     }
@@ -440,11 +458,12 @@ public abstract class PersonController extends AbstractController {
     }
 
     private void setModelEmail() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.EMAIL);
         try {
             personModel.setEmail(txtEmail.getText());
         } catch (SvmValidationException e) {
             System.out.println("PersonController setModelEmail Exception=" + e.getMessage());
-            // todo $$$ Fehler anzeigen
+            showErrMsg(e);
             throw e;
         }
     }
@@ -465,6 +484,7 @@ public abstract class PersonController extends AbstractController {
     }
 
     private void setModelGeburtsdatum() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.GEBURTSDATUM);
         try {
             personModel.setGeburtsdatum(txtGeburtsdatum.getText());
         } catch (SvmRequiredException e) {
@@ -473,35 +493,75 @@ public abstract class PersonController extends AbstractController {
             throw e;
         } catch (SvmValidationException e) {
             System.out.println("PersonController setModelGeburtsdatum Exception=" + e.getMessage());
-            // todo $$$ Fehler anzeigen
+            showErrMsg(e);
             throw e;
         }
     }
 
+    public void setErrLblAnrede(JLabel errLblAnrede) {
+        this.errLblAnrede = errLblAnrede;
+    }
+
+    public void setErrLblNachname(JLabel errLblNachname) {
+        this.errLblNachname = errLblNachname;
+    }
+
+    public void setErrLblVorname(JLabel errLblVorname) {
+        this.errLblVorname = errLblVorname;
+    }
+
+    public void setErrLblStrasseHausnummer(JLabel errLblStrasseHausnummer) {
+        this.errLblStrasseHausnummer = errLblStrasseHausnummer;
+    }
+
+    public void setErrLblPlz(JLabel errLblPlz) {
+        this.errLblPlz = errLblPlz;
+    }
+
+    public void setErrLblOrt(JLabel errLblOrt) {
+        this.errLblOrt = errLblOrt;
+    }
+
+    public void setErrLblFestnetz(JLabel errLblFestnetz) {
+        this.errLblFestnetz = errLblFestnetz;
+    }
+
+    public void setErrLblNatel(JLabel errLblNatel) {
+        this.errLblNatel = errLblNatel;
+    }
+
+    public void setErrLblEmail(JLabel errLblEmail) {
+        this.errLblEmail = errLblEmail;
+    }
+
+    public void setErrLblGeburtsdatum(JLabel errLblGeburtsdatum) {
+        this.errLblGeburtsdatum = errLblGeburtsdatum;
+    }
+
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
-        if (checkIsFieldNameChange(FieldName.NACHNAME, evt)) {
+        if (checkIsFieldChange(Field.NACHNAME, evt)) {
             txtNachname.setText(personModel.getNachname());
-        } else if (checkIsFieldNameChange(FieldName.VORNAME, evt)) {
+        } else if (checkIsFieldChange(Field.VORNAME, evt)) {
             txtVorname.setText(personModel.getVorname());
-        } else if (checkIsFieldNameChange(FieldName.STRASSE_HAUSNUMMER, evt)) {
+        } else if (checkIsFieldChange(Field.STRASSE_HAUSNUMMER, evt)) {
             txtStrasseHausnummer.setText(personModel.getStrasseHausnummer());
-        } else if (checkIsFieldNameChange(FieldName.PLZ, evt)) {
+        } else if (checkIsFieldChange(Field.PLZ, evt)) {
             txtPlz.setText(personModel.getPlz());
-        } else if (checkIsFieldNameChange(FieldName.ORT, evt)) {
+        } else if (checkIsFieldChange(Field.ORT, evt)) {
             txtOrt.setText(personModel.getOrt());
-        } else if (checkIsFieldNameChange(FieldName.GEBURTSDATUM, evt)) {
+        } else if (checkIsFieldChange(Field.GEBURTSDATUM, evt)) {
             // nicht alle Subklassen von Person haben ein Geburtsdatum
             if (txtGeburtsdatum != null) {
                 txtGeburtsdatum.setText(asString(personModel.getGeburtsdatum()));
             }
-        } else if (checkIsFieldNameChange(FieldName.FESTNETZ, evt)) {
+        } else if (checkIsFieldChange(Field.FESTNETZ, evt)) {
             txtFestnetz.setText(personModel.getFestnetz());
-        } else if (checkIsFieldNameChange(FieldName.NATEL, evt)) {
+        } else if (checkIsFieldChange(Field.NATEL, evt)) {
             txtNatel.setText(personModel.getNatel());
-        } else if (checkIsFieldNameChange(FieldName.EMAIL, evt)) {
+        } else if (checkIsFieldChange(Field.EMAIL, evt)) {
             txtEmail.setText(personModel.getEmail());
-        } else if (checkIsFieldNameChange(FieldName.ANREDE, evt)) {
+        } else if (checkIsFieldChange(Field.ANREDE, evt)) {
             // nicht alle Subklassen von Person haben eine Anrede
             if (comboBoxAnrede != null) {
                 comboBoxAnrede.setSelectedItem(personModel.getAnrede());
@@ -538,40 +598,113 @@ public abstract class PersonController extends AbstractController {
     }
 
     @Override
-    void show(SvmValidationException e) {
-        // todo $$$
+    void showErrMsg(SvmValidationException e) {
+        if (errLblAnrede != null && e.getAffectedFields().contains(Field.ANREDE)) {
+            errLblAnrede.setVisible(true);
+            errLblAnrede.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.VORNAME)) {
+            errLblVorname.setVisible(true);
+            errLblVorname.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.NACHNAME)) {
+            errLblNachname.setVisible(true);
+            errLblNachname.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.STRASSE_HAUSNUMMER)) {
+            errLblStrasseHausnummer.setVisible(true);
+            errLblStrasseHausnummer.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.PLZ)) {
+            errLblPlz.setVisible(true);
+            errLblPlz.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.ORT)) {
+            errLblOrt.setVisible(true);
+            errLblOrt.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.FESTNETZ)) {
+            errLblFestnetz.setVisible(true);
+            errLblFestnetz.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.NATEL)) {
+            errLblNatel.setVisible(true);
+            errLblNatel.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.EMAIL)) {
+            errLblEmail.setVisible(true);
+            errLblEmail.setText(e.getMessage());
+        }
+        if (errLblGeburtsdatum != null && e.getAffectedFields().contains(Field.GEBURTSDATUM)) {
+            errLblGeburtsdatum.setVisible(true);
+            errLblGeburtsdatum.setText(e.getMessage());
+        }
     }
 
     @Override
-    public void disableFields(boolean disable, Set<FieldName> fieldNames) {
-        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.ANREDE)) {
+    public void makeErrorLabelsInvisible(Set<Field> fields) {
+        if (fields.contains(Field.ANREDE) && errLblAnrede != null) {
+            errLblAnrede.setVisible(false);
+        }
+        if (fields.contains(Field.VORNAME)) {
+            errLblVorname.setVisible(false);
+        }
+        if (fields.contains(Field.NACHNAME)) {
+            errLblNachname.setVisible(false);
+        }
+        if (fields.contains(Field.STRASSE_HAUSNUMMER)) {
+            errLblStrasseHausnummer.setVisible(false);
+        }
+        if (fields.contains(Field.PLZ)) {
+            errLblPlz.setVisible(false);
+        }
+        if (fields.contains(Field.ORT)) {
+            errLblOrt.setVisible(false);
+        }
+        if (fields.contains(Field.FESTNETZ)) {
+            errLblFestnetz.setVisible(false);
+        }
+        if (fields.contains(Field.NATEL)) {
+            errLblNatel.setVisible(false);
+        }
+        if (fields.contains(Field.EMAIL)) {
+            errLblEmail.setVisible(false);
+        }
+        if (fields.contains(Field.GEBURTSDATUM) && errLblGeburtsdatum != null) {
+            errLblGeburtsdatum.setVisible(false);
+        }
+    }
+
+    @Override
+    public void disableFields(boolean disable, Set<Field> fields) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.ANREDE)) {
             comboBoxAnrede.setEnabled(!disable);
         }
-        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.NACHNAME)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.NACHNAME)) {
             txtNachname.setEnabled(!disable);
         }
-        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.VORNAME)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.VORNAME)) {
             txtVorname.setEnabled(!disable);
         }
-        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.STRASSE_HAUSNUMMER)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.STRASSE_HAUSNUMMER)) {
             txtStrasseHausnummer.setEnabled(!disable);
         }
-        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.PLZ)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.PLZ)) {
             txtPlz.setEnabled(!disable);
         }
-        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.ORT)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.ORT)) {
             txtOrt.setEnabled(!disable);
         }
-        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.FESTNETZ)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.FESTNETZ)) {
             txtFestnetz.setEnabled(!disable);
         }
-        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.NATEL)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.NATEL)) {
             txtNatel.setEnabled(!disable);
         }
-        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.EMAIL)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.EMAIL)) {
             txtEmail.setEnabled(!disable);
         }
-        if ((fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.GEBURTSDATUM)) && txtGeburtsdatum != null) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.GEBURTSDATUM)) && txtGeburtsdatum != null) {
             txtGeburtsdatum.setEnabled(!disable);
         }
     }

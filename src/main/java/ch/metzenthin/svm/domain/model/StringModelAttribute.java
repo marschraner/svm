@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.dataTypes.FieldName;
+import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 
@@ -15,14 +15,14 @@ public class StringModelAttribute {
 
     private final ModelAttributeListener modelAttributeListener;
     private final AttributeAccessor<String> attributeAccessor;
-    private final FieldName fieldName;
+    private final Field field;
     private final int minLength;
     private final int maxLength;
 
-    StringModelAttribute(ModelAttributeListener modelAttributeListener, FieldName fieldName, int minLength, int maxLength, AttributeAccessor<String> attributeAccessor) {
+    StringModelAttribute(ModelAttributeListener modelAttributeListener, Field field, int minLength, int maxLength, AttributeAccessor<String> attributeAccessor) {
         this.modelAttributeListener = modelAttributeListener;
         this.attributeAccessor = attributeAccessor;
-        this.fieldName = fieldName;
+        this.field = field;
         this.minLength = minLength;
         this.maxLength = maxLength;
     }
@@ -40,26 +40,20 @@ public class StringModelAttribute {
         }
         String oldValue = getValue();
         attributeAccessor.setValue(emptyStringAsNull(newValueTrimmed));
-        modelAttributeListener.firePropertyChange(fieldName, oldValue, getValue());
+        modelAttributeListener.firePropertyChange(field, oldValue, getValue());
     }
 
     private void checkMaxLength(String newValue) throws SvmValidationException {
         if (newValue.length() > maxLength) {
-            // Für Gleiche Adresse wie Schüler-Funktionalität
-            attributeAccessor.setValue(null);
-            modelAttributeListener.firePropertyChange(fieldName, getValue(), null);
             modelAttributeListener.invalidate();
-            throw new SvmValidationException(1100, "Länge darf höchstens " + maxLength + " sein", fieldName.toString());
+            throw new SvmValidationException(1100, "Länge darf höchstens " + maxLength + " sein", field);
         }
     }
 
     private void checkMinLength(String newValue) throws SvmValidationException {
         if (newValue.length() < minLength) {
-            // Für Gleiche Adresse wie Schüler-Funktionalität
-            attributeAccessor.setValue(null);
-            modelAttributeListener.firePropertyChange(fieldName, getValue(), null);
             modelAttributeListener.invalidate();
-            throw new SvmValidationException(1100, "Länge muss mindestens " + minLength + " sein", fieldName.toString());
+            throw new SvmValidationException(1100, "Länge muss mindestens " + minLength + " sein", field);
         }
     }
 
@@ -68,10 +62,10 @@ public class StringModelAttribute {
             if (getValue() != null && !getValue().isEmpty()) {
                 // Für Gleiche Adresse wie Schüler-Funktionalität
                 attributeAccessor.setValue(null);
-                modelAttributeListener.firePropertyChange(fieldName, getValue(), null);
+                modelAttributeListener.firePropertyChange(field, getValue(), null);
             }
             modelAttributeListener.invalidate();
-            throw new SvmRequiredException(fieldName.toString());
+            throw new SvmRequiredException(field);
         }
     }
 

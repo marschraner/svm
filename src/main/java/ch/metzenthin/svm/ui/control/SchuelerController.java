@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.dataTypes.FieldName;
+import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -26,6 +26,10 @@ public class SchuelerController extends PersonController {
     private JTextField txtAbmeldedatum;
     private JTextArea textAreaBemerkungen;
     private JComboBox<Geschlecht> comboBoxGeschlecht;
+    private JLabel errLblAnmeldedatum;
+    private JLabel errLblAbmeldedatum;
+    private JLabel errLblBemerkungen;
+    private JLabel errLblGeschlecht;
 
     private SchuelerModel schuelerModel;
 
@@ -114,6 +118,7 @@ public class SchuelerController extends PersonController {
     }
 
     private void setModelAnmeldedatum() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.ANMELDEDATUM);
         try {
             schuelerModel.setAnmeldedatum(txtAnmeldedatum.getText());
         } catch (SvmRequiredException e) {
@@ -122,7 +127,7 @@ public class SchuelerController extends PersonController {
             throw e;
         } catch (SvmValidationException e) {
             System.out.println("SchuelerController setModelAnmeldedatum Exception=" + e.getMessage());
-            // todo $$$ Fehler anzeigen
+            showErrMsg(e);
             throw e;
         }
     }
@@ -143,11 +148,12 @@ public class SchuelerController extends PersonController {
     }
 
     private void setModelAbmeldedatum() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.ABMELDEDATUM);
         try {
             schuelerModel.setAbmeldedatum(txtAbmeldedatum.getText());
         } catch (SvmValidationException e) {
             System.out.println("SchuelerController setModelAbmeldedatum Exception=" + e.getMessage());
-            // todo $$$ Fehler anzeigen
+            showErrMsg(e);
             throw e;
         }
     }
@@ -168,25 +174,42 @@ public class SchuelerController extends PersonController {
     }
 
     private void setModelBemerkungen() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.BEMERKUNGEN);
         try {
             schuelerModel.setBemerkungen(textAreaBemerkungen.getText());
         } catch (SvmValidationException e) {
             System.out.println("SchuelerController setModelBemerkungen Exception=" + e.getMessage());
-            // todo $$$ Fehler anzeigen
+            showErrMsg(e);
             throw e;
         }
+    }
+
+    public void setErrLblAnmeldedatum(JLabel errLblAnmeldedatum) {
+        this.errLblAnmeldedatum = errLblAnmeldedatum;
+    }
+
+    public void setErrLblAbmeldedatum(JLabel errLblAbmeldedatum) {
+        this.errLblAbmeldedatum = errLblAbmeldedatum;
+    }
+
+    public void setErrLblBemerkungen(JLabel errLblBemerkungen) {
+        this.errLblBemerkungen = errLblBemerkungen;
+    }
+
+    public void setErrLblGeschlecht(JLabel errLblGeschlecht) {
+        this.errLblGeschlecht = errLblGeschlecht;
     }
 
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         System.out.println("SchuelerController PropertyChangeEvent '" + evt.getPropertyName() + "', oldValue='" + evt.getOldValue() + "', newValue='" + evt.getNewValue() + "'");
-        if (checkIsFieldNameChange(FieldName.GESCHLECHT, evt)) {
+        if (checkIsFieldChange(Field.GESCHLECHT, evt)) {
             comboBoxGeschlecht.setSelectedItem(schuelerModel.getGeschlecht());
-        } else if (checkIsFieldNameChange(FieldName.BEMERKUNGEN, evt)) {
+        } else if (checkIsFieldChange(Field.BEMERKUNGEN, evt)) {
             textAreaBemerkungen.setText(schuelerModel.getBemerkungen());
-        } else if (checkIsFieldNameChange(FieldName.ANMELDEDATUM, evt)) {
+        } else if (checkIsFieldChange(Field.ANMELDEDATUM, evt)) {
             txtAnmeldedatum.setText(asString(schuelerModel.getAnmeldedatum()));
-        } else if (checkIsFieldNameChange(FieldName.ABMELDEDATUM, evt)) {
+        } else if (checkIsFieldChange(Field.ABMELDEDATUM, evt)) {
             txtAbmeldedatum.setText(asString(schuelerModel.getAbmeldedatum()));
         }
         super.doPropertyChange(evt);
@@ -206,24 +229,56 @@ public class SchuelerController extends PersonController {
     }
 
     @Override
-    void show(SvmValidationException e) {
-        super.show(e);
-        // todo $$$
+    void showErrMsg(SvmValidationException e) {
+        super.showErrMsg(e);
+        if (e.getAffectedFields().contains(Field.GESCHLECHT)) {
+            errLblGeschlecht.setVisible(true);
+            errLblGeschlecht.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.ANMELDEDATUM)) {
+            errLblAnmeldedatum.setVisible(true);
+            errLblAnmeldedatum.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.ABMELDEDATUM)) {
+            errLblAbmeldedatum.setVisible(true);
+            errLblAbmeldedatum.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.BEMERKUNGEN)) {
+            errLblBemerkungen.setVisible(true);
+            errLblBemerkungen.setText(e.getMessage());
+        }
     }
 
     @Override
-    public void disableFields(boolean disable, Set<FieldName> fieldNames) {
-        super.disableFields(disable, fieldNames);
-        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.GESCHLECHT)) {
+    public void makeErrorLabelsInvisible(Set<Field> fields) {
+        super.makeErrorLabelsInvisible(fields);
+        if (fields.contains(Field.GESCHLECHT)) {
+            errLblGeschlecht.setVisible(false);
+        }
+        if (fields.contains(Field.ANMELDEDATUM)) {
+            errLblAnmeldedatum.setVisible(false);
+        }
+        if (fields.contains(Field.ABMELDEDATUM)) {
+            errLblAbmeldedatum.setVisible(false);
+        }
+        if (fields.contains(Field.BEMERKUNGEN)) {
+            errLblBemerkungen.setVisible(false);
+        }
+    }
+
+    @Override
+    public void disableFields(boolean disable, Set<Field> fields) {
+        super.disableFields(disable, fields);
+        if (fields.contains(Field.ALLE) || fields.contains(Field.GESCHLECHT)) {
             comboBoxGeschlecht.setEnabled(!disable);
         }
-        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.ANMELDEDATUM)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.ANMELDEDATUM)) {
             txtAnmeldedatum.setEnabled(!disable);
         }
-        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.ABMELDEDATUM)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.ABMELDEDATUM)) {
             txtAbmeldedatum.setEnabled(!disable);
         }
-        if (fieldNames.contains(FieldName.ALLE) || fieldNames.contains(FieldName.BEMERKUNGEN)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.BEMERKUNGEN)) {
             textAreaBemerkungen.setEnabled(!disable);
         }
     }

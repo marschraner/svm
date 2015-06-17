@@ -62,6 +62,7 @@ public class SchuelerErfassenController {
         schuelerPanel.getMainPanel().setPreferredSize(new Dimension(597, 420));
         // Geschlecht-Voreinstellung
         schuelerModel.setGeschlecht(Geschlecht.W);
+        // Keine Fehlermeldungen sichtbar
         schuelerErfassenModel.setSchuelerModel(schuelerModel);
     }
 

@@ -1,19 +1,25 @@
 package ch.metzenthin.svm.domain;
 
+import ch.metzenthin.svm.dataTypes.Field;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Hans Stamm
  */
 public class SvmValidationException extends SvmException {
 
-    private final String[] affectedProperties;
+    private final Set<Field> affectedFields;
 
-    public SvmValidationException(int errorId, String errorMsg, String... affectedProperties) {
+    public SvmValidationException(int errorId, String errorMsg, Field... affectedFields) {
         super(errorId, errorMsg);
-        this.affectedProperties = affectedProperties;
+        this.affectedFields = new HashSet<>(Arrays.asList(affectedFields));
     }
 
-    public String[] getAffectedProperties() {
-        return affectedProperties.clone();
+    public Set<Field> getAffectedFields() {
+        return affectedFields;
     }
 
 }

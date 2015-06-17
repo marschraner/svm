@@ -1,9 +1,10 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.dataTypes.FieldName;
+import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.ui.control.CompletedListener;
 import ch.metzenthin.svm.ui.control.DisableFieldsListener;
+import ch.metzenthin.svm.ui.control.MakeErrorLabelsInvisibleListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -16,15 +17,16 @@ public interface Model {
     void addPropertyChangeListener(PropertyChangeListener listener);
     void addCompletedListener(CompletedListener listener);
     void removePropertyChangeListener(PropertyChangeListener listener);
-
-    boolean checkIsFieldNameChange(FieldName fieldName, PropertyChangeEvent evt);
-
+    boolean checkIsFieldChange(Field field, PropertyChangeEvent evt);
     void addDisableFieldsListener(DisableFieldsListener listener);
     void removeDisableFieldsListener(DisableFieldsListener listener);
     void disableFields();
-    void disableFields(Set<FieldName> fieldNames);
+    void disableFields(Set<Field> fields);
     void enableFields();
-    void enableFields(Set<FieldName> fieldNames);
+    void enableFields(Set<Field> fields);
+    void addMakeErrorLabelsInvisibleListener(MakeErrorLabelsInvisibleListener makeErrorLabelsInvisibleListener);
+    void removeMakeErrorLabelsInvisibleListener(MakeErrorLabelsInvisibleListener makeErrorLabelsInvisibleListener);
+    void makeErrorLabelsInvisible(Set<Field> fields);
     void initializeCompleted();
     boolean isCompleted();
     void validate() throws SvmValidationException;

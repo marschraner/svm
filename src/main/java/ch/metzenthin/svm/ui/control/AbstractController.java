@@ -1,16 +1,19 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.dataTypes.FieldName;
+import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.Model;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Hans Stamm
  */
-public abstract class AbstractController implements PropertyChangeListener, DisableFieldsListener {
+public abstract class AbstractController implements PropertyChangeListener, DisableFieldsListener, MakeErrorLabelsInvisibleListener {
 
     private final Model model;
 
@@ -29,8 +32,8 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
         validate();
     }
 
-    public boolean checkIsFieldNameChange(FieldName fieldName, PropertyChangeEvent evt) {
-        return fieldName.toString().equals(evt.getPropertyName());
+    public boolean checkIsFieldChange(Field field, PropertyChangeEvent evt) {
+        return field.toString().equals(evt.getPropertyName());
     }
 
     /**
@@ -50,12 +53,20 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
             model.validate();
         } catch (SvmValidationException e) {
             System.out.println("AbstractController model.validate " + e.getMessage());
-            show(e);
+            // Keine Fehlermeldung ausgeben
+            // showErrMsg(e);
         }
     }
 
     abstract void validateFields() throws SvmValidationException;
 
-    abstract void show(SvmValidationException e);
+    abstract void showErrMsg(SvmValidationException e);
+
+    public void makeErrorLabelInvisible(Field field) {
+        Set<Field> fields = new HashSet<>();
+        fields.add(field);
+        makeErrorLabelsInvisible(fields);
+
+    }
 
 }

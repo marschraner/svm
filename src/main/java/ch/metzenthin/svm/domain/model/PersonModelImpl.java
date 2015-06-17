@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
-import ch.metzenthin.svm.dataTypes.FieldName;
+import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -36,12 +36,12 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     public void setAnrede(Anrede anrede) {
         Anrede oldValue = getPerson().getAnrede();
         getPerson().setAnrede(anrede);
-        firePropertyChange(FieldName.ANREDE, oldValue, getPerson().getAnrede());
+        firePropertyChange(Field.ANREDE, oldValue, getPerson().getAnrede());
     }
 
     private final StringModelAttribute nachnameModelAttribute = new StringModelAttribute(
             this,
-            FieldName.NACHNAME, 2, 50,
+            Field.NACHNAME, 2, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -67,7 +67,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute vornameModelAttribute = new StringModelAttribute(
             this,
-            FieldName.VORNAME, 2, 50,
+            Field.VORNAME, 2, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -93,7 +93,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute natelModelAttribute = new StringModelAttribute(
             this,
-            FieldName.NATEL, 0, 20,
+            Field.NATEL, 13, 20,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -119,7 +119,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute emailModelAttribute = new StringModelAttribute(
             this,
-            FieldName.EMAIL, 0, 50,
+            Field.EMAIL, 5, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -154,7 +154,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         try {
             setGeburtsdatum(toCalendar(geburtsdatum));
         } catch (ParseException e) {
-            throw new SvmValidationException(1200, "Geburtsdatum ist falsch formatiert. Es wird TT.MM.JJJJ erwartet");
+            throw new SvmValidationException(1200, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.GEBURTSDATUM);
         }
     }
 
@@ -162,12 +162,12 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     public void setGeburtsdatum(Calendar geburtsdatum) {
         Calendar oldValue = getPerson().getGeburtsdatum();
         getPerson().setGeburtsdatum(geburtsdatum);
-        firePropertyChange(FieldName.GEBURTSDATUM, oldValue, getPerson().getGeburtsdatum());
+        firePropertyChange(Field.GEBURTSDATUM, oldValue, getPerson().getGeburtsdatum());
     }
 
     private final StringModelAttribute strasseHausnummerModelAttribute = new StringModelAttribute(
             this,
-            FieldName.STRASSE_HAUSNUMMER, 2, 50,
+            Field.STRASSE_HAUSNUMMER, 2, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -230,7 +230,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute plzModelAttribute = new StringModelAttribute(
             this,
-            FieldName.PLZ, 4, 10,
+            Field.PLZ, 4, 10,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -256,7 +256,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute ortModelAttribute = new StringModelAttribute(
             this,
-            FieldName.ORT, 2, 50,
+            Field.ORT, 2, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -282,7 +282,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute festnetzModelAttribute = new StringModelAttribute(
             this,
-            FieldName.FESTNETZ, 0, 20,
+            Field.FESTNETZ, 13, 20,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -318,21 +318,21 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     public void doValidate() throws SvmValidationException {
         if (isAdresseRequired()) {
             if (!isSetName()) {
-                throw new SvmValidationException(2000, "Nachname und Vorname obligatorisch", "Nachname", "Vorname");
+                throw new SvmValidationException(2000, "Nachname und Vorname obligatorisch", Field.NACHNAME, Field.VORNAME);
             }
             if (!isSetAnschrift()) {
-                throw new SvmValidationException(2001, "Anschrift ist obligatorisch", "StrasseHausnummer", "Plz", "Ort", "Festnetz");
+                throw new SvmValidationException(2001, "Anschrift ist obligatorisch", Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT, Field.FESTNETZ);
             }
         } else {
             if (isSetAnyNameElement() && !isSetName()) {
-                throw new SvmValidationException(2002, "Nachname und Vorname müssen zusammen angegeben werden", "Nachname", "Vorname");
+                throw new SvmValidationException(2002, "Nachname und Vorname müssen zusammen angegeben werden", Field.NACHNAME, Field.VORNAME);
             }
             if (isSetAnyAnschriftElement()) {
                 if (!isSetName()) {
-                    throw new SvmValidationException(2003, "Nachname und Vorname müssen angegeben werden, wenn eine Anschrift vorhanden ist", "Nachname", "Vorname");
+                    throw new SvmValidationException(2003, "Nachname und Vorname müssen angegeben werden, wenn eine Anschrift vorhanden ist", Field.NACHNAME, Field.VORNAME);
                 }
                 if (!isSetAnschrift()) {
-                    throw new SvmValidationException(2004, "Anschrift ist unvollständig", "StrasseHausnummer", "Plz", "Ort", "Festnetz");
+                    throw new SvmValidationException(2004, "Anschrift ist unvollständig", Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT, Field.FESTNETZ);
                 }
             }
         }

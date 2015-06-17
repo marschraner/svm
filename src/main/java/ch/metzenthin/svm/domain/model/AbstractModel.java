@@ -1,10 +1,11 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.dataTypes.FieldName;
+import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.ui.control.CompletedListener;
 import ch.metzenthin.svm.ui.control.DisableFieldsListener;
+import ch.metzenthin.svm.ui.control.MakeErrorLabelsInvisibleListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.prefs.PreferenceChangeEvent;
 
 /**
  * @author Hans Stamm
@@ -47,16 +47,16 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
     }
 
     @Override
-    public final void firePropertyChange(FieldName fieldName, Object oldValue, Object newValue) {
+    public final void firePropertyChange(Field field, Object oldValue, Object newValue) {
         if ((oldValue == null) && (newValue == null)) {
             return;
         }
-        this.propertyChangeSupport.firePropertyChange(fieldName.toString(), oldValue, newValue);
+        this.propertyChangeSupport.firePropertyChange(field.toString(), oldValue, newValue);
     }
 
     @Override
-    public boolean checkIsFieldNameChange(FieldName fieldName, PropertyChangeEvent evt) {
-        return fieldName.toString().equals(evt.getPropertyName());
+    public boolean checkIsFieldChange(Field field, PropertyChangeEvent evt) {
+        return field.toString().equals(evt.getPropertyName());
     }
 
 
@@ -66,39 +66,74 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
 
     private final List<DisableFieldsListener> disableFieldsListeners = new ArrayList<>();
 
+    @Override
     public void addDisableFieldsListener(DisableFieldsListener disableFieldsListener) {
         disableFieldsListeners.add(disableFieldsListener);
     }
 
+    @Override
     public void removeDisableFieldsListener(DisableFieldsListener disableFieldsListener) {
         disableFieldsListeners.remove(disableFieldsListener);
     }
 
-    void fireDisableFields(boolean disable, Set<FieldName> fieldNames) {
+    void fireDisableFields(boolean disable, Set<Field> fields) {
         for (DisableFieldsListener disableFieldsListener : disableFieldsListeners) {
-            disableFieldsListener.disableFields(disable, fieldNames);
+            disableFieldsListener.disableFields(disable, fields);
         }
     }
 
+    @Override
     public void disableFields() {
-        Set<FieldName> fieldNames = new HashSet<>();
-        fieldNames.add(FieldName.ALLE);
-        disableFields(fieldNames);
+        Set<Field> fields = new HashSet<>();
+        fields.add(Field.ALLE);
+        disableFields(fields);
     }
 
+    @Override
     public void enableFields() {
-        Set<FieldName> fieldNames = new HashSet<>();
-        fieldNames.add(FieldName.ALLE);
-        enableFields(fieldNames);
+        Set<Field> fields = new HashSet<>();
+        fields.add(Field.ALLE);
+        enableFields(fields);
     }
 
-    public void disableFields(Set<FieldName> fieldNames) {
-        fireDisableFields(true, fieldNames);
+    @Override
+    public void disableFields(Set<Field> fields) {
+        fireDisableFields(true, fields);
     }
 
-    public void enableFields(Set<FieldName> fieldNames) {
-        fireDisableFields(false, fieldNames);
+    @Override
+    public void enableFields(Set<Field> fields) {
+        fireDisableFields(false, fields);
     }
+
+
+    //------------------------------------------------------------------------------------------------------------------
+    // DisableFields support
+    //------------------------------------------------------------------------------------------------------------------
+
+    private final List<MakeErrorLabelsInvisibleListener> makeErrorLabelsInvisibleListeners = new ArrayList<>();
+
+    @Override
+    public void addMakeErrorLabelsInvisibleListener(MakeErrorLabelsInvisibleListener makeErrorLabelsInvisibleListener) {
+        makeErrorLabelsInvisibleListeners.add(makeErrorLabelsInvisibleListener);
+    }
+
+    @Override
+    public void removeMakeErrorLabelsInvisibleListener(MakeErrorLabelsInvisibleListener makeErrorLabelsInvisibleListener) {
+        makeErrorLabelsInvisibleListeners.remove(makeErrorLabelsInvisibleListener);
+    }
+
+    void fireMakeErrorLabelsInvisible(Set<Field> fields) {
+        for (MakeErrorLabelsInvisibleListener makeErrorLabelsInvisibleListener : makeErrorLabelsInvisibleListeners) {
+            makeErrorLabelsInvisibleListener.makeErrorLabelsInvisible(fields);
+        }
+    }
+
+    @Override
+    public void makeErrorLabelsInvisible(Set<Field> fields) {
+        fireMakeErrorLabelsInvisible(fields);
+    }
+
 
     //------------------------------------------------------------------------------------------------------------------
     // Completed support

@@ -7,6 +7,6 @@ import java.util.Set;
 /**
  * @author Martin Schraner
  */
-public interface DisableFieldsListener {
-    void disableFields(boolean disable, Set<Field> fields);
+public interface MakeErrorLabelsInvisibleListener {
+    void makeErrorLabelsInvisible(Set<Field> fields);
 }

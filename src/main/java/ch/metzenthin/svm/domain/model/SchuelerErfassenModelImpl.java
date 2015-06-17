@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.dataTypes.FieldName;
+import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
@@ -72,7 +72,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     public void doValidate() throws SvmValidationException {
         if (isSubModelsCompleted()) {
             if (!isSetRechnungsempfaenger()) {
-                throw new SvmValidationException(3000, "Rechnungsempfänger ist nicht gesetzt", "Rechnungsempfaenger");
+                throw new SvmValidationException(3000, "Rechnungsempfänger ist nicht gesetzt", Field.RECHNUNGSEMPFAENGER);
             }
         }
     }
@@ -202,6 +202,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             if (isBooleanNewValuePropertyChecked(newValue)) {
                 replaceByAdresseSchueler(mutterModel);
                 mutterModel.disableFields(getAdresseFields());
+                mutterModel.makeErrorLabelsInvisible(getAdresseFields());
             } else {
                 invalidateAdresse(mutterModel);
                 mutterModel.enableFields(getAdresseFields());
@@ -227,6 +228,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             if (isBooleanNewValuePropertyChecked(newValue)) {
                 replaceByAdresseSchueler(vaterModel);
                 vaterModel.disableFields(getAdresseFields());
+                vaterModel.makeErrorLabelsInvisible(getAdresseFields());
             } else {
                 invalidateAdresse(vaterModel);
                 vaterModel.enableFields(getAdresseFields());
@@ -246,27 +248,27 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     }
 
     private boolean isStrasseHausnummerPropertyChange(PropertyChangeEvent evt) {
-        return checkIsFieldNameChange(FieldName.STRASSE_HAUSNUMMER, evt);
+        return checkIsFieldChange(Field.STRASSE_HAUSNUMMER, evt);
     }
 
     private boolean isPlzPropertyChange(PropertyChangeEvent evt) {
-        return checkIsFieldNameChange(FieldName.PLZ, evt);
+        return checkIsFieldChange(Field.PLZ, evt);
     }
 
     private boolean isOrtPropertyChange(PropertyChangeEvent evt) {
-        return checkIsFieldNameChange(FieldName.ORT, evt);
+        return checkIsFieldChange(Field.ORT, evt);
     }
 
     private boolean isFestnetzPropertyChange(PropertyChangeEvent evt) {
-        return checkIsFieldNameChange(FieldName.FESTNETZ, evt);
+        return checkIsFieldChange(Field.FESTNETZ, evt);
     }
 
     private boolean isRechnungsempfaengerPropertyChange(PropertyChangeEvent evt) {
-        return checkIsFieldNameChange(FieldName.RECHNUNGSEMPFAENGER, evt);
+        return checkIsFieldChange(Field.RECHNUNGSEMPFAENGER, evt);
     }
 
     private boolean isGleicheAdresseWieSchuelerPropertyChange(PropertyChangeEvent evt) {
-        return checkIsFieldNameChange(FieldName.GLEICHE_ADRESSE_WIE_SCHUELER, evt);
+        return checkIsFieldChange(Field.GLEICHE_ADRESSE_WIE_SCHUELER, evt);
     }
 
     private boolean isBooleanNewValuePropertyChecked(Boolean newValue) {
@@ -293,12 +295,12 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         invalidateFestnetz(angehoerigerModel);
     }
 
-    private Set<FieldName> getAdresseFields() {
-        Set<FieldName> adresseFields = new HashSet<>();
-        adresseFields.add(FieldName.STRASSE_HAUSNUMMER);
-        adresseFields.add(FieldName.PLZ);
-        adresseFields.add(FieldName.ORT);
-        adresseFields.add(FieldName.FESTNETZ);
+    private Set<Field> getAdresseFields() {
+        Set<Field> adresseFields = new HashSet<>();
+        adresseFields.add(Field.STRASSE_HAUSNUMMER);
+        adresseFields.add(Field.PLZ);
+        adresseFields.add(Field.ORT);
+        adresseFields.add(Field.FESTNETZ);
         return adresseFields;
     }
 
