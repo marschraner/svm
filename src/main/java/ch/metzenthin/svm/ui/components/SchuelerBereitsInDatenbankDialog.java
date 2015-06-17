@@ -95,7 +95,7 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 30, 5, 5);
+        gbc.insets = new Insets(0, 5, 5, 5);
         panel1.add(lblSchueler, gbc);
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridBagLayout());
