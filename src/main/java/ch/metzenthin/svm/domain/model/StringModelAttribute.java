@@ -59,11 +59,6 @@ public class StringModelAttribute {
 
     private void checkRequired(boolean isRequired, String newValue) throws SvmRequiredException {
         if (isRequired && !checkNotEmpty(newValue)) {
-            if (getValue() != null && !getValue().isEmpty()) {
-                // Für Gleiche Adresse wie Schüler-Funktionalität
-                attributeAccessor.setValue(null);
-                modelAttributeListener.firePropertyChange(field, getValue(), null);
-            }
             modelAttributeListener.invalidate();
             throw new SvmRequiredException(field);
         }

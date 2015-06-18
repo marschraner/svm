@@ -171,11 +171,11 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    if (adresse.getStrasse() == null && adresse.getHausnummer() == null) {
-                        return null;
-                    } else if (adresse.getHausnummer() == null) {
+                    if (!checkNotEmpty(adresse.getStrasse()) && !checkNotEmpty(adresse.getHausnummer())) {
+                        return "";
+                    } else if (!checkNotEmpty(adresse.getHausnummer())) {
                         return adresse.getStrasse();
-                    } else if (adresse.getStrasse() == null) {
+                    } else if (!checkNotEmpty(adresse.getStrasse())) {
                         return adresse.getHausnummer();
                     } else {
                         return adresse.getStrasse() + " " + adresse.getHausnummer();
