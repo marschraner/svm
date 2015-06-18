@@ -59,6 +59,14 @@ public class StringModelAttribute {
 
     private void checkRequired(boolean isRequired, String newValue) throws SvmRequiredException {
         if (isRequired && !checkNotEmpty(newValue)) {
+            // todo $$$ ?
+            if (getValue() != null && !getValue().isEmpty()) {
+                // Für Gleiche Adresse wie Schüler-Funktionalität
+                // (für den Fall, dass z.B. bei der Mutter die Strasse gelöscht wird und nachher AdresseVonSchülerÜbernehmen ausgewählt wird,
+                // oder auch, wenn AdresseVonSchülerÜbernehmen ausgewählt wurde und Häkchen wieder entfernt wird, verschwindet die Adresse nicht)
+                attributeAccessor.setValue(null);
+                modelAttributeListener.firePropertyChange(field, getValue(), null);
+            }
             modelAttributeListener.invalidate();
             throw new SvmRequiredException(field);
         }
