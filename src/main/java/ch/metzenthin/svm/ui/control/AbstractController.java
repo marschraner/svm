@@ -7,7 +7,6 @@ import ch.metzenthin.svm.domain.model.Model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -53,14 +52,15 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
             model.validate();
         } catch (SvmValidationException e) {
             System.out.println("AbstractController model.validate " + e.getMessage());
-            // Keine Fehlermeldung ausgeben
-            // showErrMsg(e);
+            showErrMsgAsToolTip(e);
         }
     }
 
     abstract void validateFields() throws SvmValidationException;
 
     abstract void showErrMsg(SvmValidationException e);
+
+    abstract void showErrMsgAsToolTip(SvmValidationException e);
 
     public void makeErrorLabelInvisible(Field field) {
         Set<Field> fields = new HashSet<>();

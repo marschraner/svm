@@ -45,12 +45,15 @@ public class SchuelerErfassenController {
         if (completed) {
             try {
                 schuelerErfassenModel.validate();
+                btnSpeichern.setToolTipText(null);
                 btnSpeichern.setEnabled(true);
             } catch (SvmValidationException e) {
                 System.out.println("SchuelerErfassenController Exception=" + e.getMessage());
+                btnSpeichern.setToolTipText(e.getMessage());
                 btnSpeichern.setEnabled(false);
             }
         } else {
+            btnSpeichern.setToolTipText("Bitte Eingabedaten vervollständigen");
             btnSpeichern.setEnabled(false);
         }
     }

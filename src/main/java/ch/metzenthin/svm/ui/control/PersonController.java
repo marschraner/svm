@@ -252,6 +252,7 @@ public abstract class PersonController extends AbstractController {
             personModel.setNachname(txtNachname.getText());
         } catch (SvmRequiredException e) {
             System.out.println("PersonController setModelNachname RequiredException=" + e.getMessage());
+            txtNachname.setToolTipText(e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             throw e;
         } catch (SvmValidationException e) {
@@ -282,6 +283,7 @@ public abstract class PersonController extends AbstractController {
             personModel.setVorname(txtVorname.getText());
         } catch (SvmRequiredException e) {
             System.out.println("PersonController setModelVorname RequiredException=" + e.getMessage());
+            txtVorname.setToolTipText(e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             throw e;
         } catch (SvmValidationException e) {
@@ -321,6 +323,7 @@ public abstract class PersonController extends AbstractController {
             personModel.setStrasseHausnummer(txtStrasseHausnummer.getText());
         } catch (SvmRequiredException e) {
             System.out.println("PersonController setModelStrasseHausnummer RequiredException=" + e.getMessage());
+            txtStrasseHausnummer.setToolTipText(e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             throw e;
         } catch (SvmValidationException e) {
@@ -351,6 +354,7 @@ public abstract class PersonController extends AbstractController {
             personModel.setPlz(txtPlz.getText());
         } catch (SvmRequiredException e) {
             System.out.println("PersonController setModelPlz RequiredException=" + e.getMessage());
+            txtPlz.setToolTipText(e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             throw e;
         } catch (SvmValidationException e) {
@@ -381,6 +385,7 @@ public abstract class PersonController extends AbstractController {
             personModel.setOrt(txtOrt.getText());
         } catch (SvmRequiredException e) {
             System.out.println("PersonController setModelOrt RequiredException=" + e.getMessage());
+            txtOrt.setToolTipText(e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             throw e;
         } catch (SvmValidationException e) {
@@ -489,6 +494,7 @@ public abstract class PersonController extends AbstractController {
             personModel.setGeburtsdatum(txtGeburtsdatum.getText());
         } catch (SvmRequiredException e) {
             System.out.println("PersonController setModelGeburtsdatum RequiredException=" + e.getMessage());
+            txtGeburtsdatum.setToolTipText(e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             throw e;
         } catch (SvmValidationException e) {
@@ -642,36 +648,80 @@ public abstract class PersonController extends AbstractController {
     }
 
     @Override
+    void showErrMsgAsToolTip(SvmValidationException e) {
+        if (comboBoxAnrede != null && e.getAffectedFields().contains(Field.ANREDE)) {
+            comboBoxAnrede.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.VORNAME)) {
+            txtVorname.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.NACHNAME)) {
+            txtNachname.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.STRASSE_HAUSNUMMER)) {
+            txtStrasseHausnummer.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.PLZ)) {
+            txtPlz.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.ORT)) {
+            txtOrt.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.FESTNETZ)) {
+            txtFestnetz.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.NATEL)) {
+            txtNatel.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.EMAIL)) {
+            txtEmail.setToolTipText(e.getMessage());
+        }
+        if (errLblGeburtsdatum != null && e.getAffectedFields().contains(Field.GEBURTSDATUM)) {
+            txtGeburtsdatum.setToolTipText(e.getMessage());
+        }
+    }
+
+    @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         if (fields.contains(Field.ANREDE) && errLblAnrede != null) {
             errLblAnrede.setVisible(false);
+            comboBoxAnrede.setToolTipText(null);
         }
         if (fields.contains(Field.VORNAME)) {
             errLblVorname.setVisible(false);
+            txtVorname.setToolTipText(null);
         }
         if (fields.contains(Field.NACHNAME)) {
             errLblNachname.setVisible(false);
+            txtNachname.setToolTipText(null);
         }
         if (fields.contains(Field.STRASSE_HAUSNUMMER)) {
             errLblStrasseHausnummer.setVisible(false);
+            txtStrasseHausnummer.setToolTipText(null);
         }
         if (fields.contains(Field.PLZ)) {
             errLblPlz.setVisible(false);
+            txtPlz.setToolTipText(null);
         }
         if (fields.contains(Field.ORT)) {
             errLblOrt.setVisible(false);
+            txtOrt.setToolTipText(null);
         }
         if (fields.contains(Field.FESTNETZ)) {
             errLblFestnetz.setVisible(false);
+            txtFestnetz.setToolTipText(null);
         }
         if (fields.contains(Field.NATEL)) {
             errLblNatel.setVisible(false);
+            txtNatel.setToolTipText(null);
         }
         if (fields.contains(Field.EMAIL)) {
             errLblEmail.setVisible(false);
+            txtEmail.setToolTipText(null);
         }
         if (fields.contains(Field.GEBURTSDATUM) && errLblGeburtsdatum != null) {
             errLblGeburtsdatum.setVisible(false);
+            txtGeburtsdatum.setToolTipText(null);
         }
     }
 

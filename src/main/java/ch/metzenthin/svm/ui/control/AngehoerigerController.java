@@ -108,13 +108,26 @@ public class AngehoerigerController extends PersonController {
     }
 
     @Override
+    void showErrMsgAsToolTip(SvmValidationException e) {
+        super.showErrMsgAsToolTip(e);
+        if (e.getAffectedFields().contains(Field.GLEICHE_ADRESSE_WIE_SCHUELER)) {
+            checkBoxGleicheAdresseWieSchueler.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.RECHNUNGSEMPFAENGER)) {
+            checkBoxRechnungsempfaenger.setToolTipText(e.getMessage());
+        }
+    }
+
+    @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         super.makeErrorLabelsInvisible(fields);
         if (fields.contains(Field.GLEICHE_ADRESSE_WIE_SCHUELER)) {
             errLblGleicheAdresseWieSchueler.setVisible(false);
+            checkBoxGleicheAdresseWieSchueler.setToolTipText(null);
         }
         if (fields.contains(Field.RECHNUNGSEMPFAENGER)) {
             errLblRechnungsempfaenger.setVisible(false);
+            checkBoxRechnungsempfaenger.setToolTipText(null);
         }
     }
 

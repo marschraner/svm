@@ -123,6 +123,7 @@ public class SchuelerController extends PersonController {
             schuelerModel.setAnmeldedatum(txtAnmeldedatum.getText());
         } catch (SvmRequiredException e) {
             System.out.println("SchuelerController setModelAnmeldedatum RequiredException=" + e.getMessage());
+            txtAnmeldedatum.setToolTipText(e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             throw e;
         } catch (SvmValidationException e) {
@@ -250,19 +251,40 @@ public class SchuelerController extends PersonController {
     }
 
     @Override
+    void showErrMsgAsToolTip(SvmValidationException e) {
+        super.showErrMsgAsToolTip(e);
+        if (e.getAffectedFields().contains(Field.GESCHLECHT)) {
+            comboBoxGeschlecht.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.ANMELDEDATUM)) {
+            txtAnmeldedatum.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.ABMELDEDATUM)) {
+            txtAbmeldedatum.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.BEMERKUNGEN)) {
+            textAreaBemerkungen.setToolTipText(e.getMessage());
+        }
+    }
+
+    @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         super.makeErrorLabelsInvisible(fields);
         if (fields.contains(Field.GESCHLECHT)) {
             errLblGeschlecht.setVisible(false);
+            comboBoxGeschlecht.setToolTipText(null);
         }
         if (fields.contains(Field.ANMELDEDATUM)) {
             errLblAnmeldedatum.setVisible(false);
+            txtAnmeldedatum.setToolTipText(null);
         }
         if (fields.contains(Field.ABMELDEDATUM)) {
             errLblAbmeldedatum.setVisible(false);
+            txtAbmeldedatum.setToolTipText(null);
         }
         if (fields.contains(Field.BEMERKUNGEN)) {
             errLblBemerkungen.setVisible(false);
+            textAreaBemerkungen.setToolTipText(null);
         }
     }
 
