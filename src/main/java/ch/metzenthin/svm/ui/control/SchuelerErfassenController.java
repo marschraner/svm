@@ -5,6 +5,7 @@ import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.ui.components.*;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +20,8 @@ import java.awt.event.ActionListener;
  * @author Hans Stamm
  */
 public class SchuelerErfassenController {
+
+    private static final Logger LOGGER = Logger.getLogger(SchuelerErfassenController.class);
 
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
@@ -41,14 +44,14 @@ public class SchuelerErfassenController {
     }
 
     private void onSchuelerErfassenModelCompleted(boolean completed) {
-        System.out.println("SchuelerErfassenController completed=" + completed);
+        LOGGER.trace("SchuelerErfassenController completed=" + completed);
         if (completed) {
             try {
                 schuelerErfassenModel.validate();
                 btnSpeichern.setToolTipText(null);
                 btnSpeichern.setEnabled(true);
             } catch (SvmValidationException e) {
-                System.out.println("SchuelerErfassenController Exception=" + e.getMessage());
+                LOGGER.trace("SchuelerErfassenController Exception=" + e.getMessage());
                 btnSpeichern.setToolTipText(e.getMessage());
                 btnSpeichern.setEnabled(false);
             }
@@ -152,7 +155,7 @@ public class SchuelerErfassenController {
     }
 
     private void onAbbrechen() {
-        System.out.println("SchuelerErfassenPanel Abbrechen gedrückt");
+        LOGGER.trace("SchuelerErfassenPanel Abbrechen gedrückt");
         Object[] options = {"Ja", "Nein"};
         int n = JOptionPane.showOptionDialog(
                 btnAbbrechen.getParent().getParent(),
@@ -169,7 +172,7 @@ public class SchuelerErfassenController {
     }
 
     private void onSpeichern() {
-        System.out.println("SchuelerErfassenPanel Speichern gedrückt");
+        LOGGER.trace("SchuelerErfassenPanel Speichern gedrückt");
         SchuelerErfassenDialog dialog = null;
         SchuelerErfassenSaveResult schuelerErfassenSaveResult = schuelerErfassenModel.validieren();
         while (schuelerErfassenSaveResult != null) { // Wenn null: kein weiterer Dialog
