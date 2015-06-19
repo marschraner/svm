@@ -11,8 +11,4 @@ public class SvmRequiredException extends SvmValidationException {
         super(1000, "Attribut ist obligatorisch", affectedField);
     }
 
-    public Field getAffectedField() {
-        return (getAffectedFields().size() == 1 ? getAffectedFields().iterator().next() : null);
-    }
-
 }

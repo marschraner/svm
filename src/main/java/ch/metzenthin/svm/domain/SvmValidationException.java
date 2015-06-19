@@ -22,4 +22,23 @@ public class SvmValidationException extends SvmException {
         return affectedFields;
     }
 
+    public String getMessage() {
+        String msg = super.getMessage();
+        if ((getAffectedFields() != null) && !getAffectedFields().isEmpty()) {
+            StringBuilder stringBuilder = new StringBuilder(msg);
+            stringBuilder.append(": [");
+            boolean first = true;
+            for (Field field : getAffectedFields()) {
+                if (!first) {
+                    stringBuilder.append(",");
+                }
+                stringBuilder.append(field);
+                first = false;
+            }
+            stringBuilder.append("]");
+            msg = stringBuilder.toString();
+        }
+        return msg;
+    }
+
 }
