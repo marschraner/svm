@@ -43,6 +43,15 @@ public class StringModelAttribute {
         modelAttributeListener.firePropertyChange(field, oldValue, getValue());
     }
 
+    /**
+     * Achtung: Neuer Wert wird nicht geprüft!
+     */
+    void initValue(String newValue) {
+        String oldValue = getValue();
+        attributeAccessor.setValue(emptyStringAsNull(newValue));
+        modelAttributeListener.firePropertyChange(field, oldValue, getValue());
+    }
+
     private void checkMaxLength(String newValue) throws SvmValidationException {
         if (newValue.length() > maxLength) {
             modelAttributeListener.invalidate();
@@ -59,14 +68,6 @@ public class StringModelAttribute {
 
     private void checkRequired(boolean isRequired, String newValue) throws SvmRequiredException {
         if (isRequired && !checkNotEmpty(newValue)) {
-            // todo $$$ ?
-            if (getValue() != null && !getValue().isEmpty()) {
-                // Für Gleiche Adresse wie Schüler-Funktionalität
-                // (für den Fall, dass z.B. bei der Mutter die Strasse gelöscht wird und nachher AdresseVonSchülerÜbernehmen ausgewählt wird,
-                // oder auch, wenn AdresseVonSchülerÜbernehmen ausgewählt wurde und Häkchen wieder entfernt wird, verschwindet die Adresse nicht)
-                attributeAccessor.setValue(null);
-                modelAttributeListener.firePropertyChange(field, getValue(), null);
-            }
             modelAttributeListener.invalidate();
             throw new SvmRequiredException(field);
         }

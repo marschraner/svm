@@ -7,7 +7,7 @@ import ch.metzenthin.svm.persistence.entities.Adresse;
 import java.util.Calendar;
 
 /**
- * @author hans
+ * @author Hans Stamm
  */
 public interface PersonModel extends AdresseModel {
     Anrede getAnrede();
@@ -27,4 +27,9 @@ public interface PersonModel extends AdresseModel {
     void setEmail(String email) throws SvmValidationException;
     void setGeburtsdatum(String geburtsdatum) throws SvmValidationException;
     void setGeburtsdatum(Calendar geburtsdatum);
+
+    /**
+     * @param adresseModel Wenn null werden die Adressfelder mit null initialisiert
+     */
+    void initAdresse(AdresseModel adresseModel);
 }

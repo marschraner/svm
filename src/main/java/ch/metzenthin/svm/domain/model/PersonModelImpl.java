@@ -307,6 +307,21 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     @Override
+    public void initAdresse(AdresseModel adresseModel) {
+        if (adresseModel == null) {
+            strasseHausnummerModelAttribute.initValue(null);
+            plzModelAttribute.initValue(null);
+            ortModelAttribute.initValue(null);
+            festnetzModelAttribute.initValue(null);
+        } else {
+            strasseHausnummerModelAttribute.initValue(adresseModel.getStrasseHausnummer());
+            plzModelAttribute.initValue(adresseModel.getPlz());
+            ortModelAttribute.initValue(adresseModel.getOrt());
+            festnetzModelAttribute.initValue(adresseModel.getFestnetz());
+        }
+    }
+
+    @Override
     public boolean isCompleted() {
         if (isAdresseRequired()) {
             return isSetName() && isSetAnschrift();

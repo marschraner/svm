@@ -282,17 +282,11 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     }
 
     private void replaceByAdresseSchueler(AngehoerigerModel angehoerigerModel) {
-        replaceByStrasseHausnummerSchueler(angehoerigerModel);
-        replaceByPlzSchueler(angehoerigerModel);
-        replaceByOrtSchueler(angehoerigerModel);
-        replaceByFestnetzSchueler(angehoerigerModel);
+        angehoerigerModel.initAdresse(schuelerModel);
     }
 
     private void invalidateAdresse(AngehoerigerModel angehoerigerModel) {
-        invalidateStrasseHausnummer(angehoerigerModel);
-        invalidatePlz(angehoerigerModel);
-        invalidateOrt(angehoerigerModel);
-        invalidateFestnetz(angehoerigerModel);
+        angehoerigerModel.initAdresse(null);
     }
 
     private Set<Field> getAdresseFields() {
@@ -345,38 +339,6 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
         } catch (SvmValidationException e) {
             // Tritt nie ein, da Validierung bereits beim Schüler
-        }
-    }
-
-    private void invalidateStrasseHausnummer(AngehoerigerModel angehoerigerModel) {
-        try {
-            angehoerigerModel.setStrasseHausnummer(null);
-        } catch (SvmValidationException e) {
-            // Nicht weiter behandeln
-        }
-    }
-
-    private void invalidatePlz(AngehoerigerModel angehoerigerModel) {
-        try {
-            angehoerigerModel.setPlz(null);
-        } catch (SvmValidationException e) {
-            // Nicht weiter behandeln
-        }
-    }
-
-    private void invalidateOrt(AngehoerigerModel angehoerigerModel) {
-        try {
-            angehoerigerModel.setOrt(null);
-        } catch (SvmValidationException e) {
-            // Nicht weiter behandeln
-        }
-    }
-
-    private void invalidateFestnetz(AngehoerigerModel angehoerigerModel) {
-        try {
-            angehoerigerModel.setFestnetz(null);
-        } catch (SvmValidationException e) {
-            // Nicht weiter behandeln
         }
     }
 
