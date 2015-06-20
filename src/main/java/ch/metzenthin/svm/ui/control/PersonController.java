@@ -5,6 +5,7 @@ import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.PersonModel;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -21,6 +22,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
  * @author Hans Stamm
  */
 public abstract class PersonController extends AbstractController {
+
+    private static final Logger LOGGER = Logger.getLogger(PersonController.class);
 
     private JComboBox<Anrede> comboBoxAnrede;
     private JTextField txtNachname;
@@ -206,7 +209,7 @@ public abstract class PersonController extends AbstractController {
     }
 
     private void onAnredeSelected() {
-        System.out.println("PersonController Event Anrede selected=" + comboBoxAnrede.getSelectedItem());
+        LOGGER.trace("PersonController Event Anrede selected=" + comboBoxAnrede.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxAnrede.getSelectedItem(), personModel.getAnrede());
         try {
             setModelAnrede();
@@ -215,7 +218,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            System.out.println("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
         }
     }
@@ -225,14 +228,14 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setAnrede((Anrede) comboBoxAnrede.getSelectedItem());
         } catch (SvmValidationException e) {
-            System.out.println("PersonController setModelAnrede Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelAnrede Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
     }
 
     private void onNachnameEvent() {
-        System.out.println("PersonController Event Nachname");
+        LOGGER.trace("PersonController Event Nachname");
         boolean equalFieldAndModelValue = equalsNullSafe(txtNachname.getText(), personModel.getNachname());
         try {
             setModelNachname();
@@ -241,7 +244,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            System.out.println("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
         }
     }
@@ -251,19 +254,19 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setNachname(txtNachname.getText());
         } catch (SvmRequiredException e) {
-            System.out.println("PersonController setModelNachname RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelNachname RequiredException=" + e.getMessage());
             txtNachname.setToolTipText(e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             throw e;
         } catch (SvmValidationException e) {
-            System.out.println("PersonController setModelNachname Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelNachname Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
     }
 
     private void onVornameEvent() {
-        System.out.println("PersonController Event Vorname");
+        LOGGER.trace("PersonController Event Vorname");
         boolean equalFieldAndModelValue = equalsNullSafe(txtVorname.getText(), personModel.getVorname());
         try {
             setModelVorname();
@@ -272,7 +275,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            System.out.println("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
         }
     }
@@ -282,19 +285,19 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setVorname(txtVorname.getText());
         } catch (SvmRequiredException e) {
-            System.out.println("PersonController setModelVorname RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelVorname RequiredException=" + e.getMessage());
             txtVorname.setToolTipText(e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             throw e;
         } catch (SvmValidationException e) {
-            System.out.println("PersonController setModelVorname Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelVorname Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
     }
 
     private void onStrasseHausnummerEvent() {
-        System.out.println("PersonController Event StrasseHausnummer");
+        LOGGER.trace("PersonController Event StrasseHausnummer");
         boolean equalFieldAndModelValue = equalsNullSafe(txtStrasseHausnummer.getText(), personModel.getStrasseHausnummer());
         try {
             setModelStrasseHausnummer();
@@ -303,7 +306,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            System.out.println("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
         }
     }
@@ -313,19 +316,19 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setStrasseHausnummer(txtStrasseHausnummer.getText());
         } catch (SvmRequiredException e) {
-            System.out.println("PersonController setModelStrasseHausnummer RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelStrasseHausnummer RequiredException=" + e.getMessage());
             txtStrasseHausnummer.setToolTipText(e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             throw e;
         } catch (SvmValidationException e) {
-            System.out.println("PersonController setModelStrasseHausnummer Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelStrasseHausnummer Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
     }
 
     private void onPlzEvent() {
-        System.out.println("PersonController Event PLZ");
+        LOGGER.trace("PersonController Event PLZ");
         boolean equalFieldAndModelValue = equalsNullSafe(txtPlz.getText(), personModel.getPlz());
         try {
             setModelPlz();
@@ -334,7 +337,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            System.out.println("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
         }
     }
@@ -344,19 +347,19 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setPlz(txtPlz.getText());
         } catch (SvmRequiredException e) {
-            System.out.println("PersonController setModelPlz RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelPlz RequiredException=" + e.getMessage());
             txtPlz.setToolTipText(e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             throw e;
         } catch (SvmValidationException e) {
-            System.out.println("PersonController setModelPlz Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelPlz Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
     }
 
     private void onOrtEvent() {
-        System.out.println("PersonController Event Ort");
+        LOGGER.trace("PersonController Event Ort");
         boolean equalFieldAndModelValue = equalsNullSafe(txtOrt.getText(), personModel.getOrt());
         try {
             setModelOrt();
@@ -365,7 +368,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            System.out.println("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
         }
     }
@@ -375,19 +378,19 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setOrt(txtOrt.getText());
         } catch (SvmRequiredException e) {
-            System.out.println("PersonController setModelOrt RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelOrt RequiredException=" + e.getMessage());
             txtOrt.setToolTipText(e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             throw e;
         } catch (SvmValidationException e) {
-            System.out.println("PersonController setModelOrt Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelOrt Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
     }
 
     private void onFestnetzEvent() {
-        System.out.println("PersonController Event Festnetz");
+        LOGGER.trace("PersonController Event Festnetz");
         boolean equalFieldAndModelValue = equalsNullSafe(txtFestnetz.getText(), personModel.getFestnetz());
         try {
             setModelFestnetz();
@@ -396,7 +399,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            System.out.println("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
         }
     }
@@ -406,14 +409,14 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setFestnetz(txtFestnetz.getText());
         } catch (SvmValidationException e) {
-            System.out.println("PersonController setModelFestnetz Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelFestnetz Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
     }
 
     private void onNatelEvent() {
-        System.out.println("PersonController Event Natel");
+        LOGGER.trace("PersonController Event Natel");
         boolean equalFieldAndModelValue = equalsNullSafe(txtNatel.getText(), personModel.getNatel());
         try {
             setModelNatel();
@@ -422,7 +425,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            System.out.println("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
         }
     }
@@ -432,14 +435,14 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setNatel(txtNatel.getText());
         } catch (SvmValidationException e) {
-            System.out.println("PersonController setModelNatel Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelNatel Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
     }
 
     private void onEmailEvent() {
-        System.out.println("PersonController Event Email");
+        LOGGER.trace("PersonController Event Email");
         boolean equalFieldAndModelValue = equalsNullSafe(txtEmail.getText(), personModel.getEmail());
         try {
             setModelEmail();
@@ -448,7 +451,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            System.out.println("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
         }
     }
@@ -458,14 +461,14 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setEmail(txtEmail.getText());
         } catch (SvmValidationException e) {
-            System.out.println("PersonController setModelEmail Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelEmail Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
     }
 
     private void onGeburtsdatumEvent() {
-        System.out.println("PersonController Event Geburtsdatum");
+        LOGGER.trace("PersonController Event Geburtsdatum");
         boolean equalFieldAndModelValue = equalsNullSafe(txtGeburtsdatum.getText(), personModel.getGeburtsdatum());
         try {
             setModelGeburtsdatum();
@@ -474,7 +477,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            System.out.println("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
         }
     }
@@ -484,12 +487,12 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setGeburtsdatum(txtGeburtsdatum.getText());
         } catch (SvmRequiredException e) {
-            System.out.println("PersonController setModelGeburtsdatum RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelGeburtsdatum RequiredException=" + e.getMessage());
             txtGeburtsdatum.setToolTipText(e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             throw e;
         } catch (SvmValidationException e) {
-            System.out.println("PersonController setModelGeburtsdatum Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelGeburtsdatum Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -569,28 +572,28 @@ public abstract class PersonController extends AbstractController {
     @Override
     void validateFields() throws SvmValidationException {
         if (comboBoxAnrede != null) {
-            System.out.println("Validate field Anrede");
+            LOGGER.trace("Validate field Anrede");
             setModelAnrede();
         }
-        System.out.println("Validate field Nachname");
+        LOGGER.trace("Validate field Nachname");
         setModelNachname();
-        System.out.println("Validate field Vorname");
+        LOGGER.trace("Validate field Vorname");
         setModelVorname();
-        System.out.println("Validate field StrasseHausnummer");
+        LOGGER.trace("Validate field StrasseHausnummer");
         setModelStrasseHausnummer();
-        System.out.println("Validate field Plz");
+        LOGGER.trace("Validate field Plz");
         setModelPlz();
-        System.out.println("Validate field Ort");
+        LOGGER.trace("Validate field Ort");
         setModelOrt();
         if (txtGeburtsdatum != null) {
-            System.out.println("Validate field Geburtsdatum");
+            LOGGER.trace("Validate field Geburtsdatum");
             setModelGeburtsdatum();
         }
-        System.out.println("Validate field Festnetz");
+        LOGGER.trace("Validate field Festnetz");
         setModelFestnetz();
-        System.out.println("Validate field Natel");
+        LOGGER.trace("Validate field Natel");
         setModelNatel();
-        System.out.println("Validate field Email");
+        LOGGER.trace("Validate field Email");
         setModelEmail();
     }
 

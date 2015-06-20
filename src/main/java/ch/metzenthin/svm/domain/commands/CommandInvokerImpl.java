@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.SvmDbException;
+import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -10,6 +11,8 @@ import javax.persistence.EntityTransaction;
  * @author Hans Stamm
  */
 public class CommandInvokerImpl implements CommandInvoker {
+
+    private static final Logger LOGGER = Logger.getLogger(CommandInvokerImpl.class);
 
     private EntityManagerFactory entityManagerFactory;
     EntityManager entityManager = null;
@@ -52,7 +55,7 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     public void beginTransaction() {
-        System.out.println("commitTransaction aufgerufen");
+        LOGGER.trace("commitTransaction aufgerufen");
         try {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
@@ -68,10 +71,10 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     public void commitTransaction() {
-        System.out.println("commitTransaction aufgerufen");
+        LOGGER.trace("commitTransaction aufgerufen");
         try {
             entityManager.getTransaction().commit();
-            System.out.println("commitTransaction durchgeführt");
+            LOGGER.trace("commitTransaction durchgeführt");
         } catch (RuntimeException e) {
             EntityTransaction tx = entityManager.getTransaction();
             if (tx != null && tx.isActive()) {
@@ -85,10 +88,10 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     public void rollbackTransaction() {
-        System.out.println("rollbackTransaction aufgerufen");
+        LOGGER.trace("rollbackTransaction aufgerufen");
         try {
             entityManager.getTransaction().rollback();
-            System.out.println("rollbackTransaction durchgeführt");
+            LOGGER.trace("rollbackTransaction durchgeführt");
         } catch (RuntimeException e) {
             EntityTransaction tx = entityManager.getTransaction();
             if (tx != null && tx.isActive()) {
@@ -102,11 +105,11 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     public GenericDaoCommand executeCommandWithinTransaction(GenericDaoCommand genericDaoCommand) {
-        System.out.println("executeCommandWithinTransaction aufgerufen");
+        LOGGER.trace("executeCommandWithinTransaction aufgerufen");
         try {
             genericDaoCommand.setEntityManager(entityManager);
             genericDaoCommand.execute();
-            System.out.println("executeCommandWithinTransaction durchgeführt");
+            LOGGER.trace("executeCommandWithinTransaction durchgeführt");
         } catch (Throwable e) {
             rollbackTransaction();
             throw e;

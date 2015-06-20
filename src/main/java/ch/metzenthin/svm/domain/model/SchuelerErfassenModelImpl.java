@@ -10,6 +10,7 @@ import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.control.CompletedListener;
+import org.apache.log4j.Logger;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -24,6 +25,8 @@ import static ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand.Entry.NE
  * @author Hans Stamm
  */
 public class SchuelerErfassenModelImpl extends AbstractModel implements SchuelerErfassenModel, ValidateSchuelerModel {
+
+    private static final Logger LOGGER = Logger.getLogger(SchuelerErfassenModelImpl.class);
 
     private SchuelerModel schuelerModel;
     private AngehoerigerModel mutterModel;
@@ -50,7 +53,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     @Override
     public boolean isCompleted() {
         boolean completed = isSubModelsCompleted();
-        System.out.println("SchuelerErfassenModel isCompleted=" + completed);
+        LOGGER.trace("SchuelerErfassenModel isCompleted=" + completed);
         return completed;
     }
 
@@ -302,7 +305,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         try {
             angehoerigerModel.setStrasseHausnummer(schuelerModel.getStrasseHausnummer());
         } catch (SvmRequiredException e) {
-            System.out.println("SchuelerErfassenController replaceByStrasseHausnummerSchueler RequiredException=" + e.getMessage());
+            LOGGER.trace("SchuelerErfassenController replaceByStrasseHausnummerSchueler RequiredException=" + e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
         } catch (SvmValidationException e) {
             // Tritt nie ein, da Validierung bereits beim Schüler
@@ -313,7 +316,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         try {
             angehoerigerModel.setPlz(schuelerModel.getPlz());
         } catch (SvmRequiredException e) {
-            System.out.println("SchuelerErfassenController replaceByPlzSchueler RequiredException=" + e.getMessage());
+            LOGGER.trace("SchuelerErfassenController replaceByPlzSchueler RequiredException=" + e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
         } catch (SvmValidationException e) {
             // Tritt nie ein, da Validierung bereits beim Schüler
@@ -324,7 +327,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         try {
             angehoerigerModel.setOrt(schuelerModel.getOrt());
         } catch (SvmRequiredException e) {
-            System.out.println("SchuelerErfassenController replaceByOrtSchueler RequiredException=" + e.getMessage());
+            LOGGER.trace("SchuelerErfassenController replaceByOrtSchueler RequiredException=" + e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
         } catch (SvmValidationException e) {
             // Tritt nie ein, da Validierung bereits beim Schüler
@@ -335,7 +338,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         try {
             angehoerigerModel.setFestnetz(schuelerModel.getFestnetz());
         } catch (SvmRequiredException e) {
-            System.out.println("SchuelerErfassenController replaceByFestnetzSchueler RequiredException=" + e.getMessage());
+            LOGGER.trace("SchuelerErfassenController replaceByFestnetzSchueler RequiredException=" + e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
         } catch (SvmValidationException e) {
             // Tritt nie ein, da Validierung bereits beim Schüler
@@ -343,25 +346,25 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     }
 
     private void onSchuelerModelCompleted(boolean completed) {
-        System.out.println("SchuelerModel completed=" + completed);
+        LOGGER.trace("SchuelerModel completed=" + completed);
         isSchuelerModelCompleted = completed;
         fireCompletedChange();
     }
 
     private void onMutterModelCompleted(boolean completed) {
-        System.out.println("MutterModel completed=" + completed);
+        LOGGER.trace("MutterModel completed=" + completed);
         isMutterModelCompleted = completed;
         fireCompletedChange();
     }
 
     private void onVaterModelCompleted(boolean completed) {
-        System.out.println("VaterModel completed=" + completed);
+        LOGGER.trace("VaterModel completed=" + completed);
         isVaterModelCompleted = completed;
         fireCompletedChange();
     }
 
     private void onDrittempfaengerModelCompleted(boolean completed) {
-        System.out.println("DrittempfaengerModel completed=" + completed);
+        LOGGER.trace("DrittempfaengerModel completed=" + completed);
         isDrittempfaengerModelCompleted = completed;
         fireCompletedChange();
     }
@@ -374,7 +377,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public SchuelerErfassenSaveResult validieren() {
-        System.out.println("SchuelerErfassenModel validieren");
+        LOGGER.trace("SchuelerErfassenModel validieren");
 
         validateSchuelerCommand = new ValidateSchuelerCommand(this);
         validateSchuelerCommand.setEntry(NEU_ERFASSTEN_SCHUELER_VALIDIEREN);

@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.Model;
+import org.apache.log4j.Logger;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -13,6 +14,8 @@ import java.util.Set;
  * @author Hans Stamm
  */
 public abstract class AbstractController implements PropertyChangeListener, DisableFieldsListener, MakeErrorLabelsInvisibleListener {
+
+    private static final Logger LOGGER = Logger.getLogger(AbstractController.class);
 
     private final Model model;
 
@@ -51,7 +54,7 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
         try {
             model.validate();
         } catch (SvmValidationException e) {
-            System.out.println("AbstractController model.validate " + e.getMessage());
+            LOGGER.trace("AbstractController model.validate " + e.getMessage());
             showErrMsgAsToolTip(e);
         }
     }

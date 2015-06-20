@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.AngehoerigerModel;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.event.ItemEvent;
@@ -14,6 +15,8 @@ import java.util.Set;
  * @author Hans Stamm
  */
 public class AngehoerigerController extends PersonController {
+
+    private static final Logger LOGGER = Logger.getLogger(AbstractController.class);
 
     private JCheckBox checkBoxGleicheAdresseWieSchueler;
     private JCheckBox checkBoxRechnungsempfaenger;
@@ -50,7 +53,7 @@ public class AngehoerigerController extends PersonController {
     }
 
     public void onGleicheAdresseWieSchuelerEvent() {
-        System.out.println("AngehoerigerController Event GleicheAdresseWieSchueler. Selected=" + checkBoxGleicheAdresseWieSchueler.isSelected());
+        LOGGER.trace("AngehoerigerController Event GleicheAdresseWieSchueler. Selected=" + checkBoxGleicheAdresseWieSchueler.isSelected());
         setModelGleicheAdresseWieSchueler();
     }
 
@@ -59,7 +62,7 @@ public class AngehoerigerController extends PersonController {
     }
 
     private void onRechnungsempfaengerEvent() {
-        System.out.println("AngehoerigerController Event Rechnungsempfaenger. Selected=" + checkBoxRechnungsempfaenger.isSelected());
+        LOGGER.trace("AngehoerigerController Event Rechnungsempfaenger. Selected=" + checkBoxRechnungsempfaenger.isSelected());
         setModelRechnungsempfaenger();
     }
 
@@ -77,7 +80,7 @@ public class AngehoerigerController extends PersonController {
 
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
-        System.out.println("AngehoerigerController PropertyChangeEvent '" + evt.getPropertyName() + "', oldValue='" + evt.getOldValue() + "', newValue='" + evt.getNewValue() + "'");
+        LOGGER.trace("AngehoerigerController PropertyChangeEvent '" + evt.getPropertyName() + "', oldValue='" + evt.getOldValue() + "', newValue='" + evt.getNewValue() + "'");
         if (checkIsFieldChange(Field.GLEICHE_ADRESSE_WIE_SCHUELER, evt)) {
             checkBoxGleicheAdresseWieSchueler.setSelected(angehoerigerModel.isGleicheAdresseWieSchueler());
         }
@@ -90,7 +93,7 @@ public class AngehoerigerController extends PersonController {
     @Override
     void validateFields() throws SvmValidationException {
         super.validateFields();
-        System.out.println("Validate field Rechnungsempfaenger");
+        LOGGER.trace("Validate field Rechnungsempfaenger");
         setModelRechnungsempfaenger();
     }
 
