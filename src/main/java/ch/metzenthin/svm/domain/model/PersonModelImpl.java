@@ -187,7 +187,8 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
                     adresse.setStrasse(strasseHausnummerGetStrasse(strasseHausnummer));
                     adresse.setHausnummer(strasseHausnummerGetHausnummer(strasseHausnummer));
                 }
-            }
+            },
+            new StrasseFormatter()
     );
 
     private String[] splitStrasseHausnummer(String strasseHausnummer) {

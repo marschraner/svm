@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 /**
@@ -241,10 +242,96 @@ public class StringModelAttributeTest {
         assertEquals(1, testModelAttributeListener.getFireCounter());
     }
 
+    @Test
+    public void testInitValue_Null() throws SvmValidationException {
+        TestAttributeAccessor  testAttributeAccessor = new TestAttributeAccessor("TestValue");
+        StringModelAttribute stringModelAttribute = new StringModelAttribute(
+                testModelAttributeListener,
+                Field.NACHNAME, 0, 10,
+                testAttributeAccessor
+        );
+        stringModelAttribute.initValue(null);
+        assertNull(testAttributeAccessor.settedValue);
+        assertEquals(0, testModelAttributeListener.getInvalidateCounter());
+        assertEquals(1, testModelAttributeListener.getFireCounter());
+    }
+
+    @Test
+    public void testInitValue_Value() throws SvmValidationException {
+        TestAttributeAccessor  testAttributeAccessor = new TestAttributeAccessor("TestValue");
+        StringModelAttribute stringModelAttribute = new StringModelAttribute(
+                testModelAttributeListener,
+                Field.NACHNAME, 0, 10,
+                testAttributeAccessor
+        );
+        stringModelAttribute.initValue("initValue");
+        assertEquals("initValue", testAttributeAccessor.settedValue);
+        assertEquals(0, testModelAttributeListener.getInvalidateCounter());
+        assertEquals(1, testModelAttributeListener.getFireCounter());
+    }
+
+    @Test
+    public void testSetNewValue_NoFormatter() throws SvmValidationException {
+        String strasse = "Austrasse 5";
+        TestAttributeAccessor  testAttributeAccessor = new TestAttributeAccessor(strasse);
+        StringModelAttribute stringModelAttribute = new StringModelAttribute(
+                testModelAttributeListener,
+                Field.STRASSE_HAUSNUMMER, 0, 50,
+                testAttributeAccessor
+        );
+        String input = "Austr. 5";
+        stringModelAttribute.setNewValue(true, input);
+        assertEquals(input, testAttributeAccessor.settedValue);
+        assertEquals(strasse, testModelAttributeListener.oldValue);
+        assertEquals(input, testModelAttributeListener.newValue);
+        assertEquals(0, testModelAttributeListener.getInvalidateCounter());
+        assertEquals(1, testModelAttributeListener.getFireCounter());
+    }
+
+    @Test
+    public void testSetNewValue_FormatterChanged() throws SvmValidationException {
+        String strasse = "Austrasse 5";
+        TestAttributeAccessor  testAttributeAccessor = new TestAttributeAccessor(strasse);
+        StringModelAttribute stringModelAttribute = new StringModelAttribute(
+                testModelAttributeListener,
+                Field.STRASSE_HAUSNUMMER, 0, 50,
+                testAttributeAccessor,
+                new StrasseFormatter()
+        );
+        String input = "Austr. 5";
+        stringModelAttribute.setNewValue(true, input);
+        assertEquals(strasse, testAttributeAccessor.getValue);
+        assertEquals(input, testModelAttributeListener.oldValue);
+        assertEquals(strasse, testModelAttributeListener.newValue);
+        assertEquals(0, testModelAttributeListener.getInvalidateCounter());
+        assertEquals(1, testModelAttributeListener.getFireCounter());
+    }
+
+    @Test
+    public void testSetNewValue_FormatterUnchanged() throws SvmValidationException {
+        String strasse = "Austrasse 5";
+        TestAttributeAccessor  testAttributeAccessor = new TestAttributeAccessor(strasse);
+        StringModelAttribute stringModelAttribute = new StringModelAttribute(
+                testModelAttributeListener,
+                Field.STRASSE_HAUSNUMMER, 0, 50,
+                testAttributeAccessor,
+                new StrasseFormatter()
+        );
+        stringModelAttribute.setNewValue(true, strasse);
+        assertEquals(strasse, testAttributeAccessor.getValue);
+        assertEquals(strasse, testModelAttributeListener.oldValue);
+        assertEquals(strasse, testModelAttributeListener.newValue);
+        assertEquals(0, testModelAttributeListener.getInvalidateCounter());
+        assertEquals(1, testModelAttributeListener.getFireCounter());
+    }
+
     private static class TestModelAttributeListener implements ModelAttributeListener {
 
         private int invalidateCounter;
         private int fireCounter;
+
+        private Object oldValue;
+        private Object newValue;
 
         public int getInvalidateCounter() {
             return invalidateCounter;
@@ -262,6 +349,8 @@ public class StringModelAttributeTest {
         @Override
         public void firePropertyChange(Field field, Object oldValue, Object newValue) {
             fireCounter++;
+            this.oldValue = oldValue;
+            this.newValue = newValue;
         }
 
     }
@@ -280,6 +369,7 @@ public class StringModelAttributeTest {
         @Override
         public void setValue(String value) {
             settedValue = value;
+            getValue = value;
         }
     }
 

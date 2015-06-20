@@ -295,8 +295,6 @@ public abstract class PersonController extends AbstractController {
 
     private void onStrasseHausnummerEvent() {
         System.out.println("PersonController Event StrasseHausnummer");
-        // Substitution hier, damit neuer Wert auf jeden Fall im Textfeld angezeigt wird!
-        txtStrasseHausnummer.setText(replaceStrByStrasse(txtStrasseHausnummer.getText()));
         boolean equalFieldAndModelValue = equalsNullSafe(txtStrasseHausnummer.getText(), personModel.getStrasseHausnummer());
         try {
             setModelStrasseHausnummer();
@@ -308,13 +306,6 @@ public abstract class PersonController extends AbstractController {
             System.out.println("Validierung wegen equalFieldAndModelValue");
             validate();
         }
-    }
-
-    private String replaceStrByStrasse(String strasse) {
-        if (strasse == null) {
-            return null;
-        }
-        return strasse.replace("str.", "strasse");
     }
 
     private void setModelStrasseHausnummer() throws SvmValidationException {
