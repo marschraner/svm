@@ -53,7 +53,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuBar.add(menuDatei);
 
         JMenu menuSchueler = new JMenu("Schüler");
-        menuSchueler.setMnemonic(KeyEvent.VK_S);
+        menuSchueler.setMnemonic(KeyEvent.VK_C);
         menuBar.add(menuSchueler);
 
         // Set up the first menu item.
@@ -61,6 +61,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.setMnemonic(KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_MASK));
         menuItem.setActionCommand("schuelerErfassen");
+        menuItem.addActionListener(this);
+        menuSchueler.add(menuItem);
+
+        menuItem = new JMenuItem("Schüler suchen");
+        menuItem.setMnemonic(KeyEvent.VK_S);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("schuelerSuchen");
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
 
@@ -77,6 +84,9 @@ public class SvmDesktop extends JFrame implements ActionListener {
 
     // React to menu selections.
     public void actionPerformed(ActionEvent e) {
+        if (activeComponent != null) {
+            activeComponent.setVisible(false);
+        }
         if ("schuelerErfassen".equals(e.getActionCommand())) {
             SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext);
             schuelerErfassenPanel.addCloseListener(new ActionListener() {
@@ -89,6 +99,19 @@ public class SvmDesktop extends JFrame implements ActionListener {
             getContentPane().add(activeComponent);
             activeComponent.setVisible(true);
             setTitle("Neuen Schüler erfassen");
+            revalidate();
+        } else if ("schuelerSuchen".equals(e.getActionCommand())) {
+            SchuelerSuchenPanel schuelerSuchenPanel = new SchuelerSuchenPanel(svmContext);
+            schuelerSuchenPanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onSchuelerErfassenFrameAbbrechen();
+                }
+            });
+            activeComponent = schuelerSuchenPanel.$$$getRootComponent$$$();
+            getContentPane().add(activeComponent);
+            activeComponent.setVisible(true);
+            setTitle("Schüler suchen");
             revalidate();
         } else { // beenden
             quit();
