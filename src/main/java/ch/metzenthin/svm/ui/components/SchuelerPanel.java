@@ -27,6 +27,7 @@ public class SchuelerPanel {
     private JTextField txtAbmeldedatum;
     private JTextArea textAreaBemerkungen;
     private JComboBox<Geschlecht> comboBoxGeschlecht;
+    private JLabel lblAbmeldedatum;
     private JLabel errLblNachname;
     private JLabel errLblVorname;
     private JLabel errLblStrasseHausnummer;
@@ -118,6 +119,18 @@ public class SchuelerPanel {
 
     public JPanel getMainPanel() {
         return mainPanel;
+    }
+
+    public JLabel getLblAbmeldedatum() {
+        return lblAbmeldedatum;
+    }
+
+    public JTextField getTxtAbmeldedatum() {
+        return txtAbmeldedatum;
+    }
+
+    public JLabel getErrLblAbmeldedatum() {
+        return errLblAbmeldedatum;
     }
 
     /**
@@ -293,15 +306,15 @@ public class SchuelerPanel {
         gbc.gridy = 19;
         gbc.fill = GridBagConstraints.VERTICAL;
         mainPanel.add(spacer6, gbc);
-        final JLabel label8 = new JLabel();
-        label8.setText("Abmeldedatum");
-        label8.setDisplayedMnemonic('B');
-        label8.setDisplayedMnemonicIndex(1);
+        lblAbmeldedatum = new JLabel();
+        lblAbmeldedatum.setText("Abmeldedatum");
+        lblAbmeldedatum.setDisplayedMnemonic('B');
+        lblAbmeldedatum.setDisplayedMnemonicIndex(1);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 22;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        mainPanel.add(label8, gbc);
+        mainPanel.add(lblAbmeldedatum, gbc);
         txtAbmeldedatum = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -316,15 +329,15 @@ public class SchuelerPanel {
         gbc.gridy = 23;
         gbc.fill = GridBagConstraints.VERTICAL;
         mainPanel.add(spacer7, gbc);
-        final JLabel label9 = new JLabel();
-        label9.setText("Anmeldedatum");
-        label9.setDisplayedMnemonic('M');
-        label9.setDisplayedMnemonicIndex(2);
+        final JLabel label8 = new JLabel();
+        label8.setText("Anmeldedatum");
+        label8.setDisplayedMnemonic('M');
+        label8.setDisplayedMnemonicIndex(2);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 20;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        mainPanel.add(label9, gbc);
+        mainPanel.add(label8, gbc);
         txtAnmeldedatum = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -349,15 +362,15 @@ public class SchuelerPanel {
         mainPanel.add(scrollPane1, gbc);
         textAreaBemerkungen = new JTextArea();
         scrollPane1.setViewportView(textAreaBemerkungen);
-        final JLabel label10 = new JLabel();
-        label10.setText("Bemerkungen");
-        label10.setDisplayedMnemonic('R');
-        label10.setDisplayedMnemonicIndex(4);
+        final JLabel label9 = new JLabel();
+        label9.setText("Bemerkungen");
+        label9.setDisplayedMnemonic('R');
+        label9.setDisplayedMnemonicIndex(4);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 24;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        mainPanel.add(label10, gbc);
+        mainPanel.add(label9, gbc);
         final JPanel spacer9 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -407,15 +420,15 @@ public class SchuelerPanel {
         gbc.gridy = 15;
         gbc.fill = GridBagConstraints.VERTICAL;
         mainPanel.add(spacer12, gbc);
-        final JLabel label11 = new JLabel();
-        label11.setText("Geschlecht");
-        label11.setDisplayedMnemonic('H');
-        label11.setDisplayedMnemonicIndex(4);
+        final JLabel label10 = new JLabel();
+        label10.setText("Geschlecht");
+        label10.setDisplayedMnemonic('H');
+        label10.setDisplayedMnemonicIndex(4);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 16;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        mainPanel.add(label11, gbc);
+        mainPanel.add(label10, gbc);
         final JPanel spacer13 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -429,16 +442,16 @@ public class SchuelerPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         mainPanel.add(comboBoxGeschlecht, gbc);
-        final JLabel label12 = new JLabel();
-        label12.setText("Nachname");
-        label12.setDisplayedMnemonic('C');
-        label12.setDisplayedMnemonicIndex(2);
+        final JLabel label11 = new JLabel();
+        label11.setText("Nachname");
+        label11.setDisplayedMnemonic('C');
+        label11.setDisplayedMnemonicIndex(2);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 0.1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        mainPanel.add(label12, gbc);
+        mainPanel.add(label11, gbc);
         txtNachname = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -566,11 +579,11 @@ public class SchuelerPanel {
         label5.setLabelFor(txtGeburtsdatum);
         label6.setLabelFor(txtNatel);
         label7.setLabelFor(txtEmail);
-        label8.setLabelFor(txtAbmeldedatum);
-        label9.setLabelFor(txtAnmeldedatum);
-        label10.setLabelFor(textAreaBemerkungen);
-        label11.setLabelFor(comboBoxGeschlecht);
-        label12.setLabelFor(txtNachname);
+        lblAbmeldedatum.setLabelFor(txtAbmeldedatum);
+        label8.setLabelFor(txtAnmeldedatum);
+        label9.setLabelFor(textAreaBemerkungen);
+        label10.setLabelFor(comboBoxGeschlecht);
+        label11.setLabelFor(txtNachname);
     }
 
     /**

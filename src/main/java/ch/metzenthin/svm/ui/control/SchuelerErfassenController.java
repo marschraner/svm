@@ -66,9 +66,12 @@ public class SchuelerErfassenController {
         // Panelgrösse überschreiben
         schuelerPanel.getMainPanel().setMinimumSize(new Dimension(597, 420));
         schuelerPanel.getMainPanel().setPreferredSize(new Dimension(597, 420));
+        // Kein Abmeldedatum sichtbar
+        schuelerPanel.getLblAbmeldedatum().setVisible(false);
+        schuelerPanel.getTxtAbmeldedatum().setVisible(false);
+        schuelerPanel.getErrLblAbmeldedatum().setVisible(false);
         // Geschlecht-Voreinstellung
         schuelerModel.setGeschlecht(Geschlecht.W);
-        // Keine Fehlermeldungen sichtbar
         schuelerErfassenModel.setSchuelerModel(schuelerModel);
     }
 
