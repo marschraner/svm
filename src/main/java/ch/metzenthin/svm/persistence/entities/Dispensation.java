@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.persistence.entities;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Calendar;
 
 /**
@@ -15,9 +16,13 @@ public class Dispensation {
     @Column(name = "dispensation_id")
     private Integer dispensationId;
 
+    @Version
+    @Column(name = "last_updated")
+    private Timestamp version;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "dispensationsbeginn", nullable = false)
-    private Calendar dispensationbeginn;
+    private Calendar dispensationsbeginn;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "dispensationsende", nullable = true)
@@ -34,10 +39,23 @@ public class Dispensation {
     public Dispensation() {
     }
 
-    public Dispensation(Calendar dispensationbeginn, Calendar dispensationsende, String grund) {
-        this.dispensationbeginn = dispensationbeginn;
+    public Dispensation(Calendar dispensationsbeginn, Calendar dispensationsende, String grund) {
+        this.dispensationsbeginn = dispensationsbeginn;
         this.dispensationsende = dispensationsende;
         this.grund = grund;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder dispensationSb = new StringBuilder();
+        dispensationSb.append("Dispensationsbeginn: ").append(String.format("%1$td.%1$tm.%1$tY", dispensationsbeginn));
+        if (dispensationsende != null) {
+            dispensationSb.append(", Dispensationsende: ").append(String.format("%1$td.%1$tm.%1$tY", dispensationsende));
+        }
+        if (grund != null) {
+            dispensationSb.append(", Grund: ").append(grund);
+        }
+        return dispensationSb.toString();
     }
 
     public Integer getDispensationId() {
@@ -48,12 +66,12 @@ public class Dispensation {
         this.dispensationId = dispensationId;
     }
 
-    public Calendar getDispensationbeginn() {
-        return dispensationbeginn;
+    public Calendar getDispensationsbeginn() {
+        return dispensationsbeginn;
     }
 
-    public void setDispensationbeginn(Calendar dispensationbeginn) {
-        this.dispensationbeginn = dispensationbeginn;
+    public void setDispensationsbeginn(Calendar dispensationbeginn) {
+        this.dispensationsbeginn = dispensationbeginn;
     }
 
     public Calendar getDispensationsende() {

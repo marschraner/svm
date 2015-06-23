@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import java.util.Calendar;
@@ -15,6 +16,7 @@ public interface SchuelerModel extends PersonModel {
     Calendar getAbmeldedatum();
     String getBemerkungen();
     Schueler getSchueler();
+    Anmeldung getAnmeldung();
 
     void setGeschlecht(Geschlecht geschlecht);
     void setAnmeldedatum(String anmeldedatum) throws SvmValidationException;

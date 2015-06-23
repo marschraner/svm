@@ -54,7 +54,9 @@ public class AngehoerigerDaoTest {
             angehoeriger.setAdresse(adresse);
             entityManager.persist(angehoeriger);
             Angehoeriger angehoerigerFound = angehoerigerDao.findById(angehoeriger.getPersonId());
-            assertEquals("Adresse not correct", "Hohenklingenstrasse", angehoerigerFound.getAdresse().getStrasse());
+            // Erzwingen, dass von DB gelesen wird
+            entityManager.refresh(angehoerigerFound);
+            assertEquals("Adresse falsch", "Hohenklingenstrasse", angehoerigerFound.getAdresse().getStrasse());
         } finally {
             if (tx != null)
                 tx.rollback();
@@ -75,18 +77,21 @@ public class AngehoerigerDaoTest {
             vater.setAdresse(adresse);
             Angehoeriger vaterSaved = angehoerigerDao.save(vater);
             Angehoeriger vaterFound = angehoerigerDao.findById(vaterSaved.getPersonId());
-            assertEquals("Adresse not correct", "Hohenklingenstrasse", vaterFound.getAdresse().getStrasse());
+            // Erzwingen, dass von DB gelesen wird
+            entityManager.refresh(vaterFound);
+            assertEquals("Adresse falsch", "Hohenklingenstrasse", vaterFound.getAdresse().getStrasse());
 
             // Mutter
             Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Eugen", "Regula", null, null);
-            //mutter.setAdresse(adresse);
             mutter.setAdresse(vaterFound.getAdresse());
             Angehoeriger mutterSaved = angehoerigerDao.save(mutter);
             Angehoeriger mutterFound = angehoerigerDao.findById(mutterSaved.getPersonId());
-            assertEquals("Adresse not correct", "Hohenklingenstrasse", mutterFound.getAdresse().getStrasse());
+            // Erzwingen, dass von DB gelesen wird
+            entityManager.refresh(mutterFound);
+            assertEquals("Adresse falsch", "Hohenklingenstrasse", mutterFound.getAdresse().getStrasse());
 
             // Are adresseIds equal?
-            assertEquals("adresse_ids not equal", vaterFound.getAdresse().getAdresseId(), mutterFound.getAdresse().getAdresseId());
+            assertEquals("adresse_ids nicht identisch", vaterFound.getAdresse().getAdresseId(), mutterFound.getAdresse().getAdresseId());
 
             // Angehöriger ohne Adresse
             Angehoeriger vater2 = new Angehoeriger(Anrede.HERR, "Urs", "Müller", null, null);
@@ -108,7 +113,7 @@ public class AngehoerigerDaoTest {
 
             AdresseDao adresseDao = new AdresseDao(entityManager);
 
-            // Create 2 Angehoerige with the same adress
+            // 2 Angehörige mit derselben Adresse erzeugen
             tx = entityManager.getTransaction();
             tx.begin();
 
@@ -132,20 +137,19 @@ public class AngehoerigerDaoTest {
             assertNotNull(angehoerigerDao.findById(mutterId));
             assertNotNull(adresseDao.findById(adresseId));
 
-            // Delete Vater
+            // Vater löschen
             angehoerigerDao.remove(vaterSaved);
             entityManager.flush();
             assertNull(angehoerigerDao.findById(vaterId));
             assertNotNull(adresseDao.findById(adresseId));
 
-            // Delete Mutter
+            // Mutter löschen
             angehoerigerDao.remove(mutterSaved);
             entityManager.flush();
             assertNull(angehoerigerDao.findById(mutterId));
             assertNull(adresseDao.findById(adresseId));
 
             tx.commit();
-
 
         } catch (NullPointerException e){
             if (tx != null)

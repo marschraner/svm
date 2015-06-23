@@ -13,6 +13,7 @@ USE svm;
 -- ******
 
 DELETE FROM Dispensation;
+DELETE FROM Anmeldung;
 DELETE FROM Schueler;
 DELETE FROM Angehoeriger;
 DELETE FROM Person;
@@ -62,12 +63,23 @@ SELECT * FROM Angehoeriger;
 -- Schueler
 -- ********
 
-INSERT INTO Schueler (person_id, geschlecht, anmeldedatum, abmeldedatum, vater_id, mutter_id, rechnungsempfaenger_id, bemerkungen) VALUES
-    (4, 'M', '2015-05-09', NULL, 2, 3, 3, NULL),
-    (7, 'W', '2014-01-01', NULL, 5, 6, 1, 'Grosse Schwester von Anna'),
-    (8, 'W', '2014-01-01', NULL, 5, 6, 1, 'Grosse Schwester von Feller');
+INSERT INTO Schueler (person_id, geschlecht, vater_id, mutter_id, rechnungsempfaenger_id, bemerkungen) VALUES
+    (4, 'M', 2, 3, 3, NULL),
+    (7, 'W', 5, 6, 1, 'Grosse Schwester von Anna'),
+    (8, 'W', 5, 6, 1, 'Grosse Schwester von Feller');
 
 SELECT * FROM Schueler;
+
+
+-- Anmeldung
+-- *********
+
+INSERT INTO Anmeldung (anmeldung_id, anmeldedatum, abmeldedatum, schueler_id) VALUES
+    (1, '2015-05-09', NULL, 4),
+    (2, '2013-01-01', NULL, 7),
+    (3, '2014-01-01', NULL, 8);
+
+SELECT * FROM Anmeldung;
 
 
 -- Dispensation

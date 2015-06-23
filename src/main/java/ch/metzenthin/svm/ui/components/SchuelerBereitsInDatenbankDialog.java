@@ -26,7 +26,7 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
         setTitle("Fehler");
 
         setLblBeschreibung();
-        lblSchueler.setText(schuelerBereitsInDatenbankResult.getSchueler().toString());
+        setLblSchueler();
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -52,6 +52,12 @@ public class SchuelerBereitsInDatenbankDialog extends SchuelerErfassenDialog {
         String schuelerStr = (schuelerBereitsInDatenbankResult.getSchueler().getGeschlecht() == Geschlecht.W ? "Die Schülerin" : "Der Schüler");
         String beschreibungStr = schuelerStr + " ist bereits in der Datenbank gespeichert und kann nicht ein weiteres Mal erfasst werden:";
         lblBeschreibung.setText(beschreibungStr);
+    }
+
+    private void setLblSchueler() {
+        String schuelerStr = schuelerBereitsInDatenbankResult.getSchueler().toString();
+        String anmeldungStr = schuelerBereitsInDatenbankResult.getSchueler().getAnmeldungen().get(0).toString();
+        lblSchueler.setText(schuelerStr + ", " + anmeldungStr);
     }
 
     private void onOk() {

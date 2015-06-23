@@ -3,10 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
-import ch.metzenthin.svm.persistence.entities.Adresse;
-import ch.metzenthin.svm.persistence.entities.Angehoeriger;
-import ch.metzenthin.svm.persistence.entities.Dispensation;
-import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,9 +42,10 @@ public class SaveSchuelerCommandTest {
     public void testExecute() throws Exception {
 
         // Schueler
-        Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, "Schwester von Valentin");
+        Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, Geschlecht.W, "Schwester von Valentin");
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich", "044 491 69 33");
         schueler.setAdresse(adresse);
+        schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.MAY, 1), null));
 
         // Set Vater
         Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null);

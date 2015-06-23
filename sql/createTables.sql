@@ -19,6 +19,7 @@ SET default_storage_engine=InnoDB;
 -- *********************
 
 DROP TABLE IF EXISTS Dispensation;
+DROP TABLE IF EXISTS Anmeldung;
 DROP TABLE IF EXISTS Schueler;
 DROP TABLE IF EXISTS Angehoeriger;
 DROP TABLE IF EXISTS Person;
@@ -79,8 +80,6 @@ DESCRIBE Angehoeriger;
 CREATE TABLE IF NOT EXISTS Schueler (
     person_id               INT           NOT NULL,
     geschlecht              VARCHAR(1)    NOT NULL,
-    anmeldedatum            DATE          NOT NULL,
-    abmeldedatum            DATE,
     vater_id                INT,
     mutter_id               INT,
     rechnungsempfaenger_id  INT           NOT NULL,
@@ -93,6 +92,21 @@ CREATE TABLE IF NOT EXISTS Schueler (
     FOREIGN KEY (rechnungsempfaenger_id) REFERENCES Angehoeriger (person_id));
 
 DESCRIBE Schueler;
+
+
+-- Anmeldung
+-- *********
+
+CREATE TABLE IF NOT EXISTS Anmeldung (
+    anmeldung_id            INT           NOT NULL AUTO_INCREMENT,
+    anmeldedatum            DATE          NOT NULL,
+    abmeldedatum            DATE,
+    schueler_id             INT           NOT NULL,
+    last_updated            TIMESTAMP     NOT NULL,
+    PRIMARY KEY (anmeldung_id),
+    FOREIGN KEY (schueler_id) REFERENCES Schueler (person_id));
+
+DESCRIBE Anmeldung;
 
 
 -- Dispensation
@@ -109,3 +123,4 @@ CREATE TABLE IF NOT EXISTS Dispensation (
     FOREIGN KEY (schueler_id) REFERENCES Schueler (person_id));
 
 DESCRIBE Dispensation;
+

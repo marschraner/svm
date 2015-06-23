@@ -4,7 +4,7 @@ import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
-import ch.metzenthin.svm.persistence.entities.Dispensation;
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import org.junit.After;
 import org.junit.Before;
@@ -14,26 +14,25 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Hans Stamm
  */
-public class DispensationDaoTest {
+public class AnmeldungDaoTest {
 
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
-    private DispensationDao dispensationDao;
+    private AnmeldungDao anmeldungDao;
 
     @Before
     public void setUp() throws Exception {
         entityManagerFactory = Persistence.createEntityManagerFactory("svm");
         entityManager = entityManagerFactory.createEntityManager();
-        dispensationDao = new DispensationDao(entityManager);
+        anmeldungDao = new AnmeldungDao(entityManager);
     }
 
     @After
@@ -66,14 +65,18 @@ public class DispensationDaoTest {
             // Set Rechnungsempfänger
             schueler.setRechnungsempfaenger(vater);
 
-            Dispensation dispensation = new Dispensation(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2015, Calendar.MARCH, 31), "Zu klein");
-            schueler.addDispensation(dispensation);
+            Anmeldung anmeldung = new Anmeldung(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2015, Calendar.MARCH, 31));
+            schueler.addAnmeldung(anmeldung);
 
             entityManager.persist(schueler);
 
-            Dispensation dispensationFound = dispensationDao.findById(dispensation.getDispensationId());
+            Anmeldung anmeldungFound = anmeldungDao.findById(anmeldung.getAnmeldungId());
 
-            assertEquals("Dispensationsbeginn not correct", new GregorianCalendar(2014, Calendar.JANUARY, 15), dispensationFound.getDispensationsbeginn());
+            // Erzwingen, dass von DB gelesen wird
+            entityManager.refresh(anmeldungFound);
+
+            assertEquals("Anmeldedatum falsch", new GregorianCalendar(2014, Calendar.JANUARY, 15), anmeldungFound.getAnmeldedatum());
+            assertEquals("Abmeldedatum falsch", new GregorianCalendar(2015, Calendar.MARCH, 31), anmeldungFound.getAbmeldedatum());
 
         } finally {
             if (tx != null) {
@@ -102,19 +105,17 @@ public class DispensationDaoTest {
             // Set Rechnungsempfänger
             schueler.setRechnungsempfaenger(vater);
 
-            Dispensation dispensation = new Dispensation(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2015, Calendar.MARCH, 31), "Zu klein");
-            schueler.addDispensation(dispensation);
+            Anmeldung anmeldung = new Anmeldung(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2015, Calendar.MARCH, 31));
+            schueler.addAnmeldung(anmeldung);
 
-            dispensationDao.save(dispensation, schueler);
+            anmeldungDao.save(anmeldung, schueler);
 
-            Dispensation dispensationFound = dispensationDao.findById(dispensation.getDispensationId());
+            Anmeldung anmeldungFound = anmeldungDao.findById(anmeldung.getAnmeldungId());
 
             // Erzwingen, dass von DB gelesen wird
-            entityManager.refresh(dispensationFound);
+            entityManager.refresh(anmeldungFound);
 
-            assertEquals("Dispensationsbeginn falsch", new GregorianCalendar(2014, Calendar.JANUARY, 15), dispensationFound.getDispensationsbeginn());
-            assertEquals("Dispensationsende falsch", new GregorianCalendar(2015, Calendar.MARCH, 31), dispensationFound.getDispensationsende());
-            assertEquals("Grund falsch", "Zu klein", dispensationFound.getGrund());
+            assertEquals("Anmeldedatum falsch", new GregorianCalendar(2014, Calendar.JANUARY, 15), anmeldungFound.getAnmeldedatum());
 
         } finally {
             if (tx != null) {

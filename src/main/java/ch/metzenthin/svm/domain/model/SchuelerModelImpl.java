@@ -6,6 +6,7 @@ import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
@@ -21,11 +22,13 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     private final Schueler schueler;
+    private final Anmeldung anmeldung;
 
     SchuelerModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
         schueler = new Schueler();
         schueler.setAnrede(Anrede.KEINE); // Schueler haben keine Anrede, ist aber obligatorisch in DB
+        anmeldung = new Anmeldung();
     }
 
     @Override
@@ -56,7 +59,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public Calendar getAnmeldedatum() {
-        return schueler.getAnmeldedatum();
+        return anmeldung.getAnmeldedatum();
     }
 
     @Override
@@ -74,14 +77,14 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public void setAnmeldedatum(Calendar anmeldedatum) {
-        Calendar oldValue = schueler.getAnmeldedatum();
-        schueler.setAnmeldedatum(anmeldedatum);
-        firePropertyChange(Field.ANMELDEDATUM, oldValue, schueler.getAnmeldedatum());
+        Calendar oldValue = anmeldung.getAnmeldedatum();
+        anmeldung.setAnmeldedatum(anmeldedatum);
+        firePropertyChange(Field.ANMELDEDATUM, oldValue, anmeldung.getAnmeldedatum());
     }
 
     @Override
     public Calendar getAbmeldedatum() {
-        return schueler.getAbmeldedatum();
+        return anmeldung.getAbmeldedatum();
     }
 
     @Override
@@ -95,9 +98,9 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public void setAbmeldedatum(Calendar abmeldedatum) {
-        Calendar oldValue = schueler.getAbmeldedatum();
-        schueler.setAbmeldedatum(abmeldedatum);
-        firePropertyChange(Field.ABMELDEDATUM, oldValue, schueler.getAbmeldedatum());
+        Calendar oldValue = anmeldung.getAbmeldedatum();
+        anmeldung.setAbmeldedatum(abmeldedatum);
+        firePropertyChange(Field.ABMELDEDATUM, oldValue, anmeldung.getAbmeldedatum());
     }
 
     private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(
@@ -139,6 +142,11 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     @Override
     public Schueler getSchueler() {
         return schueler;
+    }
+
+    @Override
+    public Anmeldung getAnmeldung() {
+        return anmeldung;
     }
 
     /**

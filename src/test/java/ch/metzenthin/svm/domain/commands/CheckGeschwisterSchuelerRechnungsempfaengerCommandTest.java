@@ -4,6 +4,7 @@ import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import org.junit.Test;
 
@@ -35,11 +36,12 @@ public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
         Adresse adresse2 = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich", null);
 
         // Erstes Kind mit Grossmutter als Rechnungsempfängerin erfassen
-        Schueler schueler1 = new Schueler("Lilly", "Juchli", new GregorianCalendar(2008, Calendar.JANUARY, 13), null, null, Geschlecht.W, new GregorianCalendar(2000, Calendar.JANUARY, 1), null, null);
+        Schueler schueler1 = new Schueler("Lilly", "Juchli", new GregorianCalendar(2008, Calendar.JANUARY, 13), null, null, Geschlecht.W, null);
         schueler1.setAdresse(adresse1);
         schueler1.setMutter(angehoeriger1);
         schueler1.setVater(angehoeriger2);
         schueler1.setRechnungsempfaenger(angehoeriger3);
+        schueler1.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
         CheckGeschwisterSchuelerRechnungempfaengerCommand checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler1);
         commandInvoker.executeCommand(checkGeschwisterSchuelerRechnungempfaengerCommand);
         List<Schueler> geschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAngemeldeteGeschwisterList();
@@ -49,11 +51,12 @@ public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
         printGeschwisterUndSchuelerRechnungsempfaenger(schueler1, geschwisterList, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList);
 
         // Geschwister von Schüler 1 mit Vater als Rechnungsempfänger erfassen
-        Schueler schueler2 = new Schueler("Anna", "Juchli", new GregorianCalendar(2010, Calendar.MARCH, 5), null, null, Geschlecht.W, new GregorianCalendar(2000, Calendar.JANUARY, 1), null, null);
+        Schueler schueler2 = new Schueler("Anna", "Juchli", new GregorianCalendar(2010, Calendar.MARCH, 5), null, null, Geschlecht.W, null);
         schueler2.setAdresse(adresse1);
         schueler2.setMutter(angehoeriger1);
         schueler2.setVater(angehoeriger2);
         schueler2.setRechnungsempfaenger(angehoeriger2);
+        schueler2.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
         checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler2);
         commandInvoker.executeCommand(checkGeschwisterSchuelerRechnungempfaengerCommand);
         geschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAngemeldeteGeschwisterList();
@@ -64,11 +67,12 @@ public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
         printGeschwisterUndSchuelerRechnungsempfaenger(schueler2, geschwisterList, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList);
 
         // Anderer Schueler mit gleicher Grossmutter wie bei Schüler 1 als Rechnungsempfängerin erfassen
-        Schueler schueler3 = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, Geschlecht.W, new GregorianCalendar(2000, Calendar.JANUARY, 1), null, null);
+        Schueler schueler3 = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, Geschlecht.W, null);
         schueler3.setAdresse(adresse2);
         schueler3.setMutter(angehoeriger4);
         schueler3.setVater(angehoeriger5);
         schueler3.setRechnungsempfaenger(angehoeriger3);
+        schueler3.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
         checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler3);
         commandInvoker.executeCommand(checkGeschwisterSchuelerRechnungempfaengerCommand);
         geschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAngemeldeteGeschwisterList();
@@ -79,11 +83,12 @@ public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
         printGeschwisterUndSchuelerRechnungsempfaenger(schueler3, geschwisterList, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList);
 
         // Weiteres Geschwister von Schueler 3 mit Mutter als Rechnungsempfängerin erfassen
-        Schueler schueler4 = new Schueler("Valentin Dan", "Rösle", new GregorianCalendar(2014, Calendar.SEPTEMBER, 15), null, null, Geschlecht.W, new GregorianCalendar(2000, Calendar.JANUARY, 1), null, null);
+        Schueler schueler4 = new Schueler("Valentin Dan", "Rösle", new GregorianCalendar(2014, Calendar.SEPTEMBER, 15), null, null, Geschlecht.W, null);
         schueler4.setAdresse(adresse2);
         schueler4.setMutter(angehoeriger4);
         schueler4.setVater(angehoeriger5);
         schueler4.setRechnungsempfaenger(angehoeriger4);
+        schueler4.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
         checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler4);
         commandInvoker.executeCommand(checkGeschwisterSchuelerRechnungempfaengerCommand);
         geschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAngemeldeteGeschwisterList();
@@ -94,11 +99,12 @@ public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
         printGeschwisterUndSchuelerRechnungsempfaenger(schueler4, geschwisterList, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList);
 
         // Weiteres Geschwister von Schueler 1 und 2 mit Mutter von Schüler 3 und 4 als Rechnungsempfänger erfassen
-        Schueler schueler5 = new Schueler("Felicitas", "Juchli", new GregorianCalendar(2012, Calendar.MAY, 5), null, null, Geschlecht.W, new GregorianCalendar(2000, Calendar.JANUARY, 1), null, null);
+        Schueler schueler5 = new Schueler("Felicitas", "Juchli", new GregorianCalendar(2012, Calendar.MAY, 5), null, null, Geschlecht.W, null);
         schueler5.setAdresse(adresse1);
         schueler5.setMutter(angehoeriger1);
         schueler5.setVater(angehoeriger2);
         schueler5.setRechnungsempfaenger(angehoeriger4);
+        schueler5.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
         checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler5);
         commandInvoker.executeCommand(checkGeschwisterSchuelerRechnungempfaengerCommand);
         geschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAngemeldeteGeschwisterList();
@@ -111,8 +117,8 @@ public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
         printGeschwisterUndSchuelerRechnungsempfaenger(schueler5, geschwisterList, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList);
 
         // Schüler 2 und Schüler 4 melden sich ab
-        schueler2.setAbmeldedatum(new GregorianCalendar(2015, Calendar.JUNE, 1));
-        schueler4.setAbmeldedatum(new GregorianCalendar(2015, Calendar.JUNE, 1));
+        schueler2.getAnmeldungen().get(0).setAbmeldedatum(new GregorianCalendar(2015, Calendar.JUNE, 1));
+        schueler4.getAnmeldungen().get(0).setAbmeldedatum(new GregorianCalendar(2015, Calendar.JUNE, 1));
 
         // Nochmals Abfrage für Schüler 5
         checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler5);

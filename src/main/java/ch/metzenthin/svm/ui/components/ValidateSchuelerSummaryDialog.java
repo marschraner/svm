@@ -75,7 +75,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
 
     private void setSchuelerAngehoerige() {
         lblSchueler.setText(validateSchuelerSummaryResult.getSchueler().getGeschlecht() == Geschlecht.W ? "Schülerin:" : "Schüler:");
-        schuelerValue.setText(validateSchuelerSummaryResult.getSchueler().toString());
+        setSchuelerValue();
         String neuMutter = ((validateSchuelerSummaryResult.getSchueler().getMutter() != null && validateSchuelerSummaryResult.isMutterNeu()) ? " (neu)" : "");
         lblMutter.setText("Mutter" + neuMutter + ":");
         mutterValue.setText(validateSchuelerSummaryResult.getSchueler().getMutter() == null ? "-" : validateSchuelerSummaryResult.getSchueler().getMutter().toString());
@@ -97,6 +97,12 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         }
         lblRechnungsempfaenger.setText(lblRechnungsempfaengerText);
         rechnungsempfaengerValue.setText(rechnungsempfaengerText);
+    }
+
+    private void setSchuelerValue() {
+        String schuelerStr = validateSchuelerSummaryResult.getSchueler().toString();
+        String anmeldungStr = validateSchuelerSummaryResult.getSchueler().getAnmeldungen().get(0).toString();
+        schuelerValue.setText(schuelerStr + ", " + anmeldungStr);
     }
 
     private void setInfoIdentischeAdressen() {

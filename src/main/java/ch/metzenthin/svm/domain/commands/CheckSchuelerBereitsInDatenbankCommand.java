@@ -28,7 +28,7 @@ public class CheckSchuelerBereitsInDatenbankCommand extends GenericDaoCommand {
         SchuelerDao schuelerDao = new SchuelerDao(entityManager);
 
         // Suche nach Vorname, Nachname, Geburstdatum, Strasse, Hausnummer, PLZ, Ort
-        Schueler schuelerToBeFound = new Schueler(schueler.getVorname(), schueler.getNachname(), schueler.getGeburtsdatum(), null, null, null, null, null, null);
+        Schueler schuelerToBeFound = new Schueler(schueler.getVorname(), schueler.getNachname(), schueler.getGeburtsdatum(), null, null, null, null);
         Adresse adresseToBeFound = new Adresse(schueler.getAdresse().getStrasse(), schueler.getAdresse().getHausnummer(), schueler.getAdresse().getPlz(), schueler.getAdresse().getOrt(), null);
         schuelerToBeFound.setAdresse(adresseToBeFound);
         List<Schueler> schuelerListFound = schuelerDao.findSchueler(schuelerToBeFound);

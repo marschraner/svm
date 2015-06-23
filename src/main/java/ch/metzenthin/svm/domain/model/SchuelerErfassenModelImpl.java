@@ -8,6 +8,7 @@ import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerModel;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.control.CompletedListener;
 import org.apache.log4j.Logger;
@@ -447,6 +448,11 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     @Override
     public Adresse getAdresseSchueler() {
         return schuelerModel.getAdresse();
+    }
+
+    @Override
+    public Anmeldung getAnmeldung() {
+        return schuelerModel.getAnmeldung();
     }
 
     @Override

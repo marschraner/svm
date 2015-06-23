@@ -36,13 +36,13 @@ public class CheckIdentischeAdressenCommandTest {
 
     @Before
     public void setUp() {
-        schueler1 = new Schueler("Carla", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, null);
+        schueler1 = new Schueler("Carla", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, null);
         Adresse adresseSchueler1 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", "056 426 69 15");
         schueler1.setAdresse(adresseSchueler1);
-        schueler2 = new Schueler("Carla", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, null);
+        schueler2 = new Schueler("Carla", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, null);
         Adresse adresseSchueler2 = new Adresse("Weidstrasse", "55", "8803", "Rüschlikon", "044 724 11 20");
         schueler2.setAdresse(adresseSchueler2);
-        schueler3 = new Schueler("Carla", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, new GregorianCalendar(2015, Calendar.JANUARY, 1), null, null);
+        schueler3 = new Schueler("Carla", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, null);
         Adresse adresseSchueler3 = new Adresse("Tödistrasse", "2", "8800", "Thalwil", "044 720 12 15");
         schueler3.setAdresse(adresseSchueler3);
 

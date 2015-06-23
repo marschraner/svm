@@ -17,7 +17,7 @@ SELECT PersSchue.vorname AS 'Vorname',
     Adr.ort AS 'Ort',
     PersVater.vorname AS 'Vorn. Vater',
     PersMutter.vorname AS 'Vorn. Mutter',
-    Schue.anmeldedatum AS 'Anmeldedatum',
+    Anm.anmeldedatum AS 'Anmeldedatum',
     PersRechn.vorname AS 'Vorn. Rechnungsemp.',
     Schue.bemerkungen AS 'Bemerkungen'
     FROM Schueler Schue
@@ -28,6 +28,7 @@ SELECT PersSchue.vorname AS 'Vorname',
     LEFT OUTER JOIN Angehoeriger Mutter ON Mutter.person_id = Schue.mutter_id
     INNER JOIN Person PersMutter ON PersMutter.person_id = Mutter.person_id
     INNER JOIN Angehoeriger Rechn ON Rechn.person_id = Schue.rechnungsempfaenger_id
-    INNER JOIN Person PersRechn ON PersRechn.person_id = Rechn.person_id;
+    INNER JOIN Person PersRechn ON PersRechn.person_id = Rechn.person_id
+    INNER JOIN Anmeldung Anm ON Anm.schueler_id = Schue.person_id;
 
     

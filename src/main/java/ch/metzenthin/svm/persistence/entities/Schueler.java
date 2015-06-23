@@ -4,9 +4,9 @@ import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * @author Martin Schraner
@@ -19,14 +19,6 @@ public class Schueler extends Person {
     @Enumerated(EnumType.STRING)
     @Column(name = "geschlecht", nullable = false)
     private Geschlecht geschlecht;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "anmeldedatum", nullable = false)
-    private Calendar anmeldedatum;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "abmeldedatum", nullable = true)
-    private Calendar abmeldedatum;
 
     @Lob
     @Column(name = "bemerkungen", columnDefinition = "text", nullable = true)
@@ -45,39 +37,31 @@ public class Schueler extends Person {
     private Angehoeriger rechnungsempfaenger;
 
     @OneToMany(mappedBy = "schueler", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Dispensation> dispensationen = new HashSet<>();
+    @OrderBy("anmeldedatum DESC , abmeldedatum DESC")
+    private List<Anmeldung> anmeldungen = new ArrayList<>();
+
+    @OneToMany(mappedBy = "schueler", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("dispensationsbeginn DESC, dispensationsende DESC")
+    private List<Dispensation> dispensationen = new ArrayList<>();
 
     public Schueler() {
     }
 
-    public Schueler(String vorname, String nachname, Calendar geburtsdatum, String natel, String email, Geschlecht geschlecht, Calendar anmeldedatum, Calendar abmeldedatum, String bemerkungen) {
+    public Schueler(String vorname, String nachname, Calendar geburtsdatum, String natel, String email, Geschlecht geschlecht, String bemerkungen) {
         super(Anrede.KEINE, vorname, nachname, geburtsdatum, natel, email);
         this.geschlecht = geschlecht;
-        this.anmeldedatum = anmeldedatum;
-        this.abmeldedatum = abmeldedatum;
         this.bemerkungen = bemerkungen;
     }
 
     public boolean isEmpty() {
         return super.isEmpty()
-                && anmeldedatum == null
-                && abmeldedatum == null
                 && (bemerkungen == null || bemerkungen.trim().isEmpty());
     }
 
     @Override
     public String toString() {
-        StringBuilder personSb = new StringBuilder();
-        personSb.append(super.toString());
-        if (anmeldedatum != null) {
-            personSb.append(", Anmeldedatum: ").append(String.format("%1$td.%1$tm.%1$tY", anmeldedatum));
-        }
-        if (abmeldedatum != null) {
-            personSb.append(", Abmeldedatum: ").append(String.format("%1$td.%1$tm.%1$tY", abmeldedatum));
-        }
-        return personSb.toString();
+        return super.toString();
     }
-
 
     public Geschlecht getGeschlecht() {
         return geschlecht;
@@ -85,22 +69,6 @@ public class Schueler extends Person {
 
     public void setGeschlecht(Geschlecht geschlecht) {
         this.geschlecht = geschlecht;
-    }
-
-    public Calendar getAnmeldedatum() {
-        return anmeldedatum;
-    }
-
-    public void setAnmeldedatum(Calendar anmeldedatum) {
-        this.anmeldedatum = anmeldedatum;
-    }
-
-    public Calendar getAbmeldedatum() {
-        return abmeldedatum;
-    }
-
-    public void setAbmeldedatum(Calendar abmeldedatum) {
-        this.abmeldedatum = abmeldedatum;
     }
 
     public String getBemerkungen() {
@@ -168,6 +136,19 @@ public class Schueler extends Person {
         this.rechnungsempfaenger = null;
     }
 
+    public void addAnmeldung(Anmeldung anmeldung) {
+        anmeldung.setSchueler(this);
+        anmeldungen.add(anmeldung);
+    }
+
+    public List<Anmeldung> getAnmeldungen() {
+        return anmeldungen;
+    }
+
+    public void deleteAnmeldung(Anmeldung anmeldung) {
+        anmeldungen.remove(anmeldung);
+    }
+
     public void addDispensation(Dispensation dispensation) {
         dispensation.setSchueler(this);
         dispensationen.add(dispensation);
@@ -177,7 +158,7 @@ public class Schueler extends Person {
         dispensationen.remove(dispensation);
     }
 
-    public Set<Dispensation> getDispensationen() {
+    public List<Dispensation> getDispensationen() {
         return dispensationen;
     }
 }

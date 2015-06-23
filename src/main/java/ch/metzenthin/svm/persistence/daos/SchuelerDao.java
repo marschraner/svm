@@ -20,7 +20,7 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
     @Override
     public void remove(Schueler schueler) {
 
-        // Remove schueler from adresse, vater, mutter and rechnungsempaenger
+        // Entferne Schüler von Adresse, Vater, Mutter und Rechnungsempfänger
         Adresse adresse = schueler.getAdresse();
         adresse.getPersonen().remove(schueler);
 
@@ -37,10 +37,10 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
         Angehoeriger rechnungsempfaenger = schueler.getRechnungsempfaenger();
         rechnungsempfaenger.getSchuelerRechnungsempfaenger().remove(schueler);
 
-        // Remove schueler from db
+        // Lösche Schüler aus DB
         entityManager.remove(schueler);
 
-        // Remove adresse, vater, mutter and rechnungsempfaenger if they are not referenced any more
+        // Lösche Adresse, Vater, Mutter und Rechnungsempfänger aus DB, falls diese nicht mehr referenziert werden
         if (adresse.getPersonen().size() == 0) {
             AdresseDao adresseDao = new AdresseDao(entityManager);
             adresseDao.remove(adresse);

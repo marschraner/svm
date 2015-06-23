@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import java.util.List;
@@ -133,6 +134,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     // input
     private Schueler schueler;
     private Adresse adresseSchueler;
+    private Anmeldung anmeldung;
     private Angehoeriger mutter;
     private Adresse adresseMutter;
     private boolean isRechnungsempfaengerMutter;
@@ -164,6 +166,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     public ValidateSchuelerCommand(ValidateSchuelerModel validateSchuelerModel) {
         this.schueler = validateSchuelerModel.getSchueler();
         this.adresseSchueler = validateSchuelerModel.getAdresseSchueler();
+        this.anmeldung = validateSchuelerModel.getAnmeldung();
         this.mutter = validateSchuelerModel.getMutter();
         this.adresseMutter = validateSchuelerModel.getAdresseMutter();
         this.isRechnungsempfaengerMutter = validateSchuelerModel.isRechnungsempfaengerMutter();
@@ -183,6 +186,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         if (!skipMutterVaterDrittpersonAusGuiUebernehmen) {
             skipMutterVaterDrittpersonAusGuiUebernehmen = true;
             schueler.setAdresse(adresseSchueler);
+            schueler.addAnmeldung(anmeldung);
             if (mutter != null && !mutter.isEmpty()) {
                 schueler.setMutter(mutter);
                 if (adresseMutter != null && !adresseMutter.isEmpty()) {

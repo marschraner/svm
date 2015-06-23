@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
 /**
@@ -9,6 +10,7 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
  */
 public interface ValidateSchuelerModel {
     Schueler getSchueler();
+    Anmeldung getAnmeldung();
     Adresse getAdresseSchueler();
     Angehoeriger getMutter();
     Adresse getAdresseMutter();
