@@ -1,0 +1,47 @@
+Installationsanleitung
+======================
+
+Linux
+=====
+
+Einmalig
+========
+- MySQL installieren
+
+Applikation installieren
+========================
+- Entpacken svm-${version}-bin.zip (bzw. ...tar.bz2 oder ...tar.gz)
+- In Terminal:
+  - Ins Directory wechseln (cd svm-${version})
+  - *.bsh-Files ausführbar machen (chmod 775 *.bsh)
+  - Datenbank-Erstellungs-Script ausführen (./createSvmDatabase.bsh)
+    Voraussetzung: mysql muss im Pfad vorhanden sein
+
+Applikation starten
+===================
+- Voraussetzung: MySQL Server gestartet, java (1.7) muss im Pfad vorhanden sein
+- Applikation starten (./runSvm.bsh)
+
+
+--------------------------------------------------------------------------------
+
+
+Windows
+=======
+
+Einmalig
+========
+- MySQL installieren
+
+Applikation installieren
+========================
+- Entpacken svm-${version}-bin.zip
+- In cmd-Shell:
+  - Ins Directory wechseln (cd svm-${version})
+  - Datenbank-Erstellungs-Script ausführen (createSvmDatabase.bat)
+    Voraussetzung: mysql muss im Pfad vorhanden sein
+
+Applikation starten
+===================
+- Voraussetzung: MySQL Server gestartet, java (1.7) muss im Pfad vorhanden sein
+- Applikation starten (runSvm.bat)
