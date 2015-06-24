@@ -9,7 +9,7 @@ import java.util.Calendar;
  */
 @Entity
 @Table(name="Dispensation")
-public class Dispensation {
+public class Dispensation implements Comparable<Dispensation> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +58,22 @@ public class Dispensation {
         return dispensationSb.toString();
     }
 
+    @Override
+    public int compareTo(Dispensation otherDispensation) {
+        // absteigend nach Dispensationsbeginn und Dispensationsende sortieren, d.h. neuste Einträge zuoberst
+        int result = -dispensationsbeginn.compareTo(otherDispensation.dispensationsbeginn);
+        if (result == 0) {
+            if (dispensationsende != null && otherDispensation.dispensationsende != null) {
+                result = -dispensationsende.compareTo(otherDispensation.dispensationsende);
+            } else if (dispensationsende != null) {
+                result = 1;
+            } else if (otherDispensation.dispensationsende != null) {
+                result = -1;
+            }
+        }
+        return result;
+    }
+
     public Integer getDispensationId() {
         return dispensationId;
     }
@@ -97,5 +113,4 @@ public class Dispensation {
     public void setSchueler(Schueler schueler) {
         this.schueler = schueler;
     }
-
 }

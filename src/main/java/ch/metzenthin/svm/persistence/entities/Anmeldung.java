@@ -9,7 +9,7 @@ import java.util.Calendar;
  */
 @Entity
 @Table(name="Anmeldung")
-public class Anmeldung {
+public class Anmeldung implements Comparable<Anmeldung> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,28 +50,44 @@ public class Anmeldung {
         return anmeldungSb.toString();
     }
 
+    @Override
+    public int compareTo(Anmeldung otherAnmeldung) {
+        // absteigend nach Anmeldedatum und Abmeldedatum sortieren, d.h. neuste Einträge zuoberst
+        int result = -anmeldedatum.compareTo(otherAnmeldung.anmeldedatum);
+        if (result == 0) {
+            if (abmeldedatum != null && otherAnmeldung.abmeldedatum != null) {
+                result = -abmeldedatum.compareTo(otherAnmeldung.abmeldedatum);
+            } else if (abmeldedatum != null) {
+                result = 1;
+            } else if (otherAnmeldung.abmeldedatum != null) {
+                result = -1;
+            }
+        }
+        return result;
+    }
+
     public Integer getAnmeldungId() {
         return anmeldungId;
     }
 
-    public void setAnmeldungId(Integer dispensationId) {
-        this.anmeldungId = dispensationId;
+    public void setAnmeldungId(Integer anmeldungId) {
+        this.anmeldungId = anmeldungId;
     }
 
     public Calendar getAnmeldedatum() {
         return anmeldedatum;
     }
 
-    public void setAnmeldedatum(Calendar dispensationbeginn) {
-        this.anmeldedatum = dispensationbeginn;
+    public void setAnmeldedatum(Calendar anmeldungbeginn) {
+        this.anmeldedatum = anmeldungbeginn;
     }
 
     public Calendar getAbmeldedatum() {
         return abmeldedatum;
     }
 
-    public void setAbmeldedatum(Calendar dispensationsende) {
-        this.abmeldedatum = dispensationsende;
+    public void setAbmeldedatum(Calendar abmeldedatum) {
+        this.abmeldedatum = abmeldedatum;
     }
 
     public Schueler getSchueler() {

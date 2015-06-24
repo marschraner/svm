@@ -6,6 +6,7 @@ import ch.metzenthin.svm.dataTypes.Geschlecht;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -139,6 +140,7 @@ public class Schueler extends Person {
     public void addAnmeldung(Anmeldung anmeldung) {
         anmeldung.setSchueler(this);
         anmeldungen.add(anmeldung);
+        Collections.sort(anmeldungen);
     }
 
     public List<Anmeldung> getAnmeldungen() {
@@ -152,6 +154,7 @@ public class Schueler extends Person {
     public void addDispensation(Dispensation dispensation) {
         dispensation.setSchueler(this);
         dispensationen.add(dispensation);
+        Collections.sort(dispensationen);
     }
 
     public void deleteDispensation(Dispensation dispensation) {

@@ -54,8 +54,6 @@ public class AngehoerigerDaoTest {
             angehoeriger.setAdresse(adresse);
             entityManager.persist(angehoeriger);
             Angehoeriger angehoerigerFound = angehoerigerDao.findById(angehoeriger.getPersonId());
-            // Erzwingen, dass von DB gelesen wird
-            entityManager.refresh(angehoerigerFound);
             assertEquals("Adresse falsch", "Hohenklingenstrasse", angehoerigerFound.getAdresse().getStrasse());
         } finally {
             if (tx != null)
@@ -77,8 +75,6 @@ public class AngehoerigerDaoTest {
             vater.setAdresse(adresse);
             Angehoeriger vaterSaved = angehoerigerDao.save(vater);
             Angehoeriger vaterFound = angehoerigerDao.findById(vaterSaved.getPersonId());
-            // Erzwingen, dass von DB gelesen wird
-            entityManager.refresh(vaterFound);
             assertEquals("Adresse falsch", "Hohenklingenstrasse", vaterFound.getAdresse().getStrasse());
 
             // Mutter
@@ -86,8 +82,6 @@ public class AngehoerigerDaoTest {
             mutter.setAdresse(vaterFound.getAdresse());
             Angehoeriger mutterSaved = angehoerigerDao.save(mutter);
             Angehoeriger mutterFound = angehoerigerDao.findById(mutterSaved.getPersonId());
-            // Erzwingen, dass von DB gelesen wird
-            entityManager.refresh(mutterFound);
             assertEquals("Adresse falsch", "Hohenklingenstrasse", mutterFound.getAdresse().getStrasse());
 
             // Are adresseIds equal?

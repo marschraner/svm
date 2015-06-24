@@ -67,9 +67,6 @@ public class SchuelerDaoTest {
 
             Schueler schuelerFound = schuelerDao.findById(schueler.getPersonId());
 
-            // Erzwingen, dass von DB gelesen wird
-            entityManager.refresh(schuelerFound);
-
             assertEquals("Anmeldedatum falsch", new GregorianCalendar(2015, Calendar.JANUARY, 1), schuelerFound.getAnmeldungen().get(0).getAnmeldedatum());
 
         } finally {
@@ -121,9 +118,6 @@ public class SchuelerDaoTest {
 
             Schueler schuelerFound = schuelerDao.findById(schuelerSaved.getPersonId());
 
-            // Erzwingen, dass von DB gelesen wird
-            entityManager.refresh(schuelerFound);
-
             assertEquals("Vater not correct", "Eugen", schuelerFound.getVater().getVorname());
             assertEquals("Mutter not correct", "Regula", schuelerFound.getMutter().getVorname());
             assertEquals("Vater not correct", "Eugen", schuelerFound.getRechnungsempfaenger().getVorname());
@@ -143,6 +137,21 @@ public class SchuelerDaoTest {
 
             // Dispensationen
             List<Dispensation> dispensationen = schuelerFound.getDispensationen();
+            assertEquals("2 Dispensationen erwartet", 2, dispensationen.size());
+            assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());   // neuste zuerst
+            assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
+
+            // Erzwingen, dass von DB gelesen wird
+            entityManager.refresh(schuelerFound);
+
+             // Anmeldungen
+            anmeldungen = schuelerFound.getAnmeldungen();
+            assertEquals("2 Anmeldungen erwartet", 2, anmeldungen.size());
+            assertEquals("Falsches Anmeldedatum", new GregorianCalendar(2015, Calendar.FEBRUARY, 1), anmeldungen.get(0).getAnmeldedatum());  // neuste zuerst
+            assertEquals("Falsches Anmeldedatum", new GregorianCalendar(2014, Calendar.JANUARY, 1), anmeldungen.get(1).getAnmeldedatum());
+
+            // Dispensationen
+            dispensationen = schuelerFound.getDispensationen();
             assertEquals("2 Dispensationen erwartet", 2, dispensationen.size());
             assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());   // neuste zuerst
             assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
@@ -329,9 +338,6 @@ public class SchuelerDaoTest {
             assertEquals("Nur 1 Schüler erwartet", 1, schuelerList2.size());
             Schueler schuelerFound2 = schuelerList2.get(0);
 
-            // Erzwingen, dass von DB gelesen wird
-            entityManager.refresh(schuelerFound2);
-
             assertNotNull("Schüler nicht gefunden", schuelerFound2);
 
             // Anmeldung: Reihenfolge prüfen:
@@ -342,6 +348,21 @@ public class SchuelerDaoTest {
 
             // Dispensationen: Reihenfolge prüfen:
             List<Dispensation> dispensationen = schuelerFound2.getDispensationen();
+            assertEquals("2 Dispensationen erwartet", 2, dispensationen.size());
+            assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());   // neuste zuerst
+            assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
+
+            // Erzwingen, dass von DB gelesen wird
+            entityManager.refresh(schuelerFound2);
+
+            // Anmeldung: Reihenfolge prüfen:
+            anmeldungen= schuelerFound2.getAnmeldungen();
+            assertEquals("2 Anmeldungen erwartet", 2, anmeldungen.size());
+            assertEquals("Falsches Anmeldedatum", new GregorianCalendar(2015, Calendar.JANUARY, 1), anmeldungen.get(0).getAnmeldedatum());   // neuste zuerst
+            assertEquals("Falsches Abmeldedatum", new GregorianCalendar(2014, Calendar.JANUARY, 15), anmeldungen.get(1).getAbmeldedatum());
+
+            // Dispensationen: Reihenfolge prüfen:
+            dispensationen = schuelerFound2.getDispensationen();
             assertEquals("2 Dispensationen erwartet", 2, dispensationen.size());
             assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());   // neuste zuerst
             assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
