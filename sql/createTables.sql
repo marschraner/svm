@@ -6,6 +6,11 @@
 -- mysql -u svm -psvm 
 -- mysql> source createTables.sql
 
+-- Auf Jenkins-Server (Immer durchführen wenn DB ändert, damit Tests durchlaufen!):
+-- ssh root@sinv-56059.edu.hsr.ch
+-- cd /var/lib/jenkins/workspace/SVM/
+-- mysql -u svm -psvm < sql/createTables.sql
+
 USE svm;
 
 

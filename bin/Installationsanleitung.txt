@@ -6,20 +6,32 @@ Linux
 
 Einmalig
 ========
-- MySQL installieren
+- Java 7 Installation. Getestet mit:
+  java version "1.7.0_79"
+  OpenJDK Runtime Environment (IcedTea 2.5.5) (7u79-2.5.5-0ubuntu0.14.04.2)
+  OpenJDK 64-Bit Server VM (build 24.79-b02, mixed mode)
+- MySQL-Server Installation. Getestet mit:
+  mysql  Ver 14.14 Distrib 5.5.43, for debian-linux-gnu (x86_64) using readline 6.3
 
 Applikation installieren
 ========================
-- Entpacken svm-${version}-bin.zip (bzw. ...tar.bz2 oder ...tar.gz)
+- Entpacken von svm-${version}-bin.zip (bzw. ...tar.bz2 oder ...tar.gz)
 - In Terminal:
-  - Ins Directory wechseln (cd svm-${version})
+  - Ins entpackte Directory wechseln (cd svm-${version})
   - *.bsh-Files ausführbar machen (chmod 775 *.bsh)
-  - Datenbank-Erstellungs-Script ausführen (./createSvmDatabase.bsh)
-    Voraussetzung: mysql muss im Pfad vorhanden sein
+
+Datenbank installieren
+======================
+- Voraussetzungen:
+  - mysql muss bekannt sein (bin-Directory von MySQL muss im PATH vorhanden sein), ist unter Linux in der Regel der Fall
+  - MySQL-Server muss gestartet sein (ist unter Linux in der Regel automatisch gestartet)
+- Datenbank-Erstellungs-Script ausführen (./createSvmDatabase.bsh)
 
 Applikation starten
 ===================
-- Voraussetzung: MySQL Server gestartet, java (1.7) muss im Pfad vorhanden sein
+- Voraussetzungen:
+  - MySQL-Server muss gestartet sein (ist unter Linux in der Regel automatisch gestartet)
+  - java muss bekannt sein (bin-Directory von Java muss im PATH vorhanden sein), ist unter Linux in der Regel der Fall
 - Applikation starten (./runSvm.bsh)
 
 
@@ -31,17 +43,26 @@ Windows
 
 Einmalig
 ========
-- MySQL installieren
+- Java 7 Installation (JRE 7u79)
+- MySQL-Server Installation (z.B. mysql-5.6.25-winx64.zip bzw. mysql-5.6.25-win32.zip)
 
 Applikation installieren
 ========================
 - Entpacken svm-${version}-bin.zip
 - In cmd-Shell:
   - Ins Directory wechseln (cd svm-${version})
-  - Datenbank-Erstellungs-Script ausführen (createSvmDatabase.bat)
-    Voraussetzung: mysql muss im Pfad vorhanden sein
+
+Datenbank installieren
+======================
+- Voraussetzungen:
+  - mysql muss bekannt sein (bin-Directory von MySQL muss im PATH vorhanden sein)
+  - MySQL-Server muss gestartet sein (mysqld)
+- Datenbank-Erstellungs-Script ausführen (createSvmDatabase.bat)
 
 Applikation starten
 ===================
-- Voraussetzung: MySQL Server gestartet, java (1.7) muss im Pfad vorhanden sein
+- Voraussetzungen:
+  - MySQL-Server muss gestartet sein (mysqld)
+  - java muss bekannt sein (bin-Directory von Java 7 muss im PATH vorhanden sein),
+    oder das Script muss entsprechend angepasst werden.
 - Applikation starten (runSvm.bat)
