@@ -19,6 +19,6 @@ CREATE DATABASE IF NOT EXISTS svm
 -- Neuen User erzeugen und Rechte für DB zuweisen
 -- **********************************************
 
-DROP USER svm;
-GRANT ALL ON svm.* TO svm@'%' IDENTIFIED BY 'svm';
+-- DROP USER svm; Macht Probleme, wenn der User nicht existiert.
+GRANT ALL ON svm.* TO 'svm'@'%' IDENTIFIED BY 'svm';
 
