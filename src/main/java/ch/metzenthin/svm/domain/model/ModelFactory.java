@@ -7,4 +7,5 @@ public interface ModelFactory {
     SchuelerModel createSchuelerModel();
     AngehoerigerModel createAngehoerigerModel();
     SchuelerErfassenModel createSchuelerErfassenModel();
+    SchuelerSuchenModel createSchuelerSuchenModel();
 }

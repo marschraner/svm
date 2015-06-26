@@ -72,4 +72,32 @@ public class Converter {
         return s;
     }
 
+    private static String[] splitStrasseHausnummer(String strasseHausnummer) {
+        if (strasseHausnummer == null) {
+            return null;
+        }
+        String[] splitted = strasseHausnummer.trim().split("\\s+");
+        // Prüfen, ob mindestens 2 Felder und ob letztes mit Zahlen beginnt
+        if (splitted.length > 1 && splitted[splitted.length - 1].matches("\\d+.*")) {
+            String strasse = splitted[0];
+            for (int i = 1; i < splitted.length - 1; i++) {
+                strasse = strasse + " " + splitted[i];
+            }
+            return new String[]{strasse, splitted[splitted.length - 1]};
+        } else {
+            return new String[]{strasseHausnummer};
+        }
+    }
+
+    public static String strasseHausnummerGetStrasse(String strasseHausnummer) {
+        return (splitStrasseHausnummer(strasseHausnummer) == null ? null : splitStrasseHausnummer(strasseHausnummer)[0]);
+    }
+
+    public static String strasseHausnummerGetHausnummer(String strasseHausnummer) {
+        if (splitStrasseHausnummer(strasseHausnummer) == null) {
+            return null;
+        }
+        return (splitStrasseHausnummer(strasseHausnummer).length > 1 ? splitStrasseHausnummer(strasseHausnummer)[1] : "");
+    }
+
 }
