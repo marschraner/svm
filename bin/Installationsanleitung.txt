@@ -18,21 +18,21 @@ Applikation installieren
 - Entpacken von svm-${version}-bin.zip (bzw. ...tar.bz2 oder ...tar.gz)
 - In Terminal:
   - Ins entpackte Directory wechseln (cd svm-${version})
-  - *.bsh-Files ausführbar machen (chmod 775 *.bsh)
+  - *.sh-Files ausführbar machen (chmod 775 *.sh)
 
 Datenbank installieren
 ======================
 - Voraussetzungen:
   - mysql muss bekannt sein (bin-Directory von MySQL muss im PATH vorhanden sein), ist unter Linux in der Regel der Fall
   - MySQL-Server muss gestartet sein (ist unter Linux in der Regel automatisch gestartet)
-- Datenbank-Erstellungs-Script ausführen (./createSvmDatabase.bsh)
+- Datenbank-Erstellungs-Script ausführen (./createSvmDatabase.sh)
 
 Applikation starten
 ===================
 - Voraussetzungen:
   - MySQL-Server muss gestartet sein (ist unter Linux in der Regel automatisch gestartet)
   - java muss bekannt sein (bin-Directory von Java muss im PATH vorhanden sein), ist unter Linux in der Regel der Fall
-- Applikation starten (./runSvm.bsh)
+- Applikation starten (./runSvm.sh)
 
 
 --------------------------------------------------------------------------------
