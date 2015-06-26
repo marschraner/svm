@@ -69,7 +69,6 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
         Set<Field> fields = new HashSet<>();
         fields.add(field);
         makeErrorLabelsInvisible(fields);
-
     }
 
 }

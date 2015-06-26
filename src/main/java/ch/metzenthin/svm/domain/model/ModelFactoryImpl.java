@@ -28,4 +28,9 @@ public class ModelFactoryImpl implements ModelFactory {
         return new SchuelerErfassenModelImpl(commandInvoker);
     }
 
+    @Override
+    public SchuelerSuchenModel createSchuelerSuchenModel() {
+        return new SchuelerSuchenModelImpl(commandInvoker);
+    }
+
 }
