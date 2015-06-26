@@ -64,9 +64,7 @@ public class CommandInvokerImpl implements CommandInvoker {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
-            if (entityManager != null) {
-                entityManager.close();
-            }
+            entityManager.close();
         }
     }
 

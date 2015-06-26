@@ -51,12 +51,34 @@ public class Anmeldung implements Comparable<Anmeldung> {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Anmeldung)) return false;
+
+        Anmeldung anmeldung = (Anmeldung) o;
+
+        if (!anmeldedatum.equals(anmeldung.anmeldedatum)) return false;
+        if (abmeldedatum != null ? !abmeldedatum.equals(anmeldung.abmeldedatum) : anmeldung.abmeldedatum != null)
+            return false;
+        return schueler.equals(anmeldung.schueler);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = anmeldedatum.hashCode();
+        result = 31 * result + (abmeldedatum != null ? abmeldedatum.hashCode() : 0);
+        result = 31 * result + schueler.hashCode();
+        return result;
+    }
+
+    @Override
     public int compareTo(Anmeldung otherAnmeldung) {
         // absteigend nach Anmeldedatum und Abmeldedatum sortieren, d.h. neuste Einträge zuoberst
-        int result = -anmeldedatum.compareTo(otherAnmeldung.anmeldedatum);
+        int result = otherAnmeldung.anmeldedatum.compareTo(anmeldedatum);
         if (result == 0) {
             if (abmeldedatum != null && otherAnmeldung.abmeldedatum != null) {
-                result = -abmeldedatum.compareTo(otherAnmeldung.abmeldedatum);
+                result = otherAnmeldung.abmeldedatum.compareTo(abmeldedatum);
             } else if (abmeldedatum != null) {
                 result = 1;
             } else if (otherAnmeldung.abmeldedatum != null) {

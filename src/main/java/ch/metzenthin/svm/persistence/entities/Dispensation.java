@@ -59,12 +59,36 @@ public class Dispensation implements Comparable<Dispensation> {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Dispensation)) return false;
+
+        Dispensation that = (Dispensation) o;
+
+        if (!dispensationsbeginn.equals(that.dispensationsbeginn)) return false;
+        if (dispensationsende != null ? !dispensationsende.equals(that.dispensationsende) : that.dispensationsende != null)
+            return false;
+        if (!grund.equals(that.grund)) return false;
+        return schueler.equals(that.schueler);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = dispensationsbeginn.hashCode();
+        result = 31 * result + (dispensationsende != null ? dispensationsende.hashCode() : 0);
+        result = 31 * result + grund.hashCode();
+        result = 31 * result + schueler.hashCode();
+        return result;
+    }
+
+    @Override
     public int compareTo(Dispensation otherDispensation) {
         // absteigend nach Dispensationsbeginn und Dispensationsende sortieren, d.h. neuste Einträge zuoberst
-        int result = -dispensationsbeginn.compareTo(otherDispensation.dispensationsbeginn);
+        int result = otherDispensation.dispensationsbeginn.compareTo(dispensationsbeginn);
         if (result == 0) {
             if (dispensationsende != null && otherDispensation.dispensationsende != null) {
-                result = -dispensationsende.compareTo(otherDispensation.dispensationsende);
+                result = otherDispensation.dispensationsende.compareTo(dispensationsende);
             } else if (dispensationsende != null) {
                 result = 1;
             } else if (otherDispensation.dispensationsende != null) {
