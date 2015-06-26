@@ -1021,6 +1021,12 @@
                       <text value="Abmeldungen"/>
                     </properties>
                   </component>
+                  <vspacer id="76d4f">
+                    <constraints>
+                      <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
                 </children>
               </grid>
               <grid id="9f702" binding="stichtagPanel" layout-manager="GridBagLayout">
