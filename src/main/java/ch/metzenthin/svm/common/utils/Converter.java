@@ -79,11 +79,11 @@ public class Converter {
         String[] splitted = strasseHausnummer.trim().split("\\s+");
         // Prüfen, ob mindestens 2 Felder und ob letztes mit Zahlen beginnt
         if (splitted.length > 1 && splitted[splitted.length - 1].matches("\\d+.*")) {
-            String strasse = splitted[0];
+            StringBuilder strasse = new StringBuilder(splitted[0]);
             for (int i = 1; i < splitted.length - 1; i++) {
-                strasse = strasse + " " + splitted[i];
+                strasse.append(" ").append(splitted[i]);
             }
-            return new String[]{strasse, splitted[splitted.length - 1]};
+            return new String[]{strasse.toString(), splitted[splitted.length - 1]};
         } else {
             return new String[]{strasseHausnummer};
         }
