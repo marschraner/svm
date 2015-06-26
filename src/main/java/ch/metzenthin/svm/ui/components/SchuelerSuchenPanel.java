@@ -188,7 +188,7 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 10, 0, 0);
         panelLeft.add(stammdatenPanel, gbc);
-        stammdatenPanel.setBorder(BorderFactory.createTitledBorder("Stammdaten"));
+        stammdatenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Stammdaten"));
         final JPanel spacer1 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -294,6 +294,7 @@ public class SchuelerSuchenPanel {
         gbc.gridx = 1;
         gbc.gridy = 16;
         gbc.anchor = GridBagConstraints.WEST;
+        gbc.ipadx = 90;
         stammdatenPanel.add(label4, gbc);
         txtGeburtsdatum = new JTextField();
         gbc = new GridBagConstraints();
@@ -588,14 +589,14 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 10, 0, 0);
         panelLeft.add(statusDispensationGeschlechtPanel, gbc);
-        statusDispensationGeschlechtPanel.setBorder(BorderFactory.createTitledBorder("Status, Dispensation, Geschlecht"));
+        statusDispensationGeschlechtPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Status, Dispensation, Geschlecht"));
         final JLabel label10 = new JLabel();
         label10.setText("Status");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.ipadx = 55;
+        gbc.ipadx = 145;
         statusDispensationGeschlechtPanel.add(label10, gbc);
         final JPanel panel6 = new JPanel();
         panel6.setLayout(new GridBagLayout());
@@ -777,7 +778,7 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 10, 0, 0);
         panelLeft.add(codesPanel, gbc);
-        codesPanel.setBorder(BorderFactory.createTitledBorder("Codes"));
+        codesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Codes"));
         final JLabel label13 = new JLabel();
         label13.setText("Codes");
         label13.setDisplayedMnemonic('C');
@@ -786,7 +787,7 @@ public class SchuelerSuchenPanel {
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 58;
+        gbc.ipadx = 148;
         codesPanel.add(label13, gbc);
         final JPanel spacer29 = new JPanel();
         gbc = new GridBagConstraints();
@@ -839,7 +840,7 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 0, 0, 10);
         panelRight.add(kursPanel, gbc);
-        kursPanel.setBorder(BorderFactory.createTitledBorder("Kurs"));
+        kursPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Kurs"));
         final JLabel label14 = new JLabel();
         label14.setText("Lehrkraft");
         label14.setDisplayedMnemonic('L');
@@ -848,7 +849,7 @@ public class SchuelerSuchenPanel {
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.ipadx = 35;
+        gbc.ipadx = 125;
         kursPanel.add(label14, gbc);
         final JPanel spacer33 = new JPanel();
         gbc = new GridBagConstraints();
@@ -1009,14 +1010,14 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 0, 0, 10);
         panelRight.add(anAbmeldeStatistikPanel, gbc);
-        anAbmeldeStatistikPanel.setBorder(BorderFactory.createTitledBorder("An-/Abmeldesstatistik"));
+        anAbmeldeStatistikPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "An-/Abmeldesstatistik"));
         final JLabel label19 = new JLabel();
         label19.setText("Monat/Jahr");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.ipadx = 24;
+        gbc.ipadx = 114;
         anAbmeldeStatistikPanel.add(label19, gbc);
         final JPanel spacer42 = new JPanel();
         gbc = new GridBagConstraints();
@@ -1065,6 +1066,7 @@ public class SchuelerSuchenPanel {
         gbc.gridx = 3;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 0, 0, 5);
         anAbmeldeStatistikPanel.add(radioBtnAnmeldungen, gbc);
         radioBtnAbmeldungen = new JRadioButton();
         radioBtnAbmeldungen.setText("Abmeldungen");
@@ -1081,7 +1083,7 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 0, 0, 10);
         panelRight.add(stichtagPanel, gbc);
-        stichtagPanel.setBorder(BorderFactory.createTitledBorder("Stichtag für Suche"));
+        stichtagPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Stichtag für Suche"));
         final JLabel label20 = new JLabel();
         label20.setText("Stichtag");
         label20.setDisplayedMnemonic('T');
@@ -1090,7 +1092,7 @@ public class SchuelerSuchenPanel {
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.ipadx = 42;
+        gbc.ipadx = 132;
         stichtagPanel.add(label20, gbc);
         final JPanel spacer46 = new JPanel();
         gbc = new GridBagConstraints();

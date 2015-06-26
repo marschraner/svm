@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.SchuelerSuchenPanel">
   <grid id="27dc6" binding="panel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="1296" height="1129"/>
+      <xy x="20" y="20" width="1526" height="1129"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -50,7 +50,7 @@
                   <gridbag top="0" left="10" bottom="0" right="0" weightx="1.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="none" title="Stammdaten"/>
+                <border type="etched" title="Stammdaten"/>
                 <children>
                   <hspacer id="2c94d">
                     <constraints>
@@ -161,7 +161,7 @@
                   <component id="c698d" class="javax.swing.JLabel">
                     <constraints>
                       <grid row="16" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0"/>
+                      <gridbag weightx="0.0" weighty="0.0" ipadx="90"/>
                     </constraints>
                     <properties>
                       <labelFor value="28b3b"/>
@@ -485,12 +485,12 @@
                   <gridbag top="0" left="10" bottom="0" right="0" weightx="1.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="none" title="Status, Dispensation, Geschlecht"/>
+                <border type="etched" title="Status, Dispensation, Geschlecht"/>
                 <children>
                   <component id="a5f60" class="javax.swing.JLabel">
                     <constraints>
                       <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0" ipadx="55"/>
+                      <gridbag weightx="0.0" weighty="0.0" ipadx="145"/>
                     </constraints>
                     <properties>
                       <text value="Status"/>
@@ -693,12 +693,12 @@
                   <gridbag top="0" left="10" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="none" title="Codes"/>
+                <border type="etched" title="Codes"/>
                 <children>
                   <component id="e4756" class="javax.swing.JLabel">
                     <constraints>
                       <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0" ipadx="58"/>
+                      <gridbag weightx="0.0" weighty="0.0" ipadx="148"/>
                     </constraints>
                     <properties>
                       <labelFor value="ab101"/>
@@ -764,12 +764,12 @@
                   <gridbag top="0" left="0" bottom="0" right="10" weightx="1.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="none" title="Kurs"/>
+                <border type="etched" title="Kurs"/>
                 <children>
                   <component id="4a4cb" class="javax.swing.JLabel">
                     <constraints>
                       <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0" ipadx="35"/>
+                      <gridbag weightx="0.0" weighty="0.0" ipadx="125"/>
                     </constraints>
                     <properties>
                       <labelFor value="9e43a"/>
@@ -949,12 +949,12 @@
                   <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="none" title="An-/Abmeldesstatistik"/>
+                <border type="etched" title="An-/Abmeldesstatistik"/>
                 <children>
                   <component id="cf968" class="javax.swing.JLabel">
                     <constraints>
                       <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0" ipadx="24"/>
+                      <gridbag weightx="0.0" weighty="0.0" ipadx="114"/>
                     </constraints>
                     <properties>
                       <labelFor value="48538"/>
@@ -1006,7 +1006,7 @@
                   <component id="32ff9" class="javax.swing.JRadioButton" binding="radioBtnAnmeldungen">
                     <constraints>
                       <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0"/>
+                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
                       <text value="Anmeldungen"/>
@@ -1029,12 +1029,12 @@
                   <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="none" title="Stichtag für Suche"/>
+                <border type="etched" title="Stichtag für Suche"/>
                 <children>
                   <component id="cab37" class="javax.swing.JLabel">
                     <constraints>
                       <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0" ipadx="42"/>
+                      <gridbag weightx="0.0" weighty="0.0" ipadx="132"/>
                     </constraints>
                     <properties>
                       <labelFor value="cfc47"/>

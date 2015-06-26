@@ -8,7 +8,6 @@ import ch.metzenthin.svm.ui.components.*;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -63,9 +62,6 @@ public class SchuelerErfassenController {
 
     public void setSchuelerPanel(SchuelerPanel schuelerPanel, SchuelerModel schuelerModel) {
         schuelerPanel.setModel(schuelerModel);
-        // Panelgrösse überschreiben
-        schuelerPanel.getMainPanel().setMinimumSize(new Dimension(597, 420));
-        schuelerPanel.getMainPanel().setPreferredSize(new Dimension(597, 420));
         // Kein Abmeldedatum sichtbar
         schuelerPanel.getLblAbmeldedatum().setVisible(false);
         schuelerPanel.getTxtAbmeldedatum().setVisible(false);
@@ -77,9 +73,6 @@ public class SchuelerErfassenController {
 
     public void setMutterPanel(AngehoerigerPanel mutterPanel, AngehoerigerModel mutterModel) {
         mutterPanel.setModel(mutterModel);
-        // Panelgrösse überschreiben
-        mutterPanel.getMainPanel().setMinimumSize(new Dimension(597, 290));
-        mutterPanel.getMainPanel().setPreferredSize(new Dimension(597, 290));
         // Rechnungsempfänger-Label überschreiben
         mutterPanel.getLblRechnungsempfaenger().setText("Rechnungsempfängerin");
         // Keine Anrede anzeigen
@@ -97,9 +90,6 @@ public class SchuelerErfassenController {
 
     public void setVaterPanel(AngehoerigerPanel vaterPanel, AngehoerigerModel vaterModel) {
         vaterPanel.setModel(vaterModel);
-        // Panelgrösse überschreiben
-        vaterPanel.getMainPanel().setMinimumSize(new Dimension(597, 290));
-        vaterPanel.getMainPanel().setPreferredSize(new Dimension(597, 290));
         // Keine Anrede anzeigen
         vaterPanel.getLblAnrede().setVisible(false);
         vaterPanel.getComboBoxAnrede().setVisible(false);
@@ -113,9 +103,6 @@ public class SchuelerErfassenController {
 
     public void setDrittempfaengerPanel(AngehoerigerPanel drittempfaengerPanel, AngehoerigerModel drittempfaengerModel) {
         drittempfaengerPanel.setModel(drittempfaengerModel);
-        // Panelgrösse überschreiben
-        drittempfaengerPanel.getMainPanel().setMinimumSize(new Dimension(597, 270));
-        drittempfaengerPanel.getMainPanel().setPreferredSize(new Dimension(597, 270));
         // Anrede: KEINE nicht anzeigen:
         drittempfaengerPanel.getComboBoxAnrede().removeItem(Anrede.KEINE);
         // Keine Adresse Schüler übernehmen-Checkbox anzeigen
