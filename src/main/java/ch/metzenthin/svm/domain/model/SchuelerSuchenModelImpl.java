@@ -4,7 +4,10 @@ import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.persistence.entities.Adresse;
+import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
+import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.control.CompletedListener;
 import ch.metzenthin.svm.ui.control.DisableFieldsListener;
 import ch.metzenthin.svm.ui.control.MakeErrorLabelsInvisibleListener;
@@ -12,12 +15,9 @@ import ch.metzenthin.svm.ui.control.MakeErrorLabelsInvisibleListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Set;
+import java.util.*;
 
-import static ch.metzenthin.svm.common.utils.Converter.strasseHausnummerGetHausnummer;
-import static ch.metzenthin.svm.common.utils.Converter.strasseHausnummerGetStrasse;
-import static ch.metzenthin.svm.common.utils.Converter.toCalendar;
+import static ch.metzenthin.svm.common.utils.Converter.*;
 
 /**
  * @author Martin Schraner
@@ -167,6 +167,15 @@ final class SchuelerSuchenModelImpl implements SchuelerSuchenModel {
     @Override
     public Calendar getStichtag() {
         return stichtag;
+    }
+
+    @Override
+    public SchuelerSuchenResult suchen() {
+        List<Schueler> schuelerList = new ArrayList<>();
+        schuelerList.add(new Schueler("Leu", "Lea", new GregorianCalendar(2010, Calendar.APRIL, 15), null, null, null, null));
+        schuelerList.add(new Schueler("Keller", "Urs", new GregorianCalendar(2000, Calendar.JANUARY, 31), null, null, null, null));
+        SchuelerSuchenResult schuelerSuchenResult = new SchuelerSuchenResult(schuelerList);
+        return schuelerSuchenResult;
     }
 
     @Override

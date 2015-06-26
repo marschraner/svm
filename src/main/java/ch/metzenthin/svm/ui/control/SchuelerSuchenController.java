@@ -3,6 +3,9 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
+import ch.metzenthin.svm.domain.model.SchuelerSuchenResult;
+import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -63,7 +66,8 @@ public class SchuelerSuchenController extends AbstractController {
     private JButton btnSuchen;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
-    
+    private ActionListener nextPanelListener;
+
     private SchuelerSuchenModel schuelerSuchenModel;
 
     public SchuelerSuchenController(SchuelerSuchenModel schuelerSuchenModel) {
@@ -315,6 +319,10 @@ public class SchuelerSuchenController extends AbstractController {
         this.closeListener = closeListener;
     }
 
+    public void addNextPanelListener(ActionListener nextPanelListener) {
+        this.nextPanelListener = nextPanelListener;
+    }
+
     private void onNachnameEvent() {
         LOGGER.trace("SchuelerSuchenController Event Nachname");
         schuelerSuchenModel.setNachname(txtNachname.getText());
@@ -395,19 +403,10 @@ public class SchuelerSuchenController extends AbstractController {
 
     private void onSuchen() {
         LOGGER.trace("SchuelerSuchenPanel Suchen gedrückt");
-        //TODO
-//        SchuelerErfassenDialog dialog = null;
-//        SchuelerErfassenSaveResult schuelerErfassenSaveResult = schuelerErfassenModel.validieren();
-//        while (schuelerErfassenSaveResult != null) { // Wenn null: kein weiterer Dialog
-//            dialog = createDialog(schuelerErfassenSaveResult);
-//            dialog.pack();
-//            dialog.setVisible(true);
-//            schuelerErfassenSaveResult = dialog.getResult();
-//        }
-//        // Wenn isAbbrechen() zurück zur Eingabemaske, sonst Eingabemaske schliessen
-//        if ((dialog == null) || !dialog.isAbbrechen()) {
-//            closeListener.actionPerformed(new ActionEvent(btnSuchen, ActionEvent.ACTION_PERFORMED, "Close nach Suchen"));
-//        }
+        SchuelerSuchenResult schuelerSuchenResult = schuelerSuchenModel.suchen();
+        SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenResult);
+        SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(schuelerSuchenTableModel);
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
     }
 
     @Override

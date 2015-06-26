@@ -76,7 +76,7 @@ public class SchuelerSuchenPanel {
     public SchuelerSuchenPanel(SvmContext svmContext) {
         $$$setupUI$$$();
         initializeErrLbls();
-        //createSchuelerErfassenController(svmContext);
+        createSchuelerSuchenController(svmContext);
     }
 
     private void initializeErrLbls() {
@@ -112,7 +112,7 @@ public class SchuelerSuchenPanel {
         errLblAnAbmeldemonat.setForeground(Color.RED);
     }
 
-    private void createSchuelerErfassenController(SvmContext svmContext) {
+    private void createSchuelerSuchenController(SvmContext svmContext) {
         schuelerSuchenController = new SchuelerSuchenController(svmContext.getModelFactory().createSchuelerSuchenModel());
         schuelerSuchenController.setTxtNachname(txtNachname);
         schuelerSuchenController.setTxtVorname(txtVorname);
@@ -145,8 +145,11 @@ public class SchuelerSuchenPanel {
     }
 
     public void addCloseListener(ActionListener actionListener) {
-        //TODO
-        //schuelerSuchenController.addCloseListener(actionListener);
+        schuelerSuchenController.addCloseListener(actionListener);
+    }
+
+    public void addNextPanelListener(ActionListener actionListener) {
+        schuelerSuchenController.addNextPanelListener(actionListener);
     }
 
     /**

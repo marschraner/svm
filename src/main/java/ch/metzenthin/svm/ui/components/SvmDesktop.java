@@ -108,6 +108,12 @@ public class SvmDesktop extends JFrame implements ActionListener {
                     onSchuelerErfassenFrameAbbrechen();
                 }
             });
+            schuelerSuchenPanel.addNextPanelListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onNextPanelAvailable(e.getSource());
+                }
+            });
             activeComponent = schuelerSuchenPanel.$$$getRootComponent$$$();
             getContentPane().add(activeComponent);
             activeComponent.setVisible(true);
@@ -116,6 +122,18 @@ public class SvmDesktop extends JFrame implements ActionListener {
         } else { // beenden
             quit();
         }
+    }
+
+    private void onNextPanelAvailable(Object eventSource) {
+        Object[] eventSourceArray = (Object[]) eventSource;
+        JComponent nextComponent = (JComponent) eventSourceArray[0];
+        activeComponent.setVisible(false);
+        getContentPane().remove(activeComponent);
+        activeComponent = nextComponent;
+        getContentPane().add(activeComponent);
+        activeComponent.setVisible(true);
+        setTitle((String) eventSourceArray[1]);
+        revalidate();
     }
 
     private void onSchuelerErfassenFrameAbbrechen() {

@@ -1,9 +1,11 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.persistence.entities.Adresse;
+import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
+import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import java.util.Calendar;
 
@@ -16,6 +18,8 @@ public interface SchuelerSuchenModel extends Model {
     Adresse getAdresse();
     Anmeldung getAnmeldung();
     Calendar getStichtag();
+
+    SchuelerSuchenResult suchen();
 
     void setNachname(String nachname);
     void setVorname(String vorname);
