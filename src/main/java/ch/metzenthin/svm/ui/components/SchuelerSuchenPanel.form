@@ -1127,9 +1127,6 @@
           </vspacer>
         </children>
       </grid>
-      <hspacer id="3ccb3">
-        <constraints border-constraint="West"/>
-      </hspacer>
     </children>
   </grid>
   <buttonGroups>

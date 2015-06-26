@@ -1169,8 +1169,6 @@ public class SchuelerSuchenPanel {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel2.add(spacer55, gbc);
-        final com.intellij.uiDesigner.core.Spacer spacer56 = new com.intellij.uiDesigner.core.Spacer();
-        panel.add(spacer56, BorderLayout.WEST);
         label1.setLabelFor(txtNachname);
         label2.setLabelFor(txtVorname);
         label3.setLabelFor(txtPlz);
