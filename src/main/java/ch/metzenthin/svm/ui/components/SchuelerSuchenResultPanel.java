@@ -5,6 +5,7 @@ import ch.metzenthin.svm.ui.control.SchuelerSuchenResultController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 /**
  * @author Hans Stamm
@@ -18,6 +19,10 @@ public class SchuelerSuchenResultPanel {
     public SchuelerSuchenResultPanel(SchuelerSuchenTableModel schuelerSuchenTableModel) {
         schuelerSuchenResultController = new SchuelerSuchenResultController(schuelerSuchenTableModel, schuelerSuchenResultTable);
         schuelerSuchenResultController.setBtnDatenblatt(btnDatenblatt);
+    }
+
+    public void addNextPanelListener(ActionListener actionListener) {
+        schuelerSuchenResultController.addNextPanelListener(actionListener);
     }
 
     {

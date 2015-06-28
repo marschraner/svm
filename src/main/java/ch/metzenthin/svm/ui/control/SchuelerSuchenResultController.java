@@ -2,6 +2,7 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -18,6 +19,7 @@ public class SchuelerSuchenResultController {
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final JTable schuelerSuchenResultTable;
     private JButton btnDatenblatt;
+    private ActionListener nextPanelListener;
 
     public SchuelerSuchenResultController(SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable) {
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
@@ -41,6 +43,10 @@ public class SchuelerSuchenResultController {
         });
     }
 
+    public void addNextPanelListener(ActionListener nextPanelListener) {
+        this.nextPanelListener = nextPanelListener;
+    }
+
     public void setBtnDatenblatt(JButton btnDatenblatt) {
         this.btnDatenblatt = btnDatenblatt;
         enableBtnDatenblatt(false);
@@ -59,6 +65,8 @@ public class SchuelerSuchenResultController {
     private void onDatenblatt() {
         SchuelerDatenblattModel schuelerDatenblattModel = schuelerSuchenTableModel.getSchuelerDatenblattModel(schuelerSuchenResultTable.getSelectedRow());
         System.out.println("Datenblatt für " + schuelerDatenblattModel.getNachname() + "," + schuelerDatenblattModel.getVorname());
+        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(schuelerDatenblattModel);
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[] {schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));
     }
 
     private void onListSelection() {
