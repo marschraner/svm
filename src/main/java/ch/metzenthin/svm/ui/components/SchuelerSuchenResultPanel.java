@@ -12,10 +12,12 @@ import java.awt.*;
 public class SchuelerSuchenResultPanel {
     private JTable schuelerSuchenResultTable;
     private JPanel panel;
+    private JButton btnDatenblatt;
     private final SchuelerSuchenResultController schuelerSuchenResultController;
 
     public SchuelerSuchenResultPanel(SchuelerSuchenTableModel schuelerSuchenTableModel) {
         schuelerSuchenResultController = new SchuelerSuchenResultController(schuelerSuchenTableModel, schuelerSuchenResultTable);
+        schuelerSuchenResultController.setBtnDatenblatt(btnDatenblatt);
     }
 
     {
@@ -35,8 +37,16 @@ public class SchuelerSuchenResultPanel {
     private void $$$setupUI$$$() {
         panel = new JPanel();
         panel.setLayout(new BorderLayout(0, 0));
+        final JScrollPane scrollPane1 = new JScrollPane();
+        panel.add(scrollPane1, BorderLayout.CENTER);
         schuelerSuchenResultTable = new JTable();
-        panel.add(schuelerSuchenResultTable, BorderLayout.CENTER);
+        scrollPane1.setViewportView(schuelerSuchenResultTable);
+        final JPanel panel1 = new JPanel();
+        panel1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        panel.add(panel1, BorderLayout.SOUTH);
+        btnDatenblatt = new JButton();
+        btnDatenblatt.setText("Datenblatt");
+        panel1.add(btnDatenblatt);
     }
 
     /**

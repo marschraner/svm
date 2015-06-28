@@ -7,10 +7,30 @@
     <properties/>
     <border type="none"/>
     <children>
-      <component id="f7e9d" class="javax.swing.JTable" binding="schuelerSuchenResultTable">
+      <scrollpane id="4fa35">
         <constraints border-constraint="Center"/>
         <properties/>
-      </component>
+        <border type="none"/>
+        <children>
+          <component id="f7e9d" class="javax.swing.JTable" binding="schuelerSuchenResultTable">
+            <constraints/>
+            <properties/>
+          </component>
+        </children>
+      </scrollpane>
+      <grid id="6fb06" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="10473" class="javax.swing.JButton" binding="btnDatenblatt">
+            <constraints/>
+            <properties>
+              <text value="Datenblatt"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
     </children>
   </grid>
 </form>

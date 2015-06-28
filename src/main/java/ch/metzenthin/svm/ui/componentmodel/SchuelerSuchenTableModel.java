@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.componentmodel;
 
+import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenResult;
 
 import javax.swing.table.AbstractTableModel;
@@ -28,6 +29,15 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return schuelerSuchenResult.getValueAt(rowIndex, columnIndex);
+    }
+
+    @Override
+    public String getColumnName(int column) {
+        return schuelerSuchenResult.getColumnName(column);
+    }
+
+    public SchuelerDatenblattModel getSchuelerDatenblattModel(int rowIndex) {
+        return schuelerSuchenResult.getSchuelerDatenblattModel(rowIndex);
     }
 
 }

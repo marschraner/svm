@@ -172,10 +172,9 @@ final class SchuelerSuchenModelImpl implements SchuelerSuchenModel {
     @Override
     public SchuelerSuchenResult suchen() {
         List<Schueler> schuelerList = new ArrayList<>();
-        schuelerList.add(new Schueler("Leu", "Lea", new GregorianCalendar(2010, Calendar.APRIL, 15), null, null, null, null));
-        schuelerList.add(new Schueler("Keller", "Urs", new GregorianCalendar(2000, Calendar.JANUARY, 31), null, null, null, null));
-        SchuelerSuchenResult schuelerSuchenResult = new SchuelerSuchenResult(schuelerList);
-        return schuelerSuchenResult;
+        schuelerList.add(new Schueler("Lea", "Leu", new GregorianCalendar(2010, Calendar.APRIL, 15), null, null, null, null));
+        schuelerList.add(new Schueler("Urs", "Keller", new GregorianCalendar(2000, Calendar.JANUARY, 31), null, null, null, null));
+        return new SchuelerSuchenResult(schuelerList);
     }
 
     @Override
