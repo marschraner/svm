@@ -167,7 +167,8 @@
                           <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <text value="&amp;Schüler"/>
+                          <selected value="true"/>
+                          <text value="Schüler"/>
                         </properties>
                       </component>
                       <component id="e4207" class="javax.swing.JRadioButton" binding="radioBtnEltern">
@@ -176,7 +177,7 @@
                           <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <text value="&amp;Eltern"/>
+                          <text value="Eltern"/>
                         </properties>
                       </component>
                       <component id="baf1f" class="javax.swing.JRadioButton" binding="radioBtnRechnungsempfaenger">
@@ -185,7 +186,7 @@
                           <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <text value="&amp;Rechnungsempfänger"/>
+                          <text value="Rechnungsempfänger"/>
                         </properties>
                       </component>
                       <component id="d74d8" class="javax.swing.JRadioButton" binding="radioBtnRolleAlle">
@@ -259,7 +260,7 @@
                     </constraints>
                     <properties>
                       <labelFor value="88152"/>
-                      <text value="E&amp;mail"/>
+                      <text value="&amp;Email"/>
                     </properties>
                   </component>
                   <component id="88152" class="javax.swing.JTextField" binding="txtEmail" default-binding="true">
@@ -293,7 +294,7 @@
                     </constraints>
                     <properties>
                       <labelFor value="153d4"/>
-                      <text value="Strasse/Nr."/>
+                      <text value="&amp;Strasse/Nr."/>
                     </properties>
                   </component>
                   <component id="e2472" class="javax.swing.JLabel" binding="errLblVorname">
@@ -471,6 +472,36 @@
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                   </vspacer>
+                  <component id="c5e78" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="20" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="Für Suche berücksichtigen"/>
+                    </properties>
+                  </component>
+                  <component id="9ee29" class="javax.swing.JCheckBox" binding="checkBoxStammdatenBeruecksichtigen">
+                    <constraints>
+                      <grid row="20" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                  <vspacer id="bc2df">
+                    <constraints>
+                      <grid row="21" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
+                  <vspacer id="8f391">
+                    <constraints>
+                      <grid row="19" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
                 </children>
               </grid>
               <grid id="fd4c2" binding="statusDispensationGeschlechtPanel" layout-manager="GridBagLayout">
@@ -504,6 +535,7 @@
                           <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
+                          <selected value="true"/>
                           <text value="angemeldet"/>
                         </properties>
                       </component>
@@ -516,12 +548,13 @@
                           <text value="abgemeldet"/>
                         </properties>
                       </component>
-                      <component id="95367" class="javax.swing.JRadioButton" binding="radioBtnStatusAlle">
+                      <component id="95367" class="javax.swing.JRadioButton" binding="radioBtnAnmeldestatusAlle">
                         <constraints>
                           <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                           <gridbag weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
+                          <selected value="false"/>
                           <text value="alle"/>
                         </properties>
                       </component>
@@ -562,7 +595,8 @@
                           <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <text value="d&amp;ispensiert"/>
+                          <selected value="false"/>
+                          <text value="dispensiert"/>
                         </properties>
                       </component>
                       <component id="594c2" class="javax.swing.JRadioButton" binding="radioBtnNichtDispensiert">
@@ -571,7 +605,7 @@
                           <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <text value="nic&amp;ht dispensiert"/>
+                          <text value="nicht dispensiert"/>
                         </properties>
                       </component>
                       <component id="8b982" class="javax.swing.JRadioButton" binding="radioBtnDispensationAlle">
@@ -580,6 +614,7 @@
                           <gridbag weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
+                          <selected value="true"/>
                           <text value="alle"/>
                         </properties>
                       </component>
@@ -632,6 +667,7 @@
                           <gridbag weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
+                          <selected value="true"/>
                           <text value="alle"/>
                         </properties>
                       </component>
@@ -674,74 +710,6 @@
                     </constraints>
                   </vspacer>
                   <vspacer id="7eebd">
-                    <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0"/>
-                    </constraints>
-                  </vspacer>
-                </children>
-              </grid>
-              <grid id="1a3" binding="codesPanel" layout-manager="GridBagLayout">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag top="0" left="10" bottom="10" right="0" weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties/>
-                <border type="etched" title="Codes"/>
-                <children>
-                  <component id="e4756" class="javax.swing.JLabel">
-                    <constraints>
-                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0"/>
-                    </constraints>
-                    <properties>
-                      <labelFor value="ab101"/>
-                      <text value="&amp;Codes"/>
-                    </properties>
-                  </component>
-                  <component id="ab101" class="javax.swing.JTextField" binding="txtCodes">
-                    <constraints>
-                      <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                        <preferred-size width="150" height="-1"/>
-                      </grid>
-                      <gridbag weightx="1.0" weighty="0.0"/>
-                    </constraints>
-                    <properties/>
-                  </component>
-                  <hspacer id="ae3e0">
-                    <constraints>
-                      <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0"/>
-                    </constraints>
-                  </hspacer>
-                  <component id="9bf84" class="javax.swing.JLabel" binding="errLblCodes">
-                    <constraints>
-                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0"/>
-                    </constraints>
-                    <properties>
-                      <text value="errLblCodes"/>
-                    </properties>
-                  </component>
-                  <hspacer id="b40c3">
-                    <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0"/>
-                    </constraints>
-                  </hspacer>
-                  <hspacer id="5b25e">
-                    <constraints>
-                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0" ipadx="200"/>
-                    </constraints>
-                  </hspacer>
-                  <vspacer id="c0718">
-                    <constraints>
-                      <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0"/>
-                    </constraints>
-                  </vspacer>
-                  <vspacer id="7fd04">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
@@ -851,7 +819,7 @@
                         </constraints>
                         <properties>
                           <labelFor value="1fb4b"/>
-                          <text value="bis"/>
+                          <text value="b&amp;is"/>
                         </properties>
                       </component>
                       <component id="1fb4b" class="javax.swing.JTextField" binding="txtBis">
@@ -935,95 +903,131 @@
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                   </vspacer>
-                </children>
-              </grid>
-              <grid id="2dacf" binding="anAbmeldeStatistikPanel" layout-manager="GridBagLayout">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag top="0" left="0" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties/>
-                <border type="etched" title="An-/Abmeldesstatistik"/>
-                <children>
-                  <component id="cf968" class="javax.swing.JLabel">
+                  <component id="54003" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
-                      <labelFor value="48538"/>
-                      <text value="Monat/Jahr"/>
+                      <text value="Für Suche berücksichtigen"/>
                     </properties>
                   </component>
-                  <vspacer id="84e89">
+                  <component id="e72ff" class="javax.swing.JCheckBox" binding="checkBoxKursBeruecksichtigen">
                     <constraints>
-                      <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                  <vspacer id="84d5d">
+                    <constraints>
+                      <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                   </vspacer>
-                  <hspacer id="b19fb">
+                  <vspacer id="ae8d3">
                     <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
-                  </hspacer>
-                  <component id="48538" class="javax.swing.JTextField" binding="txtAnAbmeldemonat">
+                  </vspacer>
+                </children>
+              </grid>
+              <grid id="1a3" binding="codesPanel" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="0" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties/>
+                <border type="etched" title="Codes"/>
+                <children>
+                  <component id="e4756" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="1" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <labelFor value="ab101"/>
+                      <text value="&amp;Codes"/>
+                    </properties>
+                  </component>
+                  <component id="ab101" class="javax.swing.JTextField" binding="txtCodes">
+                    <constraints>
+                      <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="150" height="-1"/>
                       </grid>
                       <gridbag weightx="1.0" weighty="0.0"/>
                     </constraints>
                     <properties/>
                   </component>
-                  <hspacer id="27b56">
+                  <hspacer id="ae3e0">
                     <constraints>
-                      <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                   </hspacer>
-                  <component id="8bbad" class="javax.swing.JLabel" binding="errLblAnAbmeldemonat">
+                  <component id="9bf84" class="javax.swing.JLabel" binding="errLblCodes">
                     <constraints>
-                      <grid row="0" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
-                      <text value="errLblAnAbmeldemonat"/>
+                      <text value="errLblCodes"/>
                     </properties>
                   </component>
-                  <component id="32ff9" class="javax.swing.JRadioButton" binding="radioBtnAnmeldungen">
+                  <hspacer id="b40c3">
                     <constraints>
-                      <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
-                    </constraints>
-                    <properties>
-                      <text value="Anmeldungen"/>
-                    </properties>
-                  </component>
-                  <component id="b51c7" class="javax.swing.JRadioButton" binding="radioBtnAbmeldungen">
-                    <constraints>
-                      <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
-                    <properties>
-                      <text value="Abmeldungen"/>
-                    </properties>
-                  </component>
-                  <vspacer id="76d4f">
-                    <constraints>
-                      <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0"/>
-                    </constraints>
-                  </vspacer>
-                  <hspacer id="b630f">
+                  </hspacer>
+                  <hspacer id="5b25e">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0" ipadx="200"/>
                     </constraints>
                   </hspacer>
-                  <vspacer id="5a052">
+                  <vspacer id="c0718">
+                    <constraints>
+                      <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
+                  <vspacer id="7fd04">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
+                  <component id="5d7dd" class="javax.swing.JCheckBox" binding="checkBoxCodesBeruecksichtigen">
+                    <constraints>
+                      <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                  <component id="9ce3b" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="Für Suche berücksichtigen"/>
+                    </properties>
+                  </component>
+                  <vspacer id="35456">
+                    <constraints>
+                      <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
+                  <vspacer id="18936">
+                    <constraints>
+                      <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                   </vspacer>
@@ -1031,7 +1035,7 @@
               </grid>
               <grid id="9f702" binding="stichtagPanel" layout-manager="GridBagLayout">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                   <gridbag top="0" left="0" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
@@ -1097,6 +1101,129 @@
                   </vspacer>
                 </children>
               </grid>
+              <grid id="2dacf" binding="anAbmeldeStatistikPanel" layout-manager="GridBagLayout">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="0" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties/>
+                <border type="etched" title="An-/Abmeldesstatistik"/>
+                <children>
+                  <component id="cf968" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <labelFor value="48538"/>
+                      <text value="Monat/Jahr"/>
+                    </properties>
+                  </component>
+                  <vspacer id="84e89">
+                    <constraints>
+                      <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
+                  <hspacer id="b19fb">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </hspacer>
+                  <component id="48538" class="javax.swing.JTextField" binding="txtAnAbmeldemonat">
+                    <constraints>
+                      <grid row="1" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="-1"/>
+                      </grid>
+                      <gridbag weightx="1.0" weighty="0.0"/>
+                    </constraints>
+                    <properties/>
+                  </component>
+                  <hspacer id="27b56">
+                    <constraints>
+                      <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </hspacer>
+                  <component id="8bbad" class="javax.swing.JLabel" binding="errLblAnAbmeldemonat">
+                    <constraints>
+                      <grid row="0" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="errLblAnAbmeldemonat"/>
+                    </properties>
+                  </component>
+                  <component id="32ff9" class="javax.swing.JRadioButton" binding="radioBtnAnmeldungen">
+                    <constraints>
+                      <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="Anmeldungen"/>
+                    </properties>
+                  </component>
+                  <component id="b51c7" class="javax.swing.JRadioButton" binding="radioBtnAbmeldungen">
+                    <constraints>
+                      <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="Abmeldungen"/>
+                    </properties>
+                  </component>
+                  <vspacer id="76d4f">
+                    <constraints>
+                      <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
+                  <hspacer id="b630f">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0" ipadx="200"/>
+                    </constraints>
+                  </hspacer>
+                  <vspacer id="5a052">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
+                  <component id="675e3" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value="Für Suche berücksichtigen"/>
+                    </properties>
+                  </component>
+                  <vspacer id="340b7">
+                    <constraints>
+                      <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
+                  <component id="ae3e8" class="javax.swing.JCheckBox" binding="checkBoxAnAbmeldestatistikBeruecksichtigen">
+                    <constraints>
+                      <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                  <vspacer id="25c1f">
+                    <constraints>
+                      <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                  </vspacer>
+                </children>
+              </grid>
             </children>
           </grid>
         </children>
@@ -1131,6 +1258,11 @@
       <member id="fefa8"/>
       <member id="f19e3"/>
       <member id="95367"/>
+    </group>
+    <group name="buttonGroupGeschlecht">
+      <member id="275bc"/>
+      <member id="646e0"/>
+      <member id="d7034"/>
     </group>
   </buttonGroups>
   <inspectionSuppressions>

@@ -55,7 +55,7 @@ public class StringModelAttribute {
         String oldValue = getValue();
         attributeAccessor.setValue(emptyStringAsNull(newValueFormatted));
         if (!equalsNullSafe(newValueTrimmed, newValueFormatted) && equalsNullSafe(oldValue, getValue())) {
-            // Der Wert wurde fomatiert und das Resultat entspricht dem alten Wert. Dann wird kein PropertyChangeEvent
+            // Der Wert wurde formatiert und das Resultat entspricht dem alten Wert. Dann wird kein PropertyChangeEvent
             // ausgelöst. Damit trotzdem ein Event ausgelöst wird, wird der alte Wert auf den nicht formatierten Wert gesetzt.
             oldValue = newValueTrimmed;
             LOGGER.trace("setNewValue: Alten Wert auf Eingabewert gesetzt, damit PropertyChangeEvent ausgelöst wird. Alter Wert=" + oldValue + ", neuer Wert=" + getValue());
