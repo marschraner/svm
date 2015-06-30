@@ -571,30 +571,46 @@ public abstract class PersonController extends AbstractController {
 
     @Override
     void validateFields() throws SvmValidationException {
-        if (comboBoxAnrede != null) {
+        if (comboBoxAnrede != null && comboBoxAnrede.isEnabled()) {
             LOGGER.trace("Validate field Anrede");
             setModelAnrede();
         }
-        LOGGER.trace("Validate field Nachname");
-        setModelNachname();
-        LOGGER.trace("Validate field Vorname");
-        setModelVorname();
-        LOGGER.trace("Validate field StrasseHausnummer");
-        setModelStrasseHausnummer();
-        LOGGER.trace("Validate field Plz");
-        setModelPlz();
-        LOGGER.trace("Validate field Ort");
-        setModelOrt();
-        if (txtGeburtsdatum != null) {
+        if (txtNachname.isEnabled()) {
+            LOGGER.trace("Validate field Nachname");
+            setModelNachname();
+        }
+        if (txtVorname.isEnabled()) {
+            LOGGER.trace("Validate field Vorname");
+            setModelVorname();
+        }
+        if (txtStrasseHausnummer.isEnabled()) {
+            LOGGER.trace("Validate field StrasseHausnummer");
+            setModelStrasseHausnummer();
+        }
+        if (txtPlz.isEnabled()) {
+            LOGGER.trace("Validate field Plz");
+            setModelPlz();
+        }
+        if (txtOrt.isEnabled()) {
+            LOGGER.trace("Validate field Ort");
+            setModelOrt();
+        }
+        if (txtGeburtsdatum != null && txtGeburtsdatum.isEnabled()) {
             LOGGER.trace("Validate field Geburtsdatum");
             setModelGeburtsdatum();
         }
-        LOGGER.trace("Validate field Festnetz");
-        setModelFestnetz();
-        LOGGER.trace("Validate field Natel");
-        setModelNatel();
-        LOGGER.trace("Validate field Email");
-        setModelEmail();
+        if (txtFestnetz.isEnabled()) {
+            LOGGER.trace("Validate field Festnetz");
+            setModelFestnetz();
+        }
+        if (txtNatel.isEnabled()) {
+            LOGGER.trace("Validate field Natel");
+            setModelNatel();
+        }
+        if (txtEmail.isEnabled()) {
+            LOGGER.trace("Validate field Email");
+            setModelEmail();
+        }
     }
 
     @Override

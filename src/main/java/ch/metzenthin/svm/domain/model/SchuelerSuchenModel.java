@@ -7,7 +7,7 @@ import java.util.Calendar;
 /**
  * @author Martin Schraner
  */
-public interface SchuelerSuchenModel extends Model {
+public interface SchuelerSuchenModel extends PersonModel {
 
     enum RolleSelected {
         SCHUELER,
@@ -39,15 +39,6 @@ public interface SchuelerSuchenModel extends Model {
         ABMELDUNGEN
     }
 
-    String getNachname();
-    String getVorname();
-    String getStrasseHausnummer();
-    String getPlz();
-    String getOrt();
-    String getFestnetz();
-    String getNatel();
-    String getEmail();
-    Calendar getGeburtsdatum();
     RolleSelected getRolle();
     AnmeldestatusSelected getAnmeldestatus();
     DispensationSelected getDispensation();
@@ -62,16 +53,6 @@ public interface SchuelerSuchenModel extends Model {
 
     SchuelerSuchenResult suchen();
 
-    void setNachname(String nachname) throws SvmValidationException;
-    void setVorname(String vorname) throws SvmValidationException;
-    void setStrasseHausnummer(String strasseHausnummer) throws SvmValidationException;
-    void setPlz(String plz) throws SvmValidationException;
-    void setOrt(String ort) throws SvmValidationException;
-    void setFestnetz(String festnetz) throws SvmValidationException;
-    void setNatel(String natel) throws SvmValidationException;
-    void setEmail(String email) throws SvmValidationException;
-    void setGeburtsdatum(String geburtsdatum) throws SvmValidationException;
-    void setGeburtsdatum(Calendar geburtsdatum);
     void setRolle(RolleSelected rolle);
     void setAnmeldestatus(AnmeldestatusSelected anmeldestatus);
     void setDispensation(DispensationSelected dispensation);

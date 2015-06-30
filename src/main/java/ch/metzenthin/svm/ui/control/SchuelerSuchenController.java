@@ -22,19 +22,10 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
-public class SchuelerSuchenController extends AbstractController {
+public class SchuelerSuchenController extends PersonController {
 
     private static final Logger LOGGER = Logger.getLogger(SchuelerSuchenController.class);
 
-    private JTextField txtNachname;
-    private JTextField txtVorname;
-    private JTextField txtStrasseHausnummer;
-    private JTextField txtPlz;
-    private JTextField txtOrt;
-    private JTextField txtFestnetz;
-    private JTextField txtNatel;
-    private JTextField txtEmail;
-    private JTextField txtGeburtsdatum;
     private JTextField txtCodes;
     private JTextField txtLehrkraft;
     private JTextField txtVon;
@@ -61,15 +52,6 @@ public class SchuelerSuchenController extends AbstractController {
     private JCheckBox checkBoxKursBeruecksichtigen;
     private JCheckBox checkBoxCodesBeruecksichtigen;
     private JCheckBox checkBoxAnAbmeldestatistikBeruecksichtigen;
-    private JLabel errLblNachname;
-    private JLabel errLblVorname;
-    private JLabel errLblStrasseHausnummer;
-    private JLabel errLblPlz;
-    private JLabel errLblOrt;
-    private JLabel errLblFestnetz;
-    private JLabel errLblNatel;
-    private JLabel errLblEmail;
-    private JLabel errLblGeburtsdatum;
     private JLabel errLblStichtag;
     private JLabel errLblAnAbmeldemonat;
     private JButton btnSuchen;
@@ -102,150 +84,6 @@ public class SchuelerSuchenController extends AbstractController {
             btnSuchen.setToolTipText("Bitte Eingabedaten vervollständigen");
             btnSuchen.setEnabled(false);
         }
-    }
-
-    public void setTxtNachname(JTextField txtNachname) {
-        this.txtNachname = txtNachname;
-        this.txtNachname.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNachnameEvent();
-            }
-        });
-        this.txtNachname.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onNachnameEvent();
-            }
-        });
-    }
-
-    public void setTxtVorname(JTextField txtVorname) {
-        this.txtVorname = txtVorname;
-        this.txtVorname.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onVornameEvent();
-            }
-        });
-        this.txtVorname.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onVornameEvent();
-            }
-        });
-    }
-
-    public void setTxtStrasseHausnummer(JTextField txtStrasseHausnummer) {
-        this.txtStrasseHausnummer = txtStrasseHausnummer;
-        this.txtStrasseHausnummer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onStrasseHausnummerEvent();
-            }
-        });
-        this.txtStrasseHausnummer.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onStrasseHausnummerEvent();
-            }
-        });
-    }
-
-    public void setTxtPlz(JTextField txtPlz) {
-        this.txtPlz = txtPlz;
-        this.txtPlz.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onPlzEvent();
-            }
-        });
-        this.txtPlz.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onPlzEvent();
-            }
-        });
-    }
-
-    public void setTxtOrt(JTextField txtOrt) {
-        this.txtOrt = txtOrt;
-        this.txtOrt.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onOrtEvent();
-            }
-        });
-        this.txtOrt.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onOrtEvent();
-            }
-        });
-    }
-
-    public void setTxtFestnetz(JTextField txtFestnetz) {
-        this.txtFestnetz = txtFestnetz;
-        this.txtFestnetz.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onFestnetzEvent();
-            }
-        });
-        this.txtFestnetz.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onFestnetzEvent();
-            }
-        });
-    }
-
-    public void setTxtNatel(JTextField txtNatel) {
-        this.txtNatel = txtNatel;
-        this.txtNatel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNatelEvent();
-            }
-        });
-        this.txtNatel.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onNatelEvent();
-            }
-        });
-    }
-
-    public void setTxtEmail(JTextField txtEmail) {
-        this.txtEmail = txtEmail;
-        this.txtEmail.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onEmailEvent();
-            }
-        });
-        this.txtEmail.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onEmailEvent();
-            }
-        });
-    }
-
-    public void setTxtGeburtsdatum(JTextField txtGeburtsdatum) {
-        this.txtGeburtsdatum = txtGeburtsdatum;
-        this.txtGeburtsdatum.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onGeburtsdatumEvent();
-            }
-        });
-        this.txtGeburtsdatum.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onGeburtsdatumEvent();
-            }
-        });
     }
 
     public void setTxtLehrkraft(JTextField txtLehrkraft) {
@@ -435,42 +273,6 @@ public class SchuelerSuchenController extends AbstractController {
         });
     }
 
-    public void setErrLblNachname(JLabel errLblNachname) {
-        this.errLblNachname = errLblNachname;
-    }
-
-    public void setErrLblVorname(JLabel errLblVorname) {
-        this.errLblVorname = errLblVorname;
-    }
-
-    public void setErrLblStrasseHausnummer(JLabel errLblStrasseHausnummer) {
-        this.errLblStrasseHausnummer = errLblStrasseHausnummer;
-    }
-
-    public void setErrLblPlz(JLabel errLblPlz) {
-        this.errLblPlz = errLblPlz;
-    }
-
-    public void setErrLblOrt(JLabel errLblOrt) {
-        this.errLblOrt = errLblOrt;
-    }
-
-    public void setErrLblFestnetz(JLabel errLblFestnetz) {
-        this.errLblFestnetz = errLblFestnetz;
-    }
-
-    public void setErrLblNatel(JLabel errLblNatel) {
-        this.errLblNatel = errLblNatel;
-    }
-
-    public void setErrLblEmail(JLabel errLblEmail) {
-        this.errLblEmail = errLblEmail;
-    }
-
-    public void setErrLblGeburtsdatum(JLabel errLblGeburtsdatum) {
-        this.errLblGeburtsdatum = errLblGeburtsdatum;
-    }
-
     public void setErrLblStichtag(JLabel errLblStichtag) {
         this.errLblStichtag = errLblStichtag;
     }
@@ -485,195 +287,6 @@ public class SchuelerSuchenController extends AbstractController {
 
     public void addNextPanelListener(ActionListener nextPanelListener) {
         this.nextPanelListener = nextPanelListener;
-    }
-
-    private void onNachnameEvent() {
-        LOGGER.trace("SchuelerSuchenController Event Nachname");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtNachname.getText(), schuelerSuchenModel.getNachname());
-        setModelNachname();
-        if (equalFieldAndModelValue) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
-    }
-
-    private void setModelNachname() {
-        errLblNachname.setVisible(false);
-        try {
-            schuelerSuchenModel.setNachname(txtNachname.getText());
-        } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelNachname Exception=" + e.getMessage());
-            showErrMsg(e);
-        }
-    }
-
-    private void onVornameEvent() {
-        LOGGER.trace("SchuelerSuchenController Event Vorname");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtVorname.getText(), schuelerSuchenModel.getVorname());
-        setModelVorname();
-        if (equalFieldAndModelValue) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
-    }
-
-    private void setModelVorname() {
-        errLblVorname.setVisible(false);
-        try {
-            schuelerSuchenModel.setVorname(txtVorname.getText());
-        } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelVorname Exception=" + e.getMessage());
-            showErrMsg(e);
-        }
-    }
-
-    private void onStrasseHausnummerEvent() {
-        LOGGER.trace("SchuelerSuchenController Event StrasseHausnummer");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtStrasseHausnummer.getText(), schuelerSuchenModel.getStrasseHausnummer());
-        setModelStrasseHausnummer();
-        if (equalFieldAndModelValue) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
-    }
-
-    private void setModelStrasseHausnummer() {
-        errLblStrasseHausnummer.setVisible(false);
-        try {
-            schuelerSuchenModel.setStrasseHausnummer(txtStrasseHausnummer.getText());
-        } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelStrasseHausnummer Exception=" + e.getMessage());
-            showErrMsg(e);
-        }
-    }
-
-    private void onPlzEvent() {
-        LOGGER.trace("SchuelerSuchenController Event Plz");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtPlz.getText(), schuelerSuchenModel.getPlz());
-        setModelPlz();
-        if (equalFieldAndModelValue) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
-    }
-
-    private void setModelPlz() {
-        errLblPlz.setVisible(false);
-        try {
-            schuelerSuchenModel.setPlz(txtPlz.getText());
-        } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelPlz Exception=" + e.getMessage());
-            showErrMsg(e);
-        }
-    }
-
-    private void onOrtEvent() {
-        LOGGER.trace("SchuelerSuchenController Event Ort");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtOrt.getText(), schuelerSuchenModel.getOrt());
-        setModelOrt();
-        if (equalFieldAndModelValue) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
-    }
-
-    private void setModelOrt() {
-        errLblOrt.setVisible(false);
-        try {
-            schuelerSuchenModel.setOrt(txtOrt.getText());
-        } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelOrt Exception=" + e.getMessage());
-            showErrMsg(e);
-        }
-    }
-
-    private void onFestnetzEvent() {
-        LOGGER.trace("SchuelerSuchenController Event Festnetz");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtFestnetz.getText(), schuelerSuchenModel.getFestnetz());
-        setModelFestnetz();
-        if (equalFieldAndModelValue) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
-    }
-
-    private void setModelFestnetz() {
-        errLblFestnetz.setVisible(false);
-        try {
-            schuelerSuchenModel.setFestnetz(txtFestnetz.getText());
-        } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelFestnetz Exception=" + e.getMessage());
-            showErrMsg(e);
-        }
-    }
-
-    private void onNatelEvent() {
-        LOGGER.trace("SchuelerSuchenController Event Natel");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtNatel.getText(), schuelerSuchenModel.getNatel());
-        setModelNatel();
-        if (equalFieldAndModelValue) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
-    }
-
-    private void setModelNatel() {
-        errLblNatel.setVisible(false);
-        try {
-            schuelerSuchenModel.setNatel(txtNatel.getText());
-        } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelNatel Exception=" + e.getMessage());
-            showErrMsg(e);
-        }
-    }
-
-    private void onEmailEvent() {
-        LOGGER.trace("SchuelerSuchenController Event Email");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtEmail.getText(), schuelerSuchenModel.getEmail());
-        setModelEmail();
-        if (equalFieldAndModelValue) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
-    }
-
-    private void setModelEmail() {
-        errLblEmail.setVisible(false);
-        try {
-            schuelerSuchenModel.setEmail(txtEmail.getText());
-        } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelEmail Exception=" + e.getMessage());
-            showErrMsg(e);
-        }
-    }
-
-    private void onGeburtsdatumEvent() {
-        LOGGER.trace("SchuelerSuchenController Event Geburtsdatum");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtGeburtsdatum.getText(), schuelerSuchenModel.getGeburtsdatum());
-        setModelGeburtsdatum();
-        if (equalFieldAndModelValue) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
-    }
-
-    private void setModelGeburtsdatum() {
-        errLblGeburtsdatum.setVisible(false);
-        try {
-            schuelerSuchenModel.setGeburtsdatum(txtGeburtsdatum.getText());
-        } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelGeburtsdatum Exception=" + e.getMessage());
-            showErrMsg(e);
-        }
     }
 
     private void onAnmeldemonatEvent() {
@@ -754,25 +367,8 @@ public class SchuelerSuchenController extends AbstractController {
 
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
-        if (checkIsFieldChange(Field.NACHNAME, evt)) {
-            txtNachname.setText(schuelerSuchenModel.getNachname());
-        } else if (checkIsFieldChange(Field.VORNAME, evt)) {
-            txtVorname.setText(schuelerSuchenModel.getVorname());
-        } else if (checkIsFieldChange(Field.STRASSE_HAUSNUMMER, evt)) {
-            txtStrasseHausnummer.setText(schuelerSuchenModel.getStrasseHausnummer());
-        } else if (checkIsFieldChange(Field.PLZ, evt)) {
-            txtPlz.setText(schuelerSuchenModel.getPlz());
-        } else if (checkIsFieldChange(Field.ORT, evt)) {
-            txtOrt.setText(schuelerSuchenModel.getOrt());
-        } else if (checkIsFieldChange(Field.GEBURTSDATUM, evt)) {
-            txtGeburtsdatum.setText(asString(schuelerSuchenModel.getGeburtsdatum()));
-        } else if (checkIsFieldChange(Field.FESTNETZ, evt)) {
-            txtFestnetz.setText(schuelerSuchenModel.getFestnetz());
-        } else if (checkIsFieldChange(Field.NATEL, evt)) {
-            txtNatel.setText(schuelerSuchenModel.getNatel());
-        } else if (checkIsFieldChange(Field.EMAIL, evt)) {
-            txtEmail.setText(schuelerSuchenModel.getEmail());
-        } else if (checkIsFieldChange(Field.STICHTAG, evt)) {
+        super.doPropertyChange(evt);
+        if (checkIsFieldChange(Field.STICHTAG, evt)) {
             txtStichtag.setText(asString(schuelerSuchenModel.getStichtag()));
         } else if (checkIsFieldChange(Field.AN_ABMELDEMONAT, evt)) {
             txtAnAbmeldemonat.setText(asString(schuelerSuchenModel.getAnAbmeldemonat()));
@@ -899,42 +495,7 @@ public class SchuelerSuchenController extends AbstractController {
 
     @Override
     void validateFields() throws SvmValidationException {
-        if (txtNachname.isEnabled()) {
-            LOGGER.trace("Validate field Nachname");
-            setModelNachname();
-        }
-        if (txtVorname.isEnabled()) {
-            LOGGER.trace("Validate field Vorname");
-            setModelVorname();
-        }
-        if (txtStrasseHausnummer.isEnabled()) {
-            LOGGER.trace("Validate field StrasseHausnummer");
-            setModelStrasseHausnummer();
-        }
-        if (txtPlz.isEnabled()) {
-            LOGGER.trace("Validate field Plz");
-            setModelPlz();
-        }
-        if (txtOrt.isEnabled()) {
-            LOGGER.trace("Validate field Ort");
-            setModelOrt();
-        }
-        if (txtGeburtsdatum.isEnabled()) {
-            LOGGER.trace("Validate field Geburtsdatum");
-            setModelGeburtsdatum();
-        }
-        if (txtFestnetz.isEnabled()) {
-            LOGGER.trace("Validate field Festnetz");
-            setModelFestnetz();
-        }
-        if (txtNatel.isEnabled()) {
-            LOGGER.trace("Validate field Natel");
-            setModelNatel();
-        }
-        if (txtEmail.isEnabled()) {
-            LOGGER.trace("Validate field Email");
-            setModelEmail();
-        }
+        super.validateFields();
         if (txtAnAbmeldemonat.isEnabled()) {
             LOGGER.trace("Validate field An-/Abmeldemonat");
             setModelAnAbmeldemonat();
@@ -947,42 +508,7 @@ public class SchuelerSuchenController extends AbstractController {
 
     @Override
     void showErrMsg(SvmValidationException e) {
-        if (e.getAffectedFields().contains(Field.VORNAME)) {
-            errLblVorname.setVisible(true);
-            errLblVorname.setText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.NACHNAME)) {
-            errLblNachname.setVisible(true);
-            errLblNachname.setText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.STRASSE_HAUSNUMMER)) {
-            errLblStrasseHausnummer.setVisible(true);
-            errLblStrasseHausnummer.setText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.PLZ)) {
-            errLblPlz.setVisible(true);
-            errLblPlz.setText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.ORT)) {
-            errLblOrt.setVisible(true);
-            errLblOrt.setText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.FESTNETZ)) {
-            errLblFestnetz.setVisible(true);
-            errLblFestnetz.setText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.NATEL)) {
-            errLblNatel.setVisible(true);
-            errLblNatel.setText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.EMAIL)) {
-            errLblEmail.setVisible(true);
-            errLblEmail.setText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.GEBURTSDATUM)) {
-            errLblGeburtsdatum.setVisible(true);
-            errLblGeburtsdatum.setText(e.getMessage());
-        }
+        super.showErrMsg(e);
         if (e.getAffectedFields().contains(Field.STICHTAG)) {
             errLblStichtag.setVisible(true);
             errLblStichtag.setText(e.getMessage());
@@ -995,33 +521,7 @@ public class SchuelerSuchenController extends AbstractController {
 
     @Override
     void showErrMsgAsToolTip(SvmValidationException e) {
-        if (e.getAffectedFields().contains(Field.VORNAME)) {
-            txtVorname.setToolTipText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.NACHNAME)) {
-            txtNachname.setToolTipText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.STRASSE_HAUSNUMMER)) {
-            txtStrasseHausnummer.setToolTipText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.PLZ)) {
-            txtPlz.setToolTipText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.ORT)) {
-            txtOrt.setToolTipText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.FESTNETZ)) {
-            txtFestnetz.setToolTipText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.NATEL)) {
-            txtNatel.setToolTipText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.EMAIL)) {
-            txtEmail.setToolTipText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.GEBURTSDATUM)) {
-            txtGeburtsdatum.setToolTipText(e.getMessage());
-        }
+        super.showErrMsgAsToolTip(e);
         if (e.getAffectedFields().contains(Field.STICHTAG)) {
             txtStichtag.setToolTipText(e.getMessage());
         }
@@ -1032,42 +532,8 @@ public class SchuelerSuchenController extends AbstractController {
 
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
-        if (fields.contains(Field.VORNAME)) {
-            errLblVorname.setVisible(false);
-            txtVorname.setToolTipText(null);
-        }
-        if (fields.contains(Field.NACHNAME)) {
-            errLblNachname.setVisible(false);
-            txtNachname.setToolTipText(null);
-        }
-        if (fields.contains(Field.STRASSE_HAUSNUMMER)) {
-            errLblStrasseHausnummer.setVisible(false);
-            txtStrasseHausnummer.setToolTipText(null);
-        }
-        if (fields.contains(Field.PLZ)) {
-            errLblPlz.setVisible(false);
-            txtPlz.setToolTipText(null);
-        }
-        if (fields.contains(Field.ORT)) {
-            errLblOrt.setVisible(false);
-            txtOrt.setToolTipText(null);
-        }
-        if (fields.contains(Field.FESTNETZ)) {
-            errLblFestnetz.setVisible(false);
-            txtFestnetz.setToolTipText(null);
-        }
-        if (fields.contains(Field.NATEL)) {
-            errLblNatel.setVisible(false);
-            txtNatel.setToolTipText(null);
-        }
-        if (fields.contains(Field.EMAIL)) {
-            errLblEmail.setVisible(false);
-            txtEmail.setToolTipText(null);
-        }
-        if (fields.contains(Field.GEBURTSDATUM)) {
-            errLblGeburtsdatum.setVisible(false);
-            txtGeburtsdatum.setToolTipText(null);
-        }
+        super.makeErrorLabelsInvisible(fields);
+
         if (fields.contains(Field.AN_ABMELDEMONAT)) {
             errLblAnAbmeldemonat.setVisible(false);
             txtAnAbmeldemonat.setToolTipText(null);
@@ -1080,33 +546,7 @@ public class SchuelerSuchenController extends AbstractController {
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
-        if (fields.contains(Field.ALLE) || fields.contains(Field.NACHNAME)) {
-            txtNachname.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.VORNAME)) {
-            txtVorname.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.STRASSE_HAUSNUMMER)) {
-            txtStrasseHausnummer.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.PLZ)) {
-            txtPlz.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ORT)) {
-            txtOrt.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.FESTNETZ)) {
-            txtFestnetz.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.NATEL)) {
-            txtNatel.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.EMAIL)) {
-            txtEmail.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.GEBURTSDATUM)) {
-            txtGeburtsdatum.setEnabled(!disable);
-        }
+        super.disableFields(disable, fields);
         if (fields.contains(Field.ALLE) || fields.contains(Field.SCHUELER)) {
             radioBtnSchueler.setEnabled(!disable);
         }
