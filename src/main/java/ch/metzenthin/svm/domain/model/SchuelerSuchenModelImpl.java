@@ -300,8 +300,7 @@ final class SchuelerSuchenModelImpl extends AbstractModel implements SchuelerSuc
     public AnmeldestatusSelected getAnmeldestatus() {
         return anmeldestatus;
     }
-
-    @Override
+    
     public void setAnmeldestatus(AnmeldestatusSelected anmeldestatus) {
         AnmeldestatusSelected oldValue = this.anmeldestatus;
         this.anmeldestatus = anmeldestatus;

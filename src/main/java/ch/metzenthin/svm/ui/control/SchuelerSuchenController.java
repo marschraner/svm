@@ -747,6 +747,7 @@ public class SchuelerSuchenController extends AbstractController {
         SchuelerSuchenResult schuelerSuchenResult = schuelerSuchenModel.suchen();
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenResult);
         SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(schuelerSuchenTableModel);
+        schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
     }
 

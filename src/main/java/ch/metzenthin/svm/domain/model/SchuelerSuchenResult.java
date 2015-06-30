@@ -15,10 +15,10 @@ public class SchuelerSuchenResult {
         this.schuelerList = schuelerList;
     }
 
-    String[] columns = {"Nachname", "Vorname", "Geburtsdatum"};
+    private static final String[] COLUMNS = {"Nachname", "Vorname", "Geburtsdatum"};
 
     public int getColumnCount() {
-        return columns.length;
+        return COLUMNS.length;
     }
 
     public int size() {
@@ -28,7 +28,7 @@ public class SchuelerSuchenResult {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Schueler schueler = schuelerList.get(rowIndex);
         Object value = null;
-        switch (columns[columnIndex]) {
+        switch (COLUMNS[columnIndex]) {
             case "Nachname" :
                 value = schueler.getNachname();
                 break;
@@ -42,6 +42,14 @@ public class SchuelerSuchenResult {
                 break;
         }
         return value;
+    }
+
+    public String getColumnName(int column) {
+        return COLUMNS[column];
+    }
+
+    public SchuelerDatenblattModel getSchuelerDatenblattModel(int rowIndex) {
+        return new SchuelerDatenblattModelImpl(schuelerList.get(rowIndex));
     }
 
 }
