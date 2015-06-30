@@ -34,6 +34,13 @@ public class Converter {
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT_STRING);
         formatter.setLenient(false);
         calendar.setTime(formatter.parse(s));
+        if (calendar.get(Calendar.YEAR) < 100) {
+            if (calendar.get(Calendar.YEAR) < 40) {
+                calendar.add(Calendar.YEAR, 2000);
+            } else {
+                calendar.add(Calendar.YEAR, 1900);
+            }
+        }
         formatter.setLenient(true);
         return calendar;
     }

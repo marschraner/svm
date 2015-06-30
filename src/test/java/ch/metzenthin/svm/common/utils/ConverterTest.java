@@ -78,6 +78,16 @@ public class ConverterTest {
         toCalendar("31.04.2001");
     }
 
+   @Test
+    public void test_Lenient_Year_Zweistellig_1900() throws ParseException {
+       assertEquals("30.04.1941", asString(toCalendar("30.04.41")));
+    }
+
+   @Test
+    public void test_Lenient_Year_Zweistellig_2000() throws ParseException {
+       assertEquals("30.04.2015", asString(toCalendar("30.04.15")));
+    }
+
     @Test
     public void testEmptyStringAsNull_NotEmpty() {
         assertEquals("abc", emptyStringAsNull("abc"));
