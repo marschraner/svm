@@ -1,4 +1,4 @@
-package ch.metzenthin.svm.ui.control;
+package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Field;
 

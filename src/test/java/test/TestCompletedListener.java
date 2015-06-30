@@ -1,6 +1,6 @@
 package test;
 
-import ch.metzenthin.svm.ui.control.CompletedListener;
+import ch.metzenthin.svm.domain.model.CompletedListener;
 
 /**
  * @author Hans Stamm

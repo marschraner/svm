@@ -1,4 +1,4 @@
-package ch.metzenthin.svm.ui.control;
+package ch.metzenthin.svm.domain.model;
 
 /**
  * @author Hans Stamm

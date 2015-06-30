@@ -2,6 +2,8 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.model.DisableFieldsListener;
+import ch.metzenthin.svm.domain.model.MakeErrorLabelsInvisibleListener;
 import ch.metzenthin.svm.domain.model.Model;
 import org.apache.log4j.Logger;
 

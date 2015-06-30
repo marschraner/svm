@@ -3,9 +3,6 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.ui.control.CompletedListener;
-import ch.metzenthin.svm.ui.control.DisableFieldsListener;
-import ch.metzenthin.svm.ui.control.MakeErrorLabelsInvisibleListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

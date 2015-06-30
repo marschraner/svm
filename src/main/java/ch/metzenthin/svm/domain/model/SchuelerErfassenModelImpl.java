@@ -10,7 +10,6 @@ import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
-import ch.metzenthin.svm.ui.control.CompletedListener;
 import org.apache.log4j.Logger;
 
 import java.beans.PropertyChangeEvent;
