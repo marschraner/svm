@@ -1,8 +1,8 @@
 package ch.metzenthin.svm;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.CommandInvokerImpl;
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.ModelFactoryImpl;
 import ch.metzenthin.svm.ui.components.SvmDesktop;
 
@@ -20,7 +20,24 @@ public class Svm {
      */
     private static void createAndShowGUI(SvmContext svmContext) {
         // Make sure we have nice window decorations.
-        // TODO JFrame.setDefaultLookAndFeelDecorated(true);
+        for (UIManager.LookAndFeelInfo lookAndFeelInfo : UIManager.getInstalledLookAndFeels()) {
+            String laf = lookAndFeelInfo.getName();
+            switch (laf) {
+                case "GTK+" :
+                case "Mac" :
+                case "Windows" :
+                    try {
+                        UIManager.setLookAndFeel(lookAndFeelInfo.getClassName());
+                    } catch (Exception ignore) {
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if ("GTK+".equals(laf)) {
+                GtkPlusLookAndFeelWorkaround.installGtkPopupBugWorkaround();
+            }
+        }
 
         // Create and set up the window.
         new SvmDesktop(svmContext);

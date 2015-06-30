@@ -69,7 +69,10 @@
                   <gridbag weightx="0.5" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="etched" title="Rechnungsempfänger Drittperson"/>
+                <border type="etched" title="Rechnungsempfänger Drittperson">
+                  <font style="1"/>
+                  <title-color color="-16777216"/>
+                </border>
                 <children>
                   <nested-form id="258f0" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="drittempfaengerPanel">
                     <constraints>
@@ -120,6 +123,7 @@
                 <properties/>
                 <border type="etched" title="Mutter">
                   <font style="1"/>
+                  <title-color color="-16777216"/>
                 </border>
                 <children>
                   <vspacer id="5bdbf">
@@ -160,7 +164,10 @@
                   <gridbag weightx="0.5" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="etched" title="Vater"/>
+                <border type="etched" title="Vater">
+                  <font style="1"/>
+                  <title-color color="-16777216"/>
+                </border>
                 <children>
                   <nested-form id="94d28" form-file="ch/metzenthin/svm/ui/components/AngehoerigerPanel.form" binding="vaterPanel">
                     <constraints>

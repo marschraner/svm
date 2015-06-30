@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="1044" height="559"/>
+      <xy x="20" y="20" width="1044" height="571"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -144,7 +144,10 @@
               <gridbag top="0" left="10" bottom="10" right="10" weightx="1.0" weighty="0.0"/>
             </constraints>
             <properties/>
-            <border type="etched" title="Stammdaten"/>
+            <border type="etched" title="Stammdaten">
+              <font style="1"/>
+              <title-color color="-16777216"/>
+            </border>
             <children>
               <component id="67a8" class="javax.swing.JLabel">
                 <constraints>
@@ -357,13 +360,16 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <grid id="6c87f" binding="dispensationPanel" layout-manager="GridBagLayout">
+                  <grid id="6c87f" binding="dispensationenPanel" layout-manager="GridBagLayout">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                       <gridbag top="0" left="10" bottom="10" right="0" weightx="1.0" weighty="0.0"/>
                     </constraints>
                     <properties/>
-                    <border type="etched" title="Dispensationen"/>
+                    <border type="etched" title="Dispensationen">
+                      <font style="1"/>
+                      <title-color color="-16777216"/>
+                    </border>
                     <children>
                       <hspacer id="33edd">
                         <constraints>
@@ -439,7 +445,10 @@
                       <gridbag top="0" left="0" bottom="10" right="10" weightx="1.0" weighty="0.0"/>
                     </constraints>
                     <properties/>
-                    <border type="etched" title="Codes"/>
+                    <border type="etched" title="Codes">
+                      <font style="1"/>
+                      <title-color color="-16777216"/>
+                    </border>
                     <children>
                       <vspacer id="f28ed">
                         <constraints>

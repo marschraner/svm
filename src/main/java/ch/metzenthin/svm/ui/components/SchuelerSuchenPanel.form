@@ -50,7 +50,10 @@
                   <gridbag top="10" left="10" bottom="10" right="0" weightx="1.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="etched" title="Stammdaten"/>
+                <border type="etched" title="Stammdaten">
+                  <font style="1"/>
+                  <title-color color="-16777216"/>
+                </border>
                 <children>
                   <component id="6d128" class="javax.swing.JLabel">
                     <constraints>
@@ -510,7 +513,10 @@
                   <gridbag top="0" left="10" bottom="10" right="0" weightx="1.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="etched" title="Status, Dispensation, Geschlecht"/>
+                <border type="etched" title="Status, Dispensation, Geschlecht">
+                  <font style="1"/>
+                  <title-color color="-16777216"/>
+                </border>
                 <children>
                   <component id="a5f60" class="javax.swing.JLabel">
                     <constraints>
@@ -732,7 +738,10 @@
                   <gridbag top="10" left="0" bottom="10" right="10" weightx="1.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="etched" title="Kurs"/>
+                <border type="etched" title="Kurs">
+                  <font style="1"/>
+                  <title-color color="-16777216"/>
+                </border>
                 <children>
                   <component id="4a4cb" class="javax.swing.JLabel">
                     <constraints>
@@ -941,7 +950,10 @@
                   <gridbag top="0" left="0" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="etched" title="Codes"/>
+                <border type="etched" title="Codes">
+                  <font style="1"/>
+                  <title-color color="-16777216"/>
+                </border>
                 <children>
                   <component id="e4756" class="javax.swing.JLabel">
                     <constraints>
@@ -1039,7 +1051,10 @@
                   <gridbag top="0" left="0" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="etched" title="Stichtag für Suche"/>
+                <border type="etched" title="Stichtag für Suche">
+                  <font style="1"/>
+                  <title-color color="-16777216"/>
+                </border>
                 <children>
                   <component id="cab37" class="javax.swing.JLabel">
                     <constraints>
@@ -1107,7 +1122,10 @@
                   <gridbag top="0" left="0" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
-                <border type="etched" title="An-/Abmeldesstatistik"/>
+                <border type="etched" title="An-/Abmeldesstatistik">
+                  <font style="1"/>
+                  <title-color color="-16777216"/>
+                </border>
                 <children>
                   <component id="cf968" class="javax.swing.JLabel">
                     <constraints>

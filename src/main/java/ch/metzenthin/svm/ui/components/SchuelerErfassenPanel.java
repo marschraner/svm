@@ -115,7 +115,7 @@ public class SchuelerErfassenPanel {
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel2.add(panel4, gbc);
-        panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Rechnungsempfänger Drittperson"));
+        panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Rechnungsempfänger Drittperson", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel4.getFont().getName(), Font.BOLD, panel4.getFont().getSize()), new Color(-16777216)));
         drittempfaengerPanel = new AngehoerigerPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -161,7 +161,7 @@ public class SchuelerErfassenPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 10, 0);
         panel5.add(panel6, gbc);
-        panel6.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mutter", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel6.getFont().getName(), Font.BOLD, panel6.getFont().getSize())));
+        panel6.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mutter", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel6.getFont().getName(), Font.BOLD, panel6.getFont().getSize()), new Color(-16777216)));
         final JPanel spacer9 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -204,7 +204,7 @@ public class SchuelerErfassenPanel {
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel5.add(panel7, gbc);
-        panel7.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Vater"));
+        panel7.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Vater", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel7.getFont().getName(), Font.BOLD, panel7.getFont().getSize()), new Color(-16777216)));
         vaterPanel = new AngehoerigerPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;

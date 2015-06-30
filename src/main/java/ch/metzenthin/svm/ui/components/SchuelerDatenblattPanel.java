@@ -6,6 +6,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 /**
@@ -25,7 +26,7 @@ public class SchuelerDatenblattPanel {
     private JButton btnStammdatenBearbeiten;
     private JPanel titelPanel;
     private JLabel lblAnmeldungValue;
-    private JPanel dispensationPanel;
+    private JPanel dispensationenPanel;
     private JTable tableDispensationen;
     private JButton btnDispensationBearbeiten;
     private JPanel codesPanel;
@@ -180,7 +181,7 @@ public class SchuelerDatenblattPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 10, 10, 10);
         datenPanel.add(stammdatenPanel, gbc);
-        stammdatenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Stammdaten"));
+        stammdatenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Stammdaten", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(stammdatenPanel.getFont().getName(), Font.BOLD, stammdatenPanel.getFont().getSize()), new Color(-16777216)));
         final JLabel label1 = new JLabel();
         label1.setText("Schüler:");
         gbc = new GridBagConstraints();
@@ -359,8 +360,8 @@ public class SchuelerDatenblattPanel {
         leftPanel = new JPanel();
         leftPanel.setLayout(new GridBagLayout());
         panel3.add(leftPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        dispensationPanel = new JPanel();
-        dispensationPanel.setLayout(new GridBagLayout());
+        dispensationenPanel = new JPanel();
+        dispensationenPanel.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -368,14 +369,14 @@ public class SchuelerDatenblattPanel {
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 10, 10, 0);
-        leftPanel.add(dispensationPanel, gbc);
-        dispensationPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Dispensationen"));
+        leftPanel.add(dispensationenPanel, gbc);
+        dispensationenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Dispensationen", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(dispensationenPanel.getFont().getName(), Font.BOLD, dispensationenPanel.getFont().getSize()), new Color(-16777216)));
         final JPanel spacer20 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        dispensationPanel.add(spacer20, gbc);
+        dispensationenPanel.add(spacer20, gbc);
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
@@ -383,7 +384,7 @@ public class SchuelerDatenblattPanel {
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        dispensationPanel.add(panel4, gbc);
+        dispensationenPanel.add(panel4, gbc);
         btnDispensationBearbeiten = new JButton();
         btnDispensationBearbeiten.setText("Bearbeiten");
         gbc = new GridBagConstraints();
@@ -404,13 +405,13 @@ public class SchuelerDatenblattPanel {
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.VERTICAL;
-        dispensationPanel.add(spacer22, gbc);
+        dispensationenPanel.add(spacer22, gbc);
         final JPanel spacer23 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.VERTICAL;
-        dispensationPanel.add(spacer23, gbc);
+        dispensationenPanel.add(spacer23, gbc);
         final JScrollPane scrollPane1 = new JScrollPane();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -419,7 +420,7 @@ public class SchuelerDatenblattPanel {
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 0, 10);
-        dispensationPanel.add(scrollPane1, gbc);
+        dispensationenPanel.add(scrollPane1, gbc);
         tableDispensationen = new JTable();
         scrollPane1.setViewportView(tableDispensationen);
         rightPanel = new JPanel();
@@ -435,7 +436,7 @@ public class SchuelerDatenblattPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 10, 10);
         rightPanel.add(codesPanel, gbc);
-        codesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Codes"));
+        codesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Codes", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(codesPanel.getFont().getName(), Font.BOLD, codesPanel.getFont().getSize()), new Color(-16777216)));
         final JPanel spacer24 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
