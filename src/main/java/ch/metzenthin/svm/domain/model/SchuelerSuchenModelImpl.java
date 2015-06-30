@@ -221,10 +221,14 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         List<Schueler> schuelerList = new ArrayList<>();
         schuelerList.add(new Schueler("Leu", "Lea", new GregorianCalendar(2010, Calendar.APRIL, 15), null, null, null, null));
         schuelerList.add(new Schueler("Keller", "Urs", new GregorianCalendar(2000, Calendar.JANUARY, 31), null, null, null, null));
+        Adresse adresse1 = new Adresse("Forchstrasse", "232", "8032", "Zürich", null);
+        Adresse adresse2 = new Adresse("Hintere Bergstrasse", "15", "8942", "Oberrieden", null);
         Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.FRAU, "Eva", "Juchli", null, null);
         Angehoeriger angehoeriger2 = new Angehoeriger(Anrede.HERR, "Kurt", "Juchli", null, null);
         Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", null, null);
-        Adresse adresse1 = new Adresse("Forchstrasse", "232", "8032", "Zürich", null);
+        angehoeriger1.setAdresse(adresse1);
+        angehoeriger2.setAdresse(adresse1);
+        angehoeriger3.setAdresse(adresse2);
         Schueler schueler1 = new Schueler("Lilly", "Juchli", new GregorianCalendar(2008, Calendar.JANUARY, 13), null, null, Geschlecht.W, null);
         schueler1.setAdresse(adresse1);
         schueler1.setMutter(angehoeriger1);

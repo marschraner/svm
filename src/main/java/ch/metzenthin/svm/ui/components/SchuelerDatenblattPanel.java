@@ -429,6 +429,8 @@ public class SchuelerDatenblattPanel {
         gbc.fill = GridBagConstraints.VERTICAL;
         dispensationenPanel.add(spacer22, gbc);
         final JScrollPane scrollPane1 = new JScrollPane();
+        scrollPane1.setPreferredSize(new Dimension(23, 54));
+        scrollPane1.setVerifyInputWhenFocusTarget(false);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -489,6 +491,7 @@ public class SchuelerDatenblattPanel {
         gbc.fill = GridBagConstraints.VERTICAL;
         codesPanel.add(spacer25, gbc);
         final JScrollPane scrollPane2 = new JScrollPane();
+        scrollPane2.setPreferredSize(new Dimension(23, 54));
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -515,7 +518,7 @@ public class SchuelerDatenblattPanel {
         gbc.insets = new Insets(10, 10, 40, 10);
         datenPanel.add(titelPanel, gbc);
         lblVornameNachname = new JLabel();
-        lblVornameNachname.setFont(new Font(lblVornameNachname.getFont().getName(), lblVornameNachname.getFont().getStyle(), 20));
+        lblVornameNachname.setFont(new Font(lblVornameNachname.getFont().getName(), lblVornameNachname.getFont().getStyle(), 36));
         lblVornameNachname.setText("Vorname Nachname");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;

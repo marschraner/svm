@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="1044" height="603"/>
+      <xy x="20" y="20" width="1044" height="609"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -431,7 +431,10 @@
                           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                           <gridbag top="0" left="0" bottom="0" right="10" weightx="1.0" weighty="0.0"/>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <preferredSize width="23" height="54"/>
+                          <verifyInputWhenFocusTarget value="false"/>
+                        </properties>
                         <border type="none"/>
                         <children>
                           <component id="4a5ed" class="javax.swing.JTable" binding="tableDispensationen">
@@ -504,7 +507,9 @@
                           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                           <gridbag top="0" left="0" bottom="0" right="10" weightx="1.0" weighty="0.0"/>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <preferredSize width="23" height="54"/>
+                        </properties>
                         <border type="none"/>
                         <children>
                           <component id="e93af" class="javax.swing.JTable" binding="tableCodes">
@@ -539,7 +544,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <font size="20"/>
+                  <font size="36"/>
                   <text value="Vorname Nachname"/>
                 </properties>
               </component>
