@@ -64,7 +64,7 @@ public class SchuelerSuchenResultController {
 
     private void onDatenblatt() {
         SchuelerDatenblattModel schuelerDatenblattModel = schuelerSuchenTableModel.getSchuelerDatenblattModel(schuelerSuchenResultTable.getSelectedRow());
-        System.out.println("Datenblatt für " + schuelerDatenblattModel.getNachname() + "," + schuelerDatenblattModel.getVorname());
+        System.out.println("Datenblatt für " + schuelerDatenblattModel.getSchuelerAsString());
         SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(schuelerDatenblattModel);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[] {schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));
     }

@@ -101,7 +101,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
 
     private void setSchuelerValue() {
         String schuelerStr = validateSchuelerSummaryResult.getSchueler().toString();
-        String anmeldungStr = validateSchuelerSummaryResult.getSchueler().getAnmeldungen().get(0).toString();
+        String anmeldungStr = validateSchuelerSummaryResult.getSchueler().getAnmeldungen().get(0).toStringVerbose();
         schuelerValue.setText(schuelerStr + ", " + anmeldungStr);
     }
 
