@@ -1,11 +1,15 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.commands.CheckGeschwisterSchuelerRechnungempfaengerCommand;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import java.util.List;
+
+import static ch.metzenthin.svm.common.utils.Converter.asString;
 
 /**
  * @author Hans Stamm
@@ -29,6 +33,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     }
 
     @Override
+    public String getLabelSchueler() {
+        return (schueler.getGeschlecht() == Geschlecht.W ? "Schülerin:" : "Schüler:");
+    }
+
+    @Override
     public String getSchuelerAsString() {
         return schueler.toString();
     }
@@ -49,6 +58,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
             return vater.toString();
         }
         return "-";
+    }
+
+    @Override
+    public String getLabelRechnungsempfaenger() {
+        return (schueler.getRechnungsempfaenger().getAnrede() == Anrede.FRAU ? "Rechnungsempfängerin:" : "Rechnungsempfänger:");
     }
 
     @Override
@@ -86,6 +100,16 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     }
 
     @Override
+    public String getLabelSchuelerGleicherRechnungsempfaenger1() {
+        return "Andere Schüler mit " + (schueler.getRechnungsempfaenger().getAnrede() == Anrede.FRAU ? "gleicher" : "gleichem");
+    }
+
+    @Override
+    public String getLabelSchuelerGleicherRechnungsempfaenger2() {
+        return (schueler.getRechnungsempfaenger().getAnrede() == Anrede.FRAU ? "Rechnungsempfängerin:" : "Rechnungsempfänger:");
+    }
+
+    @Override
     public String getSchuelerGleicherRechnungsempfaengerAsString() {
         CheckGeschwisterSchuelerRechnungempfaengerCommand command = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler);
         command.execute();
@@ -105,20 +129,47 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     }
 
     @Override
-    public String getAnmeldungenAsString() {
+    public String getSchuelerGeburtsdatumAsString() {
+        return asString(schueler.getGeburtsdatum());
+    }
+
+    @Override
+    public String getAnmeldedatumAsString() {
         List<Anmeldung> anmeldungen = schueler.getAnmeldungen();
         if (!anmeldungen.isEmpty()) {
-            StringBuilder infoAnmeldungen = new StringBuilder("<html>");
-            for (Anmeldung anmeldung : anmeldungen) {
-                if (infoAnmeldungen.length() > 6) {
-                    infoAnmeldungen.append("<br>");
-                }
-                infoAnmeldungen.append(anmeldung.toString());
+            if (anmeldungen.get(0).getAnmeldedatum() != null) {
+                return asString(anmeldungen.get(0).getAnmeldedatum());
             }
-            infoAnmeldungen.append("</html>");
-            return infoAnmeldungen.toString();
         }
         return "-";
+    }
+
+    @Override
+    public String getAbmeldedatumAsString() {
+        List<Anmeldung> anmeldungen = schueler.getAnmeldungen();
+        if (!anmeldungen.isEmpty()) {
+            if (anmeldungen.get(0).getAbmeldedatum() != null) {
+                return asString(anmeldungen.get(0).getAbmeldedatum());
+            }
+        }
+        return "";
+    }
+
+    @Override
+    public String getFruehereAnmeldungenAsString() {
+        List<Anmeldung> anmeldungen = schueler.getAnmeldungen();
+        if (anmeldungen.size() > 1) {
+            StringBuilder fruehereAnmeldungen = new StringBuilder("<html>");
+            for (int i = 1; i < anmeldungen.size(); i++) {
+                if (fruehereAnmeldungen.length() > 6) {
+                    fruehereAnmeldungen.append("<br>");
+                }
+                fruehereAnmeldungen.append(anmeldungen.get(i).toString());
+            }
+            fruehereAnmeldungen.append("</html>");
+            return fruehereAnmeldungen.toString();
+        }
+        return "";
     }
 
 }

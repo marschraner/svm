@@ -234,7 +234,8 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         schueler1.setMutter(angehoeriger1);
         schueler1.setVater(angehoeriger2);
         schueler1.setRechnungsempfaenger(angehoeriger3);
-        schueler1.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
+        schueler1.addAnmeldung(new Anmeldung(new GregorianCalendar(2013, Calendar.JANUARY, 1), new GregorianCalendar(2013, Calendar.JULY, 1)));
+        schueler1.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JULY, 1)));
         schuelerList.add(schueler1);
         return new SchuelerSuchenResult(schuelerList);
     }

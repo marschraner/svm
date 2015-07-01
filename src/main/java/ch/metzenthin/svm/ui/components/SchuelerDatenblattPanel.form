@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="1044" height="609"/>
+      <xy x="20" y="20" width="1044" height="681"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -149,7 +149,7 @@
               <title-color color="-16777216"/>
             </border>
             <children>
-              <component id="67a8" class="javax.swing.JLabel">
+              <component id="67a8" class="javax.swing.JLabel" binding="lblSchueler">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
@@ -233,7 +233,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
               </vspacer>
-              <component id="c53d" class="javax.swing.JLabel">
+              <component id="c53d" class="javax.swing.JLabel" binding="lblRechnungsempfaenger">
                 <constraints>
                   <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
@@ -277,13 +277,13 @@
               </component>
               <vspacer id="4ee45">
                 <constraints>
-                  <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="15" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
               </vspacer>
               <grid id="62a93" layout-manager="GridBagLayout">
                 <constraints>
-                  <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="19" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
@@ -308,35 +308,35 @@
               </grid>
               <vspacer id="bb9b5">
                 <constraints>
-                  <grid row="15" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="20" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
               </vspacer>
               <component id="52b37" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="13" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="16" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
                   <text value="Anmeldedatum:"/>
                 </properties>
               </component>
-              <component id="a09de" class="javax.swing.JLabel" binding="lblAnmeldungValue">
+              <component id="a09de" class="javax.swing.JLabel" binding="lblAnmeldedatumValue">
                 <constraints>
-                  <grid row="13" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="16" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="AnmeldungValue"/>
+                  <text value="AnmeldedatumValue"/>
                 </properties>
               </component>
-              <component id="c6110" class="javax.swing.JLabel" binding="lblSchuelerGleicherRechnungsempfaenger">
+              <component id="c6110" class="javax.swing.JLabel" binding="lblSchuelerGleicherRechnungsempfaenger1">
                 <constraints>
                   <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="Andere Schüler mit gleichem Rechnungsempfänger:"/>
+                  <text value="Andere Schüler mit gleichem"/>
                 </properties>
               </component>
               <vspacer id="f9888">
@@ -347,13 +347,90 @@
               </vspacer>
               <component id="4df71" class="javax.swing.JLabel" binding="lblSchuelerGleicherRechnungsempfaengerValue">
                 <constraints>
-                  <grid row="11" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="11" column="2" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
                   <text value="SchuelerGleicherRechnungsempfaengerValue"/>
                 </properties>
               </component>
+              <component id="148aa" class="javax.swing.JLabel" binding="lblSchuelerGleicherRechnungsempfaenger2">
+                <constraints>
+                  <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Rechnungsempfaenger:"/>
+                </properties>
+              </component>
+              <vspacer id="c8e46">
+                <constraints>
+                  <grid row="13" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </vspacer>
+              <component id="6e58b" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="14" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Geburtsdatum:"/>
+                </properties>
+              </component>
+              <component id="b4853" class="javax.swing.JLabel" binding="lblGeburtsdatumValue">
+                <constraints>
+                  <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="GeburtsdatumValue"/>
+                </properties>
+              </component>
+              <component id="71246" class="javax.swing.JLabel" binding="lblAbmeldedatum">
+                <constraints>
+                  <grid row="17" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font style="1"/>
+                  <text value="Abmeldedatum:"/>
+                </properties>
+              </component>
+              <component id="35985" class="javax.swing.JLabel" binding="lblAbmeldedatumValue">
+                <constraints>
+                  <grid row="17" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font style="1"/>
+                  <text value="AbmeldedatumValue"/>
+                </properties>
+              </component>
+              <component id="87404" class="javax.swing.JLabel" binding="lblFruehereAnmeldungen">
+                <constraints>
+                  <grid row="18" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Frühere Anmeldungen:"/>
+                </properties>
+              </component>
+              <component id="70f47" class="javax.swing.JLabel" binding="lblFruehereAnmeldungenValue">
+                <constraints>
+                  <grid row="18" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="FrühereAnmeldungenValue"/>
+                </properties>
+              </component>
+              <hspacer id="e0335">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0" ipadx="200"/>
+                </constraints>
+              </hspacer>
             </children>
           </grid>
           <grid id="8d22f" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -533,7 +610,7 @@
           <grid id="9d615" binding="titelPanel" layout-manager="GridBagLayout">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
-              <gridbag top="10" left="10" bottom="40" right="10" weightx="0.0" weighty="0.0"/>
+              <gridbag top="10" left="10" bottom="20" right="10" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties/>
             <border type="none"/>
