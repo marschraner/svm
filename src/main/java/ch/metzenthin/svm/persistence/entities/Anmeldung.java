@@ -50,15 +50,6 @@ public class Anmeldung implements Comparable<Anmeldung> {
         return anmeldungSb.toString();
     }
 
-    public String toStringVerbose() {
-        StringBuilder anmeldungSb = new StringBuilder();
-        anmeldungSb.append("Anmeldedatum: ").append(String.format("%1$td.%1$tm.%1$tY", anmeldedatum));
-        if (abmeldedatum != null) {
-            anmeldungSb.append(", Abmeldedatum: ").append(String.format("%1$td.%1$tm.%1$tY", abmeldedatum));
-        }
-        return anmeldungSb.toString();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

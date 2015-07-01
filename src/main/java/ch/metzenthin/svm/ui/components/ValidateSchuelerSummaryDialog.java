@@ -7,8 +7,11 @@ import ch.metzenthin.svm.domain.model.ValidateSchuelerSummaryResult;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
+
+import static ch.metzenthin.svm.common.utils.Converter.asString;
 
 public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
     private final ValidateSchuelerSummaryResult validateSchuelerSummaryResult;
@@ -25,7 +28,12 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
     private JLabel lblMutter;
     private JLabel lblVater;
     private JLabel infoIdentischeAdressen;
-    private JLabel infoGeschwister;
+    private JLabel geschwisterValue;
+    private JLabel schuelerGleicherRecĥnungsempfaengerValue;
+    private JLabel anmeldedatumValue;
+    private JLabel geburtsdatumValue;
+    private JLabel lblAndereSchuelerGleicherRechnungsempfaenger1;
+    private JLabel lblAndereSchuelerGleicherRechnungsempfaenger2;
 
     public ValidateSchuelerSummaryDialog(
             ValidateSchuelerSummaryResult validateSchuelerSummaryResult,
@@ -40,9 +48,15 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         setTitle("Zusammenfassung");
 
         if (validateSchuelerSummaryResult != null) {
-            setSchuelerAngehoerige();
+            setSchueler();
+            setMutter();
+            setVater();
+            setRechnungsempfaenger();
+            setGeschwister();
+            setSchuelerGleicherRechnungsempfaenger();
+            setGeburtsdatum();
+            setAnmeldedatum();
             setInfoIdentischeAdressen();
-            setGeschwisterSchuelerRechungsempfaenger();
         }
 
         buttonSpeichern.addActionListener(new ActionListener() {
@@ -73,15 +87,24 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private void setSchuelerAngehoerige() {
+    private void setSchueler() {
         lblSchueler.setText(validateSchuelerSummaryResult.getSchueler().getGeschlecht() == Geschlecht.W ? "Schülerin:" : "Schüler:");
-        setSchuelerValue();
+        schuelerValue.setText(validateSchuelerSummaryResult.getSchueler().toString());
+    }
+
+    private void setMutter() {
         String neuMutter = ((validateSchuelerSummaryResult.getSchueler().getMutter() != null && validateSchuelerSummaryResult.isMutterNeu()) ? " (neu)" : "");
         lblMutter.setText("Mutter" + neuMutter + ":");
         mutterValue.setText(validateSchuelerSummaryResult.getSchueler().getMutter() == null ? "-" : validateSchuelerSummaryResult.getSchueler().getMutter().toString());
+    }
+
+    private void setVater() {
         String neuVater = ((validateSchuelerSummaryResult.getSchueler().getVater() != null && validateSchuelerSummaryResult.isVaterNeu()) ? " (neu)" : "");
         lblVater.setText("Vater" + neuVater + ":");
         vaterValue.setText(validateSchuelerSummaryResult.getSchueler().getVater() == null ? "-" : validateSchuelerSummaryResult.getSchueler().getVater().toString());
+    }
+
+    private void setRechnungsempfaenger() {
         String lblRechnungsempfaengerText;
         String rechnungsempfaengerText;
         if (validateSchuelerSummaryResult.isRechnungsempfaengerMutter()) {
@@ -99,10 +122,12 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         rechnungsempfaengerValue.setText(rechnungsempfaengerText);
     }
 
-    private void setSchuelerValue() {
-        String schuelerStr = validateSchuelerSummaryResult.getSchueler().toString();
-        String anmeldungStr = validateSchuelerSummaryResult.getSchueler().getAnmeldungen().get(0).toStringVerbose();
-        schuelerValue.setText(schuelerStr + ", " + anmeldungStr);
+    private void setGeburtsdatum() {
+        geburtsdatumValue.setText(asString(validateSchuelerSummaryResult.getSchueler().getGeburtsdatum()));
+    }
+
+    private void setAnmeldedatum() {
+        anmeldedatumValue.setText(validateSchuelerSummaryResult.getSchueler().getAnmeldungen().get(0).toString());
     }
 
     private void setInfoIdentischeAdressen() {
@@ -119,27 +144,38 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         infoIdentischeAdressen.setText(infoIdentischeAdressenText);
     }
 
-    private void setGeschwisterSchuelerRechungsempfaenger() {
-        StringBuilder infoGeschwisterStb = new StringBuilder("<html>");
-        String schuelerVornameNachname = validateSchuelerSummaryResult.getSchueler().getVorname() + " " + validateSchuelerSummaryResult.getSchueler().getNachname();
+    private void setGeschwister() {
         if (validateSchuelerSummaryResult.getGeschwister() == null || validateSchuelerSummaryResult.getGeschwister().isEmpty()) {
-            infoGeschwisterStb.append(schuelerVornameNachname).append(" hat keine angemeldeten Geschwister.");
-
-        } else {
-            infoGeschwisterStb.append("Angemeldete Geschwister von ").append(schuelerVornameNachname).append(":");
-            for (Schueler schueler1 : validateSchuelerSummaryResult.getGeschwister()) {
-                infoGeschwisterStb.append("<br>").append(schueler1.toString());
+            StringBuilder geschwisterStb = new StringBuilder("<html>");
+            for (Schueler geschwister : validateSchuelerSummaryResult.getGeschwister()) {
+                if (geschwisterStb.length() > 6) {
+                    geschwisterStb.append("<br>");
+                }
+                geschwisterStb.append(geschwister.toString());
             }
+            geschwisterStb.append("</html>");
+            geschwisterValue.setText(geschwisterStb.toString());
         }
+        geschwisterValue.setText("-");
+    }
 
-        if (validateSchuelerSummaryResult.getAndereSchueler() != null && !validateSchuelerSummaryResult.getAndereSchueler().isEmpty()) {
-            infoGeschwisterStb.append("<br>Andere Schüler, welche den Vater, die Mutter oder den Rechnungsempfänger von ").append(schuelerVornameNachname).append(" als Rechnungsempfänger haben:");
-            for (Schueler schueler1 : validateSchuelerSummaryResult.getAndereSchueler()) {
-                infoGeschwisterStb.append("<br>").append(schueler1.toString());
-            }
+    private void setSchuelerGleicherRechnungsempfaenger() {
+        if (validateSchuelerSummaryResult.getSchueler().getRechnungsempfaenger().getAnrede() == Anrede.FRAU) {
+            lblAndereSchuelerGleicherRechnungsempfaenger1.setText("Andere Schüler mit gleicher");
+            lblAndereSchuelerGleicherRechnungsempfaenger2.setText("Rechnungsempfängerin:");
         }
-        infoGeschwisterStb.append("</html>");
-        infoGeschwister.setText(infoGeschwisterStb.toString());
+        if (validateSchuelerSummaryResult.getAndereSchueler() == null || validateSchuelerSummaryResult.getAndereSchueler().isEmpty()) {
+            StringBuilder schuelerGleicherRechnungsempfaengerStb = new StringBuilder("<html>");
+            for (Schueler schueler : validateSchuelerSummaryResult.getAndereSchueler()) {
+                if (schuelerGleicherRechnungsempfaengerStb.length() > 6) {
+                    schuelerGleicherRechnungsempfaengerStb.append("<br>");
+                }
+                schuelerGleicherRechnungsempfaengerStb.append(schueler.toString());
+            }
+            schuelerGleicherRechnungsempfaengerStb.append("</html>");
+            schuelerGleicherRecĥnungsempfaengerValue.setText(schuelerGleicherRechnungsempfaengerStb.toString());
+        }
+        schuelerGleicherRecĥnungsempfaengerValue.setText("-");
     }
 
     private void onSpeichern() {
@@ -180,115 +216,255 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         contentPane.setLayout(new BorderLayout(0, 0));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
-        contentPane.add(panel1, BorderLayout.CENTER);
-        lblSchueler = new JLabel();
-        lblSchueler.setText("Schüler:");
+        contentPane.add(panel1, BorderLayout.SOUTH);
+        buttonAbbrechen = new JButton();
+        buttonAbbrechen.setMaximumSize(new Dimension(114, 29));
+        buttonAbbrechen.setMinimumSize(new Dimension(114, 29));
+        buttonAbbrechen.setPreferredSize(new Dimension(114, 29));
+        buttonAbbrechen.setText("Abbrechen");
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(5, 5, 0, 5);
-        panel1.add(lblSchueler, gbc);
-        lblMutter = new JLabel();
-        lblMutter.setText("Mutter:");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 5, 0, 5);
-        panel1.add(lblMutter, gbc);
-        schuelerValue = new JLabel();
-        schuelerValue.setText("SchuelerValue");
-        schuelerValue.setVerticalAlignment(0);
-        gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(5, 5, 0, 5);
-        panel1.add(schuelerValue, gbc);
-        mutterValue = new JLabel();
-        mutterValue.setText("MutterValue");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.weightx = 1.0;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 5, 0, 5);
-        panel1.add(mutterValue, gbc);
-        lblVater = new JLabel();
-        lblVater.setText("Vater:");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 5, 0, 5);
-        panel1.add(lblVater, gbc);
-        vaterValue = new JLabel();
-        vaterValue.setText("VaterValue");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 5, 0, 5);
-        panel1.add(vaterValue, gbc);
-        lblRechnungsempfaenger = new JLabel();
-        lblRechnungsempfaenger.setText("Rechnungsempfänger:");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 5, 0, 5);
-        panel1.add(lblRechnungsempfaenger, gbc);
-        rechnungsempfaengerValue = new JLabel();
-        rechnungsempfaengerValue.setHorizontalAlignment(10);
-        rechnungsempfaengerValue.setHorizontalTextPosition(11);
-        rechnungsempfaengerValue.setText("RechnungsempfaengerValue");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 5, 0, 5);
-        panel1.add(rechnungsempfaengerValue, gbc);
-        infoIdentischeAdressen = new JLabel();
-        infoIdentischeAdressen.setText("Info identische Adressen");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(10, 5, 0, 5);
-        panel1.add(infoIdentischeAdressen, gbc);
-        infoGeschwister = new JLabel();
-        infoGeschwister.setText("Info Geschwister");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(10, 5, 5, 5);
-        panel1.add(infoGeschwister, gbc);
-        final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridBagLayout());
-        contentPane.add(panel2, BorderLayout.SOUTH);
-        buttonAbbrechen = new JButton();
-        buttonAbbrechen.setText("Abbrechen");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(5, 5, 5, 5);
-        panel2.add(buttonAbbrechen, gbc);
+        gbc.insets = new Insets(5, 5, 10, 5);
+        panel1.add(buttonAbbrechen, gbc);
         buttonSpeichern = new JButton();
         buttonSpeichern.setHorizontalAlignment(0);
         buttonSpeichern.setHorizontalTextPosition(11);
+        buttonSpeichern.setMaximumSize(new Dimension(114, 29));
+        buttonSpeichern.setMinimumSize(new Dimension(114, 29));
+        buttonSpeichern.setOpaque(false);
+        buttonSpeichern.setPreferredSize(new Dimension(114, 29));
         buttonSpeichern.setText("Speichern");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.EAST;
-        gbc.insets = new Insets(5, 5, 5, 5);
-        panel2.add(buttonSpeichern, gbc);
+        gbc.insets = new Insets(5, 5, 10, 5);
+        panel1.add(buttonSpeichern, gbc);
+        final JPanel panel2 = new JPanel();
+        panel2.setLayout(new GridBagLayout());
+        contentPane.add(panel2, BorderLayout.CENTER);
+        final JPanel panel3 = new JPanel();
+        panel3.setLayout(new GridBagLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        panel2.add(panel3, gbc);
+        panel3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Zusammefassung", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel3.getFont().getName(), Font.BOLD, panel3.getFont().getSize()), new Color(-16777216)));
+        lblSchueler = new JLabel();
+        lblSchueler.setText("Schüler:");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(lblSchueler, gbc);
+        lblMutter = new JLabel();
+        lblMutter.setText("Mutter:");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(lblMutter, gbc);
+        schuelerValue = new JLabel();
+        schuelerValue.setText("SchuelerValue");
+        schuelerValue.setVerticalAlignment(0);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(schuelerValue, gbc);
+        mutterValue = new JLabel();
+        mutterValue.setText("MutterValue");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        gbc.weightx = 1.0;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(mutterValue, gbc);
+        lblVater = new JLabel();
+        lblVater.setText("Vater:");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(lblVater, gbc);
+        vaterValue = new JLabel();
+        vaterValue.setText("VaterValue");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 5;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(vaterValue, gbc);
+        lblRechnungsempfaenger = new JLabel();
+        lblRechnungsempfaenger.setText("Rechnungsempfänger:");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 7;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(lblRechnungsempfaenger, gbc);
+        rechnungsempfaengerValue = new JLabel();
+        rechnungsempfaengerValue.setHorizontalAlignment(10);
+        rechnungsempfaengerValue.setHorizontalTextPosition(11);
+        rechnungsempfaengerValue.setText("RechnungsempfaengerValue");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 7;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(rechnungsempfaengerValue, gbc);
+        infoIdentischeAdressen = new JLabel();
+        infoIdentischeAdressen.setText("Info identische Adressen");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 19;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(infoIdentischeAdressen, gbc);
+        final JPanel spacer1 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel3.add(spacer1, gbc);
+        final JPanel spacer2 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel3.add(spacer2, gbc);
+        final JPanel spacer3 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel3.add(spacer3, gbc);
+        final JPanel spacer4 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 8;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel3.add(spacer4, gbc);
+        final JLabel label1 = new JLabel();
+        label1.setText("Geschwister:");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 9;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(label1, gbc);
+        final JPanel spacer5 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 10;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel3.add(spacer5, gbc);
+        geschwisterValue = new JLabel();
+        geschwisterValue.setText("GeschwisterValue");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 9;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(geschwisterValue, gbc);
+        final JPanel spacer6 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 13;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel3.add(spacer6, gbc);
+        lblAndereSchuelerGleicherRechnungsempfaenger1 = new JLabel();
+        lblAndereSchuelerGleicherRechnungsempfaenger1.setText("Andere Schüler mit gleichem");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 11;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 0, 0, 10);
+        panel3.add(lblAndereSchuelerGleicherRechnungsempfaenger1, gbc);
+        final JPanel spacer7 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel3.add(spacer7, gbc);
+        final JPanel spacer8 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel3.add(spacer8, gbc);
+        final JPanel spacer9 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel3.add(spacer9, gbc);
+        final JPanel spacer10 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 20;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel3.add(spacer10, gbc);
+        lblAndereSchuelerGleicherRechnungsempfaenger2 = new JLabel();
+        lblAndereSchuelerGleicherRechnungsempfaenger2.setText("Rechnungsempfänger:");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 12;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(lblAndereSchuelerGleicherRechnungsempfaenger2, gbc);
+        schuelerGleicherRecĥnungsempfaengerValue = new JLabel();
+        schuelerGleicherRecĥnungsempfaengerValue.setText("SchuelerGleicherRechnungsempfaengerValue");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 11;
+        gbc.gridheight = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(schuelerGleicherRecĥnungsempfaengerValue, gbc);
+        final JLabel label2 = new JLabel();
+        label2.setText("Anmeldedatum:");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 16;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(label2, gbc);
+        final JPanel spacer11 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 18;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel3.add(spacer11, gbc);
+        anmeldedatumValue = new JLabel();
+        anmeldedatumValue.setText("AnmeldedatumValue");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 16;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(anmeldedatumValue, gbc);
+        final JPanel spacer12 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 17;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel3.add(spacer12, gbc);
+        final JLabel label3 = new JLabel();
+        label3.setText("Geburtsdatum:");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 14;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(label3, gbc);
+        final JPanel spacer13 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 15;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel3.add(spacer13, gbc);
+        geburtsdatumValue = new JLabel();
+        geburtsdatumValue.setText("GeburtsdatumValue");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 14;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel3.add(geburtsdatumValue, gbc);
     }
 
     /**
