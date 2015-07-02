@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -14,6 +15,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.Converter.toCalendar;
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
  * @author Martin Schraner
@@ -49,6 +51,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         try {
             setGeburtsdatum(toCalendar(geburtsdatum));
         } catch (ParseException e) {
+            invalidate();
             throw new SvmValidationException(1200, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.GEBURTSDATUM);
         }
     }
@@ -114,9 +117,14 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     @Override
     public void setStichtag(String stichtag) throws SvmValidationException {
+        if (!checkNotEmpty(stichtag)) {
+            invalidate();
+            throw new SvmRequiredException(Field.STICHTAG);
+        }
         try {
             setStichtag(toCalendar(stichtag));
         } catch (ParseException e) {
+            invalidate();
             throw new SvmValidationException(1200, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.STICHTAG);
         }
     }
@@ -167,13 +175,14 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     @Override
     public boolean isCompleted() {
-        // wird nicht verwendet
-        return true;
+        return stichtag != null;
     }
 
     @Override
     public void doValidate() throws SvmValidationException {
-        //TODO
+        if (stichtag == null) {
+            throw new SvmValidationException(2000, "Stichtag obligatorisch", Field.STICHTAG);
+        }
     }
 
     @Override

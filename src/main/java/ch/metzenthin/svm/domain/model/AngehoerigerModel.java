@@ -10,10 +10,8 @@ public interface AngehoerigerModel extends PersonModel {
     Angehoeriger getAngehoeriger();
 
     boolean isGleicheAdresseWieSchueler();
-
-    void setIsGleicheAdresseWieSchueler(boolean isSelected);
-
     boolean isRechnungsempfaenger();
 
+    void setIsGleicheAdresseWieSchueler(boolean isSelected);
     void setIsRechnungsempfaenger(boolean isSelected);
 }

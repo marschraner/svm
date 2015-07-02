@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -17,6 +18,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.Converter.toCalendar;
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
  * @author Martin Schraner
@@ -39,9 +41,14 @@ public class AnmeldungenStatistikModelImpl extends AbstractModel implements Anme
 
     @Override
     public void setAnAbmeldemonat(String anAbmeldemonat) throws SvmValidationException {
+        if (!checkNotEmpty(anAbmeldemonat)) {
+            invalidate();
+            throw new SvmRequiredException(Field.AN_ABMELDEMONAT);
+        }
         try {
             setAnAbmeldemonat(toCalendar(anAbmeldemonat));
         } catch (ParseException e) {
+            invalidate();
             throw new SvmValidationException(1200, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.AN_ABMELDEMONAT);
         }
     }
@@ -91,11 +98,13 @@ public class AnmeldungenStatistikModelImpl extends AbstractModel implements Anme
 
     @Override
     public boolean isCompleted() {
-        return false;
+        return anAbmeldemonat != null;
     }
 
     @Override
     void doValidate() throws SvmValidationException {
-
+        if (anAbmeldemonat == null) {
+            throw new SvmValidationException(2000, "An-/Abmeldemonat obligatorisch", Field.STICHTAG);
+        }
     }
 }

@@ -71,6 +71,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
         try {
             setAnmeldedatum(toCalendar(anmeldedatum));
         } catch (ParseException e) {
+            invalidate();
             throw new SvmValidationException(1200, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.ANMELDEDATUM);
         }
     }
@@ -92,6 +93,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
         try {
             setAbmeldedatum(toCalendar(abmeldedatum));
         } catch (ParseException e) {
+            invalidate();
             throw new SvmValidationException(1201, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.ABMELDEDATUM);
         }
     }

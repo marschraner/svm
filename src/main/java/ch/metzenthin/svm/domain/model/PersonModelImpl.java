@@ -156,7 +156,8 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         try {
             setGeburtsdatum(toCalendar(geburtsdatum));
         } catch (ParseException e) {
-            throw new SvmValidationException(1200, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.GEBURTSDATUM);
+            invalidate();
+            throw new SvmValidationException(1200, "Es wird ein gültiges Datum im Format TT.MM.JJJJ erwartet", Field.GEBURTSDATUM);
         }
     }
 
