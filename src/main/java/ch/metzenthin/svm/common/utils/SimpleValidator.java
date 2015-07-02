@@ -2,6 +2,8 @@ package ch.metzenthin.svm.common.utils;
 
 import java.util.Calendar;
 
+import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
+
 /**
  * @author Hans Stamm
  */
@@ -38,7 +40,7 @@ public class SimpleValidator {
         if (anO == null) {
             return anotherO == null;
         }
-        String anotherOString = Converter.asString(anotherO);
+        String anotherOString = nullAsEmptyString(Converter.asString(anotherO));
         return anO.equals(anotherOString);
     }
 
