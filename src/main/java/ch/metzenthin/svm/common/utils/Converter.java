@@ -30,6 +30,8 @@ public class Converter {
         if (!checkNotEmpty(s)) {
             return null;
         }
+        // Akzeptiere 00 als Kürzel für 2000 (führt sonst zu ParseException)
+        s = s.replaceAll("\\.00", ".2000");
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT_STRING);
         formatter.setLenient(false);
