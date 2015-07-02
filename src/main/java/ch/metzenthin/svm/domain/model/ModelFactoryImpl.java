@@ -33,4 +33,9 @@ public class ModelFactoryImpl implements ModelFactory {
         return new SchuelerSuchenModelImpl(commandInvoker);
     }
 
+    @Override
+    public AnmeldungenStatistikModel createAnmeldungenStatistikModel() {
+        return new AnmeldungenStatistikModelImpl(commandInvoker);
+    }
+
 }

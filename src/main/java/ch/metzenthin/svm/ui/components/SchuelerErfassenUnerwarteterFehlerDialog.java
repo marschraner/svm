@@ -56,15 +56,24 @@ public class SchuelerErfassenUnerwarteterFehlerDialog extends SchuelerErfassenDi
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
         contentPane.add(panel1, BorderLayout.CENTER);
+        final JScrollPane scrollPane1 = new JScrollPane();
+        GridBagConstraints gbc;
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.BOTH;
+        panel1.add(scrollPane1, gbc);
+        final JPanel panel2 = new JPanel();
+        panel2.setLayout(new GridBagLayout());
+        scrollPane1.setViewportView(panel2);
         lblBeschreibung = new JLabel();
         lblBeschreibung.setText("Label");
-        GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(5, 5, 5, 5);
-        panel1.add(lblBeschreibung, gbc);
+        panel2.add(lblBeschreibung, gbc);
         lblFehler = new JLabel();
         lblFehler.setText("Label");
         gbc = new GridBagConstraints();
@@ -72,10 +81,10 @@ public class SchuelerErfassenUnerwarteterFehlerDialog extends SchuelerErfassenDi
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(5, 5, 5, 5);
-        panel1.add(lblFehler, gbc);
-        final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridBagLayout());
-        contentPane.add(panel2, BorderLayout.SOUTH);
+        panel2.add(lblFehler, gbc);
+        final JPanel panel3 = new JPanel();
+        panel3.setLayout(new GridBagLayout());
+        contentPane.add(panel3, BorderLayout.SOUTH);
         buttonOK = new JButton();
         buttonOK.setText("OK");
         buttonOK.setMnemonic('O');
@@ -85,7 +94,7 @@ public class SchuelerErfassenUnerwarteterFehlerDialog extends SchuelerErfassenDi
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(5, 5, 5, 5);
-        panel2.add(buttonOK, gbc);
+        panel3.add(buttonOK, gbc);
     }
 
     /**

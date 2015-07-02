@@ -27,12 +27,6 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private DispensationSelected dispensation;
     private GeschlechtSelected geschlecht;
     private Calendar stichtag;
-    private Calendar anAbmeldemonat;
-    private AnAbmeldungenSelected anAbmeldungen;
-    private boolean stammdatenBeruecksichtigen;
-    private boolean kursBeruecksichtigen;
-    private boolean codesBeruecksichtigen;
-    private boolean anAbmeldestatistikBeruecksichtigen;
 
     SchuelerSuchenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -132,87 +126,6 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         Calendar oldValue = this.stichtag;
         this.stichtag = stichtag;
         firePropertyChange(Field.STICHTAG, oldValue, this.stichtag);
-    }
-
-    @Override
-    public Calendar getAnAbmeldemonat() {
-        return anAbmeldemonat;
-    }
-
-    @Override
-    public void setAnAbmeldemonat(String anmeldemonat) throws SvmValidationException {
-        try {
-            setAnAbmeldemonat(toCalendar(anmeldemonat));
-        } catch (ParseException e) {
-            throw new SvmValidationException(1200, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.ANMELDEDATUM);
-        }
-    }
-
-    @Override
-    public AnAbmeldungenSelected getAnAbmeldungen() {
-        return anAbmeldungen;
-    }
-
-    @Override
-    public void setAnAbmeldemonat(Calendar anAbmeldemonat) {
-        Calendar oldValue = this.anAbmeldemonat;
-        this.anAbmeldemonat = anAbmeldemonat;
-        firePropertyChange(Field.AN_ABMELDEMONAT, oldValue, this.anAbmeldemonat);
-    }
-
-    @Override
-    public void setAnAbmeldungen(AnAbmeldungenSelected anAbmeldungen) {
-        AnAbmeldungenSelected oldValue = this.anAbmeldungen;
-        this.anAbmeldungen = anAbmeldungen;
-        firePropertyChange(Field.AN_ABMELDUNGEN, oldValue, this.anAbmeldungen);
-    }
-
-    @Override
-    public boolean isStammdatenBeruecksichtigen() {
-        return stammdatenBeruecksichtigen;
-    }
-
-    @Override
-    public void setStammdatenBeruecksichtigen(boolean stammdatenBeruecksichtigen) {
-        boolean oldValue = this.stammdatenBeruecksichtigen;
-        this.stammdatenBeruecksichtigen = stammdatenBeruecksichtigen;
-        firePropertyChange(Field.STAMMDATEN_BERUECKSICHTIGEN, oldValue, this.stammdatenBeruecksichtigen);
-    }
-
-    @Override
-    public boolean isKursBeruecksichtigen() {
-        return kursBeruecksichtigen;
-    }
-
-    @Override
-    public void setKursBeruecksichtigen(boolean kursBeruecksichtigen) {
-        boolean oldValue = this.kursBeruecksichtigen;
-        this.kursBeruecksichtigen = kursBeruecksichtigen;
-        firePropertyChange(Field.KURS_BERUECKSICHTIGEN, oldValue, this.kursBeruecksichtigen);
-    }
-
-    @Override
-    public boolean isCodesBeruecksichtigen() {
-        return codesBeruecksichtigen;
-    }
-
-    @Override
-    public void setCodesBeruecksichtigen(boolean codesBeruecksichtigen) {
-        boolean oldValue = this.codesBeruecksichtigen;
-        this.codesBeruecksichtigen = codesBeruecksichtigen;
-        firePropertyChange(Field.CODES_BERUECKSICHTIGEN, oldValue, this.codesBeruecksichtigen);
-    }
-
-    @Override
-    public boolean isAnAbmeldestatistikBeruecksichtigen() {
-        return anAbmeldestatistikBeruecksichtigen;
-    }
-
-    @Override
-    public void setAnAbmeldestatistikBeruecksichtigen(boolean anAbmeldestatistikBeruecksichtigen) {
-        boolean oldValue = this.anAbmeldestatistikBeruecksichtigen;
-        this.anAbmeldestatistikBeruecksichtigen = anAbmeldestatistikBeruecksichtigen;
-        firePropertyChange(Field.AN_ABMELDESTATISTIK_BERUECKSICHTIGEN, oldValue, this.anAbmeldestatistikBeruecksichtigen);
     }
 
     @Override

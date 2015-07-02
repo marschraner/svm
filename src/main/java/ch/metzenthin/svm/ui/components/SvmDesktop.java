@@ -71,6 +71,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
 
+        menuItem = new JMenuItem("An-/Abmeldestatistik");
+        menuItem.setMnemonic(KeyEvent.VK_A);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("anAbmeldestatistik");
+        menuItem.addActionListener(this);
+        menuSchueler.add(menuItem);
+
         // Set up the second menu item.
         menuItem = new JMenuItem("Beenden");
         menuItem.setMnemonic(KeyEvent.VK_Q);
@@ -92,7 +99,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             schuelerErfassenPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    onSchuelerErfassenFrameAbbrechen();
+                    onFrameAbbrechen();
                 }
             });
             activeComponent = schuelerErfassenPanel.$$$getRootComponent$$$();
@@ -100,12 +107,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
             activeComponent.setVisible(true);
             setTitle("Neuen Schüler erfassen");
             revalidate();
+
         } else if ("schuelerSuchen".equals(e.getActionCommand())) {
             SchuelerSuchenPanel schuelerSuchenPanel = new SchuelerSuchenPanel(svmContext);
             schuelerSuchenPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    onSchuelerErfassenFrameAbbrechen();
+                    onFrameAbbrechen();
                 }
             });
             schuelerSuchenPanel.addNextPanelListener(new ActionListener() {
@@ -119,6 +127,27 @@ public class SvmDesktop extends JFrame implements ActionListener {
             activeComponent.setVisible(true);
             setTitle("Schüler suchen");
             revalidate();
+
+        } else if ("anAbmeldestatistik".equals(e.getActionCommand())) {
+            AnmeldungenStatistikPanel anAbmeldestatistikPanel = new AnmeldungenStatistikPanel(svmContext);
+            anAbmeldestatistikPanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFrameAbbrechen();
+                }
+            });
+            anAbmeldestatistikPanel.addNextPanelListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onNextPanelAvailable(e.getSource());
+                }
+            });
+            activeComponent = anAbmeldestatistikPanel.$$$getRootComponent$$$();
+            getContentPane().add(activeComponent);
+            activeComponent.setVisible(true);
+            setTitle("An-/Abmeldestatistik");
+            revalidate();
+
         } else { // beenden
             quit();
         }
@@ -136,7 +165,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
         revalidate();
     }
 
-    private void onSchuelerErfassenFrameAbbrechen() {
+    private void onFrameAbbrechen() {
         activeComponent.setVisible(false);
         getContentPane().remove(activeComponent);
         activeComponent = null;

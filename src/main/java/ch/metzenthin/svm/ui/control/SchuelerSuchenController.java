@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
-import java.util.HashSet;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -30,7 +29,6 @@ public class SchuelerSuchenController extends PersonController {
     private JTextField txtLehrkraft;
     private JTextField txtVon;
     private JTextField txtBis;
-    private JTextField txtAnAbmeldemonat;
     private JTextField txtStichtag;
     private JRadioButton radioBtnSchueler;
     private JRadioButton radioBtnEltern;
@@ -45,15 +43,8 @@ public class SchuelerSuchenController extends PersonController {
     private JRadioButton radioBtnWeiblich;
     private JRadioButton radioBtnMaennlich;
     private JRadioButton radioBtnGeschlechtAlle;
-    private JRadioButton radioBtnAnmeldungen;
-    private JRadioButton radioBtnAbmeldungen;
     private JComboBox<Wochentag> comboBoxWochentag;
-    private JCheckBox checkBoxStammdatenBeruecksichtigen;
-    private JCheckBox checkBoxKursBeruecksichtigen;
-    private JCheckBox checkBoxCodesBeruecksichtigen;
-    private JCheckBox checkBoxAnAbmeldestatistikBeruecksichtigen;
     private JLabel errLblStichtag;
-    private JLabel errLblAnAbmeldemonat;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
@@ -75,17 +66,6 @@ public class SchuelerSuchenController extends PersonController {
         });
     }
 
-    private void onSchuelerSuchenModelCompleted(boolean completed) {
-        LOGGER.trace("SchuelerSuchenModel completed=" + completed);
-        if (completed) {
-            btnSuchen.setToolTipText(null);
-            btnSuchen.setEnabled(true);
-        } else {
-            btnSuchen.setToolTipText("Bitte Eingabedaten vervollständigen");
-            btnSuchen.setEnabled(false);
-        }
-    }
-
     public void setTxtLehrkraft(JTextField txtLehrkraft) {
         this.txtLehrkraft = txtLehrkraft;
     }
@@ -104,22 +84,6 @@ public class SchuelerSuchenController extends PersonController {
 
     public void setTxtCodes(JTextField txtCodes) {
         this.txtCodes = txtCodes;
-    }
-
-    public void setTxtAnAbmeldemonat(JTextField txtAnAbmeldemonat) {
-        this.txtAnAbmeldemonat = txtAnAbmeldemonat;
-        this.txtAnAbmeldemonat.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAnmeldemonatEvent();
-            }
-        });
-        this.txtAnAbmeldemonat.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onAnmeldemonatEvent();
-            }
-        });
     }
 
     public void setTxtStichtag(JTextField txtStichtag) {
@@ -201,58 +165,6 @@ public class SchuelerSuchenController extends PersonController {
         this.radioBtnGeschlechtAlle.addActionListener(radioBtnGroupGeschlechtListener);
     }
 
-    public void setRadioBtnGroupAnAbmeldungen(JRadioButton radioBtnAnmeldungen, JRadioButton radioBtnAbmeldungen) {
-        this.radioBtnAnmeldungen = radioBtnAnmeldungen;
-        this.radioBtnAbmeldungen = radioBtnAbmeldungen;
-        // Action Commands
-        this.radioBtnAnmeldungen.setActionCommand(SchuelerSuchenModel.AnAbmeldungenSelected.ANMELDUNGEN.toString());
-        this.radioBtnAbmeldungen.setActionCommand(SchuelerSuchenModel.AnAbmeldungenSelected.ABMELDUNGEN.toString());
-        // Listener
-        RadioBtnGroupAnAbmeldungenListener radioBtnGroupAnAbmeldungenListener = new RadioBtnGroupAnAbmeldungenListener();
-        this.radioBtnAnmeldungen.addActionListener(radioBtnGroupAnAbmeldungenListener);
-        this.radioBtnAbmeldungen.addActionListener(radioBtnGroupAnAbmeldungenListener);
-    }
-
-    public void setCheckBoxStammdatenBeruecksichtigen(JCheckBox checkBoxStammdatenBeruecksichtigen) {
-        this.checkBoxStammdatenBeruecksichtigen = checkBoxStammdatenBeruecksichtigen;
-        this.checkBoxStammdatenBeruecksichtigen.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onStammdatenBeruecksichtigenEvent();
-            }
-        });
-    }
-
-    public void setCheckBoxKursBeruecksichtigen(JCheckBox checkBoxKursBeruecksichtigen) {
-        this.checkBoxKursBeruecksichtigen = checkBoxKursBeruecksichtigen;
-        this.checkBoxKursBeruecksichtigen.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onKursBeruecksichtigenEvent();
-            }
-        });
-    }
-
-    public void setCheckBoxCodesBeruecksichtigen(JCheckBox checkBoxCodesBeruecksichtigen) {
-        this.checkBoxCodesBeruecksichtigen = checkBoxCodesBeruecksichtigen;
-        this.checkBoxCodesBeruecksichtigen.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onCodesBeruecksichtigenEvent();
-            }
-        });
-    }
-
-    public void setCheckBoxAnAbmeldestatistikBeruecksichtigen(JCheckBox checkBoxAnAbmeldestatistikBeruecksichtigen) {
-        this.checkBoxAnAbmeldestatistikBeruecksichtigen = checkBoxAnAbmeldestatistikBeruecksichtigen;
-        this.checkBoxAnAbmeldestatistikBeruecksichtigen.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onAnAbmeldestatistikBeruecksichtigenEvent();
-            }
-        });
-    }
-
     public void setBtnSuchen(JButton btnSuchen) {
         this.btnSuchen = btnSuchen;
         this.btnSuchen.addActionListener(new ActionListener() {
@@ -277,39 +189,6 @@ public class SchuelerSuchenController extends PersonController {
         this.errLblStichtag = errLblStichtag;
     }
 
-    public void setErrLblAnAbmeldemonat(JLabel errLblAnAbmeldemonat) {
-        this.errLblAnAbmeldemonat = errLblAnAbmeldemonat;
-    }
-
-    public void addCloseListener(ActionListener closeListener) {
-        this.closeListener = closeListener;
-    }
-
-    public void addNextPanelListener(ActionListener nextPanelListener) {
-        this.nextPanelListener = nextPanelListener;
-    }
-
-    private void onAnmeldemonatEvent() {
-        LOGGER.trace("SchuelerSuchenController Event An-/Abmeldemonat");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtAnAbmeldemonat.getText(), schuelerSuchenModel.getAnAbmeldemonat());
-        setModelAnAbmeldemonat();
-        if (equalFieldAndModelValue) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
-    }
-
-    private void setModelAnAbmeldemonat() {
-        errLblAnAbmeldemonat.setVisible(false);
-        try {
-            schuelerSuchenModel.setAnAbmeldemonat(txtAnAbmeldemonat.getText());
-        } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelAnAbmeldemonat Exception=" + e.getMessage());
-            showErrMsg(e);
-        }
-    }
-
     private void onStichtagEvent() {
         LOGGER.trace("SchuelerSuchenController Event Stichtag");
         boolean equalFieldAndModelValue = equalsNullSafe(txtStichtag.getText(), schuelerSuchenModel.getStichtag());
@@ -331,26 +210,6 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
-    private void onStammdatenBeruecksichtigenEvent() {
-        LOGGER.trace("SchuelerSuchenController Event StammdatenBeruecksichtigen. Selected=" + checkBoxStammdatenBeruecksichtigen.isSelected());
-        schuelerSuchenModel.setStammdatenBeruecksichtigen(checkBoxStammdatenBeruecksichtigen.isSelected());
-    }
-
-    private void onKursBeruecksichtigenEvent() {
-        LOGGER.trace("SchuelerSuchenController Event KursBeruecksichtigen. Selected=" + checkBoxKursBeruecksichtigen.isSelected());
-        schuelerSuchenModel.setKursBeruecksichtigen(checkBoxKursBeruecksichtigen.isSelected());
-    }
-
-    private void onCodesBeruecksichtigenEvent() {
-        LOGGER.trace("SchuelerSuchenController Event CodesBeruecksichtigen. Selected=" + checkBoxCodesBeruecksichtigen.isSelected());
-        schuelerSuchenModel.setCodesBeruecksichtigen(checkBoxCodesBeruecksichtigen.isSelected());
-    }
-
-    private void onAnAbmeldestatistikBeruecksichtigenEvent() {
-        LOGGER.trace("SchuelerSuchenController Event AnAbmeldestatistikBeruecksichtigen. Selected=" + checkBoxAnAbmeldestatistikBeruecksichtigen.isSelected());
-        schuelerSuchenModel.setAnAbmeldestatistikBeruecksichtigen(checkBoxAnAbmeldestatistikBeruecksichtigen.isSelected());
-    }
-
     private void onAbbrechen() {
         LOGGER.trace("SchuelerSuchenPanel Abbrechen gedrückt");
         closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Abbrechen"));
@@ -365,141 +224,36 @@ public class SchuelerSuchenController extends PersonController {
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
     }
 
+    private void onSchuelerSuchenModelCompleted(boolean completed) {
+        LOGGER.trace("SchuelerSuchenModel completed=" + completed);
+        if (completed) {
+            btnSuchen.setToolTipText(null);
+            btnSuchen.setEnabled(true);
+        } else {
+            btnSuchen.setToolTipText("Bitte Eingabedaten vervollständigen");
+            btnSuchen.setEnabled(false);
+        }
+    }
+
+    public void addCloseListener(ActionListener closeListener) {
+        this.closeListener = closeListener;
+    }
+
+    public void addNextPanelListener(ActionListener nextPanelListener) {
+        this.nextPanelListener = nextPanelListener;
+    }
+
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.STICHTAG, evt)) {
             txtStichtag.setText(asString(schuelerSuchenModel.getStichtag()));
-        } else if (checkIsFieldChange(Field.AN_ABMELDEMONAT, evt)) {
-            txtAnAbmeldemonat.setText(asString(schuelerSuchenModel.getAnAbmeldemonat()));
-        } else if (checkIsFieldChange(Field.STAMMDATEN_BERUECKSICHTIGEN, evt)) {
-            checkBoxStammdatenBeruecksichtigen.setSelected(schuelerSuchenModel.isStammdatenBeruecksichtigen());
-            Boolean newValue = (Boolean) evt.getNewValue();
-            if (isBooleanNewValuePropertyChecked(newValue)) {
-                schuelerSuchenModel.enableFields(getStammdatenFields());
-                schuelerSuchenModel.enableFields(getSucheMitStichtagFields());
-                schuelerSuchenModel.disableFields(getAnAbmeldestatistikFields());
-                schuelerSuchenModel.makeErrorLabelsInvisible(getAnAbmeldestatistikFields());
-                schuelerSuchenModel.setAnAbmeldestatistikBeruecksichtigen(false);
-            } else {
-                schuelerSuchenModel.disableFields(getStammdatenFields());
-                schuelerSuchenModel.makeErrorLabelsInvisible(getStammdatenFields());
-            }
-        } else if (checkIsFieldChange(Field.KURS_BERUECKSICHTIGEN, evt)) {
-            checkBoxKursBeruecksichtigen.setSelected(schuelerSuchenModel.isKursBeruecksichtigen());
-            Boolean newValue = (Boolean) evt.getNewValue();
-            if (isBooleanNewValuePropertyChecked(newValue)) {
-                schuelerSuchenModel.enableFields(getKursFields());
-                schuelerSuchenModel.enableFields(getSucheMitStichtagFields());
-                schuelerSuchenModel.disableFields(getAnAbmeldestatistikFields());
-                schuelerSuchenModel.makeErrorLabelsInvisible(getAnAbmeldestatistikFields());
-                schuelerSuchenModel.setAnAbmeldestatistikBeruecksichtigen(false);
-            } else {
-                schuelerSuchenModel.disableFields(getKursFields());
-                schuelerSuchenModel.makeErrorLabelsInvisible(getKursFields());
-            }
-        } else if (checkIsFieldChange(Field.CODES_BERUECKSICHTIGEN, evt)) {
-            checkBoxCodesBeruecksichtigen.setSelected(schuelerSuchenModel.isCodesBeruecksichtigen());
-            Boolean newValue = (Boolean) evt.getNewValue();
-            if (isBooleanNewValuePropertyChecked(newValue)) {
-                schuelerSuchenModel.enableFields(getCodesFields());
-                schuelerSuchenModel.enableFields(getSucheMitStichtagFields());
-                schuelerSuchenModel.disableFields(getAnAbmeldestatistikFields());
-                schuelerSuchenModel.makeErrorLabelsInvisible(getAnAbmeldestatistikFields());
-                schuelerSuchenModel.setAnAbmeldestatistikBeruecksichtigen(false);
-            } else {
-                schuelerSuchenModel.disableFields(getCodesFields());
-                schuelerSuchenModel.makeErrorLabelsInvisible(getCodesFields());
-                schuelerSuchenModel.makeErrorLabelsInvisible(getCodesFields());
-            }
-        } else if (checkIsFieldChange(Field.AN_ABMELDESTATISTIK_BERUECKSICHTIGEN, evt)) {
-            checkBoxAnAbmeldestatistikBeruecksichtigen.setSelected(schuelerSuchenModel.isAnAbmeldestatistikBeruecksichtigen());
-            Boolean newValue = (Boolean) evt.getNewValue();
-            if (isBooleanNewValuePropertyChecked(newValue)) {
-                schuelerSuchenModel.enableFields(getAnAbmeldestatistikFields());
-                schuelerSuchenModel.disableFields(getSucheMitStichtagFields());
-                schuelerSuchenModel.makeErrorLabelsInvisible(getSucheMitStichtagFields());
-                schuelerSuchenModel.disableFields(getStammdatenFields());
-                schuelerSuchenModel.makeErrorLabelsInvisible(getStammdatenFields());
-                schuelerSuchenModel.setStammdatenBeruecksichtigen(false);
-                schuelerSuchenModel.disableFields(getKursFields());
-                schuelerSuchenModel.makeErrorLabelsInvisible(getKursFields());
-                schuelerSuchenModel.setKursBeruecksichtigen(false);
-                schuelerSuchenModel.disableFields(getCodesFields());
-                schuelerSuchenModel.makeErrorLabelsInvisible(getCodesFields());
-                schuelerSuchenModel.setCodesBeruecksichtigen(false);
-
-            } else {
-                schuelerSuchenModel.disableFields(getAnAbmeldestatistikFields());
-                schuelerSuchenModel.makeErrorLabelsInvisible(getAnAbmeldestatistikFields());
-            }
         }
-    }
-
-    private boolean isBooleanNewValuePropertyChecked(Boolean newValue) {
-        return (newValue != null) && newValue;
-    }
-
-    private Set<Field> getSucheMitStichtagFields() {
-        Set<Field> sucheMitStichtagFields = new HashSet<>();
-        sucheMitStichtagFields.add(Field.STICHTAG);
-        sucheMitStichtagFields.add(Field.ANGEMELDET);
-        sucheMitStichtagFields.add(Field.ABGEMELDET);
-        sucheMitStichtagFields.add(Field.ANMELDESTATUS_ALLE);
-        sucheMitStichtagFields.add(Field.DISPENSIERT);
-        sucheMitStichtagFields.add(Field.NICHT_DISPENSIERT);
-        sucheMitStichtagFields.add(Field.DISPENSATION_ALLE);
-        return sucheMitStichtagFields;
-    }
-
-    private Set<Field> getStammdatenFields() {
-        Set<Field> stammdatenFields = new HashSet<>();
-        stammdatenFields.add(Field.NACHNAME);
-        stammdatenFields.add(Field.VORNAME);
-        stammdatenFields.add(Field.STRASSE_HAUSNUMMER);
-        stammdatenFields.add(Field.PLZ);
-        stammdatenFields.add(Field.ORT);
-        stammdatenFields.add(Field.FESTNETZ);
-        stammdatenFields.add(Field.NATEL);
-        stammdatenFields.add(Field.EMAIL);
-        stammdatenFields.add(Field.GEBURTSDATUM);
-        stammdatenFields.add(Field.SCHUELER);
-        stammdatenFields.add(Field.ELTERN);
-        stammdatenFields.add(Field.RECHNUNGSEMPFAENGER);
-        stammdatenFields.add(Field.ROLLE_ALLE);
-        return stammdatenFields;
-    }
-
-    private Set<Field> getKursFields() {
-        Set<Field> kursFields = new HashSet<>();
-        kursFields.add(Field.LEHRKRAFT);
-        kursFields.add(Field.WOCHENTAG);
-        kursFields.add(Field.VON);
-        kursFields.add(Field.BIS);
-        return kursFields;
-    }
-
-    private Set<Field> getCodesFields() {
-        Set<Field> codesFields = new HashSet<>();
-        codesFields.add(Field.CODES);
-        return codesFields;
-    }
-
-    private Set<Field> getAnAbmeldestatistikFields() {
-        Set<Field> anAbmeldestatistikFields = new HashSet<>();
-        anAbmeldestatistikFields.add(Field.AN_ABMELDEMONAT);
-        anAbmeldestatistikFields.add(Field.ANMELDUNGEN);
-        anAbmeldestatistikFields.add(Field.ABMELDUNGEN);
-        return anAbmeldestatistikFields;
     }
 
     @Override
     void validateFields() throws SvmValidationException {
         super.validateFields();
-        if (txtAnAbmeldemonat.isEnabled()) {
-            LOGGER.trace("Validate field An-/Abmeldemonat");
-            setModelAnAbmeldemonat();
-        }
         if (txtStichtag.isEnabled()) {
             LOGGER.trace("Validate field Stichtag");
             setModelStichtag();
@@ -513,10 +267,6 @@ public class SchuelerSuchenController extends PersonController {
             errLblStichtag.setVisible(true);
             errLblStichtag.setText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.AN_ABMELDEMONAT)) {
-            errLblAnAbmeldemonat.setVisible(true);
-            errLblAnAbmeldemonat.setText(e.getMessage());
-        }
     }
 
     @Override
@@ -525,19 +275,11 @@ public class SchuelerSuchenController extends PersonController {
         if (e.getAffectedFields().contains(Field.STICHTAG)) {
             txtStichtag.setToolTipText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.AN_ABMELDEMONAT)) {
-            txtAnAbmeldemonat.setToolTipText(e.getMessage());
-        }
     }
 
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         super.makeErrorLabelsInvisible(fields);
-
-        if (fields.contains(Field.AN_ABMELDEMONAT)) {
-            errLblAnAbmeldemonat.setVisible(false);
-            txtAnAbmeldemonat.setToolTipText(null);
-        }
         if (fields.contains(Field.STICHTAG)) {
             errLblStichtag.setVisible(false);
             txtStichtag.setToolTipText(null);
@@ -558,9 +300,6 @@ public class SchuelerSuchenController extends PersonController {
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.ROLLE_ALLE)) {
             radioBtnRolleAlle.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.STAMMDATEN_BERUECKSICHTIGEN)) {
-            checkBoxStammdatenBeruecksichtigen.setEnabled(!disable);
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.ANGEMELDET)) {
             radioBtnAngemeldet.setEnabled(!disable);
@@ -601,26 +340,8 @@ public class SchuelerSuchenController extends PersonController {
         if (fields.contains(Field.ALLE) || fields.contains(Field.BIS)) {
             txtBis.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.KURS_BERUECKSICHTIGEN)) {
-            checkBoxKursBeruecksichtigen.setEnabled(!disable);
-        }
         if (fields.contains(Field.ALLE) || fields.contains(Field.CODES)) {
             txtCodes.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.CODES_BERUECKSICHTIGEN)) {
-            checkBoxCodesBeruecksichtigen.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.AN_ABMELDEMONAT)) {
-            txtAnAbmeldemonat.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ANMELDUNGEN)) {
-            radioBtnAnmeldungen.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ABMELDUNGEN)) {
-            radioBtnAbmeldungen.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.AN_ABMELDESTATISTIK_BERUECKSICHTIGEN)) {
-            checkBoxAnAbmeldestatistikBeruecksichtigen.setEnabled(!disable);
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.STICHTAG)) {
             txtStichtag.setEnabled(!disable);
@@ -656,14 +377,6 @@ public class SchuelerSuchenController extends PersonController {
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SchuelerSuchenController Geschlecht Event");
             schuelerSuchenModel.setGeschlecht(SchuelerSuchenModel.GeschlechtSelected.valueOf(e.getActionCommand()));
-        }
-    }
-
-    class RadioBtnGroupAnAbmeldungenListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            LOGGER.trace("SchuelerSuchenController AnAbmeldungen Event");
-            schuelerSuchenModel.setAnAbmeldungen(SchuelerSuchenModel.AnAbmeldungenSelected.valueOf(e.getActionCommand()));
         }
     }
 

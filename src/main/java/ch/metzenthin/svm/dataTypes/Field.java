@@ -45,11 +45,7 @@ public enum Field {
     WOCHENTAG("Wochentag"),
     VON("von"),
     BIS("bis"),
-    CODES("Codes"),
-    STAMMDATEN_BERUECKSICHTIGEN("Stammdaten berücksichtigen"),
-    KURS_BERUECKSICHTIGEN("Kurs berücksichtigen"),
-    CODES_BERUECKSICHTIGEN("Codes berücksichtigen"),
-    AN_ABMELDESTATISTIK_BERUECKSICHTIGEN("An-/Abmeldestatistik berücksichtigen");
+    CODES("Codes");
 
     private String name;
 
