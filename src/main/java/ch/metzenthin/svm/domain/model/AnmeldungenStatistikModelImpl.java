@@ -25,6 +25,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 public class AnmeldungenStatistikModelImpl extends AbstractModel implements AnmeldungenStatistikModel {
 
+    private static final String AN_ABMELDEMONAT_DATE_FORMAT_STRING = "MM.yyyy";
+
     private final CommandInvoker commandInvoker;
     private Calendar anAbmeldemonat;
     private AnAbmeldungenSelected anAbmeldungen;
@@ -46,10 +48,10 @@ public class AnmeldungenStatistikModelImpl extends AbstractModel implements Anme
             throw new SvmRequiredException(Field.AN_ABMELDEMONAT);
         }
         try {
-            setAnAbmeldemonat(toCalendar(anAbmeldemonat));
+            setAnAbmeldemonat(toCalendar(anAbmeldemonat, AN_ABMELDEMONAT_DATE_FORMAT_STRING));
         } catch (ParseException e) {
             invalidate();
-            throw new SvmValidationException(1200, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.AN_ABMELDEMONAT);
+            throw new SvmValidationException(1200, "Es wird ein gültige Datum im Format MM.JJJJ erwartet", Field.AN_ABMELDEMONAT);
         }
     }
 
@@ -57,7 +59,7 @@ public class AnmeldungenStatistikModelImpl extends AbstractModel implements Anme
     public void setAnAbmeldemonat(Calendar anAbmeldemonat) {
         Calendar oldValue = this.anAbmeldemonat;
         this.anAbmeldemonat = anAbmeldemonat;
-        firePropertyChange(Field.STICHTAG, oldValue, this.anAbmeldemonat);
+        firePropertyChange(Field.AN_ABMELDEMONAT, oldValue, this.anAbmeldemonat);
     }
 
     @Override

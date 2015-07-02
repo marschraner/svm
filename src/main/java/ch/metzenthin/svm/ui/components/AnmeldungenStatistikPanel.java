@@ -24,6 +24,7 @@ public class AnmeldungenStatistikPanel {
     public AnmeldungenStatistikPanel(SvmContext svmContext) {
         $$$setupUI$$$();
         initializeErrLbls();
+        btnSuchen.setEnabled(false);
         createAnmeldungenStatistikController(svmContext);
     }
 
@@ -75,9 +76,9 @@ public class AnmeldungenStatistikPanel {
         panel1.add(panel2, gbc);
         panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "An-/Abmeldestatistik"));
         lblAnAbmeldemonat = new JLabel();
-        lblAnAbmeldemonat.setText("An-/Abmeldemonat");
+        lblAnAbmeldemonat.setText("Monat/Jahr (MM.JJJJ)");
         lblAnAbmeldemonat.setDisplayedMnemonic('M');
-        lblAnAbmeldemonat.setDisplayedMnemonicIndex(11);
+        lblAnAbmeldemonat.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 2;

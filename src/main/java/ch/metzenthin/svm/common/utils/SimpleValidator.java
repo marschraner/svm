@@ -2,6 +2,7 @@ package ch.metzenthin.svm.common.utils;
 
 import java.util.Calendar;
 
+import static ch.metzenthin.svm.common.utils.Converter.DATE_FORMAT_STRING;
 import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
 
 /**
@@ -37,10 +38,14 @@ public class SimpleValidator {
     }
 
     public static boolean equalsNullSafe(String anO, Calendar anotherO) {
+        return equalsNullSafe(anO, anotherO, DATE_FORMAT_STRING);
+    }
+
+    public static boolean equalsNullSafe(String anO, Calendar anotherO, String dateFormat) {
         if (anO == null) {
             return anotherO == null;
         }
-        String anotherOString = nullAsEmptyString(Converter.asString(anotherO));
+        String anotherOString = nullAsEmptyString(Converter.asString(anotherO, dateFormat));
         return anO.equals(anotherOString);
     }
 

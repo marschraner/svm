@@ -27,6 +27,8 @@ public class AnmeldungenStatistikController extends AbstractController {
 
     private static final Logger LOGGER = Logger.getLogger(AnmeldungenStatistikController.class);
 
+    private static final String AN_ABMELDEMONAT_DATE_FORMAT_STRING = "MM.yyyy";
+
     private AnmeldungenStatistikModel anmeldungenStatistikModel;
     private ActionListener closeListener;
     private ActionListener nextPanelListener;
@@ -105,7 +107,7 @@ public class AnmeldungenStatistikController extends AbstractController {
 
     private void onAnAbmeldemonatEvent() {
         LOGGER.trace("AnmeldungenStatistikController Event An-/Abmeldemonat");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtAnAbmeldemonat.getText(), asString(anmeldungenStatistikModel.getAnAbmeldemonat()));
+        boolean equalFieldAndModelValue = equalsNullSafe(txtAnAbmeldemonat.getText(), anmeldungenStatistikModel.getAnAbmeldemonat(), AN_ABMELDEMONAT_DATE_FORMAT_STRING);
         setModelAnAbmeldemonat();
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
@@ -160,7 +162,7 @@ public class AnmeldungenStatistikController extends AbstractController {
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         if (checkIsFieldChange(Field.AN_ABMELDEMONAT, evt)) {
-            txtAnAbmeldemonat.setText(asString(anmeldungenStatistikModel.getAnAbmeldemonat()));
+            txtAnAbmeldemonat.setText(asString(anmeldungenStatistikModel.getAnAbmeldemonat(), AN_ABMELDEMONAT_DATE_FORMAT_STRING));
         }
     }
 

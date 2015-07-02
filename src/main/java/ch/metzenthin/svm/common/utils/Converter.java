@@ -27,13 +27,22 @@ public class Converter {
     }
 
     public static Calendar toCalendar(String s) throws ParseException {
+        return toCalendar(s, DATE_FORMAT_STRING);
+    }
+
+
+    public static Calendar toCalendar(String s, String dateFormatString) throws ParseException {
         if (!checkNotEmpty(s)) {
             return null;
+        }
+        // Verhindern, dass für einen dateFormatString MM.yyyy Eingaben wie 11.09,2011 akzeptiert werden (-> 11.2009 !)
+        if (getCharacterOccurrencesInString(s, '.') != getCharacterOccurrencesInString(dateFormatString, '.')) {
+            throw new ParseException("Falsches Datenformat", 0);
         }
         // Akzeptiere 00 als Kürzel für 2000 (führt sonst zu ParseException)
         s = s.replaceAll("\\.00", ".2000");
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT_STRING);
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormatString);
         formatter.setLenient(false);
         calendar.setTime(formatter.parse(s));
         if (calendar.get(Calendar.YEAR) < 100) {
@@ -60,10 +69,14 @@ public class Converter {
     }
 
     public static String asString(Calendar calendar) {
+        return asString(calendar, DATE_FORMAT_STRING);
+    }
+
+    public static String asString(Calendar calendar, String dateFormatString) {
         if (calendar == null) {
             return null;
         }
-        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT_STRING);
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormatString);
         return formatter.format(calendar.getTime());
     }
 
@@ -107,6 +120,16 @@ public class Converter {
             return null;
         }
         return (splitStrasseHausnummer(strasseHausnummer).length > 1 ? splitStrasseHausnummer(strasseHausnummer)[1] : "");
+    }
+
+    public static int getCharacterOccurrencesInString(String s, char c) {
+        int counter = 0;
+        for( int i=0; i<s.length(); i++ ) {
+            if( s.charAt(i) == c ) {
+                counter++;
+            }
+        }
+        return counter;
     }
 
 }

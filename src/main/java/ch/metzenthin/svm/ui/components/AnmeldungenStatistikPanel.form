@@ -27,7 +27,7 @@
                 </constraints>
                 <properties>
                   <labelFor value="54832"/>
-                  <text value="An-/Abmelde&amp;monat"/>
+                  <text value="&amp;Monat/Jahr (MM.JJJJ)"/>
                 </properties>
               </component>
               <vspacer id="9a4a9">

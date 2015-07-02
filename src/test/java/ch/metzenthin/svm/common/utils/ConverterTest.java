@@ -94,6 +94,26 @@ public class ConverterTest {
     }
 
     @Test
+    public void test_MM_YYYY() throws ParseException {
+        assertEquals("11.2011", asString(toCalendar("11.2011", "MM.yyyy"),"MM.yyyy"));
+    }
+
+    @Test
+    public void test_MM_YYYY_Zweistellig() throws ParseException {
+        assertEquals("11.2011", asString(toCalendar("11.11", "MM.yyyy"), "MM.yyyy"));
+    }
+
+    @Test(expected = ParseException.class)
+    public void test_MM_YYYY_Mit_Tag() throws ParseException {
+        assertEquals("11.2011", asString(toCalendar("11.11.2011", "MM.yyyy"), "MM.yyyy"));
+    }
+
+    @Test(expected = ParseException.class)
+    public void test_MM_YYYY_Zweistellig_Mit_Tag() throws ParseException {
+        assertEquals("11.2011", asString(toCalendar("11.11.11", "MM.yyyy"), "MM.yyyy"));
+    }
+
+    @Test
     public void testEmptyStringAsNull_NotEmpty() {
         assertEquals("abc", emptyStringAsNull("abc"));
     }
