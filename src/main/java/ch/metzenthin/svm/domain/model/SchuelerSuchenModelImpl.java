@@ -132,8 +132,6 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     public SchuelerSuchenResult suchen() {
         //TODO
         List<Schueler> schuelerList = new ArrayList<>();
-        schuelerList.add(new Schueler("Leu", "Lea", new GregorianCalendar(2010, Calendar.APRIL, 15), null, null, null, null));
-        schuelerList.add(new Schueler("Keller", "Urs", new GregorianCalendar(2000, Calendar.JANUARY, 31), null, null, null, null));
         Adresse adresse1 = new Adresse("Forchstrasse", "232", "8032", "Zürich", null);
         Adresse adresse2 = new Adresse("Hintere Bergstrasse", "15", "8942", "Oberrieden", null);
         Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.FRAU, "Eva", "Juchli", null, null);
@@ -150,6 +148,20 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         schueler1.addAnmeldung(new Anmeldung(new GregorianCalendar(2013, Calendar.JANUARY, 1), new GregorianCalendar(2013, Calendar.JULY, 1)));
         schueler1.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JULY, 1)));
         schuelerList.add(schueler1);
+        Schueler schuelerLea = new Schueler("Lea", "Leu", new GregorianCalendar(2010, Calendar.APRIL, 15), null, null, Geschlecht.W, null);
+        Adresse adresseLea = new Adresse("Seestrasse", "1", "8234", "Stetten", null);
+        schuelerLea.setAdresse(adresseLea);
+        Angehoeriger angehoerigerLea = new Angehoeriger(Anrede.FRAU, "Anna", "Müller", null, null);
+        schuelerLea.setMutter(angehoerigerLea);
+        schuelerLea.setRechnungsempfaenger(angehoerigerLea);
+        schuelerList.add(schuelerLea);
+        Schueler schuelerUrs = new Schueler("Urs", "Keller", new GregorianCalendar(2000, Calendar.JANUARY, 31), null, null, Geschlecht.M, null);
+        Adresse adresseUrs = new Adresse("Talstrasse", "2", "8200", "Schaffhausen", null);
+        Angehoeriger angehoerigerUrs = new Angehoeriger(Anrede.HERR, "Fritz", "Meier", null, null);
+        schuelerUrs.setVater(angehoerigerUrs);
+        schuelerUrs.setRechnungsempfaenger(angehoerigerUrs);
+        schuelerUrs.setAdresse(adresseUrs);
+        schuelerList.add(schuelerUrs);
         return new SchuelerSuchenResult(schuelerList);
     }
 
