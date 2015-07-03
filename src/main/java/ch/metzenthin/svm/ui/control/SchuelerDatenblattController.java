@@ -2,6 +2,7 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -14,14 +15,10 @@ public class SchuelerDatenblattController {
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private int selectedRow;
     private SchuelerDatenblattModel schuelerDatenblattModel;
-    private JButton btnAbbrechen;
     private JButton btnErster;
     private JButton btnLetzter;
     private JButton btnNachfolgender;
     private JButton btnVorheriger;
-    private JButton btnStammdatenBearbeiten;
-    private JButton btnDispensationBearbeiten;
-    private JButton btnCodesBearbeiten;
     private JLabel labelVornameNachname;
     private JLabel labelSchueler;
     private JLabel labelSchuelerValue;
@@ -40,6 +37,8 @@ public class SchuelerDatenblattController {
     private JLabel labelFruehereAnmeldungen;
     private JLabel labelFruehereAnmeldungenValue;
     private JLabel labelScrollPosition;
+    private ActionListener nextPanelListener;
+    private ActionListener closeListener;
 
     public SchuelerDatenblattController(SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
@@ -260,18 +259,20 @@ public class SchuelerDatenblattController {
         labelFruehereAnmeldungenValue.setText(schuelerDatenblattModel.getFruehereAnmeldungenAsString());
     }
 
-    public void setBtnAbbrechen(JButton btnAbbrechen) {
-        this.btnAbbrechen = btnAbbrechen;
-        btnAbbrechen.addActionListener(new ActionListener() {
+    public void setBtnZurueck(JButton btnZurueck) {
+        btnZurueck.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
+                onZurueck();
             }
         });
     }
 
-    private void onAbbrechen() {
-
+    private void onZurueck() {
+        SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(schuelerSuchenTableModel);
+        schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
+        schuelerSuchenResultPanel.addCloseListener(closeListener);
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat"));
     }
 
     public void setBtnErster(JButton btnErster) {
@@ -335,7 +336,6 @@ public class SchuelerDatenblattController {
     }
 
     public void setBtnStammdatenBearbeiten(JButton btnStammdatenBearbeiten) {
-        this.btnStammdatenBearbeiten = btnStammdatenBearbeiten;
         btnStammdatenBearbeiten.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -349,7 +349,6 @@ public class SchuelerDatenblattController {
     }
 
     public void setBtnDispensationBearbeiten(JButton btnDispensationBearbeiten) {
-        this.btnDispensationBearbeiten = btnDispensationBearbeiten;
         btnDispensationBearbeiten.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -363,7 +362,6 @@ public class SchuelerDatenblattController {
     }
 
     public void setBtnCodesBearbeiten(JButton btnCodesBearbeiten) {
-        this.btnCodesBearbeiten = btnCodesBearbeiten;
         btnCodesBearbeiten.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -383,6 +381,14 @@ public class SchuelerDatenblattController {
 
     private void setLabelScrollPosition() {
         labelScrollPosition.setText((selectedRow + 1) + " / " + schuelerSuchenTableModel.getRowCount());
+    }
+
+    public void addNextPanelListener(ActionListener nextPanelListener) {
+        this.nextPanelListener = nextPanelListener;
+    }
+
+    public void addCloseListener(ActionListener closeListener) {
+        this.closeListener = closeListener;
     }
 
 }

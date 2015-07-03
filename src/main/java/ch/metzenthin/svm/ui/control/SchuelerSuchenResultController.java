@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 
@@ -20,6 +19,8 @@ public class SchuelerSuchenResultController {
     private final JTable schuelerSuchenResultTable;
     private JButton btnDatenblatt;
     private ActionListener nextPanelListener;
+    private JButton btnAbbrechen;
+    private ActionListener closeListener;
 
     public SchuelerSuchenResultController(SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable) {
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
@@ -64,7 +65,9 @@ public class SchuelerSuchenResultController {
 
     private void onDatenblatt() {
         SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(schuelerSuchenTableModel, schuelerSuchenResultTable.getSelectedRow());
-        nextPanelListener.actionPerformed(new ActionEvent(new Object[] {schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));
+        schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
+        schuelerDatenblattPanel.addCloseListener(closeListener);
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));
     }
 
     private void onListSelection() {
@@ -72,4 +75,21 @@ public class SchuelerSuchenResultController {
         enableBtnDatenblatt(selectedRowIndex >= 0);
     }
 
+    public void setBtnAbbrechen(JButton btnAbbrechen) {
+        this.btnAbbrechen = btnAbbrechen;
+        btnAbbrechen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onAbbrechen();
+            }
+        });
+    }
+
+    private void onAbbrechen() {
+        closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Abbrechen"));
+    }
+
+    public void addCloseListener(ActionListener closeListener) {
+        this.closeListener = closeListener;
+    }
 }
