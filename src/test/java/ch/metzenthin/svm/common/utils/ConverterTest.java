@@ -114,6 +114,61 @@ public class ConverterTest {
     }
 
     @Test
+    public void testDetermineDateFormatString_dd_MM() throws ParseException {
+        assertEquals("dd.MM.", determineDateFormatString("12.12."));
+    }
+
+    @Test
+    public void testDetermineDateFormatString_dd_MM_Einstellig() throws ParseException {
+        assertEquals("dd.MM.", determineDateFormatString("1.1."));
+    }
+
+    @Test
+    public void testDetermineDateFormatString_MM_yyyy() throws ParseException {
+        assertEquals("MM.yyyy", determineDateFormatString("12.2012"));
+    }
+
+    @Test
+    public void testDetermineDateFormatString_MM_yyyy_Monat_einstellig() throws ParseException {
+        assertEquals("MM.yyyy", determineDateFormatString("1.2012"));
+    }
+
+    @Test
+    public void testDetermineDateFormatString_MM_yyyy_Jahr_zweistellig() throws ParseException {
+        assertEquals("MM.yyyy", determineDateFormatString("12.12"));
+    }
+
+    @Test
+    public void testDetermineDateFormatString_dd_MM_yyyy() throws ParseException {
+        assertEquals("dd.MM.yyyy", determineDateFormatString("12.12.2012"));
+    }
+
+    @Test
+    public void testDetermineDateFormatString_dd_MM_yyyy_Tag_Monat_einstellig() throws ParseException {
+        assertEquals("dd.MM.yyyy", determineDateFormatString("1.1.2012"));
+    }
+
+    @Test
+    public void testDetermineDateFormatString_dd_MM_yyyy_Jahr_zweistellig() throws ParseException {
+        assertEquals("dd.MM.yyyy", determineDateFormatString("12.12.12"));
+    }
+
+    @Test
+    public void testDetermineDateFormatString_yyyy_Jahr() throws ParseException {
+        assertEquals("yyyy", determineDateFormatString("2012"));
+    }
+
+    @Test
+    public void testDetermineDateFormatString_yyyy_Jahr_zweistellig() throws ParseException {
+        assertEquals("yyyy", determineDateFormatString("12"));
+    }
+
+    @Test(expected = ParseException.class)
+    public void testDetermineDateFormatString_falscher_Separator() throws ParseException {
+        assertNull(determineDateFormatString("12/2012"));
+    }
+
+    @Test
     public void testEmptyStringAsNull_NotEmpty() {
         assertEquals("abc", emptyStringAsNull("abc"));
     }

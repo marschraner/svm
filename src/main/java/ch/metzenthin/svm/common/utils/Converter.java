@@ -68,6 +68,31 @@ public class Converter {
         return calendar;
     }
 
+    public static String determineDateFormatString(String dateAsString) throws ParseException {
+        if (dateAsString.matches("\\d{1,2}\\.\\d{1,2}\\.")) {
+            return "dd.MM.";
+        }
+        if (dateAsString.matches("\\d{1,2}\\.\\d{2}")) {
+            return "MM.yyyy";
+        }
+        if (dateAsString.matches("\\d{1,2}\\.\\d{4}")) {
+            return "MM.yyyy";
+        }
+        if (dateAsString.matches("\\d{1,2}\\.\\d{1,2}\\.\\d{2}")) {
+            return "dd.MM.yyyy";
+        }
+        if (dateAsString.matches("\\d{1,2}\\.\\d{1,2}\\.\\d{4}")) {
+            return "dd.MM.yyyy";
+        }
+        if (dateAsString.matches("\\d{2}")) {
+            return "yyyy";
+        }
+        if (dateAsString.matches("\\d{4}")) {
+            return "yyyy";
+        }
+        throw new ParseException("Ungültiges Datenformat", 0);
+    }
+
     public static String asString(Calendar calendar) {
         return asString(calendar, DATE_FORMAT_STRING);
     }
