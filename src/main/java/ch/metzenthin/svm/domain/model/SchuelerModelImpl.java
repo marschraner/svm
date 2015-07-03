@@ -90,7 +90,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public void setAnmeldedatum(String anmeldedatum) throws SvmValidationException {
-        anmeldedatumModelAttribute.setNewValue(false, anmeldedatum);
+        anmeldedatumModelAttribute.setNewValue(true, anmeldedatum);
     }
 
     private final CalendarModelAttribute abmeldedatumModelAttribute = new CalendarModelAttribute(
