@@ -138,7 +138,7 @@ public class SchuelerController extends PersonController {
 
     private void onAbmeldedatumEvent() {
         LOGGER.trace("SchuelerController Event Abmeldedatum");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtAbmeldedatum.getText(), asString(schuelerModel.getAbmeldedatum()));
+        boolean equalFieldAndModelValue = equalsNullSafe(txtAbmeldedatum.getText(), schuelerModel.getAbmeldedatum());
         try {
             setModelAbmeldedatum();
         } catch (SvmValidationException e) {
