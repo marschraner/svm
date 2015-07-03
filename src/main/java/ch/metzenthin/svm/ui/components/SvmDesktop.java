@@ -91,7 +91,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
 
     // React to menu selections.
     public void actionPerformed(ActionEvent e) {
-        if (activeComponent != null) {
+        if ((activeComponent != null) && !"beenden".equals(e.getActionCommand())) {
             activeComponent.setVisible(false);
         }
         if ("schuelerErfassen".equals(e.getActionCommand())) {

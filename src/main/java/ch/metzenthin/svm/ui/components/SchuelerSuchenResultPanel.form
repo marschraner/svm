@@ -29,6 +29,12 @@
               <text value="Datenblatt"/>
             </properties>
           </component>
+          <component id="39491" class="javax.swing.JButton" binding="btnAbbrechen">
+            <constraints/>
+            <properties>
+              <text value="Abbrechen"/>
+            </properties>
+          </component>
         </children>
       </grid>
     </children>

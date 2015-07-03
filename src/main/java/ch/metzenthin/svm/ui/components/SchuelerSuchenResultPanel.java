@@ -14,15 +14,21 @@ public class SchuelerSuchenResultPanel {
     private JTable schuelerSuchenResultTable;
     private JPanel panel;
     private JButton btnDatenblatt;
+    private JButton btnAbbrechen;
     private final SchuelerSuchenResultController schuelerSuchenResultController;
 
     public SchuelerSuchenResultPanel(SchuelerSuchenTableModel schuelerSuchenTableModel) {
         schuelerSuchenResultController = new SchuelerSuchenResultController(schuelerSuchenTableModel, schuelerSuchenResultTable);
         schuelerSuchenResultController.setBtnDatenblatt(btnDatenblatt);
+        schuelerSuchenResultController.setBtnAbbrechen(btnAbbrechen);
     }
 
     public void addNextPanelListener(ActionListener actionListener) {
         schuelerSuchenResultController.addNextPanelListener(actionListener);
+    }
+
+    public void addCloseListener(ActionListener closeListener) {
+        schuelerSuchenResultController.addCloseListener(closeListener);
     }
 
     {
@@ -52,6 +58,9 @@ public class SchuelerSuchenResultPanel {
         btnDatenblatt = new JButton();
         btnDatenblatt.setText("Datenblatt");
         panel1.add(btnDatenblatt);
+        btnAbbrechen = new JButton();
+        btnAbbrechen.setText("Abbrechen");
+        panel1.add(btnAbbrechen);
     }
 
     /**

@@ -8,6 +8,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 /**
  * @author Hans Stamm
@@ -39,7 +40,7 @@ public class SchuelerDatenblattPanel {
     private JButton btnVorheriger;
     private JButton btnNachfolgender;
     private JButton btnLetzter;
-    private JButton btnAbbrechen;
+    private JButton btnZurueck;
     private JLabel lblSchuelerGleicherRechnungsempfaenger1;
     private JLabel lblSchuelerGleicherRechnungsempfaengerValue;
     private JLabel lblVornameNachname;
@@ -53,8 +54,10 @@ public class SchuelerDatenblattPanel {
     private JLabel lblFruehereAnmeldungenValue;
     private JLabel lblScrollPosition;
 
+    private final SchuelerDatenblattController schuelerDatenblattController;
+
     public SchuelerDatenblattPanel(SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
-        SchuelerDatenblattController schuelerDatenblattController = new SchuelerDatenblattController(schuelerSuchenTableModel, selectedRow);
+        schuelerDatenblattController = new SchuelerDatenblattController(schuelerSuchenTableModel, selectedRow);
         schuelerDatenblattController.setLabelVornameNachname(lblVornameNachname);
         schuelerDatenblattController.setLabelSchueler(lblSchueler);
         schuelerDatenblattController.setLabelSchuelerValue(lblSchuelerValue);
@@ -72,7 +75,7 @@ public class SchuelerDatenblattPanel {
         schuelerDatenblattController.setLabelAbmeldedatumValue(lblAbmeldedatumValue);
         schuelerDatenblattController.setLabelFruehereAnmeldungen(lblFruehereAnmeldungen);
         schuelerDatenblattController.setLabelFruehereAnmeldungenValue(lblFruehereAnmeldungenValue);
-        schuelerDatenblattController.setBtnAbbrechen(btnAbbrechen);
+        schuelerDatenblattController.setBtnZurueck(btnZurueck);
         schuelerDatenblattController.setBtnErster(btnErster);
         schuelerDatenblattController.setBtnLetzter(btnLetzter);
         schuelerDatenblattController.setBtnNachfolgender(btnNachfolgender);
@@ -81,6 +84,14 @@ public class SchuelerDatenblattPanel {
         schuelerDatenblattController.setBtnDispensationBearbeiten(btnDispensationBearbeiten);
         schuelerDatenblattController.setBtnCodesBearbeiten(btnCodesBearbeiten);
         schuelerDatenblattController.setLabelScrollPosition(lblScrollPosition);
+    }
+
+    public void addNextPanelListener(ActionListener nextPanelListener) {
+        schuelerDatenblattController.addNextPanelListener(nextPanelListener);
+    }
+
+    public void addCloseListener(ActionListener closeListener) {
+        schuelerDatenblattController.addCloseListener(closeListener);
     }
 
     {
@@ -136,15 +147,15 @@ public class SchuelerDatenblattPanel {
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         rightButtonPanel.add(spacer2, gbc);
-        btnAbbrechen = new JButton();
-        btnAbbrechen.setPreferredSize(new Dimension(143, 29));
-        btnAbbrechen.setText("Abbrechen");
+        btnZurueck = new JButton();
+        btnZurueck.setPreferredSize(new Dimension(143, 29));
+        btnZurueck.setText("Zurück");
         gbc = new GridBagConstraints();
         gbc.gridx = 4;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 0, 10);
-        rightButtonPanel.add(btnAbbrechen, gbc);
+        rightButtonPanel.add(btnZurueck, gbc);
         final JPanel spacer3 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;

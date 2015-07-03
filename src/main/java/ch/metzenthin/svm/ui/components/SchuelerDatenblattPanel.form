@@ -52,14 +52,14 @@
                   <gridbag weightx="1.0" weighty="0.0"/>
                 </constraints>
               </hspacer>
-              <component id="d4a7c" class="javax.swing.JButton" binding="btnAbbrechen">
+              <component id="d4a7c" class="javax.swing.JButton" binding="btnZurueck">
                 <constraints>
                   <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
                   <preferredSize width="143" height="29"/>
-                  <text value="Abbrechen"/>
+                  <text value="Zurück"/>
                 </properties>
               </component>
               <vspacer id="e4e36">

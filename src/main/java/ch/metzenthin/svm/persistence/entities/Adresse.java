@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
+
 /**
  * @author Martin Schraner
  */
@@ -148,4 +150,13 @@ public class Adresse {
     public Set<Person> getPersonen() {
         return personen;
     }
+
+    public String getStrasseHausnummer() {
+        String strasseHausnummer = getStrasse();
+        if (checkNotEmpty(getHausnummer())) {
+            strasseHausnummer = strasseHausnummer + " " + getHausnummer();
+        }
+        return strasseHausnummer;
+    }
+
 }
