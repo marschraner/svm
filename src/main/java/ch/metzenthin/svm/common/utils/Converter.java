@@ -156,7 +156,7 @@ public class Converter {
     }
 
     private static String[] splitPeriode(String periode) throws ParseException {
-        if (periode == null) {
+        if (!checkNotEmpty(periode)) {
             return null;
         }
         if (getCharacterOccurrencesInString(periode, '-') > 1) {
@@ -184,14 +184,26 @@ public class Converter {
     }
 
     public static String getPeriodeBeginn(String periode) throws ParseException {
+        if (splitPeriode(periode) == null) {
+            return "";
+        }
+        //noinspection ConstantConditions
         return splitPeriode(periode)[0];
     }
 
     public static String getPeriodeEnde(String periode) throws ParseException {
+        if (splitPeriode(periode) == null) {
+            return "";
+        }
+        //noinspection ConstantConditions
         return ((splitPeriode(periode).length > 2) ? splitPeriode(periode)[1] : "");
     }
 
     public static String getPeriodeDateFormatString(String periode) throws ParseException {
+        if (splitPeriode(periode) == null) {
+            return null;
+        }
+        //noinspection ConstantConditions
         return splitPeriode(periode)[splitPeriode(periode).length - 1];
     }
 

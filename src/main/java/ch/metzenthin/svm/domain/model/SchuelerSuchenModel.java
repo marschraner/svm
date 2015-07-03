@@ -48,5 +48,4 @@ public interface SchuelerSuchenModel extends PersonModel {
     void setDispensation(DispensationSelected dispensation);
     void setGeschlecht(GeschlechtSelected geschlecht);
     void setStichtag(String stichtag) throws SvmValidationException;
-    void setStichtag(Calendar stichtag);
 }

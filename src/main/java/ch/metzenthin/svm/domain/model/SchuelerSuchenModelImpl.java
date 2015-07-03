@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
-import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -15,7 +14,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.Converter.*;
-import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
  * @author Martin Schraner
@@ -49,9 +47,9 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         if (geburtsdatumSuchperiodeBeginn == null && geburtsdatumSuchperiodeEnde == null) {
             return "";
         } else if (geburtsdatumSuchperiodeEnde == null) {
-            return asString(geburtsdatumSuchperiodeBeginn, geburtsdatumSuchperiodeDateFormatString);
+            return asString(getGeburtsdatumSuchperiodeBeginn(), geburtsdatumSuchperiodeDateFormatString);
         } else {
-            return asString(geburtsdatumSuchperiodeBeginn, geburtsdatumSuchperiodeDateFormatString) + " - " + asString(geburtsdatumSuchperiodeEnde, geburtsdatumSuchperiodeDateFormatString);
+            return asString(getGeburtsdatumSuchperiodeBeginn(), geburtsdatumSuchperiodeDateFormatString) + " - " + asString(getGeburtsdatumSuchperiodeEnde(), geburtsdatumSuchperiodeDateFormatString);
         }
     }
 
@@ -59,24 +57,60 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     public void setGeburtsdatumSuchperiode(String geburtsdatumSuchperiode) throws SvmValidationException {
         try {
             geburtsdatumSuchperiodeDateFormatString = getPeriodeDateFormatString(geburtsdatumSuchperiode);
-            setGeburtsdatumSuchperiodeBeginn(toCalendar(getPeriodeBeginn(geburtsdatumSuchperiode), geburtsdatumSuchperiodeDateFormatString));
-            setGeburtsdatumSuchperiodeEnde(toCalendar(getPeriodeEnde(geburtsdatumSuchperiode), geburtsdatumSuchperiodeDateFormatString));
+            setGeburtsdatumSuchperiodeBeginn(getPeriodeBeginn(geburtsdatumSuchperiode));
+            setGeburtsdatumSuchperiodeEnde(getPeriodeEnde(geburtsdatumSuchperiode));
         } catch (ParseException e) {
             invalidate();
             throw new SvmValidationException(1200, e.getMessage(), Field.GEBURTSDATUM_SUCHPERIODE);
         }
     }
 
-    public void setGeburtsdatumSuchperiodeBeginn(Calendar geburtsdatumSuchperiodeBeginn) {
-        Calendar oldValue = this.geburtsdatumSuchperiodeBeginn;
-        this.geburtsdatumSuchperiodeBeginn = geburtsdatumSuchperiodeBeginn;
-        firePropertyChange(Field.GEBURTSDATUM_SUCHPERIODE, oldValue, this.geburtsdatumSuchperiodeBeginn);
+    private final CalendarModelAttribute geburtsdatumSuchperiodeBeginnAttribute = new CalendarModelAttribute(
+            this,
+            Field.GEBURTSDATUM_SUCHPERIODE, new GregorianCalendar(1980, Calendar.JANUARY, 1), new GregorianCalendar(),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return geburtsdatumSuchperiodeBeginn;
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    geburtsdatumSuchperiodeBeginn = value;
+                }
+            }
+    );
+
+    public Calendar getGeburtsdatumSuchperiodeBeginn() {
+        return geburtsdatumSuchperiodeBeginnAttribute.getValue();
     }
 
-    public void setGeburtsdatumSuchperiodeEnde(Calendar geburtsdatumSuchperiodeEnde) {
-        Calendar oldValue = this.geburtsdatumSuchperiodeEnde;
-        this.geburtsdatumSuchperiodeEnde = geburtsdatumSuchperiodeEnde;
-        firePropertyChange(Field.GEBURTSDATUM_SUCHPERIODE, oldValue, this.geburtsdatumSuchperiodeEnde);
+    public void setGeburtsdatumSuchperiodeBeginn(String geburtsdatumSuchperiodeBeginn) throws SvmValidationException {
+        geburtsdatumSuchperiodeBeginnAttribute.setNewValue(false, geburtsdatumSuchperiodeBeginn, geburtsdatumSuchperiodeDateFormatString);
+    }
+
+    private final CalendarModelAttribute geburtsdatumSuchperiodeEndeAttribute = new CalendarModelAttribute(
+            this,
+            Field.GEBURTSDATUM_SUCHPERIODE, new GregorianCalendar(1980, Calendar.JANUARY, 1), new GregorianCalendar(),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return geburtsdatumSuchperiodeEnde;
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    geburtsdatumSuchperiodeEnde = value;
+                }
+            }
+    );
+
+    public Calendar getGeburtsdatumSuchperiodeEnde() {
+        return geburtsdatumSuchperiodeEndeAttribute.getValue();
+    }
+
+    public void setGeburtsdatumSuchperiodeEnde(String geburtsdatumSuchperiodeEnde) throws SvmValidationException {
+        geburtsdatumSuchperiodeEndeAttribute.setNewValue(false, geburtsdatumSuchperiodeEnde, geburtsdatumSuchperiodeDateFormatString);
     }
 
     @Override
@@ -126,30 +160,30 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         firePropertyChange(Field.GESCHLECHT, oldValue, this.geschlecht);
     }
 
+    private final CalendarModelAttribute stichtagModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.STICHTAG, new GregorianCalendar(2000, Calendar.JANUARY, 1), new GregorianCalendar(),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return stichtag;
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    stichtag = value;
+                }
+            }
+    );
+
     @Override
     public Calendar getStichtag() {
-        return stichtag;
+        return stichtagModelAttribute.getValue();
     }
 
     @Override
     public void setStichtag(String stichtag) throws SvmValidationException {
-        if (!checkNotEmpty(stichtag)) {
-            invalidate();
-            throw new SvmRequiredException(Field.STICHTAG);
-        }
-        try {
-            setStichtag(toCalendar(stichtag));
-        } catch (ParseException e) {
-            invalidate();
-            throw new SvmValidationException(1200, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.STICHTAG);
-        }
-    }
-
-    @Override
-    public void setStichtag(Calendar stichtag) {
-        Calendar oldValue = this.stichtag;
-        this.stichtag = stichtag;
-        firePropertyChange(Field.STICHTAG, oldValue, this.stichtag);
+        stichtagModelAttribute.setNewValue(true, stichtag);
     }
 
     @Override
