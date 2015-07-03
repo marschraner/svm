@@ -20,8 +20,6 @@ public interface SchuelerModel extends PersonModel {
 
     void setGeschlecht(Geschlecht geschlecht);
     void setAnmeldedatum(String anmeldedatum) throws SvmValidationException;
-    void setAnmeldedatum(Calendar anmeldedatum);
     void setAbmeldedatum(String abmeldedatum) throws SvmValidationException;
-    void setAbmeldedatum(Calendar abmeldedatum);
     void setBemerkungen(String bemerkungen) throws SvmValidationException;
 }

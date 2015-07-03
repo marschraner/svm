@@ -25,6 +25,7 @@ public class SchuelerSuchenController extends PersonController {
 
     private static final Logger LOGGER = Logger.getLogger(SchuelerSuchenController.class);
 
+    private JTextField txtGeburtsdatumSuchperiode;
     private JTextField txtCodes;
     private JTextField txtLehrkraft;
     private JTextField txtVon;
@@ -45,6 +46,7 @@ public class SchuelerSuchenController extends PersonController {
     private JRadioButton radioBtnGeschlechtAlle;
     private JComboBox<Wochentag> comboBoxWochentag;
     private JLabel errLblStichtag;
+    private JLabel errLblGeburtsdatumSuchperiode;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
@@ -62,6 +64,22 @@ public class SchuelerSuchenController extends PersonController {
             @Override
             public void completed(boolean completed) {
                 onSchuelerSuchenModelCompleted(completed);
+            }
+        });
+    }
+
+    public void setTxtGeburtsdatumSuchperiode(JTextField txtGeburtsdatumSuchperiode) {
+        this.txtGeburtsdatumSuchperiode = txtGeburtsdatumSuchperiode;
+        this.txtGeburtsdatumSuchperiode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onGeburtsdatumSuchperiodeEvent();
+            }
+        });
+        this.txtGeburtsdatumSuchperiode.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onGeburtsdatumSuchperiodeEvent();
             }
         });
     }
@@ -189,6 +207,31 @@ public class SchuelerSuchenController extends PersonController {
         this.errLblStichtag = errLblStichtag;
     }
 
+    public void setErrLblGeburtsdatumSuchperiode(JLabel errLblGeburtsdatumSuchperiode) {
+        this.errLblGeburtsdatumSuchperiode = errLblGeburtsdatumSuchperiode;
+    }
+
+    private void onGeburtsdatumSuchperiodeEvent() {
+        LOGGER.trace("SchuelerSuchenController Event GeburtsdatumSuchperiode");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtGeburtsdatumSuchperiode.getText(), schuelerSuchenModel.getGeburtsdatumSuchperiode());
+        setModelGeburtsdatumSuchperiode();
+        if (equalFieldAndModelValue) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelGeburtsdatumSuchperiode() {
+        errLblGeburtsdatumSuchperiode.setVisible(false);
+        try {
+            schuelerSuchenModel.setGeburtsdatumSuchperiode(txtGeburtsdatumSuchperiode.getText());
+        } catch (SvmValidationException e) {
+            LOGGER.trace("SchuelerSuchenController setModelGeburtsdatum Exception=" + e.getMessage());
+            showErrMsg(e);
+        }
+    }
+
     private void onStichtagEvent() {
         LOGGER.trace("SchuelerSuchenController Event Stichtag");
         boolean equalFieldAndModelValue = equalsNullSafe(txtStichtag.getText(), schuelerSuchenModel.getStichtag());
@@ -246,6 +289,9 @@ public class SchuelerSuchenController extends PersonController {
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         super.doPropertyChange(evt);
+        if (checkIsFieldChange(Field.GEBURTSDATUM_SUCHPERIODE, evt)) {
+            txtGeburtsdatumSuchperiode.setText(schuelerSuchenModel.getGeburtsdatumSuchperiode());
+        }
         if (checkIsFieldChange(Field.STICHTAG, evt)) {
             txtStichtag.setText(asString(schuelerSuchenModel.getStichtag()));
         }
@@ -254,6 +300,10 @@ public class SchuelerSuchenController extends PersonController {
     @Override
     void validateFields() throws SvmValidationException {
         super.validateFields();
+        if (txtGeburtsdatumSuchperiode.isEnabled()) {
+            LOGGER.trace("Validate field GeburtsdatumSuchperiode");
+            setModelGeburtsdatumSuchperiode();
+        }
         if (txtStichtag.isEnabled()) {
             LOGGER.trace("Validate field Stichtag");
             setModelStichtag();
@@ -263,6 +313,10 @@ public class SchuelerSuchenController extends PersonController {
     @Override
     void showErrMsg(SvmValidationException e) {
         super.showErrMsg(e);
+        if (e.getAffectedFields().contains(Field.GEBURTSDATUM_SUCHPERIODE)) {
+            errLblGeburtsdatumSuchperiode.setVisible(true);
+            errLblGeburtsdatumSuchperiode.setText(e.getMessage());
+        }
         if (e.getAffectedFields().contains(Field.STICHTAG)) {
             errLblStichtag.setVisible(true);
             errLblStichtag.setText(e.getMessage());
@@ -272,6 +326,9 @@ public class SchuelerSuchenController extends PersonController {
     @Override
     void showErrMsgAsToolTip(SvmValidationException e) {
         super.showErrMsgAsToolTip(e);
+        if (e.getAffectedFields().contains(Field.GEBURTSDATUM_SUCHPERIODE)) {
+            txtGeburtsdatumSuchperiode.setToolTipText(e.getMessage());
+        }
         if (e.getAffectedFields().contains(Field.STICHTAG)) {
             txtStichtag.setToolTipText(e.getMessage());
         }
@@ -280,6 +337,10 @@ public class SchuelerSuchenController extends PersonController {
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         super.makeErrorLabelsInvisible(fields);
+        if (fields.contains(Field.GEBURTSDATUM_SUCHPERIODE)) {
+            errLblGeburtsdatumSuchperiode.setVisible(false);
+            txtGeburtsdatumSuchperiode.setToolTipText(null);
+        }
         if (fields.contains(Field.STICHTAG)) {
             errLblStichtag.setVisible(false);
             txtStichtag.setToolTipText(null);
@@ -289,6 +350,9 @@ public class SchuelerSuchenController extends PersonController {
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
         super.disableFields(disable, fields);
+        if (fields.contains(Field.ALLE) || fields.contains(Field.GEBURTSDATUM_SUCHPERIODE)) {
+            txtGeburtsdatumSuchperiode.setEnabled(!disable);
+        }
         if (fields.contains(Field.ALLE) || fields.contains(Field.SCHUELER)) {
             radioBtnSchueler.setEnabled(!disable);
         }

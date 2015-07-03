@@ -7,12 +7,11 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Person;
 
-import java.text.ParseException;
 import java.util.Calendar;
 
+import static ch.metzenthin.svm.common.utils.Converter.getNYearsBeforeNow;
 import static ch.metzenthin.svm.common.utils.Converter.strasseHausnummerGetHausnummer;
 import static ch.metzenthin.svm.common.utils.Converter.strasseHausnummerGetStrasse;
-import static ch.metzenthin.svm.common.utils.Converter.toCalendar;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
@@ -21,6 +20,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final Adresse adresse;
+
 
     PersonModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -136,7 +136,6 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     );
 
     @Override
-
     public String getEmail() {
         return emailModelAttribute.getValue();
     }
@@ -146,26 +145,38 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         emailModelAttribute.setNewValue(false, email);
     }
 
+    protected Calendar getEarliestValidDateGeburtstag() {
+        return getNYearsBeforeNow(80);
+    }
+
+    protected Calendar getLatestValidDateGeburtstag() {
+        return getNYearsBeforeNow(2);
+    }
+
+    private CalendarModelAttribute geburtsdatumModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.GEBURTSDATUM, getEarliestValidDateGeburtstag(), getLatestValidDateGeburtstag(),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return getPerson().getGeburtsdatum();
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    getPerson().setGeburtsdatum(value);
+                }
+            }
+    );
+
     @Override
     public Calendar getGeburtsdatum() {
-        return getPerson().getGeburtsdatum();
+        return geburtsdatumModelAttribute.getValue();
     }
 
     @Override
     public void setGeburtsdatum(String geburtsdatum) throws SvmValidationException {
-        try {
-            setGeburtsdatum(toCalendar(geburtsdatum));
-        } catch (ParseException e) {
-            invalidate();
-            throw new SvmValidationException(1200, "Es wird ein gültiges Datum im Format TT.MM.JJJJ erwartet", Field.GEBURTSDATUM);
-        }
-    }
-
-    @Override
-    public void setGeburtsdatum(Calendar geburtsdatum) {
-        Calendar oldValue = getPerson().getGeburtsdatum();
-        getPerson().setGeburtsdatum(geburtsdatum);
-        firePropertyChange(Field.GEBURTSDATUM, oldValue, getPerson().getGeburtsdatum());
+        geburtsdatumModelAttribute.setNewValue(false, geburtsdatum);
     }
 
     private final StringModelAttribute strasseHausnummerModelAttribute = new StringModelAttribute(

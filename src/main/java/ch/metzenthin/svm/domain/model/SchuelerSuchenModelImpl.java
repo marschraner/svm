@@ -14,7 +14,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import static ch.metzenthin.svm.common.utils.Converter.toCalendar;
+import static ch.metzenthin.svm.common.utils.Converter.*;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
@@ -28,6 +28,9 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private AnmeldestatusSelected anmeldestatus;
     private DispensationSelected dispensation;
     private GeschlechtSelected geschlecht;
+    private Calendar geburtsdatumSuchperiodeBeginn;
+    private Calendar geburtsdatumSuchperiodeEnde;
+    private String geburtsdatumSuchperiodeDateFormatString;
     private Calendar stichtag;
 
     SchuelerSuchenModelImpl(CommandInvoker commandInvoker) {
@@ -42,25 +45,38 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
-    public Calendar getGeburtsdatum() {
-        return person.getGeburtsdatum();
-    }
-
-    @Override
-    public void setGeburtsdatum(String geburtsdatum) throws SvmValidationException {
-        try {
-            setGeburtsdatum(toCalendar(geburtsdatum));
-        } catch (ParseException e) {
-            invalidate();
-            throw new SvmValidationException(1200, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.GEBURTSDATUM);
+    public String getGeburtsdatumSuchperiode() {
+        if (geburtsdatumSuchperiodeBeginn == null && geburtsdatumSuchperiodeEnde == null) {
+            return "";
+        } else if (geburtsdatumSuchperiodeEnde == null) {
+            return asString(geburtsdatumSuchperiodeBeginn, geburtsdatumSuchperiodeDateFormatString);
+        } else {
+            return asString(geburtsdatumSuchperiodeBeginn, geburtsdatumSuchperiodeDateFormatString) + " - " + asString(geburtsdatumSuchperiodeEnde, geburtsdatumSuchperiodeDateFormatString);
         }
     }
 
     @Override
-    public void setGeburtsdatum(Calendar geburtsdatum) {
-        Calendar oldValue = person.getGeburtsdatum();
-        person.setGeburtsdatum(geburtsdatum);
-        firePropertyChange(Field.GEBURTSDATUM, oldValue, person.getGeburtsdatum());
+    public void setGeburtsdatumSuchperiode(String geburtsdatumSuchperiode) throws SvmValidationException {
+        try {
+            geburtsdatumSuchperiodeDateFormatString = getPeriodeDateFormatString(geburtsdatumSuchperiode);
+            setGeburtsdatumSuchperiodeBeginn(toCalendar(getPeriodeBeginn(geburtsdatumSuchperiode), geburtsdatumSuchperiodeDateFormatString));
+            setGeburtsdatumSuchperiodeEnde(toCalendar(getPeriodeEnde(geburtsdatumSuchperiode), geburtsdatumSuchperiodeDateFormatString));
+        } catch (ParseException e) {
+            invalidate();
+            throw new SvmValidationException(1200, e.getMessage(), Field.GEBURTSDATUM_SUCHPERIODE);
+        }
+    }
+
+    public void setGeburtsdatumSuchperiodeBeginn(Calendar geburtsdatumSuchperiodeBeginn) {
+        Calendar oldValue = this.geburtsdatumSuchperiodeBeginn;
+        this.geburtsdatumSuchperiodeBeginn = geburtsdatumSuchperiodeBeginn;
+        firePropertyChange(Field.GEBURTSDATUM_SUCHPERIODE, oldValue, this.geburtsdatumSuchperiodeBeginn);
+    }
+
+    public void setGeburtsdatumSuchperiodeEnde(Calendar geburtsdatumSuchperiodeEnde) {
+        Calendar oldValue = this.geburtsdatumSuchperiodeEnde;
+        this.geburtsdatumSuchperiodeEnde = geburtsdatumSuchperiodeEnde;
+        firePropertyChange(Field.GEBURTSDATUM_SUCHPERIODE, oldValue, this.geburtsdatumSuchperiodeEnde);
     }
 
     @Override

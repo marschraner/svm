@@ -34,6 +34,7 @@ public interface SchuelerSuchenModel extends PersonModel {
         ALLE
     }
 
+    String getGeburtsdatumSuchperiode();
     RolleSelected getRolle();
     AnmeldestatusSelected getAnmeldestatus();
     DispensationSelected getDispensation();
@@ -41,6 +42,7 @@ public interface SchuelerSuchenModel extends PersonModel {
     Calendar getStichtag();
     SchuelerSuchenResult suchen();
 
+    void setGeburtsdatumSuchperiode(String geburtsdatumSuchperiode) throws SvmValidationException;
     void setRolle(RolleSelected rolle);
     void setAnmeldestatus(AnmeldestatusSelected anmeldestatus);
     void setDispensation(DispensationSelected dispensation);

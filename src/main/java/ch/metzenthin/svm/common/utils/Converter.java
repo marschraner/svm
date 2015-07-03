@@ -3,6 +3,7 @@ package ch.metzenthin.svm.common.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNumber;
@@ -12,7 +13,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNumber;
  */
 public class Converter {
 
-    public static final String DATE_FORMAT_STRING = "dd.MM.yyyy";
+    public static final String DD_MM_YYYY_DATE_FORMAT_STRING = "dd.MM.yyyy";
 
     public static Integer toIntegerOrNull(String s) {
         Integer i = null;
@@ -27,24 +28,29 @@ public class Converter {
     }
 
     public static Calendar toCalendar(String s) throws ParseException {
-        return toCalendar(s, DATE_FORMAT_STRING);
+        return toCalendar(s, DD_MM_YYYY_DATE_FORMAT_STRING);
     }
 
 
     public static Calendar toCalendar(String s, String dateFormatString) throws ParseException {
+        String errMsg = "Es wird ein gültiges Datum im Format '" + getDeutscheBezeichnungOfDateFormatString(dateFormatString) + "' erwartet";
         if (!checkNotEmpty(s)) {
             return null;
         }
         // Verhindern, dass für einen dateFormatString MM.yyyy Eingaben wie 11.09,2011 akzeptiert werden (-> 11.2009 !)
         if (getCharacterOccurrencesInString(s, '.') != getCharacterOccurrencesInString(dateFormatString, '.')) {
-            throw new ParseException("Falsches Datenformat", 0);
+            throw new ParseException(errMsg, 0);
         }
         // Akzeptiere 00 als Kürzel für 2000 (führt sonst zu ParseException)
         s = s.replaceAll("\\.00", ".2000");
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormatString);
         formatter.setLenient(false);
-        calendar.setTime(formatter.parse(s));
+        try {
+            calendar.setTime(formatter.parse(s));
+        } catch (ParseException e) {
+            throw new ParseException(errMsg, 0);
+        }
         if (calendar.get(Calendar.YEAR) < 100) {
             if (calendar.get(Calendar.YEAR) < 40) {
                 calendar.add(Calendar.YEAR, 2000);
@@ -84,17 +90,19 @@ public class Converter {
         if (dateAsString.matches("\\d{1,2}\\.\\d{1,2}\\.\\d{4}")) {
             return "dd.MM.yyyy";
         }
-        if (dateAsString.matches("\\d{2}")) {
-            return "yyyy";
-        }
         if (dateAsString.matches("\\d{4}")) {
             return "yyyy";
         }
         throw new ParseException("Ungültiges Datenformat", 0);
     }
 
+    public static String getDeutscheBezeichnungOfDateFormatString(String dateFormatString) {
+        dateFormatString = dateFormatString.replace('y', 'J');
+        return dateFormatString.replace('d', 'T');
+    }
+
     public static String asString(Calendar calendar) {
-        return asString(calendar, DATE_FORMAT_STRING);
+        return asString(calendar, DD_MM_YYYY_DATE_FORMAT_STRING);
     }
 
     public static String asString(Calendar calendar, String dateFormatString) {
@@ -147,9 +155,65 @@ public class Converter {
         return (splitStrasseHausnummer(strasseHausnummer).length > 1 ? splitStrasseHausnummer(strasseHausnummer)[1] : "");
     }
 
+    private static String[] splitPeriode(String periode) throws ParseException {
+        if (periode == null) {
+            return null;
+        }
+        if (getCharacterOccurrencesInString(periode, '-') > 1) {
+            throw new ParseException("Ungültige Periode: mehr als ein '-'-Zeichen", 0);
+        } else if (getCharacterOccurrencesInString(periode, '-') == 1) {
+            String periodeBeginn = periode.trim().split("-")[0].trim();
+            String periodeEnde = periode.trim().split("-")[1].trim();
+            String periodeDateFormatString = determineDateFormatString(periodeBeginn);
+            if (!periodeDateFormatString.equals(determineDateFormatString(periodeEnde))) {
+                throw new ParseException("Beginn und Ende der Periode inkonsistent", 0);
+            }
+            if (periodeDateFormatString.equals("dd.MM.")) {
+                throw new ParseException("Keine gültige Periode", 0);
+            }
+            Calendar periodeBeginnAsCalendar = toCalendar(periodeBeginn, periodeDateFormatString);
+            Calendar periodeEndeAsCalendar = toCalendar(periodeEnde, periodeDateFormatString);
+            if (periodeBeginnAsCalendar != null && periodeEndeAsCalendar != null && !periodeBeginnAsCalendar.before(periodeEndeAsCalendar)) {
+                throw new ParseException("Keine gültige Periode", 0);
+            }
+            return new String[]{periodeBeginn, periodeEnde, periodeDateFormatString};
+        } else {
+            String periodeDateFormatString = determineDateFormatString(periode);
+            return new String[]{periode, periodeDateFormatString};
+        }
+    }
+
+    public static String getPeriodeBeginn(String periode) throws ParseException {
+        return splitPeriode(periode)[0];
+    }
+
+    public static String getPeriodeEnde(String periode) throws ParseException {
+        return ((splitPeriode(periode).length > 2) ? splitPeriode(periode)[1] : "");
+    }
+
+    public static String getPeriodeDateFormatString(String periode) throws ParseException {
+        return splitPeriode(periode)[splitPeriode(periode).length - 1];
+    }
+
+    public static Calendar getNYearsBeforeNow(int n) {
+        Calendar cal = new GregorianCalendar();
+        cal.add(Calendar.YEAR, -n);
+        return cal;
+    }
+
+    public static Calendar getNMonthsBeforeNow(int n) {
+        Calendar cal = new GregorianCalendar();
+        cal.add(Calendar.MONTH, -n);
+        return cal;
+    }
+
+    public static Calendar getNMonthsAfterNow(int n) {
+        return getNYearsBeforeNow(-n);
+    }
+
     public static int getCharacterOccurrencesInString(String s, char c) {
         int counter = 0;
-        for( int i=0; i<s.length(); i++ ) {
+        for( int i = 0; i < s.length(); i++ ) {
             if( s.charAt(i) == c ) {
                 counter++;
             }

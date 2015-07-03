@@ -26,7 +26,6 @@ public interface PersonModel extends AdresseModel {
     void setNatel(String natel) throws SvmValidationException;
     void setEmail(String email) throws SvmValidationException;
     void setGeburtsdatum(String geburtsdatum) throws SvmValidationException;
-    void setGeburtsdatum(Calendar geburtsdatum);
 
     /**
      * @param adresseModel Wenn null werden die Adressfelder mit null initialisiert

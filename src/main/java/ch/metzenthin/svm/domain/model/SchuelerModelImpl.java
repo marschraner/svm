@@ -10,10 +10,10 @@ import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
-import java.text.ParseException;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
-import static ch.metzenthin.svm.common.utils.Converter.toCalendar;
+import static ch.metzenthin.svm.common.utils.Converter.*;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
@@ -49,6 +49,16 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     }
 
     @Override
+    protected Calendar getEarliestValidDateGeburtstag() {
+        return getNYearsBeforeNow(25);
+    }
+
+    @Override
+    protected Calendar getLatestValidDateGeburtstag() {
+        return getNYearsBeforeNow(2);
+    }
+
+    @Override
     public void setGeburtsdatum(String geburtsdatum) throws SvmValidationException {
         if (!checkNotEmpty(geburtsdatum)) {
             invalidate();
@@ -57,52 +67,56 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
         super.setGeburtsdatum(geburtsdatum);
     }
 
+    private final CalendarModelAttribute anmeldedatumModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.ANMELDEDATUM, getNMonthsBeforeNow(3), new GregorianCalendar(),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return anmeldung.getAnmeldedatum();
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    anmeldung.setAnmeldedatum(value);
+                }
+            }
+    );
+
     @Override
     public Calendar getAnmeldedatum() {
-        return anmeldung.getAnmeldedatum();
+        return anmeldedatumModelAttribute.getValue();
     }
 
     @Override
     public void setAnmeldedatum(String anmeldedatum) throws SvmValidationException {
-        if (!checkNotEmpty(anmeldedatum)) {
-            invalidate();
-            throw new SvmRequiredException(Field.ANMELDEDATUM);
-        }
-        try {
-            setAnmeldedatum(toCalendar(anmeldedatum));
-        } catch (ParseException e) {
-            invalidate();
-            throw new SvmValidationException(1200, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.ANMELDEDATUM);
-        }
+        anmeldedatumModelAttribute.setNewValue(false, anmeldedatum);
     }
 
-    @Override
-    public void setAnmeldedatum(Calendar anmeldedatum) {
-        Calendar oldValue = anmeldung.getAnmeldedatum();
-        anmeldung.setAnmeldedatum(anmeldedatum);
-        firePropertyChange(Field.ANMELDEDATUM, oldValue, anmeldung.getAnmeldedatum());
-    }
+    private final CalendarModelAttribute abmeldedatumModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.ABMELDEDATUM, getNMonthsBeforeNow(3), getNMonthsAfterNow(3),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return anmeldung.getAbmeldedatum();
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    anmeldung.setAbmeldedatum(value);
+                }
+            }
+    );
 
     @Override
     public Calendar getAbmeldedatum() {
-        return anmeldung.getAbmeldedatum();
+        return abmeldedatumModelAttribute.getValue();
     }
 
     @Override
     public void setAbmeldedatum(String abmeldedatum) throws SvmValidationException {
-        try {
-            setAbmeldedatum(toCalendar(abmeldedatum));
-        } catch (ParseException e) {
-            invalidate();
-            throw new SvmValidationException(1201, "Es wird ein gültige Datum im Format TT.MM.JJJJ erwartet", Field.ABMELDEDATUM);
-        }
-    }
-
-    @Override
-    public void setAbmeldedatum(Calendar abmeldedatum) {
-        Calendar oldValue = anmeldung.getAbmeldedatum();
-        anmeldung.setAbmeldedatum(abmeldedatum);
-        firePropertyChange(Field.ABMELDEDATUM, oldValue, anmeldung.getAbmeldedatum());
+        abmeldedatumModelAttribute.setNewValue(false, abmeldedatum);
     }
 
     private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(

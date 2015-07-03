@@ -15,6 +15,7 @@ public enum Field {
     ORT("Ort"),
     FESTNETZ("Festnetz"),
     GEBURTSDATUM("Geburtsdatum"),
+    GEBURTSDATUM_SUCHPERIODE("Geburtsdatum"),
     RECHNUNGSEMPFAENGER("Rechnungsempfänger"),
     GLEICHE_ADRESSE_WIE_SCHUELER("Gleiche Adresse wie Schüler"),
     GESCHLECHT("Geschlecht"),
