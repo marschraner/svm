@@ -19,6 +19,5 @@ public interface AnmeldungenStatistikModel extends Model {
     SchuelerSuchenResult suchen();
 
     void setAnAbmeldemonat(String anAbmeldemonat) throws SvmValidationException;
-    void setAnAbmeldemonat(Calendar anAbmeldemonat);
     void setAnAbmeldungen(AnAbmeldungenSelected anAbmeldungen);
 }

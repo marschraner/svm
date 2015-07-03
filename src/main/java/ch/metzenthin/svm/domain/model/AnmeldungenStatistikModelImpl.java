@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
-import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -11,14 +10,10 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-
-import static ch.metzenthin.svm.common.utils.Converter.toCalendar;
-import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
  * @author Martin Schraner
@@ -36,30 +31,30 @@ public class AnmeldungenStatistikModelImpl extends AbstractModel implements Anme
         this.commandInvoker = commandInvoker;
     }
 
+    private final CalendarModelAttribute anAbmeldemonatModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.AN_ABMELDEMONAT, new GregorianCalendar(2000, Calendar.JANUARY, 1), new GregorianCalendar(),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return anAbmeldemonat;
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    anAbmeldemonat = value;
+                }
+            }
+    );
+
     @Override
     public Calendar getAnAbmeldemonat() {
-        return anAbmeldemonat;
+        return anAbmeldemonatModelAttribute.getValue();
     }
 
     @Override
     public void setAnAbmeldemonat(String anAbmeldemonat) throws SvmValidationException {
-        if (!checkNotEmpty(anAbmeldemonat)) {
-            invalidate();
-            throw new SvmRequiredException(Field.AN_ABMELDEMONAT);
-        }
-        try {
-            setAnAbmeldemonat(toCalendar(anAbmeldemonat, AN_ABMELDEMONAT_DATE_FORMAT_STRING));
-        } catch (ParseException e) {
-            invalidate();
-            throw new SvmValidationException(1200, "Es wird ein gültige Datum im Format MM.JJJJ erwartet", Field.AN_ABMELDEMONAT);
-        }
-    }
-
-    @Override
-    public void setAnAbmeldemonat(Calendar anAbmeldemonat) {
-        Calendar oldValue = this.anAbmeldemonat;
-        this.anAbmeldemonat = anAbmeldemonat;
-        firePropertyChange(Field.AN_ABMELDEMONAT, oldValue, this.anAbmeldemonat);
+        anAbmeldemonatModelAttribute.setNewValue(true, anAbmeldemonat, AN_ABMELDEMONAT_DATE_FORMAT_STRING);
     }
 
     @Override
@@ -106,7 +101,7 @@ public class AnmeldungenStatistikModelImpl extends AbstractModel implements Anme
     @Override
     void doValidate() throws SvmValidationException {
         if (anAbmeldemonat == null) {
-            throw new SvmValidationException(2000, "An-/Abmeldemonat obligatorisch", Field.STICHTAG);
+            throw new SvmValidationException(2000, "An-/Abmeldemonat obligatorisch", Field.AN_ABMELDEMONAT);
         }
     }
 }
