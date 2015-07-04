@@ -2,11 +2,14 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.ValidateSchuelerModel;
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import org.junit.Before;
 import org.junit.Test;
 import test.DummyCommandInvoker;
 import test.TestCompletedListener;
 
+import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static org.junit.Assert.*;
 
 /**
@@ -17,12 +20,14 @@ public class SchuelerErfassenModelImplTest {
     private static final CommandInvoker DUMMY_COMMAND_INVOKER = new DummyCommandInvoker();
 
     private SchuelerErfassenModel schuelerErfassenModel;
+    private ValidateSchuelerModel validateSchuelerModel;
     private SchuelerModel schuelerModel;
     private AngehoerigerModel mutterModel;
 
     @Before
     public void setUp() throws Exception {
         schuelerErfassenModel = new SchuelerErfassenModelImpl(DUMMY_COMMAND_INVOKER);
+        validateSchuelerModel = (ValidateSchuelerModel) schuelerErfassenModel;
         schuelerModel = new SchuelerModelImpl(DUMMY_COMMAND_INVOKER);
         schuelerErfassenModel.setSchuelerModel(schuelerModel);
         mutterModel = new AngehoerigerModelImpl(DUMMY_COMMAND_INVOKER);
@@ -75,4 +80,73 @@ public class SchuelerErfassenModelImplTest {
         assertTrue("IsCompleted true erwartet", schuelerErfassenModel.isCompleted());
         assertTrue("IsCompleted von CompletedListener true erwartet", testCompletedListener.isCompleted());
     }
+
+    @Test
+    public void testIsRechnungsempfaenger() {
+        mutterModel.setIsRechnungsempfaenger(true);
+        assertTrue(validateSchuelerModel.isRechnungsempfaengerMutter());
+        assertFalse(validateSchuelerModel.isRechnungsempfaengerVater());
+        assertFalse(validateSchuelerModel.isRechnungsempfaengerDrittperson());
+    }
+
+    @Test
+    public void testGetSchueler() {
+        assertNotNull(validateSchuelerModel.getSchueler());
+    }
+
+    @Test
+    public void testGetAdresseSchueler() {
+        assertNotNull(validateSchuelerModel.getAdresseSchueler());
+    }
+
+    @Test
+    public void testGetVater_Null() {
+        assertNull(validateSchuelerModel.getVater());
+    }
+
+    @Test
+    public void testGetAdresseVater() {
+        assertNotNull(validateSchuelerModel.getAdresseVater());
+    }
+
+    @Test
+    public void testGetMutter_Null() throws Exception {
+        assertNull(validateSchuelerModel.getMutter());
+    }
+
+    @Test
+    public void testGetAdresseMutter() {
+        assertNotNull(validateSchuelerModel.getAdresseMutter());
+    }
+
+    @Test
+    public void testGetMutter_NotNull() throws Exception {
+        mutterModel.setNachname("Leu");
+        mutterModel.setVorname("Mia");
+        assertNotNull(validateSchuelerModel.getMutter());
+    }
+
+    @Test
+    public void testGetRechnungsempfaengerDrittperson_Null() {
+        assertNull(validateSchuelerModel.getRechnungsempfaengerDrittperson());
+    }
+
+    @Test
+    public void testGetAdresseRechnungsempfaengerDrittperson() {
+        assertNotNull(validateSchuelerModel.getAdresseRechnungsempfaengerDrittperson());
+    }
+
+    @Test
+    public void testGetAnmdeldung() {
+        assertNotNull(validateSchuelerModel.getAnmeldung());
+    }
+
+    @Test
+    public void testGetAnmdeldung_Datum() throws Exception {
+        String anmeldedatum = "01.06.2015";
+        schuelerModel.setAnmeldedatum(anmeldedatum);
+        Anmeldung anmeldung = validateSchuelerModel.getAnmeldung();
+        assertEquals(anmeldedatum, asString(anmeldung.getAnmeldedatum()));
+    }
+
 }
