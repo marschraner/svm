@@ -61,7 +61,7 @@ public class SchuelerSuchenResult {
             case "Natel" :
                 value = schueler.getNatel();
                 break;
-            case "E-Mail" :
+            case "Email" :
                 value = schueler.getEmail();
                 break;
             case "Mutter" :
