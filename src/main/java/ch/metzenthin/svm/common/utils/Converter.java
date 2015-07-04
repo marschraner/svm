@@ -93,6 +93,9 @@ public class Converter {
         if (dateAsString.matches("\\d{4}")) {
             return "yyyy";
         }
+        if (dateAsString.matches("\\d{2}")) {
+            return "yyyy";
+        }
         throw new ParseException("Ungültiges Datenformat", 0);
     }
 
