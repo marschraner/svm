@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
+import java.util.HashSet;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -287,11 +288,169 @@ public class SchuelerSuchenController extends PersonController {
         this.nextPanelListener = nextPanelListener;
     }
 
+    void enableDisableFields() {
+        if (schuelerSuchenModel.getRolle() != null && schuelerSuchenModel.getRolle() != SchuelerSuchenModel.RolleSelected.SCHUELER) {
+            disableGeburtsdatumSuchperiode();
+            disableGeschlechtSelection();
+        } else {
+            enableGeburtsdatumSuchperiode();
+            enableGeschlechtSelection();
+        }
+        if ((schuelerSuchenModel.getRolle() != null && schuelerSuchenModel.getRolle() != SchuelerSuchenModel.RolleSelected.SCHUELER)
+                || (schuelerSuchenModel.getAnmeldestatus() != null && schuelerSuchenModel.getAnmeldestatus() != SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET)) {
+            disableDispensationSelection();
+            disableKurs();
+            disableCodes();
+        } else {
+            enableDispensationSelection();
+            enableKurs();
+            enableCodes();
+        }
+    }
+
+    private void enableGeburtsdatumSuchperiode() {
+        schuelerSuchenModel.enableFields(getGeburtsdatumSuchperiodeFields());
+    }
+
+    private void disableGeburtsdatumSuchperiode() {
+        schuelerSuchenModel.disableFields(getGeburtsdatumSuchperiodeFields());
+        schuelerSuchenModel.makeErrorLabelsInvisible(getGeburtsdatumSuchperiodeFields());
+        // Textfeld in jedem Fall leeren, auch wenn Model-Wert noch null und damit von
+        // schuelerSuchenModel.invalidateGeburtsdatumSuchperiode() kein Property Change-Event ausgelöst wird
+        txtGeburtsdatumSuchperiode.setText("");
+        schuelerSuchenModel.invalidateGeburtsdatumSuchperiode();
+    }
+
+    private void enableDispensationSelection() {
+        schuelerSuchenModel.enableFields(getDispensationFields());
+    }
+
+    private void disableDispensationSelection() {
+        schuelerSuchenModel.disableFields(getDispensationFields());
+        schuelerSuchenModel.setDispensation(SchuelerSuchenModel.DispensationSelected.ALLE);
+    }
+
+    private void enableGeschlechtSelection() {
+        schuelerSuchenModel.enableFields(getGeschlechtFields());
+    }
+
+    private void disableGeschlechtSelection() {
+        schuelerSuchenModel.disableFields(getGeschlechtFields());
+        schuelerSuchenModel.setGeschlecht(SchuelerSuchenModel.GeschlechtSelected.ALLE);
+    }
+
+    private void enableKurs() {
+        schuelerSuchenModel.enableFields(getKursFields());
+    }
+
+    private void disableKurs() {
+        schuelerSuchenModel.disableFields(getKursFields());
+        schuelerSuchenModel.makeErrorLabelsInvisible(getKursFields());
+        // Textfelder in jedem Fall leeren, auch wenn Model-Wert noch null und damit von
+        // schuelerSuchenModel.invalidateKurs() kein Property Change-Event ausgelöst wird
+        txtLehrkraft.setText("");
+        txtVon.setText("");
+        txtBis.setText("");
+        // TODO
+        // schuelerSuchenModel.invalidateKurs(); (-> auch Wochentage auf alle setzen)
+    }
+
+    private void enableCodes() {
+        schuelerSuchenModel.enableFields(getCodesFields());
+    }
+
+    private void disableCodes() {
+        schuelerSuchenModel.disableFields(getCodesFields());
+        schuelerSuchenModel.makeErrorLabelsInvisible(getCodesFields());
+        // Textfeld in jedem Fall leeren, auch wenn Model-Wert noch null und damit von
+        // schuelerSuchenModel.invalidateCodes() kein Property Change-Event ausgelöst wird
+        txtCodes.setText("");
+        // TODO
+        // schuelerSuchenModel.invalidateCodes();
+    }
+
+    private Set<Field> getGeburtsdatumSuchperiodeFields() {
+        Set<Field> geburtsdatumSuchperiodeFields = new HashSet<>();
+        geburtsdatumSuchperiodeFields.add(Field.GEBURTSDATUM_SUCHPERIODE);
+        return geburtsdatumSuchperiodeFields;
+    }
+
+    private Set<Field> getDispensationFields() {
+        Set<Field> dispensationFields = new HashSet<>();
+        dispensationFields.add(Field.DISPENSIERT);
+        dispensationFields.add(Field.NICHT_DISPENSIERT);
+        dispensationFields.add(Field.DISPENSATION_ALLE);
+        return dispensationFields;
+    }
+
+    private Set<Field> getGeschlechtFields() {
+        Set<Field> geschlechtFields = new HashSet<>();
+        geschlechtFields.add(Field.WEIBLICH);
+        geschlechtFields.add(Field.MAENNLICH);
+        geschlechtFields.add(Field.GESCHLECHT_ALLE);
+        return geschlechtFields;
+    }
+
+    private Set<Field> getKursFields() {
+        Set<Field> kursFields = new HashSet<>();
+        kursFields.add(Field.LEHRKRAFT);
+        kursFields.add(Field.VON);
+        kursFields.add(Field.BIS);
+        kursFields.add(Field.WOCHENTAG);
+        return kursFields;
+    }
+
+    private Set<Field> getCodesFields() {
+        Set<Field> codesFields = new HashSet<>();
+        codesFields.add(Field.CODES);
+        return codesFields;
+    }
+
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
+        enableDisableFields();
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.GEBURTSDATUM_SUCHPERIODE, evt)) {
             txtGeburtsdatumSuchperiode.setText(schuelerSuchenModel.getGeburtsdatumSuchperiode());
+        }
+        if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.SCHUELER) {
+            radioBtnSchueler.setSelected(true);
+        }
+        if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.ELTERN) {
+            radioBtnEltern.setSelected(true);
+        }
+        if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
+            radioBtnRechnungsempfaenger.setSelected(true);
+        }
+        if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.ALLE) {
+            radioBtnRolleAlle.setSelected(true);
+        }
+        if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET) {
+            radioBtnAngemeldet.setSelected(true);
+        }
+        if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ABGEMELDET) {
+            radioBtnAbgemeldet.setSelected(true);
+        }
+        if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ALLE) {
+            radioBtnAnmeldestatusAlle.setSelected(true);
+        }
+        if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.DISPENSIERT) {
+            radioBtnDispensiert.setSelected(true);
+        }
+        if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.NICHT_DISPENSIERT) {
+            radioBtnNichtDispensiert.setSelected(true);
+        }
+        if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.ALLE) {
+            radioBtnDispensationAlle.setSelected(true);
+        }
+        if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.WEIBLICH) {
+            radioBtnWeiblich.setSelected(true);
+        }
+        if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.MAENNLICH) {
+            radioBtnMaennlich.setSelected(true);
+        }
+        if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.ALLE) {
+            radioBtnGeschlechtAlle.setSelected(true);
         }
         if (checkIsFieldChange(Field.STICHTAG, evt)) {
             txtStichtag.setText(asString(schuelerSuchenModel.getStichtag()));
@@ -412,6 +571,7 @@ public class SchuelerSuchenController extends PersonController {
             txtStichtag.setEnabled(!disable);
         }
     }
+
 
     class RadioBtnGroupRolleListener implements ActionListener {
         @Override

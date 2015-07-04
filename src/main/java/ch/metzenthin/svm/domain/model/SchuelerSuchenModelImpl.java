@@ -224,6 +224,11 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
+    public void invalidateGeburtsdatumSuchperiode() {
+        geburtsdatumSuchperiodeBeginnAttribute.initValue(null, geburtsdatumSuchperiodeDateFormatString);
+    }
+
+    @Override
     public boolean isCompleted() {
         return stichtag != null;
     }

@@ -40,6 +40,9 @@ public class CalendarModelAttribute {
     }
 
     String getValueAsString(String dateFormatString) {
+        if (attributeAccessor.getValue() == null) {
+            return null;
+        }
         return nullAsEmptyString(asString(getValue(), dateFormatString));
     }
 
@@ -75,6 +78,23 @@ public class CalendarModelAttribute {
             oldValue = newValueTrimmed;
             LOGGER.trace("setNewValue: Alten Wert auf Eingabewert gesetzt, damit PropertyChangeEvent ausgelöst wird. Alter Wert=" + oldValue + ", neuer Wert=" + getValue());
         }
+        modelAttributeListener.firePropertyChange(field, oldValue, getValueAsString(dateFormatString));
+    }
+
+    /**
+     * Achtung: Neuer Wert wird nicht geprüft!
+     */
+    void initValue(String newValue, String dateFormatString) {
+        String oldValue = getValueAsString(dateFormatString);
+        Calendar newValueAsCalendar = null;
+        if (checkNotEmpty(newValue)) {
+            try {
+                newValueAsCalendar = toCalendar(newValue, dateFormatString);
+            } catch (ParseException e) {
+                // Neuer Wert wird nicht geprüft!
+            }
+        }
+        attributeAccessor.setValue(newValueAsCalendar);
         modelAttributeListener.firePropertyChange(field, oldValue, getValueAsString(dateFormatString));
     }
 

@@ -1044,30 +1044,25 @@
     <group name="anmeldstatusButtonGroup">
       <member id="d313a"/>
     </group>
-    <group name="buttonGroupStatus">
-      <member id="30195"/>
-      <member id="c4186"/>
-      <member id="f066c"/>
+    <group name="buttonGroupAnAbmeldestatistik">
+      <member id="32ff9"/>
+      <member id="b51c7"/>
     </group>
-    <group name="btnGroupDispensation">
-      <member id="6a44d"/>
-      <member id="594c2"/>
-      <member id="8b982"/>
-    </group>
-    <group name="btnGroupRolle">
+    <group name="buttonGroupRolle">
       <member id="f537e"/>
       <member id="e4207"/>
       <member id="baf1f"/>
       <member id="d74d8"/>
     </group>
-    <group name="buttonGroupAnAbmeldestatistik">
-      <member id="32ff9"/>
-      <member id="b51c7"/>
-    </group>
-    <group name="buttonGroupStatus">
+    <group name="buttonAnmeldestatus">
       <member id="fefa8"/>
       <member id="f19e3"/>
       <member id="95367"/>
+    </group>
+    <group name="buttonGroupDispensation">
+      <member id="6a44d"/>
+      <member id="594c2"/>
+      <member id="8b982"/>
     </group>
     <group name="buttonGroupGeschlecht">
       <member id="275bc"/>

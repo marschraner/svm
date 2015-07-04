@@ -20,6 +20,9 @@ public class SchuelerSuchenPanel {
     private SchuelerSuchenController schuelerSuchenController;
     private JPanel panel;
     private JPanel stammdatenPanel;
+    private JPanel kursPanel;
+    private JPanel codesPanel;
+    private JPanel stichtagPanel;
     private JTextField txtNachname;
     private JTextField txtVorname;
     private JTextField txtStrasseHausnummer;
@@ -34,17 +37,20 @@ public class SchuelerSuchenPanel {
     private JTextField txtBis;
     private JTextField txtCodes;
     private JTextField txtStichtag;
+    private JRadioButton radioBtnRolleAlle;
+    private JRadioButton radioBtnAngemeldet;
+    private JRadioButton radioBtnAbgemeldet;
+    private JRadioButton radioBtnAnmeldestatusAlle;
+    private JRadioButton radioBtnWeiblich;
+    private JRadioButton radioBtnMaennlich;
+    private JRadioButton radioBtnGeschlechtAlle;
     private JRadioButton radioBtnDispensiert;
     private JRadioButton radioBtnNichtDispensiert;
     private JRadioButton radioBtnDispensationAlle;
     private JRadioButton radioBtnSchueler;
     private JRadioButton radioBtnEltern;
     private JRadioButton radioBtnRechnungsempfaenger;
-    private JRadioButton radioBtnRolleAlle;
     private JComboBox<Wochentag> comboBoxWochentag;
-    private JPanel kursPanel;
-    private JPanel codesPanel;
-    private JPanel stichtagPanel;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
     private JLabel errLblNachname;
@@ -64,12 +70,6 @@ public class SchuelerSuchenPanel {
     private JPanel panelLeft;
     private JPanel panelRight;
     private JPanel statusDispensationGeschlechtPanel;
-    private JRadioButton radioBtnAngemeldet;
-    private JRadioButton radioBtnAbgemeldet;
-    private JRadioButton radioBtnAnmeldestatusAlle;
-    private JRadioButton radioBtnWeiblich;
-    private JRadioButton radioBtnMaennlich;
-    private JRadioButton radioBtnGeschlechtAlle;
 
     public SchuelerSuchenPanel(SvmContext svmContext) {
         $$$setupUI$$$();
@@ -1100,10 +1100,6 @@ public class SchuelerSuchenPanel {
         label19.setLabelFor(txtStichtag);
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
-        buttonGroup.add(radioBtnDispensiert);
-        buttonGroup.add(radioBtnNichtDispensiert);
-        buttonGroup.add(radioBtnDispensationAlle);
-        buttonGroup = new ButtonGroup();
         buttonGroup.add(radioBtnSchueler);
         buttonGroup.add(radioBtnEltern);
         buttonGroup.add(radioBtnRechnungsempfaenger);
@@ -1112,6 +1108,10 @@ public class SchuelerSuchenPanel {
         buttonGroup.add(radioBtnAngemeldet);
         buttonGroup.add(radioBtnAbgemeldet);
         buttonGroup.add(radioBtnAnmeldestatusAlle);
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(radioBtnDispensiert);
+        buttonGroup.add(radioBtnNichtDispensiert);
+        buttonGroup.add(radioBtnDispensationAlle);
         buttonGroup = new ButtonGroup();
         buttonGroup.add(radioBtnWeiblich);
         buttonGroup.add(radioBtnMaennlich);
