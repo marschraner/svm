@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 
@@ -15,6 +16,7 @@ import java.awt.event.MouseEvent;
  * @author Hans Stamm
  */
 public class SchuelerSuchenResultController {
+    private final SvmContext svmContext;
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final JTable schuelerSuchenResultTable;
     private JButton btnDatenblatt;
@@ -22,7 +24,8 @@ public class SchuelerSuchenResultController {
     private JButton btnAbbrechen;
     private ActionListener closeListener;
 
-    public SchuelerSuchenResultController(SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable) {
+    public SchuelerSuchenResultController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable) {
+        this.svmContext = svmContext;
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.schuelerSuchenResultTable = schuelerSuchenResultTable;
         schuelerSuchenResultTable.setModel(schuelerSuchenTableModel);
@@ -64,7 +67,7 @@ public class SchuelerSuchenResultController {
     }
 
     private void onDatenblatt() {
-        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(schuelerSuchenTableModel, schuelerSuchenResultTable.getSelectedRow());
+        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, schuelerSuchenResultTable.getSelectedRow());
         schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
         schuelerDatenblattPanel.addCloseListener(closeListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));

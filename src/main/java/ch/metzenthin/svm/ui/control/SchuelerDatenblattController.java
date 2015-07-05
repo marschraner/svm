@@ -1,7 +1,9 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.components.SchuelerErfassenPanel;
 import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
 
 import javax.swing.*;
@@ -12,6 +14,7 @@ import java.awt.event.ActionListener;
  * @author Hans Stamm
  */
 public class SchuelerDatenblattController {
+    private final SvmContext svmContext;
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private int selectedRow;
     private SchuelerDatenblattModel schuelerDatenblattModel;
@@ -40,7 +43,8 @@ public class SchuelerDatenblattController {
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
 
-    public SchuelerDatenblattController(SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
+    public SchuelerDatenblattController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
+        this.svmContext = svmContext;
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.selectedRow = selectedRow;
         schuelerDatenblattModel = schuelerSuchenTableModel.getSchuelerDatenblattModel(selectedRow);
@@ -269,7 +273,7 @@ public class SchuelerDatenblattController {
     }
 
     private void onZurueck() {
-        SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(schuelerSuchenTableModel);
+        SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
         schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
         schuelerSuchenResultPanel.addCloseListener(closeListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat"));
@@ -345,7 +349,9 @@ public class SchuelerDatenblattController {
     }
 
     private void onStammdatenBearbeiten() {
-
+        SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext, schuelerDatenblattModel);
+        schuelerErfassenPanel.addCloseListener(closeListener);
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[] {schuelerErfassenPanel.$$$getRootComponent$$$(), "Schüler bearbeiten"}, ActionEvent.ACTION_PERFORMED, "Schueler bearbeiten"));
     }
 
     public void setBtnDispensationBearbeiten(JButton btnDispensationBearbeiten) {

@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.control.SchuelerErfassenController;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -26,18 +27,22 @@ public class SchuelerErfassenPanel {
     private JPanel leftButtonPanel;
 
     public SchuelerErfassenPanel(SvmContext svmContext) {
+        this(svmContext, null);
+    }
+
+    public SchuelerErfassenPanel(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel) {
         $$$setupUI$$$();
-        createSchuelerErfassenController(svmContext);
+        createSchuelerErfassenController(svmContext, schuelerDatenblattModel);
     }
 
     private SchuelerErfassenController schuelerErfassenController;
 
-    private void createSchuelerErfassenController(SvmContext svmContext) {
+    private void createSchuelerErfassenController(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel) {
         schuelerErfassenController = new SchuelerErfassenController(svmContext.getModelFactory().createSchuelerErfassenModel());
-        schuelerErfassenController.setSchuelerPanel(schuelerPanel, svmContext.getModelFactory().createSchuelerModel());
-        schuelerErfassenController.setMutterPanel(mutterPanel, svmContext.getModelFactory().createAngehoerigerModel());
-        schuelerErfassenController.setVaterPanel(vaterPanel, svmContext.getModelFactory().createAngehoerigerModel());
-        schuelerErfassenController.setDrittempfaengerPanel(drittempfaengerPanel, svmContext.getModelFactory().createAngehoerigerModel());
+        schuelerErfassenController.setSchuelerPanel(schuelerPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createSchuelerModel() : schuelerDatenblattModel.getSchuelerModel(svmContext));
+        schuelerErfassenController.setMutterPanel(mutterPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createAngehoerigerModel() : schuelerDatenblattModel.getMutterModel(svmContext));
+        schuelerErfassenController.setVaterPanel(vaterPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createAngehoerigerModel() : schuelerDatenblattModel.getVaterModel(svmContext));
+        schuelerErfassenController.setDrittempfaengerPanel(drittempfaengerPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createAngehoerigerModel() : schuelerDatenblattModel.getRechnungsempfaengerModel(svmContext));
         schuelerErfassenController.setBtnSpeichern(btnSpeichern);
         schuelerErfassenController.setBtnAbbrechen(btnAbbrechen);
         schuelerErfassenController.constructionDone();

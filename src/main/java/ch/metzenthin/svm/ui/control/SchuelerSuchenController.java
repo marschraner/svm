@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -53,10 +54,12 @@ public class SchuelerSuchenController extends PersonController {
     private ActionListener closeListener;
     private ActionListener nextPanelListener;
 
+    private final SvmContext svmContext;
     private SchuelerSuchenModel schuelerSuchenModel;
 
-    public SchuelerSuchenController(SchuelerSuchenModel schuelerSuchenModel) {
+    public SchuelerSuchenController(SvmContext svmContext, SchuelerSuchenModel schuelerSuchenModel) {
         super(schuelerSuchenModel);
+        this.svmContext = svmContext;
         this.schuelerSuchenModel = schuelerSuchenModel;
         this.schuelerSuchenModel.addPropertyChangeListener(this);
         this.schuelerSuchenModel.addDisableFieldsListener(this);
@@ -263,7 +266,7 @@ public class SchuelerSuchenController extends PersonController {
         LOGGER.trace("SchuelerSuchenPanel Suchen gedrückt");
         SchuelerSuchenResult schuelerSuchenResult = schuelerSuchenModel.suchen();
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenResult);
-        SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(schuelerSuchenTableModel);
+        SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
         schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
         schuelerSuchenResultPanel.addCloseListener(closeListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));

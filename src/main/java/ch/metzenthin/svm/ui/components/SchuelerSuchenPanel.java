@@ -114,7 +114,7 @@ public class SchuelerSuchenPanel {
     }
 
     private void createSchuelerSuchenController(SvmContext svmContext) {
-        schuelerSuchenController = new SchuelerSuchenController(svmContext.getModelFactory().createSchuelerSuchenModel());
+        schuelerSuchenController = new SchuelerSuchenController(svmContext, svmContext.getModelFactory().createSchuelerSuchenModel());
         schuelerSuchenController.setTxtNachname(txtNachname);
         schuelerSuchenController.setTxtVorname(txtVorname);
         schuelerSuchenController.setTxtStrasseHausnummer(txtStrasseHausnummer);

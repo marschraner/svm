@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.AnmeldungenStatistikModel;
@@ -29,6 +30,7 @@ public class AnmeldungenStatistikController extends AbstractController {
 
     private static final String AN_ABMELDEMONAT_DATE_FORMAT_STRING = "MM.yyyy";
 
+    private final SvmContext svmContext;
     private AnmeldungenStatistikModel anmeldungenStatistikModel;
     private ActionListener closeListener;
     private ActionListener nextPanelListener;
@@ -39,8 +41,9 @@ public class AnmeldungenStatistikController extends AbstractController {
     private JButton btnSuchen;
     private JButton btnAbbrechen;
 
-    public AnmeldungenStatistikController(AnmeldungenStatistikModel anmeldungenStatistikModel) {
+    public AnmeldungenStatistikController(SvmContext svmContext, AnmeldungenStatistikModel anmeldungenStatistikModel) {
         super(anmeldungenStatistikModel);
+        this.svmContext = svmContext;
         this.anmeldungenStatistikModel = anmeldungenStatistikModel;
         this.anmeldungenStatistikModel.addPropertyChangeListener(this);
         this.anmeldungenStatistikModel.addDisableFieldsListener(this);
@@ -135,7 +138,7 @@ public class AnmeldungenStatistikController extends AbstractController {
         LOGGER.trace("SchuelerSuchenPanel Suchen gedrückt");
         SchuelerSuchenResult schuelerSuchenResult = anmeldungenStatistikModel.suchen();
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenResult);
-        SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(schuelerSuchenTableModel);
+        SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
         schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
         schuelerSuchenResultPanel.addCloseListener(closeListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
