@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.commands.CheckGeschwisterSchuelerRechnungempfaengerCommand;
@@ -69,15 +70,33 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     public String getRechnungsempfaengerAsString() {
         Angehoeriger rechnungsempfaenger = schueler.getRechnungsempfaenger();
         if (rechnungsempfaenger != null) {
-            if (rechnungsempfaenger == schueler.getMutter()) {
+            if (isRechnungsempfaengerMutter()) {
                 return "Mutter";
             }
-            if (rechnungsempfaenger == schueler.getVater()) {
+            if (isRechnungsempfaengerVater()) {
                 return "Vater";
             }
             return rechnungsempfaenger.toString();
         }
         return "-";
+    }
+
+    private boolean isRechnungsempfaengerMutter() {
+        return isRechnungsempfaenger(schueler.getMutter());
+    }
+
+    private boolean isRechnungsempfaengerVater() {
+        return isRechnungsempfaenger(schueler.getVater());
+    }
+
+    private boolean isRechnungsempfaenger(Angehoeriger angehoeriger) {
+        Angehoeriger rechnungsempfaenger = schueler.getRechnungsempfaenger();
+        if (rechnungsempfaenger != null) {
+            if (rechnungsempfaenger == angehoeriger) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -170,6 +189,40 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
             return fruehereAnmeldungen.toString();
         }
         return "";
+    }
+
+    @Override
+    public SchuelerModel getSchuelerModel(SvmContext svmContext) {
+        SchuelerModel schuelerModel = svmContext.getModelFactory().createSchuelerModel();
+        schuelerModel.setSchueler(schueler);
+        return schuelerModel;
+    }
+
+    @Override
+    public AngehoerigerModel getMutterModel(SvmContext svmContext) {
+        AngehoerigerModel mutterModel = svmContext.getModelFactory().createAngehoerigerModel();
+        mutterModel.setAngehoeriger(schueler.getMutter(), isGleicheAdresseWieSchueler(schueler.getMutter()), isRechnungsempfaengerMutter());
+        return mutterModel;
+    }
+
+    @Override
+    public AngehoerigerModel getVaterModel(SvmContext svmContext) {
+        AngehoerigerModel vaterModel = svmContext.getModelFactory().createAngehoerigerModel();
+        vaterModel.setAngehoeriger(schueler.getVater(), isGleicheAdresseWieSchueler(schueler.getVater()), isRechnungsempfaengerVater());
+        return vaterModel;
+    }
+
+    @Override
+    public AngehoerigerModel getRechnungsempfaengerModel(SvmContext svmContext) {
+        AngehoerigerModel drittempfaengerModel = svmContext.getModelFactory().createAngehoerigerModel();
+        if (!isRechnungsempfaengerMutter() && !isRechnungsempfaengerVater()) {
+            drittempfaengerModel.setAngehoeriger(schueler.getRechnungsempfaenger(), false, true);
+        }
+        return drittempfaengerModel;
+    }
+
+    private boolean isGleicheAdresseWieSchueler(Angehoeriger angehoeriger) {
+        return (angehoeriger != null) && (schueler.getAdresse() == angehoeriger.getAdresse());
     }
 
 }

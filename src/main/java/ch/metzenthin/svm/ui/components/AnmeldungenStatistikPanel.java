@@ -34,7 +34,7 @@ public class AnmeldungenStatistikPanel {
     }
 
     private void createAnmeldungenStatistikController(SvmContext svmContext) {
-        anmeldungenStatistikController = new AnmeldungenStatistikController(svmContext.getModelFactory().createAnmeldungenStatistikModel());
+        anmeldungenStatistikController = new AnmeldungenStatistikController(svmContext, svmContext.getModelFactory().createAnmeldungenStatistikModel());
         anmeldungenStatistikController.setTxtAnAbmeldemonat(txtAnAbmeldemonat);
         anmeldungenStatistikController.setRadioBtnGroupAnAbmeldungen(radioBtnAnmeldungen, radioBtnAbmeldungen);
         anmeldungenStatistikController.setBtnSuchen(btnSuchen);

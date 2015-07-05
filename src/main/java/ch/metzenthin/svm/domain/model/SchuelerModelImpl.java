@@ -22,6 +22,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     private final Schueler schueler;
+    private Schueler schuelerOrigin;
     private final Anmeldung anmeldung;
 
     SchuelerModelImpl(CommandInvoker commandInvoker) {
@@ -158,6 +159,45 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     @Override
     public Schueler getSchueler() {
         return schueler;
+    }
+
+    @Override
+    public void setSchueler(Schueler schueler) {
+        schuelerOrigin = schueler;
+/*
+        this.schueler.setAnrede(schueler.getAnrede());
+        this.schueler.setNachname(schueler.getNachname());
+        this.schueler.setVorname(schueler.getVorname());
+        this.schueler.setGeschlecht(schueler.getGeschlecht());
+        this.schueler.setGeburtsdatum(schueler.getGeburtsdatum());
+        this.schueler.setNatel(schueler.getNatel());
+        this.schueler.setEmail(schueler.getEmail());
+        this.schueler.setBemerkungen(schueler.getBemerkungen());
+*/
+    }
+
+    @Override
+    public void initializeCompleted() {
+        if (schuelerOrigin != null) {
+            try {
+                setAnrede(schuelerOrigin.getAnrede());
+                setNachname(schuelerOrigin.getNachname());
+                setVorname(schuelerOrigin.getVorname());
+                setGeschlecht(schuelerOrigin.getGeschlecht());
+                setGeburtsdatum(asString(schuelerOrigin.getGeburtsdatum()));
+                setStrasseHausnummer(schuelerOrigin.getAdresse().getStrasseHausnummer());
+                setPlz(schuelerOrigin.getAdresse().getPlz());
+                setOrt(schuelerOrigin.getAdresse().getOrt());
+                setFestnetz(schuelerOrigin.getAdresse().getFestnetz());
+                setNatel(schuelerOrigin.getNatel());
+                setEmail(schuelerOrigin.getEmail());
+                setBemerkungen(schuelerOrigin.getBemerkungen());
+                // setAbmeldedatum(schuelerOrigin.getAnmeldungen()); // $$$ todo
+                // setAnmeldedatum(schuelerOrigin.getAnmeldungen()); // $$$ todo
+            } catch (SvmValidationException ignore) {
+            }
+        }
+        super.initializeCompleted();
     }
 
     @Override

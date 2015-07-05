@@ -6,12 +6,17 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Person;
 
+import static ch.metzenthin.svm.common.utils.Converter.asString;
+
 /**
  * @author Hans Stamm
  */
 public class AngehoerigerModelImpl extends PersonModelImpl implements AngehoerigerModel {
 
     private final Angehoeriger angehoeriger;
+    private Angehoeriger angehoerigerOrigin;
+    private boolean isRechnungsempfaengerOrigin;
+    private boolean isGleicheAdresseWieSchuelerOrigin;
 
     private boolean isGleicheAdresseWieSchueler;
     private boolean isRechnungsempfaenger;
@@ -74,6 +79,38 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
         firePropertyChange(Field.RECHNUNGSEMPFAENGER, oldValue, isRechnungsempfaenger);
     }
 
+    @Override
+    public void setAngehoeriger(Angehoeriger angehoeriger, boolean isGleicheAdresseWieSchueler, boolean isRechnungsempfaenger) {
+        angehoerigerOrigin = angehoeriger;
+        isGleicheAdresseWieSchuelerOrigin = isGleicheAdresseWieSchueler;
+        isRechnungsempfaengerOrigin = isRechnungsempfaenger;
+    }
 
+
+    @Override
+    public void initializeCompleted() {
+        if (angehoerigerOrigin != null) {
+            try {
+                setAnrede(angehoerigerOrigin.getAnrede());
+                setNachname(angehoerigerOrigin.getNachname());
+                setVorname(angehoerigerOrigin.getVorname());
+                if (angehoerigerOrigin.getAdresse() != null) {
+                    setStrasseHausnummer(angehoerigerOrigin.getAdresse().getStrasseHausnummer());
+                    setPlz(angehoerigerOrigin.getAdresse().getPlz());
+                    setOrt(angehoerigerOrigin.getAdresse().getOrt());
+                    setFestnetz(angehoerigerOrigin.getAdresse().getFestnetz());
+                }
+                setNatel(angehoerigerOrigin.getNatel());
+                setEmail(angehoerigerOrigin.getEmail());
+                setGeburtsdatum(asString(angehoerigerOrigin.getGeburtsdatum()));
+                isRechnungsempfaenger = !isRechnungsempfaengerOrigin; // damit PropertyChange ausgelöst wird!
+                setIsRechnungsempfaenger(isRechnungsempfaengerOrigin);
+                isGleicheAdresseWieSchueler = !isGleicheAdresseWieSchuelerOrigin; // damit PropertyChange ausgelöst wird!
+                setIsGleicheAdresseWieSchueler(isGleicheAdresseWieSchuelerOrigin);
+            } catch (SvmValidationException ignore) {
+            }
+        }
+        super.initializeCompleted();
+    }
 
 }

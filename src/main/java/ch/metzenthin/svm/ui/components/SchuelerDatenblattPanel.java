@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.control.SchuelerDatenblattController;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -56,8 +57,8 @@ public class SchuelerDatenblattPanel {
 
     private final SchuelerDatenblattController schuelerDatenblattController;
 
-    public SchuelerDatenblattPanel(SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
-        schuelerDatenblattController = new SchuelerDatenblattController(schuelerSuchenTableModel, selectedRow);
+    public SchuelerDatenblattPanel(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
+        schuelerDatenblattController = new SchuelerDatenblattController(svmContext, schuelerSuchenTableModel, selectedRow);
         schuelerDatenblattController.setLabelVornameNachname(lblVornameNachname);
         schuelerDatenblattController.setLabelSchueler(lblSchueler);
         schuelerDatenblattController.setLabelSchuelerValue(lblSchuelerValue);

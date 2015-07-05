@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.common.SvmContext;
+
 /**
  * @author Hans Stamm
  */
@@ -20,4 +22,8 @@ public interface SchuelerDatenblattModel {
     String getAnmeldedatumAsString();
     String getAbmeldedatumAsString();
     String getFruehereAnmeldungenAsString();
+    SchuelerModel getSchuelerModel(SvmContext svmContext);
+    AngehoerigerModel getMutterModel(SvmContext svmContext);
+    AngehoerigerModel getVaterModel(SvmContext svmContext);
+    AngehoerigerModel getRechnungsempfaengerModel(SvmContext svmContext);
 }

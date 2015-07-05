@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.control.SchuelerSuchenResultController;
 
@@ -17,8 +18,8 @@ public class SchuelerSuchenResultPanel {
     private JButton btnAbbrechen;
     private final SchuelerSuchenResultController schuelerSuchenResultController;
 
-    public SchuelerSuchenResultPanel(SchuelerSuchenTableModel schuelerSuchenTableModel) {
-        schuelerSuchenResultController = new SchuelerSuchenResultController(schuelerSuchenTableModel, schuelerSuchenResultTable);
+    public SchuelerSuchenResultPanel(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel) {
+        schuelerSuchenResultController = new SchuelerSuchenResultController(svmContext, schuelerSuchenTableModel, schuelerSuchenResultTable);
         schuelerSuchenResultController.setBtnDatenblatt(btnDatenblatt);
         schuelerSuchenResultController.setBtnAbbrechen(btnAbbrechen);
     }
