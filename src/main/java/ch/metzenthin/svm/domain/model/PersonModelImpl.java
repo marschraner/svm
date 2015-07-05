@@ -21,7 +21,6 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final Adresse adresse;
 
-
     PersonModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
         adresse = new Adresse();

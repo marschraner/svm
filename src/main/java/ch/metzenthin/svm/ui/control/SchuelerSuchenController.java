@@ -291,20 +291,13 @@ public class SchuelerSuchenController extends PersonController {
     void enableDisableFields() {
         if (schuelerSuchenModel.getRolle() != null && schuelerSuchenModel.getRolle() != SchuelerSuchenModel.RolleSelected.SCHUELER) {
             disableGeburtsdatumSuchperiode();
-            disableGeschlechtSelection();
         } else {
             enableGeburtsdatumSuchperiode();
-            enableGeschlechtSelection();
         }
-        if ((schuelerSuchenModel.getRolle() != null && schuelerSuchenModel.getRolle() != SchuelerSuchenModel.RolleSelected.SCHUELER)
-                || (schuelerSuchenModel.getAnmeldestatus() != null && schuelerSuchenModel.getAnmeldestatus() != SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET)) {
+        if (schuelerSuchenModel.getAnmeldestatus() != null && schuelerSuchenModel.getAnmeldestatus() != SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET) {
             disableDispensationSelection();
-            disableKurs();
-            disableCodes();
         } else {
             enableDispensationSelection();
-            enableKurs();
-            enableCodes();
         }
     }
 
@@ -330,45 +323,6 @@ public class SchuelerSuchenController extends PersonController {
         schuelerSuchenModel.setDispensation(SchuelerSuchenModel.DispensationSelected.ALLE);
     }
 
-    private void enableGeschlechtSelection() {
-        schuelerSuchenModel.enableFields(getGeschlechtFields());
-    }
-
-    private void disableGeschlechtSelection() {
-        schuelerSuchenModel.disableFields(getGeschlechtFields());
-        schuelerSuchenModel.setGeschlecht(SchuelerSuchenModel.GeschlechtSelected.ALLE);
-    }
-
-    private void enableKurs() {
-        schuelerSuchenModel.enableFields(getKursFields());
-    }
-
-    private void disableKurs() {
-        schuelerSuchenModel.disableFields(getKursFields());
-        schuelerSuchenModel.makeErrorLabelsInvisible(getKursFields());
-        // Textfelder in jedem Fall leeren, auch wenn Model-Wert noch null und damit von
-        // schuelerSuchenModel.invalidateKurs() kein Property Change-Event ausgelöst wird
-        txtLehrkraft.setText("");
-        txtVon.setText("");
-        txtBis.setText("");
-        // TODO
-        // schuelerSuchenModel.invalidateKurs(); (-> auch Wochentage auf alle setzen)
-    }
-
-    private void enableCodes() {
-        schuelerSuchenModel.enableFields(getCodesFields());
-    }
-
-    private void disableCodes() {
-        schuelerSuchenModel.disableFields(getCodesFields());
-        schuelerSuchenModel.makeErrorLabelsInvisible(getCodesFields());
-        // Textfeld in jedem Fall leeren, auch wenn Model-Wert noch null und damit von
-        // schuelerSuchenModel.invalidateCodes() kein Property Change-Event ausgelöst wird
-        txtCodes.setText("");
-        // TODO
-        // schuelerSuchenModel.invalidateCodes();
-    }
-
     private Set<Field> getGeburtsdatumSuchperiodeFields() {
         Set<Field> geburtsdatumSuchperiodeFields = new HashSet<>();
         geburtsdatumSuchperiodeFields.add(Field.GEBURTSDATUM_SUCHPERIODE);
@@ -381,29 +335,6 @@ public class SchuelerSuchenController extends PersonController {
         dispensationFields.add(Field.NICHT_DISPENSIERT);
         dispensationFields.add(Field.DISPENSATION_ALLE);
         return dispensationFields;
-    }
-
-    private Set<Field> getGeschlechtFields() {
-        Set<Field> geschlechtFields = new HashSet<>();
-        geschlechtFields.add(Field.WEIBLICH);
-        geschlechtFields.add(Field.MAENNLICH);
-        geschlechtFields.add(Field.GESCHLECHT_ALLE);
-        return geschlechtFields;
-    }
-
-    private Set<Field> getKursFields() {
-        Set<Field> kursFields = new HashSet<>();
-        kursFields.add(Field.LEHRKRAFT);
-        kursFields.add(Field.VON);
-        kursFields.add(Field.BIS);
-        kursFields.add(Field.WOCHENTAG);
-        return kursFields;
-    }
-
-    private Set<Field> getCodesFields() {
-        Set<Field> codesFields = new HashSet<>();
-        codesFields.add(Field.CODES);
-        return codesFields;
     }
 
     @Override

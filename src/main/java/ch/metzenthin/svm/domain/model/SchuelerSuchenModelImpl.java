@@ -5,6 +5,8 @@ import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.SchuelerSuchenCommand;
+import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.entities.*;
 
 import java.text.ParseException;
@@ -22,14 +24,14 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     private final PersonSuchen person;
     private CommandInvoker commandInvoker;
-    private RolleSelected rolle;
-    private AnmeldestatusSelected anmeldestatus;
-    private DispensationSelected dispensation;
-    private GeschlechtSelected geschlecht;
+    private RolleSelected rolle = RolleSelected.SCHUELER;
+    private AnmeldestatusSelected anmeldestatus = AnmeldestatusSelected.ANGEMELDET;
+    private DispensationSelected dispensation = DispensationSelected.ALLE;
+    private GeschlechtSelected geschlecht = GeschlechtSelected.ALLE;
     private Calendar geburtsdatumSuchperiodeBeginn;
     private Calendar geburtsdatumSuchperiodeEnde;
     private String geburtsdatumSuchperiodeDateFormatString;
-    private Calendar stichtag;
+    private Calendar stichtag = new GregorianCalendar();
 
     SchuelerSuchenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -38,7 +40,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
-    Person getPerson() {
+    public PersonSuchen getPerson() {
         return person;
     }
 
@@ -81,6 +83,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
             }
     );
 
+    @Override
     public Calendar getGeburtsdatumSuchperiodeBeginn() {
         return geburtsdatumSuchperiodeBeginnAttribute.getValue();
     }
@@ -105,12 +108,18 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
             }
     );
 
+    @Override
     public Calendar getGeburtsdatumSuchperiodeEnde() {
         return geburtsdatumSuchperiodeEndeAttribute.getValue();
     }
 
     public void setGeburtsdatumSuchperiodeEnde(String geburtsdatumSuchperiodeEnde) throws SvmValidationException {
         geburtsdatumSuchperiodeEndeAttribute.setNewValue(false, geburtsdatumSuchperiodeEnde, geburtsdatumSuchperiodeDateFormatString);
+    }
+
+    @Override
+    public String getGeburtsdatumSuchperiodeDateFormatString() {
+        return geburtsdatumSuchperiodeDateFormatString;
     }
 
     @Override
@@ -220,6 +229,15 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         schuelerUrs.setRechnungsempfaenger(angehoerigerUrs);
         schuelerUrs.setAdresse(adresseUrs);
         schuelerList.add(schuelerUrs);
+
+        SchuelerSuchenCommand schuelerSuchenCommand = new SchuelerSuchenCommand(this);
+        try {
+            commandInvoker.executeCommand(schuelerSuchenCommand);
+        } catch (SvmDbException e) {
+            //TODO
+            e.printStackTrace();
+        }
+        //schuelerList = schuelerSuchenCommand.getSchuelerFound();
         return new SchuelerSuchenResult(schuelerList);
     }
 
