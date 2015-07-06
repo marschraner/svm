@@ -46,32 +46,32 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
         if (angehoeriger != null) {
 
             if (angehoeriger.getVorname() != null) {
-                selectStatementSb.append(" a.vorname = :vorname and");
+                selectStatementSb.append(" lower(a.vorname) = lower(:vorname) and");
             }
             if (angehoeriger.getNachname() != null) {
-                selectStatementSb.append(" a.nachname = :nachname and");
+                selectStatementSb.append(" lower(a.nachname) = lower(:nachname) and");
             }
             if (angehoeriger.getNatel() != null) {
-                selectStatementSb.append(" a.natel = :natel and");
+                selectStatementSb.append(" replace(a.natel, ' ', '') = replace(:natel, ' ', '') and");
             }
             if (angehoeriger.getEmail() != null) {
-                selectStatementSb.append(" a.email = :email and");
+                selectStatementSb.append(" lower(a.email) = lower(:email) and");
             }
             if (angehoeriger.getAdresse() != null) {
                 if (angehoeriger.getAdresse().getStrasse() != null) {
-                    selectStatementSb.append(" a.adresse.strasse = :strasse and");
+                    selectStatementSb.append(" lower(a.adresse.strasse) = lower(:strasse) and");
                 }
                 if (angehoeriger.getAdresse().getHausnummer() != null) {
-                    selectStatementSb.append(" a.adresse.hausnummer = :hausnummer and");
+                    selectStatementSb.append(" lower(a.adresse.hausnummer) = lower(:hausnummer) and");
                 }
                 if (angehoeriger.getAdresse().getPlz() != null) {
                     selectStatementSb.append(" a.adresse.plz = :plz and");
                 }
                 if (angehoeriger.getAdresse().getOrt() != null) {
-                    selectStatementSb.append(" a.adresse.ort = :ort and");
+                    selectStatementSb.append(" lower(a.adresse.ort) = lower(:ort) and");
                 }
                 if (angehoeriger.getAdresse().getFestnetz() != null) {
-                    selectStatementSb.append(" a.adresse.festnetz = :festnetz and");
+                    selectStatementSb.append(" replace(a.adresse.festnetz, ' ', '') = replace(:festnetz, ' ', '') and");
                 }
             }
 

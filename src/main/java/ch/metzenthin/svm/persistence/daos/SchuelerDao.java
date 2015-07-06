@@ -74,32 +74,32 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
         if (schueler != null) {
 
             if (schueler.getVorname() != null) {
-                selectStatementSb.append(" s.vorname = :vorname and");
+                selectStatementSb.append(" lower(s.vorname) = lower(:vorname) and");
             }
             if (schueler.getNachname() != null) {
-                selectStatementSb.append(" s.nachname = :nachname and");
+                selectStatementSb.append(" lower(s.nachname) = lower(:nachname) and");
             }
             if (schueler.getNatel() != null) {
-                selectStatementSb.append(" s.natel = :natel and");
+                selectStatementSb.append(" replace(s.natel, ' ', '') = replace(:natel, ' ', '') and");
             }
             if (schueler.getEmail() != null) {
-                selectStatementSb.append(" s.email = :email and");
+                selectStatementSb.append(" lower(s.email) = lower(:email) and");
             }
             if (schueler.getAdresse() != null) {
                 if (schueler.getAdresse().getStrasse() != null) {
-                    selectStatementSb.append(" s.adresse.strasse = :strasse and");
+                    selectStatementSb.append(" lower(s.adresse.strasse) = lower(:strasse) and");
                 }
                 if (schueler.getAdresse().getHausnummer() != null) {
-                    selectStatementSb.append(" s.adresse.hausnummer = :hausnummer and");
+                    selectStatementSb.append(" lower(s.adresse.hausnummer) = lower(:hausnummer) and");
                 }
                 if (schueler.getAdresse().getPlz() != null) {
                     selectStatementSb.append(" s.adresse.plz = :plz and");
                 }
                 if (schueler.getAdresse().getOrt() != null) {
-                    selectStatementSb.append(" s.adresse.ort = :ort and");
+                    selectStatementSb.append(" lower(s.adresse.ort) = lower(:ort) and");
                 }
                 if (schueler.getAdresse().getFestnetz() != null) {
-                    selectStatementSb.append(" s.adresse.festnetz = :festnetz and");
+                    selectStatementSb.append(" replace(s.adresse.festnetz, ' ', '') = replace(:festnetz, ' ', '') and");
                 }
             }
 
