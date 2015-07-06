@@ -1,16 +1,14 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Field;
-import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SchuelerSuchenCommand;
 import ch.metzenthin.svm.persistence.SvmDbException;
-import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.persistence.entities.PersonSuchen;
+import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -29,7 +27,6 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private static final Calendar STICHTAG_INIT = new GregorianCalendar();
 
     private final PersonSuchen person;
-    private CommandInvoker commandInvoker;
     private RolleSelected rolle = ROLLE_INIT;
     private AnmeldestatusSelected anmeldestatus = ANMELDESTATUS_INIT;
     private DispensationSelected dispensation = DISPENSATION_INIT;
@@ -41,7 +38,6 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     SchuelerSuchenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
-        this.commandInvoker = commandInvoker;
         this.person = new PersonSuchen();
     }
 
@@ -227,48 +223,16 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
-    public SchuelerSuchenResult suchen() {
-        //TODO
-        List<Schueler> schuelerList = new ArrayList<>();
-        Adresse adresse1 = new Adresse("Forchstrasse", "232", "8032", "Zürich", null);
-        Adresse adresse2 = new Adresse("Hintere Bergstrasse", "15", "8942", "Oberrieden", null);
-        Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.FRAU, "Eva", "Juchli", null, null);
-        Angehoeriger angehoeriger2 = new Angehoeriger(Anrede.HERR, "Kurt", "Juchli", null, null);
-        Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", null, null);
-        angehoeriger1.setAdresse(adresse1);
-        angehoeriger2.setAdresse(adresse1);
-        angehoeriger3.setAdresse(adresse2);
-        Schueler schueler1 = new Schueler("Lilly", "Juchli", new GregorianCalendar(2008, Calendar.JANUARY, 13), null, null, Geschlecht.W, null);
-        schueler1.setAdresse(adresse1);
-        schueler1.setMutter(angehoeriger1);
-        schueler1.setVater(angehoeriger2);
-        schueler1.setRechnungsempfaenger(angehoeriger3);
-        schueler1.addAnmeldung(new Anmeldung(new GregorianCalendar(2013, Calendar.JANUARY, 1), new GregorianCalendar(2013, Calendar.JULY, 1)));
-        schueler1.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JULY, 1)));
-        schuelerList.add(schueler1);
-        Schueler schuelerLea = new Schueler("Lea", "Leu", new GregorianCalendar(2010, Calendar.APRIL, 15), null, null, Geschlecht.W, null);
-        Adresse adresseLea = new Adresse("Seestrasse", "1", "8234", "Stetten", null);
-        schuelerLea.setAdresse(adresseLea);
-        Angehoeriger angehoerigerLea = new Angehoeriger(Anrede.FRAU, "Anna", "Müller", null, null);
-        schuelerLea.setMutter(angehoerigerLea);
-        schuelerLea.setRechnungsempfaenger(angehoerigerLea);
-        schuelerList.add(schuelerLea);
-        Schueler schuelerUrs = new Schueler("Urs", "Keller", new GregorianCalendar(2000, Calendar.JANUARY, 31), null, null, Geschlecht.M, null);
-        Adresse adresseUrs = new Adresse("Talstrasse", "2", "8200", "Schaffhausen", null);
-        Angehoeriger angehoerigerUrs = new Angehoeriger(Anrede.HERR, "Fritz", "Meier", null, null);
-        schuelerUrs.setVater(angehoerigerUrs);
-        schuelerUrs.setRechnungsempfaenger(angehoerigerUrs);
-        schuelerUrs.setAdresse(adresseUrs);
-        schuelerList.add(schuelerUrs);
-
+    public SchuelerSuchenResult suchen() throws SvmDbException {
         SchuelerSuchenCommand schuelerSuchenCommand = new SchuelerSuchenCommand(this);
+        CommandInvoker commandInvoker = getCommandInvoker();
         try {
-            commandInvoker.executeCommand(schuelerSuchenCommand);
-        } catch (SvmDbException e) {
-            //TODO
-            e.printStackTrace();
+            commandInvoker.openSession();
+            commandInvoker.executeCommandWithinSession(schuelerSuchenCommand);
+        } catch (Throwable e) {
+            throw new SvmDbException("Fehler beim Ausführen eines DB-Commands", e);
         }
-        //schuelerList = schuelerSuchenCommand.getSchuelerFound();
+        List<Schueler> schuelerList = schuelerSuchenCommand.getSchuelerFound();
         return new SchuelerSuchenResult(schuelerList);
     }
 

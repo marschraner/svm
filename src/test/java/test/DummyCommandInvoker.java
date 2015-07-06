@@ -38,4 +38,19 @@ public class DummyCommandInvoker implements CommandInvoker {
 
     }
 
+    @Override
+    public void openSession() {
+
+    }
+
+    @Override
+    public void closeSession() {
+
+    }
+
+    @Override
+    public GenericDaoCommand executeCommandWithinSession(GenericDaoCommand genericDaoCommand) {
+        return null;
+    }
+
 }

@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.entities.PersonSuchen;
 
 import java.util.Calendar;
@@ -50,7 +51,7 @@ public interface SchuelerSuchenModel extends PersonModel {
     GeschlechtSelected getGeschlechtInit();
     Calendar getStichtag();
     Calendar getStichtagInit();
-    SchuelerSuchenResult suchen();
+    SchuelerSuchenResult suchen() throws SvmDbException;
 
     void setGeburtsdatumSuchperiode(String geburtsdatumSuchperiode) throws SvmValidationException;
     void setRolle(RolleSelected rolle);

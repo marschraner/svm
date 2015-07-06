@@ -58,7 +58,7 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
 
 
     //------------------------------------------------------------------------------------------------------------------
-    // DisableFields support
+    // Disable fields support
     //------------------------------------------------------------------------------------------------------------------
 
     private final List<DisableFieldsListener> disableFieldsListeners = new ArrayList<>();
@@ -105,7 +105,7 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
 
 
     //------------------------------------------------------------------------------------------------------------------
-    // DisableFields support
+    // Make error labels invisible support
     //------------------------------------------------------------------------------------------------------------------
 
     private final List<MakeErrorLabelsInvisibleListener> makeErrorLabelsInvisibleListeners = new ArrayList<>();

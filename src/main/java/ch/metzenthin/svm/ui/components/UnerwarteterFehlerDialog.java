@@ -1,37 +1,47 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.domain.model.SchuelerErfassenUnerwarteterFehlerResult;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
-public class SchuelerErfassenUnerwarteterFehlerDialog extends SchuelerErfassenDialog {
+public class UnerwarteterFehlerDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JLabel lblFehler;
 
-    public SchuelerErfassenUnerwarteterFehlerDialog(SchuelerErfassenUnerwarteterFehlerResult schuelerErfassenUnerwarteterFehlerResult) {
+    public UnerwarteterFehlerDialog(Throwable e) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        setTitle("Fehler");
+        setTitle("Unerwarteter Fehler");
         //noinspection ThrowableResultOfMethodCallIgnored
-        lblFehler.setText(schuelerErfassenUnerwarteterFehlerResult.getFehler().getMessage());
+        lblFehler.setText(e.getMessage());
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK();
             }
         });
+
+// call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onOK();
+            }
+        });
+
+// call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onOK();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onOK() {
-        // keine weiteren Schritte
-        setResult(null);
         dispose();
     }
 
@@ -73,44 +83,42 @@ public class SchuelerErfassenUnerwarteterFehlerDialog extends SchuelerErfassenDi
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(5, 5, 5, 5);
         panel2.add(label1, gbc);
+        final JPanel spacer1 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel2.add(spacer1, gbc);
+        final JPanel spacer2 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel2.add(spacer2, gbc);
+        final JPanel spacer3 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel2.add(spacer3, gbc);
+        final JPanel spacer4 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel2.add(spacer4, gbc);
         lblFehler = new JLabel();
         lblFehler.setText("Fehlerbeschreibung");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(5, 5, 5, 5);
         panel2.add(lblFehler, gbc);
-        final JPanel spacer1 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(spacer1, gbc);
-        final JPanel spacer2 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(spacer2, gbc);
-        final JPanel spacer3 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer3, gbc);
-        final JPanel spacer4 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer4, gbc);
         final JPanel spacer5 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 2;
+        gbc.gridy = 4;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel2.add(spacer5, gbc);
         final JPanel panel3 = new JPanel();
@@ -120,13 +128,14 @@ public class SchuelerErfassenUnerwarteterFehlerDialog extends SchuelerErfassenDi
         buttonOK.setMaximumSize(new Dimension(100, 29));
         buttonOK.setMinimumSize(new Dimension(100, 29));
         buttonOK.setPreferredSize(new Dimension(100, 29));
+        buttonOK.setSelected(true);
         buttonOK.setText("OK");
         buttonOK.setMnemonic('O');
         buttonOK.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 10, 5);
         panel3.add(buttonOK, gbc);
     }

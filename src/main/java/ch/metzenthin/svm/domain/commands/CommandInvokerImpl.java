@@ -15,7 +15,7 @@ public class CommandInvokerImpl implements CommandInvoker {
     private static final Logger LOGGER = Logger.getLogger(CommandInvokerImpl.class);
 
     private EntityManagerFactory entityManagerFactory;
-    EntityManager entityManager = null;
+    private EntityManager entityManager = null;
 
     public CommandInvokerImpl() {
     }
@@ -54,20 +54,23 @@ public class CommandInvokerImpl implements CommandInvoker {
         return genericDaoCommand;
     }
 
+    @Override
     public void beginTransaction() {
         LOGGER.trace("commitTransaction aufgerufen");
         try {
-            entityManager = entityManagerFactory.createEntityManager();
+            if (entityManager != null) {
+                entityManager = entityManagerFactory.createEntityManager();
+            }
             entityManager.getTransaction().begin();
         } catch (RuntimeException e) {
             EntityTransaction tx = entityManager.getTransaction();
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
-            entityManager.close();
         }
     }
 
+    @Override
     public void commitTransaction() {
         LOGGER.trace("commitTransaction aufgerufen");
         try {
@@ -78,13 +81,10 @@ public class CommandInvokerImpl implements CommandInvoker {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
         }
     }
 
+    @Override
     public void rollbackTransaction() {
         LOGGER.trace("rollbackTransaction aufgerufen");
         try {
@@ -96,12 +96,13 @@ public class CommandInvokerImpl implements CommandInvoker {
                 tx.rollback();
             }
         } finally {
-            if ((entityManager != null) && entityManager.isOpen()) {
+            if (entityManager != null && entityManager.isOpen()) {
                 entityManager.close();
             }
         }
     }
 
+    @Override
     public GenericDaoCommand executeCommandWithinTransaction(GenericDaoCommand genericDaoCommand) {
         LOGGER.trace("executeCommandWithinTransaction aufgerufen");
         try {
@@ -112,6 +113,31 @@ public class CommandInvokerImpl implements CommandInvoker {
             rollbackTransaction();
             throw e;
         }
+        return genericDaoCommand;
+    }
+
+    @Override
+    public void openSession() {
+        LOGGER.trace("openSession aufgerufen");
+        if (entityManager == null || !entityManager.isOpen()) {
+            entityManager = entityManagerFactory.createEntityManager();
+        }
+    }
+
+    @Override
+    public void closeSession() {
+        LOGGER.trace("closeSession aufgerufen");
+        if (entityManager != null && entityManager.isOpen()) {
+            entityManager.close();
+        }
+    }
+
+    @Override
+    public GenericDaoCommand executeCommandWithinSession(GenericDaoCommand genericDaoCommand) {
+        LOGGER.trace("executeCommandWithinSession aufgerufen");
+        genericDaoCommand.setEntityManager(entityManager);
+        genericDaoCommand.execute();
+        LOGGER.trace("executeCommandWithinTransaction durchgeführt");
         return genericDaoCommand;
     }
 

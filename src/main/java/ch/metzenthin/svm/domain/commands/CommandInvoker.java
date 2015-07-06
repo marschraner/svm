@@ -18,4 +18,10 @@ public interface CommandInvoker {
     void commitTransaction();
 
     void rollbackTransaction();
+
+    void openSession();
+
+    void closeSession();
+
+    GenericDaoCommand executeCommandWithinSession(GenericDaoCommand genericDaoCommand);
 }

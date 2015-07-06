@@ -1,6 +1,7 @@
 package ch.metzenthin.svm;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.commands.Command;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.CommandInvokerImpl;
 import ch.metzenthin.svm.domain.model.ModelFactoryImpl;
@@ -44,7 +45,8 @@ public class Svm {
     }
 
     public static void main(String[] args) {
-        final SvmContext svmContext = new SvmContext(createModelFactory());
+        final CommandInvoker commandInvoker = createCommandInvoker();
+        final SvmContext svmContext = new SvmContext(createModelFactory(commandInvoker), commandInvoker);
         // Fängt alle unbehandelten Exceptions und beendet die Applikation.
         Thread.setDefaultUncaughtExceptionHandler(new SwingExceptionHandler());
         // Schedule a job for the event-dispatching thread:
@@ -56,8 +58,8 @@ public class Svm {
         });
     }
 
-    private static ModelFactoryImpl createModelFactory() {
-        return new ModelFactoryImpl(createCommandInvoker());
+    private static ModelFactoryImpl createModelFactory(CommandInvoker commandInvoker) {
+        return new ModelFactoryImpl(commandInvoker);
     }
 
     private static CommandInvoker createCommandInvoker() {

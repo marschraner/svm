@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.commands.CommandInvoker;
 
 import javax.swing.*;
 import java.awt.*;
@@ -92,6 +93,8 @@ public class SvmDesktop extends JFrame implements ActionListener {
     // React to menu selections.
     public void actionPerformed(ActionEvent e) {
         if ((activeComponent != null) && !"beenden".equals(e.getActionCommand())) {
+            CommandInvoker commandInvoker = svmContext.getCommandInvoker();
+            commandInvoker.closeSession();
             activeComponent.setVisible(false);
         }
         if ("schuelerErfassen".equals(e.getActionCommand())) {
@@ -166,6 +169,8 @@ public class SvmDesktop extends JFrame implements ActionListener {
     }
 
     private void onFrameAbbrechen() {
+        CommandInvoker commandInvoker = svmContext.getCommandInvoker();
+        commandInvoker.closeSession();
         activeComponent.setVisible(false);
         getContentPane().remove(activeComponent);
         activeComponent = null;
