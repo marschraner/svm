@@ -268,7 +268,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
             //TODO
             e.printStackTrace();
         }
-        schuelerList = schuelerSuchenCommand.getSchuelerFound();
+        //schuelerList = schuelerSuchenCommand.getSchuelerFound();
         return new SchuelerSuchenResult(schuelerList);
     }
 

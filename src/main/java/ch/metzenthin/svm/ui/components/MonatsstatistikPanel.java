@@ -32,7 +32,7 @@ public class MonatsstatistikPanel {
         initializeTxtFields();
         initializeRadioButtonGroups();
         initializeErrLbls();
-        btnSuchen.setEnabled(false);
+        btnSuchen.setEnabled(true);
         createMonatsstatistikController(svmContext);
     }
 

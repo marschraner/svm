@@ -5,6 +5,8 @@ import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.MonatsstatistikSchuelerSuchenCommand;
+import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
@@ -106,6 +108,14 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
         schueler1.setRechnungsempfaenger(angehoeriger3);
         schueler1.addAnmeldung(new Anmeldung(new GregorianCalendar(2013, Calendar.JANUARY, 1), null));
         schuelerList.add(schueler1);
+        MonatsstatistikSchuelerSuchenCommand monatsstatistikSchuelerSuchenCommand = new MonatsstatistikSchuelerSuchenCommand(this);
+        try {
+            commandInvoker.executeCommand(monatsstatistikSchuelerSuchenCommand);
+        } catch (SvmDbException e) {
+            //TODO
+            e.printStackTrace();
+        }
+        //schuelerList = monatsstatistikSchuelerSuchenCommand.getSchuelerFound();
         return new SchuelerSuchenResult(schuelerList);
     }
 
@@ -117,7 +127,7 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
     @Override
     void doValidate() throws SvmValidationException {
         if (monatJahr == null) {
-            throw new SvmValidationException(2000, "An-/Abmeldemonat obligatorisch", Field.MONAT_JAHR);
+            throw new SvmValidationException(2000, "Monat/Jahr obligatorisch", Field.MONAT_JAHR);
         }
     }
 }
