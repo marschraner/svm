@@ -3,7 +3,7 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.AnmeldungenStatistikModel;
+import ch.metzenthin.svm.domain.model.MonatsstatistikModel;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenResult;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
@@ -24,64 +24,68 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
-public class AnmeldungenStatistikController extends AbstractController {
+public class MonatsstatistikController extends AbstractController {
 
-    private static final Logger LOGGER = Logger.getLogger(AnmeldungenStatistikController.class);
+    private static final Logger LOGGER = Logger.getLogger(MonatsstatistikController.class);
 
-    private static final String AN_ABMELDEMONAT_DATE_FORMAT_STRING = "MM.yyyy";
+    private static final String MONAT_JAHR_DATE_FORMAT_STRING = "MM.yyyy";
 
     private final SvmContext svmContext;
-    private AnmeldungenStatistikModel anmeldungenStatistikModel;
+    private MonatsstatistikModel monatsstatistikModel;
     private ActionListener closeListener;
     private ActionListener nextPanelListener;
-    private JTextField txtAnAbmeldemonat;
-    private JLabel errLblAnAbmeldemonat;
+    private JTextField txtMonatJahr;
+    private JLabel errLblMonatJahr;
     private JRadioButton radioBtnAnmeldungen;
     private JRadioButton radioBtnAbmeldungen;
+    private JRadioButton radioBtnDispensationen;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
 
-    public AnmeldungenStatistikController(SvmContext svmContext, AnmeldungenStatistikModel anmeldungenStatistikModel) {
-        super(anmeldungenStatistikModel);
+    public MonatsstatistikController(SvmContext svmContext, MonatsstatistikModel monatsstatistikModel) {
+        super(monatsstatistikModel);
         this.svmContext = svmContext;
-        this.anmeldungenStatistikModel = anmeldungenStatistikModel;
-        this.anmeldungenStatistikModel.addPropertyChangeListener(this);
-        this.anmeldungenStatistikModel.addDisableFieldsListener(this);
-        this.anmeldungenStatistikModel.addMakeErrorLabelsInvisibleListener(this);
-        this.anmeldungenStatistikModel.addCompletedListener(new CompletedListener() {
+        this.monatsstatistikModel = monatsstatistikModel;
+        this.monatsstatistikModel.addPropertyChangeListener(this);
+        this.monatsstatistikModel.addDisableFieldsListener(this);
+        this.monatsstatistikModel.addMakeErrorLabelsInvisibleListener(this);
+        this.monatsstatistikModel.addCompletedListener(new CompletedListener() {
             @Override
             public void completed(boolean completed) {
-                onAnmeldungenStatistikModelCompleted(completed);
+                onMonatsstatistikModelCompleted(completed);
             }
         });
     }
 
-    public void setTxtAnAbmeldemonat(JTextField txtAnAbmeldemonat) {
-        this.txtAnAbmeldemonat = txtAnAbmeldemonat;
-        this.txtAnAbmeldemonat.addActionListener(new ActionListener() {
+    public void setTxtMonatJahr(JTextField txtMonatJahr) {
+        this.txtMonatJahr = txtMonatJahr;
+        this.txtMonatJahr.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onAnAbmeldemonatEvent();
+                onMonatJahrEvent();
             }
         });
-        this.txtAnAbmeldemonat.addFocusListener(new FocusAdapter() {
+        this.txtMonatJahr.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                onAnAbmeldemonatEvent();
+                onMonatJahrEvent();
             }
         });
     }
 
-    public void setRadioBtnGroupAnAbmeldungen(JRadioButton radioBtnAnmeldungen, JRadioButton radioBtnAbmeldungen) {
+    public void setRadioBtnGroupAnAbmeldungenDispensationen(JRadioButton radioBtnAnmeldungen, JRadioButton radioBtnAbmeldungen, JRadioButton radioBtnDispensationen) {
         this.radioBtnAnmeldungen = radioBtnAnmeldungen;
         this.radioBtnAbmeldungen = radioBtnAbmeldungen;
+        this.radioBtnDispensationen = radioBtnDispensationen;
         // Action Commands
-        this.radioBtnAnmeldungen.setActionCommand(AnmeldungenStatistikModel.AnAbmeldungenSelected.ANMELDUNGEN.toString());
-        this.radioBtnAbmeldungen.setActionCommand(AnmeldungenStatistikModel.AnAbmeldungenSelected.ABMELDUNGEN.toString());
+        this.radioBtnAnmeldungen.setActionCommand(MonatsstatistikModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN.toString());
+        this.radioBtnAbmeldungen.setActionCommand(MonatsstatistikModel.AnAbmeldungenDispensationenSelected.ABMELDUNGEN.toString());
+        this.radioBtnDispensationen.setActionCommand(MonatsstatistikModel.AnAbmeldungenDispensationenSelected.DISPENSATIONEN.toString());
         // Listener
-        RadioBtnGroupAnAbmeldungenListener radioBtnGroupAnAbmeldungenListener = new RadioBtnGroupAnAbmeldungenListener();
-        this.radioBtnAnmeldungen.addActionListener(radioBtnGroupAnAbmeldungenListener);
-        this.radioBtnAbmeldungen.addActionListener(radioBtnGroupAnAbmeldungenListener);
+        RadioBtnGroupAnAbmeldungenDispensationenListener radioBtnGroupAnAbmeldungenDispensationenListener = new RadioBtnGroupAnAbmeldungenDispensationenListener();
+        this.radioBtnAnmeldungen.addActionListener(radioBtnGroupAnAbmeldungenDispensationenListener);
+        this.radioBtnAbmeldungen.addActionListener(radioBtnGroupAnAbmeldungenDispensationenListener);
+        this.radioBtnDispensationen.addActionListener(radioBtnGroupAnAbmeldungenDispensationenListener);
     }
 
     public void setBtnSuchen(JButton btnSuchen) {
@@ -104,14 +108,14 @@ public class AnmeldungenStatistikController extends AbstractController {
         });
     }
 
-    public void setErrLblAnAbmeldemonat(JLabel errLblAnAbmeldemonat) {
-        this.errLblAnAbmeldemonat = errLblAnAbmeldemonat;
+    public void setErrLblMonatJahr(JLabel errLblMonatJahr) {
+        this.errLblMonatJahr = errLblMonatJahr;
     }
 
-    private void onAnAbmeldemonatEvent() {
-        LOGGER.trace("AnmeldungenStatistikController Event An-/Abmeldemonat");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtAnAbmeldemonat.getText(), anmeldungenStatistikModel.getAnAbmeldemonat(), AN_ABMELDEMONAT_DATE_FORMAT_STRING);
-        setModelAnAbmeldemonat();
+    private void onMonatJahrEvent() {
+        LOGGER.trace("MonatsstatistikController Event Monat/Jahr");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtMonatJahr.getText(), monatsstatistikModel.getMonatJahr(), MONAT_JAHR_DATE_FORMAT_STRING);
+        setModelMonatJahr();
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
@@ -119,12 +123,12 @@ public class AnmeldungenStatistikController extends AbstractController {
         }
     }
 
-    private void setModelAnAbmeldemonat() {
-        errLblAnAbmeldemonat.setVisible(false);
+    private void setModelMonatJahr() {
+        errLblMonatJahr.setVisible(false);
         try {
-            anmeldungenStatistikModel.setAnAbmeldemonat(txtAnAbmeldemonat.getText());
+            monatsstatistikModel.setMonatJahr(txtMonatJahr.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("AnmeldungenStatistikController setModelAnAbmeldemonat Exception=" + e.getMessage());
+            LOGGER.trace("MonatsstatistikController setModelMonatJahr Exception=" + e.getMessage());
             showErrMsg(e);
         }
     }
@@ -136,7 +140,7 @@ public class AnmeldungenStatistikController extends AbstractController {
 
     private void onSuchen() {
         LOGGER.trace("SchuelerSuchenPanel Suchen gedrückt");
-        SchuelerSuchenResult schuelerSuchenResult = anmeldungenStatistikModel.suchen();
+        SchuelerSuchenResult schuelerSuchenResult = monatsstatistikModel.suchen();
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenResult);
         SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
         schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
@@ -144,8 +148,8 @@ public class AnmeldungenStatistikController extends AbstractController {
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
     }
 
-    private void onAnmeldungenStatistikModelCompleted(boolean completed) {
-        LOGGER.trace("AnmeldungenStatistikModel completed=" + completed);
+    private void onMonatsstatistikModelCompleted(boolean completed) {
+        LOGGER.trace("MonatsstatistikModel completed=" + completed);
         if (completed) {
             btnSuchen.setToolTipText(null);
             btnSuchen.setEnabled(true);
@@ -165,46 +169,46 @@ public class AnmeldungenStatistikController extends AbstractController {
 
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
-        if (checkIsFieldChange(Field.AN_ABMELDEMONAT, evt)) {
-            txtAnAbmeldemonat.setText(asString(anmeldungenStatistikModel.getAnAbmeldemonat(), AN_ABMELDEMONAT_DATE_FORMAT_STRING));
+        if (checkIsFieldChange(Field.MONAT_JAHR, evt)) {
+            txtMonatJahr.setText(asString(monatsstatistikModel.getMonatJahr(), MONAT_JAHR_DATE_FORMAT_STRING));
         }
     }
 
     @Override
     void validateFields() throws SvmValidationException {
-        if (txtAnAbmeldemonat.isEnabled()) {
-            LOGGER.trace("Validate field An-/Abmeldemonat");
-            setModelAnAbmeldemonat();
+        if (txtMonatJahr.isEnabled()) {
+            LOGGER.trace("Validate field Monat/Jahr");
+            setModelMonatJahr();
         }
     }
 
     @Override
     void showErrMsg(SvmValidationException e) {
-        if (e.getAffectedFields().contains(Field.AN_ABMELDEMONAT)) {
-            errLblAnAbmeldemonat.setVisible(true);
-            errLblAnAbmeldemonat.setText(e.getMessage());
+        if (e.getAffectedFields().contains(Field.MONAT_JAHR)) {
+            errLblMonatJahr.setVisible(true);
+            errLblMonatJahr.setText(e.getMessage());
         }
     }
 
     @Override
     void showErrMsgAsToolTip(SvmValidationException e) {
-        if (e.getAffectedFields().contains(Field.AN_ABMELDEMONAT)) {
-            txtAnAbmeldemonat.setToolTipText(e.getMessage());
+        if (e.getAffectedFields().contains(Field.MONAT_JAHR)) {
+            txtMonatJahr.setToolTipText(e.getMessage());
         }
     }
 
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
-        if (fields.contains(Field.AN_ABMELDEMONAT)) {
-            errLblAnAbmeldemonat.setVisible(false);
-            txtAnAbmeldemonat.setToolTipText(null);
+        if (fields.contains(Field.MONAT_JAHR)) {
+            errLblMonatJahr.setVisible(false);
+            txtMonatJahr.setToolTipText(null);
         }
     }
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
-        if (fields.contains(Field.ALLE) || fields.contains(Field.AN_ABMELDEMONAT)) {
-            txtAnAbmeldemonat.setEnabled(!disable);
+        if (fields.contains(Field.ALLE) || fields.contains(Field.MONAT_JAHR)) {
+            txtMonatJahr.setEnabled(!disable);
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.ANMELDUNGEN)) {
             radioBtnAnmeldungen.setEnabled(!disable);
@@ -212,13 +216,16 @@ public class AnmeldungenStatistikController extends AbstractController {
         if (fields.contains(Field.ALLE) || fields.contains(Field.ABMELDUNGEN)) {
             radioBtnAbmeldungen.setEnabled(!disable);
         }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.DISPENSATIONEN)) {
+            radioBtnDispensationen.setEnabled(!disable);
+        }
     }
 
-    class RadioBtnGroupAnAbmeldungenListener implements ActionListener {
+    class RadioBtnGroupAnAbmeldungenDispensationenListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            LOGGER.trace("AnmeldungenStatistikController AnAbmeldungen Event");
-            anmeldungenStatistikModel.setAnAbmeldungen(AnmeldungenStatistikModel.AnAbmeldungenSelected.valueOf(e.getActionCommand()));
+            LOGGER.trace("MonatsstatistikController AnAbmeldungenDispensationen Event");
+            monatsstatistikModel.setAnAbmeldungenDispensationen(MonatsstatistikModel.AnAbmeldungenDispensationenSelected.valueOf(e.getActionCommand()));
         }
     }
 

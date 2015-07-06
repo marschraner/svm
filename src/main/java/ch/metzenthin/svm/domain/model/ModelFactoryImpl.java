@@ -34,8 +34,8 @@ public class ModelFactoryImpl implements ModelFactory {
     }
 
     @Override
-    public AnmeldungenStatistikModel createAnmeldungenStatistikModel() {
-        return new AnmeldungenStatistikModelImpl(commandInvoker);
+    public MonatsstatistikModel createMonatsstatistikModel() {
+        return new MonatsstatistikModelImpl(commandInvoker);
     }
 
 }

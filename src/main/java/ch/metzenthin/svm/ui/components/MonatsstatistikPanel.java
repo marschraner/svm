@@ -1,7 +1,9 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.ui.control.AnmeldungenStatistikController;
+import ch.metzenthin.svm.common.utils.Converter;
+import ch.metzenthin.svm.domain.model.MonatsstatistikModel;
+import ch.metzenthin.svm.ui.control.MonatsstatistikController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,44 +12,68 @@ import java.awt.event.ActionListener;
 /**
  * @author Martin Schraner
  */
-public class AnmeldungenStatistikPanel {
+public class MonatsstatistikPanel {
+
     private JPanel panel;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
-    private JLabel lblAnAbmeldemonat;
-    private JTextField txtAnAbmeldemonat;
+    private JLabel lblMonatJahr;
+    private JTextField txtMonatJahr;
     private JRadioButton radioBtnAnmeldungen;
     private JRadioButton radioBtnAbmeldungen;
-    private JLabel errLblAnAbmeldemonat;
-    private AnmeldungenStatistikController anmeldungenStatistikController;
+    private JRadioButton radioBtnDispensationen;
+    private JLabel errLblMonatJahr;
+    private MonatsstatistikController monatsstatistikController;
+    private MonatsstatistikModel monatsstatistikModel;
 
-    public AnmeldungenStatistikPanel(SvmContext svmContext) {
+    public MonatsstatistikPanel(SvmContext svmContext) {
         $$$setupUI$$$();
+        monatsstatistikModel = svmContext.getModelFactory().createMonatsstatistikModel();
+        initializeTxtFields();
+        initializeRadioButtonGroups();
         initializeErrLbls();
         btnSuchen.setEnabled(false);
-        createAnmeldungenStatistikController(svmContext);
+        createMonatsstatistikController(svmContext);
+    }
+
+    private void initializeTxtFields() {
+        txtMonatJahr.setText(Converter.asString(monatsstatistikModel.getMonatJahrInit(), MonatsstatistikModel.MONAT_JAHR_DATE_FORMAT_STRING));
+    }
+
+    private void initializeRadioButtonGroups() {
+        switch (monatsstatistikModel.getAnAbmeldungenDispensationenInit()) {
+            case ANMELDUNGEN:
+                radioBtnAnmeldungen.setSelected(true);
+                break;
+            case ABMELDUNGEN:
+                radioBtnAbmeldungen.setSelected(true);
+                break;
+            case DISPENSATIONEN:
+                radioBtnDispensationen.setSelected(true);
+                break;
+        }
     }
 
     private void initializeErrLbls() {
-        errLblAnAbmeldemonat.setVisible(false);
-        errLblAnAbmeldemonat.setForeground(Color.RED);
+        errLblMonatJahr.setVisible(false);
+        errLblMonatJahr.setForeground(Color.RED);
     }
 
-    private void createAnmeldungenStatistikController(SvmContext svmContext) {
-        anmeldungenStatistikController = new AnmeldungenStatistikController(svmContext, svmContext.getModelFactory().createAnmeldungenStatistikModel());
-        anmeldungenStatistikController.setTxtAnAbmeldemonat(txtAnAbmeldemonat);
-        anmeldungenStatistikController.setRadioBtnGroupAnAbmeldungen(radioBtnAnmeldungen, radioBtnAbmeldungen);
-        anmeldungenStatistikController.setBtnSuchen(btnSuchen);
-        anmeldungenStatistikController.setBtnAbbrechen(btnAbbrechen);
-        anmeldungenStatistikController.setErrLblAnAbmeldemonat(errLblAnAbmeldemonat);
+    private void createMonatsstatistikController(SvmContext svmContext) {
+        monatsstatistikController = new MonatsstatistikController(svmContext, monatsstatistikModel);
+        monatsstatistikController.setTxtMonatJahr(txtMonatJahr);
+        monatsstatistikController.setRadioBtnGroupAnAbmeldungenDispensationen(radioBtnAnmeldungen, radioBtnAbmeldungen, radioBtnDispensationen);
+        monatsstatistikController.setBtnSuchen(btnSuchen);
+        monatsstatistikController.setBtnAbbrechen(btnAbbrechen);
+        monatsstatistikController.setErrLblMonatJahr(errLblMonatJahr);
     }
 
     public void addCloseListener(ActionListener actionListener) {
-        anmeldungenStatistikController.addCloseListener(actionListener);
+        monatsstatistikController.addCloseListener(actionListener);
     }
 
     public void addNextPanelListener(ActionListener actionListener) {
-        anmeldungenStatistikController.addNextPanelListener(actionListener);
+        monatsstatistikController.addNextPanelListener(actionListener);
     }
 
 
@@ -74,30 +100,30 @@ public class AnmeldungenStatistikPanel {
         gbc.weighty = 1.0;
         gbc.insets = new Insets(10, 10, 10, 10);
         panel1.add(panel2, gbc);
-        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "An-/Abmeldestatistik"));
-        lblAnAbmeldemonat = new JLabel();
-        lblAnAbmeldemonat.setText("Monat/Jahr (MM.JJJJ)");
-        lblAnAbmeldemonat.setDisplayedMnemonic('M');
-        lblAnAbmeldemonat.setDisplayedMnemonicIndex(0);
+        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Monatsstatistik"));
+        lblMonatJahr = new JLabel();
+        lblMonatJahr.setText("Monat/Jahr (MM.JJJJ)");
+        lblMonatJahr.setDisplayedMnemonic('M');
+        lblMonatJahr.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        panel2.add(lblAnAbmeldemonat, gbc);
+        panel2.add(lblMonatJahr, gbc);
         final JPanel spacer1 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel2.add(spacer1, gbc);
-        txtAnAbmeldemonat = new JTextField();
+        txtMonatJahr = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(txtAnAbmeldemonat, gbc);
+        panel2.add(txtMonatJahr, gbc);
         final JPanel spacer2 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -118,7 +144,6 @@ public class AnmeldungenStatistikPanel {
         gbc.ipadx = 200;
         panel2.add(spacer4, gbc);
         radioBtnAnmeldungen = new JRadioButton();
-        radioBtnAnmeldungen.setSelected(true);
         radioBtnAnmeldungen.setText("Anmeldungen");
         radioBtnAnmeldungen.setMnemonic('N');
         radioBtnAnmeldungen.setDisplayedMnemonicIndex(1);
@@ -128,15 +153,6 @@ public class AnmeldungenStatistikPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 0, 0, 5);
         panel2.add(radioBtnAnmeldungen, gbc);
-        radioBtnAbmeldungen = new JRadioButton();
-        radioBtnAbmeldungen.setText("Abmeldungen");
-        radioBtnAbmeldungen.setMnemonic('B');
-        radioBtnAbmeldungen.setDisplayedMnemonicIndex(1);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 4;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel2.add(radioBtnAbmeldungen, gbc);
         final JPanel spacer5 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -148,7 +164,7 @@ public class AnmeldungenStatistikPanel {
         final JPanel spacer6 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 5;
+        gbc.gridy = 7;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel2.add(spacer6, gbc);
         final JPanel spacer7 = new JPanel();
@@ -157,14 +173,32 @@ public class AnmeldungenStatistikPanel {
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel2.add(spacer7, gbc);
-        errLblAnAbmeldemonat = new JLabel();
-        errLblAnAbmeldemonat.setText("errLblAnAbmeldemonat");
+        errLblMonatJahr = new JLabel();
+        errLblMonatJahr.setText("errLblMonatJahr");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        panel2.add(errLblAnAbmeldemonat, gbc);
+        panel2.add(errLblMonatJahr, gbc);
+        radioBtnAbmeldungen = new JRadioButton();
+        radioBtnAbmeldungen.setText("Abmeldungen");
+        radioBtnAbmeldungen.setMnemonic('B');
+        radioBtnAbmeldungen.setDisplayedMnemonicIndex(1);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 5;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel2.add(radioBtnAbmeldungen, gbc);
+        radioBtnDispensationen = new JRadioButton();
+        radioBtnDispensationen.setText("Dispensationen");
+        radioBtnDispensationen.setMnemonic('D');
+        radioBtnDispensationen.setDisplayedMnemonicIndex(0);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 6;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel2.add(radioBtnDispensationen, gbc);
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridBagLayout());
         panel.add(panel3, BorderLayout.SOUTH);
@@ -191,11 +225,12 @@ public class AnmeldungenStatistikPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(5, 5, 10, 5);
         panel3.add(btnAbbrechen, gbc);
-        lblAnAbmeldemonat.setLabelFor(txtAnAbmeldemonat);
+        lblMonatJahr.setLabelFor(txtMonatJahr);
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(radioBtnAnmeldungen);
         buttonGroup.add(radioBtnAbmeldungen);
+        buttonGroup.add(radioBtnDispensationen);
     }
 
     /**

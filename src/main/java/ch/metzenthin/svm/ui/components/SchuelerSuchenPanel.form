@@ -178,7 +178,6 @@
                           <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <selected value="true"/>
                           <text value="Schüler"/>
                         </properties>
                       </component>
@@ -519,7 +518,6 @@
                           <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <selected value="true"/>
                           <text value="angemeldet"/>
                         </properties>
                       </component>
@@ -598,7 +596,6 @@
                           <gridbag weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <selected value="true"/>
                           <text value="alle"/>
                         </properties>
                       </component>
@@ -651,7 +648,6 @@
                           <gridbag weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <selected value="true"/>
                           <text value="alle"/>
                         </properties>
                       </component>

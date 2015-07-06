@@ -71,10 +71,10 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
 
-        menuItem = new JMenuItem("An-/Abmeldestatistik");
-        menuItem.setMnemonic(KeyEvent.VK_A);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.ALT_MASK));
-        menuItem.setActionCommand("anAbmeldestatistik");
+        menuItem = new JMenuItem("Monatsstatistik");
+        menuItem.setMnemonic(KeyEvent.VK_M);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("monatsstatistik");
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
 
@@ -128,8 +128,8 @@ public class SvmDesktop extends JFrame implements ActionListener {
             setTitle("Schüler suchen");
             revalidate();
 
-        } else if ("anAbmeldestatistik".equals(e.getActionCommand())) {
-            AnmeldungenStatistikPanel anAbmeldestatistikPanel = new AnmeldungenStatistikPanel(svmContext);
+        } else if ("monatsstatistik".equals(e.getActionCommand())) {
+            MonatsstatistikPanel anAbmeldestatistikPanel = new MonatsstatistikPanel(svmContext);
             anAbmeldestatistikPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -145,7 +145,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             activeComponent = anAbmeldestatistikPanel.$$$getRootComponent$$$();
             getContentPane().add(activeComponent);
             activeComponent.setVisible(true);
-            setTitle("An-/Abmeldestatistik");
+            setTitle("Monatsstatistik");
             revalidate();
 
         } else { // beenden

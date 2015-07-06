@@ -22,16 +22,22 @@ import static ch.metzenthin.svm.common.utils.Converter.*;
  */
 final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerSuchenModel {
 
+    private static final RolleSelected ROLLE_INIT = RolleSelected.SCHUELER;
+    private static final AnmeldestatusSelected ANMELDESTATUS_INIT = AnmeldestatusSelected.ANGEMELDET;
+    private static final DispensationSelected DISPENSATION_INIT = DispensationSelected.ALLE;
+    private static final GeschlechtSelected GESCHLECHT_INIT = GeschlechtSelected.ALLE;
+    private static final Calendar STICHTAG_INIT = new GregorianCalendar();
+
     private final PersonSuchen person;
     private CommandInvoker commandInvoker;
-    private RolleSelected rolle = RolleSelected.SCHUELER;
-    private AnmeldestatusSelected anmeldestatus = AnmeldestatusSelected.ANGEMELDET;
-    private DispensationSelected dispensation = DispensationSelected.ALLE;
-    private GeschlechtSelected geschlecht = GeschlechtSelected.ALLE;
+    private RolleSelected rolle = ROLLE_INIT;
+    private AnmeldestatusSelected anmeldestatus = ANMELDESTATUS_INIT;
+    private DispensationSelected dispensation = DISPENSATION_INIT;
+    private GeschlechtSelected geschlecht = GESCHLECHT_INIT;
     private Calendar geburtsdatumSuchperiodeBeginn;
     private Calendar geburtsdatumSuchperiodeEnde;
     private String geburtsdatumSuchperiodeDateFormatString;
-    private Calendar stichtag = new GregorianCalendar();
+    private Calendar stichtag = STICHTAG_INIT;
 
     SchuelerSuchenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -128,6 +134,11 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
+    public RolleSelected getRolleInit() {
+        return ROLLE_INIT;
+    }
+
+    @Override
     public void setRolle(RolleSelected rolle) {
         RolleSelected oldValue = this.rolle;
         this.rolle = rolle;
@@ -138,7 +149,12 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     public AnmeldestatusSelected getAnmeldestatus() {
         return anmeldestatus;
     }
-    
+
+    @Override
+    public AnmeldestatusSelected getAnmeldestatusInit() {
+        return ANMELDESTATUS_INIT;
+    }
+
     public void setAnmeldestatus(AnmeldestatusSelected anmeldestatus) {
         AnmeldestatusSelected oldValue = this.anmeldestatus;
         this.anmeldestatus = anmeldestatus;
@@ -151,6 +167,11 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
+    public DispensationSelected getDispensationInit() {
+        return DISPENSATION_INIT;
+    }
+
+    @Override
     public void setDispensation(DispensationSelected dispensation) {
         DispensationSelected oldValue = this.dispensation;
         this.dispensation = dispensation;
@@ -160,6 +181,11 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     @Override
     public GeschlechtSelected getGeschlecht() {
         return geschlecht;
+    }
+
+    @Override
+    public GeschlechtSelected getGeschlechtInit() {
+        return GESCHLECHT_INIT;
     }
 
     @Override
@@ -188,6 +214,11 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     @Override
     public Calendar getStichtag() {
         return stichtagModelAttribute.getValue();
+    }
+
+    @Override
+    public Calendar getStichtagInit() {
+        return STICHTAG_INIT;
     }
 
     @Override
@@ -237,7 +268,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
             //TODO
             e.printStackTrace();
         }
-        //schuelerList = schuelerSuchenCommand.getSchuelerFound();
+        schuelerList = schuelerSuchenCommand.getSchuelerFound();
         return new SchuelerSuchenResult(schuelerList);
     }
 

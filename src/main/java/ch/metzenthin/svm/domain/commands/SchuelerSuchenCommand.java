@@ -87,6 +87,9 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         schuelerFound = typedQuery.getResultList();
     }
 
+    // Einfache or-Abfrage für Eltern / alle (where s.vorname = :vorname or s.mutter.vorname = :vorname or s.vater.vorname = :vorname)
+    // schlägt fehl, wenn mutter oder vater nicht existiert, auch wenn ein anderes or-Element, z.B. s.vorname = :vorname erfüllt wäre. Bug?
+    // Abhilfe: Subselects.
     private void createQueryStammdatenOhneGeburtsdatumSuchperiode() {
         if (person != null && checkNotEmpty(person.getVorname())) {
             String selectSchueler = " lower(s.vorname) = :vorname";
@@ -208,6 +211,9 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     }
 
     private void createQueryGeburtsdatumSuchperiode() {
+        if (geburtsdatumSuchperiodeBeginn == null && geburtsdatumSuchperiodeEnde == null) {
+            return;
+        }
         if (geburtsdatumSuchperiodeDateFormatString.equals("dd.MM.")) {
             selectStatementSb.append(" function('DAY', s.geburtsdatum) = function('DAY', :geburtsdatumSuchperiodeBeginn) and function('MONTH', s.geburtsdatum) = function('MONTH', :geburtsdatumSuchperiodeBeginn) and");
         }

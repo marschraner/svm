@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.components;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.dataTypes.Wochentag;
+import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.ui.control.SchuelerSuchenController;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -11,7 +12,6 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.GregorianCalendar;
 
 /**
  * @author Martin Schraner
@@ -70,16 +70,69 @@ public class SchuelerSuchenPanel {
     private JPanel panelLeft;
     private JPanel panelRight;
     private JPanel statusDispensationGeschlechtPanel;
+    private SchuelerSuchenModel schuelerSuchenModel;
 
     public SchuelerSuchenPanel(SvmContext svmContext) {
         $$$setupUI$$$();
-        initializeStichtag();
+        schuelerSuchenModel = svmContext.getModelFactory().createSchuelerSuchenModel();
+        initializeTxtFields();
+        initializeRadioButtonGroups();
         initializeErrLbls();
         createSchuelerSuchenController(svmContext);
     }
 
-    private void initializeStichtag() {
-        txtStichtag.setText(Converter.asString(new GregorianCalendar()));
+    private void initializeTxtFields() {
+        txtStichtag.setText(Converter.asString(schuelerSuchenModel.getStichtagInit()));
+    }
+
+    private void initializeRadioButtonGroups() {
+        switch (schuelerSuchenModel.getRolleInit()) {
+            case SCHUELER:
+                radioBtnSchueler.setSelected(true);
+                break;
+            case ELTERN:
+                radioBtnEltern.setSelected(true);
+                break;
+            case RECHNUNGSEMPFAENGER:
+                radioBtnRechnungsempfaenger.setSelected(true);
+                break;
+            case ALLE:
+                radioBtnRolleAlle.setSelected(true);
+                break;
+        }
+        switch (schuelerSuchenModel.getAnmeldestatusInit()) {
+            case ANGEMELDET:
+                radioBtnAngemeldet.setSelected(true);
+                break;
+            case ABGEMELDET:
+                radioBtnAbgemeldet.setSelected(true);
+                break;
+            case ALLE:
+                radioBtnAnmeldestatusAlle.setSelected(true);
+                break;
+        }
+        switch (schuelerSuchenModel.getDispensationInit()) {
+            case DISPENSIERT:
+                radioBtnDispensiert.setSelected(true);
+                break;
+            case NICHT_DISPENSIERT:
+                radioBtnNichtDispensiert.setSelected(true);
+                break;
+            case ALLE:
+                radioBtnDispensationAlle.setSelected(true);
+                break;
+        }
+        switch (schuelerSuchenModel.getGeschlechtInit()) {
+            case WEIBLICH:
+                radioBtnWeiblich.setSelected(true);
+                break;
+            case MAENNLICH:
+                radioBtnMaennlich.setSelected(true);
+                break;
+            case ALLE:
+                radioBtnGeschlechtAlle.setSelected(true);
+                break;
+        }
     }
 
     private void initializeErrLbls() {
@@ -114,7 +167,7 @@ public class SchuelerSuchenPanel {
     }
 
     private void createSchuelerSuchenController(SvmContext svmContext) {
-        schuelerSuchenController = new SchuelerSuchenController(svmContext, svmContext.getModelFactory().createSchuelerSuchenModel());
+        schuelerSuchenController = new SchuelerSuchenController(svmContext, schuelerSuchenModel);
         schuelerSuchenController.setTxtNachname(txtNachname);
         schuelerSuchenController.setTxtVorname(txtVorname);
         schuelerSuchenController.setTxtStrasseHausnummer(txtStrasseHausnummer);
@@ -313,7 +366,6 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         stammdatenPanel.add(panel4, gbc);
         radioBtnSchueler = new JRadioButton();
-        radioBtnSchueler.setSelected(true);
         radioBtnSchueler.setText("Schüler");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -622,7 +674,6 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         statusDispensationGeschlechtPanel.add(panel6, gbc);
         radioBtnAngemeldet = new JRadioButton();
-        radioBtnAngemeldet.setSelected(true);
         radioBtnAngemeldet.setText("angemeldet");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -691,7 +742,6 @@ public class SchuelerSuchenPanel {
         gbc.insets = new Insets(0, 0, 0, 5);
         panel7.add(radioBtnNichtDispensiert, gbc);
         radioBtnDispensationAlle = new JRadioButton();
-        radioBtnDispensationAlle.setSelected(true);
         radioBtnDispensationAlle.setText("alle");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -736,7 +786,6 @@ public class SchuelerSuchenPanel {
         gbc.insets = new Insets(0, 0, 0, 5);
         panel8.add(radioBtnMaennlich, gbc);
         radioBtnGeschlechtAlle = new JRadioButton();
-        radioBtnGeschlechtAlle.setSelected(true);
         radioBtnGeschlechtAlle.setText("alle");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;

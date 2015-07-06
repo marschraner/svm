@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.AnmeldungenStatistikPanel">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.MonatsstatistikPanel">
   <grid id="27dc6" binding="panel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
       <xy x="20" y="20" width="674" height="400"/>
@@ -18,9 +18,9 @@
               <gridbag top="10" left="10" bottom="10" right="10" weightx="1.0" weighty="1.0"/>
             </constraints>
             <properties/>
-            <border type="etched" title="An-/Abmeldestatistik"/>
+            <border type="etched" title="Monatsstatistik"/>
             <children>
-              <component id="9a671" class="javax.swing.JLabel" binding="lblAnAbmeldemonat">
+              <component id="9a671" class="javax.swing.JLabel" binding="lblMonatJahr">
                 <constraints>
                   <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
@@ -36,7 +36,7 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
               </vspacer>
-              <component id="54832" class="javax.swing.JTextField" binding="txtAnAbmeldemonat">
+              <component id="54832" class="javax.swing.JTextField" binding="txtMonatJahr">
                 <constraints>
                   <grid row="2" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -69,17 +69,7 @@
                   <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <selected value="true"/>
                   <text value="A&amp;nmeldungen"/>
-                </properties>
-              </component>
-              <component id="d766f" class="javax.swing.JRadioButton" binding="radioBtnAbmeldungen">
-                <constraints>
-                  <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties>
-                  <text value="A&amp;bmeldungen"/>
                 </properties>
               </component>
               <hspacer id="a6163">
@@ -90,7 +80,7 @@
               </hspacer>
               <vspacer id="6aeb2">
                 <constraints>
-                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
               </vspacer>
@@ -100,13 +90,31 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
               </hspacer>
-              <component id="32569" class="javax.swing.JLabel" binding="errLblAnAbmeldemonat">
+              <component id="32569" class="javax.swing.JLabel" binding="errLblMonatJahr">
                 <constraints>
                   <grid row="1" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="errLblAnAbmeldemonat"/>
+                  <text value="errLblMonatJahr"/>
+                </properties>
+              </component>
+              <component id="d766f" class="javax.swing.JRadioButton" binding="radioBtnAbmeldungen">
+                <constraints>
+                  <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="A&amp;bmeldungen"/>
+                </properties>
+              </component>
+              <component id="63c36" class="javax.swing.JRadioButton" binding="radioBtnDispensationen">
+                <constraints>
+                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="&amp;Dispensationen"/>
                 </properties>
               </component>
             </children>
@@ -148,9 +156,10 @@
     </children>
   </grid>
   <buttonGroups>
-    <group name="buttonGroupAnAbmeldungen">
+    <group name="buttonGroupAnAbmeldungenDispensationen">
       <member id="24eaf"/>
       <member id="d766f"/>
+      <member id="63c36"/>
     </group>
   </buttonGroups>
 </form>
