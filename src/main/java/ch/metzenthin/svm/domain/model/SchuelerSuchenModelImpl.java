@@ -4,7 +4,6 @@ import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SchuelerSuchenCommand;
-import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.entities.PersonSuchen;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
@@ -223,15 +222,11 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
-    public SchuelerSuchenResult suchen() throws SvmDbException {
+    public SchuelerSuchenResult suchen() {
         SchuelerSuchenCommand schuelerSuchenCommand = new SchuelerSuchenCommand(this);
         CommandInvoker commandInvoker = getCommandInvoker();
-        try {
-            commandInvoker.openSession();
-            commandInvoker.executeCommandWithinSession(schuelerSuchenCommand);
-        } catch (Throwable e) {
-            throw new SvmDbException("Fehler beim Ausführen eines DB-Commands", e);
-        }
+        commandInvoker.openSession();
+        commandInvoker.executeCommandWithinSession(schuelerSuchenCommand);
         List<Schueler> schuelerList = schuelerSuchenCommand.getSchuelerFound();
         return new SchuelerSuchenResult(schuelerList);
     }

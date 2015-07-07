@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.persistence.SvmDbException;
 
 import java.util.Calendar;
 
@@ -22,7 +21,7 @@ public interface MonatsstatistikModel extends Model {
     Calendar getMonatJahrInit();
     AnAbmeldungenDispensationenSelected getAnAbmeldungenDispensationen();
     AnAbmeldungenDispensationenSelected getAnAbmeldungenDispensationenInit();
-    SchuelerSuchenResult suchen() throws SvmDbException;
+    SchuelerSuchenResult suchen();
 
     void setMonatJahr(String anAbmeldemonat) throws SvmValidationException;
     void setAnAbmeldungenDispensationen(AnAbmeldungenDispensationenSelected anAbmeldungen);

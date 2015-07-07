@@ -40,8 +40,13 @@ public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
     private void showMessage(Thread t, Throwable e) {
         String stackTrace = generateStackTrace(e);
         // show an error dialog
+        JTextArea textArea = new JTextArea("Exception Occurred in " + t + "\n" + stackTrace);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        scrollPane.setPreferredSize( new Dimension( 1000, 500 ) );
         JOptionPane.showMessageDialog(findActiveOrVisibleFrame(),
-                "Exception Occurred in " + t + "\n" + stackTrace,
+                scrollPane,
                 "Ein unerwarteter Fehler ist aufgetreten. Die Applikation wird beendet!",
                 JOptionPane.ERROR_MESSAGE);
         System.exit(1);

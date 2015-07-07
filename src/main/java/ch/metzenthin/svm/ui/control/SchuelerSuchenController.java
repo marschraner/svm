@@ -7,14 +7,15 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenResult;
-import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
-import ch.metzenthin.svm.ui.components.UnerwarteterFehlerDialog;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
 import java.util.Set;
@@ -266,15 +267,7 @@ public class SchuelerSuchenController extends PersonController {
 
     private void onSuchen() {
         LOGGER.trace("SchuelerSuchenPanel Suchen gedrückt");
-        SchuelerSuchenResult schuelerSuchenResult = null;
-        try {
-            schuelerSuchenResult = schuelerSuchenModel.suchen();
-        } catch (SvmDbException e) {
-            UnerwarteterFehlerDialog unerwarteterFehlerDialog = new UnerwarteterFehlerDialog(e);
-            unerwarteterFehlerDialog.pack();
-            unerwarteterFehlerDialog.setVisible(true);
-            closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach DB-Fehler"));
-        }
+        SchuelerSuchenResult schuelerSuchenResult = schuelerSuchenModel.suchen();
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenResult);
         SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
         schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);

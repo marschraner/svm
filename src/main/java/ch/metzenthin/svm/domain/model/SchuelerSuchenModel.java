@@ -51,7 +51,7 @@ public interface SchuelerSuchenModel extends PersonModel {
     GeschlechtSelected getGeschlechtInit();
     Calendar getStichtag();
     Calendar getStichtagInit();
-    SchuelerSuchenResult suchen() throws SvmDbException;
+    SchuelerSuchenResult suchen();
 
     void setGeburtsdatumSuchperiode(String geburtsdatumSuchperiode) throws SvmValidationException;
     void setRolle(RolleSelected rolle);

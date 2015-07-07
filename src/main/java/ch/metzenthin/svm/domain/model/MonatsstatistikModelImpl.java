@@ -4,7 +4,6 @@ import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.MonatsstatistikSchuelerSuchenCommand;
-import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import java.util.Calendar;
@@ -80,15 +79,11 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
     }
 
     @Override
-    public SchuelerSuchenResult suchen() throws SvmDbException {
+    public SchuelerSuchenResult suchen() {
         MonatsstatistikSchuelerSuchenCommand monatsstatistikSchuelerSuchenCommand = new MonatsstatistikSchuelerSuchenCommand(this);
         CommandInvoker commandInvoker = getCommandInvoker();
-        try {
-            commandInvoker.openSession();
-            commandInvoker.executeCommandWithinSession(monatsstatistikSchuelerSuchenCommand);
-        } catch (Throwable e) {
-            throw new SvmDbException("Fehler beim Ausführen eines DB-Commands", e);
-        }
+        commandInvoker.openSession();
+        commandInvoker.executeCommandWithinSession(monatsstatistikSchuelerSuchenCommand);
         List<Schueler> schuelerList = monatsstatistikSchuelerSuchenCommand.getSchuelerFound();
         return new SchuelerSuchenResult(schuelerList);
     }
