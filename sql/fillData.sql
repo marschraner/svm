@@ -36,7 +36,7 @@ SELECT * FROM Adresse;
    
 INSERT INTO Person (person_id, discriminator, anrede, vorname, nachname, geburtsdatum, natel, email, adresse_id) VALUES 
     (1, 'Angehoeriger', 'FRAU', 'Käthi', 'Schraner', NULL, NULL, 'hschraner@bluewin.ch', 1),
-    (2, 'Angehoeriger', 'HERR', 'Martin', 'Schraner', NULL, '079 273 77 20', 'marschraner@gmail.ch', 2),
+    (2, 'Angehoeriger', 'HERR', 'Martin', 'Schraner', NULL, '079 273 77 20', 'marschraner@gmail.com', 2),
     (3, 'Angehoeriger', 'FRAU', 'Sibyll', 'Metzenthin', NULL, NULL, 'billa.metz@bluewin.ch', 2),
     (4, 'Schueler', 'KEINE', 'Jonas', 'Metzenthin', '2014-06-24', NULL, NULL, 2),
     (5, 'Angehoeriger', 'HERR', 'Kurt', 'Juchli', NULL, NULL, 'kurt.juchli@zuerich.ch', NULL),
@@ -85,8 +85,8 @@ SELECT * FROM Anmeldung;
 -- Dispensation
 -- ************
 
-INSERT INTO Dispensation (dispensation_id, dispensationsbeginn, dispensationsende, grund, schueler_id) VALUES
-    (1, '2015-05-09', '2017-08-23', 'Noch zu klein', 4);
+INSERT INTO Dispensation (dispensation_id, dispensationsbeginn, dispensationsende, voraussichtliche_dauer, grund, schueler_id) VALUES
+    (1, '2015-05-09', '2017-08-23', NULL, 'Noch zu klein', 4);
 
 SELECT * FROM Dispensation;
 

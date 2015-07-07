@@ -134,6 +134,7 @@
       <column name="dispensation_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="dispensationsbeginn" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="dispensationsende" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="voraussichtliche_dauer" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
       <column name="grund" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="schueler_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>

@@ -29,6 +29,10 @@ public class Dispensation implements Comparable<Dispensation> {
     private Calendar dispensationsende;
 
     @Lob
+    @Column(name = "voraussichtliche_dauer", columnDefinition = "text", nullable = true)
+    private String voraussichtlicheDauer;
+
+    @Lob
     @Column(name = "grund", columnDefinition = "text", nullable = false)
     private String grund;
 
@@ -48,13 +52,16 @@ public class Dispensation implements Comparable<Dispensation> {
     @Override
     public String toString() {
         StringBuilder dispensationSb = new StringBuilder();
-        dispensationSb.append("Dispensationsbeginn: ").append(String.format("%1$td.%1$tm.%1$tY", dispensationsbeginn));
-        if (dispensationsende != null) {
-            dispensationSb.append(", Dispensationsende: ").append(String.format("%1$td.%1$tm.%1$tY", dispensationsende));
+        if (dispensationsende == null) {
+            dispensationSb.append("Dispensiert seit ").append(String.format("%1$td.%1$tm.%1$tY", dispensationsbeginn));
+        } else {
+            dispensationSb.append("Dispensiert ").append(String.format("%1$td.%1$tm.%1$tY", dispensationsbeginn));
+            dispensationSb.append(" - ").append(String.format("%1$td.%1$tm.%1$tY", dispensationsende));
         }
-        if (grund != null) {
-            dispensationSb.append(", Grund: ").append(grund);
+        if (voraussichtlicheDauer != null) {
+            dispensationSb.append(". Voraussichtliche Dauer: ").append(voraussichtlicheDauer);
         }
+        dispensationSb.append(". Grund: ").append(grund);
         return dispensationSb.toString();
     }
 
@@ -120,6 +127,14 @@ public class Dispensation implements Comparable<Dispensation> {
 
     public void setDispensationsende(Calendar dispensationsende) {
         this.dispensationsende = dispensationsende;
+    }
+
+    public String getVoraussichtlicheDauer() {
+        return voraussichtlicheDauer;
+    }
+
+    public void setVoraussichtlicheDauer(String voraussichtlicheDauer) {
+        this.voraussichtlicheDauer = voraussichtlicheDauer;
     }
 
     public String getGrund() {

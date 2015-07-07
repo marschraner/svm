@@ -121,6 +121,7 @@ CREATE TABLE IF NOT EXISTS Dispensation (
     dispensation_id         INT           NOT NULL AUTO_INCREMENT,
     dispensationsbeginn     DATE          NOT NULL,
     dispensationsende       DATE,
+    voraussichtliche_dauer  TEXT,
     grund                   TEXT          NOT NULL,
     schueler_id             INT           NOT NULL,
     last_updated            TIMESTAMP     NOT NULL,
