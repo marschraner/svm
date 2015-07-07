@@ -1,6 +1,10 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.persistence.entities.Dispensation;
+import ch.metzenthin.svm.persistence.entities.Schueler;
+
+import java.util.List;
 
 /**
  * @author Hans Stamm
@@ -25,8 +29,10 @@ public interface SchuelerDatenblattModel {
     String getDispensationsdauerAsString();
     String getDispensationsgrund();
     String getFruehereDispensationenAsString();
+    DispensationenTableData getDispensationenTableData();
     SchuelerModel getSchuelerModel(SvmContext svmContext);
     AngehoerigerModel getMutterModel(SvmContext svmContext);
     AngehoerigerModel getVaterModel(SvmContext svmContext);
     AngehoerigerModel getRechnungsempfaengerModel(SvmContext svmContext);
+    Schueler getSchueler();
 }

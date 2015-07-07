@@ -2,7 +2,9 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
+import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.components.DispensationenBearbeitenPanel;
 import ch.metzenthin.svm.ui.components.SchuelerErfassenPanel;
 import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
 
@@ -450,17 +452,21 @@ public class SchuelerDatenblattController {
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerErfassenPanel.$$$getRootComponent$$$(), "Schüler bearbeiten"}, ActionEvent.ACTION_PERFORMED, "Schueler bearbeiten"));
     }
 
-    public void setBtnDispensationBearbeiten(JButton btnDispensationBearbeiten) {
-        btnDispensationBearbeiten.addActionListener(new ActionListener() {
+    public void setBtnDispensationenBearbeiten(JButton btnDispensationenBearbeiten) {
+        btnDispensationenBearbeiten.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onDispensationBearbeiten();
+                onDispensationenBearbeiten();
             }
         });
     }
 
-    private void onDispensationBearbeiten() {
-
+    private void onDispensationenBearbeiten() {
+        DispensationenTableModel dispensationenTableModel = new DispensationenTableModel(schuelerDatenblattModel.getDispensationenTableData());
+        DispensationenBearbeitenPanel dispensationenBearbeitenPanel = new DispensationenBearbeitenPanel(svmContext, dispensationenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
+        dispensationenBearbeitenPanel.addNextPanelListener(nextPanelListener);
+        dispensationenBearbeitenPanel.addCloseListener(closeListener);
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{dispensationenBearbeitenPanel.$$$getRootComponent$$$(), "Dispensationen bearbeiten"}, ActionEvent.ACTION_PERFORMED, "Dispensationen bearbeiten"));
     }
 
     public void setBtnCodesBearbeiten(JButton btnCodesBearbeiten) {

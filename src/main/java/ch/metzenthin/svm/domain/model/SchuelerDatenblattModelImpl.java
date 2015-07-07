@@ -246,6 +246,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         return "-";
     }
 
+    @Override
+    public DispensationenTableData getDispensationenTableData() {
+        return new DispensationenTableData(schueler.getDispensationen());
+    }
+
     private boolean isDispensationAktuell(Dispensation dispensation) {
         Calendar today = new GregorianCalendar();
         return dispensation.getDispensationsende() == null || dispensation.getDispensationsende().equals(today) || dispensation.getDispensationsende().after(today);
@@ -279,6 +284,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
             drittempfaengerModel.setAngehoeriger(schueler.getRechnungsempfaenger(), false, true);
         }
         return drittempfaengerModel;
+    }
+
+    @Override
+    public Schueler getSchueler() {
+        return schueler;
     }
 
     private boolean isGleicheAdresseWieSchueler(Angehoeriger angehoeriger) {

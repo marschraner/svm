@@ -29,7 +29,7 @@ public class SchuelerDatenblattPanel {
     private JPanel titelPanel;
     private JLabel lblAnmeldedatumValue;
     private JPanel dispensationenPanel;
-    private JButton btnDispensationBearbeiten;
+    private JButton btnDispensationenBearbeiten;
     private JPanel codesPanel;
     private JTable tableCodes;
     private JButton btnCodesBearbeiten;
@@ -93,7 +93,7 @@ public class SchuelerDatenblattPanel {
         schuelerDatenblattController.setBtnNachfolgender(btnNachfolgender);
         schuelerDatenblattController.setBtnVorheriger(btnVorheriger);
         schuelerDatenblattController.setBtnStammdatenBearbeiten(btnStammdatenBearbeiten);
-        schuelerDatenblattController.setBtnDispensationBearbeiten(btnDispensationBearbeiten);
+        schuelerDatenblattController.setBtnDispensationenBearbeiten(btnDispensationenBearbeiten);
         schuelerDatenblattController.setBtnCodesBearbeiten(btnCodesBearbeiten);
         schuelerDatenblattController.setLabelScrollPosition(lblScrollPosition);
     }
@@ -528,14 +528,14 @@ public class SchuelerDatenblattPanel {
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         dispensationenPanel.add(panel4, gbc);
-        btnDispensationBearbeiten = new JButton();
-        btnDispensationBearbeiten.setText("Bearbeiten");
+        btnDispensationenBearbeiten = new JButton();
+        btnDispensationenBearbeiten.setText("Bearbeiten");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 0, 10);
-        panel4.add(btnDispensationBearbeiten, gbc);
+        panel4.add(btnDispensationenBearbeiten, gbc);
         final JPanel spacer22 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;

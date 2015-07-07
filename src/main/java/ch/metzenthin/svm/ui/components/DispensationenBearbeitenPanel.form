@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.DispensationenBearbeitenPanel">
+  <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="910" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="4c7d3" layout-manager="GridBagLayout">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="c2248" layout-manager="GridBagLayout">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <gridbag top="10" left="10" bottom="10" right="10" weightx="1.0" weighty="1.0"/>
+            </constraints>
+            <properties/>
+            <border type="etched" title="Dispensationen"/>
+            <children>
+              <hspacer id="9f83">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </hspacer>
+              <vspacer id="2e70">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </vspacer>
+              <vspacer id="371a6">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </vspacer>
+              <hspacer id="b813c">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </hspacer>
+              <scrollpane id="b2dcc">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.0"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="cfc53" class="javax.swing.JTable" binding="dispensationenTable">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="47c65" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="b8fc7" layout-manager="GridBagLayout">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="470a1" class="javax.swing.JButton" binding="btnNeuenEintrag">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="5" left="5" bottom="10" right="5" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <actionCommand value="Neuen Eintrag"/>
+                  <maximumSize width="168" height="29"/>
+                  <minimumSize width="168" height="29"/>
+                  <preferredSize width="168" height="29"/>
+                  <selected value="true"/>
+                  <text value="Neuen Eintrag"/>
+                </properties>
+              </component>
+              <component id="9e0ba" class="javax.swing.JButton" binding="btnEintragBearbeiten">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="5" left="5" bottom="10" right="5" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <maximumSize width="168" height="29"/>
+                  <minimumSize width="168" height="29"/>
+                  <preferredSize width="168" height="29"/>
+                  <text value="Eintrag bearbeiten"/>
+                </properties>
+              </component>
+              <hspacer id="d8b3e">
+                <constraints>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.0"/>
+                </constraints>
+              </hspacer>
+              <hspacer id="6becc">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </hspacer>
+            </children>
+          </grid>
+          <grid id="fbad2" layout-manager="GridBagLayout">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <hspacer id="b1783">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.0"/>
+                </constraints>
+              </hspacer>
+              <component id="b9deb" class="javax.swing.JButton" binding="btnZurueck">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="5" left="5" bottom="10" right="5" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <maximumSize width="143" height="29"/>
+                  <minimumSize width="143" height="29"/>
+                  <preferredSize width="143" height="29"/>
+                  <text value="Zurück"/>
+                </properties>
+              </component>
+              <component id="a08d4" class="javax.swing.JButton" binding="btnAbbrechen">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="5" left="5" bottom="10" right="5" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <maximumSize width="143" height="29"/>
+                  <minimumSize width="143" height="29"/>
+                  <preferredSize width="143" height="29"/>
+                  <text value="Abbrechen"/>
+                </properties>
+              </component>
+              <hspacer id="add4e">
+                <constraints>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </hspacer>
+            </children>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>
