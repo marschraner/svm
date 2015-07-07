@@ -53,30 +53,31 @@ public class Dispensation implements Comparable<Dispensation> {
     public String toString() {
         StringBuilder dispensationSb = new StringBuilder();
         if (dispensationsende == null) {
-            dispensationSb.append("Dispensiert seit ").append(String.format("%1$td.%1$tm.%1$tY", dispensationsbeginn));
+            dispensationSb.append("Seit ").append(String.format("%1$td.%1$tm.%1$tY", dispensationsbeginn));
         } else {
-            dispensationSb.append("Dispensiert ").append(String.format("%1$td.%1$tm.%1$tY", dispensationsbeginn));
+            dispensationSb.append(String.format("%1$td.%1$tm.%1$tY", dispensationsbeginn));
             dispensationSb.append(" - ").append(String.format("%1$td.%1$tm.%1$tY", dispensationsende));
         }
         if (voraussichtlicheDauer != null) {
-            dispensationSb.append(". Voraussichtliche Dauer: ").append(voraussichtlicheDauer);
+            dispensationSb.append(", voraussichtliche Dauer: ").append(voraussichtlicheDauer);
         }
-        dispensationSb.append(". Grund: ").append(grund);
+        dispensationSb.append(", Grund: ").append(grund);
         return dispensationSb.toString();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Dispensation)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Dispensation that = (Dispensation) o;
 
         if (!dispensationsbeginn.equals(that.dispensationsbeginn)) return false;
         if (dispensationsende != null ? !dispensationsende.equals(that.dispensationsende) : that.dispensationsende != null)
             return false;
-        if (!grund.equals(that.grund)) return false;
-        return schueler.equals(that.schueler);
+        if (voraussichtlicheDauer != null ? !voraussichtlicheDauer.equals(that.voraussichtlicheDauer) : that.voraussichtlicheDauer != null)
+            return false;
+        return grund.equals(that.grund);
 
     }
 
@@ -84,8 +85,8 @@ public class Dispensation implements Comparable<Dispensation> {
     public int hashCode() {
         int result = dispensationsbeginn.hashCode();
         result = 31 * result + (dispensationsende != null ? dispensationsende.hashCode() : 0);
+        result = 31 * result + (voraussichtlicheDauer != null ? voraussichtlicheDauer.hashCode() : 0);
         result = 31 * result + grund.hashCode();
-        result = 31 * result + schueler.hashCode();
         return result;
     }
 

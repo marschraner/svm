@@ -86,7 +86,8 @@ SELECT * FROM Anmeldung;
 -- ************
 
 INSERT INTO Dispensation (dispensation_id, dispensationsbeginn, dispensationsende, voraussichtliche_dauer, grund, schueler_id) VALUES
-    (1, '2015-05-09', '2017-08-23', NULL, 'Noch zu klein', 4);
+    (1, '2015-05-09', '2017-08-23', NULL, 'Noch zu klein', 4),
+    (7, '2014-02-10', '2014-06-02', NULL, 'Beinbruch', 7);
 
 SELECT * FROM Dispensation;
 

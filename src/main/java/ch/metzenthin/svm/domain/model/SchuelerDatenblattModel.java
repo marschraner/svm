@@ -22,6 +22,9 @@ public interface SchuelerDatenblattModel {
     String getAnmeldedatumAsString();
     String getAbmeldedatumAsString();
     String getFruehereAnmeldungenAsString();
+    String getDispensationsdauerAsString();
+    String getDispensationsgrund();
+    String getFruehereDispensationenAsString();
     SchuelerModel getSchuelerModel(SvmContext svmContext);
     AngehoerigerModel getMutterModel(SvmContext svmContext);
     AngehoerigerModel getVaterModel(SvmContext svmContext);

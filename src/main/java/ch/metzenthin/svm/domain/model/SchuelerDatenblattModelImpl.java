@@ -6,8 +6,11 @@ import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.commands.CheckGeschwisterSchuelerRechnungempfaengerCommand;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
+import ch.metzenthin.svm.persistence.entities.Dispensation;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -189,6 +192,63 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
             return fruehereAnmeldungen.toString();
         }
         return "";
+    }
+
+    @Override
+    public String getDispensationsdauerAsString() {
+        List<Dispensation> dispensationen = schueler.getDispensationen();
+        if (!dispensationen.isEmpty()) {
+            Dispensation dispensation = dispensationen.get(0);
+            if (isDispensationAktuell(dispensation)) {
+                String dauer;
+                if (dispensation.getDispensationsende() == null) {
+                    dauer = "seit " + asString(dispensation.getDispensationsbeginn());
+                    if (dispensation.getVoraussichtlicheDauer() != null) {
+                        dauer = dauer + ", voraussichtlich " + dispensation.getVoraussichtlicheDauer();
+                    }
+                } else {
+                    dauer = asString(dispensation.getDispensationsbeginn()) + " - " + asString(dispensation.getDispensationsende());
+                }
+                return dauer;
+            }
+        }
+        return "";
+    }
+
+    @Override
+    public String getDispensationsgrund() {
+        List<Dispensation> dispensationen = schueler.getDispensationen();
+        if (!dispensationen.isEmpty()) {
+            Dispensation dispensation = dispensationen.get(0);
+            if (isDispensationAktuell(dispensation)) {
+                return dispensation.getGrund();
+            }
+        }
+        return "";
+    }
+
+    @Override
+    public String getFruehereDispensationenAsString() {
+        List<Dispensation> dispensationen = schueler.getDispensationen();
+        StringBuilder fruehereDispensationen = new StringBuilder("<html>");
+        for (Dispensation dispensation : dispensationen) {
+            if (!isDispensationAktuell(dispensation)) {
+                if (fruehereDispensationen.length() > 6) {
+                    fruehereDispensationen.append("<br>");
+                }
+                fruehereDispensationen.append(asString(dispensation.getDispensationsbeginn())).append(" - ").append(asString(dispensation.getDispensationsende())).append(" (").append(dispensation.getGrund()).append(")");
+            }
+            fruehereDispensationen.append("</html>");
+        }
+        if (fruehereDispensationen.length() > 13) {
+            return fruehereDispensationen.toString();
+        }
+        return "-";
+    }
+
+    private boolean isDispensationAktuell(Dispensation dispensation) {
+        Calendar today = new GregorianCalendar();
+        return dispensation.getDispensationsende() == null || dispensation.getDispensationsende().equals(today) || dispensation.getDispensationsende().after(today);
     }
 
     @Override

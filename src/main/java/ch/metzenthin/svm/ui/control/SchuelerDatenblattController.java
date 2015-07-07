@@ -39,6 +39,12 @@ public class SchuelerDatenblattController {
     private JLabel labelAbmeldedatumValue;
     private JLabel labelFruehereAnmeldungen;
     private JLabel labelFruehereAnmeldungenValue;
+    private JLabel labelNichtDispensiert;
+    private JLabel labelDispensationsdauer;
+    private JLabel labelDispensationsdauerValue;
+    private JLabel labelDispensationsgrund;
+    private JLabel labelDispensationsgrundValue;
+    private JLabel labelFruehereDispensationenValue;
     private JLabel labelScrollPosition;
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
@@ -75,6 +81,12 @@ public class SchuelerDatenblattController {
         setLabelSchuelerGleicherRechnungsempfaenger1();
         setLabelSchuelerGleicherRechnungsempfaenger2();
         setLabelGeschwisterValue();
+        setLabelNichtDispensiert();
+        setLabelDispensationsdauer();
+        setLabelDispensationsdauerValue();
+        setLabelDispensationsgrund();
+        setLabelDispensationsgrundValue();
+        setLabelFruehereDispensationenValue();
     }
 
     private void enableScrollButtons() {
@@ -225,6 +237,8 @@ public class SchuelerDatenblattController {
     private void setLabelAbmeldedatum() {
         if (schuelerDatenblattModel.getAbmeldedatumAsString().isEmpty()) {
             labelAbmeldedatum.setVisible(false);
+        } else {
+            labelAbmeldedatum.setVisible(true);
         }
     }
 
@@ -236,6 +250,8 @@ public class SchuelerDatenblattController {
     private void setLabelAbmeldedatumValue() {
         if (schuelerDatenblattModel.getAbmeldedatumAsString().isEmpty()) {
             labelAbmeldedatumValue.setVisible(false);
+        } else {
+            labelAbmeldedatumValue.setVisible(true);
         }
         labelAbmeldedatumValue.setText(schuelerDatenblattModel.getAbmeldedatumAsString());
     }
@@ -248,6 +264,8 @@ public class SchuelerDatenblattController {
     private void setLabelFruehereAnmeldungen() {
         if (schuelerDatenblattModel.getFruehereAnmeldungenAsString().isEmpty()) {
             labelFruehereAnmeldungen.setVisible(false);
+        } else {
+            labelFruehereAnmeldungen.setVisible(true);
         }
     }
 
@@ -259,8 +277,86 @@ public class SchuelerDatenblattController {
     private void setLabelFruehereAnmeldungenValue() {
         if (schuelerDatenblattModel.getFruehereAnmeldungenAsString().isEmpty()) {
             labelFruehereAnmeldungenValue.setVisible(false);
+        } else {
+            labelFruehereAnmeldungenValue.setVisible(true);
         }
         labelFruehereAnmeldungenValue.setText(schuelerDatenblattModel.getFruehereAnmeldungenAsString());
+    }
+
+    public void setLabelNichtDispensiert(JLabel labelNichtDispensiert) {
+        this.labelNichtDispensiert = labelNichtDispensiert;
+        setLabelNichtDispensiert();
+    }
+
+    private void setLabelNichtDispensiert() {
+        if (!schuelerDatenblattModel.getDispensationsdauerAsString().isEmpty()) {
+            labelNichtDispensiert.setVisible(false);
+        } else {
+            labelNichtDispensiert.setVisible(true);
+        }
+    }
+
+    public void setLabelDispensationsdauer(JLabel labelDispensationsdauer) {
+        this.labelDispensationsdauer = labelDispensationsdauer;
+        setLabelDispensationsdauer();
+    }
+
+    private void setLabelDispensationsdauer() {
+        if (schuelerDatenblattModel.getDispensationsdauerAsString().isEmpty()) {
+            labelDispensationsdauer.setVisible(false);
+        } else {
+            labelDispensationsdauer.setVisible(true);
+        }
+    }
+
+    public void setLabelDispensationsdauerValue(JLabel labelDispensationsdauerValue) {
+        this.labelDispensationsdauerValue = labelDispensationsdauerValue;
+        setLabelDispensationsdauerValue();
+    }
+
+    private void setLabelDispensationsdauerValue() {
+        if (schuelerDatenblattModel.getDispensationsdauerAsString().isEmpty()) {
+            labelDispensationsdauerValue.setVisible(false);
+        } else {
+            labelDispensationsdauerValue.setVisible(true);
+            labelDispensationsdauerValue.setText(schuelerDatenblattModel.getDispensationsdauerAsString());
+        }
+    }
+
+    public void setLabelDispensationsgrund(JLabel labelDispensationsgrund) {
+        this.labelDispensationsgrund = labelDispensationsgrund;
+        setLabelDispensationsgrund();
+    }
+
+    private void setLabelDispensationsgrund() {
+        if (schuelerDatenblattModel.getDispensationsgrund().isEmpty()) {
+            labelDispensationsgrund.setVisible(false);
+        } else {
+            labelDispensationsgrund.setVisible(true);
+        }
+    }
+
+    public void setLabelDispensationsgrundValue(JLabel labelDispensationsgrundValue) {
+        this.labelDispensationsgrundValue = labelDispensationsgrundValue;
+        setLabelDispensationsgrundValue();
+    }
+
+    private void setLabelDispensationsgrundValue() {
+        if (schuelerDatenblattModel.getDispensationsgrund().isEmpty()) {
+            labelDispensationsgrundValue.setVisible(false);
+        } else {
+            labelDispensationsgrundValue.setVisible(true);
+            labelDispensationsgrundValue.setText(schuelerDatenblattModel.getDispensationsgrund());
+        }
+    }
+
+    public void setLabelFruehereDispensationenValue(JLabel labelFruehereDispensationenValue) {
+        this.labelFruehereDispensationenValue = labelFruehereDispensationenValue;
+        setLabelFruehereDispensationenValue();
+    }
+
+    private void setLabelFruehereDispensationenValue() {
+        labelFruehereDispensationenValue.setText(schuelerDatenblattModel.getFruehereDispensationenAsString());
     }
 
     public void setBtnZurueck(JButton btnZurueck) {
@@ -351,7 +447,7 @@ public class SchuelerDatenblattController {
     private void onStammdatenBearbeiten() {
         SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext, schuelerDatenblattModel);
         schuelerErfassenPanel.addCloseListener(closeListener);
-        nextPanelListener.actionPerformed(new ActionEvent(new Object[] {schuelerErfassenPanel.$$$getRootComponent$$$(), "Schüler bearbeiten"}, ActionEvent.ACTION_PERFORMED, "Schueler bearbeiten"));
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerErfassenPanel.$$$getRootComponent$$$(), "Schüler bearbeiten"}, ActionEvent.ACTION_PERFORMED, "Schueler bearbeiten"));
     }
 
     public void setBtnDispensationBearbeiten(JButton btnDispensationBearbeiten) {
