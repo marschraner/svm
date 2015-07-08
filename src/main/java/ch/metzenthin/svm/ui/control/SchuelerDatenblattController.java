@@ -50,6 +50,7 @@ public class SchuelerDatenblattController {
     private JLabel labelScrollPosition;
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
+    private ActionListener zurueckZuSchuelerSuchenListener;
 
     public SchuelerDatenblattController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
         this.svmContext = svmContext;
@@ -374,6 +375,7 @@ public class SchuelerDatenblattController {
         SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
         schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
         schuelerSuchenResultPanel.addCloseListener(closeListener);
+        schuelerSuchenResultPanel.addZurueckListener(zurueckZuSchuelerSuchenListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat"));
     }
 
@@ -466,6 +468,7 @@ public class SchuelerDatenblattController {
         DispensationenPanel dispensationenPanel = new DispensationenPanel(svmContext, dispensationenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
         dispensationenPanel.addNextPanelListener(nextPanelListener);
         dispensationenPanel.addCloseListener(closeListener);
+        dispensationenPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{dispensationenPanel.$$$getRootComponent$$$(), "Dispensationen"}, ActionEvent.ACTION_PERFORMED, "Dispensationen"));
     }
 
@@ -497,6 +500,10 @@ public class SchuelerDatenblattController {
 
     public void addCloseListener(ActionListener closeListener) {
         this.closeListener = closeListener;
+    }
+
+    public void addZurueckZuSchuelerSuchenListener(ActionListener zurueckZuSchuelerSuchenListener) {
+        this.zurueckZuSchuelerSuchenListener = zurueckZuSchuelerSuchenListener;
     }
 
 }

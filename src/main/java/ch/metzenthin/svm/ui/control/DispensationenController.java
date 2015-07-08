@@ -26,6 +26,7 @@ public class DispensationenController {
     private JButton btnAbbrechen;
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
+    private ActionListener zurueckZuSchuelerSuchenListener;
 
     public DispensationenController(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
         this.svmContext = svmContext;
@@ -108,6 +109,7 @@ public class DispensationenController {
         SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, selectedRow);
         schuelerDatenblattPanel.addCloseListener(closeListener);
         schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
+        schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));
     }
 
@@ -131,5 +133,9 @@ public class DispensationenController {
 
     public void addCloseListener(ActionListener closeListener) {
         this.closeListener = closeListener;
+    }
+
+    public void addZurueckZuSchuelerSuchenListener(ActionListener zurueckZuSchuelerSuchenListener) {
+        this.zurueckZuSchuelerSuchenListener = zurueckZuSchuelerSuchenListener;
     }
 }

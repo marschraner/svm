@@ -11,6 +11,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
@@ -71,6 +72,7 @@ public class SchuelerSuchenPanel {
     private JPanel panelRight;
     private JPanel statusDispensationGeschlechtPanel;
     private SchuelerSuchenModel schuelerSuchenModel;
+    private ActionListener nextPanelListener;
 
     public SchuelerSuchenPanel(SvmContext svmContext) {
         $$$setupUI$$$();
@@ -199,6 +201,16 @@ public class SchuelerSuchenPanel {
         schuelerSuchenController.setErrLblStichtag(errLblStichtag);
         schuelerSuchenController.setBtnSuchen(btnSuchen);
         schuelerSuchenController.setBtnAbbrechen(btnAbbrechen);
+        schuelerSuchenController.addZurueckListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onZurueck();
+            }
+        });
+    }
+
+    private void onZurueck() {
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{$$$getRootComponent$$$(), "Schüler suchen"}, ActionEvent.ACTION_PERFORMED, "Zurück zu Schüler suchen"));
     }
 
     private void createUIComponents() {
@@ -209,8 +221,9 @@ public class SchuelerSuchenPanel {
         schuelerSuchenController.addCloseListener(actionListener);
     }
 
-    public void addNextPanelListener(ActionListener actionListener) {
-        schuelerSuchenController.addNextPanelListener(actionListener);
+    public void addNextPanelListener(ActionListener nextPanelListener) {
+        this.nextPanelListener = nextPanelListener;
+        schuelerSuchenController.addNextPanelListener(nextPanelListener);
     }
 
     /**
