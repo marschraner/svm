@@ -4,7 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
-import ch.metzenthin.svm.ui.components.DispensationenBearbeitenPanel;
+import ch.metzenthin.svm.ui.components.DispensationenPanel;
 import ch.metzenthin.svm.ui.components.SchuelerErfassenPanel;
 import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
 
@@ -463,10 +463,10 @@ public class SchuelerDatenblattController {
 
     private void onDispensationenBearbeiten() {
         DispensationenTableModel dispensationenTableModel = new DispensationenTableModel(schuelerDatenblattModel.getDispensationenTableData());
-        DispensationenBearbeitenPanel dispensationenBearbeitenPanel = new DispensationenBearbeitenPanel(svmContext, dispensationenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
-        dispensationenBearbeitenPanel.addNextPanelListener(nextPanelListener);
-        dispensationenBearbeitenPanel.addCloseListener(closeListener);
-        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{dispensationenBearbeitenPanel.$$$getRootComponent$$$(), "Dispensationen bearbeiten"}, ActionEvent.ACTION_PERFORMED, "Dispensationen bearbeiten"));
+        DispensationenPanel dispensationenPanel = new DispensationenPanel(svmContext, dispensationenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
+        dispensationenPanel.addNextPanelListener(nextPanelListener);
+        dispensationenPanel.addCloseListener(closeListener);
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{dispensationenPanel.$$$getRootComponent$$$(), "Dispensationen bearbeiten"}, ActionEvent.ACTION_PERFORMED, "Dispensationen bearbeiten"));
     }
 
     public void setBtnCodesBearbeiten(JButton btnCodesBearbeiten) {

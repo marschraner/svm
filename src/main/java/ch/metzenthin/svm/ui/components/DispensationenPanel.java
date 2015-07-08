@@ -4,7 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
-import ch.metzenthin.svm.ui.control.DispensationenBearbeitenController;
+import ch.metzenthin.svm.ui.control.DispensationenController;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 
@@ -15,19 +15,19 @@ import java.awt.event.ActionListener;
 /**
  * @author Martin Schraner
  */
-public class DispensationenBearbeitenPanel {
+public class DispensationenPanel {
     private JPanel panel1;
     private JTable dispensationenTable;
     private JButton btnEintragBearbeiten;
     private JButton btnNeuenEintrag;
     private JButton btnZurueck;
     private JButton btnAbbrechen;
-    private DispensationenBearbeitenController dispensationenBearbeitenController;
+    private DispensationenController dispensationenController;
 
-    public DispensationenBearbeitenPanel(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
+    public DispensationenPanel(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
         $$$setupUI$$$();
         initDispensationenTable(dispensationenTableModel);
-        createDispensationenBearbeitenController(svmContext, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
+        createDispensationenController(svmContext, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
     }
 
     private void initDispensationenTable(DispensationenTableModel dispensationenTableModel) {
@@ -35,21 +35,21 @@ public class DispensationenBearbeitenPanel {
         UiComponentsUtils.setJTableWidthAsPercentages(dispensationenTable, 0.15, 0.15, 0.3, 0.4);
     }
 
-    private void createDispensationenBearbeitenController(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
-        dispensationenBearbeitenController = new DispensationenBearbeitenController(svmContext, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
-        dispensationenBearbeitenController.setDispensationenTable(dispensationenTable);
-        dispensationenBearbeitenController.setBtnNeuenEintrag(btnNeuenEintrag);
-        dispensationenBearbeitenController.setBtnEintragBearbeiten(btnEintragBearbeiten);
-        dispensationenBearbeitenController.setBtnZurueck(btnZurueck);
-        dispensationenBearbeitenController.setBtnAbbrechen(btnAbbrechen);
+    private void createDispensationenController(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
+        dispensationenController = new DispensationenController(svmContext, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
+        dispensationenController.setDispensationenTable(dispensationenTable);
+        dispensationenController.setBtnNeuenEintrag(btnNeuenEintrag);
+        dispensationenController.setBtnEintragBearbeiten(btnEintragBearbeiten);
+        dispensationenController.setBtnZurueck(btnZurueck);
+        dispensationenController.setBtnAbbrechen(btnAbbrechen);
     }
 
     public void addNextPanelListener(ActionListener actionListener) {
-        dispensationenBearbeitenController.addNextPanelListener(actionListener);
+        dispensationenController.addNextPanelListener(actionListener);
     }
 
     public void addCloseListener(ActionListener closeListener) {
-        dispensationenBearbeitenController.addCloseListener(closeListener);
+        dispensationenController.addCloseListener(closeListener);
     }
 
     /**

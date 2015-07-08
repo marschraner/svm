@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
 /**
  * @author Hans Stamm
  */
-public class DispensationenBearbeitenController {
+public class DispensationenController {
     private final SvmContext svmContext;
     private final SchuelerDatenblattModel schuelerDatenblattModel;
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
@@ -27,7 +27,7 @@ public class DispensationenBearbeitenController {
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
 
-    public DispensationenBearbeitenController(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
+    public DispensationenController(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
         this.svmContext = svmContext;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
