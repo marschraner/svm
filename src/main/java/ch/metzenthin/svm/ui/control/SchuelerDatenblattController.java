@@ -466,7 +466,7 @@ public class SchuelerDatenblattController {
         DispensationenPanel dispensationenPanel = new DispensationenPanel(svmContext, dispensationenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
         dispensationenPanel.addNextPanelListener(nextPanelListener);
         dispensationenPanel.addCloseListener(closeListener);
-        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{dispensationenPanel.$$$getRootComponent$$$(), "Dispensationen bearbeiten"}, ActionEvent.ACTION_PERFORMED, "Dispensationen bearbeiten"));
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{dispensationenPanel.$$$getRootComponent$$$(), "Dispensationen"}, ActionEvent.ACTION_PERFORMED, "Dispensationen"));
     }
 
     public void setBtnCodesBearbeiten(JButton btnCodesBearbeiten) {

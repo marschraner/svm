@@ -54,6 +54,10 @@ public class DispensationenController {
         });
     }
 
+    public void setLblTitel(JLabel lblTitel) {
+        lblTitel.setText("Dispensationen " + schuelerDatenblattModel.getSchuelerVorname() + " " + schuelerDatenblattModel.getSchuelerNachname());
+    }
+
     public void setBtnNeuenEintrag(JButton btnNeuenEintrag) {
         btnNeuenEintrag.addActionListener(new ActionListener() {
             @Override
