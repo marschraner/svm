@@ -164,16 +164,6 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     @Override
     public void setSchueler(Schueler schueler) {
         schuelerOrigin = schueler;
-/*
-        this.schueler.setAnrede(schueler.getAnrede());
-        this.schueler.setNachname(schueler.getNachname());
-        this.schueler.setVorname(schueler.getVorname());
-        this.schueler.setGeschlecht(schueler.getGeschlecht());
-        this.schueler.setGeburtsdatum(schueler.getGeburtsdatum());
-        this.schueler.setNatel(schueler.getNatel());
-        this.schueler.setEmail(schueler.getEmail());
-        this.schueler.setBemerkungen(schueler.getBemerkungen());
-*/
     }
 
     @Override
@@ -194,7 +184,8 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
                 setBemerkungen(schuelerOrigin.getBemerkungen());
                 // setAbmeldedatum(schuelerOrigin.getAnmeldungen()); // $$$ todo
                 // setAnmeldedatum(schuelerOrigin.getAnmeldungen()); // $$$ todo
-            } catch (SvmValidationException ignore) {
+            } catch (SvmValidationException e) {
+                throw new RuntimeException(e);
             }
         }
         super.initializeCompleted();
