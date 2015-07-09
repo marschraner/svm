@@ -48,8 +48,8 @@ public class Schueler extends Person {
     public Schueler() {
     }
 
-    public Schueler(String vorname, String nachname, Calendar geburtsdatum, String natel, String email, Geschlecht geschlecht, String bemerkungen) {
-        super(Anrede.KEINE, vorname, nachname, geburtsdatum, natel, email);
+    public Schueler(String vorname, String nachname, Calendar geburtsdatum, String festnetz, String natel, String email, Geschlecht geschlecht, String bemerkungen) {
+        super(Anrede.KEINE, vorname, nachname, geburtsdatum, festnetz, natel, email);
         this.geschlecht = geschlecht;
         this.bemerkungen = bemerkungen;
     }

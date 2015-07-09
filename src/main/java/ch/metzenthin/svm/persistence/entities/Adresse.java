@@ -35,21 +35,17 @@ public class Adresse {
     @Column(name = "ort", nullable = true)
     private String ort;
 
-    @Column(name = "festnetz", nullable = true)
-    private String festnetz;
-
     @OneToMany(mappedBy = "adresse")
     private Set<Person> personen = new HashSet<>();
 
     public Adresse() {
     }
 
-    public Adresse(String strasse, String hausnummer, String plz, String ort, String festnetz) {
+    public Adresse(String strasse, String hausnummer, String plz, String ort) {
         this.strasse = strasse;
         this.hausnummer = hausnummer;
         this.plz = plz;
         this.ort = ort;
-        this.festnetz = festnetz;
     }
 
     public boolean isIdenticalWith(Adresse otherAdresse) {
@@ -57,8 +53,7 @@ public class Adresse {
                 && ((strasse == null && otherAdresse.getStrasse() == null) || (strasse != null && strasse.equals(otherAdresse.getStrasse())))
                 && ((hausnummer == null && otherAdresse.getHausnummer() == null) || (hausnummer != null && hausnummer.equals(otherAdresse.getHausnummer())))
                 && ((plz == null && otherAdresse.getPlz() == null) || (plz != null && plz.equals(otherAdresse.getPlz())))
-                && ((ort == null && otherAdresse.getOrt() == null) || (ort != null && ort.equals(otherAdresse.getOrt())))
-                && ((festnetz == null && otherAdresse.getFestnetz() == null) || (festnetz != null && festnetz.equals(otherAdresse.getFestnetz())));
+                && ((ort == null && otherAdresse.getOrt() == null) || (ort != null && ort.equals(otherAdresse.getOrt())));
     }
 
     public boolean isPartOf(Adresse otherAdresse) {
@@ -66,16 +61,14 @@ public class Adresse {
                 && (strasse == null || strasse.trim().isEmpty() || strasse.equals(otherAdresse.getStrasse()))
                 && (hausnummer == null || hausnummer.trim().isEmpty() || hausnummer.equals(otherAdresse.getHausnummer()))
                 && (plz == null || plz.trim().isEmpty() || plz.equals(otherAdresse.getPlz()))
-                && (ort == null || ort.trim().isEmpty() || ort.equals(otherAdresse.getOrt()))
-                && (festnetz == null || festnetz.trim().isEmpty() || festnetz.equals(otherAdresse.getFestnetz()));
+                && (ort == null || ort.trim().isEmpty() || ort.equals(otherAdresse.getOrt()));
     }
 
     public boolean isEmpty() {
         return (strasse == null || strasse.trim().isEmpty())
                 && (hausnummer == null || hausnummer.trim().isEmpty())
                 && (plz == null || plz.trim().isEmpty())
-                && (ort == null || ort.trim().isEmpty())
-                && (festnetz == null || festnetz.trim().isEmpty());
+                && (ort == null || ort.trim().isEmpty());
     }
 
     @Override
@@ -92,9 +85,6 @@ public class Adresse {
         }
         if (ort != null && !ort.trim().isEmpty()) {
             adresseSb.append(" ").append(ort);
-        }
-        if (festnetz != null && !festnetz.isEmpty()) {
-            adresseSb.append(", ").append(festnetz);
         }
         return adresseSb.toString();
     }
@@ -137,14 +127,6 @@ public class Adresse {
 
     public void setOrt(String ort) {
         this.ort = ort;
-    }
-
-    public String getFestnetz() {
-        return festnetz;
-    }
-
-    public void setFestnetz(String festnetz) {
-        this.festnetz = festnetz;
     }
 
     public Set<Person> getPersonen() {

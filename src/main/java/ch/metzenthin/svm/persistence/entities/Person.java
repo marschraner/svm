@@ -38,6 +38,9 @@ public abstract class Person {
     @Column(name = "geburtsdatum", nullable = true)
     private Calendar geburtsdatum;
 
+    @Column(name = "festnetz", nullable = true)
+    private String festnetz;
+
     @Column(name = "natel", nullable = true)
     private String natel;
 
@@ -51,11 +54,12 @@ public abstract class Person {
     public Person() {
     }
 
-    public Person(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String natel, String email) {
+    public Person(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String festnetz, String natel, String email) {
         this.anrede = anrede;
         this.vorname = vorname;
         this.nachname = nachname;
         this.geburtsdatum = geburtsdatum;
+        this.festnetz = festnetz;
         this.natel = natel;
         this.email = email;
     }
@@ -66,6 +70,7 @@ public abstract class Person {
                 && vorname.equals(otherPerson.getVorname())
                 && nachname.equals(otherPerson.getNachname())
                 && ((geburtsdatum == null && otherPerson.getGeburtsdatum() == null) || (geburtsdatum != null && geburtsdatum.equals(otherPerson.getGeburtsdatum())))
+                && ((festnetz == null && otherPerson.getFestnetz() == null) || (festnetz != null && festnetz.equals(otherPerson.getFestnetz())))
                 && ((natel == null && otherPerson.getNatel() == null) || (natel != null && natel.equals(otherPerson.getNatel())))
                 && ((email == null && otherPerson.getEmail() == null) || (email != null && email.equals(otherPerson.getEmail())))
                 && ((adresse == null && otherPerson.getAdresse() == null) || (adresse != null && adresse.isIdenticalWith(otherPerson.getAdresse())));
@@ -76,6 +81,7 @@ public abstract class Person {
                 && vorname.equals(otherPerson.getVorname())
                 && nachname.equals(otherPerson.getNachname())
                 && (geburtsdatum == null || geburtsdatum.equals(otherPerson.getGeburtsdatum()))
+                && (festnetz == null || festnetz.trim().isEmpty() || festnetz.equals(otherPerson.getFestnetz()))
                 && (natel == null || natel.trim().isEmpty() || natel.equals(otherPerson.getNatel()))
                 && (email == null || email.trim().isEmpty() || email.equals(otherPerson.getEmail()))
                 && (adresse == null || adresse.isPartOf(otherPerson.getAdresse()));
@@ -85,6 +91,7 @@ public abstract class Person {
         return (vorname == null || vorname.trim().isEmpty())
                 && (nachname == null || nachname.trim().isEmpty())
                 && geburtsdatum == null
+                && (festnetz == null || festnetz.trim().isEmpty())
                 && (natel == null || natel.trim().isEmpty())
                 && (email ==  null || email.trim().isEmpty())
                 && (adresse == null || adresse.isEmpty());
@@ -100,6 +107,9 @@ public abstract class Person {
         personSb.append(" ").append(nachname);
         if (adresse != null) {
             personSb.append(adresse.toString());
+        }
+        if (festnetz != null && !festnetz.isEmpty()) {
+            personSb.append(", ").append(festnetz);
         }
         if (natel != null && !natel.trim().isEmpty()) {
             personSb.append(", ").append(natel);
@@ -148,6 +158,14 @@ public abstract class Person {
 
     public void setGeburtsdatum(Calendar geburtsdatum) {
         this.geburtsdatum = geburtsdatum;
+    }
+
+    public String getFestnetz() {
+        return festnetz;
+    }
+
+    public void setFestnetz(String festnetz) {
+        this.festnetz = festnetz;
     }
 
     public String getNatel() {

@@ -272,12 +272,12 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return adresse.getFestnetz();
+                    return getPerson().getFestnetz();
                 }
 
                 @Override
                 public void setValue(String value) {
-                    adresse.setFestnetz(value);
+                    getPerson().setFestnetz(value);
                 }
             }
     );
@@ -313,9 +313,9 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     @Override
     public boolean isCompleted() {
         if (isAdresseRequired()) {
-            return isSetName() && isSetAnschrift();
+            return isSetName() && isSetAdresse();
         }
-        return (!isSetAnyNameElement() || isSetName()) && (!isSetAnyAnschriftElement() || (isSetName() && isSetAnschrift()));
+        return (!isSetAnyNameElement() || isSetName()) && (!isSetAnyAdresseElement() || (isSetName() && isSetAdresse()));
     }
 
     @Override
@@ -324,32 +324,25 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
             if (!isSetName()) {
                 throw new SvmValidationException(2000, "Nachname und Vorname obligatorisch", Field.NACHNAME, Field.VORNAME);
             }
-            if (!isSetAnschrift()) {
-                throw new SvmValidationException(2001, "Anschrift ist obligatorisch", Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT, Field.FESTNETZ);
+            if (!isSetAdresse()) {
+                throw new SvmValidationException(2001, "Adresse ist obligatorisch", Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT);
             }
         } else {
             if (isSetAnyNameElement() && !isSetName()) {
                 throw new SvmValidationException(2002, "Nachname und Vorname müssen zusammen angegeben werden", Field.NACHNAME, Field.VORNAME);
             }
-            if (isSetAnyAnschriftElement()) {
+            if (isSetAnyAdresseElement()) {
                 if (!isSetName()) {
-                    throw new SvmValidationException(2003, "Nachname und Vorname müssen angegeben werden, wenn eine Anschrift vorhanden ist", Field.NACHNAME, Field.VORNAME);
+                    throw new SvmValidationException(2003, "Nachname und Vorname müssen angegeben werden, wenn eine Adresse vorhanden ist", Field.NACHNAME, Field.VORNAME);
                 }
-                if (!isSetAnschrift()) {
-                    throw new SvmValidationException(2004, "Anschrift ist unvollständig", Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT, Field.FESTNETZ);
+                if (!isSetAdresse()) {
+                    throw new SvmValidationException(2004, "Adresse ist unvollständig", Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT);
                 }
             }
         }
     }
 
     private boolean isSetAnyAdresseElement() {
-        return isSetAnyAnschriftElement() || isSetFestnetz();
-    }
-
-    /**
-     * Anschrift: Adresse ohne Festnetz
-     */
-    private boolean isSetAnyAnschriftElement() {
         return checkNotEmpty(adresse.getStrasse())
                 || checkNotEmpty(adresse.getHausnummer())
                 || checkNotEmpty(adresse.getPlz())
@@ -369,11 +362,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
                 ;
     }
 
-    private boolean isSetFestnetz() {
-        return checkNotEmpty(adresse.getFestnetz());
-    }
-
-    private boolean isSetAnschrift() {
+    private boolean isSetAdresse() {
         return checkNotEmpty(adresse.getStrasse())
                 && checkNotEmpty(adresse.getPlz())
                 && checkNotEmpty(adresse.getOrt())

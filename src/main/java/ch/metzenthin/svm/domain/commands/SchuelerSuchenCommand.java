@@ -169,17 +169,17 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
                 selectStatementSb.append(selectSchueler).append(" or ").append(selectEltern).append(" or exists (select s3 from Schueler s3 where lower(s3.rechnungsempfaenger.adresse.ort) = :ort and s3.personId = s.personId)) and");
             }
         }
-        if (adresse != null && checkNotEmpty(adresse.getFestnetz())) {
-            String selectSchueler = " replace(s.adresse.festnetz, ' ', '') = :festnetz";
-            String selectEltern = "(replace(s.adresse.festnetz, ' ', '') = :festnetz or exists (select s1 from Schueler s1 where replace(s1.mutter.adresse.festnetz, ' ', '') = :festnetz and s1.personId = s.personId) or exists (select s2 from Schueler s2 where replace(s2.vater.adresse.festnetz, ' ', '') = :festnetz and s2.personId = s.personId)";
+        if (person != null && checkNotEmpty(person.getFestnetz())) {
+            String selectSchueler = " replace(s.festnetz, ' ', '') = :festnetz";
+            String selectEltern = "(replace(s.festnetz, ' ', '') = :festnetz or exists (select s1 from Schueler s1 where replace(s1.mutter.festnetz, ' ', '') = :festnetz and s1.personId = s.personId) or exists (select s2 from Schueler s2 where replace(s2.vater.festnetz, ' ', '') = :festnetz and s2.personId = s.personId)";
             if (rolle == SchuelerSuchenModel.RolleSelected.SCHUELER) {
                 selectStatementSb.append(selectSchueler).append(" and");
             } else if (rolle == SchuelerSuchenModel.RolleSelected.ELTERN) {
                 selectStatementSb.append(selectEltern).append(") and");
             } else if (rolle == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
-                selectStatementSb.append(" replace(s.rechnungsempfaenger.adresse.festnetz, ' ', '') = :festnetz and");
+                selectStatementSb.append(" replace(s.rechnungsempfaenger.festnetz, ' ', '') = :festnetz and");
             } else if (rolle == SchuelerSuchenModel.RolleSelected.ALLE) {
-                selectStatementSb.append(selectSchueler).append(" or ").append(selectEltern).append(" or exists (select s3 from Schueler s3 where replace(s3.rechnungsempfaenger.adresse.festnetz, ' ', '') = :festnetz and s3.personId = s.personId)) and");
+                selectStatementSb.append(selectSchueler).append(" or ").append(selectEltern).append(" or exists (select s3 from Schueler s3 where replace(s3.rechnungsempfaenger.festnetz, ' ', '') = :festnetz and s3.personId = s.personId)) and");
             }
         }
         if (person != null && checkNotEmpty(person.getNatel())) {
@@ -287,7 +287,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
             typedQuery.setParameter("ort", adresse.getOrt().toLowerCase());
         }
         if (selectStatementSb.toString().contains(":festnetz")) {
-            typedQuery.setParameter("festnetz", adresse.getFestnetz().replaceAll("\\s+", ""));
+            typedQuery.setParameter("festnetz", person.getFestnetz().replaceAll("\\s+", ""));
         }
         if (selectStatementSb.toString().contains(":natel")) {
             typedQuery.setParameter("natel", person.getNatel().replaceAll("\\s+", ""));

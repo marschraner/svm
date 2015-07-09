@@ -65,7 +65,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
         }
 
         // Suche nur mit Vorname und Nachname
-        Angehoeriger angehoerigerNurVornameNachname = new Angehoeriger(null, angehoeriger.getVorname(), angehoeriger.getNachname(), null, null);
+        Angehoeriger angehoerigerNurVornameNachname = new Angehoeriger(null, angehoeriger.getVorname(), angehoeriger.getNachname(), null, null, null);
 
         angehoerigerFoundList = angehoerigerDao.findAngehoerige(angehoerigerNurVornameNachname);
         if (angehoerigerFoundList != null && angehoerigerFoundList.size() == 1) {

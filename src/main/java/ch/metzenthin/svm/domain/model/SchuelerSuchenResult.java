@@ -56,7 +56,7 @@ public class SchuelerSuchenResult {
                 value = schuelerAdresse.getOrt();
                 break;
             case "Festnetz" :
-                value = schuelerAdresse.getFestnetz();
+                value = schueler.getFestnetz();
                 break;
             case "Natel" :
                 value = schueler.getNatel();

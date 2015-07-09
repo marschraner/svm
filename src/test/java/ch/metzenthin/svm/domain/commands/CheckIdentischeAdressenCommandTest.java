@@ -36,46 +36,46 @@ public class CheckIdentischeAdressenCommandTest {
 
     @Before
     public void setUp() {
-        schueler1 = new Schueler("Carla", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, null);
-        Adresse adresseSchueler1 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", "056 426 69 15");
+        schueler1 = new Schueler("Carla", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), "056 426 69 15", null, null, Geschlecht.W, null);
+        Adresse adresseSchueler1 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         schueler1.setAdresse(adresseSchueler1);
-        schueler2 = new Schueler("Carla", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, null);
-        Adresse adresseSchueler2 = new Adresse("Weidstrasse", "55", "8803", "Rüschlikon", "044 724 11 20");
+        schueler2 = new Schueler("Carla", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), "044 724 11 20", null, null, Geschlecht.W, null);
+        Adresse adresseSchueler2 = new Adresse("Weidstrasse", "55", "8803", "Rüschlikon");
         schueler2.setAdresse(adresseSchueler2);
-        schueler3 = new Schueler("Carla", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), null, null, Geschlecht.W, null);
-        Adresse adresseSchueler3 = new Adresse("Tödistrasse", "2", "8800", "Thalwil", "044 720 12 15");
+        schueler3 = new Schueler("Carla", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), "044 720 12 15", null, null, Geschlecht.W, null);
+        Adresse adresseSchueler3 = new Adresse("Tödistrasse", "2", "8800", "Thalwil");
         schueler3.setAdresse(adresseSchueler3);
 
-        mutter1 = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", null, null);
-        Adresse adresseMutter1 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", "056 426 69 15");
+        mutter1 = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", "056 426 69 15", null, null);
+        Adresse adresseMutter1 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         mutter1.setAdresse(adresseMutter1);
-        mutter2 = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", null, null);
-        Adresse adresseMutter2 = new Adresse("Weidstrasse", "55", "8803", "Rüschlikon", "044 724 11 20");
+        mutter2 = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", "044 724 11 20", null, null);
+        Adresse adresseMutter2 = new Adresse("Weidstrasse", "55", "8803", "Rüschlikon");
         mutter2.setAdresse(adresseMutter2);
-        mutter3 = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", null, null);
-        Adresse adresseMutter3 = new Adresse("Tödistrasse", "4", "8800", "Thalwil", "044 720 12 17");
+        mutter3 = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", "044 720 12 17", null, null);
+        Adresse adresseMutter3 = new Adresse("Tödistrasse", "4", "8800", "Thalwil");
         mutter3.setAdresse(adresseMutter3);
-        mutter4 = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", null, null);
+        mutter4 = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", null, null, null);
 
-        vater1 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
-        Adresse adresseVater1 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", "056 426 69 15");
+        vater1 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null);
+        Adresse adresseVater1 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         vater1.setAdresse(adresseVater1);
-        vater2 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
-        Adresse adresseVater2 = new Adresse("Weidstrasse", "55", "8803", "Rüschlikon", "044 724 11 20");
+        vater2 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "044 724 11 20", null, null);
+        Adresse adresseVater2 = new Adresse("Weidstrasse", "55", "8803", "Rüschlikon");
         vater2.setAdresse(adresseVater2);
-        vater3 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
-        Adresse adresseVater3 = new Adresse("Tödistrasse", "6", "8800", "Thalwil", "044 720 12 19");
+        vater3 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "044 720 12 19", null, null);
+        Adresse adresseVater3 = new Adresse("Tödistrasse", "6", "8800", "Thalwil");
         vater3.setAdresse(adresseVater3);
-        vater4 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
+        vater4 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null, null);
 
-        rechnungsempfaengerDrittperson1 = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", null, null);
-        Adresse adresseRechnungsempfaengerDrittperson1 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", "056 426 69 15");
+        rechnungsempfaengerDrittperson1 = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", "056 426 69 15", null, null);
+        Adresse adresseRechnungsempfaengerDrittperson1 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         rechnungsempfaengerDrittperson1.setAdresse(adresseRechnungsempfaengerDrittperson1);
-        rechnungsempfaengerDrittperson2 = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", null, null);
-        Adresse adresseRechnungsempfaengerDrittperson2 = new Adresse("Weidstrasse", "55", "8803", "Rüschlikon", "044 724 11 20");
+        rechnungsempfaengerDrittperson2 = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", "044 724 11 20", null, null);
+        Adresse adresseRechnungsempfaengerDrittperson2 = new Adresse("Weidstrasse", "55", "8803", "Rüschlikon");
         rechnungsempfaengerDrittperson2.setAdresse(adresseRechnungsempfaengerDrittperson2);
-        rechnungsempfaengerDrittperson3 = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", null, null);
-        Adresse adresseRechnungsempfaengerDrittperson3 = new Adresse("Tödistrasse", "8", "8800", "Thalwil", "044 720 12 21");
+        rechnungsempfaengerDrittperson3 = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", "044 720 12 21", null, null);
+        Adresse adresseRechnungsempfaengerDrittperson3 = new Adresse("Tödistrasse", "8", "8800", "Thalwil");
         rechnungsempfaengerDrittperson3.setAdresse(adresseRechnungsempfaengerDrittperson3);
     }
 

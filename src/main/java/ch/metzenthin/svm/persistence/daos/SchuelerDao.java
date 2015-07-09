@@ -79,6 +79,9 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
             if (schueler.getNachname() != null) {
                 selectStatementSb.append(" lower(s.nachname) = lower(:nachname) and");
             }
+            if (schueler.getFestnetz() != null) {
+                selectStatementSb.append(" replace(s.festnetz, ' ', '') = replace(:festnetz, ' ', '') and");
+            }
             if (schueler.getNatel() != null) {
                 selectStatementSb.append(" replace(s.natel, ' ', '') = replace(:natel, ' ', '') and");
             }
@@ -97,9 +100,6 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
                 }
                 if (schueler.getAdresse().getOrt() != null) {
                     selectStatementSb.append(" lower(s.adresse.ort) = lower(:ort) and");
-                }
-                if (schueler.getAdresse().getFestnetz() != null) {
-                    selectStatementSb.append(" replace(s.adresse.festnetz, ' ', '') = replace(:festnetz, ' ', '') and");
                 }
             }
 
@@ -127,6 +127,9 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
             if (schueler.getVorname() != null) {
                 typedQuery.setParameter("nachname", schueler.getNachname());
             }
+            if (schueler.getFestnetz() != null) {
+                typedQuery.setParameter("festnetz", schueler.getFestnetz());
+            }
             if (schueler.getNatel() != null) {
                 typedQuery.setParameter("natel", schueler.getNatel());
             }
@@ -145,9 +148,6 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
                 }
                 if (schueler.getAdresse().getOrt() != null) {
                     typedQuery.setParameter("ort", schueler.getAdresse().getOrt());
-                }
-                if (schueler.getAdresse().getFestnetz() != null) {
-                    typedQuery.setParameter("festnetz", schueler.getAdresse().getFestnetz());
                 }
             }
         }

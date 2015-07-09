@@ -51,6 +51,9 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
             if (angehoeriger.getNachname() != null) {
                 selectStatementSb.append(" lower(a.nachname) = lower(:nachname) and");
             }
+            if (angehoeriger.getFestnetz() != null) {
+                selectStatementSb.append(" replace(a.festnetz, ' ', '') = replace(:festnetz, ' ', '') and");
+            }
             if (angehoeriger.getNatel() != null) {
                 selectStatementSb.append(" replace(a.natel, ' ', '') = replace(:natel, ' ', '') and");
             }
@@ -69,9 +72,6 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
                 }
                 if (angehoeriger.getAdresse().getOrt() != null) {
                     selectStatementSb.append(" lower(a.adresse.ort) = lower(:ort) and");
-                }
-                if (angehoeriger.getAdresse().getFestnetz() != null) {
-                    selectStatementSb.append(" replace(a.adresse.festnetz, ' ', '') = replace(:festnetz, ' ', '') and");
                 }
             }
 
@@ -99,6 +99,9 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
             if (angehoeriger.getVorname() != null) {
                 typedQuery.setParameter("nachname", angehoeriger.getNachname());
             }
+            if (angehoeriger.getFestnetz() != null) {
+                typedQuery.setParameter("festnetz", angehoeriger.getFestnetz());
+            }
             if (angehoeriger.getNatel() != null) {
                 typedQuery.setParameter("natel", angehoeriger.getNatel());
             }
@@ -117,9 +120,6 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
                 }
                 if (angehoeriger.getAdresse().getOrt() != null) {
                     typedQuery.setParameter("ort", angehoeriger.getAdresse().getOrt());
-                }
-                if (angehoeriger.getAdresse().getFestnetz() != null) {
-                    typedQuery.setParameter("festnetz", angehoeriger.getAdresse().getFestnetz());
                 }
             }
         }

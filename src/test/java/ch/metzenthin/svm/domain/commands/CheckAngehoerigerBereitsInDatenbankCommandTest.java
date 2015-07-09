@@ -45,8 +45,8 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
     @Test
     public void testExecute_NICHT_IN_DATENBANK() {
-        Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Armin", "Bruggisser", null, null);
-        Adresse adresse = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", "056 426 69 15");
+        Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Armin", "Bruggisser", "056 426 69 15", null, null);
+        Adresse adresse = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         angehoeriger.setAdresse(adresse);
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
@@ -61,8 +61,8 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
     @Test
     public void testExecute_EIN_EINTRAG_PASST() {
-        Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
-        Adresse adresse = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", null);  // ohne Festnetz
+        Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null, null);  // ohne Festnetz
+        Adresse adresse = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         angehoeriger.setAdresse(adresse);
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
@@ -80,7 +80,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
     @Test
     public void testExecute_MEHRERE_EINTRAEGE_PASSEN() {
-        Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);  // ohne Adresse
+        Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null, null);  // ohne Adresse
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
         try {
@@ -100,8 +100,8 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
     @Test
     public void testExecute_EIN_EINTRAG_PASST_TEILWEISE() {
-        Angehoeriger angehoeriger = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", null, null);
-        Adresse adresse1 = new Adresse("Wiesenstrasse", "55", "5430", "Wettingen", "056 426 69 15");   // andere Hausnummer
+        Angehoeriger angehoeriger = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", "056 426 69 15", null, null);
+        Adresse adresse1 = new Adresse("Wiesenstrasse", "55", "5430", "Wettingen");   // andere Hausnummer
         angehoeriger.setAdresse(adresse1);
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
@@ -119,8 +119,8 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
     @Test
     public void testExecute_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE() {
-        Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
-        Adresse adresse1 = new Adresse("Wiesenstrasse", "5", "8803", "Rüschlikon", null);  // anderer Ort
+        Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null, null);
+        Adresse adresse1 = new Adresse("Wiesenstrasse", "5", "8803", "Rüschlikon");  // anderer Ort
         angehoeriger.setAdresse(adresse1);
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
@@ -147,17 +147,17 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
             AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
 
-            Angehoeriger angehoeriger0 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
-            Adresse adresse0 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen", "056 426 69 15");
+            Angehoeriger angehoeriger0 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null);
+            Adresse adresse0 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
             angehoeriger0.setAdresse(adresse0);
             angehoerigerTestdata0 = angehoerigerDao.save(angehoeriger0);
 
-            Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null);
-            Adresse adresse1 = new Adresse("Freudenbergstrasse", "5", "8002", "Zürich", "056 426 69 15");
+            Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null);
+            Adresse adresse1 = new Adresse("Freudenbergstrasse", "5", "8002", "Zürich");
             angehoeriger1.setAdresse(adresse1);
             angehoerigerTestdata1 = angehoerigerDao.save(angehoeriger1);
 
-            Angehoeriger angehoeriger2 = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", null, null);
+            Angehoeriger angehoeriger2 = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", "056 426 69 15", null, null);
             angehoeriger2.setAdresse(adresse0);
             angehoerigerTestdata2 = angehoerigerDao.save(angehoeriger2);
 

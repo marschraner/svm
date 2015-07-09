@@ -22,11 +22,11 @@ public class SchuelerDatenblattModelImplTest {
 
     @Before
     public void setup() {
-        Schueler schueler = new Schueler("Vorname", "Nachname", new GregorianCalendar(2000, Calendar.MAY, 12), "Natel", "Email", Geschlecht.W, "Bemerkungen");
+        Schueler schueler = new Schueler("Vorname", "Nachname", new GregorianCalendar(2000, Calendar.MAY, 12), "Festnetz", "Natel", "Email", Geschlecht.W, "Bemerkungen");
         schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.APRIL, 1), null));
         schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2011, Calendar.JUNE, 1), new GregorianCalendar(2012, Calendar.DECEMBER, 31)));
         schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2009, Calendar.NOVEMBER, 11), new GregorianCalendar(2010, Calendar.MARCH, 31)));
-        Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Vorname Mutter", "Nachname Mutter", "Natel Mutter", "Email Mutter");
+        Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Vorname Mutter", "Nachname Mutter", "Festnetz Mutter", "Natel Mutter", "Email Mutter");
         schueler.setMutter(mutter);
         schueler.setRechnungsempfaenger(mutter);
         schuelerDatenblattModel = new SchuelerDatenblattModelImpl(schueler);
@@ -58,7 +58,7 @@ public class SchuelerDatenblattModelImplTest {
 
     @Test
     public void testGetMutterAsString() throws Exception {
-        assertEquals("Frau Vorname Mutter Nachname Mutter, Natel Mutter, Email Mutter", schuelerDatenblattModel.getMutterAsString());
+        assertEquals("Frau Vorname Mutter Nachname Mutter, Festnetz Mutter, Natel Mutter, Email Mutter", schuelerDatenblattModel.getMutterAsString());
     }
 
     @Test

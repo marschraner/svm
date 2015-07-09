@@ -29,8 +29,8 @@ public class Angehoeriger extends Person {
     public Angehoeriger() {
     }
 
-    public Angehoeriger(Anrede anrede, String vorname, String nachname, String natel, String email) {
-        super(anrede, vorname, nachname, null, natel, email);
+    public Angehoeriger(Anrede anrede, String vorname, String nachname, String festnetz, String natel, String email) {
+        super(anrede, vorname, nachname, null, festnetz, natel, email);
     }
 
     public Set<Schueler> getKinderVater() {

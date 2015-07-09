@@ -42,13 +42,13 @@ public class SaveSchuelerCommandTest {
     public void testExecute() throws Exception {
 
         // Schueler
-        Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, Geschlecht.W, "Schwester von Valentin");
-        Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich", "044 491 69 33");
+        Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
+        Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
         schueler.setAdresse(adresse);
         schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.MAY, 1), null));
 
         // Set Vater
-        Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null);
+        Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
         vater.setAdresse(adresse);
         schueler.setVater(vater);
 

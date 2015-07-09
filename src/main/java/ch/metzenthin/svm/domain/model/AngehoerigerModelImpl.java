@@ -100,8 +100,8 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
                     setStrasseHausnummer(angehoerigerOrigin.getAdresse().getStrasseHausnummer());
                     setPlz(angehoerigerOrigin.getAdresse().getPlz());
                     setOrt(angehoerigerOrigin.getAdresse().getOrt());
-                    setFestnetz(angehoerigerOrigin.getAdresse().getFestnetz());
                 }
+                setFestnetz(angehoerigerOrigin.getFestnetz());
                 setNatel(angehoerigerOrigin.getNatel());
                 setEmail(angehoerigerOrigin.getEmail());
                 setGeburtsdatum(asString(angehoerigerOrigin.getGeburtsdatum()));

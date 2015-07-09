@@ -180,7 +180,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
                 setStrasseHausnummer(schuelerOrigin.getAdresse().getStrasseHausnummer());
                 setPlz(schuelerOrigin.getAdresse().getPlz());
                 setOrt(schuelerOrigin.getAdresse().getOrt());
-                setFestnetz(schuelerOrigin.getAdresse().getFestnetz());
+                setFestnetz(schuelerOrigin.getFestnetz());
                 setNatel(schuelerOrigin.getNatel());
                 setEmail(schuelerOrigin.getEmail());
                 setBemerkungen(schuelerOrigin.getBemerkungen());
