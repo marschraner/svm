@@ -56,7 +56,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     protected Calendar getLatestValidDateGeburtstag() {
-        return getNYearsBeforeNow(2);
+        return getNYearsBeforeNow(1);
     }
 
     @Override
