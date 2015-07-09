@@ -27,6 +27,16 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
         return commandInvoker;
     }
 
+    private boolean bulkUpdate = false;
+
+    void setBulkUpdate(boolean bulkUpdate) {
+        this.bulkUpdate = bulkUpdate;
+    }
+
+    boolean isBulkUpdate() {
+        return bulkUpdate;
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     // Property change support
     //------------------------------------------------------------------------------------------------------------------
@@ -172,6 +182,9 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
      */
     @Override
     public void validate() throws SvmValidationException {
+        if (isBulkUpdate()) {
+            return;
+        }
         try {
             doValidate();
         } catch (SvmValidationException e) {

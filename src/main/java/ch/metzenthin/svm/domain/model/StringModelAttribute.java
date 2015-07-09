@@ -41,16 +41,20 @@ public class StringModelAttribute {
         return nullAsEmptyString(attributeAccessor.getValue());
     }
 
-    void setNewValue(boolean isRequired, String newValue) throws SvmValidationException {
+    void setNewValue(boolean isRequired, String newValue, boolean isBulkUpdate) throws SvmValidationException {
         String newValueTrimmed = (newValue != null) ? newValue.trim() : "";
-        checkRequired(isRequired, newValueTrimmed);
+        if (!isBulkUpdate) {
+            checkRequired(isRequired, newValueTrimmed);
+        }
         String newValueFormatted = newValueTrimmed;
         if (checkNotEmpty(newValueTrimmed)) {
             if (formatter != null) {
                 newValueFormatted = formatter.format(newValueTrimmed);
             }
-            checkMinLength(newValueFormatted);
-            checkMaxLength(newValueFormatted);
+            if (!isBulkUpdate) {
+                checkMinLength(newValueFormatted);
+                checkMaxLength(newValueFormatted);
+            }
         }
         String oldValue = getValue();
         attributeAccessor.setValue(emptyStringAsNull(newValueFormatted));

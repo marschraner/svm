@@ -90,7 +90,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     public void setGeburtsdatumSuchperiodeBeginn(String geburtsdatumSuchperiodeBeginn) throws SvmValidationException {
-        geburtsdatumSuchperiodeBeginnAttribute.setNewValue(false, geburtsdatumSuchperiodeBeginn, geburtsdatumSuchperiodeDateFormatString);
+        geburtsdatumSuchperiodeBeginnAttribute.setNewValue(false, geburtsdatumSuchperiodeBeginn, geburtsdatumSuchperiodeDateFormatString, isBulkUpdate());
     }
 
     private final CalendarModelAttribute geburtsdatumSuchperiodeEndeAttribute = new CalendarModelAttribute(
@@ -115,7 +115,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     public void setGeburtsdatumSuchperiodeEnde(String geburtsdatumSuchperiodeEnde) throws SvmValidationException {
-        geburtsdatumSuchperiodeEndeAttribute.setNewValue(false, geburtsdatumSuchperiodeEnde, geburtsdatumSuchperiodeDateFormatString);
+        geburtsdatumSuchperiodeEndeAttribute.setNewValue(false, geburtsdatumSuchperiodeEnde, geburtsdatumSuchperiodeDateFormatString, isBulkUpdate());
     }
 
     @Override
@@ -218,7 +218,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     @Override
     public void setStichtag(String stichtag) throws SvmValidationException {
-        stichtagModelAttribute.setNewValue(true, stichtag);
+        stichtagModelAttribute.setNewValue(true, stichtag, isBulkUpdate());
     }
 
     @Override

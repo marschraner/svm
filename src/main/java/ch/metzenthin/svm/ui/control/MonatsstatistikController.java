@@ -175,6 +175,7 @@ public class MonatsstatistikController extends AbstractController {
 
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
+        super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.MONAT_JAHR, evt)) {
             txtMonatJahr.setText(asString(monatsstatistikModel.getMonatJahr(), MONAT_JAHR_DATE_FORMAT_STRING));
         }

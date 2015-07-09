@@ -20,6 +20,7 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
     private static final Logger LOGGER = Logger.getLogger(AbstractController.class);
 
     private final Model model;
+    private boolean bulkUpdate = false;
 
     public AbstractController(Model model) {
         this.model = model;
@@ -33,7 +34,9 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
     @Override
     public final void propertyChange(PropertyChangeEvent evt) {
         doPropertyChange(evt);
-        validate();
+        if (!bulkUpdate) {
+            validate();
+        }
     }
 
     public boolean checkIsFieldChange(Field field, PropertyChangeEvent evt) {
@@ -45,7 +48,14 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
      *
      * @param evt Event
      */
-    abstract void doPropertyChange(PropertyChangeEvent evt);
+    void doPropertyChange(PropertyChangeEvent evt) {
+        if (checkIsFieldChange(Field.BULK_UPDATE, evt)) {
+            bulkUpdate = (boolean) evt.getNewValue();
+            if (!bulkUpdate) {
+                validate();
+            }
+        }
+    }
 
     protected void validate() {
         try {
@@ -53,6 +63,10 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
         } catch (SvmValidationException e) {
             return;
         }
+        validateModel();
+    }
+
+    private void validateModel() {
         try {
             model.validate();
         } catch (SvmValidationException e) {

@@ -63,7 +63,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setNachname(String nachname) throws SvmValidationException {
-        nachnameModelAttribute.setNewValue(isAdresseRequired(), nachname);
+        nachnameModelAttribute.setNewValue(isAdresseRequired(), nachname, isBulkUpdate());
     }
 
     private final StringModelAttribute vornameModelAttribute = new StringModelAttribute(
@@ -89,7 +89,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setVorname(String vorname) throws SvmValidationException {
-        vornameModelAttribute.setNewValue(isAdresseRequired(), vorname);
+        vornameModelAttribute.setNewValue(isAdresseRequired(), vorname, isBulkUpdate());
     }
 
     private final StringModelAttribute natelModelAttribute = new StringModelAttribute(
@@ -115,7 +115,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setNatel(String natel) throws SvmValidationException {
-        natelModelAttribute.setNewValue(false, natel);
+        natelModelAttribute.setNewValue(false, natel, isBulkUpdate());
     }
 
     private final StringModelAttribute emailModelAttribute = new StringModelAttribute(
@@ -141,7 +141,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setEmail(String email) throws SvmValidationException {
-        emailModelAttribute.setNewValue(false, email);
+        emailModelAttribute.setNewValue(false, email, isBulkUpdate());
     }
 
     protected Calendar getEarliestValidDateGeburtstag() {
@@ -149,7 +149,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     protected Calendar getLatestValidDateGeburtstag() {
-        return getNYearsBeforeNow(1);
+        return getNYearsBeforeNow(2);
     }
 
     private CalendarModelAttribute geburtsdatumModelAttribute = new CalendarModelAttribute(
@@ -175,7 +175,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setGeburtsdatum(String geburtsdatum) throws SvmValidationException {
-        geburtsdatumModelAttribute.setNewValue(false, geburtsdatum);
+        geburtsdatumModelAttribute.setNewValue(false, geburtsdatum, isBulkUpdate());
     }
 
     private final StringModelAttribute strasseHausnummerModelAttribute = new StringModelAttribute(
@@ -211,7 +211,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setStrasseHausnummer(String strasseHausnummer) throws SvmValidationException {
-        strasseHausnummerModelAttribute.setNewValue(isAdresseRequired(), strasseHausnummer);
+        strasseHausnummerModelAttribute.setNewValue(isAdresseRequired(), strasseHausnummer, isBulkUpdate());
     }
 
     private final StringModelAttribute plzModelAttribute = new StringModelAttribute(
@@ -237,7 +237,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setPlz(String plz) throws SvmValidationException {
-        plzModelAttribute.setNewValue(isAdresseRequired(), plz);
+        plzModelAttribute.setNewValue(isAdresseRequired(), plz, isBulkUpdate());
     }
 
     private final StringModelAttribute ortModelAttribute = new StringModelAttribute(
@@ -263,7 +263,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setOrt(String ort) throws SvmValidationException {
-        ortModelAttribute.setNewValue(isAdresseRequired(), ort);
+        ortModelAttribute.setNewValue(isAdresseRequired(), ort, isBulkUpdate());
     }
 
     private final StringModelAttribute festnetzModelAttribute = new StringModelAttribute(
@@ -289,11 +289,14 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setFestnetz(String festnetz) throws SvmValidationException {
-        festnetzModelAttribute.setNewValue(false, festnetz);
+        festnetzModelAttribute.setNewValue(false, festnetz, isBulkUpdate());
     }
 
     @Override
     public void initAdresse(AdresseModel adresseModel) {
+        if (isBulkUpdate()) {
+            return;
+        }
         if (adresseModel == null) {
             strasseHausnummerModelAttribute.initValue(null);
             plzModelAttribute.initValue(null);

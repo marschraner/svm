@@ -46,13 +46,15 @@ public class CalendarModelAttribute {
         return nullAsEmptyString(asString(getValue(), dateFormatString));
     }
 
-    void setNewValue(boolean isRequired, String newValue) throws SvmValidationException {
-        setNewValue(isRequired, newValue, Converter.DD_MM_YYYY_DATE_FORMAT_STRING);
+    void setNewValue(boolean isRequired, String newValue, boolean isBulkUpdate) throws SvmValidationException {
+        setNewValue(isRequired, newValue, Converter.DD_MM_YYYY_DATE_FORMAT_STRING, isBulkUpdate);
     }
 
-    void setNewValue(boolean isRequired, String newValue, String dateFormatString) throws SvmValidationException {
+    void setNewValue(boolean isRequired, String newValue, String dateFormatString, boolean isBulkUpdate) throws SvmValidationException {
         String newValueTrimmed = (newValue != null) ? newValue.trim() : "";
-        checkRequired(isRequired, newValueTrimmed);
+        if (!isBulkUpdate) {
+            checkRequired(isRequired, newValueTrimmed);
+        }
         String newValueFormatted = newValueTrimmed;
         Calendar newValueAsCalendar = null;
         if (checkNotEmpty(newValueTrimmed)) {
@@ -65,7 +67,7 @@ public class CalendarModelAttribute {
                 modelAttributeListener.invalidate();
                 throw new SvmValidationException(1200, e.getMessage(), field);
             }
-            if (dateFormatString.contains("y")) {
+            if (!isBulkUpdate && dateFormatString.contains("y")) {
                 checkEarliestValidDate(newValueAsCalendar, dateFormatString);
                 checkLatestValidDate(newValueAsCalendar, dateFormatString);
             }

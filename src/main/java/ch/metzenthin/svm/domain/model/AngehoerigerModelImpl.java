@@ -90,6 +90,8 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     @Override
     public void initializeCompleted() {
         if (angehoerigerOrigin != null) {
+            setBulkUpdate(true);
+            firePropertyChange(Field.BULK_UPDATE, false, true);
             try {
                 setAnrede(angehoerigerOrigin.getAnrede());
                 setNachname(angehoerigerOrigin.getNachname());
@@ -109,8 +111,11 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
                 setIsGleicheAdresseWieSchueler(isGleicheAdresseWieSchuelerOrigin);
             } catch (SvmValidationException ignore) {
             }
+            setBulkUpdate(false);
+            firePropertyChange(Field.BULK_UPDATE, true, false);
+        } else {
+            super.initializeCompleted();
         }
-        super.initializeCompleted();
     }
 
 }

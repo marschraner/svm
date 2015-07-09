@@ -58,7 +58,7 @@ public class CommandInvokerImpl implements CommandInvoker {
     public void beginTransaction() {
         LOGGER.trace("beginTransaction aufgerufen");
         try {
-            if (entityManager == null) {
+            if (entityManager == null || !entityManager.isOpen()) {
                 entityManager = entityManagerFactory.createEntityManager();
             }
             entityManager.getTransaction().begin();
@@ -102,6 +102,7 @@ public class CommandInvokerImpl implements CommandInvoker {
         } finally {
             if (entityManager != null && entityManager.isOpen()) {
                 entityManager.close();
+                entityManager = null;
             }
         }
     }
@@ -133,6 +134,7 @@ public class CommandInvokerImpl implements CommandInvoker {
         LOGGER.trace("closeSession aufgerufen");
         if (entityManager != null && entityManager.isOpen()) {
             entityManager.close();
+            entityManager = null;
         }
     }
 
@@ -141,7 +143,7 @@ public class CommandInvokerImpl implements CommandInvoker {
         LOGGER.trace("executeCommandWithinSession aufgerufen");
         genericDaoCommand.setEntityManager(entityManager);
         genericDaoCommand.execute();
-        LOGGER.trace("executeCommandWithinTransaction durchgeführt");
+        LOGGER.trace("executeCommandWithinSession durchgeführt");
         return genericDaoCommand;
     }
 

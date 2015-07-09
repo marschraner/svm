@@ -540,6 +540,7 @@ public abstract class PersonController extends AbstractController {
 
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
+        super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.NACHNAME, evt)) {
             txtNachname.setText(personModel.getNachname());
         } else if (checkIsFieldChange(Field.VORNAME, evt)) {

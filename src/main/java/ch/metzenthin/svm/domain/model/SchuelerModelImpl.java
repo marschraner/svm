@@ -56,12 +56,12 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     protected Calendar getLatestValidDateGeburtstag() {
-        return getNYearsBeforeNow(1);
+        return getNYearsBeforeNow(2);
     }
 
     @Override
     public void setGeburtsdatum(String geburtsdatum) throws SvmValidationException {
-        if (!checkNotEmpty(geburtsdatum)) {
+        if (!isBulkUpdate() && !checkNotEmpty(geburtsdatum)) {
             invalidate();
             throw new SvmRequiredException(Field.GEBURTSDATUM);
         }
@@ -91,7 +91,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public void setAnmeldedatum(String anmeldedatum) throws SvmValidationException {
-        anmeldedatumModelAttribute.setNewValue(true, anmeldedatum);
+        anmeldedatumModelAttribute.setNewValue(true, anmeldedatum, isBulkUpdate());
     }
 
     private final CalendarModelAttribute abmeldedatumModelAttribute = new CalendarModelAttribute(
@@ -117,7 +117,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public void setAbmeldedatum(String abmeldedatum) throws SvmValidationException {
-        abmeldedatumModelAttribute.setNewValue(false, abmeldedatum);
+        abmeldedatumModelAttribute.setNewValue(false, abmeldedatum, isBulkUpdate());
     }
 
     private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(
@@ -143,7 +143,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     @Override
     public void setBemerkungen(String bemerkungen) throws SvmValidationException {
-        bemerkungenModelAttribute.setNewValue(false, bemerkungen);
+        bemerkungenModelAttribute.setNewValue(false, bemerkungen, isBulkUpdate());
     }
 
     @Override
@@ -169,6 +169,8 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     @Override
     public void initializeCompleted() {
         if (schuelerOrigin != null) {
+            setBulkUpdate(true);
+            firePropertyChange(Field.BULK_UPDATE, false, true);
             try {
                 setAnrede(schuelerOrigin.getAnrede());
                 setNachname(schuelerOrigin.getNachname());
@@ -182,13 +184,16 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
                 setNatel(schuelerOrigin.getNatel());
                 setEmail(schuelerOrigin.getEmail());
                 setBemerkungen(schuelerOrigin.getBemerkungen());
-                // setAbmeldedatum(schuelerOrigin.getAnmeldungen()); // $$$ todo
-                // setAnmeldedatum(schuelerOrigin.getAnmeldungen()); // $$$ todo
-            } catch (SvmValidationException e) {
-                throw new RuntimeException(e);
+                setAnmeldedatum(asString(schuelerOrigin.getAnmeldungen().get(0).getAnmeldedatum()));
+                setAbmeldedatum(asString(schuelerOrigin.getAnmeldungen().get(0).getAbmeldedatum()));
+            } catch (SvmValidationException ignore) {
+                ignore.printStackTrace();
             }
+            setBulkUpdate(false);
+            firePropertyChange(Field.BULK_UPDATE, true, false);
+        } else {
+            super.initializeCompleted();
         }
-        super.initializeCompleted();
     }
 
     @Override

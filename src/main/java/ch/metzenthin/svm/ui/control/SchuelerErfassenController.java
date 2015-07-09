@@ -122,6 +122,7 @@ public class SchuelerErfassenController {
 
     public void setBtnSpeichern(JButton btnSpeichern) {
         this.btnSpeichern = btnSpeichern;
+        btnSpeichern.setEnabled(false);
         btnSpeichern.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -217,7 +218,7 @@ public class SchuelerErfassenController {
 
             @Override
             public void visit(SchuelerErfassenUnerwarteterFehlerResult schuelerErfassenUnerwarteterFehlerResult) {
-                dialog[0] = new SchuelerErfassenUnerwarteterFehlerDialog(schuelerErfassenUnerwarteterFehlerResult);
+                throw new RuntimeException(schuelerErfassenUnerwarteterFehlerResult.getFehler());
             }
 
             @Override

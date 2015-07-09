@@ -47,8 +47,8 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
 
     @Override
     public void setDispensationsbeginn(String dispensationsbeginn) throws SvmValidationException {
-        dispensationsbeginnModelAttribute.setNewValue(true, dispensationsbeginn);
-        if (this.dispensationsbeginn != null && dispensationsende != null && this.dispensationsbeginn.after(dispensationsende)) {
+        dispensationsbeginnModelAttribute.setNewValue(true, dispensationsbeginn, isBulkUpdate());
+        if (!isBulkUpdate() && this.dispensationsbeginn != null && dispensationsende != null && this.dispensationsbeginn.after(dispensationsende)) {
             this.dispensationsbeginn = null;
             invalidate();
             throw new SvmValidationException(2012, "Keine gültige Periode", Field.DISPENSATIONSBEGINN);
@@ -78,8 +78,8 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
 
     @Override
     public void setDispensationsende(String dispensationsende) throws SvmValidationException {
-        dispensationsendeModelAttribute.setNewValue(false, dispensationsende);
-        if (dispensationsbeginn != null && this.dispensationsende != null && dispensationsbeginn.after(this.dispensationsende)) {
+        dispensationsendeModelAttribute.setNewValue(false, dispensationsende, isBulkUpdate());
+        if (!isBulkUpdate() && dispensationsbeginn != null && this.dispensationsende != null && dispensationsbeginn.after(this.dispensationsende)) {
             this.dispensationsende = null;
             invalidate();
             throw new SvmValidationException(2013, "Keine gültige Periode", Field.DISPENSATIONSENDE);
@@ -109,7 +109,7 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
 
     @Override
     public void setVoraussichtlicheDauer(String voraussichtlicheDauer) throws SvmValidationException {
-        voraussichtlicheDauerModelAttribute.setNewValue(false, voraussichtlicheDauer);
+        voraussichtlicheDauerModelAttribute.setNewValue(false, voraussichtlicheDauer, isBulkUpdate());
     }
 
     private final StringModelAttribute grundModelAttribute = new StringModelAttribute(
@@ -135,7 +135,7 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
 
     @Override
     public void setGrund(String grund) throws SvmValidationException {
-        grundModelAttribute.setNewValue(true, grund);
+        grundModelAttribute.setNewValue(true, grund, isBulkUpdate());
     }
 
     @Override

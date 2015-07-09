@@ -58,7 +58,7 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
 
     @Override
     public void setMonatJahr(String monatJahr) throws SvmValidationException {
-        monatJahrModelAttribute.setNewValue(true, monatJahr, MONAT_JAHR_DATE_FORMAT_STRING);
+        monatJahrModelAttribute.setNewValue(true, monatJahr, MONAT_JAHR_DATE_FORMAT_STRING, isBulkUpdate());
     }
 
     @Override

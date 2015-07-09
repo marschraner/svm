@@ -288,6 +288,7 @@ public class DispensationErfassenController extends AbstractController {
 
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
+        super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.DISPENSATIONSBEGINN, evt)) {
             txtDispensationsbeginn.setText(asString(dispensationErfassenModel.getDispensationsbeginn()));
         }

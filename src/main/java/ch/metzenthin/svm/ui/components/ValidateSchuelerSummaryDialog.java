@@ -145,7 +145,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
     }
 
     private void setGeschwister() {
-        if (validateSchuelerSummaryResult.getGeschwister() == null || validateSchuelerSummaryResult.getGeschwister().isEmpty()) {
+        if (validateSchuelerSummaryResult.getGeschwister() != null && !validateSchuelerSummaryResult.getGeschwister().isEmpty()) {
             StringBuilder geschwisterStb = new StringBuilder("<html>");
             for (Schueler geschwister : validateSchuelerSummaryResult.getGeschwister()) {
                 if (geschwisterStb.length() > 6) {
@@ -155,8 +155,9 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
             }
             geschwisterStb.append("</html>");
             geschwisterValue.setText(geschwisterStb.toString());
+        } else {
+            geschwisterValue.setText("-");
         }
-        geschwisterValue.setText("-");
     }
 
     private void setSchuelerGleicherRechnungsempfaenger() {
@@ -164,7 +165,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
             lblAndereSchuelerGleicherRechnungsempfaenger1.setText("Andere Schüler mit gleicher");
             lblAndereSchuelerGleicherRechnungsempfaenger2.setText("Rechnungsempfängerin:");
         }
-        if (validateSchuelerSummaryResult.getAndereSchueler() == null || validateSchuelerSummaryResult.getAndereSchueler().isEmpty()) {
+        if (validateSchuelerSummaryResult.getAndereSchueler() != null && !validateSchuelerSummaryResult.getAndereSchueler().isEmpty()) {
             StringBuilder schuelerGleicherRechnungsempfaengerStb = new StringBuilder("<html>");
             for (Schueler schueler : validateSchuelerSummaryResult.getAndereSchueler()) {
                 if (schuelerGleicherRechnungsempfaengerStb.length() > 6) {
@@ -174,8 +175,9 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
             }
             schuelerGleicherRechnungsempfaengerStb.append("</html>");
             schuelerGleicherRecĥnungsempfaengerValue.setText(schuelerGleicherRechnungsempfaengerStb.toString());
+        } else {
+            schuelerGleicherRecĥnungsempfaengerValue.setText("-");
         }
-        schuelerGleicherRecĥnungsempfaengerValue.setText("-");
     }
 
     private void onSpeichern() {
