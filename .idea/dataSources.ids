@@ -1,12 +1,177 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
   <data-source name="MySQL - svmtest@localhost" uuid="be9dc88c-af53-440e-b26a-0a9810ffd17b">
-    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+    <database-info product="MySQL" version="5.5.43-0ubuntu0.14.04.1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
+    <schema name="" catalog="svmtest"/>
+    <table name="person" schema="" catalog="svmtest" type="TABLE">
+      <column name="personid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="birth" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="firstname" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="lastname" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="personid"/>
+    </table>
   </data-source>
   <data-source name="MySQL - root@localhost" uuid="ec950d53-b57e-4233-bf4c-c1857a9740f9">
-    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+    <database-info product="MySQL" version="5.5.43-0ubuntu0.14.04.1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
+    <schema name="" catalog="svm"/>
+    <table name="Adresse" schema="" catalog="svm" type="TABLE">
+      <column name="adresse_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="strasse" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hausnummer" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
+      <column name="plz" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ort" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="festnetz" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="adresse_id"/>
+      <exported-key name="Person_ibfk_1" table="Person" schema="" catalog="svm" columns="adresse_id"/>
+    </table>
+    <table name="Angehoeriger" schema="" catalog="svm" type="TABLE">
+      <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="person_id"/>
+      <foreign-key name="Angehoeriger_ibfk_1" columns="person_id" ref-table="Person" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="Schueler_ibfk_2" table="Schueler" schema="" catalog="svm" columns="vater_id"/>
+      <exported-key name="Schueler_ibfk_3" table="Schueler" schema="" catalog="svm" columns="mutter_id"/>
+      <exported-key name="Schueler_ibfk_4" table="Schueler" schema="" catalog="svm" columns="rechnungsempfaenger_id"/>
+    </table>
+    <table name="Anmeldung" schema="" catalog="svm" type="TABLE">
+      <column name="anmeldung_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="anmeldedatum" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="abmeldedatum" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="schueler_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="anmeldung_id"/>
+      <foreign-key name="Anmeldung_ibfk_1" columns="schueler_id" ref-table="Schueler" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="Dispensation" schema="" catalog="svm" type="TABLE">
+      <column name="dispensation_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="dispensationsbeginn" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="dispensationsende" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="grund" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="schueler_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="dispensation_id"/>
+      <foreign-key name="Dispensation_ibfk_1" columns="schueler_id" ref-table="Schueler" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="Person" schema="" catalog="svm" type="TABLE">
+      <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="discriminator" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
+      <column name="anrede" sqlType="VARCHAR" precision="5" scale="0" nullable="true" jdbcType="12"/>
+      <column name="vorname" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="nachname" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="geburtsdatum" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="natel" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="adresse_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="person_id"/>
+      <foreign-key name="Person_ibfk_1" columns="adresse_id" ref-table="Adresse" ref-schema="" ref-catalog="svm" ref-columns="adresse_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="Angehoeriger_ibfk_1" table="Angehoeriger" schema="" catalog="svm" columns="person_id"/>
+      <exported-key name="Schueler_ibfk_1" table="Schueler" schema="" catalog="svm" columns="person_id"/>
+    </table>
+    <table name="Schueler" schema="" catalog="svm" type="TABLE">
+      <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="geschlecht" sqlType="VARCHAR" precision="1" scale="0" nullable="false" jdbcType="12"/>
+      <column name="vater_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="mutter_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="rechnungsempfaenger_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="bemerkungen" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="person_id"/>
+      <foreign-key name="Schueler_ibfk_1" columns="person_id" ref-table="Person" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Schueler_ibfk_2" columns="vater_id" ref-table="Angehoeriger" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Schueler_ibfk_3" columns="mutter_id" ref-table="Angehoeriger" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Schueler_ibfk_4" columns="rechnungsempfaenger_id" ref-table="Angehoeriger" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="Anmeldung_ibfk_1" table="Anmeldung" schema="" catalog="svm" columns="schueler_id"/>
+      <exported-key name="Dispensation_ibfk_1" table="Dispensation" schema="" catalog="svm" columns="schueler_id"/>
+    </table>
   </data-source>
   <data-source name="MySQL - svm@localhost" uuid="a50a8aba-80b6-4854-a358-9d38f4fd7cd9">
-    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+    <database-info product="MySQL" version="5.5.43-0ubuntu0.14.04.1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
+    <schema name="" catalog="svm"/>
+    <table name="Adresse" schema="" catalog="svm" type="TABLE">
+      <column name="adresse_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="strasse" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hausnummer" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
+      <column name="plz" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ort" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="festnetz" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="adresse_id"/>
+      <exported-key name="Person_ibfk_1" table="Person" schema="" catalog="svm" columns="adresse_id"/>
+    </table>
+    <table name="Angehoeriger" schema="" catalog="svm" type="TABLE">
+      <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="person_id"/>
+      <foreign-key name="Angehoeriger_ibfk_1" columns="person_id" ref-table="Person" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="Schueler_ibfk_2" table="Schueler" schema="" catalog="svm" columns="vater_id"/>
+      <exported-key name="Schueler_ibfk_3" table="Schueler" schema="" catalog="svm" columns="mutter_id"/>
+      <exported-key name="Schueler_ibfk_4" table="Schueler" schema="" catalog="svm" columns="rechnungsempfaenger_id"/>
+    </table>
+    <table name="Anmeldung" schema="" catalog="svm" type="TABLE">
+      <column name="anmeldung_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="anmeldedatum" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="abmeldedatum" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="schueler_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="anmeldung_id"/>
+      <foreign-key name="Anmeldung_ibfk_1" columns="schueler_id" ref-table="Schueler" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="Dispensation" schema="" catalog="svm" type="TABLE">
+      <column name="dispensation_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="dispensationsbeginn" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="dispensationsende" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="voraussichtliche_dauer" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="grund" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="schueler_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="dispensation_id"/>
+      <foreign-key name="Dispensation_ibfk_1" columns="schueler_id" ref-table="Schueler" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="Person" schema="" catalog="svm" type="TABLE">
+      <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="discriminator" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
+      <column name="anrede" sqlType="VARCHAR" precision="5" scale="0" nullable="true" jdbcType="12"/>
+      <column name="vorname" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="nachname" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="geburtsdatum" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="natel" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="adresse_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="person_id"/>
+      <foreign-key name="Person_ibfk_1" columns="adresse_id" ref-table="Adresse" ref-schema="" ref-catalog="svm" ref-columns="adresse_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="Angehoeriger_ibfk_1" table="Angehoeriger" schema="" catalog="svm" columns="person_id"/>
+      <exported-key name="Schueler_ibfk_1" table="Schueler" schema="" catalog="svm" columns="person_id"/>
+    </table>
+    <table name="Schueler" schema="" catalog="svm" type="TABLE">
+      <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="geschlecht" sqlType="VARCHAR" precision="1" scale="0" nullable="false" jdbcType="12"/>
+      <column name="vater_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="mutter_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="rechnungsempfaenger_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="bemerkungen" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="person_id"/>
+      <foreign-key name="Schueler_ibfk_1" columns="person_id" ref-table="Person" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Schueler_ibfk_2" columns="vater_id" ref-table="Angehoeriger" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Schueler_ibfk_3" columns="mutter_id" ref-table="Angehoeriger" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Schueler_ibfk_4" columns="rechnungsempfaenger_id" ref-table="Angehoeriger" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="Anmeldung_ibfk_1" table="Anmeldung" schema="" catalog="svm" columns="schueler_id"/>
+      <exported-key name="Dispensation_ibfk_1" table="Dispensation" schema="" catalog="svm" columns="schueler_id"/>
+    </table>
   </data-source>
 </component>
