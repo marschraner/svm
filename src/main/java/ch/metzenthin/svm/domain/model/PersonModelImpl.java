@@ -149,7 +149,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     protected Calendar getLatestValidDateGeburtstag() {
-        return getNYearsBeforeNow(2);
+        return getNYearsBeforeNow(1);
     }
 
     private CalendarModelAttribute geburtsdatumModelAttribute = new CalendarModelAttribute(

@@ -70,7 +70,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     private final CalendarModelAttribute anmeldedatumModelAttribute = new CalendarModelAttribute(
             this,
-            Field.ANMELDEDATUM, getNMonthsBeforeNow(3), new GregorianCalendar(),
+            Field.ANMELDEDATUM, getNYearsBeforeNow(20), new GregorianCalendar(),
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
