@@ -38,4 +38,9 @@ public class ModelFactoryImpl implements ModelFactory {
         return new MonatsstatistikModelImpl(commandInvoker);
     }
 
+    @Override
+    public DispensationErfassenModel createDispensationErfassenModel() {
+        return new DispensationErfassenModelImpl(commandInvoker);
+    }
+
 }

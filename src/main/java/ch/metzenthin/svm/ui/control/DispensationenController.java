@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.components.DispensationErfassenDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 
 import javax.swing.*;
@@ -22,7 +23,8 @@ public class DispensationenController {
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final int selectedRow;
     private JTable dispensationenTable;
-    private JButton btnEintragBearbeiten;
+    private JButton btnBearbeiten;
+    private JButton btnLoeschen;
     private JButton btnAbbrechen;
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
@@ -48,7 +50,7 @@ public class DispensationenController {
         dispensationenTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
-                    onEintragBearbeiten();
+                    onBearbeiten();
                 }
             }
         });
@@ -58,41 +60,62 @@ public class DispensationenController {
         lblTitel.setText("Dispensationen " + schuelerDatenblattModel.getSchuelerVorname() + " " + schuelerDatenblattModel.getSchuelerNachname());
     }
 
-    public void setBtnNeuenEintrag(JButton btnNeuenEintrag) {
-        btnNeuenEintrag.addActionListener(new ActionListener() {
+    public void setBtnNeu(JButton btnNeu) {
+        btnNeu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onNeuenEintrag();
+                onNeu();
             }
         });
     }
 
-    private void onNeuenEintrag() {
+    private void onNeu() {
+        DispensationErfassenDialog dispensationErfassenDialog = new DispensationErfassenDialog(svmContext, "Neue Dispensation");
+        dispensationErfassenDialog.pack();
+        dispensationErfassenDialog.setVisible(true);
+    }
+
+    public void setBtnBearbeiten(JButton btnBearbeiten) {
+        this.btnBearbeiten = btnBearbeiten;
+        enableBtnBearbeiten(false);
+        btnBearbeiten.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onBearbeiten();
+            }
+        });
+    }
+
+    private void enableBtnBearbeiten(boolean enabled) {
+        btnBearbeiten.setEnabled(enabled);
+    }
+
+    private void onBearbeiten() {
         //TODO
     }
 
-    public void setBtnEintragBearbeiten(JButton btnEintragBearbeiten) {
-        this.btnEintragBearbeiten = btnEintragBearbeiten;
-        enableBtnDatenblatt(false);
-        btnEintragBearbeiten.addActionListener(new ActionListener() {
+    public void setBtnLoeschen(JButton btnLoeschen) {
+        this.btnLoeschen = btnLoeschen;
+        enableBtnLoeschen(false);
+        btnLoeschen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onEintragBearbeiten();
+                onLoeschen();
             }
         });
     }
 
-    private void enableBtnDatenblatt(boolean enabled) {
-        btnEintragBearbeiten.setEnabled(enabled);
+    private void enableBtnLoeschen(boolean enabled) {
+        btnLoeschen.setEnabled(enabled);
     }
 
-    private void onEintragBearbeiten() {
+    private void onLoeschen() {
         //TODO
     }
 
     private void onListSelection() {
         int selectedRowIndex = dispensationenTable.getSelectedRow();
-        enableBtnDatenblatt(selectedRowIndex >= 0);
+        enableBtnBearbeiten(selectedRowIndex >= 0);
     }
 
     public void setBtnZurueck(JButton btnZurueck) {

@@ -49,4 +49,24 @@ public class SimpleValidator {
         return anO.equals(anotherOString);
     }
 
+    public static boolean checkIfTwoPeriodsOverlap(Calendar startTime1, Calendar endTime1, Calendar startTime2, Calendar endTime2) {
+        // EndTime1 = null oder endTime2 = null bedeutet, dass die Perioden offen sind
+        if (endTime1 == null && endTime2 == null) {
+            return true;
+        }
+        if (endTime1 == null) {
+            return !endTime2.before(startTime1);
+        }
+        if (endTime2 == null) {
+            return !endTime1.before(startTime2);
+        }
+        if (startTime1.before(endTime2) && endTime1.after(startTime2)) {
+            return true;
+        }
+		if (startTime1.equals(endTime2) || endTime1.equals(startTime2)) {
+			return true;
+		}
+		return false;
+	}
+
 }

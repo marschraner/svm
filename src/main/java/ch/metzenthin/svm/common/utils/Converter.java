@@ -223,7 +223,7 @@ public class Converter {
     }
 
     public static Calendar getNMonthsAfterNow(int n) {
-        return getNYearsBeforeNow(-n);
+        return getNMonthsBeforeNow(-n);
     }
 
     public static int getCharacterOccurrencesInString(String s, char c) {

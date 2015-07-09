@@ -47,7 +47,11 @@ public enum Field {
     WOCHENTAG("Wochentag"),
     VON("von"),
     BIS("bis"),
-    CODES("Codes");
+    CODES("Codes"),
+    DISPENSATIONSBEGINN("Dispensationsbeginn"),
+    DISPENSATIONSENDE("Dispensationsende"),
+    VORAUSSICHTLICHE_DAUER("voraussichtliche Dauer"),
+    GRUND("Grund");
 
     private String name;
 

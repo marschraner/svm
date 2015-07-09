@@ -25,6 +25,11 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
         super(commandInvoker);
     }
 
+    static {
+        MONAT_JAHR_INIT = new GregorianCalendar();
+        MONAT_JAHR_INIT.add(Calendar.MONTH, -1);
+    }
+
     private final CalendarModelAttribute monatJahrModelAttribute = new CalendarModelAttribute(
             this,
             Field.MONAT_JAHR, new GregorianCalendar(2000, Calendar.JANUARY, 1), new GregorianCalendar(),
@@ -40,11 +45,6 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
                 }
             }
     );
-
-    static {
-        MONAT_JAHR_INIT = new GregorianCalendar();
-        MONAT_JAHR_INIT.add(Calendar.MONTH, -1);
-    }
 
     @Override
     public Calendar getMonatJahr() {
