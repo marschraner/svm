@@ -29,6 +29,12 @@
               <text value="Datenblatt"/>
             </properties>
           </component>
+          <component id="2263c" class="javax.swing.JButton" binding="btnZurueck">
+            <constraints/>
+            <properties>
+              <text value="Zurück"/>
+            </properties>
+          </component>
           <component id="39491" class="javax.swing.JButton" binding="btnAbbrechen">
             <constraints/>
             <properties>

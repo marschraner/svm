@@ -56,14 +56,18 @@ public class CommandInvokerImpl implements CommandInvoker {
 
     @Override
     public void beginTransaction() {
-        LOGGER.trace("commitTransaction aufgerufen");
+        LOGGER.trace("beginTransaction aufgerufen");
         try {
-            if (entityManager != null) {
+            if (entityManager == null) {
                 entityManager = entityManagerFactory.createEntityManager();
             }
             entityManager.getTransaction().begin();
+            LOGGER.trace("beginTransaction durchgeführt");
         } catch (RuntimeException e) {
-            EntityTransaction tx = entityManager.getTransaction();
+            EntityTransaction tx = null;
+            if (entityManager != null) {
+                tx = entityManager.getTransaction();
+            }
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }

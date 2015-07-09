@@ -59,6 +59,7 @@ public class SchuelerSuchenController extends PersonController {
 
     private final SvmContext svmContext;
     private SchuelerSuchenModel schuelerSuchenModel;
+    private ActionListener zurueckListener;
 
     public SchuelerSuchenController(SvmContext svmContext, SchuelerSuchenModel schuelerSuchenModel) {
         super(schuelerSuchenModel);
@@ -272,7 +273,8 @@ public class SchuelerSuchenController extends PersonController {
         SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
         schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
         schuelerSuchenResultPanel.addCloseListener(closeListener);
-        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
+        schuelerSuchenResultPanel.addZurueckListener(zurueckListener);
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[] {schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
     }
 
     private void onSchuelerSuchenModelCompleted(boolean completed) {
@@ -292,6 +294,10 @@ public class SchuelerSuchenController extends PersonController {
 
     public void addNextPanelListener(ActionListener nextPanelListener) {
         this.nextPanelListener = nextPanelListener;
+    }
+
+    public void addZurueckListener(ActionListener zurueckListener) {
+        this.zurueckListener = zurueckListener;
     }
 
     void enableDisableFields() {

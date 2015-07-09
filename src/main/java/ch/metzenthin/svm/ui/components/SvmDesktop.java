@@ -41,6 +41,8 @@ public class SvmDesktop extends JFrame implements ActionListener {
             }
         });
 
+        setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), "Schüler suchen");
+
         // Display the window.
         setVisible(true);
     }
@@ -97,6 +99,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             commandInvoker.closeSession();
             activeComponent.setVisible(false);
         }
+
         if ("schuelerErfassen".equals(e.getActionCommand())) {
             SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext);
             schuelerErfassenPanel.addCloseListener(new ActionListener() {
@@ -105,31 +108,10 @@ public class SvmDesktop extends JFrame implements ActionListener {
                     onFrameAbbrechen();
                 }
             });
-            activeComponent = schuelerErfassenPanel.$$$getRootComponent$$$();
-            getContentPane().add(activeComponent);
-            activeComponent.setVisible(true);
-            setTitle("Neuen Schüler erfassen");
-            revalidate();
+            setAndShowActivePanel(schuelerErfassenPanel.$$$getRootComponent$$$(), "Neuen Schüler erfassen");
 
         } else if ("schuelerSuchen".equals(e.getActionCommand())) {
-            SchuelerSuchenPanel schuelerSuchenPanel = new SchuelerSuchenPanel(svmContext);
-            schuelerSuchenPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
-            schuelerSuchenPanel.addNextPanelListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onNextPanelAvailable(e.getSource());
-                }
-            });
-            activeComponent = schuelerSuchenPanel.$$$getRootComponent$$$();
-            getContentPane().add(activeComponent);
-            activeComponent.setVisible(true);
-            setTitle("Schüler suchen");
-            revalidate();
+            setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), "Schüler suchen");
 
         } else if ("monatsstatistik".equals(e.getActionCommand())) {
             MonatsstatistikPanel anAbmeldestatistikPanel = new MonatsstatistikPanel(svmContext);
@@ -145,15 +127,36 @@ public class SvmDesktop extends JFrame implements ActionListener {
                     onNextPanelAvailable(e.getSource());
                 }
             });
-            activeComponent = anAbmeldestatistikPanel.$$$getRootComponent$$$();
-            getContentPane().add(activeComponent);
-            activeComponent.setVisible(true);
-            setTitle("Monatsstatistik");
-            revalidate();
+            setAndShowActivePanel(anAbmeldestatistikPanel.$$$getRootComponent$$$(), "Monatsstatistik");
 
         } else { // beenden
             quit();
         }
+    }
+
+    private SchuelerSuchenPanel createSchuelerSuchenPanel() {
+        SchuelerSuchenPanel schuelerSuchenPanel = new SchuelerSuchenPanel(svmContext);
+        schuelerSuchenPanel.addCloseListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onFrameAbbrechen();
+            }
+        });
+        schuelerSuchenPanel.addNextPanelListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onNextPanelAvailable(e.getSource());
+            }
+        });
+        return schuelerSuchenPanel;
+    }
+
+    private void setAndShowActivePanel(JComponent component, String title) {
+        activeComponent = component;
+        getContentPane().add(activeComponent);
+        activeComponent.setVisible(true);
+        setTitle(title);
+        revalidate();
     }
 
     private void onNextPanelAvailable(Object eventSource) {
@@ -161,11 +164,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
         JComponent nextComponent = (JComponent) eventSourceArray[0];
         activeComponent.setVisible(false);
         getContentPane().remove(activeComponent);
-        activeComponent = nextComponent;
-        getContentPane().add(activeComponent);
-        activeComponent.setVisible(true);
-        setTitle((String) eventSourceArray[1]);
-        revalidate();
+        setAndShowActivePanel(nextComponent, (String) eventSourceArray[1]);
     }
 
     private void onFrameAbbrechen() {

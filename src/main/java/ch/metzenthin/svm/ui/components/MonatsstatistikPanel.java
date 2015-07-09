@@ -7,6 +7,7 @@ import ch.metzenthin.svm.ui.control.MonatsstatistikController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
@@ -25,6 +26,7 @@ public class MonatsstatistikPanel {
     private JLabel errLblMonatJahr;
     private MonatsstatistikController monatsstatistikController;
     private MonatsstatistikModel monatsstatistikModel;
+    private ActionListener nextPanelListener;
 
     public MonatsstatistikPanel(SvmContext svmContext) {
         $$$setupUI$$$();
@@ -66,14 +68,25 @@ public class MonatsstatistikPanel {
         monatsstatistikController.setBtnSuchen(btnSuchen);
         monatsstatistikController.setBtnAbbrechen(btnAbbrechen);
         monatsstatistikController.setErrLblMonatJahr(errLblMonatJahr);
+        monatsstatistikController.addZurueckListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onZurueck();
+            }
+        });
+    }
+
+    private void onZurueck() {
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{$$$getRootComponent$$$(), "Schüler suchen"}, ActionEvent.ACTION_PERFORMED, "Zurück zu Schüler suchen"));
     }
 
     public void addCloseListener(ActionListener actionListener) {
         monatsstatistikController.addCloseListener(actionListener);
     }
 
-    public void addNextPanelListener(ActionListener actionListener) {
-        monatsstatistikController.addNextPanelListener(actionListener);
+    public void addNextPanelListener(ActionListener nextPanelListener) {
+        this.nextPanelListener = nextPanelListener;
+        monatsstatistikController.addNextPanelListener(nextPanelListener);
     }
 
 

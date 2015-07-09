@@ -16,11 +16,13 @@ public class SchuelerSuchenResultPanel {
     private JPanel panel;
     private JButton btnDatenblatt;
     private JButton btnAbbrechen;
+    private JButton btnZurueck;
     private final SchuelerSuchenResultController schuelerSuchenResultController;
 
     public SchuelerSuchenResultPanel(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel) {
         schuelerSuchenResultController = new SchuelerSuchenResultController(svmContext, schuelerSuchenTableModel, schuelerSuchenResultTable);
         schuelerSuchenResultController.setBtnDatenblatt(btnDatenblatt);
+        schuelerSuchenResultController.setBtnZurueck(btnZurueck);
         schuelerSuchenResultController.setBtnAbbrechen(btnAbbrechen);
     }
 
@@ -30,6 +32,10 @@ public class SchuelerSuchenResultPanel {
 
     public void addCloseListener(ActionListener closeListener) {
         schuelerSuchenResultController.addCloseListener(closeListener);
+    }
+
+    public void addZurueckListener(ActionListener zurueckListener) {
+        schuelerSuchenResultController.addZurueckListener(zurueckListener);
     }
 
     {
@@ -59,6 +65,9 @@ public class SchuelerSuchenResultPanel {
         btnDatenblatt = new JButton();
         btnDatenblatt.setText("Datenblatt");
         panel1.add(btnDatenblatt);
+        btnZurueck = new JButton();
+        btnZurueck.setText("Zurück");
+        panel1.add(btnZurueck);
         btnAbbrechen = new JButton();
         btnAbbrechen.setText("Abbrechen");
         panel1.add(btnAbbrechen);

@@ -41,6 +41,7 @@ public class MonatsstatistikController extends AbstractController {
     private JRadioButton radioBtnDispensationen;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
+    private ActionListener zurueckListener;
 
     public MonatsstatistikController(SvmContext svmContext, MonatsstatistikModel monatsstatistikModel) {
         super(monatsstatistikModel);
@@ -145,6 +146,7 @@ public class MonatsstatistikController extends AbstractController {
         SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
         schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
         schuelerSuchenResultPanel.addCloseListener(closeListener);
+        schuelerSuchenResultPanel.addZurueckListener(zurueckListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
     }
 
@@ -165,6 +167,10 @@ public class MonatsstatistikController extends AbstractController {
 
     public void addNextPanelListener(ActionListener nextPanelListener) {
         this.nextPanelListener = nextPanelListener;
+    }
+
+    public void addZurueckListener(ActionListener zurueckListener) {
+        this.zurueckListener = zurueckListener;
     }
 
     @Override

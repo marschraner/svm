@@ -23,6 +23,8 @@ public class SchuelerSuchenResultController {
     private ActionListener nextPanelListener;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
+    private JButton btnZurueck;
+    private ActionListener zurueckListener;
 
     public SchuelerSuchenResultController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable) {
         this.svmContext = svmContext;
@@ -70,6 +72,7 @@ public class SchuelerSuchenResultController {
         SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, schuelerSuchenResultTable.getSelectedRow());
         schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
         schuelerDatenblattPanel.addCloseListener(closeListener);
+        schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));
     }
 
@@ -95,4 +98,23 @@ public class SchuelerSuchenResultController {
     public void addCloseListener(ActionListener closeListener) {
         this.closeListener = closeListener;
     }
+
+    public void setBtnZurueck(JButton btnZurueck) {
+        this.btnZurueck = btnZurueck;
+        btnZurueck.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onZurueck();
+            }
+        });
+    }
+
+    private void onZurueck() {
+        zurueckListener.actionPerformed(new ActionEvent(btnZurueck, ActionEvent.ACTION_PERFORMED, "Zurück"));
+    }
+
+    public void addZurueckListener(ActionListener zurueckListener) {
+        this.zurueckListener = zurueckListener;
+    }
+
 }
