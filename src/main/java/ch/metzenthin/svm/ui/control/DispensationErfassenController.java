@@ -99,7 +99,7 @@ public class DispensationErfassenController extends AbstractController {
     }
 
     private void setModelDispensationsbeginn() {
-        errLblDispensationsbeginn.setVisible(false);
+        makeErrorLabelInvisible(Field.DISPENSATIONSBEGINN);
         try {
             dispensationErfassenModel.setDispensationsbeginn(txtDispensationsbeginn.getText());
         } catch (SvmRequiredException e) {
@@ -139,7 +139,7 @@ public class DispensationErfassenController extends AbstractController {
     }
 
     private void setModelDispensationsende() {
-        errLblDispensationsende.setVisible(false);
+        makeErrorLabelInvisible(Field.DISPENSATIONSENDE);
         try {
             dispensationErfassenModel.setDispensationsende(txtDispensationsende.getText());
         } catch (SvmRequiredException e) {
@@ -179,7 +179,7 @@ public class DispensationErfassenController extends AbstractController {
     }
 
     private void setModelVoraussichtlicheDauer() {
-        errLblVoraussichtlicheDauer.setVisible(false);
+        makeErrorLabelInvisible(Field.VORAUSSICHTLICHE_DAUER);
         try {
             dispensationErfassenModel.setVoraussichtlicheDauer(txtVoraussichtlicheDauer.getText());
         } catch (SvmRequiredException e) {
@@ -219,7 +219,7 @@ public class DispensationErfassenController extends AbstractController {
     }
 
     private void setModelGrund() {
-        errLblGrund.setVisible(false);
+        makeErrorLabelInvisible(Field.GRUND);
         try {
             dispensationErfassenModel.setGrund(txtGrund.getText());
         } catch (SvmRequiredException e) {
