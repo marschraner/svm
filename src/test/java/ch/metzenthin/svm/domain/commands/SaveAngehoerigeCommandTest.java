@@ -24,13 +24,12 @@ import static org.junit.Assert.assertTrue;
  */
 public class SaveAngehoerigeCommandTest {
 
-    private CommandInvoker commandInvoker;
+    private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
         entityManagerFactory = Persistence.createEntityManagerFactory("svm");
-        commandInvoker = new CommandInvokerImpl(entityManagerFactory);
     }
 
     @After

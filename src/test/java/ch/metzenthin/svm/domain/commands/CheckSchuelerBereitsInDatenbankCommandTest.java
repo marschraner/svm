@@ -25,14 +25,13 @@ import static org.junit.Assert.*;
  */
 public class CheckSchuelerBereitsInDatenbankCommandTest {
 
-    private CommandInvoker commandInvoker;
+    private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
     private Schueler schuelerTestdata;
 
     @Before
     public void setUp() throws Exception {
         entityManagerFactory = Persistence.createEntityManagerFactory("svm");
-        commandInvoker = new CommandInvokerImpl(entityManagerFactory);
         createTestdata();
     }
 

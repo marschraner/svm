@@ -1,13 +1,11 @@
 package ch.metzenthin.svm;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.commands.Command;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.CommandInvokerImpl;
 import ch.metzenthin.svm.domain.model.ModelFactoryImpl;
 import ch.metzenthin.svm.ui.components.SvmDesktop;
 
-import javax.persistence.Persistence;
 import javax.swing.*;
 
 /*
@@ -63,7 +61,7 @@ public class Svm {
     }
 
     private static CommandInvoker createCommandInvoker() {
-        return new CommandInvokerImpl(Persistence.createEntityManagerFactory("svm"));
+        return new CommandInvokerImpl();
     }
 
 }

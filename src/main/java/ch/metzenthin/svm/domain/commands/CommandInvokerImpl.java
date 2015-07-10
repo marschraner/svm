@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 
 /**
  * @author Hans Stamm
@@ -14,15 +15,8 @@ public class CommandInvokerImpl implements CommandInvoker {
 
     private static final Logger LOGGER = Logger.getLogger(CommandInvokerImpl.class);
 
-    private EntityManagerFactory entityManagerFactory;
+    private EntityManagerFactory entityManagerFactory = null;
     private EntityManager entityManager = null;
-
-    public CommandInvokerImpl() {
-    }
-
-    public CommandInvokerImpl(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
-    }
 
     @Override
     public Command executeCommand(Command command) {
@@ -32,9 +26,11 @@ public class CommandInvokerImpl implements CommandInvoker {
 
     @Override
     public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) throws SvmDbException {
+        EntityManagerFactory entityManagerFactory = null;
         EntityManager entityManager = null;
         EntityTransaction tx = null;
         try {
+            entityManagerFactory = Persistence.createEntityManagerFactory("svm");
             entityManager = entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             tx.begin();
@@ -49,6 +45,7 @@ public class CommandInvokerImpl implements CommandInvoker {
         } finally {
             if (entityManager != null) {
                 entityManager.close();
+                entityManagerFactory.close();
             }
         }
         return genericDaoCommand;
@@ -59,6 +56,7 @@ public class CommandInvokerImpl implements CommandInvoker {
         LOGGER.trace("beginTransaction aufgerufen");
         try {
             if (entityManager == null || !entityManager.isOpen()) {
+                entityManagerFactory = Persistence.createEntityManagerFactory("svm");
                 entityManager = entityManagerFactory.createEntityManager();
             }
             entityManager.getTransaction().begin();
@@ -103,6 +101,8 @@ public class CommandInvokerImpl implements CommandInvoker {
             if (entityManager != null && entityManager.isOpen()) {
                 entityManager.close();
                 entityManager = null;
+                entityManagerFactory.close();
+                entityManagerFactory = null;
             }
         }
     }
@@ -125,6 +125,7 @@ public class CommandInvokerImpl implements CommandInvoker {
     public void openSession() {
         LOGGER.trace("openSession aufgerufen");
         if (entityManager == null || !entityManager.isOpen()) {
+            entityManagerFactory = Persistence.createEntityManagerFactory("svm");
             entityManager = entityManagerFactory.createEntityManager();
         }
     }
@@ -135,6 +136,8 @@ public class CommandInvokerImpl implements CommandInvoker {
         if (entityManager != null && entityManager.isOpen()) {
             entityManager.close();
             entityManager = null;
+            entityManagerFactory.close();
+            entityManagerFactory = null;
         }
     }
 
