@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.persistence.daos;
 
-import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
@@ -20,10 +19,7 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
     @Override
     public void remove(Schueler schueler) {
 
-        // Entferne Schüler von Adresse, Vater, Mutter und Rechnungsempfänger
-        Adresse adresse = schueler.getAdresse();
-        adresse.getPersonen().remove(schueler);
-
+        // Entferne Schüler von Vater, Mutter und Rechnungsempfänger
         Angehoeriger vater = schueler.getVater();
         if (vater != null) {
             vater.getKinderVater().remove(schueler);
@@ -40,12 +36,7 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
         // Lösche Schüler aus DB
         entityManager.remove(schueler);
 
-        // Lösche Adresse, Vater, Mutter und Rechnungsempfänger aus DB, falls diese nicht mehr referenziert werden
-        if (adresse.getPersonen().size() == 0) {
-            AdresseDao adresseDao = new AdresseDao(entityManager);
-            adresseDao.remove(adresse);
-        }
-
+        // Lösche Vater, Mutter und Rechnungsempfänger aus DB, falls diese nicht mehr referenziert werden
         AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
         if (vater != null && entityManager.contains(vater) && vater.getKinderVater().size() == 0 && vater.getSchuelerRechnungsempfaenger().size() == 0) {
             angehoerigerDao.remove(vater);

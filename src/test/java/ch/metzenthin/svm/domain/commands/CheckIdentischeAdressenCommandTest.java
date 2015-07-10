@@ -90,9 +90,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin, Mutter, Vater und Rechnungsempfänger Drittperson"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
     }
 
     // 2.
@@ -107,9 +104,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin, Mutter und Vater"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Rechnungsempfänger"));
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // ohne Drittperson
         schueler.setRechnungsempfaenger(vater1);
@@ -117,8 +111,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin, Mutter und Vater"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
     }
 
     @Test
@@ -132,9 +124,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin, Mutter und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Vater"));
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // Vater ohne Adresse
         schueler.setVater(vater4);
@@ -142,8 +131,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin, Mutter und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // ohne Vater
         schueler.setVater(null);
@@ -151,8 +138,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin, Mutter und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
     }
 
     @Test
@@ -166,9 +151,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin, Vater und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Mutter"));
-        assertEquals(schueler.getVater().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getVater().getAdresse(), schueler.getMutter().getAdresse());
-        assertEquals(schueler.getVater().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // Mutter ohne Adresse
         schueler.setMutter(mutter4);
@@ -176,8 +158,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin, Vater und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getVater().getAdresse(), schueler.getAdresse());
-        assertEquals(schueler.getVater().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // ohne Mutter
         schueler.setMutter(null);
@@ -185,8 +165,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin, Vater und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getVater().getAdresse(), schueler.getAdresse());
-        assertEquals(schueler.getVater().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
     }
 
     @Test
@@ -199,9 +177,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Mutter, Vater und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schüler"));
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
     }
 
     // 3.a
@@ -216,9 +191,6 @@ public class CheckIdentischeAdressenCommandTest {
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Mutter"));
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Vater und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
-        assertEquals(schueler.getVater().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
     }
 
     @Test
@@ -232,9 +204,6 @@ public class CheckIdentischeAdressenCommandTest {
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Vater"));
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Mutter und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getVater().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
     }
 
     @Test
@@ -248,9 +217,6 @@ public class CheckIdentischeAdressenCommandTest {
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Mutter und Vater"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getRechnungsempfaenger().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
     }
 
     // 3.b
@@ -265,10 +231,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Mutter"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Vater und Rechnungsempfänger"));
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
-        assertNotEquals(vater2.getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // mit Drittperson, Vater ohne Adresse
         schueler.setVater(vater4);
@@ -276,8 +238,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Mutter"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Rechnungsempfänger"));
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // mit Drittperson, ohne Vater
         schueler.setVater(null);
@@ -285,8 +245,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Mutter"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Rechnungsempfänger"));
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // ohne Drittperson, Vater mit Adresse
         schueler.setRechnungsempfaenger(mutter1);
@@ -295,8 +253,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Mutter"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Vater"));
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
 
         // ohne Drittperson, Vater ohne Adresse
         schueler.setVater(vater4);
@@ -304,7 +260,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Mutter"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
 
         // ohne Drittperson, ohne Vater
         schueler.setVater(null);
@@ -312,7 +267,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Mutter"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
     }
 
     @Test
@@ -326,10 +280,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Vater"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Mutter und Rechnungsempfänger"));
-        assertEquals(schueler.getVater().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getVater().getAdresse(), schueler.getMutter().getAdresse());
-        assertNotEquals(schueler.getVater().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // mit Drittperson, Mutter ohne Adresse
         schueler.setMutter(mutter4);
@@ -337,8 +287,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Vater"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Rechnungsempfänger"));
-        assertEquals(schueler.getVater().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getVater().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // mit Drittperson, ohne Mutter
         schueler.setMutter(null);
@@ -346,8 +294,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Vater"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Rechnungsempfänger"));
-        assertEquals(schueler.getVater().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getVater().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // ohne Drittperson, Mutter mit Adresse
         schueler.setMutter(mutter2);
@@ -356,8 +302,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Vater"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Mutter"));
-        assertEquals(schueler.getVater().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getVater().getAdresse(), schueler.getMutter().getAdresse());
 
         // ohne Drittperson, Mutter ohne Adresse
         schueler.setMutter(mutter4);
@@ -365,7 +309,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Vater"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getVater().getAdresse(), schueler.getAdresse());
 
         // ohne Drittperson, ohne Mutter
         schueler.setMutter(null);
@@ -373,7 +316,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Vater"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getVater().getAdresse(), schueler.getAdresse());
     }
 
     @Test
@@ -387,10 +329,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Mutter und Vater"));
-        assertEquals(schueler.getRechnungsempfaenger().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getMutter().getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getVater().getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
 
         // Mutter mit Adresse, Vater ohne Adresse
         schueler.setVater(vater4);
@@ -398,8 +336,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Mutter"));
-        assertEquals(schueler.getRechnungsempfaenger().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getMutter().getAdresse());
 
         // Mutter mit Adresse, ohne Vater
         schueler.setVater(null);
@@ -407,8 +343,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Mutter"));
-        assertEquals(schueler.getRechnungsempfaenger().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getMutter().getAdresse());
 
         // Mutter ohne Adresse, Vater mit Adresse
         schueler.setMutter(mutter4);
@@ -417,8 +351,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Vater"));
-        assertEquals(schueler.getRechnungsempfaenger().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getVater().getAdresse());
 
         // Mutter und Vater ohne Adresse
         schueler.setVater(vater4);
@@ -426,7 +358,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getRechnungsempfaenger().getAdresse(), schueler.getAdresse());
 
         // Mutter ohne Adresse, ohne Vater
         schueler.setVater(null);
@@ -434,7 +365,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getRechnungsempfaenger().getAdresse(), schueler.getAdresse());
 
         // ohne Mutter, Vater mit Adresse
         schueler.setMutter(null);
@@ -443,8 +373,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Vater"));
-        assertEquals(schueler.getRechnungsempfaenger().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getVater().getAdresse());
 
         // ohne Mutter, Vater ohne Adresse
         schueler.setVater(vater4);
@@ -452,7 +380,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getRechnungsempfaenger().getAdresse(), schueler.getAdresse());
 
         // ohne Mutter, ohne Vater
         schueler.setVater(null);
@@ -460,7 +387,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Schülerin und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().isEmpty());
-        assertEquals(schueler.getRechnungsempfaenger().getAdresse(), schueler.getAdresse());
     }
 
     @Test
@@ -474,10 +400,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Mutter und Vater"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin und Rechnungsempfänger"));
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // ohne Drittperson
         schueler.setRechnungsempfaenger(mutter2);
@@ -485,8 +407,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Mutter und Vater"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schüler"));
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
     }
 
     @Test
@@ -500,10 +420,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Mutter und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin und Vater"));
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getVater().getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // Vater ohne Adresse
         schueler.setVater(vater4);
@@ -511,8 +427,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Mutter und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schüler"));
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // ohne Vater
         schueler.setVater(null);
@@ -520,8 +434,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Mutter und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schüler"));
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getAdresse());
-        assertEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
     }
 
     @Test
@@ -535,10 +447,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Vater und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin und Mutter"));
-        assertNotEquals(schueler.getAdresse(), schueler.getMutter().getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getVater().getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
-        assertEquals(schueler.getVater().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // Mutter ohne Adresse
         schueler.setMutter(mutter4);
@@ -546,8 +454,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Vater und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schüler"));
-        assertNotEquals(schueler.getAdresse(), schueler.getVater().getAdresse());
-        assertEquals(schueler.getVater().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // ohne Mutter
         schueler.setMutter(null);
@@ -555,8 +461,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().contains("Vater und Rechnungsempfänger"));
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schüler"));
-        assertNotEquals(schueler.getAdresse(), schueler.getVater().getAdresse());
-        assertEquals(schueler.getVater().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
     }
 
     // 4.
@@ -570,12 +474,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().isEmpty());
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin, Mutter, Vater und Rechnungsempfänger"));
-        assertNotEquals(schueler.getAdresse(), schueler.getMutter().getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getVater().getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
-        assertNotEquals(schueler.getVater().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
     }
 
     @Test
@@ -589,9 +487,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().isEmpty());
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin, Mutter und Rechnungsempfänger"));
-        assertNotEquals(schueler.getAdresse(), schueler.getMutter().getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // ohne Vater
         schueler.setVater(null);
@@ -599,9 +494,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().isEmpty());
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin, Mutter und Rechnungsempfänger"));
-        assertNotEquals(schueler.getAdresse(), schueler.getMutter().getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
     }
 
     @Test
@@ -615,9 +507,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().isEmpty());
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin, Vater und Rechnungsempfänger"));
-        assertNotEquals(schueler.getAdresse(), schueler.getVater().getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
-        assertNotEquals(schueler.getVater().getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // ohne Mutter
         schueler.setMutter(null);
@@ -638,7 +527,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().isEmpty());
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin und Rechnungsempfänger"));
-        assertNotEquals(schueler.getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // Mutter ohne Adresse, ohne Vater
         schueler.setVater(null);
@@ -646,7 +534,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().isEmpty());
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin und Rechnungsempfänger"));
-        assertNotEquals(schueler.getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // ohne Mutter, Vater ohne Adresse
         schueler.setMutter(null);
@@ -655,7 +542,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().isEmpty());
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin und Rechnungsempfänger"));
-        assertNotEquals(schueler.getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
 
         // ohne Mutter und ohne Vater
         schueler.setVater(null);
@@ -663,7 +549,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().isEmpty());
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin und Rechnungsempfänger"));
-        assertNotEquals(schueler.getAdresse(), schueler.getRechnungsempfaenger().getAdresse());
     }
 
     @Test
@@ -676,9 +561,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().isEmpty());
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin, Mutter und Vater"));
-        assertNotEquals(schueler.getAdresse(), schueler.getMutter().getAdresse());
-        assertNotEquals(schueler.getAdresse(), schueler.getVater().getAdresse());
-        assertNotEquals(schueler.getMutter().getAdresse(), schueler.getVater().getAdresse());
     }
 
     @Test
@@ -692,7 +574,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().isEmpty());
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin und Mutter"));
-        assertNotEquals(schueler.getAdresse(), schueler.getMutter().getAdresse());
 
         // ohne Vater
         schueler.setVater(null);
@@ -700,7 +581,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().isEmpty());
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin und Mutter"));
-        assertNotEquals(schueler.getAdresse(), schueler.getMutter().getAdresse());
     }
 
     @Test
@@ -714,7 +594,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().isEmpty());
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin und Vater"));
-        assertNotEquals(schueler.getAdresse(), schueler.getVater().getAdresse());
 
         // ohne Mutter
         schueler.setMutter(null);
@@ -722,7 +601,6 @@ public class CheckIdentischeAdressenCommandTest {
         commandInvoker.executeCommand(checkIdentischeAdressenCommand);
         assertTrue(checkIdentischeAdressenCommand.getIdentischeAdressen().isEmpty());
         assertTrue(checkIdentischeAdressenCommand.getAbweichendeAdressen().contains("Schülerin und Vater"));
-        assertNotEquals(schueler.getAdresse(), schueler.getVater().getAdresse());
     }
 
 }

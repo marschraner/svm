@@ -47,7 +47,7 @@ public abstract class Person {
     @Column(name = "email", nullable = true)
     private String email;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "adresse_id", nullable = true)
     private Adresse adresse;
 
@@ -189,17 +189,6 @@ public abstract class Person {
     }
 
     public void setAdresse(Adresse adresse) {
-        if (this.adresse != null) {
-            deleteAdresse(this.adresse);
-        }
-        if (adresse != null) {
-            adresse.getPersonen().add(this);
-        }
         this.adresse = adresse;
-    }
-
-    public void deleteAdresse(Adresse adresse) {
-        adresse.getPersonen().remove(this);
-        this.adresse = null;
     }
 }

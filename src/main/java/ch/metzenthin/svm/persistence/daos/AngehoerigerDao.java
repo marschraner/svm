@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.persistence.daos;
 
-import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 
 import javax.persistence.EntityManager;
@@ -18,18 +17,8 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
 
     public void remove(Angehoeriger angehoeriger) {
 
-        // Remove angehoeriger from adresse
-        Adresse adresse = angehoeriger.getAdresse();
-        adresse.getPersonen().remove(angehoeriger);
-
-        // Remove angehoeriger from db
+        // Lösche Angehörigen von DB
         entityManager.remove(angehoeriger);
-
-        // Remove adresse from db if it is not referenced any more
-        if (adresse.getPersonen().size() == 0) {
-            AdresseDao adresseDao = new AdresseDao(entityManager);
-            adresseDao.remove(adresse);
-        }
     }
 
     /**

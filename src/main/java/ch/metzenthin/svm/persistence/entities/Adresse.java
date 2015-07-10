@@ -2,8 +2,6 @@ package ch.metzenthin.svm.persistence.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
@@ -23,20 +21,17 @@ public class Adresse {
     @Column(name = "last_updated")
     private Timestamp version;
 
-    @Column(name = "strasse", nullable = true)
+    @Column(name = "strasse", nullable = false)
     private String strasse;
 
     @Column(name = "hausnummer", nullable = true)
     private String hausnummer;
 
-    @Column(name = "plz", nullable = true)
+    @Column(name = "plz", nullable = false)
     private String plz;
 
-    @Column(name = "ort", nullable = true)
+    @Column(name = "ort", nullable = false)
     private String ort;
-
-    @OneToMany(mappedBy = "adresse")
-    private Set<Person> personen = new HashSet<>();
 
     public Adresse() {
     }
@@ -127,10 +122,6 @@ public class Adresse {
 
     public void setOrt(String ort) {
         this.ort = ort;
-    }
-
-    public Set<Person> getPersonen() {
-        return personen;
     }
 
     public String getStrasseHausnummer() {

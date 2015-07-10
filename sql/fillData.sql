@@ -28,9 +28,9 @@ INSERT INTO Adresse (adresse_id, strasse, hausnummer, plz, ort) VALUES
     (2, 'Eidmattstrasse', '20', '8032', 'Zürich'),
     (3, 'Eidmattstrasse', '20', '8032', 'Zürich'),
     (4, 'Eidmattstrasse', '20', '8032', 'Zürich'),
+    (5, 'Forchstrasse', '232', '8032', 'Zürich'),
     (6, 'Forchstrasse', '232', '8032', 'Zürich'),
-    (7, 'Forchstrasse', '232', '8032', 'Zürich'),
-    (8, 'Forchstrasse', '232', '8032', 'Zürich');
+    (7, 'Forchstrasse', '232', '8032', 'Zürich');
 
 SELECT * FROM Adresse;
 
@@ -41,12 +41,12 @@ SELECT * FROM Adresse;
 INSERT INTO Person (person_id, discriminator, anrede, vorname, nachname, geburtsdatum, festnetz, natel, email, adresse_id) VALUES 
     (1, 'Angehoeriger', 'FRAU', 'Käthi', 'Schraner', NULL, '044 720 85 51', NULL, 'hschraner@bluewin.ch', 1),
     (2, 'Angehoeriger', 'HERR', 'Martin', 'Schraner', NULL, '044 364 36 30', '079 273 77 20', 'marschraner@gmail.com', 2),
-    (3, 'Angehoeriger', 'FRAU', 'Sibyll', 'Metzenthin', NULL, NULL, '044 271 53 69', 'billa.metz@bluewin.ch', 2),
-    (4, 'Schueler', 'KEINE', 'Jonas', 'Metzenthin', '2014-06-24', '044 271 53 69', NULL, NULL, 2),
+    (3, 'Angehoeriger', 'FRAU', 'Sibyll', 'Metzenthin', NULL, NULL, '044 271 53 69', 'billa.metz@bluewin.ch', 3),
+    (4, 'Schueler', 'KEINE', 'Jonas', 'Metzenthin', '2014-06-24', '044 271 53 69', NULL, NULL, 4),
     (5, 'Angehoeriger', 'HERR', 'Kurt', 'Juchli', NULL, NULL, NULL, 'kurt.juchli@zuerich.ch', NULL),
-    (6, 'Angehoeriger', 'FRAU', 'Eva', 'Juchli', NULL, NULL, '044 271 53 69', 'juchlischraner@gmail.com', 3),
-    (7, 'Schueler', 'KEINE', 'Lilly', 'Juchli', '2008-01-13', '044 271 53 69', NULL, NULL, 3),
-    (8, 'Schueler', 'KEINE', 'Anna', 'Juchli', '2010-03-05', '044 271 53 69', NULL, NULL, 3);
+    (6, 'Angehoeriger', 'FRAU', 'Eva', 'Juchli', NULL, NULL, '044 271 53 69', 'juchlischraner@gmail.com', 5),
+    (7, 'Schueler', 'KEINE', 'Lilly', 'Juchli', '2008-01-13', '044 271 53 69', NULL, NULL, 6),
+    (8, 'Schueler', 'KEINE', 'Anna', 'Juchli', '2010-03-05', '044 271 53 69', NULL, NULL, 7);
 
 SELECT * FROM Person;
 
