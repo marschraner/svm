@@ -202,7 +202,12 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
             if (isDispensationAktuell(dispensation)) {
                 String dauer;
                 if (dispensation.getDispensationsende() == null) {
-                    dauer = "seit " + asString(dispensation.getDispensationsbeginn());
+                    if (dispensation.getDispensationsbeginn().after(new GregorianCalendar())) {
+                        dauer = "ab " + asString(dispensation.getDispensationsbeginn());
+                    } else {
+                        dauer = "seit " + asString(dispensation.getDispensationsbeginn());
+                    }
+
                     if (dispensation.getVoraussichtlicheDauer() != null) {
                         dauer = dauer + ", voraussichtlich " + dispensation.getVoraussichtlicheDauer();
                     }

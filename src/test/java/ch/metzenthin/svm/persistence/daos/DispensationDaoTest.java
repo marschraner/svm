@@ -66,7 +66,7 @@ public class DispensationDaoTest {
             // Set Rechnungsempfänger
             schueler.setRechnungsempfaenger(vater);
 
-            Dispensation dispensation = new Dispensation(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2015, Calendar.MARCH, 31), "Zu klein");
+            Dispensation dispensation = new Dispensation(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2015, Calendar.MARCH, 31), null, "Zu klein");
             schueler.addDispensation(dispensation);
 
             entityManager.persist(schueler);
@@ -102,7 +102,7 @@ public class DispensationDaoTest {
             // Set Rechnungsempfänger
             schueler.setRechnungsempfaenger(vater);
 
-            Dispensation dispensation = new Dispensation(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2015, Calendar.MARCH, 31), "Zu klein");
+            Dispensation dispensation = new Dispensation(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2015, Calendar.MARCH, 31), "3 Jahre", "Zu klein");
             schueler.addDispensation(dispensation);
 
             dispensationDao.save(dispensation, schueler);
@@ -114,6 +114,7 @@ public class DispensationDaoTest {
 
             assertEquals("Dispensationsbeginn falsch", new GregorianCalendar(2014, Calendar.JANUARY, 15), dispensationFound.getDispensationsbeginn());
             assertEquals("Dispensationsende falsch", new GregorianCalendar(2015, Calendar.MARCH, 31), dispensationFound.getDispensationsende());
+            assertEquals("Voraussichtliche Dauer falsch", "3 Jahre", dispensationFound.getVoraussichtlicheDauer());
             assertEquals("Grund falsch", "Zu klein", dispensationFound.getGrund());
 
         } finally {

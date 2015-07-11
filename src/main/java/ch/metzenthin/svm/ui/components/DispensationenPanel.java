@@ -33,7 +33,7 @@ public class DispensationenPanel {
     public DispensationenPanel(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
         $$$setupUI$$$();
         initDispensationenTable(dispensationenTableModel);
-        createDispensationenController(svmContext, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
+        createDispensationenController(svmContext, dispensationenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
     }
 
     private void initDispensationenTable(DispensationenTableModel dispensationenTableModel) {
@@ -41,8 +41,8 @@ public class DispensationenPanel {
         UiComponentsUtils.setJTableWidthAsPercentages(dispensationenTable, 0.15, 0.15, 0.3, 0.4);
     }
 
-    private void createDispensationenController(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
-        dispensationenController = new DispensationenController(svmContext, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
+    private void createDispensationenController(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
+        dispensationenController = new DispensationenController(svmContext.getModelFactory().createDispensationenModel(), svmContext, dispensationenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
         dispensationenController.setDispensationenTable(dispensationenTable);
         dispensationenController.setLblTitel(lblTitel);
         dispensationenController.setBtnNeu(btnNeu);

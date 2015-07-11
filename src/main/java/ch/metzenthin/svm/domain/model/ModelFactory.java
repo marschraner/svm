@@ -9,6 +9,6 @@ public interface ModelFactory {
     SchuelerErfassenModel createSchuelerErfassenModel();
     SchuelerSuchenModel createSchuelerSuchenModel();
     MonatsstatistikModel createMonatsstatistikModel();
-
+    DispensationenModel createDispensationenModel();
     DispensationErfassenModel createDispensationErfassenModel();
 }

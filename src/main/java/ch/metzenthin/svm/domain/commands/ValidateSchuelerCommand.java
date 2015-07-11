@@ -333,7 +333,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             return;   // -> Summary-Dialog
         }
 
-        // 7. Schüler speichern
+        // 7. Schüler validieren
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
         saveSchuelerCommand.setEntityManager(entityManager);
         saveSchuelerCommand.execute();

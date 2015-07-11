@@ -39,6 +39,11 @@ public class ModelFactoryImpl implements ModelFactory {
     }
 
     @Override
+    public DispensationenModel createDispensationenModel() {
+        return new DispensationenModelImpl(commandInvoker);
+    }
+
+    @Override
     public DispensationErfassenModel createDispensationErfassenModel() {
         return new DispensationErfassenModelImpl(commandInvoker);
     }

@@ -1,11 +1,11 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.DispensationErfassenModel;
+import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -23,8 +23,8 @@ public class DispensationErfassenController extends AbstractController {
 
     private static final Logger LOGGER = Logger.getLogger(DispensationErfassenController.class);
 
-    private final SvmContext svmContext;
     private DispensationErfassenModel dispensationErfassenModel;
+    private SchuelerDatenblattModel schuelerDatenblattModel;
     private JDialog dispensationErfassenDialog;
     private JTextField txtDispensationsbeginn;
     private JTextField txtDispensationsende;
@@ -36,9 +36,9 @@ public class DispensationErfassenController extends AbstractController {
     private JLabel errLblVoraussichtlicheDauer;
     private JButton btnSpeichern;
 
-    public DispensationErfassenController(SvmContext svmContext, DispensationErfassenModel dispensationErfassenModel) {
+    public DispensationErfassenController(DispensationErfassenModel dispensationErfassenModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         super(dispensationErfassenModel);
-        this.svmContext = svmContext;
+        this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.dispensationErfassenModel = dispensationErfassenModel;
         this.dispensationErfassenModel.addPropertyChangeListener(this);
         this.dispensationErfassenModel.addDisableFieldsListener(this);
@@ -49,6 +49,10 @@ public class DispensationErfassenController extends AbstractController {
                 onDispensationErfassenModelCompleted(completed);
             }
         });
+    }
+
+    public void constructionDone() {
+        dispensationErfassenModel.initializeCompleted();
     }
 
     public void setDispensationErfassenDialog(JDialog dispensationErfassenDialog) {
@@ -90,7 +94,11 @@ public class DispensationErfassenController extends AbstractController {
     private void onDispensationsbeginnEvent() {
         LOGGER.trace("DispensationErfassenController Event Dispensationsbeginn");
         boolean equalFieldAndModelValue = equalsNullSafe(txtDispensationsbeginn.getText(), dispensationErfassenModel.getDispensationsbeginn());
-        setModelDispensationsbeginn();
+        try {
+            setModelDispensationsbeginn();
+        } catch (Exception e) {
+            return;
+        }
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
@@ -98,16 +106,18 @@ public class DispensationErfassenController extends AbstractController {
         }
     }
 
-    private void setModelDispensationsbeginn() {
+    private void setModelDispensationsbeginn() throws SvmValidationException {
         makeErrorLabelInvisible(Field.DISPENSATIONSBEGINN);
         try {
             dispensationErfassenModel.setDispensationsbeginn(txtDispensationsbeginn.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("DispensationErfassenController setModelDispensationsbeginn RequiredException=" + e.getMessage());
             txtDispensationsbeginn.setToolTipText(e.getMessage());
+            throw e;
         } catch (SvmValidationException e) {
             LOGGER.trace("DispensationErfassenController setModelDispensationsbeginn Exception=" + e.getMessage());
             showErrMsg(e);
+            throw e;
         }
     }
 
@@ -130,7 +140,11 @@ public class DispensationErfassenController extends AbstractController {
     private void onDispensationsendeEvent() {
         LOGGER.trace("DispensationErfassenController Event Dispensationsende");
         boolean equalFieldAndModelValue = equalsNullSafe(txtDispensationsende.getText(), dispensationErfassenModel.getDispensationsende());
-        setModelDispensationsende();
+        try {
+            setModelDispensationsende();
+        } catch (SvmValidationException e) {
+            return;
+        }
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
@@ -138,16 +152,18 @@ public class DispensationErfassenController extends AbstractController {
         }
     }
 
-    private void setModelDispensationsende() {
+    private void setModelDispensationsende() throws SvmValidationException {
         makeErrorLabelInvisible(Field.DISPENSATIONSENDE);
         try {
             dispensationErfassenModel.setDispensationsende(txtDispensationsende.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("DispensationErfassenController setModelDispensationsende RequiredException=" + e.getMessage());
             txtDispensationsende.setToolTipText(e.getMessage());
+            throw e;
         } catch (SvmValidationException e) {
             LOGGER.trace("DispensationErfassenController setModelDispensationsende Exception=" + e.getMessage());
             showErrMsg(e);
+            throw e;
         }
     }
 
@@ -170,7 +186,11 @@ public class DispensationErfassenController extends AbstractController {
     private void onVoraussichtlicheDauerEvent() {
         LOGGER.trace("DispensationErfassenController Event VoraussichtlicheDauer");
         boolean equalFieldAndModelValue = equalsNullSafe(txtVoraussichtlicheDauer.getText(), dispensationErfassenModel.getVoraussichtlicheDauer());
-        setModelVoraussichtlicheDauer();
+        try {
+            setModelVoraussichtlicheDauer();
+        } catch (SvmValidationException e) {
+            return;
+        }
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
@@ -178,16 +198,18 @@ public class DispensationErfassenController extends AbstractController {
         }
     }
 
-    private void setModelVoraussichtlicheDauer() {
+    private void setModelVoraussichtlicheDauer() throws SvmValidationException {
         makeErrorLabelInvisible(Field.VORAUSSICHTLICHE_DAUER);
         try {
             dispensationErfassenModel.setVoraussichtlicheDauer(txtVoraussichtlicheDauer.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("DispensationErfassenController setModelVoraussichtlicheDauer RequiredException=" + e.getMessage());
             txtVoraussichtlicheDauer.setToolTipText(e.getMessage());
+            throw e;
         } catch (SvmValidationException e) {
             LOGGER.trace("DispensationErfassenController setModelVoraussichtlicheDauer Exception=" + e.getMessage());
             showErrMsg(e);
+            throw e;
         }
     }
 
@@ -210,7 +232,11 @@ public class DispensationErfassenController extends AbstractController {
     private void onGrundEvent() {
         LOGGER.trace("DispensationErfassenController Event Grund");
         boolean equalFieldAndModelValue = equalsNullSafe(txtGrund.getText(), dispensationErfassenModel.getGrund());
-        setModelGrund();
+        try {
+            setModelGrund();
+        } catch (SvmValidationException e) {
+            return;
+        }
         if (equalFieldAndModelValue) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
@@ -218,16 +244,18 @@ public class DispensationErfassenController extends AbstractController {
         }
     }
 
-    private void setModelGrund() {
+    private void setModelGrund() throws SvmValidationException {
         makeErrorLabelInvisible(Field.GRUND);
         try {
             dispensationErfassenModel.setGrund(txtGrund.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("DispensationErfassenController setModelGrund RequiredException=" + e.getMessage());
             txtGrund.setToolTipText(e.getMessage());
+            throw e;
         } catch (SvmValidationException e) {
             LOGGER.trace("DispensationErfassenController setModelGrund Exception=" + e.getMessage());
             showErrMsg(e);
+            throw e;
         }
     }
 
@@ -258,8 +286,12 @@ public class DispensationErfassenController extends AbstractController {
     }
 
     private void onSpeichern() {
-        //TODO
-        dispensationErfassenDialog.dispose();
+        if (dispensationErfassenModel.checkDispensationUeberlapptAndereDispensationen(schuelerDatenblattModel)) {
+            JOptionPane.showMessageDialog(null, "Dispensationen dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+        } else {
+            dispensationErfassenModel.speichern(schuelerDatenblattModel);
+            dispensationErfassenDialog.dispose();
+        }
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {

@@ -43,10 +43,26 @@ public class Dispensation implements Comparable<Dispensation> {
     public Dispensation() {
     }
 
-    public Dispensation(Calendar dispensationsbeginn, Calendar dispensationsende, String grund) {
+    public Dispensation(Calendar dispensationsbeginn, Calendar dispensationsende, String voraussichtlicheDauer, String grund) {
         this.dispensationsbeginn = dispensationsbeginn;
         this.dispensationsende = dispensationsende;
+        this.voraussichtlicheDauer = voraussichtlicheDauer;
         this.grund = grund;
+    }
+
+    public boolean isIdenticalWith(Dispensation otherDispensation) {
+        return otherDispensation != null
+                && ((dispensationsbeginn == null && otherDispensation.getDispensationsbeginn() == null) || (dispensationsbeginn != null && dispensationsbeginn.equals(otherDispensation.getDispensationsbeginn())))
+                && ((dispensationsende == null && otherDispensation.getDispensationsende() == null) || (dispensationsende != null && dispensationsende.equals(otherDispensation.getDispensationsende())))
+                && ((voraussichtlicheDauer == null && otherDispensation.getVoraussichtlicheDauer() == null) || (voraussichtlicheDauer != null && voraussichtlicheDauer.equals(otherDispensation.getVoraussichtlicheDauer())))
+                && ((grund == null && otherDispensation.getGrund() == null) || (grund != null && grund.equals(otherDispensation.getGrund())));
+    }
+
+    public void copyAttributesFrom(Dispensation otherDispensation) {
+        this.dispensationsbeginn = otherDispensation.getDispensationsbeginn();
+        this.dispensationsende = otherDispensation.getDispensationsende();
+        this.voraussichtlicheDauer = otherDispensation.getVoraussichtlicheDauer();
+        this.grund = otherDispensation.getGrund();
     }
 
     @Override

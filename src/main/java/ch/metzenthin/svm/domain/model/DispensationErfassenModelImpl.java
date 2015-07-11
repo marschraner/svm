@@ -2,12 +2,14 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.commands.CheckDispensationUeberlapptAndereDispensationenCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.SaveDispensationCommand;
+import ch.metzenthin.svm.persistence.entities.Dispensation;
 
 import java.util.Calendar;
 
-import static ch.metzenthin.svm.common.utils.Converter.getNMonthsAfterNow;
-import static ch.metzenthin.svm.common.utils.Converter.getNMonthsBeforeNow;
+import static ch.metzenthin.svm.common.utils.Converter.*;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
@@ -15,27 +17,35 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 public class DispensationErfassenModelImpl extends AbstractModel implements DispensationErfassenModel {
 
-    private Calendar dispensationsbeginn;
-    private Calendar dispensationsende;
-    private String voraussichtlicheDauer;
-    private String grund;
+    private Dispensation dispensation = new Dispensation();
+    private Dispensation dispensationOrigin;
 
     public DispensationErfassenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
     }
 
+    @Override
+    public Dispensation getDispensation() {
+        return dispensation;
+    }
+
+    @Override
+    public void setDispensationOrigin(Dispensation dispensationOrigin) {
+        this.dispensationOrigin = dispensationOrigin;
+    }
+
     private final CalendarModelAttribute dispensationsbeginnModelAttribute = new CalendarModelAttribute(
             this,
-            Field.DISPENSATIONSBEGINN, getNMonthsBeforeNow(3), getNMonthsAfterNow(1),
+            Field.DISPENSATIONSBEGINN, getNYearsBeforeNow(5), getNMonthsAfterNow(1),
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
-                    return dispensationsbeginn;
+                    return dispensation.getDispensationsbeginn();
                 }
 
                 @Override
                 public void setValue(Calendar value) {
-                    dispensationsbeginn = value;
+                    dispensation.setDispensationsbeginn(value);
                 }
             }
     );
@@ -48,8 +58,8 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
     @Override
     public void setDispensationsbeginn(String dispensationsbeginn) throws SvmValidationException {
         dispensationsbeginnModelAttribute.setNewValue(true, dispensationsbeginn, isBulkUpdate());
-        if (!isBulkUpdate() && this.dispensationsbeginn != null && dispensationsende != null && this.dispensationsbeginn.after(dispensationsende)) {
-            this.dispensationsbeginn = null;
+        if (!isBulkUpdate() && dispensation.getDispensationsbeginn() != null && dispensation.getDispensationsende() != null && dispensation.getDispensationsbeginn().after(dispensation.getDispensationsende())) {
+            dispensation.setDispensationsbeginn(null);
             invalidate();
             throw new SvmValidationException(2012, "Keine gültige Periode", Field.DISPENSATIONSBEGINN);
         }
@@ -57,16 +67,16 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
 
     private final CalendarModelAttribute dispensationsendeModelAttribute = new CalendarModelAttribute(
             this,
-            Field.DISPENSATIONSENDE, getNMonthsBeforeNow(3), getNMonthsAfterNow(36),
+            Field.DISPENSATIONSENDE, getNYearsBeforeNow(5), getNMonthsAfterNow(36),
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
-                    return dispensationsende;
+                    return dispensation.getDispensationsende();
                 }
 
                 @Override
                 public void setValue(Calendar value) {
-                    dispensationsende = value;
+                    dispensation.setDispensationsende(value);
                 }
             }
     );
@@ -79,8 +89,8 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
     @Override
     public void setDispensationsende(String dispensationsende) throws SvmValidationException {
         dispensationsendeModelAttribute.setNewValue(false, dispensationsende, isBulkUpdate());
-        if (!isBulkUpdate() && dispensationsbeginn != null && this.dispensationsende != null && dispensationsbeginn.after(this.dispensationsende)) {
-            this.dispensationsende = null;
+        if (!isBulkUpdate() && dispensation.getDispensationsbeginn() != null && dispensation.getDispensationsende() != null && dispensation.getDispensationsbeginn().after(dispensation.getDispensationsende())) {
+            dispensation.setDispensationsende(null);
             invalidate();
             throw new SvmValidationException(2013, "Keine gültige Periode", Field.DISPENSATIONSENDE);
         }
@@ -92,12 +102,12 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return voraussichtlicheDauer;
+                    return dispensation.getVoraussichtlicheDauer();
                 }
 
                 @Override
                 public void setValue(String value) {
-                    voraussichtlicheDauer = value;
+                    dispensation.setVoraussichtlicheDauer(value);
                 }
             }
     );
@@ -118,12 +128,12 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return grund;
+                    return dispensation.getGrund();
                 }
 
                 @Override
                 public void setValue(String value) {
-                    grund = value;
+                    dispensation.setGrund(value);
                 }
             }
     );
@@ -139,16 +149,58 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
     }
 
     @Override
+    public boolean checkDispensationUeberlapptAndereDispensationen(SchuelerDatenblattModel schuelerDatenblattModel) {
+        CheckDispensationUeberlapptAndereDispensationenCommand checkDispensationUeberlapptAndereDispensationenCommand = new CheckDispensationUeberlapptAndereDispensationenCommand(this.getDispensation(), dispensationOrigin, schuelerDatenblattModel.getSchueler().getDispensationen());
+        CommandInvoker commandInvoker = getCommandInvoker();
+        commandInvoker.executeCommand(checkDispensationUeberlapptAndereDispensationenCommand);
+        return checkDispensationUeberlapptAndereDispensationenCommand.isUeberlappt();
+    }
+
+    @Override
+    public void speichern(SchuelerDatenblattModel schuelerDatenblattModel) {
+        CommandInvoker commandInvoker = getCommandInvoker();
+        SaveDispensationCommand saveDispensationCommand = new SaveDispensationCommand(this.getDispensation(), dispensationOrigin, schuelerDatenblattModel.getSchueler());
+        try {
+            commandInvoker.beginTransaction();
+            commandInvoker.executeCommandWithinTransaction(saveDispensationCommand);
+            commandInvoker.commitTransaction();
+        } catch (Throwable e) {
+            commandInvoker.rollbackTransaction();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void initializeCompleted() {
+        if (dispensationOrigin != null) {
+            setBulkUpdate(true);
+            firePropertyChange(Field.BULK_UPDATE, false, true);
+            try {
+                setDispensationsbeginn(asString(dispensationOrigin.getDispensationsbeginn()));
+                setDispensationsende(asString(dispensationOrigin.getDispensationsende()));
+                setVoraussichtlicheDauer(dispensationOrigin.getVoraussichtlicheDauer());
+                setGrund(dispensationOrigin.getGrund());
+            } catch (SvmValidationException ignore) {
+                ignore.printStackTrace();
+            }
+            setBulkUpdate(false);
+            firePropertyChange(Field.BULK_UPDATE, true, false);
+        } else {
+            super.initializeCompleted();
+        }
+    }
+
+    @Override
     public boolean isCompleted() {
-        return dispensationsbeginn != null && checkNotEmpty(grund);
+        return dispensation.getDispensationsbeginn() != null && checkNotEmpty(dispensation.getGrund());
     }
 
     @Override
     void doValidate() throws SvmValidationException {
-        if (dispensationsbeginn == null) {
+        if (dispensation.getDispensationsbeginn() == null) {
             throw new SvmValidationException(2010, "Dispensationsbeginn obligatorisch", Field.DISPENSATIONSBEGINN);
         }
-        if (grund == null) {
+        if (dispensation.getGrund() == null) {
             throw new SvmValidationException(2011, "Grund obligatorisch", Field.GRUND);
         }
     }

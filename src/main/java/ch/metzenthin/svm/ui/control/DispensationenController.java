@@ -1,7 +1,9 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.model.DispensationenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
+import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.DispensationErfassenDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
@@ -19,6 +21,8 @@ import java.awt.event.MouseEvent;
  */
 public class DispensationenController {
     private final SvmContext svmContext;
+    private final DispensationenModel dispensationenModel;
+    private final DispensationenTableModel dispensationenTableModel;
     private final SchuelerDatenblattModel schuelerDatenblattModel;
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final int selectedRow;
@@ -29,9 +33,12 @@ public class DispensationenController {
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
+    private JButton btnNeu;
 
-    public DispensationenController(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
+    public DispensationenController(DispensationenModel dispensationenModel, SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
+        this.dispensationenModel = dispensationenModel;
         this.svmContext = svmContext;
+        this.dispensationenTableModel = dispensationenTableModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.selectedRow = selectedRow;
@@ -62,6 +69,7 @@ public class DispensationenController {
     }
 
     public void setBtnNeu(JButton btnNeu) {
+        this.btnNeu = btnNeu;
         btnNeu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,9 +79,12 @@ public class DispensationenController {
     }
 
     private void onNeu() {
-        DispensationErfassenDialog dispensationErfassenDialog = new DispensationErfassenDialog(svmContext, "Neue Dispensation");
+        btnNeu.setFocusPainted(true);
+        DispensationErfassenDialog dispensationErfassenDialog = new DispensationErfassenDialog(svmContext, dispensationenModel, schuelerDatenblattModel, 0, false, "Neue Dispensation");
         dispensationErfassenDialog.pack();
         dispensationErfassenDialog.setVisible(true);
+        dispensationenTableModel.fireTableDataChanged();
+        btnNeu.setFocusPainted(false);
     }
 
     public void setBtnBearbeiten(JButton btnBearbeiten) {
@@ -92,7 +103,12 @@ public class DispensationenController {
     }
 
     private void onBearbeiten() {
-        //TODO
+        btnBearbeiten.setFocusPainted(true);
+        DispensationErfassenDialog dispensationErfassenDialog = new DispensationErfassenDialog(svmContext, dispensationenModel, schuelerDatenblattModel, dispensationenTable.getSelectedRow(), true, "Dispensation bearbeiten");
+        dispensationErfassenDialog.pack();
+        dispensationErfassenDialog.setVisible(true);
+        dispensationenTableModel.fireTableDataChanged();
+        btnBearbeiten.setFocusPainted(false);
     }
 
     public void setBtnLoeschen(JButton btnLoeschen) {
@@ -111,12 +127,28 @@ public class DispensationenController {
     }
 
     private void onLoeschen() {
-        //TODO
+        btnLoeschen.setFocusPainted(true);
+        Object[] options = {"Ja", "Nein"};
+        int n = JOptionPane.showOptionDialog(
+                null,
+                "Soll der Eintrag aus der Datenbank gelöscht werden?",
+                "Eintrag löschen?",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,     //do not use a custom Icon
+                options,  //the titles of buttons
+                options[1]); //default button title
+        if (n == 0) {
+            dispensationenModel.eintragLoeschen(schuelerDatenblattModel, dispensationenTable.getSelectedRow());
+            dispensationenTable.addNotify();
+        }
+        btnLoeschen.setFocusPainted(false);
     }
 
     private void onListSelection() {
         int selectedRowIndex = dispensationenTable.getSelectedRow();
         enableBtnBearbeiten(selectedRowIndex >= 0);
+        enableBtnLoeschen(selectedRowIndex >= 0);
     }
 
     public void setBtnZurueck(JButton btnZurueck) {

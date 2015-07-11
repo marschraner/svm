@@ -11,16 +11,15 @@ import org.junit.Test;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
- * @author Hans Stamm
+ * @author Martin Schraner
  */
-public class SaveSchuelerCommandTest {
+public class SaveDispensationCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
@@ -40,7 +39,9 @@ public class SaveSchuelerCommandTest {
     @Test
     public void testExecute() throws Exception {
 
-        // Schueler
+        // 1. Transaktion: Schueler erfassen und Dispensation hinzufügen
+        commandInvoker.beginTransaction();
+
         Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
         schueler.setAdresse(adresse);
@@ -54,17 +55,49 @@ public class SaveSchuelerCommandTest {
         // Set Rechnungsempfänger
         schueler.setRechnungsempfaenger(vater);
 
-        Dispensation dispensation = new Dispensation(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2015, Calendar.MARCH, 31), null, "Zu klein");
-        schueler.addDispensation(dispensation);
-
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
-        commandInvoker.executeCommand(saveSchuelerCommand);
+        commandInvoker.executeCommandWithinTransaction(saveSchuelerCommand);
         Schueler savedSchueler = saveSchuelerCommand.getSavedSchueler();
 
-        assertEquals("Vorname not found", "Jana", savedSchueler.getVorname());
-        assertEquals("Dispensation not correct", 1, savedSchueler.getDispensationen().size());
+        // Dispensation hinzufügen
+        Dispensation dispensation1 = new Dispensation(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2015, Calendar.MARCH, 31), null, "Zu klein");
+        SaveDispensationCommand saveDispensationCommand = new SaveDispensationCommand(dispensation1, null, savedSchueler);
+        commandInvoker.executeCommandWithinTransaction(saveDispensationCommand);
+        savedSchueler = saveDispensationCommand.getSavedSchueler();
 
-        // delete
+        commandInvoker.commitTransaction();
+
+        assertEquals(1, savedSchueler.getDispensationen().size());
+
+
+        // 2. Transaktion: Weitere Dispensation hinzufügen:
+        commandInvoker.beginTransaction();
+
+        Dispensation dispensation2 = new Dispensation(new GregorianCalendar(2015, Calendar.MAY, 15), null, null, "Immer noch zu klein");
+        saveDispensationCommand = new SaveDispensationCommand(dispensation2, null, savedSchueler);
+        commandInvoker.executeCommandWithinTransaction(saveDispensationCommand);
+        savedSchueler = saveDispensationCommand.getSavedSchueler();
+
+        commandInvoker.commitTransaction();
+
+        assertEquals(2, savedSchueler.getDispensationen().size());
+
+
+        // 3. Transaktion: Dispensation bearbeiten (Dispensationsende setzen)
+        commandInvoker.beginTransaction();
+
+        Dispensation dispensation2Modif = new Dispensation(new GregorianCalendar(2015, Calendar.MAY, 15), new GregorianCalendar(2015, Calendar.DECEMBER, 31), null, "Immer noch zu klein");
+        saveDispensationCommand = new SaveDispensationCommand(dispensation2Modif, dispensation2, savedSchueler);
+        commandInvoker.executeCommandWithinTransaction(saveDispensationCommand);
+        savedSchueler = saveDispensationCommand.getSavedSchueler();
+
+        commandInvoker.commitTransaction();
+
+        assertEquals(2, savedSchueler.getDispensationen().size());
+        assertEquals(new GregorianCalendar(2015, Calendar.DECEMBER, 31), savedSchueler.getDispensationen().get(0).getDispensationsende());
+
+
+        // Testdaten löschen
         EntityManager entityManager = null;
         try {
             entityManager = entityManagerFactory.createEntityManager();
@@ -78,5 +111,6 @@ public class SaveSchuelerCommandTest {
                 entityManager.close();
             }
         }
+
     }
 }

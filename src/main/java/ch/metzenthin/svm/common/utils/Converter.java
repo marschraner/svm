@@ -33,7 +33,7 @@ public class Converter {
 
 
     public static Calendar toCalendar(String s, String dateFormatString) throws ParseException {
-        String errMsg = "Es wird ein gültiges Datum im Format '" + getDeutscheBezeichnungOfDateFormatString(dateFormatString) + "' erwartet";
+        String errMsg = "Kein gültiges Datum im Format '" + getDeutscheBezeichnungOfDateFormatString(dateFormatString) + "'";
         if (!checkNotEmpty(s)) {
             return null;
         }

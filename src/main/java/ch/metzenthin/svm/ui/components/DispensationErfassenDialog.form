@@ -66,7 +66,7 @@
               <hspacer id="e749c">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0" ipadx="400"/>
+                  <gridbag weightx="0.0" weighty="0.0" ipadx="300"/>
                 </constraints>
               </hspacer>
               <component id="70c6e" class="javax.swing.JTextField" binding="txtDispensationsbeginn">

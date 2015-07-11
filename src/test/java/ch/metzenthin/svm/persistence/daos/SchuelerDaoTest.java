@@ -107,9 +107,9 @@ public class SchuelerDaoTest {
             schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.FEBRUARY, 1), null));
 
             // Dispensationen
-            Dispensation dispensation0 = new Dispensation(new GregorianCalendar(2015, Calendar.JUNE, 15), new GregorianCalendar(2015, Calendar.AUGUST, 31), "Arm gebrochen");
+            Dispensation dispensation0 = new Dispensation(new GregorianCalendar(2015, Calendar.JUNE, 15), new GregorianCalendar(2015, Calendar.AUGUST, 31), null, "Arm gebrochen");
             schueler.addDispensation(dispensation0);
-            Dispensation dispensation1 = new Dispensation(new GregorianCalendar(2015, Calendar.MAY, 1), new GregorianCalendar(2015, Calendar.JULY, 31), "Beinbruch");
+            Dispensation dispensation1 = new Dispensation(new GregorianCalendar(2015, Calendar.MAY, 1), new GregorianCalendar(2015, Calendar.JULY, 31), null, "Beinbruch");
             schueler.addDispensation(dispensation1);
 
             Schueler schuelerSaved = schuelerDao.save(schueler);
@@ -227,7 +227,7 @@ public class SchuelerDaoTest {
             schueler2.setMutter(mutter);
             schueler2.setRechnungsempfaenger(vater);
             schueler2.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.MAY, 15), null));
-            schueler2.addDispensation(new Dispensation(new GregorianCalendar(2015, Calendar.MAY, 15), null, "Viel zu klein"));
+            schueler2.addDispensation(new Dispensation(new GregorianCalendar(2015, Calendar.MAY, 15), null, null, "Viel zu klein"));
 
             Schueler schueler2Saved = schuelerDao.save(schueler2);
 
@@ -312,9 +312,9 @@ public class SchuelerDaoTest {
             schueler.setRechnungsempfaenger(rechnungsempfaenger);
 
             // Dispensationen
-            Dispensation dispensation0 = new Dispensation(new GregorianCalendar(2015, Calendar.JUNE, 15), new GregorianCalendar(2015, Calendar.AUGUST, 31), "Arm gebrochen");
+            Dispensation dispensation0 = new Dispensation(new GregorianCalendar(2015, Calendar.JUNE, 15), new GregorianCalendar(2015, Calendar.AUGUST, 31), null, "Arm gebrochen");
             schueler.addDispensation(dispensation0);
-            Dispensation dispensation1 = new Dispensation(new GregorianCalendar(2015, Calendar.MAY, 1), new GregorianCalendar(2015, Calendar.JULY, 31), "Beinbruch");
+            Dispensation dispensation1 = new Dispensation(new GregorianCalendar(2015, Calendar.MAY, 1), new GregorianCalendar(2015, Calendar.JULY, 31), null, "Beinbruch");
             schueler.addDispensation(dispensation1);
 
             Schueler schuelerSaved = schuelerDao.save(schueler);
