@@ -297,7 +297,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     }
 
     private boolean isGleicheAdresseWieSchueler(Angehoeriger angehoeriger) {
-        return (angehoeriger != null) && (schueler.getAdresse() == angehoeriger.getAdresse());
+        return (angehoeriger != null) && (schueler.getAdresse().isIdenticalWith(angehoeriger.getAdresse()));
     }
 
 }
