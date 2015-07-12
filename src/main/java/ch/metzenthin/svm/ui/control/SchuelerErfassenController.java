@@ -27,9 +27,11 @@ public class SchuelerErfassenController {
     private ActionListener closeListener;
 
     private final SchuelerErfassenModel schuelerErfassenModel;
+    private final boolean isBearbeiten;
 
-    public SchuelerErfassenController(SchuelerErfassenModel schuelerErfassenModel) {
+    public SchuelerErfassenController(SchuelerErfassenModel schuelerErfassenModel, boolean isBearbeiten) {
         this.schuelerErfassenModel = schuelerErfassenModel;
+        this.isBearbeiten = isBearbeiten;
         this.schuelerErfassenModel.addCompletedListener(new CompletedListener() {
             @Override
             public void completed(boolean completed) {
@@ -63,9 +65,9 @@ public class SchuelerErfassenController {
     public void setSchuelerPanel(SchuelerPanel schuelerPanel, SchuelerModel schuelerModel) {
         schuelerPanel.setModel(schuelerModel);
         // Kein Abmeldedatum sichtbar
-        schuelerPanel.getLblAbmeldedatum().setVisible(false);
-        schuelerPanel.getTxtAbmeldedatum().setVisible(false);
-        schuelerPanel.getErrLblAbmeldedatum().setVisible(false);
+        schuelerPanel.getLblAbmeldedatum().setVisible(isBearbeiten);
+        schuelerPanel.getTxtAbmeldedatum().setVisible(isBearbeiten);
+        schuelerPanel.getErrLblAbmeldedatum().setVisible(isBearbeiten);
         // Geschlecht-Voreinstellung
         schuelerModel.setGeschlecht(Geschlecht.W);
         schuelerErfassenModel.setSchuelerModel(schuelerModel);

@@ -38,7 +38,7 @@ public class SchuelerErfassenPanel {
     private SchuelerErfassenController schuelerErfassenController;
 
     private void createSchuelerErfassenController(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel) {
-        schuelerErfassenController = new SchuelerErfassenController(svmContext.getModelFactory().createSchuelerErfassenModel());
+        schuelerErfassenController = new SchuelerErfassenController(svmContext.getModelFactory().createSchuelerErfassenModel(), (schuelerDatenblattModel != null));
         schuelerErfassenController.setSchuelerPanel(schuelerPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createSchuelerModel() : schuelerDatenblattModel.getSchuelerModel(svmContext));
         schuelerErfassenController.setMutterPanel(mutterPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createAngehoerigerModel() : schuelerDatenblattModel.getMutterModel(svmContext));
         schuelerErfassenController.setVaterPanel(vaterPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createAngehoerigerModel() : schuelerDatenblattModel.getVaterModel(svmContext));
