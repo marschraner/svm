@@ -162,6 +162,11 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     }
 
     @Override
+    public Schueler getSchuelerOrigin() {
+        return schuelerOrigin;
+    }
+
+    @Override
     public void setSchueler(Schueler schueler) {
         schuelerOrigin = schueler;
     }

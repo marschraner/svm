@@ -10,6 +10,7 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
  */
 public interface ValidateSchuelerModel {
     Schueler getSchueler();
+    Schueler getSchuelerOrigin();
     Anmeldung getAnmeldung();
     Adresse getAdresseSchueler();
     Angehoeriger getMutter();

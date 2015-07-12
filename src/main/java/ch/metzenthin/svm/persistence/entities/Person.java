@@ -97,6 +97,16 @@ public abstract class Person {
                 && (adresse == null || adresse.isEmpty());
     }
 
+    public void copyFieldValuesFrom(Person personFrom) {
+        anrede = personFrom.getAnrede();
+        vorname = personFrom.getVorname();
+        nachname = personFrom.getNachname();
+        geburtsdatum = personFrom.getGeburtsdatum();
+        festnetz = personFrom.getFestnetz();
+        natel = personFrom.getNatel();
+        email = personFrom.getEmail();
+    }
+
     @Override
     public String toString() {
         StringBuilder personSb = new StringBuilder();

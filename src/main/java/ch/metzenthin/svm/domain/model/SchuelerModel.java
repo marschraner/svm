@@ -16,6 +16,7 @@ public interface SchuelerModel extends PersonModel {
     Calendar getAbmeldedatum();
     String getBemerkungen();
     Schueler getSchueler();
+    Schueler getSchuelerOrigin();
     Anmeldung getAnmeldung();
 
     void setGeschlecht(Geschlecht geschlecht);

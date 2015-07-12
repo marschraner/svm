@@ -54,4 +54,12 @@ public class AdresseTest {
         assertFalse(adresse.isEmpty());
     }
 
+    @Test
+    public void testCopyFieldValuesFrom() throws Exception {
+        Adresse to = new Adresse("Strasse", "Hausnummer", "PLZ", "Ort");
+        Adresse from = new Adresse("Neue Strasse", "Neue Hausnummer", "Neue PLZ", "Neuer Ort");
+        to.copyFieldValuesFrom(from);
+        assertTrue(to.isIdenticalWith(from));
+    }
+
 }

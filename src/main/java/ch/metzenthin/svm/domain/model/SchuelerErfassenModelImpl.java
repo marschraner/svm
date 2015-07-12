@@ -362,7 +362,8 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             commandInvoker.beginTransaction();
             commandInvoker.executeCommandWithinTransaction(validateSchuelerCommand);
         } catch (Throwable e) {
-            commandInvoker.rollbackTransaction();
+            LOGGER.error("Fehler beim Validieren", e);
+            // Rollback wurde bereits in CommandInvoker durchgeführt
             return new SchuelerErfassenUnerwarteterFehlerResult(ValidateSchuelerCommand.Result.UNERWARTETER_FEHLER, e);
         }
         return validateSchuelerCommand.getResult();
@@ -386,7 +387,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         try {
             getCommandInvoker().executeCommandWithinTransaction(validateSchuelerCommand);
         } catch (Throwable e) {
-            getCommandInvoker().rollbackTransaction();
+            // Rollback wurde bereits in CommandInvoker durchgeführt
             return new SchuelerErfassenUnerwarteterFehlerResult(ValidateSchuelerCommand.Result.UNERWARTETER_FEHLER, e);
         }
         return validateSchuelerCommand.getResult();
@@ -401,7 +402,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             commandInvoker.commitTransaction();
             return validateSchuelerCommand.getResult();
         } catch (Throwable e) {
-            commandInvoker.rollbackTransaction();
+            // Rollback wurde bereits in CommandInvoker durchgeführt
             return new SchuelerErfassenUnerwarteterFehlerResult(ValidateSchuelerCommand.Result.UNERWARTETER_FEHLER, e);
         } finally {
             validateSchuelerCommand = null;
@@ -418,6 +419,11 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     @Override
     public Schueler getSchueler() {
         return schuelerModel.getSchueler();
+    }
+
+    @Override
+    public Schueler getSchuelerOrigin() {
+        return schuelerModel.getSchuelerOrigin();
     }
 
     @Override

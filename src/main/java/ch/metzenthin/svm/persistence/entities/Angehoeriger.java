@@ -57,6 +57,10 @@ public class Angehoeriger extends Person {
         return schuelerRechnungsempfaenger;
     }
 
+    public void copyFieldValuesFrom(Angehoeriger schueler) {
+        super.copyFieldValuesFrom(schueler);
+    }
+
     @Override
     public String toString() {
         return super.toString();

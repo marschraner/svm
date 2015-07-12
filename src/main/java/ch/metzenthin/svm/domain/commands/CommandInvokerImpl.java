@@ -38,6 +38,7 @@ public class CommandInvokerImpl implements CommandInvoker {
             genericDaoCommand.execute();
             tx.commit();
         } catch (RuntimeException e) {
+            LOGGER.error("Fehler in executeCommand(GenericDaoCommand)", e);
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
@@ -62,6 +63,7 @@ public class CommandInvokerImpl implements CommandInvoker {
             entityManager.getTransaction().begin();
             LOGGER.trace("beginTransaction durchgeführt");
         } catch (RuntimeException e) {
+            LOGGER.error("Fehler in beginTransaction()", e);
             EntityTransaction tx = null;
             if (entityManager != null) {
                 tx = entityManager.getTransaction();
@@ -79,6 +81,7 @@ public class CommandInvokerImpl implements CommandInvoker {
             entityManager.getTransaction().commit();
             LOGGER.trace("commitTransaction durchgeführt");
         } catch (RuntimeException e) {
+            LOGGER.error("Fehler in commitTransaction()", e);
             EntityTransaction tx = entityManager.getTransaction();
             if (tx != null && tx.isActive()) {
                 tx.rollback();
@@ -93,6 +96,7 @@ public class CommandInvokerImpl implements CommandInvoker {
             entityManager.getTransaction().rollback();
             LOGGER.trace("rollbackTransaction durchgeführt");
         } catch (RuntimeException e) {
+            LOGGER.error("Fehler beim Rollback", e);
             EntityTransaction tx = entityManager.getTransaction();
             if (tx != null && tx.isActive()) {
                 tx.rollback();
@@ -115,6 +119,7 @@ public class CommandInvokerImpl implements CommandInvoker {
             genericDaoCommand.execute();
             LOGGER.trace("executeCommandWithinTransaction durchgeführt");
         } catch (Throwable e) {
+            LOGGER.error("Fehler in executeCommandWithinTransaction(GenericDaoCommand)", e);
             rollbackTransaction();
             throw e;
         }

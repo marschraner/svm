@@ -59,6 +59,12 @@ public class Schueler extends Person {
                 && (bemerkungen == null || bemerkungen.trim().isEmpty());
     }
 
+    public void copyFieldValuesFrom(Schueler schuelerFrom) {
+        super.copyFieldValuesFrom(schuelerFrom);
+        geschlecht = schuelerFrom.getGeschlecht();
+        bemerkungen = schuelerFrom.getBemerkungen();
+    }
+
     @Override
     public String toString() {
         return super.toString();

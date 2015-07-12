@@ -66,6 +66,13 @@ public class Adresse {
                 && (ort == null || ort.trim().isEmpty());
     }
 
+    public void copyFieldValuesFrom(Adresse adresseFrom) {
+        strasse = adresseFrom.getStrasse();
+        hausnummer = adresseFrom.getHausnummer();
+        plz = adresseFrom.getPlz();
+        ort = adresseFrom.getOrt();
+    }
+
     @Override
     public String toString() {
         StringBuilder adresseSb = new StringBuilder();
