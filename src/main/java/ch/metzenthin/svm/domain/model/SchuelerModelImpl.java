@@ -15,6 +15,7 @@ import java.util.GregorianCalendar;
 
 import static ch.metzenthin.svm.common.utils.Converter.*;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotNull;
 
 /**
  * @author Hans Stamm
@@ -154,6 +155,11 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     @Override
     public void doValidate() throws SvmValidationException {
         super.doValidate();
+        if (checkNotNull(getAnmeldedatum()) && checkNotNull(getAbmeldedatum())) {
+            if (!getAbmeldedatum().after(getAnmeldedatum())) {
+                throw new SvmValidationException(2101, "Abmeldedatum muss nach Anmeldedatum sein", Field.ANMELDEDATUM, Field.ABMELDEDATUM);
+            }
+        }
     }
 
     @Override
