@@ -372,6 +372,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         // Schüler kopieren
         schuelerOrigin.copyFieldValuesFrom(schueler);
         schuelerOrigin.getAdresse().copyFieldValuesFrom(schueler.getAdresse());
+        prepareAnmeldungForSave();
         // Mutter kopieren
         Angehoeriger mutterPrepared = prepareAngehoerigerForSave(schuelerOrigin.getMutter(), mutter);
         if (schuelerOrigin.getMutter() != mutterPrepared) {
@@ -411,8 +412,17 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         return schuelerOrigin;
     }
 
-    private static boolean isRechnungsempfaenger(Schueler schueler, Angehoeriger angehoeriger) {
-        return schueler.getRechnungsempfaenger() == angehoeriger;
+    private void prepareAnmeldungForSave() {
+        Anmeldung anmeldungOrigin = schuelerOrigin.getAnmeldungen().get(0);
+        Anmeldung anmeldungNew = schueler.getAnmeldungen().get(0);
+        Anmeldung anmeldungPrepared = anmeldungOrigin;
+        if (anmeldungOrigin.isInPast() && anmeldungNew.getAnmeldedatum().after(anmeldungOrigin.getAbmeldedatum())) {
+            anmeldungPrepared = new Anmeldung();
+            anmeldungPrepared.copyFieldValuesFrom(anmeldungNew); // muss vor dem add sein
+            schuelerOrigin.addAnmeldung(anmeldungPrepared);
+        } else {
+            anmeldungPrepared.copyFieldValuesFrom(anmeldungNew);
+        }
     }
 
     private static Angehoeriger prepareAngehoerigerForSave(Angehoeriger angehoerigerOrigin, Angehoeriger angehoerigerNew) {
@@ -450,6 +460,10 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             adressePrepared.copyFieldValuesFrom(adresseNew);
             angehoerigerOrigin.setAdresse(adressePrepared);
         }
+    }
+
+    private static boolean isRechnungsempfaenger(Schueler schueler, Angehoeriger angehoeriger) {
+        return schueler.getRechnungsempfaenger() == angehoeriger;
     }
 
     /**

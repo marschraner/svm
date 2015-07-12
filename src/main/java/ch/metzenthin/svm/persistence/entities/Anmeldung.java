@@ -3,6 +3,7 @@ package ch.metzenthin.svm.persistence.entities;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * @author Martin Schraner
@@ -86,6 +87,15 @@ public class Anmeldung implements Comparable<Anmeldung> {
             }
         }
         return result;
+    }
+
+    public void copyFieldValuesFrom(Anmeldung anmeldungFrom) {
+        anmeldedatum = anmeldungFrom.getAnmeldedatum();
+        abmeldedatum = anmeldungFrom.getAbmeldedatum();
+    }
+
+    public boolean isInPast() {
+        return (abmeldedatum != null) && new GregorianCalendar().after(abmeldedatum);
     }
 
     public Integer getAnmeldungId() {
