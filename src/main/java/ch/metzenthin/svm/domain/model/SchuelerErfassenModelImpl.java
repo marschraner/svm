@@ -357,16 +357,8 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
         validateSchuelerCommand = new ValidateSchuelerCommand(this);
         validateSchuelerCommand.setEntry(NEU_ERFASSTEN_SCHUELER_VALIDIEREN);
-        CommandInvoker commandInvoker = getCommandInvoker();
-        try {
-            commandInvoker.beginTransaction();
-            commandInvoker.executeCommandWithinTransaction(validateSchuelerCommand);
-        } catch (Throwable e) {
-            LOGGER.error("Fehler beim Validieren", e);
-            // Rollback wurde bereits in CommandInvoker durchgeführt
-            return new SchuelerErfassenUnerwarteterFehlerResult(ValidateSchuelerCommand.Result.UNERWARTETER_FEHLER, e);
-        }
-        return validateSchuelerCommand.getResult();
+        getCommandInvoker().openSession();
+        return executeCommandWithinSession();
     }
 
     @Override
@@ -374,22 +366,17 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         // Eigentlich müsste man das Model durch das neue Objekt, das übernommen wird, ersetzen. Darauf verzichten
         // wir im Moment.
         validateSchuelerCommand.setEntry(schuelerErfassenSaveResult.getResult().proceedUebernehmen());
-        return executeCommandWithinTransaction();
+        return executeCommandWithinSession();
     }
 
     @Override
     public SchuelerErfassenSaveResult proceedWeiterfahren(SchuelerErfassenSaveResult schuelerErfassenSaveResult) {
         validateSchuelerCommand.setEntry(schuelerErfassenSaveResult.getResult().proceedWeiterfahren());
-        return executeCommandWithinTransaction();
+        return executeCommandWithinSession();
     }
 
-    private SchuelerErfassenSaveResult executeCommandWithinTransaction() {
-        try {
-            getCommandInvoker().executeCommandWithinTransaction(validateSchuelerCommand);
-        } catch (Throwable e) {
-            // Rollback wurde bereits in CommandInvoker durchgeführt
-            return new SchuelerErfassenUnerwarteterFehlerResult(ValidateSchuelerCommand.Result.UNERWARTETER_FEHLER, e);
-        }
+    private SchuelerErfassenSaveResult executeCommandWithinSession() {
+        getCommandInvoker().executeCommandWithinSession(validateSchuelerCommand);
         return validateSchuelerCommand.getResult();
     }
 
@@ -398,6 +385,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         validateSchuelerCommand.setEntry(ValidateSchuelerCommand.Entry.SUMMARY_BESTAETIGT);
         CommandInvoker commandInvoker = getCommandInvoker();
         try {
+            commandInvoker.beginTransaction();
             commandInvoker.executeCommandWithinTransaction(validateSchuelerCommand);
             commandInvoker.commitTransaction();
             return validateSchuelerCommand.getResult();
@@ -411,8 +399,6 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public void abbrechen() {
-        CommandInvoker commandInvoker = getCommandInvoker();
-        commandInvoker.rollbackTransaction();
         validateSchuelerCommand = null;
     }
 
