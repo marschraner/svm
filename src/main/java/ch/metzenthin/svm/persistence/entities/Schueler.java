@@ -45,6 +45,13 @@ public class Schueler extends Person {
     @OrderBy("dispensationsbeginn DESC, dispensationsende DESC")
     private List<Dispensation> dispensationen = new ArrayList<>();
 
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "Schueler_Code",
+            joinColumns = {@JoinColumn(name = "schueler_id")},
+            inverseJoinColumns = {@JoinColumn(name = "code_id")})
+    @OrderBy("kuerzel ASC")
+    private List<Code> codes = new ArrayList<>();
+
     public Schueler() {
     }
 
@@ -153,6 +160,10 @@ public class Schueler extends Person {
         return anmeldungen;
     }
 
+    public List<Dispensation> getDispensationen() {
+        return dispensationen;
+    }
+
     public void deleteAnmeldung(Anmeldung anmeldung) {
         anmeldungen.remove(anmeldung);
     }
@@ -167,7 +178,19 @@ public class Schueler extends Person {
         dispensationen.remove(dispensation);
     }
 
-    public List<Dispensation> getDispensationen() {
-        return dispensationen;
+    public List<Code> getCodes() {
+        return codes;
     }
+
+    public void addCode(Code code) {
+        code.getSchueler().add(this);
+        codes.add(code);
+        Collections.sort(codes);
+    }
+
+    public void deleteCode(Code code) {
+        code.getSchueler().remove(this);
+        codes.remove(code);
+    }
+
 }

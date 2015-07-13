@@ -4,7 +4,7 @@ import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CheckDispensationUeberlapptAndereDispensationenCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.SaveDispensationCommand;
+import ch.metzenthin.svm.domain.commands.AddDispensationToSchuelerAndSaveCommand;
 import ch.metzenthin.svm.persistence.entities.Dispensation;
 
 import java.util.Calendar;
@@ -159,10 +159,10 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
     @Override
     public void speichern(SchuelerDatenblattModel schuelerDatenblattModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        SaveDispensationCommand saveDispensationCommand = new SaveDispensationCommand(this.getDispensation(), dispensationOrigin, schuelerDatenblattModel.getSchueler());
+        AddDispensationToSchuelerAndSaveCommand addDispensationToSchuelerAndSaveCommand = new AddDispensationToSchuelerAndSaveCommand(this.getDispensation(), dispensationOrigin, schuelerDatenblattModel.getSchueler());
         try {
             commandInvoker.beginTransaction();
-            commandInvoker.executeCommandWithinTransaction(saveDispensationCommand);
+            commandInvoker.executeCommandWithinTransaction(addDispensationToSchuelerAndSaveCommand);
             commandInvoker.commitTransaction();
         } catch (Throwable e) {
             commandInvoker.rollbackTransaction();

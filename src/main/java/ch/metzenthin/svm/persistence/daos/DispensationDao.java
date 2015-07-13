@@ -19,19 +19,22 @@ public class DispensationDao extends GenericDao<Dispensation, Integer> {
         throw new NullPointerException("Operation not supported");
     }
 
-    public Dispensation save(Dispensation dispensation, Schueler schueler) {
-        schueler.addDispensation(dispensation);
-        entityManager.persist(schueler);
-        return dispensation;
-    }
-
-
     @Override
     public void remove(Dispensation dispensation) {
         throw new NullPointerException("Operation not supported");
     }
 
+    public Schueler addToSchuelerAndSave(Dispensation dispensation, Schueler schueler) {
+        schueler.addDispensation(dispensation);
+        entityManager.persist(schueler);
+        return schueler;
+    }
 
+    public Schueler removeFromSchuelerAndUpdate(Dispensation dispensation, Schueler schueler) {
+        schueler.deleteDispensation(dispensation);
+        entityManager.persist(schueler);
+        return schueler;
+    }
 
 }
 

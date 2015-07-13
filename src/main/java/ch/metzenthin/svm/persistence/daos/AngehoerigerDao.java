@@ -15,12 +15,6 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
         super(entityManager);
     }
 
-    public void remove(Angehoeriger angehoeriger) {
-
-        // Lösche Angehörigen von DB
-        entityManager.remove(angehoeriger);
-    }
-
     /**
      * In der DB nach Angehörigen suchen. Sämtliche Attribute sind optional.
      * Es werden alle Angehörigen ausgegeben, deren Attribute mit den in der Suche gesetzten übereinstimmen.

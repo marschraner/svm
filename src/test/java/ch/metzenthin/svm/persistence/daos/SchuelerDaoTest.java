@@ -281,11 +281,10 @@ public class SchuelerDaoTest {
             assertNull(anmeldungDao.findById(anmeldungId2));
             assertNull(dispensationDao.findById(dispensationId2));
 
-            tx.commit();
-
-        } catch (NullPointerException e){
-            if (tx != null)
+        } finally {
+            if (tx != null) {
                 tx.rollback();
+            }
         }
 
     }
@@ -384,11 +383,10 @@ public class SchuelerDaoTest {
             // Schüler löschen
             schuelerDao.remove(schuelerSaved);
 
-            tx.commit();
-
-        } catch (NullPointerException e){
-            if (tx != null)
+        } finally {
+            if (tx != null) {
                 tx.rollback();
+            }
         }
 
     }

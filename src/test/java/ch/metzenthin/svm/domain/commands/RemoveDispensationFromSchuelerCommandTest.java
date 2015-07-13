@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 /**
  * @author Martin Schraner
  */
-public class SaveDispensationCommandTest {
+public class RemoveDispensationFromSchuelerCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
@@ -39,7 +39,7 @@ public class SaveDispensationCommandTest {
     @Test
     public void testExecute() throws Exception {
 
-        // 1. Transaktion: Schueler erfassen und Dispensation hinzufügen
+        // 1. Transaktion: Schueler erfassen und 3 Dispensationen hinzufügen
         commandInvoker.beginTransaction();
 
         Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
@@ -59,42 +59,39 @@ public class SaveDispensationCommandTest {
         commandInvoker.executeCommandWithinTransaction(saveSchuelerCommand);
         Schueler savedSchueler = saveSchuelerCommand.getSavedSchueler();
 
-        // Dispensation hinzufügen
-        Dispensation dispensation1 = new Dispensation(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2015, Calendar.MARCH, 31), null, "Zu klein");
-        SaveDispensationCommand saveDispensationCommand = new SaveDispensationCommand(dispensation1, null, savedSchueler);
-        commandInvoker.executeCommandWithinTransaction(saveDispensationCommand);
-        savedSchueler = saveDispensationCommand.getSavedSchueler();
+        // 3 Dispensationen hinzufügen
+        Dispensation dispensation1 = new Dispensation(new GregorianCalendar(2012, Calendar.JANUARY, 15), new GregorianCalendar(2012, Calendar.MARCH, 31), null, "Zu klein");
+        AddDispensationToSchuelerAndSaveCommand addDispensationToSchuelerAndSaveCommand = new AddDispensationToSchuelerAndSaveCommand(dispensation1, null, savedSchueler);
+        commandInvoker.executeCommandWithinTransaction(addDispensationToSchuelerAndSaveCommand);
+
+        Dispensation dispensation2 = new Dispensation(new GregorianCalendar(2013, Calendar.JANUARY, 15), new GregorianCalendar(2013, Calendar.MARCH, 31), null, "Beinbruch");
+        addDispensationToSchuelerAndSaveCommand = new AddDispensationToSchuelerAndSaveCommand(dispensation2, null, savedSchueler);
+        commandInvoker.executeCommandWithinTransaction(addDispensationToSchuelerAndSaveCommand);
+
+        Dispensation dispensation3 = new Dispensation(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2014, Calendar.MARCH, 31), null, "Armbruch");
+        addDispensationToSchuelerAndSaveCommand = new AddDispensationToSchuelerAndSaveCommand(dispensation3, null, savedSchueler);
+        commandInvoker.executeCommandWithinTransaction(addDispensationToSchuelerAndSaveCommand);
+
+        savedSchueler = addDispensationToSchuelerAndSaveCommand.getSchuelerUpdated();
 
         commandInvoker.commitTransaction();
 
-        assertEquals(1, savedSchueler.getDispensationen().size());
+        assertEquals(3, savedSchueler.getDispensationen().size());
 
 
-        // 2. Transaktion: Weitere Dispensation hinzufügen:
+        // 2. Transaktion: zweite Dispensation löschen
         commandInvoker.beginTransaction();
 
-        Dispensation dispensation2 = new Dispensation(new GregorianCalendar(2015, Calendar.MAY, 15), null, null, "Immer noch zu klein");
-        saveDispensationCommand = new SaveDispensationCommand(dispensation2, null, savedSchueler);
-        commandInvoker.executeCommandWithinTransaction(saveDispensationCommand);
-        savedSchueler = saveDispensationCommand.getSavedSchueler();
+        RemoveDispensationFromSchuelerCommand removeDispensationFromSchuelerCommand = new RemoveDispensationFromSchuelerCommand(1, savedSchueler);
+        commandInvoker.executeCommandWithinTransaction(removeDispensationFromSchuelerCommand);
 
         commandInvoker.commitTransaction();
 
-        assertEquals(2, savedSchueler.getDispensationen().size());
+        Schueler updatedSchueler = removeDispensationFromSchuelerCommand.getSchuelerUpdated();
 
-
-        // 3. Transaktion: Dispensation bearbeiten (Dispensationsende setzen)
-        commandInvoker.beginTransaction();
-
-        Dispensation dispensation2Modif = new Dispensation(new GregorianCalendar(2015, Calendar.MAY, 15), new GregorianCalendar(2015, Calendar.DECEMBER, 31), null, "Immer noch zu klein");
-        saveDispensationCommand = new SaveDispensationCommand(dispensation2Modif, dispensation2, savedSchueler);
-        commandInvoker.executeCommandWithinTransaction(saveDispensationCommand);
-        savedSchueler = saveDispensationCommand.getSavedSchueler();
-
-        commandInvoker.commitTransaction();
-
-        assertEquals(2, savedSchueler.getDispensationen().size());
-        assertEquals(new GregorianCalendar(2015, Calendar.DECEMBER, 31), savedSchueler.getDispensationen().get(0).getDispensationsende());
+        assertEquals(2, updatedSchueler.getDispensationen().size());
+        assertEquals("Armbruch", updatedSchueler.getDispensationen().get(0).getGrund());  // neuster zuoberst
+        assertEquals("Zu klein", updatedSchueler.getDispensationen().get(1).getGrund());
 
 
         // Testdaten löschen
@@ -103,7 +100,7 @@ public class SaveDispensationCommandTest {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
             SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-            Schueler schuelerToBeDeleted = schuelerDao.findById(savedSchueler.getPersonId());
+            Schueler schuelerToBeDeleted = schuelerDao.findById(updatedSchueler.getPersonId());
             schuelerDao.remove(schuelerToBeDeleted);
             entityManager.getTransaction().commit();
         } finally {

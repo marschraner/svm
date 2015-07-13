@@ -3,7 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.DeleteDispensationCommand;
+import ch.metzenthin.svm.domain.commands.RemoveDispensationFromSchuelerCommand;
 
 /**
  * @author Martin Schraner
@@ -17,10 +17,10 @@ public class DispensationenModelImpl extends AbstractModel implements Dispensati
     @Override
     public void eintragLoeschen(SchuelerDatenblattModel schuelerDatenblattModel, int indexDispensationToBeDeleted) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        DeleteDispensationCommand deleteDispensationCommand = new DeleteDispensationCommand(indexDispensationToBeDeleted, schuelerDatenblattModel.getSchueler());
+        RemoveDispensationFromSchuelerCommand removeDispensationFromSchuelerCommand = new RemoveDispensationFromSchuelerCommand(indexDispensationToBeDeleted, schuelerDatenblattModel.getSchueler());
         try {
             commandInvoker.beginTransaction();
-            commandInvoker.executeCommandWithinTransaction(deleteDispensationCommand);
+            commandInvoker.executeCommandWithinTransaction(removeDispensationFromSchuelerCommand);
             commandInvoker.commitTransaction();
         } catch (Throwable e) {
             commandInvoker.rollbackTransaction();

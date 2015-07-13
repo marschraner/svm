@@ -19,18 +19,22 @@ public class AnmeldungDao extends GenericDao<Anmeldung, Integer> {
         throw new NullPointerException("Operation not supported");
     }
 
-    public Anmeldung save(Anmeldung anmeldung, Schueler schueler) {
-        schueler.addAnmeldung(anmeldung);
-        entityManager.persist(schueler);
-        return anmeldung;
-    }
-
     @Override
     public void remove(Anmeldung anmeldung) {
         throw new NullPointerException("Operation not supported");
     }
 
+    public Schueler addToSchuelerAndSave(Anmeldung anmeldung, Schueler schueler) {
+        schueler.addAnmeldung(anmeldung);
+        entityManager.persist(schueler);
+        return schueler;
+    }
 
+    public Schueler removeFromSchuelerAndUpdate(Anmeldung anmeldung, Schueler schueler) {
+        schueler.deleteAnmeldung(anmeldung);
+        entityManager.persist(schueler);
+        return schueler;
+    }
 
 }
 

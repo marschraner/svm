@@ -12,6 +12,8 @@ USE svm;
 -- Delete
 -- ******
 
+DELETE FROM Schueler_Code;
+DELETE FROM Code;
 DELETE FROM Dispensation;
 DELETE FROM Anmeldung;
 DELETE FROM Schueler;
@@ -96,4 +98,22 @@ INSERT INTO Dispensation (dispensation_id, dispensationsbeginn, dispensationsend
 SELECT * FROM Dispensation;
 
 
+-- Code
+-- ****
+
+INSERT INTO Code (code_id, kuerzel, beschreibung) VALUES
+    (1, 'c', 'Casting'),
+    (2, 'j', 'Jugendtheater');
+
+SELECT * FROM Code;
+
+
+-- Schueler_Code
+-- *************
+
+INSERT INTO Schueler_Code (schueler_id, code_id) VALUES
+    (7, 2),
+    (8, 1);
+
+SELECT * FROM Schueler_Code;
 

@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.daos.DispensationDao;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.entities.Dispensation;
 import ch.metzenthin.svm.persistence.entities.Schueler;
@@ -7,7 +8,7 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 /**
  * @author Martin Schraner
  */
-public class SaveDispensationCommand extends GenericDaoCommand {
+public class AddDispensationToSchuelerAndSaveCommand extends GenericDaoCommand {
 
     // input
     private Dispensation dispensation;
@@ -15,9 +16,9 @@ public class SaveDispensationCommand extends GenericDaoCommand {
     private Schueler schueler;
 
     // output
-    private Schueler savedSchueler;
+    private Schueler schuelerUpdated;
 
-    public SaveDispensationCommand(Dispensation dispensation, Dispensation dispensationOrigin, Schueler schueler) {
+    public AddDispensationToSchuelerAndSaveCommand(Dispensation dispensation, Dispensation dispensationOrigin, Schueler schueler) {
         this.dispensation = dispensation;
         this.dispensationOrigin = dispensationOrigin;
         this.schueler = schueler;
@@ -28,15 +29,16 @@ public class SaveDispensationCommand extends GenericDaoCommand {
         if (dispensationOrigin != null) {
             // Update von dispensationOrigin mit Werten von dispensation
             dispensationOrigin.copyAttributesFrom(dispensation);
+            SchuelerDao schuelerDao = new SchuelerDao(entityManager);
+            schuelerUpdated = schuelerDao.save(schueler);
         } else {
-            // Neue Dispensation hinzufügen
-            schueler.addDispensation(dispensation);
+            DispensationDao dispensationDao = new DispensationDao(entityManager);
+            schuelerUpdated = dispensationDao.addToSchuelerAndSave(dispensation, schueler);
         }
-        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-        savedSchueler = schuelerDao.save(schueler);
+
     }
 
-    public Schueler getSavedSchueler() {
-        return savedSchueler;
+    public Schueler getSchuelerUpdated() {
+        return schuelerUpdated;
     }
 }
