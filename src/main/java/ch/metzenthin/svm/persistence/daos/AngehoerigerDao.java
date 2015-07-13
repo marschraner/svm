@@ -107,13 +107,8 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
             }
         }
 
-        List<Angehoeriger> angehoerigeFound = typedQuery.getResultList();
+        return typedQuery.getResultList();
 
-        if (angehoerigeFound == null || angehoerigeFound.size() == 0) {
-            return null;
-        }
-
-        return angehoerigeFound;
     }
 
 }

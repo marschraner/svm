@@ -53,13 +53,13 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
 
         // Suche mit allen gesetzten Attributen
         angehoerigerFoundList = angehoerigerDao.findAngehoerige(angehoeriger);
-        if (angehoerigerFoundList != null && angehoerigerFoundList.size() == 1) {
+        if (angehoerigerFoundList.size() == 1) {
             angehoerigerFound = angehoerigerFoundList.get(0);
             result = Result.EIN_EINTRAG_PASST;
             return;
         }
 
-        else if (angehoerigerFoundList != null && angehoerigerFoundList.size() > 1) {
+        else if (angehoerigerFoundList.size() > 1) {
             result = Result.MEHRERE_EINTRAEGE_PASSEN;
             return;
         }
@@ -68,13 +68,13 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
         Angehoeriger angehoerigerNurVornameNachname = new Angehoeriger(null, angehoeriger.getVorname(), angehoeriger.getNachname(), null, null, null);
 
         angehoerigerFoundList = angehoerigerDao.findAngehoerige(angehoerigerNurVornameNachname);
-        if (angehoerigerFoundList != null && angehoerigerFoundList.size() == 1) {
+        if (angehoerigerFoundList.size() == 1) {
             angehoerigerFound = angehoerigerFoundList.get(0);
             result = Result.EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE;
             return;
         }
 
-        else if (angehoerigerFoundList != null && angehoerigerFoundList.size() > 1) {
+        else if (angehoerigerFoundList.size() > 1) {
             result = Result.MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE;
             return;
         }

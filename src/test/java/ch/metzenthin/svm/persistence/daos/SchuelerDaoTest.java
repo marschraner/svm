@@ -374,11 +374,11 @@ public class SchuelerDaoTest {
             schueler3.setRechnungsempfaenger(rechnungsempfaenger2);
 
             List<Schueler> schuelerList3 = schuelerDao.findSchueler(schueler3);
-            assertNull("Schüler gefunden", schuelerList3);
+            assertTrue(schuelerList3.isEmpty());
 
             // Sämtliche Schüler suchen
             List<Schueler> schuelerList4 = schuelerDao.findSchueler(null);
-            assertNotNull("Keine Schüler gefunden", schuelerList4);
+            assertFalse(schuelerList4.isEmpty());
 
             // Schüler löschen
             schuelerDao.remove(schuelerSaved);

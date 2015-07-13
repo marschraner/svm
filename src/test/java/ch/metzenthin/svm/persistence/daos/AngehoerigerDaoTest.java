@@ -174,14 +174,12 @@ public class AngehoerigerDaoTest {
             angehoeriger2.setAdresse(adresse2);
 
             List<Angehoeriger> angehoerigeFound2 = angehoerigerDao.findAngehoerige(angehoeriger2);
-            assertNotNull("Angehörigen nicht gefunden", angehoerigeFound2);
             assertEquals("Mehr als 1 Angehörigen gefunden", 1, angehoerigeFound2.size());
 
             // Ditto, aber ohne Adresse;
             Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null);
 
             List<Angehoeriger> angehoerigeFound3 = angehoerigerDao.findAngehoerige(angehoeriger3);
-            assertNotNull("Angehörigen nicht gefunden", angehoerigeFound3);
             assertEquals("Mehr als 1 Angehörigen gefunden", 1, angehoerigeFound3.size());
             // Adresse ist diejenige von Angehoeriger 1
             assertNotNull("Hat keine Adresse", angehoerigeFound3.get(0).getAdresse());
@@ -193,11 +191,11 @@ public class AngehoerigerDaoTest {
             angehoeriger4.setAdresse(adresse4);
 
             List<Angehoeriger> angehoerigeFound4 = angehoerigerDao.findAngehoerige(angehoeriger4);
-            assertNull("Angehörigen gefunden", angehoerigeFound4);
+            assertTrue("Angehörigen gefunden", angehoerigeFound4.isEmpty());
 
             // Sämtliche Angehörige suchen
             List<Angehoeriger> angehoerigeFound5 = angehoerigerDao.findAngehoerige(null);
-            assertNotNull("Keine Angehörigen gefunden", angehoerigeFound5);
+            assertFalse("Keine Angehörigen gefunden", angehoerigeFound5.isEmpty());
 
             // Angehörigen löschen
             angehoerigerDao.remove(angehoerigerSaved);

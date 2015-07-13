@@ -33,7 +33,7 @@ public class CheckSchuelerBereitsInDatenbankCommand extends GenericDaoCommand {
         schuelerToBeFound.setAdresse(adresseToBeFound);
         List<Schueler> schuelerListFound = schuelerDao.findSchueler(schuelerToBeFound);
 
-        if (schuelerListFound != null) {
+        if (!schuelerListFound.isEmpty()) {
             schuelerFound = schuelerListFound.get(0);
             inDatenbank = true;
             return;

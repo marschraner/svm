@@ -143,13 +143,8 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
             }
         }
 
-        List<Schueler> schuelerFound = typedQuery.getResultList();
+        return typedQuery.getResultList();
 
-        if (schuelerFound == null || schuelerFound.size() == 0) {
-            return null;
-        }
-
-        return schuelerFound;
     }
 
 
