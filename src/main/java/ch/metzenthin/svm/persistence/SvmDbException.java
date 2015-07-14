@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence;
 
 /**
- * Created by Martin Schraner on 28.05.15.
+ * @author Martin Schraner
  */
 public class SvmDbException extends Exception {
     public SvmDbException(String message, Throwable cause) {

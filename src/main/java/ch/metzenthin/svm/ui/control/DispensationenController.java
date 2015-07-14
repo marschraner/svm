@@ -17,7 +17,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * @author Hans Stamm
+ * @author Martin Schraner
  */
 public class DispensationenController {
     private final SvmContext svmContext;
@@ -27,13 +27,13 @@ public class DispensationenController {
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final int selectedRow;
     private JTable dispensationenTable;
+    private JButton btnNeu;
     private JButton btnBearbeiten;
     private JButton btnLoeschen;
     private JButton btnAbbrechen;
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
-    private JButton btnNeu;
 
     public DispensationenController(DispensationenModel dispensationenModel, SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
         this.dispensationenModel = dispensationenModel;

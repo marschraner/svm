@@ -27,14 +27,12 @@ public class CheckDispensationUeberlapptAndereDispensationenCommand implements C
 
     @Override
     public void execute() {
-
         for (Dispensation bereitsErfassteDispensation : bereitsErfassteDispensationen) {
             if (!bereitsErfassteDispensation.isIdenticalWith(dispensationOrigin) && checkIfTwoPeriodsOverlap(bereitsErfassteDispensation.getDispensationsbeginn(), bereitsErfassteDispensation.getDispensationsende(), dispensation.getDispensationsbeginn(), dispensation.getDispensationsende())) {
                 ueberlappt = true;
                 return;
             }
         }
-
         ueberlappt = false;
     }
 

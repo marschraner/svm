@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.persistence.entities.Dispensation;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class DispensationenTableData {
         this.dispensationen = dispensationen;
     }
 
-    private static final String[] COLUMNS = {"Dispensationsbeginn", "Dispensationsende", "voraussichtliche Dauer", "Grund"};
+    private static final Field[] COLUMNS = {Field.DISPENSATIONSBEGINN, Field.DISPENSATIONSENDE, Field.VORAUSSICHTLICHE_DAUER, Field.GRUND};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -31,16 +32,16 @@ public class DispensationenTableData {
         Dispensation dispensation = dispensationen.get(rowIndex);
         Object value = null;
         switch (COLUMNS[columnIndex]) {
-            case "Dispensationsbeginn" :
+            case DISPENSATIONSBEGINN:
                 value = asString(dispensation.getDispensationsbeginn());
                 break;
-            case "Dispensationsende" :
+            case DISPENSATIONSENDE:
                 value = asString(dispensation.getDispensationsende());
                 break;
-            case "voraussichtliche Dauer" :
+            case VORAUSSICHTLICHE_DAUER:
                 value = dispensation.getVoraussichtlicheDauer();
                 break;
-            case "Grund" :
+            case GRUND:
                 value = dispensation.getGrund();
                 break;
             default:
@@ -50,7 +51,7 @@ public class DispensationenTableData {
     }
 
     public String getColumnName(int column) {
-        return COLUMNS[column];
+        return COLUMNS[column].toString();
     }
 
 }

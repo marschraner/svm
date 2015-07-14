@@ -11,15 +11,18 @@ import org.junit.Test;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Martin Schraner
  */
-public class RemoveDispensationFromSchuelerCommandTest {
+public class DeleteCodeCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
@@ -39,8 +42,19 @@ public class RemoveDispensationFromSchuelerCommandTest {
     @Test
     public void testExecute() throws Exception {
 
-        // 1. Transaktion: Schueler erfassen und 3 Dispensationen hinzufügen
+        List<Code> codesSaved = new ArrayList<>();
+
+        // 1. Transaktion: 2 Codes erfassen und den zweiten einem Schueler hinzufügen
         commandInvoker.beginTransaction();
+
+        Code code1 = new Code("zt", "ZirkusTest");
+        Code code2 = new Code("jt", "JugendprojektTest");
+
+        SaveOrUpdateCodeCommand saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code1, null, codesSaved);
+        commandInvoker.executeCommandWithinTransaction(saveOrUpdateCodeCommand);
+
+        saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code2, null, codesSaved);
+        commandInvoker.executeCommandWithinTransaction(saveOrUpdateCodeCommand);
 
         Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
@@ -55,43 +69,43 @@ public class RemoveDispensationFromSchuelerCommandTest {
         // Set Rechnungsempfänger
         schueler.setRechnungsempfaenger(vater);
 
+        // Code hinzufügen
+        schueler.addCode(code2);
+
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
         commandInvoker.executeCommandWithinTransaction(saveSchuelerCommand);
         Schueler savedSchueler = saveSchuelerCommand.getSavedSchueler();
 
-        // 3 Dispensationen hinzufügen
-        Dispensation dispensation1 = new Dispensation(new GregorianCalendar(2012, Calendar.JANUARY, 15), new GregorianCalendar(2012, Calendar.MARCH, 31), null, "Zu klein");
-        AddDispensationToSchuelerAndSaveCommand addDispensationToSchuelerAndSaveCommand = new AddDispensationToSchuelerAndSaveCommand(dispensation1, null, savedSchueler);
-        commandInvoker.executeCommandWithinTransaction(addDispensationToSchuelerAndSaveCommand);
-
-        Dispensation dispensation2 = new Dispensation(new GregorianCalendar(2013, Calendar.JANUARY, 15), new GregorianCalendar(2013, Calendar.MARCH, 31), null, "Beinbruch");
-        addDispensationToSchuelerAndSaveCommand = new AddDispensationToSchuelerAndSaveCommand(dispensation2, null, savedSchueler);
-        commandInvoker.executeCommandWithinTransaction(addDispensationToSchuelerAndSaveCommand);
-
-        Dispensation dispensation3 = new Dispensation(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2014, Calendar.MARCH, 31), null, "Armbruch");
-        addDispensationToSchuelerAndSaveCommand = new AddDispensationToSchuelerAndSaveCommand(dispensation3, null, savedSchueler);
-        commandInvoker.executeCommandWithinTransaction(addDispensationToSchuelerAndSaveCommand);
-
-        savedSchueler = addDispensationToSchuelerAndSaveCommand.getSchuelerUpdated();
-
         commandInvoker.commitTransaction();
 
-        assertEquals(3, savedSchueler.getDispensationen().size());
+        assertEquals(2, codesSaved.size());
+        assertEquals("jt", codesSaved.get(0).getKuerzel()); // alphabetisch geordnet
+        assertEquals("zt", codesSaved.get(1).getKuerzel());
+        assertEquals(1, savedSchueler.getCodes().size());
 
 
-        // 2. Transaktion: zweite Dispensation löschen
+        // 2. Transaktion: Codes löschen
         commandInvoker.beginTransaction();
 
-        RemoveDispensationFromSchuelerCommand removeDispensationFromSchuelerCommand = new RemoveDispensationFromSchuelerCommand(1, savedSchueler);
-        commandInvoker.executeCommandWithinTransaction(removeDispensationFromSchuelerCommand);
+        DeleteCodeCommand deleteCodeCommand = new DeleteCodeCommand(codesSaved, 1);
+        commandInvoker.executeCommandWithinTransaction(deleteCodeCommand);
+        assertEquals(DeleteCodeCommand.Result.LOESCHEN_ERFOLGREICH, deleteCodeCommand.getResult());
+        assertEquals(1, codesSaved.size());
+
+        // Kann nicht gelöscht werden, da referenziert
+        deleteCodeCommand = new DeleteCodeCommand(codesSaved, 0);
+        commandInvoker.executeCommandWithinTransaction(deleteCodeCommand);
+        assertEquals(DeleteCodeCommand.Result.CODE_VON_SCHUELER_REFERENZIERT, deleteCodeCommand.getResult());
+        assertEquals(1, codesSaved.size());
+
+        // Code vom Schüler entfernen, jetzt löschen möglich
+        savedSchueler.deleteCode(codesSaved.get(0));
+        deleteCodeCommand = new DeleteCodeCommand(codesSaved, 0);
+        commandInvoker.executeCommandWithinTransaction(deleteCodeCommand);
+        assertEquals(DeleteCodeCommand.Result.LOESCHEN_ERFOLGREICH, deleteCodeCommand.getResult());
+        assertTrue(codesSaved.isEmpty());
 
         commandInvoker.commitTransaction();
-
-        Schueler updatedSchueler = removeDispensationFromSchuelerCommand.getSchuelerUpdated();
-
-        assertEquals(2, updatedSchueler.getDispensationen().size());
-        assertEquals("Armbruch", updatedSchueler.getDispensationen().get(0).getGrund());  // neuste zuoberst
-        assertEquals("Zu klein", updatedSchueler.getDispensationen().get(1).getGrund());
 
 
         // Testdaten löschen
@@ -100,7 +114,7 @@ public class RemoveDispensationFromSchuelerCommandTest {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
             SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-            Schueler schuelerToBeDeleted = schuelerDao.findById(updatedSchueler.getPersonId());
+            Schueler schuelerToBeDeleted = schuelerDao.findById(savedSchueler.getPersonId());
             schuelerDao.remove(schuelerToBeDeleted);
             entityManager.getTransaction().commit();
         } finally {

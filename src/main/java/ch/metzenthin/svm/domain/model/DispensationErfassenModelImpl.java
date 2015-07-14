@@ -150,7 +150,7 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
 
     @Override
     public boolean checkDispensationUeberlapptAndereDispensationen(SchuelerDatenblattModel schuelerDatenblattModel) {
-        CheckDispensationUeberlapptAndereDispensationenCommand checkDispensationUeberlapptAndereDispensationenCommand = new CheckDispensationUeberlapptAndereDispensationenCommand(this.getDispensation(), dispensationOrigin, schuelerDatenblattModel.getSchueler().getDispensationen());
+        CheckDispensationUeberlapptAndereDispensationenCommand checkDispensationUeberlapptAndereDispensationenCommand = new CheckDispensationUeberlapptAndereDispensationenCommand(dispensation, dispensationOrigin, schuelerDatenblattModel.getSchueler().getDispensationen());
         CommandInvoker commandInvoker = getCommandInvoker();
         commandInvoker.executeCommand(checkDispensationUeberlapptAndereDispensationenCommand);
         return checkDispensationUeberlapptAndereDispensationenCommand.isUeberlappt();

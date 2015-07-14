@@ -56,8 +56,12 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuBar.add(menuDatei);
 
         JMenu menuSchueler = new JMenu("Schüler");
-        menuSchueler.setMnemonic(KeyEvent.VK_C);
+        menuSchueler.setMnemonic(KeyEvent.VK_H);
         menuBar.add(menuSchueler);
+
+        JMenu menuCodes = new JMenu("Codes");
+        menuCodes.setMnemonic(KeyEvent.VK_C);
+        menuBar.add(menuCodes);
 
         // Set up the first menu item.
         JMenuItem menuItem = new JMenuItem("Neuen Schüler erfassen");
@@ -80,6 +84,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.setActionCommand("monatsstatistik");
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
+
+        menuItem = new JMenuItem("Codes verwalten");
+        menuItem.setMnemonic(KeyEvent.VK_C);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("codesVerwalten");
+        menuItem.addActionListener(this);
+        menuCodes.add(menuItem);
 
         // Set up the second menu item.
         menuItem = new JMenuItem("Beenden");
@@ -128,6 +139,16 @@ public class SvmDesktop extends JFrame implements ActionListener {
                 }
             });
             setAndShowActivePanel(anAbmeldestatistikPanel.$$$getRootComponent$$$(), "Monatsstatistik");
+
+        } else if ("codesVerwalten".equals(e.getActionCommand())) {
+            CodesPanel codesPanel = new CodesPanel(svmContext);
+            codesPanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFrameAbbrechen();
+                }
+            });
+            setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Codes verwalten");
 
         } else { // beenden
             quit();

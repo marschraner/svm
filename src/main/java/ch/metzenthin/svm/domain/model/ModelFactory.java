@@ -4,6 +4,7 @@ package ch.metzenthin.svm.domain.model;
  * @author Hans Stamm
  */
 public interface ModelFactory {
+    SvmModel createSvmModel();
     SchuelerModel createSchuelerModel();
     AngehoerigerModel createAngehoerigerModel();
     SchuelerErfassenModel createSchuelerErfassenModel();
@@ -11,4 +12,6 @@ public interface ModelFactory {
     MonatsstatistikModel createMonatsstatistikModel();
     DispensationenModel createDispensationenModel();
     DispensationErfassenModel createDispensationErfassenModel();
+    CodesModel createCodesModel();
+    CodeErfassenModel createCodeErfassenModel();
 }

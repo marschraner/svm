@@ -14,6 +14,11 @@ public class ModelFactoryImpl implements ModelFactory {
     }
 
     @Override
+    public SvmModel createSvmModel() {
+        return new SvmModelImpl(commandInvoker);
+    }
+
+    @Override
     public SchuelerModel createSchuelerModel() {
         return new SchuelerModelImpl(commandInvoker);
     }
@@ -46,6 +51,16 @@ public class ModelFactoryImpl implements ModelFactory {
     @Override
     public DispensationErfassenModel createDispensationErfassenModel() {
         return new DispensationErfassenModelImpl(commandInvoker);
+    }
+
+    @Override
+    public CodesModel createCodesModel() {
+        return new CodesModelImpl(commandInvoker);
+    }
+
+    @Override
+    public CodeErfassenModel createCodeErfassenModel() {
+        return new CodeErfassenModelImpl(commandInvoker);
     }
 
 }

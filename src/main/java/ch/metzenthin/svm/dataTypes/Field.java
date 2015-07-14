@@ -52,6 +52,8 @@ public enum Field {
     DISPENSATIONSENDE("Dispensationsende"),
     VORAUSSICHTLICHE_DAUER("voraussichtliche Dauer"),
     GRUND("Grund"),
+    KUERZEL("Kürzel"),
+    BESCHREIBUNG("Beschreibung"),
     BULK_UPDATE("Bulk Update");
 
     private String name;

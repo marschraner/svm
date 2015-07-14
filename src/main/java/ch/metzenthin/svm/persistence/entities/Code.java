@@ -57,7 +57,7 @@ public class Code implements Comparable<Code> {
     @Override
     public int compareTo(Code otherDispensation) {
         // aufsteigend nach Kuerzel sortieren, d.h. neuste Einträge zuoberst
-        return otherDispensation.kuerzel.compareTo(kuerzel);
+        return kuerzel.compareTo(otherDispensation.kuerzel);
     }
 
     public Integer getCodeId() {

@@ -16,6 +16,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -258,6 +259,59 @@ public class CodeDaoTest {
             assertEquals(0, code1Found.getSchueler().size());
             entityManager.refresh(code2Found);
             assertEquals(0, code2Found.getSchueler().size());
+
+        } finally {
+            if (tx != null) {
+                tx.rollback();
+            }
+        }
+
+    }
+
+    @Test
+    public void testFindAll() {
+        EntityTransaction tx = null;
+        try {
+            tx = entityManager.getTransaction();
+            tx.begin();
+
+            // Schueler
+            Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, null, Geschlecht.W, "Schwester von Valentin");
+            Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
+            schueler.setAdresse(adresse);
+
+            // Set Vater
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
+            vater.setAdresse(adresse);
+            schueler.setVater(vater);
+
+            // Set Rechnungsempfänger
+            schueler.setRechnungsempfaenger(vater);
+
+            // Codes hinzufügen
+            Code code1 = new Code("z", "ZirkusprojektTest");
+            codeDao.addToSchuelerAndSave(code1, schueler);
+
+            Code code2 = new Code("r6", "6-Jahres-RabattTest");
+            codeDao.addToSchuelerAndSave(code2, schueler);
+
+            entityManager.flush();
+
+            // Codes suchen
+            List<Code> codesFound = codeDao.findAll();
+            assertTrue(codesFound.size() >= 2);
+            boolean found1 = false;
+            boolean found2 = false;
+            for (Code code : codesFound) {
+                if (code.getBeschreibung().equals("ZirkusprojektTest")) {
+                    found1 = true;
+                }
+                if (code.getBeschreibung().equals("6-Jahres-RabattTest")) {
+                    found2 = true;
+                }
+            }
+            assertTrue(found1);
+            assertTrue(found2);
 
         } finally {
             if (tx != null) {
