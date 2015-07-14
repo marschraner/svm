@@ -61,8 +61,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
             e.printStackTrace();
         }
 
-        assertFalse("Schüler in Datenbank", checkSchuelerBereitsInDatenbankCommand.isInDatenbank());
-        assertNull(checkSchuelerBereitsInDatenbankCommand.getSchuelerFound());
+        assertNull(checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(null));
     }
 
     @Test
@@ -82,10 +81,22 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
             e.printStackTrace();
         }
 
-        assertTrue("Schüler in Datenbank", checkSchuelerBereitsInDatenbankCommand.isInDatenbank());
-        Schueler schuelerFound = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound();
+        Schueler schuelerFound = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(null);
         assertNotNull(schuelerFound);
         System.out.println("Schüler bereits in Datenbank erfasst: " + schuelerFound);
+    }
+
+    @Test
+    public void testExecute_IN_DATENBANK_EIGENE() {
+        CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schuelerTestdata);
+        try {
+            commandInvoker.executeCommand(checkSchuelerBereitsInDatenbankCommand);
+        } catch (SvmDbException e) {
+            e.printStackTrace();
+        }
+
+        Schueler schuelerFound = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(schuelerTestdata);
+        assertNull(schuelerFound);
     }
 
     private void createTestdata() {

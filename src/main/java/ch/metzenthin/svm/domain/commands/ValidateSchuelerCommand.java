@@ -220,13 +220,13 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         }
 
         // 2. Schüler bereits in Datenbank?
-        if (!isBearbeiten() /*todo*/ && !skipCheckSchuelerBereitsInDatenbank) {
+        if (!skipCheckSchuelerBereitsInDatenbank) {
             skipCheckSchuelerBereitsInDatenbank = true;
             CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schueler);
             checkSchuelerBereitsInDatenbankCommand.setEntityManager(entityManager);
             checkSchuelerBereitsInDatenbankCommand.execute();
-            if (checkSchuelerBereitsInDatenbankCommand.isInDatenbank()) {
-                Schueler schuelerFoundInDatabase = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound();
+            Schueler schuelerFoundInDatabase = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(schuelerOrigin);
+            if (schuelerFoundInDatabase != null) {
                 result = new SchuelerBereitsInDatenbankResult(schuelerFoundInDatabase);
                 return;
             }
@@ -355,7 +355,6 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     }
 
     /**
-     * todo $$$ Anmeldung
      * todo $$$ löschen von verwaisten Angehörigen???
      * Wenn "Neu Erfassen" werden die Benutzereingaben (schueler) übernommen, es muss nichts getan werden.
      * Wenn "Bearbeiten" werden die Benutzereingaben (schueler) in den "original" Schüler (schuelerOrigin) übernommen.

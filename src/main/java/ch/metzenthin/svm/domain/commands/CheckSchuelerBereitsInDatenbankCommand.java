@@ -15,8 +15,7 @@ public class CheckSchuelerBereitsInDatenbankCommand extends GenericDaoCommand {
     private Schueler schueler;
 
     // output
-    private boolean inDatenbank;
-    private Schueler schuelerFound;
+   private List<Schueler> schuelerListFound;
 
     public CheckSchuelerBereitsInDatenbankCommand(Schueler schueler) {
         this.schueler = schueler;
@@ -31,23 +30,22 @@ public class CheckSchuelerBereitsInDatenbankCommand extends GenericDaoCommand {
         Schueler schuelerToBeFound = new Schueler(schueler.getVorname(), schueler.getNachname(), schueler.getGeburtsdatum(), null, null, null, null, null);
         Adresse adresseToBeFound = new Adresse(schueler.getAdresse().getStrasse(), schueler.getAdresse().getHausnummer(), schueler.getAdresse().getPlz(), schueler.getAdresse().getOrt());
         schuelerToBeFound.setAdresse(adresseToBeFound);
-        List<Schueler> schuelerListFound = schuelerDao.findSchueler(schuelerToBeFound);
+        schuelerListFound = schuelerDao.findSchueler(schuelerToBeFound);
+    }
 
-        if (!schuelerListFound.isEmpty()) {
-            schuelerFound = schuelerListFound.get(0);
-            inDatenbank = true;
-            return;
+    public Schueler getSchuelerFound(Schueler schuelerToBeExcluded) {
+        if (schuelerListFound.isEmpty()) {
+            return null;
         }
-
-        // Nicht gefunden
-        inDatenbank = false;
+        if (schuelerToBeExcluded == null) {
+            return schuelerListFound.get(0);
+        }
+        for (Schueler schuelerFound : schuelerListFound) {
+            if (!schuelerFound.getPersonId().equals(schuelerToBeExcluded.getPersonId())) {
+                return schuelerFound;
+            }
+        }
+        return null;
     }
 
-    public boolean isInDatenbank() {
-        return inDatenbank;
-    }
-
-    public Schueler getSchuelerFound() {
-        return schuelerFound;
-    }
 }
