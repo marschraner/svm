@@ -158,7 +158,6 @@ public class LehrkraftDaoTest {
             lehrkraft2.setAdresse(adresse2);
             lehrkraftDao.save(lehrkraft2);
 
-
             entityManager.flush();
 
             // Codes suchen

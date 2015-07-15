@@ -2,7 +2,9 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.FindAllCodesCommand;
+import ch.metzenthin.svm.domain.commands.FindAllLehrkraefteCommand;
 import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 
 import java.util.List;
 
@@ -12,6 +14,7 @@ import java.util.List;
 public class SvmModelImpl implements SvmModel {
 
     private List<Code> codesAll;
+    private List<Lehrkraft> lehrkraefteAll;
     private CommandInvoker commandInvoker;
 
     public SvmModelImpl(CommandInvoker commandInvoker) {
@@ -22,6 +25,7 @@ public class SvmModelImpl implements SvmModel {
     private void initSvmModelImpl() {
         commandInvoker.openSession();
         initCodesAll();
+        initLehrkraefteAll();
         commandInvoker.closeSession();
     }
 
@@ -31,9 +35,20 @@ public class SvmModelImpl implements SvmModel {
         codesAll = findAllCodesCommand.getCodesAll();
     }
 
+    private void initLehrkraefteAll() {
+        FindAllLehrkraefteCommand findAllLehrkraefteCommand = new FindAllLehrkraefteCommand();
+        commandInvoker.executeCommandWithinSession(findAllLehrkraefteCommand);
+        lehrkraefteAll = findAllLehrkraefteCommand.getLehrkraefteAll();
+    }
+
     @Override
     public List<Code> getCodesAll() {
         return codesAll;
+    }
+
+    @Override
+    public List<Lehrkraft> getLehrkraefteAll() {
+        return lehrkraefteAll;
     }
 
 }
