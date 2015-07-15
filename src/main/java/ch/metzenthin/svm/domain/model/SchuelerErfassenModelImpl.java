@@ -152,7 +152,6 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         });
     }
 
-    // todo schöner programmieren (nächste vier methoden)
     private void onSchuelerModelPropertyChange(PropertyChangeEvent evt) {
         if (isStrasseHausnummerPropertyChange(evt)) {
             if (mutterModel.isGleicheAdresseWieSchueler()) {

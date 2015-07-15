@@ -87,7 +87,7 @@ public class SchuelerController extends PersonController {
 
     public void setTextAreaBemerkungen(JTextArea textAreaBemerkungen) {
         this.textAreaBemerkungen = textAreaBemerkungen;
-        // todo weitere listener?
+        // todo DocumentListener und TabAction ändern (http://stackoverflow.com/questions/5042429/how-can-i-modify-the-behavior-of-the-tab-key-in-a-jtextarea)
         textAreaBemerkungen.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

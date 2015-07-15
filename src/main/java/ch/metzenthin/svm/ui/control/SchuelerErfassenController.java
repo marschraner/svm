@@ -41,7 +41,7 @@ public class SchuelerErfassenController {
     }
 
     public void constructionDone() {
-        schuelerErfassenModel.initializeCompleted(); // todo $$$ besser init-Methode in Controller?
+        schuelerErfassenModel.initializeCompleted();
     }
 
     private void onSchuelerErfassenModelCompleted(boolean completed) {
