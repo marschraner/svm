@@ -123,13 +123,13 @@ public class RemoveCodeFromSchuelerCommandTest {
             entityManager.getTransaction().begin();
             SchuelerDao schuelerDao = new SchuelerDao(entityManager);
             Schueler schuelerToBeDeleted = schuelerDao.findById(schuelerUpdated.getPersonId());
-            schuelerDao.remove(schuelerToBeDeleted);
             CodeDao codeDao = new CodeDao(entityManager);
             for (Code code : erfassteCodes) {
                 Code codeToBeDeleted = codeDao.findById(code.getCodeId());
                 codeDao.removeFromSchuelerAndUpdate(codeToBeDeleted, schuelerToBeDeleted);
                 codeDao.remove(codeToBeDeleted);
             }
+            schuelerDao.remove(schuelerToBeDeleted);
             entityManager.getTransaction().commit();
         } finally {
             if (entityManager != null) {
