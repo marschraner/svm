@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.persistence.entities.Adresse;
+import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.persistence.entities.PersonSuchen;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import org.apache.log4j.Logger;
@@ -30,6 +31,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     private Calendar geburtsdatumSuchperiodeBeginn;
     private Calendar geburtsdatumSuchperiodeEnde;
     private String geburtsdatumSuchperiodeDateFormatString;
+    private Code code;
     private Calendar stichtag;
     private StringBuilder selectStatementSb;
     private TypedQuery<Schueler> typedQuery;
@@ -47,20 +49,26 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         this.geburtsdatumSuchperiodeBeginn = schuelerSuchenModel.getGeburtsdatumSuchperiodeBeginn();
         this.geburtsdatumSuchperiodeEnde = schuelerSuchenModel.getGeburtsdatumSuchperiodeEnde();
         this.geburtsdatumSuchperiodeDateFormatString = schuelerSuchenModel.getGeburtsdatumSuchperiodeDateFormatString();
+        this.code = schuelerSuchenModel.getCode();
         this.stichtag = schuelerSuchenModel.getStichtag();
     }
 
     @Override
     public void execute() {
 
-        selectStatementSb = new StringBuilder("select s from Schueler s where");
+        selectStatementSb = new StringBuilder("select s from Schueler s");
+        
+        // Inner-Joins erzeugen
+        createJoinCode();
 
-        // Query erzeugen
-        createQueryStammdatenOhneGeburtsdatumSuchperiode();
-        createQueryGeburtsdatumSuchperiode();
-        createQueryAnmeldestatus();
-        createQueryDispensation();
-        createQueryGeschlecht();
+        // Where-Selektionen erzeugen
+        selectStatementSb.append(" where");
+        createWhereSelectionsStammdatenOhneGeburtsdatumSuchperiode();
+        createWhereSelectionsGeburtsdatumSuchperiode();
+        createWhereSelectionsAnmeldestatus();
+        createWhereSelectionsDispensation();
+        createWhereSelectionsGeschlecht();
+        createWhereSelectionsCode();
 
         // Letztes " and" löschen
         if (selectStatementSb.substring(selectStatementSb.length() - 4).equals(" and")) {
@@ -83,14 +91,21 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         setParameterStammdatenOhneGeburtsdatumSuchperiode();
         setParameterGeburtsdatumSuchperiode();
         setParameterStichtag();
+        setParameterCodeKuerzel();
 
         schuelerFound = typedQuery.getResultList();
+    }
+
+    private void createJoinCode() {
+        if (!code.getKuerzel().equals("alle")) {
+            selectStatementSb.append(" join s.codes cod");
+        }
     }
 
     // Einfache or-Abfrage für Eltern / alle (where s.vorname = :vorname or s.mutter.vorname = :vorname or s.vater.vorname = :vorname)
     // schlägt fehl, wenn mutter oder vater nicht existiert, auch wenn ein anderes or-Element, z.B. s.vorname = :vorname erfüllt wäre. Bug?
     // Abhilfe: Subselects.
-    private void createQueryStammdatenOhneGeburtsdatumSuchperiode() {
+    private void createWhereSelectionsStammdatenOhneGeburtsdatumSuchperiode() {
         if (person != null && checkNotEmpty(person.getVorname())) {
             String selectSchueler = " lower(s.vorname) = :vorname";
             String selectEltern = "(exists (select s1 from Schueler s1 where lower(s1.mutter.vorname) = :vorname and s1.personId = s.personId) or exists (select s2 from Schueler s2 where lower(s2.vater.vorname) = :vorname and s2.personId = s.personId)";
@@ -210,7 +225,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
-    private void createQueryGeburtsdatumSuchperiode() {
+    private void createWhereSelectionsGeburtsdatumSuchperiode() {
         if (geburtsdatumSuchperiodeBeginn == null && geburtsdatumSuchperiodeEnde == null) {
             return;
         }
@@ -240,7 +255,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
-    private void createQueryDispensation() {
+    private void createWhereSelectionsDispensation() {
         if (dispensation == SchuelerSuchenModel.DispensationSelected.DISPENSIERT) {
             selectStatementSb.append(" exists (select dis from Dispensation dis join dis.schueler sch where dis.dispensationsbeginn <= :stichtag and (dis.dispensationsende is null or dis.dispensationsende > :stichtag) and s.personId = sch.personId) and");
         }
@@ -249,7 +264,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
-    private void createQueryAnmeldestatus() {
+    private void createWhereSelectionsAnmeldestatus() {
         if (anmeldestatus == SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET) {
             selectStatementSb.append(" exists (select anm from Anmeldung anm join anm.schueler sch where anm.anmeldedatum <= :stichtag and (anm.abmeldedatum is null or anm.abmeldedatum > :stichtag) and s.personId = sch.personId) and");
         }
@@ -258,12 +273,18 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
-    private void createQueryGeschlecht() {
+    private void createWhereSelectionsGeschlecht() {
         if (geschlecht == SchuelerSuchenModel.GeschlechtSelected.WEIBLICH) {
             selectStatementSb.append(" s.geschlecht = 'W' and");
         }
         if (geschlecht == SchuelerSuchenModel.GeschlechtSelected.MAENNLICH) {
             selectStatementSb.append(" s.geschlecht = 'M' and");
+        }
+    }
+
+    private void createWhereSelectionsCode() {
+        if (!code.getKuerzel().equals("alle")) {
+            selectStatementSb.append(" cod.kuerzel = :codeKuerzel and");
         }
     }
 
@@ -316,6 +337,12 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
                 geburtsdatumSuchperiodeEndeMmYyyy = new GregorianCalendar(geburtsdatumSuchperiodeEnde.get(Calendar.YEAR), geburtsdatumSuchperiodeEnde.get(Calendar.MONTH) + 1, 1);
             }
             typedQuery.setParameter("geburtsdatumSuchperiodeEndMmYyyy", geburtsdatumSuchperiodeEndeMmYyyy);
+        }
+    }
+
+    private void setParameterCodeKuerzel() {
+        if (selectStatementSb.toString().contains(":codeKuerzel")) {
+            typedQuery.setParameter("codeKuerzel", code.getKuerzel());
         }
     }
 

@@ -7,6 +7,7 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenResult;
+import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
 import org.apache.log4j.Logger;
@@ -17,7 +18,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -31,7 +34,6 @@ public class SchuelerSuchenController extends PersonController {
     private static final Logger LOGGER = Logger.getLogger(SchuelerSuchenController.class);
 
     private JTextField txtGeburtsdatumSuchperiode;
-    private JTextField txtCodes;
     private JTextField txtLehrkraft;
     private JTextField txtVon;
     private JTextField txtBis;
@@ -50,6 +52,7 @@ public class SchuelerSuchenController extends PersonController {
     private JRadioButton radioBtnMaennlich;
     private JRadioButton radioBtnGeschlechtAlle;
     private JComboBox<Wochentag> comboBoxWochentag;
+    private JComboBox<Code> comboBoxCode;
     private JLabel errLblStichtag;
     private JLabel errLblGeburtsdatumSuchperiode;
     private JButton btnSuchen;
@@ -98,6 +101,9 @@ public class SchuelerSuchenController extends PersonController {
 
     public void setComboBoxWochentag(JComboBox<Wochentag> comboBoxWochentag) {
         this.comboBoxWochentag = comboBoxWochentag;
+        comboBoxWochentag.setModel(new DefaultComboBoxModel<>(Wochentag.values()));
+        // Code in Model initialisieren mit erstem ComboBox-Wert
+        //schuelerSuchenModel.setWochentag(Wochentag.values()[0]);
     }
 
     public void setTxtVon(JTextField txtVon) {
@@ -108,8 +114,21 @@ public class SchuelerSuchenController extends PersonController {
         this.txtBis = txtBis;
     }
 
-    public void setTxtCodes(JTextField txtCodes) {
-        this.txtCodes = txtCodes;
+    public void setComboBoxCode(JComboBox<Code> comboBoxCode) {
+        this.comboBoxCode = comboBoxCode;
+        List<Code> selectableCodesAsList = new ArrayList<>();
+        selectableCodesAsList.add(new Code("alle", "alle"));
+        selectableCodesAsList.addAll(svmContext.getSvmModel().getCodesAll());
+        Code[] selectableCodesAsArray = selectableCodesAsList.toArray(new Code[selectableCodesAsList.size()]);
+        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableCodesAsArray));
+        // Code in Model initialisieren mit erstem ComboBox-Wert
+        schuelerSuchenModel.setCode(selectableCodesAsArray[0]);
+        this.comboBoxCode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onCodeSelected();
+            }
+        });
     }
 
     public void setTxtStichtag(JTextField txtStichtag) {
@@ -249,6 +268,15 @@ public class SchuelerSuchenController extends PersonController {
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
         }
+    }
+
+    private void onCodeSelected() {
+        LOGGER.trace("SchuelerSuchenController Event Code selected=" + comboBoxCode.getSelectedItem());
+        setModelCombobox();
+    }
+
+    private void setModelCombobox() {
+        schuelerSuchenModel.setCode((Code) comboBoxCode.getSelectedItem());
     }
 
     private void setModelStichtag() {
@@ -507,8 +535,8 @@ public class SchuelerSuchenController extends PersonController {
         if (fields.contains(Field.ALLE) || fields.contains(Field.BIS)) {
             txtBis.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.CODES)) {
-            txtCodes.setEnabled(!disable);
+        if (fields.contains(Field.ALLE) || fields.contains(Field.CODE)) {
+            comboBoxCode.setEnabled(!disable);
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.STICHTAG)) {
             txtStichtag.setEnabled(!disable);

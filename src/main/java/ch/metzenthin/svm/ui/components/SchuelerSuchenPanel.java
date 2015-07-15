@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
+import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.ui.control.SchuelerSuchenController;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -36,7 +37,6 @@ public class SchuelerSuchenPanel {
     private JTextField txtLehrkraft;
     private JTextField txtVon;
     private JTextField txtBis;
-    private JTextField txtCodes;
     private JTextField txtStichtag;
     private JRadioButton radioBtnRolleAlle;
     private JRadioButton radioBtnAngemeldet;
@@ -52,6 +52,7 @@ public class SchuelerSuchenPanel {
     private JRadioButton radioBtnEltern;
     private JRadioButton radioBtnRechnungsempfaenger;
     private JComboBox<Wochentag> comboBoxWochentag;
+    private JComboBox<Code> comboBoxCode;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
     private JLabel errLblNachname;
@@ -66,7 +67,6 @@ public class SchuelerSuchenPanel {
     private JLabel errLblLehrkraft;
     private JLabel errLblVon;
     private JLabel errLblBis;
-    private JLabel errLblCodes;
     private JLabel errLblStichtag;
     private JPanel panelLeft;
     private JPanel panelRight;
@@ -162,8 +162,6 @@ public class SchuelerSuchenPanel {
         errLblVon.setForeground(Color.RED);
         errLblBis.setVisible(false);
         errLblBis.setForeground(Color.RED);
-        errLblCodes.setVisible(false);
-        errLblCodes.setForeground(Color.RED);
         errLblStichtag.setVisible(false);
         errLblStichtag.setForeground(Color.RED);
     }
@@ -182,9 +180,9 @@ public class SchuelerSuchenPanel {
         schuelerSuchenController.setTxtLehrkraft(txtLehrkraft);
         schuelerSuchenController.setTxtVon(txtVon);
         schuelerSuchenController.setTxtBis(txtBis);
-        schuelerSuchenController.setTxtCodes(txtCodes);
         schuelerSuchenController.setTxtStichtag(txtStichtag);
         schuelerSuchenController.setComboBoxWochentag(comboBoxWochentag);
+        schuelerSuchenController.setComboBoxCode(comboBoxCode);
         schuelerSuchenController.setRadioBtnGroupRolle(radioBtnSchueler, radioBtnEltern, radioBtnRechnungsempfaenger, radioBtnRolleAlle);
         schuelerSuchenController.setRadioBtnGroupAnmeldestatus(radioBtnAngemeldet, radioBtnAbgemeldet, radioBtnAnmeldestatusAlle);
         schuelerSuchenController.setRadioBtnGroupDispensation(radioBtnDispensiert, radioBtnNichtDispensiert, radioBtnDispensationAlle);
@@ -214,7 +212,8 @@ public class SchuelerSuchenPanel {
     }
 
     private void createUIComponents() {
-        comboBoxWochentag = new JComboBox<>(Wochentag.values());
+        comboBoxWochentag = new JComboBox<>();
+        comboBoxCode = new JComboBox<>();
     }
 
     public void addCloseListener(ActionListener actionListener) {
@@ -1036,27 +1035,12 @@ public class SchuelerSuchenPanel {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         codesPanel.add(label18, gbc);
-        txtCodes = new JTextField();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        gbc.weightx = 1.0;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        codesPanel.add(txtCodes, gbc);
         final JPanel spacer36 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         codesPanel.add(spacer36, gbc);
-        errLblCodes = new JLabel();
-        errLblCodes.setText("errLblCodes");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
-        codesPanel.add(errLblCodes, gbc);
         final JPanel spacer37 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -1082,6 +1066,19 @@ public class SchuelerSuchenPanel {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
         codesPanel.add(spacer40, gbc);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        codesPanel.add(comboBoxCode, gbc);
+        final JPanel spacer41 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        codesPanel.add(spacer41, gbc);
         stichtagPanel = new JPanel();
         stichtagPanel.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
@@ -1100,12 +1097,12 @@ public class SchuelerSuchenPanel {
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         stichtagPanel.add(label19, gbc);
-        final JPanel spacer41 = new JPanel();
+        final JPanel spacer42 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
-        stichtagPanel.add(spacer41, gbc);
+        stichtagPanel.add(spacer42, gbc);
         txtStichtag = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -1114,18 +1111,18 @@ public class SchuelerSuchenPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         stichtagPanel.add(txtStichtag, gbc);
-        final JPanel spacer42 = new JPanel();
+        final JPanel spacer43 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        stichtagPanel.add(spacer42, gbc);
-        final JPanel spacer43 = new JPanel();
+        stichtagPanel.add(spacer43, gbc);
+        final JPanel spacer44 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        stichtagPanel.add(spacer43, gbc);
+        stichtagPanel.add(spacer44, gbc);
         errLblStichtag = new JLabel();
         errLblStichtag.setText("errLblStichtag");
         gbc = new GridBagConstraints();
@@ -1133,19 +1130,19 @@ public class SchuelerSuchenPanel {
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         stichtagPanel.add(errLblStichtag, gbc);
-        final JPanel spacer44 = new JPanel();
+        final JPanel spacer45 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 200;
-        stichtagPanel.add(spacer44, gbc);
-        final JPanel spacer45 = new JPanel();
+        stichtagPanel.add(spacer45, gbc);
+        final JPanel spacer46 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
-        stichtagPanel.add(spacer45, gbc);
+        stichtagPanel.add(spacer46, gbc);
         label1.setLabelFor(txtNachname);
         label2.setLabelFor(txtVorname);
         label3.setLabelFor(txtPlz);
@@ -1158,7 +1155,6 @@ public class SchuelerSuchenPanel {
         label14.setLabelFor(comboBoxWochentag);
         label16.setLabelFor(txtBis);
         label17.setLabelFor(txtVon);
-        label18.setLabelFor(txtCodes);
         label19.setLabelFor(txtStichtag);
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();

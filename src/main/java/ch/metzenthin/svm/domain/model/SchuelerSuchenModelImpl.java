@@ -4,6 +4,7 @@ import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SchuelerSuchenCommand;
+import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.persistence.entities.PersonSuchen;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
@@ -33,6 +34,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private Calendar geburtsdatumSuchperiodeBeginn;
     private Calendar geburtsdatumSuchperiodeEnde;
     private String geburtsdatumSuchperiodeDateFormatString;
+    private Code code;
     private Calendar stichtag = STICHTAG_INIT;
 
     SchuelerSuchenModelImpl(CommandInvoker commandInvoker) {
@@ -188,6 +190,16 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         GeschlechtSelected oldValue = this.geschlecht;
         this.geschlecht = geschlecht;
         firePropertyChange(Field.GESCHLECHT, oldValue, this.geschlecht);
+    }
+
+    @Override
+    public Code getCode() {
+        return code;
+    }
+
+    @Override
+    public void setCode(Code code) {
+        this.code = code;
     }
 
     private final CalendarModelAttribute stichtagModelAttribute = new CalendarModelAttribute(

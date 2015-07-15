@@ -47,7 +47,7 @@ public enum Field {
     WOCHENTAG("Wochentag"),
     VON("von"),
     BIS("bis"),
-    CODES("Codes"),
+    CODE("Code"),
     DISPENSATIONSBEGINN("Dispensationsbeginn"),
     DISPENSATIONSENDE("Dispensationsende"),
     VORAUSSICHTLICHE_DAUER("voraussichtliche Dauer"),
