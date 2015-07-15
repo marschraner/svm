@@ -79,7 +79,7 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
             if (angehoeriger.getVorname() != null) {
                 typedQuery.setParameter("vorname", angehoeriger.getVorname());
             }
-            if (angehoeriger.getVorname() != null) {
+            if (angehoeriger.getNachname() != null) {
                 typedQuery.setParameter("nachname", angehoeriger.getNachname());
             }
             if (angehoeriger.getFestnetz() != null) {
