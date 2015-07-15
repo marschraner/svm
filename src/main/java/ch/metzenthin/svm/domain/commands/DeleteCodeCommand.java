@@ -30,11 +30,13 @@ public class DeleteCodeCommand extends GenericDaoCommand {
     @Override
     public void execute() {
         CodeDao codeDao = new CodeDao(entityManager);
-        if (codes.get(indexCodeToBeDeleted).getSchueler().size() > 0) {
+        // Zu löschende Entity von DB nachladen, damit auf Schüler zugegriffen werden kann (in codes nicht geladen wege lazy loading)
+        Code codeToBeDeleted = codeDao.findById(codes.get(indexCodeToBeDeleted).getCodeId());
+        if (codeToBeDeleted.getSchueler().size() > 0) {
             result = Result.CODE_VON_SCHUELER_REFERENZIERT;
             return;
         }
-        codeDao.remove(codes.get(indexCodeToBeDeleted));
+        codeDao.remove(codeToBeDeleted);
         codes.remove(indexCodeToBeDeleted);
         result = Result.LOESCHEN_ERFOLGREICH;
     }

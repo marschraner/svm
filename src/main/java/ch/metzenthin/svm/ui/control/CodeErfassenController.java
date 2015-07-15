@@ -1,10 +1,10 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CodeErfassenModel;
-import ch.metzenthin.svm.domain.model.CodesModel;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import org.apache.log4j.Logger;
 
@@ -23,7 +23,7 @@ public class CodeErfassenController extends AbstractController {
     private static final Logger LOGGER = Logger.getLogger(CodeErfassenController.class);
 
     private CodeErfassenModel codeErfassenModel;
-    private CodesModel codesModel;
+    private final SvmContext svmContext;
     private JDialog codeErfassenDialog;
     private JTextField txtKuerzel;
     private JTextField txtBeschreibung;
@@ -31,9 +31,9 @@ public class CodeErfassenController extends AbstractController {
     private JLabel errLblBeschreibung;
     private JButton btnSpeichern;
 
-    public CodeErfassenController(CodeErfassenModel codeErfassenModel, CodesModel codesModel) {
+    public CodeErfassenController(SvmContext svmContext, CodeErfassenModel codeErfassenModel) {
         super(codeErfassenModel);
-        this.codesModel = codesModel;
+        this.svmContext = svmContext;
         this.codeErfassenModel = codeErfassenModel;
         this.codeErfassenModel.addPropertyChangeListener(this);
         this.codeErfassenModel.addDisableFieldsListener(this);
@@ -181,10 +181,10 @@ public class CodeErfassenController extends AbstractController {
     }
 
     private void onSpeichern() {
-        if (codeErfassenModel.checkCodeKuerzelBereitsInVerwendung(codesModel)) {
+        if (codeErfassenModel.checkCodeKuerzelBereitsInVerwendung(svmContext.getSvmModel())) {
             JOptionPane.showMessageDialog(null, "Kürzel bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE);
         } else {
-            codeErfassenModel.speichern(codesModel);
+            codeErfassenModel.speichern(svmContext.getSvmModel());
             codeErfassenDialog.dispose();
         }
     }

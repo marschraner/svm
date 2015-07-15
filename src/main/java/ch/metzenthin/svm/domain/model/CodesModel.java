@@ -4,16 +4,13 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.commands.DeleteCodeCommand;
 import ch.metzenthin.svm.persistence.entities.Code;
 
-import java.util.List;
-
 /**
  * @author Martin Schraner
  */
 public interface CodesModel {
 
-    List<Code> getCodes();
-
-    DeleteCodeCommand.Result eintragLoeschen(int selectedRow);
-
+    DeleteCodeCommand.Result eintragLoeschenCodesVerwalten(SvmContext svmContext, int indexCodeToBeRemoved);
+    void eintragLoeschenCodesSchueler(int indexCodeToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel);
     CodeErfassenModel getCodeErfassenModel(SvmContext svmContext, int indexCodeToBeModified);
+    Code[] getSelectableCodes(SvmModel svmModel, SchuelerDatenblattModel schuelerDatenblattModel);
 }

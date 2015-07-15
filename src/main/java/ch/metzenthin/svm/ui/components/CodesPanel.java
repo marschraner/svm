@@ -1,6 +1,9 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
+import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
+import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.control.CodesController;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -17,30 +20,42 @@ public class CodesPanel {
     private JPanel panel1;
     private JPanel datenPanel;
     private JPanel buttonPanel;
+    private JTable codesTable;
+    private JLabel lblTitle;
     private JButton btnNeu;
     private JButton btnBearbeiten;
     private JButton btnLoeschen;
+    private JButton btnZurueck;
     private JButton btnAbbrechen;
     private JPanel titelPanel;
-    private JTable codesTable;
     private CodesController codesController;
 
-    public CodesPanel(SvmContext svmContext) {
+    public CodesPanel(SvmContext svmContext, CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isCodesSchueler) {
         $$$setupUI$$$();
-        createDispensationenController(svmContext);
+        createCodesController(svmContext, codesTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, isCodesSchueler);
     }
 
-    private void createDispensationenController(SvmContext svmContext) {
-        codesController = new CodesController(svmContext.getModelFactory().createCodesModel(), svmContext);
+    private void createCodesController(SvmContext svmContext, CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isCodesSchueler) {
+        codesController = new CodesController(svmContext.getModelFactory().createCodesModel(), svmContext, codesTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, isCodesSchueler);
         codesController.setCodesTable(codesTable);
+        codesController.setLblTitel(lblTitle);
         codesController.setBtnNeu(btnNeu);
         codesController.setBtnBearbeiten(btnBearbeiten);
         codesController.setBtnLoeschen(btnLoeschen);
+        codesController.setBtnZurueck(btnZurueck);
         codesController.setBtnAbbrechen(btnAbbrechen);
+    }
+
+    public void addNextPanelListener(ActionListener actionListener) {
+        codesController.addNextPanelListener(actionListener);
     }
 
     public void addCloseListener(ActionListener closeListener) {
         codesController.addCloseListener(closeListener);
+    }
+
+    public void addZurueckZuSchuelerSuchenListener(ActionListener zurueckZuSchuelerSuchenListener) {
+        codesController.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
     }
 
     /**
@@ -67,14 +82,14 @@ public class CodesPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 10, 20, 10);
         datenPanel.add(titelPanel, gbc);
-        final JLabel label1 = new JLabel();
-        label1.setFont(new Font(label1.getFont().getName(), Font.BOLD, 36));
-        label1.setText("Codes verwalten");
+        lblTitle = new JLabel();
+        lblTitle.setFont(new Font(lblTitle.getFont().getName(), Font.BOLD, 36));
+        lblTitle.setText("Codes verwalten");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
-        titelPanel.add(label1, gbc);
+        titelPanel.add(lblTitle, gbc);
         final JPanel spacer1 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -205,17 +220,28 @@ public class CodesPanel {
         btnAbbrechen.setPreferredSize(new Dimension(114, 29));
         btnAbbrechen.setText("Abbrechen");
         gbc = new GridBagConstraints();
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 20, 5);
         panel4.add(btnAbbrechen, gbc);
         final JPanel spacer11 = new JPanel();
         gbc = new GridBagConstraints();
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel4.add(spacer11, gbc);
+        btnZurueck = new JButton();
+        btnZurueck.setMaximumSize(new Dimension(114, 29));
+        btnZurueck.setMinimumSize(new Dimension(114, 29));
+        btnZurueck.setPreferredSize(new Dimension(114, 29));
+        btnZurueck.setText("Zurück");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 20, 5);
+        panel4.add(btnZurueck, gbc);
     }
 
     /**

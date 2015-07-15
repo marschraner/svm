@@ -82,17 +82,17 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     }
 
     @Override
-    public boolean checkCodeKuerzelBereitsInVerwendung(CodesModel codesModel) {
+    public boolean checkCodeKuerzelBereitsInVerwendung(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(code, codeOrigin, codesModel.getCodes());
+        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(code, codeOrigin, svmModel.getCodesAll());
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
         return checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung();
     }
 
     @Override
-    public void speichern(CodesModel codesModel) {
+    public void speichern(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        SaveOrUpdateCodeCommand saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code, codeOrigin, codesModel.getCodes());
+        SaveOrUpdateCodeCommand saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code, codeOrigin, svmModel.getCodesAll());
         try {
             commandInvoker.beginTransaction();
             commandInvoker.executeCommandWithinTransaction(saveOrUpdateCodeCommand);

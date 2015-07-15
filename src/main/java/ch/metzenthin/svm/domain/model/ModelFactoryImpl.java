@@ -63,4 +63,9 @@ public class ModelFactoryImpl implements ModelFactory {
         return new CodeErfassenModelImpl(commandInvoker);
     }
 
+    @Override
+    public CodeSchuelerHinzufuegenModel createCodeSchuelerHinzufuegenModel() {
+        return new CodeSchuelerHinzufuegenModelImpl(commandInvoker);
+    }
+
 }

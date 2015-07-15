@@ -32,7 +32,7 @@ public class CodeErfassenDialog extends JDialog {
 
     private void createCodeErfassenController(SvmContext svmContext, CodesModel codesModel, int indexBearbeiten, boolean isBearbeiten) {
         CodeErfassenModel codeErfassenModel = (isBearbeiten ? codesModel.getCodeErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createCodeErfassenModel());
-        CodeErfassenController codeErfassenController = new CodeErfassenController(codeErfassenModel, codesModel);
+        CodeErfassenController codeErfassenController = new CodeErfassenController(svmContext, codeErfassenModel);
         codeErfassenController.setCodeErfassenDialog(this);
         codeErfassenController.setContentPane(contentPane);
         codeErfassenController.setTxtKuerzel(txtKuerzel);
@@ -80,7 +80,7 @@ public class CodeErfassenDialog extends JDialog {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         datenPanel.add(panel1, gbc);
-        panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Codes", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel1.getFont().getName(), Font.BOLD, panel1.getFont().getSize())));
+        panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Code", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel1.getFont().getName(), Font.BOLD, panel1.getFont().getSize())));
         final JLabel label1 = new JLabel();
         label1.setText("Kürzel");
         gbc = new GridBagConstraints();

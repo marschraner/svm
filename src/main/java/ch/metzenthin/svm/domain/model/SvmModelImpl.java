@@ -2,14 +2,16 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.FindAllCodesCommand;
-import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
+import ch.metzenthin.svm.persistence.entities.Code;
+
+import java.util.List;
 
 /**
  * @author Martin Schraner
  */
 public class SvmModelImpl implements SvmModel {
 
-    private CodesTableModel codesAllTableModel;
+    private List<Code> codesAll;
     private CommandInvoker commandInvoker;
 
     public SvmModelImpl(CommandInvoker commandInvoker) {
@@ -19,24 +21,19 @@ public class SvmModelImpl implements SvmModel {
 
     private void initSvmModelImpl() {
         commandInvoker.openSession();
-        initCodesAllTableModel();
+        initCodesAll();
         commandInvoker.closeSession();
     }
 
-    private void initCodesAllTableModel() {
+    private void initCodesAll() {
         FindAllCodesCommand findAllCodesCommand = new FindAllCodesCommand();
         commandInvoker.executeCommandWithinSession(findAllCodesCommand);
-        CodesTableData codesTableData = new CodesTableData(findAllCodesCommand.getCodesAll());
-        codesAllTableModel = new CodesTableModel(codesTableData);
+        codesAll = findAllCodesCommand.getCodesAll();
     }
 
     @Override
-    public CodesTableModel getCodesAllTableModel() {
-        return codesAllTableModel;
+    public List<Code> getCodesAll() {
+        return codesAll;
     }
 
-    @Override
-    public void setCodesAllTableModel(CodesTableModel codesAllTableModel) {
-        this.codesAllTableModel = codesAllTableModel;
-    }
 }

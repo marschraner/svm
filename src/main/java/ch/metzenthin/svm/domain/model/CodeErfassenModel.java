@@ -16,6 +16,6 @@ public interface CodeErfassenModel extends Model {
     void setKuerzel(String kuerzel) throws SvmValidationException;
     void setBeschreibung(String beschreibung) throws SvmValidationException;
 
-    boolean checkCodeKuerzelBereitsInVerwendung(CodesModel codesTableModel);
-    void speichern(CodesModel codesTableModel);
+    boolean checkCodeKuerzelBereitsInVerwendung(SvmModel svmModel);
+    void speichern(SvmModel svmModel);
 }

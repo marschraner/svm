@@ -141,7 +141,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             setAndShowActivePanel(anAbmeldestatistikPanel.$$$getRootComponent$$$(), "Monatsstatistik");
 
         } else if ("codesVerwalten".equals(e.getActionCommand())) {
-            CodesPanel codesPanel = new CodesPanel(svmContext);
+            CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, 0, false);
             codesPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

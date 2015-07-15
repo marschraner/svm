@@ -18,7 +18,7 @@
               <gridbag top="10" left="10" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties/>
-            <border type="etched" title="Codes">
+            <border type="etched" title="Code">
               <font style="1"/>
             </border>
             <children>

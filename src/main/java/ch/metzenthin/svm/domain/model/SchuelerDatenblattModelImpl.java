@@ -4,10 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.commands.CheckGeschwisterSchuelerRechnungempfaengerCommand;
-import ch.metzenthin.svm.persistence.entities.Angehoeriger;
-import ch.metzenthin.svm.persistence.entities.Anmeldung;
-import ch.metzenthin.svm.persistence.entities.Dispensation;
-import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.*;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -252,8 +249,32 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     }
 
     @Override
+    public String getCodesAsString() {
+        List<Code> codes = schueler.getCodes();
+        if (!codes.isEmpty()) {
+            StringBuilder codesSb = new StringBuilder("<html>");
+            for (Code code : codes) {
+                if (codesSb.length() > 6) {
+                    codesSb.append("<br>");
+                }
+                codesSb.append(code);
+            }
+            codesSb.append("</html>");
+            if (codesSb.length() > 13) {
+                return codesSb.toString();
+            }
+        }
+        return "-";
+    }
+
+    @Override
     public DispensationenTableData getDispensationenTableData() {
         return new DispensationenTableData(schueler.getDispensationen());
+    }
+
+    @Override
+    public CodesTableData getCodesTableData() {
+        return new CodesTableData(schueler.getCodes());
     }
 
     private boolean isDispensationAktuell(Dispensation dispensation) {

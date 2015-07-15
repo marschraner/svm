@@ -2,8 +2,10 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
+import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.components.CodesPanel;
 import ch.metzenthin.svm.ui.components.DispensationenPanel;
 import ch.metzenthin.svm.ui.components.SchuelerErfassenPanel;
 import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
@@ -47,6 +49,7 @@ public class SchuelerDatenblattController {
     private JLabel labelDispensationsgrund;
     private JLabel labelDispensationsgrundValue;
     private JLabel labelFruehereDispensationenValue;
+    private JLabel labelCodesValue;
     private JLabel labelScrollPosition;
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
@@ -89,6 +92,7 @@ public class SchuelerDatenblattController {
         setLabelDispensationsdauerValue();
         setLabelDispensationsgrund();
         setLabelDispensationsgrundValue();
+        setLabelCodesValue();
         setLabelFruehereDispensationenValue();
     }
 
@@ -362,6 +366,15 @@ public class SchuelerDatenblattController {
         labelFruehereDispensationenValue.setText(schuelerDatenblattModel.getFruehereDispensationenAsString());
     }
 
+    public void setLabelCodesValue(JLabel labelCodesValue) {
+        this.labelCodesValue = labelCodesValue;
+        setLabelCodesValue();
+    }
+
+    private void setLabelCodesValue() {
+        labelCodesValue.setText(schuelerDatenblattModel.getCodesAsString());
+    }
+
     public void setBtnZurueck(JButton btnZurueck) {
         btnZurueck.addActionListener(new ActionListener() {
             @Override
@@ -482,7 +495,12 @@ public class SchuelerDatenblattController {
     }
 
     private void onCodesBearbeiten() {
-
+        CodesTableModel codesTableModel = new CodesTableModel(schuelerDatenblattModel.getCodesTableData());
+        CodesPanel codesPanel = new CodesPanel(svmContext, codesTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, true);
+        codesPanel.addNextPanelListener(nextPanelListener);
+        codesPanel.addCloseListener(closeListener);
+        codesPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{codesPanel.$$$getRootComponent$$$(), "Codes"}, ActionEvent.ACTION_PERFORMED, "Codes"));
     }
 
     public void setLabelScrollPosition(JLabel labelScrollPosition) {
