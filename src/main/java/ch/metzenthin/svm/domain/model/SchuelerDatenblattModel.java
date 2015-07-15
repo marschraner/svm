@@ -23,6 +23,7 @@ public interface SchuelerDatenblattModel {
     String getAnmeldedatumAsString();
     String getAbmeldedatumAsString();
     String getFruehereAnmeldungenAsString();
+    String getBemerkungen();
     String getDispensationsdauerAsString();
     String getDispensationsgrund();
     String getFruehereDispensationenAsString();

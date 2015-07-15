@@ -43,6 +43,7 @@ public class SchuelerDatenblattController {
     private JLabel labelAbmeldedatumValue;
     private JLabel labelFruehereAnmeldungen;
     private JLabel labelFruehereAnmeldungenValue;
+    private JLabel labelBemerkungenValue;
     private JLabel labelNichtDispensiert;
     private JLabel labelDispensationsdauer;
     private JLabel labelDispensationsdauerValue;
@@ -78,6 +79,7 @@ public class SchuelerDatenblattController {
         setLabelFruehereAnmeldungenValue();
         setLabelAbmeldedatum();
         setLabelAbmeldedatumValue();
+        setLabelBemerkungenValue();
         setLabelGeburtsdatumValue();
         setLabelMutterValue();
         setLabelVaterValue();
@@ -288,6 +290,15 @@ public class SchuelerDatenblattController {
             labelFruehereAnmeldungenValue.setVisible(true);
         }
         labelFruehereAnmeldungenValue.setText(schuelerDatenblattModel.getFruehereAnmeldungenAsString());
+    }
+
+    public void setLabelBemerkungenValue(JLabel labelBemerkungenValue) {
+        this.labelBemerkungenValue = labelBemerkungenValue;
+        setLabelBemerkungenValue();
+    }
+
+    private void setLabelBemerkungenValue() {
+        labelBemerkungenValue.setText(schuelerDatenblattModel.getBemerkungen());
     }
 
     public void setLabelNichtDispensiert(JLabel labelNichtDispensiert) {

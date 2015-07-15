@@ -192,6 +192,15 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     }
 
     @Override
+    public String getBemerkungen() {
+        if (schueler.getBemerkungen() != null && !schueler.getBemerkungen().isEmpty()) {
+            return schueler.getBemerkungen();
+        } else {
+            return "-";
+        }
+    }
+
+    @Override
     public String getDispensationsdauerAsString() {
         List<Dispensation> dispensationen = schueler.getDispensationen();
         if (!dispensationen.isEmpty()) {
