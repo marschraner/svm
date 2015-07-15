@@ -233,7 +233,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         }
 
         // 3. Rechnungsempfänger Drittperson identisch mit Mutter oder Vater?
-        if (!isBearbeiten() /*todo*/ && isRechnungsempfaengerDrittperson() && !skipCheckRechungsempfaengerDrittpersonIdentischMitElternteil) {
+        if (isRechnungsempfaengerDrittperson() && !skipCheckRechungsempfaengerDrittpersonIdentischMitElternteil) {
             skipCheckRechungsempfaengerDrittpersonIdentischMitElternteil = true;
             CheckDrittpersonIdentischMitElternteilCommand checkDrittpersonIdentischMitElternteilCommand = new CheckDrittpersonIdentischMitElternteilCommand(schueler.getMutter(), schueler.getVater(), schueler.getRechnungsempfaenger());
             checkDrittpersonIdentischMitElternteilCommand.execute();
@@ -244,7 +244,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         }
 
         // 4.a Mutter bereits in Datenbank?
-        if (!isBearbeiten() /*todo*/ && schueler.getMutter() != null && !skipCheckMutterBereitsInDatenbank) {
+        if (((isBearbeiten() && (schueler.getMutter() != null) && (schuelerOrigin.getMutter() == null)) || (!isBearbeiten() && (schueler.getMutter() != null))) && !skipCheckMutterBereitsInDatenbank) {
             skipCheckMutterBereitsInDatenbank = true;
             CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getMutter());
             checkAngehoerigerBereitsInDatenbankCommand.setEntityManager(entityManager);
@@ -271,7 +271,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         }
 
         // 4.b Vater bereits in Datenbank?
-        if (!isBearbeiten() /*todo*/ && schueler.getVater() != null && !skipCheckVaterBereitsInDatenbank) {
+        if (((isBearbeiten() && (schueler.getVater() != null) && (schuelerOrigin.getVater() == null)) || (!isBearbeiten() && (schueler.getVater() != null))) && !skipCheckVaterBereitsInDatenbank) {
             skipCheckVaterBereitsInDatenbank = true;
             CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getVater());
             checkAngehoerigerBereitsInDatenbankCommand.setEntityManager(entityManager);
@@ -298,7 +298,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         }
 
         // 4.c Rechnungsempfänger Drittperson bereits in Datenbank?
-        if (!isBearbeiten() /*todo*/ && isRechnungsempfaengerDrittperson() && !skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank) {
+        if (((isBearbeiten() && isRechnungsempfaengerDrittperson() && (!isRechnungsempfaengerDrittperson(schuelerOrigin))) || (!isBearbeiten() && isRechnungsempfaengerDrittperson())) && !skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank) {
             skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank = true;
             CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getRechnungsempfaenger());
             checkAngehoerigerBereitsInDatenbankCommand.setEntityManager(entityManager);
@@ -354,9 +354,14 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         return !isRechnungsempfaengerMutter && !isRechnungsempfaengerVater;
     }
 
+    private boolean isRechnungsempfaengerDrittperson(Schueler schueler) {
+        return !isRechnungsempfaenger(schueler, schueler.getMutter()) && !isRechnungsempfaenger(schueler, schueler.getVater());
+    }
+
     /**
      * todo $$$ löschen von verwaisten Angehörigen???
-     * Wenn "Neu Erfassen" werden die Benutzereingaben (schueler) übernommen, es muss nichts getan werden.
+     * Wenn "Neu Erfassen" werden die Benutzereingaben (schueler) bzw. Mutter, Vater oder Rechnungsempfänger
+     * von der Datenbank übernommen, es muss sonst nichts getan werden.
      * Wenn "Bearbeiten" werden die Benutzereingaben (schueler) in den "original" Schüler (schuelerOrigin) übernommen.
      *
      * Angehörige werden immer mutiert, das heisst, die Änderungen gelten für alle abhängigen Objekte, die am Angehörigen hängen!
@@ -366,46 +371,57 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
      */
     private Schueler prepareSchuelerForSave() {
         if (!isBearbeiten()) {
+            setMutterFoundInDatabase(schueler);
+            setVaterFoundInDatabase(schueler);
+            setRechnungsempfaengerFoundInDatabase(schueler);
             return schueler;
         }
-        // Schüler kopieren
+        // Schüler, Adresse und Anmeldung kopieren
         schuelerOrigin.copyFieldValuesFrom(schueler);
         schuelerOrigin.getAdresse().copyFieldValuesFrom(schueler.getAdresse());
         prepareAnmeldungForSave();
-        // Mutter kopieren
-        Angehoeriger mutterPrepared = prepareAngehoerigerForSave(schuelerOrigin.getMutter(), mutter);
-        if (schuelerOrigin.getMutter() != mutterPrepared) {
-            schuelerOrigin.setMutter(mutterPrepared);
-        }
-        // Vater kopieren
-        Angehoeriger vaterPrepared = prepareAngehoerigerForSave(schuelerOrigin.getVater(), vater);
-        if (schuelerOrigin.getVater() != vaterPrepared) {
-            schuelerOrigin.setVater(vaterPrepared);
-        }
-        // Rechnungsempfänger
-        if (isRechnungsempfaenger(schueler, schueler.getMutter())) {
-            if (!isRechnungsempfaenger(schuelerOrigin, schuelerOrigin.getMutter())) {
-                // Mutter ist neue Rechnungsempfängerin
-                schuelerOrigin.setRechnungsempfaenger(schuelerOrigin.getMutter());
+        // Mutter von Datenbank übernehmen ...
+        if (!setMutterFoundInDatabase(schuelerOrigin)) {
+            // ... oder kopieren
+            Angehoeriger mutterPrepared = prepareAngehoerigerForSave(schuelerOrigin.getMutter(), mutter);
+            if (schuelerOrigin.getMutter() != mutterPrepared) {
+                schuelerOrigin.setMutter(mutterPrepared);
             }
-        } else if (isRechnungsempfaenger(schueler, schueler.getVater())) {
-            if (!isRechnungsempfaenger(schuelerOrigin, schuelerOrigin.getVater())) {
-                // Vater ist neuer Rechnungsempfänger
-                schuelerOrigin.setRechnungsempfaenger(schuelerOrigin.getVater());
+        }
+        // Vatervon Datenbank übernehmen ...
+        if (!setVaterFoundInDatabase(schuelerOrigin)) {
+            // ... oder kopieren
+            Angehoeriger vaterPrepared = prepareAngehoerigerForSave(schuelerOrigin.getVater(), vater);
+            if (schuelerOrigin.getVater() != vaterPrepared) {
+                schuelerOrigin.setVater(vaterPrepared);
             }
-        } else {
-            Angehoeriger rechnungsempfaengerOrigin;
-            if (isRechnungsempfaenger(schuelerOrigin, schuelerOrigin.getMutter()) || isRechnungsempfaenger(schuelerOrigin, schuelerOrigin.getVater())) {
-                // Drittperson ist neuer Rechnungsempfänger
-                rechnungsempfaengerOrigin = null;
+        }
+        // Rechnungsempfänger von Datenbank übernehmen ...
+        if (!setRechnungsempfaengerFoundInDatabase(schuelerOrigin)) {
+            if (isRechnungsempfaenger(schueler, schueler.getMutter())) {
+                if (!isRechnungsempfaenger(schuelerOrigin, schuelerOrigin.getMutter())) {
+                    // ... oder Mutter ist neue Rechnungsempfängerin
+                    schuelerOrigin.setRechnungsempfaenger(schuelerOrigin.getMutter());
+                }
+            } else if (isRechnungsempfaenger(schueler, schueler.getVater())) {
+                if (!isRechnungsempfaenger(schuelerOrigin, schuelerOrigin.getVater())) {
+                    // ... oder Vater ist neuer Rechnungsempfänger
+                    schuelerOrigin.setRechnungsempfaenger(schuelerOrigin.getVater());
+                }
             } else {
-                // Drittperson war schon Rechnungsempfänger
-                rechnungsempfaengerOrigin = schuelerOrigin.getRechnungsempfaenger();
-            }
-            // Drittperson kopieren
-            Angehoeriger rechnungsempfaengerDrittpersonPrepared = prepareAngehoerigerForSave(rechnungsempfaengerOrigin, rechnungsempfaengerDrittperson);
-            if (schuelerOrigin.getRechnungsempfaenger() != rechnungsempfaengerDrittpersonPrepared) {
-                schuelerOrigin.setRechnungsempfaenger(rechnungsempfaengerDrittpersonPrepared);
+                Angehoeriger rechnungsempfaengerOrigin;
+                if (isRechnungsempfaenger(schuelerOrigin, schuelerOrigin.getMutter()) || isRechnungsempfaenger(schuelerOrigin, schuelerOrigin.getVater())) {
+                    // ... oder Drittperson ist neuer Rechnungsempfänger
+                    rechnungsempfaengerOrigin = null;
+                } else {
+                    // ... oder Drittperson war schon Rechnungsempfänger
+                    rechnungsempfaengerOrigin = schuelerOrigin.getRechnungsempfaenger();
+                }
+                // ... oder Drittperson kopieren
+                Angehoeriger rechnungsempfaengerDrittpersonPrepared = prepareAngehoerigerForSave(rechnungsempfaengerOrigin, rechnungsempfaengerDrittperson);
+                if (schuelerOrigin.getRechnungsempfaenger() != rechnungsempfaengerDrittpersonPrepared) {
+                    schuelerOrigin.setRechnungsempfaenger(rechnungsempfaengerDrittpersonPrepared);
+                }
             }
         }
         return schuelerOrigin;
@@ -465,6 +481,36 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         return schueler.getRechnungsempfaenger() == angehoeriger;
     }
 
+    private boolean setMutterFoundInDatabase(Schueler schueler) {
+        if (mutterFoundInDatabase != null) {
+            schueler.setMutter(mutterFoundInDatabase);
+            if (isRechnungsempfaengerMutter) {
+                schueler.setRechnungsempfaenger(mutterFoundInDatabase);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private boolean setVaterFoundInDatabase(Schueler schueler) {
+        if (vaterFoundInDatabase != null) {
+            schueler.setVater(vaterFoundInDatabase);
+            if (isRechnungsempfaengerVater) {
+                schueler.setRechnungsempfaenger(vaterFoundInDatabase);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private boolean setRechnungsempfaengerFoundInDatabase(Schueler schueler) {
+        if (rechnungsempfaengerDrittpersonFoundInDatabase != null) {
+            schueler.setRechnungsempfaenger(rechnungsempfaengerDrittpersonFoundInDatabase);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Aktionen, die am Beginn durchgeführt werden sollen, abhängig vom Wert von entry.
      */
@@ -483,33 +529,27 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                 break;
 
             case MUTTER_AUS_DATENBANK_UEBERNEHMEN:
-                schueler.setMutter(mutterFoundInDatabase);
-                if (isRechnungsempfaengerMutter) {
-                    schueler.setRechnungsempfaenger(mutterFoundInDatabase);
-                }
                 mutter = null;
                 break;
 
             case MIT_BISHERIGER_MUTTER_WEITERFAHREN:
+                mutterFoundInDatabase = null;
                 break;
 
             case VATER_AUS_DATENBANK_UEBERNEHMEN:
-                schueler.setVater(vaterFoundInDatabase);
-                if (isRechnungsempfaengerVater) {
-                    schueler.setRechnungsempfaenger(vaterFoundInDatabase);
-                }
                 vater = null;
                 break;
 
             case MIT_BISHERIGEM_VATER_WEITERFAHREN:
+                vaterFoundInDatabase = null;
                 break;
 
             case RECHNUNGSEMPFAENGER_DRITTPERSON_AUS_DATENBANK_UEBERNEHMEN:
-                schueler.setRechnungsempfaenger(rechnungsempfaengerDrittpersonFoundInDatabase);
                 rechnungsempfaengerDrittperson = null;
                 break;
 
             case MIT_BISHERIGEM_RECHNUNGSEMPFAENGER_DRITTPERSON_WEITERFAHREN:
+                rechnungsempfaengerDrittpersonFoundInDatabase = null;
                 break;
 
             case SUMMARY_BESTAETIGT:
