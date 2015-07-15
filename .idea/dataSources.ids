@@ -709,6 +709,15 @@
       <primary-key name="PRIMARY" columns="dispensation_id"/>
       <foreign-key name="Dispensation_ibfk_1" columns="schueler_id" ref-table="Schueler" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
+    <table name="Lehrkraft" schema="" catalog="svm" type="TABLE">
+      <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="ahvnummer" sqlType="VARCHAR" precision="16" scale="0" nullable="false" jdbcType="12"/>
+      <column name="vertretungsmoeglichkeiten" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="aktiv" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="person_id"/>
+      <foreign-key name="Lehrkraft_ibfk_1" columns="person_id" ref-table="Person" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
     <table name="Person" schema="" catalog="svm" type="TABLE">
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="discriminator" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
@@ -724,6 +733,7 @@
       <primary-key name="PRIMARY" columns="person_id"/>
       <foreign-key name="Person_ibfk_1" columns="adresse_id" ref-table="Adresse" ref-schema="" ref-catalog="svm" ref-columns="adresse_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="Angehoeriger_ibfk_1" table="Angehoeriger" schema="" catalog="svm" columns="person_id"/>
+      <exported-key name="Lehrkraft_ibfk_1" table="Lehrkraft" schema="" catalog="svm" columns="person_id"/>
       <exported-key name="Schueler_ibfk_1" table="Schueler" schema="" catalog="svm" columns="person_id"/>
     </table>
     <table name="Schueler" schema="" catalog="svm" type="TABLE">

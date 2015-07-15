@@ -37,6 +37,14 @@ public class Angehoeriger extends Person {
         return kinderVater;
     }
 
+    public Set<Schueler> getKinderMutter() {
+        return kinderMutter;
+    }
+
+    public Set<Schueler> getSchuelerRechnungsempfaenger() {
+        return schuelerRechnungsempfaenger;
+    }
+
     public boolean isIdenticalWith(Angehoeriger otherAngehoeriger) {
         return (super.isIdenticalWith(otherAngehoeriger));
     }
@@ -49,16 +57,8 @@ public class Angehoeriger extends Person {
         return super.isEmpty();
     }
 
-    public Set<Schueler> getKinderMutter() {
-        return kinderMutter;
-    }
-
-    public Set<Schueler> getSchuelerRechnungsempfaenger() {
-        return schuelerRechnungsempfaenger;
-    }
-
-    public void copyFieldValuesFrom(Angehoeriger schueler) {
-        super.copyFieldValuesFrom(schueler);
+    public void copyFieldValuesFrom(Angehoeriger angehoerigerFrom) {
+        super.copyFieldValuesFrom(angehoerigerFrom);
     }
 
     @Override

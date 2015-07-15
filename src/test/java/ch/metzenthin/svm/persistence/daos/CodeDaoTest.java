@@ -188,7 +188,6 @@ public class CodeDaoTest {
         }
     }
 
-
     @Test
     public void testRemoveFromSchuelerAndUpdate() {
         EntityTransaction tx = null;
@@ -275,25 +274,12 @@ public class CodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            // Schueler
-            Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, null, Geschlecht.W, "Schwester von Valentin");
-            Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
-            schueler.setAdresse(adresse);
-
-            // Set Vater
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
-            vater.setAdresse(adresse);
-            schueler.setVater(vater);
-
-            // Set Rechnungsempfänger
-            schueler.setRechnungsempfaenger(vater);
-
             // Codes hinzufügen
             Code code1 = new Code("z", "ZirkusprojektTest");
-            codeDao.addToSchuelerAndSave(code1, schueler);
+            codeDao.save(code1);
 
             Code code2 = new Code("r6", "6-Jahres-RabattTest");
-            codeDao.addToSchuelerAndSave(code2, schueler);
+            codeDao.save(code2);
 
             entityManager.flush();
 

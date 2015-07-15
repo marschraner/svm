@@ -54,6 +54,9 @@ public enum Field {
     GRUND("Grund"),
     KUERZEL("Kürzel"),
     BESCHREIBUNG("Beschreibung"),
+    AHV_NUMMER("AHV-Nr."),
+    VERTRETUNGSMOEGLICHKEITEN("Vertretungsmöglichkeiten"),
+    AKTIV("aktiv"),
     BULK_UPDATE("Bulk Update");
 
     private String name;

@@ -61,22 +61,6 @@ public class Schueler extends Person {
         this.bemerkungen = bemerkungen;
     }
 
-    public boolean isEmpty() {
-        return super.isEmpty()
-                && (bemerkungen == null || bemerkungen.trim().isEmpty());
-    }
-
-    public void copyFieldValuesFrom(Schueler schuelerFrom) {
-        super.copyFieldValuesFrom(schuelerFrom);
-        geschlecht = schuelerFrom.getGeschlecht();
-        bemerkungen = schuelerFrom.getBemerkungen();
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
     public Geschlecht getGeschlecht() {
         return geschlecht;
     }
@@ -191,6 +175,22 @@ public class Schueler extends Person {
     public void deleteCode(Code code) {
         code.getSchueler().remove(this);
         codes.remove(code);
+    }
+
+    public boolean isEmpty() {
+        return super.isEmpty()
+                && (bemerkungen == null || bemerkungen.trim().isEmpty());
+    }
+
+    public void copyFieldValuesFrom(Schueler schuelerFrom) {
+        super.copyFieldValuesFrom(schuelerFrom);
+        geschlecht = schuelerFrom.getGeschlecht();
+        bemerkungen = schuelerFrom.getBemerkungen();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 
 }
