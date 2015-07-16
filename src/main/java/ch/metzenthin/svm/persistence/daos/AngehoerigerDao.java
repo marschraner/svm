@@ -71,7 +71,10 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
         }
 
         // Sortierung
-        selectStatementSb.append(" order by a.nachname, a.vorname, a.adresse.ort, a.adresse.strasse");
+        selectStatementSb.append(" order by a.nachname, a.vorname");
+        if ((angehoeriger != null) && (angehoeriger.getAdresse() != null)) {
+            selectStatementSb.append(", a.adresse.ort, a.adresse.strasse");
+        }
 
         TypedQuery<Angehoeriger> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Angehoeriger.class);
 
