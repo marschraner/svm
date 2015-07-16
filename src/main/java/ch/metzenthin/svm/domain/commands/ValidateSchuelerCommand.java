@@ -327,17 +327,17 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         if (!skipPrepareSummary) {
             skipPrepareSummary = true;
             // 5. Identische Adressen?
-            CheckIdentischeAdressenCommand checkIdentischeAdressenCommand = new CheckIdentischeAdressenCommand(schueler);
+            CheckIdentischeAdressenCommand checkIdentischeAdressenCommand = new CheckIdentischeAdressenCommand((isBearbeiten() ? schuelerOrigin : schueler), mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase);
             checkIdentischeAdressenCommand.execute();
             String identischeAdressen = checkIdentischeAdressenCommand.getIdentischeAdressen();
             String abweichendeAdressen = checkIdentischeAdressenCommand.getAbweichendeAdressen();
 
             // 6. Nach Geschwistern suchen
-            CheckGeschwisterSchuelerRechnungempfaengerCommand checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler);
+            CheckGeschwisterSchuelerRechnungempfaengerCommand checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand((isBearbeiten() ? schuelerOrigin : schueler), mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase);
             checkGeschwisterSchuelerRechnungempfaengerCommand.execute();
             List<Schueler> angemeldeteGeschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAngemeldeteGeschwisterList();
             List<Schueler> andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList();
-            result = new ValidateSchuelerSummaryResult(schueler, isRechnungsempfaengerMutter, isRechnungsempfaengerVater, angemeldeteGeschwisterList, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList, identischeAdressen, abweichendeAdressen, isMutterNeu, isVaterNeu, isRechnungsempfaengerDrittpersonNeu);
+            result = new ValidateSchuelerSummaryResult(schueler, mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase, isRechnungsempfaengerMutter, isRechnungsempfaengerVater, angemeldeteGeschwisterList, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList, identischeAdressen, abweichendeAdressen, isMutterNeu, isVaterNeu, isRechnungsempfaengerDrittpersonNeu);
             return;   // -> Summary-Dialog
         }
 

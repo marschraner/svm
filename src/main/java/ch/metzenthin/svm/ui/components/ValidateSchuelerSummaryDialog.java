@@ -93,15 +93,15 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
     }
 
     private void setMutter() {
-        String neuMutter = ((validateSchuelerSummaryResult.getSchueler().getMutter() != null && validateSchuelerSummaryResult.isMutterNeu()) ? " (neu)" : "");
+        String neuMutter = ((validateSchuelerSummaryResult.getMutter() != null && validateSchuelerSummaryResult.isMutterNeu()) ? " (neu)" : "");
         lblMutter.setText("Mutter" + neuMutter + ":");
-        mutterValue.setText(validateSchuelerSummaryResult.getSchueler().getMutter() == null ? "-" : validateSchuelerSummaryResult.getSchueler().getMutter().toString());
+        mutterValue.setText(validateSchuelerSummaryResult.getMutter() == null ? "-" : validateSchuelerSummaryResult.getMutter().toString());
     }
 
     private void setVater() {
-        String neuVater = ((validateSchuelerSummaryResult.getSchueler().getVater() != null && validateSchuelerSummaryResult.isVaterNeu()) ? " (neu)" : "");
+        String neuVater = ((validateSchuelerSummaryResult.getVater() != null && validateSchuelerSummaryResult.isVaterNeu()) ? " (neu)" : "");
         lblVater.setText("Vater" + neuVater + ":");
-        vaterValue.setText(validateSchuelerSummaryResult.getSchueler().getVater() == null ? "-" : validateSchuelerSummaryResult.getSchueler().getVater().toString());
+        vaterValue.setText(validateSchuelerSummaryResult.getVater() == null ? "-" : validateSchuelerSummaryResult.getVater().toString());
     }
 
     private void setRechnungsempfaenger() {
@@ -115,8 +115,8 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
             rechnungsempfaengerText = "Vater";
         } else {
             String neuRechnungsempfaenger = (validateSchuelerSummaryResult.isRechnungsempfaengerNeu() ? " (neu)" : "");
-            lblRechnungsempfaengerText = (validateSchuelerSummaryResult.getSchueler().getRechnungsempfaenger().getAnrede() == Anrede.FRAU ? "Rechnungsempfängerin" + neuRechnungsempfaenger + ":" : "Rechnungsempfänger" + neuRechnungsempfaenger + ":");
-            rechnungsempfaengerText = validateSchuelerSummaryResult.getSchueler().getRechnungsempfaenger().toString();
+            lblRechnungsempfaengerText = (validateSchuelerSummaryResult.getRechnungsempfaenger().getAnrede() == Anrede.FRAU ? "Rechnungsempfängerin" + neuRechnungsempfaenger + ":" : "Rechnungsempfänger" + neuRechnungsempfaenger + ":");
+            rechnungsempfaengerText = validateSchuelerSummaryResult.getRechnungsempfaenger().toString();
         }
         lblRechnungsempfaenger.setText(lblRechnungsempfaengerText);
         rechnungsempfaengerValue.setText(rechnungsempfaengerText);
@@ -161,7 +161,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
     }
 
     private void setSchuelerGleicherRechnungsempfaenger() {
-        if (validateSchuelerSummaryResult.getSchueler().getRechnungsempfaenger().getAnrede() == Anrede.FRAU) {
+        if (validateSchuelerSummaryResult.getRechnungsempfaenger().getAnrede() == Anrede.FRAU) {
             lblAndereSchuelerGleicherRechnungsempfaenger1.setText("Andere Schüler mit gleicher");
             lblAndereSchuelerGleicherRechnungsempfaenger2.setText("Rechnungsempfängerin:");
         }

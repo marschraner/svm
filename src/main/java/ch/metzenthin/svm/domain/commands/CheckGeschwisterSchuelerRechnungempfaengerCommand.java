@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import java.util.ArrayList;
@@ -12,13 +13,23 @@ public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Comman
 
     // input
     private Schueler schueler;
+    private final Angehoeriger mutter;
+    private final Angehoeriger vater;
+    private final Angehoeriger rechnungsempfaenger;
 
     // output
     private List<Schueler> angemeldeteGeschwisterList = new ArrayList<>();
     private List<Schueler> andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList = new ArrayList<>();
 
     public CheckGeschwisterSchuelerRechnungempfaengerCommand(Schueler schueler) {
+        this(schueler, null, null, null);
+    }
+
+    public CheckGeschwisterSchuelerRechnungempfaengerCommand(Schueler schueler, Angehoeriger mutterFoundInDatabase, Angehoeriger vaterFoundInDatabase, Angehoeriger rechnungsempfaengerFoundInDatabase) {
         this.schueler = schueler;
+        mutter = (mutterFoundInDatabase != null) ? mutterFoundInDatabase : schueler.getMutter();
+        vater = (vaterFoundInDatabase != null) ? vaterFoundInDatabase : schueler.getVater();
+        rechnungsempfaenger = (rechnungsempfaengerFoundInDatabase != null) ? rechnungsempfaengerFoundInDatabase : schueler.getRechnungsempfaenger();
     }
 
     @Override
@@ -29,8 +40,8 @@ public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Comman
 
     private void determineGeschwister() {
         // Kinder der Mutter
-        if (schueler.getMutter() != null) {
-            for (Schueler kind : schueler.getMutter().getKinderMutter()) {
+        if (mutter != null) {
+            for (Schueler kind : mutter.getKinderMutter()) {
                 if (!kind.isIdenticalWith(schueler) && kind.getAnmeldungen().get(0).getAbmeldedatum() == null) {
                     angemeldeteGeschwisterList.add(kind);
                 }
@@ -38,8 +49,8 @@ public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Comman
         }
 
         // Kinder des Vaters
-        if (schueler.getVater() != null) {
-            for (Schueler kind : schueler.getVater().getKinderVater()) {
+        if (vater != null) {
+            for (Schueler kind : vater.getKinderVater()) {
                 if (!kind.isIdenticalWith(schueler) && kind.getAnmeldungen().get(0).getAbmeldedatum() == null && !checkIfSchuelerAlreadyInList(kind, angemeldeteGeschwisterList)) {
                     angemeldeteGeschwisterList.add(kind);
                 }
@@ -49,8 +60,8 @@ public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Comman
 
     private void determineAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaenger() {
         // Mutter
-        if (schueler.getMutter() != null) {
-           for (Schueler schueler1 : schueler.getMutter().getSchuelerRechnungsempfaenger()) {
+        if (mutter != null) {
+           for (Schueler schueler1 : mutter.getSchuelerRechnungsempfaenger()) {
                 // Nicht nochmals aufnehmen, falls schon in Geschwister-Liste!
                 if (!schueler1.isIdenticalWith(schueler) && schueler1.getAnmeldungen().get(0).getAbmeldedatum() == null && !checkIfSchuelerAlreadyInList(schueler1, angemeldeteGeschwisterList)) {
                     andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList.add(schueler1);
@@ -59,8 +70,8 @@ public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Comman
         }
 
         // Vater
-        if (schueler.getVater() != null) {
-            for (Schueler schueler1 : schueler.getVater().getSchuelerRechnungsempfaenger()) {
+        if (vater != null) {
+            for (Schueler schueler1 : vater.getSchuelerRechnungsempfaenger()) {
                 if (!schueler1.isIdenticalWith(schueler) && schueler1.getAnmeldungen().get(0).getAbmeldedatum() == null && !checkIfSchuelerAlreadyInList(schueler1, angemeldeteGeschwisterList) && !checkIfSchuelerAlreadyInList(schueler1, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList)) {
                     andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList.add(schueler1);
                 }
@@ -68,9 +79,9 @@ public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Comman
         }
 
         // Rechnungsempfänger Drittperson (d.h. weder Mutter noch Vater ist identisch mit Rechnungsempfänger)
-        if (!(schueler.getMutter() != null && schueler.getMutter().isIdenticalWith(schueler.getRechnungsempfaenger()))
-                || (schueler.getVater() != null) && schueler.getVater().isIdenticalWith(schueler.getRechnungsempfaenger())) {
-            for (Schueler schueler1 : schueler.getRechnungsempfaenger().getSchuelerRechnungsempfaenger()) {
+        if (!(mutter != null && mutter.isIdenticalWith(rechnungsempfaenger))
+                || (vater != null) && vater.isIdenticalWith(rechnungsempfaenger)) {
+            for (Schueler schueler1 : rechnungsempfaenger.getSchuelerRechnungsempfaenger()) {
                 if (!schueler1.isIdenticalWith(schueler) && schueler1.getAnmeldungen().get(0).getAbmeldedatum() == null && !checkIfSchuelerAlreadyInList(schueler1, angemeldeteGeschwisterList) && !checkIfSchuelerAlreadyInList(schueler1, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList)) {
                     andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList.add(schueler1);
                 }

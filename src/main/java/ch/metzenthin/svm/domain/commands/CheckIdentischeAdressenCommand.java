@@ -11,23 +11,31 @@ public class CheckIdentischeAdressenCommand implements Command {
 
     // input + output
     private Schueler schueler;
+    private Angehoeriger mutter;
+    private Angehoeriger vater;
+    private Angehoeriger rechnungsempfaenger;
 
     // output
     private String identischeAdressen = "";
     private String abweichendeAdressen = "";
 
     public CheckIdentischeAdressenCommand(Schueler schueler) {
+        this(schueler, null, null, null);
+    }
+
+    public CheckIdentischeAdressenCommand(Schueler schueler, Angehoeriger mutterFoundInDatabase, Angehoeriger vaterFoundInDatabase, Angehoeriger rechnungsempfaengerFoundInDatabase) {
         this.schueler = schueler;
+        mutter = (mutterFoundInDatabase != null) ? mutterFoundInDatabase : schueler.getMutter();
+        vater = (vaterFoundInDatabase != null) ? vaterFoundInDatabase : schueler.getVater();
+        rechnungsempfaenger = (rechnungsempfaengerFoundInDatabase != null) ? rechnungsempfaengerFoundInDatabase : schueler.getRechnungsempfaenger();
     }
 
     @Override
     public void execute() {
         
-        Angehoeriger mutter = schueler.getMutter();
-        Angehoeriger vater = schueler.getVater();
         Angehoeriger rechnungsempfaengerDrittperson = null;
-        if (!((mutter != null && mutter.isIdenticalWith(schueler.getRechnungsempfaenger())) || (vater != null && vater.isIdenticalWith(schueler.getRechnungsempfaenger())))) {
-            rechnungsempfaengerDrittperson = schueler.getRechnungsempfaenger();
+        if (!((mutter != null && mutter.isIdenticalWith(rechnungsempfaenger)) || (vater != null && vater.isIdenticalWith(rechnungsempfaenger)))) {
+            rechnungsempfaengerDrittperson = rechnungsempfaenger;
         }
 
         boolean mutterHasAdresse = false;
