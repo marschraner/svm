@@ -203,7 +203,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             Object[] options = {"Ja", "Nein"};
             n = JOptionPane.showOptionDialog(
                     this,
-                    "Durch Drücken des Ja-Buttons wird die Applikation beendet. Allfällig erfasste Daten gehen verloren.",
+                    "Soll die Applikation wirklich beendet werden?",
                     "Soll die Applikation beendet werden?",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,

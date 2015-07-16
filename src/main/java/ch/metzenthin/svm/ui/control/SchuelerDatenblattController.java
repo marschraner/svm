@@ -504,7 +504,7 @@ public class SchuelerDatenblattController {
     private void onStammdatenBearbeiten() {
         SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext, schuelerDatenblattModel);
         schuelerErfassenPanel.addCloseListener(closeListener);
-        schuelerErfassenPanel.addSaveSuccessfulListener(new ActionListener() {
+        schuelerErfassenPanel.addZurueckZuDatenblattListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onSaveSuccessful();

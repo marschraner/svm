@@ -56,8 +56,8 @@ public class SchuelerErfassenPanel {
         schuelerErfassenController.addNextPanelListener(nextPanelListener);
     }
 
-    public void addSaveSuccessfulListener(ActionListener saveSuccessfulListener) {
-        schuelerErfassenController.addSaveSuccessfulListener(saveSuccessfulListener);
+    public void addZurueckZuDatenblattListener(ActionListener zurueckZuDatenblattListener) {
+        schuelerErfassenController.addZurueckZuDatenblattListener(zurueckZuDatenblattListener);
     }
 
     /**

@@ -31,7 +31,7 @@ public class SchuelerErfassenController {
     private final SvmContext svmContext;
     private final SchuelerErfassenModel schuelerErfassenModel;
     private final boolean isBearbeiten;
-    private ActionListener saveSuccessfulListener;
+    private ActionListener zurueckZuDatenblattListener;
     private ActionListener nextPanelListener;
 
     public SchuelerErfassenController(SvmContext svmContext, SchuelerErfassenModel schuelerErfassenModel, boolean isBearbeiten) {
@@ -156,8 +156,8 @@ public class SchuelerErfassenController {
         this.nextPanelListener = nextPanelListener;
     }
 
-    public void addSaveSuccessfulListener(ActionListener saveSuccessfulListener) {
-        this.saveSuccessfulListener = saveSuccessfulListener;
+    public void addZurueckZuDatenblattListener(ActionListener saveSuccessfulListener) {
+        this.zurueckZuDatenblattListener = saveSuccessfulListener;
     }
 
     private void onAbbrechen() {
@@ -173,7 +173,11 @@ public class SchuelerErfassenController {
                 options,  //the titles of buttons
                 options[0]); //default button title
         if (n == 0) {
-            closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Abbrechen"));
+            if (zurueckZuDatenblattListener == null) {
+                closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Abbrechen"));
+            } else {
+                zurueckZuDatenblattListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Zurück nach Abbrechen"));
+            }
         }
     }
 
@@ -189,8 +193,8 @@ public class SchuelerErfassenController {
         }
         // Wenn isAbbrechen() zurück zur Eingabemaske, sonst Listener aufrufen (wenn vorhanden), der ein neues Panel aufruft
         if ((dialog == null) || !dialog.isAbbrechen()) {
-            if (saveSuccessfulListener != null) {
-                saveSuccessfulListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Speichern erfolgreich"));
+            if (zurueckZuDatenblattListener != null) {
+                zurueckZuDatenblattListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Speichern erfolgreich"));
             } else {
                 SchuelerSuchenResult schuelerSuchenResult = schuelerErfassenModel.getSchuelerSuchenResult();
                 SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenResult);
