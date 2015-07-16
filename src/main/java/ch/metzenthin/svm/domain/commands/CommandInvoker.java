@@ -7,19 +7,14 @@ public interface CommandInvoker {
 
     Command executeCommand(Command c);
 
+    GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand);
+
     GenericDaoCommand executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand genericDaoCommand);
 
-    void beginTransaction();
-
-    GenericDaoCommand executeCommandWithinTransaction(GenericDaoCommand genericDaoCommand);
-
-    void commitTransaction();
-
-    void rollbackTransaction();
+    GenericDaoCommand executeCommandAsTransaction(GenericDaoCommand genericDaoCommand);
 
     void openSession();
 
     void closeSession();
 
-    GenericDaoCommand executeCommandWithinSession(GenericDaoCommand genericDaoCommand);
 }

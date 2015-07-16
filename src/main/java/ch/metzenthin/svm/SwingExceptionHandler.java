@@ -1,5 +1,7 @@
 package ch.metzenthin.svm;
 
+import org.apache.log4j.Logger;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.PrintWriter;
@@ -10,6 +12,9 @@ import java.lang.reflect.InvocationTargetException;
  * @author Hans Stamm
  */
 public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
+
+    private static final Logger LOGGER = Logger.getLogger(SwingExceptionHandler.class);
+
     public void uncaughtException(final Thread t, final Throwable e) {
         if (SwingUtilities.isEventDispatchThread()) {
             showMessage(t, e);
@@ -38,6 +43,7 @@ public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
     }
 
     private void showMessage(Thread t, Throwable e) {
+        LOGGER.error("Uncaught Exception: ", e);
         String stackTrace = generateStackTrace(e);
         // show an error dialog
         JTextArea textArea = new JTextArea("Exception Occurred in " + t + "\n" + stackTrace);

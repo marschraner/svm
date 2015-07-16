@@ -31,13 +31,13 @@ public class SvmModelImpl implements SvmModel {
 
     private void initCodesAll() {
         FindAllCodesCommand findAllCodesCommand = new FindAllCodesCommand();
-        commandInvoker.executeCommandWithinSession(findAllCodesCommand);
+        commandInvoker.executeCommand(findAllCodesCommand);
         codesAll = findAllCodesCommand.getCodesAll();
     }
 
     private void initLehrkraefteAll() {
         FindAllLehrkraefteCommand findAllLehrkraefteCommand = new FindAllLehrkraefteCommand();
-        commandInvoker.executeCommandWithinSession(findAllLehrkraefteCommand);
+        commandInvoker.executeCommand(findAllLehrkraefteCommand);
         lehrkraefteAll = findAllLehrkraefteCommand.getLehrkraefteAll();
     }
 

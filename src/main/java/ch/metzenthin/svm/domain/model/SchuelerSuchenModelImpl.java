@@ -237,8 +237,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     public SchuelerSuchenResult suchen() {
         SchuelerSuchenCommand schuelerSuchenCommand = new SchuelerSuchenCommand(this);
         CommandInvoker commandInvoker = getCommandInvoker();
-        commandInvoker.openSession();
-        commandInvoker.executeCommandWithinSession(schuelerSuchenCommand);
+        commandInvoker.executeCommand(schuelerSuchenCommand);
         List<Schueler> schuelerList = schuelerSuchenCommand.getSchuelerFound();
         return new SchuelerSuchenResult(schuelerList);
     }

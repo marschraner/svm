@@ -82,8 +82,7 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
     public SchuelerSuchenResult suchen() {
         MonatsstatistikSchuelerSuchenCommand monatsstatistikSchuelerSuchenCommand = new MonatsstatistikSchuelerSuchenCommand(this);
         CommandInvoker commandInvoker = getCommandInvoker();
-        commandInvoker.openSession();
-        commandInvoker.executeCommandWithinSession(monatsstatistikSchuelerSuchenCommand);
+        commandInvoker.executeCommand(monatsstatistikSchuelerSuchenCommand);
         List<Schueler> schuelerList = monatsstatistikSchuelerSuchenCommand.getSchuelerFound();
         return new SchuelerSuchenResult(schuelerList);
     }

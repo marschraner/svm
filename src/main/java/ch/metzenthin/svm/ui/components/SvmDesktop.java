@@ -41,6 +41,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             }
         });
 
+        svmContext.getCommandInvoker().openSession();
         setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), "Schüler suchen");
 
         // Display the window.
@@ -112,6 +113,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
         }
 
         if ("schuelerErfassen".equals(e.getActionCommand())) {
+            svmContext.getCommandInvoker().openSession();
             SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext);
             schuelerErfassenPanel.addCloseListener(new ActionListener() {
                 @Override
@@ -122,9 +124,11 @@ public class SvmDesktop extends JFrame implements ActionListener {
             setAndShowActivePanel(schuelerErfassenPanel.$$$getRootComponent$$$(), "Neuen Schüler erfassen");
 
         } else if ("schuelerSuchen".equals(e.getActionCommand())) {
+            svmContext.getCommandInvoker().openSession();
             setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), "Schüler suchen");
 
         } else if ("monatsstatistik".equals(e.getActionCommand())) {
+            svmContext.getCommandInvoker().openSession();
             MonatsstatistikPanel anAbmeldestatistikPanel = new MonatsstatistikPanel(svmContext);
             anAbmeldestatistikPanel.addCloseListener(new ActionListener() {
                 @Override
@@ -141,6 +145,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             setAndShowActivePanel(anAbmeldestatistikPanel.$$$getRootComponent$$$(), "Monatsstatistik");
 
         } else if ("codesVerwalten".equals(e.getActionCommand())) {
+            svmContext.getCommandInvoker().openSession();
             CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, 0, false);
             codesPanel.addCloseListener(new ActionListener() {
                 @Override

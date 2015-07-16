@@ -29,11 +29,13 @@ public class DeleteCodeCommandTest {
 
     @Before
     public void setUp() throws Exception {
+        commandInvoker.openSession();
         entityManagerFactory = Persistence.createEntityManagerFactory("svm");
     }
 
     @After
     public void tearDown() throws Exception {
+        commandInvoker.closeSession();
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
         }
@@ -44,17 +46,15 @@ public class DeleteCodeCommandTest {
 
         List<Code> codesSaved = new ArrayList<>();
 
-        // 1. Transaktion: 2 Codes erfassen und den zweiten einem Schueler hinzufügen
-        commandInvoker.beginTransaction();
-
+        // 2 Codes erfassen und den zweiten einem Schueler hinzufügen
         Code code1 = new Code("zt", "ZirkusTest");
         Code code2 = new Code("jt", "JugendprojektTest");
 
         SaveOrUpdateCodeCommand saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code1, null, codesSaved);
-        commandInvoker.executeCommandWithinTransaction(saveOrUpdateCodeCommand);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
 
         saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code2, null, codesSaved);
-        commandInvoker.executeCommandWithinTransaction(saveOrUpdateCodeCommand);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
 
         Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
@@ -73,10 +73,8 @@ public class DeleteCodeCommandTest {
         schueler.addCode(code2);
 
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
-        commandInvoker.executeCommandWithinTransaction(saveSchuelerCommand);
+        commandInvoker.executeCommandAsTransaction(saveSchuelerCommand);
         Schueler savedSchueler = saveSchuelerCommand.getSavedSchueler();
-
-        commandInvoker.commitTransaction();
 
         assertEquals(2, codesSaved.size());
         assertEquals("jt", codesSaved.get(0).getKuerzel()); // alphabetisch geordnet
@@ -84,28 +82,24 @@ public class DeleteCodeCommandTest {
         assertEquals(1, savedSchueler.getCodes().size());
 
 
-        // 2. Transaktion: Codes löschen
-        commandInvoker.beginTransaction();
-
+        // Codes löschen
         DeleteCodeCommand deleteCodeCommand = new DeleteCodeCommand(codesSaved, 1);
-        commandInvoker.executeCommandWithinTransaction(deleteCodeCommand);
+        commandInvoker.executeCommandAsTransaction(deleteCodeCommand);
         assertEquals(DeleteCodeCommand.Result.LOESCHEN_ERFOLGREICH, deleteCodeCommand.getResult());
         assertEquals(1, codesSaved.size());
 
         // Kann nicht gelöscht werden, da referenziert
         deleteCodeCommand = new DeleteCodeCommand(codesSaved, 0);
-        commandInvoker.executeCommandWithinTransaction(deleteCodeCommand);
+        commandInvoker.executeCommandAsTransaction(deleteCodeCommand);
         assertEquals(DeleteCodeCommand.Result.CODE_VON_SCHUELER_REFERENZIERT, deleteCodeCommand.getResult());
         assertEquals(1, codesSaved.size());
 
         // Code vom Schüler entfernen, jetzt löschen möglich
         savedSchueler.deleteCode(codesSaved.get(0));
         deleteCodeCommand = new DeleteCodeCommand(codesSaved, 0);
-        commandInvoker.executeCommandWithinTransaction(deleteCodeCommand);
+        commandInvoker.executeCommandAsTransaction(deleteCodeCommand);
         assertEquals(DeleteCodeCommand.Result.LOESCHEN_ERFOLGREICH, deleteCodeCommand.getResult());
         assertTrue(codesSaved.isEmpty());
-
-        commandInvoker.commitTransaction();
 
 
         // Testdaten löschen

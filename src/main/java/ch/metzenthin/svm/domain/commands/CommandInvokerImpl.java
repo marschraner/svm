@@ -54,74 +54,17 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     @Override
-    public void beginTransaction() {
-        LOGGER.trace("beginTransaction aufgerufen");
+    public GenericDaoCommand executeCommandAsTransaction(GenericDaoCommand genericDaoCommand) {
+        LOGGER.trace("executeCommandAsTransaction aufgerufen");
         try {
-            if (entityManager == null || !entityManager.isOpen()) {
-                entityManagerFactory = Persistence.createEntityManagerFactory("svm");
-                entityManager = entityManagerFactory.createEntityManager();
-            }
             entityManager.getTransaction().begin();
-            LOGGER.trace("beginTransaction durchgeführt");
-        } catch (RuntimeException e) {
-            LOGGER.error("Fehler in beginTransaction()", e);
-            EntityTransaction tx = null;
-            if (entityManager != null) {
-                tx = entityManager.getTransaction();
-            }
-            if (tx != null && tx.isActive()) {
-                tx.rollback();
-            }
-        }
-    }
-
-    @Override
-    public void commitTransaction() {
-        LOGGER.trace("commitTransaction aufgerufen");
-        try {
-            entityManager.getTransaction().commit();
-            LOGGER.trace("commitTransaction durchgeführt");
-        } catch (RuntimeException e) {
-            LOGGER.error("Fehler in commitTransaction()", e);
-            EntityTransaction tx = entityManager.getTransaction();
-            if (tx != null && tx.isActive()) {
-                tx.rollback();
-            }
-        }
-    }
-
-    @Override
-    public void rollbackTransaction() {
-        LOGGER.trace("rollbackTransaction aufgerufen");
-        try {
-            entityManager.getTransaction().rollback();
-            LOGGER.trace("rollbackTransaction durchgeführt");
-        } catch (RuntimeException e) {
-            LOGGER.error("Fehler beim Rollback", e);
-            EntityTransaction tx = entityManager.getTransaction();
-            if (tx != null && tx.isActive()) {
-                tx.rollback();
-            }
-        } finally {
-            if (entityManager != null && entityManager.isOpen()) {
-                entityManager.close();
-                entityManager = null;
-                entityManagerFactory.close();
-                entityManagerFactory = null;
-            }
-        }
-    }
-
-    @Override
-    public GenericDaoCommand executeCommandWithinTransaction(GenericDaoCommand genericDaoCommand) {
-        LOGGER.trace("executeCommandWithinTransaction aufgerufen");
-        try {
             genericDaoCommand.setEntityManager(entityManager);
             genericDaoCommand.execute();
-            LOGGER.trace("executeCommandWithinTransaction durchgeführt");
+            entityManager.getTransaction().commit();
+            LOGGER.trace("executeCommandAsTransaction durchgeführt");
         } catch (Throwable e) {
-            LOGGER.error("Fehler in executeCommandWithinTransaction(GenericDaoCommand)", e);
-            rollbackTransaction();
+            LOGGER.error("Fehler in executeCommandAsTransaction(GenericDaoCommand)", e);
+            entityManager.getTransaction().rollback();
             throw e;
         }
         return genericDaoCommand;
@@ -148,11 +91,11 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     @Override
-    public GenericDaoCommand executeCommandWithinSession(GenericDaoCommand genericDaoCommand) {
-        LOGGER.trace("executeCommandWithinSession aufgerufen");
+    public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) {
+        LOGGER.trace("executeCommand aufgerufen");
         genericDaoCommand.setEntityManager(entityManager);
         genericDaoCommand.execute();
-        LOGGER.trace("executeCommandWithinSession durchgeführt");
+        LOGGER.trace("executeCommand durchgeführt");
         return genericDaoCommand;
     }
 

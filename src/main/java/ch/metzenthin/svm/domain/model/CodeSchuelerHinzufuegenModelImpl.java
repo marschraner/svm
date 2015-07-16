@@ -25,14 +25,7 @@ public class CodeSchuelerHinzufuegenModelImpl extends AbstractModel implements C
     public void hinzufuegen(SchuelerDatenblattModel schuelerDatenblattModel) {
         AddCodeToSchuelerAndSaveCommand addCodeToSchuelerAndSaveCommand = new AddCodeToSchuelerAndSaveCommand(code, schuelerDatenblattModel.getSchueler());
         CommandInvoker commandInvoker = getCommandInvoker();
-        try {
-            commandInvoker.beginTransaction();
-            commandInvoker.executeCommandWithinTransaction(addCodeToSchuelerAndSaveCommand);
-            commandInvoker.commitTransaction();
-        } catch (Throwable e) {
-            commandInvoker.rollbackTransaction();
-            throw new RuntimeException(e);
-        }
+        commandInvoker.executeCommandAsTransaction(addCodeToSchuelerAndSaveCommand);
     }
 
     @Override

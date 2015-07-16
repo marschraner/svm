@@ -23,29 +23,15 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
         List<Code> codes = svmContext.getSvmModel().getCodesAll();
         CommandInvoker commandInvoker = getCommandInvoker();
         DeleteCodeCommand deleteCodeCommand = new DeleteCodeCommand(codes, indexCodeToBeRemoved);
-        try {
-            commandInvoker.beginTransaction();
-            commandInvoker.executeCommandWithinTransaction(deleteCodeCommand);
-            commandInvoker.commitTransaction();
-            return deleteCodeCommand.getResult();
-        } catch (Throwable e) {
-            commandInvoker.rollbackTransaction();
-            throw new RuntimeException(e);
-        }
+        commandInvoker.executeCommandAsTransaction(deleteCodeCommand);
+        return deleteCodeCommand.getResult();
     }
 
     @Override
     public void eintragLoeschenCodesSchueler(int indexCodeToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         RemoveCodeFromSchuelerCommand removeCodeFromSchuelerCommand = new RemoveCodeFromSchuelerCommand(indexCodeToBeRemoved, schuelerDatenblattModel.getSchueler());
-        try {
-            commandInvoker.beginTransaction();
-            commandInvoker.executeCommandWithinTransaction(removeCodeFromSchuelerCommand);
-            commandInvoker.commitTransaction();
-        } catch (Throwable e) {
-            commandInvoker.rollbackTransaction();
-            throw new RuntimeException(e);
-        }
+        commandInvoker.executeCommandAsTransaction(removeCodeFromSchuelerCommand);
     }
 
     @Override

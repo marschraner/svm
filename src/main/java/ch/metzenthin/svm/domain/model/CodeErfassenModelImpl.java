@@ -93,14 +93,7 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     public void speichern(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         SaveOrUpdateCodeCommand saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code, codeOrigin, svmModel.getCodesAll());
-        try {
-            commandInvoker.beginTransaction();
-            commandInvoker.executeCommandWithinTransaction(saveOrUpdateCodeCommand);
-            commandInvoker.commitTransaction();
-        } catch (Throwable e) {
-            commandInvoker.rollbackTransaction();
-            throw new RuntimeException(e);
-        }
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
     }
 
     @Override

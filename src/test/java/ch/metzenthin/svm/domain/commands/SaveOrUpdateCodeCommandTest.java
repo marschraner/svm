@@ -27,11 +27,13 @@ public class SaveOrUpdateCodeCommandTest {
 
     @Before
     public void setUp() throws Exception {
+        commandInvoker.openSession();
         entityManagerFactory = Persistence.createEntityManagerFactory("svm");
     }
 
     @After
     public void tearDown() throws Exception {
+        commandInvoker.closeSession();
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
         }
@@ -46,22 +48,18 @@ public class SaveOrUpdateCodeCommandTest {
 
         List<Code> codesSaved = new ArrayList<>();
 
-        // 1. Transaktion: Code hinzufügen
-        commandInvoker.beginTransaction();
+        // Code hinzufügen
         Code code1 = new Code("tz", "ZirkusTest");
         SaveOrUpdateCodeCommand saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code1, null, codesSaved);
-        commandInvoker.executeCommandWithinTransaction(saveOrUpdateCodeCommand);
-        commandInvoker.commitTransaction();
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
         assertEquals(1, codesSaved.size());
         assertTrue(checkIfCodeAvailable("tz", "ZirkusTest"));
         assertFalse(checkIfCodeAvailable("tj", "JugendprojektTest"));
 
-        // 2. Transaktion: Weiteren Code hinzufügen
-        commandInvoker.beginTransaction();
+        // Weiteren Code hinzufügen
         Code code2 = new Code("tj", "JugendprojektTest");
         saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code2, null, codesSaved);
-        commandInvoker.executeCommandWithinTransaction(saveOrUpdateCodeCommand);
-        commandInvoker.commitTransaction();
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
         assertEquals(2, codesSaved.size());
         // Alphabetisch geordnet?
         assertEquals("tj", codesSaved.get(0).getKuerzel());
@@ -69,12 +67,10 @@ public class SaveOrUpdateCodeCommandTest {
         assertTrue(checkIfCodeAvailable("tz", "ZirkusTest"));
         assertTrue(checkIfCodeAvailable("tj", "JugendprojektTest"));
 
-        // 3. Transaktion: Code bearbeiten
-        commandInvoker.beginTransaction();
+        // Code bearbeiten
         Code code2Modif = new Code("tj", "JugendprojektModifTest");
         saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code2Modif, code2, codesSaved);
-        commandInvoker.executeCommandWithinTransaction(saveOrUpdateCodeCommand);
-        commandInvoker.commitTransaction();
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
         assertEquals(2, codesSaved.size());
         assertTrue(checkIfCodeAvailable("tz", "ZirkusTest"));
         assertFalse(checkIfCodeAvailable("tj", "JugendprojektTest"));

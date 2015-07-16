@@ -18,14 +18,7 @@ public class DispensationenModelImpl extends AbstractModel implements Dispensati
     public void eintragLoeschen(SchuelerDatenblattModel schuelerDatenblattModel, int indexDispensationToBeDeleted) {
         CommandInvoker commandInvoker = getCommandInvoker();
         RemoveDispensationFromSchuelerCommand removeDispensationFromSchuelerCommand = new RemoveDispensationFromSchuelerCommand(indexDispensationToBeDeleted, schuelerDatenblattModel.getSchueler());
-        try {
-            commandInvoker.beginTransaction();
-            commandInvoker.executeCommandWithinTransaction(removeDispensationFromSchuelerCommand);
-            commandInvoker.commitTransaction();
-        } catch (Throwable e) {
-            commandInvoker.rollbackTransaction();
-            throw new RuntimeException(e);
-        }
+        commandInvoker.executeCommandAsTransaction(removeDispensationFromSchuelerCommand);
     }
 
     @Override

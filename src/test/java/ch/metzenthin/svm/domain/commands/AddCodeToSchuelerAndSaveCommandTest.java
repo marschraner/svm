@@ -30,10 +30,12 @@ public class AddCodeToSchuelerAndSaveCommandTest {
     @Before
     public void setUp() throws Exception {
         entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        commandInvoker.openSession();
     }
 
     @After
     public void tearDown() throws Exception {
+        commandInvoker.closeSession();
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
         }
@@ -44,22 +46,16 @@ public class AddCodeToSchuelerAndSaveCommandTest {
 
         List<Code> erfassteCodes = new ArrayList<>();
 
-        // 1. Transaktion: Codes erzeugen
-        commandInvoker.beginTransaction();
-
+        // Codes erzeugen
         Code code1 = new Code("zt", "ZirkusTest");
         Code code2 = new Code("jt", "JugendprojektTest");
         SaveOrUpdateCodeCommand saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code1, null, erfassteCodes);
-        commandInvoker.executeCommandWithinTransaction(saveOrUpdateCodeCommand);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
         saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code2, null, erfassteCodes);
-        commandInvoker.executeCommandWithinTransaction(saveOrUpdateCodeCommand);
-
-        commandInvoker.commitTransaction();
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
 
 
-        // 2. Transaktion: Schueler erfassen und Code hinzufügen
-        commandInvoker.beginTransaction();
-
+        // Schueler erfassen und Code hinzufügen
         Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
         schueler.setAdresse(adresse);
@@ -74,28 +70,22 @@ public class AddCodeToSchuelerAndSaveCommandTest {
         schueler.setRechnungsempfaenger(vater);
 
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
-        commandInvoker.executeCommandWithinTransaction(saveSchuelerCommand);
+        commandInvoker.executeCommandAsTransaction(saveSchuelerCommand);
         Schueler schuelerSaved = saveSchuelerCommand.getSavedSchueler();
 
         // Code hinzufügen
         AddCodeToSchuelerAndSaveCommand addCodeToSchuelerAndSaveCommand = new AddCodeToSchuelerAndSaveCommand(code1, schuelerSaved);
-        commandInvoker.executeCommandWithinTransaction(addCodeToSchuelerAndSaveCommand);
+        commandInvoker.executeCommandAsTransaction(addCodeToSchuelerAndSaveCommand);
         schuelerSaved = addCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
-
-        commandInvoker.commitTransaction();
 
         assertEquals(1, schuelerSaved.getCodes().size());
         assertEquals("zt", schuelerSaved.getCodes().get(0).getKuerzel());
 
 
-        // 3. Transaktion: Weiteren Code hinzufügen:
-        commandInvoker.beginTransaction();
-
+        // Weiteren Code hinzufügen:
         addCodeToSchuelerAndSaveCommand = new AddCodeToSchuelerAndSaveCommand(code2, schuelerSaved);
-        commandInvoker.executeCommandWithinTransaction(addCodeToSchuelerAndSaveCommand);
+        commandInvoker.executeCommandAsTransaction(addCodeToSchuelerAndSaveCommand);
         schuelerSaved = addCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
-
-        commandInvoker.commitTransaction();
 
         assertEquals(2, schuelerSaved.getCodes().size());
         // Alphabetisch geordnet?

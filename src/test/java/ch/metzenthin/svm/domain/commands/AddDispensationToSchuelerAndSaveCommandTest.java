@@ -27,6 +27,7 @@ public class AddDispensationToSchuelerAndSaveCommandTest {
     @Before
     public void setUp() throws Exception {
         entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        commandInvoker.openSession();
     }
 
     @After
@@ -34,14 +35,13 @@ public class AddDispensationToSchuelerAndSaveCommandTest {
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
         }
+        commandInvoker.closeSession();
     }
 
     @Test
     public void testExecute() throws Exception {
 
-        // 1. Transaktion: Schueler erfassen und Dispensation hinzufügen
-        commandInvoker.beginTransaction();
-
+        // Schueler erfassen und Dispensation hinzufügen
         Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
         schueler.setAdresse(adresse);
@@ -56,42 +56,32 @@ public class AddDispensationToSchuelerAndSaveCommandTest {
         schueler.setRechnungsempfaenger(vater);
 
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
-        commandInvoker.executeCommandWithinTransaction(saveSchuelerCommand);
+        commandInvoker.executeCommandAsTransaction(saveSchuelerCommand);
         Schueler schuelerSaved = saveSchuelerCommand.getSavedSchueler();
 
         // Dispensation hinzufügen
         Dispensation dispensation1 = new Dispensation(new GregorianCalendar(2014, Calendar.JANUARY, 15), new GregorianCalendar(2015, Calendar.MARCH, 31), null, "Zu klein");
         AddDispensationToSchuelerAndSaveCommand addDispensationToSchuelerAndSaveCommand = new AddDispensationToSchuelerAndSaveCommand(dispensation1, null, schuelerSaved);
-        commandInvoker.executeCommandWithinTransaction(addDispensationToSchuelerAndSaveCommand);
+        commandInvoker.executeCommandAsTransaction(addDispensationToSchuelerAndSaveCommand);
         schuelerSaved = addDispensationToSchuelerAndSaveCommand.getSchuelerUpdated();
-
-        commandInvoker.commitTransaction();
 
         assertEquals(1, schuelerSaved.getDispensationen().size());
 
 
-        // 2. Transaktion: Weitere Dispensation hinzufügen:
-        commandInvoker.beginTransaction();
-
+        // Weitere Dispensation hinzufügen:
         Dispensation dispensation2 = new Dispensation(new GregorianCalendar(2015, Calendar.MAY, 15), null, null, "Immer noch zu klein");
         addDispensationToSchuelerAndSaveCommand = new AddDispensationToSchuelerAndSaveCommand(dispensation2, null, schuelerSaved);
-        commandInvoker.executeCommandWithinTransaction(addDispensationToSchuelerAndSaveCommand);
+        commandInvoker.executeCommandAsTransaction(addDispensationToSchuelerAndSaveCommand);
         schuelerSaved = addDispensationToSchuelerAndSaveCommand.getSchuelerUpdated();
-
-        commandInvoker.commitTransaction();
 
         assertEquals(2, schuelerSaved.getDispensationen().size());
 
 
-        // 3. Transaktion: Dispensation bearbeiten (Dispensationsende setzen)
-        commandInvoker.beginTransaction();
-
+        // Dispensation bearbeiten (Dispensationsende setzen)
         Dispensation dispensation2Modif = new Dispensation(new GregorianCalendar(2015, Calendar.MAY, 15), new GregorianCalendar(2015, Calendar.DECEMBER, 31), null, "Immer noch zu klein");
         addDispensationToSchuelerAndSaveCommand = new AddDispensationToSchuelerAndSaveCommand(dispensation2Modif, dispensation2, schuelerSaved);
-        commandInvoker.executeCommandWithinTransaction(addDispensationToSchuelerAndSaveCommand);
+        commandInvoker.executeCommandAsTransaction(addDispensationToSchuelerAndSaveCommand);
         schuelerSaved = addDispensationToSchuelerAndSaveCommand.getSchuelerUpdated();
-
-        commandInvoker.commitTransaction();
 
         assertEquals(2, schuelerSaved.getDispensationen().size());
         assertEquals(new GregorianCalendar(2015, Calendar.DECEMBER, 31), schuelerSaved.getDispensationen().get(0).getDispensationsende());

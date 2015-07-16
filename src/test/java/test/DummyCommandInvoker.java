@@ -18,23 +18,8 @@ public class DummyCommandInvoker implements CommandInvoker {
     }
 
     @Override
-    public void beginTransaction() {
-
-    }
-
-    @Override
-    public GenericDaoCommand executeCommandWithinTransaction(GenericDaoCommand genericDaoCommand) {
+    public GenericDaoCommand executeCommandAsTransaction(GenericDaoCommand genericDaoCommand) {
         return null;
-    }
-
-    @Override
-    public void commitTransaction() {
-
-    }
-
-    @Override
-    public void rollbackTransaction() {
-
     }
 
     @Override
@@ -48,7 +33,7 @@ public class DummyCommandInvoker implements CommandInvoker {
     }
 
     @Override
-    public GenericDaoCommand executeCommandWithinSession(GenericDaoCommand genericDaoCommand) {
+    public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) {
         return null;
     }
 

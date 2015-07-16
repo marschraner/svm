@@ -29,11 +29,13 @@ public class RemoveCodeFromSchuelerCommandTest {
 
     @Before
     public void setUp() throws Exception {
+        commandInvoker.openSession();
         entityManagerFactory = Persistence.createEntityManagerFactory("svm");
     }
 
     @After
     public void tearDown() throws Exception {
+        commandInvoker.closeSession();
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
         }
@@ -44,22 +46,16 @@ public class RemoveCodeFromSchuelerCommandTest {
 
         List<Code> erfassteCodes = new ArrayList<>();
 
-        // 1. Transaktion: Codes erzeugen
-        commandInvoker.beginTransaction();
-
+        // Codes erzeugen
         Code code1 = new Code("zt", "ZirkusTest");
         Code code2 = new Code("jt", "JugendprojektTest");
         SaveOrUpdateCodeCommand saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code1, null, erfassteCodes);
-        commandInvoker.executeCommandWithinTransaction(saveOrUpdateCodeCommand);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
         saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code2, null, erfassteCodes);
-        commandInvoker.executeCommandWithinTransaction(saveOrUpdateCodeCommand);
-
-        commandInvoker.commitTransaction();
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
 
 
-        // 2. Transaktion: Schueler erfassen und Codes hinzufügen
-        commandInvoker.beginTransaction();
-
+        // Schueler erfassen und Codes hinzufügen
         Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
         schueler.setAdresse(adresse);
@@ -74,43 +70,33 @@ public class RemoveCodeFromSchuelerCommandTest {
         schueler.setRechnungsempfaenger(vater);
 
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
-        commandInvoker.executeCommandWithinTransaction(saveSchuelerCommand);
+        commandInvoker.executeCommandAsTransaction(saveSchuelerCommand);
         Schueler schuelerSaved = saveSchuelerCommand.getSavedSchueler();
 
         // Codes hinzufügen
         AddCodeToSchuelerAndSaveCommand addCodeToSchuelerAndSaveCommand = new AddCodeToSchuelerAndSaveCommand(code1, schuelerSaved);
-        commandInvoker.executeCommandWithinTransaction(addCodeToSchuelerAndSaveCommand);
+        commandInvoker.executeCommandAsTransaction(addCodeToSchuelerAndSaveCommand);
         addCodeToSchuelerAndSaveCommand = new AddCodeToSchuelerAndSaveCommand(code2, schuelerSaved);
-        commandInvoker.executeCommandWithinTransaction(addCodeToSchuelerAndSaveCommand);
+        commandInvoker.executeCommandAsTransaction(addCodeToSchuelerAndSaveCommand);
         schuelerSaved = addCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
-
-        commandInvoker.commitTransaction();
 
         assertEquals(2, schuelerSaved.getCodes().size());
         assertEquals("jt", schuelerSaved.getCodes().get(0).getKuerzel());
         assertEquals("zt", schuelerSaved.getCodes().get(1).getKuerzel());
 
 
-        // 3. Transaktion: 2. Code von Schüler löschen
-        commandInvoker.beginTransaction();
-
+        // 2. Code von Schüler löschen
         RemoveCodeFromSchuelerCommand removeCodeFromSchuelerCommand = new RemoveCodeFromSchuelerCommand(1, schuelerSaved);
-        commandInvoker.executeCommandWithinTransaction(removeCodeFromSchuelerCommand);
-
-        commandInvoker.commitTransaction();
+        commandInvoker.executeCommandAsTransaction(removeCodeFromSchuelerCommand);
 
         Schueler schuelerUpdated = removeCodeFromSchuelerCommand.getSchuelerUpdated();
         assertEquals(1, schuelerUpdated.getCodes().size());
         assertEquals("jt", schuelerUpdated.getCodes().get(0).getKuerzel());
 
 
-        // 4. Transaktion: 1. Code von Schüler löschen
-        commandInvoker.beginTransaction();
-
+        // 1. Code von Schüler löschen
         removeCodeFromSchuelerCommand = new RemoveCodeFromSchuelerCommand(0, schuelerSaved);
-        commandInvoker.executeCommandWithinTransaction(removeCodeFromSchuelerCommand);
-
-        commandInvoker.commitTransaction();
+        commandInvoker.executeCommandAsTransaction(removeCodeFromSchuelerCommand);
 
         schuelerUpdated = removeCodeFromSchuelerCommand.getSchuelerUpdated();
         assertEquals(0, schuelerUpdated.getCodes().size());

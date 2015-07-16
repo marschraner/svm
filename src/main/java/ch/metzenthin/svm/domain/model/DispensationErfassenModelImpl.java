@@ -160,14 +160,7 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
     public void speichern(SchuelerDatenblattModel schuelerDatenblattModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         AddDispensationToSchuelerAndSaveCommand addDispensationToSchuelerAndSaveCommand = new AddDispensationToSchuelerAndSaveCommand(this.getDispensation(), dispensationOrigin, schuelerDatenblattModel.getSchueler());
-        try {
-            commandInvoker.beginTransaction();
-            commandInvoker.executeCommandWithinTransaction(addDispensationToSchuelerAndSaveCommand);
-            commandInvoker.commitTransaction();
-        } catch (Throwable e) {
-            commandInvoker.rollbackTransaction();
-            throw new RuntimeException(e);
-        }
+        commandInvoker.executeCommandAsTransaction(addDispensationToSchuelerAndSaveCommand);
     }
 
     @Override
