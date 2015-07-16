@@ -69,7 +69,7 @@ public class SchuelerSuchenResultController {
     }
 
     private void onDatenblatt() {
-        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, schuelerSuchenResultTable.getSelectedRow());
+        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, schuelerSuchenResultTable.getSelectedRow(), true);
         schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
         schuelerDatenblattPanel.addCloseListener(closeListener);
         schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckListener);

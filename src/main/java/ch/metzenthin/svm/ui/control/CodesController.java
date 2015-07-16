@@ -30,6 +30,7 @@ public class CodesController {
     private final SchuelerDatenblattModel schuelerDatenblattModel;
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final int selectedRow;
+    private final boolean isFromSchuelerSuchenResult;
     private CodesTableModel codesTableModel;
     private JTable codesTable;
     private JButton btnNeu;
@@ -40,7 +41,7 @@ public class CodesController {
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
 
-    public CodesController(CodesModel codesModel, SvmContext svmContext, CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isCodesSchueler) {
+    public CodesController(CodesModel codesModel, SvmContext svmContext, CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isCodesSchueler, boolean isFromSchuelerSuchenResult) {
         this.codesModel = codesModel;
         this.svmContext = svmContext;
         this.isCodesSchueler = isCodesSchueler;
@@ -48,6 +49,7 @@ public class CodesController {
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.selectedRow = selectedRow;
+        this.isFromSchuelerSuchenResult = isFromSchuelerSuchenResult;
     }
 
     public void setCodesTable(JTable codesTable) {
@@ -242,7 +244,7 @@ public class CodesController {
     }
 
     private void onZurueck() {
-        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, selectedRow);
+        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, selectedRow, isFromSchuelerSuchenResult);
         schuelerDatenblattPanel.addCloseListener(closeListener);
         schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
         schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);

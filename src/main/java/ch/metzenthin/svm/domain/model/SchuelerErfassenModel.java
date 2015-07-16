@@ -13,4 +13,5 @@ public interface SchuelerErfassenModel extends Model {
     SchuelerErfassenSaveResult proceedUebernehmen(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
     SchuelerErfassenSaveResult proceedWeiterfahren(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
     void abbrechen();
+    SchuelerSuchenResult getSchuelerSuchenResult();
 }

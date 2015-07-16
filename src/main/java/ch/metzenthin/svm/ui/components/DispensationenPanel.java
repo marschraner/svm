@@ -30,10 +30,10 @@ public class DispensationenPanel {
     private JButton btnLoeschen;
     private DispensationenController dispensationenController;
 
-    public DispensationenPanel(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
+    public DispensationenPanel(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isFromSchuelerSuchenResult) {
         $$$setupUI$$$();
         initDispensationenTable(dispensationenTableModel);
-        createDispensationenController(svmContext, dispensationenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
+        createDispensationenController(svmContext, dispensationenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, isFromSchuelerSuchenResult);
     }
 
     private void initDispensationenTable(DispensationenTableModel dispensationenTableModel) {
@@ -41,8 +41,8 @@ public class DispensationenPanel {
         UiComponentsUtils.setJTableWidthAsPercentages(dispensationenTable, 0.15, 0.15, 0.3, 0.4);
     }
 
-    private void createDispensationenController(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
-        dispensationenController = new DispensationenController(svmContext.getModelFactory().createDispensationenModel(), svmContext, dispensationenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
+    private void createDispensationenController(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isFromSchuelerSuchenResult) {
+        dispensationenController = new DispensationenController(svmContext.getModelFactory().createDispensationenModel(), svmContext, dispensationenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, isFromSchuelerSuchenResult);
         dispensationenController.setDispensationenTable(dispensationenTable);
         dispensationenController.setLblTitel(lblTitel);
         dispensationenController.setBtnNeu(btnNeu);

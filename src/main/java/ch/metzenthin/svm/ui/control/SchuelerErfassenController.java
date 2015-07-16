@@ -1,9 +1,11 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.*;
+import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.*;
 import org.apache.log4j.Logger;
 
@@ -26,11 +28,14 @@ public class SchuelerErfassenController {
     private JButton btnAbbrechen;
     private ActionListener closeListener;
 
+    private final SvmContext svmContext;
     private final SchuelerErfassenModel schuelerErfassenModel;
     private final boolean isBearbeiten;
     private ActionListener saveSuccessfulListener;
+    private ActionListener nextPanelListener;
 
-    public SchuelerErfassenController(SchuelerErfassenModel schuelerErfassenModel, boolean isBearbeiten) {
+    public SchuelerErfassenController(SvmContext svmContext, SchuelerErfassenModel schuelerErfassenModel, boolean isBearbeiten) {
+        this.svmContext = svmContext;
         this.schuelerErfassenModel = schuelerErfassenModel;
         this.isBearbeiten = isBearbeiten;
         this.schuelerErfassenModel.addCompletedListener(new CompletedListener() {
@@ -68,7 +73,6 @@ public class SchuelerErfassenController {
         // Kein Abmeldedatum sichtbar
         schuelerPanel.getLblAbmeldedatum().setVisible(isBearbeiten);
         schuelerPanel.getTxtAbmeldedatum().setVisible(isBearbeiten);
-        schuelerPanel.getErrLblAbmeldedatum().setVisible(isBearbeiten);
         // Geschlecht-Voreinstellung
         schuelerModel.setGeschlecht(Geschlecht.W);
         schuelerErfassenModel.setSchuelerModel(schuelerModel);
@@ -148,6 +152,10 @@ public class SchuelerErfassenController {
         this.closeListener = closeListener;
     }
 
+    public void addNextPanelListener(ActionListener nextPanelListener) {
+        this.nextPanelListener = nextPanelListener;
+    }
+
     public void addSaveSuccessfulListener(ActionListener saveSuccessfulListener) {
         this.saveSuccessfulListener = saveSuccessfulListener;
     }
@@ -184,7 +192,12 @@ public class SchuelerErfassenController {
             if (saveSuccessfulListener != null) {
                 saveSuccessfulListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Speichern erfolgreich"));
             } else {
-                closeListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Close nach Speichern"));
+                SchuelerSuchenResult schuelerSuchenResult = schuelerErfassenModel.getSchuelerSuchenResult();
+                SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenResult);
+                SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, 0, false);
+                schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
+                schuelerDatenblattPanel.addCloseListener(closeListener);
+                nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));
             }
         }
     }

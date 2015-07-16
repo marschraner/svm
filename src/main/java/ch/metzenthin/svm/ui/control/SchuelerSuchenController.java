@@ -9,6 +9,7 @@ import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenResult;
 import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
 import org.apache.log4j.Logger;
 
@@ -299,11 +300,19 @@ public class SchuelerSuchenController extends PersonController {
         LOGGER.trace("SchuelerSuchenPanel Suchen gedrückt");
         SchuelerSuchenResult schuelerSuchenResult = schuelerSuchenModel.suchen();
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenResult);
-        SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
-        schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
-        schuelerSuchenResultPanel.addCloseListener(closeListener);
-        schuelerSuchenResultPanel.addZurueckListener(zurueckListener);
-        nextPanelListener.actionPerformed(new ActionEvent(new Object[] {schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
+        if (schuelerSuchenResult.size() != 1) {
+            SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
+            schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
+            schuelerSuchenResultPanel.addCloseListener(closeListener);
+            schuelerSuchenResultPanel.addZurueckListener(zurueckListener);
+            nextPanelListener.actionPerformed(new ActionEvent(new Object[] {schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
+        } else {
+            SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, 0, true);
+            schuelerDatenblattPanel.addCloseListener(closeListener);
+            schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
+            schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckListener);
+            nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler gespeichert"));
+        }
     }
 
     private void onSchuelerSuchenModelCompleted(boolean completed) {

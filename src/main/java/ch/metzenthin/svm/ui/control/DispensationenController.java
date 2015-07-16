@@ -26,6 +26,7 @@ public class DispensationenController {
     private final SchuelerDatenblattModel schuelerDatenblattModel;
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final int selectedRow;
+    private final boolean isFromSchuelerSuchenResult;
     private JTable dispensationenTable;
     private JButton btnNeu;
     private JButton btnBearbeiten;
@@ -35,13 +36,14 @@ public class DispensationenController {
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
 
-    public DispensationenController(DispensationenModel dispensationenModel, SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
+    public DispensationenController(DispensationenModel dispensationenModel, SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isFromSchuelerSuchenResult) {
         this.dispensationenModel = dispensationenModel;
         this.svmContext = svmContext;
         this.dispensationenTableModel = dispensationenTableModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.selectedRow = selectedRow;
+        this.isFromSchuelerSuchenResult = isFromSchuelerSuchenResult;
     }
 
     public void setDispensationenTable(JTable dispensationenTable) {
@@ -161,7 +163,7 @@ public class DispensationenController {
     }
 
     private void onZurueck() {
-        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, selectedRow);
+        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, selectedRow, isFromSchuelerSuchenResult);
         schuelerDatenblattPanel.addCloseListener(closeListener);
         schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
         schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);

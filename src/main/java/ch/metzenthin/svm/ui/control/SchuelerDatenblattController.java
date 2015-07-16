@@ -52,11 +52,14 @@ public class SchuelerDatenblattController {
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
+    private boolean isFromSchuelerSuchenResult;
+    private JButton btnZurueck;
 
-    public SchuelerDatenblattController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow) {
+    public SchuelerDatenblattController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isFromSchuelerSuchenResult) {
         this.svmContext = svmContext;
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.selectedRow = selectedRow;
+        this.isFromSchuelerSuchenResult = isFromSchuelerSuchenResult;
         schuelerDatenblattModel = schuelerSuchenTableModel.getSchuelerDatenblattModel(selectedRow);
     }
 
@@ -388,6 +391,11 @@ public class SchuelerDatenblattController {
     }
 
     public void setBtnZurueck(JButton btnZurueck) {
+        this.btnZurueck = btnZurueck;
+        if (!isFromSchuelerSuchenResult) {
+            btnZurueck.setVisible(false);
+            return;
+        }
         btnZurueck.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -397,14 +405,22 @@ public class SchuelerDatenblattController {
     }
 
     private void onZurueck() {
-        SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
-        schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
-        schuelerSuchenResultPanel.addCloseListener(closeListener);
-        schuelerSuchenResultPanel.addZurueckListener(zurueckZuSchuelerSuchenListener);
-        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat"));
+        if (schuelerSuchenTableModel.getRowCount() > 1) {
+            SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
+            schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
+            schuelerSuchenResultPanel.addCloseListener(closeListener);
+            schuelerSuchenResultPanel.addZurueckListener(zurueckZuSchuelerSuchenListener);
+            nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat"));
+        } else {
+            zurueckZuSchuelerSuchenListener.actionPerformed(new ActionEvent(btnZurueck, ActionEvent.ACTION_PERFORMED, "Zurück zu Schüler suchen"));
+        }
     }
 
     public void setBtnErster(JButton btnErster) {
+        if (!isFromSchuelerSuchenResult) {
+            btnErster.setVisible(false);
+            return;
+        }
         this.btnErster = btnErster;
         btnErster.addActionListener(new ActionListener() {
             @Override
@@ -420,6 +436,10 @@ public class SchuelerDatenblattController {
     }
 
     public void setBtnLetzter(JButton btnLetzter) {
+        if (!isFromSchuelerSuchenResult) {
+            btnLetzter.setVisible(false);
+            return;
+        }
         this.btnLetzter = btnLetzter;
         btnLetzter.addActionListener(new ActionListener() {
             @Override
@@ -435,6 +455,10 @@ public class SchuelerDatenblattController {
     }
 
     public void setBtnNachfolgender(JButton btnNachfolgender) {
+        if (!isFromSchuelerSuchenResult) {
+            btnNachfolgender.setVisible(false);
+            return;
+        }
         this.btnNachfolgender = btnNachfolgender;
         btnNachfolgender.addActionListener(new ActionListener() {
             @Override
@@ -450,6 +474,10 @@ public class SchuelerDatenblattController {
     }
 
     public void setBtnVorheriger(JButton btnVorheriger) {
+        if (!isFromSchuelerSuchenResult) {
+            btnVorheriger.setVisible(false);
+            return;
+        }
         this.btnVorheriger = btnVorheriger;
         btnVorheriger.addActionListener(new ActionListener() {
             @Override
@@ -487,7 +515,7 @@ public class SchuelerDatenblattController {
 
     private void onSaveSuccessful() {
         schuelerSuchenTableModel.fireTableRowsUpdated(selectedRow, selectedRow);
-        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, selectedRow);
+        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, selectedRow, isFromSchuelerSuchenResult);
         schuelerDatenblattPanel.addCloseListener(closeListener);
         schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
         schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
@@ -505,7 +533,7 @@ public class SchuelerDatenblattController {
 
     private void onDispensationenBearbeiten() {
         DispensationenTableModel dispensationenTableModel = new DispensationenTableModel(schuelerDatenblattModel.getDispensationenTableData());
-        DispensationenPanel dispensationenPanel = new DispensationenPanel(svmContext, dispensationenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow);
+        DispensationenPanel dispensationenPanel = new DispensationenPanel(svmContext, dispensationenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, isFromSchuelerSuchenResult);
         dispensationenPanel.addNextPanelListener(nextPanelListener);
         dispensationenPanel.addCloseListener(closeListener);
         dispensationenPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
@@ -523,7 +551,7 @@ public class SchuelerDatenblattController {
 
     private void onCodesBearbeiten() {
         CodesTableModel codesTableModel = new CodesTableModel(schuelerDatenblattModel.getCodesTableData());
-        CodesPanel codesPanel = new CodesPanel(svmContext, codesTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, true);
+        CodesPanel codesPanel = new CodesPanel(svmContext, codesTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, true, isFromSchuelerSuchenResult);
         codesPanel.addNextPanelListener(nextPanelListener);
         codesPanel.addCloseListener(closeListener);
         codesPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
@@ -531,6 +559,10 @@ public class SchuelerDatenblattController {
     }
 
     public void setLabelScrollPosition(JLabel labelScrollPosition) {
+        if (!isFromSchuelerSuchenResult) {
+            labelScrollPosition.setVisible(false);
+            return;
+        }
         this.labelScrollPosition = labelScrollPosition;
         setLabelScrollPosition();
     }

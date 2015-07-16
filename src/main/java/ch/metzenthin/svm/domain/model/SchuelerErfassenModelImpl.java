@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -395,6 +396,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public void abbrechen() {
+        schuelerModel.getSchueler().deleteAnmeldung(schuelerModel.getAnmeldung());
         validateSchuelerCommand = null;
     }
 
@@ -471,4 +473,10 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     public boolean isRechnungsempfaengerDrittperson() {
         return drittempfaengerModel.isRechnungsempfaenger();
     }
+
+    @Override
+    public SchuelerSuchenResult getSchuelerSuchenResult() {
+        return new SchuelerSuchenResult(Collections.singletonList(getSchueler()));
+    }
+
 }
