@@ -46,6 +46,7 @@ public class Svm {
 
     public static void main(String[] args) {
         final CommandInvoker commandInvoker = createCommandInvoker();
+        commandInvoker.openSession();
         final ModelFactory modelFactory = createModelFactory(commandInvoker);
         final SvmModel svmModel = modelFactory.createSvmModel();
         final SvmContext svmContext = new SvmContext(modelFactory, commandInvoker, svmModel);

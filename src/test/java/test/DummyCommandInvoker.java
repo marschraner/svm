@@ -33,6 +33,11 @@ public class DummyCommandInvoker implements CommandInvoker {
     }
 
     @Override
+    public void clear() {
+
+    }
+
+    @Override
     public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) {
         return null;
     }

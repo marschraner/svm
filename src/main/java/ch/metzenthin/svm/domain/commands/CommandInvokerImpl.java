@@ -99,4 +99,10 @@ public class CommandInvokerImpl implements CommandInvoker {
         return genericDaoCommand;
     }
 
+    @Override
+    public void clear() {
+        LOGGER.trace("clear aufgerufen");
+        entityManager.clear();
+    }
+
 }

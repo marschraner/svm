@@ -23,10 +23,8 @@ public class SvmModelImpl implements SvmModel {
     }
 
     private void initSvmModelImpl() {
-        commandInvoker.openSession();
         initCodesAll();
         initLehrkraefteAll();
-        commandInvoker.closeSession();
     }
 
     private void initCodesAll() {
