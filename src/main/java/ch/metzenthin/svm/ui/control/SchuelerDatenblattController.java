@@ -5,10 +5,7 @@ import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
-import ch.metzenthin.svm.ui.components.CodesPanel;
-import ch.metzenthin.svm.ui.components.DispensationenPanel;
-import ch.metzenthin.svm.ui.components.SchuelerErfassenPanel;
-import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
+import ch.metzenthin.svm.ui.components.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -68,6 +65,10 @@ public class SchuelerDatenblattController {
             return;
         }
         this.selectedRow = selectedRow;
+        setNewModel();
+    }
+
+    private void setNewModel() {
         schuelerDatenblattModel = schuelerSuchenTableModel.getSchuelerDatenblattModel(selectedRow);
         enableScrollButtons();
         setLabelScrollPosition();
@@ -475,7 +476,22 @@ public class SchuelerDatenblattController {
     private void onStammdatenBearbeiten() {
         SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext, schuelerDatenblattModel);
         schuelerErfassenPanel.addCloseListener(closeListener);
+        schuelerErfassenPanel.addSaveSuccessfulListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onSaveSuccessful();
+            }
+        });
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerErfassenPanel.$$$getRootComponent$$$(), "Schüler bearbeiten"}, ActionEvent.ACTION_PERFORMED, "Schueler bearbeiten"));
+    }
+
+    private void onSaveSuccessful() {
+        schuelerSuchenTableModel.fireTableRowsUpdated(selectedRow, selectedRow);
+        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, selectedRow);
+        schuelerDatenblattPanel.addCloseListener(closeListener);
+        schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
+        schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler gespeichert"));
     }
 
     public void setBtnDispensationenBearbeiten(JButton btnDispensationenBearbeiten) {

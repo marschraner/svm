@@ -28,6 +28,7 @@ public class SchuelerErfassenController {
 
     private final SchuelerErfassenModel schuelerErfassenModel;
     private final boolean isBearbeiten;
+    private ActionListener saveSuccessfulListener;
 
     public SchuelerErfassenController(SchuelerErfassenModel schuelerErfassenModel, boolean isBearbeiten) {
         this.schuelerErfassenModel = schuelerErfassenModel;
@@ -147,6 +148,10 @@ public class SchuelerErfassenController {
         this.closeListener = closeListener;
     }
 
+    public void addSaveSuccessfulListener(ActionListener saveSuccessfulListener) {
+        this.saveSuccessfulListener = saveSuccessfulListener;
+    }
+
     private void onAbbrechen() {
         LOGGER.trace("SchuelerErfassenPanel Abbrechen gedrückt");
         Object[] options = {"Ja", "Nein"};
@@ -174,9 +179,13 @@ public class SchuelerErfassenController {
             dialog.setVisible(true);
             schuelerErfassenSaveResult = dialog.getResult();
         }
-        // Wenn isAbbrechen() zurück zur Eingabemaske, sonst Eingabemaske schliessen
+        // Wenn isAbbrechen() zurück zur Eingabemaske, sonst Listener aufrufen (wenn vorhanden), der ein neues Panel aufruft
         if ((dialog == null) || !dialog.isAbbrechen()) {
-            closeListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Close nach Speichern"));
+            if (saveSuccessfulListener != null) {
+                saveSuccessfulListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Speichern erfolgreich"));
+            } else {
+                closeListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Close nach Speichern"));
+            }
         }
     }
 
