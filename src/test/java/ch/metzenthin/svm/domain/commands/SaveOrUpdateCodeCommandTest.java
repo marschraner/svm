@@ -104,7 +104,7 @@ public class SaveOrUpdateCodeCommandTest {
 
     private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) throws SvmDbException {
         FindAllCodesCommand findAllCodesCommand = new FindAllCodesCommand();
-        commandInvoker.executeCommand(findAllCodesCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllCodesCommand);
         List<Code> codesAll = findAllCodesCommand.getCodesAll();
         for (Code code : codesAll) {
             if (code.getKuerzel().equals(kuerzel) && code.getBeschreibung().equals(beschreibung)) {

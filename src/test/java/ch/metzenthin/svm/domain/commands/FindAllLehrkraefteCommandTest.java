@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
-import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.daos.LehrkraftDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
@@ -42,14 +41,10 @@ public class FindAllLehrkraefteCommandTest {
     @Test
     public void testExecute() {
         FindAllLehrkraefteCommand findAllLehrkraefteCommand = new FindAllLehrkraefteCommand();
-        try {
-            commandInvoker.executeCommand(findAllLehrkraefteCommand);
-        } catch (SvmDbException e) {
-            e.printStackTrace();
-        }
+            commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLehrkraefteCommand);
 
-        List<Lehrkraft> codesFound = findAllLehrkraefteCommand.getLehrkraefteAll();
-        assertTrue(codesFound.size() >= 2);
+        List<Lehrkraft> lehrkraefteFound = findAllLehrkraefteCommand.getLehrkraefteAll();
+        assertTrue(lehrkraefteFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;
         for (Lehrkraft lehrkraft : lehrkraefteTestdata) {

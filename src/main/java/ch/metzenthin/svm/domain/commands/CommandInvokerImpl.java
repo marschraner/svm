@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.SvmDbException;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -25,7 +24,8 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     @Override
-    public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) throws SvmDbException {
+    public GenericDaoCommand executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand genericDaoCommand) {
+        LOGGER.trace("executeCommandAsTransactionWithOpenAndClose aufgerufen");
         EntityManagerFactory entityManagerFactory = null;
         EntityManager entityManager = null;
         EntityTransaction tx = null;
@@ -37,12 +37,13 @@ public class CommandInvokerImpl implements CommandInvoker {
             genericDaoCommand.setEntityManager(entityManager);
             genericDaoCommand.execute();
             tx.commit();
+            LOGGER.trace("executeCommandAsTransactionWithOpenAndClose durchgeführt");
         } catch (RuntimeException e) {
-            LOGGER.error("Fehler in executeCommand(GenericDaoCommand)", e);
+            LOGGER.error("Fehler in executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand)", e);
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
-            throw new SvmDbException("Fehler beim Ausführen eines DB-Commands", e);
+            throw e;
         } finally {
             if (entityManager != null) {
                 entityManager.close();

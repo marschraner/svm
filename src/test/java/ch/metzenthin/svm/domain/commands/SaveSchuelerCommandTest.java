@@ -58,7 +58,7 @@ public class SaveSchuelerCommandTest {
         schueler.addDispensation(dispensation);
 
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
-        commandInvoker.executeCommand(saveSchuelerCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(saveSchuelerCommand);
         Schueler savedSchueler = saveSchuelerCommand.getSavedSchueler();
 
         assertEquals("Vorname not found", "Jana", savedSchueler.getVorname());

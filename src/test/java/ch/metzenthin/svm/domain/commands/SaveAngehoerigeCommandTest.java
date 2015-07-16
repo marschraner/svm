@@ -55,7 +55,7 @@ public class SaveAngehoerigeCommandTest {
         angehoerige.add(angehoeriger1);
 
         SaveAngehoerigeCommand saveAngehoerigeCommand = new SaveAngehoerigeCommand(angehoerige);
-        commandInvoker.executeCommand(saveAngehoerigeCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(saveAngehoerigeCommand);
         List<Angehoeriger> savedAngehoerige = saveAngehoerigeCommand.getSavedAngehoeriger();
 
         Angehoeriger savedAngehoeriger0 = savedAngehoerige.get(0);

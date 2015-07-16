@@ -42,11 +42,7 @@ public class FindAllCodesCommandTest {
     @Test
     public void testExecute() {
         FindAllCodesCommand findAllCodesCommand = new FindAllCodesCommand();
-        try {
-            commandInvoker.executeCommand(findAllCodesCommand);
-        } catch (SvmDbException e) {
-            e.printStackTrace();
-        }
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllCodesCommand);
 
         List<Code> codesFound = findAllCodesCommand.getCodesAll();
         assertTrue(codesFound.size() >= 2);
