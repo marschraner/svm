@@ -359,13 +359,13 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     }
 
     /**
-     * todo $$$ löschen von verwaisten Angehörigen???
      * Wenn "Neu Erfassen" werden die Benutzereingaben (schueler) bzw. Mutter, Vater oder Rechnungsempfänger
      * von der Datenbank übernommen, es muss sonst nichts getan werden.
      * Wenn "Bearbeiten" werden die Benutzereingaben (schueler) in den "original" Schüler (schuelerOrigin) übernommen.
      *
      * Angehörige werden immer mutiert, das heisst, die Änderungen gelten für alle abhängigen Objekte, die am Angehörigen hängen!
      * Wird z.B. eine Mutter fälschlicherweise an einen Schüler gehängt, muss dieser gelöscht und neu erfasst werden!
+     * Verwaiste Angehörige bleiben im System und könnten wiederverwendet werden.
      *
      * @return zu speichernder Schüler
      */
