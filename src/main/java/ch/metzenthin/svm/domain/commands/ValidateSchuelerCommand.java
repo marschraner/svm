@@ -327,7 +327,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         if (!skipPrepareSummary) {
             skipPrepareSummary = true;
             // 5. Identische Adressen?
-            CheckIdentischeAdressenCommand checkIdentischeAdressenCommand = new CheckIdentischeAdressenCommand((isBearbeiten() ? schuelerOrigin : schueler), mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase);
+            CheckIdentischeAdressenCommand checkIdentischeAdressenCommand = new CheckIdentischeAdressenCommand(schueler, mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase);
             checkIdentischeAdressenCommand.execute();
             String identischeAdressen = checkIdentischeAdressenCommand.getIdentischeAdressen();
             String abweichendeAdressen = checkIdentischeAdressenCommand.getAbweichendeAdressen();
