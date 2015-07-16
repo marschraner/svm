@@ -13,13 +13,10 @@ public class SvmDesktop extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 1L;
 
-    private final static String TITLE_DEFAULT = "SVM Schüler Verwaltung Metzenthin";
-
     private final SvmContext svmContext;
     private JComponent activeComponent;
 
     public SvmDesktop(SvmContext svmContext) {
-        super(TITLE_DEFAULT);
         this.svmContext = svmContext;
 
         // Make the big window be indented 50 pixels from each edge
@@ -190,8 +187,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
         svmContext.getCommandInvoker().clear();
         activeComponent.setVisible(false);
         getContentPane().remove(activeComponent);
-        activeComponent = null;
-        setTitle(TITLE_DEFAULT);
+        setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), "Schüler suchen");
     }
 
     // Quit the application.

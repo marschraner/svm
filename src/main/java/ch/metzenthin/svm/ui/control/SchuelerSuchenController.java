@@ -228,6 +228,7 @@ public class SchuelerSuchenController extends PersonController {
                 onAbbrechen();
             }
         });
+        btnAbbrechen.setVisible(false); // Ist Startseite. Such-Kritierien abbrechen über Menü.
     }
 
     public void setErrLblStichtag(JLabel errLblStichtag) {
