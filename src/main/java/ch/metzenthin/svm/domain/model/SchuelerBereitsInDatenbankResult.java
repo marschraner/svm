@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Geschlecht;
-import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import static ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand.Result.SCHUELER_BEREITS_IN_DATENBANK;
@@ -23,8 +22,7 @@ public class SchuelerBereitsInDatenbankResult extends SchuelerErfassenSaveResult
         visitor.visit(this);
     }
 
-    public Schueler getSchueler() {
-        return schueler;
+    public String getErrorMessage() {
+        return (schueler.getGeschlecht() == Geschlecht.W ? "Die Schülerin" : "Der Schüler") + " ist bereits in der Datenbank gespeichert und kann nicht ein weiteres Mal erfasst werden.";
     }
-
 }

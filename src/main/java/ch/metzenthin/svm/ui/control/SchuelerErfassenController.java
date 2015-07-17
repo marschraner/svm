@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.*;
@@ -164,7 +165,7 @@ public class SchuelerErfassenController {
         LOGGER.trace("SchuelerErfassenPanelAbbrechen gedrückt");
         Object[] options = {"Ja", "Nein"};
         String dialogText;
-        if (zurueckZuDatenblattListener == null) {
+        if (!isBearbeiten) {
             dialogText = "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. Allfällige Eingaben werden nicht gespeichert.";
         } else {
             dialogText = "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. Allfällige getätigte Änderungen werden nicht gespeichert.";
@@ -179,7 +180,7 @@ public class SchuelerErfassenController {
                 options,  //the titles of buttons
                 options[0]); //default button title
         if (n == 0) {
-            if (zurueckZuDatenblattListener == null) {
+            if (!isBearbeiten) {
                 closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Abbrechen"));
             } else {
                 zurueckZuDatenblattListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Zurück nach Abbrechen"));
@@ -189,16 +190,19 @@ public class SchuelerErfassenController {
 
     private void onSpeichern() {
         LOGGER.trace("SchuelerErfassenPanel Speichern gedrückt");
-        SchuelerErfassenDialog dialog = null;
+        SchuelerErfassenDialog dialog;
         SchuelerErfassenSaveResult schuelerErfassenSaveResult = schuelerErfassenModel.validieren();
         while (schuelerErfassenSaveResult != null) { // Wenn null: kein weiterer Dialog
             dialog = createDialog(schuelerErfassenSaveResult);
+            if (dialog == null) {
+                break;
+            }
             dialog.pack();
             dialog.setVisible(true);
             schuelerErfassenSaveResult = dialog.getResult();
         }
         // Wenn isAbbrechen() zurück zur Eingabemaske, sonst Listener aufrufen (wenn vorhanden), der ein neues Panel aufruft
-        if ((dialog == null) || !dialog.isAbbrechen()) {
+        if (schuelerErfassenSaveResult != null && schuelerErfassenSaveResult.getResult() == ValidateSchuelerCommand.Result.SPEICHERUNG_ERFOLGREICH) {
             if (zurueckZuDatenblattListener != null) {
                 zurueckZuDatenblattListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Speichern erfolgreich"));
             } else {
@@ -242,12 +246,23 @@ public class SchuelerErfassenController {
 
             @Override
             public void visit(SchuelerBereitsInDatenbankResult schuelerBereitsInDatenbankResult) {
-                dialog[0] = new SchuelerBereitsInDatenbankDialog(schuelerBereitsInDatenbankResult, schuelerErfassenModel);
+                JOptionPane.showMessageDialog(
+                        null,
+                        schuelerBereitsInDatenbankResult.getErrorMessage(),
+                        "Fehler",
+                        JOptionPane.ERROR_MESSAGE);
+                schuelerErfassenModel.abbrechen();
+                dialog[0] = null;
             }
 
             @Override
             public void visit(SchuelerErfassenSaveOkResult schuelerErfassenSaveOkResult) {
-                dialog[0] = new SchuelerErfassenSaveOkDialog(schuelerErfassenSaveOkResult);
+                JOptionPane.showMessageDialog(
+                        null,
+                        (isBearbeiten ? schuelerErfassenSaveOkResult.getTextSchuelerBearbeiten() : schuelerErfassenSaveOkResult.getTextSchuelerErfassen()),
+                        (isBearbeiten ? schuelerErfassenSaveOkResult.getTitleSchuelerBearbeiten() : schuelerErfassenSaveOkResult.getTitleSchuelerErfassen()),
+                        JOptionPane.INFORMATION_MESSAGE);
+                dialog[0] = null;
             }
 
             @Override
@@ -257,7 +272,13 @@ public class SchuelerErfassenController {
 
             @Override
             public void visit(DrittpersonIdentischMitElternteilResult drittpersonIdentischMitElternteilResult) {
-                dialog[0] = new DrittpersonIdentischMitElternteilDialog(drittpersonIdentischMitElternteilResult, schuelerErfassenModel);
+                JOptionPane.showMessageDialog(
+                        null,
+                        drittpersonIdentischMitElternteilResult.getErrorMessage(),
+                        "Fehler",
+                        JOptionPane.ERROR_MESSAGE);
+                schuelerErfassenModel.abbrechen();
+                dialog[0] = null;
             }
         });
         return dialog[0];

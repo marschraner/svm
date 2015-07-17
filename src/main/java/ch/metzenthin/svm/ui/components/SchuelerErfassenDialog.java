@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.domain.model.SchuelerErfassenModel;
 import ch.metzenthin.svm.domain.model.SchuelerErfassenSaveResult;
 
 import javax.swing.*;

@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog">
   <grid id="cbd77" binding="contentPane" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="48" y="54" width="515" height="297"/>
+      <xy x="48" y="54" width="515" height="527"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -12,42 +12,66 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="4b1f2" class="javax.swing.JLabel" binding="lblBeschreibung1">
+          <grid id="3980c" layout-manager="GridBagLayout">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <gridbag top="10" left="10" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
             </constraints>
-            <properties>
-              <text value="Beschreibung1"/>
-            </properties>
-          </component>
-          <component id="d810e" class="javax.swing.JLabel" binding="lblAngehoerigerErfasst">
-            <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="0" left="30" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <text value="AngehoerigerErfasst"/>
-            </properties>
-          </component>
-          <component id="90eae" class="javax.swing.JLabel" binding="lblBeschreibung2">
-            <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="0" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <text value="Beschreibung2"/>
-            </properties>
-          </component>
-          <component id="143de" class="javax.swing.JLabel" binding="lblAngehoerigeFound">
-            <constraints>
-              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="0" left="30" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <text value="AngehoerigeFoundInDatabase"/>
-            </properties>
-          </component>
+            <properties/>
+            <border type="etched" title="Teilweise übereinstimmende Datenbankeinträge">
+              <font style="1"/>
+            </border>
+            <children>
+              <component id="4b1f2" class="javax.swing.JLabel" binding="lblBeschreibung">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Beschreibung"/>
+                </properties>
+              </component>
+              <component id="143de" class="javax.swing.JLabel" binding="lblAngehoerigeFound">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="AngehoerigeFoundInDatabase"/>
+                </properties>
+              </component>
+              <hspacer id="40f8b">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </hspacer>
+              <vspacer id="a4e48">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </vspacer>
+              <vspacer id="a1e0c">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </vspacer>
+              <vspacer id="a437b">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </vspacer>
+              <hspacer id="11b1d">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </hspacer>
+            </children>
+          </grid>
         </children>
       </grid>
       <grid id="94766" layout-manager="GridBagLayout">
@@ -61,6 +85,9 @@
               <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
+              <maximumSize width="174" height="29"/>
+              <minimumSize width="174" height="29"/>
+              <preferredSize width="174" height="29"/>
               <text value="&amp;Eingabe korrigieren"/>
             </properties>
           </component>
@@ -70,6 +97,9 @@
               <gridbag top="5" left="5" bottom="5" right="5" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
+              <maximumSize width="271" height="29"/>
+              <minimumSize width="271" height="29"/>
+              <preferredSize width="271" height="29"/>
               <text value="&amp;Neu erfassten Eintrag verwenden"/>
             </properties>
           </component>
