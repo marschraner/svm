@@ -161,11 +161,17 @@ public class SchuelerErfassenController {
     }
 
     private void onAbbrechen() {
-        LOGGER.trace("SchuelerErfassenPanel Abbrechen gedrückt");
+        LOGGER.trace("SchuelerErfassenPanelAbbrechen gedrückt");
         Object[] options = {"Ja", "Nein"};
+        String dialogText;
+        if (zurueckZuDatenblattListener == null) {
+            dialogText = "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. Allfällige Eingaben werden nicht gespeichert.";
+        } else {
+            dialogText = "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. Allfällige getätigte Änderungen werden nicht gespeichert.";
+        }
         int n = JOptionPane.showOptionDialog(
                 btnAbbrechen.getParent().getParent(),
-                "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. Allfällig erfasste Daten gehen verloren.",
+                dialogText,
                 "Soll die Eingabemaske geschlossen werden?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,

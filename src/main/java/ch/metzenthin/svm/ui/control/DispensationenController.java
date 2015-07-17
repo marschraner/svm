@@ -31,7 +31,6 @@ public class DispensationenController {
     private JButton btnNeu;
     private JButton btnBearbeiten;
     private JButton btnLoeschen;
-    private JButton btnAbbrechen;
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
@@ -168,20 +167,6 @@ public class DispensationenController {
         schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
         schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));
-    }
-
-    public void setBtnAbbrechen(JButton btnAbbrechen) {
-        this.btnAbbrechen = btnAbbrechen;
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
-    }
-
-    private void onAbbrechen() {
-        closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Abbrechen"));
     }
 
     public void addNextPanelListener(ActionListener nextPanelListener) {

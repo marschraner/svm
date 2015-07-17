@@ -23,6 +23,8 @@ public class SchuelerDatenblattController {
     private JButton btnLetzter;
     private JButton btnNachfolgender;
     private JButton btnVorheriger;
+    private JButton btnZurueck;
+    private JButton btnAbbrechen;
     private JLabel labelVornameNachname;
     private JLabel labelSchueler;
     private JLabel labelSchuelerValue;
@@ -53,7 +55,6 @@ public class SchuelerDatenblattController {
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
     private boolean isFromSchuelerSuchenResult;
-    private JButton btnZurueck;
 
     public SchuelerDatenblattController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isFromSchuelerSuchenResult) {
         this.svmContext = svmContext;
@@ -416,6 +417,24 @@ public class SchuelerDatenblattController {
         }
     }
 
+    public void setBtnAbbrechen(JButton btnAbbrechen) {
+        this.btnAbbrechen = btnAbbrechen;
+        if (isFromSchuelerSuchenResult) {
+            btnAbbrechen.setVisible(false);
+            return;
+        }
+        btnAbbrechen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onAbbrechen();
+            }
+        });
+    }
+
+    private void onAbbrechen() {
+        closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Abbrechen"));
+    }
+
     public void setBtnErster(JButton btnErster) {
         if (!isFromSchuelerSuchenResult) {
             btnErster.setVisible(false);
@@ -510,7 +529,7 @@ public class SchuelerDatenblattController {
                 onSaveSuccessful();
             }
         });
-        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerErfassenPanel.$$$getRootComponent$$$(), "Schüler bearbeiten"}, ActionEvent.ACTION_PERFORMED, "Schueler bearbeiten"));
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerErfassenPanel.$$$getRootComponent$$$(), "Stammdaten bearbeiten"}, ActionEvent.ACTION_PERFORMED, "Schueler bearbeiten"));
     }
 
     private void onSaveSuccessful() {

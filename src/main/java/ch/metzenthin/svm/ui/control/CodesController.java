@@ -252,6 +252,11 @@ public class CodesController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
+        // Abbrechen nur möglich für Codes bearbeiten
+        if (isCodesSchueler) {
+            btnAbbrechen.setVisible(false);
+            return;
+        }
         this.btnAbbrechen = btnAbbrechen;
         btnAbbrechen.addActionListener(new ActionListener() {
             @Override

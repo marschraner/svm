@@ -67,7 +67,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
 
-        menuItem = new JMenuItem("Schüler suchen");
+        menuItem = new JMenuItem("Schüler suchen / bearbeiten");
         menuItem.setMnemonic(KeyEvent.VK_S);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_MASK));
         menuItem.setActionCommand("schuelerSuchen");
@@ -204,7 +204,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             n = JOptionPane.showOptionDialog(
                     this,
                     "Soll die Applikation wirklich beendet werden?",
-                    "Soll die Applikation beendet werden?",
+                    "Applikation beenden",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
                     null,     //do not use a custom Icon
