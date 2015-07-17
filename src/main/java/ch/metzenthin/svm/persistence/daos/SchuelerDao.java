@@ -1,10 +1,12 @@
 package ch.metzenthin.svm.persistence.daos;
 
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,10 +35,16 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
         Angehoeriger rechnungsempfaenger = schueler.getRechnungsempfaenger();
         rechnungsempfaenger.getSchuelerRechnungsempfaenger().remove(schueler);
 
+        // Lösche zugewiesene Codes
+        for (Code code : new ArrayList<>(schueler.getCodes())) {
+            schueler.deleteCode(code);
+        }
+
         // Lösche Schüler aus DB
         entityManager.remove(schueler);
 
         // Lösche Vater, Mutter und Rechnungsempfänger aus DB, falls diese nicht mehr referenziert werden
+        // Achtung: dies muss NACH dem Löschen des Schülers erfolgen!
         AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
         if (vater != null && entityManager.contains(vater) && vater.getKinderVater().size() == 0 && vater.getSchuelerRechnungsempfaenger().size() == 0) {
             angehoerigerDao.remove(vater);

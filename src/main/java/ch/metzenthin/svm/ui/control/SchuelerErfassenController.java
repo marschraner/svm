@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.commands.DeleteSchuelerCommand;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
@@ -149,6 +150,18 @@ public class SchuelerErfassenController {
         });
     }
 
+    public void setBtnLoeschen(JButton btnLoeschen) {
+        if (!isBearbeiten) {
+            btnLoeschen.setVisible(false);
+        }
+        btnLoeschen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onLoeschen();
+            }
+        });
+    }
+
     public void addCloseListener(ActionListener closeListener) {
         this.closeListener = closeListener;
     }
@@ -166,14 +179,14 @@ public class SchuelerErfassenController {
         Object[] options = {"Ja", "Nein"};
         String dialogText;
         if (!isBearbeiten) {
-            dialogText = "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. Allfällige Eingaben werden nicht gespeichert.";
+            dialogText = "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. Allfällige Eingaben werden nicht gespeichert. Fortfahren?";
         } else {
-            dialogText = "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. Allfällige getätigte Änderungen werden nicht gespeichert.";
+            dialogText = "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. Allfällige getätigte Änderungen werden nicht gespeichert. Fortfahren?";
         }
         int n = JOptionPane.showOptionDialog(
                 btnAbbrechen.getParent().getParent(),
                 dialogText,
-                "Soll die Eingabemaske geschlossen werden?",
+                "Eingabemaske schliessen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,     //do not use a custom Icon
@@ -212,6 +225,35 @@ public class SchuelerErfassenController {
                 schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
                 schuelerDatenblattPanel.addCloseListener(closeListener);
                 nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));
+            }
+        }
+    }
+
+    private void onLoeschen() {
+        Object[] options = {"Ja", "Nein"};
+        int n = JOptionPane.showOptionDialog(
+                null,
+                "Durch Drücken des Ja-Buttons wird der Schüler unwiederruflich aus der Datenbank gelöscht. Fortfahren?",
+                "Schüler löschen",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                null,     //do not use a custom Icon
+                options,  //the titles of buttons
+                options[1]); //default button title
+        if (n == 0) {
+            DeleteSchuelerCommand.Result result = schuelerErfassenModel.loeschen();
+            switch (result) {
+                case SCHUELER_IN_KURSE_EINGESCHRIEBEN:
+                    JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestestens einem Kurs eingeschrieben und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    break;
+                case LOESCHEN_ERFOLGREICH:
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Der Schüler wurde erfolgreich aus der Datenbank gelöscht.",
+                            "Löschen erfolgreich",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Löschen"));
+                    break;
             }
         }
     }

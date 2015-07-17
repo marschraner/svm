@@ -161,9 +161,11 @@ public class CodeDaoTest {
 
             // Codes hinzufügen
             Code code1 = new Code("z", "Zirkusprojekt");
+            codeDao.save(code1);
             codeDao.addToSchuelerAndSave(code1, schueler);
 
             Code code2 = new Code("r6", "6-Jahres-Rabatt");
+            codeDao.save(code2);
             Schueler schuelerSaved = codeDao.addToSchuelerAndSave(code2, schueler);
 
             entityManager.flush();
@@ -210,9 +212,11 @@ public class CodeDaoTest {
 
             // Codes hinzufügen
             Code code1 = new Code("z", "Zirkusprojekt");
+            codeDao.save(code1);
             codeDao.addToSchuelerAndSave(code1, schueler);
 
             Code code2 = new Code("r6", "6-Jahres-Rabatt");
+            codeDao.save(code2);
             Schueler schuelerSaved = codeDao.addToSchuelerAndSave(code2, schueler);
 
             entityManager.flush();

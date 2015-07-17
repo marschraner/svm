@@ -4,6 +4,7 @@ import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.DeleteSchuelerCommand;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerModel;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -391,6 +392,19 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             return new SchuelerErfassenUnerwarteterFehlerResult(ValidateSchuelerCommand.Result.UNERWARTETER_FEHLER, e);
         } finally {
             validateSchuelerCommand = null;
+        }
+    }
+
+    @Override
+    public DeleteSchuelerCommand.Result loeschen() {
+        DeleteSchuelerCommand deleteSchuelerCommand = new DeleteSchuelerCommand(getSchuelerOrigin());
+        CommandInvoker commandInvoker = getCommandInvoker();
+        try {
+            commandInvoker.executeCommandAsTransaction(deleteSchuelerCommand);
+            return deleteSchuelerCommand.getResult();
+        } catch (Throwable e) {
+            // Rollback wurde bereits in CommandInvoker durchgeführt
+            throw new RuntimeException(e);
         }
     }
 

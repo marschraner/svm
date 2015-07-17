@@ -64,7 +64,7 @@ public class SaveSchuelerCommandTest {
         assertEquals("Vorname not found", "Jana", savedSchueler.getVorname());
         assertEquals("Dispensation not correct", 1, savedSchueler.getDispensationen().size());
 
-        // delete
+        // Löschen
         EntityManager entityManager = null;
         try {
             entityManager = entityManagerFactory.createEntityManager();
