@@ -6,7 +6,7 @@ import ch.metzenthin.svm.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
-import ch.metzenthin.svm.domain.model.SchuelerSuchenResult;
+import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
 import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
@@ -298,9 +298,9 @@ public class SchuelerSuchenController extends PersonController {
 
     private void onSuchen() {
         LOGGER.trace("SchuelerSuchenPanel Suchen gedrückt");
-        SchuelerSuchenResult schuelerSuchenResult = schuelerSuchenModel.suchen();
-        SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenResult);
-        if (schuelerSuchenResult.size() != 1) {
+        SchuelerSuchenTableData schuelerSuchenTableData = schuelerSuchenModel.suchen();
+        SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenTableData);
+        if (schuelerSuchenTableData.size() != 1) {
             SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
             schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
             schuelerSuchenResultPanel.addCloseListener(closeListener);

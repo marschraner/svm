@@ -234,12 +234,12 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
-    public SchuelerSuchenResult suchen() {
+    public SchuelerSuchenTableData suchen() {
         SchuelerSuchenCommand schuelerSuchenCommand = new SchuelerSuchenCommand(this);
         CommandInvoker commandInvoker = getCommandInvoker();
         commandInvoker.executeCommand(schuelerSuchenCommand);
         List<Schueler> schuelerList = schuelerSuchenCommand.getSchuelerFound();
-        return new SchuelerSuchenResult(schuelerList);
+        return new SchuelerSuchenTableData(schuelerList);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.componentmodel;
 
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
-import ch.metzenthin.svm.domain.model.SchuelerSuchenResult;
+import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -9,35 +9,35 @@ import javax.swing.table.AbstractTableModel;
 public class SchuelerSuchenTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = 1L;
-    private SchuelerSuchenResult schuelerSuchenResult;
+    private SchuelerSuchenTableData schuelerSuchenTableData;
 
-    public SchuelerSuchenTableModel(SchuelerSuchenResult schuelerSuchenResult) {
+    public SchuelerSuchenTableModel(SchuelerSuchenTableData schuelerSuchenTableData) {
         super();
-        this.schuelerSuchenResult = schuelerSuchenResult;
+        this.schuelerSuchenTableData = schuelerSuchenTableData;
     }
 
     @Override
     public int getRowCount() {
-        return schuelerSuchenResult.size();
+        return schuelerSuchenTableData.size();
     }
 
     @Override
     public int getColumnCount() {
-        return schuelerSuchenResult.getColumnCount();
+        return schuelerSuchenTableData.getColumnCount();
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return schuelerSuchenResult.getValueAt(rowIndex, columnIndex);
+        return schuelerSuchenTableData.getValueAt(rowIndex, columnIndex);
     }
 
     @Override
     public String getColumnName(int column) {
-        return schuelerSuchenResult.getColumnName(column);
+        return schuelerSuchenTableData.getColumnName(column);
     }
 
     public SchuelerDatenblattModel getSchuelerDatenblattModel(int rowIndex) {
-        return schuelerSuchenResult.getSchuelerDatenblattModel(rowIndex);
+        return schuelerSuchenTableData.getSchuelerDatenblattModel(rowIndex);
     }
 
 }

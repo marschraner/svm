@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Schueler;
@@ -11,15 +12,15 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 /**
  * @author Hans Stamm
  */
-public class SchuelerSuchenResult {
+public class SchuelerSuchenTableData {
 
     private List<Schueler> schuelerList;
 
-    public SchuelerSuchenResult(List<Schueler> schuelerList) {
+    public SchuelerSuchenTableData(List<Schueler> schuelerList) {
         this.schuelerList = schuelerList;
     }
 
-    private static final String[] COLUMNS = {"Vorname", "Nachname", "Geburtsdatum", "Geschlecht", "Strasse/Hausnummer", "PLZ", "Ort", "Festnetz", "Natel", "Email", "Mutter", "Vater", "Rechnungsempfänger"};
+    private static final Field[] COLUMNS = {Field.NACHNAME, Field.VORNAME, Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT, Field.FESTNETZ, Field.NATEL, Field.EMAIL, Field.GEBURTSDATUM, Field.MUTTER, Field.VATER, Field.RECHNUNGSEMPFAENGER};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -34,43 +35,40 @@ public class SchuelerSuchenResult {
         Adresse schuelerAdresse = schueler.getAdresse();
         Object value = null;
         switch (COLUMNS[columnIndex]) {
-            case "Nachname" :
+            case NACHNAME:
                 value = schueler.getNachname();
                 break;
-            case "Vorname" :
+            case VORNAME:
                 value = schueler.getVorname();
                 break;
-            case "Geburtsdatum" :
-                value = asString(schueler.getGeburtsdatum());
-                break;
-            case "Geschlecht" :
-                value = schueler.getGeschlecht();
-                break;
-            case "Strasse/Hausnummer" :
+            case STRASSE_HAUSNUMMER:
                 value = schuelerAdresse.getStrasseHausnummer();
                break;
-            case "PLZ" :
+            case PLZ:
                 value = schuelerAdresse.getPlz();
                 break;
-            case "Ort" :
+            case ORT:
                 value = schuelerAdresse.getOrt();
                 break;
-            case "Festnetz" :
+            case FESTNETZ:
                 value = schueler.getFestnetz();
                 break;
-            case "Natel" :
+            case NATEL:
                 value = schueler.getNatel();
                 break;
-            case "Email" :
+            case EMAIL:
                 value = schueler.getEmail();
                 break;
-            case "Mutter" :
+            case GEBURTSDATUM:
+                value = asString(schueler.getGeburtsdatum());
+                break;
+            case MUTTER:
                 value = getString(schueler.getMutter());
                 break;
-            case "Vater" :
+            case VATER:
                 value = getString(schueler.getVater());
                 break;
-            case "Rechnungsempfänger" :
+            case RECHNUNGSEMPFAENGER:
                 value = getString(schueler.getRechnungsempfaenger());
                 break;
             default:
@@ -88,7 +86,7 @@ public class SchuelerSuchenResult {
     }
 
     public String getColumnName(int column) {
-        return COLUMNS[column];
+        return COLUMNS[column].toString();
     }
 
     public SchuelerDatenblattModel getSchuelerDatenblattModel(int rowIndex) {

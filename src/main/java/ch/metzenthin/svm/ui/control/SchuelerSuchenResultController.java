@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAccordingToCellContentAndHeader;
+
 /**
  * @author Hans Stamm
  */
@@ -31,6 +33,7 @@ public class SchuelerSuchenResultController {
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.schuelerSuchenResultTable = schuelerSuchenResultTable;
         schuelerSuchenResultTable.setModel(schuelerSuchenTableModel);
+        setJTableColumnWidthAccordingToCellContentAndHeader(schuelerSuchenResultTable);
         schuelerSuchenResultTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {

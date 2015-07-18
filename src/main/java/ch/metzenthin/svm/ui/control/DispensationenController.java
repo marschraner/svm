@@ -133,7 +133,7 @@ public class DispensationenController {
         int n = JOptionPane.showOptionDialog(
                 null,
                 "Soll der Eintrag aus der Datenbank gelöscht werden?",
-                "Eintrag löschen?",
+                "Dispensation löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,     //do not use a custom Icon

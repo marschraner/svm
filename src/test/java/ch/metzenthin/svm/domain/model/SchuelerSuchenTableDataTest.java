@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
@@ -18,9 +19,9 @@ import static org.junit.Assert.*;
 /**
  * @author Hans Stamm
  */
-public class SchuelerSuchenResultTest {
+public class SchuelerSuchenTableDataTest {
 
-    private SchuelerSuchenResult schuelerSuchenResult;
+    private SchuelerSuchenTableData schuelerSuchenTableData;
 
     @Before
     public void setUp() throws Exception {
@@ -41,67 +42,66 @@ public class SchuelerSuchenResultTest {
         schuelerList.add(schueler3);
         Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.FRAU, "V3A", "N3A", "Festnetz3A", "Natel3A", "Email3A");
         schueler3.setRechnungsempfaenger(angehoeriger3);
-        schuelerSuchenResult = new SchuelerSuchenResult(schuelerList);
+        schuelerSuchenTableData = new SchuelerSuchenTableData(schuelerList);
     }
 
     @Test
     public void testGetColumnCount() throws Exception {
-        assertTrue(schuelerSuchenResult.getColumnCount() > 0);
+        assertTrue(schuelerSuchenTableData.getColumnCount() > 0);
     }
 
     @Test
     public void testSize() throws Exception {
-        assertEquals(3, schuelerSuchenResult.size());
+        assertEquals(3, schuelerSuchenTableData.size());
     }
 
     @Test
     public void testGetValueAt() throws Exception {
-        assertEquals("V2", schuelerSuchenResult.getValueAt(1, getColumnIndex("Vorname")));
-        assertEquals("N2", schuelerSuchenResult.getValueAt(1, getColumnIndex("Nachname")));
-        assertEquals(Geschlecht.M, schuelerSuchenResult.getValueAt(1, getColumnIndex("Geschlecht")));
-        assertEquals("12.04.2002", schuelerSuchenResult.getValueAt(1, getColumnIndex("Geburtsdatum")));
-        assertEquals("Festnetz2", schuelerSuchenResult.getValueAt(1, getColumnIndex("Festnetz")));
-        assertEquals("Natel2", schuelerSuchenResult.getValueAt(1, getColumnIndex("Natel")));
-        assertEquals("Email2", schuelerSuchenResult.getValueAt(1, getColumnIndex("Email")));
-        assertEquals("Strasse2 99", schuelerSuchenResult.getValueAt(1, getColumnIndex("Strasse/Hausnummer")));
-        assertEquals("8000", schuelerSuchenResult.getValueAt(1, getColumnIndex("PLZ")));
-        assertEquals("Ort2", schuelerSuchenResult.getValueAt(1, getColumnIndex("Ort")));
+        assertEquals("V2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.VORNAME.toString())));
+        assertEquals("N2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.NACHNAME.toString())));
+        assertEquals("12.04.2002", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.GEBURTSDATUM.toString())));
+        assertEquals("Festnetz2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.FESTNETZ.toString())));
+        assertEquals("Natel2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.NATEL.toString())));
+        assertEquals("Email2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.EMAIL.toString())));
+        assertEquals("Strasse2 99", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.STRASSE_HAUSNUMMER.toString())));
+        assertEquals("8000", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.PLZ.toString())));
+        assertEquals("Ort2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.ORT.toString())));
     }
 
     @Test
     public void testGetValueAt_Mutter() throws Exception {
-        assertEquals("V1A N1A", schuelerSuchenResult.getValueAt(0, getColumnIndex("Mutter")));
-        assertNull(schuelerSuchenResult.getValueAt(0, getColumnIndex("Vater")));
-        assertEquals("V1A N1A", schuelerSuchenResult.getValueAt(0, getColumnIndex("Rechnungsempfänger")));
+        assertEquals("V1A N1A", schuelerSuchenTableData.getValueAt(0, getColumnIndex(Field.MUTTER.toString())));
+        assertNull(schuelerSuchenTableData.getValueAt(0, getColumnIndex(Field.VATER.toString())));
+        assertEquals("V1A N1A", schuelerSuchenTableData.getValueAt(0, getColumnIndex(Field.RECHNUNGSEMPFAENGER.toString())));
     }
 
     @Test
     public void testGetValueAt_Vater() throws Exception {
-        assertEquals("V2A N2A", schuelerSuchenResult.getValueAt(1, getColumnIndex("Vater")));
-        assertNull(schuelerSuchenResult.getValueAt(1, getColumnIndex("Mutter")));
-        assertEquals("V2A N2A", schuelerSuchenResult.getValueAt(1, getColumnIndex("Rechnungsempfänger")));
+        assertEquals("V2A N2A", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.VATER.toString())));
+        assertNull(schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.MUTTER.toString())));
+        assertEquals("V2A N2A", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.RECHNUNGSEMPFAENGER.toString())));
     }
 
     @Test
     public void testGetValueAt_Rechnungsempfaenger() throws Exception {
-        assertEquals("V3A N3A", schuelerSuchenResult.getValueAt(2, getColumnIndex("Rechnungsempfänger")));
-        assertNull(schuelerSuchenResult.getValueAt(2, getColumnIndex("Mutter")));
-        assertNull(schuelerSuchenResult.getValueAt(2, getColumnIndex("Vater")));
+        assertEquals("V3A N3A", schuelerSuchenTableData.getValueAt(2, getColumnIndex(Field.RECHNUNGSEMPFAENGER.toString())));
+        assertNull(schuelerSuchenTableData.getValueAt(2, getColumnIndex(Field.MUTTER.toString())));
+        assertNull(schuelerSuchenTableData.getValueAt(2, getColumnIndex(Field.VATER.toString())));
     }
 
     @Test
     public void testGetColumnName() throws Exception {
-        assertTrue(getColumnIndex("Nachname") > 0);
+        assertTrue(getColumnIndex(Field.NACHNAME.toString()) == 0);
     }
 
     @Test
     public void testGetSchuelerDatenblattModel() throws Exception {
-        assertNotNull(schuelerSuchenResult.getSchuelerDatenblattModel(2));
+        assertNotNull(schuelerSuchenTableData.getSchuelerDatenblattModel(2));
     }
 
     private int getColumnIndex(String column) {
-        for (int i = 0; i < schuelerSuchenResult.getColumnCount(); i++) {
-            if (column.equals(schuelerSuchenResult.getColumnName(i))) {
+        for (int i = 0; i < schuelerSuchenTableData.getColumnCount(); i++) {
+            if (column.equals(schuelerSuchenTableData.getColumnName(i))) {
                 return i;
             }
         }

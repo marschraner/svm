@@ -52,7 +52,7 @@ public interface SchuelerSuchenModel extends PersonModel {
     GeschlechtSelected getGeschlechtInit();
     Calendar getStichtag();
     Calendar getStichtagInit();
-    SchuelerSuchenResult suchen();
+    SchuelerSuchenTableData suchen();
 
     void setCode(Code code);
     void setGeburtsdatumSuchperiode(String geburtsdatumSuchperiode) throws SvmValidationException;

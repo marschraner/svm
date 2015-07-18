@@ -489,8 +489,8 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     }
 
     @Override
-    public SchuelerSuchenResult getSchuelerSuchenResult() {
-        return new SchuelerSuchenResult(Collections.singletonList(getSchueler()));
+    public SchuelerSuchenTableData getSchuelerSuchenTableData() {
+        return new SchuelerSuchenTableData(Collections.singletonList(getSchueler()));
     }
 
 }

@@ -219,8 +219,8 @@ public class SchuelerErfassenController {
             if (zurueckZuDatenblattListener != null) {
                 zurueckZuDatenblattListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Speichern erfolgreich"));
             } else {
-                SchuelerSuchenResult schuelerSuchenResult = schuelerErfassenModel.getSchuelerSuchenResult();
-                SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenResult);
+                SchuelerSuchenTableData schuelerSuchenTableData = schuelerErfassenModel.getSchuelerSuchenTableData();
+                SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenTableData);
                 SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, 0, false);
                 schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
                 schuelerDatenblattPanel.addCloseListener(closeListener);
@@ -233,7 +233,7 @@ public class SchuelerErfassenController {
         Object[] options = {"Ja", "Nein"};
         int n = JOptionPane.showOptionDialog(
                 null,
-                "Durch Drücken des Ja-Buttons wird der Schüler unwiederruflich aus der Datenbank gelöscht. Fortfahren?",
+                "Durch Drücken des Ja-Buttons wird der Schüler unwiderruflich aus der Datenbank gelöscht. Fortfahren?",
                 "Schüler löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,

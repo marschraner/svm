@@ -5,7 +5,7 @@ import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.MonatsstatistikModel;
-import ch.metzenthin.svm.domain.model.SchuelerSuchenResult;
+import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
 import org.apache.log4j.Logger;
@@ -141,8 +141,8 @@ public class MonatsstatistikController extends AbstractController {
 
     private void onSuchen() {
         LOGGER.trace("SchuelerSuchenPanel Suchen gedrückt");
-        SchuelerSuchenResult schuelerSuchenResult = monatsstatistikModel.suchen();
-        SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenResult);
+        SchuelerSuchenTableData schuelerSuchenTableData = monatsstatistikModel.suchen();
+        SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenTableData);
         SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
         schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
         schuelerSuchenResultPanel.addCloseListener(closeListener);

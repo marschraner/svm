@@ -37,7 +37,7 @@ public class DispensationenPanel {
 
     private void initDispensationenTable(DispensationenTableModel dispensationenTableModel) {
         dispensationenTable.setModel(dispensationenTableModel);
-        UiComponentsUtils.setJTableWidthAsPercentages(dispensationenTable, 0.15, 0.15, 0.3, 0.4);
+        UiComponentsUtils.setJTableColumnWidthAsPercentages(dispensationenTable, 0.15, 0.15, 0.3, 0.4);
     }
 
     private void createDispensationenController(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isFromSchuelerSuchenResult) {

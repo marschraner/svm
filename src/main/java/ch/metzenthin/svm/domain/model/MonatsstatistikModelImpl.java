@@ -79,12 +79,12 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
     }
 
     @Override
-    public SchuelerSuchenResult suchen() {
+    public SchuelerSuchenTableData suchen() {
         MonatsstatistikSchuelerSuchenCommand monatsstatistikSchuelerSuchenCommand = new MonatsstatistikSchuelerSuchenCommand(this);
         CommandInvoker commandInvoker = getCommandInvoker();
         commandInvoker.executeCommand(monatsstatistikSchuelerSuchenCommand);
         List<Schueler> schuelerList = monatsstatistikSchuelerSuchenCommand.getSchuelerFound();
-        return new SchuelerSuchenResult(schuelerList);
+        return new SchuelerSuchenTableData(schuelerList);
     }
 
     @Override

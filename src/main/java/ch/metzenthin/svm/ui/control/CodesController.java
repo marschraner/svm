@@ -87,7 +87,7 @@ public class CodesController {
             codesTableModel = new CodesTableModel(codesTableData);
         }
         codesTable.setModel(codesTableModel);
-        UiComponentsUtils.setJTableWidthAsPercentages(codesTable, 0.15, 0.85);
+        UiComponentsUtils.setJTableColumnWidthAsPercentages(codesTable, 0.15, 0.85);
     }
 
     public void setBtnNeu(JButton btnNeu) {
@@ -183,7 +183,7 @@ public class CodesController {
         int n = JOptionPane.showOptionDialog(
                 null,
                 "Soll der Eintrag aus der Datenbank gelöscht werden?",
-                "Eintrag löschen?",
+                "Code löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,     //do not use a custom Icon
@@ -209,7 +209,7 @@ public class CodesController {
         int n = JOptionPane.showOptionDialog(
                 null,
                 "Soll der Eintrag gelöscht werden?",
-                "Eintrag löschen?",
+                "Code löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,     //do not use a custom Icon
