@@ -113,7 +113,7 @@ public class SchuelerController extends PersonController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue) {
+        if (equalFieldAndModelValue && isValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -126,8 +126,12 @@ public class SchuelerController extends PersonController {
             schuelerModel.setAnmeldedatum(txtAnmeldedatum.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("SchuelerController setModelAnmeldedatum RequiredException=" + e.getMessage());
-            txtAnmeldedatum.setToolTipText(e.getMessage());
-            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            if (isValidationMode()) {
+                txtAnmeldedatum.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
             throw e;
         } catch (SvmValidationException e) {
             LOGGER.trace("SchuelerController setModelAnmeldedatum Exception=" + e.getMessage());
@@ -144,7 +148,7 @@ public class SchuelerController extends PersonController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue) {
+        if (equalFieldAndModelValue && isValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -170,7 +174,7 @@ public class SchuelerController extends PersonController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue) {
+        if (equalFieldAndModelValue && isValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -273,19 +277,19 @@ public class SchuelerController extends PersonController {
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         super.makeErrorLabelsInvisible(fields);
-        if (fields.contains(Field.GESCHLECHT)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.GESCHLECHT)) {
             errLblGeschlecht.setVisible(false);
             comboBoxGeschlecht.setToolTipText(null);
         }
-        if (fields.contains(Field.ANMELDEDATUM)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.ANMELDEDATUM)) {
             errLblAnmeldedatum.setVisible(false);
             txtAnmeldedatum.setToolTipText(null);
         }
-        if (fields.contains(Field.ABMELDEDATUM)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.ABMELDEDATUM)) {
             errLblAbmeldedatum.setVisible(false);
             txtAbmeldedatum.setToolTipText(null);
         }
-        if (fields.contains(Field.BEMERKUNGEN)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.BEMERKUNGEN)) {
             errLblBemerkungen.setVisible(false);
             textAreaBemerkungen.setToolTipText(null);
         }

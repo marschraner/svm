@@ -187,6 +187,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             if (isBooleanNewValuePropertyChecked(newValue)) {
                 uncheckRechnungsempfaenger(vaterModel, drittempfaengerModel);
                 drittempfaengerModel.disableFields();
+                drittempfaengerModel.makeErrorLabelsInvisible(new HashSet<>(Collections.singletonList(Field.ALLE)));
             } else {
                 if (!vaterModel.isRechnungsempfaenger()) {
                     drittempfaengerModel.setIsRechnungsempfaenger(true);
@@ -213,6 +214,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             if (isBooleanNewValuePropertyChecked(newValue)) {
                 uncheckRechnungsempfaenger(mutterModel, drittempfaengerModel);
                 drittempfaengerModel.disableFields();
+                drittempfaengerModel.makeErrorLabelsInvisible(new HashSet<>(Collections.singletonList(Field.ALLE)));
             } else {
                 if (!mutterModel.isRechnungsempfaenger()) {
                     drittempfaengerModel.setIsRechnungsempfaenger(true);
@@ -238,6 +240,8 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             Boolean newValue = (Boolean) evt.getNewValue();
             if (isBooleanNewValuePropertyChecked(newValue)) {
                 uncheckRechnungsempfaenger(mutterModel, vaterModel);
+            } else {
+                drittempfaengerModel.clear();
             }
         }
         fireCompletedChange();

@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
@@ -91,7 +92,6 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     public void initializeCompleted() {
         if (angehoerigerOrigin != null) {
             setBulkUpdate(true);
-            firePropertyChange(Field.BULK_UPDATE, false, true);
             try {
                 setAnrede(angehoerigerOrigin.getAnrede());
                 setNachname(angehoerigerOrigin.getNachname());
@@ -112,10 +112,31 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
             } catch (SvmValidationException ignore) {
             }
             setBulkUpdate(false);
-            firePropertyChange(Field.BULK_UPDATE, true, false);
         } else {
             super.initializeCompleted();
         }
+    }
+
+    @Override
+    public void clear() {
+        setBulkUpdate(true);
+        try {
+            setIsRechnungsempfaenger(false);
+            setIsGleicheAdresseWieSchueler(false);
+            setAnrede(Anrede.FRAU);
+            setNachname("");
+            setVorname("");
+            setStrasseHausnummer("");
+            setPlz("");
+            setOrt("");
+            setFestnetz("");
+            setNatel("");
+            setEmail("");
+            setGeburtsdatum("");
+        } catch (SvmValidationException e) {
+            throw new RuntimeException("Keine SvmValidationException erwartet: ", e);
+        }
+        setBulkUpdate(false);
     }
 
 }

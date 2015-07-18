@@ -26,6 +26,9 @@ public class SchuelerErfassenController {
 
     private static final Logger LOGGER = Logger.getLogger(SchuelerErfassenController.class);
 
+    // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
+    private static final boolean VALIDATION_MODE = false;
+
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
@@ -70,8 +73,11 @@ public class SchuelerErfassenController {
         }
     }
 
+    private AbstractController schuelerController;
+
     public void setSchuelerPanel(SchuelerPanel schuelerPanel, SchuelerModel schuelerModel) {
-        schuelerPanel.setModel(schuelerModel);
+        schuelerController = schuelerPanel.setModel(schuelerModel);
+        schuelerController.setValidationMode(VALIDATION_MODE);
         // Kein Abmeldedatum sichtbar
         schuelerPanel.getLblAbmeldedatum().setVisible(isBearbeiten);
         schuelerPanel.getTxtAbmeldedatum().setVisible(isBearbeiten);
@@ -80,8 +86,11 @@ public class SchuelerErfassenController {
         schuelerErfassenModel.setSchuelerModel(schuelerModel);
     }
 
+    AbstractController mutterController;
+
     public void setMutterPanel(AngehoerigerPanel mutterPanel, AngehoerigerModel mutterModel) {
-        mutterPanel.setModel(mutterModel);
+        mutterController = mutterPanel.setModel(mutterModel);
+        mutterController.setValidationMode(VALIDATION_MODE);
         // Rechnungsempfänger-Label überschreiben
         mutterPanel.getLblRechnungsempfaenger().setText("Rechnungsempfängerin");
         // Keine Anrede anzeigen
@@ -97,8 +106,11 @@ public class SchuelerErfassenController {
         schuelerErfassenModel.setMutterModel(mutterModel);
     }
 
+    AbstractController vaterController;
+
     public void setVaterPanel(AngehoerigerPanel vaterPanel, AngehoerigerModel vaterModel) {
-        vaterPanel.setModel(vaterModel);
+        vaterController = vaterPanel.setModel(vaterModel);
+        vaterController.setValidationMode(VALIDATION_MODE);
         // Keine Anrede anzeigen
         vaterPanel.getLblAnrede().setVisible(false);
         vaterPanel.getComboBoxAnrede().setVisible(false);
@@ -110,8 +122,11 @@ public class SchuelerErfassenController {
         schuelerErfassenModel.setVaterModel(vaterModel);
     }
 
+    AbstractController drittempfaengerController;
+
     public void setDrittempfaengerPanel(AngehoerigerPanel drittempfaengerPanel, AngehoerigerModel drittempfaengerModel) {
-        drittempfaengerPanel.setModel(drittempfaengerModel);
+        drittempfaengerController = drittempfaengerPanel.setModel(drittempfaengerModel);
+        drittempfaengerController.setValidationMode(VALIDATION_MODE);
         // Anrede: KEINE nicht anzeigen:
         drittempfaengerPanel.getComboBoxAnrede().removeItem(Anrede.KEINE);
         // Keine Adresse Schüler übernehmen-Checkbox anzeigen
@@ -203,6 +218,9 @@ public class SchuelerErfassenController {
 
     private void onSpeichern() {
         LOGGER.trace("SchuelerErfassenPanel Speichern gedrückt");
+        if (!VALIDATION_MODE && !validate()) {
+            return;
+        }
         SchuelerErfassenDialog dialog;
         SchuelerErfassenSaveResult schuelerErfassenSaveResult = schuelerErfassenModel.validieren();
         while (schuelerErfassenSaveResult != null) { // Wenn null: kein weiterer Dialog
@@ -227,6 +245,19 @@ public class SchuelerErfassenController {
                 nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));
             }
         }
+    }
+
+    private boolean validate() {
+        try {
+            schuelerController.validateWithThrowException();
+            mutterController.validateWithThrowException();
+            vaterController.validateWithThrowException();
+            drittempfaengerController.validateWithThrowException();
+        } catch (SvmValidationException e) {
+            LOGGER.trace("SchuelerErfassenPanel validate Exception: " + e.getMessageLong());
+            return false;
+        }
+        return true;
     }
 
     private void onLoeschen() {

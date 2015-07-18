@@ -43,7 +43,7 @@ public class CalendarModelAttribute {
         if (attributeAccessor.getValue() == null) {
             return null;
         }
-        return nullAsEmptyString(asString(getValue(), dateFormatString));
+        return nullAsEmptyString(asString(getValue(), (dateFormatString != null) ? dateFormatString : ""));
     }
 
     void setNewValue(boolean isRequired, String newValue, boolean isBulkUpdate) throws SvmValidationException {
@@ -74,7 +74,7 @@ public class CalendarModelAttribute {
         }
         String oldValue = getValueAsString(dateFormatString);
         attributeAccessor.setValue(newValueAsCalendar);
-        if (!equalsNullSafe(newValueTrimmed, newValueFormatted) && equalsNullSafe(oldValue, getValueAsString(dateFormatString))) {
+        if (!equalsNullSafe(newValueTrimmed, nullAsEmptyString(asString(newValueAsCalendar, dateFormatString))) && equalsNullSafe(oldValue, getValueAsString(dateFormatString))) {
             // Der Wert wurde formatiert und das Resultat entspricht dem alten Wert. Dann wird kein PropertyChangeEvent
             // ausgelöst. Damit trotzdem ein Event ausgelöst wird, wird der alte Wert auf den nicht formatierten Wert gesetzt.
             oldValue = newValueTrimmed;

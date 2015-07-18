@@ -249,8 +249,8 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
                 }
                 fruehereDispensationen.append(asString(dispensation.getDispensationsbeginn())).append(" - ").append(asString(dispensation.getDispensationsende())).append(" (").append(dispensation.getGrund()).append(")");
             }
-            fruehereDispensationen.append("</html>");
         }
+        fruehereDispensationen.append("</html>");
         if (fruehereDispensationen.length() > 13) {
             return fruehereDispensationen.toString();
         }
