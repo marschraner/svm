@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Wochentag;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
@@ -33,6 +34,9 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 public class SchuelerSuchenController extends PersonController {
 
     private static final Logger LOGGER = Logger.getLogger(SchuelerSuchenController.class);
+
+    // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
+    private static final boolean MODEL_VALIDATION_MODE = false;
 
     private JTextField txtGeburtsdatumSuchperiode;
     private JTextField txtLehrkraft;
@@ -78,6 +82,7 @@ public class SchuelerSuchenController extends PersonController {
                 onSchuelerSuchenModelCompleted(completed);
             }
         });
+        this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
     public void setTxtGeburtsdatumSuchperiode(JTextField txtGeburtsdatumSuchperiode) {
@@ -213,6 +218,9 @@ public class SchuelerSuchenController extends PersonController {
 
     public void setBtnSuchen(JButton btnSuchen) {
         this.btnSuchen = btnSuchen;
+        if (isModelValidationMode()) {
+            btnSuchen.setEnabled(false);
+        }
         this.btnSuchen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -243,32 +251,35 @@ public class SchuelerSuchenController extends PersonController {
     private void onGeburtsdatumSuchperiodeEvent() {
         LOGGER.trace("SchuelerSuchenController Event GeburtsdatumSuchperiode");
         boolean equalFieldAndModelValue = equalsNullSafe(txtGeburtsdatumSuchperiode.getText(), schuelerSuchenModel.getGeburtsdatumSuchperiode());
-        setModelGeburtsdatumSuchperiode();
-        if (equalFieldAndModelValue && isValidationMode()) {
+        try {
+            setModelGeburtsdatumSuchperiode();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
         }
     }
 
-    private void setModelGeburtsdatumSuchperiode() {
-        errLblGeburtsdatumSuchperiode.setVisible(false);
+    private void setModelGeburtsdatumSuchperiode() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.GEBURTSDATUM_SUCHPERIODE);
         try {
             schuelerSuchenModel.setGeburtsdatumSuchperiode(txtGeburtsdatumSuchperiode.getText());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("SchuelerSuchenController setModelGeburtsdatum RequiredException=" + e.getMessage());
+            if (isModelValidationMode()) {
+                txtGeburtsdatumSuchperiode.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
         } catch (SvmValidationException e) {
             LOGGER.trace("SchuelerSuchenController setModelGeburtsdatum Exception=" + e.getMessage());
             showErrMsg(e);
-        }
-    }
-
-    private void onStichtagEvent() {
-        LOGGER.trace("SchuelerSuchenController Event Stichtag");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtStichtag.getText(), schuelerSuchenModel.getStichtag());
-        setModelStichtag();
-        if (equalFieldAndModelValue && isValidationMode()) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
+            throw e;
         }
     }
 
@@ -281,13 +292,38 @@ public class SchuelerSuchenController extends PersonController {
         schuelerSuchenModel.setCode((Code) comboBoxCode.getSelectedItem());
     }
 
-    private void setModelStichtag() {
-        errLblStichtag.setVisible(false);
+    private void onStichtagEvent() {
+        LOGGER.trace("SchuelerSuchenController Event Stichtag");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtStichtag.getText(), schuelerSuchenModel.getStichtag());
+        try {
+            setModelStichtag();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelStichtag() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.STICHTAG);
         try {
             schuelerSuchenModel.setStichtag(txtStichtag.getText());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("SchuelerSuchenController setModelStichtag RequiredException=" + e.getMessage());
+            if (isModelValidationMode()) {
+                txtStichtag.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
         } catch (SvmValidationException e) {
             LOGGER.trace("SchuelerSuchenController setModelStichtag Exception=" + e.getMessage());
             showErrMsg(e);
+            throw e;
         }
     }
 
@@ -298,6 +334,9 @@ public class SchuelerSuchenController extends PersonController {
 
     private void onSuchen() {
         LOGGER.trace("SchuelerSuchenPanel Suchen gedrückt");
+        if (!validateOnSpeichern()) {
+            return;
+        }
         SchuelerSuchenTableData schuelerSuchenTableData = schuelerSuchenModel.suchen();
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenTableData);
         if (schuelerSuchenTableData.size() != 1) {

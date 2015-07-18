@@ -30,15 +30,15 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
     private boolean bulkUpdate = false;
 
     /**
-     * validationMode true: Model wird invalidiert bei Fehler
-     * validationMode false: Model wird nicht invalidiert bei Fehler
+     * modelValidationMode true: Model wird invalidiert bei Fehler
+     * modelValidationMode false: Model wird nicht invalidiert bei Fehler
      */
-    private boolean validationMode = true;
+    private boolean modelValidationMode = true;
 
     void setBulkUpdate(boolean bulkUpdate) {
         this.bulkUpdate = bulkUpdate;
         firePropertyChange(Field.BULK_UPDATE, !bulkUpdate, bulkUpdate);
-        if (!bulkUpdate && !isValidationMode()) {
+        if (!bulkUpdate && !isModelValidationMode()) {
             fireCompleted(true);
         }
     }
@@ -173,7 +173,7 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
     }
 
     public void initializeCompleted() {
-        if (isValidationMode()) {
+        if (isModelValidationMode()) {
             fireCompleted(isCompleted());
         } else {
             fireCompleted(true);
@@ -182,7 +182,7 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
 
     @Override
     public final void invalidate() {
-        if (isValidationMode()) {
+        if (isModelValidationMode()) {
             fireCompleted(false);
         }
     }
@@ -218,13 +218,13 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
      */
     abstract void doValidate() throws SvmValidationException;
 
-    public boolean isValidationMode() {
-        return validationMode;
+    public boolean isModelValidationMode() {
+        return modelValidationMode;
     }
 
     @Override
-    public void setValidationMode(boolean validationMode) {
-        this.validationMode = validationMode;
+    public void setModelValidationMode(boolean modelValidationMode) {
+        this.modelValidationMode = modelValidationMode;
     }
 
 }

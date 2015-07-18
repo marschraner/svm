@@ -23,10 +23,8 @@ public class CodeErfassenDialog extends JDialog {
     public CodeErfassenDialog(SvmContext svmContext, CodesModel codesModel, int indexBearbeiten, boolean isBearbeiten, String title) {
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(btnSpeichern);
         setTitle(title);
         initializeErrLbls();
-        btnSpeichern.setEnabled(false);
         createCodeErfassenController(svmContext, codesModel, indexBearbeiten, isBearbeiten);
     }
 

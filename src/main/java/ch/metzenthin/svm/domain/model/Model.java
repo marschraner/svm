@@ -27,5 +27,5 @@ public interface Model {
     void initializeCompleted();
     boolean isCompleted();
     void validate() throws SvmValidationException;
-    void setValidationMode(boolean validationMode);
+    void setModelValidationMode(boolean modelValidationMode);
 }

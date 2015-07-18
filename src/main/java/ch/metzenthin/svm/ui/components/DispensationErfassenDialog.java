@@ -28,10 +28,8 @@ public class DispensationErfassenDialog extends JDialog {
     public DispensationErfassenDialog(SvmContext svmContext, DispensationenModel dispensationenModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexBearbeiten, boolean isBearbeiten, String title) {
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(btnSpeichern);
         setTitle(title);
         initializeErrLbls();
-        btnSpeichern.setEnabled(false);
         createDispensationErfassenController(svmContext, dispensationenModel, schuelerDatenblattModel, indexBearbeiten, isBearbeiten);
     }
 

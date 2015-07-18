@@ -216,7 +216,7 @@ public abstract class PersonController extends AbstractController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue && isValidationMode()) {
+        if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -242,7 +242,7 @@ public abstract class PersonController extends AbstractController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue && isValidationMode()) {
+        if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -255,7 +255,7 @@ public abstract class PersonController extends AbstractController {
             personModel.setNachname(txtNachname.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("PersonController setModelNachname RequiredException=" + e.getMessage());
-            if (isValidationMode()) {
+            if (isModelValidationMode()) {
                 txtNachname.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             } else {
@@ -277,7 +277,7 @@ public abstract class PersonController extends AbstractController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue && isValidationMode()) {
+        if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -290,7 +290,7 @@ public abstract class PersonController extends AbstractController {
             personModel.setVorname(txtVorname.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("PersonController setModelVorname RequiredException=" + e.getMessage());
-            if (isValidationMode()) {
+            if (isModelValidationMode()) {
                 txtVorname.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             } else {
@@ -312,7 +312,7 @@ public abstract class PersonController extends AbstractController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue && isValidationMode()) {
+        if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -325,7 +325,7 @@ public abstract class PersonController extends AbstractController {
             personModel.setStrasseHausnummer(txtStrasseHausnummer.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("PersonController setModelStrasseHausnummer RequiredException=" + e.getMessage());
-            if (isValidationMode()) {
+            if (isModelValidationMode()) {
                 txtStrasseHausnummer.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             } else {
@@ -347,7 +347,7 @@ public abstract class PersonController extends AbstractController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue && isValidationMode()) {
+        if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -360,7 +360,7 @@ public abstract class PersonController extends AbstractController {
             personModel.setPlz(txtPlz.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("PersonController setModelPlz RequiredException=" + e.getMessage());
-            if (isValidationMode()) {
+            if (isModelValidationMode()) {
                 txtPlz.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             } else {
@@ -382,7 +382,7 @@ public abstract class PersonController extends AbstractController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue && isValidationMode()) {
+        if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -395,7 +395,7 @@ public abstract class PersonController extends AbstractController {
             personModel.setOrt(txtOrt.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("PersonController setModelOrt RequiredException=" + e.getMessage());
-            if (isValidationMode()) {
+            if (isModelValidationMode()) {
                 txtOrt.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             } else {
@@ -417,7 +417,7 @@ public abstract class PersonController extends AbstractController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue && isValidationMode()) {
+        if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -443,7 +443,7 @@ public abstract class PersonController extends AbstractController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue && isValidationMode()) {
+        if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -469,7 +469,7 @@ public abstract class PersonController extends AbstractController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue && isValidationMode()) {
+        if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -495,7 +495,7 @@ public abstract class PersonController extends AbstractController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue && isValidationMode()) {
+        if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -508,7 +508,7 @@ public abstract class PersonController extends AbstractController {
             personModel.setGeburtsdatum(txtGeburtsdatum.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("PersonController setModelGeburtsdatum RequiredException=" + e.getMessage());
-            if (isValidationMode()) {
+            if (isModelValidationMode()) {
                 txtGeburtsdatum.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             } else {

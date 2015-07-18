@@ -2,6 +2,7 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Field;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.MonatsstatistikModel;
@@ -27,6 +28,9 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 public class MonatsstatistikController extends AbstractController {
 
     private static final Logger LOGGER = Logger.getLogger(MonatsstatistikController.class);
+
+    // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
+    private static final boolean MODEL_VALIDATION_MODE = false;
 
     private static final String MONAT_JAHR_DATE_FORMAT_STRING = "MM.yyyy";
 
@@ -56,6 +60,7 @@ public class MonatsstatistikController extends AbstractController {
                 onMonatsstatistikModelCompleted(completed);
             }
         });
+        this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
     public void setTxtMonatJahr(JTextField txtMonatJahr) {
@@ -91,6 +96,9 @@ public class MonatsstatistikController extends AbstractController {
 
     public void setBtnSuchen(JButton btnSuchen) {
         this.btnSuchen = btnSuchen;
+        if (isModelValidationMode()) {
+            btnSuchen.setEnabled(false);
+        }
         this.btnSuchen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -116,21 +124,35 @@ public class MonatsstatistikController extends AbstractController {
     private void onMonatJahrEvent() {
         LOGGER.trace("MonatsstatistikController Event Monat/Jahr");
         boolean equalFieldAndModelValue = equalsNullSafe(txtMonatJahr.getText(), monatsstatistikModel.getMonatJahr(), MONAT_JAHR_DATE_FORMAT_STRING);
-        setModelMonatJahr();
-        if (equalFieldAndModelValue) {
+        try {
+            setModelMonatJahr();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
         }
     }
 
-    private void setModelMonatJahr() {
-        errLblMonatJahr.setVisible(false);
+    private void setModelMonatJahr() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.MONAT_JAHR);
         try {
             monatsstatistikModel.setMonatJahr(txtMonatJahr.getText());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("MonatsstatistikController setModelMonatJahr RequiredException=" + e.getMessage());
+            if (isModelValidationMode()) {
+                txtMonatJahr.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
         } catch (SvmValidationException e) {
             LOGGER.trace("MonatsstatistikController setModelMonatJahr Exception=" + e.getMessage());
             showErrMsg(e);
+            throw e;
         }
     }
 
@@ -141,6 +163,9 @@ public class MonatsstatistikController extends AbstractController {
 
     private void onSuchen() {
         LOGGER.trace("SchuelerSuchenPanel Suchen gedrückt");
+        if (!isModelValidationMode() && !validateOnSpeichern()) {
+            return;
+        }
         SchuelerSuchenTableData schuelerSuchenTableData = monatsstatistikModel.suchen();
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenTableData);
         SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
@@ -206,7 +231,7 @@ public class MonatsstatistikController extends AbstractController {
 
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
-        if (fields.contains(Field.MONAT_JAHR)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.MONAT_JAHR)) {
             errLblMonatJahr.setVisible(false);
             txtMonatJahr.setToolTipText(null);
         }

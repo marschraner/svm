@@ -27,7 +27,7 @@ public class SchuelerErfassenController {
     private static final Logger LOGGER = Logger.getLogger(SchuelerErfassenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
-    private static final boolean VALIDATION_MODE = false;
+    private static final boolean MODEL_VALIDATION_MODE = false;
 
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
@@ -38,6 +38,7 @@ public class SchuelerErfassenController {
     private final boolean isBearbeiten;
     private ActionListener zurueckZuDatenblattListener;
     private ActionListener nextPanelListener;
+    private boolean modelValidationMode;
 
     public SchuelerErfassenController(SvmContext svmContext, SchuelerErfassenModel schuelerErfassenModel, boolean isBearbeiten) {
         this.svmContext = svmContext;
@@ -49,6 +50,7 @@ public class SchuelerErfassenController {
                 onSchuelerErfassenModelCompleted(completed);
             }
         });
+        this.modelValidationMode = MODEL_VALIDATION_MODE;
     }
 
     public void constructionDone() {
@@ -77,7 +79,7 @@ public class SchuelerErfassenController {
 
     public void setSchuelerPanel(SchuelerPanel schuelerPanel, SchuelerModel schuelerModel) {
         schuelerController = schuelerPanel.setModel(schuelerModel);
-        schuelerController.setValidationMode(VALIDATION_MODE);
+        schuelerController.setModelValidationMode(MODEL_VALIDATION_MODE);
         // Kein Abmeldedatum sichtbar
         schuelerPanel.getLblAbmeldedatum().setVisible(isBearbeiten);
         schuelerPanel.getTxtAbmeldedatum().setVisible(isBearbeiten);
@@ -90,7 +92,7 @@ public class SchuelerErfassenController {
 
     public void setMutterPanel(AngehoerigerPanel mutterPanel, AngehoerigerModel mutterModel) {
         mutterController = mutterPanel.setModel(mutterModel);
-        mutterController.setValidationMode(VALIDATION_MODE);
+        mutterController.setModelValidationMode(MODEL_VALIDATION_MODE);
         // Rechnungsempfänger-Label überschreiben
         mutterPanel.getLblRechnungsempfaenger().setText("Rechnungsempfängerin");
         // Keine Anrede anzeigen
@@ -110,7 +112,7 @@ public class SchuelerErfassenController {
 
     public void setVaterPanel(AngehoerigerPanel vaterPanel, AngehoerigerModel vaterModel) {
         vaterController = vaterPanel.setModel(vaterModel);
-        vaterController.setValidationMode(VALIDATION_MODE);
+        vaterController.setModelValidationMode(MODEL_VALIDATION_MODE);
         // Keine Anrede anzeigen
         vaterPanel.getLblAnrede().setVisible(false);
         vaterPanel.getComboBoxAnrede().setVisible(false);
@@ -126,7 +128,7 @@ public class SchuelerErfassenController {
 
     public void setDrittempfaengerPanel(AngehoerigerPanel drittempfaengerPanel, AngehoerigerModel drittempfaengerModel) {
         drittempfaengerController = drittempfaengerPanel.setModel(drittempfaengerModel);
-        drittempfaengerController.setValidationMode(VALIDATION_MODE);
+        drittempfaengerController.setModelValidationMode(MODEL_VALIDATION_MODE);
         // Anrede: KEINE nicht anzeigen:
         drittempfaengerPanel.getComboBoxAnrede().removeItem(Anrede.KEINE);
         // Keine Adresse Schüler übernehmen-Checkbox anzeigen
@@ -199,7 +201,7 @@ public class SchuelerErfassenController {
             dialogText = "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. Allfällige getätigte Änderungen werden nicht gespeichert. Fortfahren?";
         }
         int n = JOptionPane.showOptionDialog(
-                btnAbbrechen.getParent().getParent(),
+                null,
                 dialogText,
                 "Eingabemaske schliessen",
                 JOptionPane.YES_NO_OPTION,
@@ -218,7 +220,7 @@ public class SchuelerErfassenController {
 
     private void onSpeichern() {
         LOGGER.trace("SchuelerErfassenPanel Speichern gedrückt");
-        if (!VALIDATION_MODE && !validate()) {
+        if (!modelValidationMode && !validateOnSpeichern()) {
             return;
         }
         SchuelerErfassenDialog dialog;
@@ -247,14 +249,14 @@ public class SchuelerErfassenController {
         }
     }
 
-    private boolean validate() {
+    private boolean validateOnSpeichern() {
         try {
             schuelerController.validateWithThrowException();
             mutterController.validateWithThrowException();
             vaterController.validateWithThrowException();
             drittempfaengerController.validateWithThrowException();
         } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerErfassenPanel validate Exception: " + e.getMessageLong());
+            LOGGER.trace("SchuelerErfassenPanel validateOnSpeichern Exception: " + e.getMessageLong());
             return false;
         }
         return true;

@@ -23,10 +23,10 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
     private boolean bulkUpdate = false;
 
     /**
-     * validationMode true: SvmRequiredExceptions werden nicht markiert (nur als Tooltip). Model wird invalidiert bei Fehler
-     * validationMode false: SvmRequiredExceptions werden sofort markiert (in Error labels). Model wird nicht invalidiert bei Fehler
+     * modelValidationMode true: SvmRequiredExceptions werden nicht markiert (nur als Tooltip). Model wird invalidiert bei Fehler
+     * modelValidationMode false: SvmRequiredExceptions werden sofort markiert (in Error labels). Model wird nicht invalidiert bei Fehler
      */
-    private boolean validationMode = true;
+    private boolean modelValidationMode = true;
 
     public AbstractController(Model model) {
         this.model = model;
@@ -40,7 +40,7 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
     @Override
     public final void propertyChange(PropertyChangeEvent evt) {
         doPropertyChange(evt);
-        if (!bulkUpdate && isValidationMode()) {
+        if (!bulkUpdate && isModelValidationMode()) {
             validate();
         }
     }
@@ -61,6 +61,16 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
                 validate();
             }
         }
+    }
+
+    public boolean validateOnSpeichern() {
+        try {
+            validateWithThrowException();
+        } catch (SvmValidationException e) {
+            LOGGER.trace("AbstractController validateOnSpeichern Exception: " + e.getMessageLong());
+            return false;
+        }
+        return true;
     }
 
     public void validateWithThrowException() throws SvmValidationException {
@@ -108,13 +118,13 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
         makeErrorLabelsInvisible(fields);
     }
 
-    public boolean isValidationMode() {
-        return validationMode;
+    public boolean isModelValidationMode() {
+        return modelValidationMode;
     }
 
-    public void setValidationMode(boolean validationMode) {
-        this.validationMode = validationMode;
-        model.setValidationMode(validationMode);
+    public void setModelValidationMode(boolean modelValidationMode) {
+        this.modelValidationMode = modelValidationMode;
+        model.setModelValidationMode(modelValidationMode);
     }
 
 }

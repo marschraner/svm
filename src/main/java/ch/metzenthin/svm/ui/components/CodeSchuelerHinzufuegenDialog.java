@@ -23,7 +23,6 @@ public class CodeSchuelerHinzufuegenDialog extends JDialog {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(btnOk);
         setTitle("Code hinzufügen");
         createCodeSchuelerHinzufuegenController(svmContext, codesModel, schuelerDatenblattModel);
     }

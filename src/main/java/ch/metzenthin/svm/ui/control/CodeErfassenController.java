@@ -22,6 +22,9 @@ public class CodeErfassenController extends AbstractController {
 
     private static final Logger LOGGER = Logger.getLogger(CodeErfassenController.class);
 
+    // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
+    private static final boolean MODEL_VALIDATION_MODE = false;
+
     private CodeErfassenModel codeErfassenModel;
     private final SvmContext svmContext;
     private JDialog codeErfassenDialog;
@@ -44,6 +47,7 @@ public class CodeErfassenController extends AbstractController {
                 onCodeErfassenModelCompleted(completed);
             }
         });
+        this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
     public void constructionDone() {
@@ -94,7 +98,7 @@ public class CodeErfassenController extends AbstractController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue) {
+        if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -107,7 +111,12 @@ public class CodeErfassenController extends AbstractController {
             codeErfassenModel.setKuerzel(txtKuerzel.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("CodeErfassenController setModelKuerzel RequiredException=" + e.getMessage());
-            txtKuerzel.setToolTipText(e.getMessage());
+            if (isModelValidationMode()) {
+                txtKuerzel.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
             throw e;
         } catch (SvmValidationException e) {
             LOGGER.trace("CodeErfassenController setModelKuerzel Exception=" + e.getMessage());
@@ -140,7 +149,7 @@ public class CodeErfassenController extends AbstractController {
         } catch (SvmValidationException e) {
             return;
         }
-        if (equalFieldAndModelValue) {
+        if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -153,7 +162,12 @@ public class CodeErfassenController extends AbstractController {
             codeErfassenModel.setBeschreibung(txtBeschreibung.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("CodeErfassenController setModelBeschreibung RequiredException=" + e.getMessage());
-            txtBeschreibung.setToolTipText(e.getMessage());
+            if (isModelValidationMode()) {
+                txtBeschreibung.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
             throw e;
         } catch (SvmValidationException e) {
             LOGGER.trace("CodeErfassenController setModelBeschreibung Exception=" + e.getMessage());
@@ -172,6 +186,9 @@ public class CodeErfassenController extends AbstractController {
 
     public void setBtnSpeichern(JButton btnSpeichern) {
         this.btnSpeichern = btnSpeichern;
+        if (isModelValidationMode()) {
+            btnSpeichern.setEnabled(false);
+        }
         this.btnSpeichern.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -181,6 +198,9 @@ public class CodeErfassenController extends AbstractController {
     }
 
     private void onSpeichern() {
+        if (!isModelValidationMode() && !validateOnSpeichern()) {
+            return;
+        }
         if (codeErfassenModel.checkCodeKuerzelBereitsInVerwendung(svmContext.getSvmModel())) {
             JOptionPane.showMessageDialog(null, "Kürzel bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE);
         } else {
@@ -260,11 +280,11 @@ public class CodeErfassenController extends AbstractController {
 
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
-        if (fields.contains(Field.KUERZEL)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.KUERZEL)) {
             errLblKuerzel.setVisible(false);
             txtKuerzel.setToolTipText(null);
         }
-        if (fields.contains(Field.BESCHREIBUNG)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.BESCHREIBUNG)) {
             errLblBeschreibung.setVisible(false);
             txtBeschreibung.setToolTipText(null);
         }
