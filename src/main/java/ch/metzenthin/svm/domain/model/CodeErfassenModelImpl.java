@@ -100,7 +100,6 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     public void initializeCompleted() {
         if (codeOrigin != null) {
             setBulkUpdate(true);
-            firePropertyChange(Field.BULK_UPDATE, false, true);
             try {
                 setKuerzel(codeOrigin.getKuerzel());
                 setBeschreibung(codeOrigin.getBeschreibung());
@@ -108,7 +107,6 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
                 ignore.printStackTrace();
             }
             setBulkUpdate(false);
-            firePropertyChange(Field.BULK_UPDATE, true, false);
         } else {
             super.initializeCompleted();
         }

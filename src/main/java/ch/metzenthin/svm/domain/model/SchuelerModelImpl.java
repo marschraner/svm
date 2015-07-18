@@ -181,7 +181,6 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     public void initializeCompleted() {
         if (schuelerOrigin != null) {
             setBulkUpdate(true);
-            firePropertyChange(Field.BULK_UPDATE, false, true);
             try {
                 setAnrede(schuelerOrigin.getAnrede());
                 setNachname(schuelerOrigin.getNachname());
@@ -201,7 +200,6 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
                 ignore.printStackTrace();
             }
             setBulkUpdate(false);
-            firePropertyChange(Field.BULK_UPDATE, true, false);
         } else {
             super.initializeCompleted();
         }

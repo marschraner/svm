@@ -22,6 +22,12 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
     private final Model model;
     private boolean bulkUpdate = false;
 
+    /**
+     * validationMode true: SvmRequiredExceptions werden nicht markiert (nur als Tooltip). Model wird invalidiert bei Fehler
+     * validationMode false: SvmRequiredExceptions werden sofort markiert (in Error labels). Model wird nicht invalidiert bei Fehler
+     */
+    private boolean validationMode = true;
+
     public AbstractController(Model model) {
         this.model = model;
     }
@@ -34,7 +40,7 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
     @Override
     public final void propertyChange(PropertyChangeEvent evt) {
         doPropertyChange(evt);
-        if (!bulkUpdate) {
+        if (!bulkUpdate && isValidationMode()) {
             validate();
         }
     }
@@ -57,6 +63,11 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
         }
     }
 
+    public void validateWithThrowException() throws SvmValidationException {
+        validateFields();
+        validateModelWithThrowException();
+    }
+
     protected void validate() {
         try {
             validateFields();
@@ -75,6 +86,16 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
         }
     }
 
+    private void validateModelWithThrowException() throws SvmValidationException {
+        try {
+            model.validate();
+        } catch (SvmValidationException e) {
+            LOGGER.trace("AbstractController model.validateModelWithThrowException " + e.getMessageLong());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
     abstract void validateFields() throws SvmValidationException;
 
     abstract void showErrMsg(SvmValidationException e);
@@ -85,6 +106,15 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
         Set<Field> fields = new HashSet<>();
         fields.add(field);
         makeErrorLabelsInvisible(fields);
+    }
+
+    public boolean isValidationMode() {
+        return validationMode;
+    }
+
+    public void setValidationMode(boolean validationMode) {
+        this.validationMode = validationMode;
+        model.setValidationMode(validationMode);
     }
 
 }

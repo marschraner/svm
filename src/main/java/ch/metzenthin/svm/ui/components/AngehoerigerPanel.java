@@ -39,19 +39,16 @@ public class AngehoerigerPanel {
     private JLabel errLblRechnungsempfaenger;
     private JLabel errLblGleicheAdresseWieSchueler;
 
-    private AngehoerigerModel angehoerigerModel;
-
     public AngehoerigerPanel() {
         $$$setupUI$$$();
     }
 
-    public void setModel(AngehoerigerModel angehoerigerModel) {
-        this.angehoerigerModel = angehoerigerModel;
+    public AngehoerigerController setModel(AngehoerigerModel angehoerigerModel) {
         initializeErrLbls();
-        createAngehoerigerController();
+        return createAngehoerigerController(angehoerigerModel);
     }
 
-    private void createAngehoerigerController() {
+    private AngehoerigerController  createAngehoerigerController(AngehoerigerModel angehoerigerModel) {
         AngehoerigerController angehoerigerController = new AngehoerigerController(angehoerigerModel);
         angehoerigerController.setComboBoxAnrede(comboBoxAnrede);
         angehoerigerController.setTxtNachname(txtNachname);
@@ -75,6 +72,7 @@ public class AngehoerigerPanel {
         angehoerigerController.setErrLblEmail(errLblEmail);
         angehoerigerController.setErrLblRechnungsempfaenger(errLblRechnungsempfaenger);
         angehoerigerController.setErrLblGleicheAdresseWieSchueler(errLblGleicheAdresseWieSchueler);
+        return angehoerigerController;
     }
 
     private void initializeErrLbls() {

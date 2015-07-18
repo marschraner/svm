@@ -244,7 +244,7 @@ public class SchuelerSuchenController extends PersonController {
         LOGGER.trace("SchuelerSuchenController Event GeburtsdatumSuchperiode");
         boolean equalFieldAndModelValue = equalsNullSafe(txtGeburtsdatumSuchperiode.getText(), schuelerSuchenModel.getGeburtsdatumSuchperiode());
         setModelGeburtsdatumSuchperiode();
-        if (equalFieldAndModelValue) {
+        if (equalFieldAndModelValue && isValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -265,7 +265,7 @@ public class SchuelerSuchenController extends PersonController {
         LOGGER.trace("SchuelerSuchenController Event Stichtag");
         boolean equalFieldAndModelValue = equalsNullSafe(txtStichtag.getText(), schuelerSuchenModel.getStichtag());
         setModelStichtag();
-        if (equalFieldAndModelValue) {
+        if (equalFieldAndModelValue && isValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
             validate();
@@ -478,11 +478,11 @@ public class SchuelerSuchenController extends PersonController {
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         super.makeErrorLabelsInvisible(fields);
-        if (fields.contains(Field.GEBURTSDATUM_SUCHPERIODE)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.GEBURTSDATUM_SUCHPERIODE)) {
             errLblGeburtsdatumSuchperiode.setVisible(false);
             txtGeburtsdatumSuchperiode.setToolTipText(null);
         }
-        if (fields.contains(Field.STICHTAG)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.STICHTAG)) {
             errLblStichtag.setVisible(false);
             txtStichtag.setToolTipText(null);
         }

@@ -42,19 +42,16 @@ public class SchuelerPanel {
     private JLabel errLblAbmeldedatum;
     private JLabel errLblBemerkungen;
 
-    private SchuelerModel schuelerModel;
-
     public SchuelerPanel() {
         $$$setupUI$$$();
     }
 
-    public void setModel(SchuelerModel schuelerModel) {
-        this.schuelerModel = schuelerModel;
+    public SchuelerController setModel(SchuelerModel schuelerModel) {
         initializeErrLbls();
-        createSchuelerController();
+        return createSchuelerController(schuelerModel);
     }
 
-    private void createSchuelerController() {
+    private SchuelerController createSchuelerController(SchuelerModel schuelerModel) {
         SchuelerController schuelerController = new SchuelerController(schuelerModel);
         schuelerController.setTxtNachname(txtNachname);
         schuelerController.setTxtVorname(txtVorname);
@@ -82,6 +79,7 @@ public class SchuelerPanel {
         schuelerController.setErrLblAnmeldedatum(errLblAnmeldedatum);
         schuelerController.setErrLblAbmeldedatum(errLblAbmeldedatum);
         schuelerController.setErrLblBemerkungen(errLblBemerkungen);
+        return schuelerController;
     }
 
     private void initializeErrLbls() {

@@ -167,7 +167,6 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
     public void initializeCompleted() {
         if (dispensationOrigin != null) {
             setBulkUpdate(true);
-            firePropertyChange(Field.BULK_UPDATE, false, true);
             try {
                 setDispensationsbeginn(asString(dispensationOrigin.getDispensationsbeginn()));
                 setDispensationsende(asString(dispensationOrigin.getDispensationsende()));
@@ -177,7 +176,6 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
                 ignore.printStackTrace();
             }
             setBulkUpdate(false);
-            firePropertyChange(Field.BULK_UPDATE, true, false);
         } else {
             super.initializeCompleted();
         }
