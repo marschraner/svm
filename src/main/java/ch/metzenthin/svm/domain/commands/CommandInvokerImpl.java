@@ -64,7 +64,11 @@ public class CommandInvokerImpl implements CommandInvoker {
             LOGGER.trace("executeCommandAsTransaction durchgeführt");
         } catch (Throwable e) {
             LOGGER.error("Fehler in executeCommandAsTransaction(GenericDaoCommand)", e);
-            entityManager.getTransaction().rollback();
+            if ((entityManager != null) && entityManager.isOpen() && entityManager.getTransaction().isActive()) {
+                LOGGER.trace("Rollback wird durchgeführt executeCommandAsTransaction(GenericDaoCommand)", e);
+                entityManager.getTransaction().rollback();
+                LOGGER.trace("Rollback ist durchgeführt executeCommandAsTransaction(GenericDaoCommand)", e);
+            }
             throw e;
         }
         return genericDaoCommand;
