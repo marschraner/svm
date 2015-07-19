@@ -23,6 +23,8 @@ SET default_storage_engine=InnoDB;
 -- Alte Tabellen löschen
 -- *********************
 
+DROP TABLE IF EXISTS Kursort;
+DROP TABLE IF EXISTS Kurstyp;
 DROP TABLE IF EXISTS Schueler_Code;
 DROP TABLE IF EXISTS Code;
 DROP TABLE IF EXISTS Dispensation;
@@ -174,3 +176,27 @@ CREATE TABLE IF NOT EXISTS Schueler_Code (
     FOREIGN KEY (code_id)      REFERENCES Code (code_id));
 
 DESCRIBE Schueler_Code;
+
+
+-- Kurstyp
+-- *******
+
+CREATE TABLE IF NOT EXISTS Kurstyp (
+    kurstyp_id                 INT           NOT NULL AUTO_INCREMENT,
+    kurstyp                    VARCHAR(50)   NOT NULL,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (kurstyp_id));
+
+DESCRIBE Kurstyp;
+
+
+-- Kursort
+-- *******
+
+CREATE TABLE IF NOT EXISTS Kursort (
+    kursort_id                 INT           NOT NULL AUTO_INCREMENT,
+    kursort                    VARCHAR(50)   NOT NULL,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (kursort_id));
+
+DESCRIBE Kursort;

@@ -12,6 +12,8 @@ USE svm;
 -- Delete
 -- ******
 
+DELETE FROM Kursort;
+DELETE FROM Kurstyp;
 DELETE FROM Schueler_Code;
 DELETE FROM Code;
 DELETE FROM Dispensation;
@@ -133,4 +135,31 @@ INSERT INTO Schueler_Code (schueler_id, code_id) VALUES
     (8, 1);
 
 SELECT * FROM Schueler_Code;
+
+
+-- Kurstyp
+-- *******
+
+INSERT INTO Kurstyp (kurstyp_id, kurstyp) VALUES
+    (1, 'Rhythmik-Darstellendes Spiel'),
+    (2, 'Theaterspiel'),
+    (3, 'Jugendtheater'),
+    (4, 'Tanzen'),
+    (5, 'Akrobatik'),
+    (6, 'Artistik');
+
+SELECT * FROM Kurstyp;
+
+
+-- Kursort
+-- *******
+
+INSERT INTO Kursort (kursort_id, kursort) VALUES
+    (1, 'Saal A'),
+    (2, 'Saal B'),
+    (3, 'Studio S'),
+    (4, 'Schulhaus Hofacker C');
+
+SELECT * FROM Kursort;
+
 
