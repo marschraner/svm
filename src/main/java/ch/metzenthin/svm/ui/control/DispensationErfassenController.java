@@ -354,13 +354,13 @@ public class DispensationErfassenController extends AbstractController {
         if (checkIsFieldChange(Field.DISPENSATIONSBEGINN, evt)) {
             txtDispensationsbeginn.setText(asString(dispensationErfassenModel.getDispensationsbeginn()));
         }
-        if (checkIsFieldChange(Field.DISPENSATIONSENDE, evt)) {
+        else if (checkIsFieldChange(Field.DISPENSATIONSENDE, evt)) {
             txtDispensationsende.setText(asString(dispensationErfassenModel.getDispensationsende()));
         }
-        if (checkIsFieldChange(Field.VORAUSSICHTLICHE_DAUER, evt)) {
+        else if (checkIsFieldChange(Field.VORAUSSICHTLICHE_DAUER, evt)) {
             txtVoraussichtlicheDauer.setText(dispensationErfassenModel.getVoraussichtlicheDauer());
         }
-        if (checkIsFieldChange(Field.GRUND, evt)) {
+        else if (checkIsFieldChange(Field.GRUND, evt)) {
             txtGrund.setText(dispensationErfassenModel.getGrund());
         }
     }

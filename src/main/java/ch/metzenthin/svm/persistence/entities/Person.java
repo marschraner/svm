@@ -97,7 +97,7 @@ public abstract class Person {
                 && (adresse == null || adresse.isEmpty());
     }
 
-    public void copyFieldValuesFrom(Person personFrom) {
+    public void copyAttributesFrom(Person personFrom) {
         anrede = personFrom.getAnrede();
         vorname = personFrom.getVorname();
         nachname = personFrom.getNachname();

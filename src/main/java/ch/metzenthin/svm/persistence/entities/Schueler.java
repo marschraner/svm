@@ -183,7 +183,7 @@ public class Schueler extends Person {
     }
 
     public void copyFieldValuesFrom(Schueler schuelerFrom) {
-        super.copyFieldValuesFrom(schuelerFrom);
+        super.copyAttributesFrom(schuelerFrom);
         geschlecht = schuelerFrom.getGeschlecht();
         bemerkungen = schuelerFrom.getBemerkungen();
     }

@@ -50,7 +50,7 @@ public class LehrkraftDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Lehrkraft lehrkraft = new Lehrkraft(Anrede.FRAU, "Noémi", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Lehrkraft lehrkraft = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
             lehrkraft.setAdresse(adresse);
 
@@ -73,7 +73,7 @@ public class LehrkraftDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Lehrkraft lehrkraft = new Lehrkraft(Anrede.FRAU, "Noémi", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Lehrkraft lehrkraft = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
             lehrkraft.setAdresse(adresse);
 
@@ -85,7 +85,7 @@ public class LehrkraftDaoTest {
             // Erzwingen, dass von DB gelesen wird
             entityManager.refresh(lehrkraftFound);
 
-            assertEquals("Noémi", lehrkraftFound.getVorname());
+            assertEquals("Noémie", lehrkraftFound.getVorname());
 
         } finally {
             if (tx != null) {
@@ -102,7 +102,7 @@ public class LehrkraftDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémi", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
             lehrkraft1.setAdresse(adresse1);
             Lehrkraft lehrkraft1Saved = lehrkraftDao.save(lehrkraft1);
@@ -148,7 +148,7 @@ public class LehrkraftDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "NoémiTest", "RoosTest", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "NoémieTest", "RoosTest", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
             lehrkraft1.setAdresse(adresse1);
             lehrkraftDao.save(lehrkraft1);

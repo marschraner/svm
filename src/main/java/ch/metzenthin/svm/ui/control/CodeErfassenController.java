@@ -239,7 +239,7 @@ public class CodeErfassenController extends AbstractController {
         if (checkIsFieldChange(Field.KUERZEL, evt)) {
             txtKuerzel.setText(codeErfassenModel.getKuerzel());
         }
-        if (checkIsFieldChange(Field.BESCHREIBUNG, evt)) {
+        else if (checkIsFieldChange(Field.BESCHREIBUNG, evt)) {
             txtBeschreibung.setText(codeErfassenModel.getBeschreibung());
         }
     }

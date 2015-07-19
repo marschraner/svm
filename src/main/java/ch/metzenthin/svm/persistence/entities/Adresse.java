@@ -66,7 +66,7 @@ public class Adresse {
                 && (ort == null || ort.trim().isEmpty());
     }
 
-    public void copyFieldValuesFrom(Adresse adresseFrom) {
+    public void copyAttributesFrom(Adresse adresseFrom) {
         strasse = adresseFrom.getStrasse();
         hausnummer = adresseFrom.getHausnummer();
         plz = adresseFrom.getPlz();

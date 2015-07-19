@@ -14,7 +14,7 @@ import java.util.Calendar;
 @Entity
 @Table(name="Lehrkraft")
 @DiscriminatorValue("Lehrkraft")
-public class Lehrkraft extends Person {
+public class Lehrkraft extends Person implements Comparable<Lehrkraft> {
 
     @Column(name = "ahvnummer", nullable = false)
     private String ahvNummer;
@@ -28,8 +28,8 @@ public class Lehrkraft extends Person {
     public Lehrkraft() {
     }
 
-    public Lehrkraft(Anrede anrede, String vorname, String nachname, Calendar geburstdatum, String festnetz, String natel, String email, String ahvNummer, String vertretungsmoeglichkeiten, Boolean aktiv) {
-        super(anrede, vorname, nachname, geburstdatum, festnetz, natel, email);
+    public Lehrkraft(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String festnetz, String natel, String email, String ahvNummer, String vertretungsmoeglichkeiten, Boolean aktiv) {
+        super(anrede, vorname, nachname, geburtsdatum, festnetz, natel, email);
         this.ahvNummer = ahvNummer;
         this.vertretungsmoeglichkeiten = vertretungsmoeglichkeiten;
         this.aktiv = aktiv;
@@ -39,14 +39,24 @@ public class Lehrkraft extends Person {
         return otherLehrkraft != null
                 && getVorname().equals(otherLehrkraft.getVorname())
                 && getNachname().equals(otherLehrkraft.getNachname())
-                && ahvNummer.equals(otherLehrkraft.getAhvNummer());
+                && getGeburtsdatum().equals(otherLehrkraft.getGeburtsdatum());
     }
 
-    public void copyFieldValuesFrom(Lehrkraft lehrkraftFrom) {
-        super.copyFieldValuesFrom(lehrkraftFrom);
+    public void copyAttributesFrom(Lehrkraft lehrkraftFrom) {
+        super.copyAttributesFrom(lehrkraftFrom);
         ahvNummer = lehrkraftFrom.getAhvNummer();
         vertretungsmoeglichkeiten = lehrkraftFrom.getVertretungsmoeglichkeiten();
         aktiv = lehrkraftFrom.isAktiv();
+    }
+
+    @Override
+    public int compareTo(Lehrkraft otherLehrkraft) {
+        // aufsteigend nach Nachname und Vorname sortieren, d.h. neuste Einträge zuoberst
+        int result =  getNachname().compareTo(otherLehrkraft.getNachname());
+        if (result == 0) {
+            result = getVorname().compareTo(otherLehrkraft.getVorname());
+        }
+        return result;
     }
 
     @Override

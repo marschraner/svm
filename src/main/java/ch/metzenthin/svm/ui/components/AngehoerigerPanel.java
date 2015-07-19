@@ -48,7 +48,7 @@ public class AngehoerigerPanel {
         return createAngehoerigerController(angehoerigerModel);
     }
 
-    private AngehoerigerController  createAngehoerigerController(AngehoerigerModel angehoerigerModel) {
+    private AngehoerigerController createAngehoerigerController(AngehoerigerModel angehoerigerModel) {
         AngehoerigerController angehoerigerController = new AngehoerigerController(angehoerigerModel);
         angehoerigerController.setComboBoxAnrede(comboBoxAnrede);
         angehoerigerController.setTxtNachname(txtNachname);
@@ -102,10 +102,6 @@ public class AngehoerigerPanel {
 
     private void createUIComponents() {
         comboBoxAnrede = new JComboBox<>();
-    }
-
-    public JPanel getMainPanel() {
-        return mainPanel;
     }
 
     public JLabel getLblAnrede() {
@@ -270,10 +266,8 @@ public class AngehoerigerPanel {
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridwidth = 5;
-        gbc.weightx = 0.9;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(0, 0, 10, 0);
         mainPanel.add(comboBoxAnrede, gbc);
         final JLabel label6 = new JLabel();
         label6.setText("Natel");
@@ -490,6 +484,12 @@ public class AngehoerigerPanel {
         gbc.gridy = 16;
         gbc.fill = GridBagConstraints.VERTICAL;
         mainPanel.add(spacer10, gbc);
+        final JPanel spacer11 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        mainPanel.add(spacer11, gbc);
         label1.setLabelFor(txtNachname);
         label2.setLabelFor(txtVorname);
         label4.setLabelFor(txtPlz);

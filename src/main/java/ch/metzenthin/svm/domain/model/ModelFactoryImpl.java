@@ -73,4 +73,9 @@ public class ModelFactoryImpl implements ModelFactory {
         return new LehrkraefteModelImpl(commandInvoker);
     }
 
+    @Override
+    public LehrkraftErfassenModel createLehrkraftErfassenModel() {
+        return new LehrkraftErfassenModelImpl(commandInvoker);
+    }
+
 }

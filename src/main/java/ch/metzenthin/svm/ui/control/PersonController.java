@@ -620,10 +620,6 @@ public abstract class PersonController extends AbstractController {
             LOGGER.trace("Validate field Ort");
             setModelOrt();
         }
-        if (txtGeburtsdatum != null && txtGeburtsdatum.isEnabled()) {
-            LOGGER.trace("Validate field Geburtsdatum");
-            setModelGeburtsdatum();
-        }
         if (txtFestnetz.isEnabled()) {
             LOGGER.trace("Validate field Festnetz");
             setModelFestnetz();
@@ -635,6 +631,10 @@ public abstract class PersonController extends AbstractController {
         if (txtEmail.isEnabled()) {
             LOGGER.trace("Validate field Email");
             setModelEmail();
+        }
+        if (txtGeburtsdatum != null && txtGeburtsdatum.isEnabled()) {
+            LOGGER.trace("Validate field Geburtsdatum");
+            setModelGeburtsdatum();
         }
     }
 

@@ -378,7 +378,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         }
         // Schüler, Adresse und Anmeldung kopieren
         schuelerOrigin.copyFieldValuesFrom(schueler);
-        schuelerOrigin.getAdresse().copyFieldValuesFrom(schueler.getAdresse());
+        schuelerOrigin.getAdresse().copyAttributesFrom(schueler.getAdresse());
         prepareAnmeldungForSave();
         // Mutter von Datenbank übernehmen ...
         if (!setMutterFoundInDatabase(schuelerOrigin)) {
@@ -449,7 +449,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                 if (adresseOrigin != null) {
                     Adresse adresse = angehoerigerNew.getAdresse();
                     if ((adresse != null) && !adresse.isEmpty()) {
-                        adresseOrigin.copyFieldValuesFrom(adresse);
+                        adresseOrigin.copyAttributesFrom(adresse);
                     } else {
                         angehoerigerOrigin.setAdresse(null);
                     }
@@ -472,7 +472,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     private static void setNewAngehoerigerAdresse(Angehoeriger angehoerigerOrigin, Adresse adresseNew) {
         if ((adresseNew != null) && !adresseNew.isEmpty()) {
             Adresse adressePrepared = new Adresse();
-            adressePrepared.copyFieldValuesFrom(adresseNew);
+            adressePrepared.copyAttributesFrom(adresseNew);
             angehoerigerOrigin.setAdresse(adressePrepared);
         }
     }

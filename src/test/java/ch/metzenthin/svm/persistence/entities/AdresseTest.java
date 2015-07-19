@@ -58,7 +58,7 @@ public class AdresseTest {
     public void testCopyFieldValuesFrom() throws Exception {
         Adresse to = new Adresse("Strasse", "Hausnummer", "PLZ", "Ort");
         Adresse from = new Adresse("Neue Strasse", "Neue Hausnummer", "Neue PLZ", "Neuer Ort");
-        to.copyFieldValuesFrom(from);
+        to.copyAttributesFrom(from);
         assertTrue(to.isIdenticalWith(from));
     }
 

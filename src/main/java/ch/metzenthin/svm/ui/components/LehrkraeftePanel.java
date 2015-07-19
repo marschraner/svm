@@ -40,10 +40,6 @@ public class LehrkraeftePanel {
         lehrkraefteController.setBtnAbbrechen(btnAbbrechen);
     }
 
-    public void addNextPanelListener(ActionListener actionListener) {
-        lehrkraefteController.addNextPanelListener(actionListener);
-    }
-
     public void addCloseListener(ActionListener closeListener) {
         lehrkraefteController.addCloseListener(closeListener);
     }

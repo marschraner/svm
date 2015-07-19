@@ -16,4 +16,5 @@ public interface ModelFactory {
     CodeErfassenModel createCodeErfassenModel();
     CodeSchuelerHinzufuegenModel createCodeSchuelerHinzufuegenModel();
     LehrkraefteModel createLehrkraefteModel();
+    LehrkraftErfassenModel createLehrkraftErfassenModel();
 }

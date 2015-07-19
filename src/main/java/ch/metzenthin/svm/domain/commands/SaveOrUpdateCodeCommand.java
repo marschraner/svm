@@ -29,9 +29,7 @@ public class SaveOrUpdateCodeCommand extends GenericDaoCommand {
         if (codeOrigin != null) {
             // Update von codeOrigin mit Werten von code
             codeOrigin.copyAttributesFrom(code);
-            // Nachladen von DB
-            Code codeToBeUpdated = codeDao.findById(codeOrigin.getCodeId());
-            codeDao.save(codeToBeUpdated);
+            codeDao.save(codeOrigin);
         } else {
             Code codeSaved = codeDao.save(code);
             bereitsErfassteCodes.add(codeSaved);

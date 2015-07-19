@@ -433,46 +433,46 @@ public class SchuelerSuchenController extends PersonController {
         if (checkIsFieldChange(Field.GEBURTSDATUM_SUCHPERIODE, evt)) {
             txtGeburtsdatumSuchperiode.setText(schuelerSuchenModel.getGeburtsdatumSuchperiode());
         }
-        if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.SCHUELER) {
+        else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.SCHUELER) {
             radioBtnSchueler.setSelected(true);
         }
-        if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.ELTERN) {
+        else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.ELTERN) {
             radioBtnEltern.setSelected(true);
         }
-        if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
+        else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
             radioBtnRechnungsempfaenger.setSelected(true);
         }
-        if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.ALLE) {
+        else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.ALLE) {
             radioBtnRolleAlle.setSelected(true);
         }
-        if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET) {
+        else if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET) {
             radioBtnAngemeldet.setSelected(true);
         }
-        if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ABGEMELDET) {
+        else if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ABGEMELDET) {
             radioBtnAbgemeldet.setSelected(true);
         }
-        if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ALLE) {
+        else if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ALLE) {
             radioBtnAnmeldestatusAlle.setSelected(true);
         }
-        if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.DISPENSIERT) {
+        else if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.DISPENSIERT) {
             radioBtnDispensiert.setSelected(true);
         }
-        if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.NICHT_DISPENSIERT) {
+        else if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.NICHT_DISPENSIERT) {
             radioBtnNichtDispensiert.setSelected(true);
         }
-        if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.ALLE) {
+        else if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.ALLE) {
             radioBtnDispensationAlle.setSelected(true);
         }
-        if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.WEIBLICH) {
+        else if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.WEIBLICH) {
             radioBtnWeiblich.setSelected(true);
         }
-        if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.MAENNLICH) {
+        else if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.MAENNLICH) {
             radioBtnMaennlich.setSelected(true);
         }
-        if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.ALLE) {
+        else if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.ALLE) {
             radioBtnGeschlechtAlle.setSelected(true);
         }
-        if (checkIsFieldChange(Field.STICHTAG, evt)) {
+        else if (checkIsFieldChange(Field.STICHTAG, evt)) {
             txtStichtag.setText(asString(schuelerSuchenModel.getStichtag()));
         }
     }

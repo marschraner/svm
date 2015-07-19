@@ -116,7 +116,7 @@
                         </constraints>
                         <properties>
                           <labelFor value="af26f"/>
-                          <text value="&amp;Nachname"/>
+                          <text value="Nachname"/>
                         </properties>
                       </component>
                       <component id="af26f" class="javax.swing.JTextField" binding="txtNachname">
@@ -135,7 +135,7 @@
                         </constraints>
                         <properties>
                           <labelFor value="4058b"/>
-                          <text value="&amp;Vorname"/>
+                          <text value="Vorname"/>
                         </properties>
                       </component>
                       <component id="4058b" class="javax.swing.JTextField" binding="txtVorname">
@@ -154,7 +154,7 @@
                         </constraints>
                         <properties>
                           <labelFor value="694ae"/>
-                          <text value="&amp;PLZ/Ort"/>
+                          <text value="PLZ/Ort"/>
                         </properties>
                       </component>
                       <grid id="3a5d6" layout-manager="GridBagLayout">
@@ -198,7 +198,7 @@
                         </constraints>
                         <properties>
                           <labelFor value="28b3b"/>
-                          <text value="&amp;Geburtsdatum"/>
+                          <text value="Geburtsdatum"/>
                         </properties>
                       </component>
                       <component id="28b3b" class="javax.swing.JTextField" binding="txtGeburtsdatumSuchperiode">
@@ -278,7 +278,7 @@
                         </constraints>
                         <properties>
                           <labelFor value="96440"/>
-                          <text value="&amp;Festnetz"/>
+                          <text value="Festnetz"/>
                         </properties>
                       </component>
                       <component id="96440" class="javax.swing.JTextField" binding="txtFestnetz">
@@ -297,7 +297,7 @@
                         </constraints>
                         <properties>
                           <labelFor value="8e2ea"/>
-                          <text value="N&amp;atel"/>
+                          <text value="Natel"/>
                         </properties>
                       </component>
                       <component id="8e2ea" class="javax.swing.JTextField" binding="txtNatel">
@@ -316,7 +316,7 @@
                         </constraints>
                         <properties>
                           <labelFor value="88152"/>
-                          <text value="&amp;Email"/>
+                          <text value="Email"/>
                         </properties>
                       </component>
                       <component id="88152" class="javax.swing.JTextField" binding="txtEmail" default-binding="true">
@@ -350,7 +350,7 @@
                         </constraints>
                         <properties>
                           <labelFor value="153d4"/>
-                          <text value="&amp;Strasse/Nr."/>
+                          <text value="Strasse/Nr."/>
                         </properties>
                       </component>
                       <component id="e2472" class="javax.swing.JLabel" binding="errLblVorname">
@@ -770,7 +770,7 @@
                         </constraints>
                         <properties>
                           <labelFor value="9e43a"/>
-                          <text value="&amp;Lehrkraft"/>
+                          <text value="Lehrkraft"/>
                         </properties>
                       </component>
                       <vspacer id="69165">
@@ -807,7 +807,7 @@
                         </constraints>
                         <properties>
                           <labelFor value="d0f21"/>
-                          <text value="&amp;Wochentag"/>
+                          <text value="Wochentag"/>
                         </properties>
                       </component>
                       <component id="d0f21" class="javax.swing.JComboBox" binding="comboBoxWochentag" custom-create="true">
@@ -848,7 +848,7 @@
                             </constraints>
                             <properties>
                               <labelFor value="1fb4b"/>
-                              <text value="b&amp;is"/>
+                              <text value="bis"/>
                             </properties>
                           </component>
                           <component id="1fb4b" class="javax.swing.JTextField" binding="txtBis">
@@ -876,7 +876,7 @@
                             </constraints>
                             <properties>
                               <labelFor value="bcea6"/>
-                              <text value="v&amp;on"/>
+                              <text value="von"/>
                             </properties>
                           </component>
                         </children>
@@ -951,7 +951,7 @@
                           <gridbag weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <text value="&amp;Codes"/>
+                          <text value="Codes"/>
                         </properties>
                       </component>
                       <hspacer id="ae3e0">
@@ -1017,7 +1017,7 @@
                         </constraints>
                         <properties>
                           <labelFor value="cfc47"/>
-                          <text value="S&amp;tichtag"/>
+                          <text value="Stichtag"/>
                         </properties>
                       </component>
                       <vspacer id="861bd">

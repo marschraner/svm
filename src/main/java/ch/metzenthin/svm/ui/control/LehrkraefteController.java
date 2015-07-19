@@ -1,8 +1,11 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.model.*;
+import ch.metzenthin.svm.domain.commands.DeleteLehrkraftCommand;
+import ch.metzenthin.svm.domain.model.LehrkraefteModel;
+import ch.metzenthin.svm.domain.model.LehrkraefteTableData;
 import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
+import ch.metzenthin.svm.ui.components.LehrkraftErfassenDialog;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -26,12 +29,12 @@ public class LehrkraefteController {
     private JButton btnBearbeiten;
     private JButton btnLoeschen;
     private JButton btnAbbrechen;
-    private ActionListener nextPanelListener;
     private ActionListener closeListener;
 
     public LehrkraefteController(LehrkraefteModel lehrkraefteModel, SvmContext svmContext) {
         this.lehrkraefteModel = lehrkraefteModel;
         this.svmContext = svmContext;
+        svmContext.getSvmModel().reloadLehrkraefteAll();
     }
 
     public void setLehrkraefteTable(JTable lehrkraefteTable) {
@@ -74,10 +77,9 @@ public class LehrkraefteController {
 
     private void onNeu() {
         btnNeu.setFocusPainted(true);
-        //TODO
-//        CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, lehrkraefteModel, 0, false, "Neuer Code");
-//        codeErfassenDialog.pack();
-//        codeErfassenDialog.setVisible(true);
+        LehrkraftErfassenDialog lehrkraftErfassenDialog = new LehrkraftErfassenDialog(svmContext, lehrkraefteModel, 0, false, "Neue Lehrkraft");
+        lehrkraftErfassenDialog.pack();
+        lehrkraftErfassenDialog.setVisible(true);
         lehrkraefteTableModel.fireTableDataChanged();
         btnNeu.setFocusPainted(false);
     }
@@ -99,10 +101,9 @@ public class LehrkraefteController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        //TODO
-//        CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, lehrkraefteModel, lehrkraefteTable.getSelectedRow(), true, "Code bearbeiten");
-//        codeErfassenDialog.pack();
-//        codeErfassenDialog.setVisible(true);
+        LehrkraftErfassenDialog lehrkraftErfassenDialog = new LehrkraftErfassenDialog(svmContext, lehrkraefteModel, lehrkraefteTable.getSelectedRow(), true, "Lehrkraft bearbeiten");
+        lehrkraftErfassenDialog.pack();
+        lehrkraftErfassenDialog.setVisible(true);
         lehrkraefteTableModel.fireTableDataChanged();
         btnBearbeiten.setFocusPainted(false);
     }
@@ -135,16 +136,15 @@ public class LehrkraefteController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            //TODO
-//            DeleteCodeCommand.Result result  = lehrkraefteModel.eintragLoeschenCodesVerwalten(svmContext, lehrkraefteTable.getSelectedRow());
-//            switch (result) {
-//                case CODE_VON_SCHUELER_REFERENZIERT:
-//                    JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens einen Schüler referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
-//                    break;
-//                case LOESCHEN_ERFOLGREICH:
-//                    lehrkraefteTable.addNotify();
-//                    break;
-//            }
+            DeleteLehrkraftCommand.Result result  = lehrkraefteModel.lehrkraftLoeschen(svmContext, lehrkraefteTable.getSelectedRow());
+            switch (result) {
+                case LEHRKRAFT_VON_KURS_REFERENZIERT:
+                    JOptionPane.showMessageDialog(null, "Die Lehrkraft wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    break;
+                case LOESCHEN_ERFOLGREICH:
+                    lehrkraefteTable.addNotify();
+                    break;
+            }
         }
         btnLoeschen.setFocusPainted(false);
     }
@@ -167,10 +167,6 @@ public class LehrkraefteController {
 
     private void onAbbrechen() {
         closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Abbrechen"));
-    }
-
-    public void addNextPanelListener(ActionListener nextPanelListener) {
-        this.nextPanelListener = nextPanelListener;
     }
 
     public void addCloseListener(ActionListener closeListener) {

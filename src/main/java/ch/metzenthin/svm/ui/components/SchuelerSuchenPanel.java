@@ -331,8 +331,6 @@ public class SchuelerSuchenPanel {
         stammdatenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Stammdaten", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(stammdatenPanel.getFont().getName(), Font.BOLD, stammdatenPanel.getFont().getSize()), new Color(-16777216)));
         final JLabel label2 = new JLabel();
         label2.setText("Nachname");
-        label2.setDisplayedMnemonic('N');
-        label2.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -348,8 +346,6 @@ public class SchuelerSuchenPanel {
         stammdatenPanel.add(txtNachname, gbc);
         final JLabel label3 = new JLabel();
         label3.setText("Vorname");
-        label3.setDisplayedMnemonic('V');
-        label3.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
@@ -365,8 +361,6 @@ public class SchuelerSuchenPanel {
         stammdatenPanel.add(txtVorname, gbc);
         final JLabel label4 = new JLabel();
         label4.setText("PLZ/Ort");
-        label4.setDisplayedMnemonic('P');
-        label4.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 7;
@@ -404,8 +398,6 @@ public class SchuelerSuchenPanel {
         panel1.add(txtOrt, gbc);
         final JLabel label5 = new JLabel();
         label5.setText("Geburtsdatum");
-        label5.setDisplayedMnemonic('G');
-        label5.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 15;
@@ -474,8 +466,6 @@ public class SchuelerSuchenPanel {
         stammdatenPanel.add(label6, gbc);
         final JLabel label7 = new JLabel();
         label7.setText("Festnetz");
-        label7.setDisplayedMnemonic('F');
-        label7.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 9;
@@ -491,8 +481,6 @@ public class SchuelerSuchenPanel {
         stammdatenPanel.add(txtFestnetz, gbc);
         final JLabel label8 = new JLabel();
         label8.setText("Natel");
-        label8.setDisplayedMnemonic('A');
-        label8.setDisplayedMnemonicIndex(1);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 11;
@@ -508,8 +496,6 @@ public class SchuelerSuchenPanel {
         stammdatenPanel.add(txtNatel, gbc);
         final JLabel label9 = new JLabel();
         label9.setText("Email");
-        label9.setDisplayedMnemonic('E');
-        label9.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 13;
@@ -539,8 +525,6 @@ public class SchuelerSuchenPanel {
         stammdatenPanel.add(txtStrasseHausnummer, gbc);
         final JLabel label10 = new JLabel();
         label10.setText("Strasse/Nr.");
-        label10.setDisplayedMnemonic('S');
-        label10.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 5;
@@ -913,8 +897,6 @@ public class SchuelerSuchenPanel {
         kursPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Kurs", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(kursPanel.getFont().getName(), Font.BOLD, kursPanel.getFont().getSize()), new Color(-16777216)));
         final JLabel label14 = new JLabel();
         label14.setText("Lehrkraft");
-        label14.setDisplayedMnemonic('L');
-        label14.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -949,8 +931,6 @@ public class SchuelerSuchenPanel {
         kursPanel.add(spacer33, gbc);
         final JLabel label15 = new JLabel();
         label15.setText("Wochentag");
-        label15.setDisplayedMnemonic('W');
-        label15.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
@@ -986,8 +966,6 @@ public class SchuelerSuchenPanel {
         kursPanel.add(panel7, gbc);
         final JLabel label17 = new JLabel();
         label17.setText("bis");
-        label17.setDisplayedMnemonic('I');
-        label17.setDisplayedMnemonicIndex(1);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 0;
@@ -1013,8 +991,6 @@ public class SchuelerSuchenPanel {
         panel7.add(txtVon, gbc);
         final JLabel label18 = new JLabel();
         label18.setText("von");
-        label18.setDisplayedMnemonic('O');
-        label18.setDisplayedMnemonicIndex(1);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -1078,8 +1054,6 @@ public class SchuelerSuchenPanel {
         codesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Codes", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(codesPanel.getFont().getName(), Font.BOLD, codesPanel.getFont().getSize()), new Color(-16777216)));
         final JLabel label19 = new JLabel();
         label19.setText("Codes");
-        label19.setDisplayedMnemonic('C');
-        label19.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -1140,8 +1114,6 @@ public class SchuelerSuchenPanel {
         stichtagPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Stichtag für Suche", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(stichtagPanel.getFont().getName(), Font.BOLD, stichtagPanel.getFont().getSize()), new Color(-16777216)));
         final JLabel label20 = new JLabel();
         label20.setText("Stichtag");
-        label20.setDisplayedMnemonic('T');
-        label20.setDisplayedMnemonicIndex(1);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;

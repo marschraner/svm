@@ -58,7 +58,7 @@ public class Angehoeriger extends Person {
     }
 
     public void copyFieldValuesFrom(Angehoeriger angehoerigerFrom) {
-        super.copyFieldValuesFrom(angehoerigerFrom);
+        super.copyAttributesFrom(angehoerigerFrom);
     }
 
     @Override

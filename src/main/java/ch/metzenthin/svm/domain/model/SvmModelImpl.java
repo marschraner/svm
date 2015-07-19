@@ -19,21 +19,19 @@ public class SvmModelImpl implements SvmModel {
 
     public SvmModelImpl(CommandInvoker commandInvoker) {
         this.commandInvoker = commandInvoker;
-        initSvmModelImpl();
+        reloadCodesAll();
+        reloadLehrkraefteAll();
     }
 
-    private void initSvmModelImpl() {
-        initCodesAll();
-        initLehrkraefteAll();
-    }
-
-    private void initCodesAll() {
+    @Override
+    public void reloadCodesAll() {
         FindAllCodesCommand findAllCodesCommand = new FindAllCodesCommand();
         commandInvoker.executeCommand(findAllCodesCommand);
         codesAll = findAllCodesCommand.getCodesAll();
     }
 
-    private void initLehrkraefteAll() {
+    @Override
+    public void reloadLehrkraefteAll() {
         FindAllLehrkraefteCommand findAllLehrkraefteCommand = new FindAllLehrkraefteCommand();
         commandInvoker.executeCommand(findAllLehrkraefteCommand);
         lehrkraefteAll = findAllLehrkraefteCommand.getLehrkraefteAll();
