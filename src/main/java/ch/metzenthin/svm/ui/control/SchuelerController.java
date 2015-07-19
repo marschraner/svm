@@ -8,6 +8,7 @@ import ch.metzenthin.svm.domain.model.SchuelerModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -87,13 +88,15 @@ public class SchuelerController extends PersonController {
 
     public void setTextAreaBemerkungen(JTextArea textAreaBemerkungen) {
         this.textAreaBemerkungen = textAreaBemerkungen;
-        // todo DocumentListener und TabAction ändern (http://stackoverflow.com/questions/5042429/how-can-i-modify-the-behavior-of-the-tab-key-in-a-jtextarea)
         textAreaBemerkungen.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
                 onBemerkungenEvent();
             }
         });
+        textAreaBemerkungen.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+        textAreaBemerkungen.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+
     }
 
     private void onGeschlechtSelected() {
