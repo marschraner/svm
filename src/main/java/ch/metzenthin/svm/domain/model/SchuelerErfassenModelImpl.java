@@ -187,8 +187,9 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             if (isBooleanNewValuePropertyChecked(newValue)) {
                 uncheckRechnungsempfaenger(vaterModel, drittempfaengerModel);
                 drittempfaengerModel.disableFields();
-                drittempfaengerModel.makeErrorLabelsInvisible(new HashSet<>(Collections.singletonList(Field.ALLE)));
+                drittempfaengerModel.makeErrorLabelsInvisible(getFieldAlleInSet());
             } else {
+                mutterModel.makeErrorLabelsInvisible(getFieldAlleInSet());
                 if (!vaterModel.isRechnungsempfaenger()) {
                     drittempfaengerModel.setIsRechnungsempfaenger(true);
                     drittempfaengerModel.enableFields();
@@ -214,8 +215,9 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             if (isBooleanNewValuePropertyChecked(newValue)) {
                 uncheckRechnungsempfaenger(mutterModel, drittempfaengerModel);
                 drittempfaengerModel.disableFields();
-                drittempfaengerModel.makeErrorLabelsInvisible(new HashSet<>(Collections.singletonList(Field.ALLE)));
+                drittempfaengerModel.makeErrorLabelsInvisible(getFieldAlleInSet());
             } else {
+                vaterModel.makeErrorLabelsInvisible(getFieldAlleInSet());
                 if (!mutterModel.isRechnungsempfaenger()) {
                     drittempfaengerModel.setIsRechnungsempfaenger(true);
                     drittempfaengerModel.enableFields();
@@ -291,6 +293,10 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         adresseFields.add(Field.PLZ);
         adresseFields.add(Field.ORT);
         return adresseFields;
+    }
+
+    private Set<Field> getFieldAlleInSet() {
+        return new HashSet<>(Collections.singletonList(Field.ALLE));
     }
 
     private void replaceByStrasseHausnummerSchueler(AngehoerigerModel angehoerigerModel) {
