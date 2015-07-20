@@ -49,13 +49,13 @@ SELECT * FROM Adresse;
 INSERT INTO Person (person_id, discriminator, anrede, vorname, nachname, geburtsdatum, festnetz, natel, email, adresse_id) VALUES 
     (1, 'Angehoeriger', 'FRAU', 'Käthi', 'Schraner', NULL, '044 720 85 51', NULL, 'hschraner@bluewin.ch', 1),
     (2, 'Angehoeriger', 'HERR', 'Martin', 'Schraner', NULL, '044 364 36 30', '079 273 77 20', 'marschraner@gmail.com', 2),
-    (3, 'Angehoeriger', 'FRAU', 'Sibyll', 'Metzenthin', NULL, '044 271 53 69', NULL, 'billa.metz@bluewin.ch', 3),
-    (4, 'Schueler', 'KEINE', 'Jonas', 'Metzenthin', '2014-06-24', '044 271 53 69', NULL, NULL, 4),
+    (3, 'Angehoeriger', 'FRAU', 'Sibyll', 'Metzenthin', NULL, '044 364 36 30', NULL, 'billa.metz@bluewin.ch', 3),
+    (4, 'Schueler', 'KEINE', 'Jonas', 'Metzenthin', '2014-06-24', '044 364 36 30', NULL, NULL, 4),
     (5, 'Angehoeriger', 'HERR', 'Kurt', 'Juchli', NULL, NULL, NULL, 'kurt.juchli@zuerich.ch', NULL),
     (6, 'Angehoeriger', 'FRAU', 'Eva', 'Juchli', NULL, NULL, '044 271 53 69', 'juchlischraner@gmail.com', 5),
     (7, 'Schueler', 'KEINE', 'Lilly', 'Juchli', '2008-01-13', '044 271 53 69', NULL, NULL, 6),
     (8, 'Schueler', 'KEINE', 'Anna', 'Juchli', '2010-03-05', '044 271 53 69', NULL, NULL, 7),
-    (9, 'Lehrkraft', 'FRAU', 'Sibyll', 'Metzenthin', '1972-05-17', '044 271 53 69', NULL, 'billa.metz@bluewin.ch', 8),
+    (9, 'Lehrkraft', 'FRAU', 'Sibyll', 'Metzenthin', '1972-05-17', '044 364 36 30', NULL, 'billa.metz@bluewin.ch', 8),
     (10, 'Lehrkraft', 'FRAU', 'Sibylle', 'Schweizer', '1969-05-19', '043 322 00 08', '079 629 72 36', 'sibylle.schweizer@gmx.ch', 9),
     (11, 'Lehrkraft', 'FRAU', 'Franziska', 'Lüscher', '1962-04-25', '032 631 07 76', '076 378 07 76', 'ziska@bluewin.ch', 10);
 
@@ -140,7 +140,7 @@ SELECT * FROM Schueler_Code;
 -- Kurstyp
 -- *******
 
-INSERT INTO Kurstyp (kurstyp_id, kurstyp) VALUES
+INSERT INTO Kurstyp (kurstyp_id, bezeichnung) VALUES
     (1, 'Rhythmik-Darstellendes Spiel'),
     (2, 'Theaterspiel'),
     (3, 'Jugendtheater'),
@@ -154,7 +154,7 @@ SELECT * FROM Kurstyp;
 -- Kursort
 -- *******
 
-INSERT INTO Kursort (kursort_id, kursort) VALUES
+INSERT INTO Kursort (kursort_id, bezeichnung) VALUES
     (1, 'Saal A'),
     (2, 'Saal B'),
     (3, 'Studio S'),

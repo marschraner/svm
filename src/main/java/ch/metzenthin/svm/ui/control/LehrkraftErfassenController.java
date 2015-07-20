@@ -97,22 +97,22 @@ public class LehrkraftErfassenController extends PersonController {
         this.txtAhvNummer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onAhvNummerEvent();
+                onAhvNummerEvent(true);
             }
         });
         this.txtAhvNummer.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                onAhvNummerEvent();
+                onAhvNummerEvent(false);
             }
         });
     }
 
-    private void onAhvNummerEvent() {
+    private void onAhvNummerEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("LehrkraftErfassenController Event AhvNummer");
         boolean equalFieldAndModelValue = equalsNullSafe(txtAhvNummer.getText(), lehrkraftErfassenModel.getAhvNummer());
         try {
-            setModelAhvNummer();
+            setModelAhvNummer(showRequiredErrMsg);
         } catch (SvmValidationException e) {
             return;
         }
@@ -123,13 +123,13 @@ public class LehrkraftErfassenController extends PersonController {
         }
     }
 
-    private void setModelAhvNummer() throws SvmValidationException {
+    private void setModelAhvNummer(boolean showRequiredErrMsg) throws SvmValidationException {
         makeErrorLabelInvisible(Field.AHV_NUMMER);
         try {
             lehrkraftErfassenModel.setAhvNummer(txtAhvNummer.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("LehrkraftErfassenController setModelAhvNummer RequiredException=" + e.getMessage());
-            if (isModelValidationMode()) {
+            if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtAhvNummer.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             } else {
@@ -148,22 +148,22 @@ public class LehrkraftErfassenController extends PersonController {
         this.txtVertretungsmoeglichkeiten.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onVertretungsmoeglichkeitenEvent();
+                onVertretungsmoeglichkeitenEvent(true);
             }
         });
         this.txtVertretungsmoeglichkeiten.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                onVertretungsmoeglichkeitenEvent();
+                onVertretungsmoeglichkeitenEvent(false);
             }
         });
     }
 
-    private void onVertretungsmoeglichkeitenEvent() {
+    private void onVertretungsmoeglichkeitenEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("LehrkraftErfassenController Event Vertretungsmoeglichkeiten");
         boolean equalFieldAndModelValue = equalsNullSafe(txtVertretungsmoeglichkeiten.getText(), lehrkraftErfassenModel.getVertretungsmoeglichkeiten());
         try {
-            setModelVertretungsmoeglichkeiten();
+            setModelVertretungsmoeglichkeiten(showRequiredErrMsg);
         } catch (SvmValidationException e) {
             return;
         }
@@ -174,13 +174,13 @@ public class LehrkraftErfassenController extends PersonController {
         }
     }
 
-    private void setModelVertretungsmoeglichkeiten() throws SvmValidationException {
+    private void setModelVertretungsmoeglichkeiten(boolean showRequiredErrMsg) throws SvmValidationException {
         makeErrorLabelInvisible(Field.VERTRETUNGSMOEGLICHKEITEN);
         try {
             lehrkraftErfassenModel.setVertretungsmoeglichkeiten(txtVertretungsmoeglichkeiten.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("LehrkraftErfassenController setModelVertretungsmoeglichkeiten RequiredException=" + e.getMessage());
-            if (isModelValidationMode()) {
+            if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtVertretungsmoeglichkeiten.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             } else {
@@ -293,11 +293,11 @@ public class LehrkraftErfassenController extends PersonController {
         super.validateFields();
         if (txtAhvNummer.isEnabled()) {
             LOGGER.trace("Validate field AhvNummer");
-            setModelAhvNummer();
+            setModelAhvNummer(true);
         }
         if (txtVertretungsmoeglichkeiten.isEnabled()) {
             LOGGER.trace("Validate field Vertretungsmoeglichkeiten");
-            setModelVertretungsmoeglichkeiten();
+            setModelVertretungsmoeglichkeiten(true);
         }
     }
 

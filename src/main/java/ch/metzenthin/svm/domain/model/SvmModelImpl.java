@@ -1,9 +1,9 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.FindAllCodesCommand;
-import ch.metzenthin.svm.domain.commands.FindAllLehrkraefteCommand;
+import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.Kursort;
+import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 
 import java.util.List;
@@ -15,6 +15,8 @@ public class SvmModelImpl implements SvmModel {
 
     private List<Code> codesAll;
     private List<Lehrkraft> lehrkraefteAll;
+    private List<Kursort> kursorteAll;
+    private List<Kurstyp> kurstypenAll;
     private CommandInvoker commandInvoker;
 
     public SvmModelImpl(CommandInvoker commandInvoker) {
@@ -38,6 +40,20 @@ public class SvmModelImpl implements SvmModel {
     }
 
     @Override
+    public void reloadKursorteAll() {
+        FindAllKursorteCommand findAllKursorteCommand = new FindAllKursorteCommand();
+        commandInvoker.executeCommand(findAllKursorteCommand);
+        kursorteAll = findAllKursorteCommand.getKursorteAll();
+    }
+
+    @Override
+    public void reloadKurstypenAll() {
+        FindAllKurstypenCommand findAllKurstypenCommand = new FindAllKurstypenCommand();
+        commandInvoker.executeCommand(findAllKurstypenCommand);
+        kurstypenAll = findAllKurstypenCommand.getKurstypenAll();
+    }
+
+    @Override
     public List<Code> getCodesAll() {
         return codesAll;
     }
@@ -47,4 +63,13 @@ public class SvmModelImpl implements SvmModel {
         return lehrkraefteAll;
     }
 
+    @Override
+    public List<Kursort> getKursorteAll() {
+        return kursorteAll;
+    }
+
+    @Override
+    public List<Kurstyp> getKurstypenAll() {
+        return kurstypenAll;
+    }
 }

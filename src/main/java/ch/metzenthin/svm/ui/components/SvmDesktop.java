@@ -63,6 +63,10 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuLehrkraefte.setMnemonic(KeyEvent.VK_L);
         menuBar.add(menuLehrkraefte);
 
+        JMenu menuKurse = new JMenu("Kurse");
+        menuKurse.setMnemonic(KeyEvent.VK_K);
+        menuBar.add(menuKurse);
+
         // Set up the first menu item.
         JMenuItem menuItem = new JMenuItem("Neuen Schüler erfassen");
         menuItem.setMnemonic(KeyEvent.VK_N);
@@ -98,6 +102,20 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.setActionCommand("lehrkraefteVerwalten");
         menuItem.addActionListener(this);
         menuLehrkraefte.add(menuItem);
+
+        menuItem = new JMenuItem("Kurstypen verwalten");
+        menuItem.setMnemonic(KeyEvent.VK_T);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("kurstypenVerwalten");
+        menuItem.addActionListener(this);
+        menuKurse.add(menuItem);
+
+        menuItem = new JMenuItem("Kursorte verwalten");
+        menuItem.setMnemonic(KeyEvent.VK_O);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("kursorteVerwalten");
+        menuItem.addActionListener(this);
+        menuKurse.add(menuItem);
 
         // Set up the second menu item.
         menuItem = new JMenuItem("Beenden");
@@ -171,6 +189,26 @@ public class SvmDesktop extends JFrame implements ActionListener {
                 }
             });
             setAndShowActivePanel(lehrkraeftePanel.$$$getRootComponent$$$(), "Lehrkräfte verwalten");
+
+        } else if ("kurstypenVerwalten".equals(e.getActionCommand())) {
+            KurstypenPanel kurstypenPanel = new KurstypenPanel(svmContext);
+            kurstypenPanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFrameAbbrechen();
+                }
+            });
+            setAndShowActivePanel(kurstypenPanel.$$$getRootComponent$$$(), "Kurstypen verwalten");
+
+        } else if ("kursorteVerwalten".equals(e.getActionCommand())) {
+            KursortePanel kursortePanel = new KursortePanel(svmContext);
+            kursortePanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFrameAbbrechen();
+                }
+            });
+            setAndShowActivePanel(kursortePanel.$$$getRootComponent$$$(), "Kursorte verwalten");
 
         } else { // beenden
             quit();

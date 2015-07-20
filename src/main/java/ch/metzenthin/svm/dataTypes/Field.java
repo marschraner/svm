@@ -59,6 +59,7 @@ public enum Field {
     AHV_NUMMER("AHV-Nr."),
     VERTRETUNGSMOEGLICHKEITEN("Vertretungsmöglichkeiten"),
     AKTIV("aktiv"),
+    BEZEICHNUNG("Bezeichnung"),
     BULK_UPDATE("Bulk Update");
 
     private String name;

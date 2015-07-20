@@ -79,22 +79,22 @@ public class CodeErfassenController extends AbstractController {
         this.txtKuerzel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onKuerzelEvent();
+                onKuerzelEvent(true);
             }
         });
         this.txtKuerzel.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                onKuerzelEvent();
+                onKuerzelEvent(false);
             }
         });
     }
 
-    private void onKuerzelEvent() {
+    private void onKuerzelEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("CodeErfassenController Event Kuerzel");
         boolean equalFieldAndModelValue = equalsNullSafe(txtKuerzel.getText(), codeErfassenModel.getKuerzel());
         try {
-            setModelKuerzel();
+            setModelKuerzel(showRequiredErrMsg);
         } catch (SvmValidationException e) {
             return;
         }
@@ -105,13 +105,13 @@ public class CodeErfassenController extends AbstractController {
         }
     }
 
-    private void setModelKuerzel() throws SvmValidationException {
+    private void setModelKuerzel(boolean showRequiredErrMsg) throws SvmValidationException {
         makeErrorLabelInvisible(Field.KUERZEL);
         try {
             codeErfassenModel.setKuerzel(txtKuerzel.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("CodeErfassenController setModelKuerzel RequiredException=" + e.getMessage());
-            if (isModelValidationMode()) {
+            if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtKuerzel.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             } else {
@@ -130,22 +130,22 @@ public class CodeErfassenController extends AbstractController {
         this.txtBeschreibung.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onBeschreibungEvent();
+                onBeschreibungEvent(true);
             }
         });
         this.txtBeschreibung.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                onBeschreibungEvent();
+                onBeschreibungEvent(false);
             }
         });
     }
 
-    private void onBeschreibungEvent() {
+    private void onBeschreibungEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("CodeErfassenController Event Beschreibung");
         boolean equalFieldAndModelValue = equalsNullSafe(txtBeschreibung.getText(), codeErfassenModel.getBeschreibung());
         try {
-            setModelBeschreibung();
+            setModelBeschreibung(showRequiredErrMsg);
         } catch (SvmValidationException e) {
             return;
         }
@@ -156,13 +156,13 @@ public class CodeErfassenController extends AbstractController {
         }
     }
 
-    private void setModelBeschreibung() throws SvmValidationException {
+    private void setModelBeschreibung(boolean showRequiredErrMsg) throws SvmValidationException {
         makeErrorLabelInvisible(Field.BESCHREIBUNG);
         try {
             codeErfassenModel.setBeschreibung(txtBeschreibung.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("CodeErfassenController setModelBeschreibung RequiredException=" + e.getMessage());
-            if (isModelValidationMode()) {
+            if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBeschreibung.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             } else {
@@ -248,11 +248,11 @@ public class CodeErfassenController extends AbstractController {
     void validateFields() throws SvmValidationException {
         if (txtKuerzel.isEnabled()) {
             LOGGER.trace("Validate field Kuerzel");
-            setModelKuerzel();
+            setModelKuerzel(true);
         }
         if (txtBeschreibung.isEnabled()) {
             LOGGER.trace("Validate field Beschreibung");
-            setModelBeschreibung();
+            setModelBeschreibung(true);
         }
     }
 

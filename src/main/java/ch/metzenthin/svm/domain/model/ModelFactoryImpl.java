@@ -78,4 +78,24 @@ public class ModelFactoryImpl implements ModelFactory {
         return new LehrkraftErfassenModelImpl(commandInvoker);
     }
 
+    @Override
+    public KursorteModel createKursorteModel() {
+        return new KursorteModelImpl(commandInvoker);
+    }
+
+    @Override
+    public KursortErfassenModel createKursortErfassenModel() {
+        return new KursortErfassenModelImpl(commandInvoker);
+    }
+
+    @Override
+    public KurstypenModel createKurstypenModel() {
+        return new KurstypenModelImpl(commandInvoker);
+    }
+
+    @Override
+    public KurstypErfassenModel createKurstypErfassenModel() {
+        return new KurstypErfassenModelImpl(commandInvoker);
+    }
+
 }

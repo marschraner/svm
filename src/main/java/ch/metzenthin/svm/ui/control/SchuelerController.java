@@ -59,13 +59,13 @@ public class SchuelerController extends PersonController {
         this.txtAnmeldedatum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onAnmeldedatumEvent();
+                onAnmeldedatumEvent(true);
             }
         });
         this.txtAnmeldedatum.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                onAnmeldedatumEvent();
+                onAnmeldedatumEvent(false);
             }
         });
     }
@@ -108,11 +108,11 @@ public class SchuelerController extends PersonController {
         schuelerModel.setGeschlecht((Geschlecht) comboBoxGeschlecht.getSelectedItem());
     }
 
-    private void onAnmeldedatumEvent() {
+    private void onAnmeldedatumEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("SchuelerController Event Anmeldedatum");
         boolean equalFieldAndModelValue = equalsNullSafe(txtAnmeldedatum.getText(), schuelerModel.getAnmeldedatum());
         try {
-            setModelAnmeldedatum();
+            setModelAnmeldedatum(showRequiredErrMsg);
         } catch (SvmValidationException e) {
             return;
         }
@@ -123,13 +123,13 @@ public class SchuelerController extends PersonController {
         }
     }
 
-    private void setModelAnmeldedatum() throws SvmValidationException {
+    private void setModelAnmeldedatum(boolean showRequiredErrMsg) throws SvmValidationException {
         makeErrorLabelInvisible(Field.ANMELDEDATUM);
         try {
             schuelerModel.setAnmeldedatum(txtAnmeldedatum.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("SchuelerController setModelAnmeldedatum RequiredException=" + e.getMessage());
-            if (isModelValidationMode()) {
+            if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtAnmeldedatum.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
             } else {
@@ -232,7 +232,7 @@ public class SchuelerController extends PersonController {
         LOGGER.trace("Validate field Geschlecht");
         setModelGeschlecht();
         LOGGER.trace("Validate field Anmeldedatum");
-        setModelAnmeldedatum();
+        setModelAnmeldedatum(true);
         LOGGER.trace("Validate field Abmeldedatum");
         setModelAbmeldedatum();
         LOGGER.trace("Validate field Bemerkungen");
