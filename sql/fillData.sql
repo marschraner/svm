@@ -12,6 +12,7 @@ USE svm;
 -- Delete
 -- ******
 
+DELETE FROM Semester;
 DELETE FROM Kursort;
 DELETE FROM Kurstyp;
 DELETE FROM Schueler_Code;
@@ -161,5 +162,17 @@ INSERT INTO Kursort (kursort_id, bezeichnung) VALUES
     (4, 'Schulhaus Hofacker C');
 
 SELECT * FROM Kursort;
+
+
+-- Semester
+-- ********
+
+INSERT INTO Semester (semester_id, schuljahr, semesterbezeichnung, semsterbeginn, semesterende, anzahl_schulwochen) VALUES
+    (1, '2014/2015', 'ERSTES_SEMESTER', '2014-08-18', '2015-02-07', 22),
+    (2, '2014/2015', 'ZWEITES_SEMESTER', '2015-02-23', '2015-07-11', 22),
+    (3, '2015/2016', 'ERSTES_SEMESTER', '2015-08-17', '2016-02-06', 22),
+    (4, '2015/2016', 'ZWEITES_SEMESTER', '2016-02-22', '2016-07-09', 22);
+
+SELECT * FROM Semester;
 
 

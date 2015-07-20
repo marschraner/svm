@@ -773,5 +773,15 @@
       <foreign-key name="Schueler_Code_ibfk_1" columns="schueler_id" ref-table="Schueler" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="Schueler_Code_ibfk_2" columns="code_id" ref-table="Code" ref-schema="" ref-catalog="svm" ref-columns="code_id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
+    <table name="Semester" schema="" catalog="svm" type="TABLE">
+      <column name="semester_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="schuljahr" sqlType="VARCHAR" precision="9" scale="0" nullable="false" jdbcType="12"/>
+      <column name="semesterbezeichnung" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
+      <column name="semsterbeginn" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="semesterende" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="anzahl_schulwochen" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="semester_id"/>
+    </table>
   </data-source>
 </component>

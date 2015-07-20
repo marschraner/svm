@@ -23,6 +23,7 @@ SET default_storage_engine=InnoDB;
 -- Alte Tabellen löschen
 -- *********************
 
+DROP TABLE IF EXISTS Semester;
 DROP TABLE IF EXISTS Kursort;
 DROP TABLE IF EXISTS Kurstyp;
 DROP TABLE IF EXISTS Schueler_Code;
@@ -200,3 +201,19 @@ CREATE TABLE IF NOT EXISTS Kursort (
     PRIMARY KEY (kursort_id));
 
 DESCRIBE Kursort;
+
+
+-- Semester
+-- ********
+
+CREATE TABLE IF NOT EXISTS Semester (
+    semester_id                INT           NOT NULL AUTO_INCREMENT,
+    schuljahr                  VARCHAR(9)    NOT NULL,
+    semesterbezeichnung        VARCHAR(20)   NOT NULL,
+    semsterbeginn              DATE          NOT NULL,
+    semesterende               DATE          NOT NULL,
+    anzahl_schulwochen         INT           NOT NULL,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (semester_id));
+
+DESCRIBE Semester;
