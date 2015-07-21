@@ -3,6 +3,8 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -12,6 +14,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
 
     enum Result {
         VORNAME_NACHNAME_FEHLEN,
+        EINTRAG_WIRD_MUTIERT,                   // Angehöriger (Origin) wird mutiert (nur bei Bearbeiten möglich)
         NICHT_IN_DATENBANK,                     // Angehöriger wird neu erfasst (noch nicht in Datenbank)
         EIN_EINTRAG_PASST,                      // In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben passt: ...
                                                 // - Diesen Eintrag übernehmen (-> Angehoerigen ersetzen)
@@ -30,6 +33,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
 
     // input
     private Angehoeriger angehoeriger;
+    private final Angehoeriger angehoerigerToBeExcluded;
 
     // output
     private Result result;
@@ -37,7 +41,12 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
     private Angehoeriger angehoerigerFound;
 
     public CheckAngehoerigerBereitsInDatenbankCommand(Angehoeriger angehoeriger) {
+        this(angehoeriger, null);
+    }
+
+    public CheckAngehoerigerBereitsInDatenbankCommand(Angehoeriger angehoeriger, Angehoeriger angehoerigerToBeExcluded) {
         this.angehoeriger = angehoeriger;
+        this.angehoerigerToBeExcluded = angehoerigerToBeExcluded;
     }
 
     @Override
@@ -52,7 +61,8 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
         }
 
         // Suche mit allen gesetzten Attributen
-        angehoerigerFoundList = angehoerigerDao.findAngehoerige(angehoeriger);
+        angehoerigerFoundList = new ArrayList<>(angehoerigerDao.findAngehoerige(angehoeriger));
+        removeAngehoerigerToBeExcluded(angehoerigerFoundList);
         if (angehoerigerFoundList.size() == 1) {
             angehoerigerFound = angehoerigerFoundList.get(0);
             result = Result.EIN_EINTRAG_PASST;
@@ -67,7 +77,8 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
         // Suche nur mit Vorname und Nachname
         Angehoeriger angehoerigerNurVornameNachname = new Angehoeriger(null, angehoeriger.getVorname(), angehoeriger.getNachname(), null, null, null);
 
-        angehoerigerFoundList = angehoerigerDao.findAngehoerige(angehoerigerNurVornameNachname);
+        angehoerigerFoundList = new ArrayList<>(angehoerigerDao.findAngehoerige(angehoerigerNurVornameNachname));
+        boolean angehoerigerToBeExcludedFound = removeAngehoerigerToBeExcluded(angehoerigerFoundList);
         if (angehoerigerFoundList.size() == 1) {
             angehoerigerFound = angehoerigerFoundList.get(0);
             result = Result.EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE;
@@ -80,7 +91,23 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
         }
 
         // Nicht gefunden
-        result = Result.NICHT_IN_DATENBANK;
+        result = angehoerigerToBeExcludedFound ? Result.EINTRAG_WIRD_MUTIERT : Result.NICHT_IN_DATENBANK;
+    }
+
+    private boolean removeAngehoerigerToBeExcluded(List<Angehoeriger> angehoerigeFound) {
+        if (angehoerigerToBeExcluded == null) {
+            return false;
+        }
+        boolean excluded = false;
+        Iterator<Angehoeriger> iterator = angehoerigeFound.iterator();
+        while (iterator.hasNext()) {
+            Angehoeriger angehoeriger = iterator.next();
+            if (angehoerigerToBeExcluded.getPersonId().equals(angehoeriger.getPersonId())) {
+                iterator.remove();
+                excluded = true;
+            }
+        }
+        return excluded;
     }
 
     public Angehoeriger getAngehoerigerFound() {

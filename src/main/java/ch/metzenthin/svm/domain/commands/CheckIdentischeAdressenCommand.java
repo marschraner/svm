@@ -11,6 +11,7 @@ public class CheckIdentischeAdressenCommand implements Command {
 
     // input + output
     private Schueler schueler;
+    private final boolean isRechnungsempfaengerDrittperson;
     private Angehoeriger mutter;
     private Angehoeriger vater;
     private Angehoeriger rechnungsempfaenger;
@@ -20,11 +21,16 @@ public class CheckIdentischeAdressenCommand implements Command {
     private String abweichendeAdressen = "";
 
     public CheckIdentischeAdressenCommand(Schueler schueler) {
-        this(schueler, null, null, null);
+        this(schueler, null, null, null, false);
     }
 
-    public CheckIdentischeAdressenCommand(Schueler schueler, Angehoeriger mutterFoundInDatabase, Angehoeriger vaterFoundInDatabase, Angehoeriger rechnungsempfaengerFoundInDatabase) {
+    public CheckIdentischeAdressenCommand(Schueler schueler, boolean isRechnungsempfaengerDrittperson) {
+        this(schueler, null, null, null, isRechnungsempfaengerDrittperson);
+    }
+
+    public CheckIdentischeAdressenCommand(Schueler schueler, Angehoeriger mutterFoundInDatabase, Angehoeriger vaterFoundInDatabase, Angehoeriger rechnungsempfaengerFoundInDatabase, boolean isRechnungsempfaengerDrittperson) {
         this.schueler = schueler;
+        this.isRechnungsempfaengerDrittperson = isRechnungsempfaengerDrittperson;
         mutter = (mutterFoundInDatabase != null) ? mutterFoundInDatabase : schueler.getMutter();
         vater = (vaterFoundInDatabase != null) ? vaterFoundInDatabase : schueler.getVater();
         rechnungsempfaenger = (rechnungsempfaengerFoundInDatabase != null) ? rechnungsempfaengerFoundInDatabase : schueler.getRechnungsempfaenger();
@@ -34,7 +40,7 @@ public class CheckIdentischeAdressenCommand implements Command {
     public void execute() {
         
         Angehoeriger rechnungsempfaengerDrittperson = null;
-        if (!((mutter != null && mutter.isIdenticalWith(rechnungsempfaenger)) || (vater != null && vater.isIdenticalWith(rechnungsempfaenger)))) {
+        if (isRechnungsempfaengerDrittperson) {
             rechnungsempfaengerDrittperson = rechnungsempfaenger;
         }
 

@@ -42,7 +42,7 @@ public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
         schueler1.setVater(angehoeriger2);
         schueler1.setRechnungsempfaenger(angehoeriger3);
         schueler1.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
-        CheckGeschwisterSchuelerRechnungempfaengerCommand checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler1);
+        CheckGeschwisterSchuelerRechnungempfaengerCommand checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler1, true);
         commandInvoker.executeCommand(checkGeschwisterSchuelerRechnungempfaengerCommand);
         List<Schueler> geschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAngemeldeteGeschwisterList();
         List<Schueler> andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList();
@@ -73,7 +73,7 @@ public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
         schueler3.setVater(angehoeriger5);
         schueler3.setRechnungsempfaenger(angehoeriger3);
         schueler3.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
-        checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler3);
+        checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler3, true);
         commandInvoker.executeCommand(checkGeschwisterSchuelerRechnungempfaengerCommand);
         geschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAngemeldeteGeschwisterList();
         andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList();
@@ -105,7 +105,7 @@ public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
         schueler5.setVater(angehoeriger2);
         schueler5.setRechnungsempfaenger(angehoeriger4);
         schueler5.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
-        checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler5);
+        checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler5, true);
         commandInvoker.executeCommand(checkGeschwisterSchuelerRechnungempfaengerCommand);
         geschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAngemeldeteGeschwisterList();
         andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList();
