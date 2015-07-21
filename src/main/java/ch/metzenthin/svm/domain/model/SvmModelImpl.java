@@ -1,10 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.commands.*;
-import ch.metzenthin.svm.persistence.entities.Code;
-import ch.metzenthin.svm.persistence.entities.Kursort;
-import ch.metzenthin.svm.persistence.entities.Kurstyp;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.*;
 
 import java.util.List;
 
@@ -17,40 +14,51 @@ public class SvmModelImpl implements SvmModel {
     private List<Lehrkraft> lehrkraefteAll;
     private List<Kursort> kursorteAll;
     private List<Kurstyp> kurstypenAll;
+    private List<Semester> semestersAll;
     private CommandInvoker commandInvoker;
 
     public SvmModelImpl(CommandInvoker commandInvoker) {
         this.commandInvoker = commandInvoker;
-        reloadCodesAll();
-        reloadLehrkraefteAll();
+        loadCodesAll();
+        loadLehrkraefteAll();
+        loadKursorteAll();
+        loadKurstypenAll();
+        loadSemestersAll();
     }
 
     @Override
-    public void reloadCodesAll() {
+    public void loadCodesAll() {
         FindAllCodesCommand findAllCodesCommand = new FindAllCodesCommand();
         commandInvoker.executeCommand(findAllCodesCommand);
         codesAll = findAllCodesCommand.getCodesAll();
     }
 
     @Override
-    public void reloadLehrkraefteAll() {
+    public void loadLehrkraefteAll() {
         FindAllLehrkraefteCommand findAllLehrkraefteCommand = new FindAllLehrkraefteCommand();
         commandInvoker.executeCommand(findAllLehrkraefteCommand);
         lehrkraefteAll = findAllLehrkraefteCommand.getLehrkraefteAll();
     }
 
     @Override
-    public void reloadKursorteAll() {
+    public void loadKursorteAll() {
         FindAllKursorteCommand findAllKursorteCommand = new FindAllKursorteCommand();
         commandInvoker.executeCommand(findAllKursorteCommand);
         kursorteAll = findAllKursorteCommand.getKursorteAll();
     }
 
     @Override
-    public void reloadKurstypenAll() {
+    public void loadKurstypenAll() {
         FindAllKurstypenCommand findAllKurstypenCommand = new FindAllKurstypenCommand();
         commandInvoker.executeCommand(findAllKurstypenCommand);
         kurstypenAll = findAllKurstypenCommand.getKurstypenAll();
+    }
+
+    @Override
+    public void loadSemestersAll() {
+        FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
+        commandInvoker.executeCommand(findAllSemestersCommand);
+        semestersAll = findAllSemestersCommand.getSemesterAll();
     }
 
     @Override
@@ -71,5 +79,10 @@ public class SvmModelImpl implements SvmModel {
     @Override
     public List<Kurstyp> getKurstypenAll() {
         return kurstypenAll;
+    }
+
+    @Override
+    public List<Semester> getSemestersAll() {
+        return semestersAll;
     }
 }

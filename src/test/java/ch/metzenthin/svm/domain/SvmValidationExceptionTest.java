@@ -37,13 +37,13 @@ public class SvmValidationExceptionTest {
     @Test
     public void testGetMessage_SvmRequiredException() {
         SvmValidationException e = new SvmRequiredException(Field.NACHNAME);
-        assertEquals("Attribut ist obligatorisch", e.getMessage());
+        assertEquals("Eintrag ist obligatorisch", e.getMessage());
     }
 
     @Test
     public void testGetMessageLong_SvmRequiredException() {
         SvmValidationException e = new SvmRequiredException(Field.NACHNAME);
-        assertEquals("Attribut ist obligatorisch: [" + Field.NACHNAME.toString() + "]", e.getMessageLong());
+        assertEquals("Eintrag ist obligatorisch: [" + Field.NACHNAME.toString() + "]", e.getMessageLong());
     }
 
 }

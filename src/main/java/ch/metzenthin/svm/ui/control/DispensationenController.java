@@ -7,6 +7,7 @@ import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.DispensationErfassenDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
+import ch.metzenthin.svm.ui.components.UiComponentsUtils;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -47,6 +48,7 @@ public class DispensationenController {
 
     public void setDispensationenTable(JTable dispensationenTable) {
         this.dispensationenTable = dispensationenTable;
+        UiComponentsUtils.setJTableColumnWidthAsPercentages(dispensationenTable, 0.2, 0.2, 0.2, 0.4);
         dispensationenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {

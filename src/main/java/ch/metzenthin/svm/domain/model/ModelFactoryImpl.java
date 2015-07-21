@@ -98,4 +98,13 @@ public class ModelFactoryImpl implements ModelFactory {
         return new KurstypErfassenModelImpl(commandInvoker);
     }
 
+    @Override
+    public SemestersModel createSemestersModel() {
+        return new SemestersModelImpl(commandInvoker);
+    }
+
+    @Override
+    public SemesterErfassenModel createSemesterErfassenModel() {
+        return new SemesterErfassenModelImpl(commandInvoker);
+    }
 }

@@ -14,8 +14,8 @@
         <children>
           <grid id="c2248" layout-manager="GridBagLayout">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="5" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-              <gridbag top="10" left="10" bottom="10" right="10" weightx="1.0" weighty="0.0"/>
+              <grid row="2" column="0" row-span="1" col-span="5" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="10" left="10" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties/>
             <border type="etched" title="Dispensationen">
@@ -50,7 +50,7 @@
               <scrollpane id="b2dcc">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="1.0" weighty="0.0"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
@@ -58,7 +58,8 @@
                   <component id="cfc53" class="javax.swing.JTable" binding="dispensationenTable">
                     <constraints/>
                     <properties>
-                      <preferredScrollableViewportSize width="800" height="200"/>
+                      <opaque value="false"/>
+                      <preferredScrollableViewportSize width="900" height="200"/>
                     </properties>
                   </component>
                 </children>
@@ -68,7 +69,7 @@
           <grid id="ca287" binding="titelPanel" layout-manager="GridBagLayout">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="5" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
-              <gridbag top="10" left="10" bottom="20" right="10" weightx="0.0" weighty="0.0"/>
+              <gridbag top="10" left="10" bottom="20" right="10" weightx="1.0" weighty="0.0"/>
             </constraints>
             <properties/>
             <border type="none"/>

@@ -37,7 +37,6 @@ public class DispensationenPanel {
 
     private void initDispensationenTable(DispensationenTableModel dispensationenTableModel) {
         dispensationenTable.setModel(dispensationenTableModel);
-        UiComponentsUtils.setJTableColumnWidthAsPercentages(dispensationenTable, 0.15, 0.15, 0.3, 0.4);
     }
 
     private void createDispensationenController(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isFromSchuelerSuchenResult) {
@@ -82,8 +81,6 @@ public class DispensationenPanel {
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 5;
-        gbc.weightx = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 10, 10, 10);
         datenPanel.add(panel2, gbc);
         panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Dispensationen", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel2.getFont().getName(), Font.BOLD, panel2.getFont().getSize()), new Color(-16777216)));
@@ -115,11 +112,11 @@ public class DispensationenPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
-        gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
         panel2.add(scrollPane1, gbc);
         dispensationenTable = new JTable();
-        dispensationenTable.setPreferredScrollableViewportSize(new Dimension(800, 200));
+        dispensationenTable.setOpaque(false);
+        dispensationenTable.setPreferredScrollableViewportSize(new Dimension(900, 200));
         scrollPane1.setViewportView(dispensationenTable);
         titelPanel = new JPanel();
         titelPanel.setLayout(new GridBagLayout());
@@ -127,6 +124,7 @@ public class DispensationenPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 5;
+        gbc.weightx = 1.0;
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 10, 20, 10);
