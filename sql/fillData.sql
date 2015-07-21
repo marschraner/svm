@@ -12,6 +12,7 @@ USE svm;
 -- Delete
 -- ******
 
+DELETE FROM Kurs;
 DELETE FROM Semester;
 DELETE FROM Kursort;
 DELETE FROM Kurstyp;
@@ -176,3 +177,12 @@ INSERT INTO Semester (semester_id, schuljahr, semesterbezeichnung, semesterbegin
 SELECT * FROM Semester;
 
 
+-- Kurs
+-- ****
+
+INSERT INTO Kurs (kurs_id, semester_id, kurstyp_id, altersbereich, stufe, wochentag, zeit_beginn, zeit_ende, kursort_id, lehrkraft1_id, lehrkraft2_id, bemerkungen) VALUES
+    (1, 4, 1, '3 - 4 J', 'Vorkindergarten', 'MONTAG', '10:00:00', '10:50:00', 1, 10, NULL, NULL),
+    (2, 4, 1, '4 1/2 - 5 J', '1. Kindergarten', 'DIENSTAG', '14:00:00', '14:50:00', 1, 11, NULL, NULL),
+    (3, 4, 6, '9 - 11 J', '5 - 6', 'MONTAG', '16:40:00', '17:30:00', 1, 9, 10, NULL); 
+
+SELECT * FROM Kurs;
