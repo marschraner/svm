@@ -1,11 +1,11 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.commands.DeleteKurstypCommand;
-import ch.metzenthin.svm.domain.model.KurstypenModel;
-import ch.metzenthin.svm.domain.model.KurstypenTableData;
-import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
-import ch.metzenthin.svm.ui.components.KurstypErfassenDialog;
+import ch.metzenthin.svm.domain.commands.DeleteSemesterCommand;
+import ch.metzenthin.svm.domain.model.SemestersModel;
+import ch.metzenthin.svm.domain.model.SemestersTableData;
+import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
+import ch.metzenthin.svm.ui.components.SemesterErfassenDialog;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -18,27 +18,27 @@ import java.awt.event.MouseEvent;
 /**
  * @author Martin Schraner
  */
-public class KurstypenController {
+public class SemestersController {
     private final SvmContext svmContext;
-    private final KurstypenModel kurstypenModel;
-    private KurstypenTableModel kurstypenTableModel;
-    private JTable kurstypenTable;
+    private final SemestersModel semestersModel;
+    private SemestersTableModel semestersTableModel;
+    private JTable semestersTable;
     private JButton btnNeu;
     private JButton btnBearbeiten;
     private JButton btnLoeschen;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
 
-    public KurstypenController(KurstypenModel kurstypenModel, SvmContext svmContext) {
-        this.kurstypenModel = kurstypenModel;
+    public SemestersController(SemestersModel semestersModel, SvmContext svmContext) {
+        this.semestersModel = semestersModel;
         this.svmContext = svmContext;
-        svmContext.getSvmModel().loadKurstypenAll();
+        svmContext.getSvmModel().loadSemestersAll();
     }
 
-    public void setKurstypenTable(JTable kurstypenTable) {
-        this.kurstypenTable = kurstypenTable;
-        initializeKurstypenTable();
-        kurstypenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+    public void setSemestersTable(JTable semestersTable) {
+        this.semestersTable = semestersTable;
+        initializeSemestersTable();
+        semestersTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (e.getValueIsAdjusting()) {
@@ -47,7 +47,7 @@ public class KurstypenController {
                 onListSelection();
             }
         });
-        kurstypenTable.addMouseListener(new MouseAdapter() {
+        semestersTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     onBearbeiten();
@@ -56,10 +56,10 @@ public class KurstypenController {
         });
     }
 
-    private void initializeKurstypenTable() {
-        KurstypenTableData kurstypenTableData = new KurstypenTableData(svmContext.getSvmModel().getKurstypenAll());
-        kurstypenTableModel = new KurstypenTableModel(kurstypenTableData);
-        kurstypenTable.setModel(kurstypenTableModel);
+    private void initializeSemestersTable() {
+        SemestersTableData semestersTableData = new SemestersTableData(svmContext.getSvmModel().getSemestersAll());
+        semestersTableModel = new SemestersTableModel(semestersTableData);
+        semestersTable.setModel(semestersTableModel);
     }
 
     public void setBtnNeu(JButton btnNeu) {
@@ -74,10 +74,10 @@ public class KurstypenController {
 
     private void onNeu() {
         btnNeu.setFocusPainted(true);
-        KurstypErfassenDialog kurstypErfassenDialog = new KurstypErfassenDialog(svmContext, kurstypenModel, 0, false, "Neuer Kurstyp");
-        kurstypErfassenDialog.pack();
-        kurstypErfassenDialog.setVisible(true);
-        kurstypenTableModel.fireTableDataChanged();
+        SemesterErfassenDialog semesterErfassenDialog = new SemesterErfassenDialog(svmContext, semestersModel, 0, false, "Neues Semester");
+        semesterErfassenDialog.pack();
+        semesterErfassenDialog.setVisible(true);
+        semestersTableModel.fireTableDataChanged();
         btnNeu.setFocusPainted(false);
     }
 
@@ -98,10 +98,10 @@ public class KurstypenController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        KurstypErfassenDialog kurstypErfassenDialog = new KurstypErfassenDialog(svmContext, kurstypenModel, kurstypenTable.getSelectedRow(), true, "Kurstyp bearbeiten");
-        kurstypErfassenDialog.pack();
-        kurstypErfassenDialog.setVisible(true);
-        kurstypenTableModel.fireTableDataChanged();
+        SemesterErfassenDialog semesterErfassenDialog = new SemesterErfassenDialog(svmContext, semestersModel, semestersTable.getSelectedRow(), true, "Semester bearbeiten");
+        semesterErfassenDialog.pack();
+        semesterErfassenDialog.setVisible(true);
+        semestersTableModel.fireTableDataChanged();
         btnBearbeiten.setFocusPainted(false);
     }
 
@@ -126,20 +126,20 @@ public class KurstypenController {
         int n = JOptionPane.showOptionDialog(
                 null,
                 "Soll der Eintrag aus der Datenbank gelöscht werden?",
-                "Kurstyp löschen",
+                "Eintrag löschen?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,     //do not use a custom Icon
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteKurstypCommand.Result result  = kurstypenModel.eintragLoeschen(svmContext, kurstypenTable.getSelectedRow());
+            DeleteSemesterCommand.Result result  = semestersModel.semesterLoeschen(svmContext, semestersTable.getSelectedRow());
             switch (result) {
-                case KURSTYP_VON_KURS_REFERENZIERT:
-                    JOptionPane.showMessageDialog(null, "Der Kurstyp wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                case SEMESTER_VON_KURS_REFERENZIERT:
+                    JOptionPane.showMessageDialog(null, "Das Semester wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     break;
                 case LOESCHEN_ERFOLGREICH:
-                    kurstypenTable.addNotify();
+                    semestersTable.addNotify();
                     break;
             }
         }
@@ -147,7 +147,7 @@ public class KurstypenController {
     }
 
     private void onListSelection() {
-        int selectedRowIndex = kurstypenTable.getSelectedRow();
+        int selectedRowIndex = semestersTable.getSelectedRow();
         enableBtnBearbeiten(selectedRowIndex >= 0);
         enableBtnLoeschen(selectedRowIndex >= 0);
     }
@@ -169,6 +169,5 @@ public class KurstypenController {
     public void addCloseListener(ActionListener closeListener) {
         this.closeListener = closeListener;
     }
-
 
 }

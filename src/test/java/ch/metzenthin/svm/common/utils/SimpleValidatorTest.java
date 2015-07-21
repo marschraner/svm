@@ -2,9 +2,12 @@ package ch.metzenthin.svm.common.utils;
 
 import org.junit.Test;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -121,6 +124,14 @@ public class SimpleValidatorTest {
     @Test
     public void testEqualsNullSafe_NotEqualsNullEqualsCalendar() throws Exception {
         assertFalse(equalsNullSafe(null, Converter.toCalendar("01.01.2015")));
+    }
+
+    @Test
+    public void testGetNumberOfWeeksBetween() throws Exception {
+        assertEquals(0, getNumberOfWeeksBetween(new GregorianCalendar(2015, Calendar.JULY, 1), new GregorianCalendar(2015, Calendar.JULY, 1)));
+        assertEquals(1, getNumberOfWeeksBetween(new GregorianCalendar(2015, Calendar.JULY, 1), new GregorianCalendar(2015, Calendar.JULY, 2)));
+        assertEquals(1, getNumberOfWeeksBetween(new GregorianCalendar(2015, Calendar.JULY, 1), new GregorianCalendar(2015, Calendar.JULY, 8)));
+        assertEquals(2, getNumberOfWeeksBetween(new GregorianCalendar(2015, Calendar.JULY, 1), new GregorianCalendar(2015, Calendar.JULY, 9)));
     }
 
 }

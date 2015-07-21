@@ -52,7 +52,7 @@ public enum Field {
     CODE("Code"),
     DISPENSATIONSBEGINN("Dispensationsbeginn"),
     DISPENSATIONSENDE("Dispensationsende"),
-    VORAUSSICHTLICHE_DAUER("voraussichtliche Dauer"),
+    VORAUSSICHTLICHE_DAUER("Voraussichtliche Dauer"),
     GRUND("Grund"),
     KUERZEL("Kürzel"),
     BESCHREIBUNG("Beschreibung"),
@@ -60,6 +60,11 @@ public enum Field {
     VERTRETUNGSMOEGLICHKEITEN("Vertretungsmöglichkeiten"),
     AKTIV("aktiv"),
     BEZEICHNUNG("Bezeichnung"),
+    SCHULJAHR("Schuljahr"),
+    SEMESTERBEZEICHNUNG("Semester"),
+    SEMESTERBEGINN("Semesterbeginn"),
+    SEMESTERENDE("Semesterende"),
+    ANZAHL_SCHULWOCHEN("Anzahl Schulwochen"),
     BULK_UPDATE("Bulk Update");
 
     private String name;

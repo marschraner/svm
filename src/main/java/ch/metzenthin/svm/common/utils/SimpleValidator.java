@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.common.utils;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import static ch.metzenthin.svm.common.utils.Converter.DD_MM_YYYY_DATE_FORMAT_STRING;
 import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
@@ -68,5 +69,24 @@ public class SimpleValidator {
 		}
 		return false;
 	}
+
+    public static int getNumberOfWeeksBetween(Calendar a, Calendar b) {
+        if (a == null || b == null) {
+            throw new RuntimeException("Start- oder Enddatum der Periode nicht gesetzt");
+        }
+
+        if (a.before(a)) {
+            return -getNumberOfWeeksBetween(b, a);
+        }
+
+        Calendar cal = new GregorianCalendar(a.get(Calendar.YEAR), a.get(Calendar.MONTH), a.get(Calendar.DAY_OF_MONTH));
+        int weeks = 0;
+        while (cal.before(b)) {
+            // add another week
+            cal.add(Calendar.WEEK_OF_YEAR, 1);
+            weeks++;
+        }
+        return weeks;
+    }
 
 }

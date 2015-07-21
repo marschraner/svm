@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS Semester (
     semester_id                INT           NOT NULL AUTO_INCREMENT,
     schuljahr                  VARCHAR(9)    NOT NULL,
     semesterbezeichnung        VARCHAR(20)   NOT NULL,
-    semsterbeginn              DATE          NOT NULL,
+    semesterbeginn             DATE          NOT NULL,
     semesterende               DATE          NOT NULL,
     anzahl_schulwochen         INT           NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,

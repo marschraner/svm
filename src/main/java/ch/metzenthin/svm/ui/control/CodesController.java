@@ -50,7 +50,7 @@ public class CodesController {
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.selectedRow = selectedRow;
         this.isFromSchuelerSuchenResult = isFromSchuelerSuchenResult;
-        svmContext.getSvmModel().reloadCodesAll();
+        svmContext.getSvmModel().loadCodesAll();
     }
 
     public void setCodesTable(JTable codesTable) {
