@@ -110,6 +110,9 @@ public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
             lblSchuelerRechnungsempfaengerValue.setText(schuelerAsStr);
             lblKinder.setVisible(false);
             lblKinderValue.setVisible(false);
+        } else {
+            lblKinderValue.setText("-");
+            lblSchuelerRechnungsempfaengerValue.setText("-");
         }
     }
 

@@ -89,6 +89,10 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         return isRechnungsempfaenger(schueler.getVater());
     }
 
+    private boolean isRechnungsempfaengerDrittperson() {
+        return !isRechnungsempfaengerMutter() && !isRechnungsempfaengerVater();
+    }
+
     private boolean isRechnungsempfaenger(Angehoeriger angehoeriger) {
         Angehoeriger rechnungsempfaenger = schueler.getRechnungsempfaenger();
         if (rechnungsempfaenger != null) {
@@ -101,7 +105,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     @Override
     public String getGeschwisterAsString() {
-        CheckGeschwisterSchuelerRechnungempfaengerCommand command = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler);
+        CheckGeschwisterSchuelerRechnungempfaengerCommand command = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler, isRechnungsempfaengerDrittperson());
         command.execute();
         List<Schueler> angemeldeteGeschwister = command.getAngemeldeteGeschwisterList();
         if (!angemeldeteGeschwister.isEmpty()) {

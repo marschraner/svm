@@ -13,6 +13,7 @@ public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Comman
 
     // input
     private Schueler schueler;
+    private final boolean isRechnungsempfaengerDrittperson;
     private final Angehoeriger mutter;
     private final Angehoeriger vater;
     private final Angehoeriger rechnungsempfaenger;
@@ -22,11 +23,16 @@ public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Comman
     private List<Schueler> andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList = new ArrayList<>();
 
     public CheckGeschwisterSchuelerRechnungempfaengerCommand(Schueler schueler) {
-        this(schueler, null, null, null);
+        this(schueler, null, null, null, false);
     }
 
-    public CheckGeschwisterSchuelerRechnungempfaengerCommand(Schueler schueler, Angehoeriger mutterFoundInDatabase, Angehoeriger vaterFoundInDatabase, Angehoeriger rechnungsempfaengerFoundInDatabase) {
+    public CheckGeschwisterSchuelerRechnungempfaengerCommand(Schueler schueler, boolean isRechnungsempfaengerDrittperson) {
+        this(schueler, null, null, null, isRechnungsempfaengerDrittperson);
+    }
+
+    public CheckGeschwisterSchuelerRechnungempfaengerCommand(Schueler schueler, Angehoeriger mutterFoundInDatabase, Angehoeriger vaterFoundInDatabase, Angehoeriger rechnungsempfaengerFoundInDatabase, boolean isRechnungsempfaengerDrittperson) {
         this.schueler = schueler;
+        this.isRechnungsempfaengerDrittperson = isRechnungsempfaengerDrittperson;
         mutter = (mutterFoundInDatabase != null) ? mutterFoundInDatabase : schueler.getMutter();
         vater = (vaterFoundInDatabase != null) ? vaterFoundInDatabase : schueler.getVater();
         rechnungsempfaenger = (rechnungsempfaengerFoundInDatabase != null) ? rechnungsempfaengerFoundInDatabase : schueler.getRechnungsempfaenger();
@@ -79,8 +85,7 @@ public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Comman
         }
 
         // Rechnungsempfänger Drittperson (d.h. weder Mutter noch Vater ist identisch mit Rechnungsempfänger)
-        if (!(mutter != null && mutter.isIdenticalWith(rechnungsempfaenger))
-                || (vater != null) && vater.isIdenticalWith(rechnungsempfaenger)) {
+        if (isRechnungsempfaengerDrittperson) {
             for (Schueler schueler1 : rechnungsempfaenger.getSchuelerRechnungsempfaenger()) {
                 if (!schueler1.isIdenticalWith(schueler) && schueler1.getAnmeldungen().get(0).getAbmeldedatum() == null && !checkIfSchuelerAlreadyInList(schueler1, angemeldeteGeschwisterList) && !checkIfSchuelerAlreadyInList(schueler1, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList)) {
                     andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList.add(schueler1);

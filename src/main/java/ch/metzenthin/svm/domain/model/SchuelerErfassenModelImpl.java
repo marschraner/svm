@@ -420,7 +420,6 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public void abbrechen() {
-        schuelerModel.getSchueler().deleteAnmeldung(schuelerModel.getAnmeldung());
         validateSchuelerCommand = null;
     }
 
