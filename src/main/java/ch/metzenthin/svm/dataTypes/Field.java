@@ -65,6 +65,13 @@ public enum Field {
     SEMESTERBEGINN("Semesterbeginn"),
     SEMESTERENDE("Semesterende"),
     ANZAHL_SCHULWOCHEN("Anzahl Schulwochen"),
+    KURSTYP_BEZEICHNUNG("Kurstyp"),
+    ALTERSBEREICH("Altersbereich"),
+    STUFE("Stufe"),
+    TAG("Tag"),
+    ZEIT_BEGINN("von"),
+    ZEIT_ENDE("bis"),
+    LEITUNG("Leitung"),
     BULK_UPDATE("Bulk Update");
 
     private String name;

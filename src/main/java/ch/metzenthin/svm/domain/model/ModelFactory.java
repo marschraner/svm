@@ -23,4 +23,5 @@ public interface ModelFactory {
     KurstypErfassenModel createKurstypErfassenModel();
     SemestersModel createSemestersModel();
     SemesterErfassenModel createSemesterErfassenModel();
+    KurseSuchenModel createKurseSuchenModel();
 }

@@ -5,6 +5,8 @@ import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Martin Schraner
@@ -39,6 +41,9 @@ public class Semester implements Comparable<Semester> {
 
     @Column(name = "anzahl_schulwochen", nullable = false)
     private Integer anzahlSchulwochen;
+
+    @OneToMany(mappedBy = "semester")
+    private Set<Kurs> kurse = new HashSet<>();
 
     public Semester() {
     }
@@ -135,5 +140,9 @@ public class Semester implements Comparable<Semester> {
 
     public void setAnzahlSchulwochen(Integer anzahlSchulwochen) {
         this.anzahlSchulwochen = anzahlSchulwochen;
+    }
+
+    public Set<Kurs> getKurse() {
+        return kurse;
     }
 }

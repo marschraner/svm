@@ -101,7 +101,6 @@ public class DeleteCodeCommandTest {
         assertEquals(DeleteCodeCommand.Result.LOESCHEN_ERFOLGREICH, deleteCodeCommand.getResult());
         assertTrue(codesSaved.isEmpty());
 
-
         // Testdaten löschen
         EntityManager entityManager = null;
         try {

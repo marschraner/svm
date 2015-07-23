@@ -12,6 +12,7 @@ USE svm;
 -- Delete
 -- ******
 
+DELETE FROM Kurs_Lehrkraft;
 DELETE FROM Kurs;
 DELETE FROM Semester;
 DELETE FROM Kursort;
@@ -40,7 +41,9 @@ INSERT INTO Adresse (adresse_id, strasse, hausnummer, plz, ort) VALUES
     (7, 'Forchstrasse', '232', '8032', 'Zürich'),
     (8, 'Eidmattstrasse', '20', '8032', 'Zürich'),
     (9, 'Stauffacherstrasse', '222', '8004', 'Zürich'),
-    (10, 'Friedberg', '3', '3380', 'Wangen an der Aare');
+    (10, 'Friedberg', '3', '3380', 'Wangen an der Aare'),
+    (11, 'Zollikerstrasse', '81', '8008', 'Zürich'),
+    (12, 'Im Rüteli', '7', '5401', 'Baden-Dättwil');
 
 SELECT * FROM Adresse;
 
@@ -59,7 +62,9 @@ INSERT INTO Person (person_id, discriminator, anrede, vorname, nachname, geburts
     (8, 'Schueler', 'KEINE', 'Anna', 'Juchli', '2010-03-05', '044 271 53 69', NULL, NULL, 7),
     (9, 'Lehrkraft', 'FRAU', 'Sibyll', 'Metzenthin', '1972-05-17', '044 364 36 30', NULL, 'billa.metz@bluewin.ch', 8),
     (10, 'Lehrkraft', 'FRAU', 'Sibylle', 'Schweizer', '1969-05-19', '043 322 00 08', '079 629 72 36', 'sibylle.schweizer@gmx.ch', 9),
-    (11, 'Lehrkraft', 'FRAU', 'Franziska', 'Lüscher', '1962-04-25', '032 631 07 76', '076 378 07 76', 'ziska@bluewin.ch', 10);
+    (11, 'Lehrkraft', 'FRAU', 'Franziska', 'Lüscher', '1962-04-25', '032 631 07 76', '076 378 07 76', 'ziska@bluewin.ch', 10),
+    (12, 'Lehrkraft', 'FRAU', 'Ursina', 'Höhn', '1971-07-17', '043 499 02 20', '079 714 02 07', 'ursina.hoehn@bluewin.ch', 11),
+    (13, 'Lehrkraft', 'FRAU', 'Simona', 'Hofmann', '1980-07-24', NULL, '079 478 87 05', 'hofmannsimona@gmail.com', 12);
 
 SELECT * FROM Person;
 
@@ -93,7 +98,9 @@ SELECT * FROM Schueler;
 INSERT INTO Lehrkraft (person_id, ahvnummer, vertretungsmoeglichkeiten, aktiv) VALUES
     (9, '756.9620.8222.54', NULL, 1),
     (10, '756.3201.3214.21', 'Mi, Sa', 1),
-    (11, '756.8923.1873.08', NULL, 1);
+    (11, '756.8923.1873.08', NULL, 1),
+    (12, '756.3501.3214.21', NULL, 1),
+    (13, '756.8433.1873.08', NULL, 1);
 
 SELECT * FROM Lehrkraft;
 
@@ -180,9 +187,21 @@ SELECT * FROM Semester;
 -- Kurs
 -- ****
 
-INSERT INTO Kurs (kurs_id, semester_id, kurstyp_id, altersbereich, stufe, wochentag, zeit_beginn, zeit_ende, kursort_id, lehrkraft1_id, lehrkraft2_id, bemerkungen) VALUES
-    (1, 4, 1, '3 - 4 J', 'Vorkindergarten', 'MONTAG', '10:00:00', '10:50:00', 1, 10, NULL, NULL),
-    (2, 4, 1, '4 1/2 - 5 J', '1. Kindergarten', 'DIENSTAG', '14:00:00', '14:50:00', 1, 11, NULL, NULL),
-    (3, 4, 6, '9 - 11 J', '5 - 6', 'MONTAG', '16:40:00', '17:30:00', 1, 9, 10, NULL); 
+INSERT INTO Kurs (kurs_id, semester_id, kurstyp_id, altersbereich, stufe, wochentag, zeit_beginn, zeit_ende, kursort_id, bemerkungen) VALUES
+    (1, 4, 1, '3 - 4 J', 'Vorkindergarten', 'DIENSTAG', '09:10:00', '10:00:00', 1, NULL),
+    (2, 4, 1, '4 1/2 - 5 J', '1. Kindergarten', 'DIENSTAG', '14:00:00', '14:50:00', 1, NULL),
+    (3, 4, 6, '9 - 11 J', '5 - 6', 'MONTAG', '16:40:00', '17:30:00', 1, NULL); 
 
 SELECT * FROM Kurs;
+
+
+-- Kurs_Lehrkraft
+-- **************
+
+INSERT INTO Kurs_Lehrkraft (kurs_id, lehrkraft_id) VALUES
+    (1, 12),
+    (2, 11),
+    (3, 9),
+    (3, 13);
+
+SELECT * FROM Kurs_Lehrkraft;

@@ -124,6 +124,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.addActionListener(this);
         menuKurse.add(menuItem);
 
+        menuItem = new JMenuItem("Kurse verwalten");
+        menuItem.setMnemonic(KeyEvent.VK_K);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("kurseVerwalten");
+        menuItem.addActionListener(this);
+        menuKurse.add(menuItem);
+
         // Set up the second menu item.
         menuItem = new JMenuItem("Beenden");
         menuItem.setMnemonic(KeyEvent.VK_Q);
@@ -226,6 +233,22 @@ public class SvmDesktop extends JFrame implements ActionListener {
                 }
             });
             setAndShowActivePanel(semestersPanel.$$$getRootComponent$$$(), "Semester verwalten");
+
+        } else if ("kurseVerwalten".equals(e.getActionCommand())) {
+            KurseSuchenPanel kurseSuchenPanel = new KurseSuchenPanel(svmContext);
+            kurseSuchenPanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFrameAbbrechen();
+                }
+            });
+            kurseSuchenPanel.addNextPanelListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onNextPanelAvailable(e.getSource());
+                }
+            });
+            setAndShowActivePanel(kurseSuchenPanel.$$$getRootComponent$$$(), "Semester wählen");
 
         } else { // beenden
             quit();

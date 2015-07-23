@@ -95,7 +95,7 @@
     </table>
   </data-source>
   <data-source name="MySQL - svm@localhost" uuid="a50a8aba-80b6-4854-a358-9d38f4fd7cd9">
-    <database-info product="MySQL" version="5.5.43-0ubuntu0.14.04.1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+    <database-info product="MySQL" version="5.5.44-0ubuntu0.14.04.1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
       <extra-name-characters>#@</extra-name-characters>
       <identifier-quote-string>`</identifier-quote-string>
     </database-info>
@@ -709,17 +709,45 @@
       <primary-key name="PRIMARY" columns="dispensation_id"/>
       <foreign-key name="Dispensation_ibfk_1" columns="schueler_id" ref-table="Schueler" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
+    <table name="Kurs" schema="" catalog="svm" type="TABLE">
+      <column name="kurs_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="semester_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="kurstyp_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="altersbereich" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
+      <column name="stufe" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="wochentag" sqlType="VARCHAR" precision="10" scale="0" nullable="false" jdbcType="12"/>
+      <column name="zeit_beginn" sqlType="TIME" precision="8" scale="0" nullable="false" jdbcType="92"/>
+      <column name="zeit_ende" sqlType="TIME" precision="8" scale="0" nullable="false" jdbcType="92"/>
+      <column name="kursort_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="bemerkungen" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="kurs_id"/>
+      <foreign-key name="Kurs_ibfk_1" columns="semester_id" ref-table="Semester" ref-schema="" ref-catalog="svm" ref-columns="semester_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Kurs_ibfk_2" columns="kurstyp_id" ref-table="Kurstyp" ref-schema="" ref-catalog="svm" ref-columns="kurstyp_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Kurs_ibfk_3" columns="kursort_id" ref-table="Kursort" ref-schema="" ref-catalog="svm" ref-columns="kursort_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="Kurs_Lehrkraft_ibfk_1" table="Kurs_Lehrkraft" schema="" catalog="svm" columns="kurs_id"/>
+    </table>
+    <table name="Kurs_Lehrkraft" schema="" catalog="svm" type="TABLE">
+      <column name="kurs_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="lehrkraft_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="kurs_id,lehrkraft_id"/>
+      <foreign-key name="Kurs_Lehrkraft_ibfk_1" columns="kurs_id" ref-table="Kurs" ref-schema="" ref-catalog="svm" ref-columns="kurs_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Kurs_Lehrkraft_ibfk_2" columns="lehrkraft_id" ref-table="Lehrkraft" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
     <table name="Kursort" schema="" catalog="svm" type="TABLE">
       <column name="kursort_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="bezeichnung" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="kursort_id"/>
+      <exported-key name="Kurs_ibfk_3" table="Kurs" schema="" catalog="svm" columns="kursort_id"/>
     </table>
     <table name="Kurstyp" schema="" catalog="svm" type="TABLE">
       <column name="kurstyp_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="bezeichnung" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="kurstyp_id"/>
+      <exported-key name="Kurs_ibfk_2" table="Kurs" schema="" catalog="svm" columns="kurstyp_id"/>
     </table>
     <table name="Lehrkraft" schema="" catalog="svm" type="TABLE">
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -729,6 +757,7 @@
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="person_id"/>
       <foreign-key name="Lehrkraft_ibfk_1" columns="person_id" ref-table="Person" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="Kurs_Lehrkraft_ibfk_2" table="Kurs_Lehrkraft" schema="" catalog="svm" columns="lehrkraft_id"/>
     </table>
     <table name="Person" schema="" catalog="svm" type="TABLE">
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -782,6 +811,7 @@
       <column name="anzahl_schulwochen" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="semester_id"/>
+      <exported-key name="Kurs_ibfk_1" table="Kurs" schema="" catalog="svm" columns="semester_id"/>
     </table>
   </data-source>
 </component>

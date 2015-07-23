@@ -2,11 +2,10 @@ package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Martin Schraner
@@ -24,6 +23,9 @@ public class Lehrkraft extends Person implements Comparable<Lehrkraft> {
 
     @Column(name = "aktiv", nullable = false)
     private Boolean aktiv;
+
+    @ManyToMany(mappedBy = "lehrkraefte")
+    private Set<Kurs> kurse = new HashSet<>();
 
     public Lehrkraft() {
     }
@@ -86,5 +88,9 @@ public class Lehrkraft extends Person implements Comparable<Lehrkraft> {
 
     public void setAktiv(Boolean aktiv) {
         this.aktiv = aktiv;
+    }
+
+    public Set<Kurs> getKurse() {
+        return kurse;
     }
 }

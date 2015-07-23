@@ -7,7 +7,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="471ab" layout-manager="GridBagLayout">
+      <grid id="471ab" binding="datenPanel" layout-manager="GridBagLayout">
         <constraints border-constraint="Center"/>
         <properties/>
         <border type="none"/>
@@ -15,7 +15,7 @@
           <grid id="e64c2" layout-manager="GridBagLayout">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="10" left="10" bottom="10" right="10" weightx="1.0" weighty="1.0"/>
+              <gridbag top="10" left="10" bottom="10" right="10" weightx="0.0" weighty="1.0"/>
             </constraints>
             <properties/>
             <border type="etched" title="Monatsstatistik">
@@ -150,7 +150,7 @@
           </grid>
         </children>
       </grid>
-      <grid id="c7db6" layout-manager="GridBagLayout">
+      <grid id="c7db6" binding="buttonPanel" layout-manager="GridBagLayout">
         <constraints border-constraint="South"/>
         <properties/>
         <border type="none"/>

@@ -2,6 +2,8 @@ package ch.metzenthin.svm.persistence.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Martin Schraner
@@ -21,6 +23,9 @@ public class Kurstyp implements Comparable<Kurstyp> {
 
     @Column(name = "bezeichnung", nullable = false)
     private String bezeichnung;
+
+    @OneToMany(mappedBy = "kurstyp")
+    private Set<Kurs> kurse = new HashSet<>();
 
     public Kurstyp() {
     }
@@ -68,4 +73,7 @@ public class Kurstyp implements Comparable<Kurstyp> {
         this.bezeichnung = kurstyp;
     }
 
+    public Set<Kurs> getKurse() {
+        return kurse;
+    }
 }

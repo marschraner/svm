@@ -31,11 +31,10 @@ public class DeleteSemesterCommand extends GenericDaoCommand {
     public void execute() {
         SemesterDao SemesterDao = new SemesterDao(entityManager);
         Semester SemesterToBeDeleted = Semesters.get(indexSemesterToBeDeleted);
-        //TODO
-//        if (SemesterToBeDeleted.getKurse().size() > 0) {
-//            result = Result.SEMESTER_VON_KURS_REFERENZIERT;
-//            return;
-//        }
+        if (SemesterToBeDeleted.getKurse().size() > 0) {
+            result = Result.SEMESTER_VON_KURS_REFERENZIERT;
+            return;
+        }
         SemesterDao.remove(SemesterToBeDeleted);
         Semesters.remove(indexSemesterToBeDeleted);
         result = Result.LOESCHEN_ERFOLGREICH;

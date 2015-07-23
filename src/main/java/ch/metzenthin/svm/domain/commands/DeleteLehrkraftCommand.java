@@ -31,11 +31,10 @@ public class DeleteLehrkraftCommand extends GenericDaoCommand {
     public void execute() {
         LehrkraftDao LehrkraftDao = new LehrkraftDao(entityManager);
         Lehrkraft LehrkraftToBeDeleted = Lehrkraefte.get(indexLehrkraftToBeDeleted);
-        //TODO
-//        if (LehrkraftToBeDeleted.getKurse().size() > 0) {
-//            result = Result.LEHRKRAFT_VON_KURS_REFERENZIERT;
-//            return;
-//        }
+        if (LehrkraftToBeDeleted.getKurse().size() > 0) {
+            result = Result.LEHRKRAFT_VON_KURS_REFERENZIERT;
+            return;
+        }
         LehrkraftDao.remove(LehrkraftToBeDeleted);
         Lehrkraefte.remove(indexLehrkraftToBeDeleted);
         result = Result.LOESCHEN_ERFOLGREICH;

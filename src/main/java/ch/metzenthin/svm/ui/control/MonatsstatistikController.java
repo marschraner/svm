@@ -157,12 +157,12 @@ public class MonatsstatistikController extends AbstractController {
     }
 
     private void onAbbrechen() {
-        LOGGER.trace("SchuelerSuchenPanel Abbrechen gedrückt");
+        LOGGER.trace("MonatsstatistikController Abbrechen gedrückt");
         closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Abbrechen"));
     }
 
     private void onSuchen() {
-        LOGGER.trace("SchuelerSuchenPanel Suchen gedrückt");
+        LOGGER.trace("MonatsstatistikController Suchen gedrückt");
         if (!isModelValidationMode() && !validateOnSpeichern()) {
             return;
         }

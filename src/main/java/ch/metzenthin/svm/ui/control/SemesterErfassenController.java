@@ -102,7 +102,7 @@ public class SemesterErfassenController extends AbstractController {
     private void initSchuljahr() {
         Calendar today = new GregorianCalendar();
         int schuljahr1;
-        if (today.get(Calendar.MONTH) <= Calendar.APRIL) {
+        if (today.get(Calendar.MONTH) <= Calendar.MAY) {
             schuljahr1 = today.get(Calendar.YEAR) - 1;
         } else {
             schuljahr1 = today.get(Calendar.YEAR);
@@ -158,7 +158,7 @@ public class SemesterErfassenController extends AbstractController {
     private void initSemesterbezeichnung() {
         Calendar today = new GregorianCalendar();
         Semesterbezeichnung semesterbezeichnung;
-        if (today.get(Calendar.MONTH) <= Calendar.APRIL) {
+        if (today.get(Calendar.MONTH) >= Calendar.FEBRUARY || today.get(Calendar.MONTH) <= Calendar.MAY) {
             semesterbezeichnung = Semesterbezeichnung.ZWEITES_SEMESTER;
         } else {
             semesterbezeichnung = Semesterbezeichnung.ERSTES_SEMESTER;
