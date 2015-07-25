@@ -14,8 +14,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -100,15 +98,7 @@ public class SemesterErfassenController extends AbstractController {
     }
 
     private void initSchuljahr() {
-        Calendar today = new GregorianCalendar();
-        int schuljahr1;
-        if (today.get(Calendar.MONTH) <= Calendar.MAY) {
-            schuljahr1 = today.get(Calendar.YEAR) - 1;
-        } else {
-            schuljahr1 = today.get(Calendar.YEAR);
-        }
-        int schuljahr2 = schuljahr1 + 1;
-        String schuljahr = schuljahr1 + "/" + schuljahr2;
+        String schuljahr = semesterErfassenModel.getNaechstesNochNichtErfasstesSemester(svmContext.getSvmModel()).getSchuljahr();
         try {
             semesterErfassenModel.setSchuljahr(schuljahr);
         } catch (SvmValidationException ignore) {
@@ -156,13 +146,7 @@ public class SemesterErfassenController extends AbstractController {
     }
 
     private void initSemesterbezeichnung() {
-        Calendar today = new GregorianCalendar();
-        Semesterbezeichnung semesterbezeichnung;
-        if (today.get(Calendar.MONTH) >= Calendar.FEBRUARY || today.get(Calendar.MONTH) <= Calendar.MAY) {
-            semesterbezeichnung = Semesterbezeichnung.ZWEITES_SEMESTER;
-        } else {
-            semesterbezeichnung = Semesterbezeichnung.ERSTES_SEMESTER;
-        }
+        Semesterbezeichnung semesterbezeichnung = semesterErfassenModel.getNaechstesNochNichtErfasstesSemester(svmContext.getSvmModel()).getSemesterbezeichnung();
         try {
             semesterErfassenModel.setSemesterbezeichnung(semesterbezeichnung);
         } catch (SvmValidationException ignore) {
@@ -442,7 +426,7 @@ public class SemesterErfassenController extends AbstractController {
             setModelSemesterende(true);
         }
         if (txtAnzahlSchulwochen.isEnabled()) {
-            LOGGER.trace("Validate field Semesterende");
+            LOGGER.trace("Validate field AnzahlSchulwochen");
             setModelAnzahlSchulwochen(true);
         }
     }
@@ -493,19 +477,6 @@ public class SemesterErfassenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {
-        if (fields.contains(Field.SEMESTERBEGINN)) {
-            errLblSemesterbeginn.setVisible(false);
-            txtSemesterbeginn.setToolTipText(null);
-        }
-        if (fields.contains(Field.SEMESTERENDE)) {
-            errLblSemesterende.setVisible(false);
-            txtSemesterende.setToolTipText(null);
-        }
-        if (fields.contains(Field.ANZAHL_SCHULWOCHEN)) {
-            errLblAnzahlSchulwochen.setVisible(false);
-            txtAnzahlSchulwochen.setToolTipText(null);
-        }
-    }
+    public void disableFields(boolean disable, Set<Field> fields) {}
 
 }

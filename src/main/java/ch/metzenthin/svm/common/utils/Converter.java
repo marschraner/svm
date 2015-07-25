@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.common.utils;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -102,6 +103,35 @@ public class Converter {
     public static String getDeutscheBezeichnungOfDateFormatString(String dateFormatString) {
         dateFormatString = dateFormatString.replace('y', 'J');
         return dateFormatString.replace('d', 'T');
+    }
+
+    public static String asString(Time time) {
+        if (time == null) {
+            return "";
+        }
+        return time.toString().substring(0, 2) + "." + time.toString().substring(3, 5);
+    }
+
+    public static Time toTime(String s) throws ParseException {
+        String errMsg = "Keine gültige Zeit im Format 'HH.MM'";
+        if (!checkNotEmpty(s)) {
+            return null;
+        }
+        if (s.length() != 5 || s.charAt(2) != '.') {
+            throw new ParseException(errMsg, 0);
+        }
+        int hour;
+        int min;
+        try {
+            hour = Integer.parseInt(s.substring(0, 2));
+            min = Integer.parseInt(s.substring(3, 5));
+        } catch (NumberFormatException e) {
+            throw new ParseException(errMsg, 0);
+        }
+        if (hour < 0 || hour > 23 || min < 0 || min > 59) {
+            throw new ParseException(errMsg, 0);
+        }
+        return Time.valueOf(s.substring(0, 2) + ":" + s.substring(3, 5) + ":00");
     }
 
     public static String asString(Calendar calendar) {

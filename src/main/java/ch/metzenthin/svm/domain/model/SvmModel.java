@@ -17,6 +17,7 @@ public interface SvmModel {
 
     List<Code> getCodesAll();
     List<Lehrkraft> getLehrkraefteAll();
+    List<Lehrkraft> getAktiveLehrkraefteAll();
     List<Kursort> getKursorteAll();
     List<Kurstyp> getKurstypenAll();
     List<Semester> getSemestersAll();

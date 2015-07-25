@@ -31,7 +31,7 @@ public class CheckLehrkraftBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_LehrkraftBereitsInVerwendung() throws Exception {
+    public void testExecute_LehrkraftBereitsErfasst() throws Exception {
         Lehrkraft lehrkraft = new Lehrkraft(Anrede.FRAU, "Noémi", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "043 111 11 11", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
         Adresse adresse = new Adresse("Rebwiesenstrasse", "77", "8702", "Zollikon");
         lehrkraft.setAdresse(adresse);

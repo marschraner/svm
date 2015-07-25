@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.common.utils;
 
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -87,6 +88,21 @@ public class SimpleValidator {
             weeks++;
         }
         return weeks;
+    }
+
+    public static boolean isTimePeriodValid(Time time1, Time time2) {
+        int hour1 = Integer.parseInt(time1.toString().substring(0, 2));
+        int min1 = Integer.parseInt(time1.toString().substring(3, 5));
+        int hour2 = Integer.parseInt(time2.toString().substring(0, 2));
+        int min2 = Integer.parseInt(time2.toString().substring(3, 5));
+        // Zeitperioden über Mitternacht nicht erlaubt
+        if (hour2 < hour1) {
+            return false;
+        }
+        if (hour1 == hour2 && min2 <= min1) {
+            return false;
+        }
+        return true;
     }
 
 }

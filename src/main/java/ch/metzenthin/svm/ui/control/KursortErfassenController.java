@@ -216,12 +216,7 @@ public class KursortErfassenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {
-        if (fields.contains(Field.BEZEICHNUNG)) {
-            errLblBezeichnung.setVisible(false);
-            txtBezeichnung.setToolTipText(null);
-        }
-    }
+    public void disableFields(boolean disable, Set<Field> fields) {}
 
 
 }

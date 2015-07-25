@@ -109,8 +109,18 @@ public class ModelFactoryImpl implements ModelFactory {
     }
 
     @Override
-    public KurseSuchenModel createKurseSuchenModel() {
-        return new KurseSuchenModelImpl(commandInvoker);
+    public KurseSemesterwahlModel createKurseSemesterwahlModel() {
+        return new KurseSemesterwahlModelImpl(commandInvoker);
+    }
+
+    @Override
+    public KurseModel createKurseModel() {
+        return new KurseModelImpl(commandInvoker);
+    }
+
+    @Override
+    public KursErfassenModel createKursErfassenModel() {
+        return new KursErfassenModelImpl(commandInvoker);
     }
 
 }

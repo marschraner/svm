@@ -2,6 +2,7 @@ package ch.metzenthin.svm.common.utils;
 
 import org.junit.Test;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.util.Calendar;
 
@@ -55,11 +56,6 @@ public class ConverterTest {
             fail("ParseException erwartet");
         } catch (ParseException ignore) {
         }
-    }
-
-    @Test
-    public void testAsString_Null() {
-        assertNull("Null erwartet", asString(null));
     }
 
     @Test
@@ -166,6 +162,21 @@ public class ConverterTest {
     @Test(expected = ParseException.class)
     public void testDetermineDateFormatString_falscher_Separator() throws ParseException {
         assertNull(determineDateFormatString("12/2012"));
+    }
+
+    @Test
+    public void testToTime() throws ParseException {
+        assertEquals(Time.valueOf("12:13:00"), toTime("12.13"));
+    }
+
+    @Test(expected = ParseException.class)
+    public void testToTime_invalidHh() throws ParseException {
+        toTime("24.59");
+    }
+
+    @Test(expected = ParseException.class)
+    public void testToTime_invalidMm() throws ParseException {
+        toTime("23.60");
     }
 
     @Test

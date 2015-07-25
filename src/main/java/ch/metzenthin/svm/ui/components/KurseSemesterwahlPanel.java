@@ -3,7 +3,7 @@ package ch.metzenthin.svm.ui.components;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Schuljahre;
 import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.ui.control.KurseSuchenController;
+import ch.metzenthin.svm.ui.control.KurseSemesterwahlController;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -13,28 +13,28 @@ import java.awt.event.ActionListener;
 /**
  * @author Martin Schraner
  */
-public class KurseSuchenPanel {
+public class KurseSemesterwahlPanel {
     private JPanel panel1;
     private JPanel datenPanel;
     private JPanel titelPanel;
     private JSpinner spinnerSchuljahre;
     private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
-    private JButton btnSuchen;
+    private JButton btnOk;
     private JButton btnAbbrechen;
-    private KurseSuchenController kurseSuchenController;
+    private KurseSemesterwahlController kurseSemesterwahlController;
 
-    public KurseSuchenPanel(SvmContext svmContext) {
+    public KurseSemesterwahlPanel(SvmContext svmContext) {
         $$$setupUI$$$();
-        btnSuchen.setEnabled(true);
+        btnOk.setEnabled(true);
         createKurseSuchenController(svmContext);
     }
 
     private void createKurseSuchenController(SvmContext svmContext) {
-        kurseSuchenController = new KurseSuchenController(svmContext, svmContext.getModelFactory().createKurseSuchenModel());
-        kurseSuchenController.setSpinnerSchuljahre(spinnerSchuljahre);
-        kurseSuchenController.setComboBoxSemesterbezeichnung(comboBoxSemesterbezeichnung);
-        kurseSuchenController.setBtnSuchen(btnSuchen);
-        kurseSuchenController.setBtnAbbrechen(btnAbbrechen);
+        kurseSemesterwahlController = new KurseSemesterwahlController(svmContext, svmContext.getModelFactory().createKurseSemesterwahlModel());
+        kurseSemesterwahlController.setSpinnerSchuljahre(spinnerSchuljahre);
+        kurseSemesterwahlController.setComboBoxSemesterbezeichnung(comboBoxSemesterbezeichnung);
+        kurseSemesterwahlController.setBtnOk(btnOk);
+        kurseSemesterwahlController.setBtnAbbrechen(btnAbbrechen);
     }
 
     private void createUIComponents() {
@@ -45,11 +45,11 @@ public class KurseSuchenPanel {
     }
 
     public void addCloseListener(ActionListener actionListener) {
-        kurseSuchenController.addCloseListener(actionListener);
+        kurseSemesterwahlController.addCloseListener(actionListener);
     }
 
     public void addNextPanelListener(ActionListener nextPanelListener) {
-        kurseSuchenController.addNextPanelListener(nextPanelListener);
+        kurseSemesterwahlController.addNextPanelListener(nextPanelListener);
     }
 
     /**
@@ -78,7 +78,7 @@ public class KurseSuchenPanel {
         datenPanel.add(titelPanel, gbc);
         final JLabel label1 = new JLabel();
         label1.setFont(new Font(label1.getFont().getName(), label1.getFont().getStyle(), 36));
-        label1.setText("Semester wählen");
+        label1.setText("Kurse verwalten: Semester wählen");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -172,16 +172,16 @@ public class KurseSuchenPanel {
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.BOTH;
         datenPanel.add(panel3, gbc);
-        btnSuchen = new JButton();
-        btnSuchen.setMaximumSize(new Dimension(114, 29));
-        btnSuchen.setMinimumSize(new Dimension(114, 29));
-        btnSuchen.setPreferredSize(new Dimension(114, 29));
-        btnSuchen.setText("Suchen");
+        btnOk = new JButton();
+        btnOk.setMaximumSize(new Dimension(114, 29));
+        btnOk.setMinimumSize(new Dimension(114, 29));
+        btnOk.setPreferredSize(new Dimension(114, 29));
+        btnOk.setText("OK");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel3.add(btnSuchen, gbc);
+        panel3.add(btnOk, gbc);
         final JPanel spacer8 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;

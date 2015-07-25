@@ -18,7 +18,7 @@ public class SemestersTableData {
         this.semesters = semesters;
     }
 
-    private static final Field[] COLUMNS = {Field.SCHULJAHR, Field.SEMESTERBEZEICHNUNG, Field.SEMESTERBEGINN, Field.SEMESTERENDE, Field.ANZAHL_SCHULWOCHEN};
+    private static final Field[] COLUMNS = {Field.SCHULJAHR, Field.SEMESTERBEZEICHNUNG, Field.SEMESTERBEGINN, Field.SEMESTERENDE, Field.ANZAHL_SCHULWOCHEN, Field.ANZAHL_KURSE};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -47,6 +47,8 @@ public class SemestersTableData {
             case ANZAHL_SCHULWOCHEN:
                 value = semester.getAnzahlSchulwochen();
                 break;
+            case ANZAHL_KURSE:
+                value = semester.getKurse().size();
             default:
                 break;
         }

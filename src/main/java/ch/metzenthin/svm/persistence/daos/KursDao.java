@@ -29,7 +29,7 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         Kursort kursort = kurs.getKursort();
         kursort.getKurse().remove(kurs);
 
-        // Lösche zugewiesene Lehrkräfte
+        // Entferne zugewiesene Lehrkräfte
         for (Lehrkraft lehrkraft : new ArrayList<>(kurs.getLehrkraefte())) {
             kurs.deleteLehrkraft(lehrkraft);
         }
@@ -40,7 +40,7 @@ public class KursDao extends GenericDao<Kurs, Integer> {
 
     
     public List<Kurs> findKurseSemester(Semester semester) {
-        TypedQuery<Kurs> typedQuery = entityManager.createQuery("select k from Kurs k where k.semester.schuljahr = :schuljahr and k.semester.semesterbezeichnung = :semesterbezeichnung order by k.semester, k.kurstyp, k.stufe, k.wochentag, k.zeitBeginn, k.zeitEnde, k.kursort", Kurs.class);
+        TypedQuery<Kurs> typedQuery = entityManager.createQuery("select k from Kurs k where k.semester.schuljahr = :schuljahr and k.semester.semesterbezeichnung = :semesterbezeichnung order by k.kurstyp.bezeichnung, k.stufe, k.wochentag, k.zeitBeginn, k.zeitEnde, k.kursort.bezeichnung", Kurs.class);
         typedQuery.setParameter("schuljahr", semester.getSchuljahr());
         typedQuery.setParameter("semesterbezeichnung", semester.getSemesterbezeichnung());
         return typedQuery.getResultList();

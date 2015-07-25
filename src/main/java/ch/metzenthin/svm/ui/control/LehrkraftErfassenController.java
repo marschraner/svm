@@ -339,17 +339,6 @@ public class LehrkraftErfassenController extends PersonController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {
-        super.disableFields(disable, fields);
-        if (fields.contains(Field.AHV_NUMMER)) {
-            errLblAhvNummer.setVisible(false);
-            txtAhvNummer.setToolTipText(null);
-        }
-        if (fields.contains(Field.VERTRETUNGSMOEGLICHKEITEN)) {
-            errLblVertretungsmoeglichkeiten.setVisible(false);
-            txtVertretungsmoeglichkeiten.setToolTipText(null);
-        }
-    }
-
+    public void disableFields(boolean disable, Set<Field> fields) {}
 
 }

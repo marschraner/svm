@@ -45,11 +45,11 @@ public class LehrkraftErfassenDialog extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         setTitle(title);
-        createCodeErfassenController(svmContext, lehrkraefteModel, indexBearbeiten, isBearbeiten);
+        createLehrkraftErfassenController(svmContext, lehrkraefteModel, indexBearbeiten, isBearbeiten);
         initializeErrLbls();
     }
 
-    private void createCodeErfassenController(SvmContext svmContext, LehrkraefteModel lehrkraefteModel, int indexBearbeiten, boolean isBearbeiten) {
+    private void createLehrkraftErfassenController(SvmContext svmContext, LehrkraefteModel lehrkraefteModel, int indexBearbeiten, boolean isBearbeiten) {
         LehrkraftErfassenModel lehrkraftErfassenModel = (isBearbeiten ? lehrkraefteModel.getLehrkraftErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createLehrkraftErfassenModel());
         LehrkraftErfassenController lehrkraftErfassenController = new LehrkraftErfassenController(svmContext, lehrkraftErfassenModel, isBearbeiten);
         lehrkraftErfassenController.setLehrkraftErfassenDialog(this);

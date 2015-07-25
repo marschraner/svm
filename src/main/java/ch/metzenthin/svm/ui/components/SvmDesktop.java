@@ -55,6 +55,10 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuSchueler.setMnemonic(KeyEvent.VK_H);
         menuBar.add(menuSchueler);
 
+        JMenu menuKurse = new JMenu("Kurse");
+        menuKurse.setMnemonic(KeyEvent.VK_K);
+        menuBar.add(menuKurse);
+
         JMenu menuCodes = new JMenu("Codes");
         menuCodes.setMnemonic(KeyEvent.VK_C);
         menuBar.add(menuCodes);
@@ -62,10 +66,6 @@ public class SvmDesktop extends JFrame implements ActionListener {
         JMenu menuLehrkraefte = new JMenu("Lehrkräfte");
         menuLehrkraefte.setMnemonic(KeyEvent.VK_L);
         menuBar.add(menuLehrkraefte);
-
-        JMenu menuKurse = new JMenu("Kurse");
-        menuKurse.setMnemonic(KeyEvent.VK_K);
-        menuBar.add(menuKurse);
 
         // Set up the first menu item.
         JMenuItem menuItem = new JMenuItem("Neuen Schüler erfassen");
@@ -103,6 +103,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.addActionListener(this);
         menuLehrkraefte.add(menuItem);
 
+        menuItem = new JMenuItem("Kurse verwalten");
+        menuItem.setMnemonic(KeyEvent.VK_K);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("kurseVerwalten");
+        menuItem.addActionListener(this);
+        menuKurse.add(menuItem);
+
         menuItem = new JMenuItem("Kurstypen verwalten");
         menuItem.setMnemonic(KeyEvent.VK_T);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.ALT_MASK));
@@ -121,13 +128,6 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.setMnemonic(KeyEvent.VK_S);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_MASK));
         menuItem.setActionCommand("semesterVerwalten");
-        menuItem.addActionListener(this);
-        menuKurse.add(menuItem);
-
-        menuItem = new JMenuItem("Kurse verwalten");
-        menuItem.setMnemonic(KeyEvent.VK_K);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, InputEvent.ALT_MASK));
-        menuItem.setActionCommand("kurseVerwalten");
         menuItem.addActionListener(this);
         menuKurse.add(menuItem);
 
@@ -204,6 +204,22 @@ public class SvmDesktop extends JFrame implements ActionListener {
             });
             setAndShowActivePanel(lehrkraeftePanel.$$$getRootComponent$$$(), "Lehrkräfte verwalten");
 
+        } else if ("kurseVerwalten".equals(e.getActionCommand())) {
+            KurseSemesterwahlPanel kurseSemesterwahlPanel = new KurseSemesterwahlPanel(svmContext);
+            kurseSemesterwahlPanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFrameAbbrechen();
+                }
+            });
+            kurseSemesterwahlPanel.addNextPanelListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onNextPanelAvailable(e.getSource());
+                }
+            });
+            setAndShowActivePanel(kurseSemesterwahlPanel.$$$getRootComponent$$$(), "Kurse verwalten: Semester wählen");
+
         } else if ("kurstypenVerwalten".equals(e.getActionCommand())) {
             KurstypenPanel kurstypenPanel = new KurstypenPanel(svmContext);
             kurstypenPanel.addCloseListener(new ActionListener() {
@@ -233,22 +249,6 @@ public class SvmDesktop extends JFrame implements ActionListener {
                 }
             });
             setAndShowActivePanel(semestersPanel.$$$getRootComponent$$$(), "Semester verwalten");
-
-        } else if ("kurseVerwalten".equals(e.getActionCommand())) {
-            KurseSuchenPanel kurseSuchenPanel = new KurseSuchenPanel(svmContext);
-            kurseSuchenPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
-            kurseSuchenPanel.addNextPanelListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onNextPanelAvailable(e.getSource());
-                }
-            });
-            setAndShowActivePanel(kurseSuchenPanel.$$$getRootComponent$$$(), "Semester wählen");
 
         } else { // beenden
             quit();

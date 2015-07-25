@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,6 +70,17 @@ public class SvmModelImpl implements SvmModel {
     @Override
     public List<Lehrkraft> getLehrkraefteAll() {
         return lehrkraefteAll;
+    }
+
+    @Override
+    public List<Lehrkraft> getAktiveLehrkraefteAll() {
+        List<Lehrkraft> lehrkraefteAktiveAll = new ArrayList<>();
+        for (Lehrkraft lehrkraft : lehrkraefteAll) {
+            if (lehrkraft.isAktiv()) {
+                lehrkraefteAktiveAll.add(lehrkraft);
+            }
+        }
+        return lehrkraefteAktiveAll;
     }
 
     @Override

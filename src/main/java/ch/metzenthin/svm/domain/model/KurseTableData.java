@@ -6,6 +6,8 @@ import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 
 import java.util.List;
 
+import static ch.metzenthin.svm.common.utils.Converter.asString;
+
 /**
  * @author Martin Schraner
  */
@@ -17,7 +19,7 @@ public class KurseTableData {
         this.kurse = kurse;
     }
 
-    private static final Field[] COLUMNS = {Field.KURSTYP_BEZEICHNUNG, Field.ALTERSBEREICH, Field.STUFE, Field.TAG, Field.ZEIT_BEGINN, Field.ZEIT_ENDE, Field.ORT, Field.LEITUNG};
+    private static final Field[] COLUMNS = {Field.KURSTYP_BEZEICHNUNG, Field.ALTERSBEREICH, Field.STUFE, Field.TAG, Field.ZEIT_BEGINN, Field.ZEIT_ENDE, Field.ORT, Field.LEITUNG, Field.ANZAHL_SCHUELER};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -44,10 +46,10 @@ public class KurseTableData {
                 value = kurs.getWochentag();
                 break;
             case ZEIT_BEGINN:
-                value = kurs.getZeitBeginn();
+                value = asString(kurs.getZeitBeginn());
                 break;
             case ZEIT_ENDE:
-                value = kurs.getZeitEnde();
+                value = asString(kurs.getZeitEnde());
                 break;
             case ORT:
                 value = kurs.getKursort().getBezeichnung();
@@ -56,11 +58,14 @@ public class KurseTableData {
                 String leitung = "";
                 for (Lehrkraft lehrkraft : kurs.getLehrkraefte()) {
                     if (leitung.length() > 0) {
-                        leitung = leitung + "/";
+                        leitung = leitung + " / ";
                     }
-                    leitung = leitung + lehrkraft.getVorname() + " " + lehrkraft.getVorname();
+                    leitung = leitung + lehrkraft.getVorname() + " " + lehrkraft.getNachname();
                 }
                 value = leitung;
+                break;
+            case ANZAHL_SCHUELER:
+                value = 0;  //TODO
                 break;
             default:
                 break;
@@ -72,8 +77,20 @@ public class KurseTableData {
         return COLUMNS[column].toString();
     }
 
+    public List<Kurs> getKurse() {
+        return kurse;
+    }
+
     public Kurs getKursSelected(int rowIndex) {
         return kurse.get(rowIndex);
     }
 
+    public int getAnzahlSchueler() {
+        int anzahlSchueler = 0;
+        //TODO
+//        for (Kurs kurs : kurse) {
+//            anzahlSchueler += kurs.getSchueler().size();
+//        }
+        return anzahlSchueler;
+    }
 }

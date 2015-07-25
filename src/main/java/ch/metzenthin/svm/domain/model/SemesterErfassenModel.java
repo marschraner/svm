@@ -24,6 +24,7 @@ public interface SemesterErfassenModel extends Model {
     void setAnzahlSchulwochen(String text) throws SvmValidationException;
     void setSemesterOrigin(Semester semesterOrigin);
 
+    Semester getNaechstesNochNichtErfasstesSemester(SvmModel svmModel);
     boolean checkSemesterBereitsErfasst(SvmModel svmModel);
     boolean checkSemesterUeberlapptAndereSemester(SvmModel svmModel);
     void speichern(SvmModel svmModel);

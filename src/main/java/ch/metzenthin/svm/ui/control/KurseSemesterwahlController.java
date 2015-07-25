@@ -5,9 +5,11 @@ import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
-import ch.metzenthin.svm.domain.model.KurseSuchenModel;
+import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
 import ch.metzenthin.svm.domain.model.KurseTableData;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
+import ch.metzenthin.svm.ui.components.KursePanel;
+import ch.metzenthin.svm.ui.components.SemestersPanel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -25,40 +27,44 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
-public class KurseSuchenController extends AbstractController {
+public class KurseSemesterwahlController extends AbstractController {
 
-    private static final Logger LOGGER = Logger.getLogger(KurseSuchenController.class);
+    private static final Logger LOGGER = Logger.getLogger(KurseSemesterwahlController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private ActionListener closeListener;
     private ActionListener nextPanelListener;
-    private KurseSuchenModel kurseSuchenModel;
+    private KurseSemesterwahlModel kurseSemesterwahlModel;
     private final SvmContext svmContext;
     private JSpinner spinnerSchuljahre;
     private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
-    private JButton btnSuchen;
+    private JButton btnOk;
     private JButton btnAbbrechen;
 
-    public KurseSuchenController(SvmContext svmContext, KurseSuchenModel kurseSuchenModel) {
-        super(kurseSuchenModel);
+    public KurseSemesterwahlController(SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel) {
+        super(kurseSemesterwahlModel);
         this.svmContext = svmContext;
-        this.kurseSuchenModel = kurseSuchenModel;
-        this.kurseSuchenModel.addPropertyChangeListener(this);
-        this.kurseSuchenModel.addDisableFieldsListener(this);
-        this.kurseSuchenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.kurseSuchenModel.addCompletedListener(new CompletedListener() {
+        this.kurseSemesterwahlModel = kurseSemesterwahlModel;
+        this.kurseSemesterwahlModel.addPropertyChangeListener(this);
+        this.kurseSemesterwahlModel.addDisableFieldsListener(this);
+        this.kurseSemesterwahlModel.addMakeErrorLabelsInvisibleListener(this);
+        this.kurseSemesterwahlModel.addCompletedListener(new CompletedListener() {
             @Override
             public void completed(boolean completed) {
                 onKurseSuchenModelCompleted(completed);
             }
         });
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
+        svmContext.getSvmModel().loadSemestersAll();
+        svmContext.getSvmModel().loadLehrkraefteAll();
+        svmContext.getSvmModel().loadKursorteAll();
+        svmContext.getSvmModel().loadKurstypenAll();
     }
 
     public void constructionDone() {
-        kurseSuchenModel.initializeCompleted();
+        kurseSemesterwahlModel.initializeCompleted();
     }
 
     public void setSpinnerSchuljahre(JSpinner spinnerSchuljahre) {
@@ -83,14 +89,14 @@ public class KurseSuchenController extends AbstractController {
         int schuljahr2 = schuljahr1 + 1;
         String schuljahr = schuljahr1 + "/" + schuljahr2;
         try {
-            kurseSuchenModel.setSchuljahr(schuljahr);
+            kurseSemesterwahlModel.setSchuljahr(schuljahr);
         } catch (SvmValidationException ignore) {
         }
     }
 
     private void onSchuljahrSelected() {
-        LOGGER.trace("KurseSuchenController Event Schuljahre selected =" + spinnerSchuljahre.getValue());
-        boolean equalFieldAndModelValue = equalsNullSafe(spinnerSchuljahre.getValue(), kurseSuchenModel.getSchuljahr());
+        LOGGER.trace("KurseSemesterwahlController Event Schuljahre selected =" + spinnerSchuljahre.getValue());
+        boolean equalFieldAndModelValue = equalsNullSafe(spinnerSchuljahre.getValue(), kurseSemesterwahlModel.getSchuljahr());
         try {
             setModelSchuljahr();
         } catch (SvmValidationException e) {
@@ -106,7 +112,7 @@ public class KurseSuchenController extends AbstractController {
     private void setModelSchuljahr() throws SvmValidationException {
         makeErrorLabelInvisible(Field.SCHULJAHR);
         try {
-            kurseSuchenModel.setSchuljahr((String) spinnerSchuljahre.getValue());
+            kurseSemesterwahlModel.setSchuljahr((String) spinnerSchuljahre.getValue());
         } catch (SvmValidationException e) {
             LOGGER.trace("PersonController setModelSchuljahr Exception=" + e.getMessage());
             showErrMsg(e);
@@ -134,12 +140,12 @@ public class KurseSuchenController extends AbstractController {
         } else {
             semesterbezeichnung = Semesterbezeichnung.ERSTES_SEMESTER;
         }
-        kurseSuchenModel.setSemesterbezeichnung(semesterbezeichnung);
+        kurseSemesterwahlModel.setSemesterbezeichnung(semesterbezeichnung);
     }
 
     private void onSemesterbezeichnungSelected() {
-        LOGGER.trace("KurseSuchenController Event Semesterbezeichnung selected=" + comboBoxSemesterbezeichnung.getSelectedItem());
-        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxSemesterbezeichnung.getSelectedItem(), kurseSuchenModel.getSemesterbezeichnung());
+        LOGGER.trace("KurseSemesterwahlController Event Semesterbezeichnung selected=" + comboBoxSemesterbezeichnung.getSelectedItem());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxSemesterbezeichnung.getSelectedItem(), kurseSemesterwahlModel.getSemesterbezeichnung());
         try {
             setModelSemesterbezeichnung();
         } catch (SvmValidationException e) {
@@ -154,15 +160,15 @@ public class KurseSuchenController extends AbstractController {
 
     private void setModelSemesterbezeichnung() throws SvmValidationException {
         makeErrorLabelInvisible(Field.SEMESTERBEZEICHNUNG);
-        kurseSuchenModel.setSemesterbezeichnung((Semesterbezeichnung) comboBoxSemesterbezeichnung.getSelectedItem());
+        kurseSemesterwahlModel.setSemesterbezeichnung((Semesterbezeichnung) comboBoxSemesterbezeichnung.getSelectedItem());
     }
 
-    public void setBtnSuchen(JButton btnSuchen) {
-        this.btnSuchen = btnSuchen;
+    public void setBtnOk(JButton btnOk) {
+        this.btnOk = btnOk;
         if (isModelValidationMode()) {
-            btnSuchen.setEnabled(false);
+            btnOk.setEnabled(false);
         }
-        this.btnSuchen.addActionListener(new ActionListener() {
+        this.btnOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onSuchen();
@@ -171,17 +177,23 @@ public class KurseSuchenController extends AbstractController {
     }
 
     private void onSuchen() {
-        LOGGER.trace("KurseSuchenController Suchen gedrückt");
+        LOGGER.trace("KurseSemesterwahlController OK gedrückt");
         if (!isModelValidationMode() && !validateOnSpeichern()) {
             return;
         }
-        KurseTableData kurseTableData = kurseSuchenModel.suchen();
+        if (!kurseSemesterwahlModel.checkSemesterBereitsErfasst(svmContext.getSvmModel())) {
+            JOptionPane.showMessageDialog(null, "Bevor Kurse für das " + kurseSemesterwahlModel.getSemesterbezeichnung() + " " + kurseSemesterwahlModel.getSchuljahr() + " erfasst werden können, muss zuerst das Semester erfasst werden.", "Semester muss zuerst erfasst werden", JOptionPane.INFORMATION_MESSAGE);
+            SemestersPanel semestersPanel = new SemestersPanel(svmContext);
+            semestersPanel.addCloseListener(closeListener);
+            nextPanelListener.actionPerformed(new ActionEvent(new Object[]{semestersPanel.$$$getRootComponent$$$(), "Semester verwalten"}, ActionEvent.ACTION_PERFORMED, "Semester verwalten"));
+            return;
+        }
+        KurseTableData kurseTableData = kurseSemesterwahlModel.suchen();
         KurseTableModel kurseTableModel = new KurseTableModel(kurseTableData);
-        //TODO
-//        KursePanel kursePanel = new KursePanel(svmContext, kurseTableModel);
-//        kursePanel.addNextPanelListener(nextPanelListener);
-//        kursePanel.addCloseListener(closeListener);
-//        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{kursePanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
+        String titel = "Kurse " + kurseSemesterwahlModel.getSemesterbezeichnung() + " " + kurseSemesterwahlModel.getSchuljahr();
+        KursePanel kursePanel = new KursePanel(svmContext, kurseSemesterwahlModel, kurseTableModel, titel);
+        kursePanel.addCloseListener(closeListener);
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{kursePanel.$$$getRootComponent$$$(), titel}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
@@ -195,18 +207,18 @@ public class KurseSuchenController extends AbstractController {
     }
 
     private void onAbbrechen() {
-        LOGGER.trace("KurseSuchenController Abbrechen gedrückt");
+        LOGGER.trace("KurseSemesterwahlController Abbrechen gedrückt");
         closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Abbrechen"));
     }
 
     private void onKurseSuchenModelCompleted(boolean completed) {
-        LOGGER.trace("KurseSuchenModel completed=" + completed);
+        LOGGER.trace("KurseSemesterwahlModel completed=" + completed);
         if (completed) {
-            btnSuchen.setToolTipText(null);
-            btnSuchen.setEnabled(true);
+            btnOk.setToolTipText(null);
+            btnOk.setEnabled(true);
         } else {
-            btnSuchen.setToolTipText("Bitte Eingabedaten vervollständigen");
-            btnSuchen.setEnabled(false);
+            btnOk.setToolTipText("Bitte Eingabedaten vervollständigen");
+            btnOk.setEnabled(false);
         }
     }
 
@@ -222,9 +234,9 @@ public class KurseSuchenController extends AbstractController {
     void doPropertyChange(PropertyChangeEvent evt) {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.SCHULJAHR, evt)) {
-            spinnerSchuljahre.setValue(kurseSuchenModel.getSchuljahr());
+            spinnerSchuljahre.setValue(kurseSemesterwahlModel.getSchuljahr());
         } else if (checkIsFieldChange(Field.SEMESTERBEZEICHNUNG, evt)) {
-            comboBoxSemesterbezeichnung.setSelectedItem(kurseSuchenModel.getSemesterbezeichnung());
+            comboBoxSemesterbezeichnung.setSelectedItem(kurseSemesterwahlModel.getSemesterbezeichnung());
         }
     }
 

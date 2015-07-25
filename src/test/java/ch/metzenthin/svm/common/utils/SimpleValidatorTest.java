@@ -2,6 +2,7 @@ package ch.metzenthin.svm.common.utils;
 
 import org.junit.Test;
 
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -132,6 +133,15 @@ public class SimpleValidatorTest {
         assertEquals(1, getNumberOfWeeksBetween(new GregorianCalendar(2015, Calendar.JULY, 1), new GregorianCalendar(2015, Calendar.JULY, 2)));
         assertEquals(1, getNumberOfWeeksBetween(new GregorianCalendar(2015, Calendar.JULY, 1), new GregorianCalendar(2015, Calendar.JULY, 8)));
         assertEquals(2, getNumberOfWeeksBetween(new GregorianCalendar(2015, Calendar.JULY, 1), new GregorianCalendar(2015, Calendar.JULY, 9)));
+    }
+
+    @Test
+    public void testIsTimePeriodValid() {
+        assertTrue(isTimePeriodValid(Time.valueOf("12:30:00"), Time.valueOf("12:31:00")));
+        assertTrue(isTimePeriodValid(Time.valueOf("12:30:00"), Time.valueOf("13:30:00")));
+        assertFalse(isTimePeriodValid(Time.valueOf("12:30:00"), Time.valueOf("12:29:00")));
+        assertFalse(isTimePeriodValid(Time.valueOf("12:30:00"), Time.valueOf("11:31:00")));
+        assertFalse(isTimePeriodValid(Time.valueOf("12:30:00"), Time.valueOf("12:30:00")));
     }
 
 }

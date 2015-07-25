@@ -63,7 +63,12 @@ public class Lehrkraft extends Person implements Comparable<Lehrkraft> {
 
     @Override
     public String toString() {
-        return getVorname() + " " + getNachname();
+        if (getVorname() != null && getNachname() != null) {
+            return getVorname() + " " + getNachname();
+        } else {
+            return "";
+        }
+
     }
 
     public String getAhvNummer() {

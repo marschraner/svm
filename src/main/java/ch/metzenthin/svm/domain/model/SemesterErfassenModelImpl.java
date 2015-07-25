@@ -4,10 +4,7 @@ import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Schuljahre;
 import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CheckSemesterBereitsErfasstCommand;
-import ch.metzenthin.svm.domain.commands.CheckSemesterUeberlapptAndereSemesterCommand;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.SaveOrUpdateSemesterCommand;
+import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.Semester;
 
 import java.util.Calendar;
@@ -174,10 +171,18 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
 
     @Override
     public boolean checkSemesterUeberlapptAndereSemester(SvmModel svmModel) {
-        CheckSemesterUeberlapptAndereSemesterCommand checkSemesterUeberlapptAndereSemesterCommand = new CheckSemesterUeberlapptAndereSemesterCommand(semester, semesterOrigin, svmModel.getSemestersAll());
         CommandInvoker commandInvoker = getCommandInvoker();
+        CheckSemesterUeberlapptAndereSemesterCommand checkSemesterUeberlapptAndereSemesterCommand = new CheckSemesterUeberlapptAndereSemesterCommand(semester, semesterOrigin, svmModel.getSemestersAll());
         commandInvoker.executeCommand(checkSemesterUeberlapptAndereSemesterCommand);
         return checkSemesterUeberlapptAndereSemesterCommand.isUeberlappt();
+    }
+
+    @Override
+    public Semester getNaechstesNochNichtErfasstesSemester(SvmModel svmModel) {
+        CommandInvoker commandInvoker = getCommandInvoker();
+        DetermineNaechstesNochNichtErfasstesSemesterCommand determineNaechstesNochNichtErfasstesSemesterCommand = new DetermineNaechstesNochNichtErfasstesSemesterCommand(svmModel.getSemestersAll());
+        commandInvoker.executeCommand(determineNaechstesNochNichtErfasstesSemesterCommand);
+        return determineNaechstesNochNichtErfasstesSemesterCommand.getNaechstesNochNichtErfasstesSemester();
     }
 
     @Override

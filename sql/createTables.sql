@@ -250,6 +250,7 @@ DESCRIBE Kurs;
 CREATE TABLE IF NOT EXISTS Kurs_Lehrkraft (
     kurs_id                    INT           NOT NULL,
     lehrkraft_id               INT           NOT NULL,
+    lehrkraefte_ORDER          INT           NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (kurs_id, lehrkraft_id),
     FOREIGN KEY (kurs_id)      REFERENCES Kurs (kurs_id),

@@ -442,24 +442,6 @@ public class DispensationErfassenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {
-        if (fields.contains(Field.DISPENSATIONSBEGINN)) {
-            errLblDispensationsbeginn.setVisible(false);
-            txtDispensationsbeginn.setToolTipText(null);
-        }
-        if (fields.contains(Field.DISPENSATIONSENDE)) {
-            errLblDispensationsende.setVisible(false);
-            txtDispensationsende.setToolTipText(null);
-        }
-        if (fields.contains(Field.VORAUSSICHTLICHE_DAUER)) {
-            errLblVoraussichtlicheDauer.setVisible(false);
-            txtVoraussichtlicheDauer.setToolTipText(null);
-        }
-        if (fields.contains(Field.GRUND)) {
-            errLblGrund.setVisible(false);
-            txtGrund.setToolTipText(null);
-        }
-    }
-
+    public void disableFields(boolean disable, Set<Field> fields) {}
 
 }

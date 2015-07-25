@@ -55,8 +55,7 @@ public class KursDaoTest {
 
     @Test
     public void testFindById() {
-           EntityTransaction tx = null;
-
+        EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -160,17 +159,17 @@ public class KursDaoTest {
             assertEquals(1, kursFound.getKursort().getKurse().size());
             assertTrue(kursFound.getKursort().getKurse().contains(kursFound));
 
-            // Lehrkräfte alphabetisch geordnet?
+            // Lehrkräfte in Reihenfolge der Erfassung geordnet?
             assertEquals(2, kursFound.getLehrkraefte().size());
-            assertEquals("Delley", kursFound.getLehrkraefte().get(0).getNachname());
-            assertEquals("Roos", kursFound.getLehrkraefte().get(1).getNachname());
+            assertEquals("Roos", kursFound.getLehrkraefte().get(0).getNachname());
+            assertEquals("Delley", kursFound.getLehrkraefte().get(1).getNachname());
             assertEquals(1, kursFound.getLehrkraefte().get(0).getKurse().size());
             assertTrue(kursFound.getLehrkraefte().get(0).getKurse().contains(kursFound));
 
             // 1. Lehrkraft löschen
             kurs.deleteLehrkraft(kursFound.getLehrkraefte().get(0));
             assertEquals(1, kursFound.getLehrkraefte().size());
-            assertEquals("Roos", kursFound.getLehrkraefte().get(0).getNachname());
+            assertEquals("Delley", kursFound.getLehrkraefte().get(0).getNachname());
 
         } finally {
             if (tx != null)

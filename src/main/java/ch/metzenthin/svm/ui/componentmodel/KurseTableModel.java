@@ -1,8 +1,10 @@
 package ch.metzenthin.svm.ui.componentmodel;
 
 import ch.metzenthin.svm.domain.model.KurseTableData;
+import ch.metzenthin.svm.persistence.entities.Kurs;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.List;
 
 
 public class KurseTableModel extends AbstractTableModel {
@@ -33,6 +35,18 @@ public class KurseTableModel extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         return kurseTableData.getColumnName(column);
+    }
+
+    public List<Kurs> getKurse() {
+        return kurseTableData.getKurse();
+    }
+
+    public Kurs getKursSelected(int rowIndex) {
+        return kurseTableData.getKursSelected(rowIndex);
+    }
+
+    public int getAnzahlSchueler() {
+        return kurseTableData.getAnzahlSchueler();
     }
 
 }

@@ -6,7 +6,6 @@ import javax.persistence.*;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -54,10 +53,10 @@ public class Kurs implements Comparable<Kurs> {
     private Kursort kursort;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
+    @OrderColumn
     @JoinTable(name = "Kurs_Lehrkraft",
             joinColumns = {@JoinColumn(name = "kurs_id")},
             inverseJoinColumns = {@JoinColumn(name = "lehrkraft_id")})
-    @OrderBy("nachname ASC, vorname ASC")
     private List<Lehrkraft> lehrkraefte = new ArrayList<>();
 
     @Column(name = "bemerkungen", nullable = true)
@@ -85,14 +84,18 @@ public class Kurs implements Comparable<Kurs> {
     }
 
     public boolean isIdenticalWith(Kurs otherKurs) {
+        // Kurse identisch, falls Semester, Wochentag, Zeit und Lehrkräfte identisch
+        List<Lehrkraft> commonLehrkraefte = new ArrayList<>(lehrkraefte);
+        // RetainAll: nur diejenigen Lehrkräfte in commonLehrkraefte behalten, die auch in otherKurs enthalten sind
+        if (otherKurs != null) {
+            commonLehrkraefte.retainAll(otherKurs.getLehrkraefte());
+        }
         return otherKurs != null
                 && semester.equals(otherKurs.semester)
-                && kurstyp.equals(otherKurs.kurstyp)
-                && stufe.equals(otherKurs.stufe)
                 && wochentag.equals(otherKurs.wochentag)
                 && zeitBeginn.equals(otherKurs.zeitBeginn)
                 && zeitEnde.equals(otherKurs.zeitEnde)
-                && kursort.equals(otherKurs.kursort);
+                && commonLehrkraefte.size() > 0;
     }
 
     public void copyAttributesFrom(Kurs otherKurs) {
@@ -240,7 +243,6 @@ public class Kurs implements Comparable<Kurs> {
     public void addLehrkraft(Lehrkraft lehrkraft) {
         lehrkraft.getKurse().add(this);
         lehrkraefte.add(lehrkraft);
-        Collections.sort(lehrkraefte);
     }
 
     public void deleteLehrkraft(Lehrkraft lehrkraft) {

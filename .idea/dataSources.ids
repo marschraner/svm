@@ -730,6 +730,7 @@
     <table name="Kurs_Lehrkraft" schema="" catalog="svm" type="TABLE">
       <column name="kurs_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="lehrkraft_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="lehrkraefte_ORDER" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="kurs_id,lehrkraft_id"/>
       <foreign-key name="Kurs_Lehrkraft_ibfk_1" columns="kurs_id" ref-table="Kurs" ref-schema="" ref-catalog="svm" ref-columns="kurs_id" update-rule="3" delete-rule="3" deferrability="2"/>

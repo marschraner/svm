@@ -291,16 +291,6 @@ public class CodeErfassenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {
-        if (fields.contains(Field.KUERZEL)) {
-            errLblKuerzel.setVisible(false);
-            txtKuerzel.setToolTipText(null);
-        }
-        if (fields.contains(Field.BESCHREIBUNG)) {
-            errLblBeschreibung.setVisible(false);
-            txtBeschreibung.setToolTipText(null);
-        }
-    }
-
+    public void disableFields(boolean disable, Set<Field> fields) {}
 
 }

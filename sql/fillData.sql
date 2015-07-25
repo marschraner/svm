@@ -198,10 +198,10 @@ SELECT * FROM Kurs;
 -- Kurs_Lehrkraft
 -- **************
 
-INSERT INTO Kurs_Lehrkraft (kurs_id, lehrkraft_id) VALUES
-    (1, 12),
-    (2, 11),
-    (3, 9),
-    (3, 13);
+INSERT INTO Kurs_Lehrkraft (kurs_id, lehrkraft_id, lehrkraefte_ORDER) VALUES
+    (1, 12, 0),
+    (2, 11, 0),
+    (3, 9, 0),
+    (3, 13, 1);
 
 SELECT * FROM Kurs_Lehrkraft;
