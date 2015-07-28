@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.daos.CodeDao;
 import ch.metzenthin.svm.persistence.entities.Code;
 import org.junit.After;
@@ -13,9 +12,7 @@ import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Martin Schraner
@@ -98,7 +95,7 @@ public class SaveOrUpdateCodeCommandTest {
 
     }
 
-    private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) throws SvmDbException {
+    private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) {
         FindAllCodesCommand findAllCodesCommand = new FindAllCodesCommand();
         commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllCodesCommand);
         List<Code> codesAll = findAllCodesCommand.getCodesAll();

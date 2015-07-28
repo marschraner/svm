@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.daos.CodeDao;
 import ch.metzenthin.svm.persistence.entities.Code;
 import org.junit.After;

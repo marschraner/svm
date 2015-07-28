@@ -4,7 +4,6 @@ import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.dataTypes.Wochentag;
-import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.daos.*;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
@@ -211,7 +210,7 @@ public class AddKursToSchuelerAndSaveCommandTest {
 
     }
 
-    private boolean checkIfKursAvailable(Semester semester, Kurstyp kurstyp, String altersbereich, String stufe, Wochentag wochentag, Time zeitBeginn, Time zeitEnde, Kursort kursort, Lehrkraft lehrkraft1, Lehrkraft lehrkraft2) throws SvmDbException {
+    private boolean checkIfKursAvailable(Semester semester, Kurstyp kurstyp, String altersbereich, String stufe, Wochentag wochentag, Time zeitBeginn, Time zeitEnde, Kursort kursort, Lehrkraft lehrkraft1, Lehrkraft lehrkraft2) {
         FindKurseSemesterCommand kurseSemesterCommand = new FindKurseSemesterCommand(semester);
         commandInvoker.executeCommandAsTransaction(kurseSemesterCommand);
         List<Kurs> kurseAll = kurseSemesterCommand.getKurseFound();

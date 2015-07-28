@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.daos.SemesterDao;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import org.junit.After;
@@ -109,7 +108,7 @@ public class SaveOrUpdateSemesterCommandTest {
 
     }
 
-    private boolean checkIfSemesterAvailable(String schuljahr, Semesterbezeichnung semesterbezeichnung, Calendar semesterbeginn, Calendar semesterende, int anzahlSchulwochen) throws SvmDbException {
+    private boolean checkIfSemesterAvailable(String schuljahr, Semesterbezeichnung semesterbezeichnung, Calendar semesterbeginn, Calendar semesterende, int anzahlSchulwochen) {
         FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
         commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSemestersCommand);
         List<Semester> semestersAll = findAllSemestersCommand.getSemesterAll();
