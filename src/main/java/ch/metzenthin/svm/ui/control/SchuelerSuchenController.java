@@ -346,7 +346,7 @@ public class SchuelerSuchenController extends PersonController {
             schuelerSuchenResultPanel.addZurueckListener(zurueckListener);
             nextPanelListener.actionPerformed(new ActionEvent(new Object[] {schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
         } else {
-            SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, 0, true);
+            SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, null, 0, true);
             schuelerDatenblattPanel.addCloseListener(closeListener);
             schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
             schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckListener);

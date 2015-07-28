@@ -68,8 +68,8 @@ public class SchuelerDatenblattPanel {
 
     private final SchuelerDatenblattController schuelerDatenblattController;
 
-    public SchuelerDatenblattPanel(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isFromSchuelerSuchenResult) {
-        schuelerDatenblattController = new SchuelerDatenblattController(svmContext, schuelerSuchenTableModel, selectedRow, isFromSchuelerSuchenResult);
+    public SchuelerDatenblattPanel(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isFromSchuelerSuchenResult) {
+        schuelerDatenblattController = new SchuelerDatenblattController(svmContext, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, isFromSchuelerSuchenResult);
         schuelerDatenblattController.setLabelVornameNachname(lblVornameNachname);
         schuelerDatenblattController.setLabelSchueler(lblSchueler);
         schuelerDatenblattController.setLabelSchuelerValue(lblSchuelerValue);

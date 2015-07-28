@@ -30,6 +30,7 @@ public class KurseController {
     private final SvmContext svmContext;
     private final SchuelerDatenblattModel schuelerDatenblattModel;
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
+    private final JTable schuelerSuchenResultTable;
     private final int selectedRow;
     private final boolean isKurseSchueler;
     private final boolean isFromSchuelerSuchenResult;
@@ -48,13 +49,14 @@ public class KurseController {
     private ActionListener zurueckZuSchuelerSuchenListener;
     private boolean isNeuerKursErfassbar;
 
-    public KurseController(KurseModel kurseModel, SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isKurseSchueler, boolean isFromSchuelerSuchenResult) {
+    public KurseController(KurseModel kurseModel, SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isKurseSchueler, boolean isFromSchuelerSuchenResult) {
         this.kurseModel = kurseModel;
         this.kurseSemesterwahlModel = kurseSemesterwahlModel;
         this.kurseTableModel = kurseTableModel;
         this.svmContext = svmContext;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
+        this.schuelerSuchenResultTable = schuelerSuchenResultTable;
         this.selectedRow = selectedRow;
         this.isKurseSchueler = isKurseSchueler;
         this.isFromSchuelerSuchenResult = isFromSchuelerSuchenResult;
@@ -308,7 +310,7 @@ public class KurseController {
     }
 
     private void onZurueck() {
-        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, selectedRow, isFromSchuelerSuchenResult);
+        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, isFromSchuelerSuchenResult);
         schuelerDatenblattPanel.addCloseListener(closeListener);
         schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
         schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);

@@ -34,14 +34,14 @@ public class KursePanel {
     private JTable kurseTable;
     private KurseController kurseController;
 
-    public KursePanel(SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isKurseSchueler, boolean isFromSchuelerSuchenResult, String titel) {
+    public KursePanel(SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isKurseSchueler, boolean isFromSchuelerSuchenResult, String titel) {
         lblTitel.setText(titel);
         createUIComponents();
-        createKurseController(svmContext, kurseSemesterwahlModel, kurseTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, isKurseSchueler, isFromSchuelerSuchenResult);
+        createKurseController(svmContext, kurseSemesterwahlModel, kurseTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, isKurseSchueler, isFromSchuelerSuchenResult);
     }
 
-    private void createKurseController(SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isKurseSchueler, boolean isFromSchuelerSuchenResult) {
-        kurseController = new KurseController(svmContext.getModelFactory().createKurseModel(), svmContext, kurseSemesterwahlModel, kurseTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, isKurseSchueler, isFromSchuelerSuchenResult);
+    private void createKurseController(SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isKurseSchueler, boolean isFromSchuelerSuchenResult) {
+        kurseController = new KurseController(svmContext.getModelFactory().createKurseModel(), svmContext, kurseSemesterwahlModel, kurseTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, isKurseSchueler, isFromSchuelerSuchenResult);
         kurseController.setKurseTable(kurseTable);
         kurseController.setLblTotal(lblTotal);
         kurseController.setBtnNeu(btnNeu);
