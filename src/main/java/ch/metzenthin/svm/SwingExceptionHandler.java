@@ -1,5 +1,6 @@
 package ch.metzenthin.svm;
 
+import ch.metzenthin.svm.common.SvmRuntimeException;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -51,10 +52,17 @@ public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         scrollPane.setPreferredSize( new Dimension( 1000, 500 ) );
-        JOptionPane.showMessageDialog(findActiveOrVisibleFrame(),
-                scrollPane,
-                "Ein unerwarteter Fehler ist aufgetreten. Die Applikation wird beendet!",
-                JOptionPane.ERROR_MESSAGE);
+        if ((e instanceof SvmRuntimeException) || ((e.getCause() != null) && (e.getCause() instanceof SvmRuntimeException))) {
+            JOptionPane.showMessageDialog(findActiveOrVisibleFrame(),
+                    (e instanceof SvmRuntimeException) ? e.getMessage() : e.getCause().getMessage(),
+                    "Fehler",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(findActiveOrVisibleFrame(),
+                    scrollPane,
+                    "Ein unerwarteter Fehler ist aufgetreten. Die Applikation wird beendet!",
+                    JOptionPane.ERROR_MESSAGE);
+        }
         System.exit(1);
     }
 
