@@ -26,6 +26,7 @@ import java.awt.event.MouseEvent;
 public class CodesController {
     private final SvmContext svmContext;
     private final CodesModel codesModel;
+    private final JTable schuelerSuchenResultTable;
     private final boolean isCodesSchueler;
     private final SchuelerDatenblattModel schuelerDatenblattModel;
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
@@ -41,9 +42,10 @@ public class CodesController {
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
 
-    public CodesController(CodesModel codesModel, SvmContext svmContext, CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isCodesSchueler, boolean isFromSchuelerSuchenResult) {
+    public CodesController(CodesModel codesModel, SvmContext svmContext, CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isCodesSchueler, boolean isFromSchuelerSuchenResult) {
         this.codesModel = codesModel;
         this.svmContext = svmContext;
+        this.schuelerSuchenResultTable = schuelerSuchenResultTable;
         this.isCodesSchueler = isCodesSchueler;
         this.codesTableModel = codesTableModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
@@ -249,7 +251,7 @@ public class CodesController {
     }
 
     private void onZurueck() {
-        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, selectedRow, isFromSchuelerSuchenResult);
+        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, isFromSchuelerSuchenResult);
         schuelerDatenblattPanel.addCloseListener(closeListener);
         schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
         schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);

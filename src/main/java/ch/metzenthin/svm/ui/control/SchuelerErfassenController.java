@@ -241,7 +241,7 @@ public class SchuelerErfassenController {
             } else {
                 SchuelerSuchenTableData schuelerSuchenTableData = schuelerErfassenModel.getSchuelerSuchenTableData();
                 SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenTableData);
-                SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, 0, false);
+                SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, null, 0, false);
                 schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
                 schuelerDatenblattPanel.addCloseListener(closeListener);
                 nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));

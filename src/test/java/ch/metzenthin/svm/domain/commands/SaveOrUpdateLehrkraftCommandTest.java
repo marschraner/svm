@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
-import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.daos.LehrkraftDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
@@ -106,7 +105,7 @@ public class SaveOrUpdateLehrkraftCommandTest {
 
     }
 
-    private boolean checkIfLehrkraftAvailable(String nachname, String vorname, String email, String strasse) throws SvmDbException {
+    private boolean checkIfLehrkraftAvailable(String nachname, String vorname, String email, String strasse) {
         FindAllLehrkraefteCommand findAllLehrkraefteCommand = new FindAllLehrkraefteCommand();
         commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLehrkraefteCommand);
         List<Lehrkraft> lehrkraefteAll = findAllLehrkraefteCommand.getLehrkraefteAll();

@@ -191,7 +191,7 @@ public class KurseSemesterwahlController extends AbstractController {
         KurseTableData kurseTableData = kurseSemesterwahlModel.suchen();
         KurseTableModel kurseTableModel = new KurseTableModel(kurseTableData);
         String titel = "Kurse " + kurseSemesterwahlModel.getSemesterbezeichnung() + " " + kurseSemesterwahlModel.getSchuljahr();
-        KursePanel kursePanel = new KursePanel(svmContext, kurseSemesterwahlModel, kurseTableModel, null, null, 0, false, false, titel);
+        KursePanel kursePanel = new KursePanel(svmContext, kurseSemesterwahlModel, kurseTableModel, null, null, null, 0, false, false, titel);
         kursePanel.addCloseListener(closeListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{kursePanel.$$$getRootComponent$$$(), titel}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
     }

@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.daos.KurstypDao;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import org.junit.After;
@@ -94,7 +93,7 @@ public class SaveOrUpdateKurstypCommandTest {
         }
     }
 
-    private boolean checkIfKurstypAvailable(String bezeichnung) throws SvmDbException {
+    private boolean checkIfKurstypAvailable(String bezeichnung) {
         FindAllKurstypenCommand findAllKurstypenCommand = new FindAllKurstypenCommand();
         commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllKurstypenCommand);
         List<Kurstyp> kurstypenAll = findAllKurstypenCommand.getKurstypenAll();

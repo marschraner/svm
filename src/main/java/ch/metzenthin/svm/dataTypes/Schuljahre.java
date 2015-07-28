@@ -5,8 +5,8 @@ package ch.metzenthin.svm.dataTypes;
  */
 public class Schuljahre {
 
-    public static int SCHULJAHR_VALID_MIN = 2000;
-    public static int SCHULJAHR_VALID_MAX = 2049;
+    public final static int SCHULJAHR_VALID_MIN = 2000;
+    public final static int SCHULJAHR_VALID_MAX = 2049;
 
     public String[] getSchuljahre() {
         String[] schuljahre = new String[SCHULJAHR_VALID_MAX - SCHULJAHR_VALID_MIN + 1];

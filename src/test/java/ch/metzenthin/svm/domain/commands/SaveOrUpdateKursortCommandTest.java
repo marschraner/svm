@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.SvmDbException;
 import ch.metzenthin.svm.persistence.daos.KursortDao;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import org.junit.After;
@@ -94,7 +93,7 @@ public class SaveOrUpdateKursortCommandTest {
         }
     }
 
-    private boolean checkIfKursortAvailable(String bezeichnung) throws SvmDbException {
+    private boolean checkIfKursortAvailable(String bezeichnung) {
         FindAllKursorteCommand findAllKursorteCommand = new FindAllKursorteCommand();
         commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllKursorteCommand);
         List<Kursort> kursorteAll = findAllKursorteCommand.getKursorteAll();

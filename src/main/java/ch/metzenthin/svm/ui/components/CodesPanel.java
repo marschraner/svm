@@ -30,13 +30,13 @@ public class CodesPanel {
     private JPanel titelPanel;
     private CodesController codesController;
 
-    public CodesPanel(SvmContext svmContext, CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isCodesSchueler, boolean isFromSchuelerSuchenResult) {
+    public CodesPanel(SvmContext svmContext, CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isCodesSchueler, boolean isFromSchuelerSuchenResult) {
         $$$setupUI$$$();
-        createCodesController(svmContext, codesTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, isCodesSchueler, isFromSchuelerSuchenResult);
+        createCodesController(svmContext, codesTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, isCodesSchueler, isFromSchuelerSuchenResult);
     }
 
-    private void createCodesController(SvmContext svmContext, CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isCodesSchueler, boolean isFromSchuelerSuchenResult) {
-        codesController = new CodesController(svmContext.getModelFactory().createCodesModel(), svmContext, codesTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, isCodesSchueler, isFromSchuelerSuchenResult);
+    private void createCodesController(SvmContext svmContext, CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isCodesSchueler, boolean isFromSchuelerSuchenResult) {
+        codesController = new CodesController(svmContext.getModelFactory().createCodesModel(), svmContext, codesTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, isCodesSchueler, isFromSchuelerSuchenResult);
         codesController.setCodesTable(codesTable);
         codesController.setLblTitel(lblTitle);
         codesController.setBtnNeu(btnNeu);
