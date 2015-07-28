@@ -28,8 +28,12 @@ public interface SchuelerDatenblattModel {
     String getDispensationsgrund();
     String getFruehereDispensationenAsString();
     String getCodesAsString();
+    String getSemesterKurseAsString(SvmModel svmModel);
+    String getKurseAsString(SvmModel svmModel);
     DispensationenTableData getDispensationenTableData();
     CodesTableData getCodesTableData();
+    KurseTableData getKurseTableData();
+
     SchuelerModel getSchuelerModel(SvmContext svmContext);
     AngehoerigerModel getMutterModel(SvmContext svmContext);
     AngehoerigerModel getVaterModel(SvmContext svmContext);

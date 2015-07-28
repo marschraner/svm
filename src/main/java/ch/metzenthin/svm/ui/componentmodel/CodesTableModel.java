@@ -35,4 +35,7 @@ public class CodesTableModel extends AbstractTableModel {
         return codesTableData.getColumnName(column);
     }
 
+    public CodesTableData getCodesTableData() {
+        return codesTableData;
+    }
 }

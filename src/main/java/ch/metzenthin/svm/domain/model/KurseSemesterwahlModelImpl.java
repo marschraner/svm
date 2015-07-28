@@ -6,7 +6,7 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CheckSemesterBereitsErfasstCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.FindKurseSemesterCommand;
-import ch.metzenthin.svm.domain.commands.FindSemesterCommand;
+import ch.metzenthin.svm.domain.commands.FindSemesterForSchuljahrSemesterbezeichnungCommand;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Semester;
 
@@ -76,15 +76,15 @@ public class KurseSemesterwahlModelImpl extends AbstractModel implements KurseSe
         FindKurseSemesterCommand findKurseSemesterCommand = new FindKurseSemesterCommand(new Semester(schuljahr, semesterbezeichnung, null, null, 0));
         commandInvoker.executeCommand(findKurseSemesterCommand);
         List<Kurs> kurseFound = findKurseSemesterCommand.getKurseFound();
-        return new KurseTableData(kurseFound);
+        return new KurseTableData(kurseFound, false);
     }
 
     @Override
     public Semester getSemester(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        FindSemesterCommand findSemesterCommand = new FindSemesterCommand(schuljahr, semesterbezeichnung, svmModel.getSemestersAll());
-        commandInvoker.executeCommand(findSemesterCommand);
-        return findSemesterCommand.getSemesterFound();
+        FindSemesterForSchuljahrSemesterbezeichnungCommand findSemesterForSchuljahrSemesterbezeichnungCommand = new FindSemesterForSchuljahrSemesterbezeichnungCommand(schuljahr, semesterbezeichnung, svmModel.getSemestersAll());
+        commandInvoker.executeCommand(findSemesterForSchuljahrSemesterbezeichnungCommand);
+        return findSemesterForSchuljahrSemesterbezeichnungCommand.getSemesterFound();
     }
 
     @Override

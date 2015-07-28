@@ -6,6 +6,8 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.DeleteCodeCommand;
 import ch.metzenthin.svm.domain.commands.RemoveCodeFromSchuelerCommand;
 import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 
 import java.util.*;
 
@@ -28,10 +30,13 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
     }
 
     @Override
-    public void eintragLoeschenCodesSchueler(int indexCodeToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public void eintragLoeschenCodesSchueler(CodesTableModel codesTableModel, int indexCodeToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         RemoveCodeFromSchuelerCommand removeCodeFromSchuelerCommand = new RemoveCodeFromSchuelerCommand(indexCodeToBeRemoved, schuelerDatenblattModel.getSchueler());
         commandInvoker.executeCommandAsTransaction(removeCodeFromSchuelerCommand);
+        Schueler schuelerUpdated = removeCodeFromSchuelerCommand.getSchuelerUpdated();
+        // TableData mit von der Datenbank upgedatetem Schüler updaten
+        codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getCodes());
     }
 
     @Override

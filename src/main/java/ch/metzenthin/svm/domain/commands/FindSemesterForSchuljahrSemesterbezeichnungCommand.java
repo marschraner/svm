@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindSemesterCommand implements Command {
+public class FindSemesterForSchuljahrSemesterbezeichnungCommand implements Command {
 
     // input
     private String schuljahr;
@@ -18,7 +18,7 @@ public class FindSemesterCommand implements Command {
     // output
     private Semester semesterFound;
 
-    public FindSemesterCommand(String schuljahr, Semesterbezeichnung semesterbezeichnung, List<Semester> erfassteSemesters) {
+    public FindSemesterForSchuljahrSemesterbezeichnungCommand(String schuljahr, Semesterbezeichnung semesterbezeichnung, List<Semester> erfassteSemesters) {
         this.schuljahr = schuljahr;
         this.semesterbezeichnung = semesterbezeichnung;
         this.erfassteSemesters = erfassteSemesters;

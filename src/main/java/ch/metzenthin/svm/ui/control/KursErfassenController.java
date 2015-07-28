@@ -657,19 +657,19 @@ public class KursErfassenController extends AbstractController {
             LOGGER.trace("Validate field ZeitEnde");
             setModelZeitEnde(true);
         }
-        if (txtZeitEnde.isEnabled()) {
+        if (comboBoxKursort.isEnabled()) {
             LOGGER.trace("Validate field Kursort");
             setModelKursort();
         }
-        if (txtZeitEnde.isEnabled()) {
+        if (comboBoxLehrkraft1.isEnabled()) {
             LOGGER.trace("Validate field Lehrkraft1");
             setModelLehrkraft1();
         }
-        if (txtZeitEnde.isEnabled()) {
+        if (comboBoxLehrkraft2.isEnabled()) {
             LOGGER.trace("Validate field Lehrkraft2");
             setModelLehrkraft2();
         }
-        if (txtZeitEnde.isEnabled()) {
+        if (txtBemerkungen.isEnabled()) {
             LOGGER.trace("Validate field Bemerkungen");
             setModelBemerkungen(true);
         }

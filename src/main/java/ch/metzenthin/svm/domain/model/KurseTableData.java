@@ -4,6 +4,7 @@ import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -14,15 +15,30 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 public class KurseTableData {
 
     private List<Kurs> kurse;
+    private List<Field> columns = new ArrayList<>();
 
-    public KurseTableData(List<Kurs> kurse) {
+    public KurseTableData(List<Kurs> kurse, boolean isKurseSchueler) {
         this.kurse = kurse;
+        if (isKurseSchueler) {
+            columns.add(Field.SCHULJAHR);
+            columns.add(Field.SEMESTERBEZEICHNUNG);
+        }
+        columns.add(Field.KURSTYP_BEZEICHNUNG);
+        columns.add(Field.ALTERSBEREICH);
+        columns.add(Field.STUFE);
+        columns.add(Field.TAG);
+        columns.add(Field.ZEIT_BEGINN);
+        columns.add(Field.ZEIT_ENDE);
+        columns.add(Field.ORT);
+        columns.add(Field.LEITUNG);
+        columns.add(Field.BEMERKUNGEN);
+        if (!isKurseSchueler) {
+            columns.add(Field.ANZAHL_SCHUELER);
+        }
     }
 
-    private static final Field[] COLUMNS = {Field.KURSTYP_BEZEICHNUNG, Field.ALTERSBEREICH, Field.STUFE, Field.TAG, Field.ZEIT_BEGINN, Field.ZEIT_ENDE, Field.ORT, Field.LEITUNG, Field.ANZAHL_SCHUELER};
-
     public int getColumnCount() {
-        return COLUMNS.length;
+        return columns.size();
     }
 
     public int size() {
@@ -32,7 +48,13 @@ public class KurseTableData {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Kurs kurs = kurse.get(rowIndex);
         Object value = null;
-        switch (COLUMNS[columnIndex]) {
+        switch (columns.get(columnIndex)) {
+            case SCHULJAHR:
+                value = kurs.getSemester().getSchuljahr();
+                break;
+            case SEMESTERBEZEICHNUNG:
+                value = kurs.getSemester().getSemesterbezeichnung();
+                break;
             case KURSTYP_BEZEICHNUNG:
                 value = kurs.getKurstyp().getBezeichnung();
                 break;
@@ -64,8 +86,11 @@ public class KurseTableData {
                 }
                 value = leitung;
                 break;
+            case BEMERKUNGEN:
+                value = kurs.getBemerkungen();
+                break;
             case ANZAHL_SCHUELER:
-                value = 0;  //TODO
+                value = kurs.getSchueler().size();
                 break;
             default:
                 break;
@@ -73,8 +98,12 @@ public class KurseTableData {
         return value;
     }
 
+    public void setKurse(List<Kurs> kurse) {
+        this.kurse = kurse;
+    }
+
     public String getColumnName(int column) {
-        return COLUMNS[column].toString();
+        return columns.get(column).toString();
     }
 
     public List<Kurs> getKurse() {
@@ -87,10 +116,9 @@ public class KurseTableData {
 
     public int getAnzahlSchueler() {
         int anzahlSchueler = 0;
-        //TODO
-//        for (Kurs kurs : kurse) {
-//            anzahlSchueler += kurs.getSchueler().size();
-//        }
+        for (Kurs kurs : kurse) {
+            anzahlSchueler += kurs.getSchueler().size();
+        }
         return anzahlSchueler;
     }
 }

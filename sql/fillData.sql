@@ -12,6 +12,7 @@ USE svm;
 -- Delete
 -- ******
 
+DELETE FROM Schueler_Kurs;
 DELETE FROM Kurs_Lehrkraft;
 DELETE FROM Kurs;
 DELETE FROM Semester;
@@ -43,7 +44,9 @@ INSERT INTO Adresse (adresse_id, strasse, hausnummer, plz, ort) VALUES
     (9, 'Stauffacherstrasse', '222', '8004', 'Zürich'),
     (10, 'Friedberg', '3', '3380', 'Wangen an der Aare'),
     (11, 'Zollikerstrasse', '81', '8008', 'Zürich'),
-    (12, 'Im Rüteli', '7', '5401', 'Baden-Dättwil');
+    (12, 'Im Rüteli', '7', '5401', 'Baden-Dättwil'),
+    (13, 'Ceresstrasse', '11', '8008', 'Zürich'),
+    (14, 'Neugasse', '33', '8005', 'Zürich');
 
 SELECT * FROM Adresse;
 
@@ -64,7 +67,9 @@ INSERT INTO Person (person_id, discriminator, anrede, vorname, nachname, geburts
     (10, 'Lehrkraft', 'FRAU', 'Sibylle', 'Schweizer', '1969-05-19', '043 322 00 08', '079 629 72 36', 'sibylle.schweizer@gmx.ch', 9),
     (11, 'Lehrkraft', 'FRAU', 'Franziska', 'Lüscher', '1962-04-25', '032 631 07 76', '076 378 07 76', 'ziska@bluewin.ch', 10),
     (12, 'Lehrkraft', 'FRAU', 'Ursina', 'Höhn', '1971-07-17', '043 499 02 20', '079 714 02 07', 'ursina.hoehn@bluewin.ch', 11),
-    (13, 'Lehrkraft', 'FRAU', 'Simona', 'Hofmann', '1980-07-24', NULL, '079 478 87 05', 'hofmannsimona@gmail.com', 12);
+    (13, 'Lehrkraft', 'FRAU', 'Simona', 'Hofmann', '1980-07-24', NULL, '079 478 87 05', 'hofmannsimona@gmail.com', 12),
+    (14, 'Lehrkraft', 'FRAU', 'Esther', 'Fessler', '1981-06-19', '043 537 71 93', '076 449 39 63', 'esthifessler@gmail.com', 13),
+    (15, 'Lehrkraft', 'FRAU', 'Sara', 'Dorigo', '1980-11-26', NULL, '076 566 14 95', 'saradorigo@gmx.ch', 14);
 
 SELECT * FROM Person;
 
@@ -100,7 +105,9 @@ INSERT INTO Lehrkraft (person_id, ahvnummer, vertretungsmoeglichkeiten, aktiv) V
     (10, '756.3201.3214.21', 'Mi, Sa', 1),
     (11, '756.8923.1873.08', NULL, 1),
     (12, '756.3501.3214.21', NULL, 1),
-    (13, '756.8433.1873.08', NULL, 1);
+    (13, '756.8433.1873.08', NULL, 1),
+    (14, '756.1232.1812.12', NULL, 1),
+    (15, '756.2433.2373.47', NULL, 1);
 
 SELECT * FROM Lehrkraft;
 
@@ -139,7 +146,7 @@ SELECT * FROM Code;
 -- Schueler_Code
 -- *************
 
-INSERT INTO Schueler_Code (schueler_id, code_id) VALUES
+INSERT INTO Schueler_Code (person_id, code_id) VALUES
     (7, 2),
     (8, 1);
 
@@ -178,8 +185,7 @@ SELECT * FROM Kursort;
 INSERT INTO Semester (semester_id, schuljahr, semesterbezeichnung, semesterbeginn, semesterende, anzahl_schulwochen) VALUES
     (1, '2014/2015', 'ERSTES_SEMESTER', '2014-08-18', '2015-02-07', 18),
     (2, '2014/2015', 'ZWEITES_SEMESTER', '2015-02-23', '2015-07-11', 18),
-    (3, '2015/2016', 'ERSTES_SEMESTER', '2015-08-17', '2016-02-06', 18),
-    (4, '2015/2016', 'ZWEITES_SEMESTER', '2016-02-22', '2016-07-09', 18);
+    (3, '2015/2016', 'ERSTES_SEMESTER', '2015-08-17', '2016-02-06', 18);
 
 SELECT * FROM Semester;
 
@@ -188,9 +194,24 @@ SELECT * FROM Semester;
 -- ****
 
 INSERT INTO Kurs (kurs_id, semester_id, kurstyp_id, altersbereich, stufe, wochentag, zeit_beginn, zeit_ende, kursort_id, bemerkungen) VALUES
-    (1, 4, 1, '3 - 4 J', 'Vorkindergarten', 'DIENSTAG', '09:10:00', '10:00:00', 1, NULL),
-    (2, 4, 1, '4 1/2 - 5 J', '1. Kindergarten', 'DIENSTAG', '14:00:00', '14:50:00', 1, NULL),
-    (3, 4, 6, '9 - 11 J', '5 - 6', 'MONTAG', '16:40:00', '17:30:00', 1, NULL); 
+    (1, 1, 1, '4 1/2 - 5 J', '1. Kindergarten', 'FREITAG', '14:00:00', '14:50:00', 1, NULL),
+    (2, 2, 1, '5 - 5 1/2 J', '1. Kindergarten', 'FREITAG', '14:00:00', '14:50:00', 1, NULL),
+    (3, 3, 1, '4 1/2 - 5 J', '1. Kindergarten', 'FREITAG', '14:00:00', '14:50:00', 1, NULL),
+    (4, 1, 1, '5 1/2 - 6 J', '2. Kindergarten', 'FREITAG', '14:50:00', '15:40:00', 1, NULL),
+    (5, 2, 1, '6 - 6 1/2 J', '2. Kindergarten', 'FREITAG', '14:50:00', '15:40:00', 1, NULL),
+    (6, 3, 1, '5 1/2 - 6 J', '2. Kindergarten', 'FREITAG', '14:50:00', '15:40:00', 1, NULL),
+    (7, 1, 1, '4 1/2 - 5 J', '1. Kindergarten', 'FREITAG', '15:40:00', '16:30:00', 1, NULL),
+    (8, 2, 1, '5 - 5 1/2 J', '1. Kindergarten', 'FREITAG', '15:40:00', '16:30:00', 1, NULL),
+    (9, 3, 1, '4 1/2 - 5 J', '1. Kindergarten', 'FREITAG', '15:40:00', '16:30:00', 1, NULL),
+    (10, 1, 1, '5 1/2 - 6 J', '2. Kindergarten', 'FREITAG', '16:40:00', '17:30:00', 1, NULL),
+    (11, 2, 1, '6 - 6 1/2 J', '2. Kindergarten', 'FREITAG', '16:40:00', '17:30:00', 1, NULL),
+    (12, 3, 1, '5 1/2 - 6 J', '2. Kindergarten', 'FREITAG', '16:40:00', '17:30:00', 1, NULL),
+    (13, 1, 5, '6 1/2 - 8 J', '1 - 2 (ab 1. Kl)', 'FREITAG', '15:50:00', '16:40:00', 3, NULL),
+    (14, 2, 5, '7 - 8 J', '1 - 2 (ab 1. Kl)', 'FREITAG', '15:50:00', '16:40:00', 3, '(T. Gut / F. Vogel)'),
+    (15, 3, 5, '6 1/2 - 8 J', '1 - 2 (ab 1. Kl)', 'FREITAG', '15:50:00', '16:40:00', 3, NULL),
+    (16, 2, 6, '9 - 11 J', '2 - 3', 'MONTAG', '16:50:00', '17:40:00', 4, NULL),
+    (17, 3, 6, '9 - 11 J', '2 - 3', 'MONTAG', '16:40:00', '17:30:00', 4, NULL),
+    (18, 3, 2, '6 1/2 - 8 J', '1 - 2. Klasse', 'DONNERSTAG', '15:50:00', '16:40:00', 1, NULL); 
 
 SELECT * FROM Kurs;
 
@@ -198,10 +219,40 @@ SELECT * FROM Kurs;
 -- Kurs_Lehrkraft
 -- **************
 
-INSERT INTO Kurs_Lehrkraft (kurs_id, lehrkraft_id, lehrkraefte_ORDER) VALUES
-    (1, 12, 0),
-    (2, 11, 0),
-    (3, 9, 0),
-    (3, 13, 1);
+INSERT INTO Kurs_Lehrkraft (kurs_id, person_id, lehrkraefte_ORDER) VALUES
+    (1, 15, 0),
+    (2, 15, 0),
+    (3, 15, 0),
+    (4, 15, 0),
+    (5, 15, 0),
+    (6, 15, 0),
+    (7, 15, 0),
+    (8, 15, 0),
+    (9, 15, 0),
+    (10, 15, 0),
+    (11, 15, 0),
+    (12, 15, 0),
+    (13, 14, 0),
+    (14, 14, 0),
+    (15, 14, 0),
+    (16, 9, 0),
+    (16, 13, 1),
+    (17, 9, 0),
+    (17, 13, 1),
+    (18, 11, 0);
 
 SELECT * FROM Kurs_Lehrkraft;
+
+
+-- Schueler_Kurs
+-- *************
+
+INSERT INTO Schueler_Kurs (person_id, kurs_id) VALUES
+    (7, 13),
+    (7, 14),
+    (7, 18),
+    (8, 7),
+    (8, 8),
+    (8, 6);
+
+SELECT * FROM Schueler_Kurs;

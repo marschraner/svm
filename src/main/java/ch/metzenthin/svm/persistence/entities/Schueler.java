@@ -47,10 +47,17 @@ public class Schueler extends Person {
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "Schueler_Code",
-            joinColumns = {@JoinColumn(name = "schueler_id")},
+            joinColumns = {@JoinColumn(name = "person_id")},
             inverseJoinColumns = {@JoinColumn(name = "code_id")})
     @OrderBy("kuerzel ASC")
     private List<Code> codes = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "Schueler_Kurs",
+            joinColumns = {@JoinColumn(name = "person_id")},
+            inverseJoinColumns = {@JoinColumn(name = "kurs_id")})
+    @OrderBy("semester DESC, kurstyp ASC, wochentag ASC, zeitBeginn ASC")
+    private List<Kurs> kurse = new ArrayList<>();
 
     public Schueler() {
     }
@@ -175,6 +182,24 @@ public class Schueler extends Person {
     public void deleteCode(Code code) {
         code.getSchueler().remove(this);
         codes.remove(code);
+    }
+
+    public List<Kurs> getKurse() {
+        // orderBy kurs.semester.semesterbeginn funktioniert nicht in JPA-Abfrage (wegen 1:n?), daher sind
+        // die Kurse absteigend in der Reihenfolge der Semester-Ids geordnet -> zusätzliche Sortierung nötig
+        Collections.sort(kurse);
+        return kurse;
+    }
+
+    public void addKurs(Kurs kurs) {
+        kurs.getSchueler().add(this);
+        kurse.add(kurs);
+        Collections.sort(kurse);
+    }
+
+    public void deleteKurs(Kurs kurs) {
+        kurs.getSchueler().remove(this);
+        kurse.remove(kurs);
     }
 
     public boolean isEmpty() {

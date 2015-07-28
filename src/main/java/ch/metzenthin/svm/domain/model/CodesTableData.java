@@ -42,6 +42,10 @@ public class CodesTableData {
         return value;
     }
 
+    public void setCodes(List<Code> codes) {
+        this.codes = codes;
+    }
+
     public String getColumnName(int column) {
         return COLUMNS[column].toString();
     }

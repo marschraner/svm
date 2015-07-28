@@ -1,11 +1,13 @@
 package ch.metzenthin.svm.domain.commands;
 
 import org.apache.log4j.Logger;
+import org.hibernate.StaleObjectStateException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.swing.*;
 
 /**
  * @author Hans Stamm
@@ -62,14 +64,18 @@ public class CommandInvokerImpl implements CommandInvoker {
             genericDaoCommand.execute();
             entityManager.getTransaction().commit();
             LOGGER.trace("executeCommandAsTransaction durchgeführt");
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             LOGGER.error("Fehler in executeCommandAsTransaction(GenericDaoCommand)", e);
             if ((entityManager != null) && entityManager.isOpen() && entityManager.getTransaction().isActive()) {
                 LOGGER.trace("Rollback wird durchgeführt executeCommandAsTransaction(GenericDaoCommand)", e);
                 entityManager.getTransaction().rollback();
                 LOGGER.trace("Rollback ist durchgeführt executeCommandAsTransaction(GenericDaoCommand)", e);
             }
-            throw e;
+            if (e instanceof StaleObjectStateException) {
+                JOptionPane.showMessageDialog(null, "Speichern / löschen fehlgeschlagen, da das Objekt inzwischen auf der Datenbank verändert wurde. Die Applikation muss neu gestartet werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                System.exit(1);
+            }
         }
         return genericDaoCommand;
     }
@@ -108,7 +114,7 @@ public class CommandInvokerImpl implements CommandInvoker {
         LOGGER.trace("clear aufgerufen");
         closeSession();
         openSession();
-//        entityManager.clear();
+        entityManager.clear();
 //        entityManagerFactory.getCache().evictAll();
     }
 

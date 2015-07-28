@@ -68,17 +68,17 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuBar.add(menuLehrkraefte);
 
         // Set up the first menu item.
-        JMenuItem menuItem = new JMenuItem("Neuen Schüler erfassen");
-        menuItem.setMnemonic(KeyEvent.VK_N);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_MASK));
-        menuItem.setActionCommand("schuelerErfassen");
-        menuItem.addActionListener(this);
-        menuSchueler.add(menuItem);
-
-        menuItem = new JMenuItem("Schüler suchen / bearbeiten");
+        JMenuItem menuItem = new JMenuItem("Schüler suchen / bearbeiten");
         menuItem.setMnemonic(KeyEvent.VK_S);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_MASK));
         menuItem.setActionCommand("schuelerSuchen");
+        menuItem.addActionListener(this);
+        menuSchueler.add(menuItem);
+
+        menuItem = new JMenuItem("Neuen Schüler erfassen");
+        menuItem.setMnemonic(KeyEvent.VK_N);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("schuelerErfassen");
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
 

@@ -2,7 +2,9 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
+import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
+import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.control.KurseController;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -27,29 +29,39 @@ public class KursePanel {
     private JButton btnBearbeiten;
     private JButton btnLoeschen;
     private JButton btnAbbrechen;
+    private JButton btnZurueck;
     private JButton btnImport;
     private JTable kurseTable;
     private KurseController kurseController;
 
-    public KursePanel(SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel, String titel) {
+    public KursePanel(SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isKurseSchueler, boolean isFromSchuelerSuchenResult, String titel) {
         lblTitel.setText(titel);
         createUIComponents();
-        createKurseController(svmContext, kurseSemesterwahlModel, kurseTableModel);
+        createKurseController(svmContext, kurseSemesterwahlModel, kurseTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, isKurseSchueler, isFromSchuelerSuchenResult);
     }
 
-    private void createKurseController(SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel) {
-        kurseController = new KurseController(svmContext.getModelFactory().createKurseModel(), kurseSemesterwahlModel, kurseTableModel, svmContext);
+    private void createKurseController(SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, int selectedRow, boolean isKurseSchueler, boolean isFromSchuelerSuchenResult) {
+        kurseController = new KurseController(svmContext.getModelFactory().createKurseModel(), svmContext, kurseSemesterwahlModel, kurseTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, isKurseSchueler, isFromSchuelerSuchenResult);
         kurseController.setKurseTable(kurseTable);
         kurseController.setLblTotal(lblTotal);
         kurseController.setBtnNeu(btnNeu);
         kurseController.setBtnBearbeiten(btnBearbeiten);
         kurseController.setBtnLoeschen(btnLoeschen);
         kurseController.setBtnAbbrechen(btnAbbrechen);
+        kurseController.setBtnZurueck(btnZurueck);
         kurseController.setBtnImport(btnImport);
+    }
+
+    public void addNextPanelListener(ActionListener actionListener) {
+        kurseController.addNextPanelListener(actionListener);
     }
 
     public void addCloseListener(ActionListener closeListener) {
         kurseController.addCloseListener(closeListener);
+    }
+
+    public void addZurueckZuSchuelerSuchenListener(ActionListener zurueckZuSchuelerSuchenListener) {
+        kurseController.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
     }
 
     private void createUIComponents() {
@@ -218,20 +230,20 @@ public class KursePanel {
         btnAbbrechen.setPreferredSize(new Dimension(114, 29));
         btnAbbrechen.setText("Abbrechen");
         gbc = new GridBagConstraints();
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 0, 15);
         panel4.add(btnAbbrechen, gbc);
         final JPanel spacer10 = new JPanel();
         gbc = new GridBagConstraints();
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel4.add(spacer10, gbc);
         final JPanel spacer11 = new JPanel();
         gbc = new GridBagConstraints();
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel4.add(spacer11, gbc);
@@ -242,6 +254,17 @@ public class KursePanel {
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel4.add(spacer12, gbc);
+        btnZurueck = new JButton();
+        btnZurueck.setMaximumSize(new Dimension(114, 29));
+        btnZurueck.setMinimumSize(new Dimension(114, 29));
+        btnZurueck.setPreferredSize(new Dimension(114, 29));
+        btnZurueck.setText("Zurück");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0, 0, 0, 10);
+        panel4.add(btnZurueck, gbc);
         final JPanel panel5 = new JPanel();
         panel5.setLayout(new GridBagLayout());
         buttonPanel.add(panel5, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -254,50 +277,41 @@ public class KursePanel {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0, 0, 0, 5);
         panel5.add(btnNeu, gbc);
         final JPanel spacer13 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel5.add(spacer13, gbc);
-        final JPanel spacer14 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel5.add(spacer14, gbc);
-        final JPanel spacer15 = new JPanel();
+        panel5.add(spacer13, gbc);
+        final JPanel spacer14 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel5.add(spacer15, gbc);
+        panel5.add(spacer14, gbc);
         btnBearbeiten = new JButton();
         btnBearbeiten.setMaximumSize(new Dimension(114, 29));
         btnBearbeiten.setMinimumSize(new Dimension(114, 29));
         btnBearbeiten.setPreferredSize(new Dimension(114, 29));
         btnBearbeiten.setText("Bearbeiten");
         gbc = new GridBagConstraints();
-        gbc.gridx = 2;
+        gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0, 5, 0, 5);
         panel5.add(btnBearbeiten, gbc);
-        final JPanel spacer16 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel5.add(spacer16, gbc);
         btnLoeschen = new JButton();
         btnLoeschen.setMaximumSize(new Dimension(114, 29));
         btnLoeschen.setMinimumSize(new Dimension(114, 29));
         btnLoeschen.setPreferredSize(new Dimension(114, 29));
         btnLoeschen.setText("Löschen");
         gbc = new GridBagConstraints();
-        gbc.gridx = 4;
+        gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0, 5, 0, 0);
         panel5.add(btnLoeschen, gbc);
     }
 

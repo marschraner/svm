@@ -31,10 +31,10 @@ public class DeleteKursCommand extends GenericDaoCommand {
     public void execute() {
         KursDao KursDao = new KursDao(entityManager);
         Kurs KursToBeDeleted = Kurs.get(indexKursToBeDeleted);
-//        if (KursToBeDeleted.getSchueler().size() > 0) {
-//            result = Result.KURS_VON_SCHUELER_REFERENZIERT;
-//            return;
-//        }
+        if (KursToBeDeleted.getSchueler().size() > 0) {
+            result = Result.KURS_VON_SCHUELER_REFERENZIERT;
+            return;
+        }
         KursDao.remove(KursToBeDeleted);
         Kurs.remove(indexKursToBeDeleted);
         result = Result.LOESCHEN_ERFOLGREICH;

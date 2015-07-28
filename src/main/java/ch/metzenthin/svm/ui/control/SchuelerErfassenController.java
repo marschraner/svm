@@ -277,7 +277,7 @@ public class SchuelerErfassenController {
             DeleteSchuelerCommand.Result result = schuelerErfassenModel.loeschen();
             switch (result) {
                 case SCHUELER_IN_KURSE_EINGESCHRIEBEN:
-                    JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestestens einem Kurs eingeschrieben und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einen Kurs eingeschrieben und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     break;
                 case LOESCHEN_ERFOLGREICH:
                     JOptionPane.showMessageDialog(

@@ -83,12 +83,12 @@ public class CodeSchuelerHinzufuegenController extends AbstractController {
         btnOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onSpeichern();
+                onHinzufuegen();
             }
         });
     }
 
-    private void onSpeichern() {
+    private void onHinzufuegen() {
         codeSchuelerHinzufuegenModel.hinzufuegen(schuelerDatenblattModel);
         codeSchuelerHinzufuegenDialog.dispose();
     }

@@ -75,19 +75,19 @@ public class Semester implements Comparable<Semester> {
 
     @Override
     public String toString() {
-        return semesterbezeichnung + " " + schuljahr;
+        return schuljahr + ", " + semesterbezeichnung;
     }
 
     @Override
     public int compareTo(Semester otherSemester) {
-        // aufsteigend nach Semesterbeginn und Semesterende sortieren, d.h. neuste Einträge zuunterst
-        int result = semesterbeginn.compareTo(otherSemester.semesterbeginn);
+        // absteigend nach Semesterbeginn und Semesterende sortieren, d.h. neuste Einträge zuoberst
+        int result = otherSemester.semesterbeginn.compareTo(semesterbeginn);
         if (result == 0) {
             if (semesterende != null && otherSemester.semesterende != null) {
-                result = semesterende.compareTo(otherSemester.semesterende);
-            } else if (semesterende != null) {
-                result = -1;
+                result = otherSemester.semesterende.compareTo(semesterende);
             } else if (otherSemester.semesterende != null) {
+                result = -1;
+            } else if (semesterende != null) {
                 result = 1;
             }
         }

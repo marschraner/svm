@@ -144,6 +144,8 @@ public class SemestersController {
             }
         }
         btnLoeschen.setFocusPainted(false);
+        enableBtnLoeschen(false);
+        semestersTable.clearSelection();
     }
 
     private void onListSelection() {

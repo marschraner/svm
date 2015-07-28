@@ -202,6 +202,8 @@ public class CodesController {
             }
         }
         btnLoeschen.setFocusPainted(false);
+        enableBtnLoeschen(false);
+        codesTable.clearSelection();
     }
 
     private void onLoeschenCodesSchueler() {
@@ -217,10 +219,12 @@ public class CodesController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            codesModel.eintragLoeschenCodesSchueler(codesTable.getSelectedRow(), schuelerDatenblattModel);
+            codesModel.eintragLoeschenCodesSchueler(codesTableModel, codesTable.getSelectedRow(), schuelerDatenblattModel);
             codesTable.addNotify();
         }
         btnLoeschen.setFocusPainted(false);
+        enableBtnLoeschen(false);
+        codesTable.clearSelection();
         btnNeu.setEnabled(true);
     }
 

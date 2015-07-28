@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.persistence.daos;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.dataTypes.Wochentag;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -31,6 +32,7 @@ public class KursDaoTest {
     private KurstypDao kurstypDao;
     private KursortDao kursortDao;
     private LehrkraftDao lehrkraftDao;
+    private SchuelerDao schuelerDao;
 
     @Before
     public void setUp() throws Exception {
@@ -41,6 +43,7 @@ public class KursDaoTest {
         kurstypDao = new KurstypDao(entityManager);
         kursortDao = new KursortDao(entityManager);
         lehrkraftDao = new LehrkraftDao(entityManager);
+        schuelerDao = new SchuelerDao(entityManager);
     }
 
     @After
@@ -263,7 +266,7 @@ public class KursDaoTest {
     }
 
     @Test
-    public void testFindKurs() {
+    public void testFindKurseSemester_and_testFindKurs() {
 
         EntityTransaction tx = null;
 
@@ -369,6 +372,17 @@ public class KursDaoTest {
             assertEquals(1, kursList4.size());
             assertEquals("Testkurs4", kursList4.get(0).getKurstyp().getBezeichnung());
 
+            // Nach Kurs 1 suchen
+            Kurs kursFound = kursDao.findKurs(semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), lehrkraft1);
+            assertNotNull(kursFound);
+            assertTrue(kursFound.isIdenticalWith(kurs1));
+
+            // Nach nicht vorhandenem Kurs suchen
+            assertNull(kursDao.findKurs(semester3, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), lehrkraft1));
+            assertNull(kursDao.findKurs(semester1, Wochentag.MITTWOCH, Time.valueOf("10:00:00"), lehrkraft1));
+            assertNull(kursDao.findKurs(semester1, Wochentag.DONNERSTAG, Time.valueOf("10:10:00"), lehrkraft1));
+            assertNull(kursDao.findKurs(semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), lehrkraft2));
+
         } finally {
             if (tx != null) {
                 tx.rollback();
@@ -376,5 +390,173 @@ public class KursDaoTest {
         }
 
     }
+
+    @Test
+    public void testAddToSchuelerAndSave() {
+        EntityTransaction tx = null;
+        try {
+            tx = entityManager.getTransaction();
+            tx.begin();
+
+            // Semester, Kurstyp, Kursort und Lehrkräfte erzeugen
+            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
+            semesterDao.save(semester);
+            Kurstyp kurstyp = new Kurstyp("Testkurs");
+            kurstypDao.save(kurstyp);
+            Kursort kursort = new Kursort("Testsaal");
+            kursortDao.save(kursort);
+            Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
+            lehrkraft1.setAdresse(adresse1);
+            lehrkraftDao.save(lehrkraft1);
+
+            // Kurse
+            Kurs kurs1 = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
+            kurs1.setSemester(semester);
+            kurs1.setKurstyp(kurstyp);
+            kurs1.setKursort(kursort);
+            kurs1.addLehrkraft(lehrkraft1);
+            kursDao.save(kurs1);
+            Kurs kurs2 = new Kurs("2-3 J", "Vorkindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
+            kurs2.setSemester(semester);
+            kurs2.setKurstyp(kurstyp);
+            kurs2.setKursort(kursort);
+            kurs2.addLehrkraft(lehrkraft1);
+            kursDao.save(kurs2);
+
+            // Schüler
+            Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, null, Geschlecht.W, "Schwester von Valentin");
+            Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
+            schueler.setAdresse(adresse);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
+            vater.setAdresse(adresse);
+            schueler.setVater(vater);
+            schueler.setRechnungsempfaenger(vater);
+
+            // Kurse hinzufügen
+            kursDao.addToSchuelerAndSave(kurs1, schueler);
+            Schueler schuelerSaved = kursDao.addToSchuelerAndSave(kurs2, schueler);
+
+            entityManager.flush();
+
+            // Schueler prüfen
+            Schueler schuelerFound = schuelerDao.findById(schuelerSaved.getPersonId());
+            entityManager.refresh(schuelerFound);
+            assertEquals(2, schuelerFound.getKurse().size());
+            // Zeitlich geordnet?
+            assertEquals(Wochentag.DONNERSTAG, schuelerFound.getKurse().get(0).getWochentag());
+            assertEquals(Wochentag.FREITAG, schuelerFound.getKurse().get(1).getWochentag());
+
+            // Kurs prüfen
+            Kurs kurs1Found = kursDao.findById(kurs1.getKursId());
+            entityManager.refresh(kurs1Found);
+            assertEquals(1, kurs1Found.getSchueler().size());
+
+        } finally {
+            if (tx != null) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Test
+    public void testRemoveFromSchuelerAndUpdate() {
+        EntityTransaction tx = null;
+        try {
+            tx = entityManager.getTransaction();
+            tx.begin();
+
+            // Semester, Kurstyp, Kursort und Lehrkräfte erzeugen
+            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
+            semesterDao.save(semester);
+            Kurstyp kurstyp = new Kurstyp("Testkurs");
+            kurstypDao.save(kurstyp);
+            Kursort kursort = new Kursort("Testsaal");
+            kursortDao.save(kursort);
+            Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
+            lehrkraft1.setAdresse(adresse1);
+            lehrkraftDao.save(lehrkraft1);
+
+            // Kurse
+            Kurs kurs1 = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
+            kurs1.setSemester(semester);
+            kurs1.setKurstyp(kurstyp);
+            kurs1.setKursort(kursort);
+            kurs1.addLehrkraft(lehrkraft1);
+            kursDao.save(kurs1);
+            Kurs kurs2 = new Kurs("2-3 J", "Vorkindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
+            kurs2.setSemester(semester);
+            kurs2.setKurstyp(kurstyp);
+            kurs2.setKursort(kursort);
+            kurs2.addLehrkraft(lehrkraft1);
+            kursDao.save(kurs2);
+
+            // Schüler
+            Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, null, Geschlecht.W, "Schwester von Valentin");
+            Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
+            schueler.setAdresse(adresse);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
+            vater.setAdresse(adresse);
+            schueler.setVater(vater);
+            schueler.setRechnungsempfaenger(vater);
+
+            // Kurse hinzufügen
+            kursDao.addToSchuelerAndSave(kurs1, schueler);
+            Schueler schuelerSaved = kursDao.addToSchuelerAndSave(kurs2, schueler);
+
+            entityManager.flush();
+
+            // Schüler prüfen
+            Schueler schuelerFound = schuelerDao.findById(schuelerSaved.getPersonId());
+            entityManager.refresh(schuelerFound);
+            assertEquals(2, schuelerFound.getKurse().size());
+            assertEquals(Wochentag.DONNERSTAG, schuelerFound.getKurse().get(0).getWochentag());
+            assertEquals(Wochentag.FREITAG, schuelerFound.getKurse().get(1).getWochentag());
+
+            // Kurse prüfen
+            Kurs kurs1Found = kursDao.findById(kurs1.getKursId());
+            entityManager.refresh(kurs1Found);
+            assertEquals(1, kurs1Found.getSchueler().size());
+            Kurs kurs2Found = kursDao.findById(kurs2.getKursId());
+            entityManager.refresh(kurs2Found);
+            assertEquals(1, kurs2Found.getSchueler().size());
+
+            // 1. Kurs von Schüler entfernen
+            Schueler schuelerUpdated = kursDao.removeFromSchuelerAndUpdate(kurs1Found, schuelerFound);
+            entityManager.flush();
+
+            schuelerFound = schuelerDao.findById(schuelerUpdated.getPersonId());
+            entityManager.refresh(schuelerFound);
+            assertEquals(1, schuelerFound.getKurse().size());
+            assertEquals(Wochentag.FREITAG, schuelerFound.getKurse().get(0).getWochentag());
+
+            entityManager.refresh(kurs1Found);
+            assertEquals(0, kurs1Found.getSchueler().size());
+            entityManager.refresh(kurs2Found);
+            assertEquals(1, kurs2Found.getSchueler().size());
+
+            // 2. Kurs von Schüler entfernen
+            schuelerUpdated = kursDao.removeFromSchuelerAndUpdate(kurs2Found, schuelerFound);
+            entityManager.flush();
+
+            schuelerFound = schuelerDao.findById(schuelerUpdated.getPersonId());
+            entityManager.refresh(schuelerFound);
+            assertEquals(0, schuelerFound.getKurse().size());
+
+            entityManager.refresh(kurs1Found);
+            assertEquals(0, kurs1Found.getSchueler().size());
+            entityManager.refresh(kurs2Found);
+            assertEquals(0, kurs2Found.getSchueler().size());
+
+        } finally {
+            if (tx != null) {
+                tx.rollback();
+            }
+        }
+
+    }
+
+
 }
 

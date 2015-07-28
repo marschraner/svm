@@ -3,7 +3,9 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
+import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.commands.CheckGeschwisterSchuelerRechnungempfaengerCommand;
+import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.persistence.entities.*;
 
 import java.util.Calendar;
@@ -17,7 +19,7 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
  */
 public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
-    private final Schueler schueler;
+    private Schueler schueler;
 
     public SchuelerDatenblattModelImpl(Schueler schueler) {
         this.schueler = schueler;
@@ -247,7 +249,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         List<Dispensation> dispensationen = schueler.getDispensationen();
         StringBuilder fruehereDispensationen = new StringBuilder("<html>");
         for (Dispensation dispensation : dispensationen) {
-            if (!isDispensationAktuell(dispensation)) {
+            if (!isDispensationAktuell(dispensation) && isDispensationToBeDisplayed(dispensation)) {
                 if (fruehereDispensationen.length() > 6) {
                     fruehereDispensationen.append("<br>");
                 }
@@ -259,6 +261,13 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
             return fruehereDispensationen.toString();
         }
         return "-";
+    }
+
+    private boolean isDispensationToBeDisplayed(Dispensation dispensation) {
+        int MAX_MONTHS_IN_PAST = 48;
+        Calendar minSemesterEnde = new GregorianCalendar();
+        minSemesterEnde.add(Calendar.MONTH, -MAX_MONTHS_IN_PAST);
+        return minSemesterEnde.before(dispensation.getDispensationsende()) || minSemesterEnde.equals(dispensation.getDispensationsende());
     }
 
     @Override
@@ -281,6 +290,92 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     }
 
     @Override
+    public String getSemesterKurseAsString(SvmModel svmModel) {
+        List<Kurs> kurse = schueler.getKurse();
+        if (!kurse.isEmpty()) {
+            StringBuilder semesterSb = new StringBuilder("<html>");
+            String previousSchuljahr = null;
+            Semesterbezeichnung previousSemesterbezeichnung = null;
+            boolean gleichesSemester = false;
+            for (Kurs kurs : kurse) {
+                if (!isKursToBeDisplayed(svmModel, kurs)) {
+                    break;
+                }
+                gleichesSemester = previousSchuljahr != null && previousSemesterbezeichnung != null
+                        && kurs.getSemester().getSchuljahr().equals(previousSchuljahr)
+                        && kurs.getSemester().getSemesterbezeichnung() == previousSemesterbezeichnung;
+                if (gleichesSemester || semesterSb.length() <= 6) {
+                    semesterSb.append("<p>");
+                } else {
+                    semesterSb.append("<p style='margin-top:12'>");
+                }
+                if (!gleichesSemester) {
+                    semesterSb.append(kurs.getSemester().getSchuljahr()).append(", ").append(kurs.getSemester().getSemesterbezeichnung()).append(":");
+                }
+                previousSchuljahr = kurs.getSemester().getSchuljahr();
+                previousSemesterbezeichnung = kurs.getSemester().getSemesterbezeichnung();
+            }
+            if (gleichesSemester) {
+                // Hack damit Leerzeile nicht ignoriert wird (<p></html>: <p> wird ignoriert)
+                semesterSb.append("<p>");
+            }
+            semesterSb.append("</html>");
+            if (semesterSb.length() > 13) {
+                return semesterSb.toString();
+            }
+            System.out.println(semesterSb);
+        }
+        return "-";
+    }
+
+    @Override
+    public String getKurseAsString(SvmModel svmModel) {
+        List<Kurs> kurse = schueler.getKurse();
+        String previousSchuljahr = null;
+        Semesterbezeichnung previousSemesterbezeichnung = null;
+        if (!kurse.isEmpty()) {
+            StringBuilder kurseSb = new StringBuilder("<html>");
+            for (Kurs kurs : kurse) {
+                if (!isKursToBeDisplayed(svmModel, kurs)) {
+                    break;
+                }
+                boolean gleichesSemester = false;
+                if (previousSchuljahr != null && previousSemesterbezeichnung != null
+                        && kurs.getSemester().getSchuljahr().equals(previousSchuljahr)
+                        && kurs.getSemester().getSemesterbezeichnung() == previousSemesterbezeichnung) {
+                    gleichesSemester = true;
+                }
+                if (gleichesSemester || kurseSb.length() <= 6) {
+                    kurseSb.append("<p>");
+                } else {
+                    kurseSb.append("<p style='margin-top:12'>");
+                }
+                kurseSb.append(kurs);
+                previousSchuljahr = kurs.getSemester().getSchuljahr();
+                previousSemesterbezeichnung = kurs.getSemester().getSemesterbezeichnung();
+            }
+            kurseSb.append("</html>");
+            if (kurseSb.length() > 13) {
+                return kurseSb.toString();
+            }
+        }
+        return "";
+    }
+
+    private boolean isKursToBeDisplayed(SvmModel svmModel, Kurs kurs) {
+        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
+        findSemesterForCalendarCommand.execute();
+        Semester previousSemester = findSemesterForCalendarCommand.getPreviousSemester();
+        Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
+        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
+        return (currentSemester != null && kurs.getSemester().isIdenticalWith(currentSemester))
+                // bereits erfasstes nächstes Semester
+                || (nextSemester != null && kurs.getSemester().isIdenticalWith(nextSemester))
+                // zwischen zwei Semestern
+                || (currentSemester == null && previousSemester != null && kurs.getSemester().isIdenticalWith(previousSemester));
+    }
+
+    @Override
     public DispensationenTableData getDispensationenTableData() {
         return new DispensationenTableData(schueler.getDispensationen());
     }
@@ -290,8 +385,17 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         return new CodesTableData(schueler.getCodes());
     }
 
+    @Override
+    public KurseTableData getKurseTableData() {
+        return new KurseTableData(schueler.getKurse(), true);
+    }
+
     private boolean isDispensationAktuell(Dispensation dispensation) {
         Calendar today = new GregorianCalendar();
+        today.set(Calendar.HOUR_OF_DAY, 0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+        today.set(Calendar.MILLISECOND, 0);
         return dispensation.getDispensationsende() == null || dispensation.getDispensationsende().equals(today) || dispensation.getDispensationsende().after(today);
     }
 

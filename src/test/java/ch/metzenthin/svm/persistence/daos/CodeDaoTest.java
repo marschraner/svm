@@ -146,17 +146,13 @@ public class CodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            // Schueler
+            // Schüler
             Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, null, Geschlecht.W, "Schwester von Valentin");
             Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
             schueler.setAdresse(adresse);
-
-            // Set Vater
             Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
             vater.setAdresse(adresse);
             schueler.setVater(vater);
-
-            // Set Rechnungsempfänger
             schueler.setRechnungsempfaenger(vater);
 
             // Codes hinzufügen
@@ -197,17 +193,13 @@ public class CodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            // Schueler
+            // Schüler
             Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, null, Geschlecht.W, "Schwester von Valentin");
             Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
             schueler.setAdresse(adresse);
-
-            // Set Vater
             Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
             vater.setAdresse(adresse);
             schueler.setVater(vater);
-
-            // Set Rechnungsempfänger
             schueler.setRechnungsempfaenger(vater);
 
             // Codes hinzufügen

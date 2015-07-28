@@ -6,7 +6,11 @@ import javax.persistence.*;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static ch.metzenthin.svm.common.utils.Converter.asString;
 
 /**
  * @author Martin Schraner
@@ -56,11 +60,14 @@ public class Kurs implements Comparable<Kurs> {
     @OrderColumn
     @JoinTable(name = "Kurs_Lehrkraft",
             joinColumns = {@JoinColumn(name = "kurs_id")},
-            inverseJoinColumns = {@JoinColumn(name = "lehrkraft_id")})
+            inverseJoinColumns = {@JoinColumn(name = "person_id")})
     private List<Lehrkraft> lehrkraefte = new ArrayList<>();
 
     @Column(name = "bemerkungen", nullable = true)
     private String bemerkungen;
+
+    @ManyToMany(mappedBy = "kurse")
+    private Set<Schueler> schueler = new HashSet<>();
 
     public Kurs() {
     }
@@ -76,10 +83,11 @@ public class Kurs implements Comparable<Kurs> {
 
     @Override
     public String toString() {
-        String kursAsStr = semester + ", " + kurstyp + ", " + stufe + ", " + wochentag + " " + zeitBeginn + "-" + zeitEnde + ", Ort: " + kursort + ", Leitung: " + lehrkraefte.get(0);
+        String kursAsStr = kurstyp + " " + stufe + ", " + wochentag + " " + asString(zeitBeginn) + "-" + asString(zeitEnde) + " (" + lehrkraefte.get(0);
         for (int i = 1; i < lehrkraefte.size(); i++) {
             kursAsStr = kursAsStr + "/" + lehrkraefte.get(i);
         }
+        kursAsStr = kursAsStr + ")";
         return kursAsStr;
     }
 
@@ -109,7 +117,7 @@ public class Kurs implements Comparable<Kurs> {
 
     @Override
     public int compareTo(Kurs otherKurs) {
-        int result = semester.compareTo(otherKurs.semester);
+        int result = otherKurs.semester.getSemesterbeginn().compareTo(semester.getSemesterbeginn());   // Semester: absteigend
         if (result == 0) {
             result = kurstyp.compareTo(otherKurs.kurstyp);
             if (result == 0) {
@@ -256,5 +264,9 @@ public class Kurs implements Comparable<Kurs> {
 
     public void setBemerkungen(String bemerkungen) {
         this.bemerkungen = bemerkungen;
+    }
+
+    public Set<Schueler> getSchueler() {
+        return schueler;
     }
 }

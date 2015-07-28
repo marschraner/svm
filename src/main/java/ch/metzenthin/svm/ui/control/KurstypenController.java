@@ -144,6 +144,8 @@ public class KurstypenController {
             }
         }
         btnLoeschen.setFocusPainted(false);
+        enableBtnLoeschen(false);
+        kurstypenTable.clearSelection();
     }
 
     private void onListSelection() {

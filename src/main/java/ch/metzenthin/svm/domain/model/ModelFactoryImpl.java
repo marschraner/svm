@@ -123,4 +123,9 @@ public class ModelFactoryImpl implements ModelFactory {
         return new KursErfassenModelImpl(commandInvoker);
     }
 
+    @Override
+    public KursSchuelerHinzufuegenModel createKursSchuelerHinzufuegenModel() {
+        return new KursSchuelerHinzufuegenModelImpl(commandInvoker);
+    }
+
 }

@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
+import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.*;
 
@@ -50,6 +51,8 @@ public class SchuelerDatenblattController {
     private JLabel labelDispensationsgrundValue;
     private JLabel labelFruehereDispensationenValue;
     private JLabel labelCodesValue;
+    private JLabel labelSemesterkurseValue;
+    private JLabel labelKurseValue;
     private JLabel labelScrollPosition;
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
@@ -101,6 +104,8 @@ public class SchuelerDatenblattController {
         setLabelDispensationsgrundValue();
         setLabelCodesValue();
         setLabelFruehereDispensationenValue();
+        setLabelSemesterKurseValue();
+        setLabelKurseValue();
     }
 
     private void enableScrollButtons() {
@@ -391,6 +396,24 @@ public class SchuelerDatenblattController {
         labelCodesValue.setText(schuelerDatenblattModel.getCodesAsString());
     }
 
+    public void setLabelSemesterKurseValue(JLabel labelSemesterkurseValue) {
+        this.labelSemesterkurseValue = labelSemesterkurseValue;
+        setLabelSemesterKurseValue();
+    }
+
+    private void setLabelSemesterKurseValue() {
+        labelSemesterkurseValue.setText(schuelerDatenblattModel.getSemesterKurseAsString(svmContext.getSvmModel()));
+    }
+
+    public void setLabelKurseValue(JLabel labelKurseValue) {
+        this.labelKurseValue = labelKurseValue;
+        setLabelKurseValue();
+    }
+
+    private void setLabelKurseValue() {
+        labelKurseValue.setText(schuelerDatenblattModel.getKurseAsString(svmContext.getSvmModel()));
+    }
+
     public void setBtnZurueck(JButton btnZurueck) {
         this.btnZurueck = btnZurueck;
         if (!isFromSchuelerSuchenResult) {
@@ -575,6 +598,25 @@ public class SchuelerDatenblattController {
         codesPanel.addCloseListener(closeListener);
         codesPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{codesPanel.$$$getRootComponent$$$(), "Codes"}, ActionEvent.ACTION_PERFORMED, "Codes"));
+    }
+
+    public void setBtnKurseBearbeiten(JButton btnKurseBearbeiten) {
+        btnKurseBearbeiten.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onKurseBearbeiten();
+            }
+        });
+    }
+
+    private void onKurseBearbeiten() {
+        KurseTableModel kurseTableModel = new KurseTableModel(schuelerDatenblattModel.getKurseTableData());
+        String titel = "Kurse " + schuelerDatenblattModel.getSchuelerVorname() + " " + schuelerDatenblattModel.getSchuelerNachname();
+        KursePanel kursePanel = new KursePanel(svmContext, null, kurseTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, selectedRow, true, isFromSchuelerSuchenResult, titel);
+        kursePanel.addNextPanelListener(nextPanelListener);
+        kursePanel.addCloseListener(closeListener);
+        kursePanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{kursePanel.$$$getRootComponent$$$(), "Kurse"}, ActionEvent.ACTION_PERFORMED, "Kurse"));
     }
 
     public void setLabelScrollPosition(JLabel labelScrollPosition) {

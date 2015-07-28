@@ -49,4 +49,7 @@ public class KurseTableModel extends AbstractTableModel {
         return kurseTableData.getAnzahlSchueler();
     }
 
+    public KurseTableData getKurseTableData() {
+        return kurseTableData;
+    }
 }

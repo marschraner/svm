@@ -146,6 +146,8 @@ public class DispensationenController {
             dispensationenTable.addNotify();
         }
         btnLoeschen.setFocusPainted(false);
+        enableBtnLoeschen(false);
+        dispensationenTable.clearSelection();
     }
 
     private void onListSelection() {

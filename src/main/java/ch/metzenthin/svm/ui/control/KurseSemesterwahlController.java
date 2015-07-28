@@ -135,7 +135,7 @@ public class KurseSemesterwahlController extends AbstractController {
     private void initSemesterbezeichnung() {
         Calendar today = new GregorianCalendar();
         Semesterbezeichnung semesterbezeichnung;
-        if (today.get(Calendar.MONTH) >= Calendar.FEBRUARY || today.get(Calendar.MONTH) <= Calendar.MAY) {
+        if (today.get(Calendar.MONTH) >= Calendar.FEBRUARY && today.get(Calendar.MONTH) <= Calendar.MAY) {
             semesterbezeichnung = Semesterbezeichnung.ZWEITES_SEMESTER;
         } else {
             semesterbezeichnung = Semesterbezeichnung.ERSTES_SEMESTER;
@@ -191,7 +191,7 @@ public class KurseSemesterwahlController extends AbstractController {
         KurseTableData kurseTableData = kurseSemesterwahlModel.suchen();
         KurseTableModel kurseTableModel = new KurseTableModel(kurseTableData);
         String titel = "Kurse " + kurseSemesterwahlModel.getSemesterbezeichnung() + " " + kurseSemesterwahlModel.getSchuljahr();
-        KursePanel kursePanel = new KursePanel(svmContext, kurseSemesterwahlModel, kurseTableModel, titel);
+        KursePanel kursePanel = new KursePanel(svmContext, kurseSemesterwahlModel, kurseTableModel, null, null, 0, false, false, titel);
         kursePanel.addCloseListener(closeListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{kursePanel.$$$getRootComponent$$$(), titel}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
     }

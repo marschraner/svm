@@ -71,13 +71,13 @@ public class SaveOrUpdateSemesterCommandTest {
         assertTrue(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 20), new GregorianCalendar(1913, Calendar.JULY, 10), 19));
         assertTrue(checkIfSemesterAvailable("1911/1912", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1911, Calendar.AUGUST, 20), new GregorianCalendar(1912, Calendar.FEBRUARY, 10), 21));
         assertTrue(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1912, Calendar.AUGUST, 22), new GregorianCalendar(1913, Calendar.FEBRUARY, 22), 23));
-        // Zeitlich geordnet?
-        assertEquals("1911/1912", semestersSaved.get(0).getSchuljahr());
-        assertEquals(Semesterbezeichnung.ERSTES_SEMESTER, semestersSaved.get(0).getSemesterbezeichnung());
+        // Zeitlich absteigend geordnet?
+        assertEquals("1911/1912", semestersSaved.get(2).getSchuljahr());
+        assertEquals(Semesterbezeichnung.ERSTES_SEMESTER, semestersSaved.get(2).getSemesterbezeichnung());
         assertEquals("1912/1913", semestersSaved.get(1).getSchuljahr());
         assertEquals(Semesterbezeichnung.ERSTES_SEMESTER, semestersSaved.get(1).getSemesterbezeichnung());
-        assertEquals("1912/1913", semestersSaved.get(2).getSchuljahr());
-        assertEquals(Semesterbezeichnung.ZWEITES_SEMESTER, semestersSaved.get(2).getSemesterbezeichnung());
+        assertEquals("1912/1913", semestersSaved.get(0).getSchuljahr());
+        assertEquals(Semesterbezeichnung.ZWEITES_SEMESTER, semestersSaved.get(0).getSemesterbezeichnung());
 
         // Semester bearbeiten (neuer Semesterbeginn, neues Semesterende)
         Semester semester1Modif = new Semester("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 27), new GregorianCalendar(1913, Calendar.JULY, 17), 19);

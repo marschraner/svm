@@ -54,7 +54,6 @@ public class RemoveCodeFromSchuelerCommandTest {
         saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code2, null, erfassteCodes);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
 
-
         // Schueler erfassen und Codes hinzufügen
         Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");

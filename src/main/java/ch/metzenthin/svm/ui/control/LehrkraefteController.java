@@ -143,10 +143,17 @@ public class LehrkraefteController {
                     break;
                 case LOESCHEN_ERFOLGREICH:
                     lehrkraefteTable.addNotify();
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Die Lehrkraft wurde erfolgreich aus der Datenbank gelöscht.",
+                            "Löschen erfolgreich",
+                            JOptionPane.INFORMATION_MESSAGE);
                     break;
             }
         }
         btnLoeschen.setFocusPainted(false);
+        enableBtnLoeschen(false);
+        lehrkraefteTable.clearSelection();
     }
 
     private void onListSelection() {

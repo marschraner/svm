@@ -144,6 +144,8 @@ public class KursorteController {
             }
         }
         btnLoeschen.setFocusPainted(false);
+        enableBtnLoeschen(false);
+        kursorteTable.clearSelection();
     }
 
     private void onListSelection() {

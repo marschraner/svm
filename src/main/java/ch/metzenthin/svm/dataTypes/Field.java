@@ -78,6 +78,7 @@ public enum Field {
     LEITUNG("Leitung"),
     ANZAHL_KURSE("Kurse"),
     ANZAHL_SCHUELER("Schüler"),
+    SEMESTER("Semester"),
     BULK_UPDATE("Bulk Update");
 
     private String name;

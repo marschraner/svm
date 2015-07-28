@@ -23,6 +23,7 @@ SET default_storage_engine=InnoDB;
 -- Alte Tabellen löschen
 -- *********************
 
+DROP TABLE IF EXISTS Schueler_Kurs;
 DROP TABLE IF EXISTS Kurs_Lehrkraft;
 DROP TABLE IF EXISTS Kurs;
 DROP TABLE IF EXISTS Semester;
@@ -171,11 +172,11 @@ DESCRIBE Code;
 -- *************
 
 CREATE TABLE IF NOT EXISTS Schueler_Code (
-    schueler_id                INT           NOT NULL,
+    person_id                  INT           NOT NULL,
     code_id                    INT           NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
-    PRIMARY KEY (schueler_id, code_id),
-    FOREIGN KEY (schueler_id)  REFERENCES Schueler (person_id),
+    PRIMARY KEY (person_id, code_id),
+    FOREIGN KEY (person_id)    REFERENCES Schueler (person_id),
     FOREIGN KEY (code_id)      REFERENCES Code (code_id));
 
 DESCRIBE Schueler_Code;
@@ -249,11 +250,25 @@ DESCRIBE Kurs;
 
 CREATE TABLE IF NOT EXISTS Kurs_Lehrkraft (
     kurs_id                    INT           NOT NULL,
-    lehrkraft_id               INT           NOT NULL,
+    person_id                  INT           NOT NULL,
     lehrkraefte_ORDER          INT           NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
-    PRIMARY KEY (kurs_id, lehrkraft_id),
+    PRIMARY KEY (kurs_id, person_id),
     FOREIGN KEY (kurs_id)      REFERENCES Kurs (kurs_id),
-    FOREIGN KEY (lehrkraft_id) REFERENCES Lehrkraft (person_id));
+    FOREIGN KEY (person_id)    REFERENCES Lehrkraft (person_id));
 
 DESCRIBE Kurs_Lehrkraft;
+
+
+-- Schueler_Kurs
+-- *************
+
+CREATE TABLE IF NOT EXISTS Schueler_Kurs (
+    person_id                  INT           NOT NULL,
+    kurs_id                    INT           NOT NULL,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (person_id, kurs_id),
+    FOREIGN KEY (person_id)    REFERENCES Schueler (person_id),
+    FOREIGN KEY (kurs_id)      REFERENCES Kurs (kurs_id));
+
+DESCRIBE Schueler_Kurs;
