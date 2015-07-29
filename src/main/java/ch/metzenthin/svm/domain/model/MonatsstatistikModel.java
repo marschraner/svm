@@ -18,9 +18,7 @@ public interface MonatsstatistikModel extends Model {
     String MONAT_JAHR_DATE_FORMAT_STRING = "MM.yyyy";
 
     Calendar getMonatJahr();
-    Calendar getMonatJahrInit();
     AnAbmeldungenDispensationenSelected getAnAbmeldungenDispensationen();
-    AnAbmeldungenDispensationenSelected getAnAbmeldungenDispensationenInit();
     SchuelerSuchenTableData suchen();
 
     void setMonatJahr(String anAbmeldemonat) throws SvmValidationException;

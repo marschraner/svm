@@ -15,19 +15,11 @@ import java.util.List;
  */
 public class MonatsstatistikModelImpl extends AbstractModel implements MonatsstatistikModel {
 
-    private static Calendar MONAT_JAHR_INIT;
-    private static final AnAbmeldungenDispensationenSelected AN_ABMELDUNGEN_DISPENSATIONEN_SELECTED_INIT = AnAbmeldungenDispensationenSelected.ANMELDUNGEN;
-
-    private Calendar monatJahr = MONAT_JAHR_INIT;
-    private AnAbmeldungenDispensationenSelected anAbmeldungenDispensationen = AN_ABMELDUNGEN_DISPENSATIONEN_SELECTED_INIT;
+    private Calendar monatJahr;
+    private AnAbmeldungenDispensationenSelected anAbmeldungenDispensationen;
 
     public MonatsstatistikModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
-    }
-
-    static {
-        MONAT_JAHR_INIT = new GregorianCalendar();
-        MONAT_JAHR_INIT.add(Calendar.MONTH, -1);
     }
 
     private final CalendarModelAttribute monatJahrModelAttribute = new CalendarModelAttribute(
@@ -52,11 +44,6 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
     }
 
     @Override
-    public Calendar getMonatJahrInit() {
-        return MONAT_JAHR_INIT;
-    }
-
-    @Override
     public void setMonatJahr(String monatJahr) throws SvmValidationException {
         monatJahrModelAttribute.setNewValue(true, monatJahr, MONAT_JAHR_DATE_FORMAT_STRING, isBulkUpdate());
     }
@@ -64,11 +51,6 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
     @Override
     public AnAbmeldungenDispensationenSelected getAnAbmeldungenDispensationen() {
         return anAbmeldungenDispensationen;
-    }
-
-    @Override
-    public AnAbmeldungenDispensationenSelected getAnAbmeldungenDispensationenInit() {
-        return AN_ABMELDUNGEN_DISPENSATIONEN_SELECTED_INIT;
     }
 
     @Override

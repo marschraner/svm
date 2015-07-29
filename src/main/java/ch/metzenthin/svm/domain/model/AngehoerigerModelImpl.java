@@ -87,7 +87,6 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
         isRechnungsempfaengerOrigin = isRechnungsempfaenger;
     }
 
-
     @Override
     public void initializeCompleted() {
         if (angehoerigerOrigin != null) {

@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.domain.model.MonatsstatistikModel;
 import ch.metzenthin.svm.ui.control.MonatsstatistikController;
 
@@ -35,29 +34,9 @@ public class MonatsstatistikPanel {
     public MonatsstatistikPanel(SvmContext svmContext) {
         $$$setupUI$$$();
         monatsstatistikModel = svmContext.getModelFactory().createMonatsstatistikModel();
-        initializeTxtFields();
-        initializeRadioButtonGroups();
         initializeErrLbls();
         btnSuchen.setEnabled(true);
         createMonatsstatistikController(svmContext);
-    }
-
-    private void initializeTxtFields() {
-        txtMonatJahr.setText(Converter.asString(monatsstatistikModel.getMonatJahrInit(), MonatsstatistikModel.MONAT_JAHR_DATE_FORMAT_STRING));
-    }
-
-    private void initializeRadioButtonGroups() {
-        switch (monatsstatistikModel.getAnAbmeldungenDispensationenInit()) {
-            case ANMELDUNGEN:
-                radioBtnAnmeldungen.setSelected(true);
-                break;
-            case ABMELDUNGEN:
-                radioBtnAbmeldungen.setSelected(true);
-                break;
-            case DISPENSATIONEN:
-                radioBtnDispensationen.setSelected(true);
-                break;
-        }
     }
 
     private void initializeErrLbls() {

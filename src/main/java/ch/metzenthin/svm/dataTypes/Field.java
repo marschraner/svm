@@ -79,6 +79,8 @@ public enum Field {
     ANZAHL_KURSE("Kurse"),
     ANZAHL_SCHUELER("Schüler"),
     SEMESTER("Semester"),
+    SCHULJAHR_KURS("Schuljahr"),
+    KURS_FUER_SUCHE_BERUECKSICHTIGEN("Kurs für Suche berücksichtigen"),
     BULK_UPDATE("Bulk Update");
 
     private String name;

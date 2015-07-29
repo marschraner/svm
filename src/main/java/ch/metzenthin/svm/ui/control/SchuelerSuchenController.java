@@ -2,28 +2,28 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Field;
+import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
 import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
@@ -39,9 +39,7 @@ public class SchuelerSuchenController extends PersonController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private JTextField txtGeburtsdatumSuchperiode;
-    private JTextField txtLehrkraft;
-    private JTextField txtVon;
-    private JTextField txtBis;
+    private JTextField txtZeitBeginn;
     private JTextField txtStichtag;
     private JRadioButton radioBtnSchueler;
     private JRadioButton radioBtnEltern;
@@ -56,10 +54,15 @@ public class SchuelerSuchenController extends PersonController {
     private JRadioButton radioBtnWeiblich;
     private JRadioButton radioBtnMaennlich;
     private JRadioButton radioBtnGeschlechtAlle;
+    private JSpinner spinnerSchuljahre;
+    private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
     private JComboBox<Wochentag> comboBoxWochentag;
+    private JComboBox<Lehrkraft> comboBoxLehrkraft;
     private JComboBox<Code> comboBoxCode;
-    private JLabel errLblStichtag;
+    private JCheckBox checkBoxKursFuerSucheBeruecksichtigen;
     private JLabel errLblGeburtsdatumSuchperiode;
+    private JLabel errLblStichtag;
+    private JLabel errLblZeitBeginn;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
@@ -101,153 +104,6 @@ public class SchuelerSuchenController extends PersonController {
         });
     }
 
-    public void setTxtLehrkraft(JTextField txtLehrkraft) {
-        this.txtLehrkraft = txtLehrkraft;
-    }
-
-    public void setComboBoxWochentag(JComboBox<Wochentag> comboBoxWochentag) {
-        this.comboBoxWochentag = comboBoxWochentag;
-        comboBoxWochentag.setModel(new DefaultComboBoxModel<>(Wochentag.values()));
-        // Code in Model initialisieren mit erstem ComboBox-Wert
-        //schuelerSuchenModel.setWochentag(Wochentag.values()[0]);
-    }
-
-    public void setTxtVon(JTextField txtVon) {
-        this.txtVon = txtVon;
-    }
-
-    public void setTxtBis(JTextField txtBis) {
-        this.txtBis = txtBis;
-    }
-
-    public void setComboBoxCode(JComboBox<Code> comboBoxCode) {
-        this.comboBoxCode = comboBoxCode;
-        List<Code> selectableCodesAsList = new ArrayList<>();
-        selectableCodesAsList.add(new Code("alle", "alle"));
-        selectableCodesAsList.addAll(svmContext.getSvmModel().getCodesAll());
-        Code[] selectableCodesAsArray = selectableCodesAsList.toArray(new Code[selectableCodesAsList.size()]);
-        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableCodesAsArray));
-        // Code in Model initialisieren mit erstem ComboBox-Wert
-        schuelerSuchenModel.setCode(selectableCodesAsArray[0]);
-        this.comboBoxCode.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onCodeSelected();
-            }
-        });
-    }
-
-    public void setTxtStichtag(JTextField txtStichtag) {
-        this.txtStichtag = txtStichtag;
-        this.txtStichtag.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onStichtagEvent();
-            }
-        });
-        this.txtStichtag.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onStichtagEvent();
-            }
-        });
-    }
-
-    public void setRadioBtnGroupRolle(JRadioButton radioBtnSchueler, JRadioButton radioBtnEltern, JRadioButton radioBtnRechnungsempfaenger, JRadioButton radioBtnRolleAlle) {
-        this.radioBtnSchueler = radioBtnSchueler;
-        this.radioBtnEltern = radioBtnEltern;
-        this.radioBtnRechnungsempfaenger = radioBtnRechnungsempfaenger;
-        this.radioBtnRolleAlle = radioBtnRolleAlle;
-        // Action Commands
-        this.radioBtnSchueler.setActionCommand(SchuelerSuchenModel.RolleSelected.SCHUELER.toString());
-        this.radioBtnEltern.setActionCommand(SchuelerSuchenModel.RolleSelected.ELTERN.toString());
-        this.radioBtnRechnungsempfaenger.setActionCommand(SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER.toString());
-        this.radioBtnRolleAlle.setActionCommand(SchuelerSuchenModel.RolleSelected.ALLE.toString());
-        // Listener
-        RadioBtnGroupRolleListener radioBtnGroupRolleListener = new RadioBtnGroupRolleListener();
-        this.radioBtnSchueler.addActionListener(radioBtnGroupRolleListener);
-        this.radioBtnEltern.addActionListener(radioBtnGroupRolleListener);
-        this.radioBtnRechnungsempfaenger.addActionListener(radioBtnGroupRolleListener);
-        this.radioBtnRolleAlle.addActionListener(radioBtnGroupRolleListener);
-    }
-
-    public void setRadioBtnGroupAnmeldestatus(JRadioButton radioBtnAngemeldet, JRadioButton radioBtnAbgemeldet, JRadioButton radioBtnAnmeldestatusAlle) {
-        this.radioBtnAngemeldet = radioBtnAngemeldet;
-        this.radioBtnAbgemeldet = radioBtnAbgemeldet;
-        this.radioBtnAnmeldestatusAlle = radioBtnAnmeldestatusAlle;
-        // Action Commands
-        this.radioBtnAngemeldet.setActionCommand(SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET.toString());
-        this.radioBtnAbgemeldet.setActionCommand(SchuelerSuchenModel.AnmeldestatusSelected.ABGEMELDET.toString());
-        this.radioBtnAnmeldestatusAlle.setActionCommand(SchuelerSuchenModel.AnmeldestatusSelected.ALLE.toString());
-        // Listener
-        RadioBtnGroupAnmeldestatusListener radioBtnGroupAnmeldestatusListener = new RadioBtnGroupAnmeldestatusListener();
-        this.radioBtnAngemeldet.addActionListener(radioBtnGroupAnmeldestatusListener);
-        this.radioBtnAbgemeldet.addActionListener(radioBtnGroupAnmeldestatusListener);
-        this.radioBtnAnmeldestatusAlle.addActionListener(radioBtnGroupAnmeldestatusListener);
-    }
-
-    public void setRadioBtnGroupDispensation(JRadioButton radioBtnDispensiert, JRadioButton radioBtnNichtDispensiert, JRadioButton radioBtnDispensationAlle) {
-        this.radioBtnDispensiert = radioBtnDispensiert;
-        this.radioBtnNichtDispensiert = radioBtnNichtDispensiert;
-        this.radioBtnDispensationAlle = radioBtnDispensationAlle;
-        // Action Commands
-        this.radioBtnDispensiert.setActionCommand(SchuelerSuchenModel.DispensationSelected.DISPENSIERT.toString());
-        this.radioBtnNichtDispensiert.setActionCommand(SchuelerSuchenModel.DispensationSelected.NICHT_DISPENSIERT.toString());
-        this.radioBtnDispensationAlle.setActionCommand(SchuelerSuchenModel.DispensationSelected.ALLE.toString());
-        // Listener
-        RadioBtnGroupDispensationListener radioBtnGroupDispensationListener = new RadioBtnGroupDispensationListener();
-        this.radioBtnDispensiert.addActionListener(radioBtnGroupDispensationListener);
-        this.radioBtnNichtDispensiert.addActionListener(radioBtnGroupDispensationListener);
-        this.radioBtnDispensationAlle.addActionListener(radioBtnGroupDispensationListener);
-    }
-
-    public void setRadioBtnGroupGeschlecht(JRadioButton radioBtnWeiblich, JRadioButton radioBtnMaennlich, JRadioButton radioBtnGeschlechtAlle) {
-        this.radioBtnWeiblich = radioBtnWeiblich;
-        this.radioBtnMaennlich = radioBtnMaennlich;
-        this.radioBtnGeschlechtAlle = radioBtnGeschlechtAlle;
-        // Action Commands
-        this.radioBtnWeiblich.setActionCommand(SchuelerSuchenModel.GeschlechtSelected.WEIBLICH.toString());
-        this.radioBtnMaennlich.setActionCommand(SchuelerSuchenModel.GeschlechtSelected.MAENNLICH.toString());
-        this.radioBtnGeschlechtAlle.setActionCommand(SchuelerSuchenModel.GeschlechtSelected.ALLE.toString());
-        // Listener
-        RadioBtnGroupGeschlechtListener radioBtnGroupGeschlechtListener = new RadioBtnGroupGeschlechtListener();
-        this.radioBtnWeiblich.addActionListener(radioBtnGroupGeschlechtListener);
-        this.radioBtnMaennlich.addActionListener(radioBtnGroupGeschlechtListener);
-        this.radioBtnGeschlechtAlle.addActionListener(radioBtnGroupGeschlechtListener);
-    }
-
-    public void setBtnSuchen(JButton btnSuchen) {
-        this.btnSuchen = btnSuchen;
-        if (isModelValidationMode()) {
-            btnSuchen.setEnabled(false);
-        }
-        this.btnSuchen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSuchen();
-            }
-        });
-    }
-
-    public void setBtnAbbrechen(JButton btnAbbrechen) {
-        this.btnAbbrechen = btnAbbrechen;
-        this.btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
-        btnAbbrechen.setVisible(false); // Ist Startseite. Such-Kritierien abbrechen über Menü.
-    }
-
-    public void setErrLblStichtag(JLabel errLblStichtag) {
-        this.errLblStichtag = errLblStichtag;
-    }
-
-    public void setErrLblGeburtsdatumSuchperiode(JLabel errLblGeburtsdatumSuchperiode) {
-        this.errLblGeburtsdatumSuchperiode = errLblGeburtsdatumSuchperiode;
-    }
-
     private void onGeburtsdatumSuchperiodeEvent() {
         LOGGER.trace("SchuelerSuchenController Event GeburtsdatumSuchperiode");
         boolean equalFieldAndModelValue = equalsNullSafe(txtGeburtsdatumSuchperiode.getText(), schuelerSuchenModel.getGeburtsdatumSuchperiode());
@@ -283,13 +139,25 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
-    private void onCodeSelected() {
-        LOGGER.trace("SchuelerSuchenController Event Code selected=" + comboBoxCode.getSelectedItem());
-        setModelCombobox();
-    }
-
-    private void setModelCombobox() {
-        schuelerSuchenModel.setCode((Code) comboBoxCode.getSelectedItem());
+    public void setTxtStichtag(JTextField txtStichtag) {
+        this.txtStichtag = txtStichtag;
+        this.txtStichtag.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onStichtagEvent();
+            }
+        });
+        this.txtStichtag.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onStichtagEvent();
+            }
+        });
+        // Initialisieren mit heute
+        try {
+            schuelerSuchenModel.setStichtag(asString(new GregorianCalendar()));
+        } catch (SvmValidationException ignore) {
+        }
     }
 
     private void onStichtagEvent() {
@@ -327,9 +195,380 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
-    private void onAbbrechen() {
-        LOGGER.trace("SchuelerSuchenPanel Abbrechen gedrückt");
-        closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Abbrechen"));
+    public void setSpinnerSchuljahre(JSpinner spinnerSchuljahre) {
+        this.spinnerSchuljahre = spinnerSchuljahre;
+        spinnerSchuljahre.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                onSchuljahrSelected();
+            }
+        });
+        initSchuljahr();
+    }
+
+    private void initSchuljahr() {
+        String schuljahr;
+        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmContext.getSvmModel().getSemestersAll());
+        findSemesterForCalendarCommand.execute();
+        Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
+        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
+        if (currentSemester != null) {
+            // Innerhalb Semester
+            schuljahr = currentSemester.getSchuljahr();
+        } else if (nextSemester != null) {
+            // Ferien zwischen 2 Semestern
+            schuljahr = nextSemester.getSchuljahr();
+        } else {
+            // Kein passendes Semester erfasst
+            Calendar today = new GregorianCalendar();
+            int schuljahr1;
+            if (today.get(Calendar.MONTH) <= Calendar.JUNE) {
+                schuljahr1 = today.get(Calendar.YEAR) - 1;
+            } else {
+                schuljahr1 = today.get(Calendar.YEAR);
+            }
+            int schuljahr2 = schuljahr1 + 1;
+            schuljahr = schuljahr1 + "/" + schuljahr2;
+        }
+        try {
+            schuelerSuchenModel.setSchuljahr(schuljahr);
+        } catch (SvmValidationException ignore) {
+        }
+    }
+
+    private void onSchuljahrSelected() {
+        LOGGER.trace("KurseSemesterwahlController Event Schuljahre selected =" + spinnerSchuljahre.getValue());
+        boolean equalFieldAndModelValue = equalsNullSafe(spinnerSchuljahre.getValue(), schuelerSuchenModel.getSchuljahr());
+        try {
+            setModelSchuljahr();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelSchuljahr() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.SCHULJAHR);
+        try {
+            schuelerSuchenModel.setSchuljahr((String) spinnerSchuljahre.getValue());
+        } catch (SvmValidationException e) {
+            LOGGER.trace("PersonController setModelSchuljahr Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
+    public void setComboBoxSemesterbezeichnung(JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung) {
+        this.comboBoxSemesterbezeichnung = comboBoxSemesterbezeichnung;
+        comboBoxSemesterbezeichnung.setModel(new DefaultComboBoxModel<>(Semesterbezeichnung.values()));
+        comboBoxSemesterbezeichnung.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onSemesterbezeichnungSelected();
+            }
+        });
+        initSemesterbezeichnung();
+    }
+
+    private void initSemesterbezeichnung() {
+        Semesterbezeichnung semesterbezeichnung;
+        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmContext.getSvmModel().getSemestersAll());
+        findSemesterForCalendarCommand.execute();
+        Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
+        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
+        if (currentSemester != null) {
+            // Innerhalb Semester
+            semesterbezeichnung = currentSemester.getSemesterbezeichnung();
+        } else if (nextSemester != null) {
+            // Ferien zwischen 2 Semestern
+            semesterbezeichnung = nextSemester.getSemesterbezeichnung();
+        } else {
+            // Kein passendes Semester erfasst
+            Calendar today = new GregorianCalendar();
+            if (today.get(Calendar.MONTH) >= Calendar.FEBRUARY && today.get(Calendar.MONTH) <= Calendar.JUNE) {
+                semesterbezeichnung = Semesterbezeichnung.ZWEITES_SEMESTER;
+            } else {
+                semesterbezeichnung = Semesterbezeichnung.ERSTES_SEMESTER;
+            }
+        }
+        schuelerSuchenModel.setSemesterbezeichnung(semesterbezeichnung);
+    }
+
+    private void onSemesterbezeichnungSelected() {
+        LOGGER.trace("KurseSemesterwahlController Event Semesterbezeichnung selected=" + comboBoxSemesterbezeichnung.getSelectedItem());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxSemesterbezeichnung.getSelectedItem(), schuelerSuchenModel.getSemesterbezeichnung());
+        setModelSemesterbezeichnung();
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelSemesterbezeichnung() {
+        makeErrorLabelInvisible(Field.SEMESTERBEZEICHNUNG);
+        schuelerSuchenModel.setSemesterbezeichnung((Semesterbezeichnung) comboBoxSemesterbezeichnung.getSelectedItem());
+    }
+
+    public void setComboBoxWochentag(JComboBox<Wochentag> comboBoxWochentag) {
+        this.comboBoxWochentag = comboBoxWochentag;
+        comboBoxWochentag.setModel(new DefaultComboBoxModel<>(Wochentag.values()));
+        comboBoxWochentag.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onWochentagSelected();
+            }
+        });
+        // Code in Model initialisieren mit erstem ComboBox-Wert
+        schuelerSuchenModel.setWochentag(Wochentag.values()[0]);
+    }
+
+    private void onWochentagSelected() {
+        LOGGER.trace("KurseSemesterwahlController Event Wochentag selected=" + comboBoxWochentag.getSelectedItem());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxWochentag.getSelectedItem(), schuelerSuchenModel.getWochentag());
+        setModelWochentag();
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelWochentag() {
+        makeErrorLabelInvisible(Field.WOCHENTAG);
+        schuelerSuchenModel.setWochentag((Wochentag) comboBoxWochentag.getSelectedItem());
+    }
+
+    public void setTxtZeitBeginn(JTextField txtZeitBeginn) {
+        this.txtZeitBeginn = txtZeitBeginn;
+        this.txtZeitBeginn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onZeitBeginnEvent(true);
+            }
+        });
+        this.txtZeitBeginn.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onZeitBeginnEvent(false);
+            }
+        });
+    }
+
+    private void onZeitBeginnEvent(boolean showRequiredErrMsg) {
+        LOGGER.trace("schuelerSuchenController Event ZeitBeginn");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtZeitBeginn.getText(), schuelerSuchenModel.getZeitBeginn());
+        try {
+            setModelZeitBeginn(showRequiredErrMsg);
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelZeitBeginn(boolean showRequiredErrMsg) throws SvmValidationException {
+        makeErrorLabelInvisible(Field.ZEIT_BEGINN);
+        try {
+            schuelerSuchenModel.setZeitBeginn(txtZeitBeginn.getText());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("SchuelerSuchenController setModelZeitBeginn RequiredException=" + e.getMessage());
+            if (isModelValidationMode() || !showRequiredErrMsg) {
+                txtZeitBeginn.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        } catch (SvmValidationException e) {
+            LOGGER.trace("SchuelerSuchenController setModelZeitBeginn Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
+    public void setComboBoxLehrkraft(JComboBox<Lehrkraft> comboBoxLehrkraft) {
+        this.comboBoxLehrkraft = comboBoxLehrkraft;
+        Lehrkraft[] selectableLehrkraefte = schuelerSuchenModel.getSelectableLehrkraefte(svmContext.getSvmModel());
+        comboBoxLehrkraft.setModel(new DefaultComboBoxModel<>(selectableLehrkraefte));
+        // Model initialisieren mit erstem ComboBox-Wert
+        schuelerSuchenModel.setLehrkraft(selectableLehrkraefte[0]);
+        comboBoxLehrkraft.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onLehrkraftSelected();
+            }
+        });
+    }
+
+    private void onLehrkraftSelected() {
+        LOGGER.trace("SchuelerSuchenController Event Lehrkraft selected=" + comboBoxLehrkraft.getSelectedItem());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft.getSelectedItem(), schuelerSuchenModel.getLehrkraft());
+        try {
+            setModelLehrkraft();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelLehrkraft() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.LEHRKRAFT);
+        schuelerSuchenModel.setLehrkraft((Lehrkraft) comboBoxLehrkraft.getSelectedItem());
+    }
+
+    public void setCheckBoxKursFuerSucheBeruecksichtigen(JCheckBox checkBoxKursFuerSucheBeruecksichtigen) {
+        this.checkBoxKursFuerSucheBeruecksichtigen = checkBoxKursFuerSucheBeruecksichtigen;
+        this.checkBoxKursFuerSucheBeruecksichtigen.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                onKursFuerSucheBeruecksichtigenEvent();
+            }
+        });
+        // Initialisierung
+        schuelerSuchenModel.setKursFuerSucheBeruecksichtigen(false);
+    }
+
+    private void onKursFuerSucheBeruecksichtigenEvent() {
+        LOGGER.trace("SchuelerSuchenController Event KursFuerSucheBeruecksichtigen. Selected=" + checkBoxKursFuerSucheBeruecksichtigen.isSelected());
+        setModelKursFuerSucheBeruecksichtigen();
+    }
+
+    private void setModelKursFuerSucheBeruecksichtigen() {
+        schuelerSuchenModel.setKursFuerSucheBeruecksichtigen(checkBoxKursFuerSucheBeruecksichtigen.isSelected());
+    }
+
+    public void setComboBoxCode(JComboBox<Code> comboBoxCode) {
+        this.comboBoxCode = comboBoxCode;
+        List<Code> selectableCodesAsList = new ArrayList<>();
+        selectableCodesAsList.add(new Code("alle", "alle"));
+        selectableCodesAsList.addAll(svmContext.getSvmModel().getCodesAll());
+        Code[] selectableCodesAsArray = selectableCodesAsList.toArray(new Code[selectableCodesAsList.size()]);
+        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableCodesAsArray));
+        // Code in Model initialisieren mit erstem ComboBox-Wert
+        schuelerSuchenModel.setCode(selectableCodesAsArray[0]);
+        this.comboBoxCode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onCodeSelected();
+            }
+        });
+    }
+
+    private void onCodeSelected() {
+        LOGGER.trace("SchuelerSuchenController Event Code selected=" + comboBoxCode.getSelectedItem());
+        setModelCombobox();
+    }
+
+    private void setModelCombobox() {
+        schuelerSuchenModel.setCode((Code) comboBoxCode.getSelectedItem());
+    }
+
+    public void setErrLblStichtag(JLabel errLblStichtag) {
+        this.errLblStichtag = errLblStichtag;
+    }
+
+    public void setErrLblGeburtsdatumSuchperiode(JLabel errLblGeburtsdatumSuchperiode) {
+        this.errLblGeburtsdatumSuchperiode = errLblGeburtsdatumSuchperiode;
+    }
+
+    public void setErrLblZeitBeginn(JLabel errLblZeitBeginn) {
+        this.errLblZeitBeginn = errLblZeitBeginn;
+    }
+
+    public void setRadioBtnGroupRolle(JRadioButton radioBtnSchueler, JRadioButton radioBtnEltern, JRadioButton radioBtnRechnungsempfaenger, JRadioButton radioBtnRolleAlle) {
+        this.radioBtnSchueler = radioBtnSchueler;
+        this.radioBtnEltern = radioBtnEltern;
+        this.radioBtnRechnungsempfaenger = radioBtnRechnungsempfaenger;
+        this.radioBtnRolleAlle = radioBtnRolleAlle;
+        // Action Commands
+        this.radioBtnSchueler.setActionCommand(SchuelerSuchenModel.RolleSelected.SCHUELER.toString());
+        this.radioBtnEltern.setActionCommand(SchuelerSuchenModel.RolleSelected.ELTERN.toString());
+        this.radioBtnRechnungsempfaenger.setActionCommand(SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER.toString());
+        this.radioBtnRolleAlle.setActionCommand(SchuelerSuchenModel.RolleSelected.ALLE.toString());
+        // Listener
+        RadioBtnGroupRolleListener radioBtnGroupRolleListener = new RadioBtnGroupRolleListener();
+        this.radioBtnSchueler.addActionListener(radioBtnGroupRolleListener);
+        this.radioBtnEltern.addActionListener(radioBtnGroupRolleListener);
+        this.radioBtnRechnungsempfaenger.addActionListener(radioBtnGroupRolleListener);
+        this.radioBtnRolleAlle.addActionListener(radioBtnGroupRolleListener);
+        // Initialisieren mit Schüler
+        schuelerSuchenModel.setRolle(SchuelerSuchenModel.RolleSelected.SCHUELER);
+    }
+
+    public void setRadioBtnGroupAnmeldestatus(JRadioButton radioBtnAngemeldet, JRadioButton radioBtnAbgemeldet, JRadioButton radioBtnAnmeldestatusAlle) {
+        this.radioBtnAngemeldet = radioBtnAngemeldet;
+        this.radioBtnAbgemeldet = radioBtnAbgemeldet;
+        this.radioBtnAnmeldestatusAlle = radioBtnAnmeldestatusAlle;
+        // Action Commands
+        this.radioBtnAngemeldet.setActionCommand(SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET.toString());
+        this.radioBtnAbgemeldet.setActionCommand(SchuelerSuchenModel.AnmeldestatusSelected.ABGEMELDET.toString());
+        this.radioBtnAnmeldestatusAlle.setActionCommand(SchuelerSuchenModel.AnmeldestatusSelected.ALLE.toString());
+        // Listener
+        RadioBtnGroupAnmeldestatusListener radioBtnGroupAnmeldestatusListener = new RadioBtnGroupAnmeldestatusListener();
+        this.radioBtnAngemeldet.addActionListener(radioBtnGroupAnmeldestatusListener);
+        this.radioBtnAbgemeldet.addActionListener(radioBtnGroupAnmeldestatusListener);
+        this.radioBtnAnmeldestatusAlle.addActionListener(radioBtnGroupAnmeldestatusListener);
+        // Initialisieren mit angemeldet
+        schuelerSuchenModel.setAnmeldestatus(SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET);
+    }
+
+    public void setRadioBtnGroupDispensation(JRadioButton radioBtnDispensiert, JRadioButton radioBtnNichtDispensiert, JRadioButton radioBtnDispensationAlle) {
+        this.radioBtnDispensiert = radioBtnDispensiert;
+        this.radioBtnNichtDispensiert = radioBtnNichtDispensiert;
+        this.radioBtnDispensationAlle = radioBtnDispensationAlle;
+        // Action Commands
+        this.radioBtnDispensiert.setActionCommand(SchuelerSuchenModel.DispensationSelected.DISPENSIERT.toString());
+        this.radioBtnNichtDispensiert.setActionCommand(SchuelerSuchenModel.DispensationSelected.NICHT_DISPENSIERT.toString());
+        this.radioBtnDispensationAlle.setActionCommand(SchuelerSuchenModel.DispensationSelected.ALLE.toString());
+        // Listener
+        RadioBtnGroupDispensationListener radioBtnGroupDispensationListener = new RadioBtnGroupDispensationListener();
+        this.radioBtnDispensiert.addActionListener(radioBtnGroupDispensationListener);
+        this.radioBtnNichtDispensiert.addActionListener(radioBtnGroupDispensationListener);
+        this.radioBtnDispensationAlle.addActionListener(radioBtnGroupDispensationListener);
+        // Initialisieren mit alle
+        schuelerSuchenModel.setDispensation(SchuelerSuchenModel.DispensationSelected.ALLE);
+    }
+
+    public void setRadioBtnGroupGeschlecht(JRadioButton radioBtnWeiblich, JRadioButton radioBtnMaennlich, JRadioButton radioBtnGeschlechtAlle) {
+        this.radioBtnWeiblich = radioBtnWeiblich;
+        this.radioBtnMaennlich = radioBtnMaennlich;
+        this.radioBtnGeschlechtAlle = radioBtnGeschlechtAlle;
+        // Action Commands
+        this.radioBtnWeiblich.setActionCommand(SchuelerSuchenModel.GeschlechtSelected.WEIBLICH.toString());
+        this.radioBtnMaennlich.setActionCommand(SchuelerSuchenModel.GeschlechtSelected.MAENNLICH.toString());
+        this.radioBtnGeschlechtAlle.setActionCommand(SchuelerSuchenModel.GeschlechtSelected.ALLE.toString());
+        // Listener
+        RadioBtnGroupGeschlechtListener radioBtnGroupGeschlechtListener = new RadioBtnGroupGeschlechtListener();
+        this.radioBtnWeiblich.addActionListener(radioBtnGroupGeschlechtListener);
+        this.radioBtnMaennlich.addActionListener(radioBtnGroupGeschlechtListener);
+        this.radioBtnGeschlechtAlle.addActionListener(radioBtnGroupGeschlechtListener);
+        // Initialisieren mit alle
+        schuelerSuchenModel.setGeschlecht(SchuelerSuchenModel.GeschlechtSelected.ALLE);
+    }
+
+    public void setBtnSuchen(JButton btnSuchen) {
+        this.btnSuchen = btnSuchen;
+        if (isModelValidationMode()) {
+            btnSuchen.setEnabled(false);
+        }
+        this.btnSuchen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onSuchen();
+            }
+        });
     }
 
     private void onSuchen() {
@@ -352,6 +591,22 @@ public class SchuelerSuchenController extends PersonController {
             schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckListener);
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler gespeichert"));
         }
+    }
+
+    public void setBtnAbbrechen(JButton btnAbbrechen) {
+        this.btnAbbrechen = btnAbbrechen;
+        this.btnAbbrechen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onAbbrechen();
+            }
+        });
+        btnAbbrechen.setVisible(false); // Ist Startseite. Such-Kritierien abbrechen über Menü.
+    }
+
+    private void onAbbrechen() {
+        LOGGER.trace("SchuelerSuchenPanel Abbrechen gedrückt");
+        closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Abbrechen"));
     }
 
     private void onSchuelerSuchenModelCompleted(boolean completed) {
@@ -388,6 +643,11 @@ public class SchuelerSuchenController extends PersonController {
         } else {
             enableDispensationSelection();
         }
+        if (schuelerSuchenModel.isKursFuerSucheBeruecksichtigen()) {
+            enableKursSuche();
+        } else {
+            disableKursSuche();
+        }
     }
 
     private void enableGeburtsdatumSuchperiode() {
@@ -412,6 +672,15 @@ public class SchuelerSuchenController extends PersonController {
         schuelerSuchenModel.setDispensation(SchuelerSuchenModel.DispensationSelected.ALLE);
     }
 
+    private void enableKursSuche() {
+        schuelerSuchenModel.enableFields(getKursFields());
+    }
+
+    private void disableKursSuche() {
+        schuelerSuchenModel.disableFields(getKursFields());
+        schuelerSuchenModel.makeErrorLabelsInvisible(getKursFields());
+    }
+
     private Set<Field> getGeburtsdatumSuchperiodeFields() {
         Set<Field> geburtsdatumSuchperiodeFields = new HashSet<>();
         geburtsdatumSuchperiodeFields.add(Field.GEBURTSDATUM_SUCHPERIODE);
@@ -424,6 +693,16 @@ public class SchuelerSuchenController extends PersonController {
         dispensationFields.add(Field.NICHT_DISPENSIERT);
         dispensationFields.add(Field.DISPENSATION_ALLE);
         return dispensationFields;
+    }
+
+    private Set<Field> getKursFields() {
+        Set<Field> kursFields = new HashSet<>();
+        kursFields.add(Field.SCHULJAHR_KURS);
+        kursFields.add(Field.SEMESTERBEZEICHNUNG);
+        kursFields.add(Field.WOCHENTAG);
+        kursFields.add(Field.ZEIT_BEGINN);
+        kursFields.add(Field.LEHRKRAFT);
+        return kursFields;
     }
 
     @Override
@@ -475,6 +754,27 @@ public class SchuelerSuchenController extends PersonController {
         else if (checkIsFieldChange(Field.STICHTAG, evt)) {
             txtStichtag.setText(asString(schuelerSuchenModel.getStichtag()));
         }
+        else if (checkIsFieldChange(Field.SCHULJAHR, evt)) {
+            spinnerSchuljahre.setValue(schuelerSuchenModel.getSchuljahr());
+        }
+        else if (checkIsFieldChange(Field.SEMESTERBEZEICHNUNG, evt)) {
+            comboBoxSemesterbezeichnung.setSelectedItem(schuelerSuchenModel.getSemesterbezeichnung());
+        }
+        else if (checkIsFieldChange(Field.WOCHENTAG, evt)) {
+            comboBoxWochentag.setSelectedItem(schuelerSuchenModel.getWochentag());
+        }
+        else if (checkIsFieldChange(Field.ZEIT_BEGINN, evt)) {
+            txtZeitBeginn.setText(asString(schuelerSuchenModel.getZeitBeginn()));
+        }
+        else if (checkIsFieldChange(Field.LEHRKRAFT, evt)) {
+            comboBoxLehrkraft.setSelectedItem(schuelerSuchenModel.getLehrkraft());
+        }
+        else if (checkIsFieldChange(Field.KURS_FUER_SUCHE_BERUECKSICHTIGEN, evt)) {
+            checkBoxKursFuerSucheBeruecksichtigen.setSelected(schuelerSuchenModel.isKursFuerSucheBeruecksichtigen());
+        }
+        else if (checkIsFieldChange(Field.CODE, evt)) {
+            comboBoxCode.setSelectedItem(schuelerSuchenModel.getCode());
+        }
     }
 
     @Override
@@ -487,6 +787,10 @@ public class SchuelerSuchenController extends PersonController {
         if (txtStichtag.isEnabled()) {
             LOGGER.trace("Validate field Stichtag");
             setModelStichtag();
+        }
+        if (txtZeitBeginn.isEnabled()) {
+            LOGGER.trace("Validate field ZeitBeginn");
+            setModelZeitBeginn(true);
         }
     }
 
@@ -501,6 +805,10 @@ public class SchuelerSuchenController extends PersonController {
             errLblStichtag.setVisible(true);
             errLblStichtag.setText(e.getMessage());
         }
+        if (e.getAffectedFields().contains(Field.ZEIT_BEGINN)) {
+            errLblZeitBeginn.setVisible(true);
+            errLblZeitBeginn.setText(e.getMessage());
+        }
     }
 
     @Override
@@ -512,83 +820,108 @@ public class SchuelerSuchenController extends PersonController {
         if (e.getAffectedFields().contains(Field.STICHTAG)) {
             txtStichtag.setToolTipText(e.getMessage());
         }
+        if (e.getAffectedFields().contains(Field.ZEIT_BEGINN)) {
+            txtZeitBeginn.setToolTipText(e.getMessage());
+        }
     }
 
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         super.makeErrorLabelsInvisible(fields);
         if (fields.contains(Field.ALLE) || fields.contains(Field.GEBURTSDATUM_SUCHPERIODE)) {
-            errLblGeburtsdatumSuchperiode.setVisible(false);
-            txtGeburtsdatumSuchperiode.setToolTipText(null);
+            if (errLblGeburtsdatumSuchperiode != null) {
+                errLblGeburtsdatumSuchperiode.setVisible(false);
+            }
+            if (txtGeburtsdatumSuchperiode != null) {
+                txtGeburtsdatumSuchperiode.setToolTipText(null);
+            }
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.STICHTAG)) {
-            errLblStichtag.setVisible(false);
-            txtStichtag.setToolTipText(null);
+            if (errLblStichtag != null) {
+                errLblStichtag.setVisible(false);
+            }
+            if (txtStichtag != null) {
+                txtStichtag.setToolTipText(null);
+            }
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.ZEIT_BEGINN)) {
+            if (errLblZeitBeginn != null) {
+                errLblZeitBeginn.setVisible(false);
+            }
+            if (txtZeitBeginn != null) {
+                txtZeitBeginn.setToolTipText(null);
+            }
         }
     }
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
         super.disableFields(disable, fields);
-        if (fields.contains(Field.ALLE) || fields.contains(Field.GEBURTSDATUM_SUCHPERIODE)) {
+        if (txtGeburtsdatumSuchperiode != null && (fields.contains(Field.ALLE) || fields.contains(Field.GEBURTSDATUM_SUCHPERIODE))) {
             txtGeburtsdatumSuchperiode.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.SCHUELER)) {
+        if (radioBtnSchueler != null && (fields.contains(Field.ALLE) || fields.contains(Field.SCHUELER))) {
             radioBtnSchueler.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ELTERN)) {
+        if (radioBtnEltern != null && (fields.contains(Field.ALLE) || fields.contains(Field.ELTERN))) {
             radioBtnEltern.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.RECHNUNGSEMPFAENGER)) {
+        if (radioBtnRechnungsempfaenger != null && (fields.contains(Field.ALLE) || fields.contains(Field.RECHNUNGSEMPFAENGER))) {
             radioBtnRechnungsempfaenger.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ROLLE_ALLE)) {
+        if (radioBtnRolleAlle != null && (fields.contains(Field.ALLE) || fields.contains(Field.ROLLE_ALLE))) {
             radioBtnRolleAlle.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ANGEMELDET)) {
+        if (radioBtnAngemeldet != null && (fields.contains(Field.ALLE) || fields.contains(Field.ANGEMELDET))) {
             radioBtnAngemeldet.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ABGEMELDET)) {
+        if (radioBtnAbgemeldet != null && (fields.contains(Field.ALLE) || fields.contains(Field.ABGEMELDET))) {
             radioBtnAbgemeldet.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ANMELDESTATUS_ALLE)) {
+        if (radioBtnAnmeldestatusAlle != null && (fields.contains(Field.ALLE) || fields.contains(Field.ANMELDESTATUS_ALLE))) {
             radioBtnAnmeldestatusAlle.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.DISPENSIERT)) {
+        if (radioBtnDispensiert != null && (fields.contains(Field.ALLE) || fields.contains(Field.DISPENSIERT))) {
             radioBtnDispensiert.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.NICHT_DISPENSIERT)) {
+        if (radioBtnNichtDispensiert != null && (fields.contains(Field.ALLE) || fields.contains(Field.NICHT_DISPENSIERT))) {
             radioBtnNichtDispensiert.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.DISPENSATION_ALLE)) {
+        if (radioBtnDispensationAlle != null && (fields.contains(Field.ALLE) || fields.contains(Field.DISPENSATION_ALLE))) {
             radioBtnDispensationAlle.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.WEIBLICH)) {
+        if (radioBtnWeiblich != null && (fields.contains(Field.ALLE) || fields.contains(Field.WEIBLICH))) {
             radioBtnWeiblich.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.MAENNLICH)) {
+        if (radioBtnMaennlich != null && (fields.contains(Field.ALLE) || fields.contains(Field.MAENNLICH))) {
             radioBtnMaennlich.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.GESCHLECHT_ALLE)) {
+        if (radioBtnGeschlechtAlle != null && (fields.contains(Field.ALLE) || fields.contains(Field.GESCHLECHT_ALLE))) {
             radioBtnGeschlechtAlle.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.LEHRKRAFT)) {
-            txtLehrkraft.setEnabled(!disable);
+        if (txtStichtag != null && (fields.contains(Field.ALLE) || fields.contains(Field.STICHTAG))) {
+            txtStichtag.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.WOCHENTAG)) {
+        if (spinnerSchuljahre != null && (fields.contains(Field.ALLE) || fields.contains(Field.SCHULJAHR_KURS))) {
+            spinnerSchuljahre.setEnabled(!disable);
+        }
+        if (comboBoxSemesterbezeichnung != null && (fields.contains(Field.ALLE) || fields.contains(Field.SEMESTERBEZEICHNUNG))) {
+            comboBoxSemesterbezeichnung.setEnabled(!disable);
+        }
+        if (comboBoxWochentag != null && (fields.contains(Field.ALLE) || fields.contains(Field.WOCHENTAG))) {
             comboBoxWochentag.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.VON)) {
-            txtVon.setEnabled(!disable);
+        if (txtZeitBeginn != null && (fields.contains(Field.ALLE) || fields.contains(Field.ZEIT_BEGINN))) {
+            txtZeitBeginn.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.BIS)) {
-            txtBis.setEnabled(!disable);
+        if (comboBoxLehrkraft != null && (fields.contains(Field.ALLE) || fields.contains(Field.LEHRKRAFT))) {
+            comboBoxLehrkraft.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.CODE)) {
+        if (checkBoxKursFuerSucheBeruecksichtigen != null && (fields.contains(Field.ALLE) || fields.contains(Field.KURS_FUER_SUCHE_BERUECKSICHTIGEN))) {
+            checkBoxKursFuerSucheBeruecksichtigen.setEnabled(!disable);
+        }
+        if (comboBoxCode != null && (fields.contains(Field.ALLE) || fields.contains(Field.CODE))) {
             comboBoxCode.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.STICHTAG)) {
-            txtStichtag.setEnabled(!disable);
         }
     }
 

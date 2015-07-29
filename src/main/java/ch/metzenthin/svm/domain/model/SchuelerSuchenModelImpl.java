@@ -1,13 +1,17 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Field;
+import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SchuelerSuchenCommand;
 import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 import ch.metzenthin.svm.persistence.entities.PersonSuchen;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -20,26 +24,32 @@ import static ch.metzenthin.svm.common.utils.Converter.*;
  */
 final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerSuchenModel {
 
-    private static final RolleSelected ROLLE_INIT = RolleSelected.SCHUELER;
-    private static final AnmeldestatusSelected ANMELDESTATUS_INIT = AnmeldestatusSelected.ANGEMELDET;
-    private static final DispensationSelected DISPENSATION_INIT = DispensationSelected.ALLE;
-    private static final GeschlechtSelected GESCHLECHT_INIT = GeschlechtSelected.ALLE;
-    private static final Calendar STICHTAG_INIT = new GregorianCalendar();
+    private static final Lehrkraft LEHRKRAFT_ALLE = new Lehrkraft();
 
-    private final PersonSuchen person;
-    private RolleSelected rolle = ROLLE_INIT;
-    private AnmeldestatusSelected anmeldestatus = ANMELDESTATUS_INIT;
-    private DispensationSelected dispensation = DISPENSATION_INIT;
-    private GeschlechtSelected geschlecht = GESCHLECHT_INIT;
+    private final PersonSuchen person = new PersonSuchen();
+    private RolleSelected rolle;
+    private AnmeldestatusSelected anmeldestatus;
+    private DispensationSelected dispensation;
+    private Calendar stichtag;
+    private GeschlechtSelected geschlecht;
     private Calendar geburtsdatumSuchperiodeBeginn;
     private Calendar geburtsdatumSuchperiodeEnde;
     private String geburtsdatumSuchperiodeDateFormatString;
+    private String schuljahrKurs;
+    private Semesterbezeichnung semesterbezeichnung;
+    private Wochentag wochentag;
+    private Time zeitBeginn;
+    private Lehrkraft lehrkraft;
+    private boolean kursFuerSucheBeruecksichtigen;
     private Code code;
-    private Calendar stichtag = STICHTAG_INIT;
 
     SchuelerSuchenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
-        this.person = new PersonSuchen();
+    }
+
+    static {
+        LEHRKRAFT_ALLE.setVorname("alle");
+        LEHRKRAFT_ALLE.setNachname("");
     }
 
     @Override
@@ -126,13 +136,20 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
-    public RolleSelected getRolle() {
-        return rolle;
+    public GeschlechtSelected getGeschlecht() {
+        return geschlecht;
     }
 
     @Override
-    public RolleSelected getRolleInit() {
-        return ROLLE_INIT;
+    public void setGeschlecht(GeschlechtSelected geschlecht) {
+        GeschlechtSelected oldValue = this.geschlecht;
+        this.geschlecht = geschlecht;
+        firePropertyChange(Field.GESCHLECHT, oldValue, this.geschlecht);
+    }
+
+    @Override
+    public RolleSelected getRolle() {
+        return rolle;
     }
 
     @Override
@@ -147,11 +164,6 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         return anmeldestatus;
     }
 
-    @Override
-    public AnmeldestatusSelected getAnmeldestatusInit() {
-        return ANMELDESTATUS_INIT;
-    }
-
     public void setAnmeldestatus(AnmeldestatusSelected anmeldestatus) {
         AnmeldestatusSelected oldValue = this.anmeldestatus;
         this.anmeldestatus = anmeldestatus;
@@ -164,11 +176,6 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
-    public DispensationSelected getDispensationInit() {
-        return DISPENSATION_INIT;
-    }
-
-    @Override
     public void setDispensation(DispensationSelected dispensation) {
         DispensationSelected oldValue = this.dispensation;
         this.dispensation = dispensation;
@@ -176,20 +183,113 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
-    public GeschlechtSelected getGeschlecht() {
-        return geschlecht;
+    public Calendar getStichtag() {
+        return stichtagModelAttribute.getValue();
     }
 
     @Override
-    public GeschlechtSelected getGeschlechtInit() {
-        return GESCHLECHT_INIT;
+    public void setStichtag(String stichtag) throws SvmValidationException {
+        stichtagModelAttribute.setNewValue(true, stichtag, isBulkUpdate());
+    }
+
+    private final StringModelAttribute schuljahrKursModelAttribute = new StringModelAttribute(
+            this,
+            Field.SCHULJAHR_KURS, 9, 9,
+            new AttributeAccessor<String>() {
+                @Override
+                public String getValue() {
+                    return schuljahrKurs;
+                }
+
+                @Override
+                public void setValue(String value) {
+                    schuljahrKurs = value;
+                }
+            }
+    );
+
+    @Override
+    public String getSchuljahr() {
+        return schuljahrKursModelAttribute.getValue();
     }
 
     @Override
-    public void setGeschlecht(GeschlechtSelected geschlecht) {
-        GeschlechtSelected oldValue = this.geschlecht;
-        this.geschlecht = geschlecht;
-        firePropertyChange(Field.GESCHLECHT, oldValue, this.geschlecht);
+    public void setSchuljahr(String schuljahr) throws SvmValidationException {
+        schuljahrKursModelAttribute.setNewValue(true, schuljahr, isBulkUpdate());
+    }
+
+    @Override
+    public Semesterbezeichnung getSemesterbezeichnung() {
+        return semesterbezeichnung;
+    }
+
+    @Override
+    public void setSemesterbezeichnung(Semesterbezeichnung semesterbezeichnung) {
+        Semesterbezeichnung oldValue = this.semesterbezeichnung;
+        this.semesterbezeichnung = semesterbezeichnung;
+        firePropertyChange(Field.SEMESTERBEZEICHNUNG, oldValue, this.semesterbezeichnung);
+    }
+
+    @Override
+    public Wochentag getWochentag() {
+        return wochentag;
+    }
+
+    @Override
+    public void setWochentag(Wochentag wochentag) {
+        Wochentag oldValue = this.wochentag;
+        this.wochentag = wochentag;
+        firePropertyChange(Field.WOCHENTAG, oldValue, this.wochentag);
+    }
+
+    private final TimeModelAttribute zeitBeginnModelAttribute = new TimeModelAttribute(
+            this,
+            Field.ZEIT_BEGINN,
+            new AttributeAccessor<Time>() {
+                @Override
+                public Time getValue() {
+                    return zeitBeginn;
+                }
+
+                @Override
+                public void setValue(Time value) {
+                    zeitBeginn = value;
+                }
+            }
+    );
+
+    @Override
+    public Time getZeitBeginn() {
+        return zeitBeginnModelAttribute.getValue();
+    }
+
+    @Override
+    public void setZeitBeginn(String zeitBeginn) throws SvmValidationException {
+        zeitBeginnModelAttribute.setNewValue(false, zeitBeginn, isBulkUpdate());
+    }
+
+    @Override
+    public Lehrkraft getLehrkraft() {
+        return lehrkraft;
+    }
+
+    @Override
+    public void setLehrkraft(Lehrkraft lehrkraft) {
+        Lehrkraft oldValue = this.lehrkraft;
+        this.lehrkraft = lehrkraft;
+        firePropertyChange(Field.LEHRKRAFT, oldValue, this.lehrkraft);
+    }
+
+    @Override
+    public boolean isKursFuerSucheBeruecksichtigen() {
+        return kursFuerSucheBeruecksichtigen;
+    }
+
+    @Override
+    public void setKursFuerSucheBeruecksichtigen(boolean isSelected) {
+        boolean oldValue = kursFuerSucheBeruecksichtigen;
+        kursFuerSucheBeruecksichtigen = isSelected;
+        firePropertyChange(Field.KURS_FUER_SUCHE_BERUECKSICHTIGEN, oldValue, kursFuerSucheBeruecksichtigen);
     }
 
     @Override
@@ -219,21 +319,6 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     );
 
     @Override
-    public Calendar getStichtag() {
-        return stichtagModelAttribute.getValue();
-    }
-
-    @Override
-    public Calendar getStichtagInit() {
-        return STICHTAG_INIT;
-    }
-
-    @Override
-    public void setStichtag(String stichtag) throws SvmValidationException {
-        stichtagModelAttribute.setNewValue(true, stichtag, isBulkUpdate());
-    }
-
-    @Override
     public SchuelerSuchenTableData suchen() {
         SchuelerSuchenCommand schuelerSuchenCommand = new SchuelerSuchenCommand(this);
         CommandInvoker commandInvoker = getCommandInvoker();
@@ -245,6 +330,14 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     @Override
     public void invalidateGeburtsdatumSuchperiode() {
         geburtsdatumSuchperiodeBeginnAttribute.initValue(null, geburtsdatumSuchperiodeDateFormatString);
+    }
+
+    @Override
+    public Lehrkraft[] getSelectableLehrkraefte(SvmModel svmModel) {
+        List<Lehrkraft> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
+        // Lehrkraft alle auch erlaubt
+        lehrkraefteList.add(0, LEHRKRAFT_ALLE);
+        return lehrkraefteList.toArray(new Lehrkraft[lehrkraefteList.size()]);
     }
 
     @Override

@@ -270,7 +270,6 @@ public class KursErfassenController extends AbstractController {
         kursErfassenModel.setWochentag((Wochentag) comboBoxWochentag.getSelectedItem());
     }
 
-
     public void setTxtZeitBeginn(JTextField txtZeitBeginn) {
         this.txtZeitBeginn = txtZeitBeginn;
         this.txtZeitBeginn.addActionListener(new ActionListener() {
@@ -389,7 +388,7 @@ public class KursErfassenController extends AbstractController {
     }
 
     private void onKursortSelected() {
-        LOGGER.trace("PersonController Event Kursort selected=" + comboBoxKursort.getSelectedItem());
+        LOGGER.trace("KursErfassenController Event Kursort selected=" + comboBoxKursort.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxKursort.getSelectedItem(), kursErfassenModel.getKursort());
         try {
             setModelKursort();
@@ -408,7 +407,6 @@ public class KursErfassenController extends AbstractController {
         kursErfassenModel.setKursort((Kursort) comboBoxKursort.getSelectedItem());
     }
 
-
     public void setComboBoxLehrkraft1(JComboBox<Lehrkraft> comboBoxLehrkraft1) {
         this.comboBoxLehrkraft1 = comboBoxLehrkraft1;
         Lehrkraft[] selectableLehrkraefte1 = kursErfassenModel.getSelectableLehrkraefte1(svmContext.getSvmModel());
@@ -424,7 +422,7 @@ public class KursErfassenController extends AbstractController {
     }
 
     private void onLehrkraft1Selected() {
-        LOGGER.trace("PersonController Event Lehrkraft1 selected=" + comboBoxLehrkraft1.getSelectedItem());
+        LOGGER.trace("KursErfassenController Event Lehrkraft1 selected=" + comboBoxLehrkraft1.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft1.getSelectedItem(), kursErfassenModel.getLehrkraft1());
         try {
             setModelLehrkraft1();
@@ -458,7 +456,7 @@ public class KursErfassenController extends AbstractController {
     }
 
     private void onLehrkraft2Selected() {
-        LOGGER.trace("PersonController Event Lehrkraft2 selected=" + comboBoxLehrkraft2.getSelectedItem());
+        LOGGER.trace("KursErfassenController Event Lehrkraft2 selected=" + comboBoxLehrkraft2.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft2.getSelectedItem(), kursErfassenModel.getLehrkraft2());
         try {
             setModelLehrkraft2();

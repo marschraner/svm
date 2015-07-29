@@ -17,6 +17,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -77,6 +79,16 @@ public class MonatsstatistikController extends AbstractController {
                 onMonatJahrEvent();
             }
         });
+        initMonatJahr();
+    }
+
+    private void initMonatJahr() {
+        Calendar monatJahrInit = new GregorianCalendar();
+        monatJahrInit.add(Calendar.MONTH, -1);
+        try {
+            monatsstatistikModel.setMonatJahr(asString(monatJahrInit, MONAT_JAHR_DATE_FORMAT_STRING));
+        } catch (SvmValidationException ignore) {
+        }
     }
 
     public void setRadioBtnGroupAnAbmeldungenDispensationen(JRadioButton radioBtnAnmeldungen, JRadioButton radioBtnAbmeldungen, JRadioButton radioBtnDispensationen) {
@@ -92,6 +104,8 @@ public class MonatsstatistikController extends AbstractController {
         this.radioBtnAnmeldungen.addActionListener(radioBtnGroupAnAbmeldungenDispensationenListener);
         this.radioBtnAbmeldungen.addActionListener(radioBtnGroupAnAbmeldungenDispensationenListener);
         this.radioBtnDispensationen.addActionListener(radioBtnGroupAnAbmeldungenDispensationenListener);
+        // Initialisieren mit Anmeldungen
+        monatsstatistikModel.setAnAbmeldungenDispensationen(MonatsstatistikModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN);
     }
 
     public void setBtnSuchen(JButton btnSuchen) {
@@ -203,6 +217,12 @@ public class MonatsstatistikController extends AbstractController {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.MONAT_JAHR, evt)) {
             txtMonatJahr.setText(asString(monatsstatistikModel.getMonatJahr(), MONAT_JAHR_DATE_FORMAT_STRING));
+        } else if (checkIsFieldChange(Field.AN_ABMELDUNGEN_DISPENSATIONEN, evt) && evt.getNewValue() == MonatsstatistikModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN) {
+            radioBtnAnmeldungen.setSelected(true);
+        } else if (checkIsFieldChange(Field.AN_ABMELDUNGEN_DISPENSATIONEN, evt) && evt.getNewValue() == MonatsstatistikModel.AnAbmeldungenDispensationenSelected.ABMELDUNGEN) {
+            radioBtnAbmeldungen.setSelected(true);
+        } else if (checkIsFieldChange(Field.AN_ABMELDUNGEN_DISPENSATIONEN, evt) && evt.getNewValue() == MonatsstatistikModel.AnAbmeldungenDispensationenSelected.DISPENSATIONEN) {
+            radioBtnDispensationen.setSelected(true);
         }
     }
 
@@ -238,20 +258,7 @@ public class MonatsstatistikController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {
-        if (fields.contains(Field.ALLE) || fields.contains(Field.MONAT_JAHR)) {
-            txtMonatJahr.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ANMELDUNGEN)) {
-            radioBtnAnmeldungen.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ABMELDUNGEN)) {
-            radioBtnAbmeldungen.setEnabled(!disable);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.DISPENSATIONEN)) {
-            radioBtnDispensationen.setEnabled(!disable);
-        }
-    }
+    public void disableFields(boolean disable, Set<Field> fields) {}
 
     class RadioBtnGroupAnAbmeldungenDispensationenListener implements ActionListener {
         @Override
