@@ -4,7 +4,7 @@ package ch.metzenthin.svm.dataTypes;
  * @author Martin Schraner
  */
 public enum Wochentag {
-    ALLE("alle"),
+    ALLE(""),
     MONTAG("Montag"),
     DIENSTAG("Dienstag"),
     MITTWOCH("Mittwoch"),

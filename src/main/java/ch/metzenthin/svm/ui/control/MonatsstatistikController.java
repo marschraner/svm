@@ -178,6 +178,7 @@ public class MonatsstatistikController extends AbstractController {
     private void onSuchen() {
         LOGGER.trace("MonatsstatistikController Suchen gedrückt");
         if (!isModelValidationMode() && !validateOnSpeichern()) {
+            btnSuchen.setFocusPainted(false);
             return;
         }
         SchuelerSuchenTableData schuelerSuchenTableData = monatsstatistikModel.suchen();

@@ -52,6 +52,8 @@ public class SchuelerController extends PersonController {
                 onGeschlechtSelected();
             }
         });
+        // Leeren ComboBox-Wert anzeigen
+        comboBoxGeschlecht.setSelectedItem(null);
     }
 
     public void setTxtAnmeldedatum(JTextField txtAnmeldedatum) {
@@ -101,11 +103,33 @@ public class SchuelerController extends PersonController {
 
     private void onGeschlechtSelected() {
         LOGGER.trace("SchuelerController Event Geschlecht selected=" + comboBoxGeschlecht.getSelectedItem());
-        setModelGeschlecht();
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxGeschlecht.getSelectedItem(), schuelerModel.getGeschlecht());
+        try {
+            setModelGeschlecht();
+        } catch (SvmRequiredException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
     }
 
-    private void setModelGeschlecht() {
-        schuelerModel.setGeschlecht((Geschlecht) comboBoxGeschlecht.getSelectedItem());
+    private void setModelGeschlecht() throws SvmRequiredException {
+        makeErrorLabelInvisible(Field.GESCHLECHT);
+        try {
+            schuelerModel.setGeschlecht((Geschlecht) comboBoxGeschlecht.getSelectedItem());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("SchuelerController setModelGeschlecht RequiredException=" + e.getMessage());
+            if (isModelValidationMode()) {
+                comboBoxGeschlecht.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        }
     }
 
     private void onAnmeldedatumEvent(boolean showRequiredErrMsg) {
@@ -281,7 +305,9 @@ public class SchuelerController extends PersonController {
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         super.makeErrorLabelsInvisible(fields);
         if (fields.contains(Field.ALLE) || fields.contains(Field.GESCHLECHT)) {
-            errLblGeschlecht.setVisible(false);
+            if (errLblGeschlecht != null) {
+                errLblGeschlecht.setVisible(false);
+            }
             comboBoxGeschlecht.setToolTipText(null);
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.ANMELDEDATUM)) {

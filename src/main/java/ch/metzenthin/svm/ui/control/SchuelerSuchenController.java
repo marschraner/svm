@@ -451,13 +451,10 @@ public class SchuelerSuchenController extends PersonController {
 
     public void setComboBoxCode(JComboBox<Code> comboBoxCode) {
         this.comboBoxCode = comboBoxCode;
-        List<Code> selectableCodesAsList = new ArrayList<>();
-        selectableCodesAsList.add(new Code("alle", "alle"));
-        selectableCodesAsList.addAll(svmContext.getSvmModel().getCodesAll());
-        Code[] selectableCodesAsArray = selectableCodesAsList.toArray(new Code[selectableCodesAsList.size()]);
-        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableCodesAsArray));
-        // Code in Model initialisieren mit erstem ComboBox-Wert
-        schuelerSuchenModel.setCode(selectableCodesAsArray[0]);
+        Code[] selectableCodes = schuelerSuchenModel.getSelectableCodes(svmContext.getSvmModel());
+        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableCodes));
+        // Model initialisieren mit erstem ComboBox-Wert
+        schuelerSuchenModel.setCode(selectableCodes[0]);
         this.comboBoxCode.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -574,6 +571,7 @@ public class SchuelerSuchenController extends PersonController {
     private void onSuchen() {
         LOGGER.trace("SchuelerSuchenPanel Suchen gedrückt");
         if (!validateOnSpeichern()) {
+            btnSuchen.setFocusPainted(false);
             return;
         }
         SchuelerSuchenTableData schuelerSuchenTableData = schuelerSuchenModel.suchen();
@@ -924,7 +922,6 @@ public class SchuelerSuchenController extends PersonController {
             comboBoxCode.setEnabled(!disable);
         }
     }
-
 
     class RadioBtnGroupRolleListener implements ActionListener {
         @Override

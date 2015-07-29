@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Wochentag;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.AddKursToSchuelerAndSaveCommand;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
@@ -19,9 +20,9 @@ public interface KursSchuelerHinzufuegenModel extends Model {
     Lehrkraft getLehrkraft();
 
     void setSemester(Semester semester);
-    void setWochentag(Wochentag wochentag);
+    void setWochentag(Wochentag wochentag) throws SvmRequiredException;
     void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
-    void setLehrkraft(Lehrkraft lehrkraft);
+    void setLehrkraft(Lehrkraft lehrkraft) throws SvmRequiredException;
 
     Semester getDefaultSemester(SvmModel svmModel, Semester[] selectableSemesters);
     AddKursToSchuelerAndSaveCommand.Result hinzufuegen(SchuelerDatenblattModel schuelerDatenblattModel);

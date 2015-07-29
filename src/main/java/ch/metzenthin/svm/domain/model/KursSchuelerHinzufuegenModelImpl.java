@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Wochentag;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.AddKursToSchuelerAndSaveCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
@@ -46,10 +47,14 @@ public class KursSchuelerHinzufuegenModelImpl extends AbstractModel implements K
     }
 
     @Override
-    public void setWochentag(Wochentag wochentag) {
+    public void setWochentag(Wochentag wochentag) throws SvmRequiredException {
         Wochentag oldValue = this.wochentag;
         this.wochentag = wochentag;
         firePropertyChange(Field.WOCHENTAG, oldValue, this.wochentag);
+        if (wochentag == null) {
+            invalidate();
+            throw new SvmRequiredException(Field.WOCHENTAG);
+        }
     }
 
     private final TimeModelAttribute zeitBeginnModelAttribute = new TimeModelAttribute(
@@ -84,10 +89,14 @@ public class KursSchuelerHinzufuegenModelImpl extends AbstractModel implements K
     }
 
     @Override
-    public void setLehrkraft(Lehrkraft lehrkraft) {
+    public void setLehrkraft(Lehrkraft lehrkraft) throws SvmRequiredException {
         Lehrkraft oldValue = this.lehrkraft;
         this.lehrkraft = lehrkraft;
         firePropertyChange(Field.LEHRKRAFT, oldValue, this.lehrkraft);
+        if (lehrkraft == null) {
+            invalidate();
+            throw new SvmRequiredException(Field.LEHRKRAFT);
+        }
     }
 
     @Override

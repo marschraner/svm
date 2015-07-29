@@ -51,8 +51,8 @@ public class Code implements Comparable<Code> {
 
     @Override
     public String toString() {
-        if (kuerzel.equals("alle")) {
-            return "alle";
+        if (kuerzel.equals("")) {
+            return "";
         }
         return kuerzel + " (" + beschreibung + ")";
     }

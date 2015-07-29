@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.dataTypes.Field;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.AddCodeToSchuelerAndSaveCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
@@ -17,8 +19,17 @@ public class CodeSchuelerHinzufuegenModelImpl extends AbstractModel implements C
     }
 
     @Override
-    public void setCode(Code code) {
+    public Code getCode() {
+        return code;
+    }
+
+    @Override
+    public void setCode(Code code) throws SvmRequiredException {
         this.code = code;
+        if (code == null) {
+            invalidate();
+            throw new SvmRequiredException(Field.CODE);
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Geschlecht;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import org.junit.Before;
@@ -26,26 +27,24 @@ public class SchuelerModelImplTest {
     }
 
     @Test
-    public void testSetGeschlecht() {
+    public void testSetGeschlecht() throws SvmRequiredException {
         schuelerModel.setGeschlecht(Geschlecht.M);
         assertEquals("Geschlecht.M erwartet", Geschlecht.M, schuelerModel.getGeschlecht());
     }
 
-    @Test
-    public void testSetGeschlecht_Null() {
+    @Test(expected = SvmRequiredException.class)
+    public void testSetGeschlecht_Null() throws SvmRequiredException {
         schuelerModel.setGeschlecht(null);
-        assertNull("Geschlecht null erwartet", schuelerModel.getGeschlecht());
     }
 
-    @Test
-    public void testSetGeschlecht_NullAgain() {
+    @Test(expected = SvmRequiredException.class)
+    public void testSetGeschlecht_NullAgain() throws SvmRequiredException {
         schuelerModel.setGeschlecht(Geschlecht.M);
         schuelerModel.setGeschlecht(null);
-        assertNull("Geschlecht null erwartet", schuelerModel.getGeschlecht());
     }
 
     @Test
-    public void testSetGeschlecht_PropertyChangeOneEvent() {
+    public void testSetGeschlecht_PropertyChangeOneEvent() throws SvmRequiredException {
         TestPropertyChangeListener listener = new TestPropertyChangeListener();
         schuelerModel.addPropertyChangeListener(listener);
         schuelerModel.setGeschlecht(Geschlecht.M);
@@ -53,7 +52,7 @@ public class SchuelerModelImplTest {
     }
 
     @Test
-    public void testSetGeschlecht_PropertyChangeNoEvent() {
+    public void testSetGeschlecht_PropertyChangeNoEvent() throws SvmRequiredException {
         schuelerModel.setGeschlecht(Geschlecht.M);
         TestPropertyChangeListener listener = new TestPropertyChangeListener();
         schuelerModel.addPropertyChangeListener(listener);

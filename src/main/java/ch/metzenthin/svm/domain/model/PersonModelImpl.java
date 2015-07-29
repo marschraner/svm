@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Field;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -34,10 +35,14 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     @Override
-    public void setAnrede(Anrede anrede) {
+    public void setAnrede(Anrede anrede) throws SvmRequiredException {
         Anrede oldValue = getPerson().getAnrede();
         getPerson().setAnrede(anrede);
         firePropertyChange(Field.ANREDE, oldValue, getPerson().getAnrede());
+        if (anrede == null) {
+            invalidate();
+            throw new SvmRequiredException(Field.ANREDE);
+        }
     }
 
     private final StringModelAttribute nachnameModelAttribute = new StringModelAttribute(

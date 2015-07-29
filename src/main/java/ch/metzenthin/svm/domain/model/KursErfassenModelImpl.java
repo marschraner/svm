@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Wochentag;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CheckKursBereitsErfasstCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
@@ -52,10 +53,14 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     }
 
     @Override
-    public void setKurstyp(Kurstyp kurstyp) {
+    public void setKurstyp(Kurstyp kurstyp) throws SvmRequiredException {
         Kurstyp oldValue = this.kurstyp;
         this.kurstyp = kurstyp;
         firePropertyChange(Field.KURSTYP, oldValue, this.kurstyp);
+        if (kurstyp == null) {
+            invalidate();
+            throw new SvmRequiredException(Field.KURSTYP);
+        }
     }
 
     private final StringModelAttribute altersbereichModelAttribute = new StringModelAttribute(
@@ -178,10 +183,14 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     }
 
     @Override
-    public void setWochentag(Wochentag wochentag) {
+    public void setWochentag(Wochentag wochentag) throws SvmRequiredException {
         Wochentag oldValue = kurs.getWochentag();
         kurs.setWochentag(wochentag);
         firePropertyChange(Field.WOCHENTAG, oldValue, kurs.getWochentag());
+        if (wochentag == null) {
+            invalidate();
+            throw new SvmRequiredException(Field.WOCHENTAG);
+        }
     }
 
     @Override
@@ -190,10 +199,14 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     }
 
     @Override
-    public void setKursort(Kursort kursort) {
+    public void setKursort(Kursort kursort) throws SvmRequiredException {
         Kursort oldValue = this.kursort;
         this.kursort = kursort;
         firePropertyChange(Field.KURSORT, oldValue, this.kursort);
+        if (kursort == null) {
+            invalidate();
+            throw new SvmRequiredException(Field.KURSORT);
+        }
     }
 
     @Override
@@ -220,10 +233,14 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     }
 
     @Override
-    public void setLehrkraft1(Lehrkraft lehrkraft1) {
+    public void setLehrkraft1(Lehrkraft lehrkraft1) throws SvmRequiredException {
         Lehrkraft oldValue = this.lehrkraft1;
         this.lehrkraft1 = lehrkraft1;
         firePropertyChange(Field.LEHRKRAFT1, oldValue, this.lehrkraft1);
+        if (lehrkraft1 == null) {
+            invalidate();
+            throw new SvmRequiredException(Field.LEHRKRAFT1);
+        }
     }
 
     @Override

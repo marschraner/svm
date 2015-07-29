@@ -179,6 +179,7 @@ public class KurseSemesterwahlController extends AbstractController {
     private void onSuchen() {
         LOGGER.trace("KurseSemesterwahlController OK gedrückt");
         if (!isModelValidationMode() && !validateOnSpeichern()) {
+            btnOk.setFocusPainted(false);
             return;
         }
         if (!kurseSemesterwahlModel.checkSemesterBereitsErfasst(svmContext.getSvmModel())) {

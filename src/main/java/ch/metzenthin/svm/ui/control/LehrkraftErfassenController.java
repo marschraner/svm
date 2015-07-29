@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -76,20 +75,6 @@ public class LehrkraftErfassenController extends PersonController {
                 onAbbrechen();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    }
-
-    @Override
-    public void setComboBoxAnrede(JComboBox<Anrede> comboBoxAnrede) {
-        super.setComboBoxAnrede(comboBoxAnrede);
-        // Anrede: KEINE nicht anzeigen:
-        comboBoxAnrede.removeItem(Anrede.KEINE);
-        // Frau als Default-Wert
-        if (!isBearbeiten) {
-            try {
-                lehrkraftErfassenModel.setAnrede(Anrede.FRAU);
-            } catch (SvmValidationException ignore) {
-            }
-        }
     }
 
     public void setTxtAhvNummer(JTextField txtAhvNummer) {
@@ -240,6 +225,7 @@ public class LehrkraftErfassenController extends PersonController {
 
     private void onSpeichern() {
         if (!isModelValidationMode() && !validateOnSpeichern()) {
+            btnSpeichern.setFocusPainted(false);
             return;
         }
         if (lehrkraftErfassenModel.checkLehrkraftBereitsErfasst(svmContext.getSvmModel())) {

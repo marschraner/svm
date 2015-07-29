@@ -44,7 +44,6 @@ public interface SchuelerSuchenModel extends PersonModel {
 
     void setKursFuerSucheBeruecksichtigen(boolean isSelected);
 
-    Code getCode();
     String getGeburtsdatumSuchperiode();
     Calendar getGeburtsdatumSuchperiodeBeginn();
     Calendar getGeburtsdatumSuchperiodeEnde();
@@ -60,8 +59,8 @@ public interface SchuelerSuchenModel extends PersonModel {
     Time getZeitBeginn();
     Lehrkraft getLehrkraft();
     PersonSuchen getPerson();
+    Code getCode();
 
-    void setCode(Code code);
     void setGeburtsdatumSuchperiode(String geburtsdatumSuchperiode) throws SvmValidationException;
     void setGeschlecht(GeschlechtSelected geschlecht);
     void setRolle(RolleSelected rolle);
@@ -73,8 +72,10 @@ public interface SchuelerSuchenModel extends PersonModel {
     void setWochentag(Wochentag wochentag);
     void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
     void setLehrkraft(Lehrkraft lehrkraft);
+    void setCode(Code code);
 
     SchuelerSuchenTableData suchen();
     void invalidateGeburtsdatumSuchperiode();
     Lehrkraft[] getSelectableLehrkraefte(SvmModel svmModel);
+    Code[] getSelectableCodes(SvmModel svmModel);
 }

@@ -54,12 +54,6 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
               </vspacer>
-              <hspacer id="4ce34">
-                <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="3" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0" ipadx="300"/>
-                </constraints>
-              </hspacer>
               <hspacer id="9a687">
                 <constraints>
                   <grid row="3" column="5" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -472,6 +466,21 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
+              </component>
+              <hspacer id="4ce34">
+                <constraints>
+                  <grid row="24" column="2" row-span="1" col-span="3" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0" ipadx="300"/>
+                </constraints>
+              </hspacer>
+              <component id="11a88" class="javax.swing.JLabel" binding="errLblAnrede">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="errLblAnrede"/>
+                </properties>
               </component>
             </children>
           </grid>

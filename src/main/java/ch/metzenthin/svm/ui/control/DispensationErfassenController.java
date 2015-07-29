@@ -314,6 +314,7 @@ public class DispensationErfassenController extends AbstractController {
 
     private void onSpeichern() {
         if (!isModelValidationMode() && !validateOnSpeichern()) {
+            btnSpeichern.setFocusPainted(false);
             return;
         }
         if (dispensationErfassenModel.checkDispensationUeberlapptAndereDispensationen(schuelerDatenblattModel)) {

@@ -18,12 +18,14 @@ public class CodeSchuelerHinzufuegenDialog extends JDialog {
     private JComboBox<Code> comboBoxCode;
     private JButton btnOk;
     private JButton btnAbbrechen;
+    private JLabel errLblCode;
 
     public CodeSchuelerHinzufuegenDialog(SvmContext svmContext, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
         setTitle("Code hinzufügen");
+        initializeErrLbls();
         createCodeSchuelerHinzufuegenController(svmContext, codesModel, schuelerDatenblattModel);
     }
 
@@ -33,8 +35,14 @@ public class CodeSchuelerHinzufuegenDialog extends JDialog {
         codeSchuelerHinzufuegenController.setCodeSchuelerHinzufuegenDialog(this);
         codeSchuelerHinzufuegenController.setContentPane(contentPane);
         codeSchuelerHinzufuegenController.setComboBoxCode(comboBoxCode);
+        codeSchuelerHinzufuegenController.setErrLblCode(errLblCode);
         codeSchuelerHinzufuegenController.setBtnOk(btnOk);
         codeSchuelerHinzufuegenController.setBtnAbbrechen(btnAbbrechen);
+    }
+
+    private void initializeErrLbls() {
+        errLblCode.setVisible(false);
+        errLblCode.setForeground(Color.RED);
     }
 
     private void createUIComponents() {
@@ -112,11 +120,18 @@ public class CodeSchuelerHinzufuegenDialog extends JDialog {
         final JPanel spacer6 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
-        gbc.gridy = 0;
+        gbc.gridy = 2;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.ipadx = 200;
         panel1.add(spacer6, gbc);
+        errLblCode = new JLabel();
+        errLblCode.setText("errLblCode");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel1.add(errLblCode, gbc);
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridBagLayout());
         contentPane.add(buttonPanel, BorderLayout.SOUTH);

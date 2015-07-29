@@ -25,6 +25,7 @@ import static ch.metzenthin.svm.common.utils.Converter.*;
 final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerSuchenModel {
 
     private static final Lehrkraft LEHRKRAFT_ALLE = new Lehrkraft();
+    private static final Code CODE_ALLE = new Code();
 
     private final PersonSuchen person = new PersonSuchen();
     private RolleSelected rolle;
@@ -48,8 +49,10 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     static {
-        LEHRKRAFT_ALLE.setVorname("alle");
+        LEHRKRAFT_ALLE.setVorname("");
         LEHRKRAFT_ALLE.setNachname("");
+        CODE_ALLE.setKuerzel("");
+        CODE_ALLE.setBeschreibung("");
     }
 
     @Override
@@ -299,7 +302,9 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     @Override
     public void setCode(Code code) {
+        Code oldValue = this.code;
         this.code = code;
+        firePropertyChange(Field.CODE, oldValue, this.code);
     }
 
     private final CalendarModelAttribute stichtagModelAttribute = new CalendarModelAttribute(
@@ -338,6 +343,14 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         // Lehrkraft alle auch erlaubt
         lehrkraefteList.add(0, LEHRKRAFT_ALLE);
         return lehrkraefteList.toArray(new Lehrkraft[lehrkraefteList.size()]);
+    }
+
+    @Override
+    public Code[] getSelectableCodes(SvmModel svmModel) {
+        List<Code> codesList = svmModel.getCodesAll();
+        // Code alle auch erlaubt
+        codesList.add(0, CODE_ALLE);
+        return codesList.toArray(new Code[codesList.size()]);
     }
 
     @Override

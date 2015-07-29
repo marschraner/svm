@@ -48,10 +48,13 @@ public class KursErfassenController extends AbstractController {
     private JTextField txtZeitBeginn;
     private JTextField txtZeitEnde;
     private JTextField txtBemerkungen;
+    private JLabel errLblKurstyp;
     private JLabel errLblAltersbereich;
     private JLabel errLblStufe;
+    private JLabel errLblWochentag;
     private JLabel errLblZeitBeginn;
     private JLabel errLblZeitEnde;
+    private JLabel errLblKursort;
     private JLabel errLblLehrkraft1;
     private JLabel errLblLehrkraft2;
     private JLabel errLblBemerkungen;
@@ -104,8 +107,8 @@ public class KursErfassenController extends AbstractController {
         List<Kurstyp> kurstypenList = svmContext.getSvmModel().getKurstypenAll();
         Kurstyp[] selectableKurstypen = kurstypenList.toArray(new Kurstyp[kurstypenList.size()]);
         comboBoxKurstyp.setModel(new DefaultComboBoxModel<>(selectableKurstypen));
-        // Model initialisieren mit erstem ComboBox-Wert
-        kursErfassenModel.setKurstyp(selectableKurstypen[0]);
+        // Leeren ComboBox-Wert anzeigen
+        comboBoxKurstyp.setSelectedItem(null);
         comboBoxKurstyp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -129,9 +132,20 @@ public class KursErfassenController extends AbstractController {
         }
     }
 
-    private void setModelKurstyp() throws SvmValidationException {
+    private void setModelKurstyp() throws SvmRequiredException {
         makeErrorLabelInvisible(Field.KURSTYP);
-        kursErfassenModel.setKurstyp((Kurstyp) comboBoxKurstyp.getSelectedItem());
+        try {
+            kursErfassenModel.setKurstyp((Kurstyp) comboBoxKurstyp.getSelectedItem());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("KursErfassenController setModelKurstyp RequiredException=" + e.getMessage());
+            if (isModelValidationMode()) {
+                comboBoxKurstyp.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        }
     }
 
     public void setTxtAltersbereich(JTextField txtAltersbereich) {
@@ -240,8 +254,8 @@ public class KursErfassenController extends AbstractController {
         this.comboBoxWochentag = comboBoxWochentag;
         comboBoxWochentag.setModel(new DefaultComboBoxModel<>(Wochentag.values()));
         comboBoxWochentag.removeItem(Wochentag.ALLE);
-        // Model initialisieren mit Montag
-        kursErfassenModel.setWochentag(Wochentag.MONTAG);
+        // Leeren ComboBox-Wert anzeigen
+        comboBoxWochentag.setSelectedItem(null);
         comboBoxWochentag.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -265,9 +279,20 @@ public class KursErfassenController extends AbstractController {
         }
     }
 
-    private void setModelWochentag() throws SvmValidationException {
+    private void setModelWochentag() throws SvmRequiredException {
         makeErrorLabelInvisible(Field.WOCHENTAG);
-        kursErfassenModel.setWochentag((Wochentag) comboBoxWochentag.getSelectedItem());
+        try {
+            kursErfassenModel.setWochentag((Wochentag) comboBoxWochentag.getSelectedItem());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("KursErfassenController setModelWochentag RequiredException=" + e.getMessage());
+            if (isModelValidationMode()) {
+                comboBoxWochentag.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        }
     }
 
     public void setTxtZeitBeginn(JTextField txtZeitBeginn) {
@@ -377,8 +402,8 @@ public class KursErfassenController extends AbstractController {
         List<Kursort> kursortenList = svmContext.getSvmModel().getKursorteAll();
         Kursort[] selectableKursorte = kursortenList.toArray(new Kursort[kursortenList.size()]);
         comboBoxKursort.setModel(new DefaultComboBoxModel<>(selectableKursorte));
-        // Model initialisieren mit erstem ComboBox-Wert
-        kursErfassenModel.setKursort(selectableKursorte[0]);
+        // Leeren ComboBox-Wert anzeigen
+        comboBoxKursort.setSelectedItem(null);
         comboBoxKursort.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -402,17 +427,28 @@ public class KursErfassenController extends AbstractController {
         }
     }
 
-    private void setModelKursort() throws SvmValidationException {
+    private void setModelKursort() throws SvmRequiredException {
         makeErrorLabelInvisible(Field.KURSORT);
-        kursErfassenModel.setKursort((Kursort) comboBoxKursort.getSelectedItem());
+        try {
+            kursErfassenModel.setKursort((Kursort) comboBoxKursort.getSelectedItem());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("KursErfassenController setModelKursort RequiredException=" + e.getMessage());
+            if (isModelValidationMode()) {
+                comboBoxKursort.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        }
     }
 
     public void setComboBoxLehrkraft1(JComboBox<Lehrkraft> comboBoxLehrkraft1) {
         this.comboBoxLehrkraft1 = comboBoxLehrkraft1;
         Lehrkraft[] selectableLehrkraefte1 = kursErfassenModel.getSelectableLehrkraefte1(svmContext.getSvmModel());
         comboBoxLehrkraft1.setModel(new DefaultComboBoxModel<>(selectableLehrkraefte1));
-        // Model initialisieren mit erstem ComboBox-Wert
-        kursErfassenModel.setLehrkraft1(selectableLehrkraefte1[0]);
+        // Leeren ComboBox-Wert anzeigen
+        comboBoxLehrkraft1.setSelectedItem(null);
         comboBoxLehrkraft1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -438,7 +474,18 @@ public class KursErfassenController extends AbstractController {
 
     private void setModelLehrkraft1() throws SvmValidationException {
         makeErrorLabelInvisible(Field.LEHRKRAFT1);
-        kursErfassenModel.setLehrkraft1((Lehrkraft) comboBoxLehrkraft1.getSelectedItem());
+        try {
+            kursErfassenModel.setLehrkraft1((Lehrkraft) comboBoxLehrkraft1.getSelectedItem());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("KursErfassenController setModelLehrkraft1 RequiredException=" + e.getMessage());
+            if (isModelValidationMode()) {
+                comboBoxLehrkraft1.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        }
     }
 
     public void setComboBoxLehrkraft2(JComboBox<Lehrkraft> comboBoxLehrkraft2) {
@@ -526,6 +573,10 @@ public class KursErfassenController extends AbstractController {
         }
     }
 
+    public void setErrLblKurstyp(JLabel errLblKurstyp) {
+        this.errLblKurstyp = errLblKurstyp;
+    }
+
     public void setErrLblAltersbereich(JLabel errLblAltersbereich) {
         this.errLblAltersbereich = errLblAltersbereich;
     }
@@ -534,12 +585,20 @@ public class KursErfassenController extends AbstractController {
         this.errLblStufe = errLblStufe;
     }
 
+    public void setErrLblWochentag(JLabel errLblWochentag) {
+        this.errLblWochentag = errLblWochentag;
+    }
+
     public void setErrLblZeitBeginn(JLabel errLblZeitBeginn) {
         this.errLblZeitBeginn = errLblZeitBeginn;
     }
 
     public void setErrLblZeitEnde(JLabel errLblZeitEnde) {
         this.errLblZeitEnde = errLblZeitEnde;
+    }
+
+    public void setErrLblKursort(JLabel errLblKursort) {
+        this.errLblKursort = errLblKursort;
     }
 
     public void setErrLblLehrkraft1(JLabel errLblLehrkraft1) {
@@ -569,6 +628,7 @@ public class KursErfassenController extends AbstractController {
 
     private void onSpeichern() {
         if (!isModelValidationMode() && !validateOnSpeichern()) {
+            btnSpeichern.setFocusPainted(false);
             return;
         }
         if (kursErfassenModel.checkKursBereitsErfasst(kurseTableModel)) {
@@ -675,6 +735,10 @@ public class KursErfassenController extends AbstractController {
 
     @Override
     void showErrMsg(SvmValidationException e) {
+        if (e.getAffectedFields().contains(Field.KURSTYP)) {
+            errLblKurstyp.setVisible(true);
+            errLblKurstyp.setText(e.getMessage());
+        }
         if (e.getAffectedFields().contains(Field.ALTERSBEREICH)) {
             errLblAltersbereich.setVisible(true);
             errLblAltersbereich.setText(e.getMessage());
@@ -683,6 +747,10 @@ public class KursErfassenController extends AbstractController {
             errLblStufe.setVisible(true);
             errLblStufe.setText(e.getMessage());
         }
+        if (e.getAffectedFields().contains(Field.WOCHENTAG)) {
+            errLblWochentag.setVisible(true);
+            errLblWochentag.setText(e.getMessage());
+        }
         if (e.getAffectedFields().contains(Field.ZEIT_BEGINN)) {
             errLblZeitBeginn.setVisible(true);
             errLblZeitBeginn.setText(e.getMessage());
@@ -690,6 +758,10 @@ public class KursErfassenController extends AbstractController {
         if (e.getAffectedFields().contains(Field.ZEIT_ENDE)) {
             errLblZeitEnde.setVisible(true);
             errLblZeitEnde.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.KURSORT)) {
+            errLblKursort.setVisible(true);
+            errLblKursort.setText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.LEHRKRAFT1)) {
             errLblLehrkraft1.setVisible(true);
@@ -707,17 +779,26 @@ public class KursErfassenController extends AbstractController {
 
     @Override
     void showErrMsgAsToolTip(SvmValidationException e) {
+        if (e.getAffectedFields().contains(Field.KURSTYP)) {
+            comboBoxKurstyp.setToolTipText(e.getMessage());
+        }
         if (e.getAffectedFields().contains(Field.ALTERSBEREICH)) {
             txtAltersbereich.setToolTipText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.STUFE)) {
             txtStufe.setToolTipText(e.getMessage());
         }
+        if (e.getAffectedFields().contains(Field.WOCHENTAG)) {
+            comboBoxWochentag.setToolTipText(e.getMessage());
+        }
         if (e.getAffectedFields().contains(Field.ZEIT_BEGINN)) {
             txtZeitBeginn.setToolTipText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.ZEIT_ENDE)) {
             txtZeitEnde.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.KURSORT)) {
+            comboBoxKursort.setToolTipText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.LEHRKRAFT1)) {
             comboBoxLehrkraft1.setToolTipText(e.getMessage());
@@ -732,6 +813,10 @@ public class KursErfassenController extends AbstractController {
 
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.KURSTYP)) {
+            errLblKurstyp.setVisible(false);
+            comboBoxKurstyp.setToolTipText(null);
+        }
         if (fields.contains(Field.ALLE) || fields.contains(Field.ALTERSBEREICH)) {
             errLblAltersbereich.setVisible(false);
             txtAltersbereich.setToolTipText(null);
@@ -740,6 +825,10 @@ public class KursErfassenController extends AbstractController {
             errLblStufe.setVisible(false);
             txtStufe.setToolTipText(null);
         }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.WOCHENTAG)) {
+            errLblWochentag.setVisible(false);
+            comboBoxWochentag.setToolTipText(null);
+        }
         if (fields.contains(Field.ALLE) || fields.contains(Field.ZEIT_BEGINN)) {
             errLblZeitBeginn.setVisible(false);
             txtZeitBeginn.setToolTipText(null);
@@ -747,6 +836,10 @@ public class KursErfassenController extends AbstractController {
         if (fields.contains(Field.ALLE) || fields.contains(Field.ZEIT_ENDE)) {
             errLblZeitEnde.setVisible(false);
             txtZeitEnde.setToolTipText(null);
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.KURSORT)) {
+            errLblKursort.setVisible(false);
+            comboBoxKursort.setToolTipText(null);
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.LEHRKRAFT1)) {
             errLblLehrkraft1.setVisible(false);

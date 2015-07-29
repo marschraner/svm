@@ -44,10 +44,14 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     }
 
     @Override
-    public void setGeschlecht(Geschlecht geschlecht) {
+    public void setGeschlecht(Geschlecht geschlecht) throws SvmRequiredException {
         Geschlecht oldValue = schueler.getGeschlecht();
         schueler.setGeschlecht(geschlecht);
         firePropertyChange(Field.GESCHLECHT, oldValue, schueler.getGeschlecht());
+        if (geschlecht == null) {
+            invalidate();
+            throw new SvmRequiredException(Field.GESCHLECHT);
+        }
     }
 
     @Override

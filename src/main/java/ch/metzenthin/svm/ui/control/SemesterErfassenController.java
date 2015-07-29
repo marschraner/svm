@@ -359,6 +359,7 @@ public class SemesterErfassenController extends AbstractController {
 
     private void onSpeichern() {
         if (!isModelValidationMode() && !validateOnSpeichern()) {
+            btnSpeichern.setFocusPainted(false);
             return;
         }
         if (semesterErfassenModel.checkSemesterBereitsErfasst(svmContext.getSvmModel())) {

@@ -2,7 +2,6 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Anrede;
-import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.DeleteSchuelerCommand;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
@@ -83,8 +82,6 @@ public class SchuelerErfassenController {
         // Kein Abmeldedatum sichtbar
         schuelerPanel.getLblAbmeldedatum().setVisible(isBearbeiten);
         schuelerPanel.getTxtAbmeldedatum().setVisible(isBearbeiten);
-        // Geschlecht-Voreinstellung
-        schuelerModel.setGeschlecht(Geschlecht.W);
         schuelerErfassenModel.setSchuelerModel(schuelerModel);
     }
 
@@ -129,18 +126,12 @@ public class SchuelerErfassenController {
     public void setDrittempfaengerPanel(AngehoerigerPanel drittempfaengerPanel, AngehoerigerModel drittempfaengerModel) {
         drittempfaengerController = drittempfaengerPanel.setModel(drittempfaengerModel);
         drittempfaengerController.setModelValidationMode(MODEL_VALIDATION_MODE);
-        // Anrede: KEINE nicht anzeigen:
-        drittempfaengerPanel.getComboBoxAnrede().removeItem(Anrede.KEINE);
         // Keine Adresse Schüler übernehmen-Checkbox anzeigen
         drittempfaengerPanel.getLblGleicheAdresseWieSchueler().setVisible(false);
         drittempfaengerPanel.getCheckBoxGleicheAdresseWieSchueler().setVisible(false);
         // Keine Rechnungsempfänger-Checkbox anzeigen
         drittempfaengerPanel.getLblRechnungsempfaenger().setVisible(false);
         drittempfaengerPanel.getCheckBoxRechnungsempfaenger().setVisible(false);
-        try {
-            drittempfaengerModel.setAnrede(Anrede.FRAU);
-        } catch (SvmValidationException ignore) {
-        }
         // Default deaktiviert
         drittempfaengerModel.disableFields();
         schuelerErfassenModel.setDrittempfaengerModel(drittempfaengerModel);
@@ -221,6 +212,7 @@ public class SchuelerErfassenController {
     private void onSpeichern() {
         LOGGER.trace("SchuelerErfassenPanel Speichern gedrückt");
         if (!modelValidationMode && !validateOnSpeichern()) {
+            btnSpeichern.setFocusPainted(false);
             return;
         }
         SchuelerErfassenDialog dialog;

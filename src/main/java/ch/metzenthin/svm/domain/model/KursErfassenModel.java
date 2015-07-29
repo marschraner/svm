@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Wochentag;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Kursort;
@@ -28,14 +29,14 @@ public interface KursErfassenModel extends Model {
     Kurs getKurs();
 
     void setKursOrigin(Kurs kursOrigin);
-    void setKurstyp(Kurstyp kurstyp);
+    void setKurstyp(Kurstyp kurstyp) throws SvmRequiredException;
     void setAltersbereich(String altersbereich) throws SvmValidationException;
     void setStufe(String stufe) throws SvmValidationException;
-    void setWochentag(Wochentag wochentag);
+    void setWochentag(Wochentag wochentag) throws SvmRequiredException;
     void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
     void setZeitEnde(String zeitEnde) throws SvmValidationException;
-    void setKursort(Kursort kursort);
-    void setLehrkraft1(Lehrkraft lehrkraft1);
+    void setKursort(Kursort kursort) throws SvmRequiredException;
+    void setLehrkraft1(Lehrkraft lehrkraft1) throws SvmRequiredException;
     void setLehrkraft2(Lehrkraft lehrkraft2);
     void setBemerkungen(String bemerkungen) throws SvmValidationException;
 

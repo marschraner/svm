@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 
@@ -20,7 +21,7 @@ public interface PersonModel extends AdresseModel {
     Adresse getAdresse();
     boolean isEmpty();
 
-    void setAnrede(Anrede anrede) throws SvmValidationException;
+    void setAnrede(Anrede anrede) throws SvmRequiredException;
     void setNachname(String nachname) throws SvmValidationException;
     void setVorname(String vorname) throws SvmValidationException;
     void setNatel(String natel) throws SvmValidationException;

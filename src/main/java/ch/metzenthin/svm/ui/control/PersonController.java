@@ -62,6 +62,10 @@ public abstract class PersonController extends AbstractController {
                 onAnredeSelected();
             }
         });
+        // Anrede: KEINE nicht anzeigen:
+        comboBoxAnrede.removeItem(Anrede.KEINE);
+        // Leeren ComboBox-Wert anzeigen
+        comboBoxAnrede.setSelectedItem(null);
     }
 
     public void setTxtNachname(JTextField txtNachname) {
@@ -213,7 +217,7 @@ public abstract class PersonController extends AbstractController {
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxAnrede.getSelectedItem(), personModel.getAnrede());
         try {
             setModelAnrede();
-        } catch (SvmValidationException e) {
+        } catch (SvmRequiredException e) {
             return;
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
@@ -223,13 +227,18 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    private void setModelAnrede() throws SvmValidationException {
+    private void setModelAnrede() throws SvmRequiredException {
         makeErrorLabelInvisible(Field.ANREDE);
         try {
             personModel.setAnrede((Anrede) comboBoxAnrede.getSelectedItem());
-        } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelAnrede Exception=" + e.getMessage());
-            showErrMsg(e);
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("PersonController setModelAnrede RequiredException=" + e.getMessage());
+            if (isModelValidationMode()) {
+                comboBoxAnrede.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
             throw e;
         }
     }

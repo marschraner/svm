@@ -97,7 +97,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     }
 
     private void createJoinCode() {
-        if (!code.getKuerzel().equals("alle")) {
+        if (!code.getKuerzel().isEmpty()) {
             selectStatementSb.append(" join s.codes cod");
         }
     }
@@ -283,7 +283,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     }
 
     private void createWhereSelectionsCode() {
-        if (!code.getKuerzel().equals("alle")) {
+        if (!code.getKuerzel().isEmpty()) {
             selectStatementSb.append(" cod.kuerzel = :codeKuerzel and");
         }
     }

@@ -4,8 +4,8 @@ package ch.metzenthin.svm.dataTypes;
  * @author Martin Schraner
  */
 public enum Geschlecht {
-    M("männlich"),
-    W("weiblich");
+    W("weiblich"),
+    M("männlich");
 
     private String name;
 
