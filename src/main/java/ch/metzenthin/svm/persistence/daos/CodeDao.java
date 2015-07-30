@@ -23,14 +23,9 @@ public class CodeDao extends GenericDao<Code, Integer> {
     }
 
     public Schueler removeFromSchuelerAndUpdate(Code code, Schueler schueler) {
-        // Neu laden, da bei n:m-Beziehungen in der Zwischentabelle beim Hinzufügen eines Codes sämtliche Einträge
-        // des Schülers upgedated wurden (-> Fehler, dass Eintrag seit letztem Lesen verändert wurde!)
-        // Refresh funktioniert nicht für Test.
-        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-        Schueler schuelerReloaded = schuelerDao.findById(schueler.getPersonId());
-        schuelerReloaded.deleteCode(code);
-        entityManager.persist(schuelerReloaded);
-        return schuelerReloaded;
+        schueler.deleteCode(code);
+        entityManager.persist(schueler);
+        return schueler;
     }
 
     public List<Code> findAll() {

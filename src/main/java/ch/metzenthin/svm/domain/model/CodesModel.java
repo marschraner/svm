@@ -11,7 +11,7 @@ import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 public interface CodesModel {
 
     DeleteCodeCommand.Result eintragLoeschenCodesVerwalten(SvmContext svmContext, int indexCodeToBeRemoved);
-    void eintragLoeschenCodesSchueler(CodesTableModel codesTableModel, int indexCodeToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel);
+    void eintragLoeschenCodesSchueler(CodesTableModel codesTableModel, Code codeToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel);
     CodeErfassenModel getCodeErfassenModel(SvmContext svmContext, int indexCodeToBeModified);
     Code[] getSelectableCodes(SvmModel svmModel, SchuelerDatenblattModel schuelerDatenblattModel);
 }

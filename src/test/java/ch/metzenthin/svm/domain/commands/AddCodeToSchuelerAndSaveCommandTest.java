@@ -12,10 +12,7 @@ import org.junit.Test;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -79,7 +76,7 @@ public class AddCodeToSchuelerAndSaveCommandTest {
         schuelerSaved = addCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
 
         assertEquals(1, schuelerSaved.getCodes().size());
-        assertEquals("zt", schuelerSaved.getCodes().get(0).getKuerzel());
+        assertEquals("zt", schuelerSaved.getCodesAsList().get(0).getKuerzel());
 
 
         // Weiteren Code hinzufügen:
@@ -89,8 +86,8 @@ public class AddCodeToSchuelerAndSaveCommandTest {
 
         assertEquals(2, schuelerSaved.getCodes().size());
         // Alphabetisch geordnet?
-        assertEquals("jt", schuelerSaved.getCodes().get(0).getKuerzel());
-        assertEquals("zt", schuelerSaved.getCodes().get(1).getKuerzel());
+        assertEquals("jt", schuelerSaved.getCodesAsList().get(0).getKuerzel());
+        assertEquals("zt", schuelerSaved.getCodesAsList().get(1).getKuerzel());
 
 
         // Testdaten löschen

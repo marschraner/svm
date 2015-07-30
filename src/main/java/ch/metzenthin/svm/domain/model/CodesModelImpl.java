@@ -30,13 +30,13 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
     }
 
     @Override
-    public void eintragLoeschenCodesSchueler(CodesTableModel codesTableModel, int indexCodeToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public void eintragLoeschenCodesSchueler(CodesTableModel codesTableModel, Code codeToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        RemoveCodeFromSchuelerCommand removeCodeFromSchuelerCommand = new RemoveCodeFromSchuelerCommand(indexCodeToBeRemoved, schuelerDatenblattModel.getSchueler());
+        RemoveCodeFromSchuelerCommand removeCodeFromSchuelerCommand = new RemoveCodeFromSchuelerCommand(codeToBeRemoved, schuelerDatenblattModel.getSchueler());
         commandInvoker.executeCommandAsTransaction(removeCodeFromSchuelerCommand);
         Schueler schuelerUpdated = removeCodeFromSchuelerCommand.getSchuelerUpdated();
         // TableData mit von der Datenbank upgedatetem Schüler updaten
-        codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getCodes());
+        codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getCodesAsList());
     }
 
     @Override

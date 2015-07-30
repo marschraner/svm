@@ -16,8 +16,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Martin Schraner
@@ -81,7 +81,6 @@ public class DeleteCodeCommandTest {
         assertEquals("zt", codesSaved.get(1).getKuerzel());
         assertEquals(1, savedSchueler.getCodes().size());
 
-
         // Codes löschen
         DeleteCodeCommand deleteCodeCommand = new DeleteCodeCommand(codesSaved, 1);
         commandInvoker.executeCommandAsTransaction(deleteCodeCommand);
@@ -95,7 +94,16 @@ public class DeleteCodeCommandTest {
         assertEquals(1, codesSaved.size());
 
         // Code vom Schüler entfernen, jetzt löschen möglich
-        savedSchueler.deleteCode(codesSaved.get(0));
+        RemoveCodeFromSchuelerCommand removeCodeFromSchuelerCommand = new RemoveCodeFromSchuelerCommand(codesSaved.get(0), savedSchueler);
+        commandInvoker.executeCommandAsTransaction(removeCodeFromSchuelerCommand);
+
+        // Neue Session, damit Code über Löschen Kenntnis erhält
+        commandInvoker.clear();
+
+        ReloadCodesCommand reloadCodesCommand = new ReloadCodesCommand(codesSaved);
+        commandInvoker.executeCommand(reloadCodesCommand);
+        codesSaved = reloadCodesCommand.getCodesReloaded();
+
         deleteCodeCommand = new DeleteCodeCommand(codesSaved, 0);
         commandInvoker.executeCommandAsTransaction(deleteCodeCommand);
         assertEquals(DeleteCodeCommand.Result.LOESCHEN_ERFOLGREICH, deleteCodeCommand.getResult());

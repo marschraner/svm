@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.CodeDao;
+import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
 /**
@@ -9,21 +10,21 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 public class RemoveCodeFromSchuelerCommand extends GenericDaoCommand {
 
     // input
-    private final int indexCodeToBeDeleted;
+    private Code codeToBeDeleted;
     private Schueler schueler;
 
     // output
     private Schueler schuelerUpdated;
 
-    public RemoveCodeFromSchuelerCommand(int indexCodeToBeDeleted, Schueler schueler) {
-        this.indexCodeToBeDeleted = indexCodeToBeDeleted;
+    public RemoveCodeFromSchuelerCommand(Code codeToBeDeleleted, Schueler schueler) {
+        this.codeToBeDeleted = codeToBeDeleleted;
         this.schueler = schueler;
     }
 
     @Override
     public void execute() {
         CodeDao codeDao = new CodeDao(entityManager);
-        schuelerUpdated = codeDao.removeFromSchuelerAndUpdate(schueler.getCodes().get(indexCodeToBeDeleted), schueler);
+        schuelerUpdated = codeDao.removeFromSchuelerAndUpdate(codeToBeDeleted, schueler);
     }
 
     public Schueler getSchuelerUpdated() {

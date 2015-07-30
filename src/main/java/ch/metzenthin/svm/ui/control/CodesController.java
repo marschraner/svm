@@ -122,7 +122,7 @@ public class CodesController {
 
     private void onNeuCodesSchueler() {
         btnNeu.setFocusPainted(true);
-        CodeSchuelerHinzufuegenDialog codeSchuelerHinzufuegenDialog = new CodeSchuelerHinzufuegenDialog(svmContext, codesModel, schuelerDatenblattModel);
+        CodeSchuelerHinzufuegenDialog codeSchuelerHinzufuegenDialog = new CodeSchuelerHinzufuegenDialog(svmContext, codesTableModel, codesModel, schuelerDatenblattModel);
         codeSchuelerHinzufuegenDialog.pack();
         codeSchuelerHinzufuegenDialog.setVisible(true);
         codesTableModel.fireTableDataChanged();
@@ -221,7 +221,7 @@ public class CodesController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            codesModel.eintragLoeschenCodesSchueler(codesTableModel, codesTable.getSelectedRow(), schuelerDatenblattModel);
+            codesModel.eintragLoeschenCodesSchueler(codesTableModel, codesTableModel.getCodeAt(codesTable.getSelectedRow()), schuelerDatenblattModel);
             codesTable.addNotify();
         }
         btnLoeschen.setFocusPainted(false);

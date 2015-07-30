@@ -14,9 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -171,8 +169,8 @@ public class CodeDaoTest {
             entityManager.refresh(schuelerFound);
             assertEquals(2, schuelerFound.getCodes().size());
             // Alphatbetisch geordnet?
-            assertEquals("r6", schuelerFound.getCodes().get(0).getKuerzel());
-            assertEquals("z", schuelerFound.getCodes().get(1).getKuerzel());
+            assertEquals("r6", schuelerFound.getCodesAsList().get(0).getKuerzel());
+            assertEquals("z", schuelerFound.getCodesAsList().get(1).getKuerzel());
 
             // Code prüfen
             Code code1Found = codeDao.findById(code1.getCodeId());
@@ -217,8 +215,8 @@ public class CodeDaoTest {
             Schueler schuelerFound = schuelerDao.findById(schuelerSaved.getPersonId());
             entityManager.refresh(schuelerFound);
             assertEquals(2, schuelerFound.getCodes().size());
-            assertEquals("r6", schuelerFound.getCodes().get(0).getKuerzel());
-            assertEquals("z", schuelerFound.getCodes().get(1).getKuerzel());
+            assertEquals("r6", schuelerFound.getCodesAsList().get(0).getKuerzel());
+            assertEquals("z", schuelerFound.getCodesAsList().get(1).getKuerzel());
 
             // Codes prüfen
             Code code1Found = codeDao.findById(code1.getCodeId());
@@ -235,7 +233,7 @@ public class CodeDaoTest {
             schuelerFound = schuelerDao.findById(schuelerUpdated.getPersonId());
             entityManager.refresh(schuelerFound);
             assertEquals(1, schuelerFound.getCodes().size());
-            assertEquals("r6", schuelerFound.getCodes().get(0).getKuerzel());
+            assertEquals("r6", schuelerFound.getCodesAsList().get(0).getKuerzel());
 
             entityManager.refresh(code1Found);
             assertEquals(0, code1Found.getSchueler().size());

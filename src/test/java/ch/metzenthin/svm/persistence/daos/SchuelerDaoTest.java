@@ -253,7 +253,7 @@ public class SchuelerDaoTest {
             codeDao.save(code2);
             codeDao.addToSchuelerAndSave(code2, schueler2);
 
-            List<Code> codes = schueler2Saved.getCodes();
+            Set<Code> codes = schueler2Saved.getCodes();
             assertEquals(2, codes.size());
 
             entityManager.flush();

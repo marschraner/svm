@@ -6,6 +6,8 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.AddCodeToSchuelerAndSaveCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 
 /**
  * @author Martin Schraner
@@ -33,10 +35,13 @@ public class CodeSchuelerHinzufuegenModelImpl extends AbstractModel implements C
     }
 
     @Override
-    public void hinzufuegen(SchuelerDatenblattModel schuelerDatenblattModel) {
+    public void hinzufuegen(CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         AddCodeToSchuelerAndSaveCommand addCodeToSchuelerAndSaveCommand = new AddCodeToSchuelerAndSaveCommand(code, schuelerDatenblattModel.getSchueler());
         CommandInvoker commandInvoker = getCommandInvoker();
         commandInvoker.executeCommandAsTransaction(addCodeToSchuelerAndSaveCommand);
+        Schueler schuelerUpdated = addCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
+        // TableData mit von der Datenbank upgedatetem Schüler updaten
+        codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getCodesAsList());
     }
 
     @Override

@@ -8,6 +8,7 @@ import ch.metzenthin.svm.domain.model.CodeSchuelerHinzufuegenModel;
 import ch.metzenthin.svm.domain.model.CodesModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -30,15 +31,17 @@ public class CodeSchuelerHinzufuegenController extends AbstractController {
     private final SvmContext svmContext;
     private final SchuelerDatenblattModel schuelerDatenblattModel;
     private CodeSchuelerHinzufuegenModel codeSchuelerHinzufuegenModel;
+    private CodesTableModel codesTableModel;
     private CodesModel codesModel;
     private JDialog codeSchuelerHinzufuegenDialog;
     private JComboBox<Code> comboBoxCode;
     private JLabel errLblCode;
     private JButton btnOk;
 
-    public CodeSchuelerHinzufuegenController(SvmContext svmContext, CodeSchuelerHinzufuegenModel codeSchuelerHinzufuegenModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public CodeSchuelerHinzufuegenController(SvmContext svmContext, CodesTableModel codesTableModel, CodeSchuelerHinzufuegenModel codeSchuelerHinzufuegenModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         super(codeSchuelerHinzufuegenModel);
         this.svmContext = svmContext;
+        this.codesTableModel = codesTableModel;
         this.codesModel = codesModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.codeSchuelerHinzufuegenModel = codeSchuelerHinzufuegenModel;
@@ -129,7 +132,7 @@ public class CodeSchuelerHinzufuegenController extends AbstractController {
             btnOk.setFocusPainted(false);
             return;
         }
-        codeSchuelerHinzufuegenModel.hinzufuegen(schuelerDatenblattModel);
+        codeSchuelerHinzufuegenModel.hinzufuegen(codesTableModel, schuelerDatenblattModel);
         codeSchuelerHinzufuegenDialog.dispose();
     }
 

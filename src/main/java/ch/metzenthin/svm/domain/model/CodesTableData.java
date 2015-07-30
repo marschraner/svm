@@ -50,4 +50,8 @@ public class CodesTableData {
         return COLUMNS[column].toString();
     }
 
+    public Code getCodeAt(int rowIndex) {
+        return codes.get(rowIndex);
+    }
+
 }

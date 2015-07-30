@@ -5,6 +5,7 @@ import ch.metzenthin.svm.domain.model.CodeSchuelerHinzufuegenModel;
 import ch.metzenthin.svm.domain.model.CodesModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.control.CodeSchuelerHinzufuegenController;
 
 import javax.swing.*;
@@ -20,18 +21,18 @@ public class CodeSchuelerHinzufuegenDialog extends JDialog {
     private JButton btnAbbrechen;
     private JLabel errLblCode;
 
-    public CodeSchuelerHinzufuegenDialog(SvmContext svmContext, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public CodeSchuelerHinzufuegenDialog(SvmContext svmContext, CodesTableModel codesTableModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
         setTitle("Code hinzufügen");
         initializeErrLbls();
-        createCodeSchuelerHinzufuegenController(svmContext, codesModel, schuelerDatenblattModel);
+        createCodeSchuelerHinzufuegenController(svmContext, codesTableModel, codesModel, schuelerDatenblattModel);
     }
 
-    private void createCodeSchuelerHinzufuegenController(SvmContext svmContext, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    private void createCodeSchuelerHinzufuegenController(SvmContext svmContext, CodesTableModel codesTableModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         CodeSchuelerHinzufuegenModel codeSchuelerHinzufuegenModel = svmContext.getModelFactory().createCodeSchuelerHinzufuegenModel();
-        CodeSchuelerHinzufuegenController codeSchuelerHinzufuegenController = new CodeSchuelerHinzufuegenController(svmContext, codeSchuelerHinzufuegenModel, codesModel, schuelerDatenblattModel);
+        CodeSchuelerHinzufuegenController codeSchuelerHinzufuegenController = new CodeSchuelerHinzufuegenController(svmContext, codesTableModel, codeSchuelerHinzufuegenModel, codesModel, schuelerDatenblattModel);
         codeSchuelerHinzufuegenController.setCodeSchuelerHinzufuegenDialog(this);
         codeSchuelerHinzufuegenController.setContentPane(contentPane);
         codeSchuelerHinzufuegenController.setComboBoxCode(comboBoxCode);

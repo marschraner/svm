@@ -4,10 +4,7 @@ import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Martin Schraner
@@ -49,8 +46,7 @@ public class Schueler extends Person {
     @JoinTable(name = "Schueler_Code",
             joinColumns = {@JoinColumn(name = "person_id")},
             inverseJoinColumns = {@JoinColumn(name = "code_id")})
-    @OrderBy("kuerzel ASC")
-    private List<Code> codes = new ArrayList<>();
+    private Set<Code> codes = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "Schueler_Kurs",
@@ -169,19 +165,27 @@ public class Schueler extends Person {
         dispensationen.remove(dispensation);
     }
 
-    public List<Code> getCodes() {
+    public Set<Code> getCodes() {
         return codes;
+    }
+
+    public List<Code> getCodesAsList() {
+        List<Code> codesAsList = new ArrayList<>(codes);
+        Collections.sort(codesAsList);
+        return codesAsList;
     }
 
     public void addCode(Code code) {
         code.getSchueler().add(this);
         codes.add(code);
-        Collections.sort(codes);
     }
 
     public void deleteCode(Code code) {
-        code.getSchueler().remove(this);
+        // Führt zu StaleObjectStateException!
+        // -> Codes müssen neu von DB geladen werden, um vom gelöschten Schüler Kenntnis zu erhalten
+        // code.getSchueler().remove(this);
         codes.remove(code);
+
     }
 
     public List<Kurs> getKurse() {

@@ -8,9 +8,7 @@ import ch.metzenthin.svm.domain.commands.CheckGeschwisterSchuelerRechnungempfaen
 import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.persistence.entities.*;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 
@@ -272,10 +270,9 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     @Override
     public String getCodesAsString() {
-        List<Code> codes = schueler.getCodes();
-        if (!codes.isEmpty()) {
+        if (!schueler.getCodes().isEmpty()) {
             StringBuilder codesSb = new StringBuilder("<html>");
-            for (Code code : codes) {
+            for (Code code : schueler.getCodesAsList()) {
                 if (codesSb.length() > 6) {
                     codesSb.append("<br>");
                 }
@@ -382,7 +379,9 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     @Override
     public CodesTableData getCodesTableData() {
-        return new CodesTableData(schueler.getCodes());
+        List<Code> codes = new ArrayList<>(schueler.getCodes());
+        Collections.sort(codes);
+        return new CodesTableData(new ArrayList<>(schueler.getCodes()));
     }
 
     @Override

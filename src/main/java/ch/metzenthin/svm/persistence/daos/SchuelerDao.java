@@ -8,6 +8,7 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -37,8 +38,9 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
         rechnungsempfaenger.getSchuelerRechnungsempfaenger().remove(schueler);
 
         // Lösche zugewiesene Codes
-        for (Code code : new ArrayList<>(schueler.getCodes())) {
+        for (Code code : new HashSet<>(schueler.getCodes())) {
             schueler.deleteCode(code);
+            entityManager.refresh(code);
         }
 
         // Lösche zugewiesene Kurse
