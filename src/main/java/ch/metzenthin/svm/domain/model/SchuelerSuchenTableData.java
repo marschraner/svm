@@ -5,9 +5,8 @@ import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
+import java.util.Calendar;
 import java.util.List;
-
-import static ch.metzenthin.svm.common.utils.Converter.asString;
 
 /**
  * @author Hans Stamm
@@ -60,7 +59,7 @@ public class SchuelerSuchenTableData {
                 value = schueler.getEmail();
                 break;
             case GEBURTSDATUM:
-                value = asString(schueler.getGeburtsdatum());
+                value = schueler.getGeburtsdatum();
                 break;
             case MUTTER:
                 value = getString(schueler.getMutter());
@@ -87,6 +86,14 @@ public class SchuelerSuchenTableData {
 
     public String getColumnName(int column) {
         return COLUMNS[column].toString();
+    }
+
+    public Class<?> getColumnClass(int column) {
+        if (COLUMNS[column] == Field.GEBURTSDATUM) {
+            return Calendar.class;
+        } else {
+            return String.class;
+        }
     }
 
     public SchuelerDatenblattModel getSchuelerDatenblattModel(int rowIndex) {

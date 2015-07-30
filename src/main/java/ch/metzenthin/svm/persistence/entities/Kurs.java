@@ -83,12 +83,12 @@ public class Kurs implements Comparable<Kurs> {
 
     @Override
     public String toString() {
-        String kursAsStr = kurstyp + " " + stufe + ", " + wochentag + " " + asString(zeitBeginn) + "-" + asString(zeitEnde) + " (" + lehrkraefte.get(0);
+        StringBuilder kursAsStr = new StringBuilder(kurstyp + " " + stufe + ", " + wochentag + " " + asString(zeitBeginn) + "-" + asString(zeitEnde) + " (" + lehrkraefte.get(0));
         for (int i = 1; i < lehrkraefte.size(); i++) {
-            kursAsStr = kursAsStr + "/" + lehrkraefte.get(i);
+            kursAsStr.append("/").append(lehrkraefte.get(i));
         }
-        kursAsStr = kursAsStr + ")";
-        return kursAsStr;
+        kursAsStr.append(")");
+        return kursAsStr.toString();
     }
 
     public boolean isIdenticalWith(Kurs otherKurs) {
@@ -115,6 +115,9 @@ public class Kurs implements Comparable<Kurs> {
         this.bemerkungen = otherKurs.getBemerkungen();
     }
 
+    /**
+     * Note: this class has a natural ordering that is inconsistent with equals.
+     */
     @Override
     public int compareTo(Kurs otherKurs) {
         int result = otherKurs.semester.getSemesterbeginn().compareTo(semester.getSemesterbeginn());   // Semester: absteigend

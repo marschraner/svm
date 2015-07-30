@@ -73,7 +73,7 @@ public class GtkPlusLookAndFeelWorkaround {
                     "POPUP_MENU_SEPARATOR");
             fixGtkThickness(style, "yThickness");
         }
-        catch (Exception e)
+        catch (Exception ignore)
         {
             // Silently ignored. Workaround can't be applied.
         }
