@@ -77,14 +77,14 @@ public class KurseTableData {
                 value = kurs.getKursort().getBezeichnung();
                 break;
             case LEITUNG:
-                String leitung = "";
+                StringBuilder leitung = new StringBuilder();
                 for (Lehrkraft lehrkraft : kurs.getLehrkraefte()) {
                     if (leitung.length() > 0) {
-                        leitung = leitung + " / ";
+                        leitung.append(" / ");
                     }
-                    leitung = leitung + lehrkraft.getVorname() + " " + lehrkraft.getNachname();
+                    leitung.append(lehrkraft.getVorname()).append(" ").append(lehrkraft.getNachname());
                 }
-                value = leitung;
+                value = leitung.toString();
                 break;
             case BEMERKUNGEN:
                 value = kurs.getBemerkungen();
