@@ -137,7 +137,7 @@ public class KurseController {
 
     private void onNeuKurseSchueler() {
         btnNeu.setFocusPainted(true);
-        KursSchuelerHinzufuegenDialog kursSchuelerHinzufuegenDialog = new KursSchuelerHinzufuegenDialog(svmContext, kurseModel, schuelerDatenblattModel);
+        KursSchuelerHinzufuegenDialog kursSchuelerHinzufuegenDialog = new KursSchuelerHinzufuegenDialog(svmContext, kurseTableModel, kurseModel, schuelerDatenblattModel);
         kursSchuelerHinzufuegenDialog.pack();
         kursSchuelerHinzufuegenDialog.setVisible(true);
         kurseTableModel.fireTableDataChanged();
@@ -240,7 +240,7 @@ public class KurseController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            kurseModel.eintragLoeschenKurseSchueler(kurseTableModel, kurseTable.getSelectedRow(), schuelerDatenblattModel);
+            kurseModel.eintragLoeschenKurseSchueler(kurseTableModel, kurseTableModel.getKursAt(kurseTable.getSelectedRow()), schuelerDatenblattModel);
             kurseTable.addNotify();
         }
         btnLoeschen.setFocusPainted(false);

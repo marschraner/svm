@@ -12,6 +12,7 @@ import ch.metzenthin.svm.domain.model.KurseModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -33,6 +34,7 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
+    private KurseTableModel kurseTableModel;
     private KursSchuelerHinzufuegenModel kursSchuelerHinzufuegenModel;
     private KurseModel kurseModel;
     private SchuelerDatenblattModel schuelerDatenblattModel;
@@ -47,9 +49,10 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
     private JLabel errLblLehrkraft;
     private JButton btnOk;
 
-    public KursSchuelerHinzufuegenController(SvmContext svmContext, KursSchuelerHinzufuegenModel kursSchuelerHinzufuegenModel, KurseModel kurseModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public KursSchuelerHinzufuegenController(SvmContext svmContext, KurseTableModel kurseTableModel, KursSchuelerHinzufuegenModel kursSchuelerHinzufuegenModel, KurseModel kurseModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         super(kursSchuelerHinzufuegenModel);
         this.svmContext = svmContext;
+        this.kurseTableModel = kurseTableModel;
         this.kursSchuelerHinzufuegenModel = kursSchuelerHinzufuegenModel;
         this.kurseModel = kurseModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
@@ -295,7 +298,7 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
             btnOk.setFocusPainted(false);
             return;
         }
-        AddKursToSchuelerAndSaveCommand.Result result = kursSchuelerHinzufuegenModel.hinzufuegen(schuelerDatenblattModel);
+        AddKursToSchuelerAndSaveCommand.Result result = kursSchuelerHinzufuegenModel.hinzufuegen(kurseTableModel, schuelerDatenblattModel);
         if (result == AddKursToSchuelerAndSaveCommand.Result.KURS_EXISTIERT_NICHT) {
             JOptionPane.showMessageDialog(null, "Kurs existiert nicht.", "Fehler", JOptionPane.ERROR_MESSAGE);
             return;

@@ -121,4 +121,8 @@ public class KurseTableData {
         }
         return anzahlSchueler;
     }
+
+    public Kurs getKursAt(int rowIndex) {
+        return kurse.get(rowIndex);
+    }
 }

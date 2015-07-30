@@ -52,4 +52,8 @@ public class KurseTableModel extends AbstractTableModel {
     public KurseTableData getKurseTableData() {
         return kurseTableData;
     }
+
+    public Kurs getKursAt(int rowIndex) {
+        return kurseTableData.getKursAt(rowIndex);
+    }
 }

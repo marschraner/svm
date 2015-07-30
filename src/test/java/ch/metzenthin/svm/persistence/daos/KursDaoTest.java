@@ -444,8 +444,8 @@ public class KursDaoTest {
             entityManager.refresh(schuelerFound);
             assertEquals(2, schuelerFound.getKurse().size());
             // Zeitlich geordnet?
-            assertEquals(Wochentag.DONNERSTAG, schuelerFound.getKurse().get(0).getWochentag());
-            assertEquals(Wochentag.FREITAG, schuelerFound.getKurse().get(1).getWochentag());
+            assertEquals(Wochentag.DONNERSTAG, schuelerFound.getKurseAsList().get(0).getWochentag());
+            assertEquals(Wochentag.FREITAG, schuelerFound.getKurseAsList().get(1).getWochentag());
 
             // Kurs prüfen
             Kurs kurs1Found = kursDao.findById(kurs1.getKursId());
@@ -511,8 +511,8 @@ public class KursDaoTest {
             Schueler schuelerFound = schuelerDao.findById(schuelerSaved.getPersonId());
             entityManager.refresh(schuelerFound);
             assertEquals(2, schuelerFound.getKurse().size());
-            assertEquals(Wochentag.DONNERSTAG, schuelerFound.getKurse().get(0).getWochentag());
-            assertEquals(Wochentag.FREITAG, schuelerFound.getKurse().get(1).getWochentag());
+            assertEquals(Wochentag.DONNERSTAG, schuelerFound.getKurseAsList().get(0).getWochentag());
+            assertEquals(Wochentag.FREITAG, schuelerFound.getKurseAsList().get(1).getWochentag());
 
             // Kurse prüfen
             Kurs kurs1Found = kursDao.findById(kurs1.getKursId());
@@ -529,7 +529,7 @@ public class KursDaoTest {
             schuelerFound = schuelerDao.findById(schuelerUpdated.getPersonId());
             entityManager.refresh(schuelerFound);
             assertEquals(1, schuelerFound.getKurse().size());
-            assertEquals(Wochentag.FREITAG, schuelerFound.getKurse().get(0).getWochentag());
+            assertEquals(Wochentag.FREITAG, schuelerFound.getKurseAsList().get(0).getWochentag());
 
             entityManager.refresh(kurs1Found);
             assertEquals(0, kurs1Found.getSchueler().size());

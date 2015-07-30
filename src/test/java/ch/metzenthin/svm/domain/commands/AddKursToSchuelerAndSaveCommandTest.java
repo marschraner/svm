@@ -123,7 +123,7 @@ public class AddKursToSchuelerAndSaveCommandTest {
 
         assertEquals(AddKursToSchuelerAndSaveCommand.Result.SPEICHERN_ERFOLGREICH, addKursToSchuelerAndSaveCommand.getResult());
         assertEquals(1, schuelerSaved.getKurse().size());
-        assertEquals(kursort1, schuelerSaved.getKurse().get(0).getKursort());
+        assertEquals(kursort1, schuelerSaved.getKurseAsList().get(0).getKursort());
 
         // Weiteren Kurs hinzufügen:
         addKursToSchuelerAndSaveCommand = new AddKursToSchuelerAndSaveCommand(semester2, Wochentag.FREITAG, Time.valueOf("10:00:00"), lehrkraft2, schuelerSaved);
@@ -134,8 +134,8 @@ public class AddKursToSchuelerAndSaveCommandTest {
         assertEquals(2, schuelerSaved.getKurse().size());
 
         // Neuster zuerst?
-        assertEquals(kursort2, schuelerSaved.getKurse().get(0).getKursort());
-        assertEquals(kursort1, schuelerSaved.getKurse().get(1).getKursort());
+        assertEquals(kursort2, schuelerSaved.getKurseAsList().get(0).getKursort());
+        assertEquals(kursort1, schuelerSaved.getKurseAsList().get(1).getKursort());
 
         // Versuchen, den zweiten Kurs nochmals hinzuzufügen
         addKursToSchuelerAndSaveCommand = new AddKursToSchuelerAndSaveCommand(semester2, Wochentag.FREITAG, Time.valueOf("10:00:00"), lehrkraft2, schuelerSaved);

@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.commands.DeleteKursCommand;
+import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 
@@ -14,7 +15,7 @@ public interface KurseModel {
     String getTotal(KurseTableModel kurseTableModel);
 
     DeleteKursCommand.Result kursLoeschenKurseVerwalten(KurseTableModel kurseTableModel, int indexKursToBeRemoved);
-    void eintragLoeschenKurseSchueler(KurseTableModel kurseTableModel, int selectedRow, SchuelerDatenblattModel schuelerDatenblattModel);
+    void eintragLoeschenKurseSchueler(KurseTableModel kurseTableModel, Kurs kursToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel);
     void importKurseFromPreviousSemester(SvmModel svmModel, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel);
     Semester[] getSelectableSemestersKurseSchueler(SvmModel svmModel);
 }

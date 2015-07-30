@@ -126,19 +126,19 @@ public class RemoveKursFromSchuelerCommandTest {
         schuelerSaved = addKursToSchuelerAndSaveCommand.getSchuelerUpdated();
 
         assertEquals(2, schuelerSaved.getKurse().size());
-        assertEquals(kursort2, schuelerSaved.getKurse().get(0).getKursort());
-        assertEquals(kursort1, schuelerSaved.getKurse().get(1).getKursort());
+        assertEquals(kursort2, schuelerSaved.getKurseAsList().get(0).getKursort());
+        assertEquals(kursort1, schuelerSaved.getKurseAsList().get(1).getKursort());
 
         // 2. Kurs von Schüler löschen
-        RemoveKursFromSchuelerCommand removeKursFromSchuelerCommand = new RemoveKursFromSchuelerCommand(1, schuelerSaved);
+        RemoveKursFromSchuelerCommand removeKursFromSchuelerCommand = new RemoveKursFromSchuelerCommand(schuelerSaved.getKurseAsList().get(1), schuelerSaved);
         commandInvoker.executeCommandAsTransaction(removeKursFromSchuelerCommand);
 
         Schueler schuelerUpdated = removeKursFromSchuelerCommand.getSchuelerUpdated();
         assertEquals(1, schuelerUpdated.getKurse().size());
-        assertEquals(kursort2, schuelerSaved.getKurse().get(0).getKursort());
+        assertEquals(kursort2, schuelerSaved.getKurseAsList().get(0).getKursort());
 
         // 1. Kurs von Schüler löschen
-        removeKursFromSchuelerCommand = new RemoveKursFromSchuelerCommand(0, schuelerSaved);
+        removeKursFromSchuelerCommand = new RemoveKursFromSchuelerCommand(schuelerSaved.getKurseAsList().get(0), schuelerSaved);
         commandInvoker.executeCommandAsTransaction(removeKursFromSchuelerCommand);
 
         schuelerUpdated = removeKursFromSchuelerCommand.getSchuelerUpdated();

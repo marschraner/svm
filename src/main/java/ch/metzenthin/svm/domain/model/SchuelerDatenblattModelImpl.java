@@ -288,13 +288,12 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     @Override
     public String getSemesterKurseAsString(SvmModel svmModel) {
-        List<Kurs> kurse = schueler.getKurse();
-        if (!kurse.isEmpty()) {
+        if (!schueler.getKurse().isEmpty()) {
             StringBuilder semesterSb = new StringBuilder("<html>");
             String previousSchuljahr = null;
             Semesterbezeichnung previousSemesterbezeichnung = null;
             boolean gleichesSemester = false;
-            for (Kurs kurs : kurse) {
+            for (Kurs kurs : schueler.getKurseAsList()) {
                 if (!isKursToBeDisplayed(svmModel, kurs)) {
                     break;
                 }
@@ -327,12 +326,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     @Override
     public String getKurseAsString(SvmModel svmModel) {
-        List<Kurs> kurse = schueler.getKurse();
         String previousSchuljahr = null;
         Semesterbezeichnung previousSemesterbezeichnung = null;
-        if (!kurse.isEmpty()) {
+        if (!schueler.getKurse().isEmpty()) {
             StringBuilder kurseSb = new StringBuilder("<html>");
-            for (Kurs kurs : kurse) {
+            for (Kurs kurs : schueler.getKurseAsList()) {
                 if (!isKursToBeDisplayed(svmModel, kurs)) {
                     break;
                 }
@@ -386,7 +384,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     @Override
     public KurseTableData getKurseTableData() {
-        return new KurseTableData(schueler.getKurse(), true);
+        return new KurseTableData(schueler.getKurseAsList(), true);
     }
 
     private boolean isDispensationAktuell(Dispensation dispensation) {

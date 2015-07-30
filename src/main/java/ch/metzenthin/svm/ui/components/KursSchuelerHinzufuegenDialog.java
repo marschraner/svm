@@ -7,6 +7,7 @@ import ch.metzenthin.svm.domain.model.KurseModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.control.KursSchuelerHinzufuegenController;
 
 import javax.swing.*;
@@ -27,18 +28,18 @@ public class KursSchuelerHinzufuegenDialog extends JDialog {
     private JButton btnOk;
     private JButton btnAbbrechen;
 
-    public KursSchuelerHinzufuegenDialog(SvmContext svmContext, KurseModel kurseModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public KursSchuelerHinzufuegenDialog(SvmContext svmContext, KurseTableModel kurseTableModel, KurseModel kurseModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
         setTitle("Kurs hinzufügen");
         initializeErrLbls();
-        createKurseSchuelerHinzufuegenController(svmContext, kurseModel, schuelerDatenblattModel);
+        createKurseSchuelerHinzufuegenController(svmContext, kurseTableModel, kurseModel, schuelerDatenblattModel);
     }
 
-    private void createKurseSchuelerHinzufuegenController(SvmContext svmContext, KurseModel kurseModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    private void createKurseSchuelerHinzufuegenController(SvmContext svmContext, KurseTableModel kurseTableModel, KurseModel kurseModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         KursSchuelerHinzufuegenModel kursSchuelerHinzufuegenModel = svmContext.getModelFactory().createKursSchuelerHinzufuegenModel();
-        KursSchuelerHinzufuegenController kursSchuelerHinzufuegenController = new KursSchuelerHinzufuegenController(svmContext, kursSchuelerHinzufuegenModel, kurseModel, schuelerDatenblattModel);
+        KursSchuelerHinzufuegenController kursSchuelerHinzufuegenController = new KursSchuelerHinzufuegenController(svmContext, kurseTableModel, kursSchuelerHinzufuegenModel, kurseModel, schuelerDatenblattModel);
         kursSchuelerHinzufuegenController.setKursSchuelerHinzufuegenDialog(this);
         kursSchuelerHinzufuegenController.setContentPane(contentPane);
         kursSchuelerHinzufuegenController.setComboBoxSemester(comboBoxSemester);

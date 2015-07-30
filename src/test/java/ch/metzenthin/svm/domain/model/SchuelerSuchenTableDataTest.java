@@ -59,7 +59,7 @@ public class SchuelerSuchenTableDataTest {
     public void testGetValueAt() throws Exception {
         assertEquals("V2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.VORNAME.toString())));
         assertEquals("N2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.NACHNAME.toString())));
-        assertEquals("12.04.2002", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.GEBURTSDATUM.toString())));
+        assertEquals(new GregorianCalendar(2002, Calendar.APRIL, 12), schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.GEBURTSDATUM.toString())));
         assertEquals("Festnetz2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.FESTNETZ.toString())));
         assertEquals("Natel2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.NATEL.toString())));
         assertEquals("Email2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.EMAIL.toString())));

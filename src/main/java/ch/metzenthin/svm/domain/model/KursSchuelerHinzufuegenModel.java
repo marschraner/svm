@@ -6,6 +6,7 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.AddKursToSchuelerAndSaveCommand;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 
 import java.sql.Time;
 
@@ -25,5 +26,5 @@ public interface KursSchuelerHinzufuegenModel extends Model {
     void setLehrkraft(Lehrkraft lehrkraft) throws SvmRequiredException;
 
     Semester getDefaultSemester(SvmModel svmModel, Semester[] selectableSemesters);
-    AddKursToSchuelerAndSaveCommand.Result hinzufuegen(SchuelerDatenblattModel schuelerDatenblattModel);
+    AddKursToSchuelerAndSaveCommand.Result hinzufuegen(KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel);
 }

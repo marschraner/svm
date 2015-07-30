@@ -10,6 +10,7 @@ import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 
 import java.sql.Time;
 import java.util.Calendar;
@@ -127,11 +128,14 @@ public class KursSchuelerHinzufuegenModelImpl extends AbstractModel implements K
     }
 
     @Override
-    public AddKursToSchuelerAndSaveCommand.Result hinzufuegen(SchuelerDatenblattModel schuelerDatenblattModel) {
+    public AddKursToSchuelerAndSaveCommand.Result hinzufuegen(KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         Schueler schueler = schuelerDatenblattModel.getSchueler();
         CommandInvoker commandInvoker = getCommandInvoker();
         AddKursToSchuelerAndSaveCommand addKursToSchuelerAndSaveCommand = new AddKursToSchuelerAndSaveCommand(semester, wochentag, zeitBeginn, lehrkraft, schueler);
         commandInvoker.executeCommandAsTransaction(addKursToSchuelerAndSaveCommand);
+        Schueler schuelerUpdated = addKursToSchuelerAndSaveCommand.getSchuelerUpdated();
+        // TableData mit von der Datenbank upgedatetem Schüler updaten
+        kurseTableModel.getKurseTableData().setKurse(schuelerUpdated.getKurseAsList());
         return addKursToSchuelerAndSaveCommand.getResult();
     }
 

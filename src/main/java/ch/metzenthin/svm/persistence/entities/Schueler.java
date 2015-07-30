@@ -52,8 +52,7 @@ public class Schueler extends Person {
     @JoinTable(name = "Schueler_Kurs",
             joinColumns = {@JoinColumn(name = "person_id")},
             inverseJoinColumns = {@JoinColumn(name = "kurs_id")})
-    @OrderBy("semester DESC, kurstyp ASC, wochentag ASC, zeitBeginn ASC")
-    private List<Kurs> kurse = new ArrayList<>();
+    private Set<Kurs> kurse = new HashSet<>();
 
     public Schueler() {
     }
@@ -188,21 +187,25 @@ public class Schueler extends Person {
 
     }
 
-    public List<Kurs> getKurse() {
-        // orderBy kurs.semester.semesterbeginn funktioniert nicht in JPA-Abfrage (wegen 1:n?), daher sind
-        // die Kurse absteigend in der Reihenfolge der Semester-Ids geordnet -> zusätzliche Sortierung nötig
-        Collections.sort(kurse);
+    public Set<Kurs> getKurse() {
         return kurse;
+    }
+
+    public List<Kurs> getKurseAsList() {
+        List<Kurs> kurseAsList = new ArrayList<>(kurse);
+        Collections.sort(kurseAsList);
+        return kurseAsList;
     }
 
     public void addKurs(Kurs kurs) {
         kurs.getSchueler().add(this);
         kurse.add(kurs);
-        Collections.sort(kurse);
     }
 
     public void deleteKurs(Kurs kurs) {
-        kurs.getSchueler().remove(this);
+        // Führt zu StaleObjectStateException!
+        // -> Kurse müssen neu von DB geladen werden, um vom gelöschten Schüler Kenntnis zu erhalten
+        // kurs.getSchueler().remove(this);
         kurse.remove(kurs);
     }
 

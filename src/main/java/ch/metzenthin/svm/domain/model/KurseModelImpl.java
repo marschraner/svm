@@ -54,13 +54,13 @@ public class KurseModelImpl extends AbstractModel implements KurseModel {
     }
 
     @Override
-    public void eintragLoeschenKurseSchueler(KurseTableModel kurseTableModel, int indexKursToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public void eintragLoeschenKurseSchueler(KurseTableModel kurseTableModel, Kurs kursToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        RemoveKursFromSchuelerCommand removeKursFromSchuelerCommand = new RemoveKursFromSchuelerCommand(indexKursToBeRemoved, schuelerDatenblattModel.getSchueler());
+        RemoveKursFromSchuelerCommand removeKursFromSchuelerCommand = new RemoveKursFromSchuelerCommand(kursToBeRemoved, schuelerDatenblattModel.getSchueler());
         commandInvoker.executeCommandAsTransaction(removeKursFromSchuelerCommand);
         Schueler schuelerUpdated = removeKursFromSchuelerCommand.getSchuelerUpdated();
         // TableData mit von der Datenbank upgedatetem Schüler updaten
-        kurseTableModel.getKurseTableData().setKurse(schuelerUpdated.getKurse());
+        kurseTableModel.getKurseTableData().setKurse(schuelerUpdated.getKurseAsList());
     }
 
     @Override

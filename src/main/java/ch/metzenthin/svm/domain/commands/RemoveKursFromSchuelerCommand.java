@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.KursDao;
+import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
 /**
@@ -9,21 +10,21 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 public class RemoveKursFromSchuelerCommand extends GenericDaoCommand {
 
     // input
-    private final int indexKursToBeDeleted;
+    private Kurs kursToBeDeleted;
     private Schueler schueler;
 
     // output
     private Schueler schuelerUpdated;
 
-    public RemoveKursFromSchuelerCommand(int indexKursToBeDeleted, Schueler schueler) {
-        this.indexKursToBeDeleted = indexKursToBeDeleted;
+    public RemoveKursFromSchuelerCommand(Kurs kursToBeDeleted, Schueler schueler) {
+        this.kursToBeDeleted = kursToBeDeleted;
         this.schueler = schueler;
     }
 
     @Override
     public void execute() {
         KursDao kursDao = new KursDao(entityManager);
-        schuelerUpdated = kursDao.removeFromSchuelerAndUpdate(schueler.getKurse().get(indexKursToBeDeleted), schueler);
+        schuelerUpdated = kursDao.removeFromSchuelerAndUpdate(kursToBeDeleted, schueler);
     }
 
     public Schueler getSchuelerUpdated() {
