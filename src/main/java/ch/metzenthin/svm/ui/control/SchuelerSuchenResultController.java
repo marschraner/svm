@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 
@@ -11,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Calendar;
 
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAccordingToCellContentAndHeader;
 
@@ -33,6 +35,7 @@ public class SchuelerSuchenResultController {
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.schuelerSuchenResultTable = schuelerSuchenResultTable;
         schuelerSuchenResultTable.setModel(schuelerSuchenTableModel);
+        schuelerSuchenResultTable.setDefaultRenderer(Calendar.class, new CalendarTableCellRenderer());
         setJTableColumnWidthAccordingToCellContentAndHeader(schuelerSuchenResultTable);
         schuelerSuchenResultTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
