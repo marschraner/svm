@@ -49,6 +49,7 @@ public class SemestersTableData {
                 break;
             case ANZAHL_KURSE:
                 value = semester.getKurse().size();
+                break;
             default:
                 break;
         }
