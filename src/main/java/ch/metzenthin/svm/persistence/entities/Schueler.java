@@ -180,11 +180,9 @@ public class Schueler extends Person {
     }
 
     public void deleteCode(Code code) {
-        // Führt zu StaleObjectStateException!
-        // -> Codes müssen neu von DB geladen werden, um vom gelöschten Schüler Kenntnis zu erhalten
-        // code.getSchueler().remove(this);
+        // code.getSchueler().remove(this); führt zu StaleObjectStateException!
+        // Stattdessen in CodeDao.removeFromSchuelerAndUpdate() refresh(code) ausführen!
         codes.remove(code);
-
     }
 
     public Set<Kurs> getKurse() {
@@ -203,9 +201,8 @@ public class Schueler extends Person {
     }
 
     public void deleteKurs(Kurs kurs) {
-        // Führt zu StaleObjectStateException!
-        // -> Kurse müssen neu von DB geladen werden, um vom gelöschten Schüler Kenntnis zu erhalten
-        // kurs.getSchueler().remove(this);
+        // kurs.getSchueler().remove(this); führt zu StaleObjectStateException!
+        // Stattdessen in KursDao.removeFromSchuelerAndUpdate() refresh(kurs) ausführen!
         kurse.remove(kurs);
     }
 

@@ -25,6 +25,8 @@ public class CodeDao extends GenericDao<Code, Integer> {
     public Schueler removeFromSchuelerAndUpdate(Code code, Schueler schueler) {
         schueler.deleteCode(code);
         entityManager.persist(schueler);
+        entityManager.flush();
+        entityManager.refresh(code);
         return schueler;
     }
 

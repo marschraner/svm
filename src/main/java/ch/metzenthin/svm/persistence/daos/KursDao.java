@@ -77,6 +77,8 @@ public class KursDao extends GenericDao<Kurs, Integer> {
     public Schueler removeFromSchuelerAndUpdate(Kurs kurs, Schueler schueler) {
         schueler.deleteKurs(kurs);
         entityManager.persist(schueler);
+        entityManager.flush();
+        entityManager.refresh(kurs);
         return schueler;
     }
 

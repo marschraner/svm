@@ -96,14 +96,6 @@ public class DeleteCodeCommandTest {
         // Code vom Schüler entfernen, jetzt löschen möglich
         RemoveCodeFromSchuelerCommand removeCodeFromSchuelerCommand = new RemoveCodeFromSchuelerCommand(codesSaved.get(0), savedSchueler);
         commandInvoker.executeCommandAsTransaction(removeCodeFromSchuelerCommand);
-
-        // Neue Session, damit Code über Löschen Kenntnis erhält
-        commandInvoker.clear();
-
-        ReloadCodesCommand reloadCodesCommand = new ReloadCodesCommand(codesSaved);
-        commandInvoker.executeCommand(reloadCodesCommand);
-        codesSaved = reloadCodesCommand.getCodesReloaded();
-
         deleteCodeCommand = new DeleteCodeCommand(codesSaved, 0);
         commandInvoker.executeCommandAsTransaction(deleteCodeCommand);
         assertEquals(DeleteCodeCommand.Result.LOESCHEN_ERFOLGREICH, deleteCodeCommand.getResult());
