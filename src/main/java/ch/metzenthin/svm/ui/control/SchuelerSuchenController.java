@@ -54,7 +54,7 @@ public class SchuelerSuchenController extends PersonController {
     private JRadioButton radioBtnWeiblich;
     private JRadioButton radioBtnMaennlich;
     private JRadioButton radioBtnGeschlechtAlle;
-    private JSpinner spinnerSchuljahre;
+    private JSpinner spinnerSchuljahreKurs;
     private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
     private JComboBox<Wochentag> comboBoxWochentag;
     private JComboBox<Lehrkraft> comboBoxLehrkraft;
@@ -195,18 +195,18 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
-    public void setSpinnerSchuljahre(JSpinner spinnerSchuljahre) {
-        this.spinnerSchuljahre = spinnerSchuljahre;
-        spinnerSchuljahre.addChangeListener(new ChangeListener() {
+    public void setSpinnerSchuljahreKurs(JSpinner spinnerSchuljahreKurs) {
+        this.spinnerSchuljahreKurs = spinnerSchuljahreKurs;
+        spinnerSchuljahreKurs.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                onSchuljahrSelected();
+                onSchuljahrKursSelected();
             }
         });
-        initSchuljahr();
+        initSchuljahrKurs();
     }
 
-    private void initSchuljahr() {
+    private void initSchuljahrKurs() {
         String schuljahr;
         FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmContext.getSvmModel().getSemestersAll());
         findSemesterForCalendarCommand.execute();
@@ -231,16 +231,16 @@ public class SchuelerSuchenController extends PersonController {
             schuljahr = schuljahr1 + "/" + schuljahr2;
         }
         try {
-            schuelerSuchenModel.setSchuljahr(schuljahr);
+            schuelerSuchenModel.setSchuljahrKurs(schuljahr);
         } catch (SvmValidationException ignore) {
         }
     }
 
-    private void onSchuljahrSelected() {
-        LOGGER.trace("KurseSemesterwahlController Event Schuljahre selected =" + spinnerSchuljahre.getValue());
-        boolean equalFieldAndModelValue = equalsNullSafe(spinnerSchuljahre.getValue(), schuelerSuchenModel.getSchuljahr());
+    private void onSchuljahrKursSelected() {
+        LOGGER.trace("KurseSemesterwahlController Event SchuljahrKurs selected =" + spinnerSchuljahreKurs.getValue());
+        boolean equalFieldAndModelValue = equalsNullSafe(spinnerSchuljahreKurs.getValue(), schuelerSuchenModel.getSchuljahrKurs());
         try {
-            setModelSchuljahr();
+            setModelSchuljahrKurs();
         } catch (SvmValidationException e) {
             return;
         }
@@ -251,12 +251,12 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
-    private void setModelSchuljahr() throws SvmValidationException {
-        makeErrorLabelInvisible(Field.SCHULJAHR);
+    private void setModelSchuljahrKurs() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.SCHULJAHR_KURS);
         try {
-            schuelerSuchenModel.setSchuljahr((String) spinnerSchuljahre.getValue());
+            schuelerSuchenModel.setSchuljahrKurs((String) spinnerSchuljahreKurs.getValue());
         } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelSchuljahr Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelSchuljahrKurs Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -752,8 +752,8 @@ public class SchuelerSuchenController extends PersonController {
         else if (checkIsFieldChange(Field.STICHTAG, evt)) {
             txtStichtag.setText(asString(schuelerSuchenModel.getStichtag()));
         }
-        else if (checkIsFieldChange(Field.SCHULJAHR, evt)) {
-            spinnerSchuljahre.setValue(schuelerSuchenModel.getSchuljahr());
+        else if (checkIsFieldChange(Field.SCHULJAHR_KURS, evt)) {
+            spinnerSchuljahreKurs.setValue(schuelerSuchenModel.getSchuljahrKurs());
         }
         else if (checkIsFieldChange(Field.SEMESTERBEZEICHNUNG, evt)) {
             comboBoxSemesterbezeichnung.setSelectedItem(schuelerSuchenModel.getSemesterbezeichnung());
@@ -900,8 +900,8 @@ public class SchuelerSuchenController extends PersonController {
         if (txtStichtag != null && (fields.contains(Field.ALLE) || fields.contains(Field.STICHTAG))) {
             txtStichtag.setEnabled(!disable);
         }
-        if (spinnerSchuljahre != null && (fields.contains(Field.ALLE) || fields.contains(Field.SCHULJAHR_KURS))) {
-            spinnerSchuljahre.setEnabled(!disable);
+        if (spinnerSchuljahreKurs != null && (fields.contains(Field.ALLE) || fields.contains(Field.SCHULJAHR_KURS))) {
+            spinnerSchuljahreKurs.setEnabled(!disable);
         }
         if (comboBoxSemesterbezeichnung != null && (fields.contains(Field.ALLE) || fields.contains(Field.SEMESTERBEZEICHNUNG))) {
             comboBoxSemesterbezeichnung.setEnabled(!disable);

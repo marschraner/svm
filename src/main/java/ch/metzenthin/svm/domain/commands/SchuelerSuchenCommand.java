@@ -1,13 +1,13 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
-import ch.metzenthin.svm.persistence.entities.Adresse;
-import ch.metzenthin.svm.persistence.entities.Code;
-import ch.metzenthin.svm.persistence.entities.PersonSuchen;
-import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.*;
 import org.apache.log4j.Logger;
 
 import javax.persistence.TypedQuery;
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -31,8 +31,14 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     private Calendar geburtsdatumSuchperiodeBeginn;
     private Calendar geburtsdatumSuchperiodeEnde;
     private String geburtsdatumSuchperiodeDateFormatString;
-    private Code code;
     private Calendar stichtag;
+    private String schuljahrKurs;
+    private Semesterbezeichnung semesterbezeichnung;
+    private Wochentag wochentag;
+    private Time zeitBeginn;
+    private Lehrkraft lehrkraft;
+    private boolean kursFuerSucheBeruecksichtigen;
+    private Code code;
     private StringBuilder selectStatementSb;
     private TypedQuery<Schueler> typedQuery;
 
@@ -49,8 +55,14 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         this.geburtsdatumSuchperiodeBeginn = schuelerSuchenModel.getGeburtsdatumSuchperiodeBeginn();
         this.geburtsdatumSuchperiodeEnde = schuelerSuchenModel.getGeburtsdatumSuchperiodeEnde();
         this.geburtsdatumSuchperiodeDateFormatString = schuelerSuchenModel.getGeburtsdatumSuchperiodeDateFormatString();
-        this.code = schuelerSuchenModel.getCode();
         this.stichtag = schuelerSuchenModel.getStichtag();
+        this.schuljahrKurs = schuelerSuchenModel.getSchuljahrKurs();
+        this.semesterbezeichnung = schuelerSuchenModel.getSemesterbezeichnung();
+        this.wochentag = schuelerSuchenModel.getWochentag();
+        this.zeitBeginn = schuelerSuchenModel.getZeitBeginn();
+        this.lehrkraft = schuelerSuchenModel.getLehrkraft();
+        this.kursFuerSucheBeruecksichtigen = schuelerSuchenModel.isKursFuerSucheBeruecksichtigen();
+        this.code = schuelerSuchenModel.getCode();
     }
 
     @Override
@@ -59,6 +71,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         selectStatementSb = new StringBuilder("select s from Schueler s");
         
         // Inner-Joins erzeugen
+        createJoinKurs();
         createJoinCode();
 
         // Where-Selektionen erzeugen
@@ -68,6 +81,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         createWhereSelectionsAnmeldestatus();
         createWhereSelectionsDispensation();
         createWhereSelectionsGeschlecht();
+        createWhereSelectionsKurs();
         createWhereSelectionsCode();
 
         // Letztes " and" löschen
@@ -91,13 +105,23 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         setParameterStammdatenOhneGeburtsdatumSuchperiode();
         setParameterGeburtsdatumSuchperiode();
         setParameterStichtag();
+        setParameterKurs();
         setParameterCodeKuerzel();
 
         schuelerFound = typedQuery.getResultList();
     }
 
+    private void createJoinKurs() {
+        if (kursFuerSucheBeruecksichtigen) {
+            selectStatementSb.append(" join s.kurse kurs");
+            if (lehrkraft != SchuelerSuchenModel.LEHRKRAFT_ALLE) {
+                selectStatementSb.append(" join kurs.lehrkraefte lkr");
+            }
+        }
+    }
+
     private void createJoinCode() {
-        if (!code.getKuerzel().isEmpty()) {
+        if (code != SchuelerSuchenModel.CODE_ALLE) {
             selectStatementSb.append(" join s.codes cod");
         }
     }
@@ -282,8 +306,24 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
+    private void createWhereSelectionsKurs() {
+        if (kursFuerSucheBeruecksichtigen) {
+            selectStatementSb.append(" kurs.semester.schuljahr = :schuljahrKurs and");
+            selectStatementSb.append(" kurs.semester.semesterbezeichnung = :semesterbezeichnung and");
+            if (wochentag != Wochentag.ALLE) {
+                selectStatementSb.append(" kurs.wochentag = :wochentag and");
+            }
+            if (zeitBeginn != null) {
+                selectStatementSb.append(" kurs.zeitBeginn = :zeitBeginn and");
+            }
+            if (lehrkraft != SchuelerSuchenModel.LEHRKRAFT_ALLE) {
+                selectStatementSb.append(" lkr.vorname = :lehrkraftVorname and lkr.nachname = :lehrkraftNachname and lkr.geburtsdatum = :lehrkraftGeburtsdatum and");
+            }
+        }
+    }
+
     private void createWhereSelectionsCode() {
-        if (!code.getKuerzel().isEmpty()) {
+        if (code != SchuelerSuchenModel.CODE_ALLE) {
             selectStatementSb.append(" cod.kuerzel = :codeKuerzel and");
         }
     }
@@ -340,15 +380,39 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
-    private void setParameterCodeKuerzel() {
-        if (selectStatementSb.toString().contains(":codeKuerzel")) {
-            typedQuery.setParameter("codeKuerzel", code.getKuerzel());
-        }
-    }
-
     private void setParameterStichtag() {
         if (selectStatementSb.toString().contains(":stichtag")) {
             typedQuery.setParameter("stichtag", stichtag);
+        }
+    }
+
+    private void setParameterKurs() {
+        if (selectStatementSb.toString().contains(":schuljahrKurs")) {
+            typedQuery.setParameter("schuljahrKurs", schuljahrKurs);
+        }
+        if (selectStatementSb.toString().contains(":semesterbezeichnung")) {
+            typedQuery.setParameter("semesterbezeichnung", semesterbezeichnung);
+        }
+        if (selectStatementSb.toString().contains(":wochentag")) {
+            typedQuery.setParameter("wochentag", wochentag);
+        }
+        if (selectStatementSb.toString().contains(":zeitBeginn")) {
+            typedQuery.setParameter("zeitBeginn", zeitBeginn);
+        }
+        if (selectStatementSb.toString().contains(":lehrkraftVorname")) {
+            typedQuery.setParameter("lehrkraftVorname", lehrkraft.getVorname());
+        }
+        if (selectStatementSb.toString().contains(":lehrkraftNachname")) {
+            typedQuery.setParameter("lehrkraftNachname", lehrkraft.getNachname());
+        }
+        if (selectStatementSb.toString().contains(":lehrkraftGeburtsdatum")) {
+            typedQuery.setParameter("lehrkraftGeburtsdatum", lehrkraft.getGeburtsdatum());
+        }
+    }
+
+    private void setParameterCodeKuerzel() {
+        if (selectStatementSb.toString().contains(":codeKuerzel")) {
+            typedQuery.setParameter("codeKuerzel", code.getKuerzel());
         }
     }
 

@@ -127,7 +127,7 @@ public class SchuelerSuchenPanel {
         schuelerSuchenController.setTxtGeburtsdatumSuchperiode(txtGeburtsdatumSuchperiode);
         schuelerSuchenController.setTxtZeitBeginn(txtZeitBeginn);
         schuelerSuchenController.setTxtStichtag(txtStichtag);
-        schuelerSuchenController.setSpinnerSchuljahre(spinnerSchuljahreKurs);
+        schuelerSuchenController.setSpinnerSchuljahreKurs(spinnerSchuljahreKurs);
         schuelerSuchenController.setComboBoxSemesterbezeichnung(comboBoxSemesterbezeichnung);
         schuelerSuchenController.setComboBoxWochentag(comboBoxWochentag);
         schuelerSuchenController.setComboBoxLehrkraft(comboBoxLehrkraft);

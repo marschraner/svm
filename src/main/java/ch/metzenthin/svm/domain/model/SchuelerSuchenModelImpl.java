@@ -24,9 +24,6 @@ import static ch.metzenthin.svm.common.utils.Converter.*;
  */
 final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerSuchenModel {
 
-    private static final Lehrkraft LEHRKRAFT_ALLE = new Lehrkraft();
-    private static final Code CODE_ALLE = new Code();
-
     private final PersonSuchen person = new PersonSuchen();
     private RolleSelected rolle;
     private AnmeldestatusSelected anmeldestatus;
@@ -212,13 +209,13 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     );
 
     @Override
-    public String getSchuljahr() {
+    public String getSchuljahrKurs() {
         return schuljahrKursModelAttribute.getValue();
     }
 
     @Override
-    public void setSchuljahr(String schuljahr) throws SvmValidationException {
-        schuljahrKursModelAttribute.setNewValue(true, schuljahr, isBulkUpdate());
+    public void setSchuljahrKurs(String schuljahrKurs) throws SvmValidationException {
+        schuljahrKursModelAttribute.setNewValue(true, schuljahrKurs, isBulkUpdate());
     }
 
     @Override

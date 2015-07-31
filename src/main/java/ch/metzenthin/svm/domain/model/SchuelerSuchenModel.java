@@ -15,6 +15,9 @@ import java.util.Calendar;
  */
 public interface SchuelerSuchenModel extends PersonModel {
 
+    Lehrkraft LEHRKRAFT_ALLE = new Lehrkraft();
+    Code CODE_ALLE = new Code();
+
     enum RolleSelected {
         SCHUELER,
         ELTERN,
@@ -40,10 +43,6 @@ public interface SchuelerSuchenModel extends PersonModel {
         ALLE
     }
 
-    boolean isKursFuerSucheBeruecksichtigen();
-
-    void setKursFuerSucheBeruecksichtigen(boolean isSelected);
-
     String getGeburtsdatumSuchperiode();
     Calendar getGeburtsdatumSuchperiodeBeginn();
     Calendar getGeburtsdatumSuchperiodeEnde();
@@ -53,11 +52,12 @@ public interface SchuelerSuchenModel extends PersonModel {
     AnmeldestatusSelected getAnmeldestatus();
     DispensationSelected getDispensation();
     Calendar getStichtag();
-    String getSchuljahr();
+    String getSchuljahrKurs();
     Semesterbezeichnung getSemesterbezeichnung();
     Wochentag getWochentag();
     Time getZeitBeginn();
     Lehrkraft getLehrkraft();
+    boolean isKursFuerSucheBeruecksichtigen();
     PersonSuchen getPerson();
     Code getCode();
 
@@ -67,11 +67,12 @@ public interface SchuelerSuchenModel extends PersonModel {
     void setAnmeldestatus(AnmeldestatusSelected anmeldestatus);
     void setDispensation(DispensationSelected dispensation);
     void setStichtag(String stichtag) throws SvmValidationException;
-    void setSchuljahr(String schuljahr) throws SvmValidationException;
+    void setSchuljahrKurs(String schuljahrKurs) throws SvmValidationException;
     void setSemesterbezeichnung(Semesterbezeichnung semesterbezeichnung);
     void setWochentag(Wochentag wochentag);
     void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
     void setLehrkraft(Lehrkraft lehrkraft);
+    void setKursFuerSucheBeruecksichtigen(boolean isSelected);
     void setCode(Code code);
 
     SchuelerSuchenTableData suchen();
