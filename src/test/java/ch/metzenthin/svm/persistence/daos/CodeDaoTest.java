@@ -235,9 +235,7 @@ public class CodeDaoTest {
             assertEquals(1, schuelerFound.getCodes().size());
             assertEquals("r6", schuelerFound.getCodesAsList().get(0).getKuerzel());
 
-            entityManager.refresh(code1Found);
             assertEquals(0, code1Found.getSchueler().size());
-            entityManager.refresh(code2Found);
             assertEquals(1, code2Found.getSchueler().size());
 
             // 2. Code von Schüler entfernen
@@ -248,9 +246,7 @@ public class CodeDaoTest {
             entityManager.refresh(schuelerFound);
             assertEquals(0, schuelerFound.getCodes().size());
 
-            entityManager.refresh(code1Found);
             assertEquals(0, code1Found.getSchueler().size());
-            entityManager.refresh(code2Found);
             assertEquals(0, code2Found.getSchueler().size());
 
         } finally {
