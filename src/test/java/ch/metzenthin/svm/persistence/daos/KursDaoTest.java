@@ -266,7 +266,7 @@ public class KursDaoTest {
     }
 
     @Test
-    public void testFindKurseSemester_and_testFindKurs() {
+    public void testFindKurseSemester_and_testFindKurs_and_findKurseSchuelerSemester() {
 
         EntityTransaction tx = null;
 
@@ -382,6 +382,35 @@ public class KursDaoTest {
             assertNull(kursDao.findKurs(semester1, Wochentag.MITTWOCH, Time.valueOf("10:00:00"), lehrkraft1));
             assertNull(kursDao.findKurs(semester1, Wochentag.DONNERSTAG, Time.valueOf("10:10:00"), lehrkraft1));
             assertNull(kursDao.findKurs(semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), lehrkraft2));
+
+            // Kurse 1 und 2 einem Schüler hinzufügen
+            Schueler schueler1 = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
+            Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
+            schueler1.setAdresse(adresse);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            vater.setAdresse(adresse);
+            schueler1.setVater(vater);
+            schueler1.setRechnungsempfaenger(vater);
+
+            kursDao.addToSchuelerAndSave(kurs1, schueler1);
+            kursDao.addToSchuelerAndSave(kurs2, schueler1);
+            entityManager.flush();
+
+            List<Kurs> kurseSchueler1 = kursDao.findKurseSchuelerSemester(schueler1, semester1);
+            assertEquals(2, kurseSchueler1.size());
+            assertEquals("Testkurs1", kurseSchueler1.get(0).getKurstyp().getBezeichnung());
+            assertEquals("Testkurs2", kurseSchueler1.get(1).getKurstyp().getBezeichnung());
+
+            // Ditto für einen Schüler ohne Kurse
+            Schueler schueler2 = new Schueler("Valentin", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.M, null);
+            schueler2.setAdresse(adresse);
+            schueler2.setVater(vater);
+            schueler2.setRechnungsempfaenger(vater);
+            entityManager.flush();
+
+            List<Kurs> kurseSchueler2 = kursDao.findKurseSchuelerSemester(schueler2, semester1);
+            assertEquals(0, kurseSchueler2.size());
+
 
         } finally {
             if (tx != null) {

@@ -439,6 +439,7 @@ public class SchuelerDatenblattController {
 
     private void onZurueck() {
         if (schuelerSuchenTableModel.getRowCount() > 1) {
+            schuelerDatenblattModel.refreshSchuelerSuchenTableData(svmContext, schuelerSuchenTableModel);
             SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
             schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
             schuelerSuchenResultPanel.addCloseListener(closeListener);

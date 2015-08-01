@@ -24,10 +24,10 @@ public class SchuelerSuchenResultController {
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final JTable schuelerSuchenResultTable;
     private JButton btnDatenblatt;
-    private ActionListener nextPanelListener;
     private JButton btnAbbrechen;
-    private ActionListener closeListener;
     private JButton btnZurueck;
+    private ActionListener nextPanelListener;
+    private ActionListener closeListener;
     private ActionListener zurueckListener;
 
     public SchuelerSuchenResultController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable) {
@@ -53,6 +53,17 @@ public class SchuelerSuchenResultController {
                 }
             }
         });
+    }
+
+    public void setLblTotal(JLabel lblTotal) {
+        if (schuelerSuchenTableModel.getSemester() == null) {
+            lblTotal.setText("Semester nicht erfasst.");
+            return;
+        }
+        String semesterStr = " (" + schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() + " " + schuelerSuchenTableModel.getSemester().getSchuljahr() + ")";
+        String lektionen = (schuelerSuchenTableModel.getAnzahlLektionen() == 1 ? " Lektion" : " Lektionen");
+        String lblTotalText = "Total: " + schuelerSuchenTableModel.getRowCount() + " Schüler, " + schuelerSuchenTableModel.getAnzahlLektionen() + lektionen + semesterStr;
+        lblTotal.setText(lblTotalText);
     }
 
     public void addNextPanelListener(ActionListener nextPanelListener) {

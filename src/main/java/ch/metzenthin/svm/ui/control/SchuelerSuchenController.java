@@ -574,20 +574,23 @@ public class SchuelerSuchenController extends PersonController {
             btnSuchen.setFocusPainted(false);
             return;
         }
-        SchuelerSuchenTableData schuelerSuchenTableData = schuelerSuchenModel.suchen();
+        SchuelerSuchenTableData schuelerSuchenTableData = schuelerSuchenModel.suchen(svmContext.getSvmModel());
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenTableData);
-        if (schuelerSuchenTableData.size() != 1) {
+        if (schuelerSuchenTableData.size() > 1) {
             SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
             schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
             schuelerSuchenResultPanel.addCloseListener(closeListener);
             schuelerSuchenResultPanel.addZurueckListener(zurueckListener);
-            nextPanelListener.actionPerformed(new ActionEvent(new Object[] {schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
-        } else {
+            nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
+        } else if (schuelerSuchenTableData.size() == 1) {
             SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, null, 0, true);
             schuelerDatenblattPanel.addCloseListener(closeListener);
             schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
             schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckListener);
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler gespeichert"));
+        } else {
+            JOptionPane.showMessageDialog(null, "Es wurden keine Schüler gefunden, welche auf die Suchabfrage passen.", "Keine Schüler gefunden", JOptionPane.INFORMATION_MESSAGE);
+            btnSuchen.setFocusPainted(false);
         }
     }
 

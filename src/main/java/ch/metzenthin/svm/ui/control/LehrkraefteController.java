@@ -140,6 +140,7 @@ public class LehrkraefteController {
             switch (result) {
                 case LEHRKRAFT_VON_KURS_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Die Lehrkraft wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
                     lehrkraefteTable.addNotify();

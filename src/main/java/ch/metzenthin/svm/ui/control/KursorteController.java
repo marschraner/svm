@@ -137,6 +137,7 @@ public class KursorteController {
             switch (result) {
                 case KURSORT_VON_KURS_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Der Kursort wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
                     kursorteTable.addNotify();

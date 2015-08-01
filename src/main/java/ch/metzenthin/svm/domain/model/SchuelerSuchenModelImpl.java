@@ -4,18 +4,12 @@ import ch.metzenthin.svm.dataTypes.Field;
 import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.SchuelerSuchenCommand;
-import ch.metzenthin.svm.persistence.entities.Code;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
-import ch.metzenthin.svm.persistence.entities.PersonSuchen;
-import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.domain.commands.*;
+import ch.metzenthin.svm.persistence.entities.*;
 
 import java.sql.Time;
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.Converter.*;
 
@@ -321,12 +315,38 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     );
 
     @Override
-    public SchuelerSuchenTableData suchen() {
+    public SchuelerSuchenTableData suchen(SvmModel svmModel) {
         SchuelerSuchenCommand schuelerSuchenCommand = new SchuelerSuchenCommand(this);
         CommandInvoker commandInvoker = getCommandInvoker();
         commandInvoker.executeCommand(schuelerSuchenCommand);
         List<Schueler> schuelerList = schuelerSuchenCommand.getSchuelerFound();
-        return new SchuelerSuchenTableData(schuelerList);
+        Semester semesterTableData = determineSemesterTableData(svmModel);
+        Map<Schueler, List<Kurs>> kurseMapTableData = determineKurseMapTableData(schuelerList, semesterTableData);
+        return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData);
+    }
+
+    private Semester determineSemesterTableData(SvmModel svmModel) {
+        CommandInvoker commandInvoker = getCommandInvoker();
+        List<Semester> erfassteSemester = svmModel.getSemestersAll();
+        if (kursFuerSucheBeruecksichtigen) {
+            FindSemesterForSchuljahrSemesterbezeichnungCommand findSemesterForSchuljahrSemesterbezeichnungCommand = new FindSemesterForSchuljahrSemesterbezeichnungCommand(schuljahrKurs, semesterbezeichnung, erfassteSemester);
+            commandInvoker.executeCommand(findSemesterForSchuljahrSemesterbezeichnungCommand);
+            return findSemesterForSchuljahrSemesterbezeichnungCommand.getSemesterFound();
+        } else {
+            FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(stichtag, erfassteSemester);
+            commandInvoker.executeCommand(findSemesterForCalendarCommand);
+            Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
+            Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
+            // Wenn in Ferien zwischen 2 Semestern Folgesemester nehmen
+            return  (currentSemester == null ? nextSemester : currentSemester);
+        }
+    }
+
+    private Map<Schueler, List<Kurs>> determineKurseMapTableData(List<Schueler> schuelerList, Semester semester) {
+        CommandInvoker commandInvoker = getCommandInvoker();
+        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester);
+        commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
+        return findKurseMapSchuelerSemesterCommand.getKurseMap();
     }
 
     @Override

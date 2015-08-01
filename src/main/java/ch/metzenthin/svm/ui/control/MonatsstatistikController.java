@@ -181,13 +181,18 @@ public class MonatsstatistikController extends AbstractController {
             btnSuchen.setFocusPainted(false);
             return;
         }
-        SchuelerSuchenTableData schuelerSuchenTableData = monatsstatistikModel.suchen();
+        SchuelerSuchenTableData schuelerSuchenTableData = monatsstatistikModel.suchen(svmContext.getSvmModel());
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenTableData);
-        SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
-        schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
-        schuelerSuchenResultPanel.addCloseListener(closeListener);
-        schuelerSuchenResultPanel.addZurueckListener(zurueckListener);
-        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
+        if (schuelerSuchenTableData.size() >= 1) {
+            SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
+            schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
+            schuelerSuchenResultPanel.addCloseListener(closeListener);
+            schuelerSuchenResultPanel.addZurueckListener(zurueckListener);
+            nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
+        } else {
+            JOptionPane.showMessageDialog(null, "Es wurden keine Schüler gefunden, welche auf die Suchabfrage passen.", "Keine Schüler gefunden", JOptionPane.INFORMATION_MESSAGE);
+            btnSuchen.setFocusPainted(false);
+        }
     }
 
     private void onMonatsstatistikModelCompleted(boolean completed) {

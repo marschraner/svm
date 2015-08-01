@@ -4,9 +4,9 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.domain.commands.CheckGeschwisterSchuelerRechnungempfaengerCommand;
-import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
+import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
 import java.util.*;
 
@@ -429,6 +429,17 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     @Override
     public Schueler getSchueler() {
         return schueler;
+    }
+
+    @Override
+    public void refreshSchuelerSuchenTableData(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel) {
+        // KursMap neu setzen
+        CommandInvoker commandInvoker = svmContext.getCommandInvoker();
+        List<Schueler> schuelerList = schuelerSuchenTableModel.getSchuelerSuchenTableData().getSchuelerList();
+        Semester semester = schuelerSuchenTableModel.getSchuelerSuchenTableData().getSemester();
+        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester);
+        commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
+        schuelerSuchenTableModel.getSchuelerSuchenTableData().setKurseMap(findKurseMapSchuelerSemesterCommand.getKurseMap());
     }
 
     private boolean isGleicheAdresseWieSchueler(Angehoeriger angehoeriger) {

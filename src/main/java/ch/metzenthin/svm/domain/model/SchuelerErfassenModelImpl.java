@@ -7,17 +7,12 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.DeleteSchuelerCommand;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerModel;
-import ch.metzenthin.svm.persistence.entities.Adresse;
-import ch.metzenthin.svm.persistence.entities.Angehoeriger;
-import ch.metzenthin.svm.persistence.entities.Anmeldung;
-import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.*;
 import org.apache.log4j.Logger;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand.Entry.NEU_ERFASSTEN_SCHUELER_VALIDIEREN;
 
@@ -499,7 +494,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public SchuelerSuchenTableData getSchuelerSuchenTableData() {
-        return new SchuelerSuchenTableData(Collections.singletonList(getSchueler()));
+        return new SchuelerSuchenTableData(Collections.singletonList(getSchueler()), new HashMap<Schueler, List<Kurs>>(), null);
     }
 
 }

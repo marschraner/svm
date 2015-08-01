@@ -48,6 +48,17 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         return typedQuery.getResultList();
     }
 
+    public List<Kurs> findKurseSchuelerSemester(Schueler schueler, Semester semester) {
+        TypedQuery<Kurs> typedQuery = entityManager.createQuery("select k from Kurs k join k.schueler s where k.semester.schuljahr = :schuljahr and k.semester.semesterbezeichnung = :semesterbezeichnung and s.nachname = :schuelerNachname and s.vorname = :schuelerVorname and s.geburtsdatum =:schuelerGeburtsdatum and s.adresse.strasse = :schuelerStrasse order by k.kurstyp.bezeichnung, k.stufe, k.wochentag, k.zeitBeginn, k.zeitEnde, k.kursort.bezeichnung", Kurs.class);
+        typedQuery.setParameter("schuljahr", semester.getSchuljahr());
+        typedQuery.setParameter("semesterbezeichnung", semester.getSemesterbezeichnung());
+        typedQuery.setParameter("schuelerNachname", schueler.getNachname());
+        typedQuery.setParameter("schuelerVorname", schueler.getVorname());
+        typedQuery.setParameter("schuelerGeburtsdatum", schueler.getGeburtsdatum());
+        typedQuery.setParameter("schuelerStrasse", schueler.getAdresse().getStrasse());
+        return typedQuery.getResultList();
+    }
+
     public Kurs findKurs(Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft) {
         Kurs kursFound;
         try {

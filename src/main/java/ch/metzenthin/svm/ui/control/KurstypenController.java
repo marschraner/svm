@@ -137,6 +137,7 @@ public class KurstypenController {
             switch (result) {
                 case KURSTYP_VON_KURS_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Der Kurstyp wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
                     kurstypenTable.addNotify();

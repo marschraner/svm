@@ -230,6 +230,7 @@ public class LehrkraftErfassenController extends PersonController {
         }
         if (lehrkraftErfassenModel.checkLehrkraftBereitsErfasst(svmContext.getSvmModel())) {
             JOptionPane.showMessageDialog(null, "Die Lehrkraft ist bereits in der Datenbank gespeichert und kann nicht ein weiteres Mal erfasst werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            btnSpeichern.setFocusPainted(false);
         } else {
             lehrkraftErfassenModel.speichern(svmContext.getSvmModel());
             lehrkraftErfassenDialog.dispose();

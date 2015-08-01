@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
 /**
  * @author Hans Stamm
@@ -39,4 +40,6 @@ public interface SchuelerDatenblattModel {
     AngehoerigerModel getVaterModel(SvmContext svmContext);
     AngehoerigerModel getRechnungsempfaengerModel(SvmContext svmContext);
     Schueler getSchueler();
+
+    void refreshSchuelerSuchenTableData(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel);
 }

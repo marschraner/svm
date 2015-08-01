@@ -68,7 +68,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     @Override
     public void execute() {
 
-        selectStatementSb = new StringBuilder("select s from Schueler s");
+        selectStatementSb = new StringBuilder("select distinct s from Schueler s");
         
         // Inner-Joins erzeugen
         createJoinKurs();

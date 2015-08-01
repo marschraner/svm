@@ -91,6 +91,15 @@ public class Kurs implements Comparable<Kurs> {
         return kursAsStr.toString();
     }
 
+    public String toStringShort() {
+        StringBuilder kursAsStr = new StringBuilder(wochentag + " " + asString(zeitBeginn) + "-" + asString(zeitEnde) + " (" + lehrkraefte.get(0));
+        for (int i = 1; i < lehrkraefte.size(); i++) {
+            kursAsStr.append("/").append(lehrkraefte.get(i));
+        }
+        kursAsStr.append(")");
+        return kursAsStr.toString();
+    }
+
     public boolean isIdenticalWith(Kurs otherKurs) {
         // Kurse identisch, falls Semester, Wochentag, Zeit und Lehrkräfte identisch
         List<Lehrkraft> commonLehrkraefte = new ArrayList<>(lehrkraefte);

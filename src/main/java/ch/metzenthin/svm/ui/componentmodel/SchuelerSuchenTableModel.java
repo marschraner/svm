@@ -2,6 +2,7 @@ package ch.metzenthin.svm.ui.componentmodel;
 
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
+import ch.metzenthin.svm.persistence.entities.Semester;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -45,4 +46,15 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
         return schuelerSuchenTableData.getColumnClass(columnIndex);
     }
 
+    public int getAnzahlLektionen() {
+        return schuelerSuchenTableData.getAnzahlLektionen();
+    }
+
+    public Semester getSemester() {
+        return schuelerSuchenTableData.getSemester();
+    }
+
+    public SchuelerSuchenTableData getSchuelerSuchenTableData() {
+        return schuelerSuchenTableData;
+    }
 }

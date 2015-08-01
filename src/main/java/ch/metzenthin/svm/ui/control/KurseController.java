@@ -212,6 +212,7 @@ public class KurseController {
             switch (result) {
                 case KURS_VON_SCHUELER_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Der Kurs wird durch mindestens einen Schüler referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
                     kurseTable.addNotify();

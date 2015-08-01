@@ -204,6 +204,7 @@ public class CodeErfassenController extends AbstractController {
         }
         if (codeErfassenModel.checkCodeKuerzelBereitsInVerwendung(svmContext.getSvmModel())) {
             JOptionPane.showMessageDialog(null, "Kürzel bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            btnSpeichern.setFocusPainted(false);
         } else {
             codeErfassenModel.speichern(svmContext.getSvmModel());
             codeErfassenDialog.dispose();

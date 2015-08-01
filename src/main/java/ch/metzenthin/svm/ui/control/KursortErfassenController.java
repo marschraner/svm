@@ -147,6 +147,7 @@ public class KursortErfassenController extends AbstractController {
         }
         if (kursortErfassenModel.checkKursortBezeichnungBereitsInVerwendung(svmContext.getSvmModel())) {
             JOptionPane.showMessageDialog(null, "Bezeichnung bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            btnSpeichern.setFocusPainted(false);
         } else {
             kursortErfassenModel.speichern(svmContext.getSvmModel());
             kursortErfassenDialog.dispose();

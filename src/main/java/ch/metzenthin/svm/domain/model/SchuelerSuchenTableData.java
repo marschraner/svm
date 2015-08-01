@@ -1,12 +1,11 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Field;
-import ch.metzenthin.svm.persistence.entities.Adresse;
-import ch.metzenthin.svm.persistence.entities.Angehoeriger;
-import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.*;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hans Stamm
@@ -14,12 +13,16 @@ import java.util.List;
 public class SchuelerSuchenTableData {
 
     private List<Schueler> schuelerList;
+    private Map<Schueler, List<Kurs>> kurseMap;
+    private Semester semester;
 
-    public SchuelerSuchenTableData(List<Schueler> schuelerList) {
+    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurseMap, Semester semester) {
         this.schuelerList = schuelerList;
+        this.kurseMap = kurseMap;
+        this.semester = semester;
     }
 
-    private static final Field[] COLUMNS = {Field.NACHNAME, Field.VORNAME, Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT, Field.FESTNETZ, Field.NATEL, Field.EMAIL, Field.GEBURTSDATUM, Field.MUTTER, Field.VATER, Field.RECHNUNGSEMPFAENGER};
+    private static final Field[] COLUMNS = {Field.NACHNAME, Field.VORNAME, Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT, Field.FESTNETZ, Field.NATEL, Field.EMAIL, Field.GEBURTSDATUM, Field.MUTTER, Field.VATER, Field.RECHNUNGSEMPFAENGER, Field.KURS1, Field.ANZAHL_KURSE};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -31,6 +34,7 @@ public class SchuelerSuchenTableData {
 
     public Object getValueAt(int rowIndex, int columnIndex) {
         Schueler schueler = schuelerList.get(rowIndex);
+        List<Kurs> kurseOfSchueler = kurseMap.get(schueler);
         Adresse schuelerAdresse = schueler.getAdresse();
         Object value = null;
         switch (COLUMNS[columnIndex]) {
@@ -70,6 +74,14 @@ public class SchuelerSuchenTableData {
             case RECHNUNGSEMPFAENGER:
                 value = getString(schueler.getRechnungsempfaenger());
                 break;
+            case KURS1:
+                if (kurseOfSchueler != null && !kurseOfSchueler.isEmpty()) {
+                    value = kurseOfSchueler.get(0).toStringShort();
+                }
+                break;
+            case ANZAHL_KURSE:
+                value = (kurseOfSchueler == null ? 0 : kurseOfSchueler.size());
+                break;
             default:
                 break;
         }
@@ -98,6 +110,26 @@ public class SchuelerSuchenTableData {
 
     public SchuelerDatenblattModel getSchuelerDatenblattModel(int rowIndex) {
         return new SchuelerDatenblattModelImpl(schuelerList.get(rowIndex));
+    }
+
+    public int getAnzahlLektionen() {
+        int anzahlKurse = 0;
+        for (Schueler schueler : schuelerList) {
+            anzahlKurse += kurseMap.get(schueler).size();
+        }
+        return anzahlKurse;
+    }
+
+    public Semester getSemester() {
+        return semester;
+    }
+
+    public List<Schueler> getSchuelerList() {
+        return schuelerList;
+    }
+
+    public void setKurseMap(Map<Schueler, List<Kurs>> kurseMap) {
+        this.kurseMap = kurseMap;
     }
 
 }

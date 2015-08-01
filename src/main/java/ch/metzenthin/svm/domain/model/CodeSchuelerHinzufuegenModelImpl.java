@@ -41,7 +41,9 @@ public class CodeSchuelerHinzufuegenModelImpl extends AbstractModel implements C
         commandInvoker.executeCommandAsTransaction(addCodeToSchuelerAndSaveCommand);
         Schueler schuelerUpdated = addCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
         // TableData mit von der Datenbank upgedatetem Schüler updaten
-        codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getCodesAsList());
+        if (schuelerUpdated != null) {
+            codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getCodesAsList());
+        }
     }
 
     @Override

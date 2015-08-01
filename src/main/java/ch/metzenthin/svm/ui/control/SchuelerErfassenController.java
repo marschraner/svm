@@ -29,6 +29,7 @@ public class SchuelerErfassenController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private JButton btnSpeichern;
+    private JButton btnLoeschen;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
 
@@ -159,6 +160,7 @@ public class SchuelerErfassenController {
     }
 
     public void setBtnLoeschen(JButton btnLoeschen) {
+        this.btnLoeschen = btnLoeschen;
         if (!isBearbeiten) {
             btnLoeschen.setVisible(false);
         }
@@ -270,6 +272,7 @@ public class SchuelerErfassenController {
             switch (result) {
                 case SCHUELER_IN_KURSE_EINGESCHRIEBEN:
                     JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einen Kurs eingeschrieben und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
                     JOptionPane.showMessageDialog(

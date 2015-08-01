@@ -135,7 +135,9 @@ public class KursSchuelerHinzufuegenModelImpl extends AbstractModel implements K
         commandInvoker.executeCommandAsTransaction(addKursToSchuelerAndSaveCommand);
         Schueler schuelerUpdated = addKursToSchuelerAndSaveCommand.getSchuelerUpdated();
         // TableData mit von der Datenbank upgedatetem Schüler updaten
-        kurseTableModel.getKurseTableData().setKurse(schuelerUpdated.getKurseAsList());
+        if (schuelerUpdated != null) {
+            kurseTableModel.getKurseTableData().setKurse(schuelerUpdated.getKurseAsList());
+        }
         return addKursToSchuelerAndSaveCommand.getResult();
     }
 
