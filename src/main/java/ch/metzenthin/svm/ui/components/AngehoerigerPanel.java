@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.domain.model.AngehoerigerModel;
 import ch.metzenthin.svm.ui.control.AngehoerigerController;
 

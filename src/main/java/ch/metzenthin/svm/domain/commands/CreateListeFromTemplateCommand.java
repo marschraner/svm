@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.dataTypes.Listentyp;
+import ch.metzenthin.svm.common.dataTypes.Listentyp;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import org.apache.log4j.Logger;
@@ -79,7 +79,7 @@ public class CreateListeFromTemplateCommand extends CreateListeCommand {
                         for (XWPFParagraph p : cell.getParagraphs()) {
                             for (XWPFRun r : p.getRuns()) {
                                 String text = r.getText(0);
-                                LOGGER.info("CreateListeFromTemplateCommand: text =" + text);
+                                LOGGER.debug("CreateListeFromTemplateCommand: text =" + text);
                                 for (int i = 0; i < maxRows; i++) {
                                     String ip = Integer.toString(i + 1);
                                     // 01, 02,...

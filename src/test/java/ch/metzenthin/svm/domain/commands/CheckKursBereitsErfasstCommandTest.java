@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.dataTypes.Anrede;
-import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.Before;
 import org.junit.Test;

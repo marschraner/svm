@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.dataTypes.Field;
-import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CheckSemesterBereitsErfasstCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;

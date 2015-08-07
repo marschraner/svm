@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 
-import ch.metzenthin.svm.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.model.SchuelerModel;
 import ch.metzenthin.svm.ui.control.SchuelerController;
 

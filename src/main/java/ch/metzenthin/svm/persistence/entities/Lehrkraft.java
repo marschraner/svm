@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.common.dataTypes.Anrede;
 
 import javax.persistence.*;
 import java.util.Calendar;

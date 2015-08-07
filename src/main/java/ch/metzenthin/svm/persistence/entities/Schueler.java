@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.dataTypes.Anrede;
-import ch.metzenthin.svm.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 
 import javax.persistence.*;
 import java.util.*;

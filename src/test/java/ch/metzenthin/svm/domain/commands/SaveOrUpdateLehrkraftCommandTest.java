@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.persistence.daos.LehrkraftDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;

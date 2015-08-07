@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain;
 
-import ch.metzenthin.svm.dataTypes.Field;
+import ch.metzenthin.svm.common.dataTypes.Field;
 
 import java.util.Arrays;
 import java.util.HashSet;

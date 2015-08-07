@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.utils.SvmProperties;
-import ch.metzenthin.svm.dataTypes.Listentyp;
-import ch.metzenthin.svm.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.dataTypes.Listentyp;
+import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.persistence.entities.Semester;
 
 import java.io.File;

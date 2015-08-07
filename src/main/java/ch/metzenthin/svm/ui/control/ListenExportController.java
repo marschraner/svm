@@ -1,9 +1,9 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.utils.SvmProperties;
-import ch.metzenthin.svm.dataTypes.Field;
-import ch.metzenthin.svm.dataTypes.Filetyp;
-import ch.metzenthin.svm.dataTypes.Listentyp;
+import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.dataTypes.Filetyp;
+import ch.metzenthin.svm.common.dataTypes.Listentyp;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CreateListeCommand;

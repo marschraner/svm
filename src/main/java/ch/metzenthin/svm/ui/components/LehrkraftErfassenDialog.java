@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.domain.model.LehrkraefteModel;
 import ch.metzenthin.svm.domain.model.LehrkraftErfassenModel;
 import ch.metzenthin.svm.ui.control.LehrkraftErfassenController;

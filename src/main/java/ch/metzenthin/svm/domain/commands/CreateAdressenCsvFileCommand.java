@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.dataTypes.Anrede;
+import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.persistence.entities.Person;
 
 import java.io.File;

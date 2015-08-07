@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.dataTypes.Anrede;
-import ch.metzenthin.svm.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.model.SchuelerErfassenModel;
 import ch.metzenthin.svm.domain.model.ValidateSchuelerSummaryResult;
 import ch.metzenthin.svm.persistence.entities.Schueler;

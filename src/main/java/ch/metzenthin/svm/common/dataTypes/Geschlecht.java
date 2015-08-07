@@ -1,4 +1,4 @@
-package ch.metzenthin.svm.dataTypes;
+package ch.metzenthin.svm.common.dataTypes;
 
 /**
  * @author Martin Schraner
