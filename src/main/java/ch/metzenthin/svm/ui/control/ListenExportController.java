@@ -17,6 +17,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.io.File;
+import java.util.HashSet;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -256,7 +257,7 @@ public class ListenExportController extends AbstractController {
                         + "'. \nDie Datei existiert nicht oder der Eintrag für die Template-Datei fehlt. Bitte Datei überprüfen.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 break;
             case LISTE_ERFOLGREICH_ERSTELLT:
-                JOptionPane.showMessageDialog(this.listenExportDialog, "Die Liste wurde erfolgreich gespeichert.", "Speichern erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this.listenExportDialog, "Die Liste wurde erfolgreich erstellt.", "Liste erfolgreich erstellt", JOptionPane.INFORMATION_MESSAGE);
                 break;
         }
     }
@@ -296,8 +297,32 @@ public class ListenExportController extends AbstractController {
         }
     }
 
+    void enableDisableFields() {
+        if (listenExportModel.getListentyp() != null && listenExportModel.getListentyp() == Listentyp.SCHUELER_ADRESSETIKETTEN) {
+            disableTitel();
+        } else {
+            enableTitel();
+        }
+    }
+
+    private void enableTitel() {
+        listenExportModel.enableFields(getTitelField());
+    }
+
+    private void disableTitel() {
+        listenExportModel.disableFields(getTitelField());
+        listenExportModel.makeErrorLabelsInvisible(getTitelField());
+    }
+
+    private Set<Field> getTitelField() {
+        Set<Field> titelField = new HashSet<>();
+        titelField.add(Field.TITEL);
+        return titelField;
+    }
+
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
+        enableDisableFields();
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.LISTENTYP, evt)) {
             comboBoxListentyp.setSelectedItem(listenExportModel.getListentyp());
@@ -353,6 +378,13 @@ public class ListenExportController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.LISTENTYP)) {
+            comboBoxListentyp.setEnabled(!disable);
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.TITEL)) {
+            txtTitel.setEnabled(!disable);
+        }
+    }
 
 }

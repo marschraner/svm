@@ -106,6 +106,9 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 result = createListeFromTemplateCommand.getResult();
                 break;
             case SCHUELER_ADRESSETIKETTEN:
+                CreateAdressenCsvFileCommand createAdressenCsvFileCommand = new CreateAdressenCsvFileCommand(schuelerSuchenTableModel.getSchuelerList(), outputFile);
+                commandInvoker.executeCommand(createAdressenCsvFileCommand);
+                result = createAdressenCsvFileCommand.getResult();
                 break;
         }
         return result;
