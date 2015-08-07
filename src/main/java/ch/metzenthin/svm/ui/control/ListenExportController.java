@@ -176,15 +176,23 @@ public class ListenExportController extends AbstractController {
     }
 
     private void initTitel() {
+        String titel;
         if (listenExportTyp == ListenExportTyp.SCHUELER && schuelerSuchenTableModel.getLehrkraft() != null) {
-            String titel;
             titel = schuelerSuchenTableModel.getLehrkraft().toString();
             // Es wurde nach einem spezifischen Kurs gesucht
             if (schuelerSuchenTableModel.getWochentag() != null && schuelerSuchenTableModel.getZeitBeginn() != null) {
                 titel = titel + " (" + schuelerSuchenTableModel.getWochentag() + " " + asString(schuelerSuchenTableModel.getZeitBeginn()) + "-" + asString(schuelerSuchenTableModel.getSchuelerList().get(0).getKurseAsList().get(0).getZeitEnde()) + ")";
             }
-            txtTitel.setText(titel);
+        } else {
+            titel = "Schüler";
         }
+        if (listenExportTyp == ListenExportTyp.LEHRKRAEFTE) {
+            titel = "Lehrkräfte";
+        }
+        if (listenExportTyp == ListenExportTyp.KURSE) {
+            titel = "Kurse";
+        }
+        txtTitel.setText(titel);
     }
 
     private void onTitelEvent(boolean showRequiredErrMsg) {
