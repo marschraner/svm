@@ -146,7 +146,7 @@ public class KurstypErfassenController extends AbstractController {
             return;
         }
         if (kurstypErfassenModel.checkKurstypBezeichnungBereitsInVerwendung(svmContext.getSvmModel())) {
-            JOptionPane.showMessageDialog(null, "Bezeichnung bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(kurstypErfassenDialog, "Bezeichnung bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
             kurstypErfassenModel.speichern(svmContext.getSvmModel());

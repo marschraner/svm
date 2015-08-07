@@ -632,7 +632,7 @@ public class KursErfassenController extends AbstractController {
             return;
         }
         if (kursErfassenModel.checkKursBereitsErfasst(kurseTableModel)) {
-            JOptionPane.showMessageDialog(this.kursErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(kursErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
             kursErfassenModel.speichern(svmContext.getSvmModel(), kurseSemesterwahlModel, kurseTableModel);

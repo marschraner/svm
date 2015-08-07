@@ -268,7 +268,7 @@ public class ListenExportController extends AbstractController {
         if (outputFile.exists()) {
             Object[] options = {"Ja", "Nein"};
             int n = JOptionPane.showOptionDialog(
-                    this.listenExportDialog,
+                    listenExportDialog,
                     "Die Datei '" + outputFile.getName() + "' existiert bereits. Soll sie überschrieben werden?",
                     "Datei existiert bereits",
                     JOptionPane.YES_NO_OPTION,
@@ -286,14 +286,14 @@ public class ListenExportController extends AbstractController {
         CreateListeCommand.Result result = listenExportModel.createListenFile(outputFile, schuelerSuchenTableModel, lehrkraefteTableModel, kurseTableModel);
         switch (result) {
             case TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR:
-                JOptionPane.showMessageDialog(this.listenExportDialog, "Template-Datei '" + listenExportModel.getTemplateFile() + "' nicht gefunden. Bitte Template-Datei erstellen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(listenExportDialog, "Template-Datei '" + listenExportModel.getTemplateFile() + "' nicht gefunden. Bitte Template-Datei erstellen.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 break;
             case FEHLER_BEIM_LESEN_DES_PROPERTY_FILE:
-                JOptionPane.showMessageDialog(this.listenExportDialog, "Fehler beim Lesen der Svm-Property-Datei '" + SvmProperties.SVM_PROPERTIES_FILE_NAME
+                JOptionPane.showMessageDialog(listenExportDialog, "Fehler beim Lesen der Svm-Property-Datei '" + SvmProperties.SVM_PROPERTIES_FILE_NAME
                         + "'. \nDie Datei existiert nicht oder der Eintrag für die Template-Datei fehlt. Bitte Datei überprüfen.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 break;
             case LISTE_ERFOLGREICH_ERSTELLT:
-                JOptionPane.showMessageDialog(this.listenExportDialog, "Die Liste wurde erfolgreich erstellt.", "Liste erfolgreich erstellt", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(listenExportDialog, "Die Liste wurde erfolgreich erstellt.", "Liste erfolgreich erstellt", JOptionPane.INFORMATION_MESSAGE);
                 break;
         }
     }

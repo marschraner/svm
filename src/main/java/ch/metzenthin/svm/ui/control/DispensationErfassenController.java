@@ -318,7 +318,7 @@ public class DispensationErfassenController extends AbstractController {
             return;
         }
         if (dispensationErfassenModel.checkDispensationUeberlapptAndereDispensationen(schuelerDatenblattModel)) {
-            JOptionPane.showMessageDialog(null, "Dispensationen dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(dispensationErfassenDialog, "Dispensationen dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
             dispensationErfassenModel.speichern(schuelerDatenblattModel);

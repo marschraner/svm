@@ -363,11 +363,11 @@ public class SemesterErfassenController extends AbstractController {
             return;
         }
         if (semesterErfassenModel.checkSemesterBereitsErfasst(svmContext.getSvmModel())) {
-            JOptionPane.showMessageDialog(null, semesterErfassenModel.getSemester() + " bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(semesterErfassenDialog, semesterErfassenModel.getSemester() + " bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
             if (semesterErfassenModel.checkSemesterUeberlapptAndereSemester(svmContext.getSvmModel())) {
-                JOptionPane.showMessageDialog(null, "Semester dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(semesterErfassenDialog, "Semester dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 btnSpeichern.setFocusPainted(false);
             } else {
                 semesterErfassenModel.speichern(svmContext.getSvmModel());

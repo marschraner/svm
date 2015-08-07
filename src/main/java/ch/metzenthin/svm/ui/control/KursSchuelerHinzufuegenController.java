@@ -300,12 +300,12 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
         }
         AddKursToSchuelerAndSaveCommand.Result result = kursSchuelerHinzufuegenModel.hinzufuegen(kurseTableModel, schuelerDatenblattModel);
         if (result == AddKursToSchuelerAndSaveCommand.Result.KURS_EXISTIERT_NICHT) {
-            JOptionPane.showMessageDialog(null, "Kurs existiert nicht.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(kursSchuelerHinzufuegenDialog, "Kurs existiert nicht.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnOk.setFocusPainted(false);
             return;
         }
         if (result == AddKursToSchuelerAndSaveCommand.Result.KURS_BEREITS_ERFASST) {
-            JOptionPane.showMessageDialog(null, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(kursSchuelerHinzufuegenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnOk.setFocusPainted(false);
             return;
         }
