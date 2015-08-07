@@ -65,12 +65,12 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
         CommandInvoker commandInvoker = getCommandInvoker();
         commandInvoker.executeCommand(monatsstatistikSchuelerSuchenCommand);
         List<Schueler> schuelerList = monatsstatistikSchuelerSuchenCommand.getSchuelerFound();
-        Semester semesterTableData = determineSemesterTableData(svmModel);
-        Map<Schueler, List<Kurs>> kurseMapTableData = determineKurseMapTableData(schuelerList, semesterTableData);
-        return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData);
+        Semester semester = determineSemester(svmModel);
+        Map<Schueler, List<Kurs>> kurseMapTableData = determineKurseMapTableData(schuelerList, semester);
+        return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semester, null, null, null);
     }
 
-    private Semester determineSemesterTableData(SvmModel svmModel) {
+    private Semester determineSemester(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         List<Semester> erfassteSemester = svmModel.getSemestersAll();
         Calendar lastDayOfMonth = new GregorianCalendar(monatJahr.get(Calendar.YEAR), monatJahr.get(Calendar.MONTH), monatJahr.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -84,7 +84,7 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
 
     private Map<Schueler, List<Kurs>> determineKurseMapTableData(List<Schueler> schuelerList, Semester semester) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester);
+        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, null, null, null);
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
         return findKurseMapSchuelerSemesterCommand.getKurseMap();
     }

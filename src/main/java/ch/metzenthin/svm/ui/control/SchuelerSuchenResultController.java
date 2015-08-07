@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.components.ListenExportDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 
 import javax.swing.*;
@@ -24,6 +25,7 @@ public class SchuelerSuchenResultController {
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final JTable schuelerSuchenResultTable;
     private JButton btnDatenblatt;
+    private JButton btnExportieren;
     private JButton btnAbbrechen;
     private JButton btnZurueck;
     private ActionListener nextPanelListener;
@@ -91,6 +93,24 @@ public class SchuelerSuchenResultController {
         schuelerDatenblattPanel.addCloseListener(closeListener);
         schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));
+    }
+
+    public void setBtnExportieren(JButton btnExportieren) {
+        this.btnExportieren = btnExportieren;
+        btnExportieren.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onExportieren();
+            }
+        });
+    }
+
+    private void onExportieren() {
+        btnExportieren.setFocusPainted(true);
+        ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, schuelerSuchenTableModel);
+        listenExportDialog.pack();
+        listenExportDialog.setVisible(true);
+        btnExportieren.setFocusPainted(false);
     }
 
     private void onListSelection() {

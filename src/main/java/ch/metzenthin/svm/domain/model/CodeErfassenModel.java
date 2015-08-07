@@ -11,7 +11,6 @@ public interface CodeErfassenModel extends Model {
 
     String getKuerzel();
     String getBeschreibung();
-    Code getCode();
 
     void setKuerzel(String kuerzel) throws SvmValidationException;
     void setBeschreibung(String beschreibung) throws SvmValidationException;

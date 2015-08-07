@@ -396,10 +396,27 @@ public class KursDaoTest {
             kursDao.addToSchuelerAndSave(kurs2, schueler1);
             entityManager.flush();
 
-            List<Kurs> kurseSchueler1 = kursDao.findKurseSchuelerSemester(schueler1, semester1);
+            List<Kurs> kurseSchueler1 = kursDao.findKurseSchuelerSemester(schueler1, semester1, null, null, null);
             assertEquals(2, kurseSchueler1.size());
             assertEquals("Testkurs1", kurseSchueler1.get(0).getKurstyp().getBezeichnung());
             assertEquals("Testkurs2", kurseSchueler1.get(1).getKurstyp().getBezeichnung());
+
+            // Ditto, mit genauer Kursangabe
+            kurseSchueler1 = kursDao.findKurseSchuelerSemester(schueler1, semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), lehrkraft1);
+            assertEquals(1, kurseSchueler1.size());
+            assertEquals("Testkurs1", kurseSchueler1.get(0).getKurstyp().getBezeichnung());
+
+            // falscher Tag
+            kurseSchueler1 = kursDao.findKurseSchuelerSemester(schueler1, semester1, Wochentag.FREITAG, Time.valueOf("10:00:00"), lehrkraft1);
+            assertEquals(0, kurseSchueler1.size());
+
+            // falsche Zeit
+            kurseSchueler1 = kursDao.findKurseSchuelerSemester(schueler1, semester1, Wochentag.DONNERSTAG, Time.valueOf("10:10:00"), lehrkraft1);
+            assertEquals(0, kurseSchueler1.size());
+
+            // falsche Lehrkraft
+            kurseSchueler1 = kursDao.findKurseSchuelerSemester(schueler1, semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), lehrkraft2);
+            assertEquals(0, kurseSchueler1.size());
 
             // Ditto für einen Schüler ohne Kurse
             Schueler schueler2 = new Schueler("Valentin", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.M, null);
@@ -408,7 +425,7 @@ public class KursDaoTest {
             schueler2.setRechnungsempfaenger(vater);
             entityManager.flush();
 
-            List<Kurs> kurseSchueler2 = kursDao.findKurseSchuelerSemester(schueler2, semester1);
+            List<Kurs> kurseSchueler2 = kursDao.findKurseSchuelerSemester(schueler2, semester1, null, null, null);
             assertEquals(0, kurseSchueler2.size());
 
 

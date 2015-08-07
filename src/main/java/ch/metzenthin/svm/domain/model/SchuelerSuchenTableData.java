@@ -1,8 +1,10 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.dataTypes.Field;
+import ch.metzenthin.svm.dataTypes.Wochentag;
 import ch.metzenthin.svm.persistence.entities.*;
 
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -13,13 +15,19 @@ import java.util.Map;
 public class SchuelerSuchenTableData {
 
     private List<Schueler> schuelerList;
-    private Map<Schueler, List<Kurs>> kurseMap;
-    private Semester semester;
+    private Map<Schueler, List<Kurs>> kurse;
+    private final Semester semester;
+    private final Wochentag wochentag;
+    private final Time zeiBeginn;
+    private final Lehrkraft lehrkraft;
 
-    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurseMap, Semester semester) {
+    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeiBeginn, Lehrkraft lehrkraft) {
         this.schuelerList = schuelerList;
-        this.kurseMap = kurseMap;
+        this.kurse = kurse;
         this.semester = semester;
+        this.wochentag = wochentag;
+        this.zeiBeginn = zeiBeginn;
+        this.lehrkraft = lehrkraft;
     }
 
     private static final Field[] COLUMNS = {Field.NACHNAME, Field.VORNAME, Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT, Field.FESTNETZ, Field.NATEL, Field.EMAIL, Field.GEBURTSDATUM, Field.MUTTER, Field.VATER, Field.RECHNUNGSEMPFAENGER, Field.KURS1, Field.ANZAHL_KURSE};
@@ -34,7 +42,7 @@ public class SchuelerSuchenTableData {
 
     public Object getValueAt(int rowIndex, int columnIndex) {
         Schueler schueler = schuelerList.get(rowIndex);
-        List<Kurs> kurseOfSchueler = kurseMap.get(schueler);
+        List<Kurs> kurseOfSchueler = kurse.get(schueler);
         Adresse schuelerAdresse = schueler.getAdresse();
         Object value = null;
         switch (COLUMNS[columnIndex]) {
@@ -115,7 +123,7 @@ public class SchuelerSuchenTableData {
     public int getAnzahlLektionen() {
         int anzahlKurse = 0;
         for (Schueler schueler : schuelerList) {
-            anzahlKurse += kurseMap.get(schueler).size();
+            anzahlKurse += kurse.get(schueler).size();
         }
         return anzahlKurse;
     }
@@ -124,12 +132,27 @@ public class SchuelerSuchenTableData {
         return semester;
     }
 
+    public Wochentag getWochentag() {
+        return wochentag;
+    }
+
+    public Time getZeitBeginn() {
+        return zeiBeginn;
+    }
+
+    public Lehrkraft getLehrkraft() {
+        return lehrkraft;
+    }
+
     public List<Schueler> getSchuelerList() {
         return schuelerList;
     }
 
-    public void setKurseMap(Map<Schueler, List<Kurs>> kurseMap) {
-        this.kurseMap = kurseMap;
+    public void setKurse(Map<Schueler, List<Kurs>> kurse) {
+        this.kurse = kurse;
     }
 
+    public Map<Schueler, List<Kurs>> getKurse() {
+        return kurse;
+    }
 }

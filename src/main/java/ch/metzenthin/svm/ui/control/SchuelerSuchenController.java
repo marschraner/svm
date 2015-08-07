@@ -576,13 +576,14 @@ public class SchuelerSuchenController extends PersonController {
         }
         SchuelerSuchenTableData schuelerSuchenTableData = schuelerSuchenModel.suchen(svmContext.getSvmModel());
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenTableData);
-        if (schuelerSuchenTableData.size() > 1) {
+        if (schuelerSuchenTableData.size() > 1 || (schuelerSuchenTableData.size() == 1 && (schuelerSuchenTableData.getWochentag() != null || schuelerSuchenTableData.getZeitBeginn() != null || schuelerSuchenTableData.getLehrkraft() != null))) {
             SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
             schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
             schuelerSuchenResultPanel.addCloseListener(closeListener);
             schuelerSuchenResultPanel.addZurueckListener(zurueckListener);
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
         } else if (schuelerSuchenTableData.size() == 1) {
+            // Direkt zum Datenblatt, falls nur ein Suchresultat und nicht nach einem spezifischen Kurs gesucht wurde
             SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, null, 0, true);
             schuelerDatenblattPanel.addCloseListener(closeListener);
             schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);

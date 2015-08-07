@@ -320,12 +320,12 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         CommandInvoker commandInvoker = getCommandInvoker();
         commandInvoker.executeCommand(schuelerSuchenCommand);
         List<Schueler> schuelerList = schuelerSuchenCommand.getSchuelerFound();
-        Semester semesterTableData = determineSemesterTableData(svmModel);
-        Map<Schueler, List<Kurs>> kurseMapTableData = determineKurseMapTableData(schuelerList, semesterTableData);
-        return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData);
+        Semester semester = determineSemester(svmModel);
+        Map<Schueler, List<Kurs>> kurseMapTableData = determineKurseMapTableData(schuelerList, semester, wochentag, zeitBeginn, lehrkraft);
+        return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semester, (wochentag == Wochentag.ALLE ? null : wochentag), zeitBeginn, (lehrkraft == LEHRKRAFT_ALLE ? null : lehrkraft));
     }
 
-    private Semester determineSemesterTableData(SvmModel svmModel) {
+    private Semester determineSemester(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         List<Semester> erfassteSemester = svmModel.getSemestersAll();
         if (kursFuerSucheBeruecksichtigen) {
@@ -342,9 +342,9 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         }
     }
 
-    private Map<Schueler, List<Kurs>> determineKurseMapTableData(List<Schueler> schuelerList, Semester semester) {
+    private Map<Schueler, List<Kurs>> determineKurseMapTableData(List<Schueler> schuelerList, Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester);
+        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, (wochentag == Wochentag.ALLE ? null : wochentag), zeitBeginn, (lehrkraft == LEHRKRAFT_ALLE ? null : lehrkraft));
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
         return findKurseMapSchuelerSemesterCommand.getKurseMap();
     }

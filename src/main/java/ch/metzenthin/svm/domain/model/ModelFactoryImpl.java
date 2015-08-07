@@ -128,4 +128,9 @@ public class ModelFactoryImpl implements ModelFactory {
         return new KursSchuelerHinzufuegenModelImpl(commandInvoker);
     }
 
+    @Override
+    public ListenExportModel createListenExportModel() {
+        return new ListenExportModelImpl(commandInvoker);
+    }
+
 }

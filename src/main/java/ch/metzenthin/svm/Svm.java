@@ -10,6 +10,8 @@ import ch.metzenthin.svm.ui.components.SvmDesktop;
 
 import javax.swing.*;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
+
 /*
  * SVM Applikation
  */
@@ -45,6 +47,7 @@ public class Svm {
     }
 
     public static void main(String[] args) {
+        createSvmPropertiesFileDefault();
         final CommandInvoker commandInvoker = createCommandInvoker();
         commandInvoker.openSession();
         final ModelFactory modelFactory = createModelFactory(commandInvoker);

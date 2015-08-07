@@ -82,6 +82,8 @@ public enum Field {
     SCHULJAHR_KURS("Schuljahr"),
     KURS_FUER_SUCHE_BERUECKSICHTIGEN("Kurs für Suche berücksichtigen"),
     KURS1("1. Kurs"),
+    TITEL("Titel"),
+    LISTENTYP("Listentyp"),
     BULK_UPDATE("Bulk Update");
 
     private String name;

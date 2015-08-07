@@ -20,11 +20,6 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     }
 
     @Override
-    public Code getCode() {
-        return code;
-    }
-
-    @Override
     public void setCodeOrigin(Code codeOrigin) {
         this.codeOrigin = codeOrigin;
     }

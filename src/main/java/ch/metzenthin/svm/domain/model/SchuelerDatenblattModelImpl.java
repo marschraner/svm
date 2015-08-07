@@ -4,10 +4,12 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.dataTypes.Anrede;
 import ch.metzenthin.svm.dataTypes.Geschlecht;
 import ch.metzenthin.svm.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
+import java.sql.Time;
 import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -435,11 +437,14 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     public void refreshSchuelerSuchenTableData(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel) {
         // KursMap neu setzen
         CommandInvoker commandInvoker = svmContext.getCommandInvoker();
-        List<Schueler> schuelerList = schuelerSuchenTableModel.getSchuelerSuchenTableData().getSchuelerList();
-        Semester semester = schuelerSuchenTableModel.getSchuelerSuchenTableData().getSemester();
-        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester);
+        List<Schueler> schuelerList = schuelerSuchenTableModel.getSchuelerList();
+        Semester semester = schuelerSuchenTableModel.getSemester();
+        Wochentag wochentag = schuelerSuchenTableModel.getWochentag();
+        Time zeitBeginn = schuelerSuchenTableModel.getZeitBeginn();
+        Lehrkraft lehrkraft = schuelerSuchenTableModel.getLehrkraft();
+        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, wochentag, zeitBeginn, lehrkraft);
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
-        schuelerSuchenTableModel.getSchuelerSuchenTableData().setKurseMap(findKurseMapSchuelerSemesterCommand.getKurseMap());
+        schuelerSuchenTableModel.getSchuelerSuchenTableData().setKurse(findKurseMapSchuelerSemesterCommand.getKurseMap());
     }
 
     private boolean isGleicheAdresseWieSchueler(Angehoeriger angehoeriger) {

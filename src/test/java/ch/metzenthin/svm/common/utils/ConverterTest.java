@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.sql.Time;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import static ch.metzenthin.svm.common.utils.Converter.*;
 import static org.junit.Assert.*;
@@ -177,6 +178,11 @@ public class ConverterTest {
     @Test(expected = ParseException.class)
     public void testToTime_invalidMm() throws ParseException {
         toTime("23.60");
+    }
+
+    @Test
+    public void testCalendarToDdMmYy() {
+        assertEquals("18.06.87", calendarToDdMmYy(new GregorianCalendar(1987, Calendar.JUNE, 18)));
     }
 
     @Test

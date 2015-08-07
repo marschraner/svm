@@ -146,6 +146,11 @@ public class Converter {
         return formatter.format(calendar.getTime());
     }
 
+    public static String calendarToDdMmYy(Calendar calendar) {
+        String ddMmYy = asString(calendar, DD_MM_YYYY_DATE_FORMAT_STRING);
+        return ddMmYy.substring(0,6) + ddMmYy.substring(8,10);
+    }
+
     public static String emptyStringAsNull(String s) {
         if ((s == null) || s.isEmpty()) {
             return null;

@@ -40,7 +40,7 @@ public class SchuelerSuchenTableDataTest {
         schuelerList.add(schueler3);
         Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.FRAU, "V3A", "N3A", "Festnetz3A", "Natel3A", "Email3A");
         schueler3.setRechnungsempfaenger(angehoeriger3);
-        schuelerSuchenTableData = new SchuelerSuchenTableData(schuelerList, new HashMap<Schueler, List<Kurs>>(), null);
+        schuelerSuchenTableData = new SchuelerSuchenTableData(schuelerList, new HashMap<Schueler, List<Kurs>>(), null, null, null, null);
     }
 
     @Test

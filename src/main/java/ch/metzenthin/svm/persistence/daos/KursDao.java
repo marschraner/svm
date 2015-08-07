@@ -48,14 +48,46 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         return typedQuery.getResultList();
     }
 
-    public List<Kurs> findKurseSchuelerSemester(Schueler schueler, Semester semester) {
-        TypedQuery<Kurs> typedQuery = entityManager.createQuery("select k from Kurs k join k.schueler s where k.semester.schuljahr = :schuljahr and k.semester.semesterbezeichnung = :semesterbezeichnung and s.nachname = :schuelerNachname and s.vorname = :schuelerVorname and s.geburtsdatum =:schuelerGeburtsdatum and s.adresse.strasse = :schuelerStrasse order by k.kurstyp.bezeichnung, k.stufe, k.wochentag, k.zeitBeginn, k.zeitEnde, k.kursort.bezeichnung", Kurs.class);
+    public List<Kurs> findKurseSchuelerSemester(Schueler schueler, Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft) {
+        StringBuilder selectStatementSb = new StringBuilder("select k from Kurs k join k.schueler s");
+        if (lehrkraft != null) {
+            selectStatementSb.append(" join k.lehrkraefte lk");
+        }
+        selectStatementSb.append(" where k.semester.schuljahr = :schuljahr and k.semester.semesterbezeichnung = :semesterbezeichnung and s.nachname = :schuelerNachname and s.vorname = :schuelerVorname and s.geburtsdatum =:schuelerGeburtsdatum and s.adresse.strasse = :schuelerStrasse and");
+        if (wochentag != null) {
+            selectStatementSb.append(" k.wochentag = :wochentag and");
+        }
+        if (zeitBeginn != null) {
+            selectStatementSb.append(" k.zeitBeginn = :zeitBeginn and");
+        }
+        if (lehrkraft != null) {
+            selectStatementSb.append(" lk.nachname = :lehrkraftNachname and lk.vorname = :lehrkraftVorname and lk.geburtsdatum = :lehrkraftGeburtsdatum and");
+        }
+        // Letztes " and" löschen
+        if (selectStatementSb.substring(selectStatementSb.length() - 4).equals(" and")) {
+            selectStatementSb.setLength(selectStatementSb.length() - 4);
+        }
+        // Sortierung
+        selectStatementSb.append(" order by k.kurstyp.bezeichnung, k.stufe, k.wochentag, k.zeitBeginn, k.zeitEnde, k.kursort.bezeichnung");
+        // Query
+        TypedQuery<Kurs> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Kurs.class);
         typedQuery.setParameter("schuljahr", semester.getSchuljahr());
         typedQuery.setParameter("semesterbezeichnung", semester.getSemesterbezeichnung());
         typedQuery.setParameter("schuelerNachname", schueler.getNachname());
         typedQuery.setParameter("schuelerVorname", schueler.getVorname());
         typedQuery.setParameter("schuelerGeburtsdatum", schueler.getGeburtsdatum());
         typedQuery.setParameter("schuelerStrasse", schueler.getAdresse().getStrasse());
+        if (wochentag != null) {
+            typedQuery.setParameter("wochentag", wochentag);
+        }
+        if (zeitBeginn != null) {
+            typedQuery.setParameter("zeitBeginn", zeitBeginn);
+        }
+        if (lehrkraft != null) {
+            typedQuery.setParameter("lehrkraftNachname", lehrkraft.getNachname());
+            typedQuery.setParameter("lehrkraftVorname", lehrkraft.getVorname());
+            typedQuery.setParameter("lehrkraftGeburtsdatum", lehrkraft.getGeburtsdatum());
+        }
         return typedQuery.getResultList();
     }
 

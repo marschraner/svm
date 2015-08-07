@@ -139,4 +139,9 @@ public class Adresse {
         return strasseHausnummer;
     }
 
+    public String getStrHausnummer() {
+        String strHausnummer = getStrasseHausnummer();
+        return strHausnummer.replaceAll("strasse", "str.");
+    }
+
 }

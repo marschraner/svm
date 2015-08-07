@@ -68,7 +68,14 @@ public class Lehrkraft extends Person implements Comparable<Lehrkraft> {
         } else {
             return "";
         }
+    }
 
+    public String toStringShort() {
+        if (getVorname() != null && getNachname() != null) {
+            return getVorname().substring(0, 1) + ". " + getNachname();
+        } else {
+            return "";
+        }
     }
 
     public String getAhvNummer() {

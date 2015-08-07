@@ -27,4 +27,5 @@ public interface ModelFactory {
     KurseModel createKurseModel();
     KursErfassenModel createKursErfassenModel();
     KursSchuelerHinzufuegenModel createKursSchuelerHinzufuegenModel();
+    ListenExportModel createListenExportModel();
 }

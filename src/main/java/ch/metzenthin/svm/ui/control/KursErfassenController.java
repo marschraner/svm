@@ -265,7 +265,7 @@ public class KursErfassenController extends AbstractController {
     }
 
     private void onWochentagSelected() {
-        LOGGER.trace("PersonController Event Wochentag selected=" + comboBoxWochentag.getSelectedItem());
+        LOGGER.trace("KursErfassenController Event Wochentag selected=" + comboBoxWochentag.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxWochentag.getSelectedItem(), kursErfassenModel.getWochentag());
         try {
             setModelWochentag();
@@ -632,7 +632,7 @@ public class KursErfassenController extends AbstractController {
             return;
         }
         if (kursErfassenModel.checkKursBereitsErfasst(kurseTableModel)) {
-            JOptionPane.showMessageDialog(null, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this.kursErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
             kursErfassenModel.speichern(svmContext.getSvmModel(), kurseSemesterwahlModel, kurseTableModel);
