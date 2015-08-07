@@ -78,4 +78,7 @@ public class LehrkraefteTableData {
         return COLUMNS[column].toString();
     }
 
+    public List<Lehrkraft> getLehrkraefte() {
+        return lehrkraefte;
+    }
 }

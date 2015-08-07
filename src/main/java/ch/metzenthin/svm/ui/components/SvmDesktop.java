@@ -55,6 +55,10 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuSchueler.setMnemonic(KeyEvent.VK_H);
         menuBar.add(menuSchueler);
 
+        JMenu menuLehrkraefte = new JMenu("Lehrkräfte");
+        menuLehrkraefte.setMnemonic(KeyEvent.VK_L);
+        menuBar.add(menuLehrkraefte);
+
         JMenu menuKurse = new JMenu("Kurse");
         menuKurse.setMnemonic(KeyEvent.VK_K);
         menuBar.add(menuKurse);
@@ -62,10 +66,6 @@ public class SvmDesktop extends JFrame implements ActionListener {
         JMenu menuCodes = new JMenu("Codes");
         menuCodes.setMnemonic(KeyEvent.VK_C);
         menuBar.add(menuCodes);
-
-        JMenu menuLehrkraefte = new JMenu("Lehrkräfte");
-        menuLehrkraefte.setMnemonic(KeyEvent.VK_L);
-        menuBar.add(menuLehrkraefte);
 
         // Set up the first menu item.
         JMenuItem menuItem = new JMenuItem("Schüler suchen / bearbeiten");

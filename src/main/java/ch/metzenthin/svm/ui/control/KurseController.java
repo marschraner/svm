@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
 import ch.metzenthin.svm.domain.commands.DeleteKursCommand;
 import ch.metzenthin.svm.domain.model.KurseModel;
 import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
@@ -9,6 +10,7 @@ import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.KursErfassenDialog;
 import ch.metzenthin.svm.ui.components.KursSchuelerHinzufuegenDialog;
+import ch.metzenthin.svm.ui.components.ListenExportDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 
 import javax.swing.*;
@@ -43,7 +45,8 @@ public class KurseController {
     private JButton btnBearbeiten;
     private JButton btnLoeschen;
     private JButton btnAbbrechen;
-    private JButton btnImport;
+    private JButton btnImportieren;
+    private JButton btnExportieren;
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
@@ -174,6 +177,11 @@ public class KurseController {
         kursErfassenDialog.setVisible(true);
         kurseTableModel.fireTableDataChanged();
         btnBearbeiten.setFocusPainted(false);
+        if (kurseTableModel.getRowCount() > 0) {
+            btnExportieren.setEnabled(true);
+        } else {
+            btnExportieren.setEnabled(false);
+        }
     }
 
     public void setBtnLoeschen(JButton btnLoeschen) {
@@ -221,11 +229,16 @@ public class KurseController {
         }
         lblTotal.setText(kurseModel.getTotal(kurseTableModel));
         btnLoeschen.setFocusPainted(false);
-        if (kurseTableModel.getRowCount() == 0) {
-            btnImport.setEnabled(true);
-        }
         enableBtnLoeschen(false);
         kurseTable.clearSelection();
+        if (kurseTableModel.getRowCount() == 0) {
+            btnImportieren.setEnabled(true);
+        }
+        if (kurseTableModel.getRowCount() > 0) {
+            btnExportieren.setEnabled(true);
+        } else {
+            btnExportieren.setEnabled(false);
+        }
     }
 
     private void onLoeschenKurseSchueler() {
@@ -249,30 +262,30 @@ public class KurseController {
         kurseTable.clearSelection();
     }
 
-    public void setBtnImport(JButton btnImport) {
-        this.btnImport = btnImport;
+    public void setBtnImportieren(JButton btnImportieren) {
+        this.btnImportieren = btnImportieren;
         if (!isNeuerKursErfassbar) {
-            btnImport.setEnabled(false);
+            btnImportieren.setEnabled(false);
             return;
         }
-        // Import nur möglich für Kurse bearbeiten
+        // Importieren nur möglich für Kurse bearbeiten
         if (isKurseSchueler) {
-            btnImport.setVisible(false);
+            btnImportieren.setVisible(false);
             return;
         }
         if (kurseTableModel.getRowCount() > 0) {
-            btnImport.setEnabled(false);
+            btnImportieren.setEnabled(false);
             return;
         }
-        btnImport.addActionListener(new ActionListener() {
+        btnImportieren.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onImport();
+                onImportieren();
             }
         });
     }
 
-    private void onImport() {
+    private void onImportieren() {
         Object[] options = {"Ja", "Nein"};
         int n = JOptionPane.showOptionDialog(
                 null,
@@ -286,8 +299,37 @@ public class KurseController {
         if (n == 0) {
             kurseModel.importKurseFromPreviousSemester(svmContext.getSvmModel(), kurseSemesterwahlModel, kurseTableModel);
             kurseTableModel.fireTableDataChanged();
-            btnImport.setEnabled(false);
+            btnImportieren.setEnabled(false);
+            if (kurseTableModel.getRowCount() > 0) {
+                btnExportieren.setEnabled(true);
+            }
         }
+    }
+
+    public void setBtnExportieren(JButton btnExportieren) {
+        this.btnExportieren = btnExportieren;
+        // Exportieren nur möglich für Kurse bearbeiten
+        if (isKurseSchueler) {
+            btnExportieren.setVisible(false);
+            return;
+        }
+        if (kurseTableModel.getRowCount() == 0) {
+            btnExportieren.setEnabled(false);
+        }
+        btnExportieren.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onExportieren();
+            }
+        });
+    }
+
+    private void onExportieren() {
+        btnExportieren.setFocusPainted(true);
+        ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, null, null, kurseTableModel, ListenExportTyp.KURSE);
+        listenExportDialog.pack();
+        listenExportDialog.setVisible(true);
+        btnExportieren.setFocusPainted(false);
     }
 
     private void onListSelection() {

@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Filetyp;
@@ -9,6 +10,8 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CreateListeCommand;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.ListenExportModel;
+import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
+import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import org.apache.log4j.Logger;
 
@@ -34,7 +37,10 @@ public class ListenExportController extends AbstractController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private ListenExportModel listenExportModel;
-    private SchuelerSuchenTableModel schuelerSuchenTableModel;
+    private final SchuelerSuchenTableModel schuelerSuchenTableModel;
+    private final LehrkraefteTableModel lehrkraefteTableModel;
+    private final KurseTableModel kurseTableModel;
+    private final ListenExportTyp listenExportTyp;
     private JDialog listenExportDialog;
     private JComboBox<Listentyp> comboBoxListentyp;
     private JTextField txtTitel;
@@ -42,10 +48,13 @@ public class ListenExportController extends AbstractController {
     private JLabel errLblTitel;
     private JButton btnOk;
 
-    public ListenExportController(ListenExportModel listenExportModel, SchuelerSuchenTableModel schuelerSuchenTableModel) {
+    public ListenExportController(ListenExportModel listenExportModel, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel, ListenExportTyp listenExportTyp) {
         super(listenExportModel);
         this.listenExportModel = listenExportModel;
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
+        this.lehrkraefteTableModel = lehrkraefteTableModel;
+        this.kurseTableModel = kurseTableModel;
+        this.listenExportTyp = listenExportTyp;
         this.listenExportModel.addPropertyChangeListener(this);
         this.listenExportModel.addDisableFieldsListener(this);
         this.listenExportModel.addMakeErrorLabelsInvisibleListener(this);
@@ -85,12 +94,31 @@ public class ListenExportController extends AbstractController {
     public void setComboBoxListentyp(JComboBox<Listentyp> comboBoxListentyp) {
         this.comboBoxListentyp = comboBoxListentyp;
         comboBoxListentyp.setModel(new DefaultComboBoxModel<>(Listentyp.values()));
-        if (schuelerSuchenTableModel.getWochentag() == null || schuelerSuchenTableModel.getZeitBeginn() == null || schuelerSuchenTableModel.getLehrkraft() == null) {
-            // Keine Absenzenlisten, falls in Suche nicht nach einem spezifischen Kurs gesucht wurde
-            comboBoxListentyp.removeItem(Listentyp.ABSENZENLISTE);
+        if (listenExportTyp == ListenExportTyp.SCHUELER) {
+            if (schuelerSuchenTableModel.getWochentag() == null || schuelerSuchenTableModel.getZeitBeginn() == null || schuelerSuchenTableModel.getLehrkraft() == null) {
+                // Keine Absenzenlisten, falls in Suche nicht nach einem spezifischen Kurs gesucht wurde
+                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
+            }
+            // Initialisierung
+            comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ADRESSLISTE);
+        } else {
+            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
+            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
+            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSETIKETTEN);
         }
-        // Ersten Listentyp-Eintrag als Initialwert
-        comboBoxListentyp.setSelectedItem(Listentyp.values()[0]);
+        if (listenExportTyp == ListenExportTyp.LEHRKRAEFTE) {
+            // Initialisierung
+            comboBoxListentyp.setSelectedItem(Listentyp.LEHRKRAEFTE_ADRESSLISTE);
+        } else {
+            comboBoxListentyp.removeItem(Listentyp.LEHRKRAEFTE_ADRESSLISTE);
+            comboBoxListentyp.removeItem(Listentyp.LEHRKRAEFTE_ADRESSETIKETTEN);
+        }
+        if (listenExportTyp == ListenExportTyp.KURSE) {
+            // Initialisierung
+            comboBoxListentyp.setSelectedItem(Listentyp.KURSELISTE);
+        } else {
+            comboBoxListentyp.removeItem(Listentyp.KURSELISTE);
+        }
         comboBoxListentyp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -148,7 +176,7 @@ public class ListenExportController extends AbstractController {
     }
 
     private void initTitel() {
-        if (schuelerSuchenTableModel.getLehrkraft() != null) {
+        if (listenExportTyp == ListenExportTyp.SCHUELER && schuelerSuchenTableModel.getLehrkraft() != null) {
             String titel;
             titel = schuelerSuchenTableModel.getLehrkraft().toString();
             // Es wurde nach einem spezifischen Kurs gesucht
@@ -247,7 +275,7 @@ public class ListenExportController extends AbstractController {
         }
         // Ouput-File erzeugen
         listenExportDialog.dispose();  // Dialog vorher schliessen, da File-Erstellen länger dauern kann.
-        CreateListeCommand.Result result = listenExportModel.createListenFile(outputFile, schuelerSuchenTableModel);
+        CreateListeCommand.Result result = listenExportModel.createListenFile(outputFile, schuelerSuchenTableModel, lehrkraefteTableModel, kurseTableModel);
         switch (result) {
             case TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR:
                 JOptionPane.showMessageDialog(this.listenExportDialog, "Template-Datei '" + listenExportModel.getTemplateFile() + "' nicht gefunden. Bitte Template-Datei erstellen.", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -298,7 +326,7 @@ public class ListenExportController extends AbstractController {
     }
 
     void enableDisableFields() {
-        if (listenExportModel.getListentyp() != null && listenExportModel.getListentyp() == Listentyp.SCHUELER_ADRESSETIKETTEN) {
+        if (listenExportModel.getListentyp() != null && (listenExportModel.getListentyp() == Listentyp.SCHUELER_ADRESSETIKETTEN || listenExportModel.getListentyp() == Listentyp.LEHRKRAEFTE_ADRESSETIKETTEN)) {
             disableTitel();
         } else {
             enableTitel();

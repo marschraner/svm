@@ -1,11 +1,13 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
 import ch.metzenthin.svm.domain.commands.DeleteLehrkraftCommand;
 import ch.metzenthin.svm.domain.model.LehrkraefteModel;
 import ch.metzenthin.svm.domain.model.LehrkraefteTableData;
 import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 import ch.metzenthin.svm.ui.components.LehrkraftErfassenDialog;
+import ch.metzenthin.svm.ui.components.ListenExportDialog;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -28,6 +30,7 @@ public class LehrkraefteController {
     private JButton btnNeu;
     private JButton btnBearbeiten;
     private JButton btnLoeschen;
+    private JButton btnExportieren;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
 
@@ -106,6 +109,11 @@ public class LehrkraefteController {
         lehrkraftErfassenDialog.setVisible(true);
         lehrkraefteTableModel.fireTableDataChanged();
         btnBearbeiten.setFocusPainted(false);
+        if (lehrkraefteTableModel.getRowCount() > 0) {
+            btnExportieren.setEnabled(true);
+        } else {
+            btnExportieren.setEnabled(false);
+        }
     }
 
     public void setBtnLoeschen(JButton btnLoeschen) {
@@ -155,6 +163,32 @@ public class LehrkraefteController {
         btnLoeschen.setFocusPainted(false);
         enableBtnLoeschen(false);
         lehrkraefteTable.clearSelection();
+        if (lehrkraefteTableModel.getRowCount() > 0) {
+            btnExportieren.setEnabled(true);
+        } else {
+            btnExportieren.setEnabled(false);
+        }
+    }
+
+    public void setBtnExportieren(JButton btnExportieren) {
+        this.btnExportieren = btnExportieren;
+        if (lehrkraefteTableModel.getRowCount() == 0) {
+            btnExportieren.setEnabled(false);
+        }
+        btnExportieren.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onExportieren();
+            }
+        });
+    }
+
+    private void onExportieren() {
+        btnExportieren.setFocusPainted(true);
+        ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, null, lehrkraefteTableModel, null, ListenExportTyp.LEHRKRAEFTE);
+        listenExportDialog.pack();
+        listenExportDialog.setVisible(true);
+        btnExportieren.setFocusPainted(false);
     }
 
     private void onListSelection() {

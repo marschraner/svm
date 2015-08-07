@@ -6,6 +6,8 @@ import ch.metzenthin.svm.common.dataTypes.Listentyp;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
+import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
+import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
 import java.io.File;
@@ -90,7 +92,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
     }
 
     @Override
-    public CreateListeCommand.Result createListenFile(File outputFile, SchuelerSuchenTableModel schuelerSuchenTableModel) {
+    public CreateListeCommand.Result createListenFile(File outputFile, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         CreateListeCommand.Result result = null;
         switch (listentyp) {
@@ -99,16 +101,31 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 commandInvoker.executeCommand(createSchuelerAdresslisteCommand);
                 result = createSchuelerAdresslisteCommand.getResult();
                 break;
-            case ABSENZENLISTE:
+            case SCHUELER_ABSENZENLISTE:
                 CreateListeFromTemplateCommand createListeFromTemplateCommand = new CreateListeFromTemplateCommand(schuelerSuchenTableModel, titel, listentyp, outputFile);
                 commandInvoker.executeCommand(createListeFromTemplateCommand);
                 templateFile = createListeFromTemplateCommand.getTemplateFile();
                 result = createListeFromTemplateCommand.getResult();
                 break;
             case SCHUELER_ADRESSETIKETTEN:
-                CreateAdressenCsvFileCommand createAdressenCsvFileCommand = new CreateAdressenCsvFileCommand(schuelerSuchenTableModel.getSchuelerList(), outputFile);
-                commandInvoker.executeCommand(createAdressenCsvFileCommand);
-                result = createAdressenCsvFileCommand.getResult();
+                CreateAdressenCsvFileCommand createAdressenCsvFileCommandSchueler = new CreateAdressenCsvFileCommand(schuelerSuchenTableModel.getSchuelerList(), outputFile);
+                commandInvoker.executeCommand(createAdressenCsvFileCommandSchueler);
+                result = createAdressenCsvFileCommandSchueler.getResult();
+                break;
+            case LEHRKRAEFTE_ADRESSLISTE:
+                CreateLehrkraefteAdresslisteCommand createLehrkraefteAdresslisteCommand = new CreateLehrkraefteAdresslisteCommand(lehrkraefteTableModel, titel, outputFile);
+                commandInvoker.executeCommand(createLehrkraefteAdresslisteCommand);
+                result = createLehrkraefteAdresslisteCommand.getResult();
+                break;
+            case LEHRKRAEFTE_ADRESSETIKETTEN:
+                CreateAdressenCsvFileCommand createAdressenCsvFileCommandLehrkraefte = new CreateAdressenCsvFileCommand(lehrkraefteTableModel.getLehrkraefte(), outputFile);
+                commandInvoker.executeCommand(createAdressenCsvFileCommandLehrkraefte);
+                result = createAdressenCsvFileCommandLehrkraefte.getResult();
+                break;
+            case KURSELISTE:
+                CreateKurselisteCommand kurselisteCommand = new CreateKurselisteCommand(kurseTableModel, titel, outputFile);
+                commandInvoker.executeCommand(kurselisteCommand);
+                result = kurselisteCommand.getResult();
                 break;
         }
         return result;

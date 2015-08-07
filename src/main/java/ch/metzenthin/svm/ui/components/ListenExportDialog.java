@@ -1,7 +1,10 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
 import ch.metzenthin.svm.common.dataTypes.Listentyp;
+import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
+import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.control.ListenExportController;
 
@@ -22,17 +25,17 @@ public class ListenExportDialog extends JDialog {
     private JButton btnOk;
     private JButton btnAbbrechen;
 
-    public ListenExportDialog(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel) {
+    public ListenExportDialog(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel, ListenExportTyp listenExportTyp) {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
         setTitle("Als Liste exportieren");
         initializeErrLbls();
-        createListenExportController(svmContext, schuelerSuchenTableModel);
+        createListenExportController(svmContext, schuelerSuchenTableModel, lehrkraefteTableModel, kurseTableModel, listenExportTyp);
     }
 
-    private void createListenExportController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel) {
-        ListenExportController listenExportController = new ListenExportController(svmContext.getModelFactory().createListenExportModel(), schuelerSuchenTableModel);
+    private void createListenExportController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel, ListenExportTyp listenExportTyp) {
+        ListenExportController listenExportController = new ListenExportController(svmContext.getModelFactory().createListenExportModel(), schuelerSuchenTableModel, lehrkraefteTableModel, kurseTableModel, listenExportTyp);
         listenExportController.setListenExportDialog(this);
         listenExportController.setContentPane(contentPane);
         listenExportController.setComboBoxListentyp(comboBoxListentyp);

@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
 import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.ListenExportDialog;
@@ -107,7 +108,7 @@ public class SchuelerSuchenResultController {
 
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
-        ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, schuelerSuchenTableModel);
+        ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, schuelerSuchenTableModel, null, null, ListenExportTyp.SCHUELER);
         listenExportDialog.pack();
         listenExportDialog.setVisible(true);
         btnExportieren.setFocusPainted(false);

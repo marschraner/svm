@@ -61,14 +61,14 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         headerCellLinesColumn2.add("Strasse/Nr.");
         headerCellLinesColumn2.add("Email");
         header.add(headerCellLinesColumn2);
-        columnWidths.add(2300);
+        columnWidths.add(2600);
         // 3. Spalte
         List<String> headerCellLinesColumn3 = new ArrayList<>();
         headerCellLinesColumn3.add("Vorname");
         headerCellLinesColumn3.add("PLZ/Ort");
         headerCellLinesColumn3.add("Festnetz");
         header.add(headerCellLinesColumn3);
-        columnWidths.add(2300);
+        columnWidths.add(2600);
         // 4. Spalte
         List<String> headerCellLinesColumn4 = new ArrayList<>();
         headerCellLinesColumn4.add("Natel Mutter");

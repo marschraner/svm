@@ -113,21 +113,21 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="2d1f6" class="javax.swing.JButton" binding="btnImport">
+              <component id="2d1f6" class="javax.swing.JButton" binding="btnImportieren">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <gridbag top="0" left="15" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <maximumSize width="114" height="29"/>
-                  <minimumSize width="114" height="29"/>
-                  <preferredSize width="114" height="29"/>
-                  <text value="Import"/>
+                  <maximumSize width="120" height="29"/>
+                  <minimumSize width="120" height="29"/>
+                  <preferredSize width="120" height="29"/>
+                  <text value="Importieren"/>
                 </properties>
               </component>
               <hspacer id="df374">
                 <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="1.0" weighty="0.0"/>
                 </constraints>
               </hspacer>
@@ -143,6 +143,18 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
               </vspacer>
+              <component id="7558c" class="javax.swing.JButton" binding="btnExportieren" default-binding="true">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="10" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <maximumSize width="120" height="29"/>
+                  <minimumSize width="120" height="29"/>
+                  <preferredSize width="120" height="29"/>
+                  <text value="Exportieren"/>
+                </properties>
+              </component>
             </children>
           </grid>
           <grid id="5a9ea" layout-manager="GridBagLayout">

@@ -30,7 +30,8 @@ public class KursePanel {
     private JButton btnLoeschen;
     private JButton btnAbbrechen;
     private JButton btnZurueck;
-    private JButton btnImport;
+    private JButton btnImportieren;
+    private JButton btnExportieren;
     private JTable kurseTable;
     private KurseController kurseController;
 
@@ -49,7 +50,8 @@ public class KursePanel {
         kurseController.setBtnLoeschen(btnLoeschen);
         kurseController.setBtnAbbrechen(btnAbbrechen);
         kurseController.setBtnZurueck(btnZurueck);
-        kurseController.setBtnImport(btnImport);
+        kurseController.setBtnImportieren(btnImportieren);
+        kurseController.setBtnExportieren(btnExportieren);
     }
 
     public void addNextPanelListener(ActionListener actionListener) {
@@ -191,20 +193,20 @@ public class KursePanel {
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridBagLayout());
         buttonPanel.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        btnImport = new JButton();
-        btnImport.setMaximumSize(new Dimension(114, 29));
-        btnImport.setMinimumSize(new Dimension(114, 29));
-        btnImport.setPreferredSize(new Dimension(114, 29));
-        btnImport.setText("Import");
+        btnImportieren = new JButton();
+        btnImportieren.setMaximumSize(new Dimension(120, 29));
+        btnImportieren.setMinimumSize(new Dimension(120, 29));
+        btnImportieren.setPreferredSize(new Dimension(120, 29));
+        btnImportieren.setText("Importieren");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 15, 0, 0);
-        panel3.add(btnImport, gbc);
+        panel3.add(btnImportieren, gbc);
         final JPanel spacer7 = new JPanel();
         gbc = new GridBagConstraints();
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -221,6 +223,17 @@ public class KursePanel {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel3.add(spacer9, gbc);
+        btnExportieren = new JButton();
+        btnExportieren.setMaximumSize(new Dimension(120, 29));
+        btnExportieren.setMinimumSize(new Dimension(120, 29));
+        btnExportieren.setPreferredSize(new Dimension(120, 29));
+        btnExportieren.setText("Exportieren");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0, 10, 0, 0);
+        panel3.add(btnExportieren, gbc);
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridBagLayout());
         buttonPanel.add(panel4, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

@@ -46,13 +46,13 @@ public class SetWordPageMarginsCommand extends GenericDaoCommand {
         if (top > 0) {   // default: 720
             pgMar.setTop(BigInteger.valueOf(top));
         }
-        if (bottom > 0) {   // default: 720
+        if (bottom > 0) {  // default: 720
             pgMar.setBottom(BigInteger.valueOf(bottom));
         }
-        if (left > 0) {
+        if (left > 0) {  // default: 720
             pgMar.setLeft(BigInteger.valueOf(left));
         }
-        if (right > 0) {
+        if (right > 0) {  // default: 720
             pgMar.setRight(BigInteger.valueOf(right));
         }
         SectPr sectPr = objectFactory.createSectPr();

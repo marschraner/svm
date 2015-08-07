@@ -1,8 +1,10 @@
 package ch.metzenthin.svm.ui.componentmodel;
 
 import ch.metzenthin.svm.domain.model.LehrkraefteTableData;
+import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.List;
 
 
 public class LehrkraefteTableModel extends AbstractTableModel {
@@ -33,6 +35,10 @@ public class LehrkraefteTableModel extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         return lehrkraefteTableData.getColumnName(column);
+    }
+
+    public List<Lehrkraft> getLehrkraefte() {
+        return lehrkraefteTableData.getLehrkraefte();
     }
 
 }
