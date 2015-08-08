@@ -2,7 +2,7 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Codetyp;
-import ch.metzenthin.svm.domain.commands.DeleteMaerchenCodeCommand;
+import ch.metzenthin.svm.domain.commands.DeleteElternmithilfeCodeCommand;
 import ch.metzenthin.svm.domain.commands.DeleteSchuelerCodeCommand;
 import ch.metzenthin.svm.domain.model.CodesModel;
 import ch.metzenthin.svm.domain.model.CodesTableData;
@@ -61,8 +61,8 @@ public class CodesController {
             case SCHUELER:
                 svmContext.getSvmModel().loadSchuelerCodesAll();
                 break;
-            case MAERCHEN:
-                svmContext.getSvmModel().loadMaerchenCodesAll();
+            case ELTERNMITHILFE:
+                svmContext.getSvmModel().loadElternmithilfeCodesAll();
                 break;
         }
     }
@@ -97,8 +97,8 @@ public class CodesController {
                     lblTitel.setText("Schüler-Codes verwalten");
                 }
                 break;
-            case MAERCHEN:
-                lblTitel.setText("Märchen-Codes verwalten");
+            case ELTERNMITHILFE:
+                lblTitel.setText("Elternmithilfe-Codes verwalten");
                 break;
         }
     }
@@ -110,9 +110,9 @@ public class CodesController {
                     CodesTableData schuelerCodesTableData = new CodesTableData(svmContext.getSvmModel().getSchuelerCodesAll());
                     codesTableModel = new CodesTableModel(schuelerCodesTableData);
                     break;
-                case MAERCHEN:
-                    CodesTableData maerchenCodesTableData = new CodesTableData(svmContext.getSvmModel().getMaerchenCodesAll());
-                    codesTableModel = new CodesTableModel(maerchenCodesTableData);
+                case ELTERNMITHILFE:
+                    CodesTableData elternmithilfeCodesTableData = new CodesTableData(svmContext.getSvmModel().getElternmithilfeCodesAll());
+                    codesTableModel = new CodesTableModel(elternmithilfeCodesTableData);
                     break;
             }
         }
@@ -137,7 +137,7 @@ public class CodesController {
                             onNeuCodesVerwalten();
                         }
                         break;
-                    case MAERCHEN:
+                    case ELTERNMITHILFE:
                         onNeuCodesVerwalten();
                         break;
                 }
@@ -152,8 +152,8 @@ public class CodesController {
             case SCHUELER:
                 titel = "Neuer Schüler-Code";
                 break;
-            case MAERCHEN:
-                titel = "Neuer Märchen-Code";
+            case ELTERNMITHILFE:
+                titel = "Neuer Elternmithilfe-Code";
                 break;
         }
         CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, codesModel, 0, false, titel, codetyp);
@@ -202,8 +202,8 @@ public class CodesController {
             case SCHUELER:
                 titel = "Schüler-Code bearbeiten";
                 break;
-            case MAERCHEN:
-                titel = "Märchen-Code bearbeiten";
+            case ELTERNMITHILFE:
+                titel = "Elternmithilfe-Code bearbeiten";
                 break;
         }
         CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, codesModel, codesTable.getSelectedRow(), true, titel, codetyp);
@@ -227,8 +227,8 @@ public class CodesController {
                         onLoeschenSchuelerCodesVerwalten();
                     }
                     break;
-                case MAERCHEN:
-                    onLoeschenMaerchenCodesVerwalten();
+                case ELTERNMITHILFE:
+                    onLoeschenElternmithilfeCodesVerwalten();
                     break;
             }
             }
@@ -290,7 +290,7 @@ public class CodesController {
         btnNeu.setEnabled(true);
     }
 
-    private void onLoeschenMaerchenCodesVerwalten() {
+    private void onLoeschenElternmithilfeCodesVerwalten() {
         btnLoeschen.setFocusPainted(true);
         Object[] options = {"Ja", "Nein"};
         int n = JOptionPane.showOptionDialog(
@@ -303,7 +303,7 @@ public class CodesController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteMaerchenCodeCommand.Result result  = codesModel.eintragLoeschenMaerchenCodesVerwalten(svmContext, codesTable.getSelectedRow());
+            DeleteElternmithilfeCodeCommand.Result result  = codesModel.eintragLoeschenElternmithilfeCodesVerwalten(svmContext, codesTable.getSelectedRow());
             switch (result) {
                 case CODE_VON_MAERCHEN_EINTEILUNG_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens eine Märcheneinteilung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);

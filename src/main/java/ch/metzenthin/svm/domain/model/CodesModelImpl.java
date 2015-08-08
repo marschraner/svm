@@ -4,10 +4,10 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.DeleteMaerchenCodeCommand;
+import ch.metzenthin.svm.domain.commands.DeleteElternmithilfeCodeCommand;
 import ch.metzenthin.svm.domain.commands.DeleteSchuelerCodeCommand;
 import ch.metzenthin.svm.domain.commands.RemoveSchuelerCodeFromSchuelerCommand;
-import ch.metzenthin.svm.persistence.entities.MaerchenCode;
+import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
@@ -34,12 +34,12 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
     }
 
     @Override
-    public DeleteMaerchenCodeCommand.Result eintragLoeschenMaerchenCodesVerwalten(SvmContext svmContext, int indexCodeToBeRemoved) {
-        List<MaerchenCode> maerchenCodes = svmContext.getSvmModel().getMaerchenCodesAll();
+    public DeleteElternmithilfeCodeCommand.Result eintragLoeschenElternmithilfeCodesVerwalten(SvmContext svmContext, int indexCodeToBeRemoved) {
+        List<ElternmithilfeCode> elternmithilfeCodes = svmContext.getSvmModel().getElternmithilfeCodesAll();
         CommandInvoker commandInvoker = getCommandInvoker();
-        DeleteMaerchenCodeCommand deleteMaerchenCodeCommand = new DeleteMaerchenCodeCommand(maerchenCodes, indexCodeToBeRemoved);
-        commandInvoker.executeCommandAsTransaction(deleteMaerchenCodeCommand);
-        return deleteMaerchenCodeCommand.getResult();
+        DeleteElternmithilfeCodeCommand deleteElternmithilfeCodeCommand = new DeleteElternmithilfeCodeCommand(elternmithilfeCodes, indexCodeToBeRemoved);
+        commandInvoker.executeCommandAsTransaction(deleteElternmithilfeCodeCommand);
+        return deleteElternmithilfeCodeCommand.getResult();
     }
 
     @Override
@@ -60,9 +60,9 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
                 List<SchuelerCode> schuelerCodes = svmContext.getSvmModel().getSchuelerCodesAll();
                 codeErfassenModel.setSchuelerCodeOrigin(schuelerCodes.get(indexCodeToBeModified));
                 break;
-            case MAERCHEN:
-                List<MaerchenCode> maerchenCodes = svmContext.getSvmModel().getMaerchenCodesAll();
-                codeErfassenModel.setMaerchenCodeOrigin(maerchenCodes.get(indexCodeToBeModified));
+            case ELTERNMITHILFE:
+                List<ElternmithilfeCode> elternmithilfeCodes = svmContext.getSvmModel().getElternmithilfeCodesAll();
+                codeErfassenModel.setElternmithilfeCodeOrigin(elternmithilfeCodes.get(indexCodeToBeModified));
                 break;
         }
         return codeErfassenModel;

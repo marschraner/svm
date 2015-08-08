@@ -5,9 +5,9 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CheckCodeKuerzelBereitsInVerwendungCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.SaveOrUpdateMaerchenCodeCommand;
+import ch.metzenthin.svm.domain.commands.SaveOrUpdateElternmithilfeCodeCommand;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateSchuelerCodeCommand;
-import ch.metzenthin.svm.persistence.entities.MaerchenCode;
+import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 
 /**
@@ -19,7 +19,7 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     private String beschreibung;
 
     private SchuelerCode schuelerCodeOrigin;
-    private MaerchenCode maerchenCodeOrigin;
+    private ElternmithilfeCode elternmithilfeCodeOrigin;
 
     public CodeErfassenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -31,8 +31,8 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     }
 
     @Override
-    public void setMaerchenCodeOrigin(MaerchenCode maerchenCodeOrigin) {
-        this.maerchenCodeOrigin = maerchenCodeOrigin;
+    public void setElternmithilfeCodeOrigin(ElternmithilfeCode elternmithilfeCodeOrigin) {
+        this.elternmithilfeCodeOrigin = elternmithilfeCodeOrigin;
     }
 
     private final StringModelAttribute kuerzelModelAttribute = new StringModelAttribute(
@@ -95,8 +95,8 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
             case SCHUELER:
                 checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, schuelerCodeOrigin, svmModel.getSchuelerCodesAll());
                 break;
-            case MAERCHEN:
-                checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, maerchenCodeOrigin, svmModel.getMaerchenCodesAll());
+            case ELTERNMITHILFE:
+                checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, elternmithilfeCodeOrigin, svmModel.getElternmithilfeCodesAll());
                 break;
         }
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
@@ -112,10 +112,10 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
                 SaveOrUpdateSchuelerCodeCommand saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode, schuelerCodeOrigin, svmModel.getSchuelerCodesAll());
                 commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
                 break;
-            case MAERCHEN:
-                MaerchenCode maerchenCode = new MaerchenCode(kuerzel, beschreibung);
-                SaveOrUpdateMaerchenCodeCommand saveOrUpdateMaerchenCodeCommand = new SaveOrUpdateMaerchenCodeCommand(maerchenCode, maerchenCodeOrigin, svmModel.getMaerchenCodesAll());
-                commandInvoker.executeCommandAsTransaction(saveOrUpdateMaerchenCodeCommand);
+            case ELTERNMITHILFE:
+                ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode(kuerzel, beschreibung);
+                SaveOrUpdateElternmithilfeCodeCommand saveOrUpdateElternmithilfeCodeCommand = new SaveOrUpdateElternmithilfeCodeCommand(elternmithilfeCode, elternmithilfeCodeOrigin, svmModel.getElternmithilfeCodesAll());
+                commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);
                 break;
         }
     }
@@ -131,11 +131,11 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
                 ignore.printStackTrace();
             }
             setBulkUpdate(false);
-        } else if (maerchenCodeOrigin != null) {
+        } else if (elternmithilfeCodeOrigin != null) {
             setBulkUpdate(true);
             try {
-                setKuerzel(maerchenCodeOrigin.getKuerzel());
-                setBeschreibung(maerchenCodeOrigin.getBeschreibung());
+                setKuerzel(elternmithilfeCodeOrigin.getKuerzel());
+                setBeschreibung(elternmithilfeCodeOrigin.getBeschreibung());
             } catch (SvmValidationException ignore) {
                 ignore.printStackTrace();
             }

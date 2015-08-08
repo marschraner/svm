@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.entities.MaerchenCode;
+import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Martin Schraner
  */
-public class DeleteMaerchenCodeCommandTest {
+public class DeleteElternmithilfeCodeCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
@@ -39,31 +39,31 @@ public class DeleteMaerchenCodeCommandTest {
     @Test
     public void testExecute() throws Exception {
 
-        List<MaerchenCode> codesSaved = new ArrayList<>();
+        List<ElternmithilfeCode> codesSaved = new ArrayList<>();
 
         // 2 Codes erfassen und den zweiten einem Maerchen hinzufügen
-        MaerchenCode maerchenCode1 = new MaerchenCode("kt", "KuchenTest");
-        MaerchenCode maerchenCode2 = new MaerchenCode("ft", "FrisierenTest");
+        ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("kt", "KuchenTest");
+        ElternmithilfeCode elternmithilfeCode2 = new ElternmithilfeCode("ft", "FrisierenTest");
 
-        SaveOrUpdateMaerchenCodeCommand saveOrUpdateMaerchenCodeCommand = new SaveOrUpdateMaerchenCodeCommand(maerchenCode1, null, codesSaved);
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateMaerchenCodeCommand);
+        SaveOrUpdateElternmithilfeCodeCommand saveOrUpdateElternmithilfeCodeCommand = new SaveOrUpdateElternmithilfeCodeCommand(elternmithilfeCode1, null, codesSaved);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);
 
-        saveOrUpdateMaerchenCodeCommand = new SaveOrUpdateMaerchenCodeCommand(maerchenCode2, null, codesSaved);
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateMaerchenCodeCommand);
+        saveOrUpdateElternmithilfeCodeCommand = new SaveOrUpdateElternmithilfeCodeCommand(elternmithilfeCode2, null, codesSaved);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);
 
         assertEquals(2, codesSaved.size());
         assertEquals("ft", codesSaved.get(0).getKuerzel()); // alphabetisch geordnet
         assertEquals("kt", codesSaved.get(1).getKuerzel());
 
         // Codes löschen
-        DeleteMaerchenCodeCommand deleteMaerchenCodeCommand = new DeleteMaerchenCodeCommand(codesSaved, 1);
-        commandInvoker.executeCommandAsTransaction(deleteMaerchenCodeCommand);
-        assertEquals(DeleteMaerchenCodeCommand.Result.LOESCHEN_ERFOLGREICH, deleteMaerchenCodeCommand.getResult());
+        DeleteElternmithilfeCodeCommand deleteElternmithilfeCodeCommand = new DeleteElternmithilfeCodeCommand(codesSaved, 1);
+        commandInvoker.executeCommandAsTransaction(deleteElternmithilfeCodeCommand);
+        assertEquals(DeleteElternmithilfeCodeCommand.Result.LOESCHEN_ERFOLGREICH, deleteElternmithilfeCodeCommand.getResult());
         assertEquals(1, codesSaved.size());
 
-        deleteMaerchenCodeCommand = new DeleteMaerchenCodeCommand(codesSaved, 0);
-        commandInvoker.executeCommandAsTransaction(deleteMaerchenCodeCommand);
-        assertEquals(DeleteMaerchenCodeCommand.Result.LOESCHEN_ERFOLGREICH, deleteMaerchenCodeCommand.getResult());
+        deleteElternmithilfeCodeCommand = new DeleteElternmithilfeCodeCommand(codesSaved, 0);
+        commandInvoker.executeCommandAsTransaction(deleteElternmithilfeCodeCommand);
+        assertEquals(DeleteElternmithilfeCodeCommand.Result.LOESCHEN_ERFOLGREICH, deleteElternmithilfeCodeCommand.getResult());
         assertTrue(codesSaved.isEmpty());
 
         // Testdaten löschen

@@ -1,8 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.persistence.daos.SemesterDao;
-import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.persistence.daos.MaerchenDao;
+import ch.metzenthin.svm.persistence.entities.Maerchen;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,18 +9,20 @@ import org.junit.Test;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * @author Martin Schraner
  */
-public class FindAllSemestersCommandTest {
+public class FindAllMaerchensCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
-    private Set<Semester> semesterTestdata = new HashSet<>();
+    private Set<Maerchen> maerchenTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
@@ -39,18 +40,18 @@ public class FindAllSemestersCommandTest {
 
     @Test
     public void testExecute() {
-        FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
-            commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSemestersCommand);
+        FindAllMaerchensCommand findAllMaerchensCommand = new FindAllMaerchensCommand();
+            commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllMaerchensCommand);
 
-        List<Semester> semesterFound = findAllSemestersCommand.getSemestersAll();
-        assertTrue(semesterFound.size() >= 2);
+        List<Maerchen> maerchenFound = findAllMaerchensCommand.getMaerchensAll();
+        assertTrue(maerchenFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;
-        for (Semester semester : semesterTestdata) {
-            if (semester.getSemesterbeginn().equals(new GregorianCalendar(2011, Calendar.AUGUST, 20))) {
+        for (Maerchen maerchen : maerchenTestdata) {
+            if (maerchen.getBezeichnung().equals("Gestiefelter Kater")) {
                 found1 = true;
             }
-            if (semester.getSemesterbeginn().equals(new GregorianCalendar(2012, Calendar.FEBRUARY, 20))) {
+            if (maerchen.getBezeichnung().equals("Schneewittchen")) {
                 found2 = true;
             }
         }
@@ -64,15 +65,15 @@ public class FindAllSemestersCommandTest {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            SemesterDao semesterDao = new SemesterDao(entityManager);
+            MaerchenDao maerchenDao = new MaerchenDao(entityManager);
 
-            Semester semester1 = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
-            Semester semesterSaved = semesterDao.save(semester1);
-            semesterTestdata.add(semesterSaved);
+            Maerchen maerchen1 = new Maerchen("1911/1912", "Gestiefelter Kater");
+            Maerchen maerchenSaved = maerchenDao.save(maerchen1);
+            maerchenTestdata.add(maerchenSaved);
 
-            Semester semester2 = new Semester("2011/2012", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(2012, Calendar.FEBRUARY, 20), new GregorianCalendar(2012, Calendar.JULY, 10), 21);
-            semesterSaved = semesterDao.save(semester2);
-            semesterTestdata.add(semesterSaved);
+            Maerchen maerchen2 = new Maerchen("1912/2013", "Schneewittchen");
+            maerchenSaved = maerchenDao.save(maerchen2);
+            maerchenTestdata.add(maerchenSaved);
 
             entityManager.getTransaction().commit();
 
@@ -89,11 +90,11 @@ public class FindAllSemestersCommandTest {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            SemesterDao semesterDao = new SemesterDao(entityManager);
+            MaerchenDao maerchenDao = new MaerchenDao(entityManager);
 
-            for (Semester semester : semesterTestdata) {
-                Semester semesterToBeRemoved = semesterDao.findById(semester.getSemesterId());
-                semesterDao.remove(semesterToBeRemoved);
+            for (Maerchen maerchen : maerchenTestdata) {
+                Maerchen maerchenToBeRemoved = maerchenDao.findById(maerchen.getMaerchenId());
+                maerchenDao.remove(maerchenToBeRemoved);
             }
 
             entityManager.getTransaction().commit();

@@ -111,7 +111,7 @@ public class SaveOrUpdateSemesterCommandTest {
     private boolean checkIfSemesterAvailable(String schuljahr, Semesterbezeichnung semesterbezeichnung, Calendar semesterbeginn, Calendar semesterende, int anzahlSchulwochen) {
         FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
         commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSemestersCommand);
-        List<Semester> semestersAll = findAllSemestersCommand.getSemesterAll();
+        List<Semester> semestersAll = findAllSemestersCommand.getSemestersAll();
         for (Semester semester : semestersAll) {
             if (semester.getSchuljahr().equals(schuljahr) && semester.getSemesterbezeichnung().equals(semesterbezeichnung) && semester.getSemesterbeginn().equals(semesterbeginn) && semester.getSemesterende().equals(semesterende) && semester.getAnzahlSchulwochen().equals(anzahlSchulwochen)) {
                 return true;

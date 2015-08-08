@@ -12,13 +12,14 @@ USE svm;
 -- Delete
 -- ******
 
+DELETE FROM Maerchen;
 DELETE FROM Schueler_Kurs;
 DELETE FROM Kurs_Lehrkraft;
 DELETE FROM Kurs;
 DELETE FROM Semester;
 DELETE FROM Kursort;
 DELETE FROM Kurstyp;
-DELETE FROM MaerchenCode;
+DELETE FROM ElternmithilfeCode;
 DELETE FROM Schueler_SchuelerCode;
 DELETE FROM SchuelerCode;
 DELETE FROM Code;
@@ -141,8 +142,8 @@ SELECT * FROM Dispensation;
 INSERT INTO Code (code_id, discriminator, kuerzel, beschreibung) VALUES
     (1, 'Schueler', 'c', 'Casting'),
     (2, 'Schueler', 'j', 'Jugendtheater'),
-    (3, 'Maerchen', 'b', 'Buffet'),
-    (4, 'Maerchen', 'g', 'Garderobe');
+    (3, 'Elternmithilfe', 'b', 'Buffet'),
+    (4, 'Elternmithilfe', 'g', 'Garderobe');
 
 SELECT * FROM Code;
 
@@ -167,14 +168,14 @@ INSERT INTO Schueler_SchuelerCode (person_id, code_id) VALUES
 SELECT * FROM Schueler_SchuelerCode;
 
 
--- MaerchenCode
+-- ElternmithilfeCode
 -- ************
 
-INSERT INTO MaerchenCode (code_id) VALUES
+INSERT INTO ElternmithilfeCode (code_id) VALUES
     (3),
     (4);
 
-SELECT * FROM MaerchenCode;
+SELECT * FROM ElternmithilfeCode;
 
 
 -- Kurstyp
@@ -280,3 +281,14 @@ INSERT INTO Schueler_Kurs (person_id, kurs_id) VALUES
     (8, 6);
 
 SELECT * FROM Schueler_Kurs;
+
+
+-- Maerchen
+-- ********
+
+INSERT INTO Maerchen (maerchen_id, schuljahr, bezeichnung) VALUES
+    (1, '2013/2014', 'Froschkönig'),
+    (2, '2014/2015', 'Aschenputtel'),
+    (3, '2015/2016', 'Rumpelstilzchen');
+
+SELECT * FROM Maerchen;

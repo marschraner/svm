@@ -11,17 +11,17 @@ import java.util.List;
 public class FindAllSemestersCommand extends GenericDaoCommand {
 
     // output
-    private List<Semester> semesterAll;
+    private List<Semester> semestersAll;
 
     @Override
     public void execute() {
 
         SemesterDao semesterDao = new SemesterDao(entityManager);
-        semesterAll = semesterDao.findAll();
+        semestersAll = semesterDao.findAll();
     }
 
-    public List<Semester> getSemesterAll() {
-        return semesterAll;
+    public List<Semester> getSemestersAll() {
+        return semestersAll;
     }
 
 }

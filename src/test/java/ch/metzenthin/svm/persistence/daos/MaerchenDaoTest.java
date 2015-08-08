@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.daos;
 
-import ch.metzenthin.svm.persistence.entities.MaerchenCode;
+import ch.metzenthin.svm.persistence.entities.Maerchen;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,17 +16,17 @@ import static org.junit.Assert.*;
 /**
  * @author Martin Schraner
  */
-public class MaerchenCodeDaoTest {
+public class MaerchenDaoTest {
 
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
-    private MaerchenCodeDao maerchenCodeDao;
+    private MaerchenDao maerchenDao;
 
     @Before
     public void setUp() throws Exception {
         entityManagerFactory = Persistence.createEntityManagerFactory("svm");
         entityManager = entityManagerFactory.createEntityManager();
-        maerchenCodeDao = new MaerchenCodeDao(entityManager);
+        maerchenDao = new MaerchenDao(entityManager);
     }
 
     @After
@@ -46,13 +46,14 @@ public class MaerchenCodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            MaerchenCode maerchenCode = new MaerchenCode("k", "Kuchen");
+            Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen");
 
-            entityManager.persist(maerchenCode);
+            entityManager.persist(maerchen);
 
-            MaerchenCode maerchenCodeFound = maerchenCodeDao.findById(maerchenCode.getCodeId());
+            Maerchen maerchenFound = maerchenDao.findById(maerchen.getMaerchenId());
 
-            assertEquals("Kuchen", maerchenCodeFound.getBeschreibung());
+            assertEquals("2011/2012", maerchenFound.getSchuljahr());
+            assertEquals("Schneewittchen", maerchenFound.getBezeichnung());
 
         } finally {
             if (tx != null) {
@@ -68,17 +69,18 @@ public class MaerchenCodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            MaerchenCode maerchenCode = new MaerchenCode("k", "Kuchen");
-            MaerchenCode maerchenCodeSaved = maerchenCodeDao.save(maerchenCode);
+            Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen");
+            Maerchen maerchenSaved = maerchenDao.save(maerchen);
 
             entityManager.flush();
 
-            MaerchenCode maerchenCodeFound = maerchenCodeDao.findById(maerchenCodeSaved.getCodeId());
+            Maerchen maerchenFound = maerchenDao.findById(maerchenSaved.getMaerchenId());
 
             // Erzwingen, dass von DB gelesen wird
-            entityManager.refresh(maerchenCodeFound);
+            entityManager.refresh(maerchenFound);
 
-            assertEquals("Kuchen", maerchenCodeFound.getBeschreibung());
+            assertEquals("2011/2012", maerchenFound.getSchuljahr());
+            assertEquals("Schneewittchen", maerchenFound.getBezeichnung());
 
         } finally {
             if (tx != null) {
@@ -95,32 +97,32 @@ public class MaerchenCodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            MaerchenCode maerchenCode1 = new MaerchenCode("k", "Kuchen");
-            MaerchenCode maerchenCode1Saved = maerchenCodeDao.save(maerchenCode1);
-            int code1Id = maerchenCode1Saved.getCodeId();
+            Maerchen maerchen1 = new Maerchen("2010/2011", "Gestiefelter Kater");
+            Maerchen maerchen1Saved = maerchenDao.save(maerchen1);
+            int maerchen1Id = maerchen1Saved.getMaerchenId();
 
-            MaerchenCode maerchenCode2 = new MaerchenCode("f", "Frisieren");
-            MaerchenCode maerchenCode2Saved = maerchenCodeDao.save(maerchenCode2);
-            int code2Id = maerchenCode2Saved.getCodeId();
+            Maerchen maerchen2 = new Maerchen("2011/2012", "Schneewittchen");
+            Maerchen maerchen2Saved = maerchenDao.save(maerchen2);
+            int maerchen2Id = maerchen2Saved.getMaerchenId();
 
             entityManager.flush();
 
-            assertNotNull(maerchenCodeDao.findById(code1Id));
-            assertNotNull(maerchenCodeDao.findById(code2Id));
+            assertNotNull(maerchenDao.findById(maerchen1Id));
+            assertNotNull(maerchenDao.findById(maerchen2Id));
 
-            // 1. MaerchenCode löschen
-            maerchenCodeDao.remove(maerchenCode1Saved);
+            // 1. Maerchen löschen
+            maerchenDao.remove(maerchen1Saved);
             entityManager.flush();
 
-            assertNull(maerchenCodeDao.findById(code1Id));
-            assertNotNull(maerchenCodeDao.findById(code2Id));
+            assertNull(maerchenDao.findById(maerchen1Id));
+            assertNotNull(maerchenDao.findById(maerchen2Id));
 
-            // 2. MaerchenCode löschen
-            maerchenCodeDao.remove(maerchenCode2Saved);
+            // 2. Maerchen löschen
+            maerchenDao.remove(maerchen2Saved);
             entityManager.flush();
 
-            assertNull(maerchenCodeDao.findById(code2Id));
-            assertNull(maerchenCodeDao.findById(code2Id));
+            assertNull(maerchenDao.findById(maerchen2Id));
+            assertNull(maerchenDao.findById(maerchen2Id));
 
         } finally {
             if (tx != null) {
@@ -137,25 +139,25 @@ public class MaerchenCodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            // Codes hinzufügen
-            MaerchenCode maerchenCode1 = new MaerchenCode("kt", "KuchenTest");
-            maerchenCodeDao.save(maerchenCode1);
+            // Maerchen hinzufügen
+            Maerchen maerchen1 = new Maerchen("1910/1911", "Gestiefelter Kater");
+            maerchenDao.save(maerchen1);
 
-            MaerchenCode maerchenCode2 = new MaerchenCode("ft", "FrisierenTest");
-            maerchenCodeDao.save(maerchenCode2);
+            Maerchen maerchen2 = new Maerchen("1911/1912", "Schneewittchen");
+            maerchenDao.save(maerchen2);
 
             entityManager.flush();
 
-            // Codes suchen
-            List<MaerchenCode> codesFound = maerchenCodeDao.findAll();
-            assertTrue(codesFound.size() >= 2);
+            // Maerchen suchen
+            List<Maerchen> maerchensFound = maerchenDao.findAll();
+            assertTrue(maerchensFound.size() >= 2);
             boolean found1 = false;
             boolean found2 = false;
-            for (MaerchenCode maerchenCode : codesFound) {
-                if (maerchenCode.getBeschreibung().equals("KuchenTest")) {
+            for (Maerchen maerchen : maerchensFound) {
+                if (maerchen.getSchuljahr().equals("1910/1911")) {
                     found1 = true;
                 }
-                if (maerchenCode.getBeschreibung().equals("FrisierenTest")) {
+                if (maerchen.getSchuljahr().equals("1911/1912")) {
                     found2 = true;
                 }
             }

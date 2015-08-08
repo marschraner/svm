@@ -28,4 +28,6 @@ public interface ModelFactory {
     KursErfassenModel createKursErfassenModel();
     KursSchuelerHinzufuegenModel createKursSchuelerHinzufuegenModel();
     ListenExportModel createListenExportModel();
+    MaerchensModel createMaerchensModel();
+    MaerchenErfassenModel createMaerchenErfassenModel();
 }

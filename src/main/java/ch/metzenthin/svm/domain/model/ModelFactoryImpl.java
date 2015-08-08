@@ -133,4 +133,14 @@ public class ModelFactoryImpl implements ModelFactory {
         return new ListenExportModelImpl(commandInvoker);
     }
 
+    @Override
+    public MaerchensModel createMaerchensModel() {
+        return new MaerchensModelImpl(commandInvoker);
+    }
+
+    @Override
+    public MaerchenErfassenModel createMaerchenErfassenModel() {
+        return new MaerchenErfassenModelImpl(commandInvoker);
+    }
+
 }

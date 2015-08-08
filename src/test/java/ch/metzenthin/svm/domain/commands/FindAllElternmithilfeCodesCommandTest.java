@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.daos.MaerchenCodeDao;
-import ch.metzenthin.svm.persistence.entities.MaerchenCode;
+import ch.metzenthin.svm.persistence.daos.ElternmithilfeCodeDao;
+import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +18,11 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Martin Schraner
  */
-public class FindAllMaerchenCodesCommandTest {
+public class FindAllElternmithilfeCodesCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
-    private Set<MaerchenCode> codesTestdata = new HashSet<>();
+    private Set<ElternmithilfeCode> codesTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
@@ -40,18 +40,18 @@ public class FindAllMaerchenCodesCommandTest {
 
     @Test
     public void testExecute() {
-        FindAllMaerchenCodesCommand findAllMaerchenCodesCommand = new FindAllMaerchenCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllMaerchenCodesCommand);
+        FindAllElternmithilfeCodesCommand findAllElternmithilfeCodesCommand = new FindAllElternmithilfeCodesCommand();
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllElternmithilfeCodesCommand);
 
-        List<MaerchenCode> codesFound = findAllMaerchenCodesCommand.getMaerchenCodesAll();
+        List<ElternmithilfeCode> codesFound = findAllElternmithilfeCodesCommand.getElternmithilfeCodesAll();
         assertTrue(codesFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;
-        for (MaerchenCode maerchenCode : codesTestdata) {
-            if (maerchenCode.getBeschreibung().equals("KuchenTest")) {
+        for (ElternmithilfeCode elternmithilfeCode : codesTestdata) {
+            if (elternmithilfeCode.getBeschreibung().equals("KuchenTest")) {
                 found1 = true;
             }
-            if (maerchenCode.getBeschreibung().equals("FrisierenTest")) {
+            if (elternmithilfeCode.getBeschreibung().equals("FrisierenTest")) {
                 found2 = true;
             }
         }
@@ -65,13 +65,13 @@ public class FindAllMaerchenCodesCommandTest {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            MaerchenCodeDao maerchenCodeDao = new MaerchenCodeDao(entityManager);
+            ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
 
-            MaerchenCode maerchenCodeSaved = maerchenCodeDao.save(new MaerchenCode("k", "KuchenTest"));
-            codesTestdata.add(maerchenCodeSaved);
+            ElternmithilfeCode elternmithilfeCodeSaved = elternmithilfeCodeDao.save(new ElternmithilfeCode("k", "KuchenTest"));
+            codesTestdata.add(elternmithilfeCodeSaved);
 
-            maerchenCodeSaved = maerchenCodeDao.save(new MaerchenCode("f", "FrisierenTest"));
-            codesTestdata.add(maerchenCodeSaved);
+            elternmithilfeCodeSaved = elternmithilfeCodeDao.save(new ElternmithilfeCode("f", "FrisierenTest"));
+            codesTestdata.add(elternmithilfeCodeSaved);
 
             entityManager.getTransaction().commit();
 
@@ -88,11 +88,11 @@ public class FindAllMaerchenCodesCommandTest {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            MaerchenCodeDao maerchenCodeDao = new MaerchenCodeDao(entityManager);
+            ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
 
-            for (MaerchenCode maerchenCode : codesTestdata) {
-                MaerchenCode maerchenCodeToBeRemoved = maerchenCodeDao.findById(maerchenCode.getCodeId());
-                maerchenCodeDao.remove(maerchenCodeToBeRemoved);
+            for (ElternmithilfeCode elternmithilfeCode : codesTestdata) {
+                ElternmithilfeCode elternmithilfeCodeToBeRemoved = elternmithilfeCodeDao.findById(elternmithilfeCode.getCodeId());
+                elternmithilfeCodeDao.remove(elternmithilfeCodeToBeRemoved);
             }
 
             entityManager.getTransaction().commit();

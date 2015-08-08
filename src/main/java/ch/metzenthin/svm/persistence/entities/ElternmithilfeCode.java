@@ -8,14 +8,14 @@ import javax.persistence.Table;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="MaerchenCode")
-@DiscriminatorValue("Maerchen")
-public class MaerchenCode extends Code {
+@Table(name="ElternmithilfeCode")
+@DiscriminatorValue("Elternmithilfe")
+public class ElternmithilfeCode extends Code {
 
-    public MaerchenCode() {
+    public ElternmithilfeCode() {
     }
 
-    public MaerchenCode(String kuerzel, String beschreibung) {
+    public ElternmithilfeCode(String kuerzel, String beschreibung) {
         super(kuerzel, beschreibung);
     }
 

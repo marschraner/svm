@@ -23,13 +23,14 @@ SET default_storage_engine=InnoDB;
 -- Alte Tabellen löschen
 -- *********************
 
+DROP TABLE IF EXISTS Maerchen;
 DROP TABLE IF EXISTS Schueler_Kurs;
 DROP TABLE IF EXISTS Kurs_Lehrkraft;
 DROP TABLE IF EXISTS Kurs;
 DROP TABLE IF EXISTS Semester;
 DROP TABLE IF EXISTS Kursort;
 DROP TABLE IF EXISTS Kurstyp;
-DROP TABLE IF EXISTS MaerchenCode;
+DROP TABLE IF EXISTS ElternmithilfeCode;
 DROP TABLE IF EXISTS Schueler_SchuelerCode;
 DROP TABLE IF EXISTS SchuelerCode;
 DROP TABLE IF EXISTS Code;
@@ -197,16 +198,16 @@ CREATE TABLE IF NOT EXISTS Schueler_SchuelerCode (
 DESCRIBE Schueler_SchuelerCode;
 
 
--- MaerchenCode
--- ************
+-- ElternmithilfeCode
+-- ******************
 
-CREATE TABLE IF NOT EXISTS MaerchenCode (
+CREATE TABLE IF NOT EXISTS ElternmithilfeCode (
     code_id                    INT           NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (code_id),
     FOREIGN KEY (code_id)    REFERENCES Code (code_id));
 
-DESCRIBE MaerchenCode;
+DESCRIBE ElternmithilfeCode;
 
 
 -- Kurstyp
@@ -299,3 +300,18 @@ CREATE TABLE IF NOT EXISTS Schueler_Kurs (
     FOREIGN KEY (kurs_id)      REFERENCES Kurs (kurs_id));
 
 DESCRIBE Schueler_Kurs;
+
+
+-- Maerchen
+-- ********
+
+CREATE TABLE IF NOT EXISTS Maerchen (
+    maerchen_id                INT           NOT NULL AUTO_INCREMENT,
+    schuljahr                  VARCHAR(9)    NOT NULL,
+    bezeichnung                VARCHAR(50)   NOT NULL,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (maerchen_id));
+
+DESCRIBE Maerchen;
+
+
