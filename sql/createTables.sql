@@ -29,7 +29,9 @@ DROP TABLE IF EXISTS Kurs;
 DROP TABLE IF EXISTS Semester;
 DROP TABLE IF EXISTS Kursort;
 DROP TABLE IF EXISTS Kurstyp;
-DROP TABLE IF EXISTS Schueler_Code;
+DROP TABLE IF EXISTS MaerchenCode;
+DROP TABLE IF EXISTS Schueler_SchuelerCode;
+DROP TABLE IF EXISTS SchuelerCode;
 DROP TABLE IF EXISTS Code;
 DROP TABLE IF EXISTS Dispensation;
 DROP TABLE IF EXISTS Anmeldung;
@@ -155,11 +157,12 @@ CREATE TABLE IF NOT EXISTS Dispensation (
 DESCRIBE Dispensation;
 
 
--- SchuelerCode
+-- Code
 -- ****
 
 CREATE TABLE IF NOT EXISTS Code (
     code_id                    INT           NOT NULL AUTO_INCREMENT,
+    discriminator              VARCHAR(20)   NOT NULL,
     kuerzel                    VARCHAR(5)    NOT NULL,
     beschreibung               VARCHAR(50)   NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
@@ -168,10 +171,22 @@ CREATE TABLE IF NOT EXISTS Code (
 DESCRIBE Code;
 
 
--- Schueler_Code
--- *************
+-- SchuelerCode
+-- ************
 
-CREATE TABLE IF NOT EXISTS Schueler_Code (
+CREATE TABLE IF NOT EXISTS SchuelerCode (
+    code_id                    INT           NOT NULL,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (code_id),
+    FOREIGN KEY (code_id)    REFERENCES Code (code_id));
+
+DESCRIBE SchuelerCode;
+
+
+-- Schueler_SchuelerCode
+-- *********************
+
+CREATE TABLE IF NOT EXISTS Schueler_SchuelerCode (
     person_id                  INT           NOT NULL,
     code_id                    INT           NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
@@ -179,7 +194,19 @@ CREATE TABLE IF NOT EXISTS Schueler_Code (
     FOREIGN KEY (person_id)    REFERENCES Schueler (person_id),
     FOREIGN KEY (code_id)      REFERENCES Code (code_id));
 
-DESCRIBE Schueler_Code;
+DESCRIBE Schueler_SchuelerCode;
+
+
+-- MaerchenCode
+-- ************
+
+CREATE TABLE IF NOT EXISTS MaerchenCode (
+    code_id                    INT           NOT NULL,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (code_id),
+    FOREIGN KEY (code_id)    REFERENCES Code (code_id));
+
+DESCRIBE MaerchenCode;
 
 
 -- Kurstyp

@@ -18,7 +18,9 @@ DELETE FROM Kurs;
 DELETE FROM Semester;
 DELETE FROM Kursort;
 DELETE FROM Kurstyp;
-DELETE FROM Schueler_Code;
+DELETE FROM MaerchenCode;
+DELETE FROM Schueler_SchuelerCode;
+DELETE FROM SchuelerCode;
 DELETE FROM Code;
 DELETE FROM Dispensation;
 DELETE FROM Anmeldung;
@@ -133,24 +135,46 @@ INSERT INTO Dispensation (dispensation_id, dispensationsbeginn, dispensationsend
 SELECT * FROM Dispensation;
 
 
--- SchuelerCode
+-- Code
 -- ****
 
-INSERT INTO Code (code_id, kuerzel, beschreibung) VALUES
-    (1, 'c', 'Casting'),
-    (2, 'j', 'Jugendtheater');
+INSERT INTO Code (code_id, discriminator, kuerzel, beschreibung) VALUES
+    (1, 'Schueler', 'c', 'Casting'),
+    (2, 'Schueler', 'j', 'Jugendtheater'),
+    (3, 'Maerchen', 'b', 'Buffet'),
+    (4, 'Maerchen', 'g', 'Garderobe');
 
 SELECT * FROM Code;
 
 
--- Schueler_Code
--- *************
+-- SchuelerCode
+-- ************
 
-INSERT INTO Schueler_Code (person_id, code_id) VALUES
+INSERT INTO SchuelerCode (code_id) VALUES
+    (1),
+    (2);
+
+SELECT * FROM SchuelerCode;
+
+
+-- Schueler_SchuelerCode
+-- *********************
+
+INSERT INTO Schueler_SchuelerCode (person_id, code_id) VALUES
     (7, 2),
     (8, 1);
 
-SELECT * FROM Schueler_Code;
+SELECT * FROM Schueler_SchuelerCode;
+
+
+-- MaerchenCode
+-- ************
+
+INSERT INTO MaerchenCode (code_id) VALUES
+    (3),
+    (4);
+
+SELECT * FROM MaerchenCode;
 
 
 -- Kurstyp

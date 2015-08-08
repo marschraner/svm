@@ -43,7 +43,7 @@ public class Schueler extends Person {
     private List<Dispensation> dispensationen = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "Schueler_Code",
+    @JoinTable(name = "Schueler_SchuelerCode",
             joinColumns = {@JoinColumn(name = "person_id")},
             inverseJoinColumns = {@JoinColumn(name = "code_id")})
     private Set<SchuelerCode> schuelerCodes = new HashSet<>();
