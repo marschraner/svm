@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.daos.CodeDao;
-import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.daos.SchuelerCodeDao;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateCodeCommandTest {
+public class SaveOrUpdateSchuelerCodeCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
@@ -43,20 +43,20 @@ public class SaveOrUpdateCodeCommandTest {
         assertFalse(checkIfCodeAvailable("tz", "ZirkusTest"));
         assertFalse(checkIfCodeAvailable("tj", "JugendprojektTest"));
 
-        List<Code> codesSaved = new ArrayList<>();
+        List<SchuelerCode> codesSaved = new ArrayList<>();
 
-        // Code hinzufügen
-        Code code1 = new Code("tz", "ZirkusTest");
-        SaveOrUpdateCodeCommand saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code1, null, codesSaved);
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
+        // SchuelerCode hinzufügen
+        SchuelerCode schuelerCode1 = new SchuelerCode("tz", "ZirkusTest");
+        SaveOrUpdateSchuelerCodeCommand saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode1, null, codesSaved);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
         assertEquals(1, codesSaved.size());
         assertTrue(checkIfCodeAvailable("tz", "ZirkusTest"));
         assertFalse(checkIfCodeAvailable("tj", "JugendprojektTest"));
 
-        // Weiteren Code hinzufügen
-        Code code2 = new Code("tj", "JugendprojektTest");
-        saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code2, null, codesSaved);
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
+        // Weiteren SchuelerCode hinzufügen
+        SchuelerCode schuelerCode2 = new SchuelerCode("tj", "JugendprojektTest");
+        saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode2, null, codesSaved);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
         assertEquals(2, codesSaved.size());
         // Alphabetisch geordnet?
         assertEquals("tj", codesSaved.get(0).getKuerzel());
@@ -64,10 +64,10 @@ public class SaveOrUpdateCodeCommandTest {
         assertTrue(checkIfCodeAvailable("tz", "ZirkusTest"));
         assertTrue(checkIfCodeAvailable("tj", "JugendprojektTest"));
 
-        // Code bearbeiten
-        Code code2Modif = new Code("tj", "JugendprojektModifTest");
-        saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code2Modif, code2, codesSaved);
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
+        // SchuelerCode bearbeiten
+        SchuelerCode schuelerCode2Modif = new SchuelerCode("tj", "JugendprojektModifTest");
+        saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode2Modif, schuelerCode2, codesSaved);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
         assertEquals(2, codesSaved.size());
         assertTrue(checkIfCodeAvailable("tz", "ZirkusTest"));
         assertFalse(checkIfCodeAvailable("tj", "JugendprojektTest"));
@@ -78,11 +78,11 @@ public class SaveOrUpdateCodeCommandTest {
         try {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
-            CodeDao codeDao = new CodeDao(entityManager);
-            for (Code code : codesSaved) {
-                Code codeToBeDeleted = codeDao.findById(code.getCodeId());
-                if (codeToBeDeleted != null) {
-                    codeDao.remove(codeToBeDeleted);
+            SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
+            for (SchuelerCode schuelerCode : codesSaved) {
+                SchuelerCode schuelerCodeToBeDeleted = schuelerCodeDao.findById(schuelerCode.getCodeId());
+                if (schuelerCodeToBeDeleted != null) {
+                    schuelerCodeDao.remove(schuelerCodeToBeDeleted);
                 }
             }
             entityManager.getTransaction().commit();
@@ -96,11 +96,11 @@ public class SaveOrUpdateCodeCommandTest {
     }
 
     private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) {
-        FindAllCodesCommand findAllCodesCommand = new FindAllCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllCodesCommand);
-        List<Code> codesAll = findAllCodesCommand.getCodesAll();
-        for (Code code : codesAll) {
-            if (code.getKuerzel().equals(kuerzel) && code.getBeschreibung().equals(beschreibung)) {
+        FindAllSchuelerCodesCommand findAllSchuelerCodesCommand = new FindAllSchuelerCodesCommand();
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSchuelerCodesCommand);
+        List<SchuelerCode> codesAll = findAllSchuelerCodesCommand.getCodesAll();
+        for (SchuelerCode schuelerCode : codesAll) {
+            if (schuelerCode.getKuerzel().equals(kuerzel) && schuelerCode.getBeschreibung().equals(beschreibung)) {
                 return true;
             }
         }

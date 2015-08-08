@@ -1,17 +1,17 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmRequiredException;
-import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 
 /**
  * @author Martin Schraner
  */
-public interface CodeSchuelerHinzufuegenModel extends Model {
+public interface SchuelerCodeSchuelerHinzufuegenModel extends Model {
 
-    Code getCode();
+    SchuelerCode getSchuelerCode();
 
-    void setCode(Code code) throws SvmRequiredException;
+    void setSchuelerCode(SchuelerCode schuelerCode) throws SvmRequiredException;
 
     void hinzufuegen(CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel);
 }

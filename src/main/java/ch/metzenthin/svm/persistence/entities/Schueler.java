@@ -46,7 +46,7 @@ public class Schueler extends Person {
     @JoinTable(name = "Schueler_Code",
             joinColumns = {@JoinColumn(name = "person_id")},
             inverseJoinColumns = {@JoinColumn(name = "code_id")})
-    private Set<Code> codes = new HashSet<>();
+    private Set<SchuelerCode> schuelerCodes = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "Schueler_Kurs",
@@ -164,25 +164,25 @@ public class Schueler extends Person {
         dispensationen.remove(dispensation);
     }
 
-    public Set<Code> getCodes() {
-        return codes;
+    public Set<SchuelerCode> getSchuelerCodes() {
+        return schuelerCodes;
     }
 
-    public List<Code> getCodesAsList() {
-        List<Code> codesAsList = new ArrayList<>(codes);
+    public List<SchuelerCode> getCodesAsList() {
+        List<SchuelerCode> codesAsList = new ArrayList<>(schuelerCodes);
         Collections.sort(codesAsList);
         return codesAsList;
     }
 
-    public void addCode(Code code) {
-        code.getSchueler().add(this);
-        codes.add(code);
+    public void addCode(SchuelerCode schuelerCode) {
+        schuelerCode.getSchueler().add(this);
+        schuelerCodes.add(schuelerCode);
     }
 
-    public void deleteCode(Code code) {
-        // code.getSchueler().remove(this); führt zu StaleObjectStateException!
-        // Stattdessen in CodeDao.removeFromSchuelerAndUpdate() refresh(code) ausführen!
-        codes.remove(code);
+    public void deleteCode(SchuelerCode schuelerCode) {
+        // schuelerCode.getSchueler().remove(this); führt zu StaleObjectStateException!
+        // Stattdessen in SchuelerCodeDao.removeFromSchuelerAndUpdate() refresh(schuelerCode) ausführen!
+        schuelerCodes.remove(schuelerCode);
     }
 
     public Set<Kurs> getKurse() {

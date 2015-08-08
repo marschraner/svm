@@ -10,7 +10,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="Code")
-public class Code implements Comparable<Code> {
+public class SchuelerCode implements Comparable<SchuelerCode> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,26 +27,26 @@ public class Code implements Comparable<Code> {
     @Column(name = "beschreibung", nullable = false)
     private String beschreibung;
 
-    @ManyToMany(mappedBy = "codes")
+    @ManyToMany(mappedBy = "schuelerCodes")
     private Set<Schueler> schueler = new HashSet<>();
 
-    public Code() {
+    public SchuelerCode() {
     }
 
-    public Code(String kuerzel, String beschreibung) {
+    public SchuelerCode(String kuerzel, String beschreibung) {
         this.kuerzel = kuerzel;
         this.beschreibung = beschreibung;
     }
 
-    public boolean isIdenticalWith(Code otherCode) {
-        return otherCode != null
-                && ((kuerzel == null && otherCode.getKuerzel() == null) || (kuerzel != null && kuerzel.equals(otherCode.getKuerzel())))
-                && ((beschreibung == null && otherCode.getBeschreibung() == null) || (beschreibung != null && beschreibung.equals(otherCode.getBeschreibung())));
+    public boolean isIdenticalWith(SchuelerCode otherSchuelerCode) {
+        return otherSchuelerCode != null
+                && ((kuerzel == null && otherSchuelerCode.getKuerzel() == null) || (kuerzel != null && kuerzel.equals(otherSchuelerCode.getKuerzel())))
+                && ((beschreibung == null && otherSchuelerCode.getBeschreibung() == null) || (beschreibung != null && beschreibung.equals(otherSchuelerCode.getBeschreibung())));
     }
 
-    public void copyAttributesFrom(Code otherCode) {
-        this.kuerzel = otherCode.getKuerzel();
-        this.beschreibung = otherCode.getBeschreibung();
+    public void copyAttributesFrom(SchuelerCode otherSchuelerCode) {
+        this.kuerzel = otherSchuelerCode.getKuerzel();
+        this.beschreibung = otherSchuelerCode.getBeschreibung();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class Code implements Comparable<Code> {
     }
 
     @Override
-    public int compareTo(Code otherDispensation) {
+    public int compareTo(SchuelerCode otherDispensation) {
         // aufsteigend nach Kuerzel sortieren, d.h. neuste Einträge zuoberst
         return kuerzel.compareTo(otherDispensation.kuerzel);
     }

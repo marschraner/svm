@@ -4,24 +4,24 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CheckCodeKuerzelBereitsInVerwendungCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.SaveOrUpdateCodeCommand;
-import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.domain.commands.SaveOrUpdateSchuelerCodeCommand;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 
 /**
  * @author Martin Schraner
  */
 public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassenModel {
 
-    private Code code = new Code();
-    private Code codeOrigin;
+    private SchuelerCode schuelerCode = new SchuelerCode();
+    private SchuelerCode schuelerCodeOrigin;
 
     public CodeErfassenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
     }
 
     @Override
-    public void setCodeOrigin(Code codeOrigin) {
-        this.codeOrigin = codeOrigin;
+    public void setSchuelerCodeOrigin(SchuelerCode schuelerCodeOrigin) {
+        this.schuelerCodeOrigin = schuelerCodeOrigin;
     }
 
     private final StringModelAttribute kuerzelModelAttribute = new StringModelAttribute(
@@ -30,12 +30,12 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return code.getKuerzel();
+                    return schuelerCode.getKuerzel();
                 }
 
                 @Override
                 public void setValue(String value) {
-                    code.setKuerzel(value);
+                    schuelerCode.setKuerzel(value);
                 }
             }
     );
@@ -56,12 +56,12 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return code.getBeschreibung();
+                    return schuelerCode.getBeschreibung();
                 }
 
                 @Override
                 public void setValue(String value) {
-                    code.setBeschreibung(value);
+                    schuelerCode.setBeschreibung(value);
                 }
             }
     );
@@ -79,7 +79,7 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     @Override
     public boolean checkCodeKuerzelBereitsInVerwendung(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(code, codeOrigin, svmModel.getCodesAll());
+        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(schuelerCode, schuelerCodeOrigin, svmModel.getCodesAll());
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
         return checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung();
     }
@@ -87,17 +87,17 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     @Override
     public void speichern(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        SaveOrUpdateCodeCommand saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code, codeOrigin, svmModel.getCodesAll());
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
+        SaveOrUpdateSchuelerCodeCommand saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode, schuelerCodeOrigin, svmModel.getCodesAll());
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
     }
 
     @Override
     public void initializeCompleted() {
-        if (codeOrigin != null) {
+        if (schuelerCodeOrigin != null) {
             setBulkUpdate(true);
             try {
-                setKuerzel(codeOrigin.getKuerzel());
-                setBeschreibung(codeOrigin.getBeschreibung());
+                setKuerzel(schuelerCodeOrigin.getKuerzel());
+                setBeschreibung(schuelerCodeOrigin.getBeschreibung());
             } catch (SvmValidationException ignore) {
                 ignore.printStackTrace();
             }
@@ -109,15 +109,15 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
 
     @Override
     public boolean isCompleted() {
-        return code.getKuerzel() != null && code.getBeschreibung() != null;
+        return schuelerCode.getKuerzel() != null && schuelerCode.getBeschreibung() != null;
     }
 
     @Override
     void doValidate() throws SvmValidationException {
-        if (code.getKuerzel() == null) {
+        if (schuelerCode.getKuerzel() == null) {
             throw new SvmValidationException(2020, "Kürzel obligatorisch", Field.KUERZEL);
         }
-        if (code.getBeschreibung() == null) {
+        if (schuelerCode.getBeschreibung() == null) {
             throw new SvmValidationException(2021, "Beschreibung obligatorisch", Field.BESCHREIBUNG);
         }
     }

@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence.daos;
 
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
-import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
@@ -38,9 +38,9 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
         rechnungsempfaenger.getSchuelerRechnungsempfaenger().remove(schueler);
 
         // Lösche zugewiesene Codes
-        for (Code code : new HashSet<>(schueler.getCodes())) {
-            schueler.deleteCode(code);
-            entityManager.refresh(code);
+        for (SchuelerCode schuelerCode : new HashSet<>(schueler.getSchuelerCodes())) {
+            schueler.deleteCode(schuelerCode);
+            entityManager.refresh(schuelerCode);
         }
 
         // Lösche zugewiesene Kurse

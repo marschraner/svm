@@ -4,10 +4,10 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CodeSchuelerHinzufuegenModel;
+import ch.metzenthin.svm.domain.model.SchuelerCodeSchuelerHinzufuegenModel;
 import ch.metzenthin.svm.domain.model.CodesModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
-import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import org.apache.log4j.Logger;
 
@@ -21,31 +21,31 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
-public class CodeSchuelerHinzufuegenController extends AbstractController {
+public class SchuelerCodeSchuelerHinzufuegenController extends AbstractController {
 
-    private static final Logger LOGGER = Logger.getLogger(CodeSchuelerHinzufuegenController.class);
+    private static final Logger LOGGER = Logger.getLogger(SchuelerCodeSchuelerHinzufuegenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private final SvmContext svmContext;
     private final SchuelerDatenblattModel schuelerDatenblattModel;
-    private CodeSchuelerHinzufuegenModel codeSchuelerHinzufuegenModel;
+    private SchuelerCodeSchuelerHinzufuegenModel schuelerCodeSchuelerHinzufuegenModel;
     private CodesTableModel codesTableModel;
     private CodesModel codesModel;
     private JDialog codeSchuelerHinzufuegenDialog;
-    private JComboBox<Code> comboBoxCode;
+    private JComboBox<SchuelerCode> comboBoxCode;
     private JLabel errLblCode;
     private JButton btnOk;
 
-    public CodeSchuelerHinzufuegenController(SvmContext svmContext, CodesTableModel codesTableModel, CodeSchuelerHinzufuegenModel codeSchuelerHinzufuegenModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
-        super(codeSchuelerHinzufuegenModel);
+    public SchuelerCodeSchuelerHinzufuegenController(SvmContext svmContext, CodesTableModel codesTableModel, SchuelerCodeSchuelerHinzufuegenModel schuelerCodeSchuelerHinzufuegenModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+        super(schuelerCodeSchuelerHinzufuegenModel);
         this.svmContext = svmContext;
         this.codesTableModel = codesTableModel;
         this.codesModel = codesModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
-        this.codeSchuelerHinzufuegenModel = codeSchuelerHinzufuegenModel;
-        this.codeSchuelerHinzufuegenModel.addPropertyChangeListener(this);
+        this.schuelerCodeSchuelerHinzufuegenModel = schuelerCodeSchuelerHinzufuegenModel;
+        this.schuelerCodeSchuelerHinzufuegenModel.addPropertyChangeListener(this);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -69,10 +69,10 @@ public class CodeSchuelerHinzufuegenController extends AbstractController {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    public void setComboBoxCode(JComboBox<Code> comboBoxCode) {
+    public void setComboBoxCode(JComboBox<SchuelerCode> comboBoxCode) {
         this.comboBoxCode = comboBoxCode;
-        Code[] selectableCodes = codesModel.getSelectableCodes(svmContext.getSvmModel(), schuelerDatenblattModel);
-        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableCodes));
+        SchuelerCode[] selectableSchuelerCodes = codesModel.getSelectableCodes(svmContext.getSvmModel(), schuelerDatenblattModel);
+        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableSchuelerCodes));
         // Leeren ComboBox-Wert anzeigen
         comboBoxCode.setSelectedItem(null);
         this.comboBoxCode.addActionListener(new ActionListener() {
@@ -84,8 +84,8 @@ public class CodeSchuelerHinzufuegenController extends AbstractController {
     }
 
     private void onCodeSelected() {
-        LOGGER.trace("CodeSchuelerHinzufuegenController Event Code selected=" + comboBoxCode.getSelectedItem());
-        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxCode.getSelectedItem(), codeSchuelerHinzufuegenModel.getCode());
+        LOGGER.trace("SchuelerCodeSchuelerHinzufuegenController Event SchuelerCode selected=" + comboBoxCode.getSelectedItem());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxCode.getSelectedItem(), schuelerCodeSchuelerHinzufuegenModel.getSchuelerCode());
         try {
             setModelCode();
         } catch (SvmValidationException e) {
@@ -100,9 +100,9 @@ public class CodeSchuelerHinzufuegenController extends AbstractController {
 
     private void setModelCode() throws SvmRequiredException {
         try {
-            codeSchuelerHinzufuegenModel.setCode((Code) comboBoxCode.getSelectedItem());
+            schuelerCodeSchuelerHinzufuegenModel.setSchuelerCode((SchuelerCode) comboBoxCode.getSelectedItem());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("CodeSchuelerHinzufuegenController setModelCode RequiredException=" + e.getMessage());
+            LOGGER.trace("SchuelerCodeSchuelerHinzufuegenController setModelCode RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxCode.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
@@ -132,7 +132,7 @@ public class CodeSchuelerHinzufuegenController extends AbstractController {
             btnOk.setFocusPainted(false);
             return;
         }
-        codeSchuelerHinzufuegenModel.hinzufuegen(codesTableModel, schuelerDatenblattModel);
+        schuelerCodeSchuelerHinzufuegenModel.hinzufuegen(codesTableModel, schuelerDatenblattModel);
         codeSchuelerHinzufuegenDialog.dispose();
     }
 
@@ -152,14 +152,14 @@ public class CodeSchuelerHinzufuegenController extends AbstractController {
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         if (checkIsFieldChange(Field.CODE, evt)) {
-            comboBoxCode.setSelectedItem(codeSchuelerHinzufuegenModel.getCode());
+            comboBoxCode.setSelectedItem(schuelerCodeSchuelerHinzufuegenModel.getSchuelerCode());
         }
     }
 
     @Override
     void validateFields() throws SvmValidationException {
         if (comboBoxCode.isEnabled()) {
-            LOGGER.trace("Validate combobox Code");
+            LOGGER.trace("Validate combobox SchuelerCode");
             setModelCode();
         }
     }

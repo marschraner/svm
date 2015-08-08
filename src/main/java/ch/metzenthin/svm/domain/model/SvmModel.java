@@ -15,7 +15,7 @@ public interface SvmModel {
     void loadKurstypenAll();
     void loadSemestersAll();
 
-    List<Code> getCodesAll();
+    List<SchuelerCode> getCodesAll();
     List<Lehrkraft> getLehrkraefteAll();
     List<Lehrkraft> getAktiveLehrkraefteAll();
     List<Kursort> getKursorteAll();

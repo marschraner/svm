@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.daos.CodeDao;
-import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.daos.SchuelerCodeDao;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +18,11 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Martin Schraner
  */
-public class FindAllCodesCommandTest {
+public class FindAllSchuelerCodesCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
-    private Set<Code> codesTestdata = new HashSet<>();
+    private Set<SchuelerCode> codesTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
@@ -40,18 +40,18 @@ public class FindAllCodesCommandTest {
 
     @Test
     public void testExecute() {
-        FindAllCodesCommand findAllCodesCommand = new FindAllCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllCodesCommand);
+        FindAllSchuelerCodesCommand findAllSchuelerCodesCommand = new FindAllSchuelerCodesCommand();
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSchuelerCodesCommand);
 
-        List<Code> codesFound = findAllCodesCommand.getCodesAll();
+        List<SchuelerCode> codesFound = findAllSchuelerCodesCommand.getCodesAll();
         assertTrue(codesFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;
-        for (Code code : codesTestdata) {
-            if (code.getBeschreibung().equals("ZirkusTest")) {
+        for (SchuelerCode schuelerCode : codesTestdata) {
+            if (schuelerCode.getBeschreibung().equals("ZirkusTest")) {
                 found1 = true;
             }
-            if (code.getBeschreibung().equals("JugendprojektTest")) {
+            if (schuelerCode.getBeschreibung().equals("JugendprojektTest")) {
                 found2 = true;
             }
         }
@@ -65,13 +65,13 @@ public class FindAllCodesCommandTest {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            CodeDao codeDao = new CodeDao(entityManager);
+            SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
 
-            Code codeSaved = codeDao.save(new Code("z", "ZirkusTest"));
-            codesTestdata.add(codeSaved);
+            SchuelerCode schuelerCodeSaved = schuelerCodeDao.save(new SchuelerCode("z", "ZirkusTest"));
+            codesTestdata.add(schuelerCodeSaved);
 
-            codeSaved = codeDao.save(new Code("j", "JugendprojektTest"));
-            codesTestdata.add(codeSaved);
+            schuelerCodeSaved = schuelerCodeDao.save(new SchuelerCode("j", "JugendprojektTest"));
+            codesTestdata.add(schuelerCodeSaved);
 
             entityManager.getTransaction().commit();
 
@@ -88,11 +88,11 @@ public class FindAllCodesCommandTest {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            CodeDao codeDao = new CodeDao(entityManager);
+            SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
 
-            for (Code code : codesTestdata) {
-                Code codeToBeRemoved = codeDao.findById(code.getCodeId());
-                codeDao.remove(codeToBeRemoved);
+            for (SchuelerCode schuelerCode : codesTestdata) {
+                SchuelerCode schuelerCodeToBeRemoved = schuelerCodeDao.findById(schuelerCode.getCodeId());
+                schuelerCodeDao.remove(schuelerCodeToBeRemoved);
             }
 
             entityManager.getTransaction().commit();

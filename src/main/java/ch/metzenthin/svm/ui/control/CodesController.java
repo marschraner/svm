@@ -1,14 +1,14 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.commands.DeleteCodeCommand;
+import ch.metzenthin.svm.domain.commands.DeleteSchuelerCodeCommand;
 import ch.metzenthin.svm.domain.model.CodesModel;
 import ch.metzenthin.svm.domain.model.CodesTableData;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.CodeErfassenDialog;
-import ch.metzenthin.svm.ui.components.CodeSchuelerHinzufuegenDialog;
+import ch.metzenthin.svm.ui.components.SchuelerCodeSchuelerHinzufuegenDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 import ch.metzenthin.svm.ui.components.UiComponentsUtils;
 
@@ -113,7 +113,7 @@ public class CodesController {
 
     private void onNeuCodesVerwalten() {
         btnNeu.setFocusPainted(true);
-        CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, codesModel, 0, false, "Neuer Code");
+        CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, codesModel, 0, false, "Neuer SchuelerCode");
         codeErfassenDialog.pack();
         codeErfassenDialog.setVisible(true);
         codesTableModel.fireTableDataChanged();
@@ -122,9 +122,9 @@ public class CodesController {
 
     private void onNeuCodesSchueler() {
         btnNeu.setFocusPainted(true);
-        CodeSchuelerHinzufuegenDialog codeSchuelerHinzufuegenDialog = new CodeSchuelerHinzufuegenDialog(svmContext, codesTableModel, codesModel, schuelerDatenblattModel);
-        codeSchuelerHinzufuegenDialog.pack();
-        codeSchuelerHinzufuegenDialog.setVisible(true);
+        SchuelerCodeSchuelerHinzufuegenDialog schuelerCodeSchuelerHinzufuegenDialog = new SchuelerCodeSchuelerHinzufuegenDialog(svmContext, codesTableModel, codesModel, schuelerDatenblattModel);
+        schuelerCodeSchuelerHinzufuegenDialog.pack();
+        schuelerCodeSchuelerHinzufuegenDialog.setVisible(true);
         codesTableModel.fireTableDataChanged();
         btnNeu.setFocusPainted(false);
         if (codesModel.getSelectableCodes(svmContext.getSvmModel(), schuelerDatenblattModel).length == 0) {
@@ -154,7 +154,7 @@ public class CodesController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, codesModel, codesTable.getSelectedRow(), true, "Code bearbeiten");
+        CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, codesModel, codesTable.getSelectedRow(), true, "SchuelerCode bearbeiten");
         codeErfassenDialog.pack();
         codeErfassenDialog.setVisible(true);
         codesTableModel.fireTableDataChanged();
@@ -186,17 +186,17 @@ public class CodesController {
         int n = JOptionPane.showOptionDialog(
                 null,
                 "Soll der Eintrag aus der Datenbank gelöscht werden?",
-                "Code löschen",
+                "SchuelerCode löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,     //do not use a custom Icon
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteCodeCommand.Result result  = codesModel.eintragLoeschenCodesVerwalten(svmContext, codesTable.getSelectedRow());
+            DeleteSchuelerCodeCommand.Result result  = codesModel.eintragLoeschenCodesVerwalten(svmContext, codesTable.getSelectedRow());
             switch (result) {
                 case CODE_VON_SCHUELER_REFERENZIERT:
-                    JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens einen Schüler referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Der SchuelerCode wird durch mindestens einen Schüler referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
@@ -215,7 +215,7 @@ public class CodesController {
         int n = JOptionPane.showOptionDialog(
                 null,
                 "Soll der Eintrag gelöscht werden?",
-                "Code löschen",
+                "SchuelerCode löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,     //do not use a custom Icon

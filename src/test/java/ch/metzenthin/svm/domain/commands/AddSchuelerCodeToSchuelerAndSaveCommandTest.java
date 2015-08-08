@@ -2,7 +2,7 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.persistence.daos.CodeDao;
+import ch.metzenthin.svm.persistence.daos.SchuelerCodeDao;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Martin Schraner
  */
-public class AddCodeToSchuelerAndSaveCommandTest {
+public class AddSchuelerCodeToSchuelerAndSaveCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
@@ -41,18 +41,18 @@ public class AddCodeToSchuelerAndSaveCommandTest {
     @Test
     public void testExecute() throws Exception {
 
-        List<Code> erfassteCodes = new ArrayList<>();
+        List<SchuelerCode> erfassteSchuelerCodes = new ArrayList<>();
 
         // Codes erzeugen
-        Code code1 = new Code("zt", "ZirkusTest");
-        Code code2 = new Code("jt", "JugendprojektTest");
-        SaveOrUpdateCodeCommand saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code1, null, erfassteCodes);
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
-        saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code2, null, erfassteCodes);
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
+        SchuelerCode schuelerCode1 = new SchuelerCode("zt", "ZirkusTest");
+        SchuelerCode schuelerCode2 = new SchuelerCode("jt", "JugendprojektTest");
+        SaveOrUpdateSchuelerCodeCommand saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode1, null, erfassteSchuelerCodes);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
+        saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode2, null, erfassteSchuelerCodes);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
 
 
-        // Schueler erfassen und Code hinzufügen
+        // Schueler erfassen und SchuelerCode hinzufügen
         Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
         schueler.setAdresse(adresse);
@@ -70,21 +70,21 @@ public class AddCodeToSchuelerAndSaveCommandTest {
         commandInvoker.executeCommandAsTransaction(saveSchuelerCommand);
         Schueler schuelerSaved = saveSchuelerCommand.getSavedSchueler();
 
-        // Code hinzufügen
-        AddCodeToSchuelerAndSaveCommand addCodeToSchuelerAndSaveCommand = new AddCodeToSchuelerAndSaveCommand(code1, schuelerSaved);
-        commandInvoker.executeCommandAsTransaction(addCodeToSchuelerAndSaveCommand);
-        schuelerSaved = addCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
+        // SchuelerCode hinzufügen
+        AddSchuelerCodeToSchuelerAndSaveCommand addSchuelerCodeToSchuelerAndSaveCommand = new AddSchuelerCodeToSchuelerAndSaveCommand(schuelerCode1, schuelerSaved);
+        commandInvoker.executeCommandAsTransaction(addSchuelerCodeToSchuelerAndSaveCommand);
+        schuelerSaved = addSchuelerCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
 
-        assertEquals(1, schuelerSaved.getCodes().size());
+        assertEquals(1, schuelerSaved.getSchuelerCodes().size());
         assertEquals("zt", schuelerSaved.getCodesAsList().get(0).getKuerzel());
 
 
-        // Weiteren Code hinzufügen:
-        addCodeToSchuelerAndSaveCommand = new AddCodeToSchuelerAndSaveCommand(code2, schuelerSaved);
-        commandInvoker.executeCommandAsTransaction(addCodeToSchuelerAndSaveCommand);
-        schuelerSaved = addCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
+        // Weiteren SchuelerCode hinzufügen:
+        addSchuelerCodeToSchuelerAndSaveCommand = new AddSchuelerCodeToSchuelerAndSaveCommand(schuelerCode2, schuelerSaved);
+        commandInvoker.executeCommandAsTransaction(addSchuelerCodeToSchuelerAndSaveCommand);
+        schuelerSaved = addSchuelerCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
 
-        assertEquals(2, schuelerSaved.getCodes().size());
+        assertEquals(2, schuelerSaved.getSchuelerCodes().size());
         // Alphabetisch geordnet?
         assertEquals("jt", schuelerSaved.getCodesAsList().get(0).getKuerzel());
         assertEquals("zt", schuelerSaved.getCodesAsList().get(1).getKuerzel());
@@ -97,11 +97,11 @@ public class AddCodeToSchuelerAndSaveCommandTest {
             entityManager.getTransaction().begin();
             SchuelerDao schuelerDao = new SchuelerDao(entityManager);
             Schueler schuelerToBeDeleted = schuelerDao.findById(schuelerSaved.getPersonId());
-            CodeDao codeDao = new CodeDao(entityManager);
-            for (Code code : erfassteCodes) {
-                Code codeToBeDeleted = codeDao.findById(code.getCodeId());
-                codeDao.removeFromSchuelerAndUpdate(codeToBeDeleted, schuelerToBeDeleted);
-                codeDao.remove(codeToBeDeleted);
+            SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
+            for (SchuelerCode schuelerCode : erfassteSchuelerCodes) {
+                SchuelerCode schuelerCodeToBeDeleted = schuelerCodeDao.findById(schuelerCode.getCodeId());
+                schuelerCodeDao.removeFromSchuelerAndUpdate(schuelerCodeToBeDeleted, schuelerToBeDeleted);
+                schuelerCodeDao.remove(schuelerCodeToBeDeleted);
             }
             schuelerDao.remove(schuelerToBeDeleted);
             entityManager.getTransaction().commit();

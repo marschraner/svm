@@ -1,13 +1,13 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 
 /**
  * @author Martin Schraner
  */
 public interface CodeErfassenModel extends Model {
-    void setCodeOrigin(Code codeOrigin);
+    void setSchuelerCodeOrigin(SchuelerCode schuelerCodeOrigin);
 
     String getKuerzel();
     String getBeschreibung();

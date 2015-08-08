@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 
 import java.util.List;
 
@@ -10,10 +10,10 @@ import java.util.List;
  */
 public class CodesTableData {
 
-    private List<Code> codes;
+    private List<SchuelerCode> schuelerCodes;
 
-    public CodesTableData(List<Code> codes) {
-        this.codes = codes;
+    public CodesTableData(List<SchuelerCode> schuelerCodes) {
+        this.schuelerCodes = schuelerCodes;
     }
 
     private static final Field[] COLUMNS = {Field.KUERZEL, Field.BESCHREIBUNG};
@@ -23,18 +23,18 @@ public class CodesTableData {
     }
 
     public int size() {
-        return codes.size();
+        return schuelerCodes.size();
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Code code = codes.get(rowIndex);
+        SchuelerCode schuelerCode = schuelerCodes.get(rowIndex);
         Object value = null;
         switch (COLUMNS[columnIndex]) {
             case KUERZEL:
-                value = code.getKuerzel();
+                value = schuelerCode.getKuerzel();
                 break;
             case BESCHREIBUNG:
-                value = code.getBeschreibung();
+                value = schuelerCode.getBeschreibung();
                 break;
             default:
                 break;
@@ -42,16 +42,16 @@ public class CodesTableData {
         return value;
     }
 
-    public void setCodes(List<Code> codes) {
-        this.codes = codes;
+    public void setSchuelerCodes(List<SchuelerCode> schuelerCodes) {
+        this.schuelerCodes = schuelerCodes;
     }
 
     public String getColumnName(int column) {
         return COLUMNS[column].toString();
     }
 
-    public Code getCodeAt(int rowIndex) {
-        return codes.get(rowIndex);
+    public SchuelerCode getCodeAt(int rowIndex) {
+        return schuelerCodes.get(rowIndex);
     }
 
 }

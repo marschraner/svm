@@ -133,7 +133,7 @@ INSERT INTO Dispensation (dispensation_id, dispensationsbeginn, dispensationsend
 SELECT * FROM Dispensation;
 
 
--- Code
+-- SchuelerCode
 -- ****
 
 INSERT INTO Code (code_id, kuerzel, beschreibung) VALUES

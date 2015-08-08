@@ -14,7 +14,7 @@ public interface ModelFactory {
     DispensationErfassenModel createDispensationErfassenModel();
     CodesModel createCodesModel();
     CodeErfassenModel createCodeErfassenModel();
-    CodeSchuelerHinzufuegenModel createCodeSchuelerHinzufuegenModel();
+    SchuelerCodeSchuelerHinzufuegenModel createCodeSchuelerHinzufuegenModel();
     LehrkraefteModel createLehrkraefteModel();
     LehrkraftErfassenModel createLehrkraftErfassenModel();
     KursorteModel createKursorteModel();

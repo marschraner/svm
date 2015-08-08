@@ -3,9 +3,9 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.DeleteCodeCommand;
-import ch.metzenthin.svm.domain.commands.RemoveCodeFromSchuelerCommand;
-import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.domain.commands.DeleteSchuelerCodeCommand;
+import ch.metzenthin.svm.domain.commands.RemoveSchuelerCodeFromSchuelerCommand;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 
@@ -21,46 +21,46 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
     }
 
     @Override
-    public DeleteCodeCommand.Result eintragLoeschenCodesVerwalten(SvmContext svmContext, int indexCodeToBeRemoved) {
-        List<Code> codes = svmContext.getSvmModel().getCodesAll();
+    public DeleteSchuelerCodeCommand.Result eintragLoeschenCodesVerwalten(SvmContext svmContext, int indexCodeToBeRemoved) {
+        List<SchuelerCode> schuelerCodes = svmContext.getSvmModel().getCodesAll();
         CommandInvoker commandInvoker = getCommandInvoker();
-        DeleteCodeCommand deleteCodeCommand = new DeleteCodeCommand(codes, indexCodeToBeRemoved);
-        commandInvoker.executeCommandAsTransaction(deleteCodeCommand);
-        return deleteCodeCommand.getResult();
+        DeleteSchuelerCodeCommand deleteSchuelerCodeCommand = new DeleteSchuelerCodeCommand(schuelerCodes, indexCodeToBeRemoved);
+        commandInvoker.executeCommandAsTransaction(deleteSchuelerCodeCommand);
+        return deleteSchuelerCodeCommand.getResult();
     }
 
     @Override
-    public void eintragLoeschenCodesSchueler(CodesTableModel codesTableModel, Code codeToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public void eintragLoeschenCodesSchueler(CodesTableModel codesTableModel, SchuelerCode schuelerCodeToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        RemoveCodeFromSchuelerCommand removeCodeFromSchuelerCommand = new RemoveCodeFromSchuelerCommand(codeToBeRemoved, schuelerDatenblattModel.getSchueler());
-        commandInvoker.executeCommandAsTransaction(removeCodeFromSchuelerCommand);
-        Schueler schuelerUpdated = removeCodeFromSchuelerCommand.getSchuelerUpdated();
+        RemoveSchuelerCodeFromSchuelerCommand removeSchuelerCodeFromSchuelerCommand = new RemoveSchuelerCodeFromSchuelerCommand(schuelerCodeToBeRemoved, schuelerDatenblattModel.getSchueler());
+        commandInvoker.executeCommandAsTransaction(removeSchuelerCodeFromSchuelerCommand);
+        Schueler schuelerUpdated = removeSchuelerCodeFromSchuelerCommand.getSchuelerUpdated();
         // TableData mit von der Datenbank upgedatetem Schüler updaten
-        codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getCodesAsList());
+        codesTableModel.getCodesTableData().setSchuelerCodes(schuelerUpdated.getCodesAsList());
     }
 
     @Override
     public CodeErfassenModel getCodeErfassenModel(SvmContext svmContext, int indexCodeToBeModified) {
         CodeErfassenModel codeErfassenModel = svmContext.getModelFactory().createCodeErfassenModel();
-        List<Code> codes = svmContext.getSvmModel().getCodesAll();
-        codeErfassenModel.setCodeOrigin(codes.get(indexCodeToBeModified));
+        List<SchuelerCode> schuelerCodes = svmContext.getSvmModel().getCodesAll();
+        codeErfassenModel.setSchuelerCodeOrigin(schuelerCodes.get(indexCodeToBeModified));
         return codeErfassenModel;
     }
 
     @Override
-    public Code[] getSelectableCodes(SvmModel svmModel, SchuelerDatenblattModel schuelerDatenblattModel) {
-        List<Code> selectableCodes = new ArrayList<>(svmModel.getCodesAll());
-        List<Code> codesToBeRemoved = new ArrayList<>();
-        for (Code code : selectableCodes) {
-            for (Code codeSchueler: schuelerDatenblattModel.getSchueler().getCodes()) {
+    public SchuelerCode[] getSelectableCodes(SvmModel svmModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+        List<SchuelerCode> selectableSchuelerCodes = new ArrayList<>(svmModel.getCodesAll());
+        List<SchuelerCode> codesToBeRemoved = new ArrayList<>();
+        for (SchuelerCode schuelerCode : selectableSchuelerCodes) {
+            for (SchuelerCode schuelerCodeSchueler : schuelerDatenblattModel.getSchueler().getSchuelerCodes()) {
                 // Nur noch nicht zugewiesene Codes sollen selektierbar sein
-                if (codeSchueler.isIdenticalWith(code)) {
-                    codesToBeRemoved.add(code);
+                if (schuelerCodeSchueler.isIdenticalWith(schuelerCode)) {
+                    codesToBeRemoved.add(schuelerCode);
                 }
             }
         }
-        selectableCodes.removeAll(codesToBeRemoved);
-        return selectableCodes.toArray(new Code[selectableCodes.size()]);
+        selectableSchuelerCodes.removeAll(codesToBeRemoved);
+        return selectableSchuelerCodes.toArray(new SchuelerCode[selectableSchuelerCodes.size()]);
     }
 
     @Override

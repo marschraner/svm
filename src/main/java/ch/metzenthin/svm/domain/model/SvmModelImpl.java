@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class SvmModelImpl implements SvmModel {
 
-    private List<Code> codesAll;
+    private List<SchuelerCode> codesAll;
     private List<Lehrkraft> lehrkraefteAll;
     private List<Kursort> kursorteAll;
     private List<Kurstyp> kurstypenAll;
@@ -29,9 +29,9 @@ public class SvmModelImpl implements SvmModel {
 
     @Override
     public void loadCodesAll() {
-        FindAllCodesCommand findAllCodesCommand = new FindAllCodesCommand();
-        commandInvoker.executeCommand(findAllCodesCommand);
-        codesAll = findAllCodesCommand.getCodesAll();
+        FindAllSchuelerCodesCommand findAllSchuelerCodesCommand = new FindAllSchuelerCodesCommand();
+        commandInvoker.executeCommand(findAllSchuelerCodesCommand);
+        codesAll = findAllSchuelerCodesCommand.getCodesAll();
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SvmModelImpl implements SvmModel {
     }
 
     @Override
-    public List<Code> getCodesAll() {
+    public List<SchuelerCode> getCodesAll() {
         return codesAll;
     }
 

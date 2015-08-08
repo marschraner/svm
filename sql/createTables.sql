@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS Dispensation (
 DESCRIBE Dispensation;
 
 
--- Code
+-- SchuelerCode
 -- ****
 
 CREATE TABLE IF NOT EXISTS Code (

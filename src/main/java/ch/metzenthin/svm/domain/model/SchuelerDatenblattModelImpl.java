@@ -272,13 +272,13 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     @Override
     public String getCodesAsString() {
-        if (!schueler.getCodes().isEmpty()) {
+        if (!schueler.getSchuelerCodes().isEmpty()) {
             StringBuilder codesSb = new StringBuilder("<html>");
-            for (Code code : schueler.getCodesAsList()) {
+            for (SchuelerCode schuelerCode : schueler.getCodesAsList()) {
                 if (codesSb.length() > 6) {
                     codesSb.append("<br>");
                 }
-                codesSb.append(code);
+                codesSb.append(schuelerCode);
             }
             codesSb.append("</html>");
             if (codesSb.length() > 13) {
@@ -379,9 +379,9 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     @Override
     public CodesTableData getCodesTableData() {
-        List<Code> codes = new ArrayList<>(schueler.getCodes());
-        Collections.sort(codes);
-        return new CodesTableData(new ArrayList<>(schueler.getCodes()));
+        List<SchuelerCode> schuelerCodes = new ArrayList<>(schueler.getSchuelerCodes());
+        Collections.sort(schuelerCodes);
+        return new CodesTableData(new ArrayList<>(schueler.getSchuelerCodes()));
     }
 
     @Override

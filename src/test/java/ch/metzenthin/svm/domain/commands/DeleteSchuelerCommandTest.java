@@ -45,17 +45,17 @@ public class DeleteSchuelerCommandTest {
     @Test
     public void testExecute() throws Exception {
 
-        List<Code> codesSaved = new ArrayList<>();
+        List<SchuelerCode> codesSaved = new ArrayList<>();
 
         // 2 Codes erfassen und den zweiten einem Schueler hinzufügen
-        Code code1 = new Code("zt", "ZirkusTest");
-        Code code2 = new Code("jt", "JugendprojektTest");
+        SchuelerCode schuelerCode1 = new SchuelerCode("zt", "ZirkusTest");
+        SchuelerCode schuelerCode2 = new SchuelerCode("jt", "JugendprojektTest");
 
-        SaveOrUpdateCodeCommand saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code1, null, codesSaved);
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
+        SaveOrUpdateSchuelerCodeCommand saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode1, null, codesSaved);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
 
-        saveOrUpdateCodeCommand = new SaveOrUpdateCodeCommand(code2, null, codesSaved);
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateCodeCommand);
+        saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode2, null, codesSaved);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
 
         Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
@@ -75,8 +75,8 @@ public class DeleteSchuelerCommandTest {
         schueler.addDispensation(dispensation);
 
         // Codes hinzufügen
-        schueler.addCode(code1);
-        schueler.addCode(code2);
+        schueler.addCode(schuelerCode1);
+        schueler.addCode(schuelerCode2);
 
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
         commandInvoker.executeCommandAsTransaction(saveSchuelerCommand);
@@ -86,7 +86,7 @@ public class DeleteSchuelerCommandTest {
 
         assertEquals("Jana", schuelerSaved.getVorname());
         assertEquals("Eugen", schuelerSaved.getVater().getVorname());
-        assertEquals(2, schuelerSaved.getCodes().size());
+        assertEquals(2, schuelerSaved.getSchuelerCodes().size());
         assertEquals(1, schuelerSaved.getDispensationen().size());
 
         // Schüler löschen
@@ -95,10 +95,10 @@ public class DeleteSchuelerCommandTest {
         assertEquals(DeleteSchuelerCommand.Result.LOESCHEN_ERFOLGREICH, deleteSchuelerCommand.getResult());
 
         // Codes löschen
-        DeleteCodeCommand deleteCodeCommand = new DeleteCodeCommand(codesSaved, 0);
-        commandInvoker.executeCommandAsTransaction(deleteCodeCommand);
-        deleteCodeCommand = new DeleteCodeCommand(codesSaved, 0);
-        commandInvoker.executeCommandAsTransaction(deleteCodeCommand);
+        DeleteSchuelerCodeCommand deleteSchuelerCodeCommand = new DeleteSchuelerCodeCommand(codesSaved, 0);
+        commandInvoker.executeCommandAsTransaction(deleteSchuelerCodeCommand);
+        deleteSchuelerCodeCommand = new DeleteSchuelerCodeCommand(codesSaved, 0);
+        commandInvoker.executeCommandAsTransaction(deleteSchuelerCodeCommand);
 
         // Prüfen, ob Schüler und Vater gelöscht
         EntityManager entityManager = null;

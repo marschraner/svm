@@ -1,44 +1,44 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.model.CodeSchuelerHinzufuegenModel;
+import ch.metzenthin.svm.domain.model.SchuelerCodeSchuelerHinzufuegenModel;
 import ch.metzenthin.svm.domain.model.CodesModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
-import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
-import ch.metzenthin.svm.ui.control.CodeSchuelerHinzufuegenController;
+import ch.metzenthin.svm.ui.control.SchuelerCodeSchuelerHinzufuegenController;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class CodeSchuelerHinzufuegenDialog extends JDialog {
+public class SchuelerCodeSchuelerHinzufuegenDialog extends JDialog {
     private JPanel contentPane;
     private JPanel dataPanel;
     private JPanel buttonPanel;
-    private JComboBox<Code> comboBoxCode;
+    private JComboBox<SchuelerCode> comboBoxCode;
     private JButton btnOk;
     private JButton btnAbbrechen;
     private JLabel errLblCode;
 
-    public CodeSchuelerHinzufuegenDialog(SvmContext svmContext, CodesTableModel codesTableModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public SchuelerCodeSchuelerHinzufuegenDialog(SvmContext svmContext, CodesTableModel codesTableModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
-        setTitle("Code hinzufügen");
+        setTitle("SchuelerCode hinzufügen");
         initializeErrLbls();
         createCodeSchuelerHinzufuegenController(svmContext, codesTableModel, codesModel, schuelerDatenblattModel);
     }
 
     private void createCodeSchuelerHinzufuegenController(SvmContext svmContext, CodesTableModel codesTableModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
-        CodeSchuelerHinzufuegenModel codeSchuelerHinzufuegenModel = svmContext.getModelFactory().createCodeSchuelerHinzufuegenModel();
-        CodeSchuelerHinzufuegenController codeSchuelerHinzufuegenController = new CodeSchuelerHinzufuegenController(svmContext, codesTableModel, codeSchuelerHinzufuegenModel, codesModel, schuelerDatenblattModel);
-        codeSchuelerHinzufuegenController.setCodeSchuelerHinzufuegenDialog(this);
-        codeSchuelerHinzufuegenController.setContentPane(contentPane);
-        codeSchuelerHinzufuegenController.setComboBoxCode(comboBoxCode);
-        codeSchuelerHinzufuegenController.setErrLblCode(errLblCode);
-        codeSchuelerHinzufuegenController.setBtnOk(btnOk);
-        codeSchuelerHinzufuegenController.setBtnAbbrechen(btnAbbrechen);
+        SchuelerCodeSchuelerHinzufuegenModel schuelerCodeSchuelerHinzufuegenModel = svmContext.getModelFactory().createCodeSchuelerHinzufuegenModel();
+        SchuelerCodeSchuelerHinzufuegenController schuelerCodeSchuelerHinzufuegenController = new SchuelerCodeSchuelerHinzufuegenController(svmContext, codesTableModel, schuelerCodeSchuelerHinzufuegenModel, codesModel, schuelerDatenblattModel);
+        schuelerCodeSchuelerHinzufuegenController.setCodeSchuelerHinzufuegenDialog(this);
+        schuelerCodeSchuelerHinzufuegenController.setContentPane(contentPane);
+        schuelerCodeSchuelerHinzufuegenController.setComboBoxCode(comboBoxCode);
+        schuelerCodeSchuelerHinzufuegenController.setErrLblCode(errLblCode);
+        schuelerCodeSchuelerHinzufuegenController.setBtnOk(btnOk);
+        schuelerCodeSchuelerHinzufuegenController.setBtnAbbrechen(btnAbbrechen);
     }
 
     private void initializeErrLbls() {
@@ -159,6 +159,7 @@ public class CodeSchuelerHinzufuegenDialog extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 10, 5);
         buttonPanel.add(btnAbbrechen, gbc);
+        label1.setLabelFor(comboBoxCode);
     }
 
     /**
