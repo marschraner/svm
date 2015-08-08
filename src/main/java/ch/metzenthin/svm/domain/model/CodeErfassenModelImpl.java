@@ -1,10 +1,13 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CheckCodeKuerzelBereitsInVerwendungCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.SaveOrUpdateMaerchenCodeCommand;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateSchuelerCodeCommand;
+import ch.metzenthin.svm.persistence.entities.MaerchenCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 
 /**
@@ -12,8 +15,11 @@ import ch.metzenthin.svm.persistence.entities.SchuelerCode;
  */
 public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassenModel {
 
-    private SchuelerCode schuelerCode = new SchuelerCode();
+    private String kuerzel;
+    private String beschreibung;
+
     private SchuelerCode schuelerCodeOrigin;
+    private MaerchenCode maerchenCodeOrigin;
 
     public CodeErfassenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -24,18 +30,23 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
         this.schuelerCodeOrigin = schuelerCodeOrigin;
     }
 
+    @Override
+    public void setMaerchenCodeOrigin(MaerchenCode maerchenCodeOrigin) {
+        this.maerchenCodeOrigin = maerchenCodeOrigin;
+    }
+
     private final StringModelAttribute kuerzelModelAttribute = new StringModelAttribute(
             this,
             Field.KUERZEL, 1, 2,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return schuelerCode.getKuerzel();
+                    return kuerzel;
                 }
 
                 @Override
                 public void setValue(String value) {
-                    schuelerCode.setKuerzel(value);
+                    kuerzel = value;
                 }
             }
     );
@@ -56,12 +67,12 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return schuelerCode.getBeschreibung();
+                    return beschreibung;
                 }
 
                 @Override
                 public void setValue(String value) {
-                    schuelerCode.setBeschreibung(value);
+                    beschreibung = value;
                 }
             }
     );
@@ -77,18 +88,36 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     }
 
     @Override
-    public boolean checkCodeKuerzelBereitsInVerwendung(SvmModel svmModel) {
+    public boolean checkCodeKuerzelBereitsInVerwendung(SvmModel svmModel, Codetyp codetyp) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(schuelerCode, schuelerCodeOrigin, svmModel.getCodesAll());
+        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = null;
+        switch (codetyp) {
+            case SCHUELER:
+                checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, schuelerCodeOrigin, svmModel.getSchuelerCodesAll());
+                break;
+            case MAERCHEN:
+                checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, maerchenCodeOrigin, svmModel.getMaerchenCodesAll());
+                break;
+        }
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
         return checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung();
     }
 
     @Override
-    public void speichern(SvmModel svmModel) {
+    public void speichern(SvmModel svmModel, Codetyp codetyp) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        SaveOrUpdateSchuelerCodeCommand saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode, schuelerCodeOrigin, svmModel.getCodesAll());
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
+        switch (codetyp) {
+            case SCHUELER:
+                SchuelerCode schuelerCode = new SchuelerCode(kuerzel, beschreibung);
+                SaveOrUpdateSchuelerCodeCommand saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode, schuelerCodeOrigin, svmModel.getSchuelerCodesAll());
+                commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
+                break;
+            case MAERCHEN:
+                MaerchenCode maerchenCode = new MaerchenCode(kuerzel, beschreibung);
+                SaveOrUpdateMaerchenCodeCommand saveOrUpdateMaerchenCodeCommand = new SaveOrUpdateMaerchenCodeCommand(maerchenCode, maerchenCodeOrigin, svmModel.getMaerchenCodesAll());
+                commandInvoker.executeCommandAsTransaction(saveOrUpdateMaerchenCodeCommand);
+                break;
+        }
     }
 
     @Override
@@ -102,6 +131,15 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
                 ignore.printStackTrace();
             }
             setBulkUpdate(false);
+        } else if (maerchenCodeOrigin != null) {
+            setBulkUpdate(true);
+            try {
+                setKuerzel(maerchenCodeOrigin.getKuerzel());
+                setBeschreibung(maerchenCodeOrigin.getBeschreibung());
+            } catch (SvmValidationException ignore) {
+                ignore.printStackTrace();
+            }
+            setBulkUpdate(false);
         } else {
             super.initializeCompleted();
         }
@@ -109,16 +147,9 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
 
     @Override
     public boolean isCompleted() {
-        return schuelerCode.getKuerzel() != null && schuelerCode.getBeschreibung() != null;
+        return true;
     }
 
     @Override
-    void doValidate() throws SvmValidationException {
-        if (schuelerCode.getKuerzel() == null) {
-            throw new SvmValidationException(2020, "Kürzel obligatorisch", Field.KUERZEL);
-        }
-        if (schuelerCode.getBeschreibung() == null) {
-            throw new SvmValidationException(2021, "Beschreibung obligatorisch", Field.BESCHREIBUNG);
-        }
-    }
+    void doValidate() throws SvmValidationException {}
 }

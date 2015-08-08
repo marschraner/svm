@@ -78,5 +78,5 @@ public interface SchuelerSuchenModel extends PersonModel {
     SchuelerSuchenTableData suchen(SvmModel svmModel);
     void invalidateGeburtsdatumSuchperiode();
     Lehrkraft[] getSelectableLehrkraefte(SvmModel svmModel);
-    SchuelerCode[] getSelectableCodes(SvmModel svmModel);
+    SchuelerCode[] getSelectableSchuelerCodes(SvmModel svmModel);
 }

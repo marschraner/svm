@@ -363,8 +363,8 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
-    public SchuelerCode[] getSelectableCodes(SvmModel svmModel) {
-        List<SchuelerCode> codesList = svmModel.getCodesAll();
+    public SchuelerCode[] getSelectableSchuelerCodes(SvmModel svmModel) {
+        List<SchuelerCode> codesList = svmModel.getSchuelerCodesAll();
         // SchuelerCode alle auch erlaubt
         codesList.add(0, SCHUELER_CODE_ALLE);
         return codesList.toArray(new SchuelerCode[codesList.size()]);

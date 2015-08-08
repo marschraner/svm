@@ -11,17 +11,17 @@ import java.util.List;
 public class FindAllSchuelerCodesCommand extends GenericDaoCommand {
 
     // output
-    private List<SchuelerCode> codesAll;
+    private List<SchuelerCode> schuelerCodesAll;
 
     @Override
     public void execute() {
 
         SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
-        codesAll = schuelerCodeDao.findAll();
+        schuelerCodesAll = schuelerCodeDao.findAll();
     }
 
-    public List<SchuelerCode> getCodesAll() {
-        return codesAll;
+    public List<SchuelerCode> getSchuelerCodesAll() {
+        return schuelerCodesAll;
     }
 
 }

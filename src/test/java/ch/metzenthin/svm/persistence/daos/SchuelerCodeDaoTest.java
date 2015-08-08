@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 /**
  * @author Martin Schraner
  */
-public class SchuelerSchuelerCodeDaoTest {
+public class SchuelerCodeDaoTest {
 
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
@@ -53,13 +53,13 @@ public class SchuelerSchuelerCodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            SchuelerCode schuelerCode = new SchuelerCode("z", "Zirkusprojekt");
+            SchuelerCode schuelerCode = new SchuelerCode("tz", "ZirkusprojektTest");
 
             entityManager.persist(schuelerCode);
 
             SchuelerCode schuelerCodeFound = schuelerCodeDao.findById(schuelerCode.getCodeId());
 
-            assertEquals("Zirkusprojekt", schuelerCodeFound.getBeschreibung());
+            assertEquals("ZirkusprojektTest", schuelerCodeFound.getBeschreibung());
 
         } finally {
             if (tx != null) {
@@ -75,7 +75,7 @@ public class SchuelerSchuelerCodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            SchuelerCode schuelerCode = new SchuelerCode("z", "Zirkusprojekt");
+            SchuelerCode schuelerCode = new SchuelerCode("tz", "ZirkusprojektTest");
             SchuelerCode schuelerCodeSaved = schuelerCodeDao.save(schuelerCode);
 
             entityManager.flush();
@@ -85,7 +85,7 @@ public class SchuelerSchuelerCodeDaoTest {
             // Erzwingen, dass von DB gelesen wird
             entityManager.refresh(schuelerCodeFound);
 
-            assertEquals("Zirkusprojekt", schuelerCodeFound.getBeschreibung());
+            assertEquals("ZirkusprojektTest", schuelerCodeFound.getBeschreibung());
 
         } finally {
             if (tx != null) {

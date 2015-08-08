@@ -11,7 +11,8 @@ import java.util.List;
  */
 public class SvmModelImpl implements SvmModel {
 
-    private List<SchuelerCode> codesAll;
+    private List<SchuelerCode> schuelerCodesAll;
+    private List<MaerchenCode> maerchenCodesAll;
     private List<Lehrkraft> lehrkraefteAll;
     private List<Kursort> kursorteAll;
     private List<Kurstyp> kurstypenAll;
@@ -20,7 +21,8 @@ public class SvmModelImpl implements SvmModel {
 
     public SvmModelImpl(CommandInvoker commandInvoker) {
         this.commandInvoker = commandInvoker;
-        loadCodesAll();
+        loadSchuelerCodesAll();
+        loadMaerchenCodesAll();
         loadLehrkraefteAll();
         loadKursorteAll();
         loadKurstypenAll();
@@ -28,10 +30,17 @@ public class SvmModelImpl implements SvmModel {
     }
 
     @Override
-    public void loadCodesAll() {
+    public void loadSchuelerCodesAll() {
         FindAllSchuelerCodesCommand findAllSchuelerCodesCommand = new FindAllSchuelerCodesCommand();
         commandInvoker.executeCommand(findAllSchuelerCodesCommand);
-        codesAll = findAllSchuelerCodesCommand.getCodesAll();
+        schuelerCodesAll = findAllSchuelerCodesCommand.getSchuelerCodesAll();
+    }
+
+    @Override
+    public void loadMaerchenCodesAll() {
+        FindAllMaerchenCodesCommand findAllMaerchenCodesCommand = new FindAllMaerchenCodesCommand();
+        commandInvoker.executeCommand(findAllMaerchenCodesCommand);
+        maerchenCodesAll = findAllMaerchenCodesCommand.getMaerchenCodesAll();
     }
 
     @Override
@@ -63,8 +72,13 @@ public class SvmModelImpl implements SvmModel {
     }
 
     @Override
-    public List<SchuelerCode> getCodesAll() {
-        return codesAll;
+    public List<SchuelerCode> getSchuelerCodesAll() {
+        return schuelerCodesAll;
+    }
+
+    @Override
+    public List<MaerchenCode> getMaerchenCodesAll() {
+        return maerchenCodesAll;
     }
 
     @Override

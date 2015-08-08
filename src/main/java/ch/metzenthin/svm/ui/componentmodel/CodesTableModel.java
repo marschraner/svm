@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.componentmodel;
 
 import ch.metzenthin.svm.domain.model.CodesTableData;
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.persistence.entities.Code;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -40,7 +40,7 @@ public class CodesTableModel extends AbstractTableModel {
         return codesTableData;
     }
 
-    public SchuelerCode getCodeAt(int rowIndex) {
+    public Code getCodeAt(int rowIndex) {
         return codesTableData.getCodeAt(rowIndex);
     }
 }

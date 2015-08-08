@@ -550,7 +550,7 @@
                                   <gridbag top="0" left="0" bottom="10" right="10" weightx="1.0" weighty="0.0"/>
                                 </constraints>
                                 <properties/>
-                                <border type="etched" title="Codes">
+                                <border type="etched" title="Schüler-Codes">
                                   <font style="1"/>
                                   <title-color color="-16777216"/>
                                 </border>
@@ -625,7 +625,7 @@
                                       <gridbag weightx="0.0" weighty="0.0"/>
                                     </constraints>
                                   </vspacer>
-                                  <component id="9eb7a" class="javax.swing.JLabel" binding="lblCodesValue">
+                                  <component id="9eb7a" class="javax.swing.JLabel" binding="lblSchuelerCodesValue">
                                     <constraints>
                                       <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                       <gridbag weightx="0.0" weighty="0.0"/>

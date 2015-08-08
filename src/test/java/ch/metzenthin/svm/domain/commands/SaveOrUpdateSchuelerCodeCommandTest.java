@@ -98,7 +98,7 @@ public class SaveOrUpdateSchuelerCodeCommandTest {
     private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) {
         FindAllSchuelerCodesCommand findAllSchuelerCodesCommand = new FindAllSchuelerCodesCommand();
         commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSchuelerCodesCommand);
-        List<SchuelerCode> codesAll = findAllSchuelerCodesCommand.getCodesAll();
+        List<SchuelerCode> codesAll = findAllSchuelerCodesCommand.getSchuelerCodesAll();
         for (SchuelerCode schuelerCode : codesAll) {
             if (schuelerCode.getKuerzel().equals(kuerzel) && schuelerCode.getBeschreibung().equals(beschreibung)) {
                 return true;

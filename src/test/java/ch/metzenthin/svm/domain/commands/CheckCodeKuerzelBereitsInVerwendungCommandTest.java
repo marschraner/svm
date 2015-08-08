@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Martin Schraner
  */
-public class CheckSchuelerCodeKuerzelBereitsInVerwendungCommandTest {
+public class CheckCodeKuerzelBereitsInVerwendungCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private List<SchuelerCode> bereitsErfassteSchuelerCodes = new ArrayList<>();
@@ -27,24 +27,21 @@ public class CheckSchuelerCodeKuerzelBereitsInVerwendungCommandTest {
 
     @Test
     public void testExecute_KuerzelBereitsInVerwendung() throws Exception {
-        SchuelerCode schuelerCode = new SchuelerCode("z", "Zirkusprojekt");
-        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(schuelerCode, null, bereitsErfassteSchuelerCodes);
+        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand("z", null, bereitsErfassteSchuelerCodes);
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
         assertTrue(checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung());
     }
 
     @Test
     public void testExecute_KuerzelNochNichtInVerwendung() throws Exception {
-        SchuelerCode schuelerCode = new SchuelerCode("Z", "Zirkusprojekt");
-        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(schuelerCode, null, bereitsErfassteSchuelerCodes);
+        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand("Z", null, bereitsErfassteSchuelerCodes);
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
         assertFalse(checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung());
     }
 
     @Test
     public void testExecute_CodeOrigin() throws Exception {
-        SchuelerCode schuelerCode = new SchuelerCode("z", "Zirkusprojekt");
-        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(schuelerCode, bereitsErfassteSchuelerCodes.get(0), bereitsErfassteSchuelerCodes);
+        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand("z", bereitsErfassteSchuelerCodes.get(0), bereitsErfassteSchuelerCodes);
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
         assertFalse(checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung());
     }

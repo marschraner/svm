@@ -42,7 +42,7 @@ public class SchuelerCodeSchuelerHinzufuegenModelImpl extends AbstractModel impl
         Schueler schuelerUpdated = addSchuelerCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
         // TableData mit von der Datenbank upgedatetem Schüler updaten
         if (schuelerUpdated != null) {
-            codesTableModel.getCodesTableData().setSchuelerCodes(schuelerUpdated.getCodesAsList());
+            codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getCodesAsList());
         }
     }
 

@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.persistence.entities.Code;
 
 import java.util.List;
 
@@ -10,23 +10,23 @@ import java.util.List;
 public class CheckCodeKuerzelBereitsInVerwendungCommand implements Command {
 
     // input
-    private SchuelerCode schuelerCode;
-    private SchuelerCode schuelerCodeOrigin;
-    private List<SchuelerCode> bereitsErfassteSchuelerCodes;
+    private String kuerzel;
+    private Code codeOrigin;
+    private List<? extends Code> bereitsErfassteCodes;
 
     // output
     private boolean bereitsInVerwendung;
 
-    public CheckCodeKuerzelBereitsInVerwendungCommand(SchuelerCode schuelerCode, SchuelerCode schuelerCodeOrigin, List<SchuelerCode> bereitsErfassteSchuelerCodes) {
-        this.schuelerCode = schuelerCode;
-        this.schuelerCodeOrigin = schuelerCodeOrigin;
-        this.bereitsErfassteSchuelerCodes = bereitsErfassteSchuelerCodes;
+    public CheckCodeKuerzelBereitsInVerwendungCommand(String kuerzel, Code codeOrigin, List<? extends Code> bereitsErfassteCodes) {
+        this.kuerzel = kuerzel;
+        this.codeOrigin = codeOrigin;
+        this.bereitsErfassteCodes = bereitsErfassteCodes;
     }
 
     @Override
     public void execute() {
-        for (SchuelerCode bereitsErfassterSchuelerCode : bereitsErfassteSchuelerCodes) {
-            if (!bereitsErfassterSchuelerCode.isIdenticalWith(schuelerCodeOrigin) && bereitsErfassterSchuelerCode.getKuerzel().equals(schuelerCode.getKuerzel())) {
+        for (Code bereitsErfassterCode : bereitsErfassteCodes) {
+            if (!bereitsErfassterCode.isIdenticalWith(codeOrigin) && bereitsErfassterCode.getKuerzel().equals(kuerzel)) {
                 bereitsInVerwendung = true;
                 return;
             }

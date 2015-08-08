@@ -28,7 +28,7 @@ public interface SchuelerDatenblattModel {
     String getDispensationsdauerAsString();
     String getDispensationsgrund();
     String getFruehereDispensationenAsString();
-    String getCodesAsString();
+    String getSchuelerCodesAsString();
     String getSemesterKurseAsString(SvmModel svmModel);
     String getKurseAsString(SvmModel svmModel);
     DispensationenTableData getDispensationenTableData();

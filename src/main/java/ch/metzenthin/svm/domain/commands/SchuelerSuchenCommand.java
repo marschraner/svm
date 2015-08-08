@@ -72,7 +72,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         
         // Inner-Joins erzeugen
         createJoinKurs();
-        createJoinCode();
+        createJoinSchuelerCode();
 
         // Where-Selektionen erzeugen
         selectStatementSb.append(" where");
@@ -82,7 +82,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         createWhereSelectionsDispensation();
         createWhereSelectionsGeschlecht();
         createWhereSelectionsKurs();
-        createWhereSelectionsCode();
+        createWhereSelectionsSchuelerCode();
 
         // Letztes " and" löschen
         if (selectStatementSb.substring(selectStatementSb.length() - 4).equals(" and")) {
@@ -120,9 +120,9 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
-    private void createJoinCode() {
+    private void createJoinSchuelerCode() {
         if (schuelerCode != SchuelerSuchenModel.SCHUELER_CODE_ALLE) {
-            selectStatementSb.append(" join s.codes cod");
+            selectStatementSb.append(" join s.schuelerCodes cod");
         }
     }
 
@@ -322,7 +322,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
-    private void createWhereSelectionsCode() {
+    private void createWhereSelectionsSchuelerCode() {
         if (schuelerCode != SchuelerSuchenModel.SCHUELER_CODE_ALLE) {
             selectStatementSb.append(" cod.kuerzel = :codeKuerzel and");
         }

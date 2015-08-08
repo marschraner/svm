@@ -1,6 +1,8 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.dataTypes.Codetyp;
+import ch.metzenthin.svm.domain.commands.DeleteMaerchenCodeCommand;
 import ch.metzenthin.svm.domain.commands.DeleteSchuelerCodeCommand;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
@@ -10,8 +12,9 @@ import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
  */
 public interface CodesModel {
 
-    DeleteSchuelerCodeCommand.Result eintragLoeschenCodesVerwalten(SvmContext svmContext, int indexCodeToBeRemoved);
-    void eintragLoeschenCodesSchueler(CodesTableModel codesTableModel, SchuelerCode schuelerCodeToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel);
-    CodeErfassenModel getCodeErfassenModel(SvmContext svmContext, int indexCodeToBeModified);
-    SchuelerCode[] getSelectableCodes(SvmModel svmModel, SchuelerDatenblattModel schuelerDatenblattModel);
+    DeleteSchuelerCodeCommand.Result eintragLoeschenSchuelerCodesVerwalten(SvmContext svmContext, int indexCodeToBeRemoved);
+    DeleteMaerchenCodeCommand.Result eintragLoeschenMaerchenCodesVerwalten(SvmContext svmContext, int selectedRow);
+    void eintragLoeschenSchuelerCodesSchueler(CodesTableModel codesTableModel, SchuelerCode schuelerCodeToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel);
+    CodeErfassenModel getCodeErfassenModel(SvmContext svmContext, int indexCodeToBeModified, Codetyp codetyp);
+    SchuelerCode[] getSelectableSchuelerCodes(SvmModel svmModel, SchuelerDatenblattModel schuelerDatenblattModel);
 }

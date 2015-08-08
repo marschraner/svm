@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.daos.SchuelerCodeDao;
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.persistence.daos.MaerchenCodeDao;
+import ch.metzenthin.svm.persistence.entities.MaerchenCode;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +18,11 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Martin Schraner
  */
-public class FindAllSchuelerCodesCommandTest {
+public class FindAllMaerchenCodesCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
-    private Set<SchuelerCode> codesTestdata = new HashSet<>();
+    private Set<MaerchenCode> codesTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
@@ -40,18 +40,18 @@ public class FindAllSchuelerCodesCommandTest {
 
     @Test
     public void testExecute() {
-        FindAllSchuelerCodesCommand findAllSchuelerCodesCommand = new FindAllSchuelerCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSchuelerCodesCommand);
+        FindAllMaerchenCodesCommand findAllMaerchenCodesCommand = new FindAllMaerchenCodesCommand();
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllMaerchenCodesCommand);
 
-        List<SchuelerCode> codesFound = findAllSchuelerCodesCommand.getSchuelerCodesAll();
+        List<MaerchenCode> codesFound = findAllMaerchenCodesCommand.getMaerchenCodesAll();
         assertTrue(codesFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;
-        for (SchuelerCode schuelerCode : codesTestdata) {
-            if (schuelerCode.getBeschreibung().equals("ZirkusTest")) {
+        for (MaerchenCode maerchenCode : codesTestdata) {
+            if (maerchenCode.getBeschreibung().equals("KuchenTest")) {
                 found1 = true;
             }
-            if (schuelerCode.getBeschreibung().equals("JugendprojektTest")) {
+            if (maerchenCode.getBeschreibung().equals("FrisierenTest")) {
                 found2 = true;
             }
         }
@@ -65,13 +65,13 @@ public class FindAllSchuelerCodesCommandTest {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
+            MaerchenCodeDao maerchenCodeDao = new MaerchenCodeDao(entityManager);
 
-            SchuelerCode schuelerCodeSaved = schuelerCodeDao.save(new SchuelerCode("z", "ZirkusTest"));
-            codesTestdata.add(schuelerCodeSaved);
+            MaerchenCode maerchenCodeSaved = maerchenCodeDao.save(new MaerchenCode("k", "KuchenTest"));
+            codesTestdata.add(maerchenCodeSaved);
 
-            schuelerCodeSaved = schuelerCodeDao.save(new SchuelerCode("j", "JugendprojektTest"));
-            codesTestdata.add(schuelerCodeSaved);
+            maerchenCodeSaved = maerchenCodeDao.save(new MaerchenCode("f", "FrisierenTest"));
+            codesTestdata.add(maerchenCodeSaved);
 
             entityManager.getTransaction().commit();
 
@@ -88,11 +88,11 @@ public class FindAllSchuelerCodesCommandTest {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
+            MaerchenCodeDao maerchenCodeDao = new MaerchenCodeDao(entityManager);
 
-            for (SchuelerCode schuelerCode : codesTestdata) {
-                SchuelerCode schuelerCodeToBeRemoved = schuelerCodeDao.findById(schuelerCode.getCodeId());
-                schuelerCodeDao.remove(schuelerCodeToBeRemoved);
+            for (MaerchenCode maerchenCode : codesTestdata) {
+                MaerchenCode maerchenCodeToBeRemoved = maerchenCodeDao.findById(maerchenCode.getCodeId());
+                maerchenCodeDao.remove(maerchenCodeToBeRemoved);
             }
 
             entityManager.getTransaction().commit();

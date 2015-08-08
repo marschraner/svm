@@ -71,7 +71,7 @@ public class SchuelerCodeSchuelerHinzufuegenController extends AbstractControlle
 
     public void setComboBoxCode(JComboBox<SchuelerCode> comboBoxCode) {
         this.comboBoxCode = comboBoxCode;
-        SchuelerCode[] selectableSchuelerCodes = codesModel.getSelectableCodes(svmContext.getSvmModel(), schuelerDatenblattModel);
+        SchuelerCode[] selectableSchuelerCodes = codesModel.getSelectableSchuelerCodes(svmContext.getSvmModel(), schuelerDatenblattModel);
         comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableSchuelerCodes));
         // Leeren ComboBox-Wert anzeigen
         comboBoxCode.setSelectedItem(null);

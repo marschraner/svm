@@ -57,7 +57,7 @@ public class SchuelerDatenblattPanel {
     private JLabel lblDispensationsgrund;
     private JLabel lblDispensationsgrundValue;
     private JLabel lblFruehereDispensationenValue;
-    private JLabel lblCodesValue;
+    private JLabel lblSchuelerCodesValue;
     private JLabel lblScrollPosition;
     private JPanel datenPanel;
     private JPanel buttonPanel;
@@ -94,7 +94,7 @@ public class SchuelerDatenblattPanel {
         schuelerDatenblattController.setLabelDispensationsgrund(lblDispensationsgrund);
         schuelerDatenblattController.setLabelDispensationsgrundValue(lblDispensationsgrundValue);
         schuelerDatenblattController.setLabelFruehereDispensationenValue(lblFruehereDispensationenValue);
-        schuelerDatenblattController.setLabelCodesValue(lblCodesValue);
+        schuelerDatenblattController.setLabelSchuelerCodesValue(lblSchuelerCodesValue);
         schuelerDatenblattController.setLabelSemesterKurseValue(lblSemesterKurseValue);
         schuelerDatenblattController.setLabelKurseValue(lblKurseValue);
         schuelerDatenblattController.setBtnZurueck(btnZurueck);
@@ -617,7 +617,7 @@ public class SchuelerDatenblattPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 10, 10);
         rightPanel.add(codesPanel, gbc);
-        codesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Codes", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(codesPanel.getFont().getName(), Font.BOLD, codesPanel.getFont().getSize()), new Color(-16777216)));
+        codesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schüler-Codes", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(codesPanel.getFont().getName(), Font.BOLD, codesPanel.getFont().getSize()), new Color(-16777216)));
         final JPanel panel6 = new JPanel();
         panel6.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
@@ -686,13 +686,13 @@ public class SchuelerDatenblattPanel {
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
         codesPanel.add(spacer28, gbc);
-        lblCodesValue = new JLabel();
-        lblCodesValue.setText("CodesValue");
+        lblSchuelerCodesValue = new JLabel();
+        lblSchuelerCodesValue.setText("CodesValue");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        codesPanel.add(lblCodesValue, gbc);
+        codesPanel.add(lblSchuelerCodesValue, gbc);
         final JPanel spacer29 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;

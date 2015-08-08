@@ -989,7 +989,7 @@
                       <gridbag top="0" left="0" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties/>
-                    <border type="etched" title="Codes">
+                    <border type="etched" title="Schüler-Codes">
                       <font style="1"/>
                       <title-color color="-16777216"/>
                     </border>
@@ -1001,7 +1001,7 @@
                         </constraints>
                         <properties>
                           <labelFor value="c9914"/>
-                          <text value="Codes"/>
+                          <text value="Code"/>
                         </properties>
                       </component>
                       <hspacer id="ae3e0">
@@ -1034,7 +1034,7 @@
                           <gridbag weightx="0.0" weighty="0.0"/>
                         </constraints>
                       </vspacer>
-                      <component id="c9914" class="javax.swing.JComboBox" binding="comboBoxCode" custom-create="true">
+                      <component id="c9914" class="javax.swing.JComboBox" binding="comboBoxSchuelerCode" custom-create="true">
                         <constraints>
                           <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                           <gridbag weightx="0.0" weighty="0.0"/>

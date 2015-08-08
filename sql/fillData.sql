@@ -62,7 +62,7 @@ INSERT INTO Person (person_id, discriminator, anrede, vorname, nachname, geburts
     (3, 'Angehoeriger', 'FRAU', 'Sibyll', 'Metzenthin', NULL, '044 364 36 30', NULL, 'billa.metz@bluewin.ch', 3),
     (4, 'Schueler', 'KEINE', 'Jonas', 'Metzenthin', '2014-06-24', '044 364 36 30', NULL, NULL, 4),
     (5, 'Angehoeriger', 'HERR', 'Kurt', 'Juchli', NULL, NULL, NULL, 'kurt.juchli@zuerich.ch', NULL),
-    (6, 'Angehoeriger', 'FRAU', 'Eva', 'Juchli', NULL, NULL, '044 271 53 69', 'juchlischraner@gmail.com', 5),
+    (6, 'Angehoeriger', 'FRAU', 'Eva', 'Juchli', NULL, NULL, '076 515 14 65', 'juchlischraner@gmail.com', 5),
     (7, 'Schueler', 'KEINE', 'Lilly', 'Juchli', '2008-01-13', '044 271 53 69', NULL, NULL, 6),
     (8, 'Schueler', 'KEINE', 'Anna', 'Juchli', '2010-03-05', '044 271 53 69', NULL, NULL, 7),
     (9, 'Lehrkraft', 'FRAU', 'Sibyll', 'Metzenthin', '1972-05-17', '044 364 36 30', NULL, 'billa.metz@bluewin.ch', 8),
