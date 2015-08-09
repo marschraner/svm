@@ -29,6 +29,7 @@
             <outputDirectory>/sql</outputDirectory>
             <includes>
                 <include>create*.sql</include>
+                <include>fillData*.sql</include>
             </includes>
         </fileSet>
         <fileSet>
