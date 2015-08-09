@@ -79,7 +79,6 @@ public class SchuelerSuchenPanel {
     private JCheckBox checkBoxKursFuerSucheBeruecksichtigen;
     private SchuelerSuchenModel schuelerSuchenModel;
     private ActionListener nextPanelListener;
-    private SvmContext svmContext;
 
     public SchuelerSuchenPanel(SvmContext svmContext) {
         $$$setupUI$$$();
@@ -114,7 +113,6 @@ public class SchuelerSuchenPanel {
     }
 
     private void createSchuelerSuchenController(SvmContext svmContext) {
-        this.svmContext = svmContext;
         schuelerSuchenController = new SchuelerSuchenController(svmContext, schuelerSuchenModel);
         schuelerSuchenController.setTxtNachname(txtNachname);
         schuelerSuchenController.setTxtVorname(txtVorname);
@@ -159,8 +157,7 @@ public class SchuelerSuchenPanel {
     }
 
     private void onZurueck() {
-        svmContext.getCommandInvoker().clear();
-        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{$$$getRootComponent$$$(), "Schüler suchen"}, ActionEvent.ACTION_PERFORMED, "Zurück zu Schüler suchen"));
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{$$$getRootComponent$$$(), "Schüler suchen", Boolean.TRUE}, ActionEvent.ACTION_PERFORMED, "Zurück zu Schüler suchen"));
     }
 
     private void createUIComponents() {
