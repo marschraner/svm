@@ -1,14 +1,12 @@
 package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.utils.StringNumberComparator;
 
 import javax.persistence.*;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 
@@ -137,11 +135,12 @@ public class Kurs implements Comparable<Kurs> {
      */
     @Override
     public int compareTo(Kurs otherKurs) {
+        Comparator<String> stringNumberComparator = new StringNumberComparator();
         int result = otherKurs.semester.getSemesterbeginn().compareTo(semester.getSemesterbeginn());   // Semester: absteigend
         if (result == 0) {
             result = kurstyp.compareTo(otherKurs.kurstyp);
             if (result == 0) {
-                result = stufe.compareTo(otherKurs.stufe);
+                result = stringNumberComparator.compare(stufe, otherKurs.stufe);
                 if (result == 0) {
                     result = wochentag.compareTo(otherKurs.wochentag);
                     if (result == 0) {
