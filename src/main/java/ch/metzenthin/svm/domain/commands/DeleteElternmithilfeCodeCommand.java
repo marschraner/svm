@@ -11,7 +11,7 @@ import java.util.List;
 public class DeleteElternmithilfeCodeCommand extends GenericDaoCommand {
 
     public enum Result {
-        CODE_VON_MAERCHEN_EINTEILUNG_REFERENZIERT,
+        CODE_VON_MAERCHENEINTEILUNGEN_REFERENZIERT,
         LOESCHEN_ERFOLGREICH
     }
 
@@ -31,10 +31,10 @@ public class DeleteElternmithilfeCodeCommand extends GenericDaoCommand {
     public void execute() {
         ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
         ElternmithilfeCode elternmithilfeCodeToBeDeleted = elternmithilfeCodes.get(indexCodeToBeDeleted);
-//        if (elternmithilfeCodeToBeDeleted.getMaerchenEinteilungen().size() > 0) {
-//            result = Result.CODE_VON_MAERCHEN_REFERENZIERT;
-//            return;
-//        }
+        if (elternmithilfeCodeToBeDeleted.getMaercheneinteilungen().size() > 0) {
+            result = Result.CODE_VON_MAERCHENEINTEILUNGEN_REFERENZIERT;
+            return;
+        }
         elternmithilfeCodeDao.remove(elternmithilfeCodeToBeDeleted);
         elternmithilfeCodes.remove(indexCodeToBeDeleted);
         result = Result.LOESCHEN_ERFOLGREICH;

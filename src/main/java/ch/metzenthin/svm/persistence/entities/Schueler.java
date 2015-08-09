@@ -54,6 +54,9 @@ public class Schueler extends Person {
             inverseJoinColumns = {@JoinColumn(name = "kurs_id")})
     private Set<Kurs> kurse = new HashSet<>();
 
+    @OneToMany(mappedBy = "schueler")
+    private Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
+
     public Schueler() {
     }
 
@@ -61,6 +64,22 @@ public class Schueler extends Person {
         super(Anrede.KEINE, vorname, nachname, geburtsdatum, festnetz, natel, email);
         this.geschlecht = geschlecht;
         this.bemerkungen = bemerkungen;
+    }
+
+    public boolean isEmpty() {
+        return super.isEmpty()
+                && (bemerkungen == null || bemerkungen.trim().isEmpty());
+    }
+
+    public void copyFieldValuesFrom(Schueler schuelerFrom) {
+        super.copyAttributesFrom(schuelerFrom);
+        geschlecht = schuelerFrom.getGeschlecht();
+        bemerkungen = schuelerFrom.getBemerkungen();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 
     public Geschlecht getGeschlecht() {
@@ -206,20 +225,14 @@ public class Schueler extends Person {
         kurse.remove(kurs);
     }
 
-    public boolean isEmpty() {
-        return super.isEmpty()
-                && (bemerkungen == null || bemerkungen.trim().isEmpty());
+    public Set<Maercheneinteilung> getMaercheneinteilungen() {
+        return maercheneinteilungen;
     }
 
-    public void copyFieldValuesFrom(Schueler schuelerFrom) {
-        super.copyAttributesFrom(schuelerFrom);
-        geschlecht = schuelerFrom.getGeschlecht();
-        bemerkungen = schuelerFrom.getBemerkungen();
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
+    public List<Maercheneinteilung> getMaercheneinteilungenAsList() {
+        List<Maercheneinteilung> maercheneinteilungenAsList = new ArrayList<>(maercheneinteilungen);
+        Collections.sort(maercheneinteilungenAsList);
+        return maercheneinteilungenAsList;
     }
 
 }

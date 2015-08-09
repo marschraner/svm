@@ -2,6 +2,8 @@ package ch.metzenthin.svm.persistence.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Martin Schraner
@@ -24,6 +26,9 @@ public class Maerchen implements Comparable<Maerchen> {
 
     @Column(name = "bezeichnung", nullable = false)
     private String bezeichnung;
+
+    @OneToMany(mappedBy = "maerchen")
+    private Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
 
     public Maerchen() {
     }
@@ -77,5 +82,9 @@ public class Maerchen implements Comparable<Maerchen> {
 
     public void setBezeichnung(String bezeichnung) {
         this.bezeichnung = bezeichnung;
+    }
+
+    public Set<Maercheneinteilung> getMaercheneinteilungen() {
+        return maercheneinteilungen;
     }
 }

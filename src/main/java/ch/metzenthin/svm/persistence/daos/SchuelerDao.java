@@ -1,9 +1,6 @@
 package ch.metzenthin.svm.persistence.daos;
 
-import ch.metzenthin.svm.persistence.entities.Angehoeriger;
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
-import ch.metzenthin.svm.persistence.entities.Kurs;
-import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -46,6 +43,13 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
         // Lösche zugewiesene Kurse
         for (Kurs kurs : new ArrayList<>(schueler.getKurse())) {
             schueler.deleteKurs(kurs);
+        }
+
+        // Lösche zugewiesenen Maercheneinteilungen
+        MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao(entityManager);
+        List<Maercheneinteilung> maercheneinteilungenSchueler = maercheneinteilungDao.findMaercheneinteilungenSchueler(schueler);
+        for (Maercheneinteilung maercheneinteilung : new ArrayList<>(maercheneinteilungenSchueler)) {
+            maercheneinteilungDao.remove(maercheneinteilung);
         }
 
         // Lösche Schüler aus DB

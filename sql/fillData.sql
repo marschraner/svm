@@ -12,6 +12,7 @@ USE svm;
 -- Delete
 -- ******
 
+DELETE FROM Maercheneinteilung;
 DELETE FROM Maerchen;
 DELETE FROM Schueler_Kurs;
 DELETE FROM Kurs_Lehrkraft;
@@ -292,3 +293,27 @@ INSERT INTO Maerchen (maerchen_id, schuljahr, bezeichnung) VALUES
     (3, '2015/2016', 'Rumpelstilzchen');
 
 SELECT * FROM Maerchen;
+
+
+-- Maercheneinteilung
+-- *****************
+
+INSERT INTO Maercheneinteilung (
+    person_id, 
+    maerchen_id,
+    gruppe,
+    rolle_1,
+    bilder_rolle_1,
+    rolle_2,
+    bilder_rolle_2,
+    rolle_3,
+    bilder_rolle_3,
+    elternmithilfe,
+    code_id,
+    vorstellungen_kuchen,
+    zusatzattribut,
+    bemerkungen) VALUES
+    (7, 2, 'A', 'Aschenputtel Mina', '1, v3, 3, v4a, v4b, 4, v5b, 5, v6, 6', NULL, NULL, NULL, NULL, 'MUTTER', 3, '2, 5, 7', NULL, NULL),
+    (8, 2, 'B', 'Schulkind 6', '2, 3', 'Waldtier Hase 2', '4', NULL, NULL, NULL, NULL, NULL, NULL, 'Elternmithilfe bei Lilly Juchli erfasst');
+
+SELECT * FROM Maercheneinteilung;

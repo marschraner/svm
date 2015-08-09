@@ -305,7 +305,7 @@ public class CodesController {
         if (n == 0) {
             DeleteElternmithilfeCodeCommand.Result result  = codesModel.eintragLoeschenElternmithilfeCodesVerwalten(svmContext, codesTable.getSelectedRow());
             switch (result) {
-                case CODE_VON_MAERCHEN_EINTEILUNG_REFERENZIERT:
+                case CODE_VON_MAERCHENEINTEILUNGEN_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens eine Märcheneinteilung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnLoeschen.setFocusPainted(false);
                     break;

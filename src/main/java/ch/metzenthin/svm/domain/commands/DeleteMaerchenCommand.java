@@ -11,7 +11,7 @@ import java.util.List;
 public class DeleteMaerchenCommand extends GenericDaoCommand {
 
     public enum Result {
-        MAERCHEN_VON_SCHUELER_REFERENZIERT,
+        MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT,
         LOESCHEN_ERFOLGREICH
     }
 
@@ -31,10 +31,10 @@ public class DeleteMaerchenCommand extends GenericDaoCommand {
     public void execute() {
         MaerchenDao MaerchenDao = new MaerchenDao(entityManager);
         Maerchen MaerchenToBeDeleted = Maerchens.get(indexMaerchenToBeDeleted);
-//        if (MaerchenToBeDeleted.getSchueler().size() > 0) {
-//            result = Result.MAERCHEN_VON_SCHUELER_REFERENZIERT;
-//            return;
-//        }
+        if (MaerchenToBeDeleted.getMaercheneinteilungen().size() > 0) {
+            result = Result.MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT;
+            return;
+        }
         MaerchenDao.remove(MaerchenToBeDeleted);
         Maerchens.remove(indexMaerchenToBeDeleted);
         result = Result.LOESCHEN_ERFOLGREICH;

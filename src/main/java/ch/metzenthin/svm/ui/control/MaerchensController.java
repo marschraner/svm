@@ -137,8 +137,8 @@ public class MaerchensController {
         if (n == 0) {
             DeleteMaerchenCommand.Result result  = maerchensModel.maerchenLoeschen(svmContext, maerchensTable.getSelectedRow());
             switch (result) {
-                case MAERCHEN_VON_SCHUELER_REFERENZIERT:
-                    JOptionPane.showMessageDialog(null, "Das Maerchen wird durch mindestens einen Schüler referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                case MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT:
+                    JOptionPane.showMessageDialog(null, "Das Maerchen wird durch mindestens eine Märcheneinteilung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:

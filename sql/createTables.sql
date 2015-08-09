@@ -23,6 +23,7 @@ SET default_storage_engine=InnoDB;
 -- Alte Tabellen löschen
 -- *********************
 
+DROP TABLE IF EXISTS Maercheneinteilung;
 DROP TABLE IF EXISTS Maerchen;
 DROP TABLE IF EXISTS Schueler_Kurs;
 DROP TABLE IF EXISTS Kurs_Lehrkraft;
@@ -193,7 +194,7 @@ CREATE TABLE IF NOT EXISTS Schueler_SchuelerCode (
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id, code_id),
     FOREIGN KEY (person_id)    REFERENCES Schueler (person_id),
-    FOREIGN KEY (code_id)      REFERENCES Code (code_id));
+    FOREIGN KEY (code_id)      REFERENCES SchuelerCode (code_id));
 
 DESCRIBE Schueler_SchuelerCode;
 
@@ -314,4 +315,30 @@ CREATE TABLE IF NOT EXISTS Maerchen (
 
 DESCRIBE Maerchen;
 
+
+-- Maercheneinteilung
+-- *****************
+
+CREATE TABLE IF NOT EXISTS Maercheneinteilung (
+    person_id                  INT           NOT NULL,
+    maerchen_id                INT           NOT NULL,
+    gruppe                     VARCHAR(1)    NOT NULL,
+    rolle_1                    VARCHAR(30)   NOT NULL,
+    bilder_rolle_1             VARCHAR(60),
+    rolle_2                    VARCHAR(30),
+    bilder_rolle_2             VARCHAR(60),
+    rolle_3                    VARCHAR(30),
+    bilder_rolle_3             VARCHAR(60),
+    elternmithilfe             VARCHAR(6),
+    code_id                    INT,
+    vorstellungen_kuchen       VARCHAR(20),
+    zusatzattribut             VARCHAR(30),
+    bemerkungen                VARCHAR(100),
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (person_id, maerchen_id),
+    FOREIGN KEY (person_id)    REFERENCES Schueler (person_id),
+    FOREIGN KEY (maerchen_id)  REFERENCES Maerchen (maerchen_id),
+    FOREIGN KEY (code_id)      REFERENCES ElternmithilfeCode (code_id));
+
+DESCRIBE Maercheneinteilung;
 

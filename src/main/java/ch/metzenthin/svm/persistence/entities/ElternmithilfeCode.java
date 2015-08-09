@@ -2,7 +2,10 @@ package ch.metzenthin.svm.persistence.entities;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Martin Schraner
@@ -12,6 +15,9 @@ import javax.persistence.Table;
 @DiscriminatorValue("Elternmithilfe")
 public class ElternmithilfeCode extends Code {
 
+    @OneToMany(mappedBy = "elternmithilfeCode")
+    private Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
+
     public ElternmithilfeCode() {
     }
 
@@ -19,4 +25,7 @@ public class ElternmithilfeCode extends Code {
         super(kuerzel, beschreibung);
     }
 
+    public Set<Maercheneinteilung> getMaercheneinteilungen() {
+        return maercheneinteilungen;
+    }
 }
