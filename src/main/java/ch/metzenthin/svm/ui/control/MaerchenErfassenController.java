@@ -13,8 +13,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
@@ -93,15 +91,7 @@ public class MaerchenErfassenController extends AbstractController {
     }
 
     private void initSchuljahr() {
-        Calendar today = new GregorianCalendar();
-        int schuljahr1;
-        if (today.get(Calendar.MONTH) <= Calendar.JANUARY) {
-            schuljahr1 = today.get(Calendar.YEAR) - 1;
-        } else {
-            schuljahr1 = today.get(Calendar.YEAR);
-        }
-        int schuljahr2 = schuljahr1 + 1;
-        String initSchuljahr = schuljahr1 + "/" + schuljahr2;
+        String initSchuljahr = maerchenErfassenModel.getNaechstesNochNichtErfasstesSchuljahrMaerchen(svmContext.getSvmModel());
         try {
             maerchenErfassenModel.setSchuljahr(initSchuljahr);
         } catch (SvmValidationException ignore) {

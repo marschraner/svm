@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CheckMaerchenBereitsErfasstCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.DetermineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateMaerchenCommand;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 
@@ -103,6 +104,14 @@ public class MaerchenErfassenModelImpl extends AbstractModel implements Maerchen
         CheckMaerchenBereitsErfasstCommand checkMaerchenBereitsErfasstCommand = new CheckMaerchenBereitsErfasstCommand(maerchen, maerchenOrigin, svmModel.getMaerchensAll());
         commandInvoker.executeCommand(checkMaerchenBereitsErfasstCommand);
         return checkMaerchenBereitsErfasstCommand.isBereitsErfasst();
+    }
+
+    @Override
+    public String getNaechstesNochNichtErfasstesSchuljahrMaerchen(SvmModel svmModel) {
+        CommandInvoker commandInvoker = getCommandInvoker();
+        DetermineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand determineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand = new DetermineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand(svmModel.getMaerchensAll());
+        commandInvoker.executeCommand(determineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand);
+        return determineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand.getNaechstesNochNichtErfasstesSchuljahrMaerchen();
     }
 
     @Override
