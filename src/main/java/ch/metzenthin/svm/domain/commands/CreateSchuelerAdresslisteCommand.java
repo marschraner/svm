@@ -97,7 +97,11 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         List<List<List<String>>> rows = new ArrayList<>();
         int i = 0;
         for (Schueler schueler : schuelerList) {
-            for (Kurs kurs : kurse.get(schueler)) {
+            List<Kurs> schuelerKurse = kurse.get(schueler);
+            if (schuelerKurse == null) {
+                continue;
+            }
+            for (Kurs kurs : schuelerKurse) {
                 List<List<String>> row = new ArrayList<>();
                 // 1. Spalte
                 List<String> cellLinesColumn1 = new ArrayList<>();
