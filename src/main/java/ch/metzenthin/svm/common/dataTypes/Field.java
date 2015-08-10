@@ -85,7 +85,19 @@ public enum Field {
     TITEL("Titel"),
     LISTENTYP("Listentyp"),
     ANZAHL_KINDER("Kinder"),
-    BULK_UPDATE("Bulk Update");
+    BULK_UPDATE("Bulk Update"), 
+    MAERCHEN("Märchen"), 
+    GRUPPE("Gruppe"), 
+    ROLLE1("Rolle 1"), 
+    BILDER_ROLLE1("Bilder Rolle 1"), 
+    ROLLE2("Rolle 2"), 
+    BILDER_ROLLE2("Bilder Rolle 2"), 
+    ROLLE3("Rolle 3"), 
+    BILDER_ROLLE3("Bilder Rolle 3"),
+    ELTERNMITHILFE("Elternmithilfe"),
+    ELTERNMITHILFE_CODE("Code"),
+    VORSTELLUNGEN_KUCHEN("Vorstellungen mit Kuchen"),
+    ZUSATZATTRIBUT("Zusatzattribut");
 
     private String name;
 

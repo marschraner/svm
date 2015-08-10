@@ -314,6 +314,7 @@ INSERT INTO Maercheneinteilung (
     zusatzattribut,
     bemerkungen) VALUES
     (7, 2, 'A', 'Aschenputtel Mina', '1, v3, 3, v4a, v4b, 4, v5b, 5, v6, 6', NULL, NULL, NULL, NULL, 'MUTTER', 3, '2, 5, 7', NULL, NULL),
-    (8, 2, 'B', 'Schulkind 6', '2, 3', 'Waldtier Hase 2', '4', NULL, NULL, NULL, NULL, NULL, NULL, 'Elternmithilfe bei Lilly Juchli erfasst');
+    (7, 3, 'B', 'Rumpelstilzchen', '3, v4, 4, v5b, 5, v6, 6', NULL, NULL, NULL, NULL, 'MUTTER', 4, '1, 3, 6', NULL, NULL),
+    (8, 3, 'B', 'Schulkind 6', '2, 3', 'Waldtier Hase 2', '4', NULL, NULL, NULL, NULL, NULL, NULL, 'Elternmithilfe bei Lilly Juchli erfasst');
 
 SELECT * FROM Maercheneinteilung;

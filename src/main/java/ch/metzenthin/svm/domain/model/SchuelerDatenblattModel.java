@@ -31,10 +31,24 @@ public interface SchuelerDatenblattModel {
     String getSchuelerCodesAsString();
     String getSemesterKurseAsString(SvmModel svmModel);
     String getKurseAsString(SvmModel svmModel);
+    String getMaerchen();
+    String getGruppe();
+    String getRolle1();
+    String getBilderRolle1();
+    String getRolle2();
+    String getBilderRolle2();
+    String getRolle3();
+    String getBilderRolle3();
+    String getElternmithilfe();
+    String getElternmithilfeCode();
+    String getVorstellungenKuchen();
+    String getZusatzattribut();
+    String getBemerkungenMaerchen();
+
     DispensationenTableData getDispensationenTableData();
     CodesTableData getCodesTableData();
     KurseTableData getKurseTableData();
-
+    MaercheneinteilungenTableData getMaercheneinteilungenTableData();
     SchuelerModel getSchuelerModel(SvmContext svmContext);
     AngehoerigerModel getMutterModel(SvmContext svmContext);
     AngehoerigerModel getVaterModel(SvmContext svmContext);

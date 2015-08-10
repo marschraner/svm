@@ -143,4 +143,9 @@ public class ModelFactoryImpl implements ModelFactory {
         return new MaerchenErfassenModelImpl(commandInvoker);
     }
 
+    @Override
+    public MaercheneinteilungenModel createMaercheneinteilungenModel() {
+        return new MaercheneinteilungenModelImpl(commandInvoker);
+    }
+
 }

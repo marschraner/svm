@@ -20,9 +20,11 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     private Schueler schueler;
+    private Maercheneinteilung aktuelleMaercheneinteilung;
 
     public SchuelerDatenblattModelImpl(Schueler schueler) {
         this.schueler = schueler;
+        this.aktuelleMaercheneinteilung = determineAktuelleMaercheneinteilung(schueler.getMaercheneinteilungenAsList());
     }
 
     @Override
@@ -373,6 +375,128 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     }
 
     @Override
+    public String getMaerchen() {
+        if (aktuelleMaercheneinteilung == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getMaerchen().toString();
+    }
+
+    @Override
+    public String getGruppe() {
+        if (aktuelleMaercheneinteilung == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getGruppe().toString();
+    }
+
+    @Override
+    public String getRolle1() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getRolle1() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getRolle1();
+    }
+
+    @Override
+    public String getBilderRolle1() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getBilderRolle1() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getBilderRolle1();
+    }
+
+    @Override
+    public String getRolle2() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getRolle2() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getRolle2();
+    }
+
+    @Override
+    public String getBilderRolle2() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getBilderRolle2() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getBilderRolle2();
+    }
+
+    @Override
+    public String getRolle3() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getRolle3() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getRolle3();
+    }
+
+    @Override
+    public String getBilderRolle3() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getBilderRolle3() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getBilderRolle3();
+    }
+
+    @Override
+    public String getElternmithilfe() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getElternmithilfe() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getElternmithilfe().toString();
+    }
+
+    @Override
+    public String getElternmithilfeCode() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getElternmithilfeCode() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getElternmithilfeCode().toString();
+    }
+
+    @Override
+    public String getVorstellungenKuchen() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getVorstellungenKuchen() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getVorstellungenKuchen();
+    }
+
+    @Override
+    public String getZusatzattribut() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getZusatzattribut() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getZusatzattribut();
+    }
+
+    @Override
+    public String getBemerkungenMaerchen() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getBemerkungen() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getBemerkungen();
+    }
+
+    private Maercheneinteilung determineAktuelleMaercheneinteilung(List<Maercheneinteilung> maercheneinteilungen) {
+        Calendar today = new GregorianCalendar();
+        int schuljahr1;
+        if (today.get(Calendar.MONTH) <= Calendar.JANUARY) {
+            schuljahr1 = today.get(Calendar.YEAR) - 1;
+        } else {
+            schuljahr1 = today.get(Calendar.YEAR);
+        }
+        int schuljahr2 = schuljahr1 + 1;
+        String anzuzeigendesSchuljahr = schuljahr1 + "/" + schuljahr2;
+        for (Maercheneinteilung maercheneinteilung : maercheneinteilungen) {
+            if (maercheneinteilung.getMaerchen().getSchuljahr().equals(anzuzeigendesSchuljahr)) {
+                return maercheneinteilung;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public DispensationenTableData getDispensationenTableData() {
         return new DispensationenTableData(schueler.getDispensationen());
     }
@@ -387,6 +511,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     @Override
     public KurseTableData getKurseTableData() {
         return new KurseTableData(schueler.getKurseAsList(), true);
+    }
+
+    @Override
+    public MaercheneinteilungenTableData getMaercheneinteilungenTableData() {
+        return new MaercheneinteilungenTableData(schueler.getMaercheneinteilungenAsList());
     }
 
     private boolean isDispensationAktuell(Dispensation dispensation) {

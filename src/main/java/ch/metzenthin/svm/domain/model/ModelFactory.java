@@ -30,4 +30,5 @@ public interface ModelFactory {
     ListenExportModel createListenExportModel();
     MaerchensModel createMaerchensModel();
     MaerchenErfassenModel createMaerchenErfassenModel();
+    MaercheneinteilungenModel createMaercheneinteilungenModel();
 }
