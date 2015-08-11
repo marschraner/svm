@@ -12,10 +12,10 @@ import java.util.TreeSet;
  */
 public class SvmProperties {
 
-    public static String SVM_PROPERTIES_FILE_NAME = System.getProperty("user.home") + File.separator + ".svm";
-    public static String KEY_TEMPLATES_DIRECTORY = "templates_directory";
-    public static String KEY_DEFAULT_OUTPUT_DIRECTORY = "default_output_directory";
-    public static String KEY_ABSENZENLISTE_TEMPLATE = "absenzenlisten_template";
+    public static final String SVM_PROPERTIES_FILE_NAME = System.getProperty("user.home") + File.separator + ".svm";
+    public static final String KEY_TEMPLATES_DIRECTORY = "templates_directory";
+    public static final String KEY_DEFAULT_OUTPUT_DIRECTORY = "default_output_directory";
+    public static final String KEY_ABSENZENLISTE_TEMPLATE = "absenzenlisten_template";
 
     public static void createSvmPropertiesFileDefault() {
 
