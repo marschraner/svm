@@ -5,6 +5,7 @@ import ch.metzenthin.svm.domain.model.MaercheneinteilungenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.MaercheneinteilungenTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.components.MaercheneinteilungErfassenDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 
 import javax.swing.*;
@@ -72,6 +73,10 @@ public class MaercheneinteilungenController {
 
     public void setBtnNeu(JButton btnNeu) {
         this.btnNeu = btnNeu;
+        // Neu-Button deaktivieren, falls alle Märchen schon erfasst sind
+        if (maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel).length == 0) {
+            btnNeu.setEnabled(false);
+        }
         btnNeu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -82,15 +87,14 @@ public class MaercheneinteilungenController {
 
     private void onNeu() {
         btnNeu.setFocusPainted(true);
-        //TODO
-//        MaercheneinteilungSchuelerHinzufuegenDialog maercheneinteilungSchuelerHinzufuegenDialog = new MaercheneinteilungSchuelerHinzufuegenDialog(svmContext, maercheneinteilungenTableModel, maercheneinteilungenModel, schuelerDatenblattModel);
-//        maercheneinteilungSchuelerHinzufuegenDialog.pack();
-//        maercheneinteilungSchuelerHinzufuegenDialog.setVisible(true);
-//        maercheneinteilungenTableModel.fireTableDataChanged();
-//        btnNeu.setFocusPainted(false);
-//        if (maercheneinteilungenModel.getSelectableSemestersMaercheneinteilungeSchueler(svmContext.getSvmModel()).length == 0) {
-//            btnNeu.setEnabled(false);
-//        }
+        MaercheneinteilungErfassenDialog maercheneinteilungErfassenDialog = new MaercheneinteilungErfassenDialog(svmContext, maercheneinteilungenModel, maercheneinteilungenTableModel, schuelerDatenblattModel, maercheneinteilungenTable.getSelectedRow(), false, "Märcheneinteilung erfassen");
+        maercheneinteilungErfassenDialog.pack();
+        maercheneinteilungErfassenDialog.setVisible(true);
+        maercheneinteilungenTableModel.fireTableDataChanged();
+        btnNeu.setFocusPainted(false);
+        if (maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel).length == 0) {
+            btnNeu.setEnabled(false);
+        }
     }
 
     public void setBtnBearbeiten(JButton btnBearbeiten) {
@@ -110,17 +114,11 @@ public class MaercheneinteilungenController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        //TODO
-//        MaercheneinteilungErfassenDialog maercheneinteilungErfassenDialog = new MaercheneinteilungErfassenDialog(svmContext, maercheneinteilungenModel, maercheneinteilungeSemesterwahlModel, maercheneinteilungenTableModel, maercheneinteilungenTable.getSelectedRow(), true, "Maercheneinteilung bearbeiten");
-//        maercheneinteilungErfassenDialog.pack();
-//        maercheneinteilungErfassenDialog.setVisible(true);
-//        maercheneinteilungenTableModel.fireTableDataChanged();
-//        btnBearbeiten.setFocusPainted(false);
-//        if (maercheneinteilungenTableModel.getRowCount() > 0) {
-//            btnExportieren.setEnabled(true);
-//        } else {
-//            btnExportieren.setEnabled(false);
-//        }
+        MaercheneinteilungErfassenDialog maercheneinteilungErfassenDialog = new MaercheneinteilungErfassenDialog(svmContext, maercheneinteilungenModel, maercheneinteilungenTableModel, schuelerDatenblattModel, maercheneinteilungenTable.getSelectedRow(), true, "Märcheneinteilung bearbeiten");
+        maercheneinteilungErfassenDialog.pack();
+        maercheneinteilungErfassenDialog.setVisible(true);
+        maercheneinteilungenTableModel.fireTableDataChanged();
+        btnBearbeiten.setFocusPainted(false);
     }
 
     public void setBtnLoeschen(JButton btnLoeschen) {
@@ -150,30 +148,17 @@ public class MaercheneinteilungenController {
                 null,     //do not use a custom Icon
                 options,  //the titles of buttons
                 options[1]); //default button title
-//        if (n == 0) {
-//            DeleteMaercheneinteilungCommand.Result result  = maercheneinteilungenModel.maercheneinteilungLoeschenMaercheneinteilungeVerwalten(maercheneinteilungenTableModel, maercheneinteilungenTable.getSelectedRow());
-//            switch (result) {
-//                case MAERCHENEINTEILUNG_VON_SCHUELER_REFERENZIERT:
-//                    JOptionPane.showMessageDialog(null, "Der Maercheneinteilung wird durch mindestens einen Schüler referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
-//                    btnLoeschen.setFocusPainted(false);
-//                    break;
-//                case LOESCHEN_ERFOLGREICH:
-//                    maercheneinteilungenTable.addNotify();
-//                    break;
-//            }
-//        }
-//        lblTotal.setText(maercheneinteilungenModel.getTotal(maercheneinteilungenTableModel));
-//        btnLoeschen.setFocusPainted(false);
-//        enableBtnLoeschen(false);
-//        maercheneinteilungenTable.clearSelection();
-//        if (maercheneinteilungenTableModel.getRowCount() == 0) {
-//            btnImportieren.setEnabled(true);
-//        }
-//        if (maercheneinteilungenTableModel.getRowCount() > 0) {
-//            btnExportieren.setEnabled(true);
-//        } else {
-//            btnExportieren.setEnabled(false);
-//        }
+        if (n == 0) {
+            maercheneinteilungenModel.maercheneinteilungLoeschen(maercheneinteilungenTableModel, schuelerDatenblattModel, maercheneinteilungenTable.getSelectedRow());
+            maercheneinteilungenTable.addNotify();
+        }
+        btnLoeschen.setFocusPainted(false);
+        enableBtnLoeschen(false);
+        maercheneinteilungenTable.clearSelection();
+        // Neu-Button aktivieren, falls es selektierbare Märchen gibt
+        if (maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel).length > 0) {
+            btnNeu.setEnabled(false);
+        }
     }
 
     private void onListSelection() {

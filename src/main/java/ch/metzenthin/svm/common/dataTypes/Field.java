@@ -96,8 +96,18 @@ public enum Field {
     BILDER_ROLLE3("Bilder Rolle 3"),
     ELTERNMITHILFE("Elternmithilfe"),
     ELTERNMITHILFE_CODE("Code"),
-    VORSTELLUNGEN_KUCHEN("Vorstellungen mit Kuchen"),
-    ZUSATZATTRIBUT("Zusatzattribut");
+    KUCHEN_VORSTELLUNGEN("Vorst. m. Kuchen"),
+    ZUSATZATTRIBUT("Zusatzattribut"),
+    ANZAHL_VORSTELLUNGEN("Vorstellungen"),
+    KUCHEN_VORSTELLUNG1("1. Vorstellung mit Kuchen"),
+    KUCHEN_VORSTELLUNG2("2. Vorstellung mit Kuchen"),
+    KUCHEN_VORSTELLUNG3("3. Vorstellung mit Kuchen"),
+    KUCHEN_VORSTELLUNG4("4. Vorstellung mit Kuchen"),
+    KUCHEN_VORSTELLUNG5("5. Vorstellung mit Kuchen"),
+    KUCHEN_VORSTELLUNG6("6. Vorstellung mit Kuchen"),
+    KUCHEN_VORSTELLUNG7("7. Vorstellung mit Kuchen"),
+    KUCHEN_VORSTELLUNG8("8. Vorstellung mit Kuchen"),
+    KUCHEN_VORSTELLUNG9("9. Vorstellung mit Kuchen");
 
     private String name;
 

@@ -33,7 +33,9 @@ public class MaerchenErfassenController extends AbstractController {
     private JDialog maerchenErfassenDialog;
     private JSpinner spinnerSchuljahre;
     private JTextField txtBezeichnung;
+    private JTextField txtAnzahlVorstellungen;
     private JLabel errLblBezeichnung;
+    private JLabel errLblAnzahlVorstellungen;
     private JButton btnSpeichern;
 
     public MaerchenErfassenController(SvmContext svmContext, MaerchenErfassenModel maerchenErfassenModel, boolean isBearbeiten) {
@@ -175,8 +177,63 @@ public class MaerchenErfassenController extends AbstractController {
         }
     }
 
+    public void setTxtAnzahlVorstellungen(JTextField txtAnzahlVorstellungen) {
+        this.txtAnzahlVorstellungen = txtAnzahlVorstellungen;
+        this.txtAnzahlVorstellungen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onAnzahlVorstellungenEvent(true);
+            }
+        });
+        this.txtAnzahlVorstellungen.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onAnzahlVorstellungenEvent(false);
+            }
+        });
+    }
+
+    private void onAnzahlVorstellungenEvent(boolean showRequiredErrMsg) {
+        LOGGER.trace("MaerchenErfassenController Event AnzahlVorstellungen");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtAnzahlVorstellungen.getText(), maerchenErfassenModel.getAnzahlVorstellungen());
+        try {
+            setModelAnzahlVorstellungen(showRequiredErrMsg);
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelAnzahlVorstellungen(boolean showRequiredErrMsg) throws SvmValidationException {
+        makeErrorLabelInvisible(Field.ANZAHL_VORSTELLUNGEN);
+        try {
+            maerchenErfassenModel.setAnzahlVorstellungen(txtAnzahlVorstellungen.getText());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("MaerchenErfassenController setModelAnzahlVorstellungen RequiredException=" + e.getMessage());
+            if (isModelValidationMode() || !showRequiredErrMsg) {
+                txtAnzahlVorstellungen.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        } catch (SvmValidationException e) {
+            LOGGER.trace("MaerchenErfassenController setModelAnzahlVorstellungen Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
     public void setErrLblBezeichnung(JLabel errLblBezeichnung) {
         this.errLblBezeichnung = errLblBezeichnung;
+    }
+
+    public void setErrLblAnzahlVorstellungen(JLabel errLblAnzahlVorstellungen) {
+        this.errLblAnzahlVorstellungen = errLblAnzahlVorstellungen;
     }
 
     public void setBtnSpeichern(JButton btnSpeichern) {
@@ -238,14 +295,20 @@ public class MaerchenErfassenController extends AbstractController {
             spinnerSchuljahre.setValue(maerchenErfassenModel.getSchuljahr());
         } else if (checkIsFieldChange(Field.BEZEICHNUNG, evt)) {
             txtBezeichnung.setText(maerchenErfassenModel.getBezeichnung());
+        } else if (checkIsFieldChange(Field.ANZAHL_VORSTELLUNGEN, evt)) {
+            txtAnzahlVorstellungen.setText(Integer.toString(maerchenErfassenModel.getAnzahlVorstellungen()));
         }
     }
 
     @Override
     void validateFields() throws SvmValidationException {
         if (txtBezeichnung.isEnabled()) {
-            LOGGER.trace("Validate field Maerchenbeginn");
+            LOGGER.trace("Validate field Bezeichnung");
             setModelBezeichnung(true);
+        }
+        if (txtBezeichnung.isEnabled()) {
+            LOGGER.trace("Validate field Anzahl Vorstellungen");
+            setModelAnzahlVorstellungen(true);
         }
     }
 
@@ -255,12 +318,19 @@ public class MaerchenErfassenController extends AbstractController {
             errLblBezeichnung.setVisible(true);
             errLblBezeichnung.setText(e.getMessage());
         }
+        if (e.getAffectedFields().contains(Field.ANZAHL_VORSTELLUNGEN)) {
+            errLblAnzahlVorstellungen.setVisible(true);
+            errLblAnzahlVorstellungen.setText(e.getMessage());
+        }
     }
 
     @Override
     void showErrMsgAsToolTip(SvmValidationException e) {
         if (e.getAffectedFields().contains(Field.BEZEICHNUNG)) {
             txtBezeichnung.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.ANZAHL_VORSTELLUNGEN)) {
+            txtAnzahlVorstellungen.setToolTipText(e.getMessage());
         }
     }
 
@@ -269,6 +339,10 @@ public class MaerchenErfassenController extends AbstractController {
         if (fields.contains(Field.ALLE) || fields.contains(Field.BEZEICHNUNG)) {
             errLblBezeichnung.setVisible(false);
             txtBezeichnung.setToolTipText(null);
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.ANZAHL_VORSTELLUNGEN)) {
+            errLblAnzahlVorstellungen.setVisible(false);
+            txtAnzahlVorstellungen.setToolTipText(null);
         }
     }
 

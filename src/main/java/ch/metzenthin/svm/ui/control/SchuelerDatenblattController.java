@@ -772,7 +772,7 @@ public class SchuelerDatenblattController {
         if (schuelerDatenblattModel.getMaerchen().equals("-")) {
             labelVorstellungenKuchenValue.setVisible(false);
         } else {
-            labelVorstellungenKuchenValue.setText(schuelerDatenblattModel.getVorstellungenKuchen());
+            labelVorstellungenKuchenValue.setText(schuelerDatenblattModel.getKuchenVorstellungenAsString());
             labelVorstellungenKuchenValue.setVisible(true);
         }
     }

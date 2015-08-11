@@ -76,10 +76,10 @@ public class SaveOrUpdateMaercheneinteilungCommandTest {
         saveSchuelerCommand = new SaveSchuelerCommand(schueler2);
         commandInvoker.executeCommandAsTransaction(saveSchuelerCommand);
 
-        Maerchen maerchen1 = new Maerchen("1911/1912", "Scheewittchen");
+        Maerchen maerchen1 = new Maerchen("1911/1912", "Scheewittchen", 7);
         SaveOrUpdateMaerchenCommand saveOrUpdateMaerchenCommand = new SaveOrUpdateMaerchenCommand(maerchen1, null, erfassteMaerchen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaerchenCommand);
-        Maerchen maerchen2 = new Maerchen("1912/1913", "Hans im Glück");
+        Maerchen maerchen2 = new Maerchen("1912/1913", "Hans im Glück", 8);
         saveOrUpdateMaerchenCommand = new SaveOrUpdateMaerchenCommand(maerchen2, null, erfassteMaerchen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaerchenCommand);
 
@@ -94,21 +94,24 @@ public class SaveOrUpdateMaercheneinteilungCommandTest {
         assertFalse(checkIfMaercheneinteilungAvailable(schueler2, maerchen2, Gruppe.B, Elternteil.MUTTER, elternmithilfeCode2, "Komödiant 2", "1, 2"));
         
         // 1. Maercheneinteilung erfassen
-        Maercheneinteilung maercheneinteilung1 = new Maercheneinteilung(schueler1, maerchen1, Gruppe.A, "Komödiant 1", "1, 2", "Hase 1", "2, 3", "Frosch 1", "3, 4", Elternteil.VATER, "1, 2, 3", null, null);
+        Maercheneinteilung maercheneinteilung1 = new Maercheneinteilung(schueler1, maerchen1, Gruppe.A, "Komödiant 1", "1, 2", "Hase 1", "2, 3", "Frosch 1", "3, 4", Elternteil.VATER,
+                true, true, true, false, false, false, false, false, false, null, null);
         SaveOrUpdateMaercheneinteilungCommand saveOrUpdateMaercheneinteilungCommand = new SaveOrUpdateMaercheneinteilungCommand(maercheneinteilung1, elternmithilfeCode1, null, erfassteMaercheneinteilungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaercheneinteilungCommand);
 
         assertTrue(checkIfMaercheneinteilungAvailable(schueler1, maerchen1, Gruppe.A, Elternteil.VATER, elternmithilfeCode1, "Komödiant 1", "1, 2"));
 
         // 2. Maercheneinteilung erfassen
-        Maercheneinteilung maercheneinteilung2 = new Maercheneinteilung(schueler2, maerchen2, Gruppe.B, "Komödiant 2", "1, 2", "Hase 2", "2, 3", "Frosch 2", "3, 4", Elternteil.MUTTER, "1, 2, 3", null, null);
+        Maercheneinteilung maercheneinteilung2 = new Maercheneinteilung(schueler2, maerchen2, Gruppe.B, "Komödiant 2", "1, 2", "Hase 2", "2, 3", "Frosch 2", "3, 4", Elternteil.MUTTER,
+                true, true, true, false, false, false, false, false, false, null, null);
         saveOrUpdateMaercheneinteilungCommand = new SaveOrUpdateMaercheneinteilungCommand(maercheneinteilung2, elternmithilfeCode2, null, erfassteMaercheneinteilungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaercheneinteilungCommand);
 
         assertTrue(checkIfMaercheneinteilungAvailable(schueler2, maerchen2, Gruppe.B, Elternteil.MUTTER, elternmithilfeCode2, "Komödiant 2", "1, 2"));
 
         // 2. Maercheneinteilung bearbeiten
-        Maercheneinteilung maercheneinteilung2Modif = new Maercheneinteilung(schueler2, maerchen2, Gruppe.A, "Pilz 2", "2, 7", "Hase 2", "2, 3", "Frosch 2", "3, 4", Elternteil.VATER, "1, 2, 3", null, null);
+        Maercheneinteilung maercheneinteilung2Modif = new Maercheneinteilung(schueler2, maerchen2, Gruppe.A, "Pilz 2", "2, 7", "Hase 2", "2, 3", "Frosch 2", "3, 4", Elternteil.VATER,
+                true, true, true, false, false, false, false, false, false, null, null);
         saveOrUpdateMaercheneinteilungCommand = new SaveOrUpdateMaercheneinteilungCommand(maercheneinteilung2Modif, elternmithilfeCode1, maercheneinteilung2, erfassteMaercheneinteilungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaercheneinteilungCommand);
 

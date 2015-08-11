@@ -67,11 +67,11 @@ public class FindAllMaerchensCommandTest {
 
             MaerchenDao maerchenDao = new MaerchenDao(entityManager);
 
-            Maerchen maerchen1 = new Maerchen("1911/1912", "Gestiefelter Kater");
+            Maerchen maerchen1 = new Maerchen("1911/1912", "Gestiefelter Kater", 7);
             Maerchen maerchenSaved = maerchenDao.save(maerchen1);
             maerchenTestdata.add(maerchenSaved);
 
-            Maerchen maerchen2 = new Maerchen("1912/2013", "Schneewittchen");
+            Maerchen maerchen2 = new Maerchen("1912/2013", "Schneewittchen", 8);
             maerchenSaved = maerchenDao.save(maerchen2);
             maerchenTestdata.add(maerchenSaved);
 

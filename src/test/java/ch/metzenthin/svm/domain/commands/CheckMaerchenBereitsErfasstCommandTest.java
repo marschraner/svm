@@ -20,13 +20,13 @@ public class CheckMaerchenBereitsErfasstCommandTest {
 
     @Before
     public void setUp() {
-        bereitsErfassteMaerchens.add(new Maerchen("1911/1912", "Schneewittchen"));
-        bereitsErfassteMaerchens.add(new Maerchen("1912/1913", "Gestiefelter Kater"));
+        bereitsErfassteMaerchens.add(new Maerchen("1911/1912", "Schneewittchen", 7));
+        bereitsErfassteMaerchens.add(new Maerchen("1912/1913", "Gestiefelter Kater", 8));
     }
 
     @Test
     public void testExecute_BereitsErfasst() throws Exception {
-        Maerchen maerchen = new Maerchen("1911/1912", "Hans im Glück");
+        Maerchen maerchen = new Maerchen("1911/1912", "Hans im Glück", 9);
         CheckMaerchenBereitsErfasstCommand checkMaerchenBereitsErfasstCommand = new CheckMaerchenBereitsErfasstCommand(maerchen, null, bereitsErfassteMaerchens);
         commandInvoker.executeCommand(checkMaerchenBereitsErfasstCommand);
         assertTrue(checkMaerchenBereitsErfasstCommand.isBereitsErfasst());
@@ -34,7 +34,7 @@ public class CheckMaerchenBereitsErfasstCommandTest {
 
     @Test
     public void testExecute_MaerchenNochNichtErfasst() throws Exception {
-        Maerchen maerchen = new Maerchen("1913/1914", "Schneewittchen");
+        Maerchen maerchen = new Maerchen("1913/1914", "Schneewittchen", 7);
         CheckMaerchenBereitsErfasstCommand checkMaerchenBereitsErfasstCommand = new CheckMaerchenBereitsErfasstCommand(maerchen, null, bereitsErfassteMaerchens);
         commandInvoker.executeCommand(checkMaerchenBereitsErfasstCommand);
         assertFalse(checkMaerchenBereitsErfasstCommand.isBereitsErfasst());
@@ -42,7 +42,7 @@ public class CheckMaerchenBereitsErfasstCommandTest {
 
     @Test
     public void testExecute_MaerchenOrigin() throws Exception {
-        Maerchen maerchen = new Maerchen("1911/1912", "Schneewittchen");
+        Maerchen maerchen = new Maerchen("1911/1912", "Schneewittchen", 7);
         CheckMaerchenBereitsErfasstCommand checkMaerchenBereitsErfasstCommand = new CheckMaerchenBereitsErfasstCommand(maerchen, bereitsErfassteMaerchens.get(0), bereitsErfassteMaerchens);
         commandInvoker.executeCommand(checkMaerchenBereitsErfasstCommand);
         assertFalse(checkMaerchenBereitsErfasstCommand.isBereitsErfasst());

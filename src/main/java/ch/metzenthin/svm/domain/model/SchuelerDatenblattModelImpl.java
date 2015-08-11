@@ -455,11 +455,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     }
 
     @Override
-    public String getVorstellungenKuchen() {
-        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getVorstellungenKuchen() == null) {
+    public String getKuchenVorstellungenAsString() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getKuchenVorstellungenAsString().isEmpty()) {
             return "-";
         }
-        return aktuelleMaercheneinteilung.getVorstellungenKuchen();
+        return aktuelleMaercheneinteilung.getKuchenVorstellungenAsString();
     }
 
     @Override

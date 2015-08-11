@@ -104,6 +104,7 @@ public class MaerchensPanel {
         gbc.fill = GridBagConstraints.VERTICAL;
         panel2.add(scrollPane1, gbc);
         maerchensTable = new JTable();
+        maerchensTable.setPreferredScrollableViewportSize(new Dimension(750, 400));
         scrollPane1.setViewportView(maerchensTable);
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1, true, false));

@@ -82,6 +82,32 @@ public class MaerchenErfassenModelImpl extends AbstractModel implements Maerchen
         bezeichnungModelAttribute.setNewValue(true, bezeichnung, isBulkUpdate());
     }
 
+    private IntegerModelAttribute anzahlVorstellungenModelAttribute = new IntegerModelAttribute(
+            this,
+            Field.ANZAHL_VORSTELLUNGEN, 1, 9,
+            new AttributeAccessor<Integer>() {
+                @Override
+                public Integer getValue() {
+                    return maerchen.getAnzahlVorstellungen();
+                }
+
+                @Override
+                public void setValue(Integer value) {
+                    maerchen.setAnzahlVorstellungen(value);
+                }
+            }
+    );
+
+    @Override
+    public Integer getAnzahlVorstellungen() {
+        return anzahlVorstellungenModelAttribute.getValue();
+    }
+
+    @Override
+    public void setAnzahlVorstellungen(String anzahlVorstellungen) throws SvmValidationException {
+        anzahlVorstellungenModelAttribute.setNewValue(true, anzahlVorstellungen, isBulkUpdate());
+    }
+
     @Override
     public void initializeCompleted() {
         if (maerchenOrigin != null) {
@@ -89,6 +115,8 @@ public class MaerchenErfassenModelImpl extends AbstractModel implements Maerchen
             try {
                 setSchuljahr(maerchenOrigin.getSchuljahr());
                 setBezeichnung(maerchenOrigin.getBezeichnung());
+                setAnzahlVorstellungen(Integer.toString(maerchenOrigin.getAnzahlVorstellungen()));
+                
             } catch (SvmValidationException ignore) {
                 ignore.printStackTrace();
             }
@@ -128,4 +156,5 @@ public class MaerchenErfassenModelImpl extends AbstractModel implements Maerchen
 
     @Override
     void doValidate() throws SvmValidationException {}
+
 }

@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.componentmodel;
 
 import ch.metzenthin.svm.domain.model.MaercheneinteilungenTableData;
+import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -33,6 +34,14 @@ public class MaercheneinteilungenTableModel extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         return maercheneinteilungenTableData.getColumnName(column);
+    }
+
+    public Maercheneinteilung getMaercheneinteilungSelected(int rowIndex) {
+        return maercheneinteilungenTableData.getMaercheneinteilungSelected(rowIndex);
+    }
+
+    public MaercheneinteilungenTableData getMaercheneinteilungenTableData() {
+        return maercheneinteilungenTableData;
     }
 
 }

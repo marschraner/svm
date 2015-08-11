@@ -46,7 +46,7 @@ public class MaerchenDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen");
+            Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen", 7);
 
             entityManager.persist(maerchen);
 
@@ -54,6 +54,7 @@ public class MaerchenDaoTest {
 
             assertEquals("2011/2012", maerchenFound.getSchuljahr());
             assertEquals("Schneewittchen", maerchenFound.getBezeichnung());
+            assertEquals(7, maerchen.getAnzahlVorstellungen().intValue());
 
         } finally {
             if (tx != null) {
@@ -69,7 +70,7 @@ public class MaerchenDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen");
+            Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen", 7);
             Maerchen maerchenSaved = maerchenDao.save(maerchen);
 
             entityManager.flush();
@@ -81,6 +82,7 @@ public class MaerchenDaoTest {
 
             assertEquals("2011/2012", maerchenFound.getSchuljahr());
             assertEquals("Schneewittchen", maerchenFound.getBezeichnung());
+            assertEquals(7, maerchen.getAnzahlVorstellungen().intValue());
 
         } finally {
             if (tx != null) {
@@ -97,11 +99,11 @@ public class MaerchenDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Maerchen maerchen1 = new Maerchen("2010/2011", "Gestiefelter Kater");
+            Maerchen maerchen1 = new Maerchen("2010/2011", "Gestiefelter Kater", 8);
             Maerchen maerchen1Saved = maerchenDao.save(maerchen1);
             int maerchen1Id = maerchen1Saved.getMaerchenId();
 
-            Maerchen maerchen2 = new Maerchen("2011/2012", "Schneewittchen");
+            Maerchen maerchen2 = new Maerchen("2011/2012", "Schneewittchen", 7);
             Maerchen maerchen2Saved = maerchenDao.save(maerchen2);
             int maerchen2Id = maerchen2Saved.getMaerchenId();
 
@@ -140,10 +142,10 @@ public class MaerchenDaoTest {
             tx.begin();
 
             // Maerchen hinzufügen
-            Maerchen maerchen1 = new Maerchen("1910/1911", "Gestiefelter Kater");
+            Maerchen maerchen1 = new Maerchen("1910/1911", "Gestiefelter Kater", 8);
             maerchenDao.save(maerchen1);
 
-            Maerchen maerchen2 = new Maerchen("1911/1912", "Schneewittchen");
+            Maerchen maerchen2 = new Maerchen("1911/1912", "Schneewittchen", 7);
             maerchenDao.save(maerchen2);
 
             entityManager.flush();

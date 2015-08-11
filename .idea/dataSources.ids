@@ -774,6 +774,7 @@
       <column name="maerchen_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="schuljahr" sqlType="VARCHAR" precision="9" scale="0" nullable="false" jdbcType="12"/>
       <column name="bezeichnung" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="anzahl_vorstellungen" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="maerchen_id"/>
       <exported-key name="Maercheneinteilung_ibfk_2" table="Maercheneinteilung" schema="" catalog="svm" columns="maerchen_id"/>
@@ -790,7 +791,15 @@
       <column name="bilder_rolle_3" sqlType="VARCHAR" precision="60" scale="0" nullable="true" jdbcType="12"/>
       <column name="elternmithilfe" sqlType="VARCHAR" precision="6" scale="0" nullable="true" jdbcType="12"/>
       <column name="code_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <column name="vorstellungen_kuchen" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
+      <column name="kuchen_vorstellung_1" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="kuchen_vorstellung_2" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="kuchen_vorstellung_3" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="kuchen_vorstellung_4" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="kuchen_vorstellung_5" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="kuchen_vorstellung_6" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="kuchen_vorstellung_7" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="kuchen_vorstellung_8" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="kuchen_vorstellung_9" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="zusatzattribut" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
       <column name="bemerkungen" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>

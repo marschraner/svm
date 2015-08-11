@@ -124,14 +124,14 @@ public class LehrkraftErfassenModelImpl extends PersonModelImpl implements Lehrk
 
     @Override
     public void setAktiv(Boolean isSelected) {
-        Boolean oldValue = lehrkraft.isAktiv();
+        Boolean oldValue = lehrkraft.getAktiv();
         lehrkraft.setAktiv(isSelected);
         firePropertyChange(Field.AKTIV, oldValue, isSelected);
     }
 
     @Override
     public Boolean isAktiv() {
-        return lehrkraft.isAktiv();
+        return lehrkraft.getAktiv();
     }
 
     @Override
@@ -166,8 +166,8 @@ public class LehrkraftErfassenModelImpl extends PersonModelImpl implements Lehrk
                 setGeburtsdatum(asString(lehrkraftOrigin.getGeburtsdatum()));
                 setAhvNummer(lehrkraftOrigin.getAhvNummer());
                 setVertretungsmoeglichkeiten(lehrkraftOrigin.getVertretungsmoeglichkeiten());
-                setAktiv(!lehrkraftOrigin.isAktiv()); // damit PropertyChange ausgelöst wird!
-                setAktiv(lehrkraftOrigin.isAktiv());
+                setAktiv(!lehrkraftOrigin.getAktiv()); // damit PropertyChange ausgelöst wird!
+                setAktiv(lehrkraftOrigin.getAktiv());
             } catch (SvmValidationException ignore) {
                 ignore.printStackTrace();
             }

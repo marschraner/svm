@@ -41,7 +41,7 @@ public interface SchuelerDatenblattModel {
     String getBilderRolle3();
     String getElternmithilfe();
     String getElternmithilfeCode();
-    String getVorstellungenKuchen();
+    String getKuchenVorstellungenAsString();
     String getZusatzattribut();
     String getBemerkungenMaerchen();
 

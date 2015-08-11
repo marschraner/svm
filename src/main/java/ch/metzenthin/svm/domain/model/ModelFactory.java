@@ -31,4 +31,5 @@ public interface ModelFactory {
     MaerchensModel createMaerchensModel();
     MaerchenErfassenModel createMaerchenErfassenModel();
     MaercheneinteilungenModel createMaercheneinteilungenModel();
+    MaercheneinteilungErfassenModel createMaercheneinteilungErfassenModel();
 }

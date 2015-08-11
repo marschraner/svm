@@ -16,10 +16,11 @@ public class MaerchenErfassenDialog extends JDialog {
     private JPanel buttonPanel;
     private JSpinner spinnerSchuljahre;
     private JTextField txtBezeichnung;
+    private JTextField txtAnzahlVorstellungen;
     private JLabel errLblBezeichnung;
+    private JLabel errLblAnzahlVorstellungen;
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
-
 
     public MaerchenErfassenDialog(SvmContext svmContext, MaerchensModel maerchensModel, int indexBearbeiten, boolean isBearbeiten, String title) {
         $$$setupUI$$$();
@@ -37,15 +38,19 @@ public class MaerchenErfassenDialog extends JDialog {
         maerchenErfassenController.setContentPane(contentPane);
         maerchenErfassenController.setSpinnerSchuljahre(spinnerSchuljahre);
         maerchenErfassenController.setTxtBezeichnung(txtBezeichnung);
+        maerchenErfassenController.setTxtAnzahlVorstellungen(txtAnzahlVorstellungen);
         maerchenErfassenController.setBtnSpeichern(btnSpeichern);
         maerchenErfassenController.setBtnAbbrechen(btnAbbrechen);
         maerchenErfassenController.setErrLblBezeichnung(errLblBezeichnung);
+        maerchenErfassenController.setErrLblAnzahlVorstellungen(errLblAnzahlVorstellungen);
         maerchenErfassenController.constructionDone();
     }
 
     private void initializeErrLbls() {
         errLblBezeichnung.setVisible(false);
         errLblBezeichnung.setForeground(Color.RED);
+        errLblAnzahlVorstellungen.setVisible(false);
+        errLblAnzahlVorstellungen.setForeground(Color.RED);
     }
 
     private void createUIComponents() {
@@ -128,7 +133,6 @@ public class MaerchenErfassenDialog extends JDialog {
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 0, 0, 15);
         panel1.add(label2, gbc);
         txtBezeichnung = new JTextField();
         gbc = new GridBagConstraints();
@@ -150,6 +154,34 @@ public class MaerchenErfassenDialog extends JDialog {
         gbc.gridy = 4;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel1.add(spacer6, gbc);
+        final JLabel label3 = new JLabel();
+        label3.setText("Anzahl Vorstellungen");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 0, 0, 15);
+        panel1.add(label3, gbc);
+        final JPanel spacer7 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel1.add(spacer7, gbc);
+        txtAnzahlVorstellungen = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 5;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel1.add(txtAnzahlVorstellungen, gbc);
+        errLblAnzahlVorstellungen = new JLabel();
+        errLblAnzahlVorstellungen.setText("errLblAnzahlVorstellungen");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel1.add(errLblAnzahlVorstellungen, gbc);
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridBagLayout());
         contentPane.add(buttonPanel, BorderLayout.SOUTH);
@@ -163,24 +195,24 @@ public class MaerchenErfassenDialog extends JDialog {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         buttonPanel.add(btnSpeichern, gbc);
-        final JPanel spacer7 = new JPanel();
+        final JPanel spacer8 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        buttonPanel.add(spacer7, gbc);
-        final JPanel spacer8 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.VERTICAL;
         buttonPanel.add(spacer8, gbc);
         final JPanel spacer9 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 0;
+        gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
         buttonPanel.add(spacer9, gbc);
+        final JPanel spacer10 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        buttonPanel.add(spacer10, gbc);
         btnAbbrechen = new JButton();
         btnAbbrechen.setMaximumSize(new Dimension(114, 29));
         btnAbbrechen.setMinimumSize(new Dimension(114, 29));
@@ -193,6 +225,7 @@ public class MaerchenErfassenDialog extends JDialog {
         buttonPanel.add(btnAbbrechen, gbc);
         label1.setLabelFor(spinnerSchuljahre);
         label2.setLabelFor(txtBezeichnung);
+        errLblAnzahlVorstellungen.setLabelFor(txtAnzahlVorstellungen);
     }
 
     /**

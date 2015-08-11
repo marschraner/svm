@@ -27,26 +27,32 @@ public class Maerchen implements Comparable<Maerchen> {
     @Column(name = "bezeichnung", nullable = false)
     private String bezeichnung;
 
+    @Column(name = "anzahl_vorstellungen", nullable = false)
+    private Integer anzahlVorstellungen;
+
     @OneToMany(mappedBy = "maerchen")
     private Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
 
     public Maerchen() {
     }
 
-    public Maerchen(String schuljahr, String bezeichnung) {
+    public Maerchen(String schuljahr, String bezeichnung, Integer anzahlVorstellungen) {
         this.schuljahr = schuljahr;
         this.bezeichnung = bezeichnung;
+        this.anzahlVorstellungen = anzahlVorstellungen;
     }
 
     public boolean isIdenticalWith(Maerchen otherMaerchen) {
         return otherMaerchen != null
                 && ((schuljahr == null && otherMaerchen.getSchuljahr() == null) || (schuljahr != null && schuljahr.equals(otherMaerchen.getSchuljahr())))
-                && ((bezeichnung == null && otherMaerchen.getBezeichnung() == null) || (bezeichnung != null && bezeichnung.equals(otherMaerchen.getBezeichnung())));
+                && ((bezeichnung == null && otherMaerchen.getBezeichnung() == null) || (bezeichnung != null && bezeichnung.equals(otherMaerchen.getBezeichnung())))
+                && ((anzahlVorstellungen == null && otherMaerchen.anzahlVorstellungen == null) || (anzahlVorstellungen != null && anzahlVorstellungen.equals(otherMaerchen.anzahlVorstellungen)));
     }
 
     public void copyAttributesFrom(Maerchen otherMaerchen) {
         this.schuljahr = otherMaerchen.getSchuljahr();
         this.bezeichnung = otherMaerchen.getBezeichnung();
+        this.anzahlVorstellungen = otherMaerchen.getAnzahlVorstellungen();
     }
 
     @Override
@@ -82,6 +88,14 @@ public class Maerchen implements Comparable<Maerchen> {
 
     public void setBezeichnung(String bezeichnung) {
         this.bezeichnung = bezeichnung;
+    }
+
+    public Integer getAnzahlVorstellungen() {
+        return anzahlVorstellungen;
+    }
+
+    public void setAnzahlVorstellungen(Integer anzahlVorstellungen) {
+        this.anzahlVorstellungen = anzahlVorstellungen;
     }
 
     public Set<Maercheneinteilung> getMaercheneinteilungen() {

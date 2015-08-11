@@ -66,7 +66,7 @@ public class LehrkraefteTableData {
                 value = lehrkraft.getVertretungsmoeglichkeiten();
                 break;
             case AKTIV:
-                value = (lehrkraft.isAktiv() ? "ja" : "nein");
+                value = (lehrkraft.getAktiv() ? "ja" : "nein");
                 break;
             default:
                 break;

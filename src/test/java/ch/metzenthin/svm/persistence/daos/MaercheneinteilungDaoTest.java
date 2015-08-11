@@ -63,13 +63,14 @@ public class MaercheneinteilungDaoTest {
             schueler.setVater(vater);
             schueler.setRechnungsempfaenger(vater);
             entityManager.persist(schueler);
-            Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen");
+            Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen", 7);
             entityManager.persist(maerchen);
             ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("f", "Frisieren");
             entityManager.persist(elternmithilfeCode);
 
             // Märcheneinteilung
-            Maercheneinteilung maercheneinteilung = new Maercheneinteilung(schueler, maerchen, Gruppe.A, "Komödiant 1", "1, 2", "Hase 2", "2, 3", "Frosch 3", "3, 4", Elternteil.VATER, "1, 2, 3", null, null);
+            Maercheneinteilung maercheneinteilung = new Maercheneinteilung(schueler, maerchen, Gruppe.A, "Komödiant 1", "1, 2", "Hase 2", "2, 3", "Frosch 3", "3, 4", Elternteil.VATER,
+                    true, true, true, false, false, false, false, false, false, null, null);
             maercheneinteilung.setElternmithilfeCode(elternmithilfeCode);
             entityManager.persist(maercheneinteilung);
 
@@ -85,8 +86,15 @@ public class MaercheneinteilungDaoTest {
             assertEquals("3, 4", maercheneinteilungFound.getBilderRolle3());
             assertEquals(Elternteil.VATER, maercheneinteilungFound.getElternmithilfe());
             assertEquals("f", maercheneinteilung.getElternmithilfeCode().getKuerzel());
-            assertEquals("1, 2, 3", maercheneinteilung.getVorstellungenKuchen());
-
+            assertTrue(maercheneinteilung.getKuchenVorstellung1());
+            assertTrue(maercheneinteilung.getKuchenVorstellung2());
+            assertTrue(maercheneinteilung.getKuchenVorstellung3());
+            assertFalse(maercheneinteilung.getKuchenVorstellung4());
+            assertFalse(maercheneinteilung.getKuchenVorstellung5());
+            assertFalse(maercheneinteilung.getKuchenVorstellung6());
+            assertFalse(maercheneinteilung.getKuchenVorstellung7());
+            assertFalse(maercheneinteilung.getKuchenVorstellung8());
+            assertFalse(maercheneinteilung.getKuchenVorstellung9());
         } finally {
             if (tx != null) {
                 tx.rollback();
@@ -111,13 +119,14 @@ public class MaercheneinteilungDaoTest {
             schueler.setVater(vater);
             schueler.setRechnungsempfaenger(vater);
             entityManager.persist(schueler);
-            Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen");
+            Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen", 7);
             entityManager.persist(maerchen);
             ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("f", "Frisieren");
             entityManager.persist(elternmithilfeCode);
 
             // Märcheneinteilung
-            Maercheneinteilung maercheneinteilung = new Maercheneinteilung(schueler, maerchen, Gruppe.A, "Komödiant 1", "1, 2", "Hase 2", "2, 3", "Frosch 3", "3, 4", Elternteil.VATER, "1, 2, 3", null, null);
+            Maercheneinteilung maercheneinteilung = new Maercheneinteilung(schueler, maerchen, Gruppe.A, "Komödiant 1", "1, 2", "Hase 2", "2, 3", "Frosch 3", "3, 4", Elternteil.VATER,
+                    true, true, true, false, false, false, false, false, false, null, null);
             maercheneinteilung.setElternmithilfeCode(elternmithilfeCode);
             maercheneinteilungDao.save(maercheneinteilung);
 
@@ -155,13 +164,14 @@ public class MaercheneinteilungDaoTest {
             schueler.setVater(vater);
             schueler.setRechnungsempfaenger(vater);
             entityManager.persist(schueler);
-            Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen");
+            Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen", 7);
             entityManager.persist(maerchen);
             ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("f", "Frisieren");
             entityManager.persist(elternmithilfeCode);
 
             // Märcheneinteilung
-            Maercheneinteilung maercheneinteilung = new Maercheneinteilung(schueler, maerchen, Gruppe.A, "Komödiant 1", "1, 2", "Hase 2", "2, 3", "Frosch 3", "3, 4", Elternteil.VATER, "1, 2, 3", null, null);
+            Maercheneinteilung maercheneinteilung = new Maercheneinteilung(schueler, maerchen, Gruppe.A, "Komödiant 1", "1, 2", "Hase 2", "2, 3", "Frosch 3", "3, 4", Elternteil.VATER,
+                    true, true, true, false, false, false, false, false, false, null, null);
             maercheneinteilung.setElternmithilfeCode(elternmithilfeCode);
             Maercheneinteilung maercheneinteilungSaved = maercheneinteilungDao.save(maercheneinteilung);
             int personId = maercheneinteilungSaved.getSchueler().getPersonId();
@@ -226,9 +236,9 @@ public class MaercheneinteilungDaoTest {
             schueler3.setRechnungsempfaenger(mutter3);
             entityManager.persist(schueler3);
 
-            Maerchen maerchen1 = new Maerchen("1911/1912", "Schneewittchen");
+            Maerchen maerchen1 = new Maerchen("1911/1912", "Schneewittchen", 7);
             entityManager.persist(maerchen1);
-            Maerchen maerchen2 = new Maerchen("1912/2013", "Froschkönig");
+            Maerchen maerchen2 = new Maerchen("1912/2013", "Froschkönig", 8);
             entityManager.persist(maerchen2);
 
             ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("f", "Frisieren");
@@ -237,13 +247,16 @@ public class MaercheneinteilungDaoTest {
             entityManager.persist(elternmithilfeCode2);
 
             // Märcheneinteilung
-            Maercheneinteilung maercheneinteilung1 = new Maercheneinteilung(schueler1, maerchen1, Gruppe.A, "Komödiant 1", "1, 2", "Hase 1", "2, 3", "Frosch 1", "3, 4", Elternteil.VATER, "1, 2, 3", null, null);
+            Maercheneinteilung maercheneinteilung1 = new Maercheneinteilung(schueler1, maerchen1, Gruppe.A, "Komödiant 1", "1, 2", "Hase 1", "2, 3", "Frosch 1", "3, 4", Elternteil.VATER,
+                    true, true, true, false, false, false, false, false, false, null, null);
             maercheneinteilung1.setElternmithilfeCode(elternmithilfeCode1);
             entityManager.persist(maercheneinteilung1);
-            Maercheneinteilung maercheneinteilung2 = new Maercheneinteilung(schueler2, maerchen1, Gruppe.A, "Komödiant 2", "1, 2", "Hase 2", "2, 3", "Frosch 2", "3, 4", Elternteil.MUTTER, "1, 2, 3", null, null);
+            Maercheneinteilung maercheneinteilung2 = new Maercheneinteilung(schueler2, maerchen1, Gruppe.A, "Komödiant 2", "1, 2", "Hase 2", "2, 3", "Frosch 2", "3, 4", Elternteil.MUTTER,
+                    true, true, true, false, false, false, false, false, false, null, null);
             maercheneinteilung1.setElternmithilfeCode(elternmithilfeCode1);
             entityManager.persist(maercheneinteilung2);
-            Maercheneinteilung maercheneinteilung3 = new Maercheneinteilung(schueler1, maerchen2, Gruppe.B, "Erzähltaube 2", "1, 2", null, null, null, null, Elternteil.MUTTER, "1, 2, 3", null, null);
+            Maercheneinteilung maercheneinteilung3 = new Maercheneinteilung(schueler1, maerchen2, Gruppe.B, "Erzähltaube 2", "1, 2", null, null, null, null, Elternteil.MUTTER,
+                    true, true, true, false, false, false, false, false, false, null, null);
             entityManager.persist(maercheneinteilung3);
 
             maercheneinteilung1.setElternmithilfeCode(elternmithilfeCode1);

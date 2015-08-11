@@ -18,7 +18,7 @@ public class MaercheneinteilungenTableData {
 
     private static final Field[] COLUMNS = {Field.MAERCHEN, Field.GRUPPE, Field.ROLLE1, Field.BILDER_ROLLE1, Field.ROLLE2,
             Field.BILDER_ROLLE2, Field.ROLLE3, Field.BILDER_ROLLE3, Field.ELTERNMITHILFE, Field.ELTERNMITHILFE_CODE,
-            Field.VORSTELLUNGEN_KUCHEN, Field.ZUSATZATTRIBUT, Field.BEMERKUNGEN};
+            Field.KUCHEN_VORSTELLUNGEN, Field.ZUSATZATTRIBUT, Field.BEMERKUNGEN};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -62,8 +62,8 @@ public class MaercheneinteilungenTableData {
             case ELTERNMITHILFE_CODE:
                 value = maercheneinteilung.getElternmithilfeCode();
                 break;
-            case VORSTELLUNGEN_KUCHEN:
-                value = maercheneinteilung.getVorstellungenKuchen();
+            case KUCHEN_VORSTELLUNGEN:
+                value = maercheneinteilung.getKuchenVorstellungenAsString();
                 break;
             case ZUSATZATTRIBUT:
                 value = maercheneinteilung.getZusatzattribut();
@@ -79,5 +79,17 @@ public class MaercheneinteilungenTableData {
 
     public String getColumnName(int column) {
         return COLUMNS[column].toString();
+    }
+
+    public Maercheneinteilung getMaercheneinteilungSelected(int rowIndex) {
+        return maercheneinteilungen.get(rowIndex);
+    }
+
+    public List<Maercheneinteilung> getMaercheneinteilungen() {
+        return maercheneinteilungen;
+    }
+
+    public void setMaercheneinteilungen(List<Maercheneinteilung> maercheneinteilungen) {
+        this.maercheneinteilungen = maercheneinteilungen;
     }
 }

@@ -16,7 +16,7 @@ public class MaerchensTableData {
         this.maerchens = maerchens;
     }
 
-    private static final Field[] COLUMNS = {Field.SCHULJAHR, Field.BEZEICHNUNG, Field.ANZAHL_KINDER};
+    private static final Field[] COLUMNS = {Field.SCHULJAHR, Field.BEZEICHNUNG, Field.ANZAHL_VORSTELLUNGEN, Field.ANZAHL_KINDER};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -35,6 +35,9 @@ public class MaerchensTableData {
                 break;
             case BEZEICHNUNG:
                 value = maerchen.getBezeichnung();
+                break;
+            case ANZAHL_VORSTELLUNGEN:
+                value = maerchen.getAnzahlVorstellungen();
                 break;
             case ANZAHL_KINDER:
                 value = maerchen.getMaercheneinteilungen().size();

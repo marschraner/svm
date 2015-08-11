@@ -4,6 +4,7 @@ package ch.metzenthin.svm.common.dataTypes;
  * @author Martin Schraner
  */
 public enum Elternteil {
+    KEINER(""),
     MUTTER("Mutter"),
     VATER("Vater");
 

@@ -41,8 +41,8 @@ public class DeleteMaerchenCommandTest {
         List<Maerchen> maerchensSaved = new ArrayList<>();
 
         // 2 Maerchen erfassen
-        Maerchen maerchen1 = new Maerchen("1912/1913", "Schneewittchen");
-        Maerchen maerchen2 = new Maerchen("1911/1912", "Hans im Glück");
+        Maerchen maerchen1 = new Maerchen("1912/1913", "Schneewittchen", 7);
+        Maerchen maerchen2 = new Maerchen("1911/1912", "Hans im Glück", 8);
         SaveOrUpdateMaerchenCommand saveOrUpdateMaerchenCommand = new SaveOrUpdateMaerchenCommand(maerchen1, null, maerchensSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaerchenCommand);
 

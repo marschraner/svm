@@ -287,10 +287,10 @@ SELECT * FROM Schueler_Kurs;
 -- Maerchen
 -- ********
 
-INSERT INTO Maerchen (maerchen_id, schuljahr, bezeichnung) VALUES
-    (1, '2013/2014', 'Froschkönig'),
-    (2, '2014/2015', 'Aschenputtel'),
-    (3, '2015/2016', 'Rumpelstilzchen');
+INSERT INTO Maerchen (maerchen_id, schuljahr, bezeichnung, anzahl_vorstellungen) VALUES
+    (1, '2013/2014', 'Froschkönig', 8),
+    (2, '2014/2015', 'Aschenputtel', 7),
+    (3, '2015/2016', 'Rumpelstilzchen', 7);
 
 SELECT * FROM Maerchen;
 
@@ -310,11 +310,19 @@ INSERT INTO Maercheneinteilung (
     bilder_rolle_3,
     elternmithilfe,
     code_id,
-    vorstellungen_kuchen,
+    kuchen_vorstellung_1,
+    kuchen_vorstellung_2,
+    kuchen_vorstellung_3,
+    kuchen_vorstellung_4,
+    kuchen_vorstellung_5,
+    kuchen_vorstellung_6,
+    kuchen_vorstellung_7,
+    kuchen_vorstellung_8,
+    kuchen_vorstellung_9,
     zusatzattribut,
     bemerkungen) VALUES
-    (7, 2, 'A', 'Aschenputtel Mina', '1, v3, 3, v4a, v4b, 4, v5b, 5, v6, 6', NULL, NULL, NULL, NULL, 'MUTTER', 3, '2, 5, 7', NULL, NULL),
-    (7, 3, 'B', 'Rumpelstilzchen', '3, v4, 4, v5b, 5, v6, 6', NULL, NULL, NULL, NULL, 'MUTTER', 4, '1, 3, 6', NULL, NULL),
-    (8, 3, 'B', 'Schulkind 6', '2, 3', 'Waldtier Hase 2', '4', NULL, NULL, NULL, NULL, NULL, NULL, 'Elternmithilfe bei Lilly Juchli erfasst');
+    (7, 2, 'A', 'Aschenputtel Mina', '1, v3, 3, v4a, v4b, 4, v5b, 5, v6, 6', NULL, NULL, NULL, NULL, 'MUTTER', 3, 0, 1, 0, 0, 1, 0, 1, 0, 0, NULL, NULL),
+    (7, 3, 'B', 'Erzähltaube 2', '3, v4, 4, v5b, 5, v6, 6', NULL, NULL, NULL, NULL, 'MUTTER', 4, 1, 0, 1, 0, 0, 1, 0, 0, 0, NULL, NULL),
+    (8, 3, 'B', 'Schulkind 6', '2, 3', 'Waldtier Hase 2', '4', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Elternmithilfe bei Lilly Juchli erfasst');
 
 SELECT * FROM Maercheneinteilung;

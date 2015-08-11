@@ -99,7 +99,7 @@ public class SvmModelImpl implements SvmModel {
     public List<Lehrkraft> getAktiveLehrkraefteAll() {
         List<Lehrkraft> lehrkraefteAktiveAll = new ArrayList<>();
         for (Lehrkraft lehrkraft : lehrkraefteAll) {
-            if (lehrkraft.isAktiv()) {
+            if (lehrkraft.getAktiv()) {
                 lehrkraefteAktiveAll.add(lehrkraft);
             }
         }

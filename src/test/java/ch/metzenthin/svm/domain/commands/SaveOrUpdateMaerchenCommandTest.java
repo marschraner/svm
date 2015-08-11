@@ -40,33 +40,33 @@ public class SaveOrUpdateMaerchenCommandTest {
     public void testExecute() throws Exception {
 
         // Vor Transaktionen
-        assertFalse(checkIfMaerchenAvailable("1912/1913", "Schneewittchen"));
-        assertFalse(checkIfMaerchenAvailable("1911/1912", "Hans im Glück"));
-        assertFalse(checkIfMaerchenAvailable("1914/1915", "Erlkönig"));
+        assertFalse(checkIfMaerchenAvailable("1912/1913", "Schneewittchen", 7));
+        assertFalse(checkIfMaerchenAvailable("1911/1912", "Hans im Glück", 8));
+        assertFalse(checkIfMaerchenAvailable("1914/1915", "Erlkönig", 9));
         List<Maerchen> maerchensSaved = new ArrayList<>();
 
         // Maerchen hinzufügen
-        Maerchen maerchen1 = new Maerchen("1912/1913", "Schneewittchen");
+        Maerchen maerchen1 = new Maerchen("1912/1913", "Schneewittchen", 7);
         SaveOrUpdateMaerchenCommand saveOrUpdateMaerchenCommand = new SaveOrUpdateMaerchenCommand(maerchen1, null, maerchensSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaerchenCommand);
         assertEquals(1, maerchensSaved.size());
-        assertTrue(checkIfMaerchenAvailable("1912/1913", "Schneewittchen"));
+        assertTrue(checkIfMaerchenAvailable("1912/1913", "Schneewittchen", 7));
 
         // Weiteres Maerchen hinzufügen
-        Maerchen maerchen2 = new Maerchen("1911/1912", "Hans im Glück");
+        Maerchen maerchen2 = new Maerchen("1911/1912", "Hans im Glück", 8);
         saveOrUpdateMaerchenCommand = new SaveOrUpdateMaerchenCommand(maerchen2, null, maerchensSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaerchenCommand);
         assertEquals(2, maerchensSaved.size());
-        assertTrue(checkIfMaerchenAvailable("1911/1912", "Hans im Glück"));
+        assertTrue(checkIfMaerchenAvailable("1911/1912", "Hans im Glück", 8));
 
         // Weiteres Maerchen hinzufügen
-        Maerchen maerchen3 = new Maerchen("1914/1915", "Erlkönig");
+        Maerchen maerchen3 = new Maerchen("1914/1915", "Erlkönig", 9);
         saveOrUpdateMaerchenCommand = new SaveOrUpdateMaerchenCommand(maerchen3, null, maerchensSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaerchenCommand);
         assertEquals(3, maerchensSaved.size());
-        assertTrue(checkIfMaerchenAvailable("1912/1913", "Schneewittchen"));
-        assertTrue(checkIfMaerchenAvailable("1911/1912", "Hans im Glück"));
-        assertTrue(checkIfMaerchenAvailable("1914/1915", "Erlkönig"));
+        assertTrue(checkIfMaerchenAvailable("1912/1913", "Schneewittchen", 7));
+        assertTrue(checkIfMaerchenAvailable("1911/1912", "Hans im Glück", 8));
+        assertTrue(checkIfMaerchenAvailable("1914/1915", "Erlkönig", 9));
         // Zeitlich absteigend geordnet?
         assertEquals("1911/1912", maerchensSaved.get(2).getSchuljahr());
         assertEquals("Hans im Glück", maerchensSaved.get(2).getBezeichnung());
@@ -76,12 +76,12 @@ public class SaveOrUpdateMaerchenCommandTest {
         assertEquals("Erlkönig", maerchensSaved.get(0).getBezeichnung());
 
         // Maerchen bearbeiten (neue Bezeichnung)
-        Maerchen maerchen1Modif = new Maerchen("1912/1913", "Rumpelstilzchen");
+        Maerchen maerchen1Modif = new Maerchen("1912/1913", "Rumpelstilzchen", 9);
         saveOrUpdateMaerchenCommand = new SaveOrUpdateMaerchenCommand(maerchen1Modif, maerchen1, maerchensSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaerchenCommand);
         assertEquals(3, maerchensSaved.size());
-        assertFalse(checkIfMaerchenAvailable("1912/1913", "Schneewittchen"));
-        assertTrue(checkIfMaerchenAvailable("1912/1913", "Rumpelstilzchen"));
+        assertFalse(checkIfMaerchenAvailable("1912/1913", "Schneewittchen", 7));
+        assertTrue(checkIfMaerchenAvailable("1912/1913", "Rumpelstilzchen", 9));
 
         // Testdaten löschen
         EntityManager entityManager = null;
@@ -105,12 +105,12 @@ public class SaveOrUpdateMaerchenCommandTest {
 
     }
 
-    private boolean checkIfMaerchenAvailable(String schuljahr, String bezeichnung) {
+    private boolean checkIfMaerchenAvailable(String schuljahr, String bezeichnung, int anzahlVorstellungen) {
         FindAllMaerchensCommand findAllMaerchensCommand = new FindAllMaerchensCommand();
         commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllMaerchensCommand);
         List<Maerchen> maerchensAll = findAllMaerchensCommand.getMaerchensAll();
         for (Maerchen maerchen : maerchensAll) {
-            if (maerchen.getSchuljahr().equals(schuljahr) && maerchen.getBezeichnung().equals(bezeichnung)) {
+            if (maerchen.getSchuljahr().equals(schuljahr) && maerchen.getBezeichnung().equals(bezeichnung) && maerchen.getAnzahlVorstellungen().equals(anzahlVorstellungen)) {
                 return true;
             }
         }

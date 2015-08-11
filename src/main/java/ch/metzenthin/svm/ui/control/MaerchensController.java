@@ -61,7 +61,7 @@ public class MaerchensController {
         MaerchensTableData maerchensTableData = new MaerchensTableData(svmContext.getSvmModel().getMaerchensAll());
         maerchensTableModel = new MaerchensTableModel(maerchensTableData);
         maerchensTable.setModel(maerchensTableModel);
-        UiComponentsUtils.setJTableColumnWidthAsPercentages(maerchensTable, 0.25, 0.6, 0.15);
+        UiComponentsUtils.setJTableColumnWidthAsPercentages(maerchensTable, 0.15, 0.55, 0.15, 0.15);
     }
 
     public void setBtnNeu(JButton btnNeu) {
