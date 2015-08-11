@@ -6,4 +6,4 @@ mysql -u root -p < sql\createDbAndUser.sql
 
 mysql -u svm -psvm < sql\createTables.sql
 
-@REM mysql -u svm -psvm < sql\fillData.sql
+mysql --default-character-set=utf8 -u svm -psvm < sql\fillData.sql
