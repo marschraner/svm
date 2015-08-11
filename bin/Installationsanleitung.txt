@@ -49,8 +49,7 @@ Einmalig
 Applikation installieren
 ========================
 - Entpacken svm-${version}-bin.zip
-- In cmd-Shell:
-  - Ins Directory wechseln (cd svm-${version})
+- In Command-Shell oder Windows-Explorer ins Directory wechseln (svm-${version})
 
 Datenbank installieren
 ======================
