@@ -1,10 +1,10 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
-import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Filetyp;
+import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
 import ch.metzenthin.svm.common.dataTypes.Listentyp;
+import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CreateListeCommand;
@@ -22,6 +22,7 @@ import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
@@ -264,7 +265,7 @@ public class ListenExportController extends AbstractController {
             return;
         }
         // Prüfen, ob selektiertes Output-File schon existiert
-        File outputFile = fileChooser.getSelectedFile();
+        final File outputFile = fileChooser.getSelectedFile();
         if (outputFile.exists()) {
             Object[] options = {"Ja", "Nein"};
             int n = JOptionPane.showOptionDialog(
@@ -282,20 +283,52 @@ public class ListenExportController extends AbstractController {
             }
         }
         // Ouput-File erzeugen
-        listenExportDialog.dispose();  // Dialog vorher schliessen, da File-Erstellen länger dauern kann.
-        CreateListeCommand.Result result = listenExportModel.createListenFile(outputFile, schuelerSuchenTableModel, lehrkraefteTableModel, kurseTableModel);
-        switch (result) {
-            case TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR:
-                JOptionPane.showMessageDialog(listenExportDialog, "Template-Datei '" + listenExportModel.getTemplateFile() + "' nicht gefunden. Bitte Template-Datei erstellen.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                break;
-            case FEHLER_BEIM_LESEN_DES_PROPERTY_FILE:
-                JOptionPane.showMessageDialog(listenExportDialog, "Fehler beim Lesen der Svm-Property-Datei '" + SvmProperties.SVM_PROPERTIES_FILE_NAME
-                        + "'. \nDie Datei existiert nicht oder der Eintrag für die Template-Datei fehlt. Bitte Datei überprüfen.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                break;
-            case LISTE_ERFOLGREICH_ERSTELLT:
-                JOptionPane.showMessageDialog(listenExportDialog, "Die Liste wurde erfolgreich erstellt.", "Liste erfolgreich erstellt", JOptionPane.INFORMATION_MESSAGE);
-                break;
-        }
+        final JDialog dialog = new JDialog(listenExportDialog);
+        dialog.setUndecorated(true);
+        JPanel panel = new JPanel();
+        final JLabel label = new JLabel("Bitte warten ...");
+        panel.add(label);
+        dialog.add(panel);
+        // Public method to center the dialog after calling pack()
+        dialog.pack();
+        dialog.setLocationRelativeTo(listenExportDialog);
+        SwingWorker<CreateListeCommand.Result, String> worker = new SwingWorker<CreateListeCommand.Result, String>() {
+            @Override
+            protected CreateListeCommand.Result doInBackground() throws Exception {
+                return listenExportModel.createListenFile(outputFile, schuelerSuchenTableModel, lehrkraefteTableModel, kurseTableModel);
+            }
+            @Override
+            protected void done() {
+                dialog.dispose();
+                CreateListeCommand.Result result = null;
+                try {
+                    result = get();
+                } catch (InterruptedException | ExecutionException e) {
+                    JOptionPane.showMessageDialog(listenExportDialog, "Die Liste konnte nicht erstellt werden.", "Liste nicht erfolgreich erstellt", JOptionPane.ERROR_MESSAGE);
+                }
+                if (result != null) {
+                    switch (result) {
+                        case TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR:
+                            JOptionPane.showMessageDialog(listenExportDialog, "Template-Datei '" + listenExportModel.getTemplateFile() + "' nicht gefunden. Bitte Template-Datei erstellen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        case FEHLER_BEIM_LESEN_DES_PROPERTY_FILE:
+                            JOptionPane.showMessageDialog(listenExportDialog, "Fehler beim Lesen der Svm-Property-Datei '" + SvmProperties.SVM_PROPERTIES_FILE_NAME
+                                    + "'. \nDie Datei existiert nicht oder der Eintrag für die Template-Datei fehlt. Bitte Datei überprüfen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        case LISTE_ERFOLGREICH_ERSTELLT:
+                            JOptionPane.showMessageDialog(listenExportDialog, "Die Liste wurde erfolgreich erstellt.", "Liste erfolgreich erstellt", JOptionPane.INFORMATION_MESSAGE);
+                            break;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(listenExportDialog, "Die Liste konnte nicht erstellt werden.", "Es konnte kein Resultat ermittelt werden.", JOptionPane.ERROR_MESSAGE);
+                }
+                listenExportDialog.dispose();
+            }
+        };
+        worker.execute();
+        listenExportDialog.setEnabled(false);
+        listenExportDialog.repaint();
+        dialog.setVisible(true);
     }
 
     private JFileChooser setupFileChooser() {
