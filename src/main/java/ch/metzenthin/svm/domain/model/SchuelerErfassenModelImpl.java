@@ -174,6 +174,14 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
                 replaceByOrtSchueler(vaterModel);
             }
         }
+        if (isFestnetzPropertyChange(evt)) {
+            if (mutterModel.isGleicheAdresseWieSchueler()) {
+                replaceByFestnetzSchueler(mutterModel);
+            }
+            if (vaterModel.isGleicheAdresseWieSchueler()) {
+                replaceByFestnetzSchueler(vaterModel);
+            }
+        }
     }
 
     private void onMutterModelPropertyChange(PropertyChangeEvent evt) {
@@ -256,6 +264,10 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         return checkIsFieldChange(Field.ORT, evt);
     }
 
+    private boolean isFestnetzPropertyChange(PropertyChangeEvent evt) {
+        return checkIsFieldChange(Field.FESTNETZ, evt);
+    }
+
     private boolean isRechnungsempfaengerPropertyChange(PropertyChangeEvent evt) {
         return checkIsFieldChange(Field.RECHNUNGSEMPFAENGER, evt);
     }
@@ -287,6 +299,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         adresseFields.add(Field.STRASSE_HAUSNUMMER);
         adresseFields.add(Field.PLZ);
         adresseFields.add(Field.ORT);
+        adresseFields.add(Field.FESTNETZ);
         return adresseFields;
     }
 
@@ -321,6 +334,17 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             angehoerigerModel.setOrt(schuelerModel.getOrt());
         } catch (SvmRequiredException e) {
             LOGGER.trace("SchuelerErfassenController replaceByOrtSchueler RequiredException=" + e.getMessage());
+            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+        } catch (SvmValidationException e) {
+            // Tritt nie ein, da Validierung bereits beim Schüler
+        }
+    }
+
+    private void replaceByFestnetzSchueler(AngehoerigerModel angehoerigerModel) {
+        try {
+            angehoerigerModel.setFestnetz(schuelerModel.getFestnetz());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("SchuelerErfassenController replaceByFestnetzSchueler RequiredException=" + e.getMessage());
             // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
         } catch (SvmValidationException e) {
             // Tritt nie ein, da Validierung bereits beim Schüler

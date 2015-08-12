@@ -970,10 +970,10 @@ public class MaercheneinteilungErfassenController extends AbstractController {
             return;
         }
         if (!maercheneinteilungErfassenModel.checkIfElternmithilfeHasTelefon(schuelerDatenblattModel)) {
-            JOptionPane.showMessageDialog(maercheneinteilungErfassenDialog, "Für die Elternmithilfe sind weder Festnetz noch Natel erfasst.", "Elternmithilfe ohne Telefon", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(maercheneinteilungErfassenDialog, "Für die Elternmithilfe sind weder Festnetz noch Natel erfasst. Bitte Schüler-Stammdaten ergänzen.", "Elternmithilfe ohne Telefon", JOptionPane.WARNING_MESSAGE);
         }
         if (!maercheneinteilungErfassenModel.checkIfElternmithilfeHasEmail(schuelerDatenblattModel)) {
-            JOptionPane.showMessageDialog(maercheneinteilungErfassenDialog, "Für die Elternmithilfe ist keine E-Mail erfasst.", "Elternmithilfe ohne E-Mail", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(maercheneinteilungErfassenDialog, "Für die Elternmithilfe ist keine E-Mail erfasst. Bitte Schüler-Stammdaten ergänzen.", "Elternmithilfe ohne E-Mail", JOptionPane.WARNING_MESSAGE);
         }
         maercheneinteilungErfassenModel.speichern(maercheneinteilungenTableModel, schuelerDatenblattModel);
         maercheneinteilungErfassenDialog.dispose();
