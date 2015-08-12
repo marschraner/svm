@@ -157,7 +157,7 @@ public class MaercheneinteilungenController {
         maercheneinteilungenTable.clearSelection();
         // Neu-Button aktivieren, falls es selektierbare Märchen gibt
         if (maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel).length > 0) {
-            btnNeu.setEnabled(false);
+            btnNeu.setEnabled(true);
         }
     }
 

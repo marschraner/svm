@@ -850,6 +850,7 @@ public class SchuelerDatenblattPanel {
         panel8.setLayout(new GridBagLayout());
         maerchenPanel.add(panel8, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         lblRolle1 = new JLabel();
+        lblRolle1.setFont(new Font(lblRolle1.getFont().getName(), Font.BOLD, lblRolle1.getFont().getSize()));
         lblRolle1.setText("Rolle 1:");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -858,6 +859,7 @@ public class SchuelerDatenblattPanel {
         gbc.insets = new Insets(10, 0, 0, 0);
         panel8.add(lblRolle1, gbc);
         lblRolle1Value = new JLabel();
+        lblRolle1Value.setFont(new Font(lblRolle1Value.getFont().getName(), Font.BOLD, lblRolle1Value.getFont().getSize()));
         lblRolle1Value.setText("Rolle1Value");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -997,6 +999,7 @@ public class SchuelerDatenblattPanel {
         gbc.insets = new Insets(10, 0, 0, 0);
         panel9.add(lblZusatzattribut, gbc);
         lblGruppe = new JLabel();
+        lblGruppe.setFont(new Font(lblGruppe.getFont().getName(), Font.BOLD, lblGruppe.getFont().getSize()));
         lblGruppe.setText("Gruppe:");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -1004,6 +1007,7 @@ public class SchuelerDatenblattPanel {
         gbc.anchor = GridBagConstraints.WEST;
         panel9.add(lblGruppe, gbc);
         lblGruppeValue = new JLabel();
+        lblGruppeValue.setFont(new Font(lblGruppeValue.getFont().getName(), Font.BOLD, lblGruppeValue.getFont().getSize()));
         lblGruppeValue.setText("GruppeValue");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;

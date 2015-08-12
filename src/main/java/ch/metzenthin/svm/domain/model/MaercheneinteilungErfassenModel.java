@@ -20,6 +20,7 @@ public interface MaercheneinteilungErfassenModel extends Model {
     String getBilderRolle2();
     String getRolle3();
     String getBilderRolle3();
+
     Elternteil getElternmithilfe();
     ElternmithilfeCode getElternmithilfeCode();
     Boolean isKuchenVorstellung1();
@@ -59,6 +60,9 @@ public interface MaercheneinteilungErfassenModel extends Model {
     void setBemerkungen(String bemerkungen) throws SvmValidationException;
     void setMaercheneinteilungOrigin(Maercheneinteilung maercheneinteilungOrigin);
 
+    Elternteil[] getSelectableElternmithilfen(SchuelerDatenblattModel schuelerDatenblattModel);
     ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel);
+    boolean checkIfElternmithilfeHasEmail(SchuelerDatenblattModel schuelerDatenblattModel);
+    boolean checkIfElternmithilfeHasTelefon(SchuelerDatenblattModel schuelerDatenblattModel);
     void speichern(MaercheneinteilungenTableModel maercheneinteilungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel);
 }

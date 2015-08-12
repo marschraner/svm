@@ -289,8 +289,8 @@ SELECT * FROM Schueler_Kurs;
 
 INSERT INTO Maerchen (maerchen_id, schuljahr, bezeichnung, anzahl_vorstellungen) VALUES
     (1, '2013/2014', 'Froschkönig', 8),
-    (2, '2014/2015', 'Aschenputtel', 7),
-    (3, '2015/2016', 'Rumpelstilzchen', 7);
+    (2, '2014/2015', 'Aschenputtel', 8),
+    (3, '2015/2016', 'Rumpelstilzchen', 8);
 
 SELECT * FROM Maerchen;
 
@@ -323,6 +323,6 @@ INSERT INTO Maercheneinteilung (
     bemerkungen) VALUES
     (7, 2, 'A', 'Aschenputtel Mina', '1, v3, 3, v4a, v4b, 4, v5b, 5, v6, 6', NULL, NULL, NULL, NULL, 'MUTTER', 3, 0, 1, 0, 0, 1, 0, 1, 0, 0, NULL, NULL),
     (7, 3, 'B', 'Erzähltaube 2', '3, v4, 4, v5b, 5, v6, 6', NULL, NULL, NULL, NULL, 'MUTTER', 4, 1, 0, 1, 0, 0, 1, 0, 0, 0, NULL, NULL),
-    (8, 3, 'B', 'Schulkind 6', '2, 3', 'Waldtier Hase 2', '4', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Elternmithilfe bei Lilly Juchli erfasst');
+    (8, 3, 'B', 'Schulkind 6', '2, 3', 'Waldtier Hase 2', '4', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 'Elternmithilfe bei Lilly Juchli erfasst');
 
 SELECT * FROM Maercheneinteilung;

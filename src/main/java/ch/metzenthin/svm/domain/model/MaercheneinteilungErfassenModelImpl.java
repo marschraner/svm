@@ -10,9 +10,13 @@ import ch.metzenthin.svm.domain.commands.SaveOrUpdateMaercheneinteilungCommand;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
+import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.MaercheneinteilungenTableModel;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
  * @author Martin Schraner
@@ -223,6 +227,20 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
     }
 
     @Override
+    public Elternteil[] getSelectableElternmithilfen(SchuelerDatenblattModel schuelerDatenblattModel) {
+        List<Elternteil> selectableElternmithilfenList = new ArrayList<>();
+        selectableElternmithilfenList.add(Elternteil.KEINER);
+        Schueler schueler = schuelerDatenblattModel.getSchueler();
+        if (schueler.getMutter() != null && schueler.getMutter().getAdresse() != null) {
+            selectableElternmithilfenList.add(Elternteil.MUTTER);
+        }
+        if (schueler.getVater() != null && schueler.getVater().getAdresse() != null) {
+            selectableElternmithilfenList.add(Elternteil.VATER);
+        }
+        return selectableElternmithilfenList.toArray(new Elternteil[selectableElternmithilfenList.size()]);
+    }
+
+    @Override
     public Elternteil getElternmithilfe() {
         return maercheneinteilung.getElternmithilfe();
     }
@@ -423,6 +441,28 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
     }
 
     @Override
+    public boolean checkIfElternmithilfeHasEmail(SchuelerDatenblattModel schuelerDatenblattModel) {
+        Schueler schueler = schuelerDatenblattModel.getSchueler();
+        if (maercheneinteilung.getElternmithilfe() == Elternteil.MUTTER && !checkNotEmpty(schueler.getMutter().getEmail())) {
+            return false;
+        } else if (maercheneinteilung.getElternmithilfe() == Elternteil.VATER && !checkNotEmpty(schueler.getVater().getEmail())) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkIfElternmithilfeHasTelefon(SchuelerDatenblattModel schuelerDatenblattModel) {
+        Schueler schueler = schuelerDatenblattModel.getSchueler();
+        if (maercheneinteilung.getElternmithilfe() == Elternteil.MUTTER && !checkNotEmpty(schueler.getMutter().getFestnetz()) && !checkNotEmpty(schueler.getMutter().getNatel())) {
+            return false;
+        } else if (maercheneinteilung.getElternmithilfe() == Elternteil.VATER && !checkNotEmpty(schueler.getVater().getFestnetz()) && !checkNotEmpty(schueler.getMutter().getNatel())) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public void speichern(MaercheneinteilungenTableModel maercheneinteilungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         maercheneinteilung.setSchueler(schuelerDatenblattModel.getSchueler());
         CommandInvoker commandInvoker = getCommandInvoker();
@@ -478,14 +518,53 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
 
     @Override
     public boolean isCompleted() {
-        return !(isSetAnyMithilfeArtElement() && !isSetElternteilElternmithilfe());
+        return !(isSetBilderRolle1() && !isSetRolle1()) && !(isSetBilderRolle2() && !isSetRolle2()) && !(isSetBilderRolle3() && !isSetRolle3()) && !(isSetRolle3() && !isSetRolle2()) && !(isSetRolle2() && !isSetRolle1()) && !(isSetAnyMithilfeArtElement() && !isSetElternteilElternmithilfe());
     }
 
     @Override
     void doValidate() throws SvmValidationException {
-        if (isSetAnyMithilfeArtElement() && !isSetElternteilElternmithilfe()) {
-            throw new SvmValidationException(3001, "Kein Elternteil für Mithilfe ausgewählt", Field.ELTERNMITHILFE);
+        if (isSetBilderRolle1() && !isSetRolle1()) {
+            throw new SvmValidationException(3001, "Rolle nicht gesetzt", Field.ROLLE1);
         }
+        if (isSetBilderRolle2() && !isSetRolle2()) {
+            throw new SvmValidationException(3001, "Rolle nicht gesetzt", Field.ROLLE2);
+        }
+        if (isSetBilderRolle3() && !isSetRolle3()) {
+            throw new SvmValidationException(3003, "Rolle nicht gesetzt", Field.ROLLE3);
+        }
+        if (isSetRolle3() && !isSetRolle2()) {
+            throw new SvmValidationException(3004, "Rolle nicht gesetzt", Field.ROLLE2);
+        }
+        if (isSetRolle2() && !isSetRolle1()) {
+            throw new SvmValidationException(3005, "Rolle nicht gesetzt", Field.ROLLE1);
+        }
+        if (isSetAnyMithilfeArtElement() && !isSetElternteilElternmithilfe()) {
+            throw new SvmValidationException(3008, "Kein Elternteil für Mithilfe ausgewählt", Field.ELTERNMITHILFE);
+        }
+    }
+
+    private boolean isSetRolle1() {
+        return maercheneinteilung.getRolle1() != null;
+    }
+
+    private boolean isSetBilderRolle1() {
+        return maercheneinteilung.getBilderRolle1() != null;
+    }
+
+    private boolean isSetRolle2() {
+        return maercheneinteilung.getRolle2() != null;
+    }
+
+    private boolean isSetBilderRolle2() {
+        return maercheneinteilung.getBilderRolle2() != null;
+    }
+
+    private boolean isSetRolle3() {
+        return maercheneinteilung.getRolle3() != null;
+    }
+
+    private boolean isSetBilderRolle3() {
+        return maercheneinteilung.getBilderRolle3() != null;
     }
 
     private boolean isSetElternteilElternmithilfe() {

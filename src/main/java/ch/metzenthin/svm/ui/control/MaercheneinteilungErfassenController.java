@@ -134,14 +134,16 @@ public class MaercheneinteilungErfassenController extends AbstractController {
             selectableMaerchens = maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel);
         }
         comboBoxMaerchen.setModel(new DefaultComboBoxModel<>(selectableMaerchens));
-        // Ältestes selektierbares Märchen als Initialwert
-        if (selectableMaerchens.length > 0) {
-            try {
-                maercheneinteilungErfassenModel.setMaerchen(selectableMaerchens[selectableMaerchens.length - 1]);
-            } catch (SvmRequiredException ignore) {
+        if (!isBearbeiten) {
+            // Ältestes selektierbares Märchen als Initialwert
+            if (selectableMaerchens.length > 0) {
+                try {
+                    maercheneinteilungErfassenModel.setMaerchen(selectableMaerchens[selectableMaerchens.length - 1]);
+                } catch (SvmRequiredException ignore) {
+                }
+            } else {
+                comboBoxMaerchen.setSelectedItem(null);
             }
-        } else {
-            comboBoxMaerchen.setSelectedItem(null);
         }
         comboBoxMaerchen.addActionListener(new ActionListener() {
             @Override
@@ -534,10 +536,9 @@ public class MaercheneinteilungErfassenController extends AbstractController {
 
     public void setComboBoxElternmithilfe(JComboBox<Elternteil> comboBoxElternmithilfe) {
         this.comboBoxElternmithilfe = comboBoxElternmithilfe;
-        comboBoxElternmithilfe.setModel(new DefaultComboBoxModel<>(Elternteil.values()));
-        // Leeren ComboBox-Wert anzeigen
-        comboBoxElternmithilfe.setSelectedItem(null);
-        // SchuelerCode in Model initialisieren mit erstem ComboBox-Wert
+        Elternteil[] selectableElternmithilfen = maercheneinteilungErfassenModel.getSelectableElternmithilfen(schuelerDatenblattModel);
+        comboBoxElternmithilfe.setModel(new DefaultComboBoxModel<>(selectableElternmithilfen));
+        // Elternmithilfe in Model initialisieren mit erstem ComboBox-Wert
         maercheneinteilungErfassenModel.setElternmithilfe(Elternteil.KEINER);
         comboBoxElternmithilfe.addActionListener(new ActionListener() {
             @Override
@@ -967,6 +968,12 @@ public class MaercheneinteilungErfassenController extends AbstractController {
         if (!isModelValidationMode() && !validateOnSpeichern()) {
             btnSpeichern.setFocusPainted(false);
             return;
+        }
+        if (!maercheneinteilungErfassenModel.checkIfElternmithilfeHasTelefon(schuelerDatenblattModel)) {
+            JOptionPane.showMessageDialog(maercheneinteilungErfassenDialog, "Für die Elternmithilfe sind weder Festnetz noch Natel erfasst.", "Elternmithilfe ohne Telefon", JOptionPane.INFORMATION_MESSAGE);
+        }
+        if (!maercheneinteilungErfassenModel.checkIfElternmithilfeHasEmail(schuelerDatenblattModel)) {
+            JOptionPane.showMessageDialog(maercheneinteilungErfassenDialog, "Für die Elternmithilfe ist keine E-Mail erfasst.", "Elternmithilfe ohne E-Mail", JOptionPane.INFORMATION_MESSAGE);
         }
         maercheneinteilungErfassenModel.speichern(maercheneinteilungenTableModel, schuelerDatenblattModel);
         maercheneinteilungErfassenDialog.dispose();

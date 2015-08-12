@@ -761,6 +761,7 @@
                                   <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
+                                  <font style="1"/>
                                   <text value="Rolle 1:"/>
                                 </properties>
                               </component>
@@ -770,6 +771,7 @@
                                   <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
+                                  <font style="1"/>
                                   <text value="Rolle1Value"/>
                                 </properties>
                               </component>
@@ -926,6 +928,7 @@
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
+                                  <font style="1"/>
                                   <text value="Gruppe:"/>
                                 </properties>
                               </component>
@@ -935,6 +938,7 @@
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
+                                  <font style="1"/>
                                   <text value="GruppeValue"/>
                                 </properties>
                               </component>

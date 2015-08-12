@@ -48,6 +48,7 @@ public class MaercheneinteilungenModelImpl extends AbstractModel implements Maer
         } else {
             schuljahr1 = today.get(Calendar.YEAR);
         }
+        svmModel.loadMaerchensAll();
         List<Maerchen> selectableMaerchens = new ArrayList<>(svmModel.getMaerchensAll());
         List<Maerchen> maerchensToBeRemoved = new ArrayList<>();
         for (Maerchen maerchen : selectableMaerchens) {
