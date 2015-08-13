@@ -12,6 +12,7 @@ public class DeleteSchuelerCommand extends GenericDaoCommand {
 
     public enum Result {
         SCHUELER_IN_KURSE_EINGESCHRIEBEN,
+        SCHUELER_IN_MAERCHEN_EINGETEILT,
         LOESCHEN_ERFOLGREICH
     }
 
@@ -27,6 +28,10 @@ public class DeleteSchuelerCommand extends GenericDaoCommand {
         SchuelerDao schuelerDao = new SchuelerDao(entityManager);
         if (schueler.getKurse().size() > 0) {
             result = Result.SCHUELER_IN_KURSE_EINGESCHRIEBEN;
+            return;
+        }
+        if (schueler.getMaercheneinteilungen().size() > 0) {
+            result = Result.SCHUELER_IN_MAERCHEN_EINGETEILT;
             return;
         }
         schuelerDao.remove(schueler);

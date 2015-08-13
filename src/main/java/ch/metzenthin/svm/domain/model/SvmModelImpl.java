@@ -11,27 +11,38 @@ import java.util.List;
  */
 public class SvmModelImpl implements SvmModel {
 
-    private List<Code> codesAll;
+    private List<SchuelerCode> schuelerCodesAll;
+    private List<ElternmithilfeCode> elternmithilfeCodesAll;
     private List<Lehrkraft> lehrkraefteAll;
     private List<Kursort> kursorteAll;
     private List<Kurstyp> kurstypenAll;
     private List<Semester> semestersAll;
+    private List<Maerchen> maerchensAll;
     private CommandInvoker commandInvoker;
 
     public SvmModelImpl(CommandInvoker commandInvoker) {
         this.commandInvoker = commandInvoker;
-        loadCodesAll();
+        loadSchuelerCodesAll();
+        loadElternmithilfeCodesAll();
         loadLehrkraefteAll();
         loadKursorteAll();
         loadKurstypenAll();
         loadSemestersAll();
+        loadMaerchensAll();
     }
 
     @Override
-    public void loadCodesAll() {
-        FindAllCodesCommand findAllCodesCommand = new FindAllCodesCommand();
-        commandInvoker.executeCommand(findAllCodesCommand);
-        codesAll = findAllCodesCommand.getCodesAll();
+    public void loadSchuelerCodesAll() {
+        FindAllSchuelerCodesCommand findAllSchuelerCodesCommand = new FindAllSchuelerCodesCommand();
+        commandInvoker.executeCommand(findAllSchuelerCodesCommand);
+        schuelerCodesAll = findAllSchuelerCodesCommand.getSchuelerCodesAll();
+    }
+
+    @Override
+    public void loadElternmithilfeCodesAll() {
+        FindAllElternmithilfeCodesCommand findAllElternmithilfeCodesCommand = new FindAllElternmithilfeCodesCommand();
+        commandInvoker.executeCommand(findAllElternmithilfeCodesCommand);
+        elternmithilfeCodesAll = findAllElternmithilfeCodesCommand.getElternmithilfeCodesAll();
     }
 
     @Override
@@ -59,12 +70,24 @@ public class SvmModelImpl implements SvmModel {
     public void loadSemestersAll() {
         FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
         commandInvoker.executeCommand(findAllSemestersCommand);
-        semestersAll = findAllSemestersCommand.getSemesterAll();
+        semestersAll = findAllSemestersCommand.getSemestersAll();
     }
 
     @Override
-    public List<Code> getCodesAll() {
-        return codesAll;
+    public void loadMaerchensAll() {
+        FindAllMaerchensCommand findAllMaerchensCommand = new FindAllMaerchensCommand();
+        commandInvoker.executeCommand(findAllMaerchensCommand);
+        maerchensAll = findAllMaerchensCommand.getMaerchensAll();
+    }
+
+    @Override
+    public List<SchuelerCode> getSchuelerCodesAll() {
+        return schuelerCodesAll;
+    }
+
+    @Override
+    public List<ElternmithilfeCode> getElternmithilfeCodesAll() {
+        return elternmithilfeCodesAll;
     }
 
     @Override
@@ -76,7 +99,7 @@ public class SvmModelImpl implements SvmModel {
     public List<Lehrkraft> getAktiveLehrkraefteAll() {
         List<Lehrkraft> lehrkraefteAktiveAll = new ArrayList<>();
         for (Lehrkraft lehrkraft : lehrkraefteAll) {
-            if (lehrkraft.isAktiv()) {
+            if (lehrkraft.getAktiv()) {
                 lehrkraefteAktiveAll.add(lehrkraft);
             }
         }
@@ -96,5 +119,10 @@ public class SvmModelImpl implements SvmModel {
     @Override
     public List<Semester> getSemestersAll() {
         return semestersAll;
+    }
+
+    @Override
+    public List<Maerchen> getMaerchensAll() {
+        return maerchensAll;
     }
 }

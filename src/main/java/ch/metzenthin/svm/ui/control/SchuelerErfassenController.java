@@ -274,6 +274,10 @@ public class SchuelerErfassenController {
                     JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einen Kurs eingeschrieben und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnLoeschen.setFocusPainted(false);
                     break;
+                case SCHUELER_IN_MAERCHEN_EINGETEILT:
+                    JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einem Märchen eingeteilt und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    btnLoeschen.setFocusPainted(false);
+                    break;
                 case LOESCHEN_ERFOLGREICH:
                     JOptionPane.showMessageDialog(
                             null,

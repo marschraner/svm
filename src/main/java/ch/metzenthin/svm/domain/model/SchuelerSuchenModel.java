@@ -3,7 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 import ch.metzenthin.svm.persistence.entities.PersonSuchen;
 
@@ -16,7 +16,7 @@ import java.util.Calendar;
 public interface SchuelerSuchenModel extends PersonModel {
 
     Lehrkraft LEHRKRAFT_ALLE = new Lehrkraft();
-    Code CODE_ALLE = new Code();
+    SchuelerCode SCHUELER_CODE_ALLE = new SchuelerCode();
 
     enum RolleSelected {
         SCHUELER,
@@ -59,7 +59,7 @@ public interface SchuelerSuchenModel extends PersonModel {
     Lehrkraft getLehrkraft();
     boolean isKursFuerSucheBeruecksichtigen();
     PersonSuchen getPerson();
-    Code getCode();
+    SchuelerCode getSchuelerCode();
 
     void setGeburtsdatumSuchperiode(String geburtsdatumSuchperiode) throws SvmValidationException;
     void setGeschlecht(GeschlechtSelected geschlecht);
@@ -73,10 +73,10 @@ public interface SchuelerSuchenModel extends PersonModel {
     void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
     void setLehrkraft(Lehrkraft lehrkraft);
     void setKursFuerSucheBeruecksichtigen(boolean isSelected);
-    void setCode(Code code);
+    void setSchuelerCode(SchuelerCode schuelerCode);
 
     SchuelerSuchenTableData suchen(SvmModel svmModel);
     void invalidateGeburtsdatumSuchperiode();
     Lehrkraft[] getSelectableLehrkraefte(SvmModel svmModel);
-    Code[] getSelectableCodes(SvmModel svmModel);
+    SchuelerCode[] getSelectableSchuelerCodes(SvmModel svmModel);
 }

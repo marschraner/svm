@@ -33,7 +33,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private Time zeitBeginn;
     private Lehrkraft lehrkraft;
     private boolean kursFuerSucheBeruecksichtigen;
-    private Code code;
+    private SchuelerCode schuelerCode;
 
     SchuelerSuchenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -42,8 +42,8 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     static {
         LEHRKRAFT_ALLE.setVorname("");
         LEHRKRAFT_ALLE.setNachname("");
-        CODE_ALLE.setKuerzel("");
-        CODE_ALLE.setBeschreibung("");
+        SCHUELER_CODE_ALLE.setKuerzel("");
+        SCHUELER_CODE_ALLE.setBeschreibung("");
     }
 
     @Override
@@ -287,15 +287,15 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
-    public Code getCode() {
-        return code;
+    public SchuelerCode getSchuelerCode() {
+        return schuelerCode;
     }
 
     @Override
-    public void setCode(Code code) {
-        Code oldValue = this.code;
-        this.code = code;
-        firePropertyChange(Field.CODE, oldValue, this.code);
+    public void setSchuelerCode(SchuelerCode schuelerCode) {
+        SchuelerCode oldValue = this.schuelerCode;
+        this.schuelerCode = schuelerCode;
+        firePropertyChange(Field.CODE, oldValue, this.schuelerCode);
     }
 
     private final CalendarModelAttribute stichtagModelAttribute = new CalendarModelAttribute(
@@ -363,11 +363,11 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
-    public Code[] getSelectableCodes(SvmModel svmModel) {
-        List<Code> codesList = svmModel.getCodesAll();
-        // Code alle auch erlaubt
-        codesList.add(0, CODE_ALLE);
-        return codesList.toArray(new Code[codesList.size()]);
+    public SchuelerCode[] getSelectableSchuelerCodes(SvmModel svmModel) {
+        List<SchuelerCode> codesList = svmModel.getSchuelerCodesAll();
+        // SchuelerCode alle auch erlaubt
+        codesList.add(0, SCHUELER_CODE_ALLE);
+        return codesList.toArray(new SchuelerCode[codesList.size()]);
     }
 
     @Override

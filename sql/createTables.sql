@@ -23,13 +23,17 @@ SET default_storage_engine=InnoDB;
 -- Alte Tabellen löschen
 -- *********************
 
+DROP TABLE IF EXISTS Maercheneinteilung;
+DROP TABLE IF EXISTS Maerchen;
 DROP TABLE IF EXISTS Schueler_Kurs;
 DROP TABLE IF EXISTS Kurs_Lehrkraft;
 DROP TABLE IF EXISTS Kurs;
 DROP TABLE IF EXISTS Semester;
 DROP TABLE IF EXISTS Kursort;
 DROP TABLE IF EXISTS Kurstyp;
-DROP TABLE IF EXISTS Schueler_Code;
+DROP TABLE IF EXISTS ElternmithilfeCode;
+DROP TABLE IF EXISTS Schueler_SchuelerCode;
+DROP TABLE IF EXISTS SchuelerCode;
 DROP TABLE IF EXISTS Code;
 DROP TABLE IF EXISTS Dispensation;
 DROP TABLE IF EXISTS Anmeldung;
@@ -160,6 +164,7 @@ DESCRIBE Dispensation;
 
 CREATE TABLE IF NOT EXISTS Code (
     code_id                    INT           NOT NULL AUTO_INCREMENT,
+    discriminator              VARCHAR(20)   NOT NULL,
     kuerzel                    VARCHAR(5)    NOT NULL,
     beschreibung               VARCHAR(50)   NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
@@ -168,18 +173,42 @@ CREATE TABLE IF NOT EXISTS Code (
 DESCRIBE Code;
 
 
--- Schueler_Code
--- *************
+-- SchuelerCode
+-- ************
 
-CREATE TABLE IF NOT EXISTS Schueler_Code (
+CREATE TABLE IF NOT EXISTS SchuelerCode (
+    code_id                    INT           NOT NULL,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (code_id),
+    FOREIGN KEY (code_id)    REFERENCES Code (code_id));
+
+DESCRIBE SchuelerCode;
+
+
+-- Schueler_SchuelerCode
+-- *********************
+
+CREATE TABLE IF NOT EXISTS Schueler_SchuelerCode (
     person_id                  INT           NOT NULL,
     code_id                    INT           NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id, code_id),
     FOREIGN KEY (person_id)    REFERENCES Schueler (person_id),
-    FOREIGN KEY (code_id)      REFERENCES Code (code_id));
+    FOREIGN KEY (code_id)      REFERENCES SchuelerCode (code_id));
 
-DESCRIBE Schueler_Code;
+DESCRIBE Schueler_SchuelerCode;
+
+
+-- ElternmithilfeCode
+-- ******************
+
+CREATE TABLE IF NOT EXISTS ElternmithilfeCode (
+    code_id                    INT           NOT NULL,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (code_id),
+    FOREIGN KEY (code_id)    REFERENCES Code (code_id));
+
+DESCRIBE ElternmithilfeCode;
 
 
 -- Kurstyp
@@ -272,3 +301,53 @@ CREATE TABLE IF NOT EXISTS Schueler_Kurs (
     FOREIGN KEY (kurs_id)      REFERENCES Kurs (kurs_id));
 
 DESCRIBE Schueler_Kurs;
+
+
+-- Maerchen
+-- ********
+
+CREATE TABLE IF NOT EXISTS Maerchen (
+    maerchen_id                INT           NOT NULL AUTO_INCREMENT,
+    schuljahr                  VARCHAR(9)    NOT NULL,
+    bezeichnung                VARCHAR(50)   NOT NULL,
+    anzahl_vorstellungen       INT           NOT NULL,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (maerchen_id));
+
+DESCRIBE Maerchen;
+
+
+-- Maercheneinteilung
+-- *****************
+
+CREATE TABLE IF NOT EXISTS Maercheneinteilung (
+    person_id                  INT           NOT NULL,
+    maerchen_id                INT           NOT NULL,
+    gruppe                     VARCHAR(1)    NOT NULL,
+    rolle_1                    VARCHAR(30)   NOT NULL,
+    bilder_rolle_1             VARCHAR(60),
+    rolle_2                    VARCHAR(30),
+    bilder_rolle_2             VARCHAR(60),
+    rolle_3                    VARCHAR(30),
+    bilder_rolle_3             VARCHAR(60),
+    elternmithilfe             VARCHAR(6),
+    code_id                    INT,
+    kuchen_vorstellung_1       BOOLEAN       NOT NULL,
+    kuchen_vorstellung_2       BOOLEAN       NOT NULL,
+    kuchen_vorstellung_3       BOOLEAN       NOT NULL,
+    kuchen_vorstellung_4       BOOLEAN       NOT NULL,
+    kuchen_vorstellung_5       BOOLEAN       NOT NULL,
+    kuchen_vorstellung_6       BOOLEAN       NOT NULL,
+    kuchen_vorstellung_7       BOOLEAN       NOT NULL,
+    kuchen_vorstellung_8       BOOLEAN       NOT NULL,
+    kuchen_vorstellung_9       BOOLEAN       NOT NULL,
+    zusatzattribut             VARCHAR(30),
+    bemerkungen                VARCHAR(100),
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (person_id, maerchen_id),
+    FOREIGN KEY (person_id)    REFERENCES Schueler (person_id),
+    FOREIGN KEY (maerchen_id)  REFERENCES Maerchen (maerchen_id),
+    FOREIGN KEY (code_id)      REFERENCES ElternmithilfeCode (code_id));
+
+DESCRIBE Maercheneinteilung;
+

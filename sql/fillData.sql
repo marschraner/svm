@@ -12,13 +12,17 @@ USE svm;
 -- Delete
 -- ******
 
+DELETE FROM Maercheneinteilung;
+DELETE FROM Maerchen;
 DELETE FROM Schueler_Kurs;
 DELETE FROM Kurs_Lehrkraft;
 DELETE FROM Kurs;
 DELETE FROM Semester;
 DELETE FROM Kursort;
 DELETE FROM Kurstyp;
-DELETE FROM Schueler_Code;
+DELETE FROM ElternmithilfeCode;
+DELETE FROM Schueler_SchuelerCode;
+DELETE FROM SchuelerCode;
 DELETE FROM Code;
 DELETE FROM Dispensation;
 DELETE FROM Anmeldung;
@@ -60,7 +64,7 @@ INSERT INTO Person (person_id, discriminator, anrede, vorname, nachname, geburts
     (3, 'Angehoeriger', 'FRAU', 'Sibyll', 'Metzenthin', NULL, '044 364 36 30', NULL, 'billa.metz@bluewin.ch', 3),
     (4, 'Schueler', 'KEINE', 'Jonas', 'Metzenthin', '2014-06-24', '044 364 36 30', NULL, NULL, 4),
     (5, 'Angehoeriger', 'HERR', 'Kurt', 'Juchli', NULL, NULL, NULL, 'kurt.juchli@zuerich.ch', NULL),
-    (6, 'Angehoeriger', 'FRAU', 'Eva', 'Juchli', NULL, NULL, '044 271 53 69', 'juchlischraner@gmail.com', 5),
+    (6, 'Angehoeriger', 'FRAU', 'Eva', 'Juchli', NULL, '044 271 53 69', '076 515 14 65', 'juchlischraner@gmail.com', 5),
     (7, 'Schueler', 'KEINE', 'Lilly', 'Juchli', '2008-01-13', '044 271 53 69', NULL, NULL, 6),
     (8, 'Schueler', 'KEINE', 'Anna', 'Juchli', '2010-03-05', '044 271 53 69', NULL, NULL, 7),
     (9, 'Lehrkraft', 'FRAU', 'Sibyll', 'Metzenthin', '1972-05-17', '044 364 36 30', NULL, 'billa.metz@bluewin.ch', 8),
@@ -136,21 +140,43 @@ SELECT * FROM Dispensation;
 -- Code
 -- ****
 
-INSERT INTO Code (code_id, kuerzel, beschreibung) VALUES
-    (1, 'c', 'Casting'),
-    (2, 'j', 'Jugendtheater');
+INSERT INTO Code (code_id, discriminator, kuerzel, beschreibung) VALUES
+    (1, 'Schueler', 'c', 'Casting'),
+    (2, 'Schueler', 'j', 'Jugendtheater'),
+    (3, 'Elternmithilfe', 'b', 'Buffet'),
+    (4, 'Elternmithilfe', 'g', 'Garderobe');
 
 SELECT * FROM Code;
 
 
--- Schueler_Code
--- *************
+-- SchuelerCode
+-- ************
 
-INSERT INTO Schueler_Code (person_id, code_id) VALUES
+INSERT INTO SchuelerCode (code_id) VALUES
+    (1),
+    (2);
+
+SELECT * FROM SchuelerCode;
+
+
+-- Schueler_SchuelerCode
+-- *********************
+
+INSERT INTO Schueler_SchuelerCode (person_id, code_id) VALUES
     (7, 2),
     (8, 1);
 
-SELECT * FROM Schueler_Code;
+SELECT * FROM Schueler_SchuelerCode;
+
+
+-- ElternmithilfeCode
+-- ************
+
+INSERT INTO ElternmithilfeCode (code_id) VALUES
+    (3),
+    (4);
+
+SELECT * FROM ElternmithilfeCode;
 
 
 -- Kurstyp
@@ -256,3 +282,47 @@ INSERT INTO Schueler_Kurs (person_id, kurs_id) VALUES
     (8, 6);
 
 SELECT * FROM Schueler_Kurs;
+
+
+-- Maerchen
+-- ********
+
+INSERT INTO Maerchen (maerchen_id, schuljahr, bezeichnung, anzahl_vorstellungen) VALUES
+    (1, '2013/2014', 'Froschkönig', 8),
+    (2, '2014/2015', 'Aschenputtel', 8),
+    (3, '2015/2016', 'Rumpelstilzchen', 8);
+
+SELECT * FROM Maerchen;
+
+
+-- Maercheneinteilung
+-- *****************
+
+INSERT INTO Maercheneinteilung (
+    person_id, 
+    maerchen_id,
+    gruppe,
+    rolle_1,
+    bilder_rolle_1,
+    rolle_2,
+    bilder_rolle_2,
+    rolle_3,
+    bilder_rolle_3,
+    elternmithilfe,
+    code_id,
+    kuchen_vorstellung_1,
+    kuchen_vorstellung_2,
+    kuchen_vorstellung_3,
+    kuchen_vorstellung_4,
+    kuchen_vorstellung_5,
+    kuchen_vorstellung_6,
+    kuchen_vorstellung_7,
+    kuchen_vorstellung_8,
+    kuchen_vorstellung_9,
+    zusatzattribut,
+    bemerkungen) VALUES
+    (7, 2, 'A', 'Aschenputtel Mina', '1, v3, 3, v4a, v4b, 4, v5b, 5, v6, 6', NULL, NULL, NULL, NULL, 'MUTTER', 3, 0, 1, 0, 0, 1, 0, 1, 0, 0, NULL, NULL),
+    (7, 3, 'B', 'Erzähltaube 2', '3, v4, 4, v5b, 5, v6, 6', NULL, NULL, NULL, NULL, 'MUTTER', 4, 1, 0, 1, 0, 0, 1, 0, 0, 0, NULL, NULL),
+    (8, 3, 'B', 'Schulkind 6', '2, 3', 'Waldtier Hase 2', '4', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 'Elternmithilfe bei Lilly Juchli erfasst');
+
+SELECT * FROM Maercheneinteilung;

@@ -9,16 +9,20 @@ import java.util.List;
  */
 public interface SvmModel {
 
-    void loadCodesAll();
+    void loadSchuelerCodesAll();
+    void loadElternmithilfeCodesAll();
     void loadLehrkraefteAll();
     void loadKursorteAll();
     void loadKurstypenAll();
     void loadSemestersAll();
+    void loadMaerchensAll();
 
-    List<Code> getCodesAll();
+    List<SchuelerCode> getSchuelerCodesAll();
+    List<ElternmithilfeCode> getElternmithilfeCodesAll();
     List<Lehrkraft> getLehrkraefteAll();
     List<Lehrkraft> getAktiveLehrkraefteAll();
     List<Kursort> getKursorteAll();
     List<Kurstyp> getKurstypenAll();
     List<Semester> getSemestersAll();
+    List<Maerchen> getMaerchensAll();
 }

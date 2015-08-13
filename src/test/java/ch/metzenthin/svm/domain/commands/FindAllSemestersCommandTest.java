@@ -42,7 +42,7 @@ public class FindAllSemestersCommandTest {
         FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
             commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSemestersCommand);
 
-        List<Semester> semesterFound = findAllSemestersCommand.getSemesterAll();
+        List<Semester> semesterFound = findAllSemestersCommand.getSemestersAll();
         assertTrue(semesterFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;

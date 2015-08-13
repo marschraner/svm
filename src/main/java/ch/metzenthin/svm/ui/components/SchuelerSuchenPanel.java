@@ -5,7 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.Schuljahre;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
-import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 import ch.metzenthin.svm.ui.control.SchuelerSuchenController;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -54,7 +54,7 @@ public class SchuelerSuchenPanel {
     private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
     private JComboBox<Wochentag> comboBoxWochentag;
     private JComboBox<Lehrkraft> comboBoxLehrkraft;
-    private JComboBox<Code> comboBoxCode;
+    private JComboBox<SchuelerCode> comboBoxSchuelerCode;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
     private JLabel errLblNachname;
@@ -129,7 +129,7 @@ public class SchuelerSuchenPanel {
         schuelerSuchenController.setComboBoxSemesterbezeichnung(comboBoxSemesterbezeichnung);
         schuelerSuchenController.setComboBoxWochentag(comboBoxWochentag);
         schuelerSuchenController.setComboBoxLehrkraft(comboBoxLehrkraft);
-        schuelerSuchenController.setComboBoxCode(comboBoxCode);
+        schuelerSuchenController.setComboBoxSchuelerCode(comboBoxSchuelerCode);
         schuelerSuchenController.setCheckBoxKursFuerSucheBeruecksichtigen(checkBoxKursFuerSucheBeruecksichtigen);
         schuelerSuchenController.setRadioBtnGroupRolle(radioBtnSchueler, radioBtnEltern, radioBtnRechnungsempfaenger, radioBtnRolleAlle);
         schuelerSuchenController.setRadioBtnGroupAnmeldestatus(radioBtnAngemeldet, radioBtnAbgemeldet, radioBtnAnmeldestatusAlle);
@@ -167,7 +167,7 @@ public class SchuelerSuchenPanel {
         comboBoxSemesterbezeichnung = new JComboBox<>();
         comboBoxWochentag = new JComboBox<>();
         comboBoxLehrkraft = new JComboBox<>();
-        comboBoxCode = new JComboBox<>();
+        comboBoxSchuelerCode = new JComboBox<>();
     }
 
     public void addCloseListener(ActionListener actionListener) {
@@ -1041,9 +1041,9 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 0, 10, 10);
         panelRight.add(codesPanel, gbc);
-        codesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Codes", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(codesPanel.getFont().getName(), Font.BOLD, codesPanel.getFont().getSize()), new Color(-16777216)));
+        codesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schüler-Codes", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(codesPanel.getFont().getName(), Font.BOLD, codesPanel.getFont().getSize()), new Color(-16777216)));
         final JLabel label20 = new JLabel();
-        label20.setText("Codes");
+        label20.setText("Code");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -1085,7 +1085,7 @@ public class SchuelerSuchenPanel {
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        codesPanel.add(comboBoxCode, gbc);
+        codesPanel.add(comboBoxSchuelerCode, gbc);
         final JPanel spacer47 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -1114,7 +1114,7 @@ public class SchuelerSuchenPanel {
         label17.setLabelFor(comboBoxSemesterbezeichnung);
         Schuljahr.setLabelFor(spinnerSchuljahreKurs);
         label19.setLabelFor(comboBoxLehrkraft);
-        label20.setLabelFor(comboBoxCode);
+        label20.setLabelFor(comboBoxSchuelerCode);
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(radioBtnSchueler);

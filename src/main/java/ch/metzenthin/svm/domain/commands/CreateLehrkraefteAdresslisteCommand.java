@@ -87,7 +87,7 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
         int i = 0;
         for (Lehrkraft lehrkraft : lehrkraefte) {
             // Nur aktive Lehkräfte auflisten
-            if (!lehrkraft.isAktiv()) {
+            if (!lehrkraft.getAktiv()) {
                 continue;
             }
             List<List<String>> row = new ArrayList<>();

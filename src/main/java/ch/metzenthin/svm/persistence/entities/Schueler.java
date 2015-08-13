@@ -43,16 +43,19 @@ public class Schueler extends Person {
     private List<Dispensation> dispensationen = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "Schueler_Code",
+    @JoinTable(name = "Schueler_SchuelerCode",
             joinColumns = {@JoinColumn(name = "person_id")},
             inverseJoinColumns = {@JoinColumn(name = "code_id")})
-    private Set<Code> codes = new HashSet<>();
+    private Set<SchuelerCode> schuelerCodes = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "Schueler_Kurs",
             joinColumns = {@JoinColumn(name = "person_id")},
             inverseJoinColumns = {@JoinColumn(name = "kurs_id")})
     private Set<Kurs> kurse = new HashSet<>();
+
+    @OneToMany(mappedBy = "schueler")
+    private Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
 
     public Schueler() {
     }
@@ -61,6 +64,22 @@ public class Schueler extends Person {
         super(Anrede.KEINE, vorname, nachname, geburtsdatum, festnetz, natel, email);
         this.geschlecht = geschlecht;
         this.bemerkungen = bemerkungen;
+    }
+
+    public boolean isEmpty() {
+        return super.isEmpty()
+                && (bemerkungen == null || bemerkungen.trim().isEmpty());
+    }
+
+    public void copyFieldValuesFrom(Schueler schuelerFrom) {
+        super.copyAttributesFrom(schuelerFrom);
+        geschlecht = schuelerFrom.getGeschlecht();
+        bemerkungen = schuelerFrom.getBemerkungen();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 
     public Geschlecht getGeschlecht() {
@@ -164,25 +183,25 @@ public class Schueler extends Person {
         dispensationen.remove(dispensation);
     }
 
-    public Set<Code> getCodes() {
-        return codes;
+    public Set<SchuelerCode> getSchuelerCodes() {
+        return schuelerCodes;
     }
 
-    public List<Code> getCodesAsList() {
-        List<Code> codesAsList = new ArrayList<>(codes);
+    public List<SchuelerCode> getCodesAsList() {
+        List<SchuelerCode> codesAsList = new ArrayList<>(schuelerCodes);
         Collections.sort(codesAsList);
         return codesAsList;
     }
 
-    public void addCode(Code code) {
-        code.getSchueler().add(this);
-        codes.add(code);
+    public void addCode(SchuelerCode schuelerCode) {
+        schuelerCode.getSchueler().add(this);
+        schuelerCodes.add(schuelerCode);
     }
 
-    public void deleteCode(Code code) {
-        // code.getSchueler().remove(this); führt zu StaleObjectStateException!
-        // Stattdessen in CodeDao.removeFromSchuelerAndUpdate() refresh(code) ausführen!
-        codes.remove(code);
+    public void deleteCode(SchuelerCode schuelerCode) {
+        // schuelerCode.getSchueler().remove(this); führt zu StaleObjectStateException!
+        // Stattdessen in SchuelerCodeDao.removeFromSchuelerAndUpdate() refresh(schuelerCode) ausführen!
+        schuelerCodes.remove(schuelerCode);
     }
 
     public Set<Kurs> getKurse() {
@@ -206,20 +225,14 @@ public class Schueler extends Person {
         kurse.remove(kurs);
     }
 
-    public boolean isEmpty() {
-        return super.isEmpty()
-                && (bemerkungen == null || bemerkungen.trim().isEmpty());
+    public Set<Maercheneinteilung> getMaercheneinteilungen() {
+        return maercheneinteilungen;
     }
 
-    public void copyFieldValuesFrom(Schueler schuelerFrom) {
-        super.copyAttributesFrom(schuelerFrom);
-        geschlecht = schuelerFrom.getGeschlecht();
-        bemerkungen = schuelerFrom.getBemerkungen();
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
+    public List<Maercheneinteilung> getMaercheneinteilungenAsList() {
+        List<Maercheneinteilung> maercheneinteilungenAsList = new ArrayList<>(maercheneinteilungen);
+        Collections.sort(maercheneinteilungenAsList);
+        return maercheneinteilungenAsList;
     }
 
 }

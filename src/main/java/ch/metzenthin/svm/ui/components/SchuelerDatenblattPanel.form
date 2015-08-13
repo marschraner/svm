@@ -204,22 +204,37 @@
                           </vspacer>
                           <grid id="62a93" layout-manager="GridBagLayout">
                             <constraints>
-                              <grid row="21" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                              <grid row="21" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties/>
                             <border type="none"/>
                             <children>
-                              <component id="95464" class="javax.swing.JButton" binding="btnStammdatenBearbeiten">
+                              <component id="a8dcb" class="javax.swing.JButton" binding="btnStammdatenBearbeiten">
                                 <constraints>
-                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                                   <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
                                   <text value="Bearbeiten"/>
                                 </properties>
                               </component>
-                              <hspacer id="e6567">
+                              <component id="d9a01" class="javax.swing.JButton" binding="btnEmail">
+                                <constraints>
+                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="E-Mail"/>
+                                </properties>
+                              </component>
+                              <hspacer id="a144d">
+                                <constraints>
+                                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </hspacer>
+                              <hspacer id="33968">
                                 <constraints>
                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="1.0" weighty="0.0"/>
@@ -407,7 +422,7 @@
                                 <children>
                                   <grid id="76483" layout-manager="GridBagLayout">
                                     <constraints>
-                                      <grid row="7" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                                      <grid row="7" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                                       <gridbag weightx="0.0" weighty="0.0"/>
                                     </constraints>
                                     <properties/>
@@ -439,7 +454,7 @@
                                   <vspacer id="9ad4f">
                                     <constraints>
                                       <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                                      <gridbag weightx="0.0" weighty="0.0"/>
+                                      <gridbag weightx="0.0" weighty="1.0"/>
                                     </constraints>
                                   </vspacer>
                                   <component id="9371a" class="javax.swing.JLabel" binding="lblDispensationsdauerValue">
@@ -546,11 +561,11 @@
                             <children>
                               <grid id="6cc1d" binding="codesPanel" layout-manager="GridBagLayout">
                                 <constraints>
-                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
-                                  <gridbag top="0" left="0" bottom="10" right="10" weightx="1.0" weighty="0.0"/>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="0" left="0" bottom="10" right="10" weightx="1.0" weighty="1.0"/>
                                 </constraints>
                                 <properties/>
-                                <border type="etched" title="Codes">
+                                <border type="etched" title="Schüler-Codes">
                                   <font style="1"/>
                                   <title-color color="-16777216"/>
                                 </border>
@@ -622,10 +637,10 @@
                                   <vspacer id="6b2ac">
                                     <constraints>
                                       <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                                      <gridbag weightx="0.0" weighty="0.0"/>
+                                      <gridbag weightx="0.0" weighty="1.0"/>
                                     </constraints>
                                   </vspacer>
-                                  <component id="9eb7a" class="javax.swing.JLabel" binding="lblCodesValue">
+                                  <component id="9eb7a" class="javax.swing.JLabel" binding="lblSchuelerCodesValue">
                                     <constraints>
                                       <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                       <gridbag weightx="0.0" weighty="0.0"/>
@@ -642,7 +657,7 @@
                       </grid>
                       <vspacer id="94ffe">
                         <constraints>
-                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                           <gridbag weightx="0.0" weighty="1.0"/>
                         </constraints>
                       </vspacer>
@@ -728,6 +743,368 @@
                                 </properties>
                               </component>
                               <hspacer id="9bcb1">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="1.0" weighty="0.0"/>
+                                </constraints>
+                              </hspacer>
+                            </children>
+                          </grid>
+                        </children>
+                      </grid>
+                      <grid id="35e3c" binding="maerchenPanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                          <gridbag top="0" left="10" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
+                        </constraints>
+                        <properties/>
+                        <border type="etched" title="Märchen">
+                          <font style="1"/>
+                        </border>
+                        <children>
+                          <grid id="86ac4" layout-manager="GridBagLayout">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="3147d" class="javax.swing.JLabel" binding="lblRolle1">
+                                <constraints>
+                                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <font style="1"/>
+                                  <text value="Rolle 1:"/>
+                                </properties>
+                              </component>
+                              <component id="1f91b" class="javax.swing.JLabel" binding="lblRolle1Value">
+                                <constraints>
+                                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <font style="1"/>
+                                  <text value="Rolle1Value"/>
+                                </properties>
+                              </component>
+                              <component id="2d563" class="javax.swing.JLabel" binding="lblRolle2">
+                                <constraints>
+                                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Rolle 2:"/>
+                                </properties>
+                              </component>
+                              <component id="d9475" class="javax.swing.JLabel" binding="lblRolle2Value">
+                                <constraints>
+                                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Rolle2Value"/>
+                                </properties>
+                              </component>
+                              <component id="4f1d2" class="javax.swing.JLabel" binding="lblRolle3">
+                                <constraints>
+                                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Rolle 3:"/>
+                                </properties>
+                              </component>
+                              <component id="8eb16" class="javax.swing.JLabel" binding="lblRolle3Value">
+                                <constraints>
+                                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Rolle3Value"/>
+                                </properties>
+                              </component>
+                              <component id="b8654" class="javax.swing.JLabel" binding="lblMaerchenValue">
+                                <constraints>
+                                  <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="MaerchenValue"/>
+                                </properties>
+                              </component>
+                              <hspacer id="32b10">
+                                <constraints>
+                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0" ipadx="200"/>
+                                </constraints>
+                              </hspacer>
+                              <vspacer id="b26a5">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </vspacer>
+                              <component id="74d4f" class="javax.swing.JLabel" binding="lblElternmithilfe">
+                                <constraints>
+                                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Elternmithilfe:"/>
+                                </properties>
+                              </component>
+                              <component id="cce93" class="javax.swing.JLabel" binding="lblElternmithilfeValue">
+                                <constraints>
+                                  <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="EltermithilfeValue"/>
+                                </properties>
+                              </component>
+                              <component id="7755e" class="javax.swing.JLabel" binding="lblVorstellungenKuchen">
+                                <constraints>
+                                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Vorstellungen mit Kuchen:"/>
+                                </properties>
+                              </component>
+                              <component id="a00f7" class="javax.swing.JLabel" binding="lblVorstellungenKuchenValue">
+                                <constraints>
+                                  <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="VorstellungenKucheValue"/>
+                                </properties>
+                              </component>
+                              <component id="111ea" class="javax.swing.JLabel" binding="lblElternmithilfeCode">
+                                <constraints>
+                                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Code:"/>
+                                </properties>
+                              </component>
+                              <component id="a7183" class="javax.swing.JLabel" binding="lblElternmithilfeCodeValue">
+                                <constraints>
+                                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="ElternmithilfeCodeValue"/>
+                                </properties>
+                              </component>
+                              <hspacer id="30a94">
+                                <constraints>
+                                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="1.0" weighty="0.0"/>
+                                </constraints>
+                              </hspacer>
+                              <hspacer id="acf03">
+                                <constraints>
+                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </hspacer>
+                              <hspacer id="825b2">
+                                <constraints>
+                                  <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </hspacer>
+                            </children>
+                          </grid>
+                          <grid id="99a2d" layout-manager="GridBagLayout">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="87e8f" class="javax.swing.JLabel" binding="lblZusatzattribut">
+                                <constraints>
+                                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Zusatzattribut:"/>
+                                </properties>
+                              </component>
+                              <component id="4ce28" class="javax.swing.JLabel" binding="lblGruppe">
+                                <constraints>
+                                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <font style="1"/>
+                                  <text value="Gruppe:"/>
+                                </properties>
+                              </component>
+                              <component id="92aba" class="javax.swing.JLabel" binding="lblGruppeValue">
+                                <constraints>
+                                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <font style="1"/>
+                                  <text value="GruppeValue"/>
+                                </properties>
+                              </component>
+                              <hspacer id="d521">
+                                <constraints>
+                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </hspacer>
+                              <component id="c97d8" class="javax.swing.JLabel" binding="lblZusatzattributValue">
+                                <constraints>
+                                  <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="ZusatzattributValue"/>
+                                </properties>
+                              </component>
+                              <component id="a9aca" class="javax.swing.JLabel" binding="lblBemerkungenMaerchen">
+                                <constraints>
+                                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Bemerkungen:"/>
+                                </properties>
+                              </component>
+                              <component id="cadd6" class="javax.swing.JLabel" binding="lblBemerkungenMaerchenValue">
+                                <constraints>
+                                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="BemerkungenValue"/>
+                                </properties>
+                              </component>
+                              <vspacer id="c831d">
+                                <constraints>
+                                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="1.0"/>
+                                </constraints>
+                              </vspacer>
+                              <hspacer id="2047a">
+                                <constraints>
+                                  <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </hspacer>
+                              <hspacer id="6da35">
+                                <constraints>
+                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0" ipadx="200"/>
+                                </constraints>
+                              </hspacer>
+                              <vspacer id="c5468">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </vspacer>
+                              <component id="a40b7" class="javax.swing.JLabel" binding="lblBilderRolle1Value">
+                                <constraints>
+                                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="BilderRolle1Value"/>
+                                </properties>
+                              </component>
+                              <component id="6102" class="javax.swing.JLabel" binding="lblBilderRolle1">
+                                <constraints>
+                                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Bilder Rolle 1:"/>
+                                </properties>
+                              </component>
+                              <component id="a27a9" class="javax.swing.JLabel" binding="lblBilderRolle2Value">
+                                <constraints>
+                                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="BilderRolle2Value"/>
+                                </properties>
+                              </component>
+                              <component id="84715" class="javax.swing.JLabel" binding="lblBilderRolle2">
+                                <constraints>
+                                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Bilder Rolle 2:"/>
+                                </properties>
+                              </component>
+                              <component id="4e257" class="javax.swing.JLabel" binding="lblBilderRolle3Value">
+                                <constraints>
+                                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="BilderRolle3Value"/>
+                                </properties>
+                              </component>
+                              <component id="8a3c1" class="javax.swing.JLabel" binding="lblBilderRolle3">
+                                <constraints>
+                                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Bilder Rolle 3:"/>
+                                </properties>
+                              </component>
+                              <hspacer id="88d1a">
+                                <constraints>
+                                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="1.0" weighty="0.0"/>
+                                </constraints>
+                              </hspacer>
+                            </children>
+                          </grid>
+                          <grid id="84ff3" layout-manager="GridBagLayout">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="a7682" class="javax.swing.JButton" binding="btnMaerchenBearbeiten">
+                                <constraints>
+                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Details / Bearbeiten"/>
+                                </properties>
+                              </component>
+                              <hspacer id="f5ee2">
+                                <constraints>
+                                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </hspacer>
+                              <vspacer id="2abc2">
+                                <constraints>
+                                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </vspacer>
+                              <hspacer id="58ec7">
                                 <constraints>
                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="1.0" weighty="0.0"/>

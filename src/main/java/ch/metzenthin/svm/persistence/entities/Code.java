@@ -2,15 +2,15 @@ package ch.metzenthin.svm.persistence.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Martin Schraner
  */
 @Entity
 @Table(name="Code")
-public class Code implements Comparable<Code> {
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "discriminator")
+public abstract class Code implements Comparable<Code> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +26,6 @@ public class Code implements Comparable<Code> {
 
     @Column(name = "beschreibung", nullable = false)
     private String beschreibung;
-
-    @ManyToMany(mappedBy = "codes")
-    private Set<Schueler> schueler = new HashSet<>();
 
     public Code() {
     }
@@ -51,7 +48,7 @@ public class Code implements Comparable<Code> {
 
     @Override
     public String toString() {
-        if (kuerzel.equals("")) {
+        if (kuerzel == null || kuerzel.equals("")) {
             return "";
         }
         return kuerzel + " (" + beschreibung + ")";
@@ -85,10 +82,6 @@ public class Code implements Comparable<Code> {
 
     public void setBeschreibung(String beschreibung) {
         this.beschreibung = beschreibung;
-    }
-
-    public Set<Schueler> getSchueler() {
-        return schueler;
     }
 
 }

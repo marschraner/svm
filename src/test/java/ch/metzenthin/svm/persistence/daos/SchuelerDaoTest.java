@@ -187,7 +187,7 @@ public class SchuelerDaoTest {
             AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
             AnmeldungDao anmeldungDao = new AnmeldungDao(entityManager);
             DispensationDao dispensationDao = new DispensationDao(entityManager);
-            CodeDao codeDao = new CodeDao(entityManager);
+            SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
 
             // Create 2 Schueler with the same parents, but different Rechnungsempfaenger
             tx = entityManager.getTransaction();
@@ -244,17 +244,17 @@ public class SchuelerDaoTest {
             Integer dispensationId2 = dispensationen2.get(0).getDispensationId();
 
             // Codes hinzufügen
-            Code code1 = new Code("z", "Zirkusprojekt");
-            codeDao.save(code1);
-            codeDao.addToSchuelerAndSave(code1, schueler1);
-            codeDao.addToSchuelerAndSave(code1, schueler2);
+            SchuelerCode schuelerCode1 = new SchuelerCode("z", "Zirkusprojekt");
+            schuelerCodeDao.save(schuelerCode1);
+            schuelerCodeDao.addToSchuelerAndSave(schuelerCode1, schueler1);
+            schuelerCodeDao.addToSchuelerAndSave(schuelerCode1, schueler2);
 
-            Code code2 = new Code("r6", "6-Jahres-Rabatt");
-            codeDao.save(code2);
-            codeDao.addToSchuelerAndSave(code2, schueler2);
+            SchuelerCode schuelerCode2 = new SchuelerCode("r6", "6-Jahres-Rabatt");
+            schuelerCodeDao.save(schuelerCode2);
+            schuelerCodeDao.addToSchuelerAndSave(schuelerCode2, schueler2);
 
-            Set<Code> codes = schueler2Saved.getCodes();
-            assertEquals(2, codes.size());
+            Set<SchuelerCode> schuelerCodes = schueler2Saved.getSchuelerCodes();
+            assertEquals(2, schuelerCodes.size());
 
             entityManager.flush();
 
@@ -267,8 +267,8 @@ public class SchuelerDaoTest {
             assertNotNull(adresseDao.findById(adresseId));
             assertNotNull(anmeldungDao.findById(anmeldungId2));
             assertNotNull(dispensationDao.findById(dispensationId2));
-            assertEquals(2, code1.getSchueler().size());
-            assertEquals(1, code2.getSchueler().size());
+            assertEquals(2, schuelerCode1.getSchueler().size());
+            assertEquals(1, schuelerCode2.getSchueler().size());
 
             // 1. Schüler löschen
             schuelerDao.remove(schueler1Saved);
@@ -283,8 +283,8 @@ public class SchuelerDaoTest {
             assertNotNull(adresseDao.findById(adresseId));
             assertNotNull(anmeldungDao.findById(anmeldungId2));
             assertNotNull(dispensationDao.findById(dispensationId2));
-            assertEquals(1, code1.getSchueler().size());
-            assertEquals(1, code2.getSchueler().size());
+            assertEquals(1, schuelerCode1.getSchueler().size());
+            assertEquals(1, schuelerCode2.getSchueler().size());
 
             // 2. Schueler löschen
             schuelerDao.remove(schueler2Saved);
@@ -299,8 +299,8 @@ public class SchuelerDaoTest {
             assertNull(adresseDao.findById(adresseId));
             assertNull(anmeldungDao.findById(anmeldungId2));
             assertNull(dispensationDao.findById(dispensationId2));
-            assertEquals(0, code1.getSchueler().size());
-            assertEquals(0, code2.getSchueler().size());
+            assertEquals(0, schuelerCode1.getSchueler().size());
+            assertEquals(0, schuelerCode2.getSchueler().size());
 
         } finally {
             if (tx != null) {

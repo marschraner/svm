@@ -2,7 +2,7 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
 import org.apache.log4j.Logger;
-
+import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -66,9 +66,9 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuKurse.setMnemonic(KeyEvent.VK_K);
         menuBar.add(menuKurse);
 
-        JMenu menuCodes = new JMenu("Codes");
-        menuCodes.setMnemonic(KeyEvent.VK_C);
-        menuBar.add(menuCodes);
+        JMenu menuMaerchen = new JMenu("Märchen");
+        menuMaerchen.setMnemonic(KeyEvent.VK_M);
+        menuBar.add(menuMaerchen);
 
         // Set up the first menu item.
         JMenuItem menuItem = new JMenuItem("Schüler suchen / bearbeiten");
@@ -92,12 +92,12 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
 
-        menuItem = new JMenuItem("Codes verwalten");
+        menuItem = new JMenuItem("Schüler-Codes verwalten");
         menuItem.setMnemonic(KeyEvent.VK_C);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK));
-        menuItem.setActionCommand("codesVerwalten");
+        menuItem.setActionCommand("schuelerCodesVerwalten");
         menuItem.addActionListener(this);
-        menuCodes.add(menuItem);
+        menuSchueler.add(menuItem);
 
         menuItem = new JMenuItem("Lehrkräfte verwalten");
         menuItem.setMnemonic(KeyEvent.VK_L);
@@ -133,6 +133,20 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.setActionCommand("semesterVerwalten");
         menuItem.addActionListener(this);
         menuKurse.add(menuItem);
+
+        menuItem = new JMenuItem("Märchen verwalten");
+        menuItem.setMnemonic(KeyEvent.VK_M);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("maerchenVerwalten");
+        menuItem.addActionListener(this);
+        menuMaerchen.add(menuItem);
+
+        menuItem = new JMenuItem("Elternmithilfe-Codes verwalten");
+        menuItem.setMnemonic(KeyEvent.VK_E);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("elternmithilfeCodesVerwalten");
+        menuItem.addActionListener(this);
+        menuMaerchen.add(menuItem);
 
         // Set up the second menu item.
         menuItem = new JMenuItem("Beenden");
@@ -188,15 +202,15 @@ public class SvmDesktop extends JFrame implements ActionListener {
             });
             setAndShowActivePanel(anAbmeldestatistikPanel.$$$getRootComponent$$$(), "Monatsstatistik");
 
-        } else if ("codesVerwalten".equals(e.getActionCommand())) {
-            CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false);
+        } else if ("schuelerCodesVerwalten".equals(e.getActionCommand())) {
+            CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.SCHUELER);
             codesPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     onFrameAbbrechen();
                 }
             });
-            setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Codes verwalten");
+            setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Schüler-Codes verwalten");
 
         } else if ("lehrkraefteVerwalten".equals(e.getActionCommand())) {
             LehrkraeftePanel lehrkraeftePanel = new LehrkraeftePanel(svmContext);
@@ -254,7 +268,27 @@ public class SvmDesktop extends JFrame implements ActionListener {
             });
             setAndShowActivePanel(semestersPanel.$$$getRootComponent$$$(), "Semester verwalten");
 
-        } else { // beenden
+        }  else if ("elternmithilfeCodesVerwalten".equals(e.getActionCommand())) {
+            CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.ELTERNMITHILFE);
+            codesPanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFrameAbbrechen();
+                }
+            });
+            setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Elternmithilfe-Codes verwalten");
+
+        } else if ("maerchenVerwalten".equals(e.getActionCommand())) {
+            MaerchensPanel maerchensPanel = new MaerchensPanel(svmContext);
+            maerchensPanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFrameAbbrechen();
+                }
+            });
+            setAndShowActivePanel(maerchensPanel.$$$getRootComponent$$$(), "Märchen verwalten");
+
+        }  else { // beenden
             quit();
         }
         stopWaitCursor();

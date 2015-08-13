@@ -64,8 +64,8 @@ public class ModelFactoryImpl implements ModelFactory {
     }
 
     @Override
-    public CodeSchuelerHinzufuegenModel createCodeSchuelerHinzufuegenModel() {
-        return new CodeSchuelerHinzufuegenModelImpl(commandInvoker);
+    public SchuelerCodeSchuelerHinzufuegenModel createCodeSchuelerHinzufuegenModel() {
+        return new SchuelerCodeSchuelerHinzufuegenModelImpl(commandInvoker);
     }
 
     @Override
@@ -131,6 +131,31 @@ public class ModelFactoryImpl implements ModelFactory {
     @Override
     public ListenExportModel createListenExportModel() {
         return new ListenExportModelImpl(commandInvoker);
+    }
+
+    @Override
+    public MaerchensModel createMaerchensModel() {
+        return new MaerchensModelImpl(commandInvoker);
+    }
+
+    @Override
+    public MaerchenErfassenModel createMaerchenErfassenModel() {
+        return new MaerchenErfassenModelImpl(commandInvoker);
+    }
+
+    @Override
+    public MaercheneinteilungenModel createMaercheneinteilungenModel() {
+        return new MaercheneinteilungenModelImpl(commandInvoker);
+    }
+
+    @Override
+    public MaercheneinteilungErfassenModel createMaercheneinteilungErfassenModel() {
+        return new MaercheneinteilungErfassenModelImpl(commandInvoker);
+    }
+
+    @Override
+    public EmailModel createEmailModel() {
+        return new EmailModelImpl(commandInvoker);
     }
 
 }

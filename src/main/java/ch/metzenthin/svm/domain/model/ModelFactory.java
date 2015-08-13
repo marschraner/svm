@@ -14,7 +14,7 @@ public interface ModelFactory {
     DispensationErfassenModel createDispensationErfassenModel();
     CodesModel createCodesModel();
     CodeErfassenModel createCodeErfassenModel();
-    CodeSchuelerHinzufuegenModel createCodeSchuelerHinzufuegenModel();
+    SchuelerCodeSchuelerHinzufuegenModel createCodeSchuelerHinzufuegenModel();
     LehrkraefteModel createLehrkraefteModel();
     LehrkraftErfassenModel createLehrkraftErfassenModel();
     KursorteModel createKursorteModel();
@@ -28,4 +28,9 @@ public interface ModelFactory {
     KursErfassenModel createKursErfassenModel();
     KursSchuelerHinzufuegenModel createKursSchuelerHinzufuegenModel();
     ListenExportModel createListenExportModel();
+    MaerchensModel createMaerchensModel();
+    MaerchenErfassenModel createMaerchenErfassenModel();
+    MaercheneinteilungenModel createMaercheneinteilungenModel();
+    MaercheneinteilungErfassenModel createMaercheneinteilungErfassenModel();
+    EmailModel createEmailModel();
 }

@@ -38,7 +38,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     private Time zeitBeginn;
     private Lehrkraft lehrkraft;
     private boolean kursFuerSucheBeruecksichtigen;
-    private Code code;
+    private SchuelerCode schuelerCode;
     private StringBuilder selectStatementSb;
     private TypedQuery<Schueler> typedQuery;
 
@@ -62,7 +62,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         this.zeitBeginn = schuelerSuchenModel.getZeitBeginn();
         this.lehrkraft = schuelerSuchenModel.getLehrkraft();
         this.kursFuerSucheBeruecksichtigen = schuelerSuchenModel.isKursFuerSucheBeruecksichtigen();
-        this.code = schuelerSuchenModel.getCode();
+        this.schuelerCode = schuelerSuchenModel.getSchuelerCode();
     }
 
     @Override
@@ -72,7 +72,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         
         // Inner-Joins erzeugen
         createJoinKurs();
-        createJoinCode();
+        createJoinSchuelerCode();
 
         // Where-Selektionen erzeugen
         selectStatementSb.append(" where");
@@ -82,7 +82,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         createWhereSelectionsDispensation();
         createWhereSelectionsGeschlecht();
         createWhereSelectionsKurs();
-        createWhereSelectionsCode();
+        createWhereSelectionsSchuelerCode();
 
         // Letztes " and" löschen
         if (selectStatementSb.substring(selectStatementSb.length() - 4).equals(" and")) {
@@ -120,9 +120,9 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
-    private void createJoinCode() {
-        if (code != SchuelerSuchenModel.CODE_ALLE) {
-            selectStatementSb.append(" join s.codes cod");
+    private void createJoinSchuelerCode() {
+        if (schuelerCode != SchuelerSuchenModel.SCHUELER_CODE_ALLE) {
+            selectStatementSb.append(" join s.schuelerCodes cod");
         }
     }
 
@@ -322,8 +322,8 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
-    private void createWhereSelectionsCode() {
-        if (code != SchuelerSuchenModel.CODE_ALLE) {
+    private void createWhereSelectionsSchuelerCode() {
+        if (schuelerCode != SchuelerSuchenModel.SCHUELER_CODE_ALLE) {
             selectStatementSb.append(" cod.kuerzel = :codeKuerzel and");
         }
     }
@@ -412,7 +412,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
 
     private void setParameterCodeKuerzel() {
         if (selectStatementSb.toString().contains(":codeKuerzel")) {
-            typedQuery.setParameter("codeKuerzel", code.getKuerzel());
+            typedQuery.setParameter("codeKuerzel", schuelerCode.getKuerzel());
         }
     }
 

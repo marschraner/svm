@@ -5,7 +5,10 @@ import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
-import ch.metzenthin.svm.domain.commands.*;
+import ch.metzenthin.svm.domain.commands.CheckGeschwisterSchuelerRechnungempfaengerCommand;
+import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.FindKurseMapSchuelerSemesterCommand;
+import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
@@ -13,6 +16,7 @@ import java.sql.Time;
 import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
  * @author Hans Stamm
@@ -20,9 +24,11 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     private Schueler schueler;
+    private Maercheneinteilung aktuelleMaercheneinteilung;
 
     public SchuelerDatenblattModelImpl(Schueler schueler) {
         this.schueler = schueler;
+        this.aktuelleMaercheneinteilung = determineAktuelleMaercheneinteilung(schueler.getMaercheneinteilungenAsList());
     }
 
     @Override
@@ -271,14 +277,14 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     }
 
     @Override
-    public String getCodesAsString() {
-        if (!schueler.getCodes().isEmpty()) {
+    public String getSchuelerCodesAsString() {
+        if (!schueler.getSchuelerCodes().isEmpty()) {
             StringBuilder codesSb = new StringBuilder("<html>");
-            for (Code code : schueler.getCodesAsList()) {
+            for (SchuelerCode schuelerCode : schueler.getCodesAsList()) {
                 if (codesSb.length() > 6) {
                     codesSb.append("<br>");
                 }
-                codesSb.append(code);
+                codesSb.append(schuelerCode);
             }
             codesSb.append("</html>");
             if (codesSb.length() > 13) {
@@ -373,20 +379,147 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     }
 
     @Override
+    public String getMaerchen() {
+        if (aktuelleMaercheneinteilung == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getMaerchen().toString();
+    }
+
+    @Override
+    public String getGruppe() {
+        if (aktuelleMaercheneinteilung == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getGruppe().toString();
+    }
+
+    @Override
+    public String getRolle1() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getRolle1() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getRolle1();
+    }
+
+    @Override
+    public String getBilderRolle1() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getBilderRolle1() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getBilderRolle1();
+    }
+
+    @Override
+    public String getRolle2() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getRolle2() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getRolle2();
+    }
+
+    @Override
+    public String getBilderRolle2() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getBilderRolle2() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getBilderRolle2();
+    }
+
+    @Override
+    public String getRolle3() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getRolle3() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getRolle3();
+    }
+
+    @Override
+    public String getBilderRolle3() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getBilderRolle3() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getBilderRolle3();
+    }
+
+    @Override
+    public String getElternmithilfe() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getElternmithilfe() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getElternmithilfe().toString();
+    }
+
+    @Override
+    public String getElternmithilfeCode() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getElternmithilfeCode() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getElternmithilfeCode().toString();
+    }
+
+    @Override
+    public String getKuchenVorstellungenAsString() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getKuchenVorstellungenAsString().isEmpty()) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getKuchenVorstellungenAsString();
+    }
+
+    @Override
+    public String getZusatzattribut() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getZusatzattribut() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getZusatzattribut();
+    }
+
+    @Override
+    public String getBemerkungenMaerchen() {
+        if (aktuelleMaercheneinteilung == null || aktuelleMaercheneinteilung.getBemerkungen() == null) {
+            return "-";
+        }
+        return aktuelleMaercheneinteilung.getBemerkungen();
+    }
+
+    private Maercheneinteilung determineAktuelleMaercheneinteilung(List<Maercheneinteilung> maercheneinteilungen) {
+        Calendar today = new GregorianCalendar();
+        int schuljahr1;
+        if (today.get(Calendar.MONTH) <= Calendar.JANUARY) {
+            schuljahr1 = today.get(Calendar.YEAR) - 1;
+        } else {
+            schuljahr1 = today.get(Calendar.YEAR);
+        }
+        int schuljahr2 = schuljahr1 + 1;
+        String anzuzeigendesSchuljahr = schuljahr1 + "/" + schuljahr2;
+        for (Maercheneinteilung maercheneinteilung : maercheneinteilungen) {
+            if (maercheneinteilung.getMaerchen().getSchuljahr().equals(anzuzeigendesSchuljahr)) {
+                return maercheneinteilung;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public DispensationenTableData getDispensationenTableData() {
         return new DispensationenTableData(schueler.getDispensationen());
     }
 
     @Override
     public CodesTableData getCodesTableData() {
-        List<Code> codes = new ArrayList<>(schueler.getCodes());
-        Collections.sort(codes);
-        return new CodesTableData(new ArrayList<>(schueler.getCodes()));
+        List<SchuelerCode> schuelerCodes = new ArrayList<>(schueler.getSchuelerCodes());
+        Collections.sort(schuelerCodes);
+        return new CodesTableData(new ArrayList<>(schueler.getSchuelerCodes()));
     }
 
     @Override
     public KurseTableData getKurseTableData() {
         return new KurseTableData(schueler.getKurseAsList(), true);
+    }
+
+    @Override
+    public MaercheneinteilungenTableData getMaercheneinteilungenTableData() {
+        return new MaercheneinteilungenTableData(schueler.getMaercheneinteilungenAsList());
     }
 
     private boolean isDispensationAktuell(Dispensation dispensation) {
@@ -449,6 +582,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     private boolean isGleicheAdresseWieSchueler(Angehoeriger angehoeriger) {
         return (angehoeriger != null) && (schueler.getAdresse().isIdenticalWith(angehoeriger.getAdresse()));
+    }
+
+    @Override
+    public boolean checkIfStammdatenMitEmail() {
+        return checkNotEmpty(schueler.getEmail()) || schueler.getMutter() != null && checkNotEmpty(schueler.getMutter().getEmail()) || schueler.getVater() != null && checkNotEmpty(schueler.getVater().getEmail()) || checkNotEmpty(schueler.getRechnungsempfaenger().getEmail());
     }
 
 }

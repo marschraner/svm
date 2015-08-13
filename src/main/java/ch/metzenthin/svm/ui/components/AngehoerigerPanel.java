@@ -268,6 +268,7 @@ public class AngehoerigerPanel {
         gbc.gridwidth = 5;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0, 0, 10, 0);
         mainPanel.add(comboBoxAnrede, gbc);
         final JLabel label6 = new JLabel();
         label6.setText("Natel");
@@ -484,12 +485,6 @@ public class AngehoerigerPanel {
         gbc.gridy = 16;
         gbc.fill = GridBagConstraints.VERTICAL;
         mainPanel.add(spacer10, gbc);
-        final JPanel spacer11 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        mainPanel.add(spacer11, gbc);
         label1.setLabelFor(txtNachname);
         label2.setLabelFor(txtVorname);
         label4.setLabelFor(txtPlz);

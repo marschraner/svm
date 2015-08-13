@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,35 +16,32 @@ import static org.junit.Assert.assertTrue;
 public class CheckCodeKuerzelBereitsInVerwendungCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private List<Code> bereitsErfassteCodes = new ArrayList<>();
+    private List<SchuelerCode> bereitsErfassteSchuelerCodes = new ArrayList<>();
 
     @Before
     public void setUp() {
-        bereitsErfassteCodes.add(new Code("z", "Zirkus"));
-        bereitsErfassteCodes.add(new Code("j", "Jugendprojekt"));
-        bereitsErfassteCodes.add(new Code("6", "6-Jahres-Rabatt"));
+        bereitsErfassteSchuelerCodes.add(new SchuelerCode("z", "Zirkus"));
+        bereitsErfassteSchuelerCodes.add(new SchuelerCode("j", "Jugendprojekt"));
+        bereitsErfassteSchuelerCodes.add(new SchuelerCode("6", "6-Jahres-Rabatt"));
     }
 
     @Test
     public void testExecute_KuerzelBereitsInVerwendung() throws Exception {
-        Code code = new Code("z", "Zirkusprojekt");
-        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(code, null, bereitsErfassteCodes);
+        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand("z", null, bereitsErfassteSchuelerCodes);
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
         assertTrue(checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung());
     }
 
     @Test
     public void testExecute_KuerzelNochNichtInVerwendung() throws Exception {
-        Code code = new Code("Z", "Zirkusprojekt");
-        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(code, null, bereitsErfassteCodes);
+        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand("Z", null, bereitsErfassteSchuelerCodes);
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
         assertFalse(checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung());
     }
 
     @Test
     public void testExecute_CodeOrigin() throws Exception {
-        Code code = new Code("z", "Zirkusprojekt");
-        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(code, bereitsErfassteCodes.get(0), bereitsErfassteCodes);
+        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand("z", bereitsErfassteSchuelerCodes.get(0), bereitsErfassteSchuelerCodes);
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
         assertFalse(checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung());
     }

@@ -10,7 +10,7 @@ import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
-import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
@@ -58,7 +58,7 @@ public class SchuelerSuchenController extends PersonController {
     private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
     private JComboBox<Wochentag> comboBoxWochentag;
     private JComboBox<Lehrkraft> comboBoxLehrkraft;
-    private JComboBox<Code> comboBoxCode;
+    private JComboBox<SchuelerCode> comboBoxSchuelerCode;
     private JCheckBox checkBoxKursFuerSucheBeruecksichtigen;
     private JLabel errLblGeburtsdatumSuchperiode;
     private JLabel errLblStichtag;
@@ -323,7 +323,7 @@ public class SchuelerSuchenController extends PersonController {
                 onWochentagSelected();
             }
         });
-        // Code in Model initialisieren mit erstem ComboBox-Wert
+        // SchuelerCode in Model initialisieren mit erstem ComboBox-Wert
         schuelerSuchenModel.setWochentag(Wochentag.values()[0]);
     }
 
@@ -449,13 +449,13 @@ public class SchuelerSuchenController extends PersonController {
         schuelerSuchenModel.setKursFuerSucheBeruecksichtigen(checkBoxKursFuerSucheBeruecksichtigen.isSelected());
     }
 
-    public void setComboBoxCode(JComboBox<Code> comboBoxCode) {
-        this.comboBoxCode = comboBoxCode;
-        Code[] selectableCodes = schuelerSuchenModel.getSelectableCodes(svmContext.getSvmModel());
-        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableCodes));
+    public void setComboBoxSchuelerCode(JComboBox<SchuelerCode> comboBoxCode) {
+        this.comboBoxSchuelerCode = comboBoxCode;
+        SchuelerCode[] selectableSchuelerCodes = schuelerSuchenModel.getSelectableSchuelerCodes(svmContext.getSvmModel());
+        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableSchuelerCodes));
         // Model initialisieren mit erstem ComboBox-Wert
-        schuelerSuchenModel.setCode(selectableCodes[0]);
-        this.comboBoxCode.addActionListener(new ActionListener() {
+        schuelerSuchenModel.setSchuelerCode(selectableSchuelerCodes[0]);
+        this.comboBoxSchuelerCode.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onCodeSelected();
@@ -464,12 +464,12 @@ public class SchuelerSuchenController extends PersonController {
     }
 
     private void onCodeSelected() {
-        LOGGER.trace("SchuelerSuchenController Event Code selected=" + comboBoxCode.getSelectedItem());
+        LOGGER.trace("SchuelerSuchenController Event SchuelerCode selected=" + comboBoxSchuelerCode.getSelectedItem());
         setModelCombobox();
     }
 
     private void setModelCombobox() {
-        schuelerSuchenModel.setCode((Code) comboBoxCode.getSelectedItem());
+        schuelerSuchenModel.setSchuelerCode((SchuelerCode) comboBoxSchuelerCode.getSelectedItem());
     }
 
     public void setErrLblStichtag(JLabel errLblStichtag) {
@@ -775,7 +775,7 @@ public class SchuelerSuchenController extends PersonController {
             checkBoxKursFuerSucheBeruecksichtigen.setSelected(schuelerSuchenModel.isKursFuerSucheBeruecksichtigen());
         }
         else if (checkIsFieldChange(Field.CODE, evt)) {
-            comboBoxCode.setSelectedItem(schuelerSuchenModel.getCode());
+            comboBoxSchuelerCode.setSelectedItem(schuelerSuchenModel.getSchuelerCode());
         }
     }
 
@@ -922,8 +922,8 @@ public class SchuelerSuchenController extends PersonController {
         if (checkBoxKursFuerSucheBeruecksichtigen != null && (fields.contains(Field.ALLE) || fields.contains(Field.KURS_FUER_SUCHE_BERUECKSICHTIGEN))) {
             checkBoxKursFuerSucheBeruecksichtigen.setEnabled(!disable);
         }
-        if (comboBoxCode != null && (fields.contains(Field.ALLE) || fields.contains(Field.CODE))) {
-            comboBoxCode.setEnabled(!disable);
+        if (comboBoxSchuelerCode != null && (fields.contains(Field.ALLE) || fields.contains(Field.CODE))) {
+            comboBoxSchuelerCode.setEnabled(!disable);
         }
     }
 

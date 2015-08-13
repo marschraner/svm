@@ -10,15 +10,15 @@ import java.util.List;
 public class CheckCodeKuerzelBereitsInVerwendungCommand implements Command {
 
     // input
-    private Code code;
+    private String kuerzel;
     private Code codeOrigin;
-    private List<Code> bereitsErfassteCodes;
+    private List<? extends Code> bereitsErfassteCodes;
 
     // output
     private boolean bereitsInVerwendung;
 
-    public CheckCodeKuerzelBereitsInVerwendungCommand(Code code, Code codeOrigin, List<Code> bereitsErfassteCodes) {
-        this.code = code;
+    public CheckCodeKuerzelBereitsInVerwendungCommand(String kuerzel, Code codeOrigin, List<? extends Code> bereitsErfassteCodes) {
+        this.kuerzel = kuerzel;
         this.codeOrigin = codeOrigin;
         this.bereitsErfassteCodes = bereitsErfassteCodes;
     }
@@ -26,7 +26,7 @@ public class CheckCodeKuerzelBereitsInVerwendungCommand implements Command {
     @Override
     public void execute() {
         for (Code bereitsErfassterCode : bereitsErfassteCodes) {
-            if (!bereitsErfassterCode.isIdenticalWith(codeOrigin) && bereitsErfassterCode.getKuerzel().equals(code.getKuerzel())) {
+            if (!bereitsErfassterCode.isIdenticalWith(codeOrigin) && bereitsErfassterCode.getKuerzel().equals(kuerzel)) {
                 bereitsInVerwendung = true;
                 return;
             }

@@ -8,6 +8,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -42,10 +43,13 @@ public class KursDao extends GenericDao<Kurs, Integer> {
     }
 
     public List<Kurs> findKurseSemester(Semester semester) {
-        TypedQuery<Kurs> typedQuery = entityManager.createQuery("select k from Kurs k where k.semester.schuljahr = :schuljahr and k.semester.semesterbezeichnung = :semesterbezeichnung order by k.kurstyp.bezeichnung, k.stufe, k.wochentag, k.zeitBeginn, k.zeitEnde, k.kursort.bezeichnung", Kurs.class);
+        TypedQuery<Kurs> typedQuery = entityManager.createQuery("select k from Kurs k where k.semester.schuljahr = :schuljahr and k.semester.semesterbezeichnung = :semesterbezeichnung", Kurs.class);
         typedQuery.setParameter("schuljahr", semester.getSchuljahr());
         typedQuery.setParameter("semesterbezeichnung", semester.getSemesterbezeichnung());
-        return typedQuery.getResultList();
+        List<Kurs> kurseFound = typedQuery.getResultList();
+        // Sortieren gemäss compareTo in Kurs
+        Collections.sort(kurseFound);
+        return kurseFound;
     }
 
     public List<Kurs> findKurseSchuelerSemester(Schueler schueler, Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft) {
@@ -67,8 +71,6 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         if (selectStatementSb.substring(selectStatementSb.length() - 4).equals(" and")) {
             selectStatementSb.setLength(selectStatementSb.length() - 4);
         }
-        // Sortierung
-        selectStatementSb.append(" order by k.kurstyp.bezeichnung, k.stufe, k.wochentag, k.zeitBeginn, k.zeitEnde, k.kursort.bezeichnung");
         // Query
         TypedQuery<Kurs> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Kurs.class);
         typedQuery.setParameter("schuljahr", semester.getSchuljahr());
@@ -88,7 +90,10 @@ public class KursDao extends GenericDao<Kurs, Integer> {
             typedQuery.setParameter("lehrkraftVorname", lehrkraft.getVorname());
             typedQuery.setParameter("lehrkraftGeburtsdatum", lehrkraft.getGeburtsdatum());
         }
-        return typedQuery.getResultList();
+        List<Kurs> kurseFound = typedQuery.getResultList();
+        // Sortieren gemäss compareTo in Kurs
+        Collections.sort(kurseFound);
+        return kurseFound;
     }
 
     public Kurs findKurs(Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft) {

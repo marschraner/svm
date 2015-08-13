@@ -16,27 +16,27 @@ public class DeleteKursCommand extends GenericDaoCommand {
     }
 
     // input
-    private List<Kurs> Kurs;
+    private List<Kurs> kurse;
     int indexKursToBeDeleted;
 
     // output
     private Result result;
 
-    public DeleteKursCommand(List<Kurs> Kurs, int indexKursToBeDeleted) {
-        this.Kurs = Kurs;
+    public DeleteKursCommand(List<Kurs> kurse, int indexKursToBeDeleted) {
+        this.kurse = kurse;
         this.indexKursToBeDeleted = indexKursToBeDeleted;
     }
 
     @Override
     public void execute() {
-        KursDao KursDao = new KursDao(entityManager);
-        Kurs KursToBeDeleted = Kurs.get(indexKursToBeDeleted);
-        if (KursToBeDeleted.getSchueler().size() > 0) {
+        KursDao kursDao = new KursDao(entityManager);
+        Kurs kursToBeDeleted = kurse.get(indexKursToBeDeleted);
+        if (kursToBeDeleted.getSchueler().size() > 0) {
             result = Result.KURS_VON_SCHUELER_REFERENZIERT;
             return;
         }
-        KursDao.remove(KursToBeDeleted);
-        Kurs.remove(indexKursToBeDeleted);
+        kursDao.remove(kursToBeDeleted);
+        kurse.remove(indexKursToBeDeleted);
         result = Result.LOESCHEN_ERFOLGREICH;
     }
 

@@ -48,7 +48,7 @@ public class Lehrkraft extends Person implements Comparable<Lehrkraft> {
         super.copyAttributesFrom(lehrkraftFrom);
         ahvNummer = lehrkraftFrom.getAhvNummer();
         vertretungsmoeglichkeiten = lehrkraftFrom.getVertretungsmoeglichkeiten();
-        aktiv = lehrkraftFrom.isAktiv();
+        aktiv = lehrkraftFrom.getAktiv();
     }
 
     @Override
@@ -94,7 +94,7 @@ public class Lehrkraft extends Person implements Comparable<Lehrkraft> {
         this.vertretungsmoeglichkeiten = vertretungsmoeglichkeiten;
     }
 
-    public Boolean isAktiv() {
+    public Boolean getAktiv() {
         return aktiv;
     }
 
