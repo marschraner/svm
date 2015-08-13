@@ -2,7 +2,9 @@
 <project version="4">
   <component name="dataSourceStorageLocal">
     <data-source name="MySQL - svmtest@localhost" uuid="be9dc88c-af53-440e-b26a-0a9810ffd17b" />
-    <data-source name="MySQL - root@localhost" uuid="ec950d53-b57e-4233-bf4c-c1857a9740f9" />
+    <data-source name="MySQL - root@localhost" uuid="ec950d53-b57e-4233-bf4c-c1857a9740f9">
+      <user-name>root</user-name>
+    </data-source>
     <data-source name="MySQL - svm@localhost" uuid="a50a8aba-80b6-4854-a358-9d38f4fd7cd9">
       <user-name>svm</user-name>
     </data-source>
