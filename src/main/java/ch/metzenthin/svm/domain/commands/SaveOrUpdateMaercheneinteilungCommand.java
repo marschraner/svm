@@ -33,7 +33,10 @@ public class SaveOrUpdateMaercheneinteilungCommand extends GenericDaoCommand {
         MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao(entityManager);
         ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
         // Reload zur Verhinderung von Lazy Loading-Problem
-        ElternmithilfeCode elternmithilfeCodeReloaded = elternmithilfeCodeDao.findById(elternmithilfeCode.getCodeId());
+        ElternmithilfeCode elternmithilfeCodeReloaded = null;
+        if (elternmithilfeCode != null) {
+            elternmithilfeCodeReloaded = elternmithilfeCodeDao.findById(elternmithilfeCode.getCodeId());
+        }
         if (maercheneinteilungOrigin != null) {
             // Update von maercheneinteilungOrigin mit Werten von maercheneinteilung
             maercheneinteilungOrigin.copyAttributesFrom(maercheneinteilung);
