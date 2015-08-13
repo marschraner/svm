@@ -98,10 +98,8 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         int i = 0;
         for (Schueler schueler : schuelerList) {
             List<Kurs> schuelerKurse = kurse.get(schueler);
-            if (schuelerKurse == null) {
-                continue;
-            }
-            for (Kurs kurs : schuelerKurse) {
+            int j = 0;
+            do {
                 List<List<String>> row = new ArrayList<>();
                 // 1. Spalte
                 List<String> cellLinesColumn1 = new ArrayList<>();
@@ -131,9 +129,15 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
                 row.add(cellLinesColumn4);
                 // 5. Spalte
                 List<String> cellLinesColumn5 = new ArrayList<>();
-                cellLinesColumn5.add(kurs.getLehrkraefteShortAsStr());
-                cellLinesColumn5.add(kurs.getWochentag().toString());
-                cellLinesColumn5.add(asString(kurs.getZeitBeginn()) + " - " + asString(kurs.getZeitEnde()));
+                if (schuelerKurse != null && schuelerKurse.size() > 0) {
+                    Kurs kurs = schuelerKurse.get(j);
+                    cellLinesColumn5.add(kurs.getLehrkraefteShortAsStr());
+                    cellLinesColumn5.add(kurs.getWochentag().toString());
+                    cellLinesColumn5.add(asString(kurs.getZeitBeginn()) + " - " + asString(kurs.getZeitEnde()));
+
+                } else {
+                    cellLinesColumn5.add(" ");
+                }
                 row.add(cellLinesColumn5);
                 // 6. Spalte
                 List<String> cellLinesColumn6 = new ArrayList<>();
@@ -143,7 +147,8 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
                 // Spalten der Zeile hinzufügen
                 rows.add(row);
                 i++;
-            }
+                j++;
+            } while (schuelerKurse != null && j < schuelerKurse.size());
         }
 
         // Tabelle erzeugen

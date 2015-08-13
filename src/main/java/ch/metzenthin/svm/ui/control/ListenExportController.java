@@ -304,6 +304,7 @@ public class ListenExportController extends AbstractController {
                 try {
                     result = get();
                 } catch (InterruptedException | ExecutionException e) {
+                    LOGGER.warn("Die Liste konnte nicht erstellt werden:" + e.getMessage());
                     JOptionPane.showMessageDialog(listenExportDialog, "Die Liste konnte nicht erstellt werden.", "Liste nicht erfolgreich erstellt", JOptionPane.ERROR_MESSAGE);
                 }
                 if (result != null) {
