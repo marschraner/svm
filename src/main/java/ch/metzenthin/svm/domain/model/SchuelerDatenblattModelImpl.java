@@ -5,7 +5,10 @@ import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
-import ch.metzenthin.svm.domain.commands.*;
+import ch.metzenthin.svm.domain.commands.CheckGeschwisterSchuelerRechnungempfaengerCommand;
+import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.FindKurseMapSchuelerSemesterCommand;
+import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
@@ -13,6 +16,7 @@ import java.sql.Time;
 import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
  * @author Hans Stamm
@@ -578,6 +582,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     private boolean isGleicheAdresseWieSchueler(Angehoeriger angehoeriger) {
         return (angehoeriger != null) && (schueler.getAdresse().isIdenticalWith(angehoeriger.getAdresse()));
+    }
+
+    @Override
+    public boolean checkIfStammdatenMitEmail() {
+        return checkNotEmpty(schueler.getEmail()) || schueler.getMutter() != null && checkNotEmpty(schueler.getMutter().getEmail()) || schueler.getVater() != null && checkNotEmpty(schueler.getVater().getEmail()) || checkNotEmpty(schueler.getRechnungsempfaenger().getEmail());
     }
 
 }

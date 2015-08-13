@@ -107,7 +107,8 @@ public enum Field {
     KUCHEN_VORSTELLUNG6("6. Vorstellung mit Kuchen"),
     KUCHEN_VORSTELLUNG7("7. Vorstellung mit Kuchen"),
     KUCHEN_VORSTELLUNG8("8. Vorstellung mit Kuchen"),
-    KUCHEN_VORSTELLUNG9("9. Vorstellung mit Kuchen");
+    KUCHEN_VORSTELLUNG9("9. Vorstellung mit Kuchen"),
+    EMAIL_EMPFAENGER("E-Mail-Empfänger");
 
     private String name;
 

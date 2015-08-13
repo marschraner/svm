@@ -25,6 +25,7 @@ public class SchuelerDatenblattController {
     private JButton btnVorheriger;
     private JButton btnZurueck;
     private JButton btnAbbrechen;
+    private JButton btnEmail;
     private JLabel labelVornameNachname;
     private JLabel labelSchueler;
     private JLabel labelSchuelerValue;
@@ -156,6 +157,7 @@ public class SchuelerDatenblattController {
         setLabelZusatzattributValue();
         setLabelBemerkungenMaerchen();
         setLabelBemerkungenMaerchenValue();
+        setEmailEnabledDisabled();
     }
 
     private int convertRowIndexToModel() {
@@ -944,6 +946,33 @@ public class SchuelerDatenblattController {
             }
         });
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerErfassenPanel.$$$getRootComponent$$$(), "Stammdaten bearbeiten"}, ActionEvent.ACTION_PERFORMED, "Schueler bearbeiten"));
+    }
+
+    public void setBtnEmail(JButton btnEmail) {
+        this.btnEmail = btnEmail;
+        setEmailEnabledDisabled();
+        btnEmail.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onEmail();
+            }
+        });
+    }
+
+    public void setEmailEnabledDisabled() {
+        if (!schuelerDatenblattModel.checkIfStammdatenMitEmail()) {
+            this.btnEmail.setEnabled(false);
+            return;
+        }
+        this.btnEmail.setEnabled(true);
+    }
+
+    private void onEmail() {
+        btnEmail.setFocusPainted(true);
+        EmailDialog emailDialog = new EmailDialog(svmContext, schuelerDatenblattModel);
+        emailDialog.pack();
+        emailDialog.setVisible(true);
+        btnEmail.setFocusPainted(false);
     }
 
     private void onSaveSuccessful() {

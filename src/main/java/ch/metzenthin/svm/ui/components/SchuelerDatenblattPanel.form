@@ -204,22 +204,37 @@
                           </vspacer>
                           <grid id="62a93" layout-manager="GridBagLayout">
                             <constraints>
-                              <grid row="21" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                              <grid row="21" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties/>
                             <border type="none"/>
                             <children>
-                              <component id="95464" class="javax.swing.JButton" binding="btnStammdatenBearbeiten">
+                              <component id="a8dcb" class="javax.swing.JButton" binding="btnStammdatenBearbeiten">
                                 <constraints>
-                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                                   <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
                                   <text value="Bearbeiten"/>
                                 </properties>
                               </component>
-                              <hspacer id="e6567">
+                              <component id="d9a01" class="javax.swing.JButton" binding="btnEmail">
+                                <constraints>
+                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="E-Mail"/>
+                                </properties>
+                              </component>
+                              <hspacer id="a144d">
+                                <constraints>
+                                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </hspacer>
+                              <hspacer id="33968">
                                 <constraints>
                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="1.0" weighty="0.0"/>

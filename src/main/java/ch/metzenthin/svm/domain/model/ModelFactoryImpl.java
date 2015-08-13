@@ -153,4 +153,9 @@ public class ModelFactoryImpl implements ModelFactory {
         return new MaercheneinteilungErfassenModelImpl(commandInvoker);
     }
 
+    @Override
+    public EmailModel createEmailModel() {
+        return new EmailModelImpl(commandInvoker);
+    }
+
 }

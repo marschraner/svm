@@ -56,4 +56,5 @@ public interface SchuelerDatenblattModel {
     Schueler getSchueler();
 
     void refreshSchuelerSuchenTableData(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel);
+    boolean checkIfStammdatenMitEmail();
 }
