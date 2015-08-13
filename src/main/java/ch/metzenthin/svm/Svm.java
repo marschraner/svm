@@ -7,6 +7,7 @@ import ch.metzenthin.svm.domain.model.ModelFactory;
 import ch.metzenthin.svm.domain.model.ModelFactoryImpl;
 import ch.metzenthin.svm.domain.model.SvmModel;
 import ch.metzenthin.svm.ui.components.SvmDesktop;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 
@@ -16,6 +17,8 @@ import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFi
  * SVM Applikation
  */
 public class Svm {
+
+    private static final Logger LOGGER = Logger.getLogger(Svm.class);
 
     /**
      * Create the GUI and show it. For thread safety, this method should be
@@ -44,9 +47,11 @@ public class Svm {
 
         // Create and set up the window.
         new SvmDesktop(svmContext);
+        LOGGER.info("Svm wurde gestartet.");
     }
 
     public static void main(String[] args) {
+        LOGGER.info("Svm wird gestartet ...");
         createSvmPropertiesFileDefault();
         final CommandInvoker commandInvoker = createCommandInvoker();
         commandInvoker.openSession();

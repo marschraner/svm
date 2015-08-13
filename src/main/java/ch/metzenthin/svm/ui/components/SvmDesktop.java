@@ -332,6 +332,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
         }
         if (n == 0) {
             svmContext.getCommandInvoker().closeSession();
+            LOGGER.info("Svm wird beendet.");
             System.exit(0);
         }
     }

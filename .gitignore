@@ -4,6 +4,9 @@ target/
 # backup-Files
 *~
 
+# log-Files
+log/
+
 # Intellij
 .idea/workspace.xml
 .idea/tasks.xml

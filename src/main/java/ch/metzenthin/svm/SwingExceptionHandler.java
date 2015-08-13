@@ -63,6 +63,7 @@ public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
                     "Ein unerwarteter Fehler ist aufgetreten. Die Applikation wird beendet!",
                     JOptionPane.ERROR_MESSAGE);
         }
+        LOGGER.info("Svm wird abgebrochen.");
         System.exit(1);
     }
 
