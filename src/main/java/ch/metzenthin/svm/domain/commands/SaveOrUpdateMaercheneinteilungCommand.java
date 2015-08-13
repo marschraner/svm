@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.persistence.daos.MaercheneinteilungDao;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
+import ch.metzenthin.svm.persistence.entities.MaercheneinteilungId;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +34,8 @@ public class SaveOrUpdateMaercheneinteilungCommand extends GenericDaoCommand {
             // Update von maercheneinteilungOrigin mit Werten von maercheneinteilung
             maercheneinteilungOrigin.copyAttributesFrom(maercheneinteilung);
             maercheneinteilungOrigin.setElternmithilfeCode(elternmithilfeCode);
-            maercheneinteilungDao.save(maercheneinteilungOrigin);
+            Maercheneinteilung maercheneinteilungOriginReloaded = maercheneinteilungDao.findById(new MaercheneinteilungId(maercheneinteilungOrigin.getSchueler().getPersonId(), maercheneinteilungOrigin.getMaerchen().getMaerchenId()));
+            maercheneinteilungDao.save(maercheneinteilungOriginReloaded);
         } else {
             maercheneinteilung.setElternmithilfeCode(elternmithilfeCode);
             Maercheneinteilung maercheneinteilungSaved = maercheneinteilungDao.save(maercheneinteilung);
