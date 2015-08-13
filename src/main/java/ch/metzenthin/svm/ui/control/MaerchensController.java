@@ -76,7 +76,7 @@ public class MaerchensController {
 
     private void onNeu() {
         btnNeu.setFocusPainted(true);
-        MaerchenErfassenDialog maerchenErfassenDialog = new MaerchenErfassenDialog(svmContext, maerchensModel, 0, false, "Neues Maerchen");
+        MaerchenErfassenDialog maerchenErfassenDialog = new MaerchenErfassenDialog(svmContext, maerchensModel, 0, false, "Neues Märchen");
         maerchenErfassenDialog.pack();
         maerchenErfassenDialog.setVisible(true);
         maerchensTableModel.fireTableDataChanged();
@@ -100,7 +100,7 @@ public class MaerchensController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        MaerchenErfassenDialog maerchenErfassenDialog = new MaerchenErfassenDialog(svmContext, maerchensModel, maerchensTable.getSelectedRow(), true, "Maerchen bearbeiten");
+        MaerchenErfassenDialog maerchenErfassenDialog = new MaerchenErfassenDialog(svmContext, maerchensModel, maerchensTable.getSelectedRow(), true, "Märchen bearbeiten");
         maerchenErfassenDialog.pack();
         maerchenErfassenDialog.setVisible(true);
         maerchensTableModel.fireTableDataChanged();
