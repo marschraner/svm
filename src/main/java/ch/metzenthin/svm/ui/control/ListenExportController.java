@@ -286,7 +286,7 @@ public class ListenExportController extends AbstractController {
         final JDialog dialog = new JDialog(listenExportDialog);
         dialog.setUndecorated(true);
         JPanel panel = new JPanel();
-        final JLabel label = new JLabel("Bitte warten ...");
+        final JLabel label = new JLabel("Die Datei wird erstellt. Bitte warten ...");
         panel.add(label);
         dialog.add(panel);
         // Public method to center the dialog after calling pack()
