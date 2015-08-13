@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.daos.ElternmithilfeCodeDao;
 import ch.metzenthin.svm.persistence.daos.MaercheneinteilungDao;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
@@ -30,14 +31,18 @@ public class SaveOrUpdateMaercheneinteilungCommand extends GenericDaoCommand {
     @Override
     public void execute() {
         MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao(entityManager);
+        ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
+        // Reload zur Verhinderung von Lazy Loading-Problem
+        ElternmithilfeCode elternmithilfeCodeReloaded = elternmithilfeCodeDao.findById(elternmithilfeCode.getCodeId());
         if (maercheneinteilungOrigin != null) {
             // Update von maercheneinteilungOrigin mit Werten von maercheneinteilung
             maercheneinteilungOrigin.copyAttributesFrom(maercheneinteilung);
-            maercheneinteilungOrigin.setElternmithilfeCode(elternmithilfeCode);
+            maercheneinteilungOrigin.setElternmithilfeCode(elternmithilfeCodeReloaded);
+            // Reload zur Verhinderung von Lazy Loading-Problem
             Maercheneinteilung maercheneinteilungOriginReloaded = maercheneinteilungDao.findById(new MaercheneinteilungId(maercheneinteilungOrigin.getSchueler().getPersonId(), maercheneinteilungOrigin.getMaerchen().getMaerchenId()));
             maercheneinteilungDao.save(maercheneinteilungOriginReloaded);
         } else {
-            maercheneinteilung.setElternmithilfeCode(elternmithilfeCode);
+            maercheneinteilung.setElternmithilfeCode(elternmithilfeCodeReloaded);
             Maercheneinteilung maercheneinteilungSaved = maercheneinteilungDao.save(maercheneinteilung);
             bereitsErfassteMaercheneinteilungen.add(maercheneinteilungSaved);
         }
