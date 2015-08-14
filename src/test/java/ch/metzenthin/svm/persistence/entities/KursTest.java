@@ -21,7 +21,7 @@ public class KursTest {
         kurs.addLehrkraft(lehrkraft);
         kurs.addLehrkraft(lehrkraft2);
         kurs.setKurstyp(new Kurstyp("Kurstyp Test"));
-        assertEquals("Kurstyp Test 1, Dienstag 18.00-19.00 (Vorname Lehrkraft1/Vorname Lehrkraft2)", kurs.toString());
+        assertEquals("Kurstyp Test 1, Dienstag 18.00-19.00 (Vorname Lehrkraft1 / Vorname Lehrkraft2)", kurs.toString());
     }
 
 }
