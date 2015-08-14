@@ -10,7 +10,7 @@ Einmalig
   java version "1.7.0_79"
   OpenJDK Runtime Environment (IcedTea 2.5.5) (7u79-2.5.5-0ubuntu0.14.04.2)
   OpenJDK 64-Bit Server VM (build 24.79-b02, mixed mode)
-- MySQL-Server Installation. Getestet mit:
+- Lokale MySQL-Server Installation. Getestet mit:
   mysql  Ver 14.14 Distrib 5.5.43, for debian-linux-gnu (x86_64) using readline 6.3
 
 Applikation installieren
@@ -23,9 +23,10 @@ Applikation installieren
 Datenbank installieren
 ======================
 - Voraussetzungen:
-  - mysql muss bekannt sein (bin-Directory von MySQL muss im PATH vorhanden sein), ist unter Linux in der Regel der Fall
+  - Der MySQL-Server muss lokal installiert sein (momentan fix codierte URL).
+  - mysql/mysqld muss bekannt sein (bin-Directory von MySQL muss im PATH vorhanden sein), ist unter Linux in der Regel der Fall
   - MySQL-Server muss gestartet sein (ist unter Linux in der Regel automatisch gestartet)
-- Datenbank-Erstellungs-Script ausführen (./createSvmDatabase.sh)
+- Datenbank-Erstellungs-Script ausführen (./createSvmDatabase.sh). Es wird das Passwort des Users "root" verlangt.
 
 Applikation starten
 ===================
@@ -44,7 +45,7 @@ Windows
 Einmalig
 ========
 - Java 7 Installation (JRE 7u79)
-- MySQL-Server Installation (z.B. mysql-5.6.25-winx64.zip bzw. mysql-5.6.25-win32.zip)
+- Lokale MySQL-Server Installation (z.B. mysql-5.6.25-winx64.zip bzw. mysql-5.6.25-win32.zip)
 
 Applikation installieren
 ========================
@@ -54,9 +55,10 @@ Applikation installieren
 Datenbank installieren
 ======================
 - Voraussetzungen:
-  - mysql muss bekannt sein (bin-Directory von MySQL muss im PATH vorhanden sein)
+  - Der MySQL-Server muss lokal installiert sein (momentan fix codierte URL).
+  - mysql/mysqld muss bekannt sein (bin-Directory von MySQL muss im PATH vorhanden sein)
   - MySQL-Server muss gestartet sein (mysqld)
-- Datenbank-Erstellungs-Script ausführen (createSvmDatabase.bat)
+- Datenbank-Erstellungs-Script ausführen (createSvmDatabase.bat). Es wird das Passwort des Users "root" verlangt.
 
 Applikation starten
 ===================
