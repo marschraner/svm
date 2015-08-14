@@ -52,12 +52,18 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         return kurseFound;
     }
 
-    public List<Kurs> findKurseSchuelerSemester(Schueler schueler, Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft) {
-        StringBuilder selectStatementSb = new StringBuilder("select k from Kurs k join k.schueler s");
+    public List<Kurs> findKurse(Schueler schueler, Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft) {
+        StringBuilder selectStatementSb = new StringBuilder("select k from Kurs k");
+        if (schueler != null) {
+            selectStatementSb.append(" join k.schueler s");
+        }
         if (lehrkraft != null) {
             selectStatementSb.append(" join k.lehrkraefte lk");
         }
-        selectStatementSb.append(" where k.semester.schuljahr = :schuljahr and k.semester.semesterbezeichnung = :semesterbezeichnung and s.nachname = :schuelerNachname and s.vorname = :schuelerVorname and s.geburtsdatum =:schuelerGeburtsdatum and s.adresse.strasse = :schuelerStrasse and");
+        selectStatementSb.append(" where k.semester.schuljahr = :schuljahr and k.semester.semesterbezeichnung = :semesterbezeichnung and");
+        if (schueler != null) {
+            selectStatementSb.append(" s.nachname = :schuelerNachname and s.vorname = :schuelerVorname and s.geburtsdatum =:schuelerGeburtsdatum and s.adresse.strasse = :schuelerStrasse and");
+        }
         if (wochentag != null) {
             selectStatementSb.append(" k.wochentag = :wochentag and");
         }
@@ -75,10 +81,12 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         TypedQuery<Kurs> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Kurs.class);
         typedQuery.setParameter("schuljahr", semester.getSchuljahr());
         typedQuery.setParameter("semesterbezeichnung", semester.getSemesterbezeichnung());
-        typedQuery.setParameter("schuelerNachname", schueler.getNachname());
-        typedQuery.setParameter("schuelerVorname", schueler.getVorname());
-        typedQuery.setParameter("schuelerGeburtsdatum", schueler.getGeburtsdatum());
-        typedQuery.setParameter("schuelerStrasse", schueler.getAdresse().getStrasse());
+        if (schueler != null) {
+            typedQuery.setParameter("schuelerNachname", schueler.getNachname());
+            typedQuery.setParameter("schuelerVorname", schueler.getVorname());
+            typedQuery.setParameter("schuelerGeburtsdatum", schueler.getGeburtsdatum());
+            typedQuery.setParameter("schuelerStrasse", schueler.getAdresse().getStrasse());
+        }
         if (wochentag != null) {
             typedQuery.setParameter("wochentag", wochentag);
         }

@@ -83,7 +83,7 @@ public class Kurs implements Comparable<Kurs> {
     public String toString() {
         StringBuilder kursAsStr = new StringBuilder(kurstyp + " " + stufe + ", " + wochentag + " " + asString(zeitBeginn) + "-" + asString(zeitEnde) + " (" + lehrkraefte.get(0));
         for (int i = 1; i < lehrkraefte.size(); i++) {
-            kursAsStr.append("/").append(lehrkraefte.get(i));
+            kursAsStr.append(" / ").append(lehrkraefte.get(i));
         }
         kursAsStr.append(")");
         return kursAsStr.toString();
@@ -98,10 +98,18 @@ public class Kurs implements Comparable<Kurs> {
         return kursAsStr.toString();
     }
 
+    public String getLehrkraefteAsStr() {
+        StringBuilder lehrkraefteAsStr = new StringBuilder(lehrkraefte.get(0).toString());
+        for (int i = 1; i < lehrkraefte.size(); i++) {
+            lehrkraefteAsStr.append(" / ").append(lehrkraefte.get(i).toString());
+        }
+        return lehrkraefteAsStr.toString();
+    }
+
     public String getLehrkraefteShortAsStr() {
         StringBuilder lehrkraefteAsStr = new StringBuilder(lehrkraefte.get(0).toStringShort());
         for (int i = 1; i < lehrkraefte.size(); i++) {
-            lehrkraefteAsStr.append("/").append(lehrkraefte.get(i).toStringShort());
+            lehrkraefteAsStr.append(" / ").append(lehrkraefte.get(i).toStringShort());
         }
         return lehrkraefteAsStr.toString();
     }

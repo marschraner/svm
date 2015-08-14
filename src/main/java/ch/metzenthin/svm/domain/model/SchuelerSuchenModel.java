@@ -3,9 +3,9 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 import ch.metzenthin.svm.persistence.entities.PersonSuchen;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 
 import java.sql.Time;
 import java.util.Calendar;
@@ -75,6 +75,8 @@ public interface SchuelerSuchenModel extends PersonModel {
     void setKursFuerSucheBeruecksichtigen(boolean isSelected);
     void setSchuelerCode(SchuelerCode schuelerCode);
 
+    boolean searchForSpecificKurs();
+    boolean checkIfKurseExist();
     SchuelerSuchenTableData suchen(SvmModel svmModel);
     void invalidateGeburtsdatumSuchperiode();
     Lehrkraft[] getSelectableLehrkraefte(SvmModel svmModel);

@@ -6,12 +6,15 @@ import ch.metzenthin.svm.common.dataTypes.Listentyp;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
+import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
 import java.io.File;
 import java.util.Properties;
+
+import static ch.metzenthin.svm.common.utils.Converter.asString;
 
 /**
  * @author Martin Schraner
@@ -129,6 +132,18 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 break;
         }
         return result;
+    }
+
+    @Override
+    public String initTitleSpecificKurs(SchuelerSuchenTableModel schuelerSuchenTableModel) {
+        CommandInvoker commandInvoker = getCommandInvoker();
+        FindKursCommand findKursCommand = new FindKursCommand(schuelerSuchenTableModel.getSemester(), schuelerSuchenTableModel.getWochentag(), schuelerSuchenTableModel.getZeitBeginn(), schuelerSuchenTableModel.getLehrkraft());
+        commandInvoker.executeCommand(findKursCommand);
+        if (findKursCommand.getResult() == FindKursCommand.Result.KURS_EXISTIERT_NICHT) {
+            return "";
+        }
+        Kurs kursFound = findKursCommand.getKursFound();
+        return kursFound.getLehrkraefteAsStr() + " (" + kursFound.getWochentag() +  " " + asString(kursFound.getZeitBeginn()) + "-" + asString(kursFound.getZeitEnde()) + ")";
     }
 
     @Override

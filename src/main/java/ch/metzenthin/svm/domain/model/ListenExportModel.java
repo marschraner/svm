@@ -23,4 +23,5 @@ public interface ListenExportModel extends Model {
 
     File getSaveFileInit();
     CreateListeCommand.Result createListenFile(File outputFile, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel);
+    String initTitleSpecificKurs(SchuelerSuchenTableModel schuelerSuchenTableModel);
 }

@@ -42,7 +42,7 @@ public class FindKurseMapSchuelerSemesterCommand extends GenericDaoCommand {
         }
         KursDao kursDao = new KursDao(entityManager);
         for (Schueler schueler : schuelerList) {
-            kurseMap.put(schueler, kursDao.findKurseSchuelerSemester(schueler, semester, wochentag, zeitBeginn, lehrkraft));
+            kurseMap.put(schueler, kursDao.findKurse(schueler, semester, wochentag, zeitBeginn, lehrkraft));
         }
     }
 

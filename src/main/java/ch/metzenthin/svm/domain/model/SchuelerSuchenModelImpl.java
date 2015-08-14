@@ -315,6 +315,22 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     );
 
     @Override
+    public boolean searchForSpecificKurs() {
+        return (wochentag != null && wochentag != Wochentag.ALLE) && zeitBeginn != null && (lehrkraft != null && !lehrkraft.equals(LEHRKRAFT_ALLE));
+    }
+
+    @Override
+    public boolean checkIfKurseExist() {
+        CommandInvoker commandInvoker = getCommandInvoker();
+        Semester semester = new Semester(schuljahrKurs, semesterbezeichnung, null, null, null);
+        Wochentag wochentagFind = (wochentag == Wochentag.ALLE ? null : wochentag);
+        Lehrkraft lehrkraftFind = (lehrkraft.equals(LEHRKRAFT_ALLE) ? null : lehrkraft);
+        FindKurseCommand findKurseCommand = new FindKurseCommand(null, semester, wochentagFind, zeitBeginn, lehrkraftFind);
+        commandInvoker.executeCommand(findKurseCommand);
+        return findKurseCommand.getResult() == FindKurseCommand.Result.KURSE_GEFUNDEN;
+    }
+
+    @Override
     public SchuelerSuchenTableData suchen(SvmModel svmModel) {
         SchuelerSuchenCommand schuelerSuchenCommand = new SchuelerSuchenCommand(this);
         CommandInvoker commandInvoker = getCommandInvoker();
@@ -372,14 +388,11 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     @Override
     public boolean isCompleted() {
-        return stichtag != null;
+        return true;
     }
 
     @Override
-    public void doValidate() throws SvmValidationException {
-        if (stichtag == null) {
-            throw new SvmValidationException(2000, "Stichtag obligatorisch", Field.STICHTAG);
-        }
+    public void doValidate() {
     }
 
     @Override

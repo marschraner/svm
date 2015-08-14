@@ -396,26 +396,26 @@ public class KursDaoTest {
             kursDao.addToSchuelerAndSave(kurs2, schueler1);
             entityManager.flush();
 
-            List<Kurs> kurseSchueler1 = kursDao.findKurseSchuelerSemester(schueler1, semester1, null, null, null);
+            List<Kurs> kurseSchueler1 = kursDao.findKurse(schueler1, semester1, null, null, null);
             assertEquals(2, kurseSchueler1.size());
             assertEquals("Testkurs1", kurseSchueler1.get(0).getKurstyp().getBezeichnung());
             assertEquals("Testkurs2", kurseSchueler1.get(1).getKurstyp().getBezeichnung());
 
             // Ditto, mit genauer Kursangabe
-            kurseSchueler1 = kursDao.findKurseSchuelerSemester(schueler1, semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), lehrkraft1);
+            kurseSchueler1 = kursDao.findKurse(schueler1, semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), lehrkraft1);
             assertEquals(1, kurseSchueler1.size());
             assertEquals("Testkurs1", kurseSchueler1.get(0).getKurstyp().getBezeichnung());
 
             // falscher Tag
-            kurseSchueler1 = kursDao.findKurseSchuelerSemester(schueler1, semester1, Wochentag.FREITAG, Time.valueOf("10:00:00"), lehrkraft1);
+            kurseSchueler1 = kursDao.findKurse(schueler1, semester1, Wochentag.FREITAG, Time.valueOf("10:00:00"), lehrkraft1);
             assertEquals(0, kurseSchueler1.size());
 
             // falsche Zeit
-            kurseSchueler1 = kursDao.findKurseSchuelerSemester(schueler1, semester1, Wochentag.DONNERSTAG, Time.valueOf("10:10:00"), lehrkraft1);
+            kurseSchueler1 = kursDao.findKurse(schueler1, semester1, Wochentag.DONNERSTAG, Time.valueOf("10:10:00"), lehrkraft1);
             assertEquals(0, kurseSchueler1.size());
 
             // falsche Lehrkraft
-            kurseSchueler1 = kursDao.findKurseSchuelerSemester(schueler1, semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), lehrkraft2);
+            kurseSchueler1 = kursDao.findKurse(schueler1, semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), lehrkraft2);
             assertEquals(0, kurseSchueler1.size());
 
             // Ditto für einen Schüler ohne Kurse
@@ -425,7 +425,7 @@ public class KursDaoTest {
             schueler2.setRechnungsempfaenger(vater);
             entityManager.flush();
 
-            List<Kurs> kurseSchueler2 = kursDao.findKurseSchuelerSemester(schueler2, semester1, null, null, null);
+            List<Kurs> kurseSchueler2 = kursDao.findKurse(schueler2, semester1, null, null, null);
             assertEquals(0, kurseSchueler2.size());
 
 

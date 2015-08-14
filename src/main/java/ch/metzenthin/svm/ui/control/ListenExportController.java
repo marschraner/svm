@@ -179,10 +179,20 @@ public class ListenExportController extends AbstractController {
     private void initTitel() {
         String titel;
         if (listenExportTyp == ListenExportTyp.SCHUELER && schuelerSuchenTableModel.getLehrkraft() != null) {
-            titel = schuelerSuchenTableModel.getLehrkraft().toString();
             // Es wurde nach einem spezifischen Kurs gesucht
             if (schuelerSuchenTableModel.getWochentag() != null && schuelerSuchenTableModel.getZeitBeginn() != null) {
-                titel = titel + " (" + schuelerSuchenTableModel.getWochentag() + " " + asString(schuelerSuchenTableModel.getZeitBeginn()) + "-" + asString(schuelerSuchenTableModel.getSchuelerList().get(0).getKurseAsList().get(0).getZeitEnde()) + ")";
+                String lehrkraefte;
+                String zeitEnde;
+                if (schuelerSuchenTableModel.getSchuelerList().size() > 0) {
+                    lehrkraefte = schuelerSuchenTableModel.getSchuelerList().get(0).getKurseAsList().get(0).getLehrkraefteAsStr();
+                    zeitEnde = asString(schuelerSuchenTableModel.getSchuelerList().get(0).getKurseAsList().get(0).getZeitEnde());
+                    titel = lehrkraefte + " (" + schuelerSuchenTableModel.getWochentag() + " " + asString(schuelerSuchenTableModel.getZeitBeginn()) + "-" + zeitEnde + ")";
+                } else {
+                    titel = listenExportModel.initTitleSpecificKurs(schuelerSuchenTableModel);
+                }
+
+            } else {
+                titel = schuelerSuchenTableModel.getLehrkraft().toString();
             }
         } else {
             titel = "Schüler";

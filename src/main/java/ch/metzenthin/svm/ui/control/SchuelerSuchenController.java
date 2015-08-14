@@ -10,8 +10,8 @@ import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
@@ -23,7 +23,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
-import java.util.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
@@ -574,9 +577,23 @@ public class SchuelerSuchenController extends PersonController {
             btnSuchen.setFocusPainted(false);
             return;
         }
+        if (schuelerSuchenModel.isKursFuerSucheBeruecksichtigen() && !schuelerSuchenModel.checkIfKurseExist()) {
+            String errMsg;
+            String title;
+            if (schuelerSuchenModel.searchForSpecificKurs()) {
+                errMsg = "Es wurde kein Kurs gefunden, welcher auf die Suchabfrage passt.";
+                title = "Kein Kurs gefunden";
+            } else {
+                errMsg = "Es wurden keine Kurse gefunden, welche auf die Suchabfrage passen.";
+                title = "Keine Kurse gefunden";
+            }
+            JOptionPane.showMessageDialog(null, errMsg, title, JOptionPane.INFORMATION_MESSAGE);
+            btnSuchen.setFocusPainted(false);
+            return;
+        }
         SchuelerSuchenTableData schuelerSuchenTableData = schuelerSuchenModel.suchen(svmContext.getSvmModel());
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenTableData);
-        if (schuelerSuchenTableData.size() > 1 || (schuelerSuchenTableData.size() == 1 && (schuelerSuchenTableData.getWochentag() != null || schuelerSuchenTableData.getZeitBeginn() != null || schuelerSuchenTableData.getLehrkraft() != null))) {
+        if (schuelerSuchenTableData.size() > 1 || (schuelerSuchenModel.isKursFuerSucheBeruecksichtigen())) {
             SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
             schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
             schuelerSuchenResultPanel.addCloseListener(closeListener);
