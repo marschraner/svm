@@ -56,25 +56,25 @@ public class CreateKurselisteCommand extends CreateListeCommand {
         List<String> headerCellLinesColumn2 = new ArrayList<>();
         headerCellLinesColumn2.add("Kurstyp");
         header.add(headerCellLinesColumn2);
-        columnWidths.add(1900);
+        columnWidths.add(2100);
         // 3. Spalte
         List<String> headerCellLinesColumn3 = new ArrayList<>();
         headerCellLinesColumn3.add("Alter");
         headerCellLinesColumn3.add("Stufe");
         header.add(headerCellLinesColumn3);
-        columnWidths.add(1900);
+        columnWidths.add(2100);
         // 4. Spalte
         List<String> headerCellLinesColumn4 = new ArrayList<>();
         headerCellLinesColumn4.add("Tag");
         headerCellLinesColumn4.add("Zeit");
         header.add(headerCellLinesColumn4);
-        columnWidths.add(1700);
+        columnWidths.add(1900);
         // 5. Spalte
         List<String> headerCellLinesColumn5 = new ArrayList<>();
         headerCellLinesColumn5.add("Ort");
         headerCellLinesColumn5.add("Leitung");
         header.add(headerCellLinesColumn5);
-        columnWidths.add(2600);
+        columnWidths.add(2800);
         // 6. Spalte
         List<String> headerCellLinesColumn6 = new ArrayList<>();
         headerCellLinesColumn6.add("Bemerkungen");
@@ -128,7 +128,7 @@ public class CreateKurselisteCommand extends CreateListeCommand {
         wordMLPackage.getMainDocumentPart().addObject(table);
 
         // Seitenränder anpassen
-        SetWordPageMarginsCommand setWordPageMarginsCommand = new SetWordPageMarginsCommand(wordMLPackage, objectFactory, 50, 50, 0, 0);
+        SetWordPageMarginsCommand setWordPageMarginsCommand = new SetWordPageMarginsCommand(wordMLPackage, objectFactory, 50, 50, 650, 650);
         setWordPageMarginsCommand.execute();
 
         // Speichern

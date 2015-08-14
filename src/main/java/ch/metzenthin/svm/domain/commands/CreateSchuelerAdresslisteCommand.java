@@ -17,6 +17,7 @@ import java.util.Map;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
  * @author Martin Schraner
@@ -59,35 +60,39 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         List<String> headerCellLinesColumn2 = new ArrayList<>();
         headerCellLinesColumn2.add("Name");
         headerCellLinesColumn2.add("Strasse/Nr.");
-        headerCellLinesColumn2.add("Email");
         header.add(headerCellLinesColumn2);
-        columnWidths.add(2600);
+        columnWidths.add(2400);
         // 3. Spalte
         List<String> headerCellLinesColumn3 = new ArrayList<>();
         headerCellLinesColumn3.add("Vorname");
         headerCellLinesColumn3.add("PLZ/Ort");
-        headerCellLinesColumn3.add("Festnetz");
+        headerCellLinesColumn3.add("E-Mail");
         header.add(headerCellLinesColumn3);
-        columnWidths.add(2600);
+        columnWidths.add(2800);
         // 4. Spalte
         List<String> headerCellLinesColumn4 = new ArrayList<>();
-        headerCellLinesColumn4.add("Natel Mutter");
-        headerCellLinesColumn4.add("Natel Vater");
-        headerCellLinesColumn4.add("Natel Schüler");
+        headerCellLinesColumn4.add("Geb.Datum");
+        headerCellLinesColumn4.add("Festnetz");
         header.add(headerCellLinesColumn4);
         columnWidths.add(1700);
         // 5. Spalte
         List<String> headerCellLinesColumn5 = new ArrayList<>();
-        headerCellLinesColumn5.add("Lehrkraft");
-        headerCellLinesColumn5.add("Tag");
-        headerCellLinesColumn5.add("Zeit");
+        headerCellLinesColumn5.add("Natel Mutter");
+        headerCellLinesColumn5.add("Natel Vater");
+        headerCellLinesColumn5.add("Natel Schüler");
         header.add(headerCellLinesColumn5);
         columnWidths.add(1700);
         // 6. Spalte
         List<String> headerCellLinesColumn6 = new ArrayList<>();
-        headerCellLinesColumn6.add("Geb.Datum");
-        headerCellLinesColumn6.add("Eintritt");
+        headerCellLinesColumn6.add("Lehrkraft");
+        headerCellLinesColumn6.add("Tag");
+        headerCellLinesColumn6.add("Zeit");
         header.add(headerCellLinesColumn6);
+        columnWidths.add(1700);
+        // 7. Spalte
+        List<String> headerCellLinesColumn7 = new ArrayList<>();
+        headerCellLinesColumn7.add("Eintritt");
+        header.add(headerCellLinesColumn7);
         columnWidths.add(0);
 
         // Inhalt
@@ -109,41 +114,53 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
                 List<String> cellLinesColumn2 = new ArrayList<>();
                 cellLinesColumn2.add(schueler.getNachname());
                 cellLinesColumn2.add(schueler.getAdresse().getStrHausnummer());
-                cellLinesColumn2.add(nullAsEmptyString(schueler.getEmail()));
                 row.add(cellLinesColumn2);
                 // 3. Spalte
                 List<String> cellLinesColumn3 = new ArrayList<>();
                 cellLinesColumn3.add(schueler.getVorname());
                 cellLinesColumn3.add(schueler.getAdresse().getPlz() + " " + schueler.getAdresse().getOrt());
-                cellLinesColumn3.add(nullAsEmptyString(schueler.getFestnetz()));
+                String email = "";
+                // Wenn vorhanden Email des Schülers, sonst der Mutter, sonst des Vaters; andernfalls leer
+                if (checkNotEmpty(schueler.getEmail())) {
+                    email = schueler.getEmail();
+                } else if (schueler.getMutter() != null && checkNotEmpty(schueler.getMutter().getEmail())) {
+                    email = schueler.getMutter().getEmail();
+                } else if (schueler.getVater() != null && checkNotEmpty(schueler.getVater().getEmail())) {
+                    email = schueler.getVater().getEmail();
+                }
+                cellLinesColumn3.add(email);
                 row.add(cellLinesColumn3);
                 // 4. Spalte
                 List<String> cellLinesColumn4 = new ArrayList<>();
-                if (schueler.getMutter() != null) {
-                    cellLinesColumn4.add(nullAsEmptyString(schueler.getMutter().getNatel()));
-                }
-                if (schueler.getVater() != null) {
-                    cellLinesColumn4.add(nullAsEmptyString(schueler.getVater().getNatel()));
-                }
-                cellLinesColumn4.add(nullAsEmptyString(schueler.getNatel()));
+                cellLinesColumn4.add(asString(schueler.getGeburtsdatum()));
+                cellLinesColumn4.add(nullAsEmptyString(schueler.getFestnetz()));
                 row.add(cellLinesColumn4);
                 // 5. Spalte
                 List<String> cellLinesColumn5 = new ArrayList<>();
-                if (schuelerKurse != null && schuelerKurse.size() > 0) {
-                    Kurs kurs = schuelerKurse.get(j);
-                    cellLinesColumn5.add(kurs.getLehrkraefteShortAsStr());
-                    cellLinesColumn5.add(kurs.getWochentag().toString());
-                    cellLinesColumn5.add(asString(kurs.getZeitBeginn()) + " - " + asString(kurs.getZeitEnde()));
-
-                } else {
-                    cellLinesColumn5.add(" ");
+                if (schueler.getMutter() != null) {
+                    cellLinesColumn5.add(nullAsEmptyString(schueler.getMutter().getNatel()));
                 }
+                if (schueler.getVater() != null) {
+                    cellLinesColumn5.add(nullAsEmptyString(schueler.getVater().getNatel()));
+                }
+                cellLinesColumn5.add(nullAsEmptyString(schueler.getNatel()));
                 row.add(cellLinesColumn5);
                 // 6. Spalte
                 List<String> cellLinesColumn6 = new ArrayList<>();
-                cellLinesColumn6.add(asString(schueler.getGeburtsdatum()));
-                cellLinesColumn6.add(asString(schueler.getAnmeldungen().get(schueler.getAnmeldungen().size()-1).getAnmeldedatum()));
+                if (schuelerKurse != null && schuelerKurse.size() > 0) {
+                    Kurs kurs = schuelerKurse.get(j);
+                    cellLinesColumn6.add(kurs.getLehrkraefteShortAsStr());
+                    cellLinesColumn6.add(kurs.getWochentag().toString());
+                    cellLinesColumn6.add(asString(kurs.getZeitBeginn()) + " - " + asString(kurs.getZeitEnde()));
+
+                } else {
+                    cellLinesColumn6.add(" ");
+                }
                 row.add(cellLinesColumn6);
+                // 7. Spalte
+                List<String> cellLinesColumn7 = new ArrayList<>();
+                cellLinesColumn7.add(asString(schueler.getAnmeldungen().get(schueler.getAnmeldungen().size() - 1).getAnmeldedatum()));
+                row.add(cellLinesColumn7);
                 // Spalten der Zeile hinzufügen
                 rows.add(row);
                 i++;
@@ -158,7 +175,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         wordMLPackage.getMainDocumentPart().addObject(table);
 
         // Seitenränder anpassen
-        SetWordPageMarginsCommand setWordPageMarginsCommand = new SetWordPageMarginsCommand(wordMLPackage, objectFactory, 50, 50, 0, 0);
+        SetWordPageMarginsCommand setWordPageMarginsCommand = new SetWordPageMarginsCommand(wordMLPackage, objectFactory, 50, 50, 650, 650);
         setWordPageMarginsCommand.execute();
 
         // Speichern

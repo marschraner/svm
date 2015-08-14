@@ -57,27 +57,31 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
         List<String> headerCellLinesColumn2 = new ArrayList<>();
         headerCellLinesColumn2.add("Name");
         headerCellLinesColumn2.add("Strasse/Nr.");
-        headerCellLinesColumn2.add("Email");
         header.add(headerCellLinesColumn2);
-        columnWidths.add(2600);
+        columnWidths.add(2400);
         // 3. Spalte
         List<String> headerCellLinesColumn3 = new ArrayList<>();
         headerCellLinesColumn3.add("Vorname");
         headerCellLinesColumn3.add("PLZ/Ort");
-        headerCellLinesColumn3.add("AHV-Nummer");
+        headerCellLinesColumn3.add("E-Mail");
         header.add(headerCellLinesColumn3);
-        columnWidths.add(2600);
+        columnWidths.add(2800);
         // 4. Spalte
         List<String> headerCellLinesColumn4 = new ArrayList<>();
         headerCellLinesColumn4.add("Geburtsdatum");
-        headerCellLinesColumn4.add("Festnetz");
-        headerCellLinesColumn4.add("Natel");
+        headerCellLinesColumn4.add("AHV-Nummer");
         header.add(headerCellLinesColumn4);
-        columnWidths.add(1700);
+        columnWidths.add(2000);
         // 5. Spalte
         List<String> headerCellLinesColumn5 = new ArrayList<>();
-        headerCellLinesColumn5.add("Vertretungsmöglichkeiten");
+        headerCellLinesColumn5.add("Festnetz");
+        headerCellLinesColumn5.add("Natel");
         header.add(headerCellLinesColumn5);
+        columnWidths.add(1700);
+        // 6. Spalte
+        List<String> headerCellLinesColumn6 = new ArrayList<>();
+        headerCellLinesColumn6.add("Vertretungsmöglichkeiten");
+        header.add(headerCellLinesColumn6);
         columnWidths.add(2600);
 
         // Inhalt
@@ -99,24 +103,27 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
             List<String> cellLinesColumn2 = new ArrayList<>();
             cellLinesColumn2.add(lehrkraft.getNachname());
             cellLinesColumn2.add(lehrkraft.getAdresse().getStrHausnummer());
-            cellLinesColumn2.add(nullAsEmptyString(lehrkraft.getEmail()));
             row.add(cellLinesColumn2);
             // 3. Spalte
             List<String> cellLinesColumn3 = new ArrayList<>();
             cellLinesColumn3.add(lehrkraft.getVorname());
             cellLinesColumn3.add(lehrkraft.getAdresse().getPlz() + " " + lehrkraft.getAdresse().getOrt());
-            cellLinesColumn3.add(lehrkraft.getAhvNummer());
+            cellLinesColumn3.add(nullAsEmptyString(lehrkraft.getEmail()));
             row.add(cellLinesColumn3);
             // 4. Spalte
             List<String> cellLinesColumn4 = new ArrayList<>();
             cellLinesColumn4.add(asString(lehrkraft.getGeburtsdatum()));
-            cellLinesColumn4.add(nullAsEmptyString(lehrkraft.getFestnetz()));
-            cellLinesColumn4.add(nullAsEmptyString(lehrkraft.getNatel()));
+            cellLinesColumn4.add(lehrkraft.getAhvNummer());
             row.add(cellLinesColumn4);
             // 5. Spalte
             List<String> cellLinesColumn5 = new ArrayList<>();
-            cellLinesColumn5.add(nullAsEmptyString(lehrkraft.getVertretungsmoeglichkeiten()));
+            cellLinesColumn5.add(nullAsEmptyString(lehrkraft.getFestnetz()));
+            cellLinesColumn5.add(nullAsEmptyString(lehrkraft.getNatel()));
             row.add(cellLinesColumn5);
+            // 6. Spalte
+            List<String> cellLinesColumn6 = new ArrayList<>();
+            cellLinesColumn6.add(nullAsEmptyString(lehrkraft.getVertretungsmoeglichkeiten()));
+            row.add(cellLinesColumn6);
             // Spalten der Zeile hinzufügen
             rows.add(row);
             i++;
@@ -129,7 +136,7 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
         wordMLPackage.getMainDocumentPart().addObject(table);
 
         // Seitenränder anpassen
-        SetWordPageMarginsCommand setWordPageMarginsCommand = new SetWordPageMarginsCommand(wordMLPackage, objectFactory, 50, 50, 0, 0);
+        SetWordPageMarginsCommand setWordPageMarginsCommand = new SetWordPageMarginsCommand(wordMLPackage, objectFactory, 50, 50, 650, 650);
         setWordPageMarginsCommand.execute();
 
         // Speichern
