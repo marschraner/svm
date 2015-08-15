@@ -51,22 +51,31 @@ public class Svm {
     }
 
     public static void main(String[] args) {
-        LOGGER.info("Svm wird gestartet ...");
-        createSvmPropertiesFileDefault();
-        final CommandInvoker commandInvoker = createCommandInvoker();
-        commandInvoker.openSession();
-        final ModelFactory modelFactory = createModelFactory(commandInvoker);
-        final SvmModel svmModel = modelFactory.createSvmModel();
-        final SvmContext svmContext = new SvmContext(modelFactory, commandInvoker, svmModel);
-        // Fängt alle unbehandelten Exceptions und beendet die Applikation.
-        Thread.setDefaultUncaughtExceptionHandler(new SwingExceptionHandler());
-        // Schedule a job for the event-dispatching thread:
-        // creating and showing this application's GUI.
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI(svmContext);
-            }
-        });
+        try {
+            LOGGER.info("Svm wird gestartet ...");
+            createSvmPropertiesFileDefault();
+            final CommandInvoker commandInvoker = createCommandInvoker();
+            commandInvoker.openSession();
+            final ModelFactory modelFactory = createModelFactory(commandInvoker);
+            final SvmModel svmModel = modelFactory.createSvmModel();
+            final SvmContext svmContext = new SvmContext(modelFactory, commandInvoker, svmModel);
+            // Fängt alle unbehandelten Exceptions und beendet die Applikation.
+            Thread.setDefaultUncaughtExceptionHandler(new SwingExceptionHandler());
+            // Schedule a job for the event-dispatching thread:
+            // creating and showing this application's GUI.
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    createAndShowGUI(svmContext);
+                }
+            });
+        } catch (Exception e) {
+            LOGGER.error("Fehler bei der Initialisierung der Applikation", e);
+            JOptionPane.showMessageDialog(null,
+                    "Bei der Initialisierung der Applikation ist ein Fehler aufgetreten.\n" +
+                            "Bitte Netzwerkverbindung, Datenbank-Server und Log-Files (im Ordner \"log\") überprüfen.",
+                    "Fehler bei der Initialisierung der Applikation",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private static ModelFactoryImpl createModelFactory(CommandInvoker commandInvoker) {
