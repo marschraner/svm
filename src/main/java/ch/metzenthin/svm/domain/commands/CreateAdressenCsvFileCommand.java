@@ -29,7 +29,6 @@ public class CreateAdressenCsvFileCommand extends CreateListeCommand {
 
         try {
             FileWriter writer = new FileWriter(outputFile);
-            // TODO OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8");
 
             // Header
             writer.append("Anrede");
