@@ -1,2 +1,2 @@
 
-start javaw java -jar svm-${version}-jar-with-dependencies.jar
+start javaw -jar svm-${version}-jar-with-dependencies.jar
