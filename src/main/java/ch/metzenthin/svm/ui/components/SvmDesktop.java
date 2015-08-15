@@ -6,6 +6,7 @@ import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 
 /*
  * SVM Applikation
@@ -39,6 +40,11 @@ public class SvmDesktop extends JFrame implements ActionListener {
                 quit();
             }
         });
+
+        URL iconURL = getClass().getResource("/images/buehne.gif");
+        if (iconURL != null) {
+            setIconImage(new ImageIcon(iconURL).getImage());
+        }
 
         setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), "Schüler suchen");
 
