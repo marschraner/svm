@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 
 import javax.swing.*;
 
+import java.awt.*;
+
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 
 /*
@@ -53,6 +55,7 @@ public class Svm {
     public static void main(String[] args) {
         try {
             LOGGER.info("Svm wird gestartet ...");
+            SplashScreen splash = splashScreenInit();
             createSvmPropertiesFileDefault();
             final CommandInvoker commandInvoker = createCommandInvoker();
             commandInvoker.openSession();
@@ -68,6 +71,7 @@ public class Svm {
                     createAndShowGUI(svmContext);
                 }
             });
+            splashScreenClose(splash);
         } catch (Exception e) {
             LOGGER.error("Fehler bei der Initialisierung der Applikation", e);
             JOptionPane.showMessageDialog(null,
@@ -84,6 +88,26 @@ public class Svm {
 
     private static CommandInvoker createCommandInvoker() {
         return new CommandInvokerImpl();
+    }
+
+    private static SplashScreen splashScreenInit() {
+        final SplashScreen splash = SplashScreen.getSplashScreen();
+        if (splash == null) {
+            LOGGER.warn("SplashScreen.getSplashScreen() returned null");
+            return null;
+        }
+        Graphics2D g = splash.createGraphics();
+        if (g == null) {
+            LOGGER.warn("SplashScreen: g is null");
+            return null;
+        }
+        return splash;
+    }
+
+    private static void splashScreenClose(SplashScreen splash) {
+        if (splash != null) {
+            splash.close();
+        }
     }
 
 }

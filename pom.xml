@@ -184,6 +184,9 @@
 								<manifest>
 									<mainClass>ch.metzenthin.svm.Svm</mainClass>
 								</manifest>
+								<manifestEntries>
+									<SplashScreen-Image>images/buehne.gif</SplashScreen-Image>
+								</manifestEntries>
 							</archive>
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
