@@ -48,6 +48,7 @@ public class ListenExportController extends AbstractController {
     private JLabel errLblListentyp;
     private JLabel errLblTitel;
     private JButton btnOk;
+    private JButton btnAbbrechen;
 
     public ListenExportController(ListenExportModel listenExportModel, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel, ListenExportTyp listenExportTyp) {
         super(listenExportModel);
@@ -267,11 +268,13 @@ public class ListenExportController extends AbstractController {
             btnOk.setFocusPainted(false);
             return;
         }
+        enableButtons(false);
         // Speichern-Dialog
         JFileChooser fileChooser = setupFileChooser();
         int returnVal = fileChooser.showSaveDialog(listenExportDialog);
         if (returnVal != JFileChooser.APPROVE_OPTION) {
             btnOk.setFocusPainted(false);
+            enableButtons(true);
             return;
         }
         // Prüfen, ob selektiertes Output-File schon existiert
@@ -289,6 +292,7 @@ public class ListenExportController extends AbstractController {
                     options[1]); //default button title
             if (n != 0) {
                 btnOk.setFocusPainted(false);
+                enableButtons(true);
                 return;
             }
         }
@@ -337,9 +341,12 @@ public class ListenExportController extends AbstractController {
             }
         };
         worker.execute();
-        listenExportDialog.setEnabled(false);
-        listenExportDialog.repaint();
         dialog.setVisible(true);
+    }
+
+    private void enableButtons(boolean enable) {
+        btnOk.setEnabled(enable);
+        btnAbbrechen.setEnabled(enable);
     }
 
     private JFileChooser setupFileChooser() {
@@ -354,6 +361,7 @@ public class ListenExportController extends AbstractController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
+        this.btnAbbrechen = btnAbbrechen;
         btnAbbrechen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
