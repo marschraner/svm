@@ -416,8 +416,8 @@ INSERT INTO Schueler_Kurs (person_id, kurs_id) VALUES
     (39, 20),
     (41, 20),
     (43, 20),
-    (45, 20),
-    (48, 20);
+    (45, 21),
+    (48, 21);
 
 SELECT * FROM Schueler_Kurs;
 
