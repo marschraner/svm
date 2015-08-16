@@ -50,7 +50,41 @@ INSERT INTO Adresse (adresse_id, strasse, hausnummer, plz, ort) VALUES
     (11, 'Zollikerstrasse', '81', '8008', 'Zürich'),
     (12, 'Im Rüteli', '7', '5401', 'Baden-Dättwil'),
     (13, 'Ceresstrasse', '11', '8008', 'Zürich'),
-    (14, 'Neugasse', '33', '8005', 'Zürich');
+    (14, 'Neugasse', '33', '8005', 'Zürich'),
+    (16, 'Sennhauserweg', '18', '8032', 'Zürich'),
+    (17, 'Sennhauserweg', '18', '8032', 'Zürich'),
+    (18, 'Kurhausstrasse', '7', '8032', 'Zürich'),
+    (19, 'Kurhausstrasse', '7', '8032', 'Zürich'),
+    (20, 'Pilatusstrasse', '19', '8712', 'Stäfa'),
+    (21, 'Pilatusstrasse', '19', '8712', 'Stäfa'),
+    (22, 'Pilatusstrasse', '19', '8712', 'Stäfa'),
+    (23, 'Döltschiweg', '53', '8055', 'Zürich'),
+    (24, 'Döltschiweg', '53', '8055', 'Zürich'),
+    (25, 'Bergwiesenstrasse', '14', '8132', 'Ebmatingen'),
+    (26, 'Bergwiesenstrasse', '14', '8132', 'Ebmatingen'),
+    (27, 'Hofackerstrasse', '74', '8032', 'Zürich'),
+    (28, 'Hofackerstrasse', '74', '8032', 'Zürich'),
+    (29, 'Hadlaubsteig', '8', '8006', 'Zürich'),
+    (30, 'Hadlaubsteig', '8', '8006', 'Zürich'),
+    (31, 'Hadlaubsteig', '8', '8006', 'Zürich'),
+    (32, 'Freiestrasse', '29', '8032', 'Zürich'),
+    (33, 'Freiestrasse', '29', '8032', 'Zürich'),
+    (34, 'Weidstrasse', '12', '8122', 'Binz'),
+    (35, 'Weidstrasse', '12', '8122', 'Binz'),
+    (36, 'Zelglistrasse', '8', '8127', 'Forch'),
+    (37, 'Zelglistrasse', '8', '8127', 'Forch'),
+    (38, 'Zelglistrasse', '6', '8127', 'Forch'),
+    (39, 'Schwerzimattstrasse', '48', '8912', 'Obfelden'),
+    (40, 'Schwerzimattstrasse', '48', '8912', 'Obfelden'),
+    (41, 'Markusstrasse', '12', '8006', 'Zürich'),
+    (42, 'Markusstrasse', '12', '8006', 'Zürich'),
+    (43, 'Heugatterstrasse', '21', '8600', 'Dübendorf'),
+    (44, 'Heugatterstrasse', '21', '8600', 'Dübendorf'),
+    (45, 'Witellikerstrasse', '66', '8008', 'Zürich'),
+    (46, 'Witellikerstrasse', '66', '8008', 'Zürich'),
+    (47, 'Toggwilerstrasse', '177', '8706', 'Meilen'),
+    (48, 'Tichelrütistrasse', '39', '8044', 'Gockhausen'),
+    (49, 'Tichelrütistrasse', '39', '8044', 'Gockhausen');
 
 SELECT * FROM Adresse;
 
@@ -58,22 +92,56 @@ SELECT * FROM Adresse;
 -- Person
 -- ******
    
-INSERT INTO Person (person_id, discriminator, anrede, vorname, nachname, geburtsdatum, festnetz, natel, email, adresse_id) VALUES 
-    (1, 'Angehoeriger', 'FRAU', 'Käthi', 'Schraner', NULL, '044 720 85 51', NULL, 'hschraner@bluewin.ch', 1),
-    (2, 'Angehoeriger', 'HERR', 'Martin', 'Schraner', NULL, '044 364 36 30', '079 273 77 20', 'marschraner@gmail.com', 2),
-    (3, 'Angehoeriger', 'FRAU', 'Sibyll', 'Metzenthin', NULL, '044 364 36 30', NULL, 'billa.metz@bluewin.ch', 3),
-    (4, 'Schueler', 'KEINE', 'Jonas', 'Metzenthin', '2014-06-24', '044 364 36 30', NULL, NULL, 4),
-    (5, 'Angehoeriger', 'HERR', 'Kurt', 'Juchli', NULL, NULL, NULL, 'kurt.juchli@zuerich.ch', NULL),
-    (6, 'Angehoeriger', 'FRAU', 'Eva', 'Juchli', NULL, '044 271 53 69', '076 515 14 65', 'juchlischraner@gmail.com', 5),
-    (7, 'Schueler', 'KEINE', 'Lilly', 'Juchli', '2008-01-13', '044 271 53 69', NULL, NULL, 6),
-    (8, 'Schueler', 'KEINE', 'Anna', 'Juchli', '2010-03-05', '044 271 53 69', NULL, NULL, 7),
-    (9, 'Lehrkraft', 'FRAU', 'Sibyll', 'Metzenthin', '1972-05-17', '044 364 36 30', NULL, 'billa.metz@bluewin.ch', 8),
-    (10, 'Lehrkraft', 'FRAU', 'Sibylle', 'Schweizer', '1969-05-19', '043 322 00 08', '079 629 72 36', 'sibylle.schweizer@gmx.ch', 9),
-    (11, 'Lehrkraft', 'FRAU', 'Franziska', 'Lüscher', '1962-04-25', '032 631 07 76', '076 378 07 76', 'ziska@bluewin.ch', 10),
-    (12, 'Lehrkraft', 'FRAU', 'Ursina', 'Höhn', '1971-07-17', '043 499 02 20', '079 714 02 07', 'ursina.hoehn@bluewin.ch', 11),
-    (13, 'Lehrkraft', 'FRAU', 'Simona', 'Hofmann', '1980-07-24', NULL, '079 478 87 05', 'hofmannsimona@gmail.com', 12),
-    (14, 'Lehrkraft', 'FRAU', 'Esther', 'Fessler', '1981-06-19', '043 537 71 93', '076 449 39 63', 'esthifessler@gmail.com', 13),
-    (15, 'Lehrkraft', 'FRAU', 'Sara', 'Dorigo', '1980-11-26', NULL, '076 566 14 95', 'saradorigo@gmx.ch', 14);
+INSERT INTO Person (person_id, discriminator, anrede, nachname, vorname, geburtsdatum, festnetz, natel, email, adresse_id) VALUES 
+    (1, 'Angehoeriger', 'FRAU', 'Schraner', 'Käthi', NULL, '044 720 85 51', NULL, 'hschraner@bluewin.ch', 1),
+    (2, 'Angehoeriger', 'HERR', 'Schraner', 'Martin', NULL, '044 364 36 30', '079 273 77 20', 'marschraner@gmail.com', 2),
+    (3, 'Angehoeriger', 'FRAU', 'Metzenthin', 'Sibyll', NULL, '044 364 36 30', NULL, 'billa.metz@bluewin.ch', 3),
+    (4, 'Schueler', 'KEINE', 'Metzenthin', 'Jonas', '2014-06-24', '044 364 36 30', NULL, NULL, 4),
+    (5, 'Angehoeriger', 'HERR', 'Juchli', 'Kurt', NULL, NULL, NULL, 'kurt.juchli@zuerich.ch', NULL),
+    (6, 'Angehoeriger', 'FRAU', 'Juchli', 'Eva', NULL, '044 271 53 69', '076 515 14 65', 'juchlischraner@gmail.com', 5),
+    (7, 'Schueler', 'KEINE', 'Juchli', 'Lilly', '2008-01-13', '044 271 53 69', NULL, NULL, 6),
+    (8, 'Schueler', 'KEINE', 'Juchli', 'Anna', '2010-03-05', '044 271 53 69', NULL, NULL, 7),
+    (9, 'Lehrkraft', 'FRAU', 'Metzenthin', 'Sibyll', '1972-05-17', '044 364 36 30', NULL, 'billa.metz@bluewin.ch', 8),
+    (10, 'Lehrkraft', 'FRAU', 'Schweizer', 'Sibylle', '1969-05-19', '043 322 00 08', '079 629 72 36', 'sibylle.schweizer@gmx.ch', 9),
+    (11, 'Lehrkraft', 'FRAU', 'Lüscher', 'Franziska', '1962-04-25', '032 631 07 76', '076 378 07 76', 'ziska@bluewin.ch', 10),
+    (12, 'Lehrkraft', 'FRAU', 'Höhn', 'Ursina', '1971-07-17', '043 499 02 20', '079 714 02 07', 'ursina.hoehn@bluewin.ch', 11),
+    (13, 'Lehrkraft', 'FRAU', 'Hofmann', 'Simona', '1980-07-24', NULL, '079 478 87 05', 'hofmannsimona@gmail.com', 12),
+    (14, 'Lehrkraft', 'FRAU', 'Fessler', 'Esther', '1981-06-19', '043 537 71 93', '076 449 39 63', 'esthifessler@gmail.com', 13),
+    (15, 'Lehrkraft', 'FRAU', 'Dorigo', 'Sara', '1980-11-26', NULL, '076 566 14 95', 'saradorigo@gmx.ch', 14),
+    (16, 'Schueler', 'KEINE', 'Annen', 'Maude', '2005-08-01', '044 271 90 18', NULL, NULL, 16),
+    (17, 'Angehoeriger', 'FRAU', 'Annen', 'Sabine', NULL, '044 271 90 18', '079 771 36 16', 'annen@rogerfrei.com', 17),
+    (18, 'Schueler', 'KEINE', 'Baudouin-Psaulme', 'Eléonore', '2004-10-08', NULL, NULL, NULL, 18),
+    (19, 'Angehoeriger', 'FRAU', 'Baudouin-Psaulme', 'Claire', NULL, NULL, '079 150 90 46', 'claire.baudouin-psaulme@outlook.com', 19),
+    (20, 'Schueler', 'KEINE', 'Beerli', 'Sitara', '2005-10-25', '043 344 54 19', NULL, NULL, 20),
+    (21, 'Angehoeriger', 'FRAU', 'Beerli', 'Sibylle', NULL, '043 344 54 19', '079 274 84 85', 'sibylle.beerli@gmx.ch', 21),
+    (22, 'Angehoeriger', 'HERR', 'Beerli', 'Roland', NULL, '043 344 54 19', '079 246 64 46', NULL, 22),
+    (23, 'Schueler', 'KEINE', 'Bruseghini', 'Oriana', '2006-07-24', '044 450 25 34', NULL, NULL, 23),
+    (24, 'Angehoeriger', 'FRAU', 'Bruseghini', 'Lisa', NULL, '044 450 25 34', '079 255 77 07', 'lisabruseghini@sunrise.ch', 24),
+    (25, 'Schueler', 'KEINE', 'Doell', 'Isla', '2004-10-06', '044 577 00 64', NULL, NULL, 25),
+    (26, 'Angehoeriger', 'FRAU', 'Doell', 'Rachel', NULL, '044 577 00 64', '078 862 51 34', 'racheldoel@hotmail.com', 26),
+    (27, 'Schueler', 'KEINE', 'Glatt', 'Medea', '2005-07-28', '044 382 25 33', NULL, NULL, 27),
+    (28, 'Angehoeriger', 'HERR', 'Glatt', 'Raoul', NULL, '044 382 25 33', '079 269 62 69', 'familie_glatt@bluewin.ch', 26),
+    (29, 'Schueler', 'KEINE', 'Gramigna', 'Serge', '2005-11-07', '044 363 95 42', NULL, NULL, 29),
+    (30, 'Angehoeriger', 'FRAU', 'Nicolier', 'Isabelle', NULL, '044 363 95 42', '079 446 50 87', 'isabelle.nicolier@bluewin.ch', 30),
+    (31, 'Angehoeriger', 'HERR', 'Gramigna', 'Ralph', NULL, '044 363 95 42', '078 653 29 07', NULL, 31),
+    (32, 'Schueler', 'KEINE', 'Koch Medina', 'Anaïs', '2005-10-24', '044 381 13 05', NULL, NULL, 32),
+    (33, 'Angehoeriger', 'FRAU', 'Schim van der Loeff', 'Madelaine', NULL, '044 381 13 05', '079 354 63 23', 'madelaine.schirmvanderloeff@bluewin.ch', 33),
+    (34, 'Schueler', 'KEINE', 'Mannweiler', 'Elena', '2005-05-15', '043 366 01 36', NULL, NULL, 34),
+    (35, 'Angehoeriger', 'FRAU', 'Mannweiler', 'Petra', NULL, '043 366 01 36', '076 370 27 90', 'petra@mannweiler.ch', 35),
+    (36, 'Schueler', 'KEINE', 'Müller', 'Jessica', '2006-02-16', '044 980 66 14', NULL, NULL, 36),
+    (37, 'Angehoeriger', 'FRAU', 'Müller', 'Jane', NULL, '044 980 66 14', '078 648 06 82', 'jane.mueller@ggaw.ch', 37),
+    (38, 'Angehoeriger', 'FRAU', 'Müller', 'Monica', NULL, '044 980 66 14', NULL, 'moni.mueller@ggaw.ch', 38),
+    (39, 'Schueler', 'KEINE', 'Papiernik', 'Lena', '2006-01-27', '044 260 66 16', NULL, NULL, 39),
+    (40, 'Angehoeriger', 'FRAU', 'Papiernik', 'Eliska', NULL, '044 260 66 16', '076 336 23 10', 'eliska@sunrise.ch', 40),
+    (41, 'Schueler', 'KEINE', 'Rotzler', 'Lü Max', '2005-12-07', '044 364 54 33', NULL, NULL, 41),
+    (42, 'Angehoeriger', 'HERR', 'Rotzler', 'Andreas', NULL, '044 364 54 33', '078 744 67 07', 'r.rodriguez@highspeed.ch', 42),
+    (43, 'Schueler', 'KEINE', 'Stolarski', 'Kiara', '2005-06-29', '043 538 32 55', NULL, NULL, 43),
+    (44, 'Angehoeriger', 'HERR', 'Stolarski', 'Michal', NULL, '043 538 32 55', '076 489 71 73', 'diafka@yahoo.fr', 44),
+    (45, 'Schueler', 'KEINE', 'Baier', 'Ida', '2004-07-28', '043 810 04 20', NULL, NULL, 43),
+    (46, 'Angehoeriger', 'FRAU', 'Baier', 'Nina', NULL, '043 810 04 20', '076 392 79 87', 'nina@baierbischofberger.ch', 46),
+    (47, 'Angehoeriger', 'FRAU', 'Bischofberger', 'Christina', NULL, NULL, NULL, NULL, 47),
+    (48, 'Schueler', 'KEINE', 'Da Silva Goulart', 'Maria', '2003-09-26', NULL, NULL, NULL, 48),
+    (49, 'Angehoeriger', 'FRAU', 'Da Silva Goulart', 'Wilma', NULL, NULL, '079 796 19 22', 'm_clara_dara@hotmail.ch', 49);
 
 SELECT * FROM Person;
 
@@ -86,7 +154,26 @@ INSERT INTO Angehoeriger (person_id) VALUES
     (2),
     (3),
     (5),
-    (6);
+    (6),
+    (17),
+    (19),
+    (21),
+    (22),
+    (24),
+    (26),
+    (28),
+    (30),
+    (31),
+    (33),
+    (35),
+    (37),
+    (38),
+    (40),
+    (42),
+    (44),
+    (46),
+    (47),
+    (49);
 
 SELECT * FROM Angehoeriger;
 
@@ -94,10 +181,25 @@ SELECT * FROM Angehoeriger;
 -- Schueler
 -- ********
 
-INSERT INTO Schueler (person_id, geschlecht, vater_id, mutter_id, rechnungsempfaenger_id, bemerkungen) VALUES
-    (4, 'M', 2, 3, 3, NULL),
-    (7, 'W', 5, 6, 1, 'Grosse Schwester von Anna'),
-    (8, 'W', 5, 6, 1, 'Grosse Schwester von Feller');
+INSERT INTO Schueler (person_id, geschlecht, mutter_id, vater_id, rechnungsempfaenger_id, bemerkungen) VALUES
+    (4, 'M', 3, 2, 3, NULL),
+    (7, 'W', 6, 5, 1, 'Grosse Schwester von Anna'),
+    (8, 'W', 6, 5, 1, 'Grosse Schwester von Feller'),
+    (16, 'W', 17, NULL, 17, NULL),
+    (18, 'W', 19, NULL, 19, NULL),
+    (20, 'W', 21, 22, 21, NULL),
+    (23, 'W', 24, NULL, 24, NULL),
+    (25, 'W', 26, NULL, 26, NULL),
+    (27, 'W', NULL, 28, 28, NULL),
+    (29, 'M', 30, 31, 30, NULL),
+    (32, 'M', 33, NULL, 33, NULL),
+    (34, 'W', 35, NULL, 35, NULL),
+    (36, 'W', 37, NULL, 38, NULL),
+    (39, 'W', 40, NULL, 40, NULL),
+    (41, 'M', NULL, 42, 42, NULL),
+    (43, 'W', NULL, 44, 44, NULL),
+    (45, 'W', NULL, 46, 47, NULL),
+    (48, 'W', 49, NULL, 49, NULL);
 
 SELECT * FROM Schueler;
 
@@ -122,7 +224,22 @@ SELECT * FROM Lehrkraft;
 INSERT INTO Anmeldung (anmeldung_id, anmeldedatum, abmeldedatum, schueler_id) VALUES
     (1, '2015-05-09', NULL, 4),
     (2, '2013-01-01', NULL, 7),
-    (3, '2014-01-01', NULL, 8);
+    (3, '2014-01-01', NULL, 8),
+    (16, '2012-11-01', NULL, 16),
+    (18, '2015-03-01', NULL, 18),
+    (20, '2010-09-01', NULL, 20),
+    (23, '2011-01-01', NULL, 23),
+    (25, '2012-03-01', NULL, 25),
+    (27, '2011-02-01', NULL, 27),
+    (29, '2010-09-01', NULL, 29),
+    (32, '2013-09-01', NULL, 32),
+    (34, '2014-03-01', NULL, 34),
+    (36, '2009-09-01', NULL, 36),
+    (39, '2011-05-01', NULL, 39),
+    (41, '2012-09-01', NULL, 41),
+    (43, '2009-03-01', NULL, 43),
+    (45, '2013-10-01', NULL, 45),
+    (48, '2013-10-01', NULL, 48);
 
 SELECT * FROM Anmeldung;
 
@@ -237,7 +354,10 @@ INSERT INTO Kurs (kurs_id, semester_id, kurstyp_id, altersbereich, stufe, wochen
     (15, 3, 5, '6 1/2 - 8 J', '1 - 2 (ab 1. Kl)', 'FREITAG', '15:50:00', '16:40:00', 3, NULL),
     (16, 2, 6, '9 - 11 J', '2 - 3', 'MONTAG', '16:50:00', '17:40:00', 4, NULL),
     (17, 3, 6, '9 - 11 J', '2 - 3', 'MONTAG', '16:40:00', '17:30:00', 4, NULL),
-    (18, 3, 2, '6 1/2 - 8 J', '1 - 2. Klasse', 'DONNERSTAG', '15:50:00', '16:40:00', 1, NULL); 
+    (18, 3, 2, '6 1/2 - 8 J', '1. - 2. Klasse', 'DONNERSTAG', '15:50:00', '16:40:00', 1, NULL),
+    (19, 2, 2, '9 - 10 J', '3. - 4. Klasse', 'DIENSTAG', '16:40:00', '17:30:00', 1, NULL),
+    (20, 2, 2, '9 - 10 J', '3. - 4. Klasse', 'MITTWOCH', '16:40:00', '17:30:00', 1, NULL),
+    (21, 2, 2, '11 - 12 J', '5. - 6. Klasse', 'MITTWOCH', '17:30:00', '18:20:00', 1, NULL); 
 
 SELECT * FROM Kurs;
 
@@ -265,7 +385,10 @@ INSERT INTO Kurs_Lehrkraft (kurs_id, person_id, lehrkraefte_ORDER) VALUES
     (16, 13, 1),
     (17, 9, 0),
     (17, 13, 1),
-    (18, 11, 0);
+    (18, 11, 0),
+    (19, 11, 0),
+    (20, 11, 0),
+    (21, 11, 0);
 
 SELECT * FROM Kurs_Lehrkraft;
 
@@ -279,7 +402,22 @@ INSERT INTO Schueler_Kurs (person_id, kurs_id) VALUES
     (7, 18),
     (8, 7),
     (8, 8),
-    (8, 6);
+    (8, 6),
+    (16, 20),
+    (18, 20),
+    (20, 20),
+    (23, 20),
+    (25, 20),
+    (27, 20),
+    (29, 20),
+    (32, 20),
+    (34, 20),
+    (36, 20),
+    (39, 20),
+    (41, 20),
+    (43, 20),
+    (45, 20),
+    (48, 20);
 
 SELECT * FROM Schueler_Kurs;
 
