@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -33,6 +34,13 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private Time zeitBeginn;
     private Lehrkraft lehrkraft;
     private boolean kursFuerSucheBeruecksichtigen;
+    private Maerchen maerchen;
+    private Gruppe gruppe;
+    private String rollen;
+    private ElternmithilfeCode elternmithilfeCode;
+    private Integer kuchenVorstellung;
+    private String zusatzattributMaerchen;
+    private boolean maerchenFuerSucheBeruecksichtigen;
     private SchuelerCode schuelerCode;
 
     SchuelerSuchenModelImpl(CommandInvoker commandInvoker) {
@@ -44,6 +52,8 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         LEHRKRAFT_ALLE.setNachname("");
         SCHUELER_CODE_ALLE.setKuerzel("");
         SCHUELER_CODE_ALLE.setBeschreibung("");
+        ELTERNMITHILFE_CODE_ALLE.setKuerzel("");
+        ELTERNMITHILFE_CODE_ALLE.setBeschreibung("");
     }
 
     @Override
@@ -176,6 +186,22 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         firePropertyChange(Field.DISPENSATION, oldValue, this.dispensation);
     }
 
+    private final CalendarModelAttribute stichtagModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.STICHTAG, new GregorianCalendar(2000, Calendar.JANUARY, 1), new GregorianCalendar(),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return stichtag;
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    stichtag = value;
+                }
+            }
+    );
+
     @Override
     public Calendar getStichtag() {
         return stichtagModelAttribute.getValue();
@@ -295,25 +321,144 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     public void setSchuelerCode(SchuelerCode schuelerCode) {
         SchuelerCode oldValue = this.schuelerCode;
         this.schuelerCode = schuelerCode;
-        firePropertyChange(Field.CODE, oldValue, this.schuelerCode);
+        firePropertyChange(Field.SCHUELER_CODE, oldValue, this.schuelerCode);
     }
 
-    private final CalendarModelAttribute stichtagModelAttribute = new CalendarModelAttribute(
+    @Override
+    public Maerchen getMaerchen() {
+        return maerchen;
+    }
+
+    @Override
+    public void setMaerchen(Maerchen maerchen) {
+        Maerchen oldValue = this.maerchen;
+        this.maerchen = maerchen;
+        firePropertyChange(Field.MAERCHEN, oldValue, this.maerchen);
+    }
+
+    @Override
+    public Gruppe getGruppe() {
+        return gruppe;
+    }
+
+    @Override
+    public void setGruppe(Gruppe gruppe) {
+        Gruppe oldValue = this.gruppe;
+        this.gruppe = gruppe;
+        firePropertyChange(Field.GRUPPE, oldValue, this.gruppe);
+    }
+
+    private final StringModelAttribute rollenModelAttribute = new StringModelAttribute(
             this,
-            Field.STICHTAG, new GregorianCalendar(2000, Calendar.JANUARY, 1), new GregorianCalendar(),
-            new AttributeAccessor<Calendar>() {
+            Field.ROLLEN, 2, 1000,
+            new AttributeAccessor<String>() {
                 @Override
-                public Calendar getValue() {
-                    return stichtag;
+                public String getValue() {
+                    return rollen;
                 }
 
                 @Override
-                public void setValue(Calendar value) {
-                    stichtag = value;
+                public void setValue(String value) {
+                    rollen = value;
                 }
             }
     );
 
+    @Override
+    public String getRollen() {
+        return rollenModelAttribute.getValue();
+    }
+
+    @Override
+    public void setRollen(String rollen) throws SvmValidationException {
+        rollenModelAttribute.setNewValue(false, rollen, isBulkUpdate());
+    }
+
+    @Override
+    public ElternmithilfeCode getElternmithilfeCode() {
+        return elternmithilfeCode;
+    }
+
+    @Override
+    public void setElternmithilfeCode(ElternmithilfeCode elternmithilfeCode) {
+        ElternmithilfeCode oldValue = this.elternmithilfeCode;
+        this.elternmithilfeCode = elternmithilfeCode;
+        firePropertyChange(Field.ELTERNMITHILFE_CODE, oldValue, this.elternmithilfeCode);
+    }
+
+    private IntegerModelAttribute kuchenVorstellungModelAttribute = new IntegerModelAttribute(
+            this,
+            Field.KUCHEN_VORSTELLUNG, 1, 9,
+            new AttributeAccessor<Integer>() {
+                @Override
+                public Integer getValue() {
+                    return kuchenVorstellung;
+                }
+
+                @Override
+                public void setValue(Integer value) {
+                    kuchenVorstellung = value;
+                }
+            }
+    );
+
+    @Override
+    public Integer getKuchenVorstellung() {
+        return kuchenVorstellungModelAttribute.getValue();
+    }
+
+    @Override
+    public void setKuchenVorstellung(String kuchenVorstellung) throws SvmValidationException {
+        try {
+            if (!isBulkUpdate() && Integer.parseInt(kuchenVorstellung) > maerchen.getAnzahlVorstellungen()) {
+                this.kuchenVorstellung = null;
+                invalidate();
+                throw new SvmValidationException(2032, "Das Märchen hat nur " + maerchen.getAnzahlVorstellungen() + " Vorstellungen", Field.KUCHEN_VORSTELLUNG);
+            }
+        } catch (NumberFormatException ignore) {
+            // wird im nachfolgenden Methoden-Aufruf behandelt
+        }
+        kuchenVorstellungModelAttribute.setNewValue(false, kuchenVorstellung, isBulkUpdate());
+    }
+
+    private final StringModelAttribute zusatzattributMaerchenModelAttribute = new StringModelAttribute(
+            this,
+            Field.ZUSATZATTRIBUT_MAERCHEN, 1, 30,
+            new AttributeAccessor<String>() {
+                @Override
+                public String getValue() {
+                    return zusatzattributMaerchen;
+                }
+
+                @Override
+                public void setValue(String value) {
+                    zusatzattributMaerchen = value;
+                }
+            }
+    );
+
+    @Override
+    public String getZusatzattributMaerchen() {
+        return zusatzattributMaerchenModelAttribute.getValue();
+    }
+
+    @Override
+    public void setZusatzattributMaerchen(String zusatzattributMaerchen) throws SvmValidationException {
+        zusatzattributMaerchenModelAttribute.setNewValue(false, zusatzattributMaerchen, isBulkUpdate());
+    }
+
+    @Override
+    public boolean isMaerchenFuerSucheBeruecksichtigen() {
+        return maerchenFuerSucheBeruecksichtigen;
+    }
+
+    @Override
+    public void setMaerchenFuerSucheBeruecksichtigen(boolean isSelected) {
+        boolean oldValue = maerchenFuerSucheBeruecksichtigen;
+        maerchenFuerSucheBeruecksichtigen = isSelected;
+        firePropertyChange(Field.MAERCHEN_FUER_SUCHE_BERUECKSICHTIGEN, oldValue, maerchenFuerSucheBeruecksichtigen);
+    }
+   
     @Override
     public boolean searchForSpecificKurs() {
         return (wochentag != null && wochentag != Wochentag.ALLE) && zeitBeginn != null && (lehrkraft != null && !lehrkraft.equals(LEHRKRAFT_ALLE));
@@ -387,16 +532,104 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
-    public boolean isCompleted() {
-        return true;
+    public ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel) {
+        List<ElternmithilfeCode> codesList = svmModel.getElternmithilfeCodesAll();
+        // ElternmithilfeCode alle auch erlaubt
+        codesList.add(0, ELTERNMITHILFE_CODE_ALLE);
+        return codesList.toArray(new ElternmithilfeCode[codesList.size()]);
     }
 
     @Override
-    public void doValidate() {
+    public String getSchuljahrInit(SvmModel svmModel) {
+        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
+        findSemesterForCalendarCommand.execute();
+        Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
+        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
+        // Innerhalb Semester
+        if (currentSemester != null) {
+            return currentSemester.getSchuljahr();
+        }
+        // Ferien zwischen 2 Semestern
+        if (nextSemester != null) {
+            return nextSemester.getSchuljahr();
+        }
+        // Kein passendes Semester erfasst
+        Calendar today = new GregorianCalendar();
+        int schuljahr1;
+        if (today.get(Calendar.MONTH) <= Calendar.JUNE) {
+            schuljahr1 = today.get(Calendar.YEAR) - 1;
+        } else {
+            schuljahr1 = today.get(Calendar.YEAR);
+        }
+        int schuljahr2 = schuljahr1 + 1;
+        return schuljahr1 + "/" + schuljahr2;
+    }
+
+    @Override
+    public Semesterbezeichnung getSemesterbezeichungInit(SvmModel svmModel) {
+        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
+        findSemesterForCalendarCommand.execute();
+        Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
+        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
+        // Innerhalb Semester
+        if (currentSemester != null) {
+            return currentSemester.getSemesterbezeichnung();
+        }
+        // Ferien zwischen 2 Semestern
+        if (nextSemester != null) {
+            return nextSemester.getSemesterbezeichnung();
+        }
+        // Kein passendes Semester erfasst
+        Calendar today = new GregorianCalendar();
+        if (today.get(Calendar.MONTH) >= Calendar.FEBRUARY && today.get(Calendar.MONTH) <= Calendar.JUNE) {
+            return Semesterbezeichnung.ZWEITES_SEMESTER;
+        } else {
+            return Semesterbezeichnung.ERSTES_SEMESTER;
+        }
+    }
+
+    @Override
+    public Maerchen getMaerchenInit(SvmModel svmModel) {
+        Calendar today = new GregorianCalendar();
+        int schuljahr1;
+        if (today.get(Calendar.MONTH) <= Calendar.JANUARY) {
+            schuljahr1 = today.get(Calendar.YEAR) - 1;
+        } else {
+            schuljahr1 = today.get(Calendar.YEAR);
+        }
+        int schuljahr2 = schuljahr1 + 1;
+        String anzuzeigendesSchuljahr = schuljahr1 + "/" + schuljahr2;
+        List<Maerchen> erfassteMaerchen = svmModel.getMaerchensAll();
+        for (Maerchen maerchen : erfassteMaerchen) {
+            if (maerchen.getSchuljahr().equals(anzuzeigendesSchuljahr)) {
+                return maerchen;
+            }
+        }
+        // Neustes erfasstes Märchen, falls für gewünschtes Schuljahr noch kein Märchen erfasst
+        if (svmModel.getMaerchensAll().size() > 1) {
+            return erfassteMaerchen.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isCompleted() {
+        return !(maerchenFuerSucheBeruecksichtigen && isSetKuchenVorstellung() && kuchenVorstellung > maerchen.getAnzahlVorstellungen());
+    }
+
+    @Override
+    public void doValidate() throws SvmValidationException {
+        if (maerchenFuerSucheBeruecksichtigen && isSetKuchenVorstellung() && kuchenVorstellung > maerchen.getAnzahlVorstellungen()) {
+            throw new SvmValidationException(2032, "Das Märchen hat nur " + maerchen.getAnzahlVorstellungen() + " Vorstellungen", Field.KUCHEN_VORSTELLUNG);
+        }
     }
 
     @Override
     public boolean isAdresseRequired() {
         return false;
+    }
+
+    private boolean isSetKuchenVorstellung() {
+        return kuchenVorstellung != null;
     }
 }

@@ -1,11 +1,10 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
-import ch.metzenthin.svm.persistence.entities.PersonSuchen;
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.persistence.entities.*;
 
 import java.sql.Time;
 import java.util.Calendar;
@@ -17,6 +16,7 @@ public interface SchuelerSuchenModel extends PersonModel {
 
     Lehrkraft LEHRKRAFT_ALLE = new Lehrkraft();
     SchuelerCode SCHUELER_CODE_ALLE = new SchuelerCode();
+    ElternmithilfeCode ELTERNMITHILFE_CODE_ALLE = new ElternmithilfeCode();
 
     enum RolleSelected {
         SCHUELER,
@@ -52,14 +52,21 @@ public interface SchuelerSuchenModel extends PersonModel {
     AnmeldestatusSelected getAnmeldestatus();
     DispensationSelected getDispensation();
     Calendar getStichtag();
+    SchuelerCode getSchuelerCode();
     String getSchuljahrKurs();
     Semesterbezeichnung getSemesterbezeichnung();
     Wochentag getWochentag();
     Time getZeitBeginn();
     Lehrkraft getLehrkraft();
     boolean isKursFuerSucheBeruecksichtigen();
+    Maerchen getMaerchen();
+    Gruppe getGruppe();
+    String getRollen();
+    ElternmithilfeCode getElternmithilfeCode();
+    Integer getKuchenVorstellung();
+    String getZusatzattributMaerchen();
+    boolean isMaerchenFuerSucheBeruecksichtigen();
     PersonSuchen getPerson();
-    SchuelerCode getSchuelerCode();
 
     void setGeburtsdatumSuchperiode(String geburtsdatumSuchperiode) throws SvmValidationException;
     void setGeschlecht(GeschlechtSelected geschlecht);
@@ -74,6 +81,13 @@ public interface SchuelerSuchenModel extends PersonModel {
     void setLehrkraft(Lehrkraft lehrkraft);
     void setKursFuerSucheBeruecksichtigen(boolean isSelected);
     void setSchuelerCode(SchuelerCode schuelerCode);
+    void setMaerchen(Maerchen maerchen);
+    void setGruppe(Gruppe gruppe);
+    void setRollen(String rollen) throws SvmValidationException;
+    void setElternmithilfeCode(ElternmithilfeCode elternmithilfeCode);
+    void setKuchenVorstellung(String kuchenVorstellung) throws SvmValidationException;
+    void setZusatzattributMaerchen(String zusatzattributMaerchen) throws SvmValidationException;
+    void setMaerchenFuerSucheBeruecksichtigen(boolean isSelected);
 
     boolean searchForSpecificKurs();
     boolean checkIfKurseExist();
@@ -81,4 +95,8 @@ public interface SchuelerSuchenModel extends PersonModel {
     void invalidateGeburtsdatumSuchperiode();
     Lehrkraft[] getSelectableLehrkraefte(SvmModel svmModel);
     SchuelerCode[] getSelectableSchuelerCodes(SvmModel svmModel);
+    ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel);
+    String getSchuljahrInit(SvmModel svmModel);
+    Semesterbezeichnung getSemesterbezeichungInit(SvmModel svmModel);
+    Maerchen getMaerchenInit(SvmModel svmModel);
 }

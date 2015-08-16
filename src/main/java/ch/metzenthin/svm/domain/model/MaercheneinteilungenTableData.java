@@ -18,7 +18,7 @@ public class MaercheneinteilungenTableData {
 
     private static final Field[] COLUMNS = {Field.MAERCHEN, Field.GRUPPE, Field.ROLLE1, Field.BILDER_ROLLE1, Field.ROLLE2,
             Field.BILDER_ROLLE2, Field.ROLLE3, Field.BILDER_ROLLE3, Field.ELTERNMITHILFE, Field.ELTERNMITHILFE_CODE,
-            Field.KUCHEN_VORSTELLUNGEN, Field.ZUSATZATTRIBUT, Field.BEMERKUNGEN};
+            Field.KUCHEN_VORSTELLUNGEN, Field.ZUSATZATTRIBUT_MAERCHEN, Field.BEMERKUNGEN};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -65,7 +65,7 @@ public class MaercheneinteilungenTableData {
             case KUCHEN_VORSTELLUNGEN:
                 value = maercheneinteilung.getKuchenVorstellungenAsString();
                 break;
-            case ZUSATZATTRIBUT:
+            case ZUSATZATTRIBUT_MAERCHEN:
                 value = maercheneinteilung.getZusatzattribut();
                 break;
             case BEMERKUNGEN:

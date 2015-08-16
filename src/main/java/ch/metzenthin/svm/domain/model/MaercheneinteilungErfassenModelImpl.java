@@ -390,7 +390,7 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
 
     private final StringModelAttribute zusatzattributModelAttribute = new StringModelAttribute(
             this,
-            Field.ZUSATZATTRIBUT, 2, 30,
+            Field.ZUSATZATTRIBUT_MAERCHEN, 1, 30,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {

@@ -9,7 +9,7 @@ public class Schuljahre {
     public static final int SCHULJAHR_VALID_MAX = 2049;
 
     public String[] getSchuljahre() {
-        String[] schuljahre = new String[SCHULJAHR_VALID_MAX - SCHULJAHR_VALID_MIN + 1];
+        String[] schuljahre = new String[SCHULJAHR_VALID_MAX - SCHULJAHR_VALID_MIN];
         for (int i = 0; i < SCHULJAHR_VALID_MAX - SCHULJAHR_VALID_MIN; i++) {
             int schuljahr1 = SCHULJAHR_VALID_MIN + i;
             int schuljahr2 = schuljahr1 + 1;

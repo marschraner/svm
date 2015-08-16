@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
@@ -32,13 +33,20 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     private Calendar geburtsdatumSuchperiodeEnde;
     private String geburtsdatumSuchperiodeDateFormatString;
     private Calendar stichtag;
+    private SchuelerCode schuelerCode;
     private String schuljahrKurs;
     private Semesterbezeichnung semesterbezeichnung;
     private Wochentag wochentag;
     private Time zeitBeginn;
     private Lehrkraft lehrkraft;
     private boolean kursFuerSucheBeruecksichtigen;
-    private SchuelerCode schuelerCode;
+    private Maerchen maerchen;
+    private Gruppe gruppe;
+    private String rollen;
+    private ElternmithilfeCode elternmithilfeCode;
+    private Integer kuchenVorstellung;
+    private String zusatzattributMaerchen;
+    private boolean maerchenFuerSucheBeruecksichtigen;
     private StringBuilder selectStatementSb;
     private TypedQuery<Schueler> typedQuery;
 
@@ -56,13 +64,20 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         this.geburtsdatumSuchperiodeEnde = schuelerSuchenModel.getGeburtsdatumSuchperiodeEnde();
         this.geburtsdatumSuchperiodeDateFormatString = schuelerSuchenModel.getGeburtsdatumSuchperiodeDateFormatString();
         this.stichtag = schuelerSuchenModel.getStichtag();
+        this.schuelerCode = schuelerSuchenModel.getSchuelerCode();
         this.schuljahrKurs = schuelerSuchenModel.getSchuljahrKurs();
         this.semesterbezeichnung = schuelerSuchenModel.getSemesterbezeichnung();
         this.wochentag = schuelerSuchenModel.getWochentag();
         this.zeitBeginn = schuelerSuchenModel.getZeitBeginn();
         this.lehrkraft = schuelerSuchenModel.getLehrkraft();
         this.kursFuerSucheBeruecksichtigen = schuelerSuchenModel.isKursFuerSucheBeruecksichtigen();
-        this.schuelerCode = schuelerSuchenModel.getSchuelerCode();
+        this.maerchen = schuelerSuchenModel.getMaerchen();
+        this.gruppe = schuelerSuchenModel.getGruppe();
+        this.rollen = schuelerSuchenModel.getRollen();
+        this.elternmithilfeCode = schuelerSuchenModel.getElternmithilfeCode();
+        this.kuchenVorstellung = schuelerSuchenModel.getKuchenVorstellung();
+        this.zusatzattributMaerchen = schuelerSuchenModel.getZusatzattributMaerchen();
+        this.maerchenFuerSucheBeruecksichtigen = schuelerSuchenModel.isMaerchenFuerSucheBeruecksichtigen();
     }
 
     @Override
@@ -71,8 +86,9 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         selectStatementSb = new StringBuilder("select distinct s from Schueler s");
         
         // Inner-Joins erzeugen
-        createJoinKurs();
         createJoinSchuelerCode();
+        createJoinKurs();
+        createJoinMaerchen();
 
         // Where-Selektionen erzeugen
         selectStatementSb.append(" where");
@@ -81,8 +97,9 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         createWhereSelectionsAnmeldestatus();
         createWhereSelectionsDispensation();
         createWhereSelectionsGeschlecht();
-        createWhereSelectionsKurs();
         createWhereSelectionsSchuelerCode();
+        createWhereSelectionsKurs();
+        createWhereSelectionsMaerchen();
 
         // Letztes " and" löschen
         if (selectStatementSb.substring(selectStatementSb.length() - 4).equals(" and")) {
@@ -105,10 +122,17 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         setParameterStammdatenOhneGeburtsdatumSuchperiode();
         setParameterGeburtsdatumSuchperiode();
         setParameterStichtag();
-        setParameterKurs();
         setParameterCodeKuerzel();
+        setParameterKurs();
+        setParameterMaerchen();
 
         schuelerFound = typedQuery.getResultList();
+    }
+
+    private void createJoinSchuelerCode() {
+        if (schuelerCode != SchuelerSuchenModel.SCHUELER_CODE_ALLE) {
+            selectStatementSb.append(" join s.schuelerCodes cod");
+        }
     }
 
     private void createJoinKurs() {
@@ -120,9 +144,9 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
-    private void createJoinSchuelerCode() {
-        if (schuelerCode != SchuelerSuchenModel.SCHUELER_CODE_ALLE) {
-            selectStatementSb.append(" join s.schuelerCodes cod");
+    private void createJoinMaerchen() {
+        if (maerchenFuerSucheBeruecksichtigen) {
+            selectStatementSb.append(" join s.maercheneinteilungen mae");
         }
     }
 
@@ -306,6 +330,12 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
+    private void createWhereSelectionsSchuelerCode() {
+        if (schuelerCode != SchuelerSuchenModel.SCHUELER_CODE_ALLE) {
+            selectStatementSb.append(" cod.kuerzel = :codeKuerzel and");
+        }
+    }
+
     private void createWhereSelectionsKurs() {
         if (kursFuerSucheBeruecksichtigen) {
             selectStatementSb.append(" kurs.semester.schuljahr = :schuljahrKurs and");
@@ -322,9 +352,70 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
-    private void createWhereSelectionsSchuelerCode() {
-        if (schuelerCode != SchuelerSuchenModel.SCHUELER_CODE_ALLE) {
-            selectStatementSb.append(" cod.kuerzel = :codeKuerzel and");
+    private void createWhereSelectionsMaerchen() {
+        if (maerchenFuerSucheBeruecksichtigen) {
+            selectStatementSb.append(" mae.maerchen.schuljahr = :schuljahrMaerchen and");
+            selectStatementSb.append(" mae.maerchen.bezeichnung = :maerchenbezeichnung and");
+            if (gruppe != Gruppe.ALLE) {
+                selectStatementSb.append(" mae.gruppe = :gruppe and");
+            }
+            if (checkNotEmpty(rollen)) {
+                selectStatementSb.append(" (");
+                for (int i = 0; i < rollen.split("[,;]").length; i ++) {
+                    selectStatementSb.append(" lower(trim(mae.rolle1)) = :maerchenrolleEq").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle1)) like :maerchenrolleL1").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle1)) like :maerchenrolleL2").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle1)) like :maerchenrolleL3").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle2)) = :maerchenrolleEq").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle2)) like :maerchenrolleL1").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle2)) like :maerchenrolleL2").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle2)) like :maerchenrolleL3").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle3)) = :maerchenrolleEq").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle3)) like :maerchenrolleL1").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle3)) like :maerchenrolleL2").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle3)) like :maerchenrolleL3").append(i).append(" or");
+                }
+                // letztes or löschen
+                selectStatementSb.setLength(selectStatementSb.length() - 3);
+                selectStatementSb.append(")");
+            }
+            if (elternmithilfeCode != SchuelerSuchenModel.ELTERNMITHILFE_CODE_ALLE) {
+                selectStatementSb.append(" mae.elternmithilfeCode = :elternmithilfeCode and");
+            }
+            if (kuchenVorstellung != null) {
+                switch (kuchenVorstellung) {
+                    case (1):
+                        selectStatementSb.append(" mae.kuchenVorstellung1 = 1 and");
+                        break;
+                    case (2):
+                        selectStatementSb.append(" mae.kuchenVorstellung2 = 1 and");
+                        break;
+                    case (3):
+                        selectStatementSb.append(" mae.kuchenVorstellung3 = 1 and");
+                        break;
+                    case (4):
+                        selectStatementSb.append(" mae.kuchenVorstellung4 = 1 and");
+                        break;
+                    case (5):
+                        selectStatementSb.append(" mae.kuchenVorstellung5 = 1 and");
+                        break;
+                    case (6):
+                        selectStatementSb.append(" mae.kuchenVorstellung6 = 1 and");
+                        break;
+                    case (7):
+                        selectStatementSb.append(" mae.kuchenVorstellung7 = 1 and");
+                        break;
+                    case (8):
+                        selectStatementSb.append(" mae.kuchenVorstellung8 = 1 and");
+                        break;
+                    case (9):
+                        selectStatementSb.append(" mae.kuchenVorstellung9 = 1 and");
+                        break;
+                }
+            }
+            if (checkNotEmpty(zusatzattributMaerchen)) {
+                selectStatementSb.append(" mae.zusatzattribut = :zusatzattributMaerchen and");
+            }
         }
     }
 
@@ -386,6 +477,12 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
+    private void setParameterCodeKuerzel() {
+        if (selectStatementSb.toString().contains(":codeKuerzel")) {
+            typedQuery.setParameter("codeKuerzel", schuelerCode.getKuerzel());
+        }
+    }
+
     private void setParameterKurs() {
         if (selectStatementSb.toString().contains(":schuljahrKurs")) {
             typedQuery.setParameter("schuljahrKurs", schuljahrKurs);
@@ -410,9 +507,32 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
-    private void setParameterCodeKuerzel() {
-        if (selectStatementSb.toString().contains(":codeKuerzel")) {
-            typedQuery.setParameter("codeKuerzel", schuelerCode.getKuerzel());
+    private void setParameterMaerchen() {
+        if (selectStatementSb.toString().contains(":schuljahrMaerchen")) {
+            typedQuery.setParameter("schuljahrMaerchen", maerchen.getSchuljahr());
+        }
+        if (selectStatementSb.toString().contains(":maerchenbezeichnung")) {
+            typedQuery.setParameter("maerchenbezeichnung", maerchen.getBezeichnung());
+        }
+        if (selectStatementSb.toString().contains(":gruppe")) {
+            typedQuery.setParameter("gruppe", gruppe);
+        }
+        if (selectStatementSb.toString().contains(":maerchenrolle")) {
+            String[] rollenSplitted = rollen.split("[,;]");
+            for (int i = 0; i < rollenSplitted.length; i++) {
+                String rolle = rollenSplitted[i].trim().toLowerCase();
+                typedQuery.setParameter("maerchenrolleEq" + i, rolle);
+                // Like soll nur eigenständige Wörter finden
+                typedQuery.setParameter("maerchenrolleL1" + i, rolle + " %");
+                typedQuery.setParameter("maerchenrolleL2" + i, "% " + rolle);
+                typedQuery.setParameter("maerchenrolleL3" + i, "% " + rolle + " %");
+            }
+        }
+        if (selectStatementSb.toString().contains(":elternmithilfeCode")) {
+            typedQuery.setParameter("elternmithilfeCode", elternmithilfeCode);
+        }
+        if (selectStatementSb.toString().contains(":zusatzattributMaerchen")) {
+            typedQuery.setParameter("zusatzattributMaerchen", zusatzattributMaerchen);
         }
     }
 

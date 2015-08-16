@@ -1,18 +1,16 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.dataTypes.*;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
+import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
-import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
@@ -21,9 +19,9 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,8 +40,11 @@ public class SchuelerSuchenController extends PersonController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private JTextField txtGeburtsdatumSuchperiode;
-    private JTextField txtZeitBeginn;
     private JTextField txtStichtag;
+    private JTextField txtZeitBeginn;
+    private JTextField txtKuchenVorstellung;
+    private JTextField txtZusatzattributMaerchen;
+    private JTextArea txtAreaRollen;
     private JRadioButton radioBtnSchueler;
     private JRadioButton radioBtnEltern;
     private JRadioButton radioBtnRechnungsempfaenger;
@@ -58,19 +59,25 @@ public class SchuelerSuchenController extends PersonController {
     private JRadioButton radioBtnMaennlich;
     private JRadioButton radioBtnGeschlechtAlle;
     private JSpinner spinnerSchuljahreKurs;
+    private JSpinner spinnerMaerchen;
     private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
     private JComboBox<Wochentag> comboBoxWochentag;
     private JComboBox<Lehrkraft> comboBoxLehrkraft;
     private JComboBox<SchuelerCode> comboBoxSchuelerCode;
+    private JComboBox<Gruppe> comboBoxGruppe;
+    private JComboBox<ElternmithilfeCode> comboBoxElternmithilfeCode;
     private JCheckBox checkBoxKursFuerSucheBeruecksichtigen;
+    private JCheckBox checkBoxMaerchenFuerSucheBeruecksichtigen;
     private JLabel errLblGeburtsdatumSuchperiode;
     private JLabel errLblStichtag;
     private JLabel errLblZeitBeginn;
+    private JLabel errLblRollen;
+    private JLabel errLblKuchenVorstellung;
+    private JLabel errLblZusatzattributMaerchen;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
     private ActionListener nextPanelListener;
-
     private final SvmContext svmContext;
     private SchuelerSuchenModel schuelerSuchenModel;
     private ActionListener zurueckListener;
@@ -198,43 +205,43 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
+    public void setComboBoxSchuelerCode(JComboBox<SchuelerCode> comboBoxCode) {
+        this.comboBoxSchuelerCode = comboBoxCode;
+        SchuelerCode[] selectableSchuelerCodes = schuelerSuchenModel.getSelectableSchuelerCodes(svmContext.getSvmModel());
+        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableSchuelerCodes));
+        // Model initialisieren mit erstem ComboBox-Wert
+        schuelerSuchenModel.setSchuelerCode(selectableSchuelerCodes[0]);
+        this.comboBoxSchuelerCode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onSchuelerCodeSelected();
+            }
+        });
+    }
+
+    private void onSchuelerCodeSelected() {
+        LOGGER.trace("SchuelerSuchenController Event SchuelerCode selected=" + comboBoxSchuelerCode.getSelectedItem());
+        setModelSchuelerCode();
+    }
+
+    private void setModelSchuelerCode() {
+        schuelerSuchenModel.setSchuelerCode((SchuelerCode) comboBoxSchuelerCode.getSelectedItem());
+    }
+
     public void setSpinnerSchuljahreKurs(JSpinner spinnerSchuljahreKurs) {
         this.spinnerSchuljahreKurs = spinnerSchuljahreKurs;
+        String[] schuljahre = new Schuljahre().getSchuljahre();
+        SpinnerModel spinnerModelSchuljahre = new SpinnerListModel(schuljahre);
+        spinnerSchuljahreKurs.setModel(spinnerModelSchuljahre);
         spinnerSchuljahreKurs.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 onSchuljahrKursSelected();
             }
         });
-        initSchuljahrKurs();
-    }
-
-    private void initSchuljahrKurs() {
-        String schuljahr;
-        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmContext.getSvmModel().getSemestersAll());
-        findSemesterForCalendarCommand.execute();
-        Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
-        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
-        if (currentSemester != null) {
-            // Innerhalb Semester
-            schuljahr = currentSemester.getSchuljahr();
-        } else if (nextSemester != null) {
-            // Ferien zwischen 2 Semestern
-            schuljahr = nextSemester.getSchuljahr();
-        } else {
-            // Kein passendes Semester erfasst
-            Calendar today = new GregorianCalendar();
-            int schuljahr1;
-            if (today.get(Calendar.MONTH) <= Calendar.JUNE) {
-                schuljahr1 = today.get(Calendar.YEAR) - 1;
-            } else {
-                schuljahr1 = today.get(Calendar.YEAR);
-            }
-            int schuljahr2 = schuljahr1 + 1;
-            schuljahr = schuljahr1 + "/" + schuljahr2;
-        }
+        String schuljahrInit = schuelerSuchenModel.getSchuljahrInit(svmContext.getSvmModel());
         try {
-            schuelerSuchenModel.setSchuljahrKurs(schuljahr);
+            schuelerSuchenModel.setSchuljahrKurs(schuljahrInit);
         } catch (SvmValidationException ignore) {
         }
     }
@@ -274,31 +281,8 @@ public class SchuelerSuchenController extends PersonController {
                 onSemesterbezeichnungSelected();
             }
         });
-        initSemesterbezeichnung();
-    }
-
-    private void initSemesterbezeichnung() {
-        Semesterbezeichnung semesterbezeichnung;
-        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmContext.getSvmModel().getSemestersAll());
-        findSemesterForCalendarCommand.execute();
-        Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
-        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
-        if (currentSemester != null) {
-            // Innerhalb Semester
-            semesterbezeichnung = currentSemester.getSemesterbezeichnung();
-        } else if (nextSemester != null) {
-            // Ferien zwischen 2 Semestern
-            semesterbezeichnung = nextSemester.getSemesterbezeichnung();
-        } else {
-            // Kein passendes Semester erfasst
-            Calendar today = new GregorianCalendar();
-            if (today.get(Calendar.MONTH) >= Calendar.FEBRUARY && today.get(Calendar.MONTH) <= Calendar.JUNE) {
-                semesterbezeichnung = Semesterbezeichnung.ZWEITES_SEMESTER;
-            } else {
-                semesterbezeichnung = Semesterbezeichnung.ERSTES_SEMESTER;
-            }
-        }
-        schuelerSuchenModel.setSemesterbezeichnung(semesterbezeichnung);
+        Semesterbezeichnung semesterbezeichnungInit = schuelerSuchenModel.getSemesterbezeichungInit(svmContext.getSvmModel());
+        schuelerSuchenModel.setSemesterbezeichnung(semesterbezeichnungInit);
     }
 
     private void onSemesterbezeichnungSelected() {
@@ -351,22 +335,22 @@ public class SchuelerSuchenController extends PersonController {
         this.txtZeitBeginn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onZeitBeginnEvent(true);
+                onZeitBeginnEvent();
             }
         });
         this.txtZeitBeginn.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                onZeitBeginnEvent(false);
+                onZeitBeginnEvent();
             }
         });
     }
 
-    private void onZeitBeginnEvent(boolean showRequiredErrMsg) {
+    private void onZeitBeginnEvent() {
         LOGGER.trace("schuelerSuchenController Event ZeitBeginn");
         boolean equalFieldAndModelValue = equalsNullSafe(txtZeitBeginn.getText(), schuelerSuchenModel.getZeitBeginn());
         try {
-            setModelZeitBeginn(showRequiredErrMsg);
+            setModelZeitBeginn();
         } catch (SvmValidationException e) {
             return;
         }
@@ -377,19 +361,10 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
-    private void setModelZeitBeginn(boolean showRequiredErrMsg) throws SvmValidationException {
+    private void setModelZeitBeginn() throws SvmValidationException {
         makeErrorLabelInvisible(Field.ZEIT_BEGINN);
         try {
             schuelerSuchenModel.setZeitBeginn(txtZeitBeginn.getText());
-        } catch (SvmRequiredException e) {
-            LOGGER.trace("SchuelerSuchenController setModelZeitBeginn RequiredException=" + e.getMessage());
-            if (isModelValidationMode() || !showRequiredErrMsg) {
-                txtZeitBeginn.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
-            } else {
-                showErrMsg(e);
-            }
-            throw e;
         } catch (SvmValidationException e) {
             LOGGER.trace("SchuelerSuchenController setModelZeitBeginn Exception=" + e.getMessage());
             showErrMsg(e);
@@ -452,27 +427,237 @@ public class SchuelerSuchenController extends PersonController {
         schuelerSuchenModel.setKursFuerSucheBeruecksichtigen(checkBoxKursFuerSucheBeruecksichtigen.isSelected());
     }
 
-    public void setComboBoxSchuelerCode(JComboBox<SchuelerCode> comboBoxCode) {
-        this.comboBoxSchuelerCode = comboBoxCode;
-        SchuelerCode[] selectableSchuelerCodes = schuelerSuchenModel.getSelectableSchuelerCodes(svmContext.getSvmModel());
-        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableSchuelerCodes));
-        // Model initialisieren mit erstem ComboBox-Wert
-        schuelerSuchenModel.setSchuelerCode(selectableSchuelerCodes[0]);
-        this.comboBoxSchuelerCode.addActionListener(new ActionListener() {
+    public void setSpinnerMaerchen(JSpinner spinnerMaerchen) {
+        this.spinnerMaerchen = spinnerMaerchen;
+        java.util.List<Maerchen> maerchenList = svmContext.getSvmModel().getMaerchensAll();
+        if (maerchenList.isEmpty()) {
+            return;
+        }
+        Maerchen[] maerchens = maerchenList.toArray(new Maerchen[maerchenList.size()]);
+        SpinnerModel spinnerModelMaerchen = new SpinnerListModel(maerchens);
+        spinnerMaerchen.setModel(spinnerModelMaerchen);
+        spinnerMaerchen.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                onMaerchenSelected();
+            }
+        });
+        Maerchen maerchenInit = schuelerSuchenModel.getMaerchenInit(svmContext.getSvmModel());
+        schuelerSuchenModel.setMaerchen(maerchenInit);
+    }
+
+    private void onMaerchenSelected() {
+        LOGGER.trace("KurseSemesterwahlController Event Maerchen selected =" + spinnerMaerchen.getValue());
+        boolean equalFieldAndModelValue = equalsNullSafe(spinnerMaerchen.getValue(), schuelerSuchenModel.getMaerchen());
+        setModelMaerchen();
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelMaerchen() {
+        makeErrorLabelInvisible(Field.MAERCHEN);
+        schuelerSuchenModel.setMaerchen((Maerchen) spinnerMaerchen.getValue());
+    }
+
+    public void setComboBoxGruppe(JComboBox<Gruppe> comboBoxGruppe) {
+        this.comboBoxGruppe = comboBoxGruppe;
+        comboBoxGruppe.setModel(new DefaultComboBoxModel<>(Gruppe.values()));
+        comboBoxGruppe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onCodeSelected();
+                onGruppeSelected();
+            }
+        });
+        // SchuelerCode in Model initialisieren mit erstem ComboBox-Wert
+        schuelerSuchenModel.setGruppe(Gruppe.values()[0]);
+    }
+
+    private void onGruppeSelected() {
+        LOGGER.trace("SchuelerSuchenController Event Gruppe selected=" + comboBoxGruppe.getSelectedItem());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxGruppe.getSelectedItem(), schuelerSuchenModel.getGruppe());
+        setModelGruppe();
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelGruppe() {
+        makeErrorLabelInvisible(Field.GRUPPE);
+        schuelerSuchenModel.setGruppe((Gruppe) comboBoxGruppe.getSelectedItem());
+    }
+
+    public void setTxtAreaRollen(JTextArea txtAreaRollen) {
+        this.txtAreaRollen = txtAreaRollen;
+        this.txtAreaRollen.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onRollenEvent();
+            }
+        });
+        this.txtAreaRollen.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+        this.txtAreaRollen.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+    }
+
+    private void onRollenEvent() {
+        LOGGER.trace("schuelerSuchenController Event Rollen");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtAreaRollen.getText(), schuelerSuchenModel.getRollen());
+        try {
+            setModelRollen();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelRollen() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.ROLLEN);
+        try {
+            schuelerSuchenModel.setRollen(txtAreaRollen.getText());
+        } catch (SvmValidationException e) {
+            LOGGER.trace("SchuelerSuchenController setModelRollen Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
+    public void setComboBoxElternmithilfeCode(JComboBox<ElternmithilfeCode> comboBoxCode) {
+        this.comboBoxElternmithilfeCode = comboBoxCode;
+        ElternmithilfeCode[] selectableElternmithilfeCodes = schuelerSuchenModel.getSelectableElternmithilfeCodes(svmContext.getSvmModel());
+        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableElternmithilfeCodes));
+        // Model initialisieren mit erstem ComboBox-Wert
+        schuelerSuchenModel.setElternmithilfeCode(selectableElternmithilfeCodes[0]);
+        this.comboBoxElternmithilfeCode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onElternmithilfeCodeSelected();
             }
         });
     }
 
-    private void onCodeSelected() {
-        LOGGER.trace("SchuelerSuchenController Event SchuelerCode selected=" + comboBoxSchuelerCode.getSelectedItem());
-        setModelCombobox();
+    private void onElternmithilfeCodeSelected() {
+        LOGGER.trace("ElternmithilfeSuchenController Event ElternmithilfeCode selected=" + comboBoxElternmithilfeCode.getSelectedItem());
+        setModelElternmithilfeCode();
     }
 
-    private void setModelCombobox() {
-        schuelerSuchenModel.setSchuelerCode((SchuelerCode) comboBoxSchuelerCode.getSelectedItem());
+    private void setModelElternmithilfeCode() {
+        schuelerSuchenModel.setElternmithilfeCode((ElternmithilfeCode) comboBoxElternmithilfeCode.getSelectedItem());
+    }
+
+    public void setTxtKuchenVorstellung(JTextField txtKuchenVorstellung) {
+        this.txtKuchenVorstellung = txtKuchenVorstellung;
+        this.txtKuchenVorstellung.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onKuchenVorstellungEvent();
+            }
+        });
+        this.txtKuchenVorstellung.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onKuchenVorstellungEvent();
+            }
+        });
+    }
+
+    private void onKuchenVorstellungEvent() {
+        LOGGER.trace("schuelerSuchenController Event KuchenVorstellung");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtKuchenVorstellung.getText(), schuelerSuchenModel.getKuchenVorstellung());
+        try {
+            setModelKuchenVorstellung();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelKuchenVorstellung() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.KUCHEN_VORSTELLUNG);
+        try {
+            schuelerSuchenModel.setKuchenVorstellung(txtKuchenVorstellung.getText());
+        } catch (SvmValidationException e) {
+            LOGGER.trace("SchuelerSuchenController setModelKuchenVorstellung Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
+    public void setTxtZusatzattributMaerchen(JTextField txtZusatzattributMaerchen) {
+        this.txtZusatzattributMaerchen = txtZusatzattributMaerchen;
+        this.txtZusatzattributMaerchen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onZusatzattributMaerchenEvent();
+            }
+        });
+        this.txtZusatzattributMaerchen.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onZusatzattributMaerchenEvent();
+            }
+        });
+    }
+
+    private void onZusatzattributMaerchenEvent() {
+        LOGGER.trace("schuelerSuchenController Event ZusatzattributMaerchen");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtZusatzattributMaerchen.getText(), schuelerSuchenModel.getZusatzattributMaerchen());
+        try {
+            setModelZusatzattributMaerchen();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelZusatzattributMaerchen() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.ZUSATZATTRIBUT_MAERCHEN);
+        try {
+            schuelerSuchenModel.setZusatzattributMaerchen(txtZusatzattributMaerchen.getText());
+        } catch (SvmValidationException e) {
+            LOGGER.trace("SchuelerSuchenController setModelZusatzattributMaerchen Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
+    public void setCheckBoxMaerchenFuerSucheBeruecksichtigen(JCheckBox checkBoxMaerchenFuerSucheBeruecksichtigen) {
+        this.checkBoxMaerchenFuerSucheBeruecksichtigen = checkBoxMaerchenFuerSucheBeruecksichtigen;
+        if (svmContext.getSvmModel().getMaerchensAll().isEmpty()) {
+            checkBoxMaerchenFuerSucheBeruecksichtigen.setEnabled(false);
+        }
+        this.checkBoxMaerchenFuerSucheBeruecksichtigen.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                onMaerchenFuerSucheBeruecksichtigenEvent();
+            }
+        });
+        // Initialisierung
+        schuelerSuchenModel.setMaerchenFuerSucheBeruecksichtigen(false);
+    }
+
+    private void onMaerchenFuerSucheBeruecksichtigenEvent() {
+        LOGGER.trace("SchuelerSuchenController Event MaerchenFuerSucheBeruecksichtigen. Selected=" + checkBoxMaerchenFuerSucheBeruecksichtigen.isSelected());
+        setModelMaerchenFuerSucheBeruecksichtigen();
+    }
+
+    private void setModelMaerchenFuerSucheBeruecksichtigen() {
+        schuelerSuchenModel.setMaerchenFuerSucheBeruecksichtigen(checkBoxMaerchenFuerSucheBeruecksichtigen.isSelected());
     }
 
     public void setErrLblStichtag(JLabel errLblStichtag) {
@@ -485,6 +670,18 @@ public class SchuelerSuchenController extends PersonController {
 
     public void setErrLblZeitBeginn(JLabel errLblZeitBeginn) {
         this.errLblZeitBeginn = errLblZeitBeginn;
+    }
+
+    public void setErrLblRollen(JLabel errLblRollen) {
+        this.errLblRollen = errLblRollen;
+    }
+
+    public void setErrLblKuchenVorstellung(JLabel errLblKuchenVorstellung) {
+        this.errLblKuchenVorstellung = errLblKuchenVorstellung;
+    }
+
+    public void setErrLblZusatzattributMaerchen(JLabel errLblZusatzattributMaerchen) {
+        this.errLblZusatzattributMaerchen = errLblZusatzattributMaerchen;
     }
 
     public void setRadioBtnGroupRolle(JRadioButton radioBtnSchueler, JRadioButton radioBtnEltern, JRadioButton radioBtnRechnungsempfaenger, JRadioButton radioBtnRolleAlle) {
@@ -667,6 +864,11 @@ public class SchuelerSuchenController extends PersonController {
         } else {
             disableKursSuche();
         }
+        if (schuelerSuchenModel.isMaerchenFuerSucheBeruecksichtigen()) {
+            enableMaerchenSuche();
+        } else {
+            disableMaerchenSuche();
+        }
     }
 
     private void enableGeburtsdatumSuchperiode() {
@@ -700,6 +902,15 @@ public class SchuelerSuchenController extends PersonController {
         schuelerSuchenModel.makeErrorLabelsInvisible(getKursFields());
     }
 
+    private void enableMaerchenSuche() {
+        schuelerSuchenModel.enableFields(getMaerchenFields());
+    }
+
+    private void disableMaerchenSuche() {
+        schuelerSuchenModel.disableFields(getMaerchenFields());
+        schuelerSuchenModel.makeErrorLabelsInvisible(getMaerchenFields());
+    }
+
     private Set<Field> getGeburtsdatumSuchperiodeFields() {
         Set<Field> geburtsdatumSuchperiodeFields = new HashSet<>();
         geburtsdatumSuchperiodeFields.add(Field.GEBURTSDATUM_SUCHPERIODE);
@@ -722,6 +933,17 @@ public class SchuelerSuchenController extends PersonController {
         kursFields.add(Field.ZEIT_BEGINN);
         kursFields.add(Field.LEHRKRAFT);
         return kursFields;
+    }
+
+    private Set<Field> getMaerchenFields() {
+        Set<Field> maerchenFields = new HashSet<>();
+        maerchenFields.add(Field.MAERCHEN);
+        maerchenFields.add(Field.GRUPPE);
+        maerchenFields.add(Field.ROLLEN);
+        maerchenFields.add(Field.ELTERNMITHILFE_CODE);
+        maerchenFields.add(Field.KUCHEN_VORSTELLUNG);
+        maerchenFields.add(Field.ZUSATZATTRIBUT_MAERCHEN);
+        return maerchenFields;
     }
 
     @Override
@@ -773,6 +995,9 @@ public class SchuelerSuchenController extends PersonController {
         else if (checkIsFieldChange(Field.STICHTAG, evt)) {
             txtStichtag.setText(asString(schuelerSuchenModel.getStichtag()));
         }
+        else if (checkIsFieldChange(Field.SCHUELER_CODE, evt)) {
+            comboBoxSchuelerCode.setSelectedItem(schuelerSuchenModel.getSchuelerCode());
+        }
         else if (checkIsFieldChange(Field.SCHULJAHR_KURS, evt)) {
             spinnerSchuljahreKurs.setValue(schuelerSuchenModel.getSchuljahrKurs());
         }
@@ -791,8 +1016,26 @@ public class SchuelerSuchenController extends PersonController {
         else if (checkIsFieldChange(Field.KURS_FUER_SUCHE_BERUECKSICHTIGEN, evt)) {
             checkBoxKursFuerSucheBeruecksichtigen.setSelected(schuelerSuchenModel.isKursFuerSucheBeruecksichtigen());
         }
-        else if (checkIsFieldChange(Field.CODE, evt)) {
-            comboBoxSchuelerCode.setSelectedItem(schuelerSuchenModel.getSchuelerCode());
+        else if (checkIsFieldChange(Field.MAERCHEN, evt)) {
+            spinnerMaerchen.setValue(schuelerSuchenModel.getMaerchen());
+        }
+        else if (checkIsFieldChange(Field.GRUPPE, evt)) {
+            comboBoxGruppe.setSelectedItem(schuelerSuchenModel.getGruppe());
+        }
+        else if (checkIsFieldChange(Field.ROLLEN, evt)) {
+            txtAreaRollen.setText(schuelerSuchenModel.getRollen());
+        }
+        else if (checkIsFieldChange(Field.ELTERNMITHILFE_CODE, evt)) {
+            comboBoxElternmithilfeCode.setSelectedItem(schuelerSuchenModel.getElternmithilfeCode());
+        }
+        else if (checkIsFieldChange(Field.KUCHEN_VORSTELLUNG, evt)) {
+            txtKuchenVorstellung.setText(schuelerSuchenModel.getKuchenVorstellung().toString());
+        }
+        else if (checkIsFieldChange(Field.ZUSATZATTRIBUT_MAERCHEN, evt)) {
+            txtZusatzattributMaerchen.setText(schuelerSuchenModel.getZusatzattributMaerchen());
+        }
+        else if (checkIsFieldChange(Field.MAERCHEN_FUER_SUCHE_BERUECKSICHTIGEN, evt)) {
+            checkBoxMaerchenFuerSucheBeruecksichtigen.setSelected(schuelerSuchenModel.isMaerchenFuerSucheBeruecksichtigen());
         }
     }
 
@@ -809,7 +1052,19 @@ public class SchuelerSuchenController extends PersonController {
         }
         if (txtZeitBeginn.isEnabled()) {
             LOGGER.trace("Validate field ZeitBeginn");
-            setModelZeitBeginn(true);
+            setModelZeitBeginn();
+        }
+        if (txtAreaRollen.isEnabled()) {
+            LOGGER.trace("Validate field Rollen");
+            setModelRollen();
+        }
+        if (txtKuchenVorstellung.isEnabled()) {
+            LOGGER.trace("Validate field KuchenVorstellung");
+            setModelKuchenVorstellung();
+        }
+        if (txtZusatzattributMaerchen.isEnabled()) {
+            LOGGER.trace("Validate field ZusatzattributMaerchen");
+            setModelZusatzattributMaerchen();
         }
     }
 
@@ -828,6 +1083,18 @@ public class SchuelerSuchenController extends PersonController {
             errLblZeitBeginn.setVisible(true);
             errLblZeitBeginn.setText(e.getMessage());
         }
+        if (e.getAffectedFields().contains(Field.ROLLEN)) {
+            errLblRollen.setVisible(true);
+            errLblRollen.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.KUCHEN_VORSTELLUNG)) {
+            errLblKuchenVorstellung.setVisible(true);
+            errLblKuchenVorstellung.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.ZUSATZATTRIBUT_MAERCHEN)) {
+            errLblZusatzattributMaerchen.setVisible(true);
+            errLblZusatzattributMaerchen.setText(e.getMessage());
+        }
     }
 
     @Override
@@ -841,6 +1108,15 @@ public class SchuelerSuchenController extends PersonController {
         }
         if (e.getAffectedFields().contains(Field.ZEIT_BEGINN)) {
             txtZeitBeginn.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.ROLLEN)) {
+            txtAreaRollen.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.KUCHEN_VORSTELLUNG)) {
+            txtKuchenVorstellung.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.ZUSATZATTRIBUT_MAERCHEN)) {
+            txtZusatzattributMaerchen.setToolTipText(e.getMessage());
         }
     }
 
@@ -869,6 +1145,30 @@ public class SchuelerSuchenController extends PersonController {
             }
             if (txtZeitBeginn != null) {
                 txtZeitBeginn.setToolTipText(null);
+            }
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.ROLLEN)) {
+            if (errLblRollen != null) {
+                errLblRollen.setVisible(false);
+            }
+            if (txtAreaRollen != null) {
+                txtAreaRollen.setToolTipText(null);
+            }
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.KUCHEN_VORSTELLUNG)) {
+            if (errLblKuchenVorstellung != null) {
+                errLblKuchenVorstellung.setVisible(false);
+            }
+            if (txtKuchenVorstellung != null) {
+                txtKuchenVorstellung.setToolTipText(null);
+            }
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.ZUSATZATTRIBUT_MAERCHEN)) {
+            if (errLblZusatzattributMaerchen != null) {
+                errLblZusatzattributMaerchen.setVisible(false);
+            }
+            if (txtZusatzattributMaerchen != null) {
+                txtZusatzattributMaerchen.setToolTipText(null);
             }
         }
     }
@@ -921,6 +1221,9 @@ public class SchuelerSuchenController extends PersonController {
         if (txtStichtag != null && (fields.contains(Field.ALLE) || fields.contains(Field.STICHTAG))) {
             txtStichtag.setEnabled(!disable);
         }
+        if (comboBoxSchuelerCode != null && (fields.contains(Field.ALLE) || fields.contains(Field.CODE))) {
+            comboBoxSchuelerCode.setEnabled(!disable);
+        }
         if (spinnerSchuljahreKurs != null && (fields.contains(Field.ALLE) || fields.contains(Field.SCHULJAHR_KURS))) {
             spinnerSchuljahreKurs.setEnabled(!disable);
         }
@@ -939,8 +1242,26 @@ public class SchuelerSuchenController extends PersonController {
         if (checkBoxKursFuerSucheBeruecksichtigen != null && (fields.contains(Field.ALLE) || fields.contains(Field.KURS_FUER_SUCHE_BERUECKSICHTIGEN))) {
             checkBoxKursFuerSucheBeruecksichtigen.setEnabled(!disable);
         }
-        if (comboBoxSchuelerCode != null && (fields.contains(Field.ALLE) || fields.contains(Field.CODE))) {
-            comboBoxSchuelerCode.setEnabled(!disable);
+        if (spinnerMaerchen != null && (fields.contains(Field.ALLE) || fields.contains(Field.MAERCHEN))) {
+            spinnerMaerchen.setEnabled(!disable);
+        }
+        if (comboBoxGruppe != null && (fields.contains(Field.ALLE) || fields.contains(Field.GRUPPE))) {
+            comboBoxGruppe.setEnabled(!disable);
+        }
+        if (txtAreaRollen != null && (fields.contains(Field.ALLE) || fields.contains(Field.ROLLEN))) {
+            txtAreaRollen.setEnabled(!disable);
+        }
+        if (comboBoxElternmithilfeCode != null && (fields.contains(Field.ALLE) || fields.contains(Field.ELTERNMITHILFE_CODE))) {
+            comboBoxElternmithilfeCode.setEnabled(!disable);
+        }
+        if (txtKuchenVorstellung != null && (fields.contains(Field.ALLE) || fields.contains(Field.KUCHEN_VORSTELLUNG))) {
+            txtKuchenVorstellung.setEnabled(!disable);
+        }
+        if (txtZusatzattributMaerchen != null && (fields.contains(Field.ALLE) || fields.contains(Field.ZUSATZATTRIBUT_MAERCHEN))) {
+            txtZusatzattributMaerchen.setEnabled(!disable);
+        }
+        if (checkBoxMaerchenFuerSucheBeruecksichtigen != null && (fields.contains(Field.ALLE) || fields.contains(Field.MAERCHEN_FUER_SUCHE_BERUECKSICHTIGEN))) {
+            checkBoxMaerchenFuerSucheBeruecksichtigen.setEnabled(!disable);
         }
     }
 

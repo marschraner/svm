@@ -125,11 +125,10 @@ public class MaercheneinteilungErfassenController extends AbstractController {
         if (isBearbeiten) {
             comboBoxMaerchen.setEnabled(false);
         }
-        List<Maerchen> maerchenenList = svmContext.getSvmModel().getMaerchensAll();
         Maerchen[] selectableMaerchens;
         if (isBearbeiten) {
             List<Maerchen> maerchenList = svmContext.getSvmModel().getMaerchensAll();
-            selectableMaerchens = maerchenList.toArray(new Maerchen[maerchenenList.size()]);
+            selectableMaerchens = maerchenList.toArray(new Maerchen[maerchenList.size()]);
         } else {
             selectableMaerchens = maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel);
         }
@@ -154,7 +153,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
     }
 
     private void onMaerchenSelected() {
-        LOGGER.trace("PersonController Event Maerchen selected=" + comboBoxMaerchen.getSelectedItem());
+        LOGGER.trace("MaercheneinteilungErfassenController Event Maerchen selected=" + comboBoxMaerchen.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxMaerchen.getSelectedItem(), maercheneinteilungErfassenModel.getMaerchen());
         try {
             setModelMaerchen();
@@ -187,6 +186,8 @@ public class MaercheneinteilungErfassenController extends AbstractController {
     public void setComboBoxGruppe(JComboBox<Gruppe> comboBoxGruppe) {
         this.comboBoxGruppe = comboBoxGruppe;
         comboBoxGruppe.setModel(new DefaultComboBoxModel<>(Gruppe.values()));
+        // Anrede: Alle nicht anzeigen:
+        comboBoxGruppe.removeItem(Gruppe.ALLE);
         // Leeren ComboBox-Wert anzeigen
         comboBoxGruppe.setSelectedItem(null);
         comboBoxGruppe.addActionListener(new ActionListener() {
@@ -833,7 +834,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
     }
 
     private void setModelZusatzattribut(boolean showRequiredErrMsg) throws SvmValidationException {
-        makeErrorLabelInvisible(Field.ZUSATZATTRIBUT);
+        makeErrorLabelInvisible(Field.ZUSATZATTRIBUT_MAERCHEN);
         try {
             maercheneinteilungErfassenModel.setZusatzattribut(txtZusatzattribut.getText());
         } catch (SvmRequiredException e) {
@@ -1088,7 +1089,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
             checkBoxKuchenVorstellung8.setSelected(maercheneinteilungErfassenModel.isKuchenVorstellung8());
         } else if (checkIsFieldChange(Field.KUCHEN_VORSTELLUNG9, evt)) {
             checkBoxKuchenVorstellung9.setSelected(maercheneinteilungErfassenModel.isKuchenVorstellung9());
-        } else if (checkIsFieldChange(Field.ZUSATZATTRIBUT, evt)) {
+        } else if (checkIsFieldChange(Field.ZUSATZATTRIBUT_MAERCHEN, evt)) {
             txtZusatzattribut.setText(maercheneinteilungErfassenModel.getZusatzattribut());
         } else if (checkIsFieldChange(Field.BEMERKUNGEN, evt)) {
             txtBemerkungen.setText(maercheneinteilungErfassenModel.getBemerkungen());
@@ -1189,7 +1190,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
             errLblElternmithilfeCode.setVisible(true);
             errLblElternmithilfeCode.setText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.ZUSATZATTRIBUT)) {
+        if (e.getAffectedFields().contains(Field.ZUSATZATTRIBUT_MAERCHEN)) {
             errLblZusatzattribut.setVisible(true);
             errLblZusatzattribut.setText(e.getMessage());
         }
@@ -1231,7 +1232,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
         if (e.getAffectedFields().contains(Field.ELTERNMITHILFE_CODE)) {
             comboBoxElternmithilfeCode.setToolTipText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.ZUSATZATTRIBUT)) {
+        if (e.getAffectedFields().contains(Field.ZUSATZATTRIBUT_MAERCHEN)) {
             txtZusatzattribut.setToolTipText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.BEMERKUNGEN)) {
@@ -1281,7 +1282,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
             errLblElternmithilfeCode.setVisible(false);
             comboBoxElternmithilfeCode.setToolTipText(null);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ZUSATZATTRIBUT)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.ZUSATZATTRIBUT_MAERCHEN)) {
             errLblZusatzattribut.setVisible(false);
             txtZusatzattribut.setToolTipText(null);
         }

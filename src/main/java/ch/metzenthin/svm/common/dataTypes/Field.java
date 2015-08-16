@@ -87,7 +87,8 @@ public enum Field {
     ANZAHL_KINDER("Kinder"),
     BULK_UPDATE("Bulk Update"), 
     MAERCHEN("Märchen"), 
-    GRUPPE("Gruppe"), 
+    GRUPPE("Gruppe"),
+    ROLLEN("Rollen"),
     ROLLE1("Rolle 1"), 
     BILDER_ROLLE1("Bilder Rolle 1"), 
     ROLLE2("Rolle 2"), 
@@ -95,10 +96,11 @@ public enum Field {
     ROLLE3("Rolle 3"), 
     BILDER_ROLLE3("Bilder Rolle 3"),
     ELTERNMITHILFE("Elternmithilfe"),
+    SCHUELER_CODE("Code"),
     ELTERNMITHILFE_CODE("Code"),
     KUCHEN_VORSTELLUNGEN("Vorst. m. Kuchen"),
-    ZUSATZATTRIBUT("Zusatzattribut"),
     ANZAHL_VORSTELLUNGEN("Vorstellungen"),
+    KUCHEN_VORSTELLUNG("Vorstellung mit Kuchen"),
     KUCHEN_VORSTELLUNG1("1. Vorstellung mit Kuchen"),
     KUCHEN_VORSTELLUNG2("2. Vorstellung mit Kuchen"),
     KUCHEN_VORSTELLUNG3("3. Vorstellung mit Kuchen"),
@@ -108,7 +110,9 @@ public enum Field {
     KUCHEN_VORSTELLUNG7("7. Vorstellung mit Kuchen"),
     KUCHEN_VORSTELLUNG8("8. Vorstellung mit Kuchen"),
     KUCHEN_VORSTELLUNG9("9. Vorstellung mit Kuchen"),
-    EMAIL_EMPFAENGER("E-Mail-Empfänger");
+    EMAIL_EMPFAENGER("E-Mail-Empfänger"),
+    MAERCHEN_FUER_SUCHE_BERUECKSICHTIGEN("Märchen für Suche berücksichtigen"),
+    ZUSATZATTRIBUT_MAERCHEN("Zusatzattribut");
 
     private String name;
 
