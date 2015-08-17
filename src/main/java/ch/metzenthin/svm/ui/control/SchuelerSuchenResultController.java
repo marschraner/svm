@@ -2,6 +2,7 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
+import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.ListenExportDialog;
@@ -65,7 +66,13 @@ public class SchuelerSuchenResultController {
         }
         String semesterStr = " (" + schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() + " " + schuelerSuchenTableModel.getSemester().getSchuljahr() + ")";
         String lektionen = (schuelerSuchenTableModel.getAnzahlLektionen() == 1 ? " Lektion" : " Lektionen");
-        String lblTotalText = "Total: " + schuelerSuchenTableModel.getRowCount() + " Schüler, " + schuelerSuchenTableModel.getAnzahlLektionen() + lektionen + semesterStr;
+        String maercheneinteilungen = (schuelerSuchenTableModel.getAnzahlMaercheneinteilungen() == 1 ? " Märcheneinteilung" : " Märcheneinteilungen");
+        String lblTotalText = "Total: " + schuelerSuchenTableModel.getRowCount() + " Schüler, " + schuelerSuchenTableModel.getAnzahlLektionen() + lektionen;
+        if (schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+            // Nur im 1. Semester Märcheneinteilungen anzeigen
+            lblTotalText = lblTotalText + ", " + schuelerSuchenTableModel.getAnzahlMaercheneinteilungen() + maercheneinteilungen;
+        }
+        lblTotalText = lblTotalText + semesterStr;
         lblTotal.setText(lblTotalText);
     }
 

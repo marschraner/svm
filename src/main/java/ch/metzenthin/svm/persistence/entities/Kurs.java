@@ -90,9 +90,9 @@ public class Kurs implements Comparable<Kurs> {
     }
 
     public String toStringShort() {
-        StringBuilder kursAsStr = new StringBuilder(wochentag + " " + asString(zeitBeginn) + "-" + asString(zeitEnde) + " (" + lehrkraefte.get(0));
+        StringBuilder kursAsStr = new StringBuilder(wochentag + " " + asString(zeitBeginn) + "-" + asString(zeitEnde) + " (" + lehrkraefte.get(0).toStringShort());
         for (int i = 1; i < lehrkraefte.size(); i++) {
-            kursAsStr.append("/").append(lehrkraefte.get(i));
+            kursAsStr.append("/").append(lehrkraefte.get(i).toStringShort());
         }
         kursAsStr.append(")");
         return kursAsStr.toString();

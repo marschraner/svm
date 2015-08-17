@@ -3,10 +3,7 @@ package ch.metzenthin.svm.ui.componentmodel;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
-import ch.metzenthin.svm.persistence.entities.Kurs;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
-import ch.metzenthin.svm.persistence.entities.Schueler;
-import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.persistence.entities.*;
 
 import javax.swing.table.AbstractTableModel;
 import java.sql.Time;
@@ -57,6 +54,10 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
         return schuelerSuchenTableData.getAnzahlLektionen();
     }
 
+    public int getAnzahlMaercheneinteilungen() {
+        return schuelerSuchenTableData.getAnzahlMaercheneinteilungen();
+    }
+
     public List<Schueler> getSchuelerList() {
         return getSchuelerSuchenTableData().getSchuelerList();
     }
@@ -83,5 +84,9 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
 
     public Map<Schueler, List<Kurs>> getKurse() {
         return schuelerSuchenTableData.getKurse();
+    }
+
+    public Maerchen getMaerchen() {
+        return schuelerSuchenTableData.getMaerchen();
     }
 }

@@ -112,7 +112,8 @@ public enum Field {
     KUCHEN_VORSTELLUNG9("9. Vorstellung mit Kuchen"),
     EMAIL_EMPFAENGER("E-Mail-Empfänger"),
     MAERCHEN_FUER_SUCHE_BERUECKSICHTIGEN("Märchen für Suche berücksichtigen"),
-    ZUSATZATTRIBUT_MAERCHEN("Zusatzattribut");
+    ZUSATZATTRIBUT_MAERCHEN("Zusatzattribut"),
+    GEBURTSDATUM_SHORT("Geb.Datum");
 
     private String name;
 

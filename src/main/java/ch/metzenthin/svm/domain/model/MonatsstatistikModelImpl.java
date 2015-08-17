@@ -1,11 +1,10 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
-import ch.metzenthin.svm.persistence.entities.Kurs;
-import ch.metzenthin.svm.persistence.entities.Schueler;
-import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.persistence.entities.*;
 
 import java.util.*;
 
@@ -65,12 +64,14 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
         CommandInvoker commandInvoker = getCommandInvoker();
         commandInvoker.executeCommand(monatsstatistikSchuelerSuchenCommand);
         List<Schueler> schuelerList = monatsstatistikSchuelerSuchenCommand.getSchuelerFound();
-        Semester semester = determineSemester(svmModel);
-        Map<Schueler, List<Kurs>> kurseMapTableData = determineKurseMapTableData(schuelerList, semester);
-        return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semester, null, null, null);
+        Semester semesterTableData = determineSemesterTableData(svmModel);
+        Map<Schueler, List<Kurs>> kurseMapTableData = determineKurseMapTableData(schuelerList, semesterTableData);
+        Maerchen maerchenTableData = determineMaerchenTableData(svmModel, semesterTableData);
+        Map<Schueler, Maercheneinteilung> maercheneinteilungenMapTableData = determineMaercheneinteilungenMapTableData(schuelerList, maerchenTableData);
+        return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData, null, null, null, maercheneinteilungenMapTableData, maerchenTableData);
     }
 
-    private Semester determineSemester(SvmModel svmModel) {
+    private Semester determineSemesterTableData(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         List<Semester> erfassteSemester = svmModel.getSemestersAll();
         Calendar lastDayOfMonth = new GregorianCalendar(monatJahr.get(Calendar.YEAR), monatJahr.get(Calendar.MONTH), monatJahr.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -87,6 +88,26 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
         FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, null, null, null);
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
         return findKurseMapSchuelerSemesterCommand.getKurseMap();
+    }
+
+    private Maerchen determineMaerchenTableData(SvmModel svmModel, Semester semesterTableData) {
+        // Kein Märchen für 2. Semester
+        if (semesterTableData.getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER) {
+            return null;
+        }
+        List<Maerchen> erfassteMaerchen = svmModel.getMaerchensAll();
+        for (Maerchen maerchen : erfassteMaerchen) {
+            if (maerchen.getSchuljahr().equals(semesterTableData.getSchuljahr())) {
+                return maerchen;
+            }
+        }
+        return null;
+    }
+
+    private Map<Schueler,Maercheneinteilung> determineMaercheneinteilungenMapTableData(List<Schueler> schuelerList, Maerchen maerchen) {
+        FindMaercheneinteilungenMapSchuelerSemesterCommand findMaercheneinteilungenMapSchuelerSemesterCommand = new FindMaercheneinteilungenMapSchuelerSemesterCommand(schuelerList, maerchen);
+        findMaercheneinteilungenMapSchuelerSemesterCommand.execute();
+        return findMaercheneinteilungenMapSchuelerSemesterCommand.getMaercheneinteilungenMap();
     }
 
     @Override

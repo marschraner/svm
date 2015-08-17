@@ -192,13 +192,13 @@ INSERT INTO Schueler (person_id, geschlecht, mutter_id, vater_id, rechnungsempfa
     (25, 'W', 26, NULL, 26, NULL),
     (27, 'W', NULL, 28, 28, NULL),
     (29, 'M', 30, 31, 30, NULL),
-    (32, 'M', 33, NULL, 33, NULL),
+    (32, 'W', 33, NULL, 33, NULL),
     (34, 'W', 35, NULL, 35, NULL),
     (36, 'W', 37, NULL, 38, NULL),
     (39, 'W', 40, NULL, 40, NULL),
     (41, 'M', NULL, 42, 42, NULL),
     (43, 'W', NULL, 44, 44, NULL),
-    (45, 'W', NULL, 46, 47, NULL),
+    (45, 'W', 46, NULL, 47, NULL),
     (48, 'W', 49, NULL, 49, NULL);
 
 SELECT * FROM Schueler;

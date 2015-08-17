@@ -1,10 +1,12 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.persistence.entities.*;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -20,20 +22,42 @@ public class SchuelerSuchenTableData {
     private final Wochentag wochentag;
     private final Time zeiBeginn;
     private final Lehrkraft lehrkraft;
+    private Map<Schueler, Maercheneinteilung> maercheneinteilungen;
+    private Maerchen maerchen;
+    private List<Field> columns = new ArrayList<>();
 
-    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeiBeginn, Lehrkraft lehrkraft) {
+    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen) {
         this.schuelerList = schuelerList;
         this.kurse = kurse;
         this.semester = semester;
         this.wochentag = wochentag;
-        this.zeiBeginn = zeiBeginn;
+        this.zeiBeginn = zeitBeginn;
         this.lehrkraft = lehrkraft;
+        this.maercheneinteilungen = maercheneinteilungen;
+        this.maerchen = maerchen;
+        initColumns();
     }
 
-    private static final Field[] COLUMNS = {Field.NACHNAME, Field.VORNAME, Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT, Field.FESTNETZ, Field.NATEL, Field.EMAIL, Field.GEBURTSDATUM, Field.MUTTER, Field.VATER, Field.RECHNUNGSEMPFAENGER, Field.KURS1, Field.ANZAHL_KURSE};
+    private void initColumns() {
+        columns.add(Field.NACHNAME);
+        columns.add(Field.VORNAME);
+        columns.add(Field.STRASSE_HAUSNUMMER);
+        columns.add(Field.PLZ);
+        columns.add(Field.ORT);
+        columns.add(Field.GEBURTSDATUM_SHORT);
+        columns.add(Field.MUTTER);
+        columns.add(Field.VATER);
+        columns.add(Field.RECHNUNGSEMPFAENGER);
+        columns.add(Field.KURS1);
+        columns.add(Field.ANZAHL_KURSE);
+        if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+            // Märchen nur im 1. Semester anzeigen
+            columns.add(Field.GRUPPE);
+        }
+    }
 
     public int getColumnCount() {
-        return COLUMNS.length;
+        return columns.size();
     }
 
     public int size() {
@@ -45,7 +69,7 @@ public class SchuelerSuchenTableData {
         List<Kurs> kurseOfSchueler = kurse.get(schueler);
         Adresse schuelerAdresse = schueler.getAdresse();
         Object value = null;
-        switch (COLUMNS[columnIndex]) {
+        switch (columns.get(columnIndex)) {
             case NACHNAME:
                 value = schueler.getNachname();
                 break;
@@ -53,7 +77,7 @@ public class SchuelerSuchenTableData {
                 value = schueler.getVorname();
                 break;
             case STRASSE_HAUSNUMMER:
-                value = schuelerAdresse.getStrasseHausnummer();
+                value = schuelerAdresse.getStrHausnummer();
                break;
             case PLZ:
                 value = schuelerAdresse.getPlz();
@@ -61,16 +85,7 @@ public class SchuelerSuchenTableData {
             case ORT:
                 value = schuelerAdresse.getOrt();
                 break;
-            case FESTNETZ:
-                value = schueler.getFestnetz();
-                break;
-            case NATEL:
-                value = schueler.getNatel();
-                break;
-            case EMAIL:
-                value = schueler.getEmail();
-                break;
-            case GEBURTSDATUM:
+            case GEBURTSDATUM_SHORT:
                 value = schueler.getGeburtsdatum();
                 break;
             case MUTTER:
@@ -80,7 +95,15 @@ public class SchuelerSuchenTableData {
                 value = getString(schueler.getVater());
                 break;
             case RECHNUNGSEMPFAENGER:
-                value = getString(schueler.getRechnungsempfaenger());
+                String rechnungsempfaenger;
+                if (schueler.getMutter() != null && schueler.getMutter().isIdenticalWith(schueler.getRechnungsempfaenger())) {
+                    rechnungsempfaenger = "Mutter";
+                } else if (schueler.getVater() != null && schueler.getVater().isIdenticalWith(schueler.getRechnungsempfaenger())) {
+                    rechnungsempfaenger = "Vater";
+                } else {
+                    rechnungsempfaenger = getString(schueler.getRechnungsempfaenger());
+                }
+                value = rechnungsempfaenger;
                 break;
             case KURS1:
                 if (kurseOfSchueler != null && !kurseOfSchueler.isEmpty()) {
@@ -89,6 +112,11 @@ public class SchuelerSuchenTableData {
                 break;
             case ANZAHL_KURSE:
                 value = (kurseOfSchueler == null ? 0 : kurseOfSchueler.size());
+                break;
+            case GRUPPE:
+                if (maercheneinteilungen.get(schueler) != null) {
+                    value = maercheneinteilungen.get(schueler).getGruppe();
+                }
                 break;
             default:
                 break;
@@ -105,11 +133,11 @@ public class SchuelerSuchenTableData {
     }
 
     public String getColumnName(int column) {
-        return COLUMNS[column].toString();
+        return columns.get(column).toString();
     }
 
     public Class<?> getColumnClass(int column) {
-        if (COLUMNS[column] == Field.GEBURTSDATUM) {
+        if (columns.get(column) == Field.GEBURTSDATUM_SHORT) {
             return Calendar.class;
         } else {
             return String.class;
@@ -123,9 +151,21 @@ public class SchuelerSuchenTableData {
     public int getAnzahlLektionen() {
         int anzahlKurse = 0;
         for (Schueler schueler : schuelerList) {
-            anzahlKurse += kurse.get(schueler).size();
+            if (kurse.get(schueler) != null) {
+                anzahlKurse += kurse.get(schueler).size();
+            }
         }
         return anzahlKurse;
+    }
+
+    public int getAnzahlMaercheneinteilungen() {
+        int anzahlMaercheneinteilungen = 0;
+        for (Schueler schueler : schuelerList) {
+            if (maercheneinteilungen.get(schueler) != null) {
+                anzahlMaercheneinteilungen++;
+            }
+        }
+        return anzahlMaercheneinteilungen;
     }
 
     public Semester getSemester() {
@@ -154,5 +194,13 @@ public class SchuelerSuchenTableData {
 
     public Map<Schueler, List<Kurs>> getKurse() {
         return kurse;
+    }
+
+    public void setMaercheneinteilungen(Map<Schueler, Maercheneinteilung> maercheneinteilungen) {
+        this.maercheneinteilungen = maercheneinteilungen;
+    }
+
+    public Maerchen getMaerchen() {
+        return maerchen;
     }
 }

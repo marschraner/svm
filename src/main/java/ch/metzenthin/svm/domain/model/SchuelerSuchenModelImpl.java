@@ -481,12 +481,14 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         CommandInvoker commandInvoker = getCommandInvoker();
         commandInvoker.executeCommand(schuelerSuchenCommand);
         List<Schueler> schuelerList = schuelerSuchenCommand.getSchuelerFound();
-        Semester semester = determineSemester(svmModel);
-        Map<Schueler, List<Kurs>> kurseMapTableData = determineKurseMapTableData(schuelerList, semester, wochentag, zeitBeginn, lehrkraft);
-        return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semester, (wochentag == Wochentag.ALLE ? null : wochentag), zeitBeginn, (lehrkraft == LEHRKRAFT_ALLE ? null : lehrkraft));
+        Semester semesterTableData = determineSemesterTableData(svmModel);
+        Map<Schueler, List<Kurs>> kurseMapTableData = determineKurseMapTableData(schuelerList, semesterTableData, wochentag, zeitBeginn, lehrkraft);
+        Maerchen maerchenTableData = determineMaerchenTableData(svmModel, semesterTableData);
+        Map<Schueler, Maercheneinteilung> maercheneinteilungenMapTableData = determineMaercheneinteilungenMapTableData(schuelerList, maerchenTableData);
+        return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData, (wochentag == Wochentag.ALLE ? null : wochentag), zeitBeginn, (lehrkraft == LEHRKRAFT_ALLE ? null : lehrkraft), maercheneinteilungenMapTableData, maerchenTableData);
     }
 
-    private Semester determineSemester(SvmModel svmModel) {
+    private Semester determineSemesterTableData(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         List<Semester> erfassteSemester = svmModel.getSemestersAll();
         if (kursFuerSucheBeruecksichtigen) {
@@ -508,6 +510,29 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, (wochentag == Wochentag.ALLE ? null : wochentag), zeitBeginn, (lehrkraft == LEHRKRAFT_ALLE ? null : lehrkraft));
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
         return findKurseMapSchuelerSemesterCommand.getKurseMap();
+    }
+
+    private Maerchen determineMaerchenTableData(SvmModel svmModel, Semester semesterTableData) {
+        if (maerchenFuerSucheBeruecksichtigen) {
+            return maerchen;
+        }
+        // Kein Märchen für 2. Semester
+        if (semesterTableData.getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER) {
+            return null;
+        }
+        List<Maerchen> erfassteMaerchen = svmModel.getMaerchensAll();
+        for (Maerchen maerchen : erfassteMaerchen) {
+            if (maerchen.getSchuljahr().equals(semesterTableData.getSchuljahr())) {
+                return maerchen;
+            }
+        }
+        return null;
+    }
+
+    private Map<Schueler,Maercheneinteilung> determineMaercheneinteilungenMapTableData(List<Schueler> schuelerList, Maerchen maerchen) {
+        FindMaercheneinteilungenMapSchuelerSemesterCommand findMaercheneinteilungenMapSchuelerSemesterCommand = new FindMaercheneinteilungenMapSchuelerSemesterCommand(schuelerList, maerchen);
+        findMaercheneinteilungenMapSchuelerSemesterCommand.execute();
+        return findMaercheneinteilungenMapSchuelerSemesterCommand.getMaercheneinteilungenMap();
     }
 
     @Override

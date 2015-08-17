@@ -5,10 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
-import ch.metzenthin.svm.domain.commands.CheckGeschwisterSchuelerRechnungempfaengerCommand;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.FindKurseMapSchuelerSemesterCommand;
-import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
+import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
@@ -568,7 +565,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     @Override
     public void refreshSchuelerSuchenTableData(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel) {
-        // KursMap neu setzen
+        // Kurse-Map neu setzen
         CommandInvoker commandInvoker = svmContext.getCommandInvoker();
         List<Schueler> schuelerList = schuelerSuchenTableModel.getSchuelerList();
         Semester semester = schuelerSuchenTableModel.getSemester();
@@ -578,6 +575,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, wochentag, zeitBeginn, lehrkraft);
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
         schuelerSuchenTableModel.getSchuelerSuchenTableData().setKurse(findKurseMapSchuelerSemesterCommand.getKurseMap());
+        // Maercheneinteilungen-Map neu setzen
+        Maerchen maerchen = schuelerSuchenTableModel.getMaerchen();
+        FindMaercheneinteilungenMapSchuelerSemesterCommand findMaercheneinteilungenMapSchuelerSemesterCommand = new FindMaercheneinteilungenMapSchuelerSemesterCommand(schuelerList, maerchen);
+        findMaercheneinteilungenMapSchuelerSemesterCommand.execute();
+        schuelerSuchenTableModel.getSchuelerSuchenTableData().setMaercheneinteilungen(findMaercheneinteilungenMapSchuelerSemesterCommand.getMaercheneinteilungenMap());
     }
 
     private boolean isGleicheAdresseWieSchueler(Angehoeriger angehoeriger) {
