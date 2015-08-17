@@ -196,7 +196,7 @@ public class ListenExportController extends AbstractController {
                 titel = schuelerSuchenTableModel.getLehrkraft().toString();
             }
         } else {
-            titel = "Schüler";
+            titel = "Schülerliste";
         }
         if (listenExportTyp == ListenExportTyp.LEHRKRAEFTE) {
             titel = "Lehrkräfte";

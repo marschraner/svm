@@ -2,15 +2,11 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
-import org.docx4j.jaxb.Context;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.exceptions.InvalidFormatException;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.wml.ObjectFactory;
-import org.docx4j.wml.Tbl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -34,117 +30,198 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
 
     @Override
     public void execute() {
-        WordprocessingMLPackage wordMLPackage;
-        try {
-            wordMLPackage = WordprocessingMLPackage.createPackage();
-        } catch (InvalidFormatException e) {
-            throw new RuntimeException(e);
-        }
-        ObjectFactory objectFactory = Context.getWmlObjectFactory();
 
-        // Titel
-        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", titel);
+        // Spaltenbreiten
+        List<Integer> columnWidths = new ArrayList<>();
+        columnWidths.add(0);
+        columnWidths.add(2500);
+        columnWidths.add(2800);
+        columnWidths.add(1800);
+        columnWidths.add(1600);
+        columnWidths.add(2900);
+
+        // Bold / horiz. merged:
+        List<List<Boolean>> boldCells = new ArrayList<>();
+        List<List<Boolean>> mergedCells = new ArrayList<>();
+        // 1. Zeile
+        List<Boolean> boldRow1 = new ArrayList<>();
+        boldRow1.add(false);
+        boldRow1.add(true);
+        boldRow1.add(true);
+        boldRow1.add(false);
+        boldRow1.add(false);
+        boldRow1.add(false);
+        boldCells.add(boldRow1);
+        List<Boolean> mergedRow1 = new ArrayList<>();
+        mergedRow1.add(false);
+        mergedRow1.add(false);
+        mergedRow1.add(false);
+        mergedRow1.add(false);
+        mergedRow1.add(false);
+        mergedRow1.add(false);
+        mergedCells.add(mergedRow1);
+        // 2. Zeile
+        List<Boolean> boldRow2 = new ArrayList<>();
+        boldRow2.add(false);
+        boldRow2.add(false);
+        boldRow2.add(false);
+        boldRow2.add(false);
+        boldRow2.add(false);
+        boldRow2.add(false);
+        boldCells.add(boldRow2);
+        List<Boolean> mergedRow2 = new ArrayList<>();
+        mergedRow2.add(false);
+        mergedRow2.add(false);
+        mergedRow2.add(false);
+        mergedRow2.add(false);
+        mergedRow2.add(false);
+        mergedRow2.add(false);
+        mergedCells.add(mergedRow2);
+        // 3. Zeile
+        List<Boolean> boldRow3 = new ArrayList<>();
+        boldRow3.add(false);
+        boldRow3.add(false);
+        boldRow3.add(false);
+        boldRow3.add(false);
+        boldRow3.add(false);
+        boldRow3.add(false);
+        boldCells.add(boldRow3);
+        List<Boolean> mergedRow3 = new ArrayList<>();
+        mergedRow3.add(false);
+        mergedRow3.add(false);
+        mergedRow3.add(true);
+        mergedRow3.add(false);
+        mergedRow3.add(false);
+        mergedRow3.add(false);
+        mergedCells.add(mergedRow3);
+
+        // Maximale Anzahl Zeichen (wenn überschritten wird Schrift verkleinert),
+        // wenn 0 nicht zu prüfen
+        List<List<Integer>> maxLengths = new ArrayList<>();
+        // 1. Zeile
+        List<Integer> maxLengthsRow1 = new ArrayList<>();
+        maxLengthsRow1.add(0);
+        maxLengthsRow1.add(21);
+        maxLengthsRow1.add(25);
+        maxLengthsRow1.add(0);
+        maxLengthsRow1.add(0);
+        maxLengthsRow1.add(0);
+        maxLengths.add(maxLengthsRow1);
+        // 2. Zeile
+        List<Integer> maxLengthsRow2 = new ArrayList<>();
+        maxLengthsRow2.add(0);
+        maxLengthsRow2.add(21);
+        maxLengthsRow2.add(25);
+        maxLengthsRow2.add(0);
+        maxLengthsRow2.add(0);
+        maxLengthsRow2.add(0);
+        maxLengths.add(maxLengthsRow2);
+        // 3. Zeile
+        List<Integer> maxLengthsRow3 = new ArrayList<>();
+        maxLengthsRow3.add(0);
+        maxLengthsRow3.add(0);
+        maxLengthsRow3.add(38);
+        maxLengthsRow3.add(0);
+        maxLengthsRow3.add(0);
+        maxLengthsRow3.add(0);
+        maxLengths.add(maxLengthsRow3);
 
         // Header
         List<List<String>> header = new ArrayList<>();
-        List<Integer> columnWidths = new ArrayList<>();
-        // 1. Spalte
-        List<String> headerCellLinesColumn1 = new ArrayList<>();
-        headerCellLinesColumn1.add("");
-        header.add(headerCellLinesColumn1);
-        columnWidths.add(0);
-        // 2. Spalte
-        List<String> headerCellLinesColumn2 = new ArrayList<>();
-        headerCellLinesColumn2.add("Name");
-        headerCellLinesColumn2.add("Strasse/Nr.");
-        header.add(headerCellLinesColumn2);
-        columnWidths.add(2400);
+        // 1. Zeile
+        List<String> headerCellsRow1 = new ArrayList<>();
+        headerCellsRow1.add("");
+        headerCellsRow1.add("Name");
+        headerCellsRow1.add("Vorname");
+        headerCellsRow1.add("Geb.Datum");
+        headerCellsRow1.add("Festnetz");
+        headerCellsRow1.add("Vertretungsmöglichkeiten");
+        header.add(headerCellsRow1);
+        // 2. Zeile
+        List<String> headerCellsRow2 = new ArrayList<>();
+        headerCellsRow2.add("");
+        headerCellsRow2.add("Strasse/Nr.");
+        headerCellsRow2.add("PLZ/Ort");
+        headerCellsRow2.add("AHV-Nummer");
+        headerCellsRow2.add("Natel");
+        headerCellsRow2.add("");
+        header.add(headerCellsRow2);
         // 3. Spalte
-        List<String> headerCellLinesColumn3 = new ArrayList<>();
-        headerCellLinesColumn3.add("Vorname");
-        headerCellLinesColumn3.add("PLZ/Ort");
-        headerCellLinesColumn3.add("E-Mail");
-        header.add(headerCellLinesColumn3);
-        columnWidths.add(2800);
-        // 4. Spalte
-        List<String> headerCellLinesColumn4 = new ArrayList<>();
-        headerCellLinesColumn4.add("Geburtsdatum");
-        headerCellLinesColumn4.add("AHV-Nummer");
-        header.add(headerCellLinesColumn4);
-        columnWidths.add(2000);
-        // 5. Spalte
-        List<String> headerCellLinesColumn5 = new ArrayList<>();
-        headerCellLinesColumn5.add("Festnetz");
-        headerCellLinesColumn5.add("Natel");
-        header.add(headerCellLinesColumn5);
-        columnWidths.add(1700);
-        // 6. Spalte
-        List<String> headerCellLinesColumn6 = new ArrayList<>();
-        headerCellLinesColumn6.add("Vertretungsmöglichkeiten");
-        header.add(headerCellLinesColumn6);
-        columnWidths.add(2600);
+        List<String> headerCellsRow3 = new ArrayList<>();
+        headerCellsRow3.add("");
+        headerCellsRow3.add("");
+        headerCellsRow3.add("E-Mail");
+        headerCellsRow3.add("");
+        headerCellsRow3.add("");
+        headerCellsRow3.add("");
+        header.add(headerCellsRow3);
 
         // Inhalt
         List<Lehrkraft> lehrkraefte = lehrkraefteTableModel.getLehrkraefte();
-
-        List<List<List<String>>> rows = new ArrayList<>();
+        List<List<List<String>>> datasets = new ArrayList<>();
         int i = 0;
         for (Lehrkraft lehrkraft : lehrkraefte) {
             // Nur aktive Lehkräfte auflisten
             if (!lehrkraft.getAktiv()) {
                 continue;
             }
-            List<List<String>> row = new ArrayList<>();
-            // 1. Spalte
-            List<String> cellLinesColumn1 = new ArrayList<>();
-            cellLinesColumn1.add(Integer.toString(i+1));
-            row.add(cellLinesColumn1);
-            // 2. Spalte
-            List<String> cellLinesColumn2 = new ArrayList<>();
-            cellLinesColumn2.add(lehrkraft.getNachname());
-            cellLinesColumn2.add(lehrkraft.getAdresse().getStrHausnummer());
-            row.add(cellLinesColumn2);
-            // 3. Spalte
-            List<String> cellLinesColumn3 = new ArrayList<>();
-            cellLinesColumn3.add(lehrkraft.getVorname());
-            cellLinesColumn3.add(lehrkraft.getAdresse().getPlz() + " " + lehrkraft.getAdresse().getOrt());
-            cellLinesColumn3.add(nullAsEmptyString(lehrkraft.getEmail()));
-            row.add(cellLinesColumn3);
-            // 4. Spalte
-            List<String> cellLinesColumn4 = new ArrayList<>();
-            cellLinesColumn4.add(asString(lehrkraft.getGeburtsdatum()));
-            cellLinesColumn4.add(lehrkraft.getAhvNummer());
-            row.add(cellLinesColumn4);
-            // 5. Spalte
-            List<String> cellLinesColumn5 = new ArrayList<>();
-            cellLinesColumn5.add(nullAsEmptyString(lehrkraft.getFestnetz()));
-            cellLinesColumn5.add(nullAsEmptyString(lehrkraft.getNatel()));
-            row.add(cellLinesColumn5);
-            // 6. Spalte
-            List<String> cellLinesColumn6 = new ArrayList<>();
-            cellLinesColumn6.add(nullAsEmptyString(lehrkraft.getVertretungsmoeglichkeiten()));
-            row.add(cellLinesColumn6);
-            // Spalten der Zeile hinzufügen
-            rows.add(row);
+            List<List<String>> dataset = new ArrayList<>();
+            // Auf mehrere Zeilen aufzusplittende Felder:
+            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(lehrkraft.getVertretungsmoeglichkeiten(), 27);
+            splitStringIntoMultipleLinesCommand.execute();
+            List<String> vertretungsmoeglichkeitenLines = splitStringIntoMultipleLinesCommand.getLines();
+            // 1. Zeile
+            List<String> cellsRow1 = new ArrayList<>();
+            cellsRow1.add(Integer.toString(i + 1));
+            cellsRow1.add(lehrkraft.getNachname());
+            cellsRow1.add(lehrkraft.getVorname());
+            cellsRow1.add(asString(lehrkraft.getGeburtsdatum()));
+            cellsRow1.add(nullAsEmptyString(lehrkraft.getFestnetz()));
+            if (!vertretungsmoeglichkeitenLines.isEmpty()) {
+                cellsRow1.add(vertretungsmoeglichkeitenLines.get(0));
+            } else {
+                cellsRow1.add("");
+            }
+            dataset.add(cellsRow1);
+
+            // 2. Zeile
+            List<String> cellsRow2 = new ArrayList<>();
+            cellsRow2.add("");
+            cellsRow2.add(lehrkraft.getAdresse().getStrHausnummer());
+            cellsRow2.add(lehrkraft.getAdresse().getPlz() + " " + lehrkraft.getAdresse().getOrt());
+            cellsRow2.add(lehrkraft.getAhvNummer());
+            cellsRow2.add(nullAsEmptyString(lehrkraft.getNatel()));
+            if (vertretungsmoeglichkeitenLines.size() > 1) {
+                cellsRow2.add(vertretungsmoeglichkeitenLines.get(1));
+            } else {
+                cellsRow2.add("");
+            }
+            dataset.add(cellsRow2);
+
+            // 3. Zeile
+            List<String> cellsRow3 = new ArrayList<>();
+            cellsRow3.add("");
+            cellsRow3.add("");
+            cellsRow3.add(nullAsEmptyString(lehrkraft.getEmail()));
+            cellsRow3.add("");
+            cellsRow3.add("");
+            if (vertretungsmoeglichkeitenLines.size() > 2) {
+                cellsRow3.add(vertretungsmoeglichkeitenLines.get(2));
+            } else {
+                cellsRow3.add("");
+            }
+            dataset.add(cellsRow3);
+
+            // Einzelner Datensatz der Liste von Datensätzen hinzufügen
+            datasets.add(dataset);
             i++;
         }
 
         // Tabelle erzeugen
-        CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(objectFactory, header, rows, columnWidths, false, "20");
+        Calendar today = new GregorianCalendar();
+        String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                                                         " + asString(today);
+        CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile);
         createWordTableCommand.execute();
-        Tbl table = createWordTableCommand.getTable();
-        wordMLPackage.getMainDocumentPart().addObject(table);
-
-        // Seitenränder anpassen
-        SetWordPageMarginsCommand setWordPageMarginsCommand = new SetWordPageMarginsCommand(wordMLPackage, objectFactory, 50, 50, 650, 650);
-        setWordPageMarginsCommand.execute();
-
-        // Speichern
-        try {
-            wordMLPackage.save(outputFile);
-        } catch (Docx4JException e) {
-            throw new RuntimeException(e);
-        }
 
         result = Result.LISTE_ERFOLGREICH_ERSTELLT;
     }
