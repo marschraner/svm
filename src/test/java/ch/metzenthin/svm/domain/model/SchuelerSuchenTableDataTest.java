@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +38,8 @@ public class SchuelerSuchenTableDataTest {
         schuelerList.add(schueler3);
         Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.FRAU, "V3A", "N3A", "Festnetz3A", "Natel3A", "Email3A");
         schueler3.setRechnungsempfaenger(angehoeriger3);
-        schuelerSuchenTableData = new SchuelerSuchenTableData(schuelerList, new HashMap<Schueler, List<Kurs>>(), null, null, null, null, new HashMap<Schueler, Maercheneinteilung>(), null, null, null, false);
+        Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
+        schuelerSuchenTableData = new SchuelerSuchenTableData(schuelerList, new HashMap<Schueler, List<Kurs>>(), semester, null, null, null, new HashMap<Schueler, Maercheneinteilung>(), null, null, null, false);
     }
 
     @Test
