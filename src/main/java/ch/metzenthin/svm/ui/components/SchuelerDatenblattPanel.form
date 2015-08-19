@@ -865,42 +865,6 @@
                                   <text value="EltermithilfeValue"/>
                                 </properties>
                               </component>
-                              <component id="7755e" class="javax.swing.JLabel" binding="lblVorstellungenKuchen">
-                                <constraints>
-                                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <text value="Vorstellungen mit Kuchen:"/>
-                                </properties>
-                              </component>
-                              <component id="a00f7" class="javax.swing.JLabel" binding="lblVorstellungenKuchenValue">
-                                <constraints>
-                                  <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <text value="VorstellungenKucheValue"/>
-                                </properties>
-                              </component>
-                              <component id="111ea" class="javax.swing.JLabel" binding="lblElternmithilfeCode">
-                                <constraints>
-                                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <text value="Code:"/>
-                                </properties>
-                              </component>
-                              <component id="a7183" class="javax.swing.JLabel" binding="lblElternmithilfeCodeValue">
-                                <constraints>
-                                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <text value="ElternmithilfeCodeValue"/>
-                                </properties>
-                              </component>
                               <hspacer id="30a94">
                                 <constraints>
                                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -919,6 +883,42 @@
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                               </hspacer>
+                              <component id="7755e" class="javax.swing.JLabel" binding="lblVorstellungenKuchen">
+                                <constraints>
+                                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Vorstellungen mit Kuchen:"/>
+                                </properties>
+                              </component>
+                              <component id="a00f7" class="javax.swing.JLabel" binding="lblVorstellungenKuchenValue">
+                                <constraints>
+                                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="VorstellungenKucheValue"/>
+                                </properties>
+                              </component>
+                              <component id="cadd6" class="javax.swing.JLabel" binding="lblBemerkungenMaerchenValue">
+                                <constraints>
+                                  <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="BemerkungenValue"/>
+                                </properties>
+                              </component>
+                              <component id="a9aca" class="javax.swing.JLabel" binding="lblBemerkungenMaerchen">
+                                <constraints>
+                                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Bemerkungen:"/>
+                                </properties>
+                              </component>
                             </children>
                           </grid>
                           <grid id="99a2d" layout-manager="GridBagLayout">
@@ -928,15 +928,6 @@
                             <properties/>
                             <border type="none"/>
                             <children>
-                              <component id="87e8f" class="javax.swing.JLabel" binding="lblZusatzattribut">
-                                <constraints>
-                                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <text value="Zusatzattribut:"/>
-                                </properties>
-                              </component>
                               <component id="4ce28" class="javax.swing.JLabel" binding="lblGruppe">
                                 <constraints>
                                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -963,33 +954,6 @@
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                               </hspacer>
-                              <component id="c97d8" class="javax.swing.JLabel" binding="lblZusatzattributValue">
-                                <constraints>
-                                  <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <text value="ZusatzattributValue"/>
-                                </properties>
-                              </component>
-                              <component id="a9aca" class="javax.swing.JLabel" binding="lblBemerkungenMaerchen">
-                                <constraints>
-                                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <text value="Bemerkungen:"/>
-                                </properties>
-                              </component>
-                              <component id="cadd6" class="javax.swing.JLabel" binding="lblBemerkungenMaerchenValue">
-                                <constraints>
-                                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <text value="BemerkungenValue"/>
-                                </properties>
-                              </component>
                               <vspacer id="c831d">
                                 <constraints>
                                   <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
@@ -1074,6 +1038,42 @@
                                   <gridbag weightx="1.0" weighty="0.0"/>
                                 </constraints>
                               </hspacer>
+                              <component id="a7183" class="javax.swing.JLabel" binding="lblElternmithilfeCodeValue">
+                                <constraints>
+                                  <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="ElternmithilfeCodeValue"/>
+                                </properties>
+                              </component>
+                              <component id="111ea" class="javax.swing.JLabel" binding="lblElternmithilfeCode">
+                                <constraints>
+                                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Code:"/>
+                                </properties>
+                              </component>
+                              <component id="c97d8" class="javax.swing.JLabel" binding="lblZusatzattributValue">
+                                <constraints>
+                                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="ZusatzattributValue"/>
+                                </properties>
+                              </component>
+                              <component id="87e8f" class="javax.swing.JLabel" binding="lblZusatzattribut">
+                                <constraints>
+                                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Zusatzattribut:"/>
+                                </properties>
+                              </component>
                             </children>
                           </grid>
                           <grid id="84ff3" layout-manager="GridBagLayout">

@@ -1067,7 +1067,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
     private void writeElternhilfeBereitsErfasstBemerkung(Schueler geschwister) {
         if (!checkNotEmpty(maercheneinteilungErfassenModel.getBemerkungen())) {
             try {
-                maercheneinteilungErfassenModel.setBemerkungen("Eltern-Mithilfe bereits bei " + geschwister.getVorname() + " " + geschwister.getNachname() + " erfasst.");
+                maercheneinteilungErfassenModel.setBemerkungen("Eltern-Mithilfe bei " + geschwister.getVorname() + " " + geschwister.getNachname() + " erfasst.");
             } catch (SvmValidationException ignore) {
             }
         }
