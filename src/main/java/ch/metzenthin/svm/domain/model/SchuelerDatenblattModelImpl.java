@@ -324,7 +324,6 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
             if (semesterSb.length() > 13) {
                 return semesterSb.toString();
             }
-            System.out.println(semesterSb);
         }
         return "-";
     }

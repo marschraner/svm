@@ -52,8 +52,6 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         LEHRKRAFT_ALLE.setNachname("");
         SCHUELER_CODE_ALLE.setKuerzel("");
         SCHUELER_CODE_ALLE.setBeschreibung("");
-        ELTERNMITHILFE_CODE_ALLE.setKuerzel("");
-        ELTERNMITHILFE_CODE_ALLE.setBeschreibung("");
     }
 
     @Override
@@ -487,7 +485,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         Map<Schueler, Maercheneinteilung> maercheneinteilungenMapTableData = determineMaercheneinteilungenMapTableData(schuelerList, maerchenTableData);
         return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData, (wochentag == Wochentag.ALLE ? null : wochentag),
                 zeitBeginn, (lehrkraft == LEHRKRAFT_ALLE ? null : lehrkraft), maercheneinteilungenMapTableData, maerchenTableData,
-                (gruppe == Gruppe.ALLE ? null : gruppe), (elternmithilfeCode == ELTERNMITHILFE_CODE_ALLE ? null : elternmithilfeCode), (rollen != null));
+                (gruppe == Gruppe.ALLE ? null : gruppe), (elternmithilfeCode == ELTERNMITHILFE_CODE_ALLE ? null : elternmithilfeCode), maerchenFuerSucheBeruecksichtigen, (rollen != null));
     }
 
     private Semester determineSemesterTableData(SvmModel svmModel) {
@@ -562,7 +560,9 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     public ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel) {
         List<ElternmithilfeCode> codesList = svmModel.getElternmithilfeCodesAll();
         // ElternmithilfeCode alle auch erlaubt
-        codesList.add(0, ELTERNMITHILFE_CODE_ALLE);
+        if (!codesList.get(0).isIdenticalWith(ELTERNMITHILFE_CODE_ALLE)) {
+            codesList.add(0, ELTERNMITHILFE_CODE_ALLE);
+        }
         return codesList.toArray(new ElternmithilfeCode[codesList.size()]);
     }
 

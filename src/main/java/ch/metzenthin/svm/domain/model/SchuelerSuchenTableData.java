@@ -27,10 +27,11 @@ public class SchuelerSuchenTableData {
     private Maerchen maerchen;
     private final Gruppe gruppe;
     private final ElternmithilfeCode elternmithilfeCode;
+    private boolean maerchenFuerSucheBeruecksichtigen;
     private boolean nachRollenGesucht;
     private List<Field> columns = new ArrayList<>();
 
-    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean nachRollenGesucht) {
+    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean maerchenFuerSucheBeruecksichtigen, boolean nachRollenGesucht) {
         this.schuelerList = schuelerList;
         this.kurse = kurse;
         this.semester = semester;
@@ -41,6 +42,7 @@ public class SchuelerSuchenTableData {
         this.maerchen = maerchen;
         this.gruppe = gruppe;
         this.elternmithilfeCode = elternmithilfeCode;
+        this.maerchenFuerSucheBeruecksichtigen = maerchenFuerSucheBeruecksichtigen;
         this.nachRollenGesucht = nachRollenGesucht;
         initColumns();
     }
@@ -221,6 +223,10 @@ public class SchuelerSuchenTableData {
 
     public ElternmithilfeCode getElternmithilfeCode() {
         return elternmithilfeCode;
+    }
+
+    public boolean isMaerchenFuerSucheBeruecksichtigen() {
+        return maerchenFuerSucheBeruecksichtigen;
     }
 
     public boolean isNachRollenGesucht() {

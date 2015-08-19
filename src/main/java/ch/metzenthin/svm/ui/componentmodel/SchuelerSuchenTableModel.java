@@ -103,6 +103,10 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
         return schuelerSuchenTableData.getElternmithilfeCode();
     }
 
+    public boolean isMaerchenFuerSucheBeruecksichtigen() {
+        return schuelerSuchenTableData.isMaerchenFuerSucheBeruecksichtigen();
+    }
+
     public boolean isNachRollenGesucht() {
         return schuelerSuchenTableData.isNachRollenGesucht();
     }

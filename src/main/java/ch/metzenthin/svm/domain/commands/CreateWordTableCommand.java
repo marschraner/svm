@@ -24,7 +24,7 @@ public class CreateWordTableCommand implements Command {
     private final List<Integer> columnWidths;
     private final List<List<Boolean>> boldCells;
     private final List<List<Integer>> mergedCells;
-    private final List<List<Integer>> maxLenghts;
+    private final List<List<int[]>> maxLenghts;
     private final String title1;
     private final String title2;
     private final File outputFile;
@@ -33,7 +33,7 @@ public class CreateWordTableCommand implements Command {
     private int leftMargin;
     private int rightMargin;
 
-    public CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<Integer>> maxLenghts, String title1, String title2, File outputFile, int topMargin, int bottomMargin, int leftMargin, int rightMargin) {
+    public CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLenghts, String title1, String title2, File outputFile, int topMargin, int bottomMargin, int leftMargin, int rightMargin) {
         this.headerRows = headerRows;
         this.datasets = datasets;
         this.columnWidths = columnWidths;
@@ -49,7 +49,7 @@ public class CreateWordTableCommand implements Command {
         this.rightMargin = rightMargin;
     }
 
-    public CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<Integer>> maxLenghts, String title1, String title2, File outputFile) {
+    public CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLenghts, String title1, String title2, File outputFile) {
         this(headerRows, datasets, columnWidths, boldCells, mergedCells, maxLenghts, title1, title2, outputFile, 90, 10, 650, 650);
     }
 
@@ -58,8 +58,7 @@ public class CreateWordTableCommand implements Command {
         // Source:http://blog.iprofs.nl/2012/09/06/creating-word-documents-with-docx4j/ (adapted)
 
         String FONT_SIZE_TITLE = "28";
-        String FONT_SIZE_CELLS_NORMAL = "20";
-        String FONT_SIZE_CELLS_SMALL = "16";
+        String[] FONT_SIZE_CELLS = {"20", "19", "18", "17", "16", "14", "12", "10"};  // Calibri Font size: 10, 9.5, 9, 8.5, 8, 7, 6, 5
 
         try {
             wordMLPackage = WordprocessingMLPackage.createPackage();
@@ -83,7 +82,7 @@ public class CreateWordTableCommand implements Command {
             boolean verticalSpace = (i == headerRows.size() - 1);
             // Iteration über Spalten
             for (int j = 0; j < headerRow.size(); j++) {
-                addTableCell(tableRow, headerRow.get(j), columnWidths.get(j), true, mergedRow.get(j), FONT_SIZE_CELLS_NORMAL, verticalSpace);
+                addTableCell(tableRow, headerRow.get(j), columnWidths.get(j), true, mergedRow.get(j), FONT_SIZE_CELLS[0], verticalSpace);
                 if (mergedRow.get(j) > 0) {
                     j += mergedRow.get(j) - 1;
                 }
@@ -99,14 +98,20 @@ public class CreateWordTableCommand implements Command {
                 List<String> datasetRow = datasetRows.get(i);
                 List<Boolean> boldsRow = boldCells.get(i);
                 List<Integer> mergedRow = mergedCells.get(i);
-                List<Integer> maxLenghtsRow = maxLenghts.get(i);
+                List<int[]> maxLenghtsRow = maxLenghts.get(i);
                 boolean verticalSpace = (i == datasetRows.size() - 1);
                 // Iteration über Spalten
                 for (int j = 0; j < datasetRow.size(); j++) {
-                    String fontSize = FONT_SIZE_CELLS_NORMAL;
-                    if (maxLenghtsRow.get(j) > 0 && datasetRow.get(j).length() > maxLenghtsRow.get(j)) {
-                        fontSize = FONT_SIZE_CELLS_SMALL;
+
+                    // Fontsize je nach Textlänge
+                    int k = 0;
+                    int[] maxLengthsCell = maxLenghtsRow.get(j);
+                    String fontSize = FONT_SIZE_CELLS[0];
+                    while (k < maxLengthsCell.length && k < FONT_SIZE_CELLS.length - 1 && maxLengthsCell[k] > 0 && datasetRow.get(j).length() > maxLengthsCell[k]) {
+                        fontSize = FONT_SIZE_CELLS[k + 1];
+                        k++;
                     }
+
                     addTableCell(tableRow, datasetRow.get(j), columnWidths.get(j), boldsRow.get(j), mergedRow.get(j), fontSize, verticalSpace);
                     if (mergedRow.get(j) > 0) {
                         j += mergedRow.get(j) - 1;

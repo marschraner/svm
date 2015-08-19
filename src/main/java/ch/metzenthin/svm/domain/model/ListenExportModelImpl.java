@@ -163,7 +163,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
             case ROLLENLISTE:
                 titleInit = getTitleMaerchen(schuelerSuchenTableModel) + ": Rollenliste";
                 if (schuelerSuchenTableModel.getGruppe() != null) {
-                    titleInit = titleInit + " Gruppe " + schuelerSuchenTableModel.getGruppe().toString().toUpperCase();
+                    titleInit = titleInit + " Gruppe " + schuelerSuchenTableModel.getGruppe().toString();
                 }
                 break;
             case ELTERNMITHILFE_LISTE:
@@ -172,7 +172,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                     titleInit = titleInit + " " + schuelerSuchenTableModel.getElternmithilfeCode().getBeschreibung();
                 }
                 if (schuelerSuchenTableModel.getGruppe() != null) {
-                    titleInit = titleInit + " Gruppe " + schuelerSuchenTableModel.getGruppe().toString().toUpperCase();
+                    titleInit = titleInit + " Gruppe " + schuelerSuchenTableModel.getGruppe().toString();
                 }
                 break;
             case LEHRKRAEFTE_ADRESSLISTE:

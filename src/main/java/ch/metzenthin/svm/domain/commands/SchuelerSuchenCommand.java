@@ -366,14 +366,20 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
                     selectStatementSb.append(" lower(trim(mae.rolle1)) like :maerchenrolleL1").append(i).append(" or");
                     selectStatementSb.append(" lower(trim(mae.rolle1)) like :maerchenrolleL2").append(i).append(" or");
                     selectStatementSb.append(" lower(trim(mae.rolle1)) like :maerchenrolleL3").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle1)) like :maerchenrolleL4").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle1)) like :maerchenrolleL5").append(i).append(" or");
                     selectStatementSb.append(" lower(trim(mae.rolle2)) = :maerchenrolleEq").append(i).append(" or");
                     selectStatementSb.append(" lower(trim(mae.rolle2)) like :maerchenrolleL1").append(i).append(" or");
                     selectStatementSb.append(" lower(trim(mae.rolle2)) like :maerchenrolleL2").append(i).append(" or");
                     selectStatementSb.append(" lower(trim(mae.rolle2)) like :maerchenrolleL3").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle2)) like :maerchenrolleL4").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle2)) like :maerchenrolleL5").append(i).append(" or");
                     selectStatementSb.append(" lower(trim(mae.rolle3)) = :maerchenrolleEq").append(i).append(" or");
                     selectStatementSb.append(" lower(trim(mae.rolle3)) like :maerchenrolleL1").append(i).append(" or");
                     selectStatementSb.append(" lower(trim(mae.rolle3)) like :maerchenrolleL2").append(i).append(" or");
                     selectStatementSb.append(" lower(trim(mae.rolle3)) like :maerchenrolleL3").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle3)) like :maerchenrolleL4").append(i).append(" or");
+                    selectStatementSb.append(" lower(trim(mae.rolle3)) like :maerchenrolleL5").append(i).append(" or");
                 }
                 // letztes or löschen
                 selectStatementSb.setLength(selectStatementSb.length() - 3);
@@ -526,6 +532,8 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
                 typedQuery.setParameter("maerchenrolleL1" + i, rolle + " %");
                 typedQuery.setParameter("maerchenrolleL2" + i, "% " + rolle);
                 typedQuery.setParameter("maerchenrolleL3" + i, "% " + rolle + " %");
+                typedQuery.setParameter("maerchenrolleL4" + i, rolle + ": %");
+                typedQuery.setParameter("maerchenrolleL5" + i, "% " + rolle + ": %");
             }
         }
         if (selectStatementSb.toString().contains(":elternmithilfeCode")) {

@@ -68,7 +68,7 @@ public class MonatsstatistikModelImpl extends AbstractModel implements Monatssta
         Map<Schueler, List<Kurs>> kurseMapTableData = determineKurseMapTableData(schuelerList, semesterTableData);
         Maerchen maerchenTableData = determineMaerchenTableData(svmModel, semesterTableData);
         Map<Schueler, Maercheneinteilung> maercheneinteilungenMapTableData = determineMaercheneinteilungenMapTableData(schuelerList, maerchenTableData);
-        return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData, null, null, null, maercheneinteilungenMapTableData, maerchenTableData, null, null, false);
+        return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData, null, null, null, maercheneinteilungenMapTableData, maerchenTableData, null, null, false, false);
     }
 
     private Semester determineSemesterTableData(SvmModel svmModel) {

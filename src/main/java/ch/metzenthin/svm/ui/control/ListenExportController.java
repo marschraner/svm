@@ -153,10 +153,10 @@ public class ListenExportController extends AbstractController {
                 comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ABSENZENLISTE);
             } else {
                 // Initialisierung
-                if (schuelerSuchenTableModel.isNachRollenGesucht()) {
-                    comboBoxListentyp.setSelectedItem(Listentyp.ROLLENLISTE);
-                } else if (schuelerSuchenTableModel.getElternmithilfeCode() != null) {
+                if (schuelerSuchenTableModel.getElternmithilfeCode() != null) {
                     comboBoxListentyp.setSelectedItem(Listentyp.ELTERNMITHILFE_LISTE);
+                } else if (schuelerSuchenTableModel.isMaerchenFuerSucheBeruecksichtigen()) {
+                    comboBoxListentyp.setSelectedItem(Listentyp.ROLLENLISTE);
                 } else {
                     comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ADRESSLISTE);
                 }
@@ -165,6 +165,7 @@ public class ListenExportController extends AbstractController {
             comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
             comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
             comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSETIKETTEN);
+            comboBoxListentyp.removeItem(Listentyp.ROLLENLISTE);
             comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_LISTE);
         }
         if (listenExportTyp == ListenExportTyp.LEHRKRAEFTE) {
