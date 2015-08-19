@@ -351,6 +351,8 @@ public class SchuelerPanel {
         gbc.ipady = 40;
         mainPanel.add(scrollPane1, gbc);
         textAreaBemerkungen = new JTextArea();
+        textAreaBemerkungen.setLineWrap(true);
+        textAreaBemerkungen.setWrapStyleWord(true);
         scrollPane1.setViewportView(textAreaBemerkungen);
         final JLabel label9 = new JLabel();
         label9.setText("Bemerkungen");

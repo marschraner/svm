@@ -7,6 +7,7 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
+import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.MaercheneinteilungenTableModel;
 
 /**
@@ -64,5 +65,6 @@ public interface MaercheneinteilungErfassenModel extends Model {
     ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel);
     boolean checkIfElternmithilfeHasEmail(SchuelerDatenblattModel schuelerDatenblattModel);
     boolean checkIfElternmithilfeHasTelefon(SchuelerDatenblattModel schuelerDatenblattModel);
+    Schueler findGeschwisterElternmithilfeBereitsErfasst(SchuelerDatenblattModel schuelerDatenblattModel);
     void speichern(MaercheneinteilungenTableModel maercheneinteilungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel);
 }

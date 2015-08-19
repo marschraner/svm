@@ -78,24 +78,24 @@ public class CreateKurselisteCommand extends CreateListeCommand {
 
         // Maximale Anzahl Zeichen (wenn überschritten wird Schrift verkleinert),
         // wenn 0 nicht zu prüfen
-        List<List<Integer>> maxLengths = new ArrayList<>();
+        List<List<int[]>> maxLengths = new ArrayList<>();
         // 1. Zeile
-        List<Integer> maxLengthsRow1 = new ArrayList<>();
-        maxLengthsRow1.add(0);
-        maxLengthsRow1.add(0);
-        maxLengthsRow1.add(22);
-        maxLengthsRow1.add(0);
-        maxLengthsRow1.add(28);
-        maxLengthsRow1.add(0);
+        List<int[]> maxLengthsRow1 = new ArrayList<>();
+        maxLengthsRow1.add(new int[]{0});
+        maxLengthsRow1.add(new int[]{0});
+        maxLengthsRow1.add(new int[]{22, 23, 24, 25, 26, 28});
+        maxLengthsRow1.add(new int[]{0});
+        maxLengthsRow1.add(new int[]{28, 29, 30, 31, 32, 34});
+        maxLengthsRow1.add(new int[]{0});
         maxLengths.add(maxLengthsRow1);
         // 2. Zeile
-        List<Integer> maxLengthsRow2 = new ArrayList<>();
-        maxLengthsRow2.add(0);
-        maxLengthsRow2.add(0);
-        maxLengthsRow2.add(22);
-        maxLengthsRow2.add(0);
-        maxLengthsRow2.add(28);
-        maxLengthsRow2.add(0);
+        List<int[]> maxLengthsRow2 = new ArrayList<>();
+        maxLengthsRow2.add(new int[]{0});
+        maxLengthsRow2.add(new int[]{20, 21, 22, 23, 24, 26});
+        maxLengthsRow2.add(new int[]{22, 23, 24, 25, 26, 28});
+        maxLengthsRow2.add(new int[]{0});
+        maxLengthsRow2.add(new int[]{28, 29, 30, 31, 32, 34});
+        maxLengthsRow2.add(new int[]{20, 21, 22, 23, 24, 26});
         maxLengths.add(maxLengthsRow2);
 
         // Header

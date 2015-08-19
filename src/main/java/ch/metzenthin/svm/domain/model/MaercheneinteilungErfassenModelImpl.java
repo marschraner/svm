@@ -5,6 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.commands.CheckElternmithilfeBereitsBeiGeschwisterErfasstCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateMaercheneinteilungCommand;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
@@ -259,7 +260,7 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
     public ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel) {
         List<ElternmithilfeCode> elternmithilfeCodeList = svmModel.getElternmithilfeCodesAll();
         // ElternmithilfeCode darf auch leer sein
-        if (elternmithilfeCodeList.size() == 0 || !elternmithilfeCodeList.get(0).isIdenticalWith(ELTERNMITHILFE_CODE_KEINER)) {
+        if (!elternmithilfeCodeList.get(0).isIdenticalWith(ELTERNMITHILFE_CODE_KEINER)) {
             elternmithilfeCodeList.add(0, ELTERNMITHILFE_CODE_KEINER);
         }
         return elternmithilfeCodeList.toArray(new ElternmithilfeCode[elternmithilfeCodeList.size()]);
@@ -463,10 +464,22 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
     }
 
     @Override
+    public Schueler findGeschwisterElternmithilfeBereitsErfasst(SchuelerDatenblattModel schuelerDatenblattModel) {
+        Schueler schueler = schuelerDatenblattModel.getSchueler();
+        CheckElternmithilfeBereitsBeiGeschwisterErfasstCommand checkElternmithilfeBereitsBeiGeschwisterErfasstCommand = new CheckElternmithilfeBereitsBeiGeschwisterErfasstCommand(schueler, getMaerchen());
+        checkElternmithilfeBereitsBeiGeschwisterErfasstCommand.execute();
+        return checkElternmithilfeBereitsBeiGeschwisterErfasstCommand.getGeschwisterMitBereitsErfassterElternmithilfe();
+    }
+
+    @Override
     public void speichern(MaercheneinteilungenTableModel maercheneinteilungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         maercheneinteilung.setSchueler(schuelerDatenblattModel.getSchueler());
+        ElternmithilfeCode elternmithilfeCodeToBeSaved = elternmithilfeCode;
+        if (elternmithilfeCode != null && elternmithilfeCode.isIdenticalWith(ELTERNMITHILFE_CODE_KEINER)) {
+            elternmithilfeCodeToBeSaved = null;
+        }
         CommandInvoker commandInvoker = getCommandInvoker();
-        SaveOrUpdateMaercheneinteilungCommand saveOrUpdateMaercheneinteilungCommand = new SaveOrUpdateMaercheneinteilungCommand(maercheneinteilung, elternmithilfeCode, maercheneinteilungOrigin, schuelerDatenblattModel.getSchueler().getMaercheneinteilungenAsList());
+        SaveOrUpdateMaercheneinteilungCommand saveOrUpdateMaercheneinteilungCommand = new SaveOrUpdateMaercheneinteilungCommand(maercheneinteilung, elternmithilfeCodeToBeSaved, maercheneinteilungOrigin, schuelerDatenblattModel.getSchueler().getMaercheneinteilungenAsList());
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaercheneinteilungCommand);
         // TableData mit von der Datenbank upgedateter Maercheneinteilung updaten
         maercheneinteilungenTableModel.getMaercheneinteilungenTableData().setMaercheneinteilungen(schuelerDatenblattModel.getSchueler().getMaercheneinteilungenAsList());
@@ -518,7 +531,7 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
 
     @Override
     public boolean isCompleted() {
-        return !(isSetBilderRolle1() && !isSetRolle1()) && !(isSetBilderRolle2() && !isSetRolle2()) && !(isSetBilderRolle3() && !isSetRolle3()) && !(isSetRolle3() && !isSetRolle2()) && !(isSetRolle2() && !isSetRolle1()) && !(isSetAnyMithilfeArtElement() && !isSetElternteilElternmithilfe());
+        return !(isSetBilderRolle1() && !isSetRolle1()) && !(isSetBilderRolle2() && !isSetRolle2()) && !(isSetBilderRolle3() && !isSetRolle3()) && !(isSetRolle3() && !isSetRolle2()) && !(isSetRolle2() && !isSetRolle1()) && !(isSetElternteilElternmithilfe() && !isSetElternmithilfeCode()) && !(isSetAnyMithilfeArtElement() && !isSetElternteilElternmithilfe());
     }
 
     @Override
@@ -537,6 +550,9 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
         }
         if (isSetRolle2() && !isSetRolle1()) {
             throw new SvmValidationException(3005, "Rolle nicht gesetzt", Field.ROLLE1);
+        }
+        if (isSetElternteilElternmithilfe() && !isSetElternmithilfeCode()) {
+            throw new SvmValidationException(3007, "Kein Eltern-Mithilfe-Code ausgewählt", Field.ELTERNMITHILFE_CODE);
         }
         if (isSetAnyMithilfeArtElement() && !isSetElternteilElternmithilfe()) {
             throw new SvmValidationException(3008, "Kein Elternteil für Mithilfe ausgewählt", Field.ELTERNMITHILFE);
@@ -571,8 +587,12 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
         return maercheneinteilung.getElternmithilfe() != null;
     }
 
+    private boolean isSetElternmithilfeCode() {
+        return elternmithilfeCode != null && !elternmithilfeCode.isIdenticalWith(ELTERNMITHILFE_CODE_KEINER);
+    }
+
     private boolean isSetAnyMithilfeArtElement() {
-        return elternmithilfeCode != null
+        return isSetElternmithilfeCode()
                 || maercheneinteilung.getKuchenVorstellung1()
                 || maercheneinteilung.getKuchenVorstellung2()
                 || maercheneinteilung.getKuchenVorstellung3()

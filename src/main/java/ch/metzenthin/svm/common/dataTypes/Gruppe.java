@@ -5,8 +5,8 @@ package ch.metzenthin.svm.common.dataTypes;
  */
 public enum Gruppe {
     ALLE(""),
-    A("a"),
-    B("b");
+    A("A"),
+    B("B");
 
     private String name;
 

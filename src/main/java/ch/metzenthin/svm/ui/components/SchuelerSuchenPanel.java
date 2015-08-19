@@ -1205,6 +1205,8 @@ public class SchuelerSuchenPanel {
         gbc.ipady = 40;
         maerchenPanel.add(scrollPane1, gbc);
         txtAreaRollen = new JTextArea();
+        txtAreaRollen.setLineWrap(true);
+        txtAreaRollen.setWrapStyleWord(true);
         scrollPane1.setViewportView(txtAreaRollen);
         final JPanel spacer54 = new JPanel();
         gbc = new GridBagConstraints();
@@ -1342,6 +1344,7 @@ public class SchuelerSuchenPanel {
         label21.setLabelFor(comboBoxLehrkraft);
         label22.setLabelFor(spinnerMaerchen);
         label23.setLabelFor(comboBoxGruppe);
+        label24.setLabelFor(txtAreaRollen);
         label25.setLabelFor(comboBoxElternmithilfeCode);
         label26.setLabelFor(txtKuchenVorstellung);
         label27.setLabelFor(txtZusatzattributMaerchen);

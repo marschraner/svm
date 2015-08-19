@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
 
@@ -92,30 +93,30 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
 
         // Maximale Anzahl Zeichen (wenn überschritten wird Schrift verkleinert),
         // wenn 0 nicht zu prüfen
-        List<List<Integer>> maxLengths = new ArrayList<>();
+        List<List<int[]>> maxLengths = new ArrayList<>();
         // 1. Zeile
-        List<Integer> maxLengthsRow1 = new ArrayList<>();
-        maxLengthsRow1.add(21);
-        maxLengthsRow1.add(25);
-        maxLengthsRow1.add(0);
-        maxLengthsRow1.add(0);
-        maxLengthsRow1.add(0);
+        List<int[]> maxLengthsRow1 = new ArrayList<>();
+        maxLengthsRow1.add(new int[]{21, 22, 23, 24, 25, 27});
+        maxLengthsRow1.add(new int[]{25, 26, 27, 28, 29, 31});
+        maxLengthsRow1.add(new int[]{0});
+        maxLengthsRow1.add(new int[]{0});
+        maxLengthsRow1.add(new int[]{0});
         maxLengths.add(maxLengthsRow1);
         // 2. Zeile
-        List<Integer> maxLengthsRow2 = new ArrayList<>();
-        maxLengthsRow2.add(21);
-        maxLengthsRow2.add(25);
-        maxLengthsRow2.add(0);
-        maxLengthsRow2.add(0);
-        maxLengthsRow2.add(0);
+        List<int[]> maxLengthsRow2 = new ArrayList<>();
+        maxLengthsRow2.add(new int[]{21, 22, 23, 24, 25, 27});
+        maxLengthsRow2.add(new int[]{25, 26, 27, 28, 29, 31});
+        maxLengthsRow2.add(new int[]{0});
+        maxLengthsRow2.add(new int[]{0});
+        maxLengthsRow2.add(new int[]{0});
         maxLengths.add(maxLengthsRow2);
         // 3. Zeile
-        List<Integer> maxLengthsRow3 = new ArrayList<>();
-        maxLengthsRow3.add(0);
-        maxLengthsRow3.add(38);
-        maxLengthsRow3.add(0);
-        maxLengthsRow3.add(0);
-        maxLengthsRow3.add(0);
+        List<int[]> maxLengthsRow3 = new ArrayList<>();
+        maxLengthsRow3.add(new int[]{0});
+        maxLengthsRow3.add(new int[]{38, 39, 40, 41, 43, 45});
+        maxLengthsRow3.add(new int[]{0});
+        maxLengthsRow3.add(new int[]{0});
+        maxLengthsRow3.add(new int[]{27, 28, 29, 30, 31, 33});
         maxLengths.add(maxLengthsRow3);
 
         // Header
@@ -149,15 +150,22 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         // Inhalt
         List<Schueler> schuelerList = schuelerSuchenTableModel.getSchuelerList();
         Map<Schueler, Maercheneinteilung> maercheneinteilungen = schuelerSuchenTableModel.getMaercheneinteilungen();
-        List<List<List<String>>> datasets = new ArrayList<>();
-        for (Schueler schueler : schuelerList) {
+
+        // Map mit Elternmithilfe als Key, damit nach Elternmithilfe sortiert werden kann
+        Map<Angehoeriger, Maercheneinteilung> maercheneinteilungenElternmithilfe = new TreeMap<>();
+        for (Schueler schueler: schuelerList) {
             Maercheneinteilung maercheneinteilung = maercheneinteilungen.get(schueler);
             if (maercheneinteilung == null || maercheneinteilung.getElternmithilfe() == null) {
                 continue;
             }
             Angehoeriger elternmithilfe = (maercheneinteilung.getElternmithilfe() == Elternteil.MUTTER ? schueler.getMutter() : schueler.getVater());
-            List<List<String>> dataset = new ArrayList<>();
+            maercheneinteilungenElternmithilfe.put(elternmithilfe, maercheneinteilung);
+        }
 
+        List<List<List<String>>> datasets = new ArrayList<>();
+        for (Angehoeriger elternmithilfe : maercheneinteilungenElternmithilfe.keySet()) {
+            List<List<String>> dataset = new ArrayList<>();
+            Maercheneinteilung maercheneinteilung = maercheneinteilungenElternmithilfe.get(elternmithilfe);
             // Auf mehrere Zeilen aufzusplittende Felder:
             List<String> elternmithilfeCodeLines = null;
             if (maercheneinteilung.getElternmithilfeCode() != null) {

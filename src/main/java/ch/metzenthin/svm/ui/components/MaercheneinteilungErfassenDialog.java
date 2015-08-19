@@ -10,8 +10,6 @@ import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.ui.componentmodel.MaercheneinteilungenTableModel;
 import ch.metzenthin.svm.ui.control.MaercheneinteilungErfassenController;
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -89,12 +87,10 @@ public class MaercheneinteilungErfassenDialog extends JDialog {
         maercheneinteilungErfassenController.setCheckBoxKuchenVorstellung7(checkBoxKuchenVorstellung7);
         maercheneinteilungErfassenController.setCheckBoxKuchenVorstellung8(checkBoxKuchenVorstellung8);
         maercheneinteilungErfassenController.setCheckBoxKuchenVorstellung9(checkBoxKuchenVorstellung9);
-        maercheneinteilungErfassenController.setComboBoxMaerchen(comboBoxMaerchen);
         maercheneinteilungErfassenController.setTxtZusatzattribut(txtZusatzattribut);
         maercheneinteilungErfassenController.setTxtBemerkungen(txtBemerkungen);
         maercheneinteilungErfassenController.setBtnSpeichern(btnSpeichern);
         maercheneinteilungErfassenController.setBtnAbbrechen(btnAbbrechen);
-        maercheneinteilungErfassenController.setErrLblMaerchen(errLblMaerchen);
         maercheneinteilungErfassenController.setErrLblGruppe(errLblGruppe);
         maercheneinteilungErfassenController.setErrLblRolle1(errLblRolle1);
         maercheneinteilungErfassenController.setErrLblBilderRolle1(errLblBilderRolle1);
@@ -106,6 +102,8 @@ public class MaercheneinteilungErfassenDialog extends JDialog {
         maercheneinteilungErfassenController.setErrLblElternmithilfeCode(errLblElternmithilfeCode);
         maercheneinteilungErfassenController.setErrLblZusatzattribut(errLblZusatzattribut);
         maercheneinteilungErfassenController.setErrLblBemerkungen(errLblBemerkungen);
+        maercheneinteilungErfassenController.setComboBoxMaerchen(comboBoxMaerchen);   // muss am Schluss aufgerufen werden!
+        maercheneinteilungErfassenController.setErrLblMaerchen(errLblMaerchen);
         maercheneinteilungErfassenController.constructionDone();
     }
 

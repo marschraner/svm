@@ -237,7 +237,10 @@
             <children>
               <component id="62ce0" class="javax.swing.JTextArea" binding="textAreaBemerkungen">
                 <constraints/>
-                <properties/>
+                <properties>
+                  <lineWrap value="true"/>
+                  <wrapStyleWord value="true"/>
+                </properties>
               </component>
             </children>
           </scrollpane>

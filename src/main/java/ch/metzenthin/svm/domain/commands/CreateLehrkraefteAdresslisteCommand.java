@@ -97,33 +97,33 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
 
         // Maximale Anzahl Zeichen (wenn überschritten wird Schrift verkleinert),
         // wenn 0 nicht zu prüfen
-        List<List<Integer>> maxLengths = new ArrayList<>();
+        List<List<int[]>> maxLengths = new ArrayList<>();
         // 1. Zeile
-        List<Integer> maxLengthsRow1 = new ArrayList<>();
-        maxLengthsRow1.add(0);
-        maxLengthsRow1.add(21);
-        maxLengthsRow1.add(25);
-        maxLengthsRow1.add(0);
-        maxLengthsRow1.add(0);
-        maxLengthsRow1.add(0);
+        List<int[]> maxLengthsRow1 = new ArrayList<>();
+        maxLengthsRow1.add(new int[]{0});
+        maxLengthsRow1.add(new int[]{21, 22, 23, 24, 25, 27});
+        maxLengthsRow1.add(new int[]{25, 26, 27, 28, 29, 31});
+        maxLengthsRow1.add(new int[]{0});
+        maxLengthsRow1.add(new int[]{0});
+        maxLengthsRow1.add(new int[]{0});
         maxLengths.add(maxLengthsRow1);
         // 2. Zeile
-        List<Integer> maxLengthsRow2 = new ArrayList<>();
-        maxLengthsRow2.add(0);
-        maxLengthsRow2.add(21);
-        maxLengthsRow2.add(25);
-        maxLengthsRow2.add(0);
-        maxLengthsRow2.add(0);
-        maxLengthsRow2.add(0);
+        List<int[]> maxLengthsRow2 = new ArrayList<>();
+        maxLengthsRow2.add(new int[]{0});
+        maxLengthsRow2.add(new int[]{21, 22, 23, 24, 25, 27});
+        maxLengthsRow2.add(new int[]{25, 26, 27, 28, 29, 31});
+        maxLengthsRow2.add(new int[]{0});
+        maxLengthsRow2.add(new int[]{0});
+        maxLengthsRow2.add(new int[]{0});
         maxLengths.add(maxLengthsRow2);
         // 3. Zeile
-        List<Integer> maxLengthsRow3 = new ArrayList<>();
-        maxLengthsRow3.add(0);
-        maxLengthsRow3.add(0);
-        maxLengthsRow3.add(38);
-        maxLengthsRow3.add(0);
-        maxLengthsRow3.add(0);
-        maxLengthsRow3.add(0);
+        List<int[]> maxLengthsRow3 = new ArrayList<>();
+        maxLengthsRow3.add(new int[]{0});
+        maxLengthsRow3.add(new int[]{0});
+        maxLengthsRow3.add(new int[]{38, 39, 40, 41, 43, 45});
+        maxLengthsRow3.add(new int[]{0});
+        maxLengthsRow3.add(new int[]{0});
+        maxLengthsRow3.add(new int[]{0});
         maxLengths.add(maxLengthsRow3);
 
         // Header
@@ -133,7 +133,7 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
         headerCellsRow1.add("");
         headerCellsRow1.add("Name");
         headerCellsRow1.add("Vorname");
-        headerCellsRow1.add("Geb.Datum");
+        headerCellsRow1.add("Geburtsdatum");
         headerCellsRow1.add("Festnetz");
         headerCellsRow1.add("Vertretungsmöglichkeiten");
         header.add(headerCellsRow1);

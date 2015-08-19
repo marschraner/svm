@@ -1128,6 +1128,7 @@
                           <gridbag weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
+                          <labelFor value="19176"/>
                           <text value="Rolle(n)"/>
                         </properties>
                       </component>
@@ -1141,7 +1142,10 @@
                         <children>
                           <component id="19176" class="javax.swing.JTextArea" binding="txtAreaRollen">
                             <constraints/>
-                            <properties/>
+                            <properties>
+                              <lineWrap value="true"/>
+                              <wrapStyleWord value="true"/>
+                            </properties>
                           </component>
                         </children>
                       </scrollpane>
