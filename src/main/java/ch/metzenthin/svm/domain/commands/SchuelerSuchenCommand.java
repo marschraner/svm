@@ -383,7 +383,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
                 }
                 // letztes or löschen
                 selectStatementSb.setLength(selectStatementSb.length() - 3);
-                selectStatementSb.append(")");
+                selectStatementSb.append(") and");
             }
             if (elternmithilfeCode != SchuelerSuchenModel.ELTERNMITHILFE_CODE_ALLE) {
                 selectStatementSb.append(" mae.elternmithilfeCode = :elternmithilfeCode and");

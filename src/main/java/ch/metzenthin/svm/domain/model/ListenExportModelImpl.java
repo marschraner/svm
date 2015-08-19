@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.common.dataTypes.Elternteil;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Listentyp;
 import ch.metzenthin.svm.common.utils.SvmProperties;
@@ -7,12 +8,15 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.Kurs;
+import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
+import ch.metzenthin.svm.persistence.entities.Person;
+import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
 import java.io.File;
-import java.util.Properties;
+import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 
@@ -110,11 +114,6 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 templateFile = createListeFromTemplateCommand.getTemplateFile();
                 result = createListeFromTemplateCommand.getResult();
                 break;
-            case SCHUELER_ADRESSETIKETTEN:
-                CreateAdressenCsvFileCommand createAdressenCsvFileCommandSchueler = new CreateAdressenCsvFileCommand(schuelerSuchenTableModel.getSchuelerList(), outputFile);
-                commandInvoker.executeCommand(createAdressenCsvFileCommandSchueler);
-                result = createAdressenCsvFileCommandSchueler.getResult();
-                break;
             case ROLLENLISTE:
                 CreateRollenlisteCommand createRollenlisteCommand = new CreateRollenlisteCommand(schuelerSuchenTableModel, titel, outputFile);
                 commandInvoker.executeCommand(createRollenlisteCommand);
@@ -124,6 +123,55 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 CreateElternmithilfeListeCommand createElternmithilfeListeCommand = new CreateElternmithilfeListeCommand(schuelerSuchenTableModel, titel, outputFile);
                 commandInvoker.executeCommand(createElternmithilfeListeCommand);
                 result = createElternmithilfeListeCommand.getResult();
+                break;
+            case SCHUELER_ADRESSETIKETTEN:
+                CreateAdressenCsvFileCommand createAdressenCsvFileCommandSchueler = new CreateAdressenCsvFileCommand(schuelerSuchenTableModel.getSchuelerList(), outputFile);
+                commandInvoker.executeCommand(createAdressenCsvFileCommandSchueler);
+                result = createAdressenCsvFileCommandSchueler.getResult();
+                break;
+            case RECHNUNGSEMPFAENGER_ADRESSETIKETTEN:
+                Set<Person> rechnungsempfaengerSet = new HashSet<>();
+                for (Schueler schueler : schuelerSuchenTableModel.getSchuelerList()) {
+                    rechnungsempfaengerSet.add(schueler.getRechnungsempfaenger());
+                }
+                List<Person> rechnungsempfaengerList = new ArrayList<>(rechnungsempfaengerSet);
+                Collections.sort(rechnungsempfaengerList);
+                CreateAdressenCsvFileCommand createAdressenCsvFileCommandRechnungsempfaenger = new CreateAdressenCsvFileCommand(rechnungsempfaengerList, outputFile);
+                commandInvoker.executeCommand(createAdressenCsvFileCommandRechnungsempfaenger);
+                result = createAdressenCsvFileCommandRechnungsempfaenger.getResult();
+                break;
+            case MUTTER_ODER_VATER_ADRESSETIKETTEN:
+                Set<Person> mutterOderVaterSet = new HashSet<>();
+                for (Schueler schueler : schuelerSuchenTableModel.getSchuelerList()) {
+                    if (schueler.getMutter() != null && schueler.getMutter().getAdresse() != null) {
+                        mutterOderVaterSet.add(schueler.getMutter());
+                    } else if (schueler.getVater() != null && schueler.getVater().getAdresse() != null) {
+                        mutterOderVaterSet.add(schueler.getVater());
+                    } else {
+                        mutterOderVaterSet.add(schueler.getRechnungsempfaenger());
+                    }
+                }
+                List<Person> mutterOderVaterList = new ArrayList<>(mutterOderVaterSet);
+                Collections.sort(mutterOderVaterList);
+                CreateAdressenCsvFileCommand createAdressenCsvFileCommandMutterOderVater = new CreateAdressenCsvFileCommand(mutterOderVaterList, outputFile);
+                commandInvoker.executeCommand(createAdressenCsvFileCommandMutterOderVater);
+                result = createAdressenCsvFileCommandMutterOderVater.getResult();
+                break;
+            case ELTERNMITHILFE_ADRESSETIKETTEN:
+                Set<Person> elternmithilfeSet = new HashSet<>();
+                Map<Schueler, Maercheneinteilung> maercheneinteilungen = schuelerSuchenTableModel.getMaercheneinteilungen();
+                for (Schueler schueler : maercheneinteilungen.keySet()) {
+                    Maercheneinteilung maercheneinteilung = maercheneinteilungen.get(schueler);
+                    if (maercheneinteilung == null || maercheneinteilung.getElternmithilfe() == null) {
+                        continue;
+                    }
+                    elternmithilfeSet.add((maercheneinteilung.getElternmithilfe() == Elternteil.MUTTER ? schueler.getMutter() : schueler.getVater()));
+                }
+                List<Person> elternmithilfeList = new ArrayList<>(elternmithilfeSet);
+                Collections.sort(elternmithilfeList);
+                CreateAdressenCsvFileCommand createAdressenCsvFileCommandElternmithilfe = new CreateAdressenCsvFileCommand(elternmithilfeList, outputFile);
+                commandInvoker.executeCommand(createAdressenCsvFileCommandElternmithilfe);
+                result = createAdressenCsvFileCommandElternmithilfe.getResult();
                 break;
             case LEHRKRAEFTE_ADRESSLISTE:
                 CreateLehrkraefteAdresslisteCommand createLehrkraefteAdresslisteCommand = new CreateLehrkraefteAdresslisteCommand(lehrkraefteTableModel, titel, outputFile);
@@ -158,8 +206,6 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
             case SCHUELER_ABSENZENLISTE:
                 titleInit = getTitleSpecificKurs(schuelerSuchenTableModel);
                 break;
-            case SCHUELER_ADRESSETIKETTEN:
-                break;
             case ROLLENLISTE:
                 titleInit = getTitleMaerchen(schuelerSuchenTableModel) + ": Rollenliste";
                 if (schuelerSuchenTableModel.getGruppe() != null) {
@@ -174,6 +220,14 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 if (schuelerSuchenTableModel.getGruppe() != null) {
                     titleInit = titleInit + " Gruppe " + schuelerSuchenTableModel.getGruppe().toString();
                 }
+                break;
+            case SCHUELER_ADRESSETIKETTEN:
+                break;
+            case RECHNUNGSEMPFAENGER_ADRESSETIKETTEN:
+                break;
+            case MUTTER_ODER_VATER_ADRESSETIKETTEN:
+                break;
+            case ELTERNMITHILFE_ADRESSETIKETTEN:
                 break;
             case LEHRKRAEFTE_ADRESSLISTE:
                 titleInit = "Lehrkräfte";

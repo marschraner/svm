@@ -145,11 +145,15 @@ public class ListenExportController extends AbstractController {
                 // Keine Märchenlisten, falls kein Märchen oder keine Märcheneinteilungen
                 comboBoxListentyp.removeItem(Listentyp.ROLLENLISTE);
                 comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_LISTE);
+                comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_ADRESSETIKETTEN);
             }
             if (schuelerSuchenTableModel.getSchuelerList().size() == 0) {
                 // Keine Adressliste und Etiketten, falls keine Schüler (bei leerer Kurstabelle)
                 comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
                 comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSETIKETTEN);
+                comboBoxListentyp.removeItem(Listentyp.RECHNUNGSEMPFAENGER_ADRESSETIKETTEN);
+                comboBoxListentyp.removeItem(Listentyp.MUTTER_ODER_VATER_ADRESSETIKETTEN);
+                comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_ADRESSETIKETTEN);
                 comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ABSENZENLISTE);
             } else {
                 // Initialisierung
@@ -164,9 +168,12 @@ public class ListenExportController extends AbstractController {
         } else {
             comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
             comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
-            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSETIKETTEN);
             comboBoxListentyp.removeItem(Listentyp.ROLLENLISTE);
             comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_LISTE);
+            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSETIKETTEN);
+            comboBoxListentyp.removeItem(Listentyp.RECHNUNGSEMPFAENGER_ADRESSETIKETTEN);
+            comboBoxListentyp.removeItem(Listentyp.MUTTER_ODER_VATER_ADRESSETIKETTEN);
+            comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_ADRESSETIKETTEN);
         }
         if (listenExportTyp == ListenExportTyp.LEHRKRAEFTE) {
             // Initialisierung
@@ -388,7 +395,7 @@ public class ListenExportController extends AbstractController {
     }
 
     void enableDisableFields() {
-        if (listenExportModel.getListentyp() != null && (listenExportModel.getListentyp() == Listentyp.SCHUELER_ADRESSETIKETTEN || listenExportModel.getListentyp() == Listentyp.LEHRKRAEFTE_ADRESSETIKETTEN)) {
+        if (listenExportModel.getListentyp() != null && listenExportModel.getListentyp().getFiletyp() == Filetyp.CSV) {
             disableTitel();
         } else {
             enableTitel();
@@ -437,12 +444,16 @@ public class ListenExportController extends AbstractController {
     @Override
     void showErrMsg(SvmValidationException e) {
         if (e.getAffectedFields().contains(Field.LISTENTYP)) {
-            errLblListentyp.setVisible(true);
-            errLblListentyp.setText(e.getMessage());
+            if (errLblListentyp != null) {
+                errLblListentyp.setVisible(true);
+                errLblListentyp.setText(e.getMessage());
+            }
         }
         if (e.getAffectedFields().contains(Field.TITEL)) {
-            errLblTitel.setVisible(true);
-            errLblTitel.setText(e.getMessage());
+            if (errLblTitel != null) {
+                errLblTitel.setVisible(true);
+                errLblTitel.setText(e.getMessage());
+            }
         }
     }
 
