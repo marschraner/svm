@@ -37,7 +37,7 @@ public class SchuelerSuchenTableDataTest {
         schuelerList.add(schueler3);
         Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.FRAU, "V3A", "N3A", "Festnetz3A", "Natel3A", "Email3A");
         schueler3.setRechnungsempfaenger(angehoeriger3);
-        schuelerSuchenTableData = new SchuelerSuchenTableData(schuelerList, new HashMap<Schueler, List<Kurs>>(), null, null, null, null, new HashMap<Schueler, Maercheneinteilung>(), null);
+        schuelerSuchenTableData = new SchuelerSuchenTableData(schuelerList, new HashMap<Schueler, List<Kurs>>(), null, null, null, null, new HashMap<Schueler, Maercheneinteilung>(), null, null, null, false);
     }
 
     @Test
@@ -54,10 +54,7 @@ public class SchuelerSuchenTableDataTest {
     public void testGetValueAt() throws Exception {
         assertEquals("V2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.VORNAME.toString())));
         assertEquals("N2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.NACHNAME.toString())));
-        assertEquals(new GregorianCalendar(2002, Calendar.APRIL, 12), schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.GEBURTSDATUM.toString())));
-        assertEquals("Festnetz2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.FESTNETZ.toString())));
-        assertEquals("Natel2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.NATEL.toString())));
-        assertEquals("Email2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.EMAIL.toString())));
+        assertEquals(new GregorianCalendar(2002, Calendar.APRIL, 12), schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.GEBURTSDATUM_SHORT.toString())));
         assertEquals("Strasse2 99", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.STRASSE_HAUSNUMMER.toString())));
         assertEquals("8000", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.PLZ.toString())));
         assertEquals("Ort2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.ORT.toString())));
@@ -67,14 +64,14 @@ public class SchuelerSuchenTableDataTest {
     public void testGetValueAt_Mutter() throws Exception {
         assertEquals("V1A N1A", schuelerSuchenTableData.getValueAt(0, getColumnIndex(Field.MUTTER.toString())));
         assertNull(schuelerSuchenTableData.getValueAt(0, getColumnIndex(Field.VATER.toString())));
-        assertEquals("V1A N1A", schuelerSuchenTableData.getValueAt(0, getColumnIndex(Field.RECHNUNGSEMPFAENGER.toString())));
+        assertEquals("Mutter", schuelerSuchenTableData.getValueAt(0, getColumnIndex(Field.RECHNUNGSEMPFAENGER.toString())));
     }
 
     @Test
     public void testGetValueAt_Vater() throws Exception {
         assertEquals("V2A N2A", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.VATER.toString())));
         assertNull(schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.MUTTER.toString())));
-        assertEquals("V2A N2A", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.RECHNUNGSEMPFAENGER.toString())));
+        assertEquals("Vater", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.RECHNUNGSEMPFAENGER.toString())));
     }
 
     @Test

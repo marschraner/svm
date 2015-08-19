@@ -2,9 +2,11 @@ package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.common.dataTypes.Elternteil;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
+import ch.metzenthin.svm.common.utils.StringNumberComparator;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Comparator;
 
 /**
  * @author Martin Schraner
@@ -122,7 +124,9 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
 
     @Override
     public int compareTo(Maercheneinteilung otherMaercheneinteilung) {
-        return otherMaercheneinteilung.getMaerchen().getSchuljahr().compareTo(this.getMaerchen().getSchuljahr());
+        // Sortierung nach Rolle 1
+        Comparator<String> stringNumberComparator = new StringNumberComparator();
+        return stringNumberComparator.compare(rolle1, otherMaercheneinteilung.rolle1);
     }
 
     public boolean isIdenticalWith(Maercheneinteilung otherMaercheneinteilung) {

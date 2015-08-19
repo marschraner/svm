@@ -147,7 +147,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.addActionListener(this);
         menuMaerchen.add(menuItem);
 
-        menuItem = new JMenuItem("Elternmithilfe-Codes verwalten");
+        menuItem = new JMenuItem("Eltern-Mithilfe-Codes verwalten");
         menuItem.setMnemonic(KeyEvent.VK_E);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.ALT_MASK));
         menuItem.setActionCommand("elternmithilfeCodesVerwalten");
@@ -282,7 +282,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
                     onFrameAbbrechen();
                 }
             });
-            setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Elternmithilfe-Codes verwalten");
+            setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Eltern-Mithilfe-Codes verwalten");
 
         } else if ("maerchenVerwalten".equals(e.getActionCommand())) {
             MaerchensPanel maerchensPanel = new MaerchensPanel(svmContext);

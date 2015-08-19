@@ -43,9 +43,9 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         columnWidths.add(2000);
         columnWidths.add(0);
 
-        // Bold / horiz. merged:
+        // Bold / horiz. merged (Anzahl zu mergende Zellen; 0: kein Merging):
         List<List<Boolean>> boldCells = new ArrayList<>();
-        List<List<Boolean>> mergedCells = new ArrayList<>();
+        List<List<Integer>> mergedCells = new ArrayList<>();
         // 1. Zeile
         List<Boolean> boldRow1 = new ArrayList<>();
         boldRow1.add(false);
@@ -56,14 +56,14 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         boldRow1.add(false);
         boldRow1.add(false);
         boldCells.add(boldRow1);
-        List<Boolean> mergedRow1 = new ArrayList<>();
-        mergedRow1.add(false);
-        mergedRow1.add(false);
-        mergedRow1.add(false);
-        mergedRow1.add(false);
-        mergedRow1.add(false);
-        mergedRow1.add(false);
-        mergedRow1.add(false);
+        List<Integer> mergedRow1 = new ArrayList<>();
+        mergedRow1.add(0);
+        mergedRow1.add(0);
+        mergedRow1.add(0);
+        mergedRow1.add(0);
+        mergedRow1.add(0);
+        mergedRow1.add(0);
+        mergedRow1.add(0);
         mergedCells.add(mergedRow1);
         // 2. Zeile
         List<Boolean> boldRow2 = new ArrayList<>();
@@ -75,14 +75,14 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         boldRow2.add(false);
         boldRow2.add(false);
         boldCells.add(boldRow2);
-        List<Boolean> mergedRow2 = new ArrayList<>();
-        mergedRow2.add(false);
-        mergedRow2.add(false);
-        mergedRow2.add(false);
-        mergedRow2.add(false);
-        mergedRow2.add(false);
-        mergedRow2.add(true);
-        mergedRow2.add(false);
+        List<Integer> mergedRow2 = new ArrayList<>();
+        mergedRow2.add(0);
+        mergedRow2.add(0);
+        mergedRow2.add(0);
+        mergedRow2.add(0);
+        mergedRow2.add(0);
+        mergedRow2.add(0);
+        mergedRow2.add(0);
         mergedCells.add(mergedRow2);
         // 3. Zeile
         List<Boolean> boldRow3 = new ArrayList<>();
@@ -94,14 +94,14 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         boldRow3.add(false);
         boldRow3.add(false);
         boldCells.add(boldRow3);
-        List<Boolean> mergedRow3 = new ArrayList<>();
-        mergedRow3.add(false);
-        mergedRow3.add(false);
-        mergedRow3.add(true);
-        mergedRow3.add(false);
-        mergedRow3.add(false);
-        mergedRow3.add(true);
-        mergedRow3.add(false);
+        List<Integer> mergedRow3 = new ArrayList<>();
+        mergedRow3.add(0);
+        mergedRow3.add(0);
+        mergedRow3.add(2);
+        mergedRow3.add(0);
+        mergedRow3.add(0);
+        mergedRow3.add(0);
+        mergedRow3.add(0);
         mergedCells.add(mergedRow3);
 
         // Maximale Anzahl Zeichen (wenn überschritten wird Schrift verkleinert),

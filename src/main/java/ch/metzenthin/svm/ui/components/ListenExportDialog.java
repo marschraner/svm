@@ -152,7 +152,7 @@ public class ListenExportDialog extends JDialog {
         gbc.gridy = 4;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 350;
+        gbc.ipadx = 450;
         panel1.add(spacer6, gbc);
         errLblListentyp = new JLabel();
         errLblListentyp.setText("errLblListentyp");

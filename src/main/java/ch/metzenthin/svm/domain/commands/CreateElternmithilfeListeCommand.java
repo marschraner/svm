@@ -1,29 +1,31 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
-import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
+import ch.metzenthin.svm.common.dataTypes.Elternteil;
+import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
+import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 
-import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
 
 /**
  * @author Martin Schraner
  */
-public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
+public class CreateElternmithilfeListeCommand extends CreateListeCommand {
 
     // input
-    private final LehrkraefteTableModel lehrkraefteTableModel;
+    private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final String titel;
     private final File outputFile;
 
-    public CreateLehrkraefteAdresslisteCommand(LehrkraefteTableModel lehrkraefteTableModel, String titel, File outputFile) {
-        this.lehrkraefteTableModel = lehrkraefteTableModel;
+    public CreateElternmithilfeListeCommand(SchuelerSuchenTableModel schuelerSuchenTableModel, String titel, File outputFile) {
+        this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.titel = titel;
         this.outputFile = outputFile;
     }
@@ -33,19 +35,17 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
 
         // Spaltenbreiten
         List<Integer> columnWidths = new ArrayList<>();
-        columnWidths.add(0);
         columnWidths.add(2500);
         columnWidths.add(2800);
         columnWidths.add(1800);
-        columnWidths.add(1600);
-        columnWidths.add(2900);
+        columnWidths.add(3100);
+        columnWidths.add(1000);
 
-        // Bold / horiz. merged (Anzahl zu mergende Zellen; 0: kein Merging):
+        // Bold / horiz. merged (Anzahl zu mergende Zellen; 0: kein Merging)::
         List<List<Boolean>> boldCells = new ArrayList<>();
         List<List<Integer>> mergedCells = new ArrayList<>();
         // 1. Zeile
         List<Boolean> boldRow1 = new ArrayList<>();
-        boldRow1.add(false);
         boldRow1.add(true);
         boldRow1.add(true);
         boldRow1.add(false);
@@ -53,7 +53,6 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
         boldRow1.add(false);
         boldCells.add(boldRow1);
         List<Integer> mergedRow1 = new ArrayList<>();
-        mergedRow1.add(0);
         mergedRow1.add(0);
         mergedRow1.add(0);
         mergedRow1.add(0);
@@ -67,10 +66,8 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
         boldRow2.add(false);
         boldRow2.add(false);
         boldRow2.add(false);
-        boldRow2.add(false);
         boldCells.add(boldRow2);
         List<Integer> mergedRow2 = new ArrayList<>();
-        mergedRow2.add(0);
         mergedRow2.add(0);
         mergedRow2.add(0);
         mergedRow2.add(0);
@@ -84,10 +81,8 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
         boldRow3.add(false);
         boldRow3.add(false);
         boldRow3.add(false);
-        boldRow3.add(false);
         boldCells.add(boldRow3);
         List<Integer> mergedRow3 = new ArrayList<>();
-        mergedRow3.add(0);
         mergedRow3.add(0);
         mergedRow3.add(2);
         mergedRow3.add(0);
@@ -100,7 +95,6 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
         List<List<Integer>> maxLengths = new ArrayList<>();
         // 1. Zeile
         List<Integer> maxLengthsRow1 = new ArrayList<>();
-        maxLengthsRow1.add(0);
         maxLengthsRow1.add(21);
         maxLengthsRow1.add(25);
         maxLengthsRow1.add(0);
@@ -109,7 +103,6 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
         maxLengths.add(maxLengthsRow1);
         // 2. Zeile
         List<Integer> maxLengthsRow2 = new ArrayList<>();
-        maxLengthsRow2.add(0);
         maxLengthsRow2.add(21);
         maxLengthsRow2.add(25);
         maxLengthsRow2.add(0);
@@ -118,7 +111,6 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
         maxLengths.add(maxLengthsRow2);
         // 3. Zeile
         List<Integer> maxLengthsRow3 = new ArrayList<>();
-        maxLengthsRow3.add(0);
         maxLengthsRow3.add(0);
         maxLengthsRow3.add(38);
         maxLengthsRow3.add(0);
@@ -130,69 +122,71 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
         List<List<String>> header = new ArrayList<>();
         // 1. Zeile
         List<String> headerCellsRow1 = new ArrayList<>();
-        headerCellsRow1.add("");
         headerCellsRow1.add("Name");
         headerCellsRow1.add("Vorname");
-        headerCellsRow1.add("Geb.Datum");
         headerCellsRow1.add("Festnetz");
-        headerCellsRow1.add("Vertretungsmöglichkeiten");
+        headerCellsRow1.add("Mithilfe");
+        headerCellsRow1.add("Gruppe");
         header.add(headerCellsRow1);
         // 2. Zeile
         List<String> headerCellsRow2 = new ArrayList<>();
-        headerCellsRow2.add("");
         headerCellsRow2.add("Strasse/Nr.");
         headerCellsRow2.add("PLZ/Ort");
-        headerCellsRow2.add("AHV-Nummer");
         headerCellsRow2.add("Natel");
+        headerCellsRow2.add("");
         headerCellsRow2.add("");
         header.add(headerCellsRow2);
         // 3. Spalte
         List<String> headerCellsRow3 = new ArrayList<>();
         headerCellsRow3.add("");
-        headerCellsRow3.add("");
         headerCellsRow3.add("E-Mail");
         headerCellsRow3.add("");
         headerCellsRow3.add("");
         headerCellsRow3.add("");
+
         header.add(headerCellsRow3);
 
         // Inhalt
-        List<Lehrkraft> lehrkraefte = lehrkraefteTableModel.getLehrkraefte();
+        List<Schueler> schuelerList = schuelerSuchenTableModel.getSchuelerList();
+        Map<Schueler, Maercheneinteilung> maercheneinteilungen = schuelerSuchenTableModel.getMaercheneinteilungen();
         List<List<List<String>>> datasets = new ArrayList<>();
-        int i = 0;
-        for (Lehrkraft lehrkraft : lehrkraefte) {
-            // Nur aktive Lehkräfte auflisten
-            if (!lehrkraft.getAktiv()) {
+        for (Schueler schueler : schuelerList) {
+            Maercheneinteilung maercheneinteilung = maercheneinteilungen.get(schueler);
+            if (maercheneinteilung == null || maercheneinteilung.getElternmithilfe() == null) {
                 continue;
             }
+            Angehoeriger elternmithilfe = (maercheneinteilung.getElternmithilfe() == Elternteil.MUTTER ? schueler.getMutter() : schueler.getVater());
             List<List<String>> dataset = new ArrayList<>();
+
             // Auf mehrere Zeilen aufzusplittende Felder:
-            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(lehrkraft.getVertretungsmoeglichkeiten(), 27, 3);
-            splitStringIntoMultipleLinesCommand.execute();
-            List<String> vertretungsmoeglichkeitenLines = splitStringIntoMultipleLinesCommand.getLines();
+            List<String> elternmithilfeCodeLines = null;
+            if (maercheneinteilung.getElternmithilfeCode() != null) {
+                SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(maercheneinteilung.getElternmithilfeCode().getBeschreibung(), 29, 3);
+                splitStringIntoMultipleLinesCommand.execute();
+                elternmithilfeCodeLines = splitStringIntoMultipleLinesCommand.getLines();
+            }
+
             // 1. Zeile
             List<String> cellsRow1 = new ArrayList<>();
-            cellsRow1.add(Integer.toString(i + 1));
-            cellsRow1.add(lehrkraft.getNachname());
-            cellsRow1.add(lehrkraft.getVorname());
-            cellsRow1.add(asString(lehrkraft.getGeburtsdatum()));
-            cellsRow1.add(nullAsEmptyString(lehrkraft.getFestnetz()));
-            if (!vertretungsmoeglichkeitenLines.isEmpty()) {
-                cellsRow1.add(vertretungsmoeglichkeitenLines.get(0));
+            cellsRow1.add(elternmithilfe.getNachname());
+            cellsRow1.add(elternmithilfe.getVorname());
+            cellsRow1.add(nullAsEmptyString(elternmithilfe.getFestnetz()));
+            if (elternmithilfeCodeLines != null) {
+                cellsRow1.add(elternmithilfeCodeLines.get(0));
             } else {
                 cellsRow1.add("");
             }
+            cellsRow1.add(maercheneinteilung.getGruppe().toString());
             dataset.add(cellsRow1);
 
             // 2. Zeile
             List<String> cellsRow2 = new ArrayList<>();
+            cellsRow2.add(elternmithilfe.getAdresse().getStrHausnummer());
+            cellsRow2.add(elternmithilfe.getAdresse().getPlz() + " " + elternmithilfe.getAdresse().getOrt());
+            cellsRow2.add(nullAsEmptyString(elternmithilfe.getNatel()));
             cellsRow2.add("");
-            cellsRow2.add(lehrkraft.getAdresse().getStrHausnummer());
-            cellsRow2.add(lehrkraft.getAdresse().getPlz() + " " + lehrkraft.getAdresse().getOrt());
-            cellsRow2.add(lehrkraft.getAhvNummer());
-            cellsRow2.add(nullAsEmptyString(lehrkraft.getNatel()));
-            if (vertretungsmoeglichkeitenLines.size() > 1) {
-                cellsRow2.add(vertretungsmoeglichkeitenLines.get(1));
+            if (elternmithilfeCodeLines != null && elternmithilfeCodeLines.size() > 1) {
+                cellsRow2.add(elternmithilfeCodeLines.get(1));
             } else {
                 cellsRow2.add("");
             }
@@ -201,12 +195,11 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
             // 3. Zeile
             List<String> cellsRow3 = new ArrayList<>();
             cellsRow3.add("");
+            cellsRow3.add(nullAsEmptyString(elternmithilfe.getEmail()));
             cellsRow3.add("");
-            cellsRow3.add(nullAsEmptyString(lehrkraft.getEmail()));
             cellsRow3.add("");
-            cellsRow3.add("");
-            if (vertretungsmoeglichkeitenLines.size() > 2) {
-                cellsRow3.add(vertretungsmoeglichkeitenLines.get(2));
+            if (elternmithilfeCodeLines != null && elternmithilfeCodeLines.size() > 2) {
+                cellsRow3.add(elternmithilfeCodeLines.get(2));
             } else {
                 cellsRow3.add("");
             }
@@ -214,12 +207,12 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
 
             // Einzelner Datensatz der Liste von Datensätzen hinzufügen
             datasets.add(dataset);
-            i++;
         }
 
         // Tabelle erzeugen
-        Calendar today = new GregorianCalendar();
-        String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                                                         " + asString(today);
+        Semester semester = schuelerSuchenTableModel.getSemester();
+        String maerchenspielSchuljahr = "Märchenspiel " + semester.getSchuljahr();
+        String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                                  " + maerchenspielSchuljahr;
         CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile);
         createWordTableCommand.execute();
 

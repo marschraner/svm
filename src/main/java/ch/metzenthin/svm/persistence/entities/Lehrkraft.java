@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name="Lehrkraft")
 @DiscriminatorValue("Lehrkraft")
-public class Lehrkraft extends Person implements Comparable<Lehrkraft> {
+public class Lehrkraft extends Person {
 
     @Column(name = "ahvnummer", nullable = false)
     private String ahvNummer;
@@ -49,16 +49,6 @@ public class Lehrkraft extends Person implements Comparable<Lehrkraft> {
         ahvNummer = lehrkraftFrom.getAhvNummer();
         vertretungsmoeglichkeiten = lehrkraftFrom.getVertretungsmoeglichkeiten();
         aktiv = lehrkraftFrom.getAktiv();
-    }
-
-    @Override
-    public int compareTo(Lehrkraft otherLehrkraft) {
-        // aufsteigend nach Nachname und Vorname sortieren, d.h. neuste Einträge zuoberst
-        int result =  getNachname().compareTo(otherLehrkraft.getNachname());
-        if (result == 0) {
-            result = getVorname().compareTo(otherLehrkraft.getVorname());
-        }
-        return result;
     }
 
     @Override

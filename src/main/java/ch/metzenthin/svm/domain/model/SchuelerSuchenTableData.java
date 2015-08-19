@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -20,21 +21,27 @@ public class SchuelerSuchenTableData {
     private Map<Schueler, List<Kurs>> kurse;
     private final Semester semester;
     private final Wochentag wochentag;
-    private final Time zeiBeginn;
+    private final Time zeitBeginn;
     private final Lehrkraft lehrkraft;
     private Map<Schueler, Maercheneinteilung> maercheneinteilungen;
     private Maerchen maerchen;
+    private final Gruppe gruppe;
+    private final ElternmithilfeCode elternmithilfeCode;
+    private boolean nachRollenGesucht;
     private List<Field> columns = new ArrayList<>();
 
-    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen) {
+    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean nachRollenGesucht) {
         this.schuelerList = schuelerList;
         this.kurse = kurse;
         this.semester = semester;
         this.wochentag = wochentag;
-        this.zeiBeginn = zeitBeginn;
+        this.zeitBeginn = zeitBeginn;
         this.lehrkraft = lehrkraft;
         this.maercheneinteilungen = maercheneinteilungen;
         this.maerchen = maerchen;
+        this.gruppe = gruppe;
+        this.elternmithilfeCode = elternmithilfeCode;
+        this.nachRollenGesucht = nachRollenGesucht;
         initColumns();
     }
 
@@ -50,7 +57,7 @@ public class SchuelerSuchenTableData {
         columns.add(Field.RECHNUNGSEMPFAENGER);
         columns.add(Field.KURS1);
         columns.add(Field.ANZAHL_KURSE);
-        if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+        if (semester != null && semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
             // Märchen nur im 1. Semester anzeigen
             columns.add(Field.GRUPPE);
         }
@@ -177,7 +184,7 @@ public class SchuelerSuchenTableData {
     }
 
     public Time getZeitBeginn() {
-        return zeiBeginn;
+        return zeitBeginn;
     }
 
     public Lehrkraft getLehrkraft() {
@@ -192,15 +199,31 @@ public class SchuelerSuchenTableData {
         this.kurse = kurse;
     }
 
+    public Maerchen getMaerchen() {
+        return maerchen;
+    }
+
     public Map<Schueler, List<Kurs>> getKurse() {
         return kurse;
+    }
+
+    public Map<Schueler, Maercheneinteilung> getMaercheneinteilungen() {
+        return maercheneinteilungen;
     }
 
     public void setMaercheneinteilungen(Map<Schueler, Maercheneinteilung> maercheneinteilungen) {
         this.maercheneinteilungen = maercheneinteilungen;
     }
 
-    public Maerchen getMaerchen() {
-        return maerchen;
+    public Gruppe getGruppe() {
+        return gruppe;
+    }
+
+    public ElternmithilfeCode getElternmithilfeCode() {
+        return elternmithilfeCode;
+    }
+
+    public boolean isNachRollenGesucht() {
+        return nachRollenGesucht;
     }
 }

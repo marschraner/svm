@@ -72,7 +72,7 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
 
     private final StringModelAttribute rolle1ModelAttribute = new StringModelAttribute(
             this,
-            Field.ROLLE1, 1, 30,
+            Field.ROLLE1, 1, 60,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -124,7 +124,7 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
 
     private final StringModelAttribute rolle2ModelAttribute = new StringModelAttribute(
             this,
-            Field.ROLLE2, 1, 30,
+            Field.ROLLE2, 1, 60,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -176,7 +176,7 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
 
     private final StringModelAttribute rolle3ModelAttribute = new StringModelAttribute(
             this,
-            Field.ROLLE3, 1, 30,
+            Field.ROLLE3, 1, 60,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {

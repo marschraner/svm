@@ -98,7 +98,7 @@ public class CodesController {
                 }
                 break;
             case ELTERNMITHILFE:
-                lblTitel.setText("Elternmithilfe-Codes verwalten");
+                lblTitel.setText("Eltern-Mithilfe-Codes verwalten");
                 break;
         }
     }
@@ -153,7 +153,7 @@ public class CodesController {
                 titel = "Neuer Schüler-Code";
                 break;
             case ELTERNMITHILFE:
-                titel = "Neuer Elternmithilfe-Code";
+                titel = "Neuer Eltern-Mithilfe-Code";
                 break;
         }
         CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, codesModel, 0, false, titel, codetyp);
@@ -203,7 +203,7 @@ public class CodesController {
                 titel = "Schüler-Code bearbeiten";
                 break;
             case ELTERNMITHILFE:
-                titel = "Elternmithilfe-Code bearbeiten";
+                titel = "Eltern-Mithilfe-Code bearbeiten";
                 break;
         }
         CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, codesModel, codesTable.getSelectedRow(), true, titel, codetyp);

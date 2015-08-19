@@ -40,7 +40,7 @@ public class CreateKurselisteCommand extends CreateListeCommand {
 
         // Bold / horiz. merged:
         List<List<Boolean>> boldCells = new ArrayList<>();
-        List<List<Boolean>> mergedCells = new ArrayList<>();
+        List<List<Integer>> mergedCells = new ArrayList<>();
         // 1. Zeile
         List<Boolean> boldRow1 = new ArrayList<>();
         boldRow1.add(false);
@@ -50,13 +50,13 @@ public class CreateKurselisteCommand extends CreateListeCommand {
         boldRow1.add(false);
         boldRow1.add(false);
         boldCells.add(boldRow1);
-        List<Boolean> mergedRow1 = new ArrayList<>();
-        mergedRow1.add(false);
-        mergedRow1.add(false);
-        mergedRow1.add(false);
-        mergedRow1.add(false);
-        mergedRow1.add(false);
-        mergedRow1.add(false);
+        List<Integer> mergedRow1 = new ArrayList<>();
+        mergedRow1.add(0);
+        mergedRow1.add(0);
+        mergedRow1.add(0);
+        mergedRow1.add(0);
+        mergedRow1.add(0);
+        mergedRow1.add(0);
         mergedCells.add(mergedRow1);
         // 2. Zeile
         List<Boolean> boldRow2 = new ArrayList<>();
@@ -67,13 +67,13 @@ public class CreateKurselisteCommand extends CreateListeCommand {
         boldRow2.add(false);
         boldRow2.add(false);
         boldCells.add(boldRow2);
-        List<Boolean> mergedRow2 = new ArrayList<>();
-        mergedRow2.add(false);
-        mergedRow2.add(false);
-        mergedRow2.add(false);
-        mergedRow2.add(false);
-        mergedRow2.add(false);
-        mergedRow2.add(false);
+        List<Integer> mergedRow2 = new ArrayList<>();
+        mergedRow2.add(0);
+        mergedRow2.add(0);
+        mergedRow2.add(0);
+        mergedRow2.add(0);
+        mergedRow2.add(0);
+        mergedRow2.add(0);
         mergedCells.add(mergedRow2);
 
         // Maximale Anzahl Zeichen (wenn überschritten wird Schrift verkleinert),
@@ -127,10 +127,10 @@ public class CreateKurselisteCommand extends CreateListeCommand {
         for (Kurs kurs : kurse) {
             List<List<String>> dataset = new ArrayList<>();
             // Auf mehrere Zeilen aufzusplittende Felder:
-            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(kurs.getKurstyp().getBezeichnung(), 20);
+            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(kurs.getKurstyp().getBezeichnung(), 20, 2);
             splitStringIntoMultipleLinesCommand.execute();
             List<String> kurstypLines = splitStringIntoMultipleLinesCommand.getLines();
-            splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(kurs.getBemerkungen(), 20);
+            splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(kurs.getBemerkungen(), 20, 2);
             splitStringIntoMultipleLinesCommand.execute();
             List<String> bemerkungenLines = splitStringIntoMultipleLinesCommand.getLines();
             // 1. Zeile

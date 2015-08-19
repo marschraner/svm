@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.componentmodel;
 
+import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
@@ -88,5 +89,21 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
 
     public Maerchen getMaerchen() {
         return schuelerSuchenTableData.getMaerchen();
+    }
+
+    public Map<Schueler, Maercheneinteilung> getMaercheneinteilungen() {
+        return schuelerSuchenTableData.getMaercheneinteilungen();
+    }
+
+    public Gruppe getGruppe() {
+        return schuelerSuchenTableData.getGruppe();
+    }
+
+    public ElternmithilfeCode getElternmithilfeCode() {
+        return schuelerSuchenTableData.getElternmithilfeCode();
+    }
+
+    public boolean isNachRollenGesucht() {
+        return schuelerSuchenTableData.isNachRollenGesucht();
     }
 }

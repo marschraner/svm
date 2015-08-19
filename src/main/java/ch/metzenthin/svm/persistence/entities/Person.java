@@ -13,7 +13,7 @@ import java.util.Calendar;
 @Table(name="Person")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "discriminator")
-public abstract class Person {
+public abstract class Person implements Comparable<Person>  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -105,6 +105,21 @@ public abstract class Person {
         festnetz = personFrom.getFestnetz();
         natel = personFrom.getNatel();
         email = personFrom.getEmail();
+    }
+
+    @Override
+    public int compareTo(Person otherPerson) {
+        int result = nachname.compareTo(otherPerson.nachname);
+        if (result == 0) {
+            result = vorname.compareTo(otherPerson.vorname);
+            if (result == 0 && adresse != null && otherPerson.adresse != null) {
+                result = adresse.getOrt().compareTo(otherPerson.adresse.getOrt());
+                if (result == 0) {
+                    result = adresse.getStrasse().compareTo(otherPerson.adresse.getStrasse());
+                }
+            }
+        }
+        return result;
     }
 
     @Override

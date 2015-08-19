@@ -23,13 +23,17 @@ public class CreateWordTableCommand implements Command {
     private final List<List<List<String>>> datasets;
     private final List<Integer> columnWidths;
     private final List<List<Boolean>> boldCells;
-    private final List<List<Boolean>> mergedCells;
+    private final List<List<Integer>> mergedCells;
     private final List<List<Integer>> maxLenghts;
     private final String title1;
     private final String title2;
     private final File outputFile;
+    private int topMargin;
+    private int bottomMargin;
+    private int leftMargin;
+    private int rightMargin;
 
-    public CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Boolean>> mergedCells, List<List<Integer>> maxLenghts, String title1, String title2, File outputFile) {
+    public CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<Integer>> maxLenghts, String title1, String title2, File outputFile, int topMargin, int bottomMargin, int leftMargin, int rightMargin) {
         this.headerRows = headerRows;
         this.datasets = datasets;
         this.columnWidths = columnWidths;
@@ -39,9 +43,17 @@ public class CreateWordTableCommand implements Command {
         this.title1 = title1;
         this.title2 = title2;
         this.outputFile = outputFile;
+        this.topMargin = topMargin;
+        this.bottomMargin = bottomMargin;
+        this.leftMargin = leftMargin;
+        this.rightMargin = rightMargin;
     }
 
-    @Override
+    public CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<Integer>> maxLenghts, String title1, String title2, File outputFile) {
+        this(headerRows, datasets, columnWidths, boldCells, mergedCells, maxLenghts, title1, title2, outputFile, 90, 10, 650, 650);
+    }
+
+        @Override
     public void execute() {
         // Source:http://blog.iprofs.nl/2012/09/06/creating-word-documents-with-docx4j/ (adapted)
 
@@ -67,13 +79,13 @@ public class CreateWordTableCommand implements Command {
         for (int i = 0; i < headerRows.size(); i++) {
             Tr tableRow = objectFactory.createTr();
             List<String> headerRow = headerRows.get(i);
-            List<Boolean> mergedRow = mergedCells.get(i);
+            List<Integer> mergedRow = mergedCells.get(i);
             boolean verticalSpace = (i == headerRows.size() - 1);
             // Iteration über Spalten
             for (int j = 0; j < headerRow.size(); j++) {
                 addTableCell(tableRow, headerRow.get(j), columnWidths.get(j), true, mergedRow.get(j), FONT_SIZE_CELLS_NORMAL, verticalSpace);
-                if (mergedRow.get(j)) {
-                    j++;
+                if (mergedRow.get(j) > 0) {
+                    j += mergedRow.get(j) - 1;
                 }
             }
             table.getContent().add(tableRow);
@@ -86,7 +98,7 @@ public class CreateWordTableCommand implements Command {
                 Tr tableRow = objectFactory.createTr();
                 List<String> datasetRow = datasetRows.get(i);
                 List<Boolean> boldsRow = boldCells.get(i);
-                List<Boolean> mergedRow = mergedCells.get(i);
+                List<Integer> mergedRow = mergedCells.get(i);
                 List<Integer> maxLenghtsRow = maxLenghts.get(i);
                 boolean verticalSpace = (i == datasetRows.size() - 1);
                 // Iteration über Spalten
@@ -96,8 +108,8 @@ public class CreateWordTableCommand implements Command {
                         fontSize = FONT_SIZE_CELLS_SMALL;
                     }
                     addTableCell(tableRow, datasetRow.get(j), columnWidths.get(j), boldsRow.get(j), mergedRow.get(j), fontSize, verticalSpace);
-                    if (mergedRow.get(j)) {
-                        j++;
+                    if (mergedRow.get(j) > 0) {
+                        j += mergedRow.get(j) - 1;
                     }
                 }
                 table.getContent().add(tableRow);
@@ -107,7 +119,7 @@ public class CreateWordTableCommand implements Command {
         wordMLPackage.getMainDocumentPart().addObject(table);
 
         // Seitenränder anpassen
-        SetWordPageMarginsCommand setWordPageMarginsCommand = new SetWordPageMarginsCommand(wordMLPackage, objectFactory, 90, 10, 650, 650);
+        SetWordPageMarginsCommand setWordPageMarginsCommand = new SetWordPageMarginsCommand(wordMLPackage, objectFactory, topMargin, bottomMargin, leftMargin, rightMargin);
         setWordPageMarginsCommand.execute();
 
         // Speichern
@@ -150,7 +162,7 @@ public class CreateWordTableCommand implements Command {
 
     }
 
-    private void addTableCell(Tr tableRow, String content, int width, boolean bold, boolean mergedCell, String fontSize, boolean verticalSpace) {
+    private void addTableCell(Tr tableRow, String content, int width, boolean bold, int mergedCells, String fontSize, boolean verticalSpace) {
         Tc tableCell = objectFactory.createTc();
         P paragraph = objectFactory.createP();
         R run = objectFactory.createR();
@@ -185,14 +197,14 @@ public class CreateWordTableCommand implements Command {
         run.setRPr(runProperties);
 
         // Merged cell
-        if (mergedCell) {
+        if (mergedCells > 1) {
             TcPr tcpr = objectFactory.createTcPr();
             tableCell.setTcPr(tcpr);
             CTVerticalJc valign = objectFactory.createCTVerticalJc();
             valign.setVal(STVerticalJc.TOP);
             tcpr.setVAlign(valign);
             org.docx4j.wml.TcPrInner.GridSpan gspan = objectFactory.createTcPrInnerGridSpan();
-            gspan.setVal(new BigInteger("" + 2));
+            gspan.setVal(new BigInteger("" + mergedCells));
             tcpr.setGridSpan(gspan);
         }
         // Paragraph der Zelle hinzufügen

@@ -790,7 +790,7 @@ public class SchuelerSuchenController extends PersonController {
         }
         SchuelerSuchenTableData schuelerSuchenTableData = schuelerSuchenModel.suchen(svmContext.getSvmModel());
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenTableData);
-        if (schuelerSuchenTableData.size() > 1 || (schuelerSuchenModel.isKursFuerSucheBeruecksichtigen())) {
+        if (schuelerSuchenTableData.size() > 1 || schuelerSuchenModel.isKursFuerSucheBeruecksichtigen() || schuelerSuchenModel.isMaerchenFuerSucheBeruecksichtigen()) {
             SchuelerSuchenResultPanel schuelerSuchenResultPanel = new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);
             schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
             schuelerSuchenResultPanel.addCloseListener(closeListener);

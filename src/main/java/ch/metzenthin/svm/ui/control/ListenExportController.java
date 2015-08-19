@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 
 /**
@@ -96,37 +95,13 @@ public class ListenExportController extends AbstractController {
     public void setComboBoxListentyp(JComboBox<Listentyp> comboBoxListentyp) {
         this.comboBoxListentyp = comboBoxListentyp;
         comboBoxListentyp.setModel(new DefaultComboBoxModel<>(Listentyp.values()));
-        if (listenExportTyp == ListenExportTyp.SCHUELER) {
-            if (schuelerSuchenTableModel.getWochentag() == null || schuelerSuchenTableModel.getZeitBeginn() == null || schuelerSuchenTableModel.getLehrkraft() == null) {
-                // Keine Absenzenlisten, falls in Suche nicht nach einem spezifischen Kurs gesucht wurde
-                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
-            }
-            // Initialisierung
-            comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ADRESSLISTE);
-        } else {
-            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
-            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
-            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSETIKETTEN);
-        }
-        if (listenExportTyp == ListenExportTyp.LEHRKRAEFTE) {
-            // Initialisierung
-            comboBoxListentyp.setSelectedItem(Listentyp.LEHRKRAEFTE_ADRESSLISTE);
-        } else {
-            comboBoxListentyp.removeItem(Listentyp.LEHRKRAEFTE_ADRESSLISTE);
-            comboBoxListentyp.removeItem(Listentyp.LEHRKRAEFTE_ADRESSETIKETTEN);
-        }
-        if (listenExportTyp == ListenExportTyp.KURSE) {
-            // Initialisierung
-            comboBoxListentyp.setSelectedItem(Listentyp.KURSELISTE);
-        } else {
-            comboBoxListentyp.removeItem(Listentyp.KURSELISTE);
-        }
         comboBoxListentyp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onListentypSelected();
             }
         });
+        initComboBoxListentyp();
     }
 
     private void onListentypSelected() {
@@ -159,6 +134,53 @@ public class ListenExportController extends AbstractController {
             throw e;
         }
     }
+
+    public void initComboBoxListentyp() {
+        if (listenExportTyp == ListenExportTyp.SCHUELER) {
+            if (schuelerSuchenTableModel.getWochentag() == null || schuelerSuchenTableModel.getZeitBeginn() == null || schuelerSuchenTableModel.getLehrkraft() == null) {
+                // Keine Absenzenlisten, falls in Suche nicht nach einem spezifischen Kurs gesucht wurde
+                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
+            }
+            if (schuelerSuchenTableModel.getMaerchen() == null || schuelerSuchenTableModel.getMaercheneinteilungen().size() == 0) {
+                // Keine Märchenlisten, falls kein Märchen oder keine Märcheneinteilungen
+                comboBoxListentyp.removeItem(Listentyp.ROLLENLISTE);
+                comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_LISTE);
+            }
+            if (schuelerSuchenTableModel.getSchuelerList().size() == 0) {
+                // Keine Adressliste und Etiketten, falls keine Schüler (bei leerer Kurstabelle)
+                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
+                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSETIKETTEN);
+                comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ABSENZENLISTE);
+            } else {
+                // Initialisierung
+                if (schuelerSuchenTableModel.isNachRollenGesucht()) {
+                    comboBoxListentyp.setSelectedItem(Listentyp.ROLLENLISTE);
+                } else if (schuelerSuchenTableModel.getElternmithilfeCode() != null) {
+                    comboBoxListentyp.setSelectedItem(Listentyp.ELTERNMITHILFE_LISTE);
+                } else {
+                    comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ADRESSLISTE);
+                }
+            }
+        } else {
+            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
+            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
+            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSETIKETTEN);
+            comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_LISTE);
+        }
+        if (listenExportTyp == ListenExportTyp.LEHRKRAEFTE) {
+            // Initialisierung
+            comboBoxListentyp.setSelectedItem(Listentyp.LEHRKRAEFTE_ADRESSLISTE);
+        } else {
+            comboBoxListentyp.removeItem(Listentyp.LEHRKRAEFTE_ADRESSLISTE);
+            comboBoxListentyp.removeItem(Listentyp.LEHRKRAEFTE_ADRESSETIKETTEN);
+        }
+        if (listenExportTyp == ListenExportTyp.KURSE) {
+            // Initialisierung
+            comboBoxListentyp.setSelectedItem(Listentyp.KURSELISTE);
+        } else {
+            comboBoxListentyp.removeItem(Listentyp.KURSELISTE);
+        }
+    }
     
     public void setTxtTitel(JTextField txtTitel) {
         this.txtTitel = txtTitel;
@@ -178,33 +200,12 @@ public class ListenExportController extends AbstractController {
     }
 
     private void initTitel() {
-        String titel;
-        if (listenExportTyp == ListenExportTyp.SCHUELER && schuelerSuchenTableModel.getLehrkraft() != null) {
-            // Es wurde nach einem spezifischen Kurs gesucht
-            if (schuelerSuchenTableModel.getWochentag() != null && schuelerSuchenTableModel.getZeitBeginn() != null) {
-                String lehrkraefte;
-                String zeitEnde;
-                if (schuelerSuchenTableModel.getSchuelerList().size() > 0) {
-                    lehrkraefte = schuelerSuchenTableModel.getSchuelerList().get(0).getKurseAsList().get(0).getLehrkraefteAsStr();
-                    zeitEnde = asString(schuelerSuchenTableModel.getSchuelerList().get(0).getKurseAsList().get(0).getZeitEnde());
-                    titel = lehrkraefte + " (" + schuelerSuchenTableModel.getWochentag() + " " + asString(schuelerSuchenTableModel.getZeitBeginn()) + "-" + zeitEnde + ")";
-                } else {
-                    titel = listenExportModel.initTitleSpecificKurs(schuelerSuchenTableModel);
-                }
-
-            } else {
-                titel = schuelerSuchenTableModel.getLehrkraft().toString();
-            }
-        } else {
-            titel = "Schülerliste";
+        // Wird auch nach jeder neuen Selektion des Listentyps aufgerufen
+        if (txtTitel == null || listenExportModel.getListentyp() == null) {
+            return;
         }
-        if (listenExportTyp == ListenExportTyp.LEHRKRAEFTE) {
-            titel = "Lehrkräfte";
-        }
-        if (listenExportTyp == ListenExportTyp.KURSE) {
-            titel = "Kurse";
-        }
-        txtTitel.setText(titel);
+        String titleInit = listenExportModel.getTitleInit(schuelerSuchenTableModel);
+        txtTitel.setText(titleInit);
     }
 
     private void onTitelEvent(boolean showRequiredErrMsg) {
@@ -414,6 +415,7 @@ public class ListenExportController extends AbstractController {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.LISTENTYP, evt)) {
             comboBoxListentyp.setSelectedItem(listenExportModel.getListentyp());
+            initTitel();
         } else if (checkIsFieldChange(Field.TITEL, evt)) {
             txtTitel.setText(listenExportModel.getTitel());
         }
@@ -456,21 +458,29 @@ public class ListenExportController extends AbstractController {
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         if (fields.contains(Field.ALLE) || fields.contains(Field.LISTENTYP)) {
-            errLblListentyp.setVisible(false);
-            comboBoxListentyp.setToolTipText(null);
+            if (errLblListentyp != null) {
+                errLblListentyp.setVisible(false);
+            }
+            if (comboBoxListentyp != null) {
+                comboBoxListentyp.setToolTipText(null);
+            }
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.TITEL)) {
-            errLblTitel.setVisible(false);
-            txtTitel.setToolTipText(null);
+            if (errLblTitel != null) {
+                errLblTitel.setVisible(false);
+            }
+            if (txtTitel != null) {
+                txtTitel.setToolTipText(null);
+            }
         }
     }
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
-        if (fields.contains(Field.ALLE) || fields.contains(Field.LISTENTYP)) {
+        if (comboBoxListentyp != null && (fields.contains(Field.ALLE) || fields.contains(Field.LISTENTYP))) {
             comboBoxListentyp.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.TITEL)) {
+        if (txtTitel != null && (fields.contains(Field.ALLE) || fields.contains(Field.TITEL))) {
             txtTitel.setEnabled(!disable);
         }
     }

@@ -518,7 +518,8 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public SchuelerSuchenTableData getSchuelerSuchenTableData() {
-        return new SchuelerSuchenTableData(Collections.singletonList(getSchueler()), new HashMap<Schueler, List<Kurs>>(), null, null, null, null, new HashMap<Schueler, Maercheneinteilung>(), null);
+        return new SchuelerSuchenTableData(Collections.singletonList(getSchueler()), new HashMap<Schueler, List<Kurs>>(),
+                null, null, null, null, new HashMap<Schueler, Maercheneinteilung>(), null, null, null, false);
     }
 
 }

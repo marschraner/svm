@@ -8,6 +8,8 @@ import ch.metzenthin.svm.common.utils.SvmProperties;
 public enum Listentyp {
     SCHUELER_ADRESSLISTE("Adressliste", null, Filetyp.DOCX),
     SCHUELER_ABSENZENLISTE("Absenzenliste", SvmProperties.KEY_ABSENZENLISTE_TEMPLATE, Filetyp.DOCX),
+    ROLLENLISTE("Rollenliste", null, Filetyp.DOCX),
+    ELTERNMITHILFE_LISTE("Eltern-Mithilfe-Liste", null, Filetyp.DOCX),
     SCHUELER_ADRESSETIKETTEN("Schüler-Adressetiketten", null, Filetyp.CSV),
     LEHRKRAEFTE_ADRESSLISTE("Adressliste", null, Filetyp.DOCX),
     LEHRKRAEFTE_ADRESSETIKETTEN("Adressetiketten", null, Filetyp.CSV),
