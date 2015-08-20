@@ -57,6 +57,7 @@ public class LehrkraeftePanel {
         };
         lehrkraefteTable.setAutoCreateRowSorter(true);
         lehrkraefteTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        lehrkraefteTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         final JScrollPane scrollPane = new JScrollPane(lehrkraefteTable);
         lehrkraefteTablePanel.add(scrollPane);
     }

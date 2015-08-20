@@ -23,6 +23,8 @@ public class MaercheneinteilungDao extends GenericDao<Maercheneinteilung, Maerch
         maercheneinteilung.getSchueler().getMaercheneinteilungen().add(maercheneinteilung);
         maercheneinteilung.getMaerchen().getMaercheneinteilungen().add(maercheneinteilung);
         entityManager.persist(maercheneinteilung);
+        entityManager.flush();
+        entityManager.refresh(maercheneinteilung);
         return maercheneinteilung;
     }
 

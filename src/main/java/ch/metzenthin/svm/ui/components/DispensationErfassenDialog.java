@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.DispensationErfassenModel;
 import ch.metzenthin.svm.domain.model.DispensationenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
+import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
 import ch.metzenthin.svm.ui.control.DispensationErfassenController;
 
 import javax.swing.*;
@@ -25,12 +26,12 @@ public class DispensationErfassenDialog extends JDialog {
     private JLabel errLblVoraussichtlicheDauer;
     private JLabel errLblGrund;
 
-    public DispensationErfassenDialog(SvmContext svmContext, DispensationenModel dispensationenModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexBearbeiten, boolean isBearbeiten, String title) {
+    public DispensationErfassenDialog(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, DispensationenModel dispensationenModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexBearbeiten, boolean isBearbeiten, String title) {
         setContentPane(contentPane);
         setModal(true);
         setTitle(title);
         initializeErrLbls();
-        createDispensationErfassenController(svmContext, dispensationenModel, schuelerDatenblattModel, indexBearbeiten, isBearbeiten);
+        createDispensationErfassenController(svmContext, dispensationenTableModel, dispensationenModel, schuelerDatenblattModel, indexBearbeiten, isBearbeiten);
     }
 
     private void initializeErrLbls() {
@@ -44,9 +45,9 @@ public class DispensationErfassenDialog extends JDialog {
         errLblGrund.setForeground(Color.RED);
     }
 
-    private void createDispensationErfassenController(SvmContext svmContext, DispensationenModel dispensationenModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexBearbeiten, boolean isBearbeiten) {
+    private void createDispensationErfassenController(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, DispensationenModel dispensationenModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexBearbeiten, boolean isBearbeiten) {
         DispensationErfassenModel dispensationErfassenModel = (isBearbeiten ? dispensationenModel.getDispensationErfassenModel(svmContext, schuelerDatenblattModel, indexBearbeiten) : svmContext.getModelFactory().createDispensationErfassenModel());
-        DispensationErfassenController dispensationErfassenController = new DispensationErfassenController(dispensationErfassenModel, schuelerDatenblattModel);
+        DispensationErfassenController dispensationErfassenController = new DispensationErfassenController(dispensationenTableModel, dispensationErfassenModel, schuelerDatenblattModel);
         dispensationErfassenController.setDispensationErfassenDialog(this);
         dispensationErfassenController.setContentPane(contentPane);
         dispensationErfassenController.setTxtDispensationsbeginn(txtDispensationsbeginn);

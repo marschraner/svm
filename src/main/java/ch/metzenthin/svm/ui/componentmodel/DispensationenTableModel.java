@@ -35,4 +35,7 @@ public class DispensationenTableModel extends AbstractTableModel {
         return dispensationenTableData.getColumnName(column);
     }
 
+    public DispensationenTableData getDispensationenTableData() {
+        return dispensationenTableData;
+    }
 }

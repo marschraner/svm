@@ -77,6 +77,7 @@ public class KursePanel {
         };
         kurseTable.setAutoCreateRowSorter(true);
         kurseTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        kurseTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         final JScrollPane scrollPane = new JScrollPane(kurseTable);
         kurseTablePanel.add(scrollPane);
     }

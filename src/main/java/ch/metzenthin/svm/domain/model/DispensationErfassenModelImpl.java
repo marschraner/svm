@@ -6,6 +6,8 @@ import ch.metzenthin.svm.domain.commands.CheckDispensationUeberlapptAndereDispen
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.AddDispensationToSchuelerAndSaveCommand;
 import ch.metzenthin.svm.persistence.entities.Dispensation;
+import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
 
 import java.util.Calendar;
 
@@ -157,10 +159,15 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
     }
 
     @Override
-    public void speichern(SchuelerDatenblattModel schuelerDatenblattModel) {
+    public void speichern(DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         AddDispensationToSchuelerAndSaveCommand addDispensationToSchuelerAndSaveCommand = new AddDispensationToSchuelerAndSaveCommand(this.getDispensation(), dispensationOrigin, schuelerDatenblattModel.getSchueler());
         commandInvoker.executeCommandAsTransaction(addDispensationToSchuelerAndSaveCommand);
+        Schueler schuelerUpdated = addDispensationToSchuelerAndSaveCommand.getSchuelerUpdated();
+        // TableData mit von der Datenbank upgedatetem Schüler updaten
+        if (schuelerUpdated != null) {
+            dispensationenTableModel.getDispensationenTableData().setDispensationen(schuelerUpdated.getDispensationen());
+        }
     }
 
     @Override

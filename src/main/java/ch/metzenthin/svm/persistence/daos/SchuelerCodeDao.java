@@ -19,6 +19,9 @@ public class SchuelerCodeDao extends GenericDao<SchuelerCode, Integer> {
     public Schueler addToSchuelerAndSave(SchuelerCode schuelerCode, Schueler schueler) {
         schueler.addCode(schuelerCode);
         entityManager.persist(schueler);
+        entityManager.flush();
+        entityManager.refresh(schuelerCode);
+        entityManager.refresh(schueler);
         return schueler;
     }
 
@@ -27,6 +30,7 @@ public class SchuelerCodeDao extends GenericDao<SchuelerCode, Integer> {
         entityManager.persist(schueler);
         entityManager.flush();
         entityManager.refresh(schuelerCode);
+        entityManager.refresh(schueler);
         return schueler;
     }
 

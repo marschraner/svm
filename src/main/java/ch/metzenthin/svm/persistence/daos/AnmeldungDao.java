@@ -27,12 +27,17 @@ public class AnmeldungDao extends GenericDao<Anmeldung, Integer> {
     public Schueler addToSchuelerAndSave(Anmeldung anmeldung, Schueler schueler) {
         schueler.addAnmeldung(anmeldung);
         entityManager.persist(schueler);
+        entityManager.flush();
+        entityManager.refresh(anmeldung);
+        entityManager.refresh(schueler);
         return schueler;
     }
 
     public Schueler removeFromSchuelerAndUpdate(Anmeldung anmeldung, Schueler schueler) {
         schueler.deleteAnmeldung(anmeldung);
         entityManager.persist(schueler);
+        entityManager.flush();
+        entityManager.refresh(schueler);
         return schueler;
     }
 

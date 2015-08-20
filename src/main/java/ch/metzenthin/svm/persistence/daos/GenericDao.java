@@ -38,6 +38,8 @@ public abstract class GenericDao<T, ID> {
 
     public T save(T entity) {
         entityManager.persist(entity);
+        entityManager.flush();
+        entityManager.refresh(entity);
         return entity;
     }
 

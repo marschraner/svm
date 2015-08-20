@@ -55,7 +55,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="cfc53" class="javax.swing.JTable" binding="dispensationenTable">
+                  <component id="cfc53" class="javax.swing.JTable" binding="dispensationenTable" custom-create="true">
                     <constraints/>
                     <properties>
                       <opaque value="false"/>

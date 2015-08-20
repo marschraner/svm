@@ -85,7 +85,7 @@ public class DispensationenController {
 
     private void onNeu() {
         btnNeu.setFocusPainted(true);
-        DispensationErfassenDialog dispensationErfassenDialog = new DispensationErfassenDialog(svmContext, dispensationenModel, schuelerDatenblattModel, 0, false, "Neue Dispensation");
+        DispensationErfassenDialog dispensationErfassenDialog = new DispensationErfassenDialog(svmContext, dispensationenTableModel, dispensationenModel, schuelerDatenblattModel, 0, false, "Neue Dispensation");
         dispensationErfassenDialog.pack();
         dispensationErfassenDialog.setVisible(true);
         dispensationenTableModel.fireTableDataChanged();
@@ -109,7 +109,7 @@ public class DispensationenController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        DispensationErfassenDialog dispensationErfassenDialog = new DispensationErfassenDialog(svmContext, dispensationenModel, schuelerDatenblattModel, dispensationenTable.getSelectedRow(), true, "Dispensation bearbeiten");
+        DispensationErfassenDialog dispensationErfassenDialog = new DispensationErfassenDialog(svmContext, dispensationenTableModel, dispensationenModel, schuelerDatenblattModel, dispensationenTable.getSelectedRow(), true, "Dispensation bearbeiten");
         dispensationErfassenDialog.pack();
         dispensationErfassenDialog.setVisible(true);
         dispensationenTableModel.fireTableDataChanged();
@@ -144,7 +144,7 @@ public class DispensationenController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            dispensationenModel.eintragLoeschen(schuelerDatenblattModel, dispensationenTable.getSelectedRow());
+            dispensationenModel.eintragLoeschen(dispensationenTableModel, schuelerDatenblattModel, dispensationenTable.getSelectedRow());
             dispensationenTable.addNotify();
         }
         btnLoeschen.setFocusPainted(false);

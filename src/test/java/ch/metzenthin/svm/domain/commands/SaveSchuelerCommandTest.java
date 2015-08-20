@@ -11,7 +11,6 @@ import org.junit.Test;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -62,7 +61,6 @@ public class SaveSchuelerCommandTest {
         Schueler savedSchueler = saveSchuelerCommand.getSavedSchueler();
 
         assertEquals("Vorname not found", "Jana", savedSchueler.getVorname());
-        assertEquals("Dispensation not correct", 1, savedSchueler.getDispensationen().size());
 
         // Löschen
         EntityManager entityManager = null;

@@ -27,12 +27,17 @@ public class DispensationDao extends GenericDao<Dispensation, Integer> {
     public Schueler addToSchuelerAndSave(Dispensation dispensation, Schueler schueler) {
         schueler.addDispensation(dispensation);
         entityManager.persist(schueler);
+        entityManager.flush();
+        entityManager.refresh(dispensation);
+        entityManager.refresh(schueler);
         return schueler;
     }
 
     public Schueler removeFromSchuelerAndUpdate(Dispensation dispensation, Schueler schueler) {
         schueler.deleteDispensation(dispensation);
         entityManager.persist(schueler);
+        entityManager.flush();
+        entityManager.refresh(schueler);
         return schueler;
     }
 

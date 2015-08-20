@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
@@ -44,14 +45,27 @@ public class Converter {
         }
         // Akzeptiere 00 als Kürzel für 2000 (führt sonst zu ParseException)
         s = s.replaceAll("\\.00", ".2000");
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat(dateFormatString);
-        formatter.setLenient(false);
+        // Schärfere Prüfung, ob Datenformat korrekt, als mit formatter möglich
         try {
-            calendar.setTime(formatter.parse(s));
+            determineDateFormatString(s);
         } catch (ParseException e) {
             throw new ParseException(errMsg, 0);
         }
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormatString);
+        try {
+            formatter.parse(s);
+        } catch (ParseException e) {
+            throw new ParseException(errMsg, 0);
+        }
+        formatter.setLenient(false);
+        Date parsedDate;
+        try {
+            parsedDate = formatter.parse(s);
+        } catch (ParseException e) {
+            throw new ParseException("Kein gültiges Datum", 0);
+        }
+        calendar.setTime(parsedDate);
         if (calendar.get(Calendar.YEAR) < 100) {
             if (calendar.get(Calendar.YEAR) < 40) {
                 calendar.add(Calendar.YEAR, 2000);

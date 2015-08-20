@@ -127,6 +127,9 @@ public class KursDao extends GenericDao<Kurs, Integer> {
     public Schueler addToSchuelerAndSave(Kurs kurs, Schueler schueler) {
         schueler.addKurs(kurs);
         entityManager.persist(schueler);
+        entityManager.flush();
+        entityManager.refresh(kurs);
+        entityManager.refresh(schueler);
         return schueler;
     }
 
@@ -135,6 +138,7 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         entityManager.persist(schueler);
         entityManager.flush();
         entityManager.refresh(kurs);
+        entityManager.refresh(schueler);
         return schueler;
     }
 

@@ -74,7 +74,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="8d739" class="javax.swing.JTable" binding="codesTable">
+                  <component id="8d739" class="javax.swing.JTable" binding="codesTable" custom-create="true">
                     <constraints/>
                     <properties>
                       <preferredScrollableViewportSize width="400" height="200"/>

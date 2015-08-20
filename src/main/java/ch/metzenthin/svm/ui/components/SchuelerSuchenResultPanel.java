@@ -62,6 +62,7 @@ public class SchuelerSuchenResultPanel {
         };
         schuelerSuchenResultTable.setAutoCreateRowSorter(true);
         schuelerSuchenResultTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        schuelerSuchenResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         final JScrollPane scrollPane = new JScrollPane(schuelerSuchenResultTable);
         schuelerSuchenResultTablePanel.add(scrollPane);
     }

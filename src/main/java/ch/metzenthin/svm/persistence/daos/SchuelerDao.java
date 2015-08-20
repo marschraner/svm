@@ -18,6 +18,30 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
     }
 
     @Override
+    public Schueler save(Schueler schueler) {
+        super.save(schueler);
+        entityManager.refresh(schueler.getAdresse());
+        if (schueler.getMutter() != null) {
+            entityManager.refresh(schueler.getMutter());
+            if (schueler.getMutter().getAdresse() != null) {
+                entityManager.refresh(schueler.getMutter().getAdresse());
+            }
+        }
+        if (schueler.getVater() != null) {
+            entityManager.refresh(schueler.getVater());
+            if (schueler.getVater().getAdresse() != null) {
+                entityManager.refresh(schueler.getVater().getAdresse());
+            }
+        }
+        entityManager.refresh(schueler.getRechnungsempfaenger());
+        entityManager.refresh(schueler.getRechnungsempfaenger().getAdresse());
+        for (Anmeldung anmeldung : schueler.getAnmeldungen()) {
+            entityManager.refresh(anmeldung);
+        }
+        return schueler;
+    }
+
+    @Override
     public void remove(Schueler schueler) {
 
         // Entferne Schüler von Vater, Mutter und Rechnungsempfänger

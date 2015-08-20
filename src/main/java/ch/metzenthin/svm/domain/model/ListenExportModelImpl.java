@@ -183,7 +183,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 commandInvoker.executeCommand(createAdressenCsvFileCommandLehrkraefte);
                 result = createAdressenCsvFileCommandLehrkraefte.getResult();
                 break;
-            case KURSELISTE:
+            case KURSLISTE:
                 CreateKurselisteCommand kurselisteCommand = new CreateKurselisteCommand(kurseTableModel, titel, outputFile);
                 commandInvoker.executeCommand(kurselisteCommand);
                 result = kurselisteCommand.getResult();
@@ -234,7 +234,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 break;
             case LEHRKRAEFTE_ADRESSETIKETTEN:
                 break;
-            case KURSELISTE:
+            case KURSLISTE:
                 titleInit = "Kurse";
                 break;
         }

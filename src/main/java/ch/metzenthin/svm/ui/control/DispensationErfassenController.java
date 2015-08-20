@@ -6,6 +6,7 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.DispensationErfassenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
+import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -27,6 +28,7 @@ public class DispensationErfassenController extends AbstractController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private DispensationErfassenModel dispensationErfassenModel;
+    private DispensationenTableModel dispensationenTableModel;
     private SchuelerDatenblattModel schuelerDatenblattModel;
     private JDialog dispensationErfassenDialog;
     private JTextField txtDispensationsbeginn;
@@ -39,8 +41,9 @@ public class DispensationErfassenController extends AbstractController {
     private JLabel errLblVoraussichtlicheDauer;
     private JButton btnSpeichern;
 
-    public DispensationErfassenController(DispensationErfassenModel dispensationErfassenModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public DispensationErfassenController(DispensationenTableModel dispensationenTableModel, DispensationErfassenModel dispensationErfassenModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         super(dispensationErfassenModel);
+        this.dispensationenTableModel = dispensationenTableModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.dispensationErfassenModel = dispensationErfassenModel;
         this.dispensationErfassenModel.addPropertyChangeListener(this);
@@ -321,7 +324,7 @@ public class DispensationErfassenController extends AbstractController {
             JOptionPane.showMessageDialog(dispensationErfassenDialog, "Dispensationen dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
-            dispensationErfassenModel.speichern(schuelerDatenblattModel);
+            dispensationErfassenModel.speichern(dispensationenTableModel, schuelerDatenblattModel);
             dispensationErfassenDialog.dispose();
         }
     }

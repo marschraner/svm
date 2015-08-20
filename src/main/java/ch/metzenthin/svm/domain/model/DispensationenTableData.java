@@ -54,4 +54,7 @@ public class DispensationenTableData {
         return COLUMNS[column].toString();
     }
 
+    public void setDispensationen(List<Dispensation> dispensationen) {
+        this.dispensationen = dispensationen;
+    }
 }

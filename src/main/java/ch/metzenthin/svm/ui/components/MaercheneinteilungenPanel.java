@@ -68,6 +68,7 @@ public class MaercheneinteilungenPanel {
         };
         maercheneinteilungenTable.setAutoCreateRowSorter(true);
         maercheneinteilungenTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        maercheneinteilungenTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         final JScrollPane scrollPane = new JScrollPane(maercheneinteilungenTable);
         maercheneinteilungenTablePanel.add(scrollPane);
     }

@@ -15,6 +15,13 @@ public class LehrkraftDao extends GenericDao<Lehrkraft, Integer> {
         super(entityManager);
     }
 
+    @Override
+    public Lehrkraft save(Lehrkraft entity) {
+        super.save(entity);
+        entityManager.refresh(entity.getAdresse());
+        return entity;
+    }
+
     public List<Lehrkraft> findAll() {
         TypedQuery<Lehrkraft> typedQuery = entityManager.createQuery("select l from Lehrkraft l order by l.nachname, l.vorname, l.geburtsdatum", Lehrkraft.class);
         return typedQuery.getResultList();
