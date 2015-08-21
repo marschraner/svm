@@ -955,11 +955,11 @@ public class MaercheneinteilungErfassenController extends AbstractController {
         }
         int n = 0;
         if (!isBearbeiten && maercheneinteilungErfassenModel.checkIfMaerchenIsInPast()) {
-            Object[] options = {"Ignorieren", "Abbrechen"};
+            Object[] options = {"Ja", "Nein"};
             n = JOptionPane.showOptionDialog(
                     null,
-                    "Das selektierte Schuljahr liegt in der Vergangenheit.",
-                    "Warnung",
+                    "Das selektierte Märchen liegt in der Vergangenheit. Märcheneinteilung trotzdem speichern?",
+                    "Märchen in Vergangenheit",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
                     null,     //do not use a custom Icon

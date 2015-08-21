@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -53,8 +52,7 @@ public interface SchuelerSuchenModel extends PersonModel {
     DispensationSelected getDispensation();
     Calendar getStichtag();
     SchuelerCode getSchuelerCode();
-    String getSchuljahrKurs();
-    Semesterbezeichnung getSemesterbezeichnung();
+    Semester getSemesterKurs();
     Wochentag getWochentag();
     Time getZeitBeginn();
     Lehrkraft getLehrkraft();
@@ -74,8 +72,7 @@ public interface SchuelerSuchenModel extends PersonModel {
     void setAnmeldestatus(AnmeldestatusSelected anmeldestatus);
     void setDispensation(DispensationSelected dispensation);
     void setStichtag(String stichtag) throws SvmValidationException;
-    void setSchuljahrKurs(String schuljahrKurs) throws SvmValidationException;
-    void setSemesterbezeichnung(Semesterbezeichnung semesterbezeichnung);
+    void setSemesterKurs(Semester semesterKurs);
     void setWochentag(Wochentag wochentag);
     void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
     void setLehrkraft(Lehrkraft lehrkraft);
@@ -96,7 +93,6 @@ public interface SchuelerSuchenModel extends PersonModel {
     Lehrkraft[] getSelectableLehrkraefte(SvmModel svmModel);
     SchuelerCode[] getSelectableSchuelerCodes(SvmModel svmModel);
     ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel);
-    String getSchuljahrInit(SvmModel svmModel);
-    Semesterbezeichnung getSemesterbezeichungInit(SvmModel svmModel);
+    Semester getSemesterInit(SvmModel svmModel);
     Maerchen getMaerchenInit(SvmModel svmModel);
 }

@@ -94,6 +94,9 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
     public void setSpinnerSemester(JSpinner spinnerSemester) {
         this.spinnerSemester = spinnerSemester;
         List<Semester> semesterList = svmContext.getSvmModel().getSemestersAll();
+        if (semesterList.isEmpty()) {
+            return;
+        }
         Semester[] semesters = semesterList.toArray(new Semester[semesterList.size()]);
         SpinnerModel spinnerModelSemester = new SpinnerListModel(semesters);
         spinnerSemester.setModel(spinnerModelSemester);
@@ -297,11 +300,11 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
         }
         int n = 0;
         if (kursSchuelerHinzufuegenModel.checkIfSemesterIsInPast()) {
-            Object[] options = {"Ignorieren", "Abbrechen"};
+            Object[] options = {"Ja", "Nein"};
             n = JOptionPane.showOptionDialog(
                     null,
-                    "Das selektierte Schuljahr liegt in der Vergangenheit.",
-                    "Warnung",
+                    "Das selektierte Semester liegt in der Vergangenheit. Kurs trotzdem speichern?",
+                    "Semester in Vergangenheit",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
                     null,     //do not use a custom Icon

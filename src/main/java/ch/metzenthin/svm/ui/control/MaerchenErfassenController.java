@@ -262,8 +262,8 @@ public class MaerchenErfassenController extends AbstractController {
                 Object[] options = {"Ignorieren", "Abbrechen"};
                 int n = JOptionPane.showOptionDialog(
                         null,
-                        "Das selektierte Schuljahr liegt in der Vergangenheit.",
-                        "Warnung",
+                        "Das selektierte Schuljahr liegt in der Vergangenheit. Märchen trotzdem speichern?",
+                        "Schuljahr in Vergangenheit",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE,
                         null,     //do not use a custom Icon

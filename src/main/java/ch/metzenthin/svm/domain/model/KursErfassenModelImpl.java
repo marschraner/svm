@@ -306,7 +306,7 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     @Override
     public void speichern(SvmModel svmModel, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        SaveOrUpdateKursCommand saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs, kurseSemesterwahlModel.getSemester(svmModel), kurstyp, kursort, lehrkraft1, lehrkraft2, kursOrigin, kurseTableModel.getKurse());
+        SaveOrUpdateKursCommand saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs, kurseSemesterwahlModel.getSemester(), kurstyp, kursort, lehrkraft1, lehrkraft2, kursOrigin, kurseTableModel.getKurse());
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursCommand);
     }
 

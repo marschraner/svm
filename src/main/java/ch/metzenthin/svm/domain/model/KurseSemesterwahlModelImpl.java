@@ -1,15 +1,15 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CheckSemesterBereitsErfasstCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.FindKurseSemesterCommand;
-import ch.metzenthin.svm.domain.commands.FindSemesterForSchuljahrSemesterbezeichnungCommand;
+import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Semester;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -17,74 +17,56 @@ import java.util.List;
  */
 public class KurseSemesterwahlModelImpl extends AbstractModel implements KurseSemesterwahlModel {
 
-    private String schuljahr;
-    private Semesterbezeichnung semesterbezeichnung;
+    private Semester semester;
 
     public KurseSemesterwahlModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
     }
 
-    private final StringModelAttribute schuljahrModelAttribute = new StringModelAttribute(
-            this,
-            Field.SCHULJAHR, 9, 9,
-            new AttributeAccessor<String>() {
-                @Override
-                public String getValue() {
-                    return schuljahr;
-                }
-
-                @Override
-                public void setValue(String value) {
-                    schuljahr = value;
-                }
-            }
-    );
-
     @Override
-    public String getSchuljahr() {
-        return schuljahrModelAttribute.getValue();
+    public Semester getSemester() {
+        return semester;
     }
 
     @Override
-    public void setSchuljahr(String schuljahr) throws SvmValidationException {
-        schuljahrModelAttribute.setNewValue(true, schuljahr, isBulkUpdate());
+    public void setSemester(Semester semester) {
+        Semester oldValue = this.semester;
+        this.semester = semester;
+        firePropertyChange(Field.SEMESTER, oldValue, this.semester);
     }
 
     @Override
-    public Semesterbezeichnung getSemesterbezeichnung() {
-        return semesterbezeichnung;
-    }
-
-    @Override
-    public void setSemesterbezeichnung(Semesterbezeichnung semesterbezeichnung) {
-        Semesterbezeichnung oldValue = this.semesterbezeichnung;
-        this.semesterbezeichnung = semesterbezeichnung;
-        firePropertyChange(Field.SEMESTERBEZEICHNUNG, oldValue, this.semesterbezeichnung);
-    }
-
-    @Override
-    public boolean checkSemesterBereitsErfasst(SvmModel svmModel) {
-        CommandInvoker commandInvoker = getCommandInvoker();
-        CheckSemesterBereitsErfasstCommand checkSemesterBereitsErfasstCommand = new CheckSemesterBereitsErfasstCommand(new Semester(schuljahr, semesterbezeichnung, null, null, 0), null, svmModel.getSemestersAll());
-        commandInvoker.executeCommand(checkSemesterBereitsErfasstCommand);
-        return checkSemesterBereitsErfasstCommand.isBereitsErfasst();
+    public Semester getInitSemester(SvmModel svmModel) {
+        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
+        Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
+        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
+        Calendar dayToShowNextSemster = new GregorianCalendar();
+        dayToShowNextSemster.add(Calendar.DAY_OF_YEAR, 40);
+        Semester initSemester;
+        if (currentSemester == null) {
+            // Ferien zwischen 2 Semestern
+            initSemester = nextSemester;
+        } else if (dayToShowNextSemster.after(currentSemester.getSemesterende()) && nextSemester != null) {
+            // weniger als 40 Tage vor Semesterende
+            initSemester = nextSemester;
+        } else {
+            // Neues Semester noch nicht erfasst
+            initSemester = currentSemester;
+        }
+        if (initSemester != null) {
+            return initSemester;
+        } else {
+            return svmModel.getSemestersAll().get(0);
+        }
     }
 
     @Override
     public KurseTableData suchen() {
         CommandInvoker commandInvoker = getCommandInvoker();
-        FindKurseSemesterCommand findKurseSemesterCommand = new FindKurseSemesterCommand(new Semester(schuljahr, semesterbezeichnung, null, null, 0));
+        FindKurseSemesterCommand findKurseSemesterCommand = new FindKurseSemesterCommand(semester);
         commandInvoker.executeCommand(findKurseSemesterCommand);
         List<Kurs> kurseFound = findKurseSemesterCommand.getKurseFound();
         return new KurseTableData(kurseFound, false);
-    }
-
-    @Override
-    public Semester getSemester(SvmModel svmModel) {
-        CommandInvoker commandInvoker = getCommandInvoker();
-        FindSemesterForSchuljahrSemesterbezeichnungCommand findSemesterForSchuljahrSemesterbezeichnungCommand = new FindSemesterForSchuljahrSemesterbezeichnungCommand(schuljahr, semesterbezeichnung, svmModel.getSemestersAll());
-        commandInvoker.executeCommand(findSemesterForSchuljahrSemesterbezeichnungCommand);
-        return findSemesterForSchuljahrSemesterbezeichnungCommand.getSemesterFound();
     }
 
     @Override

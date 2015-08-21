@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -34,8 +33,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     private String geburtsdatumSuchperiodeDateFormatString;
     private Calendar stichtag;
     private SchuelerCode schuelerCode;
-    private String schuljahrKurs;
-    private Semesterbezeichnung semesterbezeichnung;
+    private Semester semesterKurs;
     private Wochentag wochentag;
     private Time zeitBeginn;
     private Lehrkraft lehrkraft;
@@ -65,8 +63,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         this.geburtsdatumSuchperiodeDateFormatString = schuelerSuchenModel.getGeburtsdatumSuchperiodeDateFormatString();
         this.stichtag = schuelerSuchenModel.getStichtag();
         this.schuelerCode = schuelerSuchenModel.getSchuelerCode();
-        this.schuljahrKurs = schuelerSuchenModel.getSchuljahrKurs();
-        this.semesterbezeichnung = schuelerSuchenModel.getSemesterbezeichnung();
+        this.semesterKurs = schuelerSuchenModel.getSemesterKurs();
         this.wochentag = schuelerSuchenModel.getWochentag();
         this.zeitBeginn = schuelerSuchenModel.getZeitBeginn();
         this.lehrkraft = schuelerSuchenModel.getLehrkraft();
@@ -491,10 +488,10 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
 
     private void setParameterKurs() {
         if (selectStatementSb.toString().contains(":schuljahrKurs")) {
-            typedQuery.setParameter("schuljahrKurs", schuljahrKurs);
+            typedQuery.setParameter("schuljahrKurs", semesterKurs.getSchuljahr());
         }
         if (selectStatementSb.toString().contains(":semesterbezeichnung")) {
-            typedQuery.setParameter("semesterbezeichnung", semesterbezeichnung);
+            typedQuery.setParameter("semesterbezeichnung", semesterKurs.getSemesterbezeichnung());
         }
         if (selectStatementSb.toString().contains(":wochentag")) {
             typedQuery.setParameter("wochentag", wochentag);

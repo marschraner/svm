@@ -10,7 +10,10 @@ import ch.metzenthin.svm.persistence.entities.*;
 
 import java.sql.Time;
 import java.text.ParseException;
-import java.util.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
 
 import static ch.metzenthin.svm.common.utils.Converter.*;
 
@@ -28,8 +31,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private Calendar geburtsdatumSuchperiodeBeginn;
     private Calendar geburtsdatumSuchperiodeEnde;
     private String geburtsdatumSuchperiodeDateFormatString;
-    private String schuljahrKurs;
-    private Semesterbezeichnung semesterbezeichnung;
+    private Semester semesterKurs;
     private Wochentag wochentag;
     private Time zeitBeginn;
     private Lehrkraft lehrkraft;
@@ -210,42 +212,16 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         stichtagModelAttribute.setNewValue(true, stichtag, isBulkUpdate());
     }
 
-    private final StringModelAttribute schuljahrKursModelAttribute = new StringModelAttribute(
-            this,
-            Field.SCHULJAHR_KURS, 9, 9,
-            new AttributeAccessor<String>() {
-                @Override
-                public String getValue() {
-                    return schuljahrKurs;
-                }
-
-                @Override
-                public void setValue(String value) {
-                    schuljahrKurs = value;
-                }
-            }
-    );
-
     @Override
-    public String getSchuljahrKurs() {
-        return schuljahrKursModelAttribute.getValue();
+    public Semester getSemesterKurs() {
+        return semesterKurs;
     }
 
     @Override
-    public void setSchuljahrKurs(String schuljahrKurs) throws SvmValidationException {
-        schuljahrKursModelAttribute.setNewValue(true, schuljahrKurs, isBulkUpdate());
-    }
-
-    @Override
-    public Semesterbezeichnung getSemesterbezeichnung() {
-        return semesterbezeichnung;
-    }
-
-    @Override
-    public void setSemesterbezeichnung(Semesterbezeichnung semesterbezeichnung) {
-        Semesterbezeichnung oldValue = this.semesterbezeichnung;
-        this.semesterbezeichnung = semesterbezeichnung;
-        firePropertyChange(Field.SEMESTERBEZEICHNUNG, oldValue, this.semesterbezeichnung);
+    public void setSemesterKurs(Semester semesterKurs) {
+        Semester oldValue = this.semesterKurs;
+        this.semesterKurs = semesterKurs;
+        firePropertyChange(Field.SEMESTER_KURS, oldValue, this.semesterKurs);
     }
 
     @Override
@@ -465,10 +441,9 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     @Override
     public boolean checkIfKurseExist() {
         CommandInvoker commandInvoker = getCommandInvoker();
-        Semester semester = new Semester(schuljahrKurs, semesterbezeichnung, null, null, null);
         Wochentag wochentagFind = (wochentag == Wochentag.ALLE ? null : wochentag);
         Lehrkraft lehrkraftFind = (lehrkraft.equals(LEHRKRAFT_ALLE) ? null : lehrkraft);
-        FindKurseCommand findKurseCommand = new FindKurseCommand(null, semester, wochentagFind, zeitBeginn, lehrkraftFind);
+        FindKurseCommand findKurseCommand = new FindKurseCommand(null, semesterKurs, wochentagFind, zeitBeginn, lehrkraftFind);
         commandInvoker.executeCommand(findKurseCommand);
         return findKurseCommand.getResult() == FindKurseCommand.Result.KURSE_GEFUNDEN;
     }
@@ -489,13 +464,11 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     private Semester determineSemesterTableData(SvmModel svmModel) {
-        CommandInvoker commandInvoker = getCommandInvoker();
-        List<Semester> erfassteSemester = svmModel.getSemestersAll();
         if (kursFuerSucheBeruecksichtigen) {
-            FindSemesterForSchuljahrSemesterbezeichnungCommand findSemesterForSchuljahrSemesterbezeichnungCommand = new FindSemesterForSchuljahrSemesterbezeichnungCommand(schuljahrKurs, semesterbezeichnung, erfassteSemester);
-            commandInvoker.executeCommand(findSemesterForSchuljahrSemesterbezeichnungCommand);
-            return findSemesterForSchuljahrSemesterbezeichnungCommand.getSemesterFound();
+            return semesterKurs;
         } else {
+            CommandInvoker commandInvoker = getCommandInvoker();
+            List<Semester> erfassteSemester = svmModel.getSemestersAll();
             FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(stichtag, erfassteSemester);
             commandInvoker.executeCommand(findSemesterForCalendarCommand);
             Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
@@ -513,6 +486,9 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     private Maerchen determineMaerchenTableData(SvmModel svmModel, Semester semesterTableData) {
+        if (semesterTableData == null) {
+            return null;
+        }
         if (maerchenFuerSucheBeruecksichtigen) {
             return maerchen;
         }
@@ -560,59 +536,28 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     public ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel) {
         List<ElternmithilfeCode> codesList = svmModel.getElternmithilfeCodesAll();
         // ElternmithilfeCode alle auch erlaubt
-        if (!codesList.get(0).isIdenticalWith(ELTERNMITHILFE_CODE_ALLE)) {
+        if (codesList.isEmpty() || !codesList.get(0).isIdenticalWith(ELTERNMITHILFE_CODE_ALLE)) {
             codesList.add(0, ELTERNMITHILFE_CODE_ALLE);
         }
         return codesList.toArray(new ElternmithilfeCode[codesList.size()]);
     }
 
     @Override
-    public String getSchuljahrInit(SvmModel svmModel) {
+    public Semester getSemesterInit(SvmModel svmModel) {
         FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
         findSemesterForCalendarCommand.execute();
         Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
         Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
         // Innerhalb Semester
         if (currentSemester != null) {
-            return currentSemester.getSchuljahr();
+            return currentSemester;
         }
         // Ferien zwischen 2 Semestern
         if (nextSemester != null) {
-            return nextSemester.getSchuljahr();
+            return nextSemester;
         }
         // Kein passendes Semester erfasst
-        Calendar today = new GregorianCalendar();
-        int schuljahr1;
-        if (today.get(Calendar.MONTH) <= Calendar.JUNE) {
-            schuljahr1 = today.get(Calendar.YEAR) - 1;
-        } else {
-            schuljahr1 = today.get(Calendar.YEAR);
-        }
-        int schuljahr2 = schuljahr1 + 1;
-        return schuljahr1 + "/" + schuljahr2;
-    }
-
-    @Override
-    public Semesterbezeichnung getSemesterbezeichungInit(SvmModel svmModel) {
-        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
-        findSemesterForCalendarCommand.execute();
-        Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
-        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
-        // Innerhalb Semester
-        if (currentSemester != null) {
-            return currentSemester.getSemesterbezeichnung();
-        }
-        // Ferien zwischen 2 Semestern
-        if (nextSemester != null) {
-            return nextSemester.getSemesterbezeichnung();
-        }
-        // Kein passendes Semester erfasst
-        Calendar today = new GregorianCalendar();
-        if (today.get(Calendar.MONTH) >= Calendar.FEBRUARY && today.get(Calendar.MONTH) <= Calendar.JUNE) {
-            return Semesterbezeichnung.ZWEITES_SEMESTER;
-        } else {
-            return Semesterbezeichnung.ERSTES_SEMESTER;
-        }
+        return svmModel.getSemestersAll().get(0);
     }
 
     @Override

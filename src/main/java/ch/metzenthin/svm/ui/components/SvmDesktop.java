@@ -242,7 +242,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
                     onNextPanelAvailable(e.getSource());
                 }
             });
-            setAndShowActivePanel(kurseSemesterwahlPanel.$$$getRootComponent$$$(), "Kurse verwalten: Semester wählen");
+            setAndShowActivePanel(kurseSemesterwahlPanel.$$$getRootComponent$$$(), "Kurse verwalten: Schuljahr / Semester wählen");
 
         } else if ("kurstypenVerwalten".equals(e.getActionCommand())) {
             KurstypenPanel kurstypenPanel = new KurstypenPanel(svmContext);

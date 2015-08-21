@@ -113,7 +113,8 @@ public enum Field {
     EMAIL_EMPFAENGER("E-Mail-Empfänger"),
     MAERCHEN_FUER_SUCHE_BERUECKSICHTIGEN("Märchen für Suche berücksichtigen"),
     ZUSATZATTRIBUT_MAERCHEN("Zusatzattribut"),
-    GEBURTSDATUM_SHORT("Geb.Datum");
+    GEBURTSDATUM_SHORT("Geb.Datum"),
+    SEMESTER_KURS("Semester");
 
     private String name;
 

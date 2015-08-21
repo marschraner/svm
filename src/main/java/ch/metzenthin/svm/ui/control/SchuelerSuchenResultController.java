@@ -64,7 +64,7 @@ public class SchuelerSuchenResultController {
             lblTotal.setText("Semester nicht erfasst.");
             return;
         }
-        String semesterStr = " (" + schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() + " " + schuelerSuchenTableModel.getSemester().getSchuljahr() + ")";
+        String semesterStr = " (" + schuelerSuchenTableModel.getSemester().getSchuljahr() + ", " + schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() + ")";
         String lektionen = (schuelerSuchenTableModel.getAnzahlLektionen() == 1 ? " Lektion" : " Lektionen");
         String maercheneinteilungen = (schuelerSuchenTableModel.getAnzahlMaercheneinteilungen() == 1 ? " Märcheneinteilung" : " Märcheneinteilungen");
         String lblTotalText = "Total: " + schuelerSuchenTableModel.getRowCount() + " Schüler, " + schuelerSuchenTableModel.getAnzahlLektionen() + lektionen;

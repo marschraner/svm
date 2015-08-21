@@ -35,7 +35,7 @@ public class DetermineNaechstesNochNichtErfasstesSemesterCommand implements Comm
         int schuljahr2 = schuljahr1 + 1;
         String naechtesSchuljahr = schuljahr1 + "/" + schuljahr2;
         Semesterbezeichnung naechsteSemesterbezeichnung;
-        if (today.get(Calendar.MONTH) >= Calendar.FEBRUARY || today.get(Calendar.MONTH) <= Calendar.MAY) {
+        if (today.get(Calendar.MONTH) >= Calendar.FEBRUARY && today.get(Calendar.MONTH) <= Calendar.MAY) {
             naechsteSemesterbezeichnung = Semesterbezeichnung.ZWEITES_SEMESTER;
         } else {
             naechsteSemesterbezeichnung = Semesterbezeichnung.ERSTES_SEMESTER;

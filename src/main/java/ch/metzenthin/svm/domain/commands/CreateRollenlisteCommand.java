@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.utils.StringNumberComparator;
 import ch.metzenthin.svm.common.dataTypes.Elternteil;
-import ch.metzenthin.svm.common.utils.MapUtils;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
@@ -165,7 +165,7 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
         Set<Schueler> keys;
         if (schuelerSuchenTableModel.isNachRollenGesucht()) {
             // Wenn nach Rollen gesucht wurde, gibt es keine Keys mit leeren Values
-            maercheneinteilungen = MapUtils.sortByValue(maercheneinteilungen);
+            maercheneinteilungen = sortMaercheneinteilungenByRollen(maercheneinteilungen);
             keys = maercheneinteilungen.keySet();
         } else {
             // Sortierung nach Keys
@@ -311,6 +311,25 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
         createWordTableCommand.execute();
 
         result = Result.LISTE_ERFOLGREICH_ERSTELLT;
+    }
+
+
+
+    private Map<Schueler, Maercheneinteilung> sortMaercheneinteilungenByRollen(Map<Schueler, Maercheneinteilung> maercheneinteilungen) {
+        List<Map.Entry<Schueler, Maercheneinteilung>> list = new LinkedList<>(maercheneinteilungen.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Schueler, Maercheneinteilung>>() {
+            @Override
+            public int compare(Map.Entry<Schueler, Maercheneinteilung> o1, Map.Entry<Schueler, Maercheneinteilung> o2) {
+                Comparator<String> stringNumberComparator = new StringNumberComparator();
+                return stringNumberComparator.compare(o1.getValue().getRolle1(), o2.getValue().getRolle1());
+            }
+        });
+
+        Map<Schueler, Maercheneinteilung> result = new LinkedHashMap<>();
+        for (Map.Entry<Schueler, Maercheneinteilung> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
     }
 
 }

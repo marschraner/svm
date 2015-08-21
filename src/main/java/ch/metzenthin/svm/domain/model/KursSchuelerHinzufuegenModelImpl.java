@@ -107,19 +107,19 @@ public class KursSchuelerHinzufuegenModelImpl extends AbstractModel implements K
         Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
         Calendar dayToShowNextSemster = new GregorianCalendar();
         dayToShowNextSemster.add(Calendar.DAY_OF_YEAR, 40);
-        Semester defaultSemester;
+        Semester initSemester;
         if (currentSemester == null) {
             // Ferien zwischen 2 Semestern
-            defaultSemester = nextSemester;
+            initSemester = nextSemester;
         } else if (dayToShowNextSemster.after(currentSemester.getSemesterende()) && nextSemester != null) {
             // weniger als 40 Tage vor Semesterende
-            defaultSemester = nextSemester;
+            initSemester = nextSemester;
         } else {
             // Neues Semester noch nicht erfasst
-            defaultSemester = currentSemester;
+            initSemester = currentSemester;
         }
-        if (defaultSemester != null) {
-            return defaultSemester;
+        if (initSemester != null) {
+            return initSemester;
         } else {
             return svmModel.getSemestersAll().get(0);
         }

@@ -2,14 +2,13 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
 import ch.metzenthin.svm.domain.model.KurseTableData;
+import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.components.KursePanel;
-import ch.metzenthin.svm.ui.components.SemestersPanel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -18,8 +17,6 @@ import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
@@ -38,8 +35,7 @@ public class KurseSemesterwahlController extends AbstractController {
     private ActionListener nextPanelListener;
     private KurseSemesterwahlModel kurseSemesterwahlModel;
     private final SvmContext svmContext;
-    private JSpinner spinnerSchuljahre;
-    private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
+    private JSpinner spinnerSemester;
     private JButton btnOk;
     private JButton btnAbbrechen;
 
@@ -67,41 +63,33 @@ public class KurseSemesterwahlController extends AbstractController {
         kurseSemesterwahlModel.initializeCompleted();
     }
 
-    public void setSpinnerSchuljahre(JSpinner spinnerSchuljahre) {
-        this.spinnerSchuljahre = spinnerSchuljahre;
-        spinnerSchuljahre.addChangeListener(new ChangeListener() {
+    public void setSpinnerSemester(JSpinner spinnerSemester) {
+        this.spinnerSemester = spinnerSemester;
+        java.util.List<Semester> semesterList = svmContext.getSvmModel().getSemestersAll();
+        if (semesterList.isEmpty()) {
+            // keine Semester erfasst
+            SpinnerModel spinnerModel = new SpinnerListModel(new String[]{""});
+            spinnerSemester.setModel(spinnerModel);
+            spinnerSemester.setEnabled(false);
+            return;
+        }
+        Semester[] semesters = semesterList.toArray(new Semester[semesterList.size()]);
+        SpinnerModel spinnerModelSemester = new SpinnerListModel(semesters);
+        spinnerSemester.setModel(spinnerModelSemester);
+        spinnerSemester.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                onSchuljahrSelected();
+                onSemesterSelected();
             }
         });
-        initSchuljahr();
+        // Model initialisieren
+        kurseSemesterwahlModel.setSemester(kurseSemesterwahlModel.getInitSemester(svmContext.getSvmModel()));
     }
 
-    private void initSchuljahr() {
-        Calendar today = new GregorianCalendar();
-        int schuljahr1;
-        if (today.get(Calendar.MONTH) <= Calendar.MAY) {
-            schuljahr1 = today.get(Calendar.YEAR) - 1;
-        } else {
-            schuljahr1 = today.get(Calendar.YEAR);
-        }
-        int schuljahr2 = schuljahr1 + 1;
-        String schuljahr = schuljahr1 + "/" + schuljahr2;
-        try {
-            kurseSemesterwahlModel.setSchuljahr(schuljahr);
-        } catch (SvmValidationException ignore) {
-        }
-    }
-
-    private void onSchuljahrSelected() {
-        LOGGER.trace("KurseSemesterwahlController Event Schuljahre selected =" + spinnerSchuljahre.getValue());
-        boolean equalFieldAndModelValue = equalsNullSafe(spinnerSchuljahre.getValue(), kurseSemesterwahlModel.getSchuljahr());
-        try {
-            setModelSchuljahr();
-        } catch (SvmValidationException e) {
-            return;
-        }
+    private void onSemesterSelected() {
+        LOGGER.trace("KurseSemesterwahlController Event Semester selected =" + spinnerSemester.getValue());
+        boolean equalFieldAndModelValue = equalsNullSafe(spinnerSemester.getValue(), kurseSemesterwahlModel.getSemester());
+        setModelSemester();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
@@ -109,63 +97,14 @@ public class KurseSemesterwahlController extends AbstractController {
         }
     }
 
-    private void setModelSchuljahr() throws SvmValidationException {
-        makeErrorLabelInvisible(Field.SCHULJAHR);
-        try {
-            kurseSemesterwahlModel.setSchuljahr((String) spinnerSchuljahre.getValue());
-        } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelSchuljahr Exception=" + e.getMessage());
-            showErrMsg(e);
-            throw e;
-        }
+    private void setModelSemester() {
+        makeErrorLabelInvisible(Field.SEMESTER_KURS);
+        kurseSemesterwahlModel.setSemester((Semester) spinnerSemester.getValue());
     }
-
-    public void setComboBoxSemesterbezeichnung(JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung) {
-        this.comboBoxSemesterbezeichnung = comboBoxSemesterbezeichnung;
-        comboBoxSemesterbezeichnung.setModel(new DefaultComboBoxModel<>(Semesterbezeichnung.values()));
-        comboBoxSemesterbezeichnung.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSemesterbezeichnungSelected();
-            }
-        });
-        initSemesterbezeichnung();
-    }
-
-    private void initSemesterbezeichnung() {
-        Calendar today = new GregorianCalendar();
-        Semesterbezeichnung semesterbezeichnung;
-        if (today.get(Calendar.MONTH) >= Calendar.FEBRUARY && today.get(Calendar.MONTH) <= Calendar.MAY) {
-            semesterbezeichnung = Semesterbezeichnung.ZWEITES_SEMESTER;
-        } else {
-            semesterbezeichnung = Semesterbezeichnung.ERSTES_SEMESTER;
-        }
-        kurseSemesterwahlModel.setSemesterbezeichnung(semesterbezeichnung);
-    }
-
-    private void onSemesterbezeichnungSelected() {
-        LOGGER.trace("KurseSemesterwahlController Event Semesterbezeichnung selected=" + comboBoxSemesterbezeichnung.getSelectedItem());
-        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxSemesterbezeichnung.getSelectedItem(), kurseSemesterwahlModel.getSemesterbezeichnung());
-        try {
-            setModelSemesterbezeichnung();
-        } catch (SvmValidationException e) {
-            return;
-        }
-        if (equalFieldAndModelValue && isModelValidationMode()) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
-    }
-
-    private void setModelSemesterbezeichnung() throws SvmValidationException {
-        makeErrorLabelInvisible(Field.SEMESTERBEZEICHNUNG);
-        kurseSemesterwahlModel.setSemesterbezeichnung((Semesterbezeichnung) comboBoxSemesterbezeichnung.getSelectedItem());
-    }
-
+    
     public void setBtnOk(JButton btnOk) {
         this.btnOk = btnOk;
-        if (isModelValidationMode()) {
+        if (svmContext.getSvmModel().getSemestersAll().isEmpty() || isModelValidationMode()) {
             btnOk.setEnabled(false);
         }
         this.btnOk.addActionListener(new ActionListener() {
@@ -182,16 +121,9 @@ public class KurseSemesterwahlController extends AbstractController {
             btnOk.setFocusPainted(false);
             return;
         }
-        if (!kurseSemesterwahlModel.checkSemesterBereitsErfasst(svmContext.getSvmModel())) {
-            JOptionPane.showMessageDialog(null, "Bevor Kurse für das " + kurseSemesterwahlModel.getSemesterbezeichnung() + " " + kurseSemesterwahlModel.getSchuljahr() + " erfasst werden können, muss zuerst das Semester erfasst werden.", "Semester muss zuerst erfasst werden", JOptionPane.INFORMATION_MESSAGE);
-            SemestersPanel semestersPanel = new SemestersPanel(svmContext);
-            semestersPanel.addCloseListener(closeListener);
-            nextPanelListener.actionPerformed(new ActionEvent(new Object[]{semestersPanel.$$$getRootComponent$$$(), "Semester verwalten"}, ActionEvent.ACTION_PERFORMED, "Semester verwalten"));
-            return;
-        }
         KurseTableData kurseTableData = kurseSemesterwahlModel.suchen();
         KurseTableModel kurseTableModel = new KurseTableModel(kurseTableData);
-        String titel = "Kurse " + kurseSemesterwahlModel.getSemesterbezeichnung() + " " + kurseSemesterwahlModel.getSchuljahr();
+        String titel = "Kurse " + kurseSemesterwahlModel.getSemester().getSemesterbezeichnung() + " " + kurseSemesterwahlModel.getSemester().getSchuljahr();
         KursePanel kursePanel = new KursePanel(svmContext, kurseSemesterwahlModel, kurseTableModel, null, null, null, 0, false, false, titel);
         kursePanel.addCloseListener(closeListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{kursePanel.$$$getRootComponent$$$(), titel}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
@@ -234,10 +166,8 @@ public class KurseSemesterwahlController extends AbstractController {
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         super.doPropertyChange(evt);
-        if (checkIsFieldChange(Field.SCHULJAHR, evt)) {
-            spinnerSchuljahre.setValue(kurseSemesterwahlModel.getSchuljahr());
-        } else if (checkIsFieldChange(Field.SEMESTERBEZEICHNUNG, evt)) {
-            comboBoxSemesterbezeichnung.setSelectedItem(kurseSemesterwahlModel.getSemesterbezeichnung());
+        if (checkIsFieldChange(Field.SEMESTER, evt)) {
+            spinnerSemester.setValue(kurseSemesterwahlModel.getSemester());
         }
     }
 

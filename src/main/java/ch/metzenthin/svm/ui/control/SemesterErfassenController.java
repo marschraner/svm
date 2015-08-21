@@ -125,7 +125,7 @@ public class SemesterErfassenController extends AbstractController {
         try {
             semesterErfassenModel.setSchuljahr((String) spinnerSchuljahre.getValue());
         } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelSchuljahr Exception=" + e.getMessage());
+            LOGGER.trace("SemesterErfassenController setModelSchuljahr Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -154,7 +154,7 @@ public class SemesterErfassenController extends AbstractController {
     }
 
     private void onSemesterbezeichnungSelected() {
-        LOGGER.trace("PersonController Event Semesterbezeichnung selected=" + comboBoxSemesterbezeichnung.getSelectedItem());
+        LOGGER.trace("SemesterErfasssenController Event Semesterbezeichnung selected=" + comboBoxSemesterbezeichnung.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxSemesterbezeichnung.getSelectedItem(), semesterErfassenModel.getSemesterbezeichnung());
         try {
             setModelSemesterbezeichnung();

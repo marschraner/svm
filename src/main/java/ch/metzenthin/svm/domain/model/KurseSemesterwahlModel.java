@@ -1,7 +1,5 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Semester;
 
 /**
@@ -9,13 +7,10 @@ import ch.metzenthin.svm.persistence.entities.Semester;
  */
 public interface KurseSemesterwahlModel extends Model {
 
-    String getSchuljahr();
-    Semesterbezeichnung getSemesterbezeichnung();
-    Semester getSemester(SvmModel svmModel);
+    Semester getSemester();
 
-    void setSchuljahr(String schuljahr) throws SvmValidationException;
-    void setSemesterbezeichnung(Semesterbezeichnung semesterbezeichnung);
+    void setSemester(Semester semesterg);
 
-    boolean checkSemesterBereitsErfasst(SvmModel svmModel);
+    Semester getInitSemester(SvmModel svmModel);
     KurseTableData suchen();
 }

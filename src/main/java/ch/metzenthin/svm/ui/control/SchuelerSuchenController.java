@@ -7,10 +7,7 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
-import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
-import ch.metzenthin.svm.persistence.entities.Maerchen;
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
@@ -22,9 +19,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
@@ -58,9 +53,8 @@ public class SchuelerSuchenController extends PersonController {
     private JRadioButton radioBtnWeiblich;
     private JRadioButton radioBtnMaennlich;
     private JRadioButton radioBtnGeschlechtAlle;
-    private JSpinner spinnerSchuljahreKurs;
+    private JSpinner spinnerSemesterKurs;
     private JSpinner spinnerMaerchen;
-    private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
     private JComboBox<Wochentag> comboBoxWochentag;
     private JComboBox<Lehrkraft> comboBoxLehrkraft;
     private JComboBox<SchuelerCode> comboBoxSchuelerCode;
@@ -228,67 +222,32 @@ public class SchuelerSuchenController extends PersonController {
         schuelerSuchenModel.setSchuelerCode((SchuelerCode) comboBoxSchuelerCode.getSelectedItem());
     }
 
-    public void setSpinnerSchuljahreKurs(JSpinner spinnerSchuljahreKurs) {
-        this.spinnerSchuljahreKurs = spinnerSchuljahreKurs;
-        String[] schuljahre = new Schuljahre().getSchuljahre();
-        SpinnerModel spinnerModelSchuljahre = new SpinnerListModel(schuljahre);
-        spinnerSchuljahreKurs.setModel(spinnerModelSchuljahre);
-        spinnerSchuljahreKurs.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                onSchuljahrKursSelected();
-            }
-        });
-        String schuljahrInit = schuelerSuchenModel.getSchuljahrInit(svmContext.getSvmModel());
-        try {
-            schuelerSuchenModel.setSchuljahrKurs(schuljahrInit);
-        } catch (SvmValidationException ignore) {
-        }
-    }
-
-    private void onSchuljahrKursSelected() {
-        LOGGER.trace("KurseSemesterwahlController Event SchuljahrKurs selected =" + spinnerSchuljahreKurs.getValue());
-        boolean equalFieldAndModelValue = equalsNullSafe(spinnerSchuljahreKurs.getValue(), schuelerSuchenModel.getSchuljahrKurs());
-        try {
-            setModelSchuljahrKurs();
-        } catch (SvmValidationException e) {
+    public void setSpinnerSemesterKurs(JSpinner spinnerSemesterKurs) {
+        this.spinnerSemesterKurs = spinnerSemesterKurs;
+        java.util.List<Semester> semesterList = svmContext.getSvmModel().getSemestersAll();
+        if (semesterList.isEmpty()) {
+            // keine Semester erfasst
+            SpinnerModel spinnerModel = new SpinnerListModel(new String[]{""});
+            spinnerSemesterKurs.setModel(spinnerModel);
             return;
         }
-        if (equalFieldAndModelValue && isModelValidationMode()) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
-    }
-
-    private void setModelSchuljahrKurs() throws SvmValidationException {
-        makeErrorLabelInvisible(Field.SCHULJAHR_KURS);
-        try {
-            schuelerSuchenModel.setSchuljahrKurs((String) spinnerSchuljahreKurs.getValue());
-        } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelSchuljahrKurs Exception=" + e.getMessage());
-            showErrMsg(e);
-            throw e;
-        }
-    }
-
-    public void setComboBoxSemesterbezeichnung(JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung) {
-        this.comboBoxSemesterbezeichnung = comboBoxSemesterbezeichnung;
-        comboBoxSemesterbezeichnung.setModel(new DefaultComboBoxModel<>(Semesterbezeichnung.values()));
-        comboBoxSemesterbezeichnung.addActionListener(new ActionListener() {
+        Semester[] semesters = semesterList.toArray(new Semester[semesterList.size()]);
+        SpinnerModel spinnerModelSemester = new SpinnerListModel(semesters);
+        spinnerSemesterKurs.setModel(spinnerModelSemester);
+        spinnerSemesterKurs.addChangeListener(new ChangeListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                onSemesterbezeichnungSelected();
+            public void stateChanged(ChangeEvent e) {
+                onSemesterKursSelected();
             }
         });
-        Semesterbezeichnung semesterbezeichnungInit = schuelerSuchenModel.getSemesterbezeichungInit(svmContext.getSvmModel());
-        schuelerSuchenModel.setSemesterbezeichnung(semesterbezeichnungInit);
+        // Model initialisieren
+        schuelerSuchenModel.setSemesterKurs(schuelerSuchenModel.getSemesterInit(svmContext.getSvmModel()));
     }
 
-    private void onSemesterbezeichnungSelected() {
-        LOGGER.trace("KurseSemesterwahlController Event Semesterbezeichnung selected=" + comboBoxSemesterbezeichnung.getSelectedItem());
-        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxSemesterbezeichnung.getSelectedItem(), schuelerSuchenModel.getSemesterbezeichnung());
-        setModelSemesterbezeichnung();
+    private void onSemesterKursSelected() {
+        LOGGER.trace("SchuelerSuchenController Event Semester selected =" + spinnerSemesterKurs.getValue());
+        boolean equalFieldAndModelValue = equalsNullSafe(spinnerSemesterKurs.getValue(), schuelerSuchenModel.getSemesterKurs());
+        setModelSemesterKurs();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
@@ -296,9 +255,9 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
-    private void setModelSemesterbezeichnung() {
-        makeErrorLabelInvisible(Field.SEMESTERBEZEICHNUNG);
-        schuelerSuchenModel.setSemesterbezeichnung((Semesterbezeichnung) comboBoxSemesterbezeichnung.getSelectedItem());
+    private void setModelSemesterKurs() {
+        makeErrorLabelInvisible(Field.SEMESTER_KURS);
+        schuelerSuchenModel.setSemesterKurs((Semester) spinnerSemesterKurs.getValue());
     }
 
     public void setComboBoxWochentag(JComboBox<Wochentag> comboBoxWochentag) {
@@ -408,6 +367,9 @@ public class SchuelerSuchenController extends PersonController {
 
     public void setCheckBoxKursFuerSucheBeruecksichtigen(JCheckBox checkBoxKursFuerSucheBeruecksichtigen) {
         this.checkBoxKursFuerSucheBeruecksichtigen = checkBoxKursFuerSucheBeruecksichtigen;
+        if (svmContext.getSvmModel().getSemestersAll().isEmpty()) {
+            checkBoxKursFuerSucheBeruecksichtigen.setEnabled(false);
+        }
         this.checkBoxKursFuerSucheBeruecksichtigen.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -431,6 +393,9 @@ public class SchuelerSuchenController extends PersonController {
         this.spinnerMaerchen = spinnerMaerchen;
         java.util.List<Maerchen> maerchenList = svmContext.getSvmModel().getMaerchensAll();
         if (maerchenList.isEmpty()) {
+            // keine Märchen erfasst
+            SpinnerModel spinnerModel = new SpinnerListModel(new String[]{""});
+            spinnerMaerchen.setModel(spinnerModel);
             return;
         }
         Maerchen[] maerchens = maerchenList.toArray(new Maerchen[maerchenList.size()]);
@@ -929,7 +894,7 @@ public class SchuelerSuchenController extends PersonController {
 
     private Set<Field> getKursFields() {
         Set<Field> kursFields = new HashSet<>();
-        kursFields.add(Field.SCHULJAHR_KURS);
+        kursFields.add(Field.SEMESTER_KURS);
         kursFields.add(Field.SEMESTERBEZEICHNUNG);
         kursFields.add(Field.WOCHENTAG);
         kursFields.add(Field.ZEIT_BEGINN);
@@ -1000,11 +965,8 @@ public class SchuelerSuchenController extends PersonController {
         else if (checkIsFieldChange(Field.SCHUELER_CODE, evt)) {
             comboBoxSchuelerCode.setSelectedItem(schuelerSuchenModel.getSchuelerCode());
         }
-        else if (checkIsFieldChange(Field.SCHULJAHR_KURS, evt)) {
-            spinnerSchuljahreKurs.setValue(schuelerSuchenModel.getSchuljahrKurs());
-        }
-        else if (checkIsFieldChange(Field.SEMESTERBEZEICHNUNG, evt)) {
-            comboBoxSemesterbezeichnung.setSelectedItem(schuelerSuchenModel.getSemesterbezeichnung());
+        else if (checkIsFieldChange(Field.SEMESTER_KURS, evt)) {
+            spinnerSemesterKurs.setValue(schuelerSuchenModel.getSemesterKurs());
         }
         else if (checkIsFieldChange(Field.WOCHENTAG, evt)) {
             comboBoxWochentag.setSelectedItem(schuelerSuchenModel.getWochentag());
@@ -1226,11 +1188,8 @@ public class SchuelerSuchenController extends PersonController {
         if (comboBoxSchuelerCode != null && (fields.contains(Field.ALLE) || fields.contains(Field.CODE))) {
             comboBoxSchuelerCode.setEnabled(!disable);
         }
-        if (spinnerSchuljahreKurs != null && (fields.contains(Field.ALLE) || fields.contains(Field.SCHULJAHR_KURS))) {
-            spinnerSchuljahreKurs.setEnabled(!disable);
-        }
-        if (comboBoxSemesterbezeichnung != null && (fields.contains(Field.ALLE) || fields.contains(Field.SEMESTERBEZEICHNUNG))) {
-            comboBoxSemesterbezeichnung.setEnabled(!disable);
+        if (spinnerSemesterKurs != null && (fields.contains(Field.ALLE) || fields.contains(Field.SEMESTER_KURS))) {
+            spinnerSemesterKurs.setEnabled(!disable);
         }
         if (comboBoxWochentag != null && (fields.contains(Field.ALLE) || fields.contains(Field.WOCHENTAG))) {
             comboBoxWochentag.setEnabled(!disable);

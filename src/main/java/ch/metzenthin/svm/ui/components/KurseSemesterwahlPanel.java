@@ -2,7 +2,6 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Schuljahre;
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.ui.control.KurseSemesterwahlController;
 
 import javax.swing.*;
@@ -17,8 +16,7 @@ public class KurseSemesterwahlPanel {
     private JPanel panel1;
     private JPanel datenPanel;
     private JPanel titelPanel;
-    private JSpinner spinnerSchuljahre;
-    private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
+    private JSpinner spinnerSemester;
     private JButton btnOk;
     private JButton btnAbbrechen;
     private KurseSemesterwahlController kurseSemesterwahlController;
@@ -31,8 +29,7 @@ public class KurseSemesterwahlPanel {
 
     private void createKurseSuchenController(SvmContext svmContext) {
         kurseSemesterwahlController = new KurseSemesterwahlController(svmContext, svmContext.getModelFactory().createKurseSemesterwahlModel());
-        kurseSemesterwahlController.setSpinnerSchuljahre(spinnerSchuljahre);
-        kurseSemesterwahlController.setComboBoxSemesterbezeichnung(comboBoxSemesterbezeichnung);
+        kurseSemesterwahlController.setSpinnerSemester(spinnerSemester);
         kurseSemesterwahlController.setBtnOk(btnOk);
         kurseSemesterwahlController.setBtnAbbrechen(btnAbbrechen);
     }
@@ -40,8 +37,7 @@ public class KurseSemesterwahlPanel {
     private void createUIComponents() {
         String[] schuljahre = new Schuljahre().getSchuljahre();
         SpinnerModel spinnerModelSchuljahre = new SpinnerListModel(schuljahre);
-        spinnerSchuljahre = new JSpinner(spinnerModelSchuljahre);
-        comboBoxSemesterbezeichnung = new JComboBox<>(Semesterbezeichnung.values());
+        spinnerSemester = new JSpinner(spinnerModelSchuljahre);
     }
 
     public void addCloseListener(ActionListener actionListener) {
@@ -78,7 +74,7 @@ public class KurseSemesterwahlPanel {
         datenPanel.add(titelPanel, gbc);
         final JLabel label1 = new JLabel();
         label1.setFont(new Font(label1.getFont().getName(), label1.getFont().getStyle(), 36));
-        label1.setText("Kurse verwalten: Semester wählen");
+        label1.setText("Kurse verwalten: Schuljahr / Semester wählen");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -99,13 +95,14 @@ public class KurseSemesterwahlPanel {
         gbc.weighty = 1.0;
         gbc.insets = new Insets(10, 10, 10, 10);
         datenPanel.add(panel2, gbc);
-        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Semester", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel2.getFont().getName(), Font.BOLD, panel2.getFont().getSize()), new Color(-16777216)));
+        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schuljahr / Semester", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel2.getFont().getName(), Font.BOLD, panel2.getFont().getSize()), new Color(-16777216)));
         final JLabel label2 = new JLabel();
-        label2.setText("Schuljahr");
+        label2.setText("Schuljahr, Semester");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 0, 0, 15);
         panel2.add(label2, gbc);
         final JPanel spacer2 = new JPanel();
         gbc = new GridBagConstraints();
@@ -115,56 +112,36 @@ public class KurseSemesterwahlPanel {
         panel2.add(spacer2, gbc);
         final JPanel spacer3 = new JPanel();
         gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer3, gbc);
-        final JPanel spacer4 = new JPanel();
-        gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(spacer4, gbc);
+        panel2.add(spacer3, gbc);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(spinnerSchuljahre, gbc);
-        final JPanel spacer5 = new JPanel();
+        panel2.add(spinnerSemester, gbc);
+        final JPanel spacer4 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer5, gbc);
-        final JPanel spacer6 = new JPanel();
+        panel2.add(spacer4, gbc);
+        final JPanel spacer5 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.ipadx = 300;
-        panel2.add(spacer6, gbc);
-        final JLabel label3 = new JLabel();
-        label3.setText("Semester");
+        panel2.add(spacer5, gbc);
+        final JPanel spacer6 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 0, 0, 15);
-        panel2.add(label3, gbc);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(comboBoxSemesterbezeichnung, gbc);
-        final JPanel spacer7 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 4;
+        gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer7, gbc);
+        panel2.add(spacer6, gbc);
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
@@ -182,18 +159,18 @@ public class KurseSemesterwahlPanel {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel3.add(btnOk, gbc);
-        final JPanel spacer8 = new JPanel();
+        final JPanel spacer7 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel3.add(spacer8, gbc);
-        final JPanel spacer9 = new JPanel();
+        panel3.add(spacer7, gbc);
+        final JPanel spacer8 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel3.add(spacer9, gbc);
+        panel3.add(spacer8, gbc);
         btnAbbrechen = new JButton();
         btnAbbrechen.setMaximumSize(new Dimension(114, 29));
         btnAbbrechen.setMinimumSize(new Dimension(114, 29));
@@ -204,7 +181,6 @@ public class KurseSemesterwahlPanel {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel3.add(btnAbbrechen, gbc);
-        label3.setLabelFor(comboBoxSemesterbezeichnung);
     }
 
     /**

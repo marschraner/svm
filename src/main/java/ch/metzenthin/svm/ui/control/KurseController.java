@@ -97,6 +97,10 @@ public class KurseController {
 
     public void setBtnNeu(JButton btnNeu) {
         this.btnNeu = btnNeu;
+        if (svmContext.getSvmModel().getSemestersAll().isEmpty()) {
+            btnNeu.setEnabled(false);
+            return;
+        }
         btnNeu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -110,21 +114,20 @@ public class KurseController {
     }
 
     private void onNeuKurseVerwalten() {
-        int n = 0;
         if (kurseModel.checkIfSemesterIsInPast(svmContext.getSvmModel(), kurseSemesterwahlModel)) {
-            Object[] options = {"Ignorieren", "Abbrechen"};
-            n = JOptionPane.showOptionDialog(
+            Object[] options = {"Ja", "Nein"};
+            int n = JOptionPane.showOptionDialog(
                     null,
-                    "Das Semester liegt in der Vergangenheit.",
-                    "Warnung",
+                    "Das Schuljahr / Semester liegt in der Vergangenheit. Trotzdem neuen Kurs erfassen?",
+                    "Schuljahr / Semester in Vergangenheit",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
                     null,     //do not use a custom Icon
                     options,  //the titles of buttons
                     options[1]); //default button title
-        }
-        if (n == 1) {
-            return;
+            if (n == 1) {
+                return;
+            }
         }
         btnNeu.setFocusPainted(true);
         KursErfassenDialog kursErfassenDialog = new KursErfassenDialog(svmContext, kurseModel, kurseSemesterwahlModel, kurseTableModel, 0, false, "Neuer Kurs");

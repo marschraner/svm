@@ -97,11 +97,12 @@ public class KursSchuelerHinzufuegenDialog extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(spacer1, gbc);
         final JLabel label1 = new JLabel();
-        label1.setText("Semester");
+        label1.setText("Schuljahr, Semester");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 0, 0, 15);
         panel1.add(label1, gbc);
         final JPanel spacer2 = new JPanel();
         gbc = new GridBagConstraints();

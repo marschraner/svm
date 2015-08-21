@@ -38,7 +38,7 @@ public class KurseModelImpl extends AbstractModel implements KurseModel {
     @Override
     public void importKurseFromPreviousSemester(SvmModel svmModel, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        Semester semester = kurseSemesterwahlModel.getSemester(svmModel);
+        Semester semester = kurseSemesterwahlModel.getSemester();
         List<Kurs> kurse = kurseTableModel.getKurse();
         ImportKurseFromPreviousSemesterCommand importKurseFromPreviousSemesterCommand = new ImportKurseFromPreviousSemesterCommand(kurse, semester);
         commandInvoker.executeCommandAsTransaction(importKurseFromPreviousSemesterCommand);
@@ -66,7 +66,7 @@ public class KurseModelImpl extends AbstractModel implements KurseModel {
     @Override
     public boolean checkIfSemesterIsInPast(SvmModel svmModel, KurseSemesterwahlModel kurseSemesterwahlModel) {
         Calendar today = new GregorianCalendar();
-        Semester semester = kurseSemesterwahlModel.getSemester(svmModel);
+        Semester semester = kurseSemesterwahlModel.getSemester();
         return semester.getSemesterende().before(today);
     }
 
