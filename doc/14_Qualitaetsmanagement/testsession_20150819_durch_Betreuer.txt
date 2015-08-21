@@ -1,0 +1,153 @@
+﻿svm Test session
+———————
+Datum: 19.8.2015
+Dauer: 1h
+
+Charter: 
+Durch Besuchen aller Menüpunkte sich einen Überblick verschaffen über den Funktionsumfang, Usability und die Stabilität der einzelnen Funktionen. 
+
+Erfüllung:
+Nur die Hauptmenupunkte Datei und Kurse wurden getestet. Grund dafür waren zahlreiche kleine Usability, denen ich dann etwas systematischer nachgegangen bin.
+
+Weiteres Vorgehen:
+1 zusätzliche Testsession, bei der die fehlenden Menupunkte vor allem aus funktionaler Sicht abgedeckt werden.
+
+Data Setup:
+Initialer Datenlord mit geliefertem SQL Skript
+
+Gesamteindruck:
+- Bis auf den Bug beim wiederholten Ausführen von Editieraktionen stabil.
+- Zahlreiche kleine Usability Glitches, die die Anwendung etwas altbacken erscheinen lassen. Man merkt ihr das Vorbild der Framemaker Applikation an. Das wäre trotz entsprechenden Kundenwünschen nicht notwendig gewesen. 
+Die erkannten Punkte sind unter Fragen aufgelistet.
+
+Protokoll:
+Start 22:25
+
+Datei
+Beenden und dann abrechen -> Weiterarbeit ist möglich
+
+Kurstypen verwalten
+ abbrechen und erneut aufrufen
+Bug: Kurstyp Roland Test erfassen und gleich wieder löschen -> RollbackException
+Kurstyp erneut erfassen - wird verhindert
+Kurstyp löschen, und auf abbrechen klicken ->  Daten bleiben erhalten wie erwartet
+Kurstyp bearbeiten und anderen Namen geben
+Bestehenden Kurs auf Type Rolands Test ändern
+Kurstyp löschen -> wird verhindert, da Kurs referenziert wird
+Kurstyp umbenennt und in Übersicht Kurse kontrolliert
+
+Kursort verwalten:
+Kursort angelegt und gleich bearbeitet -> Exception
+bestehenden Kursort bearbeitet und anschliessend gleich nochmal bearbeitet -> Exception
+Mehrfachselektion Kursort und bearbeiten -> erster Eintrag wird übernommen -> unschön
+
+Semester erfassen:
+- Input Validierung Anzahl Schulwochen ist plausibel
+- Input Validieren Semesterende: bei Daten wie 31.2.2015 unschöne Fehlermeldung: Kein gültiges Datumsformat 
+- Semester auf anderes Jahr verschoben -> ok
+- zurückverschrieben -> Exception
+- Neustart dann gehts
+- Neues Semester anlegen, wegnavigierten,zurück und löschen -> ok
+
+Kurse verwalten
+- Eingabe eines ungültigen Semester -> warum wird Auswahlliste nicht eingeschränkt?
+- existierendes Semester eingegeben und dann neuen Kurs erstellt. Dabei Felder einzeln abgefüllt und dann speichern gedrückt -> Fehlermeldungen kommen einzeln -> warum nicht gesamtvalidieren?
+- Kurs bearbeiten und mit ungültigen Zeitspannen experimentieren -> ok
+- überlangen String in Stufe: Validierungsmeldung ok - wäre nicht Begrenzung des Eingabefeldes sinnvoller
+- Änderungen speichern und Kursübersicht neu laden ->ok
+- Sortierung in Kursliste ausprobieren -> Sortierung nach Wochentag ist alphabetisch -> besser spezfisischen Sortieralgo implementieren
+- Erstellen Kursliste -> Kurseliste ist nicht deutsch - sonst ok
+- Editieren der Liste im Word for Mac -> ok
+- Löschen klicken und abbrechen -> fokus in Tabelle verschwindet
+
+Beenden der Testsession aus Zeitgründen.
+
+Fragen:
+—————
+- Wie wird mit Kurstypen verfahren, die nicht mehr angeboten werden? Sollten die nicht in Auswahl versteckt werden können?
+- Wäre es nicht sinnvoll, in Listen wie der Kursortsverwaltung oder Kurstyp nur einfach Selektion zuzulassen, da eh nur der erste Eintrag dann bearbeitet wird?
+- Datumsvalidierung: 31.02.2015 = Kein gültiges Format: Aussage ist nicht korrekt - nicht eher eine spezifische Fehlermeldung?
+- Wäre eine Einschränkung der Semester bei der Kurserfassung nicht sinnvoller. Allenfalls gleich ein Link zur Semestererfassung im GUI. Fehlermeldung nach auswahl eines angezeigten Semesters scheint mir etwas umständlich.
+- Bei der Erfassungsmaske für Kurse erfolgt keine Gesamtvalidierung, wenn nicht alle Felder eingegeben sind. Die Meldungen kommen tröpfchenweise, wenn man einen Fehler korrigiert hat, wird der nächste angezeigt. Gesamtvalidierung und Anzeige aller Validierungsresultate ist dringend zu empfehlen.
+- Bei Längenbegrenzungen bei Feldern wäre vermutlich eine Einschränkung der Feldlänge sinnvoll, statt eine Fehlermeldung beim Speichern.
+- für die Sortierung der Kurstabelle im Feld Tag wäre eine Sortierung Mo, Di, Mi etc wohl sinnvoller als eine alphabetische Sortierung
+- Wäre Kursliste statt Kurseliste nicht korrekter?
+- Wäre es nicht sinnvoller, wenn beim Abbruch einer Aktion auf einer Detailmaske mit Rücksprung in die Tabelle der Fokus erhalten bleibt? Beobachtet bei den Kursen.
+- Kursliste enhält keinen Hinweis auf Semester - könnte man das nicht aufnehmen?
+
+Bugs:
+———
+- Fehlerferhalten: App schmiert ab nach internem Fehler - extrem ärgerlich bei der Arbeit -> was Hirnschmalz in generischen Fehlermechanismus investieren
+
+- Kurstyp anlegen und gleich wieder löschen (analog dazu auch bei Kursort und evt anderen Orten)
+
+- Kursort anlegen und gleich anschliessend bearbeiten: RollbackException
+- Bestehenden Kursort zweimal hintereinander bearbeiten: RollbackException
+- Diese Fehler treten wohl auch an anderen Orten auf: gesehen bei Semester
+
+RollbackException -> Reproduzierbar
+Exception Occurred in Thread[AWT-EventQueue-0,6,main]
+javax.persistence.RollbackException: Error while committing the transaction
+	at org.hibernate.jpa.internal.TransactionImpl.commit(TransactionImpl.java:94)
+	at ch.metzenthin.svm.domain.commands.CommandInvokerImpl.executeCommandAsTransaction(CommandInvokerImpl.java:65)
+	at ch.metzenthin.svm.domain.model.KurstypenModelImpl.eintragLoeschen(KurstypenModelImpl.java:25)
+	at ch.metzenthin.svm.ui.control.KurstypenController.onLoeschen(KurstypenController.java:136)
+	at ch.metzenthin.svm.ui.control.KurstypenController.access$300(KurstypenController.java:21)
+	at ch.metzenthin.svm.ui.control.KurstypenController$5.actionPerformed(KurstypenController.java:114)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2022)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2346)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.Component.processMouseEvent(Component.java:6525)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3324)
+	at java.awt.Component.processEvent(Component.java:6290)
+	at java.awt.Container.processEvent(Container.java:2234)
+	at java.awt.Component.dispatchEventImpl(Component.java:4881)
+	at java.awt.Container.dispatchEventImpl(Container.java:2292)
+	at java.awt.Component.dispatchEvent(Component.java:4703)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4898)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4533)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4462)
+	at java.awt.Container.dispatchEventImpl(Container.java:2278)
+	at java.awt.Window.dispatchEventImpl(Window.java:2750)
+	at java.awt.Component.dispatchEvent(Component.java:4703)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.awt.EventQueue$4.run(EventQueue.java:731)
+	at java.awt.EventQueue$4.run(EventQueue.java:729)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: javax.persistence.OptimisticLockException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [ch.metzenthin.svm.persistence.entities.Kurstyp#8]
+	at org.hibernate.jpa.spi.AbstractEntityManagerImpl.wrapStaleStateException(AbstractEntityManagerImpl.java:1792)
+	at org.hibernate.jpa.spi.AbstractEntityManagerImpl.convert(AbstractEntityManagerImpl.java:1705)
+	at org.hibernate.jpa.spi.AbstractEntityManagerImpl.convert(AbstractEntityManagerImpl.java:1677)
+	at org.hibernate.jpa.internal.TransactionImpl.commit(TransactionImpl.java:82)
+	... 41 more
+Caused by: org.hibernate.StaleObjectStateException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [ch.metzenthin.svm.persistence.entities.Kurstyp#8]
+	at org.hibernate.persister.entity.AbstractEntityPersister.check(AbstractEntityPersister.java:2541)
+	at org.hibernate.persister.entity.AbstractEntityPersister.delete(AbstractEntityPersister.java:3403)
+	at org.hibernate.persister.entity.AbstractEntityPersister.delete(AbstractEntityPersister.java:3630)
+	at org.hibernate.action.internal.EntityDeleteAction.execute(EntityDeleteAction.java:114)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:465)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:351)
+	at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:350)
+	at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:56)
+	at org.hibernate.internal.SessionImpl.flush(SessionImpl.java:1258)
+	at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:425)
+	at org.hibernate.engine.transaction.internal.jdbc.JdbcTransaction.beforeTransactionCommit(JdbcTransaction.java:101)
+	at org.hibernate.engine.transaction.spi.AbstractTransactionImpl.commit(AbstractTransactionImpl.java:177)
+	at org.hibernate.jpa.internal.TransactionImpl.commit(TransactionImpl.java:77)
+	... 41 more
