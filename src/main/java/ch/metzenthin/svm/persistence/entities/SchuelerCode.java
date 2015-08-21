@@ -21,8 +21,8 @@ public class SchuelerCode extends Code {
     public SchuelerCode() {
     }
 
-    public SchuelerCode(String kuerzel, String beschreibung) {
-        super(kuerzel, beschreibung);
+    public SchuelerCode(String kuerzel, String beschreibung, Boolean selektierbar) {
+        super(kuerzel, beschreibung, selektierbar);
     }
 
     public Set<Schueler> getSchueler() {

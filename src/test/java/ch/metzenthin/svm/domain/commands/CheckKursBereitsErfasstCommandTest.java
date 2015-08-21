@@ -25,10 +25,10 @@ public class CheckKursBereitsErfasstCommandTest {
     private List<Kurs> bereitsErfassteKurse = new ArrayList<>();
     private Semester semester1 = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
     private Semester semester2 = new Semester("2012/2013", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2012, Calendar.AUGUST, 20), new GregorianCalendar(2013, Calendar.FEBRUARY, 10), 21);
-    private Kurstyp kurstyp1 = new Kurstyp("Testkurs1");
-    private Kurstyp kurstyp2 = new Kurstyp("Testkurs1");
-    private Kursort kursort1 = new Kursort("Testsaal1");
-    private Kursort kursort2 = new Kursort("Testsaal2");
+    private Kurstyp kurstyp1 = new Kurstyp("Testkurs1", true);
+    private Kurstyp kurstyp2 = new Kurstyp("Testkurs1", true);
+    private Kursort kursort1 = new Kursort("Testsaal1", true);
+    private Kursort kursort2 = new Kursort("Testsaal2", true);
     private Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos1", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
     private Lehrkraft lehrkraft2 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos2", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
 

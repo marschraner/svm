@@ -16,7 +16,7 @@ public class KurstypenTableData {
         this.kurstypen = kurstypen;
     }
 
-    private static final Field[] COLUMNS = {Field.BEZEICHNUNG};
+    private static final Field[] COLUMNS = {Field.BEZEICHNUNG, Field.SELEKTIERBAR};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -32,6 +32,9 @@ public class KurstypenTableData {
         switch (COLUMNS[columnIndex]) {
             case BEZEICHNUNG:
                 value = kurstyp.getBezeichnung();
+                break;
+            case SELEKTIERBAR:
+                value = (kurstyp.getSelektierbar() ? "ja" : "nein");
                 break;
             default:
                 break;

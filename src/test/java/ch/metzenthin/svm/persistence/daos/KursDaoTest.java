@@ -66,9 +66,9 @@ public class KursDaoTest {
             // Semester, Kurstyp, Kursort und Lehrkraft erzeugen
             Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
             semesterDao.save(semester);
-            Kurstyp kurstyp = new Kurstyp("Testkurs");
+            Kurstyp kurstyp = new Kurstyp("Testkurs", true);
             kurstypDao.save(kurstyp);
-            Kursort kursort = new Kursort("Testsaal");
+            Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
             Lehrkraft lehrkraft = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
@@ -115,9 +115,9 @@ public class KursDaoTest {
             // Semester, Kurstyp, Kursort und Lehrkräfte erzeugen
             Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
             semesterDao.save(semester);
-            Kurstyp kurstyp = new Kurstyp("Testkurs");
+            Kurstyp kurstyp = new Kurstyp("Testkurs", true);
             kurstypDao.save(kurstyp);
-            Kursort kursort = new Kursort("Testsaal");
+            Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
             Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
@@ -192,9 +192,9 @@ public class KursDaoTest {
             // Semester, Kurstyp, Kursort und Lehrkräfte erzeugen
             Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
             semesterDao.save(semester);
-            Kurstyp kurstyp = new Kurstyp("Testkurs");
+            Kurstyp kurstyp = new Kurstyp("Testkurs", true);
             kurstypDao.save(kurstyp);
-            Kursort kursort = new Kursort("Testsaal");
+            Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
             Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
@@ -285,23 +285,23 @@ public class KursDaoTest {
             semesterDao.save(semester4);
 
             // Kurstyp
-            Kurstyp kurstyp1 = new Kurstyp("Testkurs1");
+            Kurstyp kurstyp1 = new Kurstyp("Testkurs1", true);
             kurstypDao.save(kurstyp1);
-            Kurstyp kurstyp2 = new Kurstyp("Testkurs2");
+            Kurstyp kurstyp2 = new Kurstyp("Testkurs2", true);
             kurstypDao.save(kurstyp2);
-            Kurstyp kurstyp3 = new Kurstyp("Testkurs3");
+            Kurstyp kurstyp3 = new Kurstyp("Testkurs3", true);
             kurstypDao.save(kurstyp3);
-            Kurstyp kurstyp4 = new Kurstyp("Testkurs4");
+            Kurstyp kurstyp4 = new Kurstyp("Testkurs4", true);
             kurstypDao.save(kurstyp4);
 
             // Kursorte
-            Kursort kursort1 = new Kursort("Testsaal1");
+            Kursort kursort1 = new Kursort("Testsaal1", true);
             kursortDao.save(kursort1);
-            Kursort kursort2 = new Kursort("Testsaal2");
+            Kursort kursort2 = new Kursort("Testsaal2", true);
             kursortDao.save(kursort2);
-            Kursort kursort3 = new Kursort("Testsaal3");
+            Kursort kursort3 = new Kursort("Testsaal3", true);
             kursortDao.save(kursort3);
-            Kursort kursort4 = new Kursort("Testsaal4");
+            Kursort kursort4 = new Kursort("Testsaal4", true);
             kursortDao.save(kursort4);
 
             // Lehrkräfte
@@ -447,9 +447,9 @@ public class KursDaoTest {
             // Semester, Kurstyp, Kursort und Lehrkräfte erzeugen
             Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
             semesterDao.save(semester);
-            Kurstyp kurstyp = new Kurstyp("Testkurs");
+            Kurstyp kurstyp = new Kurstyp("Testkurs", true);
             kurstypDao.save(kurstyp);
-            Kursort kursort = new Kursort("Testsaal");
+            Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
             Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
@@ -515,9 +515,9 @@ public class KursDaoTest {
             // Semester, Kurstyp, Kursort und Lehrkräfte erzeugen
             Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
             semesterDao.save(semester);
-            Kurstyp kurstyp = new Kurstyp("Testkurs");
+            Kurstyp kurstyp = new Kurstyp("Testkurs", true);
             kurstypDao.save(kurstyp);
-            Kursort kursort = new Kursort("Testsaal");
+            Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
             Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");

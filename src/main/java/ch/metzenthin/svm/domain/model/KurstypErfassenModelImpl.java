@@ -56,6 +56,18 @@ public class KurstypErfassenModelImpl extends AbstractModel implements KurstypEr
     }
 
     @Override
+    public void setSelektierbar(Boolean isSelected) {
+        Boolean oldValue = kurstyp.getSelektierbar();
+        kurstyp.setSelektierbar(isSelected);
+        firePropertyChange(Field.SELEKTIERBAR, oldValue, isSelected);
+    }
+
+    @Override
+    public Boolean isSelektierbar() {
+        return kurstyp.getSelektierbar();
+    }
+
+    @Override
     public boolean checkKurstypBezeichnungBereitsInVerwendung(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         CheckKurstypBezeichnungBereitsInVerwendungCommand checkKurstypBezeichnungBereitsInVerwendungCommand = new CheckKurstypBezeichnungBereitsInVerwendungCommand(kurstyp, kurstypOrigin, svmModel.getKurstypenAll());
@@ -76,6 +88,8 @@ public class KurstypErfassenModelImpl extends AbstractModel implements KurstypEr
             setBulkUpdate(true);
             try {
                 setBezeichnung(kurstypOrigin.getBezeichnung());
+                setSelektierbar(!kurstypOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
+                setSelektierbar(kurstypOrigin.getSelektierbar());
             } catch (SvmValidationException ignore) {
                 ignore.printStackTrace();
             }

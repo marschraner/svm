@@ -210,18 +210,63 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     }
 
     @Override
+    public Kurstyp[] getSelectableKurstypen(SvmModel svmModel) {
+        List<Kurstyp> kurstypenList = svmModel.getSelektierbareKurstypenAll();
+        if (kursOrigin != null) {
+            // Beim Bearbeiten muss ggf auch ein nicht mehr selektierbarer Kurstyp angezeigt werden können
+            boolean found = false;
+            for (Kurstyp kurstyp : kurstypenList) {
+                if (kursOrigin.getKurstyp().isIdenticalWith(kurstyp)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                kurstypenList.add(kursOrigin.getKurstyp());
+            }
+        }
+        return kurstypenList.toArray(new Kurstyp[kurstypenList.size()]);
+    }
+
+    @Override
+    public Kursort[] getSelectableKursorte(SvmModel svmModel) {
+        List<Kursort> kursorteList = svmModel.getSelektierbareKursorteAll();
+        if (kursOrigin != null) {
+            // Beim Bearbeiten muss ggf auch ein nicht mehr selektierbarer Kursort angezeigt werden können
+            boolean found = false;
+            for (Kursort kursort : kursorteList) {
+                if (kursOrigin.getKursort().isIdenticalWith(kursort)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                kursorteList.add(kursOrigin.getKursort());
+            }
+        }
+        return kursorteList.toArray(new Kursort[kursorteList.size()]);
+    }
+
+    @Override
     public Lehrkraft[] getSelectableLehrkraefte1(SvmModel svmModel) {
         List<Lehrkraft> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
-        addLehrkraefteOrigin(lehrkraefteList);
+        addInaktiveLehrkraefteOrigin(lehrkraefteList);
         return lehrkraefteList.toArray(new Lehrkraft[lehrkraefteList.size()]);
     }
 
-    private void addLehrkraefteOrigin(List<Lehrkraft> lehrkraefteList) {
+    private void addInaktiveLehrkraefteOrigin(List<Lehrkraft> lehrkraefteList) {
         if (kursOrigin != null) {
-            // Lehrkraefte in kursOrigin müssen auch angezeigt werden, wenn die Lehrkraft nicht (mehr) aktiv ist
-            for (Lehrkraft lehrkraft : kursOrigin.getLehrkraefte()) {
-                if (!lehrkraefteList.contains(lehrkraft)) {
-                    lehrkraefteList.add(lehrkraft);
+            for (Lehrkraft lehrkraftKursOrigin : kursOrigin.getLehrkraefte()) {
+                // Beim Bearbeiten müssen ggf auch nicht mehr aktive Lehrkräfte angezeigt werden können
+                boolean found = false;
+                for (Lehrkraft lehrkraft : lehrkraefteList) {
+                    if (lehrkraftKursOrigin.isIdenticalWith(lehrkraft)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    lehrkraefteList.add(lehrkraftKursOrigin);
                 }
             }
         }
@@ -250,7 +295,7 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
         if (lehrkraefteList.size() == 0 || !lehrkraefteList.get(0).isIdenticalWith(LEHRKRAFT_KEINE)) {
             lehrkraefteList.add(0, LEHRKRAFT_KEINE);
         }
-        addLehrkraefteOrigin(lehrkraefteList);
+        addInaktiveLehrkraefteOrigin(lehrkraefteList);
         return lehrkraefteList.toArray(new Lehrkraft[lehrkraefteList.size()]);
     }
 

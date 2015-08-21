@@ -101,7 +101,7 @@ public class KursortePanel {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.BOTH;
         panel2.add(scrollPane1, gbc);
-        kursorteTable.setPreferredScrollableViewportSize(new Dimension(300, 300));
+        kursorteTable.setPreferredScrollableViewportSize(new Dimension(400, 300));
         scrollPane1.setViewportView(kursorteTable);
         final JPanel spacer2 = new JPanel();
         gbc = new GridBagConstraints();

@@ -63,11 +63,11 @@ public class ImportKurseFromPreviousSemesterCommandTest {
         saveOrUpdateSemesterCommand = new SaveOrUpdateSemesterCommand(semester3, null, erfassteSemester);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterCommand);
 
-        Kurstyp kurstyp1 = new Kurstyp("Kurs Test");
+        Kurstyp kurstyp1 = new Kurstyp("Kurs Test", true);
         SaveOrUpdateKurstypCommand saveOrUpdateKurstypCommand = new SaveOrUpdateKurstypCommand(kurstyp1, null, erfassteKurstypen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKurstypCommand);
 
-        Kursort kursort1 = new Kursort("Saal Test");
+        Kursort kursort1 = new Kursort("Saal Test", true);
         SaveOrUpdateKursortCommand saveOrUpdateKursortCommand = new SaveOrUpdateKursortCommand(kursort1, null, erfassteKursorte);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
 

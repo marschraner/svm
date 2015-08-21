@@ -6,6 +6,7 @@ import ch.metzenthin.svm.domain.model.KurstypenModel;
 import ch.metzenthin.svm.domain.model.KurstypenTableData;
 import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
 import ch.metzenthin.svm.ui.components.KurstypErfassenDialog;
+import ch.metzenthin.svm.ui.components.UiComponentsUtils;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -37,7 +38,10 @@ public class KurstypenController {
 
     public void setKurstypenTable(JTable kurstypenTable) {
         this.kurstypenTable = kurstypenTable;
-        initializeKurstypenTable();
+        KurstypenTableData kurstypenTableData = new KurstypenTableData(svmContext.getSvmModel().getKurstypenAll());
+        kurstypenTableModel = new KurstypenTableModel(kurstypenTableData);
+        kurstypenTable.setModel(kurstypenTableModel);
+        UiComponentsUtils.setJTableColumnWidthAsPercentages(kurstypenTable, 0.75, 0.25);
         kurstypenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -54,12 +58,6 @@ public class KurstypenController {
                 }
             }
         });
-    }
-
-    private void initializeKurstypenTable() {
-        KurstypenTableData kurstypenTableData = new KurstypenTableData(svmContext.getSvmModel().getKurstypenAll());
-        kurstypenTableModel = new KurstypenTableModel(kurstypenTableData);
-        kurstypenTable.setModel(kurstypenTableModel);
     }
 
     public void setBtnNeu(JButton btnNeu) {

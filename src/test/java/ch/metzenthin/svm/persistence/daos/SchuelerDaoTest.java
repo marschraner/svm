@@ -244,12 +244,12 @@ public class SchuelerDaoTest {
             Integer dispensationId2 = dispensationen2.get(0).getDispensationId();
 
             // Codes hinzufügen
-            SchuelerCode schuelerCode1 = new SchuelerCode("z", "Zirkusprojekt");
+            SchuelerCode schuelerCode1 = new SchuelerCode("z", "Zirkusprojekt", true);
             schuelerCodeDao.save(schuelerCode1);
             schuelerCodeDao.addToSchuelerAndSave(schuelerCode1, schueler1);
             schuelerCodeDao.addToSchuelerAndSave(schuelerCode1, schueler2);
 
-            SchuelerCode schuelerCode2 = new SchuelerCode("r6", "6-Jahres-Rabatt");
+            SchuelerCode schuelerCode2 = new SchuelerCode("r6", "6-Jahres-Rabatt", true);
             schuelerCodeDao.save(schuelerCode2);
             schuelerCodeDao.addToSchuelerAndSave(schuelerCode2, schueler2);
 

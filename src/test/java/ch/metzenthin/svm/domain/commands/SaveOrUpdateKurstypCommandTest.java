@@ -46,7 +46,7 @@ public class SaveOrUpdateKurstypCommandTest {
         List<Kurstyp> kurstypenSaved = new ArrayList<>();
 
         // Kurstyp hinzufügen
-        Kurstyp kurstyp1 = new Kurstyp("Kurs Test1");
+        Kurstyp kurstyp1 = new Kurstyp("Kurs Test1", true);
         SaveOrUpdateKurstypCommand saveOrUpdateKurstypCommand = new SaveOrUpdateKurstypCommand(kurstyp1, null, kurstypenSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKurstypCommand);
         assertEquals(1, kurstypenSaved.size());
@@ -54,7 +54,7 @@ public class SaveOrUpdateKurstypCommandTest {
         assertFalse(checkIfKurstypAvailable("Kurs Test2"));
 
         // Weiteren Kurstyp hinzufügen
-        Kurstyp kurstyp2 = new Kurstyp("Kurs Test2");
+        Kurstyp kurstyp2 = new Kurstyp("Kurs Test2", true);
         saveOrUpdateKurstypCommand = new SaveOrUpdateKurstypCommand(kurstyp2, null, kurstypenSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKurstypCommand);
         assertEquals(2, kurstypenSaved.size());
@@ -65,7 +65,7 @@ public class SaveOrUpdateKurstypCommandTest {
         assertTrue(checkIfKurstypAvailable("Kurs Test2"));
 
         // Kurstyp bearbeiten
-        Kurstyp kurstyp2Modif = new Kurstyp("Kurs Test3");
+        Kurstyp kurstyp2Modif = new Kurstyp("Kurs Test3", true);
         saveOrUpdateKurstypCommand = new SaveOrUpdateKurstypCommand(kurstyp2Modif, kurstyp2, kurstypenSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKurstypCommand);
         assertEquals(2, kurstypenSaved.size());

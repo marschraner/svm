@@ -84,10 +84,10 @@ public class DeleteMaercheneinteilungCommandTest {
         saveOrUpdateMaerchenCommand = new SaveOrUpdateMaerchenCommand(maerchen2, null, erfassteMaerchen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaerchenCommand);
 
-        ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("tf", "Frisieren Test1");
+        ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("tf", "Frisieren Test1", true);
         SaveOrUpdateElternmithilfeCodeCommand saveOrUpdateElternmithilfeCodeCommand = new SaveOrUpdateElternmithilfeCodeCommand(elternmithilfeCode1, null, erfassteElternmithilfeCodes);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);
-        ElternmithilfeCode elternmithilfeCode2 = new ElternmithilfeCode("tk", "Kuchen Test2");
+        ElternmithilfeCode elternmithilfeCode2 = new ElternmithilfeCode("tk", "Kuchen Test2", true);
         saveOrUpdateElternmithilfeCodeCommand = new SaveOrUpdateElternmithilfeCodeCommand(elternmithilfeCode2, null, erfassteElternmithilfeCodes);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);
 

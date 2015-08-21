@@ -39,10 +39,32 @@ public class SvmModelImpl implements SvmModel {
     }
 
     @Override
+    public List<SchuelerCode> getSelektierbareSchuelerCodesAll() {
+        List<SchuelerCode> selektierbareSchuelerCodesAll = new ArrayList<>();
+        for (SchuelerCode schuelerCode : schuelerCodesAll) {
+            if (schuelerCode.getSelektierbar()) {
+                selektierbareSchuelerCodesAll.add(schuelerCode);
+            }
+        }
+        return selektierbareSchuelerCodesAll;
+    }
+
+    @Override
     public void loadElternmithilfeCodesAll() {
         FindAllElternmithilfeCodesCommand findAllElternmithilfeCodesCommand = new FindAllElternmithilfeCodesCommand();
         commandInvoker.executeCommand(findAllElternmithilfeCodesCommand);
         elternmithilfeCodesAll = findAllElternmithilfeCodesCommand.getElternmithilfeCodesAll();
+    }
+
+    @Override
+    public List<ElternmithilfeCode> getSelektierbareElternmithilfeCodesAll() {
+        List<ElternmithilfeCode> selektierbareElternmithilfeCodesAll = new ArrayList<>();
+        for (ElternmithilfeCode elternmithilfeCode : elternmithilfeCodesAll) {
+            if (elternmithilfeCode.getSelektierbar()) {
+                selektierbareElternmithilfeCodesAll.add(elternmithilfeCode);
+            }
+        }
+        return selektierbareElternmithilfeCodesAll;
     }
 
     @Override
@@ -97,13 +119,13 @@ public class SvmModelImpl implements SvmModel {
 
     @Override
     public List<Lehrkraft> getAktiveLehrkraefteAll() {
-        List<Lehrkraft> lehrkraefteAktiveAll = new ArrayList<>();
+        List<Lehrkraft> aktiveLehrkraefteAll = new ArrayList<>();
         for (Lehrkraft lehrkraft : lehrkraefteAll) {
             if (lehrkraft.getAktiv()) {
-                lehrkraefteAktiveAll.add(lehrkraft);
+                aktiveLehrkraefteAll.add(lehrkraft);
             }
         }
-        return lehrkraefteAktiveAll;
+        return aktiveLehrkraefteAll;
     }
 
     @Override
@@ -112,8 +134,30 @@ public class SvmModelImpl implements SvmModel {
     }
 
     @Override
+    public List<Kursort> getSelektierbareKursorteAll() {
+        List<Kursort> selektierbareKursorteAll = new ArrayList<>();
+        for (Kursort kursort : kursorteAll) {
+            if (kursort.getSelektierbar()) {
+                selektierbareKursorteAll.add(kursort);
+            }
+        }
+        return selektierbareKursorteAll;
+    }
+
+    @Override
     public List<Kurstyp> getKurstypenAll() {
         return kurstypenAll;
+    }
+
+    @Override
+    public List<Kurstyp> getSelektierbareKurstypenAll() {
+        List<Kurstyp> selektierbareKurstypenAll = new ArrayList<>();
+        for (Kurstyp kurstyp : kurstypenAll) {
+            if (kurstyp.getSelektierbar()) {
+                selektierbareKurstypenAll.add(kurstyp);
+            }
+        }
+        return selektierbareKurstypenAll;
     }
 
     @Override

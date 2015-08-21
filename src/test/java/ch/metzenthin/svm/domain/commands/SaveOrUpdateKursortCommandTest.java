@@ -46,7 +46,7 @@ public class SaveOrUpdateKursortCommandTest {
         List<Kursort> kursorteSaved = new ArrayList<>();
 
         // Kursort hinzufügen
-        Kursort kursort1 = new Kursort("Saal Test1");
+        Kursort kursort1 = new Kursort("Saal Test1", true);
         SaveOrUpdateKursortCommand saveOrUpdateKursortCommand = new SaveOrUpdateKursortCommand(kursort1, null, kursorteSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
         assertEquals(1, kursorteSaved.size());
@@ -54,7 +54,7 @@ public class SaveOrUpdateKursortCommandTest {
         assertFalse(checkIfKursortAvailable("Saal Test2"));
 
         // Weiteren Kursort hinzufügen
-        Kursort kursort2 = new Kursort("Saal Test2");
+        Kursort kursort2 = new Kursort("Saal Test2", true);
         saveOrUpdateKursortCommand = new SaveOrUpdateKursortCommand(kursort2, null, kursorteSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
         assertEquals(2, kursorteSaved.size());
@@ -65,7 +65,7 @@ public class SaveOrUpdateKursortCommandTest {
         assertTrue(checkIfKursortAvailable("Saal Test2"));
 
         // Kursort bearbeiten
-        Kursort kursort2Modif = new Kursort("Saal Test3");
+        Kursort kursort2Modif = new Kursort("Saal Test3", true);
         saveOrUpdateKursortCommand = new SaveOrUpdateKursortCommand(kursort2Modif, kursort2, kursorteSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
         assertEquals(2, kursorteSaved.size());

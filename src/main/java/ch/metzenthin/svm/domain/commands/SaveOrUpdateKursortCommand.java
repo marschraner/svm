@@ -31,8 +31,8 @@ public class SaveOrUpdateKursortCommand extends GenericDaoCommand {
             kursortOrigin.copyAttributesFrom(kursort);
             kursortDao.save(kursortOrigin);
         } else {
-            Kursort kursorteaved = kursortDao.save(kursort);
-            bereitsErfassteKursorte.add(kursorteaved);
+            Kursort kursorteSaved = kursortDao.save(kursort);
+            bereitsErfassteKursorte.add(kursorteSaved);
         }
         Collections.sort(bereitsErfassteKursorte);
     }

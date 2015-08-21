@@ -16,7 +16,7 @@ public class KursorteTableData {
         this.kursorte = kursorte;
     }
 
-    private static final Field[] COLUMNS = {Field.BEZEICHNUNG};
+    private static final Field[] COLUMNS = {Field.BEZEICHNUNG, Field.SELEKTIERBAR};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -32,6 +32,9 @@ public class KursorteTableData {
         switch (COLUMNS[columnIndex]) {
             case BEZEICHNUNG:
                 value = kursort.getBezeichnung();
+                break;
+            case SELEKTIERBAR:
+                value = (kursort.getSelektierbar() ? "ja" : "nein");
                 break;
             default:
                 break;

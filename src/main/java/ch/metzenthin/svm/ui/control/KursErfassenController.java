@@ -17,7 +17,6 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -104,8 +103,7 @@ public class KursErfassenController extends AbstractController {
     
     public void setComboBoxKurstyp(JComboBox<Kurstyp> comboBoxKurstyp) {
         this.comboBoxKurstyp = comboBoxKurstyp;
-        List<Kurstyp> kurstypenList = svmContext.getSvmModel().getKurstypenAll();
-        Kurstyp[] selectableKurstypen = kurstypenList.toArray(new Kurstyp[kurstypenList.size()]);
+        Kurstyp[] selectableKurstypen = kursErfassenModel.getSelectableKurstypen(svmContext.getSvmModel());
         comboBoxKurstyp.setModel(new DefaultComboBoxModel<>(selectableKurstypen));
         // Leeren ComboBox-Wert anzeigen
         comboBoxKurstyp.setSelectedItem(null);
@@ -399,8 +397,7 @@ public class KursErfassenController extends AbstractController {
 
     public void setComboBoxKursort(JComboBox<Kursort> comboBoxKursort) {
         this.comboBoxKursort = comboBoxKursort;
-        List<Kursort> kursortenList = svmContext.getSvmModel().getKursorteAll();
-        Kursort[] selectableKursorte = kursortenList.toArray(new Kursort[kursortenList.size()]);
+        Kursort[] selectableKursorte = kursErfassenModel.getSelectableKursorte(svmContext.getSvmModel());
         comboBoxKursort.setModel(new DefaultComboBoxModel<>(selectableKursorte));
         // Leeren ComboBox-Wert anzeigen
         comboBoxKursort.setSelectedItem(null);

@@ -65,7 +65,7 @@ public class MaercheneinteilungDaoTest {
             entityManager.persist(schueler);
             Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen", 7);
             entityManager.persist(maerchen);
-            ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("f", "Frisieren");
+            ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("f", "Frisieren", true);
             entityManager.persist(elternmithilfeCode);
 
             // Märcheneinteilung
@@ -121,7 +121,7 @@ public class MaercheneinteilungDaoTest {
             entityManager.persist(schueler);
             Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen", 7);
             entityManager.persist(maerchen);
-            ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("f", "Frisieren");
+            ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("f", "Frisieren", true);
             entityManager.persist(elternmithilfeCode);
 
             // Märcheneinteilung
@@ -166,7 +166,7 @@ public class MaercheneinteilungDaoTest {
             entityManager.persist(schueler);
             Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen", 7);
             entityManager.persist(maerchen);
-            ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("f", "Frisieren");
+            ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("f", "Frisieren", true);
             entityManager.persist(elternmithilfeCode);
 
             // Märcheneinteilung
@@ -241,9 +241,9 @@ public class MaercheneinteilungDaoTest {
             Maerchen maerchen2 = new Maerchen("1912/2013", "Froschkönig", 8);
             entityManager.persist(maerchen2);
 
-            ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("f", "Frisieren");
+            ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("f", "Frisieren", true);
             entityManager.persist(elternmithilfeCode1);
-            ElternmithilfeCode elternmithilfeCode2 = new ElternmithilfeCode("k", "Kuchen");
+            ElternmithilfeCode elternmithilfeCode2 = new ElternmithilfeCode("k", "Kuchen", true);
             entityManager.persist(elternmithilfeCode2);
 
             // Märcheneinteilung

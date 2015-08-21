@@ -24,14 +24,18 @@ public class Kursort implements Comparable<Kursort> {
     @Column(name = "bezeichnung", nullable = false)
     private String bezeichnung;
 
+    @Column(name = "selektierbar", nullable = false)
+    private Boolean selektierbar;
+
     @OneToMany(mappedBy = "kursort")
     private Set<Kurs> kurse = new HashSet<>();
 
     public Kursort() {
     }
 
-    public Kursort(String bezeichnung) {
+    public Kursort(String bezeichnung, Boolean selektierbar) {
         this.bezeichnung = bezeichnung;
+        this.selektierbar = selektierbar;
     }
 
     public boolean isIdenticalWith(Kursort otherCode) {
@@ -41,6 +45,7 @@ public class Kursort implements Comparable<Kursort> {
 
     public void copyAttributesFrom(Kursort otherKursort) {
         this.bezeichnung = otherKursort.getBezeichnung();
+        this.selektierbar = otherKursort.getSelektierbar();
     }
 
     @Override
@@ -71,6 +76,14 @@ public class Kursort implements Comparable<Kursort> {
 
     public void setBezeichnung(String kursort) {
         this.bezeichnung = kursort;
+    }
+
+    public Boolean getSelektierbar() {
+        return selektierbar;
+    }
+
+    public void setSelektierbar(Boolean selektierbar) {
+        this.selektierbar = selektierbar;
     }
 
     public Set<Kurs> getKurse() {

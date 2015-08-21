@@ -26,16 +26,19 @@ public class KurstypErfassenController extends AbstractController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private KurstypErfassenModel kurstypErfassenModel;
+    private boolean isBearbeiten;
     private final SvmContext svmContext;
     private JDialog kurstypErfassenDialog;
     private JTextField txtBezeichnung;
+    private JCheckBox checkBoxSelektierbar;
     private JLabel errLblBezeichnung;
     private JButton btnSpeichern;
 
-    public KurstypErfassenController(SvmContext svmContext, KurstypErfassenModel kurstypErfassenModel) {
+    public KurstypErfassenController(SvmContext svmContext, KurstypErfassenModel kurstypErfassenModel, boolean isBearbeiten) {
         super(kurstypErfassenModel);
         this.svmContext = svmContext;
         this.kurstypErfassenModel = kurstypErfassenModel;
+        this.isBearbeiten = isBearbeiten;
         this.kurstypErfassenModel.addPropertyChangeListener(this);
         this.kurstypErfassenModel.addDisableFieldsListener(this);
         this.kurstypErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -123,6 +126,29 @@ public class KurstypErfassenController extends AbstractController {
         }
     }
 
+    public void setCheckBoxSelektierbar(JCheckBox checkBoxSelektierbar) {
+        this.checkBoxSelektierbar = checkBoxSelektierbar;
+        // Selektierbar als Default-Wert
+        if (!isBearbeiten) {
+            kurstypErfassenModel.setSelektierbar(true);
+        }
+        this.checkBoxSelektierbar.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                onSelektierbarEvent();
+            }
+        });
+    }
+
+    private void setModelSelektierbar() {
+        kurstypErfassenModel.setSelektierbar(checkBoxSelektierbar.isSelected());
+    }
+
+    private void onSelektierbarEvent() {
+        LOGGER.trace("AngehoerigerController Event Selektierbar. Selected=" + checkBoxSelektierbar.isSelected());
+        setModelSelektierbar();
+    }
+
     public void setErrLblBezeichnung(JLabel errLblBezeichnung) {
         this.errLblBezeichnung = errLblBezeichnung;
     }
@@ -183,6 +209,8 @@ public class KurstypErfassenController extends AbstractController {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.BEZEICHNUNG, evt)) {
             txtBezeichnung.setText(kurstypErfassenModel.getBezeichnung());
+        } else if (checkIsFieldChange(Field.SELEKTIERBAR, evt)) {
+            checkBoxSelektierbar.setSelected(kurstypErfassenModel.isSelektierbar());
         }
     }
 

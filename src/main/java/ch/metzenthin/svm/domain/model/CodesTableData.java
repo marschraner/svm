@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,15 +13,25 @@ import java.util.List;
 public class CodesTableData {
 
     private List<? extends Code> codes;
+    private boolean isCodesSpecificSchueler;
+    private List<Field> columns = new ArrayList<>();
 
-    public CodesTableData(List<? extends Code> codes) {
+    public CodesTableData(List<? extends Code> codes, boolean isCodesSpecificSchueler) {
         this.codes = codes;
+        this.isCodesSpecificSchueler = isCodesSpecificSchueler;
+        initColumns();
     }
 
-    private static final Field[] COLUMNS = {Field.KUERZEL, Field.BESCHREIBUNG};
+    private void initColumns() {
+        columns.add(Field.KUERZEL);
+        columns.add(Field.BESCHREIBUNG);
+        if (!isCodesSpecificSchueler) {
+            columns.add(Field.SELEKTIERBAR);
+        }
+    }
 
     public int getColumnCount() {
-        return COLUMNS.length;
+        return columns.size();
     }
 
     public int size() {
@@ -28,14 +39,17 @@ public class CodesTableData {
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Code schuelerCode = codes.get(rowIndex);
+        Code code = codes.get(rowIndex);
         Object value = null;
-        switch (COLUMNS[columnIndex]) {
+        switch (columns.get(columnIndex)) {
             case KUERZEL:
-                value = schuelerCode.getKuerzel();
+                value = code.getKuerzel();
                 break;
             case BESCHREIBUNG:
-                value = schuelerCode.getBeschreibung();
+                value = code.getBeschreibung();
+                break;
+            case SELEKTIERBAR:
+                value = (code.getSelektierbar() ? "ja" : "nein");
                 break;
             default:
                 break;
@@ -48,7 +62,7 @@ public class CodesTableData {
     }
 
     public String getColumnName(int column) {
-        return COLUMNS[column].toString();
+        return columns.get(column).toString();
     }
 
     public Code getCodeAt(int rowIndex) {

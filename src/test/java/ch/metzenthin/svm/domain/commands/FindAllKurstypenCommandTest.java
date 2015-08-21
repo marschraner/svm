@@ -67,10 +67,10 @@ public class FindAllKurstypenCommandTest {
 
             KurstypDao kurstypDao = new KurstypDao(entityManager);
 
-            Kurstyp kurstypenaved = kurstypDao.save(new Kurstyp("Kurs Test1"));
+            Kurstyp kurstypenaved = kurstypDao.save(new Kurstyp("Kurs Test1", true));
             kurstypenTestdata.add(kurstypenaved);
 
-            kurstypenaved = kurstypDao.save(new Kurstyp("Kurs Test2"));
+            kurstypenaved = kurstypDao.save(new Kurstyp("Kurs Test2", true));
             kurstypenTestdata.add(kurstypenaved);
 
             entityManager.getTransaction().commit();

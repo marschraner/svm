@@ -46,7 +46,7 @@ public class KurstypDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Kurstyp kurstyp = new Kurstyp("Kurs Test");
+            Kurstyp kurstyp = new Kurstyp("Kurs Test", true);
 
             entityManager.persist(kurstyp);
 
@@ -68,7 +68,7 @@ public class KurstypDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Kurstyp kurstyp = new Kurstyp("Kurs Test");
+            Kurstyp kurstyp = new Kurstyp("Kurs Test", true);
             Kurstyp kurstypSaved = kurstypDao.save(kurstyp);
 
             entityManager.flush();
@@ -95,11 +95,11 @@ public class KurstypDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Kurstyp kurstyp1 = new Kurstyp("Kurs Test1");
+            Kurstyp kurstyp1 = new Kurstyp("Kurs Test1", true);
             Kurstyp kurstyp1Saved = kurstypDao.save(kurstyp1);
             int kurstyp1Id = kurstyp1Saved.getKurstypId();
 
-            Kurstyp kurstyp2 = new Kurstyp("Kurs Test2");
+            Kurstyp kurstyp2 = new Kurstyp("Kurs Test2", true);
             Kurstyp kurstyp2Saved = kurstypDao.save(kurstyp2);
             int kurstyp2Id = kurstyp2Saved.getKurstypId();
 
@@ -138,10 +138,10 @@ public class KurstypDaoTest {
             tx.begin();
 
             // Kurstyps hinzufügen
-            Kurstyp kurstyp1 = new Kurstyp("Kurs Test1");
+            Kurstyp kurstyp1 = new Kurstyp("Kurs Test1", true);
             kurstypDao.save(kurstyp1);
 
-            Kurstyp kurstyp2 = new Kurstyp("Kurs Test2");
+            Kurstyp kurstyp2 = new Kurstyp("Kurs Test2", true);
             kurstypDao.save(kurstyp2);
 
             entityManager.flush();

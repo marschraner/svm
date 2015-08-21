@@ -114,7 +114,8 @@ public enum Field {
     MAERCHEN_FUER_SUCHE_BERUECKSICHTIGEN("Märchen für Suche berücksichtigen"),
     ZUSATZATTRIBUT_MAERCHEN("Zusatzattribut"),
     GEBURTSDATUM_SHORT("Geb.Datum"),
-    SEMESTER_KURS("Semester");
+    SEMESTER_KURS("Semester"),
+    SELEKTIERBAR("selektierbar");
 
     private String name;
 

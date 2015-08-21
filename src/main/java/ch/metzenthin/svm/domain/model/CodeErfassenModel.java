@@ -14,9 +14,11 @@ public interface CodeErfassenModel extends Model {
 
     String getKuerzel();
     String getBeschreibung();
+    Boolean isSelektierbar();
 
     void setKuerzel(String kuerzel) throws SvmValidationException;
     void setBeschreibung(String beschreibung) throws SvmValidationException;
+    void setSelektierbar(Boolean isSelected);
 
     boolean checkCodeKuerzelBereitsInVerwendung(SvmModel svmModel, Codetyp codetyp);
     void speichern(SvmModel svmModel, Codetyp codetyp);

@@ -41,8 +41,8 @@ public class DeleteKurstypCommandTest {
         List<Kurstyp> kurstypenSaved = new ArrayList<>();
 
         // 2 Kurstypen erfassen
-        Kurstyp kurstyp1 = new Kurstyp("Saal Test1");
-        Kurstyp kurstyp2 = new Kurstyp("Saal Test2");
+        Kurstyp kurstyp1 = new Kurstyp("Saal Test1", true);
+        Kurstyp kurstyp2 = new Kurstyp("Saal Test2", true);
 
         SaveOrUpdateKurstypCommand saveOrUpdateKurstypCommand = new SaveOrUpdateKurstypCommand(kurstyp1, null, kurstypenSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKurstypCommand);

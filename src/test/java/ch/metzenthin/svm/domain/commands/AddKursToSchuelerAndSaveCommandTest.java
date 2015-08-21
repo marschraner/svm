@@ -62,17 +62,17 @@ public class AddKursToSchuelerAndSaveCommandTest {
         saveOrUpdateSemesterCommand = new SaveOrUpdateSemesterCommand(semester2, null, erfassteSemester);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterCommand);
 
-        Kurstyp kurstyp1 = new Kurstyp("Kurs Test1");
+        Kurstyp kurstyp1 = new Kurstyp("Kurs Test1", true);
         SaveOrUpdateKurstypCommand saveOrUpdateKurstypCommand = new SaveOrUpdateKurstypCommand(kurstyp1, null, erfassteKurstypen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKurstypCommand);
-        Kurstyp kurstyp2 = new Kurstyp("Kurs Test2");
+        Kurstyp kurstyp2 = new Kurstyp("Kurs Test2", true);
         saveOrUpdateKurstypCommand = new SaveOrUpdateKurstypCommand(kurstyp2, null, erfassteKurstypen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKurstypCommand);
 
-        Kursort kursort1 = new Kursort("Saal Test");
+        Kursort kursort1 = new Kursort("Saal Test", true);
         SaveOrUpdateKursortCommand saveOrUpdateKursortCommand = new SaveOrUpdateKursortCommand(kursort1, null, erfassteKursorte);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
-        Kursort kursort2 = new Kursort("Saal Test");
+        Kursort kursort2 = new Kursort("Saal Test", true);
         saveOrUpdateKursortCommand = new SaveOrUpdateKursortCommand(kursort2, null, erfassteKursorte);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
 

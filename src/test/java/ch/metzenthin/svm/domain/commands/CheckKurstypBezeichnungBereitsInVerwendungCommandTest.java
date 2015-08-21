@@ -20,14 +20,14 @@ public class CheckKurstypBezeichnungBereitsInVerwendungCommandTest {
 
     @Before
     public void setUp() {
-        bereitsErfassteKurstypen.add(new Kurstyp("Kurs Test1"));
-        bereitsErfassteKurstypen.add(new Kurstyp("Kurs Test2"));
-        bereitsErfassteKurstypen.add(new Kurstyp("Kurs Test3"));
+        bereitsErfassteKurstypen.add(new Kurstyp("Kurs Test1", true));
+        bereitsErfassteKurstypen.add(new Kurstyp("Kurs Test2", true));
+        bereitsErfassteKurstypen.add(new Kurstyp("Kurs Test3", true));
     }
 
     @Test
     public void testExecute_BezeichnungBereitsInVerwendung() throws Exception {
-        Kurstyp kurstyp = new Kurstyp("Kurs Test2");
+        Kurstyp kurstyp = new Kurstyp("Kurs Test2", true);
         CheckKurstypBezeichnungBereitsInVerwendungCommand checkKurstypBezeichnungBereitsInVerwendungCommand = new CheckKurstypBezeichnungBereitsInVerwendungCommand(kurstyp, null, bereitsErfassteKurstypen);
         commandInvoker.executeCommand(checkKurstypBezeichnungBereitsInVerwendungCommand);
         assertTrue(checkKurstypBezeichnungBereitsInVerwendungCommand.isBereitsInVerwendung());
@@ -35,7 +35,7 @@ public class CheckKurstypBezeichnungBereitsInVerwendungCommandTest {
 
     @Test
     public void testExecute_BezeichnungNochNichtInVerwendung() throws Exception {
-        Kurstyp kurstyp = new Kurstyp("Kurs Test4");
+        Kurstyp kurstyp = new Kurstyp("Kurs Test4", true);
         CheckKurstypBezeichnungBereitsInVerwendungCommand checkKurstypBezeichnungBereitsInVerwendungCommand = new CheckKurstypBezeichnungBereitsInVerwendungCommand(kurstyp, null, bereitsErfassteKurstypen);
         commandInvoker.executeCommand(checkKurstypBezeichnungBereitsInVerwendungCommand);
         assertFalse(checkKurstypBezeichnungBereitsInVerwendungCommand.isBereitsInVerwendung());
@@ -43,7 +43,7 @@ public class CheckKurstypBezeichnungBereitsInVerwendungCommandTest {
 
     @Test
     public void testExecute_KurstypOrigin() throws Exception {
-        Kurstyp kurstyp = new Kurstyp("Kurs Test1");
+        Kurstyp kurstyp = new Kurstyp("Kurs Test1", true);
         CheckKurstypBezeichnungBereitsInVerwendungCommand checkKurstypBezeichnungBereitsInVerwendungCommand = new CheckKurstypBezeichnungBereitsInVerwendungCommand(kurstyp, bereitsErfassteKurstypen.get(0), bereitsErfassteKurstypen);
         commandInvoker.executeCommand(checkKurstypBezeichnungBereitsInVerwendungCommand);
         assertFalse(checkKurstypBezeichnungBereitsInVerwendungCommand.isBereitsInVerwendung());

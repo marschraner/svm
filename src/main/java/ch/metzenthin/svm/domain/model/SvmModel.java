@@ -18,11 +18,15 @@ public interface SvmModel {
     void loadMaerchensAll();
 
     List<SchuelerCode> getSchuelerCodesAll();
+    List<SchuelerCode> getSelektierbareSchuelerCodesAll();
     List<ElternmithilfeCode> getElternmithilfeCodesAll();
+    List<ElternmithilfeCode> getSelektierbareElternmithilfeCodesAll();
     List<Lehrkraft> getLehrkraefteAll();
     List<Lehrkraft> getAktiveLehrkraefteAll();
     List<Kursort> getKursorteAll();
+    List<Kursort> getSelektierbareKursorteAll();
     List<Kurstyp> getKurstypenAll();
+    List<Kurstyp> getSelektierbareKurstypenAll();
     List<Semester> getSemestersAll();
     List<Maerchen> getMaerchensAll();
 }

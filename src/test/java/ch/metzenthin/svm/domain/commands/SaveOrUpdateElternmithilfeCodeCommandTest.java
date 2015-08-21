@@ -46,7 +46,7 @@ public class SaveOrUpdateElternmithilfeCodeCommandTest {
         List<ElternmithilfeCode> codesSaved = new ArrayList<>();
 
         // ElternmithilfeCode hinzufügen
-        ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("tk", "KuchenTest");
+        ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("tk", "KuchenTest", true);
         SaveOrUpdateElternmithilfeCodeCommand saveOrUpdateElternmithilfeCodeCommand = new SaveOrUpdateElternmithilfeCodeCommand(elternmithilfeCode1, null, codesSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);
         assertEquals(1, codesSaved.size());
@@ -54,7 +54,7 @@ public class SaveOrUpdateElternmithilfeCodeCommandTest {
         assertFalse(checkIfCodeAvailable("tf", "FrisierenTest"));
 
         // Weiteren ElternmithilfeCode hinzufügen
-        ElternmithilfeCode elternmithilfeCode2 = new ElternmithilfeCode("tf", "FrisierenTest");
+        ElternmithilfeCode elternmithilfeCode2 = new ElternmithilfeCode("tf", "FrisierenTest", true);
         saveOrUpdateElternmithilfeCodeCommand = new SaveOrUpdateElternmithilfeCodeCommand(elternmithilfeCode2, null, codesSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);
         assertEquals(2, codesSaved.size());
@@ -65,7 +65,7 @@ public class SaveOrUpdateElternmithilfeCodeCommandTest {
         assertTrue(checkIfCodeAvailable("tf", "FrisierenTest"));
 
         // ElternmithilfeCode bearbeiten
-        ElternmithilfeCode elternmithilfeCode2Modif = new ElternmithilfeCode("tf", "FrisierenModifTest");
+        ElternmithilfeCode elternmithilfeCode2Modif = new ElternmithilfeCode("tf", "FrisierenModifTest", true);
         saveOrUpdateElternmithilfeCodeCommand = new SaveOrUpdateElternmithilfeCodeCommand(elternmithilfeCode2Modif, elternmithilfeCode2, codesSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);
         assertEquals(2, codesSaved.size());

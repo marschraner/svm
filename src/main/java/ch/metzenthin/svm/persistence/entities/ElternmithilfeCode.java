@@ -21,8 +21,8 @@ public class ElternmithilfeCode extends Code {
     public ElternmithilfeCode() {
     }
 
-    public ElternmithilfeCode(String kuerzel, String beschreibung) {
-        super(kuerzel, beschreibung);
+    public ElternmithilfeCode(String kuerzel, String beschreibung, Boolean selektierbar) {
+        super(kuerzel, beschreibung, selektierbar);
     }
 
     public Set<Maercheneinteilung> getMaercheneinteilungen() {

@@ -28,19 +28,22 @@ public class CodeErfassenController extends AbstractController {
 
     private CodeErfassenModel codeErfassenModel;
     private Codetyp codetyp;
+    private boolean isBearbeiten;
     private final SvmContext svmContext;
     private JDialog codeErfassenDialog;
     private JTextField txtKuerzel;
     private JTextField txtBeschreibung;
+    private JCheckBox checkBoxSelektierbar;
     private JLabel errLblKuerzel;
     private JLabel errLblBeschreibung;
     private JButton btnSpeichern;
 
-    public CodeErfassenController(SvmContext svmContext, CodeErfassenModel codeErfassenModel, Codetyp codetyp) {
+    public CodeErfassenController(SvmContext svmContext, CodeErfassenModel codeErfassenModel, Codetyp codetyp, boolean isBearbeiten) {
         super(codeErfassenModel);
         this.svmContext = svmContext;
         this.codeErfassenModel = codeErfassenModel;
         this.codetyp = codetyp;
+        this.isBearbeiten = isBearbeiten;
         this.codeErfassenModel.addPropertyChangeListener(this);
         this.codeErfassenModel.addDisableFieldsListener(this);
         this.codeErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -179,6 +182,29 @@ public class CodeErfassenController extends AbstractController {
         }
     }
 
+    public void setCheckBoxSelektierbar(JCheckBox checkBoxSelektierbar) {
+        this.checkBoxSelektierbar = checkBoxSelektierbar;
+        // Selektierbar als Default-Wert
+        if (!isBearbeiten) {
+            codeErfassenModel.setSelektierbar(true);
+        }
+        this.checkBoxSelektierbar.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                onSelektierbarEvent();
+            }
+        });
+    }
+
+    private void setModelSelektierbar() {
+        codeErfassenModel.setSelektierbar(checkBoxSelektierbar.isSelected());
+    }
+
+    private void onSelektierbarEvent() {
+        LOGGER.trace("AngehoerigerController Event Selektierbar. Selected=" + checkBoxSelektierbar.isSelected());
+        setModelSelektierbar();
+    }
+
     public void setErrLblKuerzel(JLabel errLblKuerzel) {
         this.errLblKuerzel = errLblKuerzel;
     }
@@ -246,6 +272,8 @@ public class CodeErfassenController extends AbstractController {
         }
         else if (checkIsFieldChange(Field.BESCHREIBUNG, evt)) {
             txtBeschreibung.setText(codeErfassenModel.getBeschreibung());
+        } else if (checkIsFieldChange(Field.SELEKTIERBAR, evt)) {
+            checkBoxSelektierbar.setSelected(codeErfassenModel.isSelektierbar());
         }
     }
 

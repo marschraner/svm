@@ -60,7 +60,7 @@
                   <component id="ca0ce" class="javax.swing.JTable" binding="kursorteTable" custom-create="true">
                     <constraints/>
                     <properties>
-                      <preferredScrollableViewportSize width="300" height="300"/>
+                      <preferredScrollableViewportSize width="400" height="300"/>
                     </properties>
                   </component>
                 </children>

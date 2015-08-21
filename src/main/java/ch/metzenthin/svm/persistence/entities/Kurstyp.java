@@ -24,14 +24,18 @@ public class Kurstyp implements Comparable<Kurstyp> {
     @Column(name = "bezeichnung", nullable = false)
     private String bezeichnung;
 
+    @Column(name = "selektierbar", nullable = false)
+    private Boolean selektierbar;
+
     @OneToMany(mappedBy = "kurstyp")
     private Set<Kurs> kurse = new HashSet<>();
 
     public Kurstyp() {
     }
 
-    public Kurstyp(String bezeichnung) {
+    public Kurstyp(String bezeichnung, Boolean selektierbar) {
         this.bezeichnung = bezeichnung;
+        this.selektierbar = selektierbar;
     }
 
     public boolean isIdenticalWith(Kurstyp otherCode) {
@@ -39,8 +43,9 @@ public class Kurstyp implements Comparable<Kurstyp> {
                 && ((bezeichnung == null && otherCode.getBezeichnung() == null) || (bezeichnung != null && bezeichnung.equals(otherCode.getBezeichnung())));
     }
 
-    public void copyAttributesFrom(Kurstyp otherCode) {
-        this.bezeichnung = otherCode.getBezeichnung();
+    public void copyAttributesFrom(Kurstyp otherKurstyp) {
+        this.bezeichnung = otherKurstyp.getBezeichnung();
+        this.selektierbar = otherKurstyp.getSelektierbar();
     }
 
     @Override
@@ -71,6 +76,14 @@ public class Kurstyp implements Comparable<Kurstyp> {
 
     public void setBezeichnung(String kurstyp) {
         this.bezeichnung = kurstyp;
+    }
+
+    public Boolean getSelektierbar() {
+        return selektierbar;
+    }
+
+    public void setSelektierbar(Boolean selektierbar) {
+        this.selektierbar = selektierbar;
     }
 
     public Set<Kurs> getKurse() {
