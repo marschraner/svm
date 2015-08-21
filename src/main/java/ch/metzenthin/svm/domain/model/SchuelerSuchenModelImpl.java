@@ -617,26 +617,9 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     @Override
     public Maerchen getMaerchenInit(SvmModel svmModel) {
-        Calendar today = new GregorianCalendar();
-        int schuljahr1;
-        if (today.get(Calendar.MONTH) <= Calendar.JANUARY) {
-            schuljahr1 = today.get(Calendar.YEAR) - 1;
-        } else {
-            schuljahr1 = today.get(Calendar.YEAR);
-        }
-        int schuljahr2 = schuljahr1 + 1;
-        String anzuzeigendesSchuljahr = schuljahr1 + "/" + schuljahr2;
-        List<Maerchen> erfassteMaerchen = svmModel.getMaerchensAll();
-        for (Maerchen maerchen : erfassteMaerchen) {
-            if (maerchen.getSchuljahr().equals(anzuzeigendesSchuljahr)) {
-                return maerchen;
-            }
-        }
-        // Neustes erfasstes Märchen, falls für gewünschtes Schuljahr noch kein Märchen erfasst
-        if (svmModel.getMaerchensAll().size() > 1) {
-            return erfassteMaerchen.get(0);
-        }
-        return null;
+        DetermineMaerchenInitCommand determineMaerchenInitCommand = new DetermineMaerchenInitCommand(svmModel);
+        determineMaerchenInitCommand.execute();
+        return determineMaerchenInitCommand.getMaerchenInit();
     }
 
     @Override

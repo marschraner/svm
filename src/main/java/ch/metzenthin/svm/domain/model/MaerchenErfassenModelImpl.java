@@ -8,6 +8,9 @@ import ch.metzenthin.svm.domain.commands.DetermineNaechstesNochNichtErfasstesSch
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateMaerchenCommand;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
  * @author Martin Schraner
  */
@@ -140,6 +143,19 @@ public class MaerchenErfassenModelImpl extends AbstractModel implements Maerchen
         DetermineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand determineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand = new DetermineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand(svmModel.getMaerchensAll());
         commandInvoker.executeCommand(determineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand);
         return determineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand.getNaechstesNochNichtErfasstesSchuljahrMaerchen();
+    }
+
+    @Override
+    public boolean checkIfMaerchenIsInPast() {
+        Calendar today = new GregorianCalendar();
+        int schuljahr1;
+        if (today.get(Calendar.MONTH) <= Calendar.JUNE) {
+            schuljahr1 = today.get(Calendar.YEAR) - 1;
+        } else {
+            schuljahr1 = today.get(Calendar.YEAR);
+        }
+        int schuljahr1Maerchen = Integer.parseInt(maerchen.getSchuljahr().substring(0, 4));
+        return schuljahr1Maerchen < schuljahr1;
     }
 
     @Override

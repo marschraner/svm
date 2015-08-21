@@ -25,6 +25,7 @@ public interface KursSchuelerHinzufuegenModel extends Model {
     void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
     void setLehrkraft(Lehrkraft lehrkraft) throws SvmRequiredException;
 
-    Semester getDefaultSemester(SvmModel svmModel, Semester[] selectableSemesters);
+    Semester getInitSemester(SvmModel svmModel);
+    boolean checkIfSemesterIsInPast();
     AddKursToSchuelerAndSaveCommand.Result hinzufuegen(KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel);
 }

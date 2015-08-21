@@ -254,11 +254,25 @@ public class MaerchenErfassenController extends AbstractController {
             btnSpeichern.setFocusPainted(false);
             return;
         }
-
         if (maerchenErfassenModel.checkMaerchenBereitsErfasst(svmContext.getSvmModel())) {
             JOptionPane.showMessageDialog(maerchenErfassenDialog, "Märchen für Schuljahr " + maerchenErfassenModel.getMaerchen().getSchuljahr() + " bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
+            if (maerchenErfassenModel.checkIfMaerchenIsInPast()) {
+                Object[] options = {"Ignorieren", "Abbrechen"};
+                int n = JOptionPane.showOptionDialog(
+                        null,
+                        "Das selektierte Schuljahr liegt in der Vergangenheit.",
+                        "Warnung",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,     //do not use a custom Icon
+                        options,  //the titles of buttons
+                        options[1]); //default button title
+                if (n == 1) {
+                    return;
+                }
+            }
             maerchenErfassenModel.speichern(svmContext.getSvmModel());
             maerchenErfassenDialog.dispose();
         }

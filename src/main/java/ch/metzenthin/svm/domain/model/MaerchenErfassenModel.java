@@ -19,5 +19,6 @@ public interface MaerchenErfassenModel extends Model {
 
     boolean checkMaerchenBereitsErfasst(SvmModel svmModel);
     String getNaechstesNochNichtErfasstesSchuljahrMaerchen(SvmModel svmModel);
+    boolean checkIfMaerchenIsInPast();
     void speichern(SvmModel svmModel);
 }

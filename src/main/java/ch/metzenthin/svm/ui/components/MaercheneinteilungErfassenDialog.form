@@ -36,7 +36,6 @@
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
-                      <labelFor value="20359"/>
                       <text value="Märchen"/>
                     </properties>
                   </component>
@@ -58,13 +57,6 @@
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                   </hspacer>
-                  <component id="20359" class="javax.swing.JComboBox" binding="comboBoxMaerchen" custom-create="true">
-                    <constraints>
-                      <grid row="1" column="2" row-span="1" col-span="9" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="0.0" weighty="0.0"/>
-                    </constraints>
-                    <properties/>
-                  </component>
                   <vspacer id="823a7">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
@@ -563,6 +555,13 @@
                     </constraints>
                     <properties/>
                   </component>
+                  <component id="cba55" class="javax.swing.JSpinner" binding="spinnerMaerchen" custom-create="true">
+                    <constraints>
+                      <grid row="1" column="2" row-span="1" col-span="9" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties/>
+                  </component>
                 </children>
               </grid>
             </children>
@@ -622,5 +621,6 @@
   </grid>
   <inspectionSuppressions>
     <suppress inspection="NoLabelFor" id="231c8"/>
+    <suppress inspection="NoLabelFor" id="cba55"/>
   </inspectionSuppressions>
 </form>

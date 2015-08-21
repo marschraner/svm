@@ -8,14 +8,15 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.AddKursToSchuelerAndSaveCommand;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.KursSchuelerHinzufuegenModel;
-import ch.metzenthin.svm.domain.model.KurseModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
-import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
@@ -36,11 +37,10 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
 
     private KurseTableModel kurseTableModel;
     private KursSchuelerHinzufuegenModel kursSchuelerHinzufuegenModel;
-    private KurseModel kurseModel;
     private SchuelerDatenblattModel schuelerDatenblattModel;
     private final SvmContext svmContext;
     private JDialog kursSchuelerHinzufuegenDialog;
-    private JComboBox<Semester> comboBoxSemester;
+    private JSpinner spinnerSemester;
     private JComboBox<Wochentag> comboBoxWochentag;
     private JComboBox<Lehrkraft> comboBoxLehrkraft;
     private JTextField txtZeitBeginn;
@@ -49,12 +49,11 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
     private JLabel errLblLehrkraft;
     private JButton btnOk;
 
-    public KursSchuelerHinzufuegenController(SvmContext svmContext, KurseTableModel kurseTableModel, KursSchuelerHinzufuegenModel kursSchuelerHinzufuegenModel, KurseModel kurseModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public KursSchuelerHinzufuegenController(SvmContext svmContext, KurseTableModel kurseTableModel, KursSchuelerHinzufuegenModel kursSchuelerHinzufuegenModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         super(kursSchuelerHinzufuegenModel);
         this.svmContext = svmContext;
         this.kurseTableModel = kurseTableModel;
         this.kursSchuelerHinzufuegenModel = kursSchuelerHinzufuegenModel;
-        this.kurseModel = kurseModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.kursSchuelerHinzufuegenModel.addPropertyChangeListener(this);
         this.kursSchuelerHinzufuegenModel.addDisableFieldsListener(this);
@@ -92,28 +91,26 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
     
-    public void setComboBoxSemester(JComboBox<Semester> comboBoxSemester) {
-        this.comboBoxSemester = comboBoxSemester;
-        Semester[] selectableSemesters = kurseModel.getSelectableSemestersKurseSchueler(svmContext.getSvmModel());
-        comboBoxSemester.setModel(new DefaultComboBoxModel<>(selectableSemesters));
-        // Model initialisieren mit Default-Semester
-        kursSchuelerHinzufuegenModel.setSemester(kursSchuelerHinzufuegenModel.getDefaultSemester(svmContext.getSvmModel(), selectableSemesters));
-        comboBoxSemester.addActionListener(new ActionListener() {
+    public void setSpinnerSemester(JSpinner spinnerSemester) {
+        this.spinnerSemester = spinnerSemester;
+        List<Semester> semesterList = svmContext.getSvmModel().getSemestersAll();
+        Semester[] semesters = semesterList.toArray(new Semester[semesterList.size()]);
+        SpinnerModel spinnerModelSemester = new SpinnerListModel(semesters);
+        spinnerSemester.setModel(spinnerModelSemester);
+        spinnerSemester.addChangeListener(new ChangeListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void stateChanged(ChangeEvent e) {
                 onSemesterSelected();
             }
         });
+        // Model initialisieren
+        kursSchuelerHinzufuegenModel.setSemester(kursSchuelerHinzufuegenModel.getInitSemester(svmContext.getSvmModel()));
     }
 
     private void onSemesterSelected() {
-        LOGGER.trace("PersonController Event Semester selected=" + comboBoxSemester.getSelectedItem());
-        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxSemester.getSelectedItem(), kursSchuelerHinzufuegenModel.getSemester());
-        try {
-            setModelSemester();
-        } catch (SvmValidationException e) {
-            return;
-        }
+        LOGGER.trace("KursSchuelerHinzufuegenController Event Semester selected =" + spinnerSemester.getValue());
+        boolean equalFieldAndModelValue = equalsNullSafe(spinnerSemester.getValue(), kursSchuelerHinzufuegenModel.getSemester());
+        setModelSemester();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
@@ -121,9 +118,9 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
         }
     }
 
-    private void setModelSemester() throws SvmValidationException {
+    private void setModelSemester() {
         makeErrorLabelInvisible(Field.SEMESTER);
-        kursSchuelerHinzufuegenModel.setSemester((Semester) comboBoxSemester.getSelectedItem());
+        kursSchuelerHinzufuegenModel.setSemester((Semester) spinnerSemester.getValue());
     }
 
     public void setComboBoxWochentag(JComboBox<Wochentag> comboBoxWochentag) {
@@ -298,16 +295,31 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
             btnOk.setFocusPainted(false);
             return;
         }
-        AddKursToSchuelerAndSaveCommand.Result result = kursSchuelerHinzufuegenModel.hinzufuegen(kurseTableModel, schuelerDatenblattModel);
-        if (result == AddKursToSchuelerAndSaveCommand.Result.KURS_EXISTIERT_NICHT) {
-            JOptionPane.showMessageDialog(kursSchuelerHinzufuegenDialog, "Kurs existiert nicht.", "Fehler", JOptionPane.ERROR_MESSAGE);
-            btnOk.setFocusPainted(false);
-            return;
+        int n = 0;
+        if (kursSchuelerHinzufuegenModel.checkIfSemesterIsInPast()) {
+            Object[] options = {"Ignorieren", "Abbrechen"};
+            n = JOptionPane.showOptionDialog(
+                    null,
+                    "Das selektierte Schuljahr liegt in der Vergangenheit.",
+                    "Warnung",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,     //do not use a custom Icon
+                    options,  //the titles of buttons
+                    options[1]); //default button title
         }
-        if (result == AddKursToSchuelerAndSaveCommand.Result.KURS_BEREITS_ERFASST) {
-            JOptionPane.showMessageDialog(kursSchuelerHinzufuegenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
-            btnOk.setFocusPainted(false);
-            return;
+        if (n == 0) {
+            AddKursToSchuelerAndSaveCommand.Result result = kursSchuelerHinzufuegenModel.hinzufuegen(kurseTableModel, schuelerDatenblattModel);
+            if (result == AddKursToSchuelerAndSaveCommand.Result.KURS_EXISTIERT_NICHT) {
+                JOptionPane.showMessageDialog(kursSchuelerHinzufuegenDialog, "Kurs existiert nicht.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                btnOk.setFocusPainted(false);
+                return;
+            }
+            if (result == AddKursToSchuelerAndSaveCommand.Result.KURS_BEREITS_ERFASST) {
+                JOptionPane.showMessageDialog(kursSchuelerHinzufuegenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                btnOk.setFocusPainted(false);
+                return;
+            }
         }
         kursSchuelerHinzufuegenDialog.dispose();
     }
@@ -340,7 +352,7 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
     void doPropertyChange(PropertyChangeEvent evt) {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.SEMESTER, evt)) {
-            comboBoxSemester.setSelectedItem(kursSchuelerHinzufuegenModel.getSemester());
+            spinnerSemester.setValue(kursSchuelerHinzufuegenModel.getSemester());
         } else if (checkIsFieldChange(Field.WOCHENTAG, evt)) {
             comboBoxWochentag.setSelectedItem(kursSchuelerHinzufuegenModel.getWochentag());
         } else if (checkIsFieldChange(Field.ZEIT_BEGINN, evt)) {
@@ -352,7 +364,7 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
 
     @Override
     void validateFields() throws SvmValidationException {
-        if (comboBoxSemester.isEnabled()) {
+        if (spinnerSemester.isEnabled()) {
             LOGGER.trace("Validate field Semester");
             setModelSemester();
         }

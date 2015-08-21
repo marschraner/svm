@@ -17,5 +17,5 @@ public interface KurseModel {
     DeleteKursCommand.Result kursLoeschenKurseVerwalten(KurseTableModel kurseTableModel, int indexKursToBeRemoved);
     void eintragLoeschenKurseSchueler(KurseTableModel kurseTableModel, Kurs kursToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel);
     void importKurseFromPreviousSemester(SvmModel svmModel, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel);
-    Semester[] getSelectableSemestersKurseSchueler(SvmModel svmModel);
+    boolean checkIfSemesterIsInPast(SvmModel svmModel, KurseSemesterwahlModel kurseSemesterwahlModel);
 }

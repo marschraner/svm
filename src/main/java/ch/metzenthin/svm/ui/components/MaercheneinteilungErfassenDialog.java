@@ -7,7 +7,6 @@ import ch.metzenthin.svm.domain.model.MaercheneinteilungErfassenModel;
 import ch.metzenthin.svm.domain.model.MaercheneinteilungenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
-import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.ui.componentmodel.MaercheneinteilungenTableModel;
 import ch.metzenthin.svm.ui.control.MaercheneinteilungErfassenController;
 
@@ -19,7 +18,7 @@ public class MaercheneinteilungErfassenDialog extends JDialog {
     private JPanel contentPane;
     private JPanel datenPanel;
     private JPanel buttonPanel;
-    private JComboBox<Maerchen> comboBoxMaerchen;
+    private JSpinner spinnerMaerchen;
     private JComboBox<Gruppe> comboBoxGruppe;
     private JTextField txtRolle1;
     private JTextField txtBilderRolle1;
@@ -102,8 +101,8 @@ public class MaercheneinteilungErfassenDialog extends JDialog {
         maercheneinteilungErfassenController.setErrLblElternmithilfeCode(errLblElternmithilfeCode);
         maercheneinteilungErfassenController.setErrLblZusatzattribut(errLblZusatzattribut);
         maercheneinteilungErfassenController.setErrLblBemerkungen(errLblBemerkungen);
-        maercheneinteilungErfassenController.setComboBoxMaerchen(comboBoxMaerchen);   // muss am Schluss aufgerufen werden!
         maercheneinteilungErfassenController.setErrLblMaerchen(errLblMaerchen);
+        maercheneinteilungErfassenController.setSpinnerMaerchen(spinnerMaerchen);   // muss am Schluss aufgerufen werden!
         maercheneinteilungErfassenController.constructionDone();
     }
 
@@ -135,7 +134,7 @@ public class MaercheneinteilungErfassenDialog extends JDialog {
     }
 
     private void createUIComponents() {
-        comboBoxMaerchen = new JComboBox<>();
+        spinnerMaerchen = new JSpinner();
         comboBoxGruppe = new JComboBox<>(Gruppe.values());
         comboBoxElternmithilfe = new JComboBox<>(Elternteil.values());
         comboBoxElternmithilfeCode = new JComboBox<>();
@@ -197,13 +196,6 @@ public class MaercheneinteilungErfassenDialog extends JDialog {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel2.add(spacer3, gbc);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        gbc.gridwidth = 9;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(comboBoxMaerchen, gbc);
         final JPanel spacer4 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -633,6 +625,13 @@ public class MaercheneinteilungErfassenDialog extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel2.add(txtBemerkungen, gbc);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.gridwidth = 9;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel2.add(spinnerMaerchen, gbc);
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridBagLayout());
         contentPane.add(buttonPanel, BorderLayout.SOUTH);
@@ -674,7 +673,6 @@ public class MaercheneinteilungErfassenDialog extends JDialog {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         buttonPanel.add(btnAbbrechen, gbc);
-        label1.setLabelFor(comboBoxMaerchen);
         label2.setLabelFor(txtRolle1);
         label3.setLabelFor(txtRolle2);
         label4.setLabelFor(txtRolle3);

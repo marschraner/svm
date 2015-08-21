@@ -10,6 +10,8 @@ import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.MaercheneinteilungenTableModel;
 
+import java.util.List;
+
 /**
  * @author Martin Schraner
  */
@@ -37,7 +39,7 @@ public interface MaercheneinteilungErfassenModel extends Model {
     String getBemerkungen();
     Maerchen getMaerchen();
 
-    void setMaerchen(Maerchen maerchen) throws SvmRequiredException;
+    void setMaerchen(Maerchen maerchen);
     void setGruppe(Gruppe gruppe) throws SvmRequiredException;
     void setRolle1(String rolle1) throws SvmValidationException;
     void setBilderRolle1(String bilderRolle1) throws SvmValidationException;
@@ -61,6 +63,8 @@ public interface MaercheneinteilungErfassenModel extends Model {
     void setBemerkungen(String bemerkungen) throws SvmValidationException;
     void setMaercheneinteilungOrigin(Maercheneinteilung maercheneinteilungOrigin);
 
+    Maerchen getMaerchenInit(List<Maerchen> selectableMaerchens);
+    boolean checkIfMaerchenIsInPast();
     Elternteil[] getSelectableElternmithilfen(SchuelerDatenblattModel schuelerDatenblattModel);
     ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel);
     boolean checkIfElternmithilfeHasEmail(SchuelerDatenblattModel schuelerDatenblattModel);

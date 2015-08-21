@@ -101,7 +101,7 @@ public class KursSchuelerHinzufuegenModelImpl extends AbstractModel implements K
     }
 
     @Override
-    public Semester getDefaultSemester(SvmModel svmModel, Semester[] selectableSemesters) {
+    public Semester getInitSemester(SvmModel svmModel) {
         FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
         Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
         Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
@@ -118,13 +118,17 @@ public class KursSchuelerHinzufuegenModelImpl extends AbstractModel implements K
             // Neues Semester noch nicht erfasst
             defaultSemester = currentSemester;
         }
-        // Gibt es defaultSemester in selectableSemesters?
-        for (Semester selectableSemester : selectableSemesters) {
-            if (selectableSemester.isIdenticalWith(defaultSemester)) {
-                return selectableSemester;
-            }
+        if (defaultSemester != null) {
+            return defaultSemester;
+        } else {
+            return svmModel.getSemestersAll().get(0);
         }
-        return selectableSemesters[selectableSemesters.length - 1];
+    }
+
+    @Override
+    public boolean checkIfSemesterIsInPast() {
+        Calendar today = new GregorianCalendar();
+        return semester.getSemesterende().before(today);
     }
 
     @Override

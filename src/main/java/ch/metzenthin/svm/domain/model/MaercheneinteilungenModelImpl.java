@@ -9,8 +9,6 @@ import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.ui.componentmodel.MaercheneinteilungenTableModel;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -40,23 +38,11 @@ public class MaercheneinteilungenModelImpl extends AbstractModel implements Maer
     }
 
     @Override
-    public Maerchen[] getSelectableMaerchens(SvmModel svmModel, SchuelerDatenblattModel schuelerDatenblattModel) {
-        Calendar today = new GregorianCalendar();
-        int schuljahr1;
-        if (today.get(Calendar.MONTH) <= Calendar.JANUARY) {
-            schuljahr1 = today.get(Calendar.YEAR) - 1;
-        } else {
-            schuljahr1 = today.get(Calendar.YEAR);
-        }
+    public List<Maerchen> getSelectableMaerchens(SvmModel svmModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         svmModel.loadMaerchensAll();
         List<Maerchen> selectableMaerchens = new ArrayList<>(svmModel.getMaerchensAll());
         List<Maerchen> maerchensToBeRemoved = new ArrayList<>();
         for (Maerchen maerchen : selectableMaerchens) {
-            // Falls das Märchen in der Vergangenheit ist, soll es nicht mehr selektierbar sein
-            int schuljahr1Maerchen = Integer.parseInt(maerchen.getSchuljahr().substring(0, 4));
-            if (schuljahr1Maerchen < schuljahr1) {
-                maerchensToBeRemoved.add(maerchen);
-            }
             for (Maercheneinteilung maercheneinteilung : schuelerDatenblattModel.getSchueler().getMaercheneinteilungen()) {
                 // Nur noch nicht erfasste Märchen sollen selektierbar sein
                 if (maercheneinteilung.getMaerchen().isIdenticalWith(maerchen)) {
@@ -65,7 +51,7 @@ public class MaercheneinteilungenModelImpl extends AbstractModel implements Maer
             }
         }
         selectableMaerchens.removeAll(maerchensToBeRemoved);
-        return selectableMaerchens.toArray(new Maerchen[selectableMaerchens.size()]);
+        return selectableMaerchens;
     }
 
     @Override

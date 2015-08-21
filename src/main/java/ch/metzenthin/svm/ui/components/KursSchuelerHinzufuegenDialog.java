@@ -3,10 +3,8 @@ package ch.metzenthin.svm.ui.components;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.model.KursSchuelerHinzufuegenModel;
-import ch.metzenthin.svm.domain.model.KurseModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
-import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.control.KursSchuelerHinzufuegenController;
 
@@ -18,7 +16,7 @@ public class KursSchuelerHinzufuegenDialog extends JDialog {
     private JPanel contentPane;
     private JPanel datenPanel;
     private JPanel buttonPanel;
-    private JComboBox<Semester> comboBoxSemester;
+    private JSpinner spinnerSemester;
     private JComboBox<Wochentag> comboBoxWochentag;
     private JComboBox<Lehrkraft> comboBoxLehrkraft;
     private JLabel errLblWochentag;
@@ -28,21 +26,21 @@ public class KursSchuelerHinzufuegenDialog extends JDialog {
     private JButton btnOk;
     private JButton btnAbbrechen;
 
-    public KursSchuelerHinzufuegenDialog(SvmContext svmContext, KurseTableModel kurseTableModel, KurseModel kurseModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public KursSchuelerHinzufuegenDialog(SvmContext svmContext, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
         setTitle("Kurs hinzufügen");
         initializeErrLbls();
-        createKurseSchuelerHinzufuegenController(svmContext, kurseTableModel, kurseModel, schuelerDatenblattModel);
+        createKurseSchuelerHinzufuegenController(svmContext, kurseTableModel, schuelerDatenblattModel);
     }
 
-    private void createKurseSchuelerHinzufuegenController(SvmContext svmContext, KurseTableModel kurseTableModel, KurseModel kurseModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    private void createKurseSchuelerHinzufuegenController(SvmContext svmContext, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         KursSchuelerHinzufuegenModel kursSchuelerHinzufuegenModel = svmContext.getModelFactory().createKursSchuelerHinzufuegenModel();
-        KursSchuelerHinzufuegenController kursSchuelerHinzufuegenController = new KursSchuelerHinzufuegenController(svmContext, kurseTableModel, kursSchuelerHinzufuegenModel, kurseModel, schuelerDatenblattModel);
+        KursSchuelerHinzufuegenController kursSchuelerHinzufuegenController = new KursSchuelerHinzufuegenController(svmContext, kurseTableModel, kursSchuelerHinzufuegenModel, schuelerDatenblattModel);
         kursSchuelerHinzufuegenController.setKursSchuelerHinzufuegenDialog(this);
         kursSchuelerHinzufuegenController.setContentPane(contentPane);
-        kursSchuelerHinzufuegenController.setComboBoxSemester(comboBoxSemester);
+        kursSchuelerHinzufuegenController.setSpinnerSemester(spinnerSemester);
         kursSchuelerHinzufuegenController.setComboBoxWochentag(comboBoxWochentag);
         kursSchuelerHinzufuegenController.setTxtZeitBeginn(txtZeitBeginn);
         kursSchuelerHinzufuegenController.setComboBoxLehrkraft(comboBoxLehrkraft);
@@ -63,7 +61,7 @@ public class KursSchuelerHinzufuegenDialog extends JDialog {
     }
 
     private void createUIComponents() {
-        comboBoxSemester = new JComboBox<>();
+        spinnerSemester = new JSpinner();
         comboBoxWochentag = new JComboBox<>();
         comboBoxLehrkraft = new JComboBox<>();
     }
@@ -105,12 +103,6 @@ public class KursSchuelerHinzufuegenDialog extends JDialog {
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         panel1.add(label1, gbc);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel1.add(comboBoxSemester, gbc);
         final JPanel spacer2 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -231,6 +223,12 @@ public class KursSchuelerHinzufuegenDialog extends JDialog {
         gbc.gridy = 6;
         gbc.anchor = GridBagConstraints.WEST;
         panel1.add(errLblLehrkraft, gbc);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel1.add(spinnerSemester, gbc);
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
@@ -276,7 +274,7 @@ public class KursSchuelerHinzufuegenDialog extends JDialog {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         buttonPanel.add(btnAbbrechen, gbc);
-        label1.setLabelFor(comboBoxSemester);
+        label1.setLabelFor(spinnerSemester);
         label2.setLabelFor(comboBoxWochentag);
         label4.setLabelFor(comboBoxLehrkraft);
     }

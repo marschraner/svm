@@ -74,7 +74,7 @@ public class MaercheneinteilungenController {
     public void setBtnNeu(JButton btnNeu) {
         this.btnNeu = btnNeu;
         // Neu-Button deaktivieren, falls alle Märchen schon erfasst sind
-        if (maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel).length == 0) {
+        if (maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel).size() == 0) {
             btnNeu.setEnabled(false);
         }
         btnNeu.addActionListener(new ActionListener() {
@@ -92,7 +92,7 @@ public class MaercheneinteilungenController {
         maercheneinteilungErfassenDialog.setVisible(true);
         maercheneinteilungenTableModel.fireTableDataChanged();
         btnNeu.setFocusPainted(false);
-        if (maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel).length == 0) {
+        if (maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel).size() == 0) {
             btnNeu.setEnabled(false);
         }
     }
@@ -156,7 +156,7 @@ public class MaercheneinteilungenController {
         enableBtnLoeschen(false);
         maercheneinteilungenTable.clearSelection();
         // Neu-Button aktivieren, falls es selektierbare Märchen gibt
-        if (maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel).length > 0) {
+        if (maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel).size() > 0) {
             btnNeu.setEnabled(true);
         }
     }

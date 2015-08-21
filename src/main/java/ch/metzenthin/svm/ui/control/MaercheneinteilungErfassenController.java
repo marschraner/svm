@@ -17,6 +17,8 @@ import ch.metzenthin.svm.ui.componentmodel.MaercheneinteilungenTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
@@ -42,7 +44,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
     private SchuelerDatenblattModel schuelerDatenblattModel;
     private boolean isBearbeiten;
     private JDialog maercheneinteilungErfassenDialog;
-    private JComboBox<Maerchen> comboBoxMaerchen;
+    private JSpinner spinnerMaerchen;
     private JComboBox<Gruppe> comboBoxGruppe;
     private JTextField txtRolle1;
     private JTextField txtBilderRolle1;
@@ -121,47 +123,37 @@ public class MaercheneinteilungErfassenController extends AbstractController {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
     
-    public void setComboBoxMaerchen(JComboBox<Maerchen> comboBoxMaerchen) {
-        this.comboBoxMaerchen = comboBoxMaerchen;
+    public void setSpinnerMaerchen(JSpinner spinnerMaerchen) {
+        this.spinnerMaerchen = spinnerMaerchen;
         // Darf nicht bearbeitet werden, da Teil der ID!
         if (isBearbeiten) {
-            comboBoxMaerchen.setEnabled(false);
+            spinnerMaerchen.setEnabled(false);
         }
-        Maerchen[] selectableMaerchens;
+        List<Maerchen> selectableMaerchenList;
         if (isBearbeiten) {
-            List<Maerchen> maerchenList = svmContext.getSvmModel().getMaerchensAll();
-            selectableMaerchens = maerchenList.toArray(new Maerchen[maerchenList.size()]);
+            selectableMaerchenList = svmContext.getSvmModel().getMaerchensAll();
         } else {
-            selectableMaerchens = maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel);
+            selectableMaerchenList = maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel);
         }
-        comboBoxMaerchen.setModel(new DefaultComboBoxModel<>(selectableMaerchens));
-        if (!isBearbeiten) {
-            // Ältestes selektierbares Märchen als Initialwert
-            if (selectableMaerchens.length > 0) {
-                try {
-                    maercheneinteilungErfassenModel.setMaerchen(selectableMaerchens[selectableMaerchens.length - 1]);
-                } catch (SvmRequiredException ignore) {
-                }
-            } else {
-                comboBoxMaerchen.setSelectedItem(null);
-            }
-        }
-        comboBoxMaerchen.addActionListener(new ActionListener() {
+        Maerchen[] selectableMaerchens = selectableMaerchenList.toArray(new Maerchen[selectableMaerchenList.size()]);
+        SpinnerModel spinnerModelMaerchen = new SpinnerListModel(selectableMaerchens);
+        spinnerMaerchen.setModel(spinnerModelMaerchen);
+        spinnerMaerchen.addChangeListener(new ChangeListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void stateChanged(ChangeEvent e) {
                 onMaerchenSelected();
             }
         });
+        if (!isBearbeiten) {
+            Maerchen maerchenInit = maercheneinteilungErfassenModel.getMaerchenInit(selectableMaerchenList);
+            maercheneinteilungErfassenModel.setMaerchen(maerchenInit);
+        }
     }
 
     private void onMaerchenSelected() {
-        LOGGER.trace("MaercheneinteilungErfassenController Event Maerchen selected=" + comboBoxMaerchen.getSelectedItem());
-        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxMaerchen.getSelectedItem(), maercheneinteilungErfassenModel.getMaerchen());
-        try {
-            setModelMaerchen();
-        } catch (SvmValidationException e) {
-            return;
-        }
+        LOGGER.trace("MaercheneinteilungErfassenController Event Maerchen selected =" + spinnerMaerchen.getValue());
+        boolean equalFieldAndModelValue = equalsNullSafe(spinnerMaerchen.getValue(), maercheneinteilungErfassenModel.getMaerchen());
+        setModelMaerchen();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
@@ -169,20 +161,9 @@ public class MaercheneinteilungErfassenController extends AbstractController {
         }
     }
 
-    private void setModelMaerchen() throws SvmRequiredException {
+    private void setModelMaerchen() {
         makeErrorLabelInvisible(Field.MAERCHEN);
-        try {
-            maercheneinteilungErfassenModel.setMaerchen((Maerchen) comboBoxMaerchen.getSelectedItem());
-        } catch (SvmRequiredException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelMaerchen RequiredException=" + e.getMessage());
-            if (isModelValidationMode()) {
-                comboBoxMaerchen.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
-            } else {
-                showErrMsg(e);
-            }
-            throw e;
-        }
+        maercheneinteilungErfassenModel.setMaerchen((Maerchen) spinnerMaerchen.getValue());
     }
 
     public void setComboBoxGruppe(JComboBox<Gruppe> comboBoxGruppe) {
@@ -972,13 +953,28 @@ public class MaercheneinteilungErfassenController extends AbstractController {
             btnSpeichern.setFocusPainted(false);
             return;
         }
-        if (!maercheneinteilungErfassenModel.checkIfElternmithilfeHasTelefon(schuelerDatenblattModel)) {
-            JOptionPane.showMessageDialog(maercheneinteilungErfassenDialog, "Für die Elternmithilfe sind weder Festnetz noch Natel erfasst. Bitte Schüler-Stammdaten ergänzen.", "Elternmithilfe ohne Telefon", JOptionPane.WARNING_MESSAGE);
+        int n = 0;
+        if (!isBearbeiten && maercheneinteilungErfassenModel.checkIfMaerchenIsInPast()) {
+            Object[] options = {"Ignorieren", "Abbrechen"};
+            n = JOptionPane.showOptionDialog(
+                    null,
+                    "Das selektierte Schuljahr liegt in der Vergangenheit.",
+                    "Warnung",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,     //do not use a custom Icon
+                    options,  //the titles of buttons
+                    options[1]); //default button title
         }
-        if (!maercheneinteilungErfassenModel.checkIfElternmithilfeHasEmail(schuelerDatenblattModel)) {
-            JOptionPane.showMessageDialog(maercheneinteilungErfassenDialog, "Für die Elternmithilfe ist keine E-Mail erfasst. Bitte Schüler-Stammdaten ergänzen.", "Elternmithilfe ohne E-Mail", JOptionPane.WARNING_MESSAGE);
+        if (n == 0) {
+            if (!maercheneinteilungErfassenModel.checkIfElternmithilfeHasTelefon(schuelerDatenblattModel)) {
+                JOptionPane.showMessageDialog(maercheneinteilungErfassenDialog, "Für die Elternmithilfe sind weder Festnetz noch Natel erfasst. Bitte Schüler-Stammdaten ergänzen.", "Elternmithilfe ohne Telefon", JOptionPane.WARNING_MESSAGE);
+            }
+            if (!maercheneinteilungErfassenModel.checkIfElternmithilfeHasEmail(schuelerDatenblattModel)) {
+                JOptionPane.showMessageDialog(maercheneinteilungErfassenDialog, "Für die Elternmithilfe ist keine E-Mail erfasst. Bitte Schüler-Stammdaten ergänzen.", "Elternmithilfe ohne E-Mail", JOptionPane.WARNING_MESSAGE);
+            }
+            maercheneinteilungErfassenModel.speichern(maercheneinteilungenTableModel, schuelerDatenblattModel);
         }
-        maercheneinteilungErfassenModel.speichern(maercheneinteilungenTableModel, schuelerDatenblattModel);
         maercheneinteilungErfassenDialog.dispose();
     }
 
@@ -1077,7 +1073,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
     void doPropertyChange(PropertyChangeEvent evt) {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.MAERCHEN, evt)) {
-            comboBoxMaerchen.setSelectedItem(maercheneinteilungErfassenModel.getMaerchen());
+            spinnerMaerchen.setValue(maercheneinteilungErfassenModel.getMaerchen());
             makeUnusableCheckboxesInvisible();
             Schueler geschwister = maercheneinteilungErfassenModel.findGeschwisterElternmithilfeBereitsErfasst(schuelerDatenblattModel);
             if (geschwister != null) {
@@ -1131,7 +1127,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
 
     @Override
     void validateFields() throws SvmValidationException {
-        if (comboBoxMaerchen.isEnabled()) {
+        if (spinnerMaerchen.isEnabled()) {
             LOGGER.trace("Validate field Maerchen");
             setModelMaerchen();
         }
@@ -1236,7 +1232,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
     @Override
     void showErrMsgAsToolTip(SvmValidationException e) {
         if (e.getAffectedFields().contains(Field.MAERCHEN)) {
-            comboBoxMaerchen.setToolTipText(e.getMessage());
+            spinnerMaerchen.setToolTipText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.GRUPPE)) {
             comboBoxGruppe.setToolTipText(e.getMessage());
@@ -1277,7 +1273,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         if (fields.contains(Field.ALLE) || fields.contains(Field.MAERCHEN)) {
             errLblMaerchen.setVisible(false);
-            comboBoxMaerchen.setToolTipText(null);
+            spinnerMaerchen.setToolTipText(null);
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.GRUPPE)) {
             errLblGruppe.setVisible(false);

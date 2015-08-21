@@ -20,8 +20,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAccordingToCellContentAndHeader;
 
@@ -50,7 +48,7 @@ public class KurseController {
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
-    private boolean isNeuerKursErfassbar;
+    //private boolean isNeuerKursErfassbar;
 
     public KurseController(KurseModel kurseModel, SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isKurseSchueler, boolean isFromSchuelerSuchenResult) {
         this.kurseModel = kurseModel;
@@ -63,19 +61,6 @@ public class KurseController {
         this.selectedRow = selectedRow;
         this.isKurseSchueler = isKurseSchueler;
         this.isFromSchuelerSuchenResult = isFromSchuelerSuchenResult;
-        this.isNeuerKursErfassbar = isNeuerKursErfassbar();
-    }
-
-    private boolean isNeuerKursErfassbar() {
-        if (isKurseSchueler) {
-            return true;
-        }
-        Calendar today = new GregorianCalendar();
-        today.set(Calendar.HOUR_OF_DAY, 0);
-        today.set(Calendar.MINUTE, 0);
-        today.set(Calendar.SECOND, 0);
-        today.set(Calendar.MILLISECOND, 0);
-        return kurseSemesterwahlModel.getSemester(svmContext.getSvmModel()).getSemesterende().after(today) || kurseSemesterwahlModel.getSemester(svmContext.getSvmModel()).getSemesterende().equals(today);
     }
 
     public void setKurseTable(JTable kurseTable) {
@@ -112,10 +97,6 @@ public class KurseController {
 
     public void setBtnNeu(JButton btnNeu) {
         this.btnNeu = btnNeu;
-        if (!isNeuerKursErfassbar) {
-            btnNeu.setEnabled(false);
-            return;
-        }
         btnNeu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -129,6 +110,22 @@ public class KurseController {
     }
 
     private void onNeuKurseVerwalten() {
+        int n = 0;
+        if (kurseModel.checkIfSemesterIsInPast(svmContext.getSvmModel(), kurseSemesterwahlModel)) {
+            Object[] options = {"Ignorieren", "Abbrechen"};
+            n = JOptionPane.showOptionDialog(
+                    null,
+                    "Das Semester liegt in der Vergangenheit.",
+                    "Warnung",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,     //do not use a custom Icon
+                    options,  //the titles of buttons
+                    options[1]); //default button title
+        }
+        if (n == 1) {
+            return;
+        }
         btnNeu.setFocusPainted(true);
         KursErfassenDialog kursErfassenDialog = new KursErfassenDialog(svmContext, kurseModel, kurseSemesterwahlModel, kurseTableModel, 0, false, "Neuer Kurs");
         kursErfassenDialog.pack();
@@ -140,12 +137,12 @@ public class KurseController {
 
     private void onNeuKurseSchueler() {
         btnNeu.setFocusPainted(true);
-        KursSchuelerHinzufuegenDialog kursSchuelerHinzufuegenDialog = new KursSchuelerHinzufuegenDialog(svmContext, kurseTableModel, kurseModel, schuelerDatenblattModel);
+        KursSchuelerHinzufuegenDialog kursSchuelerHinzufuegenDialog = new KursSchuelerHinzufuegenDialog(svmContext, kurseTableModel, schuelerDatenblattModel);
         kursSchuelerHinzufuegenDialog.pack();
         kursSchuelerHinzufuegenDialog.setVisible(true);
         kurseTableModel.fireTableDataChanged();
         btnNeu.setFocusPainted(false);
-        if (kurseModel.getSelectableSemestersKurseSchueler(svmContext.getSvmModel()).length == 0) {
+        if (svmContext.getSvmModel().getSemestersAll().size() == 0) {
             btnNeu.setEnabled(false);
         }
     }
@@ -264,10 +261,6 @@ public class KurseController {
 
     public void setBtnImportieren(JButton btnImportieren) {
         this.btnImportieren = btnImportieren;
-        if (!isNeuerKursErfassbar) {
-            btnImportieren.setEnabled(false);
-            return;
-        }
         // Importieren nur möglich für Kurse bearbeiten
         if (isKurseSchueler) {
             btnImportieren.setVisible(false);

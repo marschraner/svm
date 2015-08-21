@@ -7,6 +7,7 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CheckElternmithilfeBereitsBeiGeschwisterErfasstCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.DetermineMaerchenInitCommand;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateMaercheneinteilungCommand;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
@@ -15,6 +16,8 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.MaercheneinteilungenTableModel;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
@@ -45,14 +48,10 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
     }
 
     @Override
-    public void setMaerchen(Maerchen maerchen) throws SvmRequiredException {
+    public void setMaerchen(Maerchen maerchen) {
         Maerchen oldValue = maercheneinteilung.getMaerchen();
         maercheneinteilung.setMaerchen(maerchen);
         firePropertyChange(Field.MAERCHEN, oldValue, maercheneinteilung.getMaerchen());
-        if (maerchen == null) {
-            invalidate();
-            throw new SvmRequiredException(Field.MAERCHEN);
-        }
     }
 
     @Override
@@ -225,6 +224,26 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
     @Override
     public void setBilderRolle3(String bilderRolle3) throws SvmValidationException {
         bilderRolle3ModelAttribute.setNewValue(false, bilderRolle3, isBulkUpdate());
+    }
+
+    @Override
+    public Maerchen getMaerchenInit(List<Maerchen> selectableMaerchens) {
+        DetermineMaerchenInitCommand determineMaerchenInitCommand = new DetermineMaerchenInitCommand(selectableMaerchens);
+        determineMaerchenInitCommand.execute();
+        return determineMaerchenInitCommand.getMaerchenInit();
+    }
+
+    @Override
+    public boolean checkIfMaerchenIsInPast() {
+        Calendar today = new GregorianCalendar();
+        int schuljahr1;
+        if (today.get(Calendar.MONTH) <= Calendar.JANUARY) {
+            schuljahr1 = today.get(Calendar.YEAR) - 1;
+        } else {
+            schuljahr1 = today.get(Calendar.YEAR);
+        }
+        int schuljahr1Maerchen = Integer.parseInt(maercheneinteilung.getMaerchen().getSchuljahr().substring(0, 4));
+        return schuljahr1Maerchen < schuljahr1;
     }
 
     @Override

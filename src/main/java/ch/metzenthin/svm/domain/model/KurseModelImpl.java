@@ -64,23 +64,10 @@ public class KurseModelImpl extends AbstractModel implements KurseModel {
     }
 
     @Override
-    public Semester[] getSelectableSemestersKurseSchueler(SvmModel svmModel) {
-        List<Semester> selectableSemesters = new ArrayList<>();
-        List<Semester> semesterAll = svmModel.getSemestersAll();
+    public boolean checkIfSemesterIsInPast(SvmModel svmModel, KurseSemesterwahlModel kurseSemesterwahlModel) {
         Calendar today = new GregorianCalendar();
-        today.set(Calendar.HOUR_OF_DAY, 0);
-        today.set(Calendar.MINUTE, 0);
-        today.set(Calendar.SECOND, 0);
-        today.set(Calendar.MILLISECOND, 0);
-        for (Semester semester : semesterAll) {
-            // Keine Semester in der Vergangenheit anzeigen
-            if (semester.getSemesterende().after(today) || semester.getSemesterende().equals(today)) {
-                selectableSemesters.add(semester);
-            }
-        }
-        // Aufsteigende Sortierung für Combobox, d.h. ältestes Semester zuoberst
-        Collections.sort(selectableSemesters, Collections.reverseOrder());
-        return selectableSemesters.toArray(new Semester[selectableSemesters.size()]);
+        Semester semester = kurseSemesterwahlModel.getSemester(svmModel);
+        return semester.getSemesterende().before(today);
     }
 
     @Override
