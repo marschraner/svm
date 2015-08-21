@@ -6,6 +6,7 @@ import ch.metzenthin.svm.domain.model.KursorteModel;
 import ch.metzenthin.svm.domain.model.KursorteTableData;
 import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
 import ch.metzenthin.svm.ui.components.KursortErfassenDialog;
+import ch.metzenthin.svm.ui.components.UiComponentsUtils;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -37,7 +38,10 @@ public class KursorteController {
 
     public void setKursorteTable(JTable kursorteTable) {
         this.kursorteTable = kursorteTable;
-        initializeKursorteTable();
+        KursorteTableData kursorteTableData = new KursorteTableData(svmContext.getSvmModel().getKursorteAll());
+        kursorteTableModel = new KursorteTableModel(kursorteTableData);
+        kursorteTable.setModel(kursorteTableModel);
+        UiComponentsUtils.setJTableColumnWidthAsPercentages(kursorteTable, 0.75, 0.25);
         kursorteTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -54,12 +58,6 @@ public class KursorteController {
                 }
             }
         });
-    }
-
-    private void initializeKursorteTable() {
-        KursorteTableData kursorteTableData = new KursorteTableData(svmContext.getSvmModel().getKursorteAll());
-        kursorteTableModel = new KursorteTableModel(kursorteTableData);
-        kursorteTable.setModel(kursorteTableModel);
     }
 
     public void setBtnNeu(JButton btnNeu) {

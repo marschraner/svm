@@ -56,6 +56,18 @@ public class KursortErfassenModelImpl extends AbstractModel implements KursortEr
     }
 
     @Override
+    public void setSelektierbar(Boolean isSelected) {
+        Boolean oldValue = kursort.getSelektierbar();
+        kursort.setSelektierbar(isSelected);
+        firePropertyChange(Field.SELEKTIERBAR, oldValue, isSelected);
+    }
+
+    @Override
+    public Boolean isSelektierbar() {
+        return kursort.getSelektierbar();
+    }
+
+    @Override
     public boolean checkKursortBezeichnungBereitsInVerwendung(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         CheckKursortBezeichnungBereitsInVerwendungCommand checkKursortBezeichnungBereitsInVerwendungCommand = new CheckKursortBezeichnungBereitsInVerwendungCommand(kursort, kursortOrigin, svmModel.getKursorteAll());
@@ -76,6 +88,8 @@ public class KursortErfassenModelImpl extends AbstractModel implements KursortEr
             setBulkUpdate(true);
             try {
                 setBezeichnung(kursortOrigin.getBezeichnung());
+                setSelektierbar(!kursortOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
+                setSelektierbar(kursortOrigin.getSelektierbar());
             } catch (SvmValidationException ignore) {
                 ignore.printStackTrace();
             }

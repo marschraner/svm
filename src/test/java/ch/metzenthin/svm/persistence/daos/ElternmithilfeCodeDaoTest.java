@@ -46,7 +46,7 @@ public class ElternmithilfeCodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("k", "Kuchen");
+            ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("k", "Kuchen", true);
 
             entityManager.persist(elternmithilfeCode);
 
@@ -68,7 +68,7 @@ public class ElternmithilfeCodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("k", "Kuchen");
+            ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("k", "Kuchen", true);
             ElternmithilfeCode elternmithilfeCodeSaved = elternmithilfeCodeDao.save(elternmithilfeCode);
 
             entityManager.flush();
@@ -95,11 +95,11 @@ public class ElternmithilfeCodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("k", "Kuchen");
+            ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("k", "Kuchen", true);
             ElternmithilfeCode elternmithilfeCode1Saved = elternmithilfeCodeDao.save(elternmithilfeCode1);
             int code1Id = elternmithilfeCode1Saved.getCodeId();
 
-            ElternmithilfeCode elternmithilfeCode2 = new ElternmithilfeCode("f", "Frisieren");
+            ElternmithilfeCode elternmithilfeCode2 = new ElternmithilfeCode("f", "Frisieren", true);
             ElternmithilfeCode elternmithilfeCode2Saved = elternmithilfeCodeDao.save(elternmithilfeCode2);
             int code2Id = elternmithilfeCode2Saved.getCodeId();
 
@@ -138,10 +138,10 @@ public class ElternmithilfeCodeDaoTest {
             tx.begin();
 
             // Codes hinzufügen
-            ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("kt", "KuchenTest");
+            ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("kt", "KuchenTest", true);
             elternmithilfeCodeDao.save(elternmithilfeCode1);
 
-            ElternmithilfeCode elternmithilfeCode2 = new ElternmithilfeCode("ft", "FrisierenTest");
+            ElternmithilfeCode elternmithilfeCode2 = new ElternmithilfeCode("ft", "FrisierenTest", true);
             elternmithilfeCodeDao.save(elternmithilfeCode2);
 
             entityManager.flush();

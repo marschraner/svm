@@ -47,8 +47,8 @@ public class DeleteSchuelerCodeCommandTest {
         List<SchuelerCode> codesSaved = new ArrayList<>();
 
         // 2 Codes erfassen und den zweiten einem Schueler hinzufügen
-        SchuelerCode schuelerCode1 = new SchuelerCode("zt", "ZirkusTest");
-        SchuelerCode schuelerCode2 = new SchuelerCode("jt", "JugendprojektTest");
+        SchuelerCode schuelerCode1 = new SchuelerCode("zt", "ZirkusTest", true);
+        SchuelerCode schuelerCode2 = new SchuelerCode("jt", "JugendprojektTest", true);
 
         SaveOrUpdateSchuelerCodeCommand saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode1, null, codesSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);

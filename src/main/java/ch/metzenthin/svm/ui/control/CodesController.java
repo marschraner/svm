@@ -79,13 +79,16 @@ public class CodesController {
                 onListSelection();
             }
         });
-        codesTable.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent me) {
-                if (me.getClickCount() == 2) {
-                    onBearbeiten();
+        if (!isCodesSpecificSchueler) {
+            // Doppelklick zum Bearbeiten darf nicht funktionieren für Schüler-Codes
+            codesTable.addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent me) {
+                    if (me.getClickCount() == 2) {
+                        onBearbeiten();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public void setLblTitel(JLabel lblTitel) {
@@ -107,17 +110,21 @@ public class CodesController {
         if (!isCodesSpecificSchueler) {
             switch (codetyp) {
                 case SCHUELER:
-                    CodesTableData schuelerCodesTableData = new CodesTableData(svmContext.getSvmModel().getSchuelerCodesAll());
+                    CodesTableData schuelerCodesTableData = new CodesTableData(svmContext.getSvmModel().getSchuelerCodesAll(), false);
                     codesTableModel = new CodesTableModel(schuelerCodesTableData);
                     break;
                 case ELTERNMITHILFE:
-                    CodesTableData elternmithilfeCodesTableData = new CodesTableData(svmContext.getSvmModel().getElternmithilfeCodesAll());
+                    CodesTableData elternmithilfeCodesTableData = new CodesTableData(svmContext.getSvmModel().getElternmithilfeCodesAll(), false);
                     codesTableModel = new CodesTableModel(elternmithilfeCodesTableData);
                     break;
             }
         }
         codesTable.setModel(codesTableModel);
-        UiComponentsUtils.setJTableColumnWidthAsPercentages(codesTable, 0.15, 0.85);
+        if (isCodesSpecificSchueler) {
+            UiComponentsUtils.setJTableColumnWidthAsPercentages(codesTable, 0.2, 0.8);
+        } else {
+            UiComponentsUtils.setJTableColumnWidthAsPercentages(codesTable, 0.15, 0.65, 0.2);
+        }
     }
 
     public void setBtnNeu(JButton btnNeu) {

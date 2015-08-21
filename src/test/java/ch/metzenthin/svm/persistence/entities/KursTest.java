@@ -20,7 +20,7 @@ public class KursTest {
         Lehrkraft lehrkraft2 = new Lehrkraft(Anrede.FRAU, "Vorname", "Lehrkraft2", toCalendar("11.11.95"), null, null, null, "222.22.222.2222.22", null, true);
         kurs.addLehrkraft(lehrkraft);
         kurs.addLehrkraft(lehrkraft2);
-        kurs.setKurstyp(new Kurstyp("Kurstyp Test"));
+        kurs.setKurstyp(new Kurstyp("Kurstyp Test", true));
         assertEquals("Kurstyp Test 1, Dienstag 18.00-19.00 (Vorname Lehrkraft1 / Vorname Lehrkraft2)", kurs.toString());
     }
 

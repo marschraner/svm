@@ -695,6 +695,7 @@
       <column name="discriminator" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
       <column name="kuerzel" sqlType="VARCHAR" precision="5" scale="0" nullable="false" jdbcType="12"/>
       <column name="beschreibung" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="selektierbar" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="code_id"/>
       <exported-key name="ElternmithilfeCode_ibfk_1" table="ElternmithilfeCode" schema="" catalog="svm" columns="code_id"/>
@@ -749,6 +750,7 @@
     <table name="Kursort" schema="" catalog="svm" type="TABLE">
       <column name="kursort_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="bezeichnung" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="selektierbar" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="kursort_id"/>
       <exported-key name="Kurs_ibfk_3" table="Kurs" schema="" catalog="svm" columns="kursort_id"/>
@@ -756,6 +758,7 @@
     <table name="Kurstyp" schema="" catalog="svm" type="TABLE">
       <column name="kurstyp_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="bezeichnung" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="selektierbar" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="kurstyp_id"/>
       <exported-key name="Kurs_ibfk_2" table="Kurs" schema="" catalog="svm" columns="kurstyp_id"/>
@@ -783,11 +786,11 @@
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="maerchen_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="gruppe" sqlType="VARCHAR" precision="1" scale="0" nullable="false" jdbcType="12"/>
-      <column name="rolle_1" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="rolle_1" sqlType="VARCHAR" precision="60" scale="0" nullable="false" jdbcType="12"/>
       <column name="bilder_rolle_1" sqlType="VARCHAR" precision="60" scale="0" nullable="true" jdbcType="12"/>
-      <column name="rolle_2" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
+      <column name="rolle_2" sqlType="VARCHAR" precision="60" scale="0" nullable="true" jdbcType="12"/>
       <column name="bilder_rolle_2" sqlType="VARCHAR" precision="60" scale="0" nullable="true" jdbcType="12"/>
-      <column name="rolle_3" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
+      <column name="rolle_3" sqlType="VARCHAR" precision="60" scale="0" nullable="true" jdbcType="12"/>
       <column name="bilder_rolle_3" sqlType="VARCHAR" precision="60" scale="0" nullable="true" jdbcType="12"/>
       <column name="elternmithilfe" sqlType="VARCHAR" precision="6" scale="0" nullable="true" jdbcType="12"/>
       <column name="code_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>

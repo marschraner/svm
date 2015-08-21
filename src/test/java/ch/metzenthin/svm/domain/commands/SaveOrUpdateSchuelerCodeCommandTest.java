@@ -46,7 +46,7 @@ public class SaveOrUpdateSchuelerCodeCommandTest {
         List<SchuelerCode> codesSaved = new ArrayList<>();
 
         // SchuelerCode hinzufügen
-        SchuelerCode schuelerCode1 = new SchuelerCode("tz", "ZirkusTest");
+        SchuelerCode schuelerCode1 = new SchuelerCode("tz", "ZirkusTest", true);
         SaveOrUpdateSchuelerCodeCommand saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode1, null, codesSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
         assertEquals(1, codesSaved.size());
@@ -54,7 +54,7 @@ public class SaveOrUpdateSchuelerCodeCommandTest {
         assertFalse(checkIfCodeAvailable("tj", "JugendprojektTest"));
 
         // Weiteren SchuelerCode hinzufügen
-        SchuelerCode schuelerCode2 = new SchuelerCode("tj", "JugendprojektTest");
+        SchuelerCode schuelerCode2 = new SchuelerCode("tj", "JugendprojektTest", true);
         saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode2, null, codesSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
         assertEquals(2, codesSaved.size());
@@ -65,7 +65,7 @@ public class SaveOrUpdateSchuelerCodeCommandTest {
         assertTrue(checkIfCodeAvailable("tj", "JugendprojektTest"));
 
         // SchuelerCode bearbeiten
-        SchuelerCode schuelerCode2Modif = new SchuelerCode("tj", "JugendprojektModifTest");
+        SchuelerCode schuelerCode2Modif = new SchuelerCode("tj", "JugendprojektModifTest", true);
         saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode2Modif, schuelerCode2, codesSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
         assertEquals(2, codesSaved.size());

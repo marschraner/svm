@@ -41,8 +41,8 @@ public class DeleteKursortCommandTest {
         List<Kursort> kursorteSaved = new ArrayList<>();
 
         // 2 Kursorte erfassen
-        Kursort kursort1 = new Kursort("Saal Test1");
-        Kursort kursort2 = new Kursort("Saal Test2");
+        Kursort kursort1 = new Kursort("Saal Test1", true);
+        Kursort kursort2 = new Kursort("Saal Test2", true);
 
         SaveOrUpdateKursortCommand saveOrUpdateKursortCommand = new SaveOrUpdateKursortCommand(kursort1, null, kursorteSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);

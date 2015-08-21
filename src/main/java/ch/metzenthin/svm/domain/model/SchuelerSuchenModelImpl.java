@@ -526,7 +526,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     @Override
     public SchuelerCode[] getSelectableSchuelerCodes(SvmModel svmModel) {
-        List<SchuelerCode> codesList = svmModel.getSchuelerCodesAll();
+        List<SchuelerCode> codesList = svmModel.getSelektierbareSchuelerCodesAll();
         // SchuelerCode alle auch erlaubt
         codesList.add(0, SCHUELER_CODE_ALLE);
         return codesList.toArray(new SchuelerCode[codesList.size()]);
@@ -534,7 +534,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     @Override
     public ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel) {
-        List<ElternmithilfeCode> codesList = svmModel.getElternmithilfeCodesAll();
+        List<ElternmithilfeCode> codesList = svmModel.getSelektierbareElternmithilfeCodesAll();
         // ElternmithilfeCode alle auch erlaubt
         if (codesList.isEmpty() || !codesList.get(0).isIdenticalWith(ELTERNMITHILFE_CODE_ALLE)) {
             codesList.add(0, ELTERNMITHILFE_CODE_ALLE);

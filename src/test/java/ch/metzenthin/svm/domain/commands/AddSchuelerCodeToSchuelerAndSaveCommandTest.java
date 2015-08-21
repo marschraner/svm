@@ -44,8 +44,8 @@ public class AddSchuelerCodeToSchuelerAndSaveCommandTest {
         List<SchuelerCode> erfassteSchuelerCodes = new ArrayList<>();
 
         // Codes erzeugen
-        SchuelerCode schuelerCode1 = new SchuelerCode("zt", "ZirkusTest");
-        SchuelerCode schuelerCode2 = new SchuelerCode("jt", "JugendprojektTest");
+        SchuelerCode schuelerCode1 = new SchuelerCode("zt", "ZirkusTest", true);
+        SchuelerCode schuelerCode2 = new SchuelerCode("jt", "JugendprojektTest", true);
         SaveOrUpdateSchuelerCodeCommand saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode1, null, erfassteSchuelerCodes);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
         saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode2, null, erfassteSchuelerCodes);

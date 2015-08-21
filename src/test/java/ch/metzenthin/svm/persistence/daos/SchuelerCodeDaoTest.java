@@ -53,7 +53,7 @@ public class SchuelerCodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            SchuelerCode schuelerCode = new SchuelerCode("tz", "ZirkusprojektTest");
+            SchuelerCode schuelerCode = new SchuelerCode("tz", "ZirkusprojektTest", true);
 
             entityManager.persist(schuelerCode);
 
@@ -75,7 +75,7 @@ public class SchuelerCodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            SchuelerCode schuelerCode = new SchuelerCode("tz", "ZirkusprojektTest");
+            SchuelerCode schuelerCode = new SchuelerCode("tz", "ZirkusprojektTest", true);
             SchuelerCode schuelerCodeSaved = schuelerCodeDao.save(schuelerCode);
 
             entityManager.flush();
@@ -102,11 +102,11 @@ public class SchuelerCodeDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            SchuelerCode schuelerCode1 = new SchuelerCode("z", "Zirkusprojekt");
+            SchuelerCode schuelerCode1 = new SchuelerCode("z", "Zirkusprojekt", true);
             SchuelerCode schuelerCode1Saved = schuelerCodeDao.save(schuelerCode1);
             int code1Id = schuelerCode1Saved.getCodeId();
 
-            SchuelerCode schuelerCode2 = new SchuelerCode("r6", "6-Jahres-Rabatt");
+            SchuelerCode schuelerCode2 = new SchuelerCode("r6", "6-Jahres-Rabatt", true);
             SchuelerCode schuelerCode2Saved = schuelerCodeDao.save(schuelerCode2);
             int code2Id = schuelerCode2Saved.getCodeId();
 
@@ -154,11 +154,11 @@ public class SchuelerCodeDaoTest {
             schueler.setRechnungsempfaenger(vater);
 
             // Codes hinzufügen
-            SchuelerCode schuelerCode1 = new SchuelerCode("z", "Zirkusprojekt");
+            SchuelerCode schuelerCode1 = new SchuelerCode("z", "Zirkusprojekt", true);
             schuelerCodeDao.save(schuelerCode1);
             schuelerCodeDao.addToSchuelerAndSave(schuelerCode1, schueler);
 
-            SchuelerCode schuelerCode2 = new SchuelerCode("r6", "6-Jahres-Rabatt");
+            SchuelerCode schuelerCode2 = new SchuelerCode("r6", "6-Jahres-Rabatt", true);
             schuelerCodeDao.save(schuelerCode2);
             Schueler schuelerSaved = schuelerCodeDao.addToSchuelerAndSave(schuelerCode2, schueler);
 
@@ -201,11 +201,11 @@ public class SchuelerCodeDaoTest {
             schueler.setRechnungsempfaenger(vater);
 
             // Codes hinzufügen
-            SchuelerCode schuelerCode1 = new SchuelerCode("z", "Zirkusprojekt");
+            SchuelerCode schuelerCode1 = new SchuelerCode("z", "Zirkusprojekt", true);
             schuelerCodeDao.save(schuelerCode1);
             schuelerCodeDao.addToSchuelerAndSave(schuelerCode1, schueler);
 
-            SchuelerCode schuelerCode2 = new SchuelerCode("r6", "6-Jahres-Rabatt");
+            SchuelerCode schuelerCode2 = new SchuelerCode("r6", "6-Jahres-Rabatt", true);
             schuelerCodeDao.save(schuelerCode2);
             Schueler schuelerSaved = schuelerCodeDao.addToSchuelerAndSave(schuelerCode2, schueler);
 
@@ -265,10 +265,10 @@ public class SchuelerCodeDaoTest {
             tx.begin();
 
             // Codes hinzufügen
-            SchuelerCode schuelerCode1 = new SchuelerCode("z", "ZirkusprojektTest");
+            SchuelerCode schuelerCode1 = new SchuelerCode("z", "ZirkusprojektTest", true);
             schuelerCodeDao.save(schuelerCode1);
 
-            SchuelerCode schuelerCode2 = new SchuelerCode("r6", "6-Jahres-RabattTest");
+            SchuelerCode schuelerCode2 = new SchuelerCode("r6", "6-Jahres-RabattTest", true);
             schuelerCodeDao.save(schuelerCode2);
 
             entityManager.flush();

@@ -10,9 +10,11 @@ public interface KurstypErfassenModel extends Model {
     void setKurstypOrigin(Kurstyp kurstypOrigin);
 
     String getBezeichnung();
+    Boolean isSelektierbar();
     Kurstyp getKurstyp();
 
     void setBezeichnung(String bezeichnung) throws SvmValidationException;
+    void setSelektierbar(Boolean isSelected);
 
     boolean checkKurstypBezeichnungBereitsInVerwendung(SvmModel svmModel);
     void speichern(SvmModel svmModel);

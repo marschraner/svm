@@ -46,7 +46,7 @@ public class KursortDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Kursort kursort = new Kursort("Saal Test");
+            Kursort kursort = new Kursort("Saal Test", true);
 
             entityManager.persist(kursort);
 
@@ -68,7 +68,7 @@ public class KursortDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Kursort kursort = new Kursort("Saal Test");
+            Kursort kursort = new Kursort("Saal Test", true);
             Kursort kursortSaved = kursortDao.save(kursort);
 
             entityManager.flush();
@@ -95,11 +95,11 @@ public class KursortDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Kursort kursort1 = new Kursort("Saal Test1");
+            Kursort kursort1 = new Kursort("Saal Test1", true);
             Kursort kursort1Saved = kursortDao.save(kursort1);
             int kursort1Id = kursort1Saved.getKursortId();
 
-            Kursort kursort2 = new Kursort("Saal Test2");
+            Kursort kursort2 = new Kursort("Saal Test2", true);
             Kursort kursort2Saved = kursortDao.save(kursort2);
             int kursort2Id = kursort2Saved.getKursortId();
 
@@ -138,10 +138,10 @@ public class KursortDaoTest {
             tx.begin();
 
             // Kursorts hinzufügen
-            Kursort kursort1 = new Kursort("Saal Test1");
+            Kursort kursort1 = new Kursort("Saal Test1", true);
             kursortDao.save(kursort1);
 
-            Kursort kursort2 = new Kursort("Saal Test2");
+            Kursort kursort2 = new Kursort("Saal Test2", true);
             kursortDao.save(kursort2);
 
             entityManager.flush();

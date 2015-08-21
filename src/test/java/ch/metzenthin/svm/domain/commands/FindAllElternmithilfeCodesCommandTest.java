@@ -67,10 +67,10 @@ public class FindAllElternmithilfeCodesCommandTest {
 
             ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
 
-            ElternmithilfeCode elternmithilfeCodeSaved = elternmithilfeCodeDao.save(new ElternmithilfeCode("k", "KuchenTest"));
+            ElternmithilfeCode elternmithilfeCodeSaved = elternmithilfeCodeDao.save(new ElternmithilfeCode("k", "KuchenTest", true));
             codesTestdata.add(elternmithilfeCodeSaved);
 
-            elternmithilfeCodeSaved = elternmithilfeCodeDao.save(new ElternmithilfeCode("f", "FrisierenTest"));
+            elternmithilfeCodeSaved = elternmithilfeCodeDao.save(new ElternmithilfeCode("f", "FrisierenTest", true));
             codesTestdata.add(elternmithilfeCodeSaved);
 
             entityManager.getTransaction().commit();

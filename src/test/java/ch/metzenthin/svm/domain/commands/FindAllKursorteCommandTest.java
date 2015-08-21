@@ -67,10 +67,10 @@ public class FindAllKursorteCommandTest {
 
             KursortDao kursortDao = new KursortDao(entityManager);
 
-            Kursort kursorteaved = kursortDao.save(new Kursort("Saal Test1"));
+            Kursort kursorteaved = kursortDao.save(new Kursort("Saal Test1", true));
             kursorteTestdata.add(kursorteaved);
 
-            kursorteaved = kursortDao.save(new Kursort("Saal Test2"));
+            kursorteaved = kursortDao.save(new Kursort("Saal Test2", true));
             kursorteTestdata.add(kursorteaved);
 
             entityManager.getTransaction().commit();

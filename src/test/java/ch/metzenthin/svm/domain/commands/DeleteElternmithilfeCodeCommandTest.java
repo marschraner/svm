@@ -42,8 +42,8 @@ public class DeleteElternmithilfeCodeCommandTest {
         List<ElternmithilfeCode> codesSaved = new ArrayList<>();
 
         // 2 Codes erfassen und den zweiten einem Maerchen hinzufügen
-        ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("kt", "KuchenTest");
-        ElternmithilfeCode elternmithilfeCode2 = new ElternmithilfeCode("ft", "FrisierenTest");
+        ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("kt", "KuchenTest", true);
+        ElternmithilfeCode elternmithilfeCode2 = new ElternmithilfeCode("ft", "FrisierenTest", true);
 
         SaveOrUpdateElternmithilfeCodeCommand saveOrUpdateElternmithilfeCodeCommand = new SaveOrUpdateElternmithilfeCodeCommand(elternmithilfeCode1, null, codesSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);

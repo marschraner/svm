@@ -20,9 +20,9 @@ public class CheckCodeKuerzelBereitsInVerwendungCommandTest {
 
     @Before
     public void setUp() {
-        bereitsErfassteSchuelerCodes.add(new SchuelerCode("z", "Zirkus"));
-        bereitsErfassteSchuelerCodes.add(new SchuelerCode("j", "Jugendprojekt"));
-        bereitsErfassteSchuelerCodes.add(new SchuelerCode("6", "6-Jahres-Rabatt"));
+        bereitsErfassteSchuelerCodes.add(new SchuelerCode("z", "Zirkus", true));
+        bereitsErfassteSchuelerCodes.add(new SchuelerCode("j", "Jugendprojekt", true));
+        bereitsErfassteSchuelerCodes.add(new SchuelerCode("6", "6-Jahres-Rabatt", true));
     }
 
     @Test

@@ -120,7 +120,7 @@ public class KurstypenPanel {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.BOTH;
         panel2.add(scrollPane1, gbc);
-        kurstypenTable.setPreferredScrollableViewportSize(new Dimension(300, 300));
+        kurstypenTable.setPreferredScrollableViewportSize(new Dimension(400, 300));
         scrollPane1.setViewportView(kurstypenTable);
         final JPanel spacer5 = new JPanel();
         gbc = new GridBagConstraints();

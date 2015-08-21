@@ -257,11 +257,11 @@ SELECT * FROM Dispensation;
 -- Code
 -- ****
 
-INSERT INTO Code (code_id, discriminator, kuerzel, beschreibung) VALUES
-    (1, 'Schueler', 'c', 'Casting'),
-    (2, 'Schueler', 'j', 'Jugendtheater'),
-    (3, 'Elternmithilfe', 'b', 'Buffet'),
-    (4, 'Elternmithilfe', 'g', 'Garderobe');
+INSERT INTO Code (code_id, discriminator, kuerzel, beschreibung, selektierbar) VALUES
+    (1, 'Schueler', 'c', 'Casting', 1),
+    (2, 'Schueler', 'j', 'Jugendtheater', 1),
+    (3, 'Elternmithilfe', 'b', 'Buffet', 1),
+    (4, 'Elternmithilfe', 'g', 'Garderobe', 1);
 
 SELECT * FROM Code;
 
@@ -299,13 +299,13 @@ SELECT * FROM ElternmithilfeCode;
 -- Kurstyp
 -- *******
 
-INSERT INTO Kurstyp (kurstyp_id, bezeichnung) VALUES
-    (1, 'Rhythmik-Darstellendes Spiel'),
-    (2, 'Theaterspiel'),
-    (3, 'Jugendtheater'),
-    (4, 'Tanzen'),
-    (5, 'Akrobatik'),
-    (6, 'Artistik');
+INSERT INTO Kurstyp (kurstyp_id, bezeichnung, selektierbar) VALUES
+    (1, 'Rhythmik-Darstellendes Spiel', 1),
+    (2, 'Theaterspiel', 1),
+    (3, 'Jugendtheater', 1),
+    (4, 'Tanzen', 1),
+    (5, 'Akrobatik', 1),
+    (6, 'Artistik', 1);
 
 SELECT * FROM Kurstyp;
 
@@ -313,11 +313,11 @@ SELECT * FROM Kurstyp;
 -- Kursort
 -- *******
 
-INSERT INTO Kursort (kursort_id, bezeichnung) VALUES
-    (1, 'Saal A'),
-    (2, 'Saal B'),
-    (3, 'Studio S'),
-    (4, 'Schulhaus Hofacker C');
+INSERT INTO Kursort (kursort_id, bezeichnung, selektierbar) VALUES
+    (1, 'Saal A', 1),
+    (2, 'Saal B', 1),
+    (3, 'Studio S', 1),
+    (4, 'Schulhaus Hofacker C', 1);
 
 SELECT * FROM Kursort;
 

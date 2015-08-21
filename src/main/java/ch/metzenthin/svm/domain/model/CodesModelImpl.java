@@ -70,7 +70,7 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
 
     @Override
     public SchuelerCode[] getSelectableSchuelerCodes(SvmModel svmModel, SchuelerDatenblattModel schuelerDatenblattModel) {
-        List<SchuelerCode> selectableSchuelerCodes = new ArrayList<>(svmModel.getSchuelerCodesAll());
+        List<SchuelerCode> selectableSchuelerCodes = new ArrayList<>(svmModel.getSelektierbareSchuelerCodesAll());
         List<SchuelerCode> codesToBeRemoved = new ArrayList<>();
         for (SchuelerCode schuelerCode : selectableSchuelerCodes) {
             for (SchuelerCode schuelerCodeSchueler : schuelerDatenblattModel.getSchueler().getSchuelerCodes()) {

@@ -67,10 +67,10 @@ public class FindAllSchuelerCodesCommandTest {
 
             SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
 
-            SchuelerCode schuelerCodeSaved = schuelerCodeDao.save(new SchuelerCode("z", "ZirkusTest"));
+            SchuelerCode schuelerCodeSaved = schuelerCodeDao.save(new SchuelerCode("z", "ZirkusTest", true));
             codesTestdata.add(schuelerCodeSaved);
 
-            schuelerCodeSaved = schuelerCodeDao.save(new SchuelerCode("j", "JugendprojektTest"));
+            schuelerCodeSaved = schuelerCodeDao.save(new SchuelerCode("j", "JugendprojektTest", true));
             codesTestdata.add(schuelerCodeSaved);
 
             entityManager.getTransaction().commit();

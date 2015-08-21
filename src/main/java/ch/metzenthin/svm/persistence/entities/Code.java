@@ -27,12 +27,16 @@ public abstract class Code implements Comparable<Code> {
     @Column(name = "beschreibung", nullable = false)
     private String beschreibung;
 
+    @Column(name = "selektierbar", nullable = false)
+    private Boolean selektierbar;
+
     public Code() {
     }
 
-    public Code(String kuerzel, String beschreibung) {
+    public Code(String kuerzel, String beschreibung, Boolean selektierbar) {
         this.kuerzel = kuerzel;
         this.beschreibung = beschreibung;
+        this.selektierbar = selektierbar;
     }
 
     public boolean isIdenticalWith(Code otherCode) {
@@ -44,6 +48,7 @@ public abstract class Code implements Comparable<Code> {
     public void copyAttributesFrom(Code otherCode) {
         this.kuerzel = otherCode.getKuerzel();
         this.beschreibung = otherCode.getBeschreibung();
+        this.selektierbar = otherCode.getSelektierbar();
     }
 
     @Override
@@ -84,4 +89,11 @@ public abstract class Code implements Comparable<Code> {
         this.beschreibung = beschreibung;
     }
 
+    public Boolean getSelektierbar() {
+        return selektierbar;
+    }
+
+    public void setSelektierbar(Boolean selektierbar) {
+        this.selektierbar = selektierbar;
+    }
 }

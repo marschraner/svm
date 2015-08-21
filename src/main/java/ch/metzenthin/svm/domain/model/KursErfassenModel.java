@@ -39,7 +39,8 @@ public interface KursErfassenModel extends Model {
     void setLehrkraft1(Lehrkraft lehrkraft1) throws SvmRequiredException;
     void setLehrkraft2(Lehrkraft lehrkraft2);
     void setBemerkungen(String bemerkungen) throws SvmValidationException;
-
+    Kurstyp[] getSelectableKurstypen(SvmModel svmModel);
+    Kursort[] getSelectableKursorte(SvmModel svmModel);
     Lehrkraft[] getSelectableLehrkraefte1(SvmModel svmModel);
     Lehrkraft[] getSelectableLehrkraefte2(SvmModel svmModel);
     boolean checkKursBereitsErfasst(KurseTableModel kurseTableModel);

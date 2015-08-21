@@ -17,6 +17,7 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
 
     private String kuerzel;
     private String beschreibung;
+    private Boolean selektierbar;
 
     private SchuelerCode schuelerCodeOrigin;
     private ElternmithilfeCode elternmithilfeCodeOrigin;
@@ -88,6 +89,18 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     }
 
     @Override
+    public void setSelektierbar(Boolean isSelected) {
+        Boolean oldValue = selektierbar;
+        selektierbar = isSelected;
+        firePropertyChange(Field.SELEKTIERBAR, oldValue, isSelected);
+    }
+
+    @Override
+    public Boolean isSelektierbar() {
+        return selektierbar;
+    }
+
+    @Override
     public boolean checkCodeKuerzelBereitsInVerwendung(SvmModel svmModel, Codetyp codetyp) {
         CommandInvoker commandInvoker = getCommandInvoker();
         CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = null;
@@ -108,12 +121,12 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
         CommandInvoker commandInvoker = getCommandInvoker();
         switch (codetyp) {
             case SCHUELER:
-                SchuelerCode schuelerCode = new SchuelerCode(kuerzel, beschreibung);
+                SchuelerCode schuelerCode = new SchuelerCode(kuerzel, beschreibung, selektierbar);
                 SaveOrUpdateSchuelerCodeCommand saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode, schuelerCodeOrigin, svmModel.getSchuelerCodesAll());
                 commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
                 break;
             case ELTERNMITHILFE:
-                ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode(kuerzel, beschreibung);
+                ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode(kuerzel, beschreibung, selektierbar);
                 SaveOrUpdateElternmithilfeCodeCommand saveOrUpdateElternmithilfeCodeCommand = new SaveOrUpdateElternmithilfeCodeCommand(elternmithilfeCode, elternmithilfeCodeOrigin, svmModel.getElternmithilfeCodesAll());
                 commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);
                 break;
@@ -127,6 +140,8 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
             try {
                 setKuerzel(schuelerCodeOrigin.getKuerzel());
                 setBeschreibung(schuelerCodeOrigin.getBeschreibung());
+                setSelektierbar(!schuelerCodeOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
+                setSelektierbar(schuelerCodeOrigin.getSelektierbar());
             } catch (SvmValidationException ignore) {
                 ignore.printStackTrace();
             }
@@ -136,6 +151,8 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
             try {
                 setKuerzel(elternmithilfeCodeOrigin.getKuerzel());
                 setBeschreibung(elternmithilfeCodeOrigin.getBeschreibung());
+                setSelektierbar(!elternmithilfeCodeOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
+                setSelektierbar(elternmithilfeCodeOrigin.getSelektierbar());
             } catch (SvmValidationException ignore) {
                 ignore.printStackTrace();
             }

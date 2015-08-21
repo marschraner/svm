@@ -30,7 +30,7 @@ public class CheckElternmithilfeBereitsBeiGeschwisterErfasstCommandTest {
         geschwister1.setVater(vater);
         geschwister1.setRechnungsempfaenger(vater);
         Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen", 7);
-        ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("f", "Frisieren");
+        ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("f", "Frisieren", true);
         Maercheneinteilung maercheneinteilung1 = new Maercheneinteilung(geschwister1, maerchen, Gruppe.A, "Komödiant 1", "1, 2", "Hase 2", "2, 3", "Frosch 3", "3, 4", Elternteil.VATER,
                 true, true, true, false, false, false, false, false, false, null, null);
         maercheneinteilung1.setElternmithilfeCode(elternmithilfeCode);

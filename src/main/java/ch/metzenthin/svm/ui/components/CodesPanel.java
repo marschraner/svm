@@ -136,7 +136,7 @@ public class CodesPanel {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.BOTH;
         panel2.add(scrollPane1, gbc);
-        codesTable.setPreferredScrollableViewportSize(new Dimension(400, 200));
+        codesTable.setPreferredScrollableViewportSize(new Dimension(470, 200));
         scrollPane1.setViewportView(codesTable);
         final JPanel spacer5 = new JPanel();
         gbc = new GridBagConstraints();

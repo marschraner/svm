@@ -167,6 +167,7 @@ CREATE TABLE IF NOT EXISTS Code (
     discriminator              VARCHAR(20)   NOT NULL,
     kuerzel                    VARCHAR(5)    NOT NULL,
     beschreibung               VARCHAR(50)   NOT NULL,
+    selektierbar               BOOLEAN       NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (code_id));
 
@@ -217,6 +218,7 @@ DESCRIBE ElternmithilfeCode;
 CREATE TABLE IF NOT EXISTS Kurstyp (
     kurstyp_id                 INT           NOT NULL AUTO_INCREMENT,
     bezeichnung                VARCHAR(50)   NOT NULL,
+    selektierbar               BOOLEAN       NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (kurstyp_id));
 
@@ -229,6 +231,7 @@ DESCRIBE Kurstyp;
 CREATE TABLE IF NOT EXISTS Kursort (
     kursort_id                 INT           NOT NULL AUTO_INCREMENT,
     bezeichnung                VARCHAR(50)   NOT NULL,
+    selektierbar               BOOLEAN       NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (kursort_id));
 

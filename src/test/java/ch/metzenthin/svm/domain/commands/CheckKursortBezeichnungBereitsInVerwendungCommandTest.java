@@ -20,14 +20,14 @@ public class CheckKursortBezeichnungBereitsInVerwendungCommandTest {
 
     @Before
     public void setUp() {
-        bereitsErfassteKursorte.add(new Kursort("Saal Test1"));
-        bereitsErfassteKursorte.add(new Kursort("Saal Test2"));
-        bereitsErfassteKursorte.add(new Kursort("Saal Test3"));
+        bereitsErfassteKursorte.add(new Kursort("Saal Test1", true));
+        bereitsErfassteKursorte.add(new Kursort("Saal Test2", true));
+        bereitsErfassteKursorte.add(new Kursort("Saal Test3", true));
     }
 
     @Test
     public void testExecute_BezeichnungBereitsInVerwendung() throws Exception {
-        Kursort kursort = new Kursort("Saal Test2");
+        Kursort kursort = new Kursort("Saal Test2", true);
         CheckKursortBezeichnungBereitsInVerwendungCommand checkKursortBezeichnungBereitsInVerwendungCommand = new CheckKursortBezeichnungBereitsInVerwendungCommand(kursort, null, bereitsErfassteKursorte);
         commandInvoker.executeCommand(checkKursortBezeichnungBereitsInVerwendungCommand);
         assertTrue(checkKursortBezeichnungBereitsInVerwendungCommand.isBereitsInVerwendung());
@@ -35,7 +35,7 @@ public class CheckKursortBezeichnungBereitsInVerwendungCommandTest {
 
     @Test
     public void testExecute_BezeichnungNochNichtInVerwendung() throws Exception {
-        Kursort kursort = new Kursort("Saal Test4");
+        Kursort kursort = new Kursort("Saal Test4", true);
         CheckKursortBezeichnungBereitsInVerwendungCommand checkKursortBezeichnungBereitsInVerwendungCommand = new CheckKursortBezeichnungBereitsInVerwendungCommand(kursort, null, bereitsErfassteKursorte);
         commandInvoker.executeCommand(checkKursortBezeichnungBereitsInVerwendungCommand);
         assertFalse(checkKursortBezeichnungBereitsInVerwendungCommand.isBereitsInVerwendung());
@@ -43,7 +43,7 @@ public class CheckKursortBezeichnungBereitsInVerwendungCommandTest {
 
     @Test
     public void testExecute_KursortOrigin() throws Exception {
-        Kursort kursort = new Kursort("Saal Test1");
+        Kursort kursort = new Kursort("Saal Test1", true);
         CheckKursortBezeichnungBereitsInVerwendungCommand checkKursortBezeichnungBereitsInVerwendungCommand = new CheckKursortBezeichnungBereitsInVerwendungCommand(kursort, bereitsErfassteKursorte.get(0), bereitsErfassteKursorte);
         commandInvoker.executeCommand(checkKursortBezeichnungBereitsInVerwendungCommand);
         assertFalse(checkKursortBezeichnungBereitsInVerwendungCommand.isBereitsInVerwendung());
