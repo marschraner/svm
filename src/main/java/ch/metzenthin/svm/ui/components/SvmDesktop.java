@@ -300,6 +300,10 @@ public class SvmDesktop extends JFrame implements ActionListener {
         stopWaitCursor();
     }
 
+    public void initialize() {
+        onFrameAbbrechen();
+    }
+
     private SchuelerSuchenPanel createSchuelerSuchenPanel() {
         SchuelerSuchenPanel schuelerSuchenPanel = new SchuelerSuchenPanel(svmContext);
         schuelerSuchenPanel.addCloseListener(new ActionListener() {
@@ -349,8 +353,10 @@ public class SvmDesktop extends JFrame implements ActionListener {
     private void onFrameAbbrechen() {
         startWaitCursor();
         svmContext.getCommandInvoker().clear();
-        activeComponent.setVisible(false);
-        getContentPane().remove(activeComponent);
+        if (activeComponent != null) {
+            activeComponent.setVisible(false);
+            getContentPane().remove(activeComponent);
+        }
         setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), "Schüler suchen");
         stopWaitCursor();
     }

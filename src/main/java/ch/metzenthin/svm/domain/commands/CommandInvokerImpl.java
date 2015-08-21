@@ -4,10 +4,7 @@ import ch.metzenthin.svm.common.SvmRuntimeException;
 import org.apache.log4j.Logger;
 import org.hibernate.StaleObjectStateException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 
 /**
  * @author Hans Stamm
@@ -72,8 +69,8 @@ public class CommandInvokerImpl implements CommandInvoker {
                 entityManager.getTransaction().rollback();
                 LOGGER.trace("Rollback ist durchgeführt executeCommandAsTransaction(GenericDaoCommand)", e);
             }
-            if (e instanceof StaleObjectStateException) {
-                throw new SvmRuntimeException("Speichern / löschen fehlgeschlagen, da das Objekt inzwischen auf der Datenbank verändert wurde. Die Applikation muss neu gestartet werden.", e);
+            if (e instanceof StaleObjectStateException || e instanceof OptimisticLockException) {
+                throw new SvmRuntimeException("Speichern / löschen fehlgeschlagen, da das Objekt inzwischen auf der Datenbank verändert wurde.", e);
             }
             throw e;
         }

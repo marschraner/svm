@@ -1,6 +1,7 @@
 package ch.metzenthin.svm;
 
 import ch.metzenthin.svm.common.SvmRuntimeException;
+import ch.metzenthin.svm.ui.components.SvmDesktop;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     private static final Logger LOGGER = Logger.getLogger(SwingExceptionHandler.class);
+    private SvmDesktop svmDesktop;
 
     public void uncaughtException(final Thread t, final Throwable e) {
         if (SwingUtilities.isEventDispatchThread()) {
@@ -52,19 +54,26 @@ public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         scrollPane.setPreferredSize( new Dimension( 1000, 500 ) );
+        String leaveMessage = (svmDesktop == null) ? "Die Applikation wird beendet." : "Die Applikation wird neu initialisiert.";
         if ((e instanceof SvmRuntimeException) || ((e.getCause() != null) && (e.getCause() instanceof SvmRuntimeException))) {
             JOptionPane.showMessageDialog(findActiveOrVisibleFrame(),
-                    (e instanceof SvmRuntimeException) ? e.getMessage() : e.getCause().getMessage(),
+                    (e instanceof SvmRuntimeException) ? e.getMessage() : e.getCause().getMessage() + " " + leaveMessage,
                     "Fehler",
                     JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(findActiveOrVisibleFrame(),
                     scrollPane,
-                    "Ein unerwarteter Fehler ist aufgetreten. Die Applikation wird beendet!",
+                    "Ein unerwarteter Fehler ist aufgetreten. " + leaveMessage,
                     JOptionPane.ERROR_MESSAGE);
         }
-        LOGGER.info("Svm wird abgebrochen.");
-        System.exit(1);
+        if (svmDesktop != null) {
+            LOGGER.info("Svm wird neu initialisiert.");
+            svmDesktop.initialize();
+            LOGGER.info("Svm Initialisierung nach Fehler beendet.");
+        } else {
+            LOGGER.info("Svm wird nach Fehler beendet.");
+            System.exit(1);
+        }
     }
 
     /**
@@ -84,4 +93,9 @@ public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
         }
         return null;
     }
+
+    public void setSvmDesktop(SvmDesktop svmDesktop) {
+        this.svmDesktop = svmDesktop;
+    }
+
 }
