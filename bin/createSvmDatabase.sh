@@ -6,4 +6,4 @@ mysql -u root -p < sql/createDbAndUser.sql
 
 mysql -u svm -psvm < sql/createTables.sql
 
-# mysql -u svm -psvm < sql/fillData.sql
+mysql -u svm -psvm < sql/fillData.sql
