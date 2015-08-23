@@ -120,11 +120,11 @@ public class SchuelerSuchenTableData {
                 }
                 break;
             case ANZAHL_KURSE:
-                value = (kurseOfSchueler == null ? 0 : kurseOfSchueler.size());
+                value = Integer.toString(kurseOfSchueler == null ? 0 : kurseOfSchueler.size());
                 break;
             case GRUPPE:
                 if (maercheneinteilungen.get(schueler) != null) {
-                    value = maercheneinteilungen.get(schueler).getGruppe();
+                    value = maercheneinteilungen.get(schueler).getGruppe().toString();
                 }
                 break;
             default:
