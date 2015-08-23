@@ -76,13 +76,15 @@ public class KurseController {
                 onListSelection();
             }
         });
-        kurseTable.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent me) {
-                if (me.getClickCount() == 2) {
-                    onBearbeiten();
+        if (!isKurseSchueler) {
+            kurseTable.addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent me) {
+                    if (me.getClickCount() == 2) {
+                        onBearbeiten();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public void setLblTotal(JLabel lblTotal) {
