@@ -4,7 +4,7 @@
   <groupId>ch.metzenthin.svm</groupId>
   <artifactId>svm</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.3-SNAPSHOT</version>
+  <version>1.0</version>
   <name>svm</name>
   <url>http://maven.apache.org</url>
 	<dependencies>
