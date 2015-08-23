@@ -1,0 +1,89 @@
+ï»¿svm Test session
+============
+
+Datum: 23.8.2015, 9:30
+Dauer: 1h
+Version: 1.0.2-Snapshot
+
+Charter: 
+----------
+Durch Besuchen aller MenÃ¼punkte sich einen Ãberblick verschaffen Ã¼ber den Funktionsumfang und den generellen Zustand des Programms.
+
+ErfÃ¼llung:
+------------
+Ãberblick ist verschafft. Die SchÃ¼lerverwaltung und -erfassung hÃ¤tte ich gern noch etwas mehr getestet, war aber aus ZeitgrÃ¼nden nicht mÃ¶glich
+
+Weiteres Vorgehen:
+-----------------------
+keine weiteren Tests geplant
+
+Data Setup:
+-------------
+Initialer Datenlord mit geliefertem SQL Skript
+
+Protokoll:
+------------
+MÃ¤rchen verwalten aufgerufen mit kleinem Fenster - Layout Probleme
+- MÃ¤rchen Rumpelstilzchen doppelgeklickt und validierung geprÃ¼ft ->ok
+- Namen unbemannt und gespeichert -> ok
+- Aktion wiederholt -> ok
+- mit Bearbeiten dasselbe MÃ¤rchen ausgwÃ¤hlt und auf Schuljahr 2014%15 verschoben -> Fehlermeldung: MÃ¤rchen bereits erfasst - es ist aber nicht sichtbar.
+- MÃ¤rchen mit SchÃ¼lern lÃ¶schen: wird abgefangen
+- MÃ¤rchen ohne SchÃ¼ler lÃ¶schten geht
+- MÃ¤rchen fÃ¼r Schuljahr in der Zukunft geht
+- MÃ¤rchen gelÃ¶scht und identisch wieder angelegt: geht
+- Bearbeiten mit Abbrechen nach Ãnderung: bleibt alles beim Alten
+
+Mithilfe Codes
+- Neu angelegt
+- bestehenden Code auf inaktiv gesetzt
+- SchÃ¼lerliste durch Suchen ohne EinschrÃ¤nkung
+- Schuler ausgewÃ¤hlt und Eltern Mithilfe modizfiziert: deaktivierte Codes nicht sichtbar, neuer Code konnte ausgewÃ¤hlt werden
+- Code Bezeichnung modifizert und in Elternhilfe kontrolliert: war verÃ¤ndert
+- Details MÃ¤rcheneinteilung: Bug - Codes werden nicht angezeigt und mÃ¼ssen beim Bearbeiten neu gesetzt werden.
+- Ausdruck der Elternmithilfe Liste und Controlle der erfassten Codes
+- Modifikation Code fÃ¼r Mitarbeit und Kontrolle in MÃ¤rcheneinteilung: weiterhin vorhanden
+
+LehrkrÃ¤fte verwalten:
+Funktion aufrufen
+Frau Dorigo editieren mit Input Validierung: ok
+Liste neu sortieren und Frau Dorigo erneut aufrufen zum Editieren -> Bug: falsche Person wird geÃ¶ffnet
+Frau Dorigo passiv gesetzt und Auswahllisten bei Kursen kontrolliert: ok
+neue Lehrkraft erfasst und in Kurs als 2. Leiter gespeichert: ok
+
+SchÃ¼ler Codes verwalten:
+bestehenden Code angepasst (KÃ¼rzel und Beschreibung) und neuen Code erstellt sowie einen Code deaktiviert: alle verhalten sich wie erwartet.
+
+SchÃ¼ler suchen:
+Suche mit leeren Parameter -> erwartetes Resultat
+Sortierung des Suchresultats: Bug bei Kurse und Gruppe: ClassCastException
+
+DAtenblatt:
+- SchÃ¼ler geÃ¶ffnet - Dispensation erfassen geht nicht wegen bereits bestehnder
+- Dispesnation gelÃ¶scht und neue erfasst - ok
+- Emailversand ok
+- Neuen RechnungsempfÃ¤nger fÃ¼r SchÃ¼ler erafsst ok
+
+Monatsstatistik:
+- Dispensationen mit verschiedenen Laufzeiten erfasst und Selektion geprÃ¼ft: ok
+- Abmeldung erfasst und Monatsstatistik zu verschiedenen Daten ausprobiert.
+- SchÃ¼ler angemeldet und Monatsstatistik zu verschiedenen Daten: ok
+
+Fragen:
+---------
+- WÃ¤re es mÃ¶glich, in der Mac Task Bar ebenfalls das Icon aus dem Splash Screen anzuzeigen statt das JAVA Icon?
+- Warum brauchts eigentlich die Kurzform der Elternmithilfe? Es wird ja immer auch der Volltext angezeigt, oder?
+- Bedienung Elternmithilfe: Erfassen ist umstÃ¤ndlich, da ein Zusammenhang zwischen 2 Feldern besteht. Diese sollten vielleicht Ã¼ber ein Kasten gruppiert werden, damit man das sieht. Ist es nicht mÃ¶glich, dass beide Elternteile mithelfen wollen, dass liesse sich ja gar nicht abbilden. Wie wÃ¤re es mit einem Erfassungsfeld fÃ¼r Vater und Mutter, in dem dann der Code ausgewÃ¤hlt werden kann. Und wenn dann auch noch die Oma helfen will?
+- Zurodnung zu Kursen ist sehr umstÃ¤ndlich, wenn man die Kursliste und alle Zeiten nicht im Kopf hat. WÃ¤re eine etwas ausgereiftere Suche nicht sinnvoller? Mit einer Liste, aus der man dann auswÃ¤hlen kann?
+
+Bugs:
+-------
+- Falsche Person im Editiermodus geÃ¶ffnet: Nach dem Sortieren der Liste mit den LehrkrÃ¤ften wird fÃ¼rs Bearbeiten die falsche Person geÃ¶ffnet. Passiert das auch bei andern Masken?
+- Resizing verhalten bei MÃ¤rchen verwalten: Inhalt wird unnÃ¶tigerweise bis zur Unkenntlichkeit verkleinert. Platz am Rand wird nicht genutzt. Verhalten kann auch bei andern Masken so oder Ã¤hnlich beobachtet werden. 
+- Bei kleinem Fenster erscheinen keine Scroll Bars, mit denen man auf den gewÃ¼nschten Fensterausschnitt navigieren kÃ¶nnte.
+- VerÃ¤ndern Schuljahr MÃ¤rchen Rumpelstilzchen auf 14/15: Meldung dass MÃ¤rchen bereits existiert. Es ist aber nicht sichtbar. Bei den andern MÃ¤rchen erscheint eine Warnung, dass Schuljahr in der Vergangenheit liegt.
+- MÃ¤rcheneinteilung Detailsicht Editiermodus: Codes werden nicht angezeigt, und mÃ¼ssen vor dem Speichern neu gesetzt werden
+- Sortierung der SchÃ¼lerliste nach Kurse und Gruppe: ClassCastException
+
+
+
