@@ -277,7 +277,6 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
 
     @Override
     public ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel) {
-        svmModel.loadElternmithilfeCodesAll();
         List<ElternmithilfeCode> elternmithilfeCodeList = svmModel.getSelektierbareElternmithilfeCodesAll();
         // ElternmithilfeCode darf auch leer sein
         if (!elternmithilfeCodeList.get(0).isIdenticalWith(ELTERNMITHILFE_CODE_KEINER)) {

@@ -22,6 +22,11 @@ public class SvmModelImpl implements SvmModel {
 
     public SvmModelImpl(CommandInvoker commandInvoker) {
         this.commandInvoker = commandInvoker;
+        loadAll();
+    }
+
+    @Override
+    public void loadAll() {
         loadSchuelerCodesAll();
         loadElternmithilfeCodesAll();
         loadLehrkraefteAll();

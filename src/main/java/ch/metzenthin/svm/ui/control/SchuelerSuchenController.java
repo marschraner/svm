@@ -90,6 +90,7 @@ public class SchuelerSuchenController extends PersonController {
             }
         });
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
+        svmContext.getSvmModel().loadAll();
     }
 
     public void setTxtGeburtsdatumSuchperiode(JTextField txtGeburtsdatumSuchperiode) {

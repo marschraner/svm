@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface SvmModel {
 
+    void loadAll();
     void loadSchuelerCodesAll();
     void loadElternmithilfeCodesAll();
     void loadLehrkraefteAll();
