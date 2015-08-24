@@ -142,6 +142,7 @@ public class MaerchensController {
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
+                    maerchensTableModel.fireTableDataChanged();
                     maerchensTable.addNotify();
                     break;
             }

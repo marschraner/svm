@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 
@@ -98,6 +99,17 @@ public class KurseTableData {
         return value;
     }
 
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (columns.get(columnIndex)) {
+            case TAG:
+                return Wochentag.class;
+            case ANZAHL_SCHUELER:
+                return Integer.class;
+            default:
+                return String.class;
+        }
+    }
+
     public void setKurse(List<Kurs> kurse) {
         this.kurse = kurse;
     }
@@ -125,4 +137,5 @@ public class KurseTableData {
     public Kurs getKursAt(int rowIndex) {
         return kurse.get(rowIndex);
     }
+
 }

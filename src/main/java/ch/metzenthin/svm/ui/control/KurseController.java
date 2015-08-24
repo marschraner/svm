@@ -174,7 +174,7 @@ public class KurseController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        KursErfassenDialog kursErfassenDialog = new KursErfassenDialog(svmContext, kurseModel, kurseSemesterwahlModel, kurseTableModel, kurseTable.getSelectedRow(), true, "Kurs bearbeiten");
+        KursErfassenDialog kursErfassenDialog = new KursErfassenDialog(svmContext, kurseModel, kurseSemesterwahlModel, kurseTableModel, kurseTable.convertRowIndexToModel(kurseTable.getSelectedRow()), true, "Kurs bearbeiten");
         kursErfassenDialog.pack();
         kursErfassenDialog.setVisible(true);
         kurseTableModel.fireTableDataChanged();
@@ -218,13 +218,14 @@ public class KurseController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteKursCommand.Result result  = kurseModel.kursLoeschenKurseVerwalten(kurseTableModel, kurseTable.getSelectedRow());
+            DeleteKursCommand.Result result  = kurseModel.kursLoeschenKurseVerwalten(kurseTableModel, kurseTable.convertRowIndexToModel(kurseTable.getSelectedRow()));
             switch (result) {
                 case KURS_VON_SCHUELER_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Der Kurs wird durch mindestens einen Schüler referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
+                    kurseTableModel.fireTableDataChanged();
                     kurseTable.addNotify();
                     break;
             }
@@ -256,7 +257,8 @@ public class KurseController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            kurseModel.eintragLoeschenKurseSchueler(kurseTableModel, kurseTableModel.getKursAt(kurseTable.getSelectedRow()), schuelerDatenblattModel);
+            kurseModel.eintragLoeschenKurseSchueler(kurseTableModel, kurseTableModel.getKursAt(kurseTable.convertRowIndexToModel(kurseTable.getSelectedRow())), schuelerDatenblattModel);
+            kurseTableModel.fireTableDataChanged();
             kurseTable.addNotify();
         }
         btnLoeschen.setFocusPainted(false);

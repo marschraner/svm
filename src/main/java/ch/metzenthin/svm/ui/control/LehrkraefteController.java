@@ -5,6 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
 import ch.metzenthin.svm.domain.commands.DeleteLehrkraftCommand;
 import ch.metzenthin.svm.domain.model.LehrkraefteModel;
 import ch.metzenthin.svm.domain.model.LehrkraefteTableData;
+import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
 import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 import ch.metzenthin.svm.ui.components.LehrkraftErfassenDialog;
 import ch.metzenthin.svm.ui.components.ListenExportDialog;
@@ -16,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Calendar;
 
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAccordingToCellContentAndHeader;
 
@@ -65,6 +67,7 @@ public class LehrkraefteController {
         LehrkraefteTableData lehrkraefteTableData = new LehrkraefteTableData(svmContext.getSvmModel().getLehrkraefteAll());
         lehrkraefteTableModel = new LehrkraefteTableModel(lehrkraefteTableData);
         lehrkraefteTable.setModel(lehrkraefteTableModel);
+        lehrkraefteTable.setDefaultRenderer(Calendar.class, new CalendarTableCellRenderer());
         setJTableColumnWidthAccordingToCellContentAndHeader(lehrkraefteTable);
     }
 
@@ -104,7 +107,7 @@ public class LehrkraefteController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        LehrkraftErfassenDialog lehrkraftErfassenDialog = new LehrkraftErfassenDialog(svmContext, lehrkraefteModel, lehrkraefteTable.getSelectedRow(), true, "Lehrkraft bearbeiten");
+        LehrkraftErfassenDialog lehrkraftErfassenDialog = new LehrkraftErfassenDialog(svmContext, lehrkraefteModel, lehrkraefteTable.convertRowIndexToModel(lehrkraefteTable.getSelectedRow()), true, "Lehrkraft bearbeiten");
         lehrkraftErfassenDialog.pack();
         lehrkraftErfassenDialog.setVisible(true);
         lehrkraefteTableModel.fireTableDataChanged();
@@ -144,13 +147,14 @@ public class LehrkraefteController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteLehrkraftCommand.Result result  = lehrkraefteModel.lehrkraftLoeschen(svmContext, lehrkraefteTable.getSelectedRow());
+            DeleteLehrkraftCommand.Result result  = lehrkraefteModel.lehrkraftLoeschen(svmContext, lehrkraefteTable.convertRowIndexToModel(lehrkraefteTable.getSelectedRow()));
             switch (result) {
                 case LEHRKRAFT_VON_KURS_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Die Lehrkraft wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
+                    lehrkraefteTableModel.fireTableDataChanged();
                     lehrkraefteTable.addNotify();
                     JOptionPane.showMessageDialog(
                             null,

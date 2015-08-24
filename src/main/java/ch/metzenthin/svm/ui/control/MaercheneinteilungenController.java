@@ -150,6 +150,7 @@ public class MaercheneinteilungenController {
                 options[1]); //default button title
         if (n == 0) {
             maercheneinteilungenModel.maercheneinteilungLoeschen(maercheneinteilungenTableModel, schuelerDatenblattModel, maercheneinteilungenTable.getSelectedRow());
+            maercheneinteilungenTableModel.fireTableDataChanged();
             maercheneinteilungenTable.addNotify();
         }
         btnLoeschen.setFocusPainted(false);

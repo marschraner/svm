@@ -3,9 +3,8 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 
+import java.util.Calendar;
 import java.util.List;
-
-import static ch.metzenthin.svm.common.utils.Converter.asString;
 
 /**
  * @author Martin Schraner
@@ -57,7 +56,7 @@ public class LehrkraefteTableData {
                 value = lehrkraft.getEmail();
                 break;
             case GEBURTSDATUM:
-                value = asString(lehrkraft.getGeburtsdatum());
+                value = lehrkraft.getGeburtsdatum();
                 break;
             case AHV_NUMMER:
                 value = lehrkraft.getAhvNummer();
@@ -72,6 +71,15 @@ public class LehrkraefteTableData {
                 break;
         }
         return value;
+    }
+
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (COLUMNS[columnIndex]) {
+            case GEBURTSDATUM:
+                return Calendar.class;
+            default:
+                return String.class;
+        }
     }
 
     public String getColumnName(int column) {

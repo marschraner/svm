@@ -145,6 +145,7 @@ public class DispensationenController {
                 options[1]); //default button title
         if (n == 0) {
             dispensationenModel.eintragLoeschen(dispensationenTableModel, schuelerDatenblattModel, dispensationenTable.getSelectedRow());
+            dispensationenTableModel.fireTableDataChanged();
             dispensationenTable.addNotify();
         }
         btnLoeschen.setFocusPainted(false);

@@ -33,8 +33,13 @@ public class LehrkraefteTableModel extends AbstractTableModel {
     }
 
     @Override
-    public String getColumnName(int column) {
-        return lehrkraefteTableData.getColumnName(column);
+    public String getColumnName(int columnIndex) {
+        return lehrkraefteTableData.getColumnName(columnIndex);
+    }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return lehrkraefteTableData.getColumnClass(columnIndex);
     }
 
     public List<Lehrkraft> getLehrkraefte() {

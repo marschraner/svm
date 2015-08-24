@@ -140,6 +140,7 @@ public class SemestersController {
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
+                    semestersTableModel.fireTableDataChanged();
                     semestersTable.addNotify();
                     break;
             }

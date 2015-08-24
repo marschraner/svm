@@ -266,6 +266,7 @@ public class CodesController {
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
+                    codesTableModel.fireTableDataChanged();
                     codesTable.addNotify();
                     break;
             }
@@ -317,6 +318,7 @@ public class CodesController {
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
+                    codesTableModel.fireTableDataChanged();
                     codesTable.addNotify();
                     break;
             }

@@ -138,6 +138,7 @@ public class KursorteController {
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
+                    kursorteTableModel.fireTableDataChanged();
                     kursorteTable.addNotify();
                     break;
             }

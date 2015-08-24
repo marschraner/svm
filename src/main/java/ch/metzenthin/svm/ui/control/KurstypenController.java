@@ -138,6 +138,7 @@ public class KurstypenController {
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
+                    kurstypenTableModel.fireTableDataChanged();
                     kurstypenTable.addNotify();
                     break;
             }

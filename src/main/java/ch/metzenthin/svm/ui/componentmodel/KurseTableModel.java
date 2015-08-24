@@ -37,6 +37,11 @@ public class KurseTableModel extends AbstractTableModel {
         return kurseTableData.getColumnName(column);
     }
 
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return kurseTableData.getColumnClass(columnIndex);
+    }
+
     public List<Kurs> getKurse() {
         return kurseTableData.getKurse();
     }

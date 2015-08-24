@@ -38,8 +38,8 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
     }
 
     @Override
-    public String getColumnName(int column) {
-        return schuelerSuchenTableData.getColumnName(column);
+    public String getColumnName(int columnIndex) {
+        return schuelerSuchenTableData.getColumnName(columnIndex);
     }
 
     public SchuelerDatenblattModel getSchuelerDatenblattModel(int rowIndex) {

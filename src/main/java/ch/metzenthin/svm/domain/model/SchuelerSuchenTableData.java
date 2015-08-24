@@ -120,7 +120,7 @@ public class SchuelerSuchenTableData {
                 }
                 break;
             case ANZAHL_KURSE:
-                value = Integer.toString(kurseOfSchueler == null ? 0 : kurseOfSchueler.size());
+                value = (kurseOfSchueler == null ? 0 : kurseOfSchueler.size());
                 break;
             case GRUPPE:
                 if (maercheneinteilungen.get(schueler) != null) {
@@ -141,15 +141,18 @@ public class SchuelerSuchenTableData {
         return value;
     }
 
-    public String getColumnName(int column) {
-        return columns.get(column).toString();
+    public String getColumnName(int columnIndex) {
+        return columns.get(columnIndex).toString();
     }
 
-    public Class<?> getColumnClass(int column) {
-        if (columns.get(column) == Field.GEBURTSDATUM_SHORT) {
-            return Calendar.class;
-        } else {
-            return String.class;
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (columns.get(columnIndex)) {
+            case GEBURTSDATUM_SHORT:
+                return Calendar.class;
+            case ANZAHL_KURSE:
+                return Integer.class;
+            default:
+                return String.class;
         }
     }
 
