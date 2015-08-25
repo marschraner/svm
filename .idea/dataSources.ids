@@ -773,6 +773,17 @@
       <foreign-key name="Lehrkraft_ibfk_1" columns="person_id" ref-table="Person" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="Kurs_Lehrkraft_ibfk_2" table="Kurs_Lehrkraft" schema="" catalog="svm" columns="person_id"/>
     </table>
+    <table name="Lektionsgebuehren" schema="" catalog="svm" type="TABLE">
+      <column name="lektionslaenge" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="betrag_1_kind" sqlType="DECIMAL" precision="6" scale="2" nullable="false" jdbcType="3"/>
+      <column name="betrag_2_kinder" sqlType="DECIMAL" precision="6" scale="2" nullable="false" jdbcType="3"/>
+      <column name="betrag_3_kinder" sqlType="DECIMAL" precision="6" scale="2" nullable="false" jdbcType="3"/>
+      <column name="betrag_4_kinder" sqlType="DECIMAL" precision="6" scale="2" nullable="false" jdbcType="3"/>
+      <column name="betrag_5_kinder" sqlType="DECIMAL" precision="6" scale="2" nullable="false" jdbcType="3"/>
+      <column name="betrag_6_kinder" sqlType="DECIMAL" precision="6" scale="2" nullable="false" jdbcType="3"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="lektionslaenge"/>
+    </table>
     <table name="Maerchen" schema="" catalog="svm" type="TABLE">
       <column name="maerchen_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="schuljahr" sqlType="VARCHAR" precision="9" scale="0" nullable="false" jdbcType="12"/>

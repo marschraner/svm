@@ -31,6 +31,18 @@ DELETE FROM Schueler;
 DELETE FROM Angehoeriger;
 DELETE FROM Person;
 DELETE FROM Adresse;
+DELETE FROM Lektionsgebuehren;
+
+
+-- Lektionsgebuehren
+-- *****************
+
+INSERT INTO Lektionsgebuehren (lektionslaenge, betrag_1_kind, betrag_2_kinder, betrag_3_kinder, betrag_4_kinder, betrag_5_kinder, betrag_6_kinder) VALUES
+    (50, 22.00, 20.00, 18.00, 17.00, 16.00, 15.00),
+    (60, 24.00, 22.00, 20.00, 19.00, 18.00, 17.00),
+    (75, 28.00, 25.00, 23.00, 21.00, 20.00, 19.00);
+
+SELECT * FROM Lektionsgebuehren;
 
 
 -- Adresse

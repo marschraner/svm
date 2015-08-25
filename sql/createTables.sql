@@ -42,6 +42,24 @@ DROP TABLE IF EXISTS Schueler;
 DROP TABLE IF EXISTS Angehoeriger;
 DROP TABLE IF EXISTS Person;
 DROP TABLE IF EXISTS Adresse;
+DROP TABLE IF EXISTS Lektionsgebuehren;
+
+
+-- Lektionsgebuehren
+-- *****************
+
+CREATE TABLE IF NOT EXISTS Lektionsgebuehren (
+    lektionslaenge             INT           NOT NULL,
+    betrag_1_kind              DECIMAL(6,2)  NOT NULL,
+    betrag_2_kinder            DECIMAL(6,2)  NOT NULL,  
+    betrag_3_kinder            DECIMAL(6,2)  NOT NULL,  
+    betrag_4_kinder            DECIMAL(6,2)  NOT NULL,  
+    betrag_5_kinder            DECIMAL(6,2)  NOT NULL, 
+    betrag_6_kinder            DECIMAL(6,2)  NOT NULL, 
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (lektionslaenge));
+     
+DESCRIBE Lektionsgebuehren;
 
 
 -- Adresse
