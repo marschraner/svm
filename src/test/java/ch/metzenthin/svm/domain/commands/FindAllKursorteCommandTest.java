@@ -47,7 +47,7 @@ public class FindAllKursorteCommandTest {
         assertTrue(kursorteFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;
-        for (Kursort kursort : kursorteTestdata) {
+        for (Kursort kursort : kursorteFound) {
             if (kursort.getBezeichnung().equals("Saal Test1")) {
                 found1 = true;
             }

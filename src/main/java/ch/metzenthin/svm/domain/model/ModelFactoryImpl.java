@@ -158,4 +158,14 @@ public class ModelFactoryImpl implements ModelFactory {
         return new EmailModelImpl(commandInvoker);
     }
 
+    @Override
+    public LektionsgebuehrenModel createLektionsgebuehrenModel() {
+        return new LektionsgebuehrenModelImpl(commandInvoker);
+    }
+
+    @Override
+    public LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel() {
+        return new LektionsgebuehrenErfassenModelImpl(commandInvoker);
+    }
+
 }

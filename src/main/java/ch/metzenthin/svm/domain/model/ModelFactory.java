@@ -33,4 +33,6 @@ public interface ModelFactory {
     MaercheneinteilungenModel createMaercheneinteilungenModel();
     MaercheneinteilungErfassenModel createMaercheneinteilungErfassenModel();
     EmailModel createEmailModel();
+    LektionsgebuehrenModel createLektionsgebuehrenModel();
+    LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel();
 }

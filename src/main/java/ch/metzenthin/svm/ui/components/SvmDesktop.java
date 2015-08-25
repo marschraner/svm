@@ -76,6 +76,10 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuMaerchen.setMnemonic(KeyEvent.VK_M);
         menuBar.add(menuMaerchen);
 
+        JMenu menuSemesterrechnungen = new JMenu("Rechnungen");
+        menuSemesterrechnungen.setMnemonic(KeyEvent.VK_R);
+        menuBar.add(menuSemesterrechnungen);
+
         // Set up the first menu item.
         JMenuItem menuItem = new JMenuItem("Schüler suchen / bearbeiten");
         menuItem.setMnemonic(KeyEvent.VK_S);
@@ -153,6 +157,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.setActionCommand("elternmithilfeCodesVerwalten");
         menuItem.addActionListener(this);
         menuMaerchen.add(menuItem);
+
+        menuItem = new JMenuItem("Lektionsgebühren verwalten");
+        menuItem.setMnemonic(KeyEvent.VK_L);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("lektionsgebuehrenVerwalten");
+        menuItem.addActionListener(this);
+        menuSemesterrechnungen.add(menuItem);
 
         // Set up the second menu item.
         menuItem = new JMenuItem("Beenden");
@@ -293,6 +304,16 @@ public class SvmDesktop extends JFrame implements ActionListener {
                 }
             });
             setAndShowActivePanel(maerchensPanel.$$$getRootComponent$$$(), "Märchen verwalten");
+
+        } else if ("lektionsgebuehrenVerwalten".equals(e.getActionCommand())) {
+            LektionsgebuehrenPanel lektionsgebuehrenPanel = new LektionsgebuehrenPanel(svmContext);
+            lektionsgebuehrenPanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFrameAbbrechen();
+                }
+            });
+            setAndShowActivePanel(lektionsgebuehrenPanel.$$$getRootComponent$$$(), "Lektionsgebühren verwalten");
 
         }  else { // beenden
             quit();

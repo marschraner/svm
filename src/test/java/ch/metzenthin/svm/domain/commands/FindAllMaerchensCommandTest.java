@@ -47,7 +47,7 @@ public class FindAllMaerchensCommandTest {
         assertTrue(maerchenFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;
-        for (Maerchen maerchen : maerchenTestdata) {
+        for (Maerchen maerchen : maerchenFound) {
             if (maerchen.getBezeichnung().equals("Gestiefelter Kater")) {
                 found1 = true;
             }

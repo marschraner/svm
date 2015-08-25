@@ -46,7 +46,7 @@ public class FindAllSemestersCommandTest {
         assertTrue(semesterFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;
-        for (Semester semester : semesterTestdata) {
+        for (Semester semester : semesterFound) {
             if (semester.getSemesterbeginn().equals(new GregorianCalendar(2011, Calendar.AUGUST, 20))) {
                 found1 = true;
             }

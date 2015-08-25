@@ -47,7 +47,7 @@ public class FindAllSchuelerCodesCommandTest {
         assertTrue(codesFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;
-        for (SchuelerCode schuelerCode : codesTestdata) {
+        for (SchuelerCode schuelerCode : codesFound) {
             if (schuelerCode.getBeschreibung().equals("ZirkusTest")) {
                 found1 = true;
             }

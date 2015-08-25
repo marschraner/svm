@@ -3,8 +3,10 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Martin Schraner
@@ -18,6 +20,8 @@ public class SvmModelImpl implements SvmModel {
     private List<Kurstyp> kurstypenAll;
     private List<Semester> semestersAll;
     private List<Maerchen> maerchensAll;
+    private List<Lektionsgebuehren> lektionsgebuehrenAllList;
+    private Map<Integer, BigDecimal[]> lektionsgebuehrenAllMap;
     private CommandInvoker commandInvoker;
 
     public SvmModelImpl(CommandInvoker commandInvoker) {
@@ -34,6 +38,7 @@ public class SvmModelImpl implements SvmModel {
         loadKurstypenAll();
         loadSemestersAll();
         loadMaerchensAll();
+        loadLektionsgebuehrenAll();
     }
 
     @Override
@@ -108,6 +113,14 @@ public class SvmModelImpl implements SvmModel {
     }
 
     @Override
+    public void loadLektionsgebuehrenAll() {
+        FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
+        commandInvoker.executeCommand(findAllLektionsgebuehrenCommand);
+        lektionsgebuehrenAllList = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllList();
+        lektionsgebuehrenAllMap = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllMap();
+    }
+
+    @Override
     public List<SchuelerCode> getSchuelerCodesAll() {
         return schuelerCodesAll;
     }
@@ -173,5 +186,15 @@ public class SvmModelImpl implements SvmModel {
     @Override
     public List<Maerchen> getMaerchensAll() {
         return maerchensAll;
+    }
+
+    @Override
+    public List<Lektionsgebuehren> getLektionsgebuehrenAllList() {
+        return lektionsgebuehrenAllList;
+    }
+
+    @Override
+    public Map<Integer, BigDecimal[]> getLektionsgebuehrenAllMap() {
+        return lektionsgebuehrenAllMap;
     }
 }

@@ -137,7 +137,7 @@ public class KurstypDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            // Kurstyps hinzufügen
+            // Kurstypen hinzufügen
             Kurstyp kurstyp1 = new Kurstyp("Kurs Test1", true);
             kurstypDao.save(kurstyp1);
 
@@ -146,12 +146,12 @@ public class KurstypDaoTest {
 
             entityManager.flush();
 
-            // Kurstyps suchen
-            List<Kurstyp> kurstypsFound = kurstypDao.findAll();
-            assertTrue(kurstypsFound.size() >= 2);
+            // Kurstypen suchen
+            List<Kurstyp> kurstypenFound = kurstypDao.findAll();
+            assertTrue(kurstypenFound.size() >= 2);
             boolean found1 = false;
             boolean found2 = false;
-            for (Kurstyp kurstyp : kurstypsFound) {
+            for (Kurstyp kurstyp : kurstypenFound) {
                 if (kurstyp.getBezeichnung().equals("Kurs Test1")) {
                     found1 = true;
                 }

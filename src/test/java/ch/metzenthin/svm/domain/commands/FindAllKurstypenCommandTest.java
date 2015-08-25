@@ -47,7 +47,7 @@ public class FindAllKurstypenCommandTest {
         assertTrue(kurstypenFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;
-        for (Kurstyp kurstyp : kurstypenTestdata) {
+        for (Kurstyp kurstyp : kurstypenFound) {
             if (kurstyp.getBezeichnung().equals("Kurs Test1")) {
                 found1 = true;
             }

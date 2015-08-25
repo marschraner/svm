@@ -47,7 +47,7 @@ public class FindAllElternmithilfeCodesCommandTest {
         assertTrue(codesFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;
-        for (ElternmithilfeCode elternmithilfeCode : codesTestdata) {
+        for (ElternmithilfeCode elternmithilfeCode : codesFound) {
             if (elternmithilfeCode.getBeschreibung().equals("KuchenTest")) {
                 found1 = true;
             }

@@ -115,7 +115,14 @@ public enum Field {
     ZUSATZATTRIBUT_MAERCHEN("Zusatzattribut"),
     GEBURTSDATUM_SHORT("Geb.Datum"),
     SEMESTER_KURS("Semester"),
-    SELEKTIERBAR("selektierbar");
+    SELEKTIERBAR("selektierbar"),
+    LEKTIONSLAENGE("Lektionslänge"),
+    BETRAG_1_KIND("1 Kind"),
+    BETRAG_2_KINDER("2 Kinder"),
+    BETRAG_3_KINDER("3 Kinder"),
+    BETRAG_4_KINDER("4 Kinder"),
+    BETRAG_5_KINDER("5 Kinder"),
+    BETRAG_6_KINDER("6 Kinder");
 
     private String name;
 

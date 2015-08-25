@@ -47,7 +47,7 @@ public class FindAllLehrkraefteCommandTest {
         assertTrue(lehrkraefteFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;
-        for (Lehrkraft lehrkraft : lehrkraefteTestdata) {
+        for (Lehrkraft lehrkraft : lehrkraefteFound) {
             if (lehrkraft.getVorname().equals("NoémiTest")) {
                 found1 = true;
             }

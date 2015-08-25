@@ -38,9 +38,9 @@ public class Kurstyp implements Comparable<Kurstyp> {
         this.selektierbar = selektierbar;
     }
 
-    public boolean isIdenticalWith(Kurstyp otherCode) {
-        return otherCode != null
-                && ((bezeichnung == null && otherCode.getBezeichnung() == null) || (bezeichnung != null && bezeichnung.equals(otherCode.getBezeichnung())));
+    public boolean isIdenticalWith(Kurstyp otherKurstyp) {
+        return otherKurstyp != null
+                && ((bezeichnung == null && otherKurstyp.getBezeichnung() == null) || (bezeichnung != null && bezeichnung.equals(otherKurstyp.getBezeichnung())));
     }
 
     public void copyAttributesFrom(Kurstyp otherKurstyp) {
@@ -57,9 +57,9 @@ public class Kurstyp implements Comparable<Kurstyp> {
     }
 
     @Override
-    public int compareTo(Kurstyp otherDispensation) {
+    public int compareTo(Kurstyp otherKurstyp) {
         // Alphabetische Sortierung
-        return bezeichnung.compareTo(otherDispensation.bezeichnung);
+        return bezeichnung.compareTo(otherKurstyp.bezeichnung);
     }
 
     public Integer getKurstypId() {
