@@ -23,6 +23,7 @@ SET default_storage_engine=InnoDB;
 -- Alte Tabellen löschen
 -- *********************
 
+DROP TABLE IF EXISTS Semesterrechnung;
 DROP TABLE IF EXISTS Maercheneinteilung;
 DROP TABLE IF EXISTS Maerchen;
 DROP TABLE IF EXISTS Schueler_Kurs;
@@ -352,7 +353,7 @@ DESCRIBE Maerchen;
 
 
 -- Maercheneinteilung
--- *****************
+-- ******************
 
 CREATE TABLE IF NOT EXISTS Maercheneinteilung (
     person_id                  INT           NOT NULL,
@@ -385,3 +386,36 @@ CREATE TABLE IF NOT EXISTS Maercheneinteilung (
 
 DESCRIBE Maercheneinteilung;
 
+
+-- Semesterrechnung
+-- ****************
+
+CREATE TABLE IF NOT EXISTS Semesterrechnung (
+    semesterrechnung_id        INT           NOT NULL AUTO_INCREMENT,
+    semester_id                INT           NOT NULL,
+    person_id                  INT           NOT NULL,
+    ermaessigung               DECIMAL(8,2),
+    ermaessigungsgrund         VARCHAR(50),
+    zuschlag                   DECIMAL(8,2),
+    zuschlagsgrund             VARCHAR(50),
+    stipendium                 VARCHAR(13),
+    gratiskind                 BOOLEAN       NOT NULL,
+    anzahl_wochen              INT           NOT NULL,
+    wochenbetrag               DECIMAL(7,2),
+    rechnungsdatum             DATE,
+    datum_zahlung_1            DATE,
+    betrag_zahlung_1           DECIMAL(8,2),
+    datum_zahlung_2            DATE,
+    betrag_zahlung_2           DECIMAL(8,2),
+    datum_zahlung_3            DATE,
+    betrag_zahlung_3           DECIMAL(8,2),
+    restbetrag                 DECIMAL(8,2),
+    code_id                    INT,
+    bemerkungen                TEXT,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (semesterrechnung_id),
+    FOREIGN KEY (semester_id)  REFERENCES Semester (semester_id),
+    FOREIGN KEY (person_id)    REFERENCES Angehoeriger (person_id));
+    FOREIGN KEY (code_id)      REFERENCES SemesterrechnungCode (code_id));
+
+DESCRIBE Semesterrechnung;

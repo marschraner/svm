@@ -12,6 +12,7 @@ USE svm;
 -- Delete
 -- ******
 
+DELETE FROM Semesterrechnung;
 DELETE FROM Maercheneinteilung;
 DELETE FROM Maerchen;
 DELETE FROM Schueler_Kurs;
@@ -489,3 +490,35 @@ INSERT INTO Maercheneinteilung (
     (8, 3, 'B', 'Schulkind 6', '2, 3', 'Waldtier Hase 2', '4', NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 'Eltern-Mithilfe bei Lilly Juchli erfasst.');
 
 SELECT * FROM Maercheneinteilung;
+
+
+-- Semesterrechnung
+-- ****************
+
+INSERT INTO Semesterrechnung (
+    semesterrechnung_id,
+    semester_id,
+    person_id,
+    ermaessigung,
+    ermaessigungsgrund,
+    zuschlag,
+    zuschlagsgrund,
+    stipendium,
+    gratiskind,
+    anzahl_wochen,
+    wochenbetrag,
+    rechnungsdatum,
+    datum_zahlung_1,
+    betrag_zahlung_1,
+    datum_zahlung_2,
+    betrag_zahlung_2,
+    datum_zahlung_3,
+    betrag_zahlung_3,
+    restbetrag,
+    code_id,
+    bemerkungen) VALUES
+    (1, 2, 1, NULL, NULL, NULL, NULL, NULL, 0, 18, 40.00, '2015-01-26', '2015-02-28', 720.00, NULL, NULL, NULL, NULL, NULL, 0.00, NULL),
+    (2, 3, 1, NULL, NULL, NULL, NULL, NULL, 0, 18, 40.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 720.00, NULL),
+    (3, 2, 1, NULL, NULL, NULL, NULL, NULL, 0, 17, 22.00, '2015-01-26', '2015-03-01', 200.00, '2015-03-25', 196.00, NULL, NULL, NULL, 0.00, NULL);
+
+SELECT * FROM Semesterrechnung;
