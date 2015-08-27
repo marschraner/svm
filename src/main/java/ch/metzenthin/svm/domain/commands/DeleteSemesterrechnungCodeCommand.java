@@ -31,10 +31,10 @@ public class DeleteSemesterrechnungCodeCommand extends GenericDaoCommand {
     public void execute() {
         SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao(entityManager);
         SemesterrechnungCode semesterrechnungCodeToBeDeleted = semesterrechnungCodes.get(indexCodeToBeDeleted);
-//        if (semesterrechnungCodeToBeDeleted.getSemesterrechnungen().size() > 0) {
-//            result = Result.CODE_VON_SEMESTERRECHNUNGEN_REFERENZIERT;
-//            return;
-//        }
+        if (semesterrechnungCodeToBeDeleted.getSemesterrechnungen().size() > 0) {
+            result = Result.CODE_VON_SEMESTERRECHNUNGEN_REFERENZIERT;
+            return;
+        }
         semesterrechnungCodeDao.remove(semesterrechnungCodeToBeDeleted);
         semesterrechnungCodes.remove(indexCodeToBeDeleted);
         result = Result.LOESCHEN_ERFOLGREICH;

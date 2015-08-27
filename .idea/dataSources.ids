@@ -680,6 +680,7 @@
       <exported-key name="Schueler_ibfk_2" table="Schueler" schema="" catalog="svm" columns="vater_id"/>
       <exported-key name="Schueler_ibfk_3" table="Schueler" schema="" catalog="svm" columns="mutter_id"/>
       <exported-key name="Schueler_ibfk_4" table="Schueler" schema="" catalog="svm" columns="rechnungsempfaenger_id"/>
+      <exported-key name="Semesterrechnung_ibfk_2" table="Semesterrechnung" schema="" catalog="svm" columns="person_id"/>
     </table>
     <table name="Anmeldung" schema="" catalog="svm" type="TABLE">
       <column name="anmeldung_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -893,12 +894,41 @@
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="semester_id"/>
       <exported-key name="Kurs_ibfk_1" table="Kurs" schema="" catalog="svm" columns="semester_id"/>
+      <exported-key name="Semesterrechnung_ibfk_1" table="Semesterrechnung" schema="" catalog="svm" columns="semester_id"/>
+    </table>
+    <table name="Semesterrechnung" schema="" catalog="svm" type="TABLE">
+      <column name="semester_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="ermaessigung" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
+      <column name="ermaessigungsgrund" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="zuschlag" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
+      <column name="zuschlagsgrund" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="stipendium" sqlType="VARCHAR" precision="13" scale="0" nullable="true" jdbcType="12"/>
+      <column name="gratiskind" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="anzahl_wochen" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="wochenbetrag" sqlType="DECIMAL" precision="7" scale="2" nullable="true" jdbcType="3"/>
+      <column name="rechnungsdatum" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="datum_zahlung_1" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="betrag_zahlung_1" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
+      <column name="datum_zahlung_2" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="betrag_zahlung_2" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
+      <column name="datum_zahlung_3" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="betrag_zahlung_3" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
+      <column name="restbetrag" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
+      <column name="code_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="bemerkungen" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="semester_id,person_id"/>
+      <foreign-key name="Semesterrechnung_ibfk_1" columns="semester_id" ref-table="Semester" ref-schema="" ref-catalog="svm" ref-columns="semester_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Semesterrechnung_ibfk_2" columns="person_id" ref-table="Angehoeriger" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Semesterrechnung_ibfk_3" columns="code_id" ref-table="SemesterrechnungCode" ref-schema="" ref-catalog="svm" ref-columns="code_id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
     <table name="SemesterrechnungCode" schema="" catalog="svm" type="TABLE">
       <column name="code_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="code_id"/>
       <foreign-key name="SemesterrechnungCode_ibfk_1" columns="code_id" ref-table="Code" ref-schema="" ref-catalog="svm" ref-columns="code_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="Semesterrechnung_ibfk_3" table="Semesterrechnung" schema="" catalog="svm" columns="code_id"/>
     </table>
   </data-source>
 </component>

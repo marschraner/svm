@@ -12,6 +12,7 @@ public class DeleteSemesterCommand extends GenericDaoCommand {
 
     public enum Result {
         SEMESTER_VON_KURS_REFERENZIERT,
+        SEMESTER_VON_SEMESTERRECHNUNG_REFERENZIERT,
         LOESCHEN_ERFOLGREICH
     }
 
@@ -33,6 +34,10 @@ public class DeleteSemesterCommand extends GenericDaoCommand {
         Semester SemesterToBeDeleted = Semesters.get(indexSemesterToBeDeleted);
         if (SemesterToBeDeleted.getKurse().size() > 0) {
             result = Result.SEMESTER_VON_KURS_REFERENZIERT;
+            return;
+        }
+        if (SemesterToBeDeleted.getSemesterrechnungen().size() > 0) {
+            result = Result.SEMESTER_VON_SEMESTERRECHNUNG_REFERENZIERT;
             return;
         }
         SemesterDao.remove(SemesterToBeDeleted);

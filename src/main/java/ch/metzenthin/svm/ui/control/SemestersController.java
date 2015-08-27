@@ -139,6 +139,10 @@ public class SemestersController {
                     JOptionPane.showMessageDialog(null, "Das Semester wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnLoeschen.setFocusPainted(false);
                     break;
+                case SEMESTER_VON_SEMESTERRECHNUNG_REFERENZIERT:
+                    JOptionPane.showMessageDialog(null, "Das Semester wird durch mindestens eine Semesterrechnung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    btnLoeschen.setFocusPainted(false);
+                    break;
                 case LOESCHEN_ERFOLGREICH:
                     semestersTableModel.fireTableDataChanged();
                     semestersTable.addNotify();
