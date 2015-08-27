@@ -335,8 +335,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
 
     private void createWhereSelectionsKurs() {
         if (kursFuerSucheBeruecksichtigen) {
-            selectStatementSb.append(" kurs.semester.schuljahr = :schuljahrKurs and");
-            selectStatementSb.append(" kurs.semester.semesterbezeichnung = :semesterbezeichnung and");
+            selectStatementSb.append(" kurs.semester.semesterId = :semesterKursId and");
             if (wochentag != Wochentag.ALLE) {
                 selectStatementSb.append(" kurs.wochentag = :wochentag and");
             }
@@ -351,8 +350,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
 
     private void createWhereSelectionsMaerchen() {
         if (maerchenFuerSucheBeruecksichtigen) {
-            selectStatementSb.append(" mae.maerchen.schuljahr = :schuljahrMaerchen and");
-            selectStatementSb.append(" mae.maerchen.bezeichnung = :maerchenbezeichnung and");
+            selectStatementSb.append(" mae.maerchen.maerchenId = :maerchenId and");
             if (gruppe != Gruppe.ALLE) {
                 selectStatementSb.append(" mae.gruppe = :gruppe and");
             }
@@ -487,11 +485,8 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     }
 
     private void setParameterKurs() {
-        if (selectStatementSb.toString().contains(":schuljahrKurs")) {
-            typedQuery.setParameter("schuljahrKurs", semesterKurs.getSchuljahr());
-        }
-        if (selectStatementSb.toString().contains(":semesterbezeichnung")) {
-            typedQuery.setParameter("semesterbezeichnung", semesterKurs.getSemesterbezeichnung());
+        if (selectStatementSb.toString().contains(":semesterKursId")) {
+            typedQuery.setParameter("semesterKursId", semesterKurs.getSemesterId());
         }
         if (selectStatementSb.toString().contains(":wochentag")) {
             typedQuery.setParameter("wochentag", wochentag);
@@ -511,11 +506,8 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     }
 
     private void setParameterMaerchen() {
-        if (selectStatementSb.toString().contains(":schuljahrMaerchen")) {
-            typedQuery.setParameter("schuljahrMaerchen", maerchen.getSchuljahr());
-        }
-        if (selectStatementSb.toString().contains(":maerchenbezeichnung")) {
-            typedQuery.setParameter("maerchenbezeichnung", maerchen.getBezeichnung());
+        if (selectStatementSb.toString().contains(":maerchenId")) {
+            typedQuery.setParameter("maerchenId", maerchen.getMaerchenId());
         }
         if (selectStatementSb.toString().contains(":gruppe")) {
             typedQuery.setParameter("gruppe", gruppe);

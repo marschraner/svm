@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.dataTypes.Schuljahre;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.daos.KursDao;
+import ch.metzenthin.svm.persistence.daos.SemesterDao;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -31,19 +32,32 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
         }
 
         KursDao kursDao = new KursDao(entityManager);
-        String schuljahrPreviouSemester;
+        String schuljahrPreviousSemester;
         Semesterbezeichnung semesterbezeichnungPreviousSemester;
         if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
-            schuljahrPreviouSemester = Schuljahre.getPreviousSchuljahr(semester.getSchuljahr());
+            schuljahrPreviousSemester = Schuljahre.getPreviousSchuljahr(semester.getSchuljahr());
             semesterbezeichnungPreviousSemester = Semesterbezeichnung.ZWEITES_SEMESTER;
 
         } else {
-            schuljahrPreviouSemester = semester.getSchuljahr();
+            schuljahrPreviousSemester = semester.getSchuljahr();
             semesterbezeichnungPreviousSemester = Semesterbezeichnung.ERSTES_SEMESTER;
         }
 
+        SemesterDao semesterDao = new SemesterDao(entityManager);
+        List<Semester> semestersAll = semesterDao.findAll();
+        Semester previousSemester = null;
+        for (Semester semester : semestersAll) {
+            if (semester.getSchuljahr().equals(schuljahrPreviousSemester) && semester.getSemesterbezeichnung().equals(semesterbezeichnungPreviousSemester)) {
+                previousSemester = semester;
+                break;
+            }
+        }
+        if (previousSemester == null) {
+            return;
+        }
+
         // Kurse kopieren
-        List<Kurs> kursePreviousSemester = kursDao.findKurseSemester(new Semester(schuljahrPreviouSemester, semesterbezeichnungPreviousSemester, null, null, 0));
+        List<Kurs> kursePreviousSemester = kursDao.findKurseSemester(previousSemester);
         for (Kurs kursPreviousSemester : kursePreviousSemester) {
             Kurs kurs = new Kurs();
             kurs.copyAttributesFrom(kursPreviousSemester);
