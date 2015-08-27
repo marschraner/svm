@@ -496,7 +496,6 @@ SELECT * FROM Maercheneinteilung;
 -- ****************
 
 INSERT INTO Semesterrechnung (
-    semesterrechnung_id,
     semester_id,
     person_id,
     ermaessigung,
@@ -517,8 +516,8 @@ INSERT INTO Semesterrechnung (
     restbetrag,
     code_id,
     bemerkungen) VALUES
-    (1, 2, 1, NULL, NULL, NULL, NULL, NULL, 0, 18, 40.00, '2015-01-26', '2015-02-28', 720.00, NULL, NULL, NULL, NULL, NULL, 0.00, NULL),
-    (2, 3, 1, NULL, NULL, NULL, NULL, NULL, 0, 18, 40.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 720.00, NULL),
-    (3, 2, 1, NULL, NULL, NULL, NULL, NULL, 0, 17, 22.00, '2015-01-26', '2015-03-01', 200.00, '2015-03-25', 196.00, NULL, NULL, NULL, 0.00, NULL);
+    (2, 1, NULL, NULL, NULL, NULL, NULL, 0, 18, 40.00, '2015-01-26', '2015-02-28', 720.00, NULL, NULL, NULL, NULL, 0.00, NULL, NULL),
+    (3, 1, NULL, NULL, NULL, NULL, NULL, 0, 18, 40.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,  NULL, NULL),
+    (2, 17, NULL, NULL, NULL, NULL, NULL, 0, 18, 22.00, '2015-01-26', '2015-03-01', 200.00, '2015-03-25', 196.00, NULL, NULL, 0.00, NULL, NULL);
 
 SELECT * FROM Semesterrechnung;

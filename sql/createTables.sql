@@ -391,7 +391,6 @@ DESCRIBE Maercheneinteilung;
 -- ****************
 
 CREATE TABLE IF NOT EXISTS Semesterrechnung (
-    semesterrechnung_id        INT           NOT NULL AUTO_INCREMENT,
     semester_id                INT           NOT NULL,
     person_id                  INT           NOT NULL,
     ermaessigung               DECIMAL(8,2),
@@ -413,9 +412,9 @@ CREATE TABLE IF NOT EXISTS Semesterrechnung (
     code_id                    INT,
     bemerkungen                TEXT,
     last_updated               TIMESTAMP     NOT NULL,
-    PRIMARY KEY (semesterrechnung_id),
+    PRIMARY KEY (semester_id, person_id),
     FOREIGN KEY (semester_id)  REFERENCES Semester (semester_id),
-    FOREIGN KEY (person_id)    REFERENCES Angehoeriger (person_id));
+    FOREIGN KEY (person_id)    REFERENCES Angehoeriger (person_id),
     FOREIGN KEY (code_id)      REFERENCES SemesterrechnungCode (code_id));
 
 DESCRIBE Semesterrechnung;
