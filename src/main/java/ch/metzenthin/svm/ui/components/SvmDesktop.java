@@ -158,6 +158,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.addActionListener(this);
         menuMaerchen.add(menuItem);
 
+        menuItem = new JMenuItem("Semesterrechnung-Codes verwalten");
+        menuItem.setMnemonic(KeyEvent.VK_C);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("semesterrechnungCodesVerwalten");
+        menuItem.addActionListener(this);
+        menuSemesterrechnungen.add(menuItem);
+
         menuItem = new JMenuItem("Lektionsgebühren verwalten");
         menuItem.setMnemonic(KeyEvent.VK_L);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.ALT_MASK));
@@ -304,6 +311,16 @@ public class SvmDesktop extends JFrame implements ActionListener {
                 }
             });
             setAndShowActivePanel(maerchensPanel.$$$getRootComponent$$$(), "Märchen verwalten");
+
+        } else if ("semesterrechnungCodesVerwalten".equals(e.getActionCommand())) {
+            CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.SEMESTERRECHNUNG);
+            codesPanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFrameAbbrechen();
+                }
+            });
+            setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Semesterrechnung-Codes verwalten");
 
         } else if ("lektionsgebuehrenVerwalten".equals(e.getActionCommand())) {
             LektionsgebuehrenPanel lektionsgebuehrenPanel = new LektionsgebuehrenPanel(svmContext);

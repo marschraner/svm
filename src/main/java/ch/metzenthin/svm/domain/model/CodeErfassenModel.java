@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 
 /**
  * @author Martin Schraner
@@ -11,6 +12,7 @@ import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 public interface CodeErfassenModel extends Model {
     void setSchuelerCodeOrigin(SchuelerCode schuelerCodeOrigin);
     void setElternmithilfeCodeOrigin(ElternmithilfeCode elternmithilfeCodeOrigin);
+    void setSemesterrechnungCodeOrigin(SemesterrechnungCode semesterrechnungCodeOrigin);
 
     String getKuerzel();
     String getBeschreibung();
