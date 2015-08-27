@@ -31,6 +31,7 @@ DROP TABLE IF EXISTS Kurs;
 DROP TABLE IF EXISTS Semester;
 DROP TABLE IF EXISTS Kursort;
 DROP TABLE IF EXISTS Kurstyp;
+DROP TABLE IF EXISTS SemesterrechnungCode;
 DROP TABLE IF EXISTS ElternmithilfeCode;
 DROP TABLE IF EXISTS Schueler_SchuelerCode;
 DROP TABLE IF EXISTS SchuelerCode;
@@ -228,6 +229,18 @@ CREATE TABLE IF NOT EXISTS ElternmithilfeCode (
     FOREIGN KEY (code_id)    REFERENCES Code (code_id));
 
 DESCRIBE ElternmithilfeCode;
+
+
+-- SemesterrechnungCode
+-- ********************
+
+CREATE TABLE IF NOT EXISTS SemesterrechnungCode (
+    code_id                    INT           NOT NULL,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (code_id),
+    FOREIGN KEY (code_id)    REFERENCES Code (code_id));
+
+DESCRIBE SemesterrechnungCode;
 
 
 -- Kurstyp

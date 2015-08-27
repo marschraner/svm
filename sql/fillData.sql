@@ -20,6 +20,7 @@ DELETE FROM Kurs;
 DELETE FROM Semester;
 DELETE FROM Kursort;
 DELETE FROM Kurstyp;
+DELETE FROM SemesterrechnungCode;
 DELETE FROM ElternmithilfeCode;
 DELETE FROM Schueler_SchuelerCode;
 DELETE FROM SchuelerCode;
@@ -273,7 +274,9 @@ INSERT INTO Code (code_id, discriminator, kuerzel, beschreibung, selektierbar) V
     (1, 'Schueler', 'c', 'Casting', 1),
     (2, 'Schueler', 'j', 'Jugendtheater', 1),
     (3, 'Elternmithilfe', 'b', 'Buffet', 1),
-    (4, 'Elternmithilfe', 'g', 'Garderobe', 1);
+    (4, 'Elternmithilfe', 'g', 'Garderobe', 1),
+    (5, 'Semesterrechnung', '1', 'Stipendium', 1),
+    (6, 'Semesterrechnung', '2', 'Handrechnung', 1);
 
 SELECT * FROM Code;
 
@@ -299,13 +302,23 @@ SELECT * FROM Schueler_SchuelerCode;
 
 
 -- ElternmithilfeCode
--- ************
+-- ******************
 
 INSERT INTO ElternmithilfeCode (code_id) VALUES
     (3),
     (4);
 
 SELECT * FROM ElternmithilfeCode;
+
+
+-- SemesterrechnungCode
+-- ********************
+
+INSERT INTO SemesterrechnungCode (code_id) VALUES
+    (5),
+    (6);
+
+SELECT * FROM SemesterrechnungCode;
 
 
 -- Kurstyp
