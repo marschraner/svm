@@ -122,7 +122,15 @@ public enum Field {
     BETRAG_3_KINDER("3 Kinder"),
     BETRAG_4_KINDER("4 Kinder"),
     BETRAG_5_KINDER("5 Kinder"),
-    BETRAG_6_KINDER("6 Kinder");
+    BETRAG_6_KINDER("6 Kinder"),
+    RECHNUNGSDATUM_SELECTED("Rechnungsdatum"),
+    RECHNUNGSSTATUS("Rechnungsstatus"),
+    SEMESTERRECHNUNG_CODE("Semesterrechnung-Code"),
+    STIPENDIUM("Stipendium"),
+    GRATISKIND("Gratiskind"),
+    RECHNUNGSDATUM("Rechnungsdatum"),
+    WOCHENBETRAG("Wochenbetrag"),
+    SCHULGELD("Schulgeld");
 
     private String name;
 
