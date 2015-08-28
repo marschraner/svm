@@ -1,20 +1,23 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.dataTypes.Schuljahre;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * @author Martin Schraner
  */
-final class SemesterrechnungenenSuchenModelImpl extends AbstractModel implements SemesterrechnungenSuchenModel {
+final class SemesterrechnungenSuchenModelImpl extends AbstractModel implements SemesterrechnungenSuchenModel {
 
     private Semester semester;
     private String nachname;
@@ -22,14 +25,15 @@ final class SemesterrechnungenenSuchenModelImpl extends AbstractModel implements
     private RolleSelected rolle;
     private SemesterrechnungCode semesterrechnungCode;
     private Stipendium stipendium;
-    private Boolean gratiskind;
+    private Boolean sechsJahresRabatt;
+    private Boolean gratiskinder;
     private RechnungsdatumSelected rechnungsdatumSelected;
     private Calendar rechnungsdatum;
     private RechnungsstatusSelected rechnungsstatus;
     private BigDecimal wochenbetrag;
     private BigDecimal schulgeld;
 
-    SemesterrechnungenenSuchenModelImpl(CommandInvoker commandInvoker) {
+    SemesterrechnungenSuchenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
     }
 
@@ -103,11 +107,6 @@ final class SemesterrechnungenenSuchenModelImpl extends AbstractModel implements
     }
 
     @Override
-    public RolleSelected getRolle() {
-        return rolle;
-    }
-
-    @Override
     public void setRolle(RolleSelected rolle) {
         RolleSelected oldValue = this.rolle;
         this.rolle = rolle;
@@ -139,20 +138,27 @@ final class SemesterrechnungenenSuchenModelImpl extends AbstractModel implements
     }
 
     @Override
-    public Boolean isGratiskind() {
-        return gratiskind;
+    public Boolean isSechsJahresRabatt() {
+        return sechsJahresRabatt;
     }
 
     @Override
-    public void setGratiskind(Boolean gratiskind) {
-        Boolean oldValue = this.gratiskind;
-        this.gratiskind = gratiskind;
-        firePropertyChange(Field.GRATISKIND, oldValue, gratiskind);
+    public void setSechsJahresRabatt(Boolean sechsJahresRabatt) {
+        Boolean oldValue = this.sechsJahresRabatt;
+        this.sechsJahresRabatt = sechsJahresRabatt;
+        firePropertyChange(Field.SECHS_JAHRES_RABATT, oldValue, sechsJahresRabatt);
     }
 
     @Override
-    public RechnungsdatumSelected getRechnungsdatumSelected() {
-        return rechnungsdatumSelected;
+    public Boolean isGratiskinder() {
+        return gratiskinder;
+    }
+
+    @Override
+    public void setGratiskinder(Boolean gratiskinder) {
+        Boolean oldValue = this.gratiskinder;
+        this.gratiskinder = gratiskinder;
+        firePropertyChange(Field.GRATISKINDER, oldValue, gratiskinder);
     }
 
     @Override
@@ -164,7 +170,7 @@ final class SemesterrechnungenenSuchenModelImpl extends AbstractModel implements
 
     private CalendarModelAttribute rechnungsdatumModelAttribute = new CalendarModelAttribute(
             this,
-            Field.RECHNUNGSDATUM, new GregorianCalendar(1920, Calendar.JANUARY, 1), new GregorianCalendar(),
+            Field.RECHNUNGSDATUM, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
@@ -186,11 +192,6 @@ final class SemesterrechnungenenSuchenModelImpl extends AbstractModel implements
     @Override
     public void setRechnungsdatum(String rechnungsdatum) throws SvmValidationException {
         rechnungsdatumModelAttribute.setNewValue(false, rechnungsdatum, isBulkUpdate());
-    }
-
-    @Override
-    public RechnungsstatusSelected getRechnungsstatus() {
-        return rechnungsstatus;
     }
 
     @Override
@@ -250,6 +251,34 @@ final class SemesterrechnungenenSuchenModelImpl extends AbstractModel implements
     @Override
     public void setSchulgeld(String schulgeld) throws SvmValidationException {
         schulgeldModelAttribute.setNewValue(false, schulgeld, isBulkUpdate());
+    }
+
+    @Override
+    public Semester getSemesterInit(SvmModel svmModel) {
+        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
+        findSemesterForCalendarCommand.execute();
+        Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
+        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
+        // Innerhalb Semester
+        if (currentSemester != null) {
+            return currentSemester;
+        }
+        // Ferien zwischen 2 Semestern
+        if (nextSemester != null) {
+            return nextSemester;
+        }
+        // Kein passendes Semester erfasst
+        return svmModel.getSemestersAll().get(0);
+    }
+
+    @Override
+    public SemesterrechnungCode[] getSelectableSemesterrechnungCodes(SvmModel svmModel) {
+        List<SemesterrechnungCode> codesList = svmModel.getSelektierbareSemesterrechnungCodesAll();
+        // SemesterrechnungCode alle auch erlaubt
+        if (codesList.isEmpty() || !codesList.get(0).isIdenticalWith(SEMESTERRECHNUNG_CODE_ALLE)) {
+            codesList.add(0, SEMESTERRECHNUNG_CODE_ALLE);
+        }
+        return codesList.toArray(new SemesterrechnungCode[codesList.size()]);
     }
 
     @Override

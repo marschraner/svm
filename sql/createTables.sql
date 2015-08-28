@@ -398,7 +398,7 @@ CREATE TABLE IF NOT EXISTS Semesterrechnung (
     zuschlag                   DECIMAL(8,2),
     zuschlagsgrund             VARCHAR(50),
     stipendium                 VARCHAR(13),
-    gratiskind                 BOOLEAN       NOT NULL,
+    gratiskinder               BOOLEAN       NOT NULL,
     anzahl_wochen              INT           NOT NULL,
     wochenbetrag               DECIMAL(7,2),
     rechnungsdatum             DATE,

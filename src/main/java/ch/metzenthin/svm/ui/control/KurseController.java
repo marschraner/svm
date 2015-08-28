@@ -48,7 +48,6 @@ public class KurseController {
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
-    //private boolean isNeuerKursErfassbar;
 
     public KurseController(KurseModel kurseModel, SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isKurseSchueler, boolean isFromSchuelerSuchenResult) {
         this.kurseModel = kurseModel;

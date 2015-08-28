@@ -95,7 +95,7 @@ public class SemesterrechnungDaoTest {
             assertEquals(new BigDecimal("20.00"), semesterrechnungFound.getZuschlag());
             assertEquals("versäumte Zahlung", semesterrechnungFound.getZuschlagsgrund());
             assertEquals(Stipendium.STIPENDIUM_70, semesterrechnungFound.getStipendium());
-            assertFalse(semesterrechnungFound.getGratiskind());
+            assertFalse(semesterrechnungFound.getGratiskinder());
             assertEquals(new Integer(18), semesterrechnungFound.getAnzahlWochen());
             assertEquals(new BigDecimal("22.00"), semesterrechnungFound.getWochenbetrag());
             assertEquals(new GregorianCalendar(1912, Calendar.FEBRUARY, 1), semesterrechnungFound.getRechnungsdatum());

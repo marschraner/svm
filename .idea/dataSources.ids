@@ -904,7 +904,7 @@
       <column name="zuschlag" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
       <column name="zuschlagsgrund" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="stipendium" sqlType="VARCHAR" precision="13" scale="0" nullable="true" jdbcType="12"/>
-      <column name="gratiskind" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="gratiskinder" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="anzahl_wochen" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="wochenbetrag" sqlType="DECIMAL" precision="7" scale="2" nullable="true" jdbcType="3"/>
       <column name="rechnungsdatum" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>

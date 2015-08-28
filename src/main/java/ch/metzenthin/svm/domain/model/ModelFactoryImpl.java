@@ -168,4 +168,9 @@ public class ModelFactoryImpl implements ModelFactory {
         return new LektionsgebuehrenErfassenModelImpl(commandInvoker);
     }
 
+    @Override
+    public SemesterrechnungenSuchenModel createSemesterrechnungenSuchenModel() {
+        return new SemesterrechnungenSuchenModelImpl(commandInvoker);
+    }
+
 }

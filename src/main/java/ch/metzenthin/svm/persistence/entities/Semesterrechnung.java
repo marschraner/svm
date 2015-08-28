@@ -45,8 +45,8 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     @Column(name = "stipendium", nullable = true)
     private Stipendium stipendium;
 
-    @Column(name = "gratiskind", nullable = false)
-    private Boolean gratiskind;
+    @Column(name = "gratiskinder", nullable = false)
+    private Boolean gratiskinder;
 
     @Column(name = "anzahl_wochen", nullable = true)
     private Integer anzahlWochen;
@@ -93,7 +93,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     public Semesterrechnung() {
     }
 
-    public Semesterrechnung(Semester semester, Angehoeriger rechnungsempfaenger, BigDecimal ermaessigung, String ermaessigungsgrund, BigDecimal zuschlag, String zuschlagsgrund, Stipendium stipendium, Boolean gratiskind, int anzahlWochen, BigDecimal wochenbetrag, Calendar rechnungsdatum, Calendar datumZahlung1, BigDecimal betragZahlung1, Calendar datumZahlung2, BigDecimal betragZahlung2, Calendar datumZahlung3, BigDecimal betragZahlung3, BigDecimal restbetrag, String bemerkungen) {
+    public Semesterrechnung(Semester semester, Angehoeriger rechnungsempfaenger, BigDecimal ermaessigung, String ermaessigungsgrund, BigDecimal zuschlag, String zuschlagsgrund, Stipendium stipendium, Boolean gratiskinder, int anzahlWochen, BigDecimal wochenbetrag, Calendar rechnungsdatum, Calendar datumZahlung1, BigDecimal betragZahlung1, Calendar datumZahlung2, BigDecimal betragZahlung2, Calendar datumZahlung3, BigDecimal betragZahlung3, BigDecimal restbetrag, String bemerkungen) {
         this.semester = semester;
         this.rechnungsempfaenger = rechnungsempfaenger;
         this.ermaessigung = ermaessigung;
@@ -101,7 +101,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.zuschlag = zuschlag;
         this.zuschlagsgrund = zuschlagsgrund;
         this.stipendium = stipendium;
-        this.gratiskind = gratiskind;
+        this.gratiskinder = gratiskinder;
         this.anzahlWochen = anzahlWochen;
         this.wochenbetrag = wochenbetrag;
         this.rechnungsdatum = rechnungsdatum;
@@ -133,7 +133,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.zuschlag = otherSemesterrechnung.zuschlag;
         this.zuschlagsgrund = otherSemesterrechnung.zuschlagsgrund;
         this.stipendium = otherSemesterrechnung.stipendium;
-        this.gratiskind = otherSemesterrechnung.gratiskind;
+        this.gratiskinder = otherSemesterrechnung.gratiskinder;
         this.anzahlWochen = otherSemesterrechnung.anzahlWochen;
         this.wochenbetrag = otherSemesterrechnung.wochenbetrag;
         this.rechnungsdatum = otherSemesterrechnung.rechnungsdatum;
@@ -203,12 +203,12 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.stipendium = stipendium;
     }
 
-    public Boolean getGratiskind() {
-        return gratiskind;
+    public Boolean getGratiskinder() {
+        return gratiskinder;
     }
 
-    public void setGratiskind(Boolean gratiskind) {
-        this.gratiskind = gratiskind;
+    public void setGratiskinder(Boolean gratiskinder) {
+        this.gratiskinder = gratiskinder;
     }
 
     public Integer getAnzahlWochen() {

@@ -127,10 +127,11 @@ public enum Field {
     RECHNUNGSSTATUS("Rechnungsstatus"),
     SEMESTERRECHNUNG_CODE("Semesterrechnung-Code"),
     STIPENDIUM("Stipendium"),
-    GRATISKIND("Gratiskind"),
+    GRATISKINDER("Gratiskinder"),
     RECHNUNGSDATUM("Rechnungsdatum"),
     WOCHENBETRAG("Wochenbetrag"),
-    SCHULGELD("Schulgeld");
+    SCHULGELD("Schulgeld"),
+    SECHS_JAHRES_RABATT("6-Jahres-Rabatt");
 
     private String name;
 

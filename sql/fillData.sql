@@ -503,7 +503,7 @@ INSERT INTO Semesterrechnung (
     zuschlag,
     zuschlagsgrund,
     stipendium,
-    gratiskind,
+    gratiskinder,
     anzahl_wochen,
     wochenbetrag,
     rechnungsdatum,

@@ -182,10 +182,6 @@ public class SchuelerSuchenPanel {
         });
     }
 
-    private void onZurueck() {
-        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{$$$getRootComponent$$$(), "Schüler suchen", Boolean.TRUE}, ActionEvent.ACTION_PERFORMED, "Zurück zu Schüler suchen"));
-    }
-
     private void createUIComponents() {
         spinnerSemesterKurs = new JSpinner();
         spinnerMaerchen = new JSpinner();
@@ -194,6 +190,10 @@ public class SchuelerSuchenPanel {
         comboBoxSchuelerCode = new JComboBox<>();
         comboBoxGruppe = new JComboBox<>();
         comboBoxElternmithilfeCode = new JComboBox<>();
+    }
+
+    private void onZurueck() {
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{$$$getRootComponent$$$(), "Schüler suchen", Boolean.TRUE}, ActionEvent.ACTION_PERFORMED, "Zurück zu Schüler suchen"));
     }
 
     public void addCloseListener(ActionListener actionListener) {
