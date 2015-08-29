@@ -23,6 +23,9 @@ public class Angehoeriger extends Person {
     @OneToMany(mappedBy = "rechnungsempfaenger")
     private Set<Schueler> schuelerRechnungsempfaenger = new HashSet<>();
 
+    @OneToMany(mappedBy = "rechnungsempfaenger")
+    private Set<Semesterrechnung> semesterrechnungen = new HashSet<>();
+
     public Angehoeriger() {
     }
 
@@ -63,4 +66,7 @@ public class Angehoeriger extends Person {
         return schuelerRechnungsempfaenger;
     }
 
+    public Set<Semesterrechnung> getSemesterrechnungen() {
+        return semesterrechnungen;
+    }
 }

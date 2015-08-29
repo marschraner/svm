@@ -43,9 +43,8 @@ public class KursDao extends GenericDao<Kurs, Integer> {
     }
 
     public List<Kurs> findKurseSemester(Semester semester) {
-        TypedQuery<Kurs> typedQuery = entityManager.createQuery("select k from Kurs k where k.semester.schuljahr = :schuljahr and k.semester.semesterbezeichnung = :semesterbezeichnung", Kurs.class);
-        typedQuery.setParameter("schuljahr", semester.getSchuljahr());
-        typedQuery.setParameter("semesterbezeichnung", semester.getSemesterbezeichnung());
+        TypedQuery<Kurs> typedQuery = entityManager.createQuery("select k from Kurs k where k.semester.semesterId = :semesterId", Kurs.class);
+        typedQuery.setParameter("semesterId", semester.getSemesterId());
         List<Kurs> kurseFound = typedQuery.getResultList();
         // Sortieren gemäss compareTo in Kurs
         Collections.sort(kurseFound);
@@ -60,9 +59,9 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         if (lehrkraft != null) {
             selectStatementSb.append(" join k.lehrkraefte lk");
         }
-        selectStatementSb.append(" where k.semester.schuljahr = :schuljahr and k.semester.semesterbezeichnung = :semesterbezeichnung and");
+        selectStatementSb.append(" where k.semester.semesterId = :semesterId and");
         if (schueler != null) {
-            selectStatementSb.append(" s.nachname = :schuelerNachname and s.vorname = :schuelerVorname and s.geburtsdatum =:schuelerGeburtsdatum and s.adresse.strasse = :schuelerStrasse and");
+            selectStatementSb.append(" s.personId = :schuelerPersonId and");
         }
         if (wochentag != null) {
             selectStatementSb.append(" k.wochentag = :wochentag and");
@@ -71,7 +70,7 @@ public class KursDao extends GenericDao<Kurs, Integer> {
             selectStatementSb.append(" k.zeitBeginn = :zeitBeginn and");
         }
         if (lehrkraft != null) {
-            selectStatementSb.append(" lk.nachname = :lehrkraftNachname and lk.vorname = :lehrkraftVorname and lk.geburtsdatum = :lehrkraftGeburtsdatum and");
+            selectStatementSb.append(" lk.personId = :lehrkraftPersonId and");
         }
         // Letztes " and" löschen
         if (selectStatementSb.substring(selectStatementSb.length() - 4).equals(" and")) {
@@ -79,13 +78,9 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         }
         // Query
         TypedQuery<Kurs> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Kurs.class);
-        typedQuery.setParameter("schuljahr", semester.getSchuljahr());
-        typedQuery.setParameter("semesterbezeichnung", semester.getSemesterbezeichnung());
+        typedQuery.setParameter("semesterId", semester.getSemesterId());
         if (schueler != null) {
-            typedQuery.setParameter("schuelerNachname", schueler.getNachname());
-            typedQuery.setParameter("schuelerVorname", schueler.getVorname());
-            typedQuery.setParameter("schuelerGeburtsdatum", schueler.getGeburtsdatum());
-            typedQuery.setParameter("schuelerStrasse", schueler.getAdresse().getStrasse());
+            typedQuery.setParameter("schuelerPersonId", schueler.getPersonId());
         }
         if (wochentag != null) {
             typedQuery.setParameter("wochentag", wochentag);
@@ -94,9 +89,7 @@ public class KursDao extends GenericDao<Kurs, Integer> {
             typedQuery.setParameter("zeitBeginn", zeitBeginn);
         }
         if (lehrkraft != null) {
-            typedQuery.setParameter("lehrkraftNachname", lehrkraft.getNachname());
-            typedQuery.setParameter("lehrkraftVorname", lehrkraft.getVorname());
-            typedQuery.setParameter("lehrkraftGeburtsdatum", lehrkraft.getGeburtsdatum());
+            typedQuery.setParameter("lehrkraftPersonId", lehrkraft.getPersonId());
         }
         List<Kurs> kurseFound = typedQuery.getResultList();
         // Sortieren gemäss compareTo in Kurs
@@ -108,15 +101,12 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         Kurs kursFound;
         try {
             TypedQuery<Kurs> typedQuery = entityManager.createQuery("select k from Kurs k join k.lehrkraefte lk " +
-                    " where k.semester.schuljahr = :schuljahr and k.semester.semesterbezeichnung = :semesterbezeichnung and k.wochentag = :wochentag and k.zeitBeginn = :zeitBeginn " +
-                    " and lk.nachname = :lehrkraftNachname and lk.vorname = :lehrkraftVorname and lk.geburtsdatum = :lehrkraftGeburtsdatum", Kurs.class);
-            typedQuery.setParameter("schuljahr", semester.getSchuljahr());
-            typedQuery.setParameter("semesterbezeichnung", semester.getSemesterbezeichnung());
+                    " where k.semester.semesterId = :semesterId and k.wochentag = :wochentag and k.zeitBeginn = :zeitBeginn " +
+                    " and lk.personId = :lehrkraftPersonId", Kurs.class);
+            typedQuery.setParameter("semesterId", semester.getSemesterId());
             typedQuery.setParameter("wochentag", wochentag);
             typedQuery.setParameter("zeitBeginn", zeitBeginn);
-            typedQuery.setParameter("lehrkraftNachname", lehrkraft.getNachname());
-            typedQuery.setParameter("lehrkraftVorname", lehrkraft.getVorname());
-            typedQuery.setParameter("lehrkraftGeburtsdatum", lehrkraft.getGeburtsdatum());
+            typedQuery.setParameter("lehrkraftPersonId", lehrkraft.getPersonId());
             kursFound = typedQuery.getSingleResult();
         } catch (NoResultException e) {
             kursFound = null;

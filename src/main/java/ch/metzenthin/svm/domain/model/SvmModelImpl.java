@@ -15,6 +15,7 @@ public class SvmModelImpl implements SvmModel {
 
     private List<SchuelerCode> schuelerCodesAll;
     private List<ElternmithilfeCode> elternmithilfeCodesAll;
+    private List<SemesterrechnungCode> semesterrechnungCodesAll;
     private List<Lehrkraft> lehrkraefteAll;
     private List<Kursort> kursorteAll;
     private List<Kurstyp> kurstypenAll;
@@ -33,6 +34,7 @@ public class SvmModelImpl implements SvmModel {
     public void loadAll() {
         loadSchuelerCodesAll();
         loadElternmithilfeCodesAll();
+        loadSemesterrechnungCodesAll();
         loadLehrkraefteAll();
         loadKursorteAll();
         loadKurstypenAll();
@@ -75,6 +77,24 @@ public class SvmModelImpl implements SvmModel {
             }
         }
         return selektierbareElternmithilfeCodesAll;
+    }
+
+    @Override
+    public void loadSemesterrechnungCodesAll() {
+        FindAllSemesterrechnungCodesCommand findAllSemesterrechnungCodesCommand = new FindAllSemesterrechnungCodesCommand();
+        commandInvoker.executeCommand(findAllSemesterrechnungCodesCommand);
+        semesterrechnungCodesAll = findAllSemesterrechnungCodesCommand.getSemesterrechnungCodesAll();
+    }
+
+    @Override
+    public List<SemesterrechnungCode> getSelektierbareSemesterrechnungCodesAll() {
+        List<SemesterrechnungCode> selektierbareSemesterrechnungCodesAll = new ArrayList<>();
+        for (SemesterrechnungCode semesterrechnungCode : semesterrechnungCodesAll) {
+            if (semesterrechnungCode.getSelektierbar()) {
+                selektierbareSemesterrechnungCodesAll.add(semesterrechnungCode);
+            }
+        }
+        return selektierbareSemesterrechnungCodesAll;
     }
 
     @Override
@@ -128,6 +148,11 @@ public class SvmModelImpl implements SvmModel {
     @Override
     public List<ElternmithilfeCode> getElternmithilfeCodesAll() {
         return elternmithilfeCodesAll;
+    }
+
+    @Override
+    public List<SemesterrechnungCode> getSemesterrechnungCodesAll() {
+        return semesterrechnungCodesAll;
     }
 
     @Override

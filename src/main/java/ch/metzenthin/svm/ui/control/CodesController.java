@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import ch.metzenthin.svm.domain.commands.DeleteElternmithilfeCodeCommand;
 import ch.metzenthin.svm.domain.commands.DeleteSchuelerCodeCommand;
+import ch.metzenthin.svm.domain.commands.DeleteSemesterrechnungCodeCommand;
 import ch.metzenthin.svm.domain.model.CodesModel;
 import ch.metzenthin.svm.domain.model.CodesTableData;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
@@ -64,6 +65,9 @@ public class CodesController {
             case ELTERNMITHILFE:
                 svmContext.getSvmModel().loadElternmithilfeCodesAll();
                 break;
+            case SEMESTERRECHNUNG:
+                svmContext.getSvmModel().loadSemesterrechnungCodesAll();
+                break;
         }
     }
 
@@ -103,6 +107,9 @@ public class CodesController {
             case ELTERNMITHILFE:
                 lblTitel.setText("Eltern-Mithilfe-Codes verwalten");
                 break;
+            case SEMESTERRECHNUNG:
+                lblTitel.setText("Semesterrechnung-Codes verwalten");
+                break;
         }
     }
 
@@ -116,6 +123,10 @@ public class CodesController {
                 case ELTERNMITHILFE:
                     CodesTableData elternmithilfeCodesTableData = new CodesTableData(svmContext.getSvmModel().getElternmithilfeCodesAll(), false);
                     codesTableModel = new CodesTableModel(elternmithilfeCodesTableData);
+                    break;
+                case SEMESTERRECHNUNG:
+                    CodesTableData semesterrechnungCodesTableData = new CodesTableData(svmContext.getSvmModel().getSemesterrechnungCodesAll(), false);
+                    codesTableModel = new CodesTableModel(semesterrechnungCodesTableData);
                     break;
             }
         }
@@ -147,6 +158,9 @@ public class CodesController {
                     case ELTERNMITHILFE:
                         onNeuCodesVerwalten();
                         break;
+                    case SEMESTERRECHNUNG:
+                        onNeuCodesVerwalten();
+                        break;
                 }
             }
         });
@@ -161,6 +175,9 @@ public class CodesController {
                 break;
             case ELTERNMITHILFE:
                 titel = "Neuer Eltern-Mithilfe-Code";
+                break;
+            case SEMESTERRECHNUNG:
+                titel = "Neuer Semesterrechnung-Code";
                 break;
         }
         CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, codesModel, 0, false, titel, codetyp);
@@ -212,6 +229,9 @@ public class CodesController {
             case ELTERNMITHILFE:
                 titel = "Eltern-Mithilfe-Code bearbeiten";
                 break;
+            case SEMESTERRECHNUNG:
+                titel = "Semesterrechnung-Code bearbeiten";
+                break;
         }
         CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, codesModel, codesTable.getSelectedRow(), true, titel, codetyp);
         codeErfassenDialog.pack();
@@ -226,18 +246,21 @@ public class CodesController {
         btnLoeschen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            switch (codetyp) {
-                case SCHUELER:
-                    if (isCodesSpecificSchueler) {
-                        onLoeschenSchuelerCodesSpecificSchueler();
-                    } else {
-                        onLoeschenSchuelerCodesVerwalten();
-                    }
-                    break;
-                case ELTERNMITHILFE:
-                    onLoeschenElternmithilfeCodesVerwalten();
-                    break;
-            }
+                switch (codetyp) {
+                    case SCHUELER:
+                        if (isCodesSpecificSchueler) {
+                            onLoeschenSchuelerCodesSpecificSchueler();
+                        } else {
+                            onLoeschenSchuelerCodesVerwalten();
+                        }
+                        break;
+                    case ELTERNMITHILFE:
+                        onLoeschenElternmithilfeCodesVerwalten();
+                        break;
+                    case SEMESTERRECHNUNG:
+                        onLoeschenSemesterrechnungCodesVerwalten();
+                        break;
+                }
             }
         });
     }
@@ -315,6 +338,36 @@ public class CodesController {
             switch (result) {
                 case CODE_VON_MAERCHENEINTEILUNGEN_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens eine Märcheneinteilung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    btnLoeschen.setFocusPainted(false);
+                    break;
+                case LOESCHEN_ERFOLGREICH:
+                    codesTableModel.fireTableDataChanged();
+                    codesTable.addNotify();
+                    break;
+            }
+        }
+        btnLoeschen.setFocusPainted(false);
+        enableBtnLoeschen(false);
+        codesTable.clearSelection();
+    }
+
+    private void onLoeschenSemesterrechnungCodesVerwalten() {
+        btnLoeschen.setFocusPainted(true);
+        Object[] options = {"Ja", "Nein"};
+        int n = JOptionPane.showOptionDialog(
+                null,
+                "Soll der Eintrag aus der Datenbank gelöscht werden?",
+                "Semesterrechnung-Code löschen",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,     //do not use a custom Icon
+                options,  //the titles of buttons
+                options[1]); //default button title
+        if (n == 0) {
+            DeleteSemesterrechnungCodeCommand.Result result  = codesModel.eintragLoeschenSemesterrechnungCodesVerwalten(svmContext, codesTable.getSelectedRow());
+            switch (result) {
+                case CODE_VON_SEMESTERRECHNUNGEN_REFERENZIERT:
+                    JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens eine Semesterrechnung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:

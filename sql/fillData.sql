@@ -12,6 +12,7 @@ USE svm;
 -- Delete
 -- ******
 
+DELETE FROM Semesterrechnung;
 DELETE FROM Maercheneinteilung;
 DELETE FROM Maerchen;
 DELETE FROM Schueler_Kurs;
@@ -20,6 +21,7 @@ DELETE FROM Kurs;
 DELETE FROM Semester;
 DELETE FROM Kursort;
 DELETE FROM Kurstyp;
+DELETE FROM SemesterrechnungCode;
 DELETE FROM ElternmithilfeCode;
 DELETE FROM Schueler_SchuelerCode;
 DELETE FROM SchuelerCode;
@@ -273,7 +275,9 @@ INSERT INTO Code (code_id, discriminator, kuerzel, beschreibung, selektierbar) V
     (1, 'Schueler', 'c', 'Casting', 1),
     (2, 'Schueler', 'j', 'Jugendtheater', 1),
     (3, 'Elternmithilfe', 'b', 'Buffet', 1),
-    (4, 'Elternmithilfe', 'g', 'Garderobe', 1);
+    (4, 'Elternmithilfe', 'g', 'Garderobe', 1),
+    (5, 'Semesterrechnung', '1', 'Stipendium', 1),
+    (6, 'Semesterrechnung', '2', 'Handrechnung', 1);
 
 SELECT * FROM Code;
 
@@ -299,13 +303,23 @@ SELECT * FROM Schueler_SchuelerCode;
 
 
 -- ElternmithilfeCode
--- ************
+-- ******************
 
 INSERT INTO ElternmithilfeCode (code_id) VALUES
     (3),
     (4);
 
 SELECT * FROM ElternmithilfeCode;
+
+
+-- SemesterrechnungCode
+-- ********************
+
+INSERT INTO SemesterrechnungCode (code_id) VALUES
+    (5),
+    (6);
+
+SELECT * FROM SemesterrechnungCode;
 
 
 -- Kurstyp
@@ -476,3 +490,34 @@ INSERT INTO Maercheneinteilung (
     (8, 3, 'B', 'Schulkind 6', '2, 3', 'Waldtier Hase 2', '4', NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 'Eltern-Mithilfe bei Lilly Juchli erfasst.');
 
 SELECT * FROM Maercheneinteilung;
+
+
+-- Semesterrechnung
+-- ****************
+
+INSERT INTO Semesterrechnung (
+    semester_id,
+    person_id,
+    ermaessigung,
+    ermaessigungsgrund,
+    zuschlag,
+    zuschlagsgrund,
+    stipendium,
+    gratiskinder,
+    anzahl_wochen,
+    wochenbetrag,
+    rechnungsdatum,
+    datum_zahlung_1,
+    betrag_zahlung_1,
+    datum_zahlung_2,
+    betrag_zahlung_2,
+    datum_zahlung_3,
+    betrag_zahlung_3,
+    restbetrag,
+    code_id,
+    bemerkungen) VALUES
+    (2, 1, NULL, NULL, NULL, NULL, NULL, 0, 18, 40.00, '2015-01-26', '2015-02-28', 720.00, NULL, NULL, NULL, NULL, 0.00, NULL, NULL),
+    (3, 1, NULL, NULL, NULL, NULL, NULL, 0, 18, 40.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,  NULL, NULL),
+    (2, 17, NULL, NULL, NULL, NULL, NULL, 0, 18, 22.00, '2015-01-26', '2015-03-01', 200.00, '2015-03-25', 196.00, NULL, NULL, 0.00, NULL, NULL);
+
+SELECT * FROM Semesterrechnung;

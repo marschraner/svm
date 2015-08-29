@@ -45,6 +45,9 @@ public class Semester implements Comparable<Semester> {
     @OneToMany(mappedBy = "semester")
     private Set<Kurs> kurse = new HashSet<>();
 
+    @OneToMany(mappedBy = "semester")
+    private Set<Semesterrechnung> semesterrechnungen = new HashSet<>();
+
     public Semester() {
     }
 
@@ -144,5 +147,9 @@ public class Semester implements Comparable<Semester> {
 
     public Set<Kurs> getKurse() {
         return kurse;
+    }
+
+    public Set<Semesterrechnung> getSemesterrechnungen() {
+        return semesterrechnungen;
     }
 }

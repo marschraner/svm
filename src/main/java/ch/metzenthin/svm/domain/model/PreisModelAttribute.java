@@ -50,12 +50,15 @@ public class PreisModelAttribute {
         }
         BigDecimal newValueAsBigDecimal = null;
         if (checkNotEmpty(newValueTrimmed)) {
+            if (newValueTrimmed.matches("^\\d+$")) {
+                // .00 anhängen, falls Ganzzahl übergeben
+                newValueTrimmed = newValueTrimmed + ".00";
+            }
             String errMsg = "Kein gültiger Preis im Format 'Fr.Rp'";
-            if (newValue != null && !newValue.matches("^\\d+\\.\\d{2}$")) {
+            if (!newValueTrimmed.matches("^\\d+\\.\\d{2}$")) {
                 throw new SvmValidationException(1320, errMsg, field);
             }
             try {
-
                 newValueAsBigDecimal = new BigDecimal(newValueTrimmed);
             } catch (NumberFormatException e) {
                 modelAttributeListener.invalidate();

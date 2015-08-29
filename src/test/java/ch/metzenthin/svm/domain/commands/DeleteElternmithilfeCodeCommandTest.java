@@ -41,7 +41,7 @@ public class DeleteElternmithilfeCodeCommandTest {
 
         List<ElternmithilfeCode> codesSaved = new ArrayList<>();
 
-        // 2 Codes erfassen und den zweiten einem Maerchen hinzufügen
+        // 2 Codes erfassen
         ElternmithilfeCode elternmithilfeCode1 = new ElternmithilfeCode("kt", "KuchenTest", true);
         ElternmithilfeCode elternmithilfeCode2 = new ElternmithilfeCode("ft", "FrisierenTest", true);
 

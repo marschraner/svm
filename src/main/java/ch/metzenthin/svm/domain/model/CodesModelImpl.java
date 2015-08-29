@@ -3,13 +3,11 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.DeleteElternmithilfeCodeCommand;
-import ch.metzenthin.svm.domain.commands.DeleteSchuelerCodeCommand;
-import ch.metzenthin.svm.domain.commands.RemoveSchuelerCodeFromSchuelerCommand;
+import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 
 import java.util.ArrayList;
@@ -43,6 +41,15 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
     }
 
     @Override
+    public DeleteSemesterrechnungCodeCommand.Result eintragLoeschenSemesterrechnungCodesVerwalten(SvmContext svmContext, int indexCodeToBeRemoved) {
+        List<SemesterrechnungCode> semesterrechnungCodes = svmContext.getSvmModel().getSemesterrechnungCodesAll();
+        CommandInvoker commandInvoker = getCommandInvoker();
+        DeleteSemesterrechnungCodeCommand deleteSemesterrechnungCodeCommand = new DeleteSemesterrechnungCodeCommand(semesterrechnungCodes, indexCodeToBeRemoved);
+        commandInvoker.executeCommandAsTransaction(deleteSemesterrechnungCodeCommand);
+        return deleteSemesterrechnungCodeCommand.getResult();
+    }
+
+    @Override
     public void eintragLoeschenSchuelerCodesSchueler(CodesTableModel codesTableModel, SchuelerCode schuelerCodeToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         RemoveSchuelerCodeFromSchuelerCommand removeSchuelerCodeFromSchuelerCommand = new RemoveSchuelerCodeFromSchuelerCommand(schuelerCodeToBeRemoved, schuelerDatenblattModel.getSchueler());
@@ -63,6 +70,10 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
             case ELTERNMITHILFE:
                 List<ElternmithilfeCode> elternmithilfeCodes = svmContext.getSvmModel().getElternmithilfeCodesAll();
                 codeErfassenModel.setElternmithilfeCodeOrigin(elternmithilfeCodes.get(indexCodeToBeModified));
+                break;
+            case SEMESTERRECHNUNG:
+                List<SemesterrechnungCode> semesterrechnungCodes = svmContext.getSvmModel().getSemesterrechnungCodesAll();
+                codeErfassenModel.setSemesterrechnungCodeOrigin(semesterrechnungCodes.get(indexCodeToBeModified));
                 break;
         }
         return codeErfassenModel;

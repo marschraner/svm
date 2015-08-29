@@ -3,12 +3,10 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CheckCodeKuerzelBereitsInVerwendungCommand;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.SaveOrUpdateElternmithilfeCodeCommand;
-import ch.metzenthin.svm.domain.commands.SaveOrUpdateSchuelerCodeCommand;
+import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 
 /**
  * @author Martin Schraner
@@ -21,6 +19,7 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
 
     private SchuelerCode schuelerCodeOrigin;
     private ElternmithilfeCode elternmithilfeCodeOrigin;
+    private SemesterrechnungCode semesterrechnungCodeOrigin;
 
     public CodeErfassenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -34,6 +33,11 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     @Override
     public void setElternmithilfeCodeOrigin(ElternmithilfeCode elternmithilfeCodeOrigin) {
         this.elternmithilfeCodeOrigin = elternmithilfeCodeOrigin;
+    }
+
+    @Override
+    public void setSemesterrechnungCodeOrigin(SemesterrechnungCode semesterrechnungCodeOrigin) {
+        this.semesterrechnungCodeOrigin = semesterrechnungCodeOrigin;
     }
 
     private final StringModelAttribute kuerzelModelAttribute = new StringModelAttribute(
@@ -111,6 +115,9 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
             case ELTERNMITHILFE:
                 checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, elternmithilfeCodeOrigin, svmModel.getElternmithilfeCodesAll());
                 break;
+            case SEMESTERRECHNUNG:
+                checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, semesterrechnungCodeOrigin, svmModel.getSemesterrechnungCodesAll());
+                break;
         }
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
         return checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung();
@@ -129,6 +136,11 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
                 ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode(kuerzel, beschreibung, selektierbar);
                 SaveOrUpdateElternmithilfeCodeCommand saveOrUpdateElternmithilfeCodeCommand = new SaveOrUpdateElternmithilfeCodeCommand(elternmithilfeCode, elternmithilfeCodeOrigin, svmModel.getElternmithilfeCodesAll());
                 commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);
+                break;
+            case SEMESTERRECHNUNG:
+                SemesterrechnungCode semesterrechnungCode = new SemesterrechnungCode(kuerzel, beschreibung, selektierbar);
+                SaveOrUpdateSemesterrechnungCodeCommand saveOrUpdateSemesterrechnungCodeCommand = new SaveOrUpdateSemesterrechnungCodeCommand(semesterrechnungCode, semesterrechnungCodeOrigin, svmModel.getSemesterrechnungCodesAll());
+                commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterrechnungCodeCommand);
                 break;
         }
     }
@@ -153,6 +165,17 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
                 setBeschreibung(elternmithilfeCodeOrigin.getBeschreibung());
                 setSelektierbar(!elternmithilfeCodeOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
                 setSelektierbar(elternmithilfeCodeOrigin.getSelektierbar());
+            } catch (SvmValidationException ignore) {
+                ignore.printStackTrace();
+            }
+            setBulkUpdate(false);
+        } else if (semesterrechnungCodeOrigin != null) {
+            setBulkUpdate(true);
+            try {
+                setKuerzel(semesterrechnungCodeOrigin.getKuerzel());
+                setBeschreibung(semesterrechnungCodeOrigin.getBeschreibung());
+                setSelektierbar(!semesterrechnungCodeOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
+                setSelektierbar(semesterrechnungCodeOrigin.getSelektierbar());
             } catch (SvmValidationException ignore) {
                 ignore.printStackTrace();
             }

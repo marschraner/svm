@@ -21,7 +21,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * @author Hans Stamm
+ * @author Martin Schraner
  */
 public class KursDaoTest {
 

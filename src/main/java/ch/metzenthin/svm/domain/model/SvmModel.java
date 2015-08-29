@@ -14,6 +14,7 @@ public interface SvmModel {
     void loadAll();
     void loadSchuelerCodesAll();
     void loadElternmithilfeCodesAll();
+    void loadSemesterrechnungCodesAll();
     void loadLehrkraefteAll();
     void loadKursorteAll();
     void loadKurstypenAll();
@@ -25,6 +26,8 @@ public interface SvmModel {
     List<SchuelerCode> getSelektierbareSchuelerCodesAll();
     List<ElternmithilfeCode> getElternmithilfeCodesAll();
     List<ElternmithilfeCode> getSelektierbareElternmithilfeCodesAll();
+    List<SemesterrechnungCode> getSemesterrechnungCodesAll();
+    List<SemesterrechnungCode> getSelektierbareSemesterrechnungCodesAll();
     List<Lehrkraft> getLehrkraefteAll();
     List<Lehrkraft> getAktiveLehrkraefteAll();
     List<Kursort> getKursorteAll();

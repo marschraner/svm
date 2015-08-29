@@ -36,17 +36,8 @@ public class MaercheneinteilungDao extends GenericDao<Maercheneinteilung, Maerch
     }
 
     public List<Maercheneinteilung> findMaercheneinteilungenSchueler(Schueler schueler) {
-        TypedQuery<Maercheneinteilung> typedQuery = entityManager.createQuery("select m from Maercheneinteilung m where" +
-                " m.schueler.vorname = :vorname and " +
-                " m.schueler.nachname = :nachname and" +
-                " m.schueler.geburtsdatum = :geburtsdatum and" +
-                " m.schueler.adresse.strasse = :strasse and" +
-                " m.schueler.adresse.ort = :ort", Maercheneinteilung.class);
-        typedQuery.setParameter("vorname", schueler.getVorname());
-        typedQuery.setParameter("nachname", schueler.getNachname());
-        typedQuery.setParameter("geburtsdatum", schueler.getGeburtsdatum());
-        typedQuery.setParameter("strasse", schueler.getAdresse().getStrasse());
-        typedQuery.setParameter("ort", schueler.getAdresse().getOrt());
+        TypedQuery<Maercheneinteilung> typedQuery = entityManager.createQuery("select m from Maercheneinteilung m where m.schueler.personId = :personId", Maercheneinteilung.class);
+        typedQuery.setParameter("personId", schueler.getPersonId());
         List<Maercheneinteilung> maercheneinteilungenFound = typedQuery.getResultList();
         // Sortieren gemäss compareTo in Maercheneinteilungen
         Collections.sort(maercheneinteilungenFound);

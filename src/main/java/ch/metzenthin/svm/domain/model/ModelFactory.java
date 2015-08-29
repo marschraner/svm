@@ -35,4 +35,5 @@ public interface ModelFactory {
     EmailModel createEmailModel();
     LektionsgebuehrenModel createLektionsgebuehrenModel();
     LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel();
+    SemesterrechnungenSuchenModel createSemesterrechnungenSuchenModel();
 }
