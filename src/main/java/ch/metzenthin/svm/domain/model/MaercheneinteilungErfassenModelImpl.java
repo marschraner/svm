@@ -489,7 +489,7 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
         Schueler schueler = schuelerDatenblattModel.getSchueler();
         if (maercheneinteilung.getElternmithilfe() == Elternteil.MUTTER && !checkNotEmpty(schueler.getMutter().getFestnetz()) && !checkNotEmpty(schueler.getMutter().getNatel())) {
             return false;
-        } else if (maercheneinteilung.getElternmithilfe() == Elternteil.VATER && !checkNotEmpty(schueler.getVater().getFestnetz()) && !checkNotEmpty(schueler.getMutter().getNatel())) {
+        } else if (maercheneinteilung.getElternmithilfe() == Elternteil.VATER && !checkNotEmpty(schueler.getVater().getFestnetz()) && !checkNotEmpty(schueler.getVater().getNatel())) {
             return false;
         }
         return true;
