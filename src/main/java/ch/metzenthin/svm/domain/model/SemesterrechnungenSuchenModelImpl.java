@@ -5,6 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.Schuljahre;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.FindErfassteSemesterrechnungenCommand;
 import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
@@ -107,6 +108,11 @@ final class SemesterrechnungenSuchenModelImpl extends AbstractModel implements S
     }
 
     @Override
+    public RolleSelected getRolle() {
+        return rolle;
+    }
+
+    @Override
     public void setRolle(RolleSelected rolle) {
         RolleSelected oldValue = this.rolle;
         this.rolle = rolle;
@@ -162,6 +168,11 @@ final class SemesterrechnungenSuchenModelImpl extends AbstractModel implements S
     }
 
     @Override
+    public RechnungsdatumSelected getRechnungsdatumSelected() {
+        return rechnungsdatumSelected;
+    }
+
+    @Override
     public void setRechnungsdatumSelected(RechnungsdatumSelected rechnungsdatumSelected) {
         RechnungsdatumSelected oldValue = this.rechnungsdatumSelected;
         this.rechnungsdatumSelected = rechnungsdatumSelected;
@@ -192,6 +203,11 @@ final class SemesterrechnungenSuchenModelImpl extends AbstractModel implements S
     @Override
     public void setRechnungsdatum(String rechnungsdatum) throws SvmValidationException {
         rechnungsdatumModelAttribute.setNewValue(false, rechnungsdatum, isBulkUpdate());
+    }
+
+    @Override
+    public RechnungsstatusSelected getRechnungsstatus() {
+        return rechnungsstatus;
     }
 
     @Override
@@ -279,6 +295,15 @@ final class SemesterrechnungenSuchenModelImpl extends AbstractModel implements S
             codesList.add(0, SEMESTERRECHNUNG_CODE_ALLE);
         }
         return codesList.toArray(new SemesterrechnungCode[codesList.size()]);
+    }
+
+    @Override
+    public SemesterrechnungenTableData suchen() {
+        CommandInvoker commandInvoker = getCommandInvoker();
+        FindErfassteSemesterrechnungenCommand findErfassteSemesterrechnungenCommand =
+                new FindErfassteSemesterrechnungenCommand(this);
+        commandInvoker.executeCommand(findErfassteSemesterrechnungenCommand);
+        return new SemesterrechnungenTableData(findErfassteSemesterrechnungenCommand.getSemesterrechnungenFound());
     }
 
     @Override

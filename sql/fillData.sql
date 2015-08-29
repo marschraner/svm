@@ -383,7 +383,8 @@ INSERT INTO Kurs (kurs_id, semester_id, kurstyp_id, altersbereich, stufe, wochen
     (18, 3, 2, '6 1/2 - 8 J', '1. - 2. Klasse', 'DONNERSTAG', '15:50:00', '16:40:00', 1, NULL),
     (19, 2, 2, '9 - 10 J', '3. - 4. Klasse', 'DIENSTAG', '16:40:00', '17:30:00', 1, NULL),
     (20, 2, 2, '9 - 10 J', '3. - 4. Klasse', 'MITTWOCH', '16:40:00', '17:30:00', 1, NULL),
-    (21, 2, 2, '11 - 12 J', '5. - 6. Klasse', 'MITTWOCH', '17:30:00', '18:20:00', 1, NULL); 
+    (21, 2, 2, '11 - 12 J', '5. - 6. Klasse', 'MITTWOCH', '17:30:00', '18:20:00', 1, NULL),
+    (22, 3, 2, '11 - 12 J', '5. - 6. Klasse', 'MITTWOCH', '17:30:00', '18:20:00', 1, NULL); 
 
 SELECT * FROM Kurs;
 
@@ -414,7 +415,8 @@ INSERT INTO Kurs_Lehrkraft (kurs_id, person_id, lehrkraefte_ORDER) VALUES
     (18, 11, 0),
     (19, 11, 0),
     (20, 11, 0),
-    (21, 11, 0);
+    (21, 11, 0),
+    (22, 11, 0);
 
 SELECT * FROM Kurs_Lehrkraft;
 
@@ -443,7 +445,8 @@ INSERT INTO Schueler_Kurs (person_id, kurs_id) VALUES
     (41, 20),
     (43, 20),
     (45, 21),
-    (48, 21);
+    (48, 21),
+    (48, 22);
 
 SELECT * FROM Schueler_Kurs;
 
@@ -513,11 +516,11 @@ INSERT INTO Semesterrechnung (
     betrag_zahlung_2,
     datum_zahlung_3,
     betrag_zahlung_3,
-    restbetrag,
     code_id,
     bemerkungen) VALUES
-    (2, 1, NULL, NULL, NULL, NULL, NULL, 0, 18, 40.00, '2015-01-26', '2015-02-28', 720.00, NULL, NULL, NULL, NULL, 0.00, NULL, NULL),
-    (3, 1, NULL, NULL, NULL, NULL, NULL, 0, 18, 40.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,  NULL, NULL),
-    (2, 17, NULL, NULL, NULL, NULL, NULL, 0, 18, 22.00, '2015-01-26', '2015-03-01', 200.00, '2015-03-25', 196.00, NULL, NULL, 0.00, NULL, NULL);
+    (2, 1, NULL, NULL, NULL, NULL, NULL, 0, 18, 40.00, '2015-01-26', '2015-02-28', 720.00, NULL, NULL, NULL, NULL, NULL, NULL),
+    (3, 1, NULL, NULL, NULL, NULL, NULL, 0, 18, 40.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,  NULL),
+    (2, 17, NULL, NULL, NULL, NULL, NULL, 0, 18, 22.00, '2015-01-26', '2015-03-01', 200.00, '2015-03-25', 196.00, NULL, NULL, NULL, NULL),
+    (3, 19, 20.00, 'Gutschrift vom letzten Semester', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 SELECT * FROM Semesterrechnung;

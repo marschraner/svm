@@ -15,10 +15,6 @@ public interface SemesterrechnungenSuchenModel extends Model {
 
     SemesterrechnungCode SEMESTERRECHNUNG_CODE_ALLE = new SemesterrechnungCode();
 
-    Semester getSemesterInit(SvmModel svmModel);
-
-    SemesterrechnungCode[] getSelectableSemesterrechnungCodes(SvmModel svmModel);
-
     enum RolleSelected {
         SCHUELER,
         ELTERN,
@@ -41,11 +37,14 @@ public interface SemesterrechnungenSuchenModel extends Model {
     Semester getSemester();
     String getNachname();
     String getVorname();
+    RolleSelected getRolle();
     SemesterrechnungCode getSemesterrechnungCode();
     Stipendium getStipendium();
     Boolean isSechsJahresRabatt();
     Boolean isGratiskinder();
+    RechnungsdatumSelected getRechnungsdatumSelected();
     Calendar getRechnungsdatum();
+    RechnungsstatusSelected getRechnungsstatus();
     BigDecimal getWochenbetrag();
     BigDecimal getSchulgeld();
 
@@ -63,4 +62,7 @@ public interface SemesterrechnungenSuchenModel extends Model {
     void setWochenbetrag(String wochenbetrag) throws SvmValidationException;
     void setSchulgeld(String schulgeld) throws SvmValidationException;
 
+    Semester getSemesterInit(SvmModel svmModel);
+    SemesterrechnungCode[] getSelectableSemesterrechnungCodes(SvmModel svmModel);
+    SemesterrechnungenTableData suchen();
 }

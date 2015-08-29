@@ -131,7 +131,8 @@ public enum Field {
     RECHNUNGSDATUM("Rechnungsdatum"),
     WOCHENBETRAG("Wochenbetrag"),
     SCHULGELD("Schulgeld"),
-    SECHS_JAHRES_RABATT("6-Jahres-Rabatt");
+    SECHS_JAHRES_RABATT("6-Jahres-Rabatt"),
+    RESTBETRAG("Restbetrag");
 
     private String name;
 

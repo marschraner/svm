@@ -408,7 +408,6 @@ CREATE TABLE IF NOT EXISTS Semesterrechnung (
     betrag_zahlung_2           DECIMAL(8,2),
     datum_zahlung_3            DATE,
     betrag_zahlung_3           DECIMAL(8,2),
-    restbetrag                 DECIMAL(8,2),
     code_id                    INT,
     bemerkungen                TEXT,
     last_updated               TIMESTAMP     NOT NULL,

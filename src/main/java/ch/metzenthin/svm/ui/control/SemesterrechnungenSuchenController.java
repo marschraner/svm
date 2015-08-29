@@ -5,9 +5,12 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
+import ch.metzenthin.svm.domain.model.SemesterrechnungenTableData;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenSuchenModel;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
+import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
+import ch.metzenthin.svm.ui.components.SemesterrechnungenPanel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -521,7 +524,13 @@ public class SemesterrechnungenSuchenController extends AbstractController {
             btnSuchen.setFocusPainted(false);
             return;
         }
-        //TODO
+        SemesterrechnungenTableData semesterrechnungenTableData = semesterrechnungenSuchenModel.suchen();
+        SemesterrechnungenTableModel semesterrechnungenTableModel = new SemesterrechnungenTableModel(semesterrechnungenTableData);
+        SemesterrechnungenPanel semesterrechnungenPanel = new SemesterrechnungenPanel(svmContext, semesterrechnungenTableModel);
+        semesterrechnungenPanel.addNextPanelListener(nextPanelListener);
+        semesterrechnungenPanel.addCloseListener(closeListener);
+        semesterrechnungenPanel.addZurueckListener(zurueckListener);
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{semesterrechnungenPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
@@ -620,10 +629,10 @@ public class SemesterrechnungenSuchenController extends AbstractController {
             radioBtnRechnungsstatusAlle.setSelected(true);
         }
         else if (checkIsFieldChange(Field.WOCHENBETRAG, evt)) {
-            txtWochenbetrag.setText(semesterrechnungenSuchenModel.getWochenbetrag().toString());
+            txtWochenbetrag.setText(semesterrechnungenSuchenModel.getWochenbetrag() == null ? null : semesterrechnungenSuchenModel.getWochenbetrag().toString());
         }
         else if (checkIsFieldChange(Field.SCHULGELD, evt)) {
-            txtSchulgeld.setText(semesterrechnungenSuchenModel.getSchulgeld().toString());
+            txtSchulgeld.setText(semesterrechnungenSuchenModel.getSchulgeld() == null ? null : semesterrechnungenSuchenModel.getSchulgeld().toString());
         }
     }
 

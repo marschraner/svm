@@ -119,7 +119,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         setParameterStammdatenOhneGeburtsdatumSuchperiode();
         setParameterGeburtsdatumSuchperiode();
         setParameterStichtag();
-        setParameterCodeKuerzel();
+        setParameterSchuelerCodeId();
         setParameterKurs();
         setParameterMaerchen();
 
@@ -329,7 +329,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
 
     private void createWhereSelectionsSchuelerCode() {
         if (schuelerCode != SchuelerSuchenModel.SCHUELER_CODE_ALLE) {
-            selectStatementSb.append(" cod.kuerzel = :codeKuerzel and");
+            selectStatementSb.append(" cod.codeId = :schuelerCodeId and");
         }
     }
 
@@ -343,7 +343,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
                 selectStatementSb.append(" kurs.zeitBeginn = :zeitBeginn and");
             }
             if (lehrkraft != SchuelerSuchenModel.LEHRKRAFT_ALLE) {
-                selectStatementSb.append(" lkr.vorname = :lehrkraftVorname and lkr.nachname = :lehrkraftNachname and lkr.geburtsdatum = :lehrkraftGeburtsdatum and");
+                selectStatementSb.append(" lkr.personId = :lehrkraftPersonId and");
             }
         }
     }
@@ -381,7 +381,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
                 selectStatementSb.append(") and");
             }
             if (elternmithilfeCode != SchuelerSuchenModel.ELTERNMITHILFE_CODE_ALLE) {
-                selectStatementSb.append(" mae.elternmithilfeCode = :elternmithilfeCode and");
+                selectStatementSb.append(" mae.elternmithilfeCode.codeId = :elternmithilfeCodeId and");
             }
             if (kuchenVorstellung != null) {
                 switch (kuchenVorstellung) {
@@ -478,9 +478,9 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
-    private void setParameterCodeKuerzel() {
-        if (selectStatementSb.toString().contains(":codeKuerzel")) {
-            typedQuery.setParameter("codeKuerzel", schuelerCode.getKuerzel());
+    private void setParameterSchuelerCodeId() {
+        if (selectStatementSb.toString().contains(":schuelerCodeId")) {
+            typedQuery.setParameter("schuelerCodeId", schuelerCode.getCodeId());
         }
     }
 
@@ -494,14 +494,8 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         if (selectStatementSb.toString().contains(":zeitBeginn")) {
             typedQuery.setParameter("zeitBeginn", zeitBeginn);
         }
-        if (selectStatementSb.toString().contains(":lehrkraftVorname")) {
-            typedQuery.setParameter("lehrkraftVorname", lehrkraft.getVorname());
-        }
-        if (selectStatementSb.toString().contains(":lehrkraftNachname")) {
-            typedQuery.setParameter("lehrkraftNachname", lehrkraft.getNachname());
-        }
-        if (selectStatementSb.toString().contains(":lehrkraftGeburtsdatum")) {
-            typedQuery.setParameter("lehrkraftGeburtsdatum", lehrkraft.getGeburtsdatum());
+        if (selectStatementSb.toString().contains(":lehrkraftPersonId")) {
+            typedQuery.setParameter("lehrkraftPersonId", lehrkraft.getPersonId());
         }
     }
 
@@ -525,8 +519,8 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
                 typedQuery.setParameter("maerchenrolleL5" + i, "% " + rolle + ": %");
             }
         }
-        if (selectStatementSb.toString().contains(":elternmithilfeCode")) {
-            typedQuery.setParameter("elternmithilfeCode", elternmithilfeCode);
+        if (selectStatementSb.toString().contains(":elternmithilfeCodeId")) {
+            typedQuery.setParameter("elternmithilfeCodeId", elternmithilfeCode.getCodeId());
         }
         if (selectStatementSb.toString().contains(":zusatzattributMaerchen")) {
             typedQuery.setParameter("zusatzattributMaerchen", zusatzattributMaerchen);

@@ -914,7 +914,6 @@
       <column name="betrag_zahlung_2" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
       <column name="datum_zahlung_3" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="betrag_zahlung_3" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
-      <column name="restbetrag" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
       <column name="code_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="bemerkungen" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>

@@ -79,9 +79,6 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     @Column(name = "betrag_zahlung_3", nullable = true)
     private BigDecimal betragZahlung3;
 
-    @Column(name = "restbetrag", nullable = true)
-    private BigDecimal restbetrag;
-
     @ManyToOne
     @JoinColumn(name = "code_id", nullable = true)
     private SemesterrechnungCode semesterrechnungCode;
@@ -93,7 +90,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     public Semesterrechnung() {
     }
 
-    public Semesterrechnung(Semester semester, Angehoeriger rechnungsempfaenger, BigDecimal ermaessigung, String ermaessigungsgrund, BigDecimal zuschlag, String zuschlagsgrund, Stipendium stipendium, Boolean gratiskinder, int anzahlWochen, BigDecimal wochenbetrag, Calendar rechnungsdatum, Calendar datumZahlung1, BigDecimal betragZahlung1, Calendar datumZahlung2, BigDecimal betragZahlung2, Calendar datumZahlung3, BigDecimal betragZahlung3, BigDecimal restbetrag, String bemerkungen) {
+    public Semesterrechnung(Semester semester, Angehoeriger rechnungsempfaenger, BigDecimal ermaessigung, String ermaessigungsgrund, BigDecimal zuschlag, String zuschlagsgrund, Stipendium stipendium, Boolean gratiskinder, int anzahlWochen, BigDecimal wochenbetrag, Calendar rechnungsdatum, Calendar datumZahlung1, BigDecimal betragZahlung1, Calendar datumZahlung2, BigDecimal betragZahlung2, Calendar datumZahlung3, BigDecimal betragZahlung3, String bemerkungen) {
         this.semester = semester;
         this.rechnungsempfaenger = rechnungsempfaenger;
         this.ermaessigung = ermaessigung;
@@ -111,7 +108,6 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.betragZahlung2 = betragZahlung2;
         this.datumZahlung3 = datumZahlung3;
         this.betragZahlung3 = betragZahlung3;
-        this.restbetrag = restbetrag;
         this.bemerkungen = bemerkungen;
     }
 
@@ -143,7 +139,6 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.betragZahlung2 = otherSemesterrechnung.betragZahlung2;
         this.datumZahlung3 = otherSemesterrechnung.datumZahlung3;
         this.betragZahlung3 = otherSemesterrechnung.betragZahlung3;
-        this.restbetrag = otherSemesterrechnung.restbetrag;
         this.bemerkungen = otherSemesterrechnung.getBemerkungen();
     }
 
@@ -283,14 +278,6 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.betragZahlung3 = betragZahlung3;
     }
 
-    public BigDecimal getRestbetrag() {
-        return restbetrag;
-    }
-
-    public void setRestbetrag(BigDecimal restbetrag) {
-        this.restbetrag = restbetrag;
-    }
-
     public SemesterrechnungCode getSemesterrechnungCode() {
         return semesterrechnungCode;
     }
@@ -316,5 +303,47 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
 
     public void setBemerkungen(String bemerkungen) {
         this.bemerkungen = bemerkungen;
+    }
+
+    @Transient
+    public BigDecimal getSchulgeld() {
+        // Gratiskinder haben immer 0.00 als Schulgeld
+        if (gratiskinder) {
+            return new BigDecimal("0.00");
+        }
+        if (anzahlWochen == null || wochenbetrag == null) {
+            return null;
+        }
+        // Normale Rechnungen
+        BigDecimal schulgeld = new BigDecimal(anzahlWochen).multiply(wochenbetrag);
+        // Stipendium
+        if (stipendium != null && stipendium != Stipendium.KEINES) {
+            schulgeld = schulgeld.multiply(new BigDecimal(stipendium.getFaktor()));
+            schulgeld = schulgeld.setScale(1, BigDecimal.ROUND_HALF_EVEN);  // Runden auf 10 Rappen
+            schulgeld = schulgeld.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        }
+        // Zuschlag / Ermässigung
+        if (zuschlag != null) {
+            schulgeld = schulgeld.add(zuschlag);
+        }
+        if (ermaessigung != null) {
+            schulgeld = schulgeld.subtract(ermaessigung);
+        }
+        return schulgeld;
+    }
+
+    @Transient
+    public BigDecimal getRestbetrag() {
+        BigDecimal restbetrag = getSchulgeld();
+        if (betragZahlung1 != null) {
+            restbetrag = restbetrag.subtract(betragZahlung1);
+        }
+        if (betragZahlung2 != null) {
+            restbetrag = restbetrag.subtract(betragZahlung2);
+        }
+        if (betragZahlung3 != null) {
+            restbetrag = restbetrag.subtract(betragZahlung3);
+        }
+        return restbetrag;
     }
 }

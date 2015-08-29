@@ -532,17 +532,17 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         if (checkIsFieldChange(Field.LEKTIONSLAENGE, evt)) {
             txtLektionslaenge.setText(Integer.toString(lektionsgebuehrenErfassenModel.getLektionslaenge()));
         } else if (checkIsFieldChange(Field.BETRAG_1_KIND, evt)) {
-            txtBetrag1Kind.setText(lektionsgebuehrenErfassenModel.getBetrag1Kind().toString());
+            txtBetrag1Kind.setText(lektionsgebuehrenErfassenModel.getBetrag1Kind() == null ? null : lektionsgebuehrenErfassenModel.getBetrag1Kind().toString());
         } else if (checkIsFieldChange(Field.BETRAG_2_KINDER, evt)) {
-            txtBetrag2Kinder.setText(lektionsgebuehrenErfassenModel.getBetrag2Kinder().toString());
+            txtBetrag2Kinder.setText(lektionsgebuehrenErfassenModel.getBetrag2Kinder() == null ? null : lektionsgebuehrenErfassenModel.getBetrag2Kinder().toString());
         } else if (checkIsFieldChange(Field.BETRAG_3_KINDER, evt)) {
-            txtBetrag3Kinder.setText(lektionsgebuehrenErfassenModel.getBetrag3Kinder().toString());
+            txtBetrag3Kinder.setText(lektionsgebuehrenErfassenModel.getBetrag3Kinder() == null ? null : lektionsgebuehrenErfassenModel.getBetrag3Kinder().toString());
         } else if (checkIsFieldChange(Field.BETRAG_4_KINDER, evt)) {
-            txtBetrag4Kinder.setText(lektionsgebuehrenErfassenModel.getBetrag4Kinder().toString());
+            txtBetrag4Kinder.setText(lektionsgebuehrenErfassenModel.getBetrag4Kinder() == null ? null : lektionsgebuehrenErfassenModel.getBetrag4Kinder().toString());
         } else if (checkIsFieldChange(Field.BETRAG_5_KINDER, evt)) {
-            txtBetrag5Kinder.setText(lektionsgebuehrenErfassenModel.getBetrag5Kinder().toString());
+            txtBetrag5Kinder.setText(lektionsgebuehrenErfassenModel.getBetrag5Kinder() == null ? null : lektionsgebuehrenErfassenModel.getBetrag5Kinder().toString());
         } else if (checkIsFieldChange(Field.BETRAG_6_KINDER, evt)) {
-            txtBetrag6Kinder.setText(lektionsgebuehrenErfassenModel.getBetrag6Kinder().toString());
+            txtBetrag6Kinder.setText(lektionsgebuehrenErfassenModel.getBetrag6Kinder() == null ? null : lektionsgebuehrenErfassenModel.getBetrag6Kinder().toString());
         }
     }
 
