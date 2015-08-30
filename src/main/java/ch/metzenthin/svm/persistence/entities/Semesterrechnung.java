@@ -113,8 +113,12 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
 
     @Override
     public int compareTo(Semesterrechnung otherSemesterrechnung) {
-        // aufsteigend nach Rechnungsempfänger sortieren
-        return this.rechnungsempfaenger.compareTo(otherSemesterrechnung.rechnungsempfaenger);
+        // aufsteigend nach Rechnungsempfänger und absteigend nach Semester sortieren
+        int result = this.rechnungsempfaenger.compareTo(otherSemesterrechnung.rechnungsempfaenger);
+        if (result == 0) {
+            result = this.semester.compareTo(otherSemesterrechnung.semester);
+        }
+        return result;
     }
 
     public boolean isIdenticalWith(Semesterrechnung otherSemesterrechnung) {

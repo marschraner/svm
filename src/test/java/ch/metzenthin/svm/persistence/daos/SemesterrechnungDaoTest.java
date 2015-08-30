@@ -16,6 +16,7 @@ import javax.persistence.Persistence;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -67,7 +68,7 @@ public class SemesterrechnungDaoTest {
             SemesterrechnungCode semesterrechnungCode = new SemesterrechnungCode("1t", "Stipendium Test", true);
             entityManager.persist(semesterrechnungCode);
 
-            // Märcheneinteilung
+            // Semesterrechnung
             Semesterrechnung semesterrechnung = new Semesterrechnung(semester, rechnungsempfaenger,
                     new BigDecimal("10.00"),
                     "1 Woche dispensiert",
@@ -231,6 +232,129 @@ public class SemesterrechnungDaoTest {
             }
         }
 
+    }
+
+    @Test
+    public void testFindSemesterrechnungenRechnungsempfaenger() {
+        EntityTransaction tx = null;
+
+        try {
+            tx = entityManager.getTransaction();
+            tx.begin();
+
+            // Semester, Rechnungsempfänger, SemesterrechnungCode erzeugen
+            Semester semester1 = new Semester("1911/1912", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1911, Calendar.AUGUST, 20), new GregorianCalendar(1912, Calendar.FEBRUARY, 10), 21);
+            entityManager.persist(semester1);
+            Semester semester2 = new Semester("1911/1912", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1912, Calendar.FEBRUARY, 20), new GregorianCalendar(1912, Calendar.JULY, 10), 21);
+            entityManager.persist(semester2);
+            Semester semester3 = new Semester("1912/1913", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1912, Calendar.AUGUST, 20), new GregorianCalendar(1913, Calendar.FEBRUARY, 10), 21);
+            entityManager.persist(semester1);
+
+            Schueler schueler1 = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
+            Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
+            schueler1.setAdresse(adresse);
+            schueler1.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
+            Angehoeriger rechnungsempfaenger1 = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            rechnungsempfaenger1.setAdresse(adresse);
+            schueler1.setRechnungsempfaenger(rechnungsempfaenger1);
+            entityManager.persist(schueler1);
+
+            Schueler schueler2 = new Schueler("Hanna", "Hasler", new GregorianCalendar(2010, Calendar.JULY, 24), "044 422 69 33", null, null, Geschlecht.W, null);
+            Adresse adresse2 = new Adresse("Hohenklingenstrasse", "22", "8049", "Zürich");
+            schueler2.setAdresse(adresse2);
+            schueler2.addAnmeldung(new Anmeldung(new GregorianCalendar(2013, Calendar.JANUARY, 1), null));
+            Angehoeriger rechnungsempfaenger2 = new Angehoeriger(Anrede.FRAU, "Adriana", "Hasler", "044 422 69 33", null, null);
+            rechnungsempfaenger2.setAdresse(adresse2);
+            schueler2.setRechnungsempfaenger(rechnungsempfaenger2);
+            entityManager.persist(schueler2);
+
+            SemesterrechnungCode semesterrechnungCode1 = new SemesterrechnungCode("1t", "Stipendium Test2", true);
+            entityManager.persist(semesterrechnungCode1);
+            SemesterrechnungCode semesterrechnungCode2 = new SemesterrechnungCode("2t", "Stipendium Test2", true);
+            entityManager.persist(semesterrechnungCode2);
+
+            // Märcheneinteilung
+            Semesterrechnung semesterrechnung1 = new Semesterrechnung(semester1, rechnungsempfaenger1,
+                    new BigDecimal("17.00"),
+                    "2 Wochen dispensiert",
+                    new BigDecimal("23.00"),
+                    "versäumte Zahlungen",
+                    Stipendium.STIPENDIUM_60,
+                    true,
+                    17,
+                    new BigDecimal("22.00"),
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 5),
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 23),
+                    new BigDecimal("100.00"),
+                    new GregorianCalendar(1912, Calendar.MARCH, 12),
+                    new BigDecimal("150.00"),
+                    new GregorianCalendar(1912, Calendar.APRIL, 21),
+                    new BigDecimal("146.00"),
+                    "Zahlt immer in Raten");
+            semesterrechnung1.setSemesterrechnungCode(semesterrechnungCode1);
+            entityManager.persist(semesterrechnung1);
+            Semesterrechnung semesterrechnung2 = new Semesterrechnung(semester1, rechnungsempfaenger2,
+                    new BigDecimal("17.00"),
+                    "3 Wochen dispensiert",
+                    new BigDecimal("23.00"),
+                    "versäumte Zahlungen",
+                    Stipendium.STIPENDIUM_60,
+                    true,
+                    17,
+                    new BigDecimal("22.00"),
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 5),
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 23),
+                    new BigDecimal("100.00"),
+                    new GregorianCalendar(1912, Calendar.MARCH, 12),
+                    new BigDecimal("150.00"),
+                    new GregorianCalendar(1912, Calendar.APRIL, 21),
+                    new BigDecimal("146.00"),
+                    "Zahlt immer in Raten");
+            semesterrechnung2.setSemesterrechnungCode(semesterrechnungCode1);
+            entityManager.persist(semesterrechnung2);
+            Semesterrechnung semesterrechnung3 = new Semesterrechnung(semester2, rechnungsempfaenger1,
+                    new BigDecimal("20.00"),
+                    "1 Woche dispensiert",
+                    new BigDecimal("30.00"),
+                    "versäumte Zahlung",
+                    Stipendium.STIPENDIUM_70,
+                    false,
+                    18,
+                    new BigDecimal("32.00"),
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 28),
+                    new BigDecimal("200.00"),
+                    new GregorianCalendar(1912, Calendar.MARCH, 10),
+                    new BigDecimal("160.00"),
+                    new GregorianCalendar(1912, Calendar.APRIL, 20),
+                    new BigDecimal("156.00"),
+                    "Zahlt in Raten");
+            semesterrechnung3.setSemesterrechnungCode(semesterrechnungCode2);
+            entityManager.persist(semesterrechnung3);
+
+            entityManager.flush();
+
+            // Nach Semesterrechnungen Semester 1 suchen
+            List<Semesterrechnung> semesterrechnungList1 = semesterrechnungDao.findSemesterrechnungenSemester(semester1);
+            assertEquals(2, semesterrechnungList1.size());
+            assertEquals("3 Wochen dispensiert", semesterrechnungList1.get(0).getErmaessigungsgrund());
+            assertEquals("2 Wochen dispensiert", semesterrechnungList1.get(1).getErmaessigungsgrund());
+
+            // Nach Semesterrechnungen Semester 2 suchen
+            List<Semesterrechnung> semesterrechnungList2 = semesterrechnungDao.findSemesterrechnungenSemester(semester2);
+            assertEquals(1, semesterrechnungList2.size());
+            assertEquals("1 Woche dispensiert", semesterrechnungList2.get(0).getErmaessigungsgrund());
+
+            // Nach Semesterrechnungen Semester 3 suchen
+            List<Semesterrechnung> semesterrechnungList3 = semesterrechnungDao.findSemesterrechnungenSemester(semester3);
+            assertTrue(semesterrechnungList3.isEmpty());
+
+
+        } finally {
+            if (tx != null) {
+                tx.rollback();
+            }
+        }
     }
 
 }

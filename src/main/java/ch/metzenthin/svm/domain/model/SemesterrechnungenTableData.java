@@ -34,7 +34,7 @@ public class SemesterrechnungenTableData {
         Object value = null;
         switch (COLUMNS[columnIndex]) {
             case RECHNUNGSEMPFAENGER:
-                value = semesterrechnung.getRechnungsempfaenger().getVorname() + " " + semesterrechnung.getRechnungsempfaenger().getNachname();
+                value = semesterrechnung.getRechnungsempfaenger().getNachname() + " " + semesterrechnung.getRechnungsempfaenger().getVorname();
                 break;
             case RECHNUNGSDATUM:
                 value = semesterrechnung.getRechnungsdatum();

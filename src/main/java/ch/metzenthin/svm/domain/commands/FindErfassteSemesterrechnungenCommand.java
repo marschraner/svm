@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
@@ -78,43 +79,43 @@ public class FindErfassteSemesterrechnungenCommand extends GenericDaoCommand {
         // Suchparameter setzen
         setSelectionParameters();
 
-        List<Semesterrechnung> resultList1 = typedQuery.getResultList();
+        semesterrechnungenFound = typedQuery.getResultList();
         if (schulgeld == null && rechnungsstatus == SemesterrechnungenSuchenModel.RechnungsstatusSelected.ALLE) {
-            semesterrechnungenFound = resultList1;
             return;
         }
 
         // Schulgeld
-        List<Semesterrechnung> resultList2;
         if (schulgeld != null) {
-            resultList2 = new ArrayList<>();
-            for (Semesterrechnung semesterrechnung : resultList1) {
-                if (semesterrechnung.getSchulgeld() != null && semesterrechnung.getSchulgeld().compareTo(schulgeld) == 0) {
-                    resultList2.add(semesterrechnung);
+            Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
+            while (it.hasNext()) {
+                Semesterrechnung semesterrechnungIt = it.next();
+                if (semesterrechnungIt.getSchulgeld() == null || semesterrechnungIt.getSchulgeld().compareTo(schulgeld) != 0) {
+                    it.remove();
                 }
             }
-        } else {
-            resultList2 = resultList1;
         }
 
-        // Offene / bezahlte Rechnungen
-        List<Semesterrechnung> resultList3 = new ArrayList<>();
-        if (rechnungsstatus == SemesterrechnungenSuchenModel.RechnungsstatusSelected.OFFEN) {
-            for (Semesterrechnung semesterrechnung : resultList1) {
-                if (semesterrechnung.getRestbetrag() != null && semesterrechnung.getRestbetrag().compareTo(BigDecimal.ZERO) > 0) {
-                    resultList3.add(semesterrechnung);
+        // Rechnungsstatus
+        if (rechnungsstatus != null && rechnungsstatus != SemesterrechnungenSuchenModel.RechnungsstatusSelected.ALLE) {
+            Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
+            if (rechnungsstatus == SemesterrechnungenSuchenModel.RechnungsstatusSelected.OFFEN) {
+                while (it.hasNext()) {
+                    Semesterrechnung semesterrechnungIt = it.next();
+                    if (semesterrechnungIt.getRestbetrag() == null || semesterrechnungIt.getRestbetrag().compareTo(BigDecimal.ZERO) <= 0) {
+                        it.remove();
+                    }
                 }
             }
-        } else if (rechnungsstatus == SemesterrechnungenSuchenModel.RechnungsstatusSelected.BEZAHLT) {
-            for (Semesterrechnung semesterrechnung : resultList1) {
-                if (semesterrechnung.getRestbetrag() != null && semesterrechnung.getRestbetrag().compareTo(BigDecimal.ZERO) == 0) {
-                    resultList3.add(semesterrechnung);
+            else if (rechnungsstatus == SemesterrechnungenSuchenModel.RechnungsstatusSelected.BEZAHLT) {
+                while (it.hasNext()) {
+                    Semesterrechnung semesterrechnungIt = it.next();
+                    if (semesterrechnungIt.getRestbetrag() == null || semesterrechnungIt.getRestbetrag().compareTo(BigDecimal.ZERO) > 0) {
+                        it.remove();
+                    }
                 }
             }
-        } else {
-            resultList3 = resultList2;
         }
-        semesterrechnungenFound = resultList3;
+
     }
 
     private void createJoinSchueler() {

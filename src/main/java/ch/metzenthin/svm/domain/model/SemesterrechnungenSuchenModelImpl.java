@@ -5,7 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.Schuljahre;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.FindErfassteSemesterrechnungenCommand;
+import ch.metzenthin.svm.domain.commands.FindOrCreateSemesterrechnungenCommand;
 import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
@@ -300,10 +300,9 @@ final class SemesterrechnungenSuchenModelImpl extends AbstractModel implements S
     @Override
     public SemesterrechnungenTableData suchen() {
         CommandInvoker commandInvoker = getCommandInvoker();
-        FindErfassteSemesterrechnungenCommand findErfassteSemesterrechnungenCommand =
-                new FindErfassteSemesterrechnungenCommand(this);
-        commandInvoker.executeCommand(findErfassteSemesterrechnungenCommand);
-        return new SemesterrechnungenTableData(findErfassteSemesterrechnungenCommand.getSemesterrechnungenFound());
+        FindOrCreateSemesterrechnungenCommand findOrCreateSemesterrechnungenCommand = new FindOrCreateSemesterrechnungenCommand(this);
+        commandInvoker.executeCommandAsTransaction(findOrCreateSemesterrechnungenCommand);
+        return new SemesterrechnungenTableData(findOrCreateSemesterrechnungenCommand.getFoundOrCreatedSemesterrechnungen());
     }
 
     @Override

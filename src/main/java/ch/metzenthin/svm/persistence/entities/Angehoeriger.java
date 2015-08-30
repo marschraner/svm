@@ -2,9 +2,11 @@ package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.*;
 
 /**
  * @author Martin Schraner
@@ -68,5 +70,11 @@ public class Angehoeriger extends Person {
 
     public Set<Semesterrechnung> getSemesterrechnungen() {
         return semesterrechnungen;
+    }
+
+    public List<Semesterrechnung> getSemesterrechnungenAsList() {
+        List<Semesterrechnung> semesterrechnungenAsList = new ArrayList<>(semesterrechnungen);
+        Collections.sort(semesterrechnungenAsList);
+        return semesterrechnungenAsList;
     }
 }

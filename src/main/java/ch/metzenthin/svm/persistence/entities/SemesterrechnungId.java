@@ -12,8 +12,8 @@ public class SemesterrechnungId implements Serializable {
 
     public SemesterrechnungId() {}
 
-    public SemesterrechnungId(Integer schueler, Integer rechnungsempfaenger) {
-        this.semester = schueler;
+    public SemesterrechnungId(Integer semester, Integer rechnungsempfaenger) {
+        this.semester = semester;
         this.rechnungsempfaenger = rechnungsempfaenger;
     }
 

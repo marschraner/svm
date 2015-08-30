@@ -71,7 +71,7 @@ public class SaveOrUpdateMaercheneinteilungCommandTest {
         schueler2.addAnmeldung(new Anmeldung(new GregorianCalendar(2013, Calendar.JANUARY, 1), null));
         Angehoeriger mutter2 = new Angehoeriger(Anrede.FRAU, "Adriana", "Hasler", "044 422 69 33", null, null);
         mutter2.setAdresse(adresse2);
-        schueler2.setVater(mutter2);
+        schueler2.setMutter(mutter2);
         schueler2.setRechnungsempfaenger(mutter2);
         saveSchuelerCommand = new SaveSchuelerCommand(schueler2);
         commandInvoker.executeCommandAsTransaction(saveSchuelerCommand);
