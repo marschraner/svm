@@ -4,9 +4,7 @@ import ch.metzenthin.svm.common.dataTypes.Schuljahre;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.daos.KursDao;
 import ch.metzenthin.svm.persistence.daos.SemesterDao;
-import ch.metzenthin.svm.persistence.entities.Kurs;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
-import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.persistence.entities.*;
 
 import java.util.List;
 
@@ -69,6 +67,18 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
             kurs.setSemester(semester);
             kursDao.save(kurs);
             kurseCurrentSemester.add(kurs);
+
+            // Falls 2. Semester, Schüler des alten Kurses auch importieren
+            if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER) {
+                for (Schueler schueler : kursPreviousSemester.getSchueler()) {
+                    // Prüfen, ob Schüler noch angemeldet
+                    Anmeldung anmeldung = schueler.getAnmeldungen().get(0);
+                    if (anmeldung.getAbmeldedatum() == null || anmeldung.getAbmeldedatum().after(semester.getSemesterbeginn())) {
+                        kursDao.addToSchuelerAndSave(kurs, schueler);
+                    }
+                }
+            }
+
         }
     }
 

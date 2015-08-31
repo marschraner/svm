@@ -41,13 +41,13 @@ public class DetermineNaechstesNochNichtErfasstesSemesterCommand implements Comm
             naechsteSemesterbezeichnung = Semesterbezeichnung.ERSTES_SEMESTER;
         }
         while (isSemesterBereitsErfasst(naechtesSchuljahr, naechsteSemesterbezeichnung) && schuljahr1 < Schuljahre.SCHULJAHR_VALID_MAX) {
-            schuljahr1++;
-            schuljahr2++;
-            naechtesSchuljahr = schuljahr1 + "/" + schuljahr2;
             if (naechsteSemesterbezeichnung == Semesterbezeichnung.ERSTES_SEMESTER) {
                 naechsteSemesterbezeichnung = Semesterbezeichnung.ZWEITES_SEMESTER;
             } else {
                 naechsteSemesterbezeichnung = Semesterbezeichnung.ERSTES_SEMESTER;
+                schuljahr1++;
+                schuljahr2++;
+                naechtesSchuljahr = schuljahr1 + "/" + schuljahr2;
             }
         }
         naechstesNochNichtErfasstesSemester = new Semester(naechtesSchuljahr, naechsteSemesterbezeichnung, null, null, 0);

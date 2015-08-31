@@ -2,6 +2,7 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
+import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.commands.DeleteKursCommand;
 import ch.metzenthin.svm.domain.model.KurseModel;
 import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
@@ -286,9 +287,15 @@ public class KurseController {
 
     private void onImportieren() {
         Object[] options = {"Ja", "Nein"};
+        String msg;
+        if (kurseSemesterwahlModel.getSemester().getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+            msg = "Sollen die Kurse vom 2. Semester des vorherigen Schuljahrs (ohne Schüler) importiert werden?";
+        } else {
+            msg = "Sollen die Kurse vom 1. Semester (inklusive Schüler) importiert werden?";
+        }
         int n = JOptionPane.showOptionDialog(
                 null,
-                "Sollen die Kurse vom vorherigen Semester importiert werden?",
+                msg,
                 "Import Kurse vom vorherigen Semester?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
@@ -298,6 +305,7 @@ public class KurseController {
         if (n == 0) {
             kurseModel.importKurseFromPreviousSemester(svmContext.getSvmModel(), kurseSemesterwahlModel, kurseTableModel);
             kurseTableModel.fireTableDataChanged();
+            lblTotal.setText(kurseModel.getTotal(kurseTableModel));
             btnImportieren.setEnabled(false);
             if (kurseTableModel.getRowCount() > 0) {
                 btnExportieren.setEnabled(true);
