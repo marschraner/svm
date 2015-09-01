@@ -337,7 +337,7 @@ public class SemesterrechnungenSuchenController extends AbstractController {
     }
 
     private void setModelRechnungsdatum() throws SvmValidationException {
-        makeErrorLabelInvisible(Field.RECHNUNGSDATUM);
+        makeErrorLabelInvisible(Field.RECHNUNGSDATUM_VORRECHNUNG);
         try {
             semesterrechnungenSuchenModel.setRechnungsdatum(txtRechnungsdatum.getText());
         } catch (SvmValidationException e) {
@@ -379,7 +379,7 @@ public class SemesterrechnungenSuchenController extends AbstractController {
     }
 
     private void setModelWochenbetrag() throws SvmValidationException {
-        makeErrorLabelInvisible(Field.WOCHENBETRAG);
+        makeErrorLabelInvisible(Field.WOCHENBETRAG_VORRECHNUNG);
         try {
             semesterrechnungenSuchenModel.setWochenbetrag(txtWochenbetrag.getText());
         } catch (SvmValidationException e) {
@@ -421,7 +421,7 @@ public class SemesterrechnungenSuchenController extends AbstractController {
     }
 
     private void setModelSchulgeld() throws SvmValidationException {
-        makeErrorLabelInvisible(Field.SCHULGELD);
+        makeErrorLabelInvisible(Field.SCHULGELD_VORRECHNUNG);
         try {
             semesterrechnungenSuchenModel.setSchulgeld(txtSchulgeld.getText());
         } catch (SvmValidationException e) {
@@ -616,7 +616,7 @@ public class SemesterrechnungenSuchenController extends AbstractController {
         else if (checkIsFieldChange(Field.RECHNUNGSDATUM_SELECTED, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumSelected.NACH) {
             radioBtnNach.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.RECHNUNGSDATUM, evt)) {
+        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_VORRECHNUNG, evt)) {
             txtRechnungsdatum.setText(asString(semesterrechnungenSuchenModel.getRechnungsdatum()));
         }
         else if (checkIsFieldChange(Field.RECHNUNGSSTATUS, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsstatusSelected.OFFEN) {
@@ -628,10 +628,10 @@ public class SemesterrechnungenSuchenController extends AbstractController {
         else if (checkIsFieldChange(Field.RECHNUNGSSTATUS, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsstatusSelected.ALLE) {
             radioBtnRechnungsstatusAlle.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.WOCHENBETRAG, evt)) {
+        else if (checkIsFieldChange(Field.WOCHENBETRAG_VORRECHNUNG, evt)) {
             txtWochenbetrag.setText(semesterrechnungenSuchenModel.getWochenbetrag() == null ? null : semesterrechnungenSuchenModel.getWochenbetrag().toString());
         }
-        else if (checkIsFieldChange(Field.SCHULGELD, evt)) {
+        else if (checkIsFieldChange(Field.SCHULGELD_VORRECHNUNG, evt)) {
             txtSchulgeld.setText(semesterrechnungenSuchenModel.getSchulgeld() == null ? null : semesterrechnungenSuchenModel.getSchulgeld().toString());
         }
     }
@@ -670,15 +670,15 @@ public class SemesterrechnungenSuchenController extends AbstractController {
             errLblVorname.setVisible(true);
             errLblVorname.setText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.RECHNUNGSDATUM)) {
+        if (e.getAffectedFields().contains(Field.RECHNUNGSDATUM_VORRECHNUNG)) {
             errLblRechnungsdatum.setVisible(true);
             errLblRechnungsdatum.setText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.WOCHENBETRAG)) {
+        if (e.getAffectedFields().contains(Field.WOCHENBETRAG_VORRECHNUNG)) {
             errLblWochenbetrag.setVisible(true);
             errLblWochenbetrag.setText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.SCHULGELD)) {
+        if (e.getAffectedFields().contains(Field.SCHULGELD_VORRECHNUNG)) {
             errLblSchulgeld.setVisible(true);
             errLblSchulgeld.setText(e.getMessage());
         }
@@ -692,13 +692,13 @@ public class SemesterrechnungenSuchenController extends AbstractController {
         if (e.getAffectedFields().contains(Field.VORNAME)) {
             txtVorname.setToolTipText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.RECHNUNGSDATUM)) {
+        if (e.getAffectedFields().contains(Field.RECHNUNGSDATUM_VORRECHNUNG)) {
             txtRechnungsdatum.setToolTipText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.WOCHENBETRAG)) {
+        if (e.getAffectedFields().contains(Field.WOCHENBETRAG_VORRECHNUNG)) {
             txtWochenbetrag.setToolTipText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.SCHULGELD)) {
+        if (e.getAffectedFields().contains(Field.SCHULGELD_VORRECHNUNG)) {
             txtSchulgeld.setToolTipText(e.getMessage());
         }
     }
@@ -721,7 +721,7 @@ public class SemesterrechnungenSuchenController extends AbstractController {
                 txtVorname.setToolTipText(null);
             }
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.RECHNUNGSDATUM)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.RECHNUNGSDATUM_VORRECHNUNG)) {
             if (errLblRechnungsdatum != null) {
                 errLblRechnungsdatum.setVisible(false);
             }
@@ -729,7 +729,7 @@ public class SemesterrechnungenSuchenController extends AbstractController {
                 txtRechnungsdatum.setToolTipText(null);
             }
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.WOCHENBETRAG)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.WOCHENBETRAG_VORRECHNUNG)) {
             if (errLblWochenbetrag != null) {
                 errLblWochenbetrag.setVisible(false);
             }
@@ -737,7 +737,7 @@ public class SemesterrechnungenSuchenController extends AbstractController {
                 txtWochenbetrag.setToolTipText(null);
             }
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.SCHULGELD)) {
+        if (fields.contains(Field.ALLE) || fields.contains(Field.SCHULGELD_VORRECHNUNG)) {
             if (errLblSchulgeld != null) {
                 errLblSchulgeld.setVisible(false);
             }

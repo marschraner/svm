@@ -31,7 +31,7 @@ public class CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsComm
             Semesterrechnung semesterrechnung = new Semesterrechnung();
             semesterrechnung.setSemester(semester);
             semesterrechnung.setRechnungsempfaenger(rechnungsempfaenger);
-            semesterrechnung.setAnzahlWochen(semester.getAnzahlSchulwochen());
+            semesterrechnung.setAnzahlWochenVorrechnung(semester.getAnzahlSchulwochen());
             semesterrechnung.setGratiskinder(false);
 
             if (!rechnungsempfaenger.getSemesterrechnungen().isEmpty()) {

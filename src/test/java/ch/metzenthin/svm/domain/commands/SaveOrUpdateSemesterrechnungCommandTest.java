@@ -90,51 +90,74 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterrechnungCodeCommand);
 
         assertFalse(checkIfSemesterrechnungAvailable(semester1, rechnungsempfaenger1,
+                Stipendium.STIPENDIUM_60,
+                true,
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 5),
                 new BigDecimal("17.00"),
                 "2 Wochen dispensiert",
                 new BigDecimal("23.00"),
                 "versäumte Zahlungen",
-                Stipendium.STIPENDIUM_60,
-                true,
                 17,
                 new BigDecimal("22.00"),
-                new GregorianCalendar(1912, Calendar.FEBRUARY, 5),
+                new GregorianCalendar(1912, Calendar.APRIL, 2),
+                new BigDecimal("25.00"),
+                "2.5 Wochen dispensiert",
+                new BigDecimal("23.00"),
+                "versäumte Zahlungen",
+                17,
+                new BigDecimal("22.00"),
                 new GregorianCalendar(1912, Calendar.FEBRUARY, 23),
                 new BigDecimal("100.00"),
                 new GregorianCalendar(1912, Calendar.MARCH, 12),
                 new BigDecimal("150.00"),
                 new GregorianCalendar(1912, Calendar.APRIL, 21),
                 new BigDecimal("146.00"),
-                "Zahlt immer in Raten"));
+                "Zahlt immer in Raten",
+                semesterrechnungCode1));
         assertFalse(checkIfSemesterrechnungAvailable(semester2, rechnungsempfaenger2,
+                Stipendium.STIPENDIUM_70,
+                false,
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
                 new BigDecimal("20.00"),
                 "1 Woche dispensiert",
                 new BigDecimal("30.00"),
                 "versäumte Zahlung",
-                Stipendium.STIPENDIUM_70,
-                false,
                 18,
                 new BigDecimal("32.00"),
-                new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
+                new GregorianCalendar(1912, Calendar.MAY, 1),
+                new BigDecimal("23.00"),
+                "1.5 Wochen dispensiert",
+                new BigDecimal("31.00"),
+                "versäumte Zahlung",
+                18,
+                new BigDecimal("32.00"),
                 new GregorianCalendar(1912, Calendar.FEBRUARY, 28),
                 new BigDecimal("200.00"),
                 new GregorianCalendar(1912, Calendar.MARCH, 10),
                 new BigDecimal("160.00"),
                 new GregorianCalendar(1912, Calendar.APRIL, 20),
                 new BigDecimal("156.00"),
-                "Zahlt in Raten"));
+                "Zahlt in Raten",
+                semesterrechnungCode2));
 
         // 1. Semesterrechnung erfassen
         Semesterrechnung semesterrechnung1 = new Semesterrechnung(semester1, rechnungsempfaenger1,
+                Stipendium.STIPENDIUM_60,
+                true,
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 5),
                 new BigDecimal("17.00"),
                 "2 Wochen dispensiert",
                 new BigDecimal("23.00"),
                 "versäumte Zahlungen",
-                Stipendium.STIPENDIUM_60,
-                true,
                 17,
                 new BigDecimal("22.00"),
-                new GregorianCalendar(1912, Calendar.FEBRUARY, 5),
+                new GregorianCalendar(1912, Calendar.APRIL, 2),
+                new BigDecimal("25.00"),
+                "2.5 Wochen dispensiert",
+                new BigDecimal("23.00"),
+                "versäumte Zahlungen",
+                17,
+                new BigDecimal("22.00"),
                 new GregorianCalendar(1912, Calendar.FEBRUARY, 23),
                 new BigDecimal("100.00"),
                 new GregorianCalendar(1912, Calendar.MARCH, 12),
@@ -146,34 +169,49 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterrechnungCommand);
 
         assertTrue(checkIfSemesterrechnungAvailable(semester1, rechnungsempfaenger1,
+                Stipendium.STIPENDIUM_60,
+                true,
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 5),
                 new BigDecimal("17.00"),
                 "2 Wochen dispensiert",
                 new BigDecimal("23.00"),
                 "versäumte Zahlungen",
-                Stipendium.STIPENDIUM_60,
-                true,
                 17,
                 new BigDecimal("22.00"),
-                new GregorianCalendar(1912, Calendar.FEBRUARY, 5),
+                new GregorianCalendar(1912, Calendar.APRIL, 2),
+                new BigDecimal("25.00"),
+                "2.5 Wochen dispensiert",
+                new BigDecimal("23.00"),
+                "versäumte Zahlungen",
+                17,
+                new BigDecimal("22.00"),
                 new GregorianCalendar(1912, Calendar.FEBRUARY, 23),
                 new BigDecimal("100.00"),
                 new GregorianCalendar(1912, Calendar.MARCH, 12),
                 new BigDecimal("150.00"),
                 new GregorianCalendar(1912, Calendar.APRIL, 21),
                 new BigDecimal("146.00"),
-                "Zahlt immer in Raten"));
+                "Zahlt immer in Raten",
+                semesterrechnungCode1));
 
         // 2. Semesterrechnung erfassen
         Semesterrechnung semesterrechnung2 = new Semesterrechnung(semester2, rechnungsempfaenger2,
+                Stipendium.STIPENDIUM_70,
+                false,
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
                 new BigDecimal("20.00"),
                 "1 Woche dispensiert",
                 new BigDecimal("30.00"),
                 "versäumte Zahlung",
-                Stipendium.STIPENDIUM_70,
-                false,
                 18,
                 new BigDecimal("32.00"),
-                new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
+                new GregorianCalendar(1912, Calendar.MAY, 1),
+                new BigDecimal("23.00"),
+                "1.5 Wochen dispensiert",
+                new BigDecimal("31.00"),
+                "versäumte Zahlung",
+                18,
+                new BigDecimal("32.00"),
                 new GregorianCalendar(1912, Calendar.FEBRUARY, 28),
                 new BigDecimal("200.00"),
                 new GregorianCalendar(1912, Calendar.MARCH, 10),
@@ -185,78 +223,109 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterrechnungCommand);
 
         assertTrue(checkIfSemesterrechnungAvailable(semester2, rechnungsempfaenger2,
+                Stipendium.STIPENDIUM_70,
+                false,
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
                 new BigDecimal("20.00"),
                 "1 Woche dispensiert",
                 new BigDecimal("30.00"),
                 "versäumte Zahlung",
-                Stipendium.STIPENDIUM_70,
-                false,
                 18,
                 new BigDecimal("32.00"),
-                new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
+                new GregorianCalendar(1912, Calendar.MAY, 1),
+                new BigDecimal("23.00"),
+                "1.5 Wochen dispensiert",
+                new BigDecimal("31.00"),
+                "versäumte Zahlung",
+                18,
+                new BigDecimal("32.00"),
                 new GregorianCalendar(1912, Calendar.FEBRUARY, 28),
                 new BigDecimal("200.00"),
                 new GregorianCalendar(1912, Calendar.MARCH, 10),
                 new BigDecimal("160.00"),
                 new GregorianCalendar(1912, Calendar.APRIL, 20),
                 new BigDecimal("156.00"),
-                "Zahlt in Raten"));
+                "Zahlt in Raten",
+                semesterrechnungCode2));
 
         // 2. Semesterrechnung bearbeiten
         Semesterrechnung semesterrechnung2Modif = new Semesterrechnung(semester2, rechnungsempfaenger2,
-                new BigDecimal("21.00"),
+                Stipendium.STIPENDIUM_70,
+                false,
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
+                new BigDecimal("26.00"),
+                "1 Woche dispensiert",
+                new BigDecimal("32.00"),
+                "versäumte Zahlung",
+                18,
+                new BigDecimal("34.00"),
+                new GregorianCalendar(1912, Calendar.MAY, 1),
+                new BigDecimal("23.00"),
                 "1.5 Wochen dispensiert",
                 new BigDecimal("31.00"),
                 "versäumte Zahlung",
-                Stipendium.STIPENDIUM_80,
-                true,
-                19,
-                new BigDecimal("33.00"),
-                new GregorianCalendar(1912, Calendar.FEBRUARY, 2),
-                new GregorianCalendar(1912, Calendar.FEBRUARY, 29),
+                18,
+                new BigDecimal("34.00"),
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 28),
                 new BigDecimal("201.00"),
-                new GregorianCalendar(1912, Calendar.MARCH, 11),
+                new GregorianCalendar(1912, Calendar.MARCH, 10),
                 new BigDecimal("161.00"),
-                new GregorianCalendar(1912, Calendar.APRIL, 21),
+                new GregorianCalendar(1912, Calendar.APRIL, 20),
                 new BigDecimal("157.00"),
                 "Zahlt in Raten modif");
         saveOrUpdateSemesterrechnungCommand = new SaveOrUpdateSemesterrechnungCommand(semesterrechnung2Modif, semesterrechnungCode1, semesterrechnung2, erfassteSemesterrechnungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterrechnungCommand);
 
         assertFalse(checkIfSemesterrechnungAvailable(semester2, rechnungsempfaenger2,
+                Stipendium.STIPENDIUM_70,
+                false,
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
                 new BigDecimal("20.00"),
                 "1 Woche dispensiert",
                 new BigDecimal("30.00"),
                 "versäumte Zahlung",
-                Stipendium.STIPENDIUM_70,
-                false,
                 18,
                 new BigDecimal("32.00"),
-                new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
+                new GregorianCalendar(1912, Calendar.MAY, 1),
+                new BigDecimal("23.00"),
+                "1.5 Wochen dispensiert",
+                new BigDecimal("31.00"),
+                "versäumte Zahlung",
+                18,
+                new BigDecimal("32.00"),
                 new GregorianCalendar(1912, Calendar.FEBRUARY, 28),
                 new BigDecimal("200.00"),
                 new GregorianCalendar(1912, Calendar.MARCH, 10),
                 new BigDecimal("160.00"),
                 new GregorianCalendar(1912, Calendar.APRIL, 20),
                 new BigDecimal("156.00"),
-                "Zahlt in Raten"));
+                "Zahlt in Raten",
+                semesterrechnungCode1));
         assertTrue(checkIfSemesterrechnungAvailable(semester2, rechnungsempfaenger2,
-                new BigDecimal("21.00"),
+                Stipendium.STIPENDIUM_70,
+                false,
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
+                new BigDecimal("26.00"),
+                "1 Woche dispensiert",
+                new BigDecimal("32.00"),
+                "versäumte Zahlung",
+                18,
+                new BigDecimal("34.00"),
+                new GregorianCalendar(1912, Calendar.MAY, 1),
+                new BigDecimal("23.00"),
                 "1.5 Wochen dispensiert",
                 new BigDecimal("31.00"),
                 "versäumte Zahlung",
-                Stipendium.STIPENDIUM_80,
-                true,
-                19,
-                new BigDecimal("33.00"),
-                new GregorianCalendar(1912, Calendar.FEBRUARY, 2),
-                new GregorianCalendar(1912, Calendar.FEBRUARY, 29),
+                18,
+                new BigDecimal("34.00"),
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 28),
                 new BigDecimal("201.00"),
-                new GregorianCalendar(1912, Calendar.MARCH, 11),
+                new GregorianCalendar(1912, Calendar.MARCH, 10),
                 new BigDecimal("161.00"),
-                new GregorianCalendar(1912, Calendar.APRIL, 21),
+                new GregorianCalendar(1912, Calendar.APRIL, 20),
                 new BigDecimal("157.00"),
-                "Zahlt in Raten modif"));
+                "Zahlt in Raten modif",
+                semesterrechnungCode1));
 
         // Testdaten löschen
         EntityManager entityManager = null;
@@ -303,28 +372,36 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
         }
     }
 
-    private boolean checkIfSemesterrechnungAvailable(Semester semester, Angehoeriger rechnungsempfaenger, BigDecimal ermaessigung, String ermaessigungsgrund, BigDecimal zuschlag, String zuschlagsgrund, Stipendium stipendium, Boolean gratiskinder, int anzahlWochen, BigDecimal wochenbetrag, Calendar rechnungsdatum, Calendar datumZahlung1, BigDecimal betragZahlung1, Calendar datumZahlung2, BigDecimal betragZahlung2, Calendar datumZahlung3, BigDecimal betragZahlung3, String bemerkungen) {
+    private boolean checkIfSemesterrechnungAvailable(Semester semester, Angehoeriger rechnungsempfaenger, Stipendium stipendium, Boolean gratiskinder, Calendar rechnungsdatumVorrechnung, BigDecimal ermaessigungVorrechnung, String ermaessigungsgrundVorrechnung, BigDecimal zuschlagVorrechnung, String zuschlagsgrundVorrechnung, Integer anzahlWochenVorrechnung, BigDecimal wochenbetragVorrechnung, Calendar rechnungsdatumNachrechnung, BigDecimal ermaessigungNachrechnung, String ermaessigungsgrundNachrechnung, BigDecimal zuschlagNachrechnung, String zuschlagsgrundNachrechnung, Integer anzahlWochenNachrechnung, BigDecimal wochenbetragNachrechnung, Calendar datumZahlung1, BigDecimal betragZahlung1, Calendar datumZahlung2, BigDecimal betragZahlung2, Calendar datumZahlung3, BigDecimal betragZahlung3, String bemerkungen, SemesterrechnungCode semesterrechnungCode) {
         FindSemesterrechnungenSemesterCommand findSemesterrechnungenSemesterCommand = new FindSemesterrechnungenSemesterCommand(semester);
         commandInvoker.executeCommandAsTransaction(findSemesterrechnungenSemesterCommand);
         List<Semesterrechnung> semesterrechnungenRechnungsempfaenger = findSemesterrechnungenSemesterCommand.getSemesterrechnungenFound();
         for (Semesterrechnung semesterrechnung : semesterrechnungenRechnungsempfaenger) {
             if (semesterrechnung.getRechnungsempfaenger().equals(rechnungsempfaenger)
-                    && semesterrechnung.getErmaessigung().compareTo(ermaessigung) == 0
-                    && semesterrechnung.getErmaessigungsgrund().equals(ermaessigungsgrund)
-                    && semesterrechnung.getZuschlag().compareTo(zuschlag) == 0
-                    && semesterrechnung.getZuschlagsgrund().equals(zuschlagsgrund)
                     && semesterrechnung.getStipendium().equals(stipendium)
                     && semesterrechnung.getGratiskinder().equals(gratiskinder)
-                    && semesterrechnung.getAnzahlWochen().equals(anzahlWochen)
-                    && semesterrechnung.getWochenbetrag().compareTo(wochenbetrag) == 0
-                    && semesterrechnung.getRechnungsdatum().equals(rechnungsdatum)
+                    && semesterrechnung.getRechnungsdatumVorrechnung().equals(rechnungsdatumVorrechnung)
+                    && semesterrechnung.getErmaessigungVorrechnung().compareTo(ermaessigungVorrechnung) == 0
+                    && semesterrechnung.getErmaessigungsgrundVorrechnung().equals(ermaessigungsgrundVorrechnung)
+                    && semesterrechnung.getZuschlagVorrechnung().compareTo(zuschlagVorrechnung) == 0
+                    && semesterrechnung.getZuschlagsgrundVorrechnung().equals(zuschlagsgrundVorrechnung)
+                    && semesterrechnung.getAnzahlWochenVorrechnung().equals(anzahlWochenVorrechnung)
+                    && semesterrechnung.getWochenbetragVorrechnung().compareTo(wochenbetragVorrechnung) == 0
+                    && semesterrechnung.getRechnungsdatumNachrechnung().equals(rechnungsdatumNachrechnung)
+                    && semesterrechnung.getErmaessigungNachrechnung().compareTo(ermaessigungNachrechnung) == 0
+                    && semesterrechnung.getErmaessigungsgrundNachrechnung().equals(ermaessigungsgrundNachrechnung)
+                    && semesterrechnung.getZuschlagNachrechnung().compareTo(zuschlagNachrechnung) == 0
+                    && semesterrechnung.getZuschlagsgrundNachrechnung().equals(zuschlagsgrundNachrechnung)
+                    && semesterrechnung.getAnzahlWochenNachrechnung().equals(anzahlWochenNachrechnung)
+                    && semesterrechnung.getWochenbetragNachrechnung().compareTo(wochenbetragNachrechnung) == 0
                     && semesterrechnung.getDatumZahlung1().equals(datumZahlung1)
                     && semesterrechnung.getBetragZahlung1().compareTo(betragZahlung1) == 0
                     && semesterrechnung.getDatumZahlung2().equals(datumZahlung2)
                     && semesterrechnung.getBetragZahlung2().compareTo(betragZahlung2) == 0
                     && semesterrechnung.getDatumZahlung3().equals(datumZahlung3)
                     && semesterrechnung.getBetragZahlung3().compareTo(betragZahlung3) == 0
-                    && semesterrechnung.getBemerkungen().equals(bemerkungen)) {
+                    && semesterrechnung.getBemerkungen().equals(bemerkungen)
+                    && semesterrechnung.getSemesterrechnungCode().isIdenticalWith(semesterrechnungCode)) {
                 return true;
             }
         }

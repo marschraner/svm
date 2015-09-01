@@ -181,7 +181,7 @@ final class SemesterrechnungenSuchenModelImpl extends AbstractModel implements S
 
     private CalendarModelAttribute rechnungsdatumModelAttribute = new CalendarModelAttribute(
             this,
-            Field.RECHNUNGSDATUM, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
+            Field.RECHNUNGSDATUM_VORRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
@@ -219,7 +219,7 @@ final class SemesterrechnungenSuchenModelImpl extends AbstractModel implements S
 
     private final PreisModelAttribute wochenbetragModelAttribute = new PreisModelAttribute(
             this,
-            Field.WOCHENBETRAG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.WOCHENBETRAG_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
@@ -245,7 +245,7 @@ final class SemesterrechnungenSuchenModelImpl extends AbstractModel implements S
 
     private final PreisModelAttribute schulgeldModelAttribute = new PreisModelAttribute(
             this,
-            Field.SCHULGELD, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.SCHULGELD_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {

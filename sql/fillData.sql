@@ -501,15 +501,22 @@ SELECT * FROM Maercheneinteilung;
 INSERT INTO Semesterrechnung (
     semester_id,
     person_id,
-    ermaessigung,
-    ermaessigungsgrund,
-    zuschlag,
-    zuschlagsgrund,
     stipendium,
     gratiskinder,
-    anzahl_wochen,
-    wochenbetrag,
-    rechnungsdatum,
+    rechnungsdatum_vorrechnung,
+    ermaessigung_vorrechnung,
+    ermaessigungsgrund_vorrechnung,
+    zuschlag_vorrechnung,
+    zuschlagsgrund_vorrechnung,
+    anzahl_wochen_vorrechnung,
+    wochenbetrag_vorrechnung,
+    rechnungsdatum_nachrechnung,
+    ermaessigung_nachrechnung,
+    ermaessigungsgrund_nachrechnung,
+    zuschlag_nachrechnung,
+    zuschlagsgrund_nachrechnung,
+    anzahl_wochen_nachrechnung,
+    wochenbetrag_nachrechnung, 
     datum_zahlung_1,
     betrag_zahlung_1,
     datum_zahlung_2,
@@ -518,9 +525,9 @@ INSERT INTO Semesterrechnung (
     betrag_zahlung_3,
     code_id,
     bemerkungen) VALUES
-    (2, 1, NULL, NULL, NULL, NULL, NULL, 0, 18, 40.00, '2015-01-26', '2015-02-28', 720.00, NULL, NULL, NULL, NULL, NULL, NULL),
-    (3, 1, NULL, NULL, NULL, NULL, NULL, 0, 18, 40.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,  NULL),
-    (2, 17, NULL, NULL, NULL, NULL, NULL, 0, 18, 22.00, '2015-01-26', '2015-03-01', 200.00, '2015-03-25', 196.00, NULL, NULL, NULL, NULL),
-    (3, 19, 20.00, 'Gutschrift vom letzten Semester', NULL, NULL, NULL, 0, 18, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    (2, 1, NULL, 0, '2015-02-15', NULL, NULL, NULL, NULL, 18, 40.00, '2015-04-20', NULL, NULL, NULL, NULL, 18, 40.00, '2015-03-21', 720.00, NULL, NULL, NULL, NULL, NULL, NULL),
+    (3, 1, NULL, 0, '2015-07-30', NULL, NULL, NULL, NULL, 18, 40.00, '2015-09-01', NULL, NULL, NULL, NULL, 18, 40.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+    (2, 17, NULL, 0, '2015-02-15', NULL, NULL, NULL, NULL, 18, 20.00, '2015-04-20', NULL, NULL, NULL, NULL, 18, 20.00, '2015-03-21', 180.00, '2015-04-08', 180.00, NULL, NULL, NULL, NULL),
+    (3, 19, NULL, 0, '2015-07-30', 20.00, 'Gutschrift vom letzten Semester', NULL, NULL, 18, 20.00, '2015-09-01', 20.00, 'Gutschrift vom letzten Semester', NULL, NULL, 18, 25.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 SELECT * FROM Semesterrechnung;

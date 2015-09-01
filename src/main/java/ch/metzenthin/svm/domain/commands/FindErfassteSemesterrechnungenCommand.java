@@ -89,7 +89,7 @@ public class FindErfassteSemesterrechnungenCommand extends GenericDaoCommand {
             Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
             while (it.hasNext()) {
                 Semesterrechnung semesterrechnungIt = it.next();
-                if (semesterrechnungIt.getSchulgeld() == null || semesterrechnungIt.getSchulgeld().compareTo(schulgeld) != 0) {
+                if (semesterrechnungIt.getSchulgeldVorrechnung() == null || semesterrechnungIt.getSchulgeldVorrechnung().compareTo(schulgeld) != 0) {
                     it.remove();
                 }
             }

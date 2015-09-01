@@ -29,18 +29,6 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     @Column(name = "last_updated")
     private Timestamp version;
 
-    @Column(name = "ermaessigung", nullable = true)
-    private BigDecimal ermaessigung;
-
-    @Column(name = "ermaessigungsgrund", nullable = true)
-    private String ermaessigungsgrund;
-
-    @Column(name = "zuschlag", nullable = true)
-    private BigDecimal zuschlag;
-
-    @Column(name = "zuschlagsgrund", nullable = true)
-    private String zuschlagsgrund;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "stipendium", nullable = true)
     private Stipendium stipendium;
@@ -48,15 +36,49 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     @Column(name = "gratiskinder", nullable = false)
     private Boolean gratiskinder;
 
-    @Column(name = "anzahl_wochen", nullable = true)
-    private Integer anzahlWochen;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "rechnungsdatum_vorrechnung", nullable = true)
+    private Calendar rechnungsdatumVorrechnung;
 
-    @Column(name = "wochenbetrag", nullable = true)
-    private BigDecimal wochenbetrag;
+    @Column(name = "ermaessigung_vorrechnung", nullable = true)
+    private BigDecimal ermaessigungVorrechnung;
+
+    @Column(name = "ermaessigungsgrund_vorrechnung", nullable = true)
+    private String ermaessigungsgrundVorrechnung;
+
+    @Column(name = "zuschlag_vorrechnung", nullable = true)
+    private BigDecimal zuschlagVorrechnung;
+
+    @Column(name = "zuschlagsgrund_vorrechnung", nullable = true)
+    private String zuschlagsgrundVorrechnung;
+
+    @Column(name = "anzahl_wochen_vorrechnung", nullable = true)
+    private Integer anzahlWochenVorrechnung;
+
+    @Column(name = "wochenbetrag_vorrechnung", nullable = true)
+    private BigDecimal wochenbetragVorrechnung;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "rechnungsdatum", nullable = true)
-    private Calendar rechnungsdatum;
+    @Column(name = "rechnungsdatum_nachrechnung", nullable = true)
+    private Calendar rechnungsdatumNachrechnung;
+
+    @Column(name = "ermaessigung_nachrechnung", nullable = true)
+    private BigDecimal ermaessigungNachrechnung;
+
+    @Column(name = "ermaessigungsgrund_nachrechnung", nullable = true)
+    private String ermaessigungsgrundNachrechnung;
+
+    @Column(name = "zuschlag_nachrechnung", nullable = true)
+    private BigDecimal zuschlagNachrechnung;
+
+    @Column(name = "zuschlagsgrund_nachrechnung", nullable = true)
+    private String zuschlagsgrundNachrechnung;
+
+    @Column(name = "anzahl_wochen_nachrechnung", nullable = true)
+    private Integer anzahlWochenNachrechnung;
+
+    @Column(name = "wochenbetrag_nachrechnung", nullable = true)
+    private BigDecimal wochenbetragNachrechnung;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "datum_zahlung_1", nullable = true)
@@ -90,18 +112,25 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     public Semesterrechnung() {
     }
 
-    public Semesterrechnung(Semester semester, Angehoeriger rechnungsempfaenger, BigDecimal ermaessigung, String ermaessigungsgrund, BigDecimal zuschlag, String zuschlagsgrund, Stipendium stipendium, Boolean gratiskinder, int anzahlWochen, BigDecimal wochenbetrag, Calendar rechnungsdatum, Calendar datumZahlung1, BigDecimal betragZahlung1, Calendar datumZahlung2, BigDecimal betragZahlung2, Calendar datumZahlung3, BigDecimal betragZahlung3, String bemerkungen) {
+    public Semesterrechnung(Semester semester, Angehoeriger rechnungsempfaenger, Stipendium stipendium, Boolean gratiskinder, Calendar rechnungsdatumVorrechnung, BigDecimal ermaessigungVorrechnung, String ermaessigungsgrundVorrechnung, BigDecimal zuschlagVorrechnung, String zuschlagsgrundVorrechnung, Integer anzahlWochenVorrechnung, BigDecimal wochenbetragVorrechnung, Calendar rechnungsdatumNachrechnung, BigDecimal ermaessigungNachrechnung, String ermaessigungsgrundNachrechnung, BigDecimal zuschlagNachrechnung, String zuschlagsgrundNachrechnung, Integer anzahlWochenNachrechnung, BigDecimal wochenbetragNachrechnung, Calendar datumZahlung1, BigDecimal betragZahlung1, Calendar datumZahlung2, BigDecimal betragZahlung2, Calendar datumZahlung3, BigDecimal betragZahlung3, String bemerkungen) {
         this.semester = semester;
         this.rechnungsempfaenger = rechnungsempfaenger;
-        this.ermaessigung = ermaessigung;
-        this.ermaessigungsgrund = ermaessigungsgrund;
-        this.zuschlag = zuschlag;
-        this.zuschlagsgrund = zuschlagsgrund;
         this.stipendium = stipendium;
         this.gratiskinder = gratiskinder;
-        this.anzahlWochen = anzahlWochen;
-        this.wochenbetrag = wochenbetrag;
-        this.rechnungsdatum = rechnungsdatum;
+        this.rechnungsdatumVorrechnung = rechnungsdatumVorrechnung;
+        this.ermaessigungVorrechnung = ermaessigungVorrechnung;
+        this.ermaessigungsgrundVorrechnung = ermaessigungsgrundVorrechnung;
+        this.zuschlagVorrechnung = zuschlagVorrechnung;
+        this.zuschlagsgrundVorrechnung = zuschlagsgrundVorrechnung;
+        this.anzahlWochenVorrechnung = anzahlWochenVorrechnung;
+        this.wochenbetragVorrechnung = wochenbetragVorrechnung;
+        this.rechnungsdatumNachrechnung = rechnungsdatumNachrechnung;
+        this.ermaessigungNachrechnung = ermaessigungNachrechnung;
+        this.ermaessigungsgrundNachrechnung = ermaessigungsgrundNachrechnung;
+        this.zuschlagNachrechnung = zuschlagNachrechnung;
+        this.zuschlagsgrundNachrechnung = zuschlagsgrundNachrechnung;
+        this.anzahlWochenNachrechnung = anzahlWochenNachrechnung;
+        this.wochenbetragNachrechnung = wochenbetragNachrechnung;
         this.datumZahlung1 = datumZahlung1;
         this.betragZahlung1 = betragZahlung1;
         this.datumZahlung2 = datumZahlung2;
@@ -128,15 +157,22 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     }
 
     public void copyAttributesFrom(Semesterrechnung otherSemesterrechnung) {
-        this.ermaessigung = otherSemesterrechnung.ermaessigung;
-        this.ermaessigungsgrund = otherSemesterrechnung.ermaessigungsgrund;
-        this.zuschlag = otherSemesterrechnung.zuschlag;
-        this.zuschlagsgrund = otherSemesterrechnung.zuschlagsgrund;
         this.stipendium = otherSemesterrechnung.stipendium;
         this.gratiskinder = otherSemesterrechnung.gratiskinder;
-        this.anzahlWochen = otherSemesterrechnung.anzahlWochen;
-        this.wochenbetrag = otherSemesterrechnung.wochenbetrag;
-        this.rechnungsdatum = otherSemesterrechnung.rechnungsdatum;
+        this.rechnungsdatumVorrechnung = otherSemesterrechnung.rechnungsdatumVorrechnung;
+        this.ermaessigungVorrechnung = otherSemesterrechnung.ermaessigungVorrechnung;
+        this.ermaessigungsgrundVorrechnung = otherSemesterrechnung.ermaessigungsgrundVorrechnung;
+        this.zuschlagVorrechnung = otherSemesterrechnung.zuschlagVorrechnung;
+        this.zuschlagsgrundVorrechnung = otherSemesterrechnung.zuschlagsgrundVorrechnung;
+        this.anzahlWochenVorrechnung = otherSemesterrechnung.anzahlWochenVorrechnung;
+        this.wochenbetragVorrechnung = otherSemesterrechnung.wochenbetragVorrechnung;
+        this.rechnungsdatumNachrechnung = otherSemesterrechnung.rechnungsdatumNachrechnung;
+        this.ermaessigungNachrechnung = otherSemesterrechnung.ermaessigungNachrechnung;
+        this.ermaessigungsgrundNachrechnung = otherSemesterrechnung.ermaessigungsgrundNachrechnung;
+        this.zuschlagNachrechnung = otherSemesterrechnung.zuschlagNachrechnung;
+        this.zuschlagsgrundNachrechnung = otherSemesterrechnung.zuschlagsgrundNachrechnung;
+        this.anzahlWochenNachrechnung = otherSemesterrechnung.anzahlWochenNachrechnung;
+        this.wochenbetragNachrechnung = otherSemesterrechnung.wochenbetragNachrechnung;
         this.datumZahlung1 = otherSemesterrechnung.datumZahlung1;
         this.betragZahlung1 = otherSemesterrechnung.betragZahlung1;
         this.datumZahlung2 = otherSemesterrechnung.datumZahlung2;
@@ -162,38 +198,6 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.rechnungsempfaenger = rechnungsempfaenger;
     }
 
-    public BigDecimal getErmaessigung() {
-        return ermaessigung;
-    }
-
-    public void setErmaessigung(BigDecimal ermaessigung) {
-        this.ermaessigung = ermaessigung;
-    }
-
-    public String getErmaessigungsgrund() {
-        return ermaessigungsgrund;
-    }
-
-    public void setErmaessigungsgrund(String ermaessigungsgrund) {
-        this.ermaessigungsgrund = ermaessigungsgrund;
-    }
-
-    public BigDecimal getZuschlag() {
-        return zuschlag;
-    }
-
-    public void setZuschlag(BigDecimal zuschlag) {
-        this.zuschlag = zuschlag;
-    }
-
-    public String getZuschlagsgrund() {
-        return zuschlagsgrund;
-    }
-
-    public void setZuschlagsgrund(String zuschlagsgrund) {
-        this.zuschlagsgrund = zuschlagsgrund;
-    }
-
     public Stipendium getStipendium() {
         return stipendium;
     }
@@ -210,28 +214,116 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.gratiskinder = gratiskinder;
     }
 
-    public Integer getAnzahlWochen() {
-        return anzahlWochen;
+    public Calendar getRechnungsdatumVorrechnung() {
+        return rechnungsdatumVorrechnung;
     }
 
-    public void setAnzahlWochen(Integer anzahlWochen) {
-        this.anzahlWochen = anzahlWochen;
+    public void setRechnungsdatumVorrechnung(Calendar rechnungsdatumVorrechnung) {
+        this.rechnungsdatumVorrechnung = rechnungsdatumVorrechnung;
     }
 
-    public BigDecimal getWochenbetrag() {
-        return wochenbetrag;
+    public BigDecimal getErmaessigungVorrechnung() {
+        return ermaessigungVorrechnung;
     }
 
-    public void setWochenbetrag(BigDecimal wochenbetrag) {
-        this.wochenbetrag = wochenbetrag;
+    public void setErmaessigungVorrechnung(BigDecimal ermaessigungVorrechnung) {
+        this.ermaessigungVorrechnung = ermaessigungVorrechnung;
     }
 
-    public Calendar getRechnungsdatum() {
-        return rechnungsdatum;
+    public String getErmaessigungsgrundVorrechnung() {
+        return ermaessigungsgrundVorrechnung;
     }
 
-    public void setRechnungsdatum(Calendar rechnungsdatum) {
-        this.rechnungsdatum = rechnungsdatum;
+    public void setErmaessigungsgrundVorrechnung(String ermaessigungsgrundVorrechnung) {
+        this.ermaessigungsgrundVorrechnung = ermaessigungsgrundVorrechnung;
+    }
+
+    public BigDecimal getZuschlagVorrechnung() {
+        return zuschlagVorrechnung;
+    }
+
+    public void setZuschlagVorrechnung(BigDecimal zuschlagVorrechnung) {
+        this.zuschlagVorrechnung = zuschlagVorrechnung;
+    }
+
+    public String getZuschlagsgrundVorrechnung() {
+        return zuschlagsgrundVorrechnung;
+    }
+
+    public void setZuschlagsgrundVorrechnung(String zuschlagsgrundVorrechnung) {
+        this.zuschlagsgrundVorrechnung = zuschlagsgrundVorrechnung;
+    }
+
+    public Integer getAnzahlWochenVorrechnung() {
+        return anzahlWochenVorrechnung;
+    }
+
+    public void setAnzahlWochenVorrechnung(Integer anzahlWochenVorrechnung) {
+        this.anzahlWochenVorrechnung = anzahlWochenVorrechnung;
+    }
+
+    public BigDecimal getWochenbetragVorrechnung() {
+        return wochenbetragVorrechnung;
+    }
+
+    public void setWochenbetragVorrechnung(BigDecimal wochenbetragVorrechnung) {
+        this.wochenbetragVorrechnung = wochenbetragVorrechnung;
+    }
+
+    public Calendar getRechnungsdatumNachrechnung() {
+        return rechnungsdatumNachrechnung;
+    }
+
+    public void setRechnungsdatumNachrechnung(Calendar rechnungsdatumNachrechnung) {
+        this.rechnungsdatumNachrechnung = rechnungsdatumNachrechnung;
+    }
+
+    public BigDecimal getErmaessigungNachrechnung() {
+        return ermaessigungNachrechnung;
+    }
+
+    public void setErmaessigungNachrechnung(BigDecimal ermaessigungNachrechnung) {
+        this.ermaessigungNachrechnung = ermaessigungNachrechnung;
+    }
+
+    public String getErmaessigungsgrundNachrechnung() {
+        return ermaessigungsgrundNachrechnung;
+    }
+
+    public void setErmaessigungsgrundNachrechnung(String ermaessigungsgrundNachrechnung) {
+        this.ermaessigungsgrundNachrechnung = ermaessigungsgrundNachrechnung;
+    }
+
+    public BigDecimal getZuschlagNachrechnung() {
+        return zuschlagNachrechnung;
+    }
+
+    public void setZuschlagNachrechnung(BigDecimal zuschlagNachrechnung) {
+        this.zuschlagNachrechnung = zuschlagNachrechnung;
+    }
+
+    public String getZuschlagsgrundNachrechnung() {
+        return zuschlagsgrundNachrechnung;
+    }
+
+    public void setZuschlagsgrundNachrechnung(String zuschlagsgrundNachrechnung) {
+        this.zuschlagsgrundNachrechnung = zuschlagsgrundNachrechnung;
+    }
+
+    public Integer getAnzahlWochenNachrechnung() {
+        return anzahlWochenNachrechnung;
+    }
+
+    public void setAnzahlWochenNachrechnung(Integer anzahlWochenNachrechnung) {
+        this.anzahlWochenNachrechnung = anzahlWochenNachrechnung;
+    }
+
+    public BigDecimal getWochenbetragNachrechnung() {
+        return wochenbetragNachrechnung;
+    }
+
+    public void setWochenbetragNachrechnung(BigDecimal wochenbetragNachrechnung) {
+        this.wochenbetragNachrechnung = wochenbetragNachrechnung;
     }
 
     public Calendar getDatumZahlung1() {
@@ -310,35 +402,70 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     }
 
     @Transient
-    public BigDecimal getSchulgeld() {
+    public BigDecimal getSchulgeldVorrechnung() {
         // Gratiskinder haben immer 0.00 als Schulgeld
         if (gratiskinder) {
             return new BigDecimal("0.00");
         }
-        if (anzahlWochen == null || wochenbetrag == null) {
+        if (anzahlWochenVorrechnung == null || wochenbetragVorrechnung == null) {
             return null;
         }
         // Normale Rechnungen
-        BigDecimal schulgeld = new BigDecimal(anzahlWochen).multiply(wochenbetrag);
+        BigDecimal schulgeldVorrechnung = new BigDecimal(anzahlWochenVorrechnung).multiply(wochenbetragVorrechnung);
         // Stipendium
         if (stipendium != null && stipendium != Stipendium.KEINES) {
-            schulgeld = schulgeld.multiply(new BigDecimal(stipendium.getFaktor()));
-            schulgeld = schulgeld.setScale(1, BigDecimal.ROUND_HALF_EVEN);  // Runden auf 10 Rappen
-            schulgeld = schulgeld.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+            schulgeldVorrechnung = schulgeldVorrechnung.multiply(new BigDecimal(stipendium.getFaktor()));
+            schulgeldVorrechnung = schulgeldVorrechnung.setScale(1, BigDecimal.ROUND_HALF_EVEN);  // Runden auf 10 Rappen
+            schulgeldVorrechnung = schulgeldVorrechnung.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         }
         // Zuschlag / Ermässigung
-        if (zuschlag != null) {
-            schulgeld = schulgeld.add(zuschlag);
+        if (zuschlagVorrechnung != null) {
+            schulgeldVorrechnung = schulgeldVorrechnung.add(zuschlagVorrechnung);
         }
-        if (ermaessigung != null) {
-            schulgeld = schulgeld.subtract(ermaessigung);
+        if (ermaessigungVorrechnung != null) {
+            schulgeldVorrechnung = schulgeldVorrechnung.subtract(ermaessigungVorrechnung);
         }
-        return schulgeld;
+        return schulgeldVorrechnung;
+    }
+
+    @Transient
+    public BigDecimal getSchulgeldNachrechnung() {
+        // Gratiskinder haben immer 0.00 als Schulgeld
+        if (gratiskinder) {
+            return new BigDecimal("0.00");
+        }
+        if (anzahlWochenNachrechnung == null || wochenbetragNachrechnung == null) {
+            return null;
+        }
+        // Normale Rechnungen
+        BigDecimal schulgeldNachrechnung = new BigDecimal(anzahlWochenNachrechnung).multiply(wochenbetragNachrechnung);
+        // Stipendium
+        if (stipendium != null && stipendium != Stipendium.KEINES) {
+            schulgeldNachrechnung = schulgeldNachrechnung.multiply(new BigDecimal(stipendium.getFaktor()));
+            schulgeldNachrechnung = schulgeldNachrechnung.setScale(1, BigDecimal.ROUND_HALF_EVEN);  // Runden auf 10 Rappen
+            schulgeldNachrechnung = schulgeldNachrechnung.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        }
+        // Zuschlag / Ermässigung
+        if (zuschlagNachrechnung != null) {
+            schulgeldNachrechnung = schulgeldNachrechnung.add(zuschlagNachrechnung);
+        }
+        if (ermaessigungNachrechnung != null) {
+            schulgeldNachrechnung = schulgeldNachrechnung.subtract(ermaessigungNachrechnung);
+        }
+        return schulgeldNachrechnung;
+    }
+
+    @Transient
+    public BigDecimal getSchulgeldDifferenzNachrechnungVorrechnung() {
+        if (getSchulgeldNachrechnung() != null && getSchulgeldVorrechnung() != null) {
+            return getSchulgeldNachrechnung().subtract(getSchulgeldVorrechnung());
+        }
+        return null;
     }
 
     @Transient
     public BigDecimal getRestbetrag() {
-        BigDecimal restbetrag = getSchulgeld();
+        BigDecimal restbetrag = (getSchulgeldNachrechnung() == null ? getSchulgeldVorrechnung() : getSchulgeldNachrechnung());
         if (betragZahlung1 != null) {
             restbetrag = restbetrag.subtract(betragZahlung1);
         }

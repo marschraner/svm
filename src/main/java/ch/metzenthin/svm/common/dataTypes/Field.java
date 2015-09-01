@@ -128,10 +128,20 @@ public enum Field {
     SEMESTERRECHNUNG_CODE("Semesterrechnung-Code"),
     STIPENDIUM("Stipendium"),
     GRATISKINDER("Gratiskinder"),
-    RECHNUNGSDATUM("Rechnungsdatum"),
-    WOCHENBETRAG("Wochenbetrag"),
-    SCHULGELD("Schulgeld"),
     SECHS_JAHRES_RABATT("6-Jahres-Rabatt"),
+    RECHNUNGSDATUM_VORRECHNUNG("R.datum V"),
+    ERMAESSIGUNG_VORRECHNUNG("Ermäss. V"),
+    ZUSCHLAG_VORRECHNUNG("Zuschl. V"),
+    ANZAHL_WOCHEN_VORRECHNUNG("Anz. V"),
+    WOCHENBETRAG_VORRECHNUNG("Wochenb. V"),
+    SCHULGELD_VORRECHNUNG("Schulgeld V"),
+    RECHNUNGSDATUM_NACHRECHNUNG("R.datum N"),
+    ERMAESSIGUNG_NACHRECHNUNG("Ermäss. N"),
+    ZUSCHLAG_NACHRECHNUNG("Zuschl. N"),
+    ANZAHL_WOCHEN_NACHRECHNUNG("Anz. N"),
+    WOCHENBETRAG_NACHRECHNUNG("Wochenb. N"),
+    SCHULGELD_NACHRECHNUNG("Schulgeld N"),
+    SCHULGELD_DIFFERENZ_NACHRECHNUNG_VORRECHNUNG("Schulg. N-V"),
     RESTBETRAG("Restbetrag");
 
     private String name;

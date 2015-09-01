@@ -899,15 +899,22 @@
     <table name="Semesterrechnung" schema="" catalog="svm" type="TABLE">
       <column name="semester_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="ermaessigung" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
-      <column name="ermaessigungsgrund" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="zuschlag" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
-      <column name="zuschlagsgrund" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="stipendium" sqlType="VARCHAR" precision="13" scale="0" nullable="true" jdbcType="12"/>
       <column name="gratiskinder" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
-      <column name="anzahl_wochen" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="wochenbetrag" sqlType="DECIMAL" precision="7" scale="2" nullable="true" jdbcType="3"/>
-      <column name="rechnungsdatum" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="rechnungsdatum_vorrechnung" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="ermaessigung_vorrechnung" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
+      <column name="ermaessigungsgrund_vorrechnung" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="zuschlag_vorrechnung" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
+      <column name="zuschlagsgrund_vorrechnung" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="anzahl_wochen_vorrechnung" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="wochenbetrag_vorrechnung" sqlType="DECIMAL" precision="7" scale="2" nullable="true" jdbcType="3"/>
+      <column name="rechnungsdatum_nachrechnung" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="ermaessigung_nachrechnung" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
+      <column name="ermaessigungsgrund_nachrechnung" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="zuschlag_nachrechnung" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
+      <column name="zuschlagsgrund_nachrechnung" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="anzahl_wochen_nachrechnung" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="wochenbetrag_nachrechnung" sqlType="DECIMAL" precision="7" scale="2" nullable="true" jdbcType="3"/>
       <column name="datum_zahlung_1" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="betrag_zahlung_1" sqlType="DECIMAL" precision="8" scale="2" nullable="true" jdbcType="3"/>
       <column name="datum_zahlung_2" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>

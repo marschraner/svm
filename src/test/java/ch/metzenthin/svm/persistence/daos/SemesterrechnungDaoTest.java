@@ -70,15 +70,22 @@ public class SemesterrechnungDaoTest {
 
             // Semesterrechnung
             Semesterrechnung semesterrechnung = new Semesterrechnung(semester, rechnungsempfaenger,
+                    Stipendium.STIPENDIUM_70,
+                    false,
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
                     new BigDecimal("10.00"),
                     "1 Woche dispensiert",
                     new BigDecimal("20.00"),
                     "versäumte Zahlung",
-                    Stipendium.STIPENDIUM_70,
-                    false,
+                    18,
+                    new BigDecimal("23.00"),
+                    new GregorianCalendar(1912, Calendar.MARCH, 1),
+                    new BigDecimal("11.00"),
+                    "1 Woche dispensiert",
+                    new BigDecimal("21.00"),
+                    "versäumte Zahlung",
                     18,
                     new BigDecimal("22.00"),
-                    new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
                     new GregorianCalendar(1912, Calendar.FEBRUARY, 28),
                     new BigDecimal("100.00"),
                     new GregorianCalendar(1912, Calendar.MARCH, 10),
@@ -90,15 +97,15 @@ public class SemesterrechnungDaoTest {
             entityManager.persist(semesterrechnung);
 
             Semesterrechnung semesterrechnungFound = semesterrechnungDao.findById(new SemesterrechnungId(semesterrechnung.getSemester().getSemesterId(), semesterrechnung.getRechnungsempfaenger().getPersonId()));
-            assertEquals(new BigDecimal("10.00"), semesterrechnungFound.getErmaessigung());
-            assertEquals("1 Woche dispensiert", semesterrechnungFound.getErmaessigungsgrund());
-            assertEquals(new BigDecimal("20.00"), semesterrechnungFound.getZuschlag());
-            assertEquals("versäumte Zahlung", semesterrechnungFound.getZuschlagsgrund());
+            assertEquals(new BigDecimal("10.00"), semesterrechnungFound.getErmaessigungVorrechnung());
+            assertEquals("1 Woche dispensiert", semesterrechnungFound.getErmaessigungsgrundVorrechnung());
+            assertEquals(new BigDecimal("20.00"), semesterrechnungFound.getZuschlagVorrechnung());
+            assertEquals("versäumte Zahlung", semesterrechnungFound.getZuschlagsgrundVorrechnung());
             assertEquals(Stipendium.STIPENDIUM_70, semesterrechnungFound.getStipendium());
             assertFalse(semesterrechnungFound.getGratiskinder());
-            assertEquals(new Integer(18), semesterrechnungFound.getAnzahlWochen());
-            assertEquals(new BigDecimal("22.00"), semesterrechnungFound.getWochenbetrag());
-            assertEquals(new GregorianCalendar(1912, Calendar.FEBRUARY, 1), semesterrechnungFound.getRechnungsdatum());
+            assertEquals(new Integer(18), semesterrechnungFound.getAnzahlWochenVorrechnung());
+            assertEquals(new BigDecimal("23.00"), semesterrechnungFound.getWochenbetragVorrechnung());
+            assertEquals(new GregorianCalendar(1912, Calendar.FEBRUARY, 1), semesterrechnungFound.getRechnungsdatumVorrechnung());
             assertEquals(new GregorianCalendar(1912, Calendar.FEBRUARY, 28), semesterrechnungFound.getDatumZahlung1());
             assertEquals(new BigDecimal("100.00"), semesterrechnungFound.getBetragZahlung1());
             assertEquals(new GregorianCalendar(1912, Calendar.MARCH, 10), semesterrechnungFound.getDatumZahlung2());
@@ -135,15 +142,22 @@ public class SemesterrechnungDaoTest {
             entityManager.persist(semesterrechnungCode);
 
             Semesterrechnung semesterrechnung = new Semesterrechnung(semester, rechnungsempfaenger,
+                    Stipendium.STIPENDIUM_70,
+                    false,
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
                     new BigDecimal("10.00"),
                     "1 Woche dispensiert",
                     new BigDecimal("20.00"),
                     "versäumte Zahlung",
-                    Stipendium.STIPENDIUM_70,
-                    false,
+                    18,
+                    new BigDecimal("23.00"),
+                    new GregorianCalendar(1912, Calendar.MARCH, 1),
+                    new BigDecimal("11.00"),
+                    "1 Woche dispensiert",
+                    new BigDecimal("21.00"),
+                    "versäumte Zahlung",
                     18,
                     new BigDecimal("22.00"),
-                    new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
                     new GregorianCalendar(1912, Calendar.FEBRUARY, 28),
                     new BigDecimal("100.00"),
                     new GregorianCalendar(1912, Calendar.MARCH, 10),
@@ -155,10 +169,10 @@ public class SemesterrechnungDaoTest {
             semesterrechnungDao.save(semesterrechnung);
 
             Semesterrechnung semesterrechnungFound = semesterrechnungDao.findById(new SemesterrechnungId(semesterrechnung.getSemester().getSemesterId(), semesterrechnung.getRechnungsempfaenger().getPersonId()));
-            assertEquals(new BigDecimal("10.00"), semesterrechnungFound.getErmaessigung());
-            assertEquals("1 Woche dispensiert", semesterrechnungFound.getErmaessigungsgrund());
-            assertEquals(new BigDecimal("20.00"), semesterrechnungFound.getZuschlag());
-            assertEquals("versäumte Zahlung", semesterrechnungFound.getZuschlagsgrund());
+            assertEquals(new BigDecimal("10.00"), semesterrechnungFound.getErmaessigungVorrechnung());
+            assertEquals("1 Woche dispensiert", semesterrechnungFound.getErmaessigungsgrundVorrechnung());
+            assertEquals(new BigDecimal("20.00"), semesterrechnungFound.getZuschlagVorrechnung());
+            assertEquals("versäumte Zahlung", semesterrechnungFound.getZuschlagsgrundVorrechnung());
             assertEquals(1, semester.getSemesterrechnungen().size());
             assertEquals(1, rechnungsempfaenger.getSemesterrechnungen().size());
 
@@ -192,15 +206,22 @@ public class SemesterrechnungDaoTest {
             entityManager.persist(semesterrechnungCode);
 
             Semesterrechnung semesterrechnung = new Semesterrechnung(semester, rechnungsempfaenger,
+                    Stipendium.STIPENDIUM_70,
+                    false,
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
                     new BigDecimal("10.00"),
                     "1 Woche dispensiert",
                     new BigDecimal("20.00"),
                     "versäumte Zahlung",
-                    Stipendium.STIPENDIUM_70,
-                    false,
+                    18,
+                    new BigDecimal("23.00"),
+                    new GregorianCalendar(1912, Calendar.MARCH, 1),
+                    new BigDecimal("11.00"),
+                    "1 Woche dispensiert",
+                    new BigDecimal("21.00"),
+                    "versäumte Zahlung",
                     18,
                     new BigDecimal("22.00"),
-                    new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
                     new GregorianCalendar(1912, Calendar.FEBRUARY, 28),
                     new BigDecimal("100.00"),
                     new GregorianCalendar(1912, Calendar.MARCH, 10),
@@ -275,15 +296,22 @@ public class SemesterrechnungDaoTest {
 
             // Märcheneinteilung
             Semesterrechnung semesterrechnung1 = new Semesterrechnung(semester1, rechnungsempfaenger1,
+                    Stipendium.STIPENDIUM_60,
+                    true,
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 5),
                     new BigDecimal("17.00"),
                     "2 Wochen dispensiert",
                     new BigDecimal("23.00"),
                     "versäumte Zahlungen",
-                    Stipendium.STIPENDIUM_60,
-                    true,
                     17,
                     new BigDecimal("22.00"),
-                    new GregorianCalendar(1912, Calendar.FEBRUARY, 5),
+                    new GregorianCalendar(1912, Calendar.MARCH, 5),
+                    new BigDecimal("17.00"),
+                    "2 Wochen dispensiert",
+                    new BigDecimal("23.00"),
+                    "versäumte Zahlungen",
+                    17,
+                    new BigDecimal("22.00"),
                     new GregorianCalendar(1912, Calendar.FEBRUARY, 23),
                     new BigDecimal("100.00"),
                     new GregorianCalendar(1912, Calendar.MARCH, 12),
@@ -294,15 +322,22 @@ public class SemesterrechnungDaoTest {
             semesterrechnung1.setSemesterrechnungCode(semesterrechnungCode1);
             entityManager.persist(semesterrechnung1);
             Semesterrechnung semesterrechnung2 = new Semesterrechnung(semester1, rechnungsempfaenger2,
+                    Stipendium.STIPENDIUM_60,
+                    true,
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 5),
                     new BigDecimal("17.00"),
                     "3 Wochen dispensiert",
                     new BigDecimal("23.00"),
                     "versäumte Zahlungen",
-                    Stipendium.STIPENDIUM_60,
-                    true,
                     17,
                     new BigDecimal("22.00"),
                     new GregorianCalendar(1912, Calendar.FEBRUARY, 5),
+                    new BigDecimal("17.00"),
+                    "3 Wochen dispensiert",
+                    new BigDecimal("23.00"),
+                    "versäumte Zahlungen",
+                    17,
+                    new BigDecimal("22.00"),
                     new GregorianCalendar(1912, Calendar.FEBRUARY, 23),
                     new BigDecimal("100.00"),
                     new GregorianCalendar(1912, Calendar.MARCH, 12),
@@ -313,15 +348,22 @@ public class SemesterrechnungDaoTest {
             semesterrechnung2.setSemesterrechnungCode(semesterrechnungCode1);
             entityManager.persist(semesterrechnung2);
             Semesterrechnung semesterrechnung3 = new Semesterrechnung(semester2, rechnungsempfaenger1,
+                    Stipendium.STIPENDIUM_70,
+                    false,
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
                     new BigDecimal("20.00"),
                     "1 Woche dispensiert",
                     new BigDecimal("30.00"),
                     "versäumte Zahlung",
-                    Stipendium.STIPENDIUM_70,
-                    false,
                     18,
                     new BigDecimal("32.00"),
                     new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
+                    new BigDecimal("20.00"),
+                    "1 Woche dispensiert",
+                    new BigDecimal("30.00"),
+                    "versäumte Zahlung",
+                    18,
+                    new BigDecimal("32.00"),
                     new GregorianCalendar(1912, Calendar.FEBRUARY, 28),
                     new BigDecimal("200.00"),
                     new GregorianCalendar(1912, Calendar.MARCH, 10),
@@ -337,13 +379,13 @@ public class SemesterrechnungDaoTest {
             // Nach Semesterrechnungen Semester 1 suchen
             List<Semesterrechnung> semesterrechnungList1 = semesterrechnungDao.findSemesterrechnungenSemester(semester1);
             assertEquals(2, semesterrechnungList1.size());
-            assertEquals("3 Wochen dispensiert", semesterrechnungList1.get(0).getErmaessigungsgrund());
-            assertEquals("2 Wochen dispensiert", semesterrechnungList1.get(1).getErmaessigungsgrund());
+            assertEquals("3 Wochen dispensiert", semesterrechnungList1.get(0).getErmaessigungsgrundVorrechnung());
+            assertEquals("2 Wochen dispensiert", semesterrechnungList1.get(1).getErmaessigungsgrundVorrechnung());
 
             // Nach Semesterrechnungen Semester 2 suchen
             List<Semesterrechnung> semesterrechnungList2 = semesterrechnungDao.findSemesterrechnungenSemester(semester2);
             assertEquals(1, semesterrechnungList2.size());
-            assertEquals("1 Woche dispensiert", semesterrechnungList2.get(0).getErmaessigungsgrund());
+            assertEquals("1 Woche dispensiert", semesterrechnungList2.get(0).getErmaessigungsgrundVorrechnung());
 
             // Nach Semesterrechnungen Semester 3 suchen
             List<Semesterrechnung> semesterrechnungList3 = semesterrechnungDao.findSemesterrechnungenSemester(semester3);
