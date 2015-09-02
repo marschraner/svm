@@ -24,6 +24,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private PraezisierungWochenbetragVorrechnungSelected praezisierungWochenbetragVorrechnungSelected;
     private PraezisierungSchulgeldVorrechnungSelected praezisierungSchulgeldVorrechnungSelected;
     private BigDecimal schulgeldVorrechnung;
+    private SechsJahresRabattVorrechnungSelected sechsJahresRabattVorrechnungSelected;
     private VollstaendigkeitVorrechnungSelected vollstaendigkeitVorrechnungSelected;
     private PraezisierungRechnungsdatumNachrechnungSelected praezisierungRechnungsdatumNachrechnungSelected;
     private PraezisierungErmaessigungNachrechnungSelected praezisierungErmaessigungNachrechnungSelected;
@@ -32,6 +33,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private PraezisierungWochenbetragNachrechnungSelected praezisierungWochenbetragNachrechnungSelected;
     private PraezisierungSchulgeldNachrechnungSelected praezisierungSchulgeldNachrechnungSelected;
     private BigDecimal schulgeldNachrechnung;
+    private SechsJahresRabattNachrechnungSelected sechsJahresRabattNachrechnungSelected;
     private VollstaendigkeitNachrechnungSelected vollstaendigkeitNachrechnungSelected;
     private PraezisierungDifferenzSchulgeldSelected praezisierungDifferenzSchulgeldSelected;
     private BigDecimal differenzSchulgeld;
@@ -205,6 +207,18 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     }
 
     @Override
+    public SechsJahresRabattVorrechnungSelected getSechsJahresRabattVorrechnungSelected() {
+        return sechsJahresRabattVorrechnungSelected;
+    }
+
+    @Override
+    public void setSechsJahresRabattVorrechnungSelected(SechsJahresRabattVorrechnungSelected sechsJahresRabattVorrechnungSelected) {
+        SechsJahresRabattVorrechnungSelected oldValue = this.sechsJahresRabattVorrechnungSelected;
+        this.sechsJahresRabattVorrechnungSelected = sechsJahresRabattVorrechnungSelected;
+        firePropertyChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, oldValue, this.sechsJahresRabattVorrechnungSelected);
+    }
+
+    @Override
     public VollstaendigkeitVorrechnungSelected getVollstaendigkeitVorrechnungSelected() {
         return vollstaendigkeitVorrechnungSelected;
     }
@@ -312,6 +326,18 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     @Override
     public void setSchulgeldNachrechnung(String schulgeldNachrechnung) throws SvmValidationException {
         schulgeldNachrechnungModelAttribute.setNewValue(false, schulgeldNachrechnung, isBulkUpdate());
+    }
+
+    @Override
+    public SechsJahresRabattNachrechnungSelected getSechsJahresRabattNachrechnungSelected() {
+        return sechsJahresRabattNachrechnungSelected;
+    }
+
+    @Override
+    public void setSechsJahresRabattNachrechnungSelected(SechsJahresRabattNachrechnungSelected sechsJahresRabattNachrechnungSelected) {
+        SechsJahresRabattNachrechnungSelected oldValue = this.sechsJahresRabattNachrechnungSelected;
+        this.sechsJahresRabattNachrechnungSelected = sechsJahresRabattNachrechnungSelected;
+        firePropertyChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, oldValue, this.sechsJahresRabattNachrechnungSelected);
     }
 
     @Override

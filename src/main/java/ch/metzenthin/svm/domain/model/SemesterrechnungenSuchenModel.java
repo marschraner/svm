@@ -47,6 +47,12 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
         GROESSER
     }
 
+    enum SechsJahresRabattVorrechnungSelected {
+        VORHANDEN,
+        NICHT_VORHANDEN,
+        ALLE
+    }
+
     enum VollstaendigkeitVorrechnungSelected {
         VOLLSTAENDIG,
         UNVOLLSTAENDIG,
@@ -89,6 +95,12 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
         GROESSER
     }
 
+    enum SechsJahresRabattNachrechnungSelected {
+        VORHANDEN,
+        NICHT_VORHANDEN,
+        ALLE
+    }
+
     enum VollstaendigkeitNachrechnungSelected {
         VOLLSTAENDIG,
         UNVOLLSTAENDIG,
@@ -117,6 +129,7 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     PraezisierungWochenbetragVorrechnungSelected getPraezisierungWochenbetragVorrechnungSelected();
     PraezisierungSchulgeldVorrechnungSelected getPraezisierungSchulgeldVorrechnungSelected();
     BigDecimal getSchulgeldVorrechnung();
+    SechsJahresRabattVorrechnungSelected getSechsJahresRabattVorrechnungSelected();
     VollstaendigkeitVorrechnungSelected getVollstaendigkeitVorrechnungSelected();
     PraezisierungRechnungsdatumNachrechnungSelected getPraezisierungRechnungsdatumNachrechnungSelected();
     PraezisierungErmaessigungNachrechnungSelected getPraezisierungErmaessigungNachrechnungSelected();
@@ -125,6 +138,7 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     PraezisierungWochenbetragNachrechnungSelected getPraezisierungWochenbetragNachrechnungSelected();
     PraezisierungSchulgeldNachrechnungSelected getPraezisierungSchulgeldNachrechnungSelected();
     BigDecimal getSchulgeldNachrechnung();
+    SechsJahresRabattNachrechnungSelected getSechsJahresRabattNachrechnungSelected();
     VollstaendigkeitNachrechnungSelected getVollstaendigkeitNachrechnungSelected();
     PraezisierungDifferenzSchulgeldSelected getPraezisierungDifferenzSchulgeldSelected();
     BigDecimal getDifferenzSchulgeld();
@@ -141,6 +155,7 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     void setPraezisierungWochenbetragVorrechnungSelected(PraezisierungWochenbetragVorrechnungSelected praezisierungWochenbetragVorrechnungSelected);
     void setPraezisierungSchulgeldVorrechnungSelected(PraezisierungSchulgeldVorrechnungSelected praezisierungSchulgeldVorrechnungSelected);
     void setSchulgeldVorrechnung(String schulgeldVorrechnung) throws SvmValidationException;
+    void setSechsJahresRabattVorrechnungSelected(SechsJahresRabattVorrechnungSelected sechsJahresRabattVorrechnungSelected);
     void setVollstaendigkeitVorrechnungSelected(VollstaendigkeitVorrechnungSelected vollstaendigkeitVorrechnungSelected);
     void setPraezisierungRechnungsdatumNachrechnungSelected(PraezisierungRechnungsdatumNachrechnungSelected praezisierungRechnungsdatumNachrechnungSelected);
     void setPraezisierungErmaessigungNachrechnungSelected(PraezisierungErmaessigungNachrechnungSelected praezisierungErmaessigungNachrechnungSelected);
@@ -149,6 +164,7 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     void setPraezisierungWochenbetragNachrechnungSelected(PraezisierungWochenbetragNachrechnungSelected praezisierungWochenbetragNachrechnungSelected);
     void setPraezisierungSchulgeldNachrechnungSelected(PraezisierungSchulgeldNachrechnungSelected praezisierungSchulgeldNachrechnungSelected);
     void setSchulgeldNachrechnung(String schulgeldNachrechnung) throws SvmValidationException;
+    void setSechsJahresRabattNachrechnungSelected(SechsJahresRabattNachrechnungSelected sechsJahresRabattNachrechnungSelected);
     void setVollstaendigkeitNachrechnungSelected(VollstaendigkeitNachrechnungSelected vollstaendigkeitNachrechnungSelected);
     void setPraezisierungDifferenzSchulgeldSelected(PraezisierungDifferenzSchulgeldSelected praezisierungDifferenzSchulgeldSelected);
     void setDifferenzSchulgeld(String differenzSchulgeld) throws SvmValidationException;

@@ -19,7 +19,6 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     private SemesterrechnungCode semesterrechnungCode;
     private Stipendium stipendium;
-    private Boolean sechsJahresRabatt;
     private Boolean gratiskinder;
     private Calendar rechnungsdatumVorrechnung;
     private BigDecimal ermaessigungVorrechnung;
@@ -74,18 +73,6 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
         Stipendium oldValue = this.stipendium;
         this.stipendium = stipendium;
         firePropertyChange(Field.STIPENDIUM, oldValue, this.stipendium);
-    }
-
-    @Override
-    public Boolean isSechsJahresRabatt() {
-        return sechsJahresRabatt;
-    }
-
-    @Override
-    public void setSechsJahresRabatt(Boolean sechsJahresRabatt) {
-        Boolean oldValue = this.sechsJahresRabatt;
-        this.sechsJahresRabatt = sechsJahresRabatt;
-        firePropertyChange(Field.SECHS_JAHRES_RABATT, oldValue, sechsJahresRabatt);
     }
 
     @Override

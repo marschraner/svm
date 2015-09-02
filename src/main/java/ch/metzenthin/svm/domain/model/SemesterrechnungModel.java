@@ -16,7 +16,6 @@ public interface SemesterrechnungModel extends Model {
 
     SemesterrechnungCode getSemesterrechnungCode();
     Stipendium getStipendium();
-    Boolean isSechsJahresRabatt();
     Boolean isGratiskinder();
     Calendar getRechnungsdatumVorrechnung();
     BigDecimal getErmaessigungVorrechnung();
@@ -42,7 +41,6 @@ public interface SemesterrechnungModel extends Model {
 
     void setSemesterrechnungCode(SemesterrechnungCode semesterrechnungCode);
     void setStipendium(Stipendium stipendium);
-    void setSechsJahresRabatt(Boolean sechsJahresRabatt);
     void setGratiskinder(Boolean gratiskind);
     void setRechnungsdatumVorrechnung(String rechnungsdatumVorrechnung) throws SvmValidationException;
     void setErmaessigungVorrechnung(String ermaessigungVorrechnung) throws SvmValidationException;

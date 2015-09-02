@@ -128,7 +128,7 @@ public enum Field {
     SEMESTERRECHNUNG_CODE("Semesterrechnung-Code"),
     STIPENDIUM("Stipendium"),
     GRATISKINDER("Gratiskinder"),
-    SECHS_JAHRES_RABATT("6-Jahres-Rabatt"),
+    SECHS_JAHRES_RABATT_VORRECHNUNG("6-Jahres-Rabatt V"),
     RECHNUNGSDATUM_VORRECHNUNG("R.datum V"),
     ERMAESSIGUNG_VORRECHNUNG("Ermäss. V"),
     ERMAESSIGUNGSGRUND_VORRECHNUNG("Ermässigungsgrund V"),
@@ -167,7 +167,8 @@ public enum Field {
     PRAEZISIERUNG_SCHULGELD_NACHRECHNUNG("Präzisierung Schulgeld N"),
     VOLLSTAENDIGKEIT_NACHRECHNUNG("Vollständigkeit N"),
     PRAEZISIERUNG_RESTBETRAG("Präzisierung Restbetrag"),
-    PRAEZISIERUNG_DIFFERENZ_SCHULGELD("Präzisierung Differenz Schulgeld N-V");
+    PRAEZISIERUNG_DIFFERENZ_SCHULGELD("Präzisierung Differenz Schulgeld N-V"),
+    SECHS_JAHRES_RABATT_NACHRECHNUNG("6-Jahres-Rabatt N");
 
     private String name;
 

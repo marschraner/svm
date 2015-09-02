@@ -73,7 +73,6 @@ public abstract class SemesterrechnungController extends AbstractController {
     private JComboBox<SemesterrechnungCode> comboBoxSemesterrechnungCode;
     private JComboBox<Stipendium> comboBoxStipendium;
     private JCheckBox checkBoxGratiskinder;
-    private JCheckBox checkBoxSechsJahresRabatt;
     private SemesterrechnungModel semesterrechnungModel;
     private SvmContext svmContext;
 
@@ -138,30 +137,6 @@ public abstract class SemesterrechnungController extends AbstractController {
     private void setModelStipendium() {
         makeErrorLabelInvisible(Field.STIPENDIUM);
         semesterrechnungModel.setStipendium((Stipendium) comboBoxStipendium.getSelectedItem());
-    }
-
-    public void setCheckBoxSechsJahresRabatt(JCheckBox checkBoxSechsJahresRabatt) {
-        this.checkBoxSechsJahresRabatt = checkBoxSechsJahresRabatt;
-        if (svmContext.getSvmModel().getSemestersAll().isEmpty()) {
-            checkBoxSechsJahresRabatt.setEnabled(false);
-        }
-        this.checkBoxSechsJahresRabatt.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onSechsJahresRabattEvent();
-            }
-        });
-        // Initialisierung
-        semesterrechnungModel.setSechsJahresRabatt(false);
-    }
-
-    private void onSechsJahresRabattEvent() {
-        LOGGER.trace("SemesterrechnungenSuchenController Event SechsJahresRabatt. Selected=" + checkBoxSechsJahresRabatt.isSelected());
-        setModelSechsJahresRabatt();
-    }
-
-    private void setModelSechsJahresRabatt() {
-        semesterrechnungModel.setSechsJahresRabatt(checkBoxSechsJahresRabatt.isSelected());
     }
 
     public void setCheckBoxGratiskinder(JCheckBox checkBoxGratiskinder) {
@@ -1158,9 +1133,6 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         else if (checkIsFieldChange(Field.STIPENDIUM, evt)) {
             comboBoxStipendium.setSelectedItem(semesterrechnungModel.getStipendium());
-        }
-        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT, evt)) {
-            checkBoxSechsJahresRabatt.setSelected(semesterrechnungModel.isSechsJahresRabatt());
         }
         else if (checkIsFieldChange(Field.GRATISKINDER, evt)) {
             checkBoxGratiskinder.setSelected(semesterrechnungModel.isGratiskinder());
