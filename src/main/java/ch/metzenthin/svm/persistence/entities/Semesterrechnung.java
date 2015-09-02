@@ -429,6 +429,11 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     }
 
     @Transient
+    public boolean isVollstaendigVorrechnung() {
+        return rechnungsdatumVorrechnung != null && anzahlWochenVorrechnung != null && wochenbetragVorrechnung != null;
+    }
+
+    @Transient
     public BigDecimal getSchulgeldNachrechnung() {
         // Gratiskinder haben immer 0.00 als Schulgeld
         if (gratiskinder) {
@@ -456,7 +461,12 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     }
 
     @Transient
-    public BigDecimal getSchulgeldDifferenzNachrechnungVorrechnung() {
+    public boolean isVollstaendigNachrechnung() {
+        return rechnungsdatumNachrechnung != null && anzahlWochenNachrechnung != null && wochenbetragNachrechnung != null;
+    }
+
+    @Transient
+    public BigDecimal getDifferenzSchulgeld() {
         if (getSchulgeldNachrechnung() != null && getSchulgeldVorrechnung() != null) {
             return getSchulgeldNachrechnung().subtract(getSchulgeldVorrechnung());
         }
@@ -477,4 +487,5 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         }
         return restbetrag;
     }
+
 }

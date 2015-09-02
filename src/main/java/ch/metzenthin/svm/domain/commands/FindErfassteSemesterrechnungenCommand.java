@@ -2,7 +2,9 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenSuchenModel;
-import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
+import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 import org.apache.log4j.Logger;
 
 import javax.persistence.TypedQuery;
@@ -29,11 +31,34 @@ public class FindErfassteSemesterrechnungenCommand extends GenericDaoCommand {
     private SemesterrechnungCode semesterrechnungCode;
     private Stipendium stipendium;
     private Boolean gratiskinder;
-    private SemesterrechnungenSuchenModel.RechnungsdatumSelected rechnungsdatumSelected;
-    private Calendar rechnungsdatum;
-    private SemesterrechnungenSuchenModel.RechnungsstatusSelected rechnungsstatus;
-    private BigDecimal wochenbetrag;
-    private BigDecimal schulgeld;
+    private SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumVorrechnungSelected praezisierungRechnungsdatumVorrechnungSelected;
+    private Calendar rechnungsdatumVorrechnung;
+    private SemesterrechnungenSuchenModel.PraezisierungErmaessigungVorrechnungSelected praezisierungErmaessigungVorrechnungSelected;
+    private BigDecimal ermaessigungVorrechnung;
+    private SemesterrechnungenSuchenModel.PraezisierungZuschlagVorrechnungSelected praezisierungZuschlagVorrechnungSelected;
+    private BigDecimal zuschlagVorrechnung;
+    private SemesterrechnungenSuchenModel.PraezisierungWochenbetragVorrechnungSelected praezisierungWochenbetragVorrechnungSelected;
+    private BigDecimal wochenbetragVorrechnung;
+    private SemesterrechnungenSuchenModel.PraezisierungSchulgeldVorrechnungSelected praezisierungSchulgeldVorrechnungSelected;
+    private BigDecimal schulgeldVorrechnung;
+    private SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumNachrechnungSelected praezisierungRechnungsdatumNachrechnungSelected;
+    private SemesterrechnungenSuchenModel.VollstaendigkeitVorrechnungSelected vollstaendigkeitVorrechnungSelected;
+    private Calendar rechnungsdatumNachrechnung;
+    private SemesterrechnungenSuchenModel.PraezisierungErmaessigungNachrechnungSelected praezisierungErmaessigungNachrechnungSelected;
+    private BigDecimal ermaessigungNachrechnung;
+    private SemesterrechnungenSuchenModel.PraezisierungZuschlagNachrechnungSelected praezisierungZuschlagNachrechnungSelected;
+    private BigDecimal zuschlagNachrechnung;
+    private SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenNachrechnungSelected praezisierungAnzahlWochenNachrechnungSelected;
+    private Integer anzahlWochenNachrechnung;
+    private SemesterrechnungenSuchenModel.PraezisierungWochenbetragNachrechnungSelected praezisierungWochenbetragNachrechnungSelected;
+    private BigDecimal wochenbetragNachrechnung;
+    private SemesterrechnungenSuchenModel.PraezisierungSchulgeldNachrechnungSelected praezisierungSchulgeldNachrechnungSelected;
+    private BigDecimal schulgeldNachrechnung;
+    private SemesterrechnungenSuchenModel.VollstaendigkeitNachrechnungSelected vollstaendigkeitNachrechnungSelected;
+    private SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected praezisierungDifferenzSchulgeldSelected;
+    private BigDecimal differenzSchulgeld;
+    private SemesterrechnungenSuchenModel.PraezisierungRestbetragSelected praezisierungRestbetragSelected;
+    private BigDecimal restbetrag;
     private StringBuilder selectStatementSb;
     TypedQuery<Semesterrechnung> typedQuery;
 
@@ -48,11 +73,34 @@ public class FindErfassteSemesterrechnungenCommand extends GenericDaoCommand {
         this.semesterrechnungCode = semesterrechnungenSuchenModel.getSemesterrechnungCode();
         this.stipendium = semesterrechnungenSuchenModel.getStipendium();
         this.gratiskinder = semesterrechnungenSuchenModel.isGratiskinder();
-        this.rechnungsdatumSelected = semesterrechnungenSuchenModel.getRechnungsdatumSelected();
-        this.rechnungsdatum = semesterrechnungenSuchenModel.getRechnungsdatum();
-        this.rechnungsstatus = semesterrechnungenSuchenModel.getRechnungsstatus();
-        this.wochenbetrag = semesterrechnungenSuchenModel.getWochenbetrag();
-        this.schulgeld = semesterrechnungenSuchenModel.getSchulgeld();
+        this.praezisierungRechnungsdatumVorrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungRechnungsdatumVorrechnungSelected();
+        this.rechnungsdatumVorrechnung = semesterrechnungenSuchenModel.getRechnungsdatumVorrechnung();
+        this.praezisierungErmaessigungVorrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungErmaessigungVorrechnungSelected();
+        this.ermaessigungVorrechnung = semesterrechnungenSuchenModel.getErmaessigungVorrechnung();
+        this.praezisierungZuschlagVorrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungZuschlagVorrechnungSelected();
+        this.zuschlagVorrechnung = semesterrechnungenSuchenModel.getZuschlagVorrechnung();
+        this.praezisierungWochenbetragVorrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungWochenbetragVorrechnungSelected();
+        this.wochenbetragVorrechnung = semesterrechnungenSuchenModel.getWochenbetragVorrechnung();
+        this.praezisierungSchulgeldVorrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungSchulgeldVorrechnungSelected();
+        this.schulgeldVorrechnung = semesterrechnungenSuchenModel.getSchulgeldVorrechnung();
+        this.vollstaendigkeitVorrechnungSelected = semesterrechnungenSuchenModel.getVollstaendigkeitVorrechnungSelected();
+        this.praezisierungRechnungsdatumNachrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungRechnungsdatumNachrechnungSelected();
+        this.rechnungsdatumNachrechnung = semesterrechnungenSuchenModel.getRechnungsdatumNachrechnung();
+        this.praezisierungErmaessigungNachrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungErmaessigungNachrechnungSelected();
+        this.ermaessigungNachrechnung = semesterrechnungenSuchenModel.getErmaessigungNachrechnung();
+        this.praezisierungZuschlagNachrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungZuschlagNachrechnungSelected();
+        this.zuschlagNachrechnung = semesterrechnungenSuchenModel.getZuschlagNachrechnung();
+        this.praezisierungAnzahlWochenNachrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungAnzahlWochenNachrechnungSelected();
+        this.anzahlWochenNachrechnung = semesterrechnungenSuchenModel.getAnzahlWochenNachrechnung();
+        this.praezisierungWochenbetragNachrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungWochenbetragNachrechnungSelected();
+        this.wochenbetragNachrechnung = semesterrechnungenSuchenModel.getWochenbetragNachrechnung();
+        this.praezisierungSchulgeldNachrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungSchulgeldNachrechnungSelected();
+        this.schulgeldNachrechnung = semesterrechnungenSuchenModel.getSchulgeldNachrechnung();
+        this.vollstaendigkeitNachrechnungSelected = semesterrechnungenSuchenModel.getVollstaendigkeitNachrechnungSelected();
+        this.praezisierungDifferenzSchulgeldSelected = semesterrechnungenSuchenModel.getPraezisierungDifferenzSchulgeldSelected();
+        this.differenzSchulgeld = semesterrechnungenSuchenModel.getDifferenzSchulgeld();
+        this.praezisierungRestbetragSelected = semesterrechnungenSuchenModel.getPraezisierungRestbetragSelected();
+        this.restbetrag = semesterrechnungenSuchenModel.getRestbetrag();
     }
 
     @Override
@@ -80,42 +128,171 @@ public class FindErfassteSemesterrechnungenCommand extends GenericDaoCommand {
         setSelectionParameters();
 
         semesterrechnungenFound = typedQuery.getResultList();
-        if (schulgeld == null && rechnungsstatus == SemesterrechnungenSuchenModel.RechnungsstatusSelected.ALLE) {
-            return;
-        }
 
-        // Schulgeld
-        if (schulgeld != null) {
+        // Filter für restliche Suchparameter
+        filterSemesterrechnungenFound();
+    }
+
+    private void filterSemesterrechnungenFound() {
+
+        if (schulgeldVorrechnung != null) {
             Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
-            while (it.hasNext()) {
-                Semesterrechnung semesterrechnungIt = it.next();
-                if (semesterrechnungIt.getSchulgeldVorrechnung() == null || semesterrechnungIt.getSchulgeldVorrechnung().compareTo(schulgeld) != 0) {
-                    it.remove();
-                }
+            switch (praezisierungSchulgeldVorrechnungSelected) {
+                case GLEICH:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getSchulgeldVorrechnung() == null || semesterrechnungIt.getSchulgeldVorrechnung().compareTo(schulgeldVorrechnung) != 0) {
+                            it.remove();
+                        }
+                    }
+                    break;
+                case KLEINER:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getSchulgeldVorrechnung() == null || semesterrechnungIt.getSchulgeldVorrechnung().compareTo(schulgeldVorrechnung) != -1) {
+                            it.remove();
+                        }
+                    }
+                    break;
+                case GROESSER:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getSchulgeldVorrechnung() == null || semesterrechnungIt.getSchulgeldVorrechnung().compareTo(schulgeldVorrechnung) != 1) {
+                            it.remove();
+                        }
+                    }
+                    break;
             }
         }
-
-        // Rechnungsstatus
-        if (rechnungsstatus != null && rechnungsstatus != SemesterrechnungenSuchenModel.RechnungsstatusSelected.ALLE) {
+        if (vollstaendigkeitVorrechnungSelected != SemesterrechnungenSuchenModel.VollstaendigkeitVorrechnungSelected.ALLE) {
             Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
-            if (rechnungsstatus == SemesterrechnungenSuchenModel.RechnungsstatusSelected.OFFEN) {
-                while (it.hasNext()) {
-                    Semesterrechnung semesterrechnungIt = it.next();
-                    if (semesterrechnungIt.getRestbetrag() == null || semesterrechnungIt.getRestbetrag().compareTo(BigDecimal.ZERO) <= 0) {
-                        it.remove();
+            switch (vollstaendigkeitVorrechnungSelected) {
+                case VOLLSTAENDIG:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (!semesterrechnungIt.isVollstaendigVorrechnung()) {
+                            it.remove();
+                        }
                     }
-                }
-            }
-            else if (rechnungsstatus == SemesterrechnungenSuchenModel.RechnungsstatusSelected.BEZAHLT) {
-                while (it.hasNext()) {
-                    Semesterrechnung semesterrechnungIt = it.next();
-                    if (semesterrechnungIt.getRestbetrag() == null || semesterrechnungIt.getRestbetrag().compareTo(BigDecimal.ZERO) > 0) {
-                        it.remove();
+                    break;
+                case UNVOLLSTAENDIG:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.isVollstaendigVorrechnung()) {
+                            it.remove();
+                        }
                     }
-                }
+                    break;
             }
         }
-
+        if (schulgeldNachrechnung != null) {
+            Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
+            switch (praezisierungSchulgeldNachrechnungSelected) {
+                case GLEICH:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getSchulgeldNachrechnung() == null || semesterrechnungIt.getSchulgeldNachrechnung().compareTo(schulgeldNachrechnung) != 0) {
+                            it.remove();
+                        }
+                    }
+                    break;
+                case KLEINER:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getSchulgeldNachrechnung() == null || semesterrechnungIt.getSchulgeldNachrechnung().compareTo(schulgeldNachrechnung) != -1) {
+                            it.remove();
+                        }
+                    }
+                    break;
+                case GROESSER:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getSchulgeldNachrechnung() == null || semesterrechnungIt.getSchulgeldNachrechnung().compareTo(schulgeldNachrechnung) != 1) {
+                            it.remove();
+                        }
+                    }
+                    break;
+            }
+        }
+        if (vollstaendigkeitNachrechnungSelected != SemesterrechnungenSuchenModel.VollstaendigkeitNachrechnungSelected.ALLE) {
+            Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
+            switch (vollstaendigkeitNachrechnungSelected) {
+                case VOLLSTAENDIG:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (!semesterrechnungIt.isVollstaendigNachrechnung()) {
+                            it.remove();
+                        }
+                    }
+                    break;
+                case UNVOLLSTAENDIG:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.isVollstaendigNachrechnung()) {
+                            it.remove();
+                        }
+                    }
+                    break;
+            }
+        }
+        if (differenzSchulgeld != null) {
+            Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
+            switch (praezisierungDifferenzSchulgeldSelected) {
+                case GLEICH:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getDifferenzSchulgeld() == null || semesterrechnungIt.getDifferenzSchulgeld().compareTo(differenzSchulgeld) != 0) {
+                            it.remove();
+                        }
+                    }
+                    break;
+                case KLEINER:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getDifferenzSchulgeld() == null || semesterrechnungIt.getDifferenzSchulgeld().compareTo(differenzSchulgeld) != -1) {
+                            it.remove();
+                        }
+                    }
+                    break;
+                case GROESSER:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getDifferenzSchulgeld() == null || semesterrechnungIt.getDifferenzSchulgeld().compareTo(differenzSchulgeld) != 1) {
+                            it.remove();
+                        }
+                    }
+                    break;
+            }
+        }
+        if (restbetrag != null) {
+            Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
+            switch (praezisierungRestbetragSelected) {
+                case GLEICH:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getRestbetrag() == null || semesterrechnungIt.getRestbetrag().compareTo(restbetrag) != 0) {
+                            it.remove();
+                        }
+                    }
+                    break;
+                case KLEINER:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getRestbetrag() == null || semesterrechnungIt.getRestbetrag().compareTo(restbetrag) != -1) {
+                            it.remove();
+                        }
+                    }
+                    break;
+                case GROESSER:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getRestbetrag() == null || semesterrechnungIt.getRestbetrag().compareTo(restbetrag) != 1) {
+                            it.remove();
+                        }
+                    }
+                    break;
+            }
+        }
     }
 
     private void createJoinSchueler() {
@@ -125,6 +302,7 @@ public class FindErfassteSemesterrechnungenCommand extends GenericDaoCommand {
     }
 
     private void createWhereSelections() {
+
         if (checkNotEmpty(vorname)) {
             String selectRechnungsempfaenger = " lower(semre.rechnungsempfaenger.vorname) = :vorname";
             String selectSchueler = " lower(sch.vorname) = :vorname";
@@ -174,22 +352,124 @@ public class FindErfassteSemesterrechnungenCommand extends GenericDaoCommand {
         } else {
             selectStatementSb.append(" semre.gratiskinder = 1 and");
         }
-        if (rechnungsdatum != null) {
-            switch (rechnungsdatumSelected) {
+        if (rechnungsdatumVorrechnung != null) {
+            switch (praezisierungRechnungsdatumVorrechnungSelected) {
                 case AM:
-                    selectStatementSb.append(" semre.rechnungsdatum = :rechnungsdatum and");
+                    selectStatementSb.append(" semre.rechnungsdatumVorrechnung = :rechnungsdatumVorrechnung and");
                     break;
                 case VOR:
-                    selectStatementSb.append(" semre.rechnungsdatum < :rechnungsdatum and");
+                    selectStatementSb.append(" semre.rechnungsdatumVorrechnung < :rechnungsdatumVorrechnung and");
                     break;
                 case NACH:
-                    selectStatementSb.append(" semre.rechnungsdatum > :rechnungsdatum and");
+                    selectStatementSb.append(" semre.rechnungsdatumVorrechnung > :rechnungsdatumVorrechnung and");
                     break;
             }
         }
-        if (wochenbetrag != null) {
-            selectStatementSb.append(" semre.wochenbetrag = :wochenbetrag and");
+        if (ermaessigungVorrechnung != null) {
+            switch (praezisierungErmaessigungVorrechnungSelected) {
+                case GLEICH:
+                    selectStatementSb.append(" semre.ermaessigungVorrechnung = :ermaessigungVorrechnung and");
+                    break;
+                case KLEINER:
+                    selectStatementSb.append(" semre.ermaessigungVorrechnung < :ermaessigungVorrechnung and");
+                    break;
+                case GROESSER:
+                    selectStatementSb.append(" semre.ermaessigungVorrechnung > :ermaessigungVorrechnung and");
+                    break;
+            }
         }
+        if (zuschlagVorrechnung != null) {
+            switch (praezisierungZuschlagVorrechnungSelected) {
+                case GLEICH:
+                    selectStatementSb.append(" semre.zuschlagVorrechnung = :zuschlagVorrechnung and");
+                    break;
+                case KLEINER:
+                    selectStatementSb.append(" semre.zuschlagVorrechnung < :zuschlagVorrechnung and");
+                    break;
+                case GROESSER:
+                    selectStatementSb.append(" semre.zuschlagVorrechnung > :zuschlagVorrechnung and");
+                    break;
+            }
+        }
+        if (wochenbetragVorrechnung != null) {
+            switch (praezisierungWochenbetragVorrechnungSelected) {
+                case GLEICH:
+                    selectStatementSb.append(" semre.wochenbetragVorrechnung = :wochenbetragVorrechnung and");
+                    break;
+                case KLEINER:
+                    selectStatementSb.append(" semre.wochenbetragVorrechnung < :wochenbetragVorrechnung and");
+                    break;
+                case GROESSER:
+                    selectStatementSb.append(" semre.wochenbetragVorrechnung > :wochenbetragVorrechnung and");
+                    break;
+            }
+        }
+        if (rechnungsdatumNachrechnung != null) {
+            switch (praezisierungRechnungsdatumNachrechnungSelected) {
+                case AM:
+                    selectStatementSb.append(" semre.rechnungsdatumNachrechnung = :rechnungsdatumNachrechnung and");
+                    break;
+                case VOR:
+                    selectStatementSb.append(" semre.rechnungsdatumNachrechnung < :rechnungsdatumNachrechnung and");
+                    break;
+                case NACH:
+                    selectStatementSb.append(" semre.rechnungsdatumNachrechnung > :rechnungsdatumNachrechnung and");
+                    break;
+            }
+        }
+        if (ermaessigungNachrechnung != null) {
+            switch (praezisierungErmaessigungNachrechnungSelected) {
+                case GLEICH:
+                    selectStatementSb.append(" semre.ermaessigungNachrechnung = :ermaessigungNachrechnung and");
+                    break;
+                case KLEINER:
+                    selectStatementSb.append(" semre.ermaessigungNachrechnung < :ermaessigungNachrechnung and");
+                    break;
+                case GROESSER:
+                    selectStatementSb.append(" semre.ermaessigungNachrechnung > :ermaessigungNachrechnung and");
+                    break;
+            }
+        }
+        if (zuschlagNachrechnung != null) {
+            switch (praezisierungZuschlagNachrechnungSelected) {
+                case GLEICH:
+                    selectStatementSb.append(" semre.zuschlagNachrechnung = :zuschlagNachrechnung and");
+                    break;
+                case KLEINER:
+                    selectStatementSb.append(" semre.zuschlagNachrechnung < :zuschlagNachrechnung and");
+                    break;
+                case GROESSER:
+                    selectStatementSb.append(" semre.zuschlagNachrechnung > :zuschlagNachrechnung and");
+                    break;
+            }
+        }
+        if (anzahlWochenNachrechnung != null) {
+            switch (praezisierungAnzahlWochenNachrechnungSelected) {
+                case GLEICH:
+                    selectStatementSb.append(" semre.anzahlWochenNachrechnung = :anzahlWochenNachrechnung and");
+                    break;
+                case KLEINER:
+                    selectStatementSb.append(" semre.anzahlWochenNachrechnung < :anzahlWochenNachrechnung and");
+                    break;
+                case GROESSER:
+                    selectStatementSb.append(" semre.anzahlWochenNachrechnung > :anzahlWochenNachrechnung and");
+                    break;
+            }
+        }
+        if (wochenbetragNachrechnung != null) {
+            switch (praezisierungWochenbetragNachrechnungSelected) {
+                case GLEICH:
+                    selectStatementSb.append(" semre.wochenbetragNachrechnung = :wochenbetragNachrechnung and");
+                    break;
+                case KLEINER:
+                    selectStatementSb.append(" semre.wochenbetragNachrechnung < :wochenbetragNachrechnung and");
+                    break;
+                case GROESSER:
+                    selectStatementSb.append(" semre.wochenbetragNachrechnung > :wochenbetragNachrechnung and");
+                    break;
+            }
+        }
+
     }
     
     private void setSelectionParameters() {
@@ -206,11 +486,32 @@ public class FindErfassteSemesterrechnungenCommand extends GenericDaoCommand {
         if (selectStatementSb.toString().contains(":stipendium")) {
             typedQuery.setParameter("stipendium", stipendium);
         }
-        if (selectStatementSb.toString().contains(":rechnungsdatum")) {
-            typedQuery.setParameter("rechnungsdatum", rechnungsdatum);
+        if (selectStatementSb.toString().contains(":rechnungsdatumVorrechnung")) {
+            typedQuery.setParameter("rechnungsdatumVorrechnung", rechnungsdatumVorrechnung);
         }
-        if (selectStatementSb.toString().contains(":wochenbetrag")) {
-            typedQuery.setParameter("wochenbetrag", wochenbetrag);
+        if (selectStatementSb.toString().contains(":ermaessigungVorrechnung")) {
+            typedQuery.setParameter("ermaessigungVorrechnung", ermaessigungVorrechnung);
+        }
+        if (selectStatementSb.toString().contains(":zuschlagVorrechnung")) {
+            typedQuery.setParameter("zuschlagVorrechnung", zuschlagVorrechnung);
+        }
+        if (selectStatementSb.toString().contains(":wochenbetragVorrechnung")) {
+            typedQuery.setParameter("wochenbetragVorrechnung", wochenbetragVorrechnung);
+        }
+        if (selectStatementSb.toString().contains(":rechnungsdatumNachrechnung")) {
+            typedQuery.setParameter("rechnungsdatumNachrechnung", rechnungsdatumNachrechnung);
+        }
+        if (selectStatementSb.toString().contains(":ermaessigungNachrechnung")) {
+            typedQuery.setParameter("ermaessigungNachrechnung", ermaessigungNachrechnung);
+        }
+        if (selectStatementSb.toString().contains(":zuschlagNachrechnung")) {
+            typedQuery.setParameter("zuschlagNachrechnung", zuschlagNachrechnung);
+        }
+        if (selectStatementSb.toString().contains(":anzahlWochenNachrechnung")) {
+            typedQuery.setParameter("anzahlWochenNachrechnung", anzahlWochenNachrechnung);
+        }
+        if (selectStatementSb.toString().contains(":wochenbetragNachrechnung")) {
+            typedQuery.setParameter("wochenbetragNachrechnung", wochenbetragNachrechnung);
         }
     }
 
