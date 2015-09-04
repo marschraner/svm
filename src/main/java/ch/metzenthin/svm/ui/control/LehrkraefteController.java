@@ -82,7 +82,7 @@ public class LehrkraefteController {
 
     private void onNeu() {
         btnNeu.setFocusPainted(true);
-        LehrkraftErfassenDialog lehrkraftErfassenDialog = new LehrkraftErfassenDialog(svmContext, lehrkraefteModel, 0, false, "Neue Lehrkraft");
+        LehrkraftErfassenDialog lehrkraftErfassenDialog = new LehrkraftErfassenDialog(svmContext, lehrkraefteTableModel, lehrkraefteModel, 0, false, "Neue Lehrkraft");
         lehrkraftErfassenDialog.pack();
         lehrkraftErfassenDialog.setVisible(true);
         lehrkraefteTableModel.fireTableDataChanged();
@@ -106,7 +106,7 @@ public class LehrkraefteController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        LehrkraftErfassenDialog lehrkraftErfassenDialog = new LehrkraftErfassenDialog(svmContext, lehrkraefteModel, lehrkraefteTable.convertRowIndexToModel(lehrkraefteTable.getSelectedRow()), true, "Lehrkraft bearbeiten");
+        LehrkraftErfassenDialog lehrkraftErfassenDialog = new LehrkraftErfassenDialog(svmContext, lehrkraefteTableModel, lehrkraefteModel, lehrkraefteTable.convertRowIndexToModel(lehrkraefteTable.getSelectedRow()), true, "Lehrkraft bearbeiten");
         lehrkraftErfassenDialog.pack();
         lehrkraftErfassenDialog.setVisible(true);
         lehrkraefteTableModel.fireTableDataChanged();
@@ -146,7 +146,7 @@ public class LehrkraefteController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteLehrkraftCommand.Result result  = lehrkraefteModel.lehrkraftLoeschen(svmContext, lehrkraefteTable.convertRowIndexToModel(lehrkraefteTable.getSelectedRow()));
+            DeleteLehrkraftCommand.Result result  = lehrkraefteModel.lehrkraftLoeschen(svmContext, lehrkraefteTableModel, lehrkraefteTable.convertRowIndexToModel(lehrkraefteTable.getSelectedRow()));
             switch (result) {
                 case LEHRKRAFT_VON_KURS_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Die Lehrkraft wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);

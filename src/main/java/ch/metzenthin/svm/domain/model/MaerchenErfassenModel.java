@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
+import ch.metzenthin.svm.ui.componentmodel.MaerchensTableModel;
 
 /**
  * @author Martin Schraner
@@ -20,5 +21,5 @@ public interface MaerchenErfassenModel extends Model {
     boolean checkMaerchenBereitsErfasst(SvmModel svmModel);
     String getNaechstesNochNichtErfasstesSchuljahrMaerchen(SvmModel svmModel);
     boolean checkIfMaerchenIsInPast();
-    void speichern(SvmModel svmModel);
+    void speichern(SvmModel svmModel, MaerchensTableModel maerchensTableModel);
 }

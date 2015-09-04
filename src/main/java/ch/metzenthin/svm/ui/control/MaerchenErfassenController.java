@@ -6,6 +6,7 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.MaerchenErfassenModel;
+import ch.metzenthin.svm.ui.componentmodel.MaerchensTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -27,6 +28,7 @@ public class MaerchenErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
+    private MaerchensTableModel maerchensTableModel;
     private MaerchenErfassenModel maerchenErfassenModel;
     private final SvmContext svmContext;
     private boolean isBearbeiten;
@@ -38,9 +40,10 @@ public class MaerchenErfassenController extends AbstractController {
     private JLabel errLblAnzahlVorstellungen;
     private JButton btnSpeichern;
 
-    public MaerchenErfassenController(SvmContext svmContext, MaerchenErfassenModel maerchenErfassenModel, boolean isBearbeiten) {
+    public MaerchenErfassenController(SvmContext svmContext, MaerchensTableModel maerchensTableModel, MaerchenErfassenModel maerchenErfassenModel, boolean isBearbeiten) {
         super(maerchenErfassenModel);
         this.svmContext = svmContext;
+        this.maerchensTableModel = maerchensTableModel;
         this.maerchenErfassenModel = maerchenErfassenModel;
         this.isBearbeiten = isBearbeiten;
         this.maerchenErfassenModel.addPropertyChangeListener(this);
@@ -273,7 +276,7 @@ public class MaerchenErfassenController extends AbstractController {
                     return;
                 }
             }
-            maerchenErfassenModel.speichern(svmContext.getSvmModel());
+            maerchenErfassenModel.speichern(svmContext.getSvmModel(), maerchensTableModel);
             maerchenErfassenDialog.dispose();
         }
     }

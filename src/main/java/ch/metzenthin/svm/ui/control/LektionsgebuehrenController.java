@@ -68,7 +68,7 @@ public class LektionsgebuehrenController {
 
     private void onNeu() {
         btnNeu.setFocusPainted(true);
-        LektionsgebuehrenErfassenDialog lektionsgebuehrenErfassenDialog = new LektionsgebuehrenErfassenDialog(svmContext, lektionsgebuehrenModel, 0, false, "Neuer Lektionsgebuehren");
+        LektionsgebuehrenErfassenDialog lektionsgebuehrenErfassenDialog = new LektionsgebuehrenErfassenDialog(svmContext, lektionsgebuehrenTableModel, lektionsgebuehrenModel, 0, false, "Neuer Lektionsgebuehren");
         lektionsgebuehrenErfassenDialog.pack();
         lektionsgebuehrenErfassenDialog.setVisible(true);
         lektionsgebuehrenTableModel.fireTableDataChanged();
@@ -92,7 +92,7 @@ public class LektionsgebuehrenController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        LektionsgebuehrenErfassenDialog lektionsgebuehrenErfassenDialog = new LektionsgebuehrenErfassenDialog(svmContext, lektionsgebuehrenModel, lektionsgebuehrenTable.getSelectedRow(), true, "Lektionsgebuehren bearbeiten");
+        LektionsgebuehrenErfassenDialog lektionsgebuehrenErfassenDialog = new LektionsgebuehrenErfassenDialog(svmContext, lektionsgebuehrenTableModel, lektionsgebuehrenModel, lektionsgebuehrenTable.getSelectedRow(), true, "Lektionsgebuehren bearbeiten");
         lektionsgebuehrenErfassenDialog.pack();
         lektionsgebuehrenErfassenDialog.setVisible(true);
         lektionsgebuehrenTableModel.fireTableDataChanged();
@@ -127,7 +127,7 @@ public class LektionsgebuehrenController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            lektionsgebuehrenModel.eintragLoeschen(svmContext, lektionsgebuehrenTable.getSelectedRow());
+            lektionsgebuehrenModel.eintragLoeschen(svmContext, lektionsgebuehrenTableModel, lektionsgebuehrenTable.getSelectedRow());
             lektionsgebuehrenTableModel.fireTableDataChanged();
             lektionsgebuehrenTable.addNotify();
         }

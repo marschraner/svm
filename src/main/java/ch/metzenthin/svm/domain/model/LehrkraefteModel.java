@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.commands.DeleteLehrkraftCommand;
+import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 
 /**
  * @author Martin Schraner
@@ -9,5 +10,5 @@ import ch.metzenthin.svm.domain.commands.DeleteLehrkraftCommand;
 public interface LehrkraefteModel {
     LehrkraftErfassenModel getLehrkraftErfassenModel(SvmContext svmContext, int indexBearbeiten);
 
-    DeleteLehrkraftCommand.Result lehrkraftLoeschen(SvmContext svmContext, int selectedRow);
+    DeleteLehrkraftCommand.Result lehrkraftLoeschen(SvmContext svmContext, LehrkraefteTableModel lehrkraefteTableModel, int selectedRow);
 }

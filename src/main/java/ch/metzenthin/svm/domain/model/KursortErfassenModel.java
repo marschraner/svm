@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Kursort;
+import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
 
 /**
  * @author Martin Schraner
@@ -17,5 +18,5 @@ public interface KursortErfassenModel extends Model {
     void setSelektierbar(Boolean isSelected);
 
     boolean checkKursortBezeichnungBereitsInVerwendung(SvmModel svmModel);
-    void speichern(SvmModel svmModel);
+    void speichern(SvmModel svmModel, KursorteTableModel kursorteTableModel);
 }

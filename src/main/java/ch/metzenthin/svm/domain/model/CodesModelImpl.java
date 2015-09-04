@@ -23,29 +23,35 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
     }
 
     @Override
-    public DeleteSchuelerCodeCommand.Result eintragLoeschenSchuelerCodesVerwalten(SvmContext svmContext, int indexCodeToBeRemoved) {
+    public DeleteSchuelerCodeCommand.Result eintragLoeschenSchuelerCodesVerwalten(SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved) {
         List<SchuelerCode> schuelerCodes = svmContext.getSvmModel().getSchuelerCodesAll();
         CommandInvoker commandInvoker = getCommandInvoker();
         DeleteSchuelerCodeCommand deleteSchuelerCodeCommand = new DeleteSchuelerCodeCommand(schuelerCodes, indexCodeToBeRemoved);
         commandInvoker.executeCommandAsTransaction(deleteSchuelerCodeCommand);
+        // TableData mit von der Datenbank upgedateten SchülerCodes updaten
+        codesTableModel.getCodesTableData().setCodes(svmContext.getSvmModel().getSchuelerCodesAll());
         return deleteSchuelerCodeCommand.getResult();
     }
 
     @Override
-    public DeleteElternmithilfeCodeCommand.Result eintragLoeschenElternmithilfeCodesVerwalten(SvmContext svmContext, int indexCodeToBeRemoved) {
+    public DeleteElternmithilfeCodeCommand.Result eintragLoeschenElternmithilfeCodesVerwalten(SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved) {
         List<ElternmithilfeCode> elternmithilfeCodes = svmContext.getSvmModel().getElternmithilfeCodesAll();
         CommandInvoker commandInvoker = getCommandInvoker();
         DeleteElternmithilfeCodeCommand deleteElternmithilfeCodeCommand = new DeleteElternmithilfeCodeCommand(elternmithilfeCodes, indexCodeToBeRemoved);
         commandInvoker.executeCommandAsTransaction(deleteElternmithilfeCodeCommand);
+        // TableData mit von der Datenbank upgedateten ElternmithilfeCodes updaten
+        codesTableModel.getCodesTableData().setCodes(svmContext.getSvmModel().getElternmithilfeCodesAll());
         return deleteElternmithilfeCodeCommand.getResult();
     }
 
     @Override
-    public DeleteSemesterrechnungCodeCommand.Result eintragLoeschenSemesterrechnungCodesVerwalten(SvmContext svmContext, int indexCodeToBeRemoved) {
+    public DeleteSemesterrechnungCodeCommand.Result eintragLoeschenSemesterrechnungCodesVerwalten(SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved) {
         List<SemesterrechnungCode> semesterrechnungCodes = svmContext.getSvmModel().getSemesterrechnungCodesAll();
         CommandInvoker commandInvoker = getCommandInvoker();
         DeleteSemesterrechnungCodeCommand deleteSemesterrechnungCodeCommand = new DeleteSemesterrechnungCodeCommand(semesterrechnungCodes, indexCodeToBeRemoved);
         commandInvoker.executeCommandAsTransaction(deleteSemesterrechnungCodeCommand);
+        // TableData mit von der Datenbank upgedateten SemesterrrechnungCodes updaten
+        codesTableModel.getCodesTableData().setCodes(svmContext.getSvmModel().getSemesterrechnungCodesAll());
         return deleteSemesterrechnungCodeCommand.getResult();
     }
 
@@ -55,7 +61,7 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
         RemoveSchuelerCodeFromSchuelerCommand removeSchuelerCodeFromSchuelerCommand = new RemoveSchuelerCodeFromSchuelerCommand(schuelerCodeToBeRemoved, schuelerDatenblattModel.getSchueler());
         commandInvoker.executeCommandAsTransaction(removeSchuelerCodeFromSchuelerCommand);
         Schueler schuelerUpdated = removeSchuelerCodeFromSchuelerCommand.getSchuelerUpdated();
-        // TableData mit von der Datenbank upgedatetem Schüler updaten
+        // TableData mit von der Datenbank upgedateten SchülerCodes updaten
         codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getCodesAsList());
     }
 

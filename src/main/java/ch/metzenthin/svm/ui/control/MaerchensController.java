@@ -75,7 +75,7 @@ public class MaerchensController {
 
     private void onNeu() {
         btnNeu.setFocusPainted(true);
-        MaerchenErfassenDialog maerchenErfassenDialog = new MaerchenErfassenDialog(svmContext, maerchensModel, 0, false, "Neues Märchen");
+        MaerchenErfassenDialog maerchenErfassenDialog = new MaerchenErfassenDialog(svmContext, maerchensTableModel, maerchensModel, 0, false, "Neues Märchen");
         maerchenErfassenDialog.pack();
         maerchenErfassenDialog.setVisible(true);
         maerchensTableModel.fireTableDataChanged();
@@ -99,7 +99,7 @@ public class MaerchensController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        MaerchenErfassenDialog maerchenErfassenDialog = new MaerchenErfassenDialog(svmContext, maerchensModel, maerchensTable.getSelectedRow(), true, "Märchen bearbeiten");
+        MaerchenErfassenDialog maerchenErfassenDialog = new MaerchenErfassenDialog(svmContext, maerchensTableModel, maerchensModel, maerchensTable.getSelectedRow(), true, "Märchen bearbeiten");
         maerchenErfassenDialog.pack();
         maerchenErfassenDialog.setVisible(true);
         maerchensTableModel.fireTableDataChanged();
@@ -134,7 +134,7 @@ public class MaerchensController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteMaerchenCommand.Result result  = maerchensModel.maerchenLoeschen(svmContext, maerchensTable.getSelectedRow());
+            DeleteMaerchenCommand.Result result  = maerchensModel.maerchenLoeschen(svmContext, maerchensTableModel, maerchensTable.getSelectedRow());
             switch (result) {
                 case MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Das Maerchen wird durch mindestens eine Märcheneinteilung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);

@@ -6,6 +6,7 @@ import ch.metzenthin.svm.domain.commands.CheckKurstypBezeichnungBereitsInVerwend
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateKurstypCommand;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
+import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
 
 /**
  * @author Martin Schraner
@@ -76,10 +77,12 @@ public class KurstypErfassenModelImpl extends AbstractModel implements KurstypEr
     }
 
     @Override
-    public void speichern(SvmModel svmModel) {
+    public void speichern(SvmModel svmModel, KurstypenTableModel kurstypenTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         SaveOrUpdateKurstypCommand saveOrUpdateKurstypCommand = new SaveOrUpdateKurstypCommand(kurstyp, kurstypOrigin, svmModel.getKurstypenAll());
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKurstypCommand);
+        // TableData mit von der Datenbank upgedateten Kurstypen updaten
+        kurstypenTableModel.getKurstypenTableData().setKurstypen(svmModel.getKurstypenAll());
     }
 
     @Override

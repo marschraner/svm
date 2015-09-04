@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.persistence.entities.Code;
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +56,7 @@ public class CodesTableData {
         return value;
     }
 
-    public void setCodes(List<SchuelerCode> codes) {
+    public void setCodes(List<? extends Code> codes) {
         this.codes = codes;
     }
 

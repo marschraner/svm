@@ -71,7 +71,7 @@ public class KurstypenController {
 
     private void onNeu() {
         btnNeu.setFocusPainted(true);
-        KurstypErfassenDialog kurstypErfassenDialog = new KurstypErfassenDialog(svmContext, kurstypenModel, 0, false, "Neuer Kurstyp");
+        KurstypErfassenDialog kurstypErfassenDialog = new KurstypErfassenDialog(svmContext, kurstypenTableModel, kurstypenModel, 0, false, "Neuer Kurstyp");
         kurstypErfassenDialog.pack();
         kurstypErfassenDialog.setVisible(true);
         kurstypenTableModel.fireTableDataChanged();
@@ -95,7 +95,7 @@ public class KurstypenController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        KurstypErfassenDialog kurstypErfassenDialog = new KurstypErfassenDialog(svmContext, kurstypenModel, kurstypenTable.getSelectedRow(), true, "Kurstyp bearbeiten");
+        KurstypErfassenDialog kurstypErfassenDialog = new KurstypErfassenDialog(svmContext, kurstypenTableModel, kurstypenModel, kurstypenTable.getSelectedRow(), true, "Kurstyp bearbeiten");
         kurstypErfassenDialog.pack();
         kurstypErfassenDialog.setVisible(true);
         kurstypenTableModel.fireTableDataChanged();
@@ -130,7 +130,7 @@ public class KurstypenController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteKurstypCommand.Result result  = kurstypenModel.eintragLoeschen(svmContext, kurstypenTable.getSelectedRow());
+            DeleteKurstypCommand.Result result  = kurstypenModel.eintragLoeschen(svmContext, kurstypenTableModel, kurstypenTable.getSelectedRow());
             switch (result) {
                 case KURSTYP_VON_KURS_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Der Kurstyp wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);

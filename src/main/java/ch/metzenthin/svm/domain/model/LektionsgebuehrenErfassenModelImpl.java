@@ -6,6 +6,7 @@ import ch.metzenthin.svm.domain.commands.CheckLektionslaengeBereitsErfasstComman
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateLektionsgebuehrenCommand;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
+import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
 
 import java.math.BigDecimal;
 
@@ -223,10 +224,12 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
     }
 
     @Override
-    public void speichern(SvmModel svmModel) {
+    public void speichern(SvmModel svmModel, LektionsgebuehrenTableModel lektionsgebuehrenTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         SaveOrUpdateLektionsgebuehrenCommand saveOrUpdateLektionsgebuehrenCommand = new SaveOrUpdateLektionsgebuehrenCommand(lektionsgebuehren, lektionsgebuehrenOrigin, svmModel.getLektionsgebuehrenAllList());
         commandInvoker.executeCommandAsTransaction(saveOrUpdateLektionsgebuehrenCommand);
+        // TableData mit von der Datenbank upgedateten Lektionsgebühren updaten
+        lektionsgebuehrenTableModel.getLektionsgebuehrenTableData().setLektionsgebuehrenList(svmModel.getLektionsgebuehrenAllList());
     }
 
     @Override

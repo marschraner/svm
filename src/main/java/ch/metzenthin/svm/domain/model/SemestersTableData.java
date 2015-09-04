@@ -60,4 +60,7 @@ public class SemestersTableData {
         return COLUMNS[column].toString();
     }
 
+    public void setSemesters(List<Semester> semesters) {
+        this.semesters = semesters;
+    }
 }

@@ -73,7 +73,7 @@ public class SemestersController {
 
     private void onNeu() {
         btnNeu.setFocusPainted(true);
-        SemesterErfassenDialog semesterErfassenDialog = new SemesterErfassenDialog(svmContext, semestersModel, 0, false, "Neues Semester");
+        SemesterErfassenDialog semesterErfassenDialog = new SemesterErfassenDialog(svmContext, semestersTableModel, semestersModel, 0, false, "Neues Semester");
         semesterErfassenDialog.pack();
         semesterErfassenDialog.setVisible(true);
         semestersTableModel.fireTableDataChanged();
@@ -97,7 +97,7 @@ public class SemestersController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        SemesterErfassenDialog semesterErfassenDialog = new SemesterErfassenDialog(svmContext, semestersModel, semestersTable.getSelectedRow(), true, "Semester bearbeiten");
+        SemesterErfassenDialog semesterErfassenDialog = new SemesterErfassenDialog(svmContext, semestersTableModel, semestersModel, semestersTable.getSelectedRow(), true, "Semester bearbeiten");
         semesterErfassenDialog.pack();
         semesterErfassenDialog.setVisible(true);
         semestersTableModel.fireTableDataChanged();
@@ -132,7 +132,7 @@ public class SemestersController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteSemesterCommand.Result result  = semestersModel.semesterLoeschen(svmContext, semestersTable.getSelectedRow());
+            DeleteSemesterCommand.Result result  = semestersModel.semesterLoeschen(svmContext, semestersTableModel, semestersTable.getSelectedRow());
             switch (result) {
                 case SEMESTER_VON_KURS_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Das Semester wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);

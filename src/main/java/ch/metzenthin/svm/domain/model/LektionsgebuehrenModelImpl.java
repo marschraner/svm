@@ -5,6 +5,7 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.DeleteLektionsgebuehrenCommand;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
+import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
 
 import java.util.List;
 
@@ -18,11 +19,13 @@ public class LektionsgebuehrenModelImpl extends AbstractModel implements Lektion
     }
 
     @Override
-    public void eintragLoeschen(SvmContext svmContext, int indexLektionsgebuehrenToBeRemoved) {
+    public void eintragLoeschen(SvmContext svmContext, LektionsgebuehrenTableModel lektionsgebuehrenTableModel, int indexLektionsgebuehrenToBeRemoved) {
         List<Lektionsgebuehren> lektionsgebuehren = svmContext.getSvmModel().getLektionsgebuehrenAllList();
         CommandInvoker commandInvoker = getCommandInvoker();
         DeleteLektionsgebuehrenCommand deleteLektionsgebuehrenCommand = new DeleteLektionsgebuehrenCommand(lektionsgebuehren, indexLektionsgebuehrenToBeRemoved);
         commandInvoker.executeCommandAsTransaction(deleteLektionsgebuehrenCommand);
+        // TableData mit von der Datenbank upgedateten Lektionsgebühren updaten
+        lektionsgebuehrenTableModel.getLektionsgebuehrenTableData().setLektionsgebuehrenList(svmContext.getSvmModel().getLektionsgebuehrenAllList());
     }
 
     @Override

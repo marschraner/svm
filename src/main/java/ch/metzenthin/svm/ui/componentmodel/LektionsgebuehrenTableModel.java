@@ -39,4 +39,8 @@ public class LektionsgebuehrenTableModel extends AbstractTableModel {
     public Class<?> getColumnClass(int columnIndex) {
         return lektionsgebuehrenTableData.getColumnClass(columnIndex);
     }
+
+    public LektionsgebuehrenTableData getLektionsgebuehrenTableData() {
+        return lektionsgebuehrenTableData;
+    }
 }

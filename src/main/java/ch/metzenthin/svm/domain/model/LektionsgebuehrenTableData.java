@@ -83,4 +83,7 @@ public class LektionsgebuehrenTableData {
         return COLUMNS[column].toString();
     }
 
+    public void setLektionsgebuehrenList(List<Lektionsgebuehren> lektionsgebuehrenList) {
+        this.lektionsgebuehrenList = lektionsgebuehrenList;
+    }
 }

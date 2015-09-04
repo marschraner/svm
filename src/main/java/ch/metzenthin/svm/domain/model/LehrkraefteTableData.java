@@ -89,4 +89,8 @@ public class LehrkraefteTableData {
     public List<Lehrkraft> getLehrkraefte() {
         return lehrkraefte;
     }
+
+    public void setLehrkraefte(List<Lehrkraft> lehrkraefte) {
+        this.lehrkraefte = lehrkraefte;
+    }
 }

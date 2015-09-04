@@ -5,6 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.Schuljahre;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.model.SemesterErfassenModel;
 import ch.metzenthin.svm.domain.model.SemestersModel;
+import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
 import ch.metzenthin.svm.ui.control.SemesterErfassenController;
 
 import javax.swing.*;
@@ -26,18 +27,18 @@ public class SemesterErfassenDialog extends JDialog {
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
 
-    public SemesterErfassenDialog(SvmContext svmContext, SemestersModel semestersModel, int indexBearbeiten, boolean isBearbeiten, String title) {
+    public SemesterErfassenDialog(SvmContext svmContext, SemestersTableModel semestersTableModel, SemestersModel semestersModel, int indexBearbeiten, boolean isBearbeiten, String title) {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
         setTitle(title);
         initializeErrLbls();
-        createSemesterErfassenController(svmContext, semestersModel, indexBearbeiten, isBearbeiten);
+        createSemesterErfassenController(svmContext, semestersTableModel, semestersModel, indexBearbeiten, isBearbeiten);
     }
 
-    private void createSemesterErfassenController(SvmContext svmContext, SemestersModel semestersModel, int indexBearbeiten, boolean isBearbeiten) {
+    private void createSemesterErfassenController(SvmContext svmContext, SemestersTableModel semestersTableModel, SemestersModel semestersModel, int indexBearbeiten, boolean isBearbeiten) {
         SemesterErfassenModel semesterErfassenModel = (isBearbeiten ? semestersModel.getSemesterErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createSemesterErfassenModel());
-        SemesterErfassenController semesterErfassenController = new SemesterErfassenController(svmContext, semesterErfassenModel, isBearbeiten);
+        SemesterErfassenController semesterErfassenController = new SemesterErfassenController(svmContext, semestersTableModel, semesterErfassenModel, isBearbeiten);
         semesterErfassenController.setSemesterErfassenDialog(this);
         semesterErfassenController.setContentPane(contentPane);
         semesterErfassenController.setSpinnerSchuljahre(spinnerSchuljahre);

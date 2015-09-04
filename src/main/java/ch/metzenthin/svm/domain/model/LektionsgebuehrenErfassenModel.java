@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
+import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
 
 import java.math.BigDecimal;
 
@@ -29,5 +30,5 @@ public interface LektionsgebuehrenErfassenModel extends Model {
     void setBetrag6Kinder(String betrag1Kind) throws SvmValidationException;
 
     boolean checkLektionslaengeBereitsErfasst(SvmModel svmModel);
-    void speichern(SvmModel svmModel);
+    void speichern(SvmModel svmModel, LektionsgebuehrenTableModel lektionsgebuehrenTableModel);
 }

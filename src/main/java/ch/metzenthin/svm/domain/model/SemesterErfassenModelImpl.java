@@ -6,6 +6,7 @@ import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -186,10 +187,12 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
     }
 
     @Override
-    public void speichern(SvmModel svmModel) {
+    public void speichern(SvmModel svmModel, SemestersTableModel semestersTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         SaveOrUpdateSemesterCommand saveOrUpdateSemesterCommand = new SaveOrUpdateSemesterCommand(semester, semesterOrigin, svmModel.getSemestersAll());
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterCommand);
+        // TableData mit von der Datenbank upgedateten Semesters updaten
+        semestersTableModel.getSemestersTableData().setSemesters(svmModel.getSemestersAll());
     }
 
     @Override

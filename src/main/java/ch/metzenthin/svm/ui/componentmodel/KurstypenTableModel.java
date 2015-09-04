@@ -35,4 +35,7 @@ public class KurstypenTableModel extends AbstractTableModel {
         return kurstypenTableData.getColumnName(column);
     }
 
+    public KurstypenTableData getKurstypenTableData() {
+        return kurstypenTableData;
+    }
 }

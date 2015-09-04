@@ -7,6 +7,7 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CodeErfassenModel;
 import ch.metzenthin.svm.domain.model.CompletedListener;
+import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -26,6 +27,7 @@ public class CodeErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
+    private CodesTableModel codesTableModel;
     private CodeErfassenModel codeErfassenModel;
     private Codetyp codetyp;
     private boolean isBearbeiten;
@@ -38,9 +40,10 @@ public class CodeErfassenController extends AbstractController {
     private JLabel errLblBeschreibung;
     private JButton btnSpeichern;
 
-    public CodeErfassenController(SvmContext svmContext, CodeErfassenModel codeErfassenModel, Codetyp codetyp, boolean isBearbeiten) {
+    public CodeErfassenController(SvmContext svmContext, CodesTableModel codesTableModel, CodeErfassenModel codeErfassenModel, Codetyp codetyp, boolean isBearbeiten) {
         super(codeErfassenModel);
         this.svmContext = svmContext;
+        this.codesTableModel = codesTableModel;
         this.codeErfassenModel = codeErfassenModel;
         this.codetyp = codetyp;
         this.isBearbeiten = isBearbeiten;
@@ -235,7 +238,7 @@ public class CodeErfassenController extends AbstractController {
             JOptionPane.showMessageDialog(codeErfassenDialog, "Kürzel bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
-            codeErfassenModel.speichern(svmContext.getSvmModel(), codetyp);
+            codeErfassenModel.speichern(svmContext.getSvmModel(), codesTableModel, codetyp);
             codeErfassenDialog.dispose();
         }
     }

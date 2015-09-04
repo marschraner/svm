@@ -5,6 +5,7 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.DeleteKurstypCommand;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
+import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
 
 import java.util.List;
 
@@ -18,11 +19,13 @@ public class KurstypenModelImpl extends AbstractModel implements KurstypenModel 
     }
 
     @Override
-    public DeleteKurstypCommand.Result eintragLoeschen(SvmContext svmContext, int indexKurstypToBeRemoved) {
+    public DeleteKurstypCommand.Result eintragLoeschen(SvmContext svmContext, KurstypenTableModel kurstypenTableModel, int indexKurstypToBeRemoved) {
         List<Kurstyp> kurstypen = svmContext.getSvmModel().getKurstypenAll();
         CommandInvoker commandInvoker = getCommandInvoker();
         DeleteKurstypCommand deleteKurstypCommand = new DeleteKurstypCommand(kurstypen, indexKurstypToBeRemoved);
         commandInvoker.executeCommandAsTransaction(deleteKurstypCommand);
+        // TableData mit von der Datenbank upgedateten Kurstypen updaten
+        kurstypenTableModel.getKurstypenTableData().setKurstypen(svmContext.getSvmModel().getKurstypenAll());
         return deleteKurstypCommand.getResult();
     }
 

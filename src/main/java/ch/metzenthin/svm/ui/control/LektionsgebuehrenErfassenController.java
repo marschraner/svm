@@ -6,6 +6,7 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenErfassenModel;
+import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
+    private LektionsgebuehrenTableModel lektionsgebuehrenTableModel;
     private LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel;
     private boolean isBearbeiten;
     private final SvmContext svmContext;
@@ -45,9 +47,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     private JLabel errLblBetrag6Kinder;
     private JButton btnSpeichern;
 
-    public LektionsgebuehrenErfassenController(SvmContext svmContext, LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel, boolean isBearbeiten) {
+    public LektionsgebuehrenErfassenController(SvmContext svmContext, LektionsgebuehrenTableModel lektionsgebuehrenTableModel, LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel, boolean isBearbeiten) {
         super(lektionsgebuehrenErfassenModel);
         this.svmContext = svmContext;
+        this.lektionsgebuehrenTableModel = lektionsgebuehrenTableModel;
         this.lektionsgebuehrenErfassenModel = lektionsgebuehrenErfassenModel;
         this.isBearbeiten = isBearbeiten;
         this.lektionsgebuehrenErfassenModel.addPropertyChangeListener(this);
@@ -497,7 +500,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             JOptionPane.showMessageDialog(lektionsgebuehrenErfassenDialog, "Lektionslänge bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
-            lektionsgebuehrenErfassenModel.speichern(svmContext.getSvmModel());
+            lektionsgebuehrenErfassenModel.speichern(svmContext.getSvmModel(), lektionsgebuehrenTableModel);
             lektionsgebuehrenErfassenDialog.dispose();
         }
     }

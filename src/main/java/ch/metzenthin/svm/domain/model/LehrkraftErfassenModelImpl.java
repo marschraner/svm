@@ -8,6 +8,7 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateLehrkraftCommand;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 import ch.metzenthin.svm.persistence.entities.Person;
+import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 
 import java.util.Calendar;
 
@@ -143,10 +144,12 @@ public class LehrkraftErfassenModelImpl extends PersonModelImpl implements Lehrk
     }
 
     @Override
-    public void speichern(SvmModel svmModel) {
+    public void speichern(SvmModel svmModel, LehrkraefteTableModel lehrkraefteTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         SaveOrUpdateLehrkraftCommand saveOrUpdateLehrkraftCommand = new SaveOrUpdateLehrkraftCommand(lehrkraft, getAdresse(), lehrkraftOrigin, svmModel.getLehrkraefteAll());
         commandInvoker.executeCommandAsTransaction(saveOrUpdateLehrkraftCommand);
+        // TableData mit von der Datenbank upgedateten Lehrkräften updaten
+        lehrkraefteTableModel.getLehrkraefteTableData().setLehrkraefte(svmModel.getLehrkraefteAll());
     }
 
     @Override

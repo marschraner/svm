@@ -52,4 +52,7 @@ public class MaerchensTableData {
         return COLUMNS[column].toString();
     }
 
+    public void setMaerchens(List<Maerchen> maerchens) {
+        this.maerchens = maerchens;
+    }
 }

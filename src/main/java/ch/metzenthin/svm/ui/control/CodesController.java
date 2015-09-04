@@ -169,7 +169,7 @@ public class CodesController {
                 titel = "Neuer Semesterrechnung-Code";
                 break;
         }
-        CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, codesModel, 0, false, titel, codetyp);
+        CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, codesTableModel, codesModel, 0, false, titel, codetyp);
         codeErfassenDialog.pack();
         codeErfassenDialog.setVisible(true);
         codesTableModel.fireTableDataChanged();
@@ -222,7 +222,7 @@ public class CodesController {
                 titel = "Semesterrechnung-Code bearbeiten";
                 break;
         }
-        CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, codesModel, codesTable.getSelectedRow(), true, titel, codetyp);
+        CodeErfassenDialog codeErfassenDialog = new CodeErfassenDialog(svmContext, codesTableModel, codesModel, codesTable.getSelectedRow(), true, titel, codetyp);
         codeErfassenDialog.pack();
         codeErfassenDialog.setVisible(true);
         codesTableModel.fireTableDataChanged();
@@ -271,7 +271,7 @@ public class CodesController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteSchuelerCodeCommand.Result result  = codesModel.eintragLoeschenSchuelerCodesVerwalten(svmContext, codesTable.getSelectedRow());
+            DeleteSchuelerCodeCommand.Result result  = codesModel.eintragLoeschenSchuelerCodesVerwalten(svmContext, codesTableModel, codesTable.getSelectedRow());
             switch (result) {
                 case CODE_VON_SCHUELER_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens einen Schüler referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -323,7 +323,7 @@ public class CodesController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteElternmithilfeCodeCommand.Result result  = codesModel.eintragLoeschenElternmithilfeCodesVerwalten(svmContext, codesTable.getSelectedRow());
+            DeleteElternmithilfeCodeCommand.Result result  = codesModel.eintragLoeschenElternmithilfeCodesVerwalten(svmContext, codesTableModel, codesTable.getSelectedRow());
             switch (result) {
                 case CODE_VON_MAERCHENEINTEILUNGEN_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens eine Märcheneinteilung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -353,7 +353,7 @@ public class CodesController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteSemesterrechnungCodeCommand.Result result  = codesModel.eintragLoeschenSemesterrechnungCodesVerwalten(svmContext, codesTable.getSelectedRow());
+            DeleteSemesterrechnungCodeCommand.Result result  = codesModel.eintragLoeschenSemesterrechnungCodesVerwalten(svmContext, codesTableModel, codesTable.getSelectedRow());
             switch (result) {
                 case CODE_VON_SEMESTERRECHNUNGEN_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens eine Semesterrechnung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);

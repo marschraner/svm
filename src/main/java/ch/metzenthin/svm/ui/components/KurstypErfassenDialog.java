@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.components;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.KurstypErfassenModel;
 import ch.metzenthin.svm.domain.model.KurstypenModel;
+import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
 import ch.metzenthin.svm.ui.control.KurstypErfassenController;
 
 import javax.swing.*;
@@ -19,17 +20,17 @@ public class KurstypErfassenDialog extends JDialog {
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
 
-    public KurstypErfassenDialog(SvmContext svmContext, KurstypenModel kurstypenModel, int indexBearbeiten, boolean isBearbeiten, String title) {
+    public KurstypErfassenDialog(SvmContext svmContext, KurstypenTableModel kurstypenTableModel, KurstypenModel kurstypenModel, int indexBearbeiten, boolean isBearbeiten, String title) {
         setContentPane(contentPane);
         setModal(true);
         setTitle(title);
         initializeErrLbls();
-        createKurstypErfassenController(svmContext, kurstypenModel, indexBearbeiten, isBearbeiten);
+        createKurstypErfassenController(svmContext, kurstypenTableModel, kurstypenModel, indexBearbeiten, isBearbeiten);
     }
 
-    private void createKurstypErfassenController(SvmContext svmContext, KurstypenModel kurstypenModel, int indexBearbeiten, boolean isBearbeiten) {
+    private void createKurstypErfassenController(SvmContext svmContext, KurstypenTableModel kurstypenTableModel, KurstypenModel kurstypenModel, int indexBearbeiten, boolean isBearbeiten) {
         KurstypErfassenModel kurstypErfassenModel = (isBearbeiten ? kurstypenModel.getKurstypErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createKurstypErfassenModel());
-        KurstypErfassenController kurstypErfassenController = new KurstypErfassenController(svmContext, kurstypErfassenModel, isBearbeiten);
+        KurstypErfassenController kurstypErfassenController = new KurstypErfassenController(svmContext, kurstypenTableModel, kurstypErfassenModel, isBearbeiten);
         kurstypErfassenController.setKurstypErfassenDialog(this);
         kurstypErfassenController.setContentPane(contentPane);
         kurstypErfassenController.setTxtBezeichnung(txtBezeichnung);

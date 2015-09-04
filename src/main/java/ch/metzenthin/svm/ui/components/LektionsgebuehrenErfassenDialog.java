@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.components;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenErfassenModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenModel;
+import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
 import ch.metzenthin.svm.ui.control.LektionsgebuehrenErfassenController;
 
 import javax.swing.*;
@@ -30,17 +31,17 @@ public class LektionsgebuehrenErfassenDialog extends JDialog {
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
 
-    public LektionsgebuehrenErfassenDialog(SvmContext svmContext, LektionsgebuehrenModel lektionsgebuehrenModel, int indexBearbeiten, boolean isBearbeiten, String title) {
+    public LektionsgebuehrenErfassenDialog(SvmContext svmContext, LektionsgebuehrenTableModel lektionsgebuehrenTableModel, LektionsgebuehrenModel lektionsgebuehrenModel, int indexBearbeiten, boolean isBearbeiten, String title) {
         setContentPane(contentPane);
         setModal(true);
         setTitle(title);
         initializeErrLbls();
-        createLektionsgebuehrenErfassenController(svmContext, lektionsgebuehrenModel, indexBearbeiten, isBearbeiten);
+        createLektionsgebuehrenErfassenController(svmContext, lektionsgebuehrenTableModel, lektionsgebuehrenModel, indexBearbeiten, isBearbeiten);
     }
 
-    private void createLektionsgebuehrenErfassenController(SvmContext svmContext, LektionsgebuehrenModel lektionsgebuehrenModel, int indexBearbeiten, boolean isBearbeiten) {
+    private void createLektionsgebuehrenErfassenController(SvmContext svmContext, LektionsgebuehrenTableModel lektionsgebuehrenTableModel, LektionsgebuehrenModel lektionsgebuehrenModel, int indexBearbeiten, boolean isBearbeiten) {
         LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel = (isBearbeiten ? lektionsgebuehrenModel.getLektionsgebuehrenErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createLektionsgebuehrenErfassenModel());
-        LektionsgebuehrenErfassenController lektionsgebuehrenErfassenController = new LektionsgebuehrenErfassenController(svmContext, lektionsgebuehrenErfassenModel, isBearbeiten);
+        LektionsgebuehrenErfassenController lektionsgebuehrenErfassenController = new LektionsgebuehrenErfassenController(svmContext, lektionsgebuehrenTableModel, lektionsgebuehrenErfassenModel, isBearbeiten);
         lektionsgebuehrenErfassenController.setLektionsgebuehrenErfassenDialog(this);
         lektionsgebuehrenErfassenController.setContentPane(contentPane);
         lektionsgebuehrenErfassenController.setTxtLektionslaenge(txtLektionslaenge);

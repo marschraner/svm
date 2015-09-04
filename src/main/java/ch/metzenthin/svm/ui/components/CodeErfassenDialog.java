@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import ch.metzenthin.svm.domain.model.CodeErfassenModel;
 import ch.metzenthin.svm.domain.model.CodesModel;
+import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.control.CodeErfassenController;
 
 import javax.swing.*;
@@ -22,17 +23,17 @@ public class CodeErfassenDialog extends JDialog {
     private JPanel buttonPanel;
     private JButton btnAbbrechen;
 
-    public CodeErfassenDialog(SvmContext svmContext, CodesModel codesModel, int indexBearbeiten, boolean isBearbeiten, String title, Codetyp codetyp) {
+    public CodeErfassenDialog(SvmContext svmContext, CodesTableModel codesTableModel, CodesModel codesModel, int indexBearbeiten, boolean isBearbeiten, String title, Codetyp codetyp) {
         setContentPane(contentPane);
         setModal(true);
         setTitle(title);
         initializeErrLbls();
-        createCodeErfassenController(svmContext, codesModel, indexBearbeiten, isBearbeiten, codetyp);
+        createCodeErfassenController(svmContext, codesTableModel, codesModel, indexBearbeiten, isBearbeiten, codetyp);
     }
 
-    private void createCodeErfassenController(SvmContext svmContext, CodesModel codesModel, int indexBearbeiten, boolean isBearbeiten, Codetyp codetyp) {
+    private void createCodeErfassenController(SvmContext svmContext, CodesTableModel codesTableModel, CodesModel codesModel, int indexBearbeiten, boolean isBearbeiten, Codetyp codetyp) {
         CodeErfassenModel codeErfassenModel = (isBearbeiten ? codesModel.getCodeErfassenModel(svmContext, indexBearbeiten, codetyp) : svmContext.getModelFactory().createCodeErfassenModel());
-        CodeErfassenController codeErfassenController = new CodeErfassenController(svmContext, codeErfassenModel, codetyp, isBearbeiten);
+        CodeErfassenController codeErfassenController = new CodeErfassenController(svmContext, codesTableModel, codeErfassenModel, codetyp, isBearbeiten);
         codeErfassenController.setCodeErfassenDialog(this);
         codeErfassenController.setContentPane(contentPane);
         codeErfassenController.setTxtKuerzel(txtKuerzel);

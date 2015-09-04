@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.components;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.KursortErfassenModel;
 import ch.metzenthin.svm.domain.model.KursorteModel;
+import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
 import ch.metzenthin.svm.ui.control.KursortErfassenController;
 
 import javax.swing.*;
@@ -19,17 +20,17 @@ public class KursortErfassenDialog extends JDialog {
     private JButton btnAbbrechen;
     private JLabel errLblBezeichnung;
 
-    public KursortErfassenDialog(SvmContext svmContext, KursorteModel kursorteModel, int indexBearbeiten, boolean isBearbeiten, String title) {
+    public KursortErfassenDialog(SvmContext svmContext, KursorteTableModel kursorteTableModel, KursorteModel kursorteModel, int indexBearbeiten, boolean isBearbeiten, String title) {
         setContentPane(contentPane);
         setModal(true);
         setTitle(title);
         initializeErrLbls();
-        createKursortErfassenController(svmContext, kursorteModel, indexBearbeiten, isBearbeiten);
+        createKursortErfassenController(svmContext, kursorteTableModel, kursorteModel, indexBearbeiten, isBearbeiten);
     }
 
-    private void createKursortErfassenController(SvmContext svmContext, KursorteModel kursorteModel, int indexBearbeiten, boolean isBearbeiten) {
+    private void createKursortErfassenController(SvmContext svmContext, KursorteTableModel kursorteTableModel, KursorteModel kursorteModel, int indexBearbeiten, boolean isBearbeiten) {
         KursortErfassenModel kursortErfassenModel = (isBearbeiten ? kursorteModel.getKursortErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createKursortErfassenModel());
-        KursortErfassenController kursortErfassenController = new KursortErfassenController(svmContext, kursortErfassenModel, isBearbeiten);
+        KursortErfassenController kursortErfassenController = new KursortErfassenController(svmContext, kursorteTableModel, kursortErfassenModel, isBearbeiten);
         kursortErfassenController.setKursortErfassenDialog(this);
         kursortErfassenController.setContentPane(contentPane);
         kursortErfassenController.setTxtBezeichnung(txtBezeichnung);

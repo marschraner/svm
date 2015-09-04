@@ -7,6 +7,7 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SemesterErfassenModel;
+import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -29,6 +30,7 @@ public class SemesterErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
+    private SemestersTableModel semestersTableModel;
     private SemesterErfassenModel semesterErfassenModel;
     private final SvmContext svmContext;
     private boolean isBearbeiten;
@@ -43,9 +45,10 @@ public class SemesterErfassenController extends AbstractController {
     private JLabel errLblAnzahlSchulwochen;
     private JButton btnSpeichern;
 
-    public SemesterErfassenController(SvmContext svmContext, SemesterErfassenModel semesterErfassenModel, boolean isBearbeiten) {
+    public SemesterErfassenController(SvmContext svmContext, SemestersTableModel semestersTableModel, SemesterErfassenModel semesterErfassenModel, boolean isBearbeiten) {
         super(semesterErfassenModel);
         this.svmContext = svmContext;
+        this.semestersTableModel = semestersTableModel;
         this.semesterErfassenModel = semesterErfassenModel;
         this.isBearbeiten = isBearbeiten;
         this.semesterErfassenModel.addPropertyChangeListener(this);
@@ -370,7 +373,7 @@ public class SemesterErfassenController extends AbstractController {
                 JOptionPane.showMessageDialog(semesterErfassenDialog, "Semester dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 btnSpeichern.setFocusPainted(false);
             } else {
-                semesterErfassenModel.speichern(svmContext.getSvmModel());
+                semesterErfassenModel.speichern(svmContext.getSvmModel(), semestersTableModel);
                 semesterErfassenDialog.dispose();
             }
         }

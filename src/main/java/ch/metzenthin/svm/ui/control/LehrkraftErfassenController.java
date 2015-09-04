@@ -6,6 +6,7 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.LehrkraftErfassenModel;
+import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class LehrkraftErfassenController extends PersonController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
+    private LehrkraefteTableModel lehrkraefteTableModel;
     private LehrkraftErfassenModel lehrkraftErfassenModel;
     private final boolean isBearbeiten;
     private final SvmContext svmContext;
@@ -36,9 +38,10 @@ public class LehrkraftErfassenController extends PersonController {
     private JCheckBox checkBoxAktiv;
     private JButton btnSpeichern;
 
-    public LehrkraftErfassenController(SvmContext svmContext, LehrkraftErfassenModel lehrkraftErfassenModel, boolean isBearbeiten) {
+    public LehrkraftErfassenController(SvmContext svmContext, LehrkraefteTableModel lehrkraefteTableModel, LehrkraftErfassenModel lehrkraftErfassenModel, boolean isBearbeiten) {
         super(lehrkraftErfassenModel);
         this.svmContext = svmContext;
+        this.lehrkraefteTableModel = lehrkraefteTableModel;
         this.lehrkraftErfassenModel = lehrkraftErfassenModel;
         this.lehrkraftErfassenModel.addPropertyChangeListener(this);
         this.lehrkraftErfassenModel.addDisableFieldsListener(this);
@@ -232,7 +235,7 @@ public class LehrkraftErfassenController extends PersonController {
             JOptionPane.showMessageDialog(lehrkraftErfassenDialog, "Die Lehrkraft ist bereits in der Datenbank gespeichert und kann nicht ein weiteres Mal erfasst werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
-            lehrkraftErfassenModel.speichern(svmContext.getSvmModel());
+            lehrkraftErfassenModel.speichern(svmContext.getSvmModel(), lehrkraefteTableModel);
             lehrkraftErfassenDialog.dispose();
         }
     }

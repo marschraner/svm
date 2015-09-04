@@ -6,6 +6,7 @@ import ch.metzenthin.svm.domain.commands.CheckKursortBezeichnungBereitsInVerwend
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateKursortCommand;
 import ch.metzenthin.svm.persistence.entities.Kursort;
+import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
 
 /**
  * @author Martin Schraner
@@ -76,10 +77,12 @@ public class KursortErfassenModelImpl extends AbstractModel implements KursortEr
     }
 
     @Override
-    public void speichern(SvmModel svmModel) {
+    public void speichern(SvmModel svmModel, KursorteTableModel kursorteTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         SaveOrUpdateKursortCommand saveOrUpdateKursortCommand = new SaveOrUpdateKursortCommand(kursort, kursortOrigin, svmModel.getKursorteAll());
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
+        // TableData mit von der Datenbank upgedateten Kursorten updaten
+        kursorteTableModel.getKursorteTableData().setKursorte(svmModel.getKursorteAll());
     }
 
     @Override

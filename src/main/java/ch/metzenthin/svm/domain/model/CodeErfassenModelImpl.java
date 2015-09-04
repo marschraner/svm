@@ -7,6 +7,7 @@ import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
+import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 
 /**
  * @author Martin Schraner
@@ -124,23 +125,29 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     }
 
     @Override
-    public void speichern(SvmModel svmModel, Codetyp codetyp) {
+    public void speichern(SvmModel svmModel, CodesTableModel codesTableModel, Codetyp codetyp) {
         CommandInvoker commandInvoker = getCommandInvoker();
         switch (codetyp) {
             case SCHUELER:
                 SchuelerCode schuelerCode = new SchuelerCode(kuerzel, beschreibung, selektierbar);
                 SaveOrUpdateSchuelerCodeCommand saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode, schuelerCodeOrigin, svmModel.getSchuelerCodesAll());
                 commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
+                // TableData mit von der Datenbank upgedateten SchülerCodes updaten
+                codesTableModel.getCodesTableData().setCodes(svmModel.getSchuelerCodesAll());
                 break;
             case ELTERNMITHILFE:
                 ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode(kuerzel, beschreibung, selektierbar);
                 SaveOrUpdateElternmithilfeCodeCommand saveOrUpdateElternmithilfeCodeCommand = new SaveOrUpdateElternmithilfeCodeCommand(elternmithilfeCode, elternmithilfeCodeOrigin, svmModel.getElternmithilfeCodesAll());
                 commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);
+                // TableData mit von der Datenbank upgedateten ElternmithilfeCodes updaten
+                codesTableModel.getCodesTableData().setCodes(svmModel.getElternmithilfeCodesAll());
                 break;
             case SEMESTERRECHNUNG:
                 SemesterrechnungCode semesterrechnungCode = new SemesterrechnungCode(kuerzel, beschreibung, selektierbar);
                 SaveOrUpdateSemesterrechnungCodeCommand saveOrUpdateSemesterrechnungCodeCommand = new SaveOrUpdateSemesterrechnungCodeCommand(semesterrechnungCode, semesterrechnungCodeOrigin, svmModel.getSemesterrechnungCodesAll());
                 commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterrechnungCodeCommand);
+                // TableData mit von der Datenbank upgedateten SemesterrrechnungCodes updaten
+                codesTableModel.getCodesTableData().setCodes(svmModel.getSemesterrechnungCodesAll());
                 break;
         }
     }

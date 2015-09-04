@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Schuljahre;
 import ch.metzenthin.svm.domain.model.MaerchenErfassenModel;
 import ch.metzenthin.svm.domain.model.MaerchensModel;
+import ch.metzenthin.svm.ui.componentmodel.MaerchensTableModel;
 import ch.metzenthin.svm.ui.control.MaerchenErfassenController;
 
 import javax.swing.*;
@@ -22,18 +23,18 @@ public class MaerchenErfassenDialog extends JDialog {
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
 
-    public MaerchenErfassenDialog(SvmContext svmContext, MaerchensModel maerchensModel, int indexBearbeiten, boolean isBearbeiten, String title) {
+    public MaerchenErfassenDialog(SvmContext svmContext, MaerchensTableModel maerchensTableModel, MaerchensModel maerchensModel, int indexBearbeiten, boolean isBearbeiten, String title) {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
         setTitle(title);
         initializeErrLbls();
-        createMaerchenErfassenController(svmContext, maerchensModel, indexBearbeiten, isBearbeiten);
+        createMaerchenErfassenController(svmContext, maerchensTableModel, maerchensModel, indexBearbeiten, isBearbeiten);
     }
 
-    private void createMaerchenErfassenController(SvmContext svmContext, MaerchensModel maerchensModel, int indexBearbeiten, boolean isBearbeiten) {
+    private void createMaerchenErfassenController(SvmContext svmContext, MaerchensTableModel maerchensTableModel, MaerchensModel maerchensModel, int indexBearbeiten, boolean isBearbeiten) {
         MaerchenErfassenModel maerchenErfassenModel = (isBearbeiten ? maerchensModel.getMaerchenErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createMaerchenErfassenModel());
-        MaerchenErfassenController maerchenErfassenController = new MaerchenErfassenController(svmContext, maerchenErfassenModel, isBearbeiten);
+        MaerchenErfassenController maerchenErfassenController = new MaerchenErfassenController(svmContext, maerchensTableModel, maerchenErfassenModel, isBearbeiten);
         maerchenErfassenController.setMaerchenErfassenDialog(this);
         maerchenErfassenController.setContentPane(contentPane);
         maerchenErfassenController.setSpinnerSchuljahre(spinnerSchuljahre);

@@ -46,4 +46,7 @@ public class KurstypenTableData {
         return COLUMNS[column].toString();
     }
 
+    public void setKurstypen(List<Kurstyp> kurstypen) {
+        this.kurstypen = kurstypen;
+    }
 }

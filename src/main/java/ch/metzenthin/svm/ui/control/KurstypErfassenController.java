@@ -6,6 +6,7 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.KurstypErfassenModel;
+import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class KurstypErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
+    private KurstypenTableModel kurstypenTableModel;
     private KurstypErfassenModel kurstypErfassenModel;
     private boolean isBearbeiten;
     private final SvmContext svmContext;
@@ -34,9 +36,10 @@ public class KurstypErfassenController extends AbstractController {
     private JLabel errLblBezeichnung;
     private JButton btnSpeichern;
 
-    public KurstypErfassenController(SvmContext svmContext, KurstypErfassenModel kurstypErfassenModel, boolean isBearbeiten) {
+    public KurstypErfassenController(SvmContext svmContext, KurstypenTableModel kurstypenTableModel, KurstypErfassenModel kurstypErfassenModel, boolean isBearbeiten) {
         super(kurstypErfassenModel);
         this.svmContext = svmContext;
+        this.kurstypenTableModel = kurstypenTableModel;
         this.kurstypErfassenModel = kurstypErfassenModel;
         this.isBearbeiten = isBearbeiten;
         this.kurstypErfassenModel.addPropertyChangeListener(this);
@@ -175,7 +178,7 @@ public class KurstypErfassenController extends AbstractController {
             JOptionPane.showMessageDialog(kurstypErfassenDialog, "Bezeichnung bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
-            kurstypErfassenModel.speichern(svmContext.getSvmModel());
+            kurstypErfassenModel.speichern(svmContext.getSvmModel(), kurstypenTableModel);
             kurstypErfassenDialog.dispose();
         }
     }

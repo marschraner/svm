@@ -7,6 +7,7 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.DetermineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateMaerchenCommand;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
+import ch.metzenthin.svm.ui.componentmodel.MaerchensTableModel;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -159,10 +160,12 @@ public class MaerchenErfassenModelImpl extends AbstractModel implements Maerchen
     }
 
     @Override
-    public void speichern(SvmModel svmModel) {
+    public void speichern(SvmModel svmModel, MaerchensTableModel maerchensTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         SaveOrUpdateMaerchenCommand saveOrUpdateMaerchenCommand = new SaveOrUpdateMaerchenCommand(maerchen, maerchenOrigin, svmModel.getMaerchensAll());
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaerchenCommand);
+        // TableData mit von der Datenbank upgedateten Märchens updaten
+        maerchensTableModel.getMaerchensTableData().setMaerchens(svmModel.getMaerchensAll());
     }
 
     @Override

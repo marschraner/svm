@@ -6,6 +6,7 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.KursortErfassenModel;
 import ch.metzenthin.svm.domain.model.CompletedListener;
+import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class KursortErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
+    private KursorteTableModel kursorteTableModel;
     private KursortErfassenModel kursortErfassenModel;
     private boolean isBearbeiten;
     private final SvmContext svmContext;
@@ -34,9 +36,10 @@ public class KursortErfassenController extends AbstractController {
     private JLabel errLblBezeichnung;
     private JButton btnSpeichern;
 
-    public KursortErfassenController(SvmContext svmContext, KursortErfassenModel kursortErfassenModel, boolean isBearbeiten) {
+    public KursortErfassenController(SvmContext svmContext, KursorteTableModel kursorteTableModel, KursortErfassenModel kursortErfassenModel, boolean isBearbeiten) {
         super(kursortErfassenModel);
         this.svmContext = svmContext;
+        this.kursorteTableModel = kursorteTableModel;
         this.kursortErfassenModel = kursortErfassenModel;
         this.isBearbeiten = isBearbeiten;
         this.kursortErfassenModel.addPropertyChangeListener(this);
@@ -175,7 +178,7 @@ public class KursortErfassenController extends AbstractController {
             JOptionPane.showMessageDialog(kursortErfassenDialog, "Bezeichnung bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
-            kursortErfassenModel.speichern(svmContext.getSvmModel());
+            kursortErfassenModel.speichern(svmContext.getSvmModel(), kursorteTableModel);
             kursortErfassenDialog.dispose();
         }
     }

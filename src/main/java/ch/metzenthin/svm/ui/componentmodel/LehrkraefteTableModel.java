@@ -46,4 +46,7 @@ public class LehrkraefteTableModel extends AbstractTableModel {
         return lehrkraefteTableData.getLehrkraefte();
     }
 
+    public LehrkraefteTableData getLehrkraefteTableData() {
+        return lehrkraefteTableData;
+    }
 }

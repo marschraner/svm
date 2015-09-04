@@ -278,6 +278,10 @@ public class SchuelerErfassenController {
                     JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einem Märchen eingeteilt und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnLoeschen.setFocusPainted(false);
                     break;
+                case RECHNUNGSEMPFAENGER_HAT_SEMESTERRECHNUNGEN:
+                    JOptionPane.showMessageDialog(null, "Der Rechnungsempfänger des Schülers hat mindestens eine Semesterrechnung. Der Schüler kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    btnLoeschen.setFocusPainted(false);
+                    break;
                 case LOESCHEN_ERFOLGREICH:
                     JOptionPane.showMessageDialog(
                             null,

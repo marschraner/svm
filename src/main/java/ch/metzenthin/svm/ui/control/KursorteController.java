@@ -71,7 +71,7 @@ public class KursorteController {
 
     private void onNeu() {
         btnNeu.setFocusPainted(true);
-        KursortErfassenDialog kursortErfassenDialog = new KursortErfassenDialog(svmContext, kursorteModel, 0, false, "Neuer Kursort");
+        KursortErfassenDialog kursortErfassenDialog = new KursortErfassenDialog(svmContext, kursorteTableModel, kursorteModel, 0, false, "Neuer Kursort");
         kursortErfassenDialog.pack();
         kursortErfassenDialog.setVisible(true);
         kursorteTableModel.fireTableDataChanged();
@@ -95,7 +95,7 @@ public class KursorteController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        KursortErfassenDialog kursortErfassenDialog = new KursortErfassenDialog(svmContext, kursorteModel, kursorteTable.getSelectedRow(), true, "Kursort bearbeiten");
+        KursortErfassenDialog kursortErfassenDialog = new KursortErfassenDialog(svmContext, kursorteTableModel, kursorteModel, kursorteTable.getSelectedRow(), true, "Kursort bearbeiten");
         kursortErfassenDialog.pack();
         kursortErfassenDialog.setVisible(true);
         kursorteTableModel.fireTableDataChanged();
@@ -130,7 +130,7 @@ public class KursorteController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteKursortCommand.Result result  = kursorteModel.eintragLoeschen(svmContext, kursorteTable.getSelectedRow());
+            DeleteKursortCommand.Result result  = kursorteModel.eintragLoeschen(svmContext, kursorteTableModel, kursorteTable.getSelectedRow());
             switch (result) {
                 case KURSORT_VON_KURS_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Der Kursort wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);

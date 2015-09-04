@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
 
 import java.util.Calendar;
 
@@ -27,5 +28,5 @@ public interface SemesterErfassenModel extends Model {
     Semester getNaechstesNochNichtErfasstesSemester(SvmModel svmModel);
     boolean checkSemesterBereitsErfasst(SvmModel svmModel);
     boolean checkSemesterUeberlapptAndereSemester(SvmModel svmModel);
-    void speichern(SvmModel svmModel);
+    void speichern(SvmModel svmModel, SemestersTableModel semestersTableModel);
 }

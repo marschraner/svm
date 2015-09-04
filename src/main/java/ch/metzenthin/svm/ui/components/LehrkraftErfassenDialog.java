@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.domain.model.LehrkraefteModel;
 import ch.metzenthin.svm.domain.model.LehrkraftErfassenModel;
+import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 import ch.metzenthin.svm.ui.control.LehrkraftErfassenController;
 
 import javax.swing.*;
@@ -41,18 +42,18 @@ public class LehrkraftErfassenDialog extends JDialog {
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
 
-    public LehrkraftErfassenDialog(SvmContext svmContext, LehrkraefteModel lehrkraefteModel, int indexBearbeiten, boolean isBearbeiten, String title) {
+    public LehrkraftErfassenDialog(SvmContext svmContext, LehrkraefteTableModel lehrkraefteTableModel, LehrkraefteModel lehrkraefteModel, int indexBearbeiten, boolean isBearbeiten, String title) {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
         setTitle(title);
-        createLehrkraftErfassenController(svmContext, lehrkraefteModel, indexBearbeiten, isBearbeiten);
+        createLehrkraftErfassenController(svmContext, lehrkraefteTableModel, lehrkraefteModel, indexBearbeiten, isBearbeiten);
         initializeErrLbls();
     }
 
-    private void createLehrkraftErfassenController(SvmContext svmContext, LehrkraefteModel lehrkraefteModel, int indexBearbeiten, boolean isBearbeiten) {
+    private void createLehrkraftErfassenController(SvmContext svmContext, LehrkraefteTableModel lehrkraefteTableModel, LehrkraefteModel lehrkraefteModel, int indexBearbeiten, boolean isBearbeiten) {
         LehrkraftErfassenModel lehrkraftErfassenModel = (isBearbeiten ? lehrkraefteModel.getLehrkraftErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createLehrkraftErfassenModel());
-        LehrkraftErfassenController lehrkraftErfassenController = new LehrkraftErfassenController(svmContext, lehrkraftErfassenModel, isBearbeiten);
+        LehrkraftErfassenController lehrkraftErfassenController = new LehrkraftErfassenController(svmContext, lehrkraefteTableModel, lehrkraftErfassenModel, isBearbeiten);
         lehrkraftErfassenController.setLehrkraftErfassenDialog(this);
         lehrkraftErfassenController.setContentPane(contentPane);
         lehrkraftErfassenController.setComboBoxAnrede(comboBoxAnrede);
