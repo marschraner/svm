@@ -59,6 +59,7 @@ public class SemesterrechnungenController {
 
     public void setLblTotal(JLabel lblTotal) {
         if (semesterrechnungenTableModel.getSemester() == null) {
+            lblTotal.setText("Noch keine Semesterrechnungen erfasst.");
             return;
         }
         String semesterStr = " (" + semesterrechnungenTableModel.getSemester().getSchuljahr() + ", " + semesterrechnungenTableModel.getSemester().getSemesterbezeichnung() + ")";

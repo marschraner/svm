@@ -766,7 +766,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
         SemesterrechnungenTableData semesterrechnungenTableData = semesterrechnungenSuchenModel.suchen();
         SemesterrechnungenTableModel semesterrechnungenTableModel = new SemesterrechnungenTableModel(semesterrechnungenTableData);
-        if (semesterrechnungenTableData.size() > 0) {
+        if (semesterrechnungenTableData.size() > 0 || !semesterrechnungenSuchenModel.isSuchkriterienSelected()) {
             SemesterrechnungenPanel semesterrechnungenPanel = new SemesterrechnungenPanel(svmContext, semesterrechnungenTableModel);
             semesterrechnungenPanel.addNextPanelListener(nextPanelListener);
             semesterrechnungenPanel.addCloseListener(closeListener);

@@ -41,10 +41,10 @@ public class FindRechnungsempfaengerOhneSemesterrechnungenCommand extends Generi
 
         selectStatementSb = new StringBuilder("select distinct rech from Angehoeriger rech" +
                 " join rech.schuelerRechnungsempfaenger sch" +
-                " join sch.kurse kurs");
+                " join sch.kursanmeldungen kursanm");
 
         // Selection-Statements
-        selectStatementSb.append(" where kurs.semester.semesterId = :semesterId and" +
+        selectStatementSb.append(" where kursanm.kurs.semester.semesterId = :semesterId and" +
                 " not exists (select semre.rechnungsempfaenger from Semesterrechnung semre where semre.rechnungsempfaenger.personId = rech.personId and semre.semester.semesterId = :semesterId) and");
         createWhereSelections();
 

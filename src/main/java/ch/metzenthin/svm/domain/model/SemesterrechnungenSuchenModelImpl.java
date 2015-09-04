@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.FindOrCreateSemesterrechnungenCommand;
@@ -8,6 +9,8 @@ import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.persistence.entities.Semester;
 
 import java.math.BigDecimal;
+
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
  * @author Martin Schraner
@@ -131,7 +134,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         this.praezisierungRechnungsdatumVorrechnungSelected = praezisierungRechnungsdatumVorrechnungSelected;
         firePropertyChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_VORRECHNUNG, oldValue, this.praezisierungRechnungsdatumVorrechnungSelected);
     }
-    
+
     @Override
     public PraezisierungErmaessigungVorrechnungSelected getPraezisierungErmaessigungVorrechnungSelected() {
         return praezisierungErmaessigungVorrechnungSelected;
@@ -444,6 +447,32 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         }
         // Kein passendes Semester erfasst
         return svmModel.getSemestersAll().get(0);
+    }
+
+    @Override
+    public boolean isSuchkriterienSelected() {
+        return checkNotEmpty(nachname)
+                || checkNotEmpty(vorname)
+                || (getSemesterrechnungCode() != null && getSemesterrechnungCode() != SEMESTERRECHNUNG_CODE_ALLE)
+                || (getStipendium() != null && getStipendium() != Stipendium.KEINES)
+                || isGratiskinder()
+                || getRechnungsdatumVorrechnung() != null
+                || getErmaessigungVorrechnung() != null
+                || getZuschlagVorrechnung() != null
+                || getWochenbetragVorrechnung() != null
+                || schulgeldVorrechnung != null
+                || (sechsJahresRabattVorrechnungSelected != null && sechsJahresRabattVorrechnungSelected != SechsJahresRabattVorrechnungSelected.ALLE)
+                || (vollstaendigkeitVorrechnungSelected != null && vollstaendigkeitVorrechnungSelected != VollstaendigkeitVorrechnungSelected.ALLE)
+                || getRechnungsdatumNachrechnung() != null
+                || getErmaessigungNachrechnung() != null
+                || getZuschlagNachrechnung() != null
+                || getAnzahlWochenNachrechnung() != null
+                || getWochenbetragNachrechnung() != null
+                || schulgeldNachrechnung != null
+                || (sechsJahresRabattNachrechnungSelected != null && sechsJahresRabattNachrechnungSelected != SechsJahresRabattNachrechnungSelected.ALLE)
+                || (vollstaendigkeitNachrechnungSelected != null && vollstaendigkeitNachrechnungSelected != VollstaendigkeitNachrechnungSelected.ALLE)
+                || differenzSchulgeld != null
+                || restbetrag != null;
     }
 
     @Override

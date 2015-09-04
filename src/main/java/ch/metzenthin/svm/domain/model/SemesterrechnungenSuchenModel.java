@@ -172,5 +172,6 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     void setRestbetrag(String restbetrag) throws SvmValidationException;
 
     Semester getSemesterInit(SvmModel svmModel);
+    boolean isSuchkriterienSelected();
     SemesterrechnungenTableData suchen();
 }
