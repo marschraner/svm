@@ -48,11 +48,8 @@ public class Schueler extends Person {
             inverseJoinColumns = {@JoinColumn(name = "code_id")})
     private Set<SchuelerCode> schuelerCodes = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "Schueler_Kurs",
-            joinColumns = {@JoinColumn(name = "person_id")},
-            inverseJoinColumns = {@JoinColumn(name = "kurs_id")})
-    private Set<Kurs> kurse = new HashSet<>();
+    @OneToMany(mappedBy = "schueler")
+    private Set<Kursanmeldung> kursanmeldungen = new HashSet<>();
 
     @OneToMany(mappedBy = "schueler")
     private Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
@@ -204,25 +201,14 @@ public class Schueler extends Person {
         schuelerCodes.remove(schuelerCode);
     }
 
-    public Set<Kurs> getKurse() {
-        return kurse;
+    public Set<Kursanmeldung> getKursanmeldungen() {
+        return kursanmeldungen;
     }
 
-    public List<Kurs> getKurseAsList() {
-        List<Kurs> kurseAsList = new ArrayList<>(kurse);
-        Collections.sort(kurseAsList);
-        return kurseAsList;
-    }
-
-    public void addKurs(Kurs kurs) {
-        kurs.getSchueler().add(this);
-        kurse.add(kurs);
-    }
-
-    public void deleteKurs(Kurs kurs) {
-        // kurs.getSchueler().remove(this); führt zu StaleObjectStateException!
-        // Stattdessen in KursDao.removeFromSchuelerAndUpdate() refresh(kurs) ausführen!
-        kurse.remove(kurs);
+    public List<Kursanmeldung> getKursanmeldungenAsList() {
+        List<Kursanmeldung> kurseinteilungenAsList = new ArrayList<>(kursanmeldungen);
+        Collections.sort(kurseinteilungenAsList);
+        return kurseinteilungenAsList;
     }
 
     public Set<Maercheneinteilung> getMaercheneinteilungen() {

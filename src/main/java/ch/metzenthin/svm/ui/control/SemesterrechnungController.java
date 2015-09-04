@@ -84,7 +84,6 @@ public abstract class SemesterrechnungController extends AbstractController {
         this.semesterrechnungModel.addDisableFieldsListener(this);
         this.semesterrechnungModel.addMakeErrorLabelsInvisibleListener(this);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
-        svmContext.getSvmModel().loadAll();
     }
 
     public void setComboBoxSemesterrechnungCode(JComboBox<SemesterrechnungCode> comboBoxCode) {

@@ -26,7 +26,8 @@ public interface ModelFactory {
     KurseSemesterwahlModel createKurseSemesterwahlModel();
     KurseModel createKurseModel();
     KursErfassenModel createKursErfassenModel();
-    KursSchuelerHinzufuegenModel createKursSchuelerHinzufuegenModel();
+    KursanmeldungenModel createKursanmeldungenModel();
+    KursanmeldungErfassenModel createKursanmeldungErfassenModel();
     ListenExportModel createListenExportModel();
     MaerchensModel createMaerchensModel();
     MaerchenErfassenModel createMaerchenErfassenModel();

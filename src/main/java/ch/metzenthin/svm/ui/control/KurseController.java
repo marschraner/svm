@@ -6,13 +6,9 @@ import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.commands.DeleteKursCommand;
 import ch.metzenthin.svm.domain.model.KurseModel;
 import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
-import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
-import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.KursErfassenDialog;
-import ch.metzenthin.svm.ui.components.KursSchuelerHinzufuegenDialog;
 import ch.metzenthin.svm.ui.components.ListenExportDialog;
-import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -29,12 +25,6 @@ import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnW
  */
 public class KurseController {
     private final SvmContext svmContext;
-    private final SchuelerDatenblattModel schuelerDatenblattModel;
-    private final SchuelerSuchenTableModel schuelerSuchenTableModel;
-    private final JTable schuelerSuchenResultTable;
-    private final int selectedRow;
-    private final boolean isKurseSchueler;
-    private final boolean isFromSchuelerSuchenResult;
     private KurseSemesterwahlModel kurseSemesterwahlModel;
     private final KurseModel kurseModel;
     private KurseTableModel kurseTableModel;
@@ -46,21 +36,13 @@ public class KurseController {
     private JButton btnAbbrechen;
     private JButton btnImportieren;
     private JButton btnExportieren;
-    private ActionListener nextPanelListener;
     private ActionListener closeListener;
-    private ActionListener zurueckZuSchuelerSuchenListener;
 
-    public KurseController(KurseModel kurseModel, SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isKurseSchueler, boolean isFromSchuelerSuchenResult) {
+    public KurseController(KurseModel kurseModel, SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel) {
         this.kurseModel = kurseModel;
         this.kurseSemesterwahlModel = kurseSemesterwahlModel;
         this.kurseTableModel = kurseTableModel;
         this.svmContext = svmContext;
-        this.schuelerDatenblattModel = schuelerDatenblattModel;
-        this.schuelerSuchenTableModel = schuelerSuchenTableModel;
-        this.schuelerSuchenResultTable = schuelerSuchenResultTable;
-        this.selectedRow = selectedRow;
-        this.isKurseSchueler = isKurseSchueler;
-        this.isFromSchuelerSuchenResult = isFromSchuelerSuchenResult;
     }
 
     public void setKurseTable(JTable kurseTable) {
@@ -76,24 +58,17 @@ public class KurseController {
                 onListSelection();
             }
         });
-        if (!isKurseSchueler) {
-            kurseTable.addMouseListener(new MouseAdapter() {
-                public void mousePressed(MouseEvent me) {
-                    if (me.getClickCount() == 2) {
-                        onBearbeiten();
-                    }
+        kurseTable.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                if (me.getClickCount() == 2) {
+                    onBearbeiten();
                 }
-            });
-        }
+            }
+        });
     }
 
     public void setLblTotal(JLabel lblTotal) {
         this.lblTotal = lblTotal;
-        // Total nicht sichtbar für Kurse Schüler
-        if (isKurseSchueler) {
-            lblTotal.setVisible(false);
-            return;
-        }
         lblTotal.setText(kurseModel.getTotal(kurseTableModel));
     }
 
@@ -106,16 +81,12 @@ public class KurseController {
         btnNeu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (isKurseSchueler) {
-                    onNeuKurseSchueler();
-                } else {
-                    onNeuKurseVerwalten();
-                }
+                onNeuKurse();
             }
         });
     }
 
-    private void onNeuKurseVerwalten() {
+    private void onNeuKurse() {
         if (kurseModel.checkIfSemesterIsInPast(svmContext.getSvmModel(), kurseSemesterwahlModel)) {
             Object[] options = {"Ja", "Nein"};
             int n = JOptionPane.showOptionDialog(
@@ -140,25 +111,8 @@ public class KurseController {
         btnNeu.setFocusPainted(false);
     }
 
-    private void onNeuKurseSchueler() {
-        btnNeu.setFocusPainted(true);
-        KursSchuelerHinzufuegenDialog kursSchuelerHinzufuegenDialog = new KursSchuelerHinzufuegenDialog(svmContext, kurseTableModel, schuelerDatenblattModel);
-        kursSchuelerHinzufuegenDialog.pack();
-        kursSchuelerHinzufuegenDialog.setVisible(true);
-        kurseTableModel.fireTableDataChanged();
-        btnNeu.setFocusPainted(false);
-        if (svmContext.getSvmModel().getSemestersAll().size() == 0) {
-            btnNeu.setEnabled(false);
-        }
-    }
-
     public void setBtnBearbeiten(JButton btnBearbeiten) {
         this.btnBearbeiten = btnBearbeiten;
-        // Bearbeiten nicht möglich für Kurse Schüler
-        if (isKurseSchueler) {
-            btnBearbeiten.setVisible(false);
-            return;
-        }
         enableBtnBearbeiten(false);
         btnBearbeiten.addActionListener(new ActionListener() {
             @Override
@@ -192,11 +146,7 @@ public class KurseController {
         btnLoeschen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (isKurseSchueler) {
-                    onLoeschenKurseSchueler();
-                } else {
-                    onLoeschenKurseVerwalten();
-                }
+                onLoeschenKurse();
             }
         });
     }
@@ -205,7 +155,7 @@ public class KurseController {
         btnLoeschen.setEnabled(enabled);
     }
 
-    private void onLoeschenKurseVerwalten() {
+    private void onLoeschenKurse() {
         btnLoeschen.setFocusPainted(true);
         Object[] options = {"Ja", "Nein"};
         int n = JOptionPane.showOptionDialog(
@@ -218,7 +168,7 @@ public class KurseController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteKursCommand.Result result  = kurseModel.kursLoeschenKurseVerwalten(kurseTableModel, kurseTable.convertRowIndexToModel(kurseTable.getSelectedRow()));
+            DeleteKursCommand.Result result  = kurseModel.kursLoeschen(kurseTableModel, kurseTable.convertRowIndexToModel(kurseTable.getSelectedRow()));
             switch (result) {
                 case KURS_VON_SCHUELER_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Der Kurs wird durch mindestens einen Schüler referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -244,35 +194,8 @@ public class KurseController {
         }
     }
 
-    private void onLoeschenKurseSchueler() {
-        btnLoeschen.setFocusPainted(true);
-        Object[] options = {"Ja", "Nein"};
-        int n = JOptionPane.showOptionDialog(
-                null,
-                "Soll der Eintrag gelöscht werden?",
-                "Kurs löschen",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
-                options,  //the titles of buttons
-                options[1]); //default button title
-        if (n == 0) {
-            kurseModel.eintragLoeschenKurseSchueler(kurseTableModel, kurseTableModel.getKursAt(kurseTable.convertRowIndexToModel(kurseTable.getSelectedRow())), schuelerDatenblattModel);
-            kurseTableModel.fireTableDataChanged();
-            kurseTable.addNotify();
-        }
-        btnLoeschen.setFocusPainted(false);
-        enableBtnLoeschen(false);
-        kurseTable.clearSelection();
-    }
-
     public void setBtnImportieren(JButton btnImportieren) {
         this.btnImportieren = btnImportieren;
-        // Importieren nur möglich für Kurse bearbeiten
-        if (isKurseSchueler) {
-            btnImportieren.setVisible(false);
-            return;
-        }
         if (kurseTableModel.getRowCount() > 0) {
             btnImportieren.setEnabled(false);
             return;
@@ -315,11 +238,6 @@ public class KurseController {
 
     public void setBtnExportieren(JButton btnExportieren) {
         this.btnExportieren = btnExportieren;
-        // Exportieren nur möglich für Kurse bearbeiten
-        if (isKurseSchueler) {
-            btnExportieren.setVisible(false);
-            return;
-        }
         if (kurseTableModel.getRowCount() == 0) {
             btnExportieren.setEnabled(false);
         }
@@ -345,34 +263,7 @@ public class KurseController {
         enableBtnLoeschen(selectedRowIndex >= 0);
     }
 
-    public void setBtnZurueck(JButton btnZurueck) {
-        // Zurück nicht möglich für Kurse bearbeiten
-        if (!isKurseSchueler) {
-            btnZurueck.setVisible(false);
-            return;
-        }
-        btnZurueck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZurueck();
-            }
-        });
-    }
-
-    private void onZurueck() {
-        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, isFromSchuelerSuchenResult);
-        schuelerDatenblattPanel.addCloseListener(closeListener);
-        schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
-        schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
-        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));
-    }
-
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        // Abbrechen nur möglich für Kurse bearbeiten
-        if (isKurseSchueler) {
-            btnAbbrechen.setVisible(false);
-            return;
-        }
         this.btnAbbrechen = btnAbbrechen;
         btnAbbrechen.addActionListener(new ActionListener() {
             @Override
@@ -386,16 +277,9 @@ public class KurseController {
         closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Abbrechen"));
     }
 
-    public void addNextPanelListener(ActionListener nextPanelListener) {
-        this.nextPanelListener = nextPanelListener;
-    }
-
     public void addCloseListener(ActionListener closeListener) {
         this.closeListener = closeListener;
     }
 
-    public void addZurueckZuSchuelerSuchenListener(ActionListener zurueckZuSchuelerSuchenListener) {
-        this.zurueckZuSchuelerSuchenListener = zurueckZuSchuelerSuchenListener;
-    }
 
 }

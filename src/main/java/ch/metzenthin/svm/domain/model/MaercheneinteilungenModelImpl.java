@@ -39,7 +39,6 @@ public class MaercheneinteilungenModelImpl extends AbstractModel implements Maer
 
     @Override
     public List<Maerchen> getSelectableMaerchens(SvmModel svmModel, SchuelerDatenblattModel schuelerDatenblattModel) {
-        svmModel.loadMaerchensAll();
         List<Maerchen> selectableMaerchens = new ArrayList<>(svmModel.getMaerchensAll());
         List<Maerchen> maerchensToBeRemoved = new ArrayList<>();
         for (Maerchen maerchen : selectableMaerchens) {

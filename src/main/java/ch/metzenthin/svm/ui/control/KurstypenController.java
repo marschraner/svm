@@ -33,7 +33,6 @@ public class KurstypenController {
     public KurstypenController(KurstypenModel kurstypenModel, SvmContext svmContext) {
         this.kurstypenModel = kurstypenModel;
         this.svmContext = svmContext;
-        svmContext.getSvmModel().loadKurstypenAll();
     }
 
     public void setKurstypenTable(JTable kurstypenTable) {

@@ -26,7 +26,7 @@ SET default_storage_engine=InnoDB;
 DROP TABLE IF EXISTS Semesterrechnung;
 DROP TABLE IF EXISTS Maercheneinteilung;
 DROP TABLE IF EXISTS Maerchen;
-DROP TABLE IF EXISTS Schueler_Kurs;
+DROP TABLE IF EXISTS Kursanmeldung;
 DROP TABLE IF EXISTS Kurs_Lehrkraft;
 DROP TABLE IF EXISTS Kurs;
 DROP TABLE IF EXISTS Semester;
@@ -324,18 +324,20 @@ CREATE TABLE IF NOT EXISTS Kurs_Lehrkraft (
 DESCRIBE Kurs_Lehrkraft;
 
 
--- Schueler_Kurs
+-- Kursanmeldung
 -- *************
 
-CREATE TABLE IF NOT EXISTS Schueler_Kurs (
+CREATE TABLE IF NOT EXISTS Kursanmeldung (
     person_id                  INT           NOT NULL,
     kurs_id                    INT           NOT NULL,
+    abmeldung_per_ende_semester  BOOLEAN     NOT NULL,
+    bemerkungen                VARCHAR(100),
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id, kurs_id),
     FOREIGN KEY (person_id)    REFERENCES Schueler (person_id),
     FOREIGN KEY (kurs_id)      REFERENCES Kurs (kurs_id));
 
-DESCRIBE Schueler_Kurs;
+DESCRIBE Kursanmeldung;
 
 
 -- Maerchen

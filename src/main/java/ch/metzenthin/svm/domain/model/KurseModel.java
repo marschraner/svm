@@ -2,8 +2,6 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.commands.DeleteKursCommand;
-import ch.metzenthin.svm.persistence.entities.Kurs;
-import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 
 /**
@@ -14,8 +12,7 @@ public interface KurseModel {
     KursErfassenModel getKursErfassenModel(SvmContext svmContext, KurseTableModel kurseTableModel, int indexBearbeiten);
     String getTotal(KurseTableModel kurseTableModel);
 
-    DeleteKursCommand.Result kursLoeschenKurseVerwalten(KurseTableModel kurseTableModel, int indexKursToBeRemoved);
-    void eintragLoeschenKurseSchueler(KurseTableModel kurseTableModel, Kurs kursToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel);
+    DeleteKursCommand.Result kursLoeschen(KurseTableModel kurseTableModel, int indexKursToBeRemoved);
     void importKurseFromPreviousSemester(SvmModel svmModel, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel);
     boolean checkIfSemesterIsInPast(SvmModel svmModel, KurseSemesterwahlModel kurseSemesterwahlModel);
 }

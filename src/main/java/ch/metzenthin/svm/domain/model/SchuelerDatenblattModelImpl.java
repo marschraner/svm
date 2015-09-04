@@ -153,7 +153,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
             infoSchuelerGleicherRechnungsempfaenger.append("</html>");
             return infoSchuelerGleicherRechnungsempfaenger.toString();
         }
-        return "-";
+        return "";
     }
 
     @Override
@@ -293,12 +293,13 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     @Override
     public String getSemesterKurseAsString(SvmModel svmModel) {
-        if (!schueler.getKurse().isEmpty()) {
+        if (!schueler.getKursanmeldungen().isEmpty()) {
             StringBuilder semesterSb = new StringBuilder("<html>");
             String previousSchuljahr = null;
             Semesterbezeichnung previousSemesterbezeichnung = null;
             boolean gleichesSemester = false;
-            for (Kurs kurs : schueler.getKurseAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+                Kurs kurs = kursanmeldung.getKurs();
                 if (!isKursToBeDisplayed(svmModel, kurs)) {
                     break;
                 }
@@ -332,9 +333,10 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     public String getKurseAsString(SvmModel svmModel) {
         String previousSchuljahr = null;
         Semesterbezeichnung previousSemesterbezeichnung = null;
-        if (!schueler.getKurse().isEmpty()) {
+        if (!schueler.getKursanmeldungen().isEmpty()) {
             StringBuilder kurseSb = new StringBuilder("<html>");
-            for (Kurs kurs : schueler.getKurseAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+                Kurs kurs = kursanmeldung.getKurs();
                 if (!isKursToBeDisplayed(svmModel, kurs)) {
                     break;
                 }
@@ -349,7 +351,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
                 } else {
                     kurseSb.append("<p style='margin-top:12'>");
                 }
-                kurseSb.append(kurs);
+                kurseSb.append(kursanmeldung);
                 previousSchuljahr = kurs.getSemester().getSchuljahr();
                 previousSemesterbezeichnung = kurs.getSemester().getSemesterbezeichnung();
             }
@@ -509,8 +511,8 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     }
 
     @Override
-    public KurseTableData getKurseTableData() {
-        return new KurseTableData(schueler.getKurseAsList(), true);
+    public KursanmeldungenTableData getKurseinteilungenTableData() {
+        return new KursanmeldungenTableData(schueler.getKursanmeldungenAsList());
     }
 
     @Override

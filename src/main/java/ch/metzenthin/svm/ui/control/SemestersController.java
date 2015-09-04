@@ -32,7 +32,6 @@ public class SemestersController {
     public SemestersController(SemestersModel semestersModel, SvmContext svmContext) {
         this.semestersModel = semestersModel;
         this.svmContext = svmContext;
-        svmContext.getSvmModel().loadSemestersAll();
     }
 
     public void setSemestersTable(JTable semestersTable) {

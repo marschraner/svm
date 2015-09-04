@@ -120,7 +120,6 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             }
         });
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
-        svmContext.getSvmModel().loadAll();
     }
 
     public void setSpinnerSemester(JSpinner spinnerSemester) {

@@ -10,18 +10,6 @@ import java.util.Map;
  * @author Martin Schraner
  */
 public interface SvmModel {
-
-    void loadAll();
-    void loadSchuelerCodesAll();
-    void loadElternmithilfeCodesAll();
-    void loadSemesterrechnungCodesAll();
-    void loadLehrkraefteAll();
-    void loadKursorteAll();
-    void loadKurstypenAll();
-    void loadSemestersAll();
-    void loadMaerchensAll();
-    void loadLektionsgebuehrenAll();
-
     List<SchuelerCode> getSchuelerCodesAll();
     List<SchuelerCode> getSelektierbareSchuelerCodesAll();
     List<ElternmithilfeCode> getElternmithilfeCodesAll();

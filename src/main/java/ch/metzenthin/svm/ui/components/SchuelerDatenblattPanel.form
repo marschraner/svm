@@ -198,13 +198,13 @@
                           </component>
                           <vspacer id="4ee45">
                             <constraints>
-                              <grid row="15" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                              <grid row="14" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
                             </constraints>
                           </vspacer>
                           <grid id="62a93" layout-manager="GridBagLayout">
                             <constraints>
-                              <grid row="21" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                              <grid row="20" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties/>
@@ -244,13 +244,13 @@
                           </grid>
                           <vspacer id="bb9b5">
                             <constraints>
-                              <grid row="22" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                              <grid row="21" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
                             </constraints>
                           </vspacer>
                           <component id="52b37" class="javax.swing.JLabel">
                             <constraints>
-                              <grid row="16" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="15" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties>
@@ -259,7 +259,7 @@
                           </component>
                           <component id="a09de" class="javax.swing.JLabel" binding="lblAnmeldedatumValue">
                             <constraints>
-                              <grid row="16" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="15" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties>
@@ -268,23 +268,17 @@
                           </component>
                           <component id="c6110" class="javax.swing.JLabel" binding="lblSchuelerGleicherRechnungsempfaenger1">
                             <constraints>
-                              <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                              <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
+                              <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <gridbag top="10" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties>
                               <text value="Andere Schüler mit gleichem"/>
                             </properties>
                           </component>
-                          <vspacer id="f9888">
-                            <constraints>
-                              <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                              <gridbag weightx="0.0" weighty="0.0"/>
-                            </constraints>
-                          </vspacer>
                           <component id="4df71" class="javax.swing.JLabel" binding="lblSchuelerGleicherRechnungsempfaengerValue">
                             <constraints>
-                              <grid row="11" column="2" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                              <gridbag weightx="0.0" weighty="0.0"/>
+                              <grid row="10" column="2" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties>
                               <text value="SchuelerGleicherRechnungsempfaengerValue"/>
@@ -292,7 +286,7 @@
                           </component>
                           <component id="148aa" class="javax.swing.JLabel" binding="lblSchuelerGleicherRechnungsempfaenger2">
                             <constraints>
-                              <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties>
@@ -301,13 +295,13 @@
                           </component>
                           <vspacer id="c8e46">
                             <constraints>
-                              <grid row="13" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                              <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
                             </constraints>
                           </vspacer>
                           <component id="6e58b" class="javax.swing.JLabel">
                             <constraints>
-                              <grid row="14" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="13" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties>
@@ -316,7 +310,7 @@
                           </component>
                           <component id="b4853" class="javax.swing.JLabel" binding="lblGeburtsdatumValue">
                             <constraints>
-                              <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="13" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties>
@@ -325,7 +319,7 @@
                           </component>
                           <component id="71246" class="javax.swing.JLabel" binding="lblAbmeldedatum">
                             <constraints>
-                              <grid row="17" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="16" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties>
@@ -335,7 +329,7 @@
                           </component>
                           <component id="35985" class="javax.swing.JLabel" binding="lblAbmeldedatumValue">
                             <constraints>
-                              <grid row="17" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="16" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties>
@@ -345,7 +339,7 @@
                           </component>
                           <component id="87404" class="javax.swing.JLabel" binding="lblFruehereAnmeldungen">
                             <constraints>
-                              <grid row="18" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="17" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties>
@@ -354,7 +348,7 @@
                           </component>
                           <component id="70f47" class="javax.swing.JLabel" binding="lblFruehereAnmeldungenValue">
                             <constraints>
-                              <grid row="18" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="17" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties>
@@ -369,13 +363,13 @@
                           </hspacer>
                           <vspacer id="607a5">
                             <constraints>
-                              <grid row="19" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                              <grid row="18" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
                             </constraints>
                           </vspacer>
                           <component id="a058f" class="javax.swing.JLabel">
                             <constraints>
-                              <grid row="20" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="19" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties>
@@ -384,7 +378,7 @@
                           </component>
                           <component id="a578c" class="javax.swing.JLabel" binding="lblBemerkungenValue">
                             <constraints>
-                              <grid row="20" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                              <grid row="19" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
                             </constraints>
                             <properties>
@@ -667,7 +661,7 @@
                           <gridbag top="0" left="10" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties/>
-                        <border type="etched" title="Kurse">
+                        <border type="etched" title="Aktuelle Kurse">
                           <font style="1"/>
                         </border>
                         <children>
@@ -759,7 +753,7 @@
                           <gridbag top="0" left="10" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties/>
-                        <border type="etched" title="Märchen">
+                        <border type="etched" title="Aktuelles Märchen">
                           <font style="1"/>
                         </border>
                         <children>

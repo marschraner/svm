@@ -33,7 +33,6 @@ public class KursorteController {
     public KursorteController(KursorteModel kursorteModel, SvmContext svmContext) {
         this.kursorteModel = kursorteModel;
         this.svmContext = svmContext;
-        svmContext.getSvmModel().loadKursorteAll();
     }
 
     public void setKursorteTable(JTable kursorteTable) {

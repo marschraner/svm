@@ -31,7 +31,6 @@ public class LektionsgebuehrenController {
     public LektionsgebuehrenController(LektionsgebuehrenModel lektionsgebuehrenModel, SvmContext svmContext) {
         this.lektionsgebuehrenModel = lektionsgebuehrenModel;
         this.svmContext = svmContext;
-        svmContext.getSvmModel().loadLektionsgebuehrenAll();
     }
 
     public void setLektionsgebuehrenTable(JTable lektionsgebuehrenTable) {

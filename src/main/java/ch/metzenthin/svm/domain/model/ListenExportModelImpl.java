@@ -244,9 +244,9 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
     private String getTitleSpecificKurs(SchuelerSuchenTableModel schuelerSuchenTableModel) {
         if (schuelerSuchenTableModel.getWochentag() != null && schuelerSuchenTableModel.getZeitBeginn() != null) {
             if (schuelerSuchenTableModel.getSchuelerList().size() > 0) {
-                String lehrkraefte = schuelerSuchenTableModel.getSchuelerList().get(0).getKurseAsList().get(0).getLehrkraefteAsStr();
-                String zeitEnde = asString(schuelerSuchenTableModel.getSchuelerList().get(0).getKurseAsList().get(0).getZeitEnde());
-                String kursort = schuelerSuchenTableModel.getSchuelerList().get(0).getKurseAsList().get(0).getKursort().getBezeichnung();
+                String lehrkraefte = schuelerSuchenTableModel.getSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getLehrkraefteAsStr();
+                String zeitEnde = asString(schuelerSuchenTableModel.getSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getZeitEnde());
+                String kursort = schuelerSuchenTableModel.getSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getKursort().getBezeichnung();
                 return lehrkraefte + " (" + schuelerSuchenTableModel.getWochentag() + " " + asString(schuelerSuchenTableModel.getZeitBeginn()) + "-" + zeitEnde + ", " + kursort + ")";
             } else {
                 CommandInvoker commandInvoker = getCommandInvoker();

@@ -5,9 +5,7 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.DeleteKursCommand;
 import ch.metzenthin.svm.domain.commands.ImportKurseFromPreviousSemesterCommand;
-import ch.metzenthin.svm.domain.commands.RemoveKursFromSchuelerCommand;
 import ch.metzenthin.svm.persistence.entities.Kurs;
-import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 
@@ -45,22 +43,12 @@ public class KurseModelImpl extends AbstractModel implements KurseModel {
     }
 
     @Override
-    public DeleteKursCommand.Result kursLoeschenKurseVerwalten(KurseTableModel kurseTableModel, int indexKursToBeRemoved) {
+    public DeleteKursCommand.Result kursLoeschen(KurseTableModel kurseTableModel, int indexKursToBeRemoved) {
         List<Kurs> kurse = kurseTableModel.getKurse();
         CommandInvoker commandInvoker = getCommandInvoker();
         DeleteKursCommand deleteKursCommand = new DeleteKursCommand(kurse, indexKursToBeRemoved);
         commandInvoker.executeCommandAsTransaction(deleteKursCommand);
         return deleteKursCommand.getResult();
-    }
-
-    @Override
-    public void eintragLoeschenKurseSchueler(KurseTableModel kurseTableModel, Kurs kursToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel) {
-        CommandInvoker commandInvoker = getCommandInvoker();
-        RemoveKursFromSchuelerCommand removeKursFromSchuelerCommand = new RemoveKursFromSchuelerCommand(kursToBeRemoved, schuelerDatenblattModel.getSchueler());
-        commandInvoker.executeCommandAsTransaction(removeKursFromSchuelerCommand);
-        Schueler schuelerUpdated = removeKursFromSchuelerCommand.getSchuelerUpdated();
-        // TableData mit von der Datenbank upgedatetem Schüler updaten
-        kurseTableModel.getKurseTableData().setKurse(schuelerUpdated.getKurseAsList());
     }
 
     @Override

@@ -268,6 +268,11 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelSchuelerGleicherRechnungsempfaenger1() {
+        if (schuelerDatenblattModel.getSchuelerGleicherRechnungsempfaengerAsString().isEmpty()) {
+            labelSchuelerGleicherRechnungsempfaenger1.setVisible(false);
+        } else {
+            labelSchuelerGleicherRechnungsempfaenger1.setVisible(true);
+        }
         labelSchuelerGleicherRechnungsempfaenger1.setText(schuelerDatenblattModel.getLabelSchuelerGleicherRechnungsempfaenger1());
     }
 
@@ -277,6 +282,11 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelSchuelerGleicherRechnungsempfaenger2() {
+        if (schuelerDatenblattModel.getSchuelerGleicherRechnungsempfaengerAsString().isEmpty()) {
+            labelSchuelerGleicherRechnungsempfaenger2.setVisible(false);
+        } else {
+            labelSchuelerGleicherRechnungsempfaenger2.setVisible(true);
+        }
         labelSchuelerGleicherRechnungsempfaenger2.setText(schuelerDatenblattModel.getLabelSchuelerGleicherRechnungsempfaenger2());
     }
 
@@ -286,6 +296,11 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelSchuelerGleicherRechnungsemfpaengerValue() {
+        if (schuelerDatenblattModel.getSchuelerGleicherRechnungsempfaengerAsString().isEmpty()) {
+            labelSchuelerGleicherRechnungsempfaengerValue.setVisible(false);
+        } else {
+            labelSchuelerGleicherRechnungsempfaengerValue.setVisible(true);
+        }
         labelSchuelerGleicherRechnungsempfaengerValue.setText(schuelerDatenblattModel.getSchuelerGleicherRechnungsempfaengerAsString());
     }
 
@@ -1030,13 +1045,13 @@ public class SchuelerDatenblattController {
     }
 
     private void onKurseBearbeiten() {
-        KurseTableModel kurseTableModel = new KurseTableModel(schuelerDatenblattModel.getKurseTableData());
+        KursanmeldungenTableModel kursanmeldungenTableModel = new KursanmeldungenTableModel(schuelerDatenblattModel.getKurseinteilungenTableData());
         String titel = "Kurse " + schuelerDatenblattModel.getSchuelerVorname() + " " + schuelerDatenblattModel.getSchuelerNachname();
-        KursePanel kursePanel = new KursePanel(svmContext, null, kurseTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, true, isFromSchuelerSuchenResult, titel);
-        kursePanel.addNextPanelListener(nextPanelListener);
-        kursePanel.addCloseListener(closeListener);
-        kursePanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
-        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{kursePanel.$$$getRootComponent$$$(), "Kurse"}, ActionEvent.ACTION_PERFORMED, "Kurse"));
+        KursanmeldungPanel kursanmeldungPanel = new KursanmeldungPanel(svmContext, kursanmeldungenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, isFromSchuelerSuchenResult, titel);
+        kursanmeldungPanel.addNextPanelListener(nextPanelListener);
+        kursanmeldungPanel.addCloseListener(closeListener);
+        kursanmeldungPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{kursanmeldungPanel.$$$getRootComponent$$$(), "Kurse"}, ActionEvent.ACTION_PERFORMED, "Kurse"));
     }
 
     public void setBtnMaerchenBearbeiten(JButton btnMaerchenBearbeiten) {

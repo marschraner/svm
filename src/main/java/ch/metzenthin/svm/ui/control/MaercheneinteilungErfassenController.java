@@ -129,13 +129,13 @@ public class MaercheneinteilungErfassenController extends AbstractController {
         if (isBearbeiten) {
             spinnerMaerchen.setEnabled(false);
         }
-        List<Maerchen> selectableMaerchenList;
+        List<Maerchen> selectableMaerchenList = maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel);
+        Maerchen[] selectableMaerchens;
         if (isBearbeiten) {
-            selectableMaerchenList = svmContext.getSvmModel().getMaerchensAll();
+            selectableMaerchens = maercheneinteilungErfassenModel.getSelectableMaerchenMaercheneinteilungOrigin();
         } else {
-            selectableMaerchenList = maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel);
+            selectableMaerchens = selectableMaerchenList.toArray(new Maerchen[selectableMaerchenList.size()]);
         }
-        Maerchen[] selectableMaerchens = selectableMaerchenList.toArray(new Maerchen[selectableMaerchenList.size()]);
         SpinnerModel spinnerModelMaerchen = new SpinnerListModel(selectableMaerchens);
         spinnerMaerchen.setModel(spinnerModelMaerchen);
         spinnerMaerchen.addChangeListener(new ChangeListener() {

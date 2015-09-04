@@ -443,7 +443,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         CommandInvoker commandInvoker = getCommandInvoker();
         Wochentag wochentagFind = (wochentag == Wochentag.ALLE ? null : wochentag);
         Lehrkraft lehrkraftFind = (lehrkraft.equals(LEHRKRAFT_ALLE) ? null : lehrkraft);
-        FindKurseCommand findKurseCommand = new FindKurseCommand(null, semesterKurs, wochentagFind, zeitBeginn, lehrkraftFind);
+        FindKurseCommand findKurseCommand = new FindKurseCommand(semesterKurs, wochentagFind, zeitBeginn, lehrkraftFind);
         commandInvoker.executeCommand(findKurseCommand);
         return findKurseCommand.getResult() == FindKurseCommand.Result.KURSE_GEFUNDEN;
     }

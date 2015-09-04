@@ -64,8 +64,8 @@ public class Kurs implements Comparable<Kurs> {
     @Column(name = "bemerkungen", nullable = true)
     private String bemerkungen;
 
-    @ManyToMany(mappedBy = "kurse")
-    private Set<Schueler> schueler = new HashSet<>();
+    @OneToMany(mappedBy = "kurs")
+    private Set<Kursanmeldung> kursanmeldungen = new HashSet<>();
 
     public Kurs() {
     }
@@ -293,7 +293,12 @@ public class Kurs implements Comparable<Kurs> {
         this.bemerkungen = bemerkungen;
     }
 
-    public Set<Schueler> getSchueler() {
-        return schueler;
+    public Set<Kursanmeldung> getKursanmeldungen() {
+        return kursanmeldungen;
+    }
+
+    @Transient
+    public int getKurslaenge() {
+        return (int) ((zeitEnde.getTime() - zeitBeginn.getTime()) / 6000 % 60);
     }
 }

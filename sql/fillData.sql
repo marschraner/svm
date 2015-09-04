@@ -15,7 +15,7 @@ USE svm;
 DELETE FROM Semesterrechnung;
 DELETE FROM Maercheneinteilung;
 DELETE FROM Maerchen;
-DELETE FROM Schueler_Kurs;
+DELETE FROM Kursanmeldung;
 DELETE FROM Kurs_Lehrkraft;
 DELETE FROM Kurs;
 DELETE FROM Semester;
@@ -421,34 +421,34 @@ INSERT INTO Kurs_Lehrkraft (kurs_id, person_id, lehrkraefte_ORDER) VALUES
 SELECT * FROM Kurs_Lehrkraft;
 
 
--- Schueler_Kurs
--- *************
+-- Kursanmeldung
+-- **************
 
-INSERT INTO Schueler_Kurs (person_id, kurs_id) VALUES
-    (7, 13),
-    (7, 14),
-    (7, 18),
-    (8, 7),
-    (8, 8),
-    (8, 6),
-    (16, 20),
-    (18, 20),
-    (20, 20),
-    (23, 20),
-    (25, 20),
-    (27, 20),
-    (29, 20),
-    (32, 20),
-    (34, 20),
-    (36, 20),
-    (39, 20),
-    (41, 20),
-    (43, 20),
-    (45, 21),
-    (48, 21),
-    (48, 22);
+INSERT INTO Kursanmeldung (person_id, kurs_id, abmeldung_per_ende_semester, bemerkungen) VALUES
+    (7, 13, 0, '2 Wochen später angefangen'),
+    (7, 14, 1, NULL),
+    (7, 18, 0, NULL),
+    (8, 7, 0, NULL),
+    (8, 8, 0, NULL),
+    (8, 6, 0, NULL),
+    (16, 20, 0, NULL),
+    (18, 20, 0, NULL),
+    (20, 20, 0, NULL),
+    (23, 20, 0, NULL),
+    (25, 20, 0, NULL),
+    (27, 20, 0, NULL),
+    (29, 20, 0, NULL),
+    (32, 20, 0, NULL),
+    (34, 20, 0, NULL),
+    (36, 20, 0, NULL),
+    (39, 20, 0, NULL),
+    (41, 20, 0, NULL),
+    (43, 20, 0, NULL),
+    (45, 21, 0, NULL),
+    (48, 21, 0, NULL),
+    (48, 22, 0, NULL);
 
-SELECT * FROM Schueler_Kurs;
+SELECT * FROM Kursanmeldung;
 
 
 -- Maerchen

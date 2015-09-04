@@ -134,9 +134,9 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
 
     private void createJoinKurs() {
         if (kursFuerSucheBeruecksichtigen) {
-            selectStatementSb.append(" join s.kurse kurs");
+            selectStatementSb.append(" join s.kursanmeldungen kursanm");
             if (lehrkraft != SchuelerSuchenModel.LEHRKRAFT_ALLE) {
-                selectStatementSb.append(" join kurs.lehrkraefte lkr");
+                selectStatementSb.append(" join kursanm.kurs.lehrkraefte lkr");
             }
         }
     }
@@ -335,12 +335,12 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
 
     private void createWhereSelectionsKurs() {
         if (kursFuerSucheBeruecksichtigen) {
-            selectStatementSb.append(" kurs.semester.semesterId = :semesterKursId and");
+            selectStatementSb.append(" kursanm.kurs.semester.semesterId = :semesterKursId and");
             if (wochentag != Wochentag.ALLE) {
-                selectStatementSb.append(" kurs.wochentag = :wochentag and");
+                selectStatementSb.append(" kursanm.kurs.wochentag = :wochentag and");
             }
             if (zeitBeginn != null) {
-                selectStatementSb.append(" kurs.zeitBeginn = :zeitBeginn and");
+                selectStatementSb.append(" kursanm.kurs.zeitBeginn = :zeitBeginn and");
             }
             if (lehrkraft != SchuelerSuchenModel.LEHRKRAFT_ALLE) {
                 selectStatementSb.append(" lkr.personId = :lehrkraftPersonId and");

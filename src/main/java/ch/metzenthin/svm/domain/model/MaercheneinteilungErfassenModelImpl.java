@@ -38,13 +38,13 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
     }
 
     @Override
-    public Maerchen getMaerchen() {
-        return maercheneinteilung.getMaerchen();
+    public void setMaercheneinteilungOrigin(Maercheneinteilung maercheneinteilungOrigin) {
+        this.maercheneinteilungOrigin = maercheneinteilungOrigin;
     }
 
     @Override
-    public void setMaercheneinteilungOrigin(Maercheneinteilung maercheneinteilungOrigin) {
-        this.maercheneinteilungOrigin = maercheneinteilungOrigin;
+    public Maerchen getMaerchen() {
+        return maercheneinteilung.getMaerchen();
     }
 
     @Override
@@ -471,6 +471,11 @@ public class MaercheneinteilungErfassenModelImpl extends AbstractModel implement
     @Override
     public void setBemerkungen(String bemerkungen) throws SvmValidationException {
         bemerkungenModelAttribute.setNewValue(false, bemerkungen, isBulkUpdate());
+    }
+
+    @Override
+    public Maerchen[] getSelectableMaerchenMaercheneinteilungOrigin() {
+        return new Maerchen[]{maercheneinteilungOrigin.getMaerchen()};
     }
 
     @Override

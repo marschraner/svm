@@ -33,7 +33,6 @@ public class MaerchensController {
     public MaerchensController(MaerchensModel maerchensModel, SvmContext svmContext) {
         this.maerchensModel = maerchensModel;
         this.svmContext = svmContext;
-        svmContext.getSvmModel().loadMaerchensAll();
     }
 
     public void setMaerchensTable(JTable maerchensTable) {

@@ -1,13 +1,11 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
-import ch.metzenthin.svm.persistence.daos.KursDao;
-import ch.metzenthin.svm.persistence.entities.Kurs;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
-import ch.metzenthin.svm.persistence.entities.Schueler;
-import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.persistence.daos.KursanmeldungDao;
+import ch.metzenthin.svm.persistence.entities.*;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,9 +38,14 @@ public class FindKurseMapSchuelerSemesterCommand extends GenericDaoCommand {
         if (semester == null) {
             return;
         }
-        KursDao kursDao = new KursDao(entityManager);
+        KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
         for (Schueler schueler : schuelerList) {
-            kurseMap.put(schueler, kursDao.findKurse(schueler, semester, wochentag, zeitBeginn, lehrkraft));
+            List<Kursanmeldung> kurseinteilungenFound = kursanmeldungDao.findKursanmeldungen(schueler, semester, wochentag, zeitBeginn, lehrkraft);
+            List<Kurs> kurse = new ArrayList<>();
+            for (Kursanmeldung kursanmeldung : kurseinteilungenFound) {
+                kurse.add(kursanmeldung.getKurs());
+            }
+            kurseMap.put(schueler, kurse);
         }
     }
 

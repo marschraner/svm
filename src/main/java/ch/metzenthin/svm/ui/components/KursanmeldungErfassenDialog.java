@@ -2,53 +2,61 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
-import ch.metzenthin.svm.domain.model.KursSchuelerHinzufuegenModel;
+import ch.metzenthin.svm.domain.model.KursanmeldungErfassenModel;
+import ch.metzenthin.svm.domain.model.KursanmeldungenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
-import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
-import ch.metzenthin.svm.ui.control.KursSchuelerHinzufuegenController;
+import ch.metzenthin.svm.ui.componentmodel.KursanmeldungenTableModel;
+import ch.metzenthin.svm.ui.control.KursanmeldungErfassenController;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class KursSchuelerHinzufuegenDialog extends JDialog {
+public class KursanmeldungErfassenDialog extends JDialog {
     private JPanel contentPane;
     private JPanel datenPanel;
     private JPanel buttonPanel;
-    private JSpinner spinnerSemester;
-    private JComboBox<Wochentag> comboBoxWochentag;
-    private JComboBox<Lehrkraft> comboBoxLehrkraft;
+    private JTextField txtZeitBeginn;
+    private JTextField txtBemerkungen;
     private JLabel errLblWochentag;
     private JLabel errLblZeitBeginn;
     private JLabel errLblLehrkraft;
-    private JTextField txtZeitBeginn;
+    private JLabel errLblBemerkungen;
+    private JSpinner spinnerSemester;
+    private JComboBox<Wochentag> comboBoxWochentag;
+    private JComboBox<Lehrkraft> comboBoxLehrkraft;
     private JButton btnOk;
     private JButton btnAbbrechen;
+    private JCheckBox checkBoxAbmeldungPerEndeSemester;
 
-    public KursSchuelerHinzufuegenDialog(SvmContext svmContext, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public KursanmeldungErfassenDialog(SvmContext svmContext, KursanmeldungenModel kursanmeldungenModel, KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexBearbeiten, boolean isBearbeiten, String title) {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
-        setTitle("Kurs hinzufügen");
+        setTitle(title);
+        createKursanmeldungErfassenController(svmContext, kursanmeldungenModel, kursanmeldungenTableModel, schuelerDatenblattModel, indexBearbeiten, isBearbeiten);
         initializeErrLbls();
-        createKurseSchuelerHinzufuegenController(svmContext, kurseTableModel, schuelerDatenblattModel);
     }
 
-    private void createKurseSchuelerHinzufuegenController(SvmContext svmContext, KurseTableModel kurseTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
-        KursSchuelerHinzufuegenModel kursSchuelerHinzufuegenModel = svmContext.getModelFactory().createKursSchuelerHinzufuegenModel();
-        KursSchuelerHinzufuegenController kursSchuelerHinzufuegenController = new KursSchuelerHinzufuegenController(svmContext, kurseTableModel, kursSchuelerHinzufuegenModel, schuelerDatenblattModel);
-        kursSchuelerHinzufuegenController.setKursSchuelerHinzufuegenDialog(this);
-        kursSchuelerHinzufuegenController.setContentPane(contentPane);
-        kursSchuelerHinzufuegenController.setSpinnerSemester(spinnerSemester);
-        kursSchuelerHinzufuegenController.setComboBoxWochentag(comboBoxWochentag);
-        kursSchuelerHinzufuegenController.setTxtZeitBeginn(txtZeitBeginn);
-        kursSchuelerHinzufuegenController.setComboBoxLehrkraft(comboBoxLehrkraft);
-        kursSchuelerHinzufuegenController.setBtnOk(btnOk);
-        kursSchuelerHinzufuegenController.setBtnAbbrechen(btnAbbrechen);
-        kursSchuelerHinzufuegenController.setErrLblWochentag(errLblWochentag);
-        kursSchuelerHinzufuegenController.setErrLblZeitBeginn(errLblZeitBeginn);
-        kursSchuelerHinzufuegenController.setErrLblLehrkraft(errLblLehrkraft);
+    private void createKursanmeldungErfassenController(SvmContext svmContext, KursanmeldungenModel kursanmeldungenModel, KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexBearbeiten, boolean isBearbeiten) {
+        KursanmeldungErfassenModel kursanmeldungErfassenModel = (isBearbeiten ? kursanmeldungenModel.getKurseinteilungErfassenModel(svmContext, kursanmeldungenTableModel, indexBearbeiten) : svmContext.getModelFactory().createKursanmeldungErfassenModel());
+        KursanmeldungErfassenController kursanmeldungErfassenController = new KursanmeldungErfassenController(svmContext, kursanmeldungErfassenModel, kursanmeldungenTableModel, schuelerDatenblattModel, isBearbeiten);
+        kursanmeldungErfassenController.setKursanmeldungErfassenDialog(this);
+        kursanmeldungErfassenController.setContentPane(contentPane);
+        kursanmeldungErfassenController.setErrLblWochentag(errLblWochentag);
+        kursanmeldungErfassenController.setErrLblZeitBeginn(errLblZeitBeginn);
+        kursanmeldungErfassenController.setErrLblLehrkraft(errLblLehrkraft);
+        kursanmeldungErfassenController.setErrLblBemerkungen(errLblBemerkungen);
+        kursanmeldungErfassenController.setComboBoxWochentag(comboBoxWochentag);
+        kursanmeldungErfassenController.setTxtZeitBeginn(txtZeitBeginn);
+        kursanmeldungErfassenController.setComboBoxLehrkraft(comboBoxLehrkraft);
+        kursanmeldungErfassenController.setCheckBoxAbmeldungPerEndeSemester(checkBoxAbmeldungPerEndeSemester);
+        kursanmeldungErfassenController.setTxtBemerkungen(txtBemerkungen);
+        kursanmeldungErfassenController.setSpinnerSemester(spinnerSemester);
+        kursanmeldungErfassenController.setBtnOk(btnOk);
+        kursanmeldungErfassenController.setBtnAbbrechen(btnAbbrechen);
+        kursanmeldungErfassenController.constructionDone();
     }
 
     private void initializeErrLbls() {
@@ -58,6 +66,8 @@ public class KursSchuelerHinzufuegenDialog extends JDialog {
         errLblZeitBeginn.setForeground(Color.RED);
         errLblLehrkraft.setVisible(false);
         errLblLehrkraft.setForeground(Color.RED);
+        errLblBemerkungen.setVisible(false);
+        errLblBemerkungen.setForeground(Color.RED);
     }
 
     private void createUIComponents() {
@@ -89,7 +99,7 @@ public class KursSchuelerHinzufuegenDialog extends JDialog {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         datenPanel.add(panel1, gbc);
-        panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Kurs", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel1.getFont().getName(), Font.BOLD, panel1.getFont().getSize())));
+        panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Kursanmeldung", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel1.getFont().getName(), Font.BOLD, panel1.getFont().getSize())));
         final JPanel spacer1 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
@@ -203,13 +213,6 @@ public class KursSchuelerHinzufuegenDialog extends JDialog {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel1.add(spacer8, gbc);
-        final JPanel spacer9 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 8;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 300;
-        panel1.add(spacer9, gbc);
         errLblWochentag = new JLabel();
         errLblWochentag.setText("errLblWochentag");
         gbc = new GridBagConstraints();
@@ -230,6 +233,61 @@ public class KursSchuelerHinzufuegenDialog extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(spinnerSemester, gbc);
+        final JPanel spacer9 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.ipadx = 300;
+        panel1.add(spacer9, gbc);
+        final JLabel label5 = new JLabel();
+        label5.setText("Abmeldung per Ende Semester");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 9;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 0, 0, 15);
+        panel1.add(label5, gbc);
+        final JPanel spacer10 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 10;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel1.add(spacer10, gbc);
+        checkBoxAbmeldungPerEndeSemester = new JCheckBox();
+        checkBoxAbmeldungPerEndeSemester.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 9;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel1.add(checkBoxAbmeldungPerEndeSemester, gbc);
+        final JLabel label6 = new JLabel();
+        label6.setText("Bemerkungen");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 11;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel1.add(label6, gbc);
+        final JPanel spacer11 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 12;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        panel1.add(spacer11, gbc);
+        txtBemerkungen = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 11;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel1.add(txtBemerkungen, gbc);
+        errLblBemerkungen = new JLabel();
+        errLblBemerkungen.setText("errLblBemerkungen");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 10;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel1.add(errLblBemerkungen, gbc);
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
@@ -247,24 +305,24 @@ public class KursSchuelerHinzufuegenDialog extends JDialog {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         buttonPanel.add(btnOk, gbc);
-        final JPanel spacer10 = new JPanel();
+        final JPanel spacer12 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        buttonPanel.add(spacer10, gbc);
-        final JPanel spacer11 = new JPanel();
+        buttonPanel.add(spacer12, gbc);
+        final JPanel spacer13 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
-        buttonPanel.add(spacer11, gbc);
-        final JPanel spacer12 = new JPanel();
+        buttonPanel.add(spacer13, gbc);
+        final JPanel spacer14 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
-        buttonPanel.add(spacer12, gbc);
+        buttonPanel.add(spacer14, gbc);
         btnAbbrechen = new JButton();
         btnAbbrechen.setMaximumSize(new Dimension(115, 29));
         btnAbbrechen.setMinimumSize(new Dimension(115, 29));
@@ -278,6 +336,7 @@ public class KursSchuelerHinzufuegenDialog extends JDialog {
         label1.setLabelFor(spinnerSemester);
         label2.setLabelFor(comboBoxWochentag);
         label4.setLabelFor(comboBoxLehrkraft);
+        label6.setLabelFor(txtBemerkungen);
     }
 
     /**

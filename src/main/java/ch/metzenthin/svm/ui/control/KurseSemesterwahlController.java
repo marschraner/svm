@@ -53,10 +53,6 @@ public class KurseSemesterwahlController extends AbstractController {
             }
         });
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
-        svmContext.getSvmModel().loadSemestersAll();
-        svmContext.getSvmModel().loadLehrkraefteAll();
-        svmContext.getSvmModel().loadKursorteAll();
-        svmContext.getSvmModel().loadKurstypenAll();
     }
 
     public void constructionDone() {
@@ -124,7 +120,7 @@ public class KurseSemesterwahlController extends AbstractController {
         KurseTableData kurseTableData = kurseSemesterwahlModel.suchen();
         KurseTableModel kurseTableModel = new KurseTableModel(kurseTableData);
         String titel = "Kurse " + kurseSemesterwahlModel.getSemester().getSemesterbezeichnung() + " " + kurseSemesterwahlModel.getSemester().getSchuljahr();
-        KursePanel kursePanel = new KursePanel(svmContext, kurseSemesterwahlModel, kurseTableModel, null, null, null, 0, false, false, titel);
+        KursePanel kursePanel = new KursePanel(svmContext, kurseSemesterwahlModel, kurseTableModel, titel);
         kursePanel.addCloseListener(closeListener);
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{kursePanel.$$$getRootComponent$$$(), titel}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
     }

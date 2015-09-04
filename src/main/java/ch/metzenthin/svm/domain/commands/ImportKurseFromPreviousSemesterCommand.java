@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.dataTypes.Schuljahre;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.daos.KursDao;
+import ch.metzenthin.svm.persistence.daos.KursanmeldungDao;
 import ch.metzenthin.svm.persistence.daos.SemesterDao;
 import ch.metzenthin.svm.persistence.entities.*;
 
@@ -30,6 +31,7 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
         }
 
         KursDao kursDao = new KursDao(entityManager);
+        KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
         String schuljahrPreviousSemester;
         Semesterbezeichnung semesterbezeichnungPreviousSemester;
         if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
@@ -68,13 +70,13 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
             kursDao.save(kurs);
             kurseCurrentSemester.add(kurs);
 
-            // Falls 2. Semester, Schüler des alten Kurses auch importieren
+            // Falls 2. Semester, auch Schüler bzw. Kurseinteilungen importieren
             if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER) {
-                for (Schueler schueler : kursPreviousSemester.getSchueler()) {
-                    // Prüfen, ob Schüler noch angemeldet
-                    Anmeldung anmeldung = schueler.getAnmeldungen().get(0);
-                    if (anmeldung.getAbmeldedatum() == null || anmeldung.getAbmeldedatum().after(semester.getSemesterbeginn())) {
-                        kursDao.addToSchuelerAndSave(kurs, schueler);
+                for (Kursanmeldung kursanmeldungPreviousSemester : kursPreviousSemester.getKursanmeldungen()) {
+                    // Nur Kurseinteilungen ohne Abmeldungen importieren
+                    if (!kursanmeldungPreviousSemester.getAbmeldungPerEndeSemester()) {
+                        Kursanmeldung kursanmeldung = new Kursanmeldung(kursanmeldungPreviousSemester.getSchueler(), kurs, false, null);
+                        kursanmeldungDao.save(kursanmeldung);
                     }
                 }
             }

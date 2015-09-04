@@ -91,7 +91,7 @@ public class KurseTableData {
                 value = kurs.getBemerkungen();
                 break;
             case ANZAHL_SCHUELER:
-                value = kurs.getSchueler().size();
+                value = kurs.getKursanmeldungen().size();
                 break;
             default:
                 break;
@@ -129,7 +129,7 @@ public class KurseTableData {
     public int getAnzahlSchueler() {
         int anzahlSchueler = 0;
         for (Kurs kurs : kurse) {
-            anzahlSchueler += kurs.getSchueler().size();
+            anzahlSchueler += kurs.getKursanmeldungen().size();
         }
         return anzahlSchueler;
     }

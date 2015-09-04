@@ -5,13 +5,13 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.AddKursToSchuelerAndSaveCommand;
+import ch.metzenthin.svm.domain.commands.FindKursCommand;
 import ch.metzenthin.svm.domain.model.CompletedListener;
-import ch.metzenthin.svm.domain.model.KursSchuelerHinzufuegenModel;
+import ch.metzenthin.svm.domain.model.KursanmeldungErfassenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
 import ch.metzenthin.svm.persistence.entities.Semester;
-import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
+import ch.metzenthin.svm.ui.componentmodel.KursanmeldungenTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -28,54 +28,59 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
-public class KursSchuelerHinzufuegenController extends AbstractController {
+public class KursanmeldungErfassenController extends AbstractController {
 
-    private static final Logger LOGGER = Logger.getLogger(KursSchuelerHinzufuegenController.class);
+    private static final Logger LOGGER = Logger.getLogger(KursanmeldungErfassenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private KurseTableModel kurseTableModel;
-    private KursSchuelerHinzufuegenModel kursSchuelerHinzufuegenModel;
-    private SchuelerDatenblattModel schuelerDatenblattModel;
     private final SvmContext svmContext;
-    private JDialog kursSchuelerHinzufuegenDialog;
+    private KursanmeldungenTableModel kursanmeldungenTableModel;
+    private KursanmeldungErfassenModel kursanmeldungErfassenModel;
+    private SchuelerDatenblattModel schuelerDatenblattModel;
+    private boolean isBearbeiten;
+    private JDialog kursanmeldungErfassenDialog;
     private JSpinner spinnerSemester;
     private JComboBox<Wochentag> comboBoxWochentag;
     private JComboBox<Lehrkraft> comboBoxLehrkraft;
+    private JCheckBox checkBoxAbmeldungPerEndeSemester;
     private JTextField txtZeitBeginn;
+    private JTextField txtBemerkungen;
     private JLabel errLblWochentag;
     private JLabel errLblZeitBeginn;
     private JLabel errLblLehrkraft;
+    private JLabel errLblBemerkungen;
     private JButton btnOk;
 
-    public KursSchuelerHinzufuegenController(SvmContext svmContext, KurseTableModel kurseTableModel, KursSchuelerHinzufuegenModel kursSchuelerHinzufuegenModel, SchuelerDatenblattModel schuelerDatenblattModel) {
-        super(kursSchuelerHinzufuegenModel);
+    public KursanmeldungErfassenController(SvmContext svmContext, KursanmeldungErfassenModel kursanmeldungErfassenModel, KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, boolean isBearbeiten) {
+        super(kursanmeldungErfassenModel);
         this.svmContext = svmContext;
-        this.kurseTableModel = kurseTableModel;
-        this.kursSchuelerHinzufuegenModel = kursSchuelerHinzufuegenModel;
+        this.kursanmeldungenTableModel = kursanmeldungenTableModel;
+        this.kursanmeldungErfassenModel = kursanmeldungErfassenModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
-        this.kursSchuelerHinzufuegenModel.addPropertyChangeListener(this);
-        this.kursSchuelerHinzufuegenModel.addDisableFieldsListener(this);
-        this.kursSchuelerHinzufuegenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.kursSchuelerHinzufuegenModel.addCompletedListener(new CompletedListener() {
+        this.isBearbeiten = isBearbeiten;
+        this.kursanmeldungErfassenModel.addPropertyChangeListener(this);
+        this.kursanmeldungErfassenModel.addDisableFieldsListener(this);
+        this.kursanmeldungErfassenModel.addMakeErrorLabelsInvisibleListener(this);
+        this.kursanmeldungErfassenModel.addCompletedListener(new CompletedListener() {
             @Override
             public void completed(boolean completed) {
-                onKursSchuelerHinzufuegenModelCompleted(completed);
+                onKursanmeldungErfassenModelCompleted(completed);
             }
         });
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
     public void constructionDone() {
-        kursSchuelerHinzufuegenModel.initializeCompleted();
+        kursanmeldungErfassenModel.initializeCompleted();
     }
 
-    public void setKursSchuelerHinzufuegenDialog(JDialog kursSchuelerHinzufuegenDialog) {
+    public void setKursanmeldungErfassenDialog(JDialog kursanmeldungErfassenDialog) {
         // call onCancel() when cross is clicked
-        this.kursSchuelerHinzufuegenDialog = kursSchuelerHinzufuegenDialog;
-        kursSchuelerHinzufuegenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        kursSchuelerHinzufuegenDialog.addWindowListener(new WindowAdapter() {
+        this.kursanmeldungErfassenDialog = kursanmeldungErfassenDialog;
+        kursanmeldungErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        kursanmeldungErfassenDialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 onAbbrechen();
             }
@@ -93,11 +98,20 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
     
     public void setSpinnerSemester(JSpinner spinnerSemester) {
         this.spinnerSemester = spinnerSemester;
+        // Darf nicht bearbeitet werden, da Teil von Kurs und dieser Teil der ID!
+        if (isBearbeiten) {
+            spinnerSemester.setEnabled(false);
+        }
         List<Semester> semesterList = svmContext.getSvmModel().getSemestersAll();
         if (semesterList.isEmpty()) {
             return;
         }
-        Semester[] semesters = semesterList.toArray(new Semester[semesterList.size()]);
+        Semester[] semesters;
+        if (isBearbeiten) {
+            semesters = kursanmeldungErfassenModel.getSelectableSemesterKursanmeldungOrigin();
+        } else {
+            semesters = semesterList.toArray(new Semester[semesterList.size()]);
+        }
         SpinnerModel spinnerModelSemester = new SpinnerListModel(semesters);
         spinnerSemester.setModel(spinnerModelSemester);
         spinnerSemester.addChangeListener(new ChangeListener() {
@@ -106,13 +120,15 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
                 onSemesterSelected();
             }
         });
-        // Model initialisieren
-        kursSchuelerHinzufuegenModel.setSemester(kursSchuelerHinzufuegenModel.getInitSemester(svmContext.getSvmModel()));
+        if (!isBearbeiten) {
+            // Model initialisieren
+            kursanmeldungErfassenModel.setSemester(kursanmeldungErfassenModel.getInitSemester(svmContext.getSvmModel()));
+        }
     }
 
     private void onSemesterSelected() {
         LOGGER.trace("KursSchuelerHinzufuegenController Event Semester selected =" + spinnerSemester.getValue());
-        boolean equalFieldAndModelValue = equalsNullSafe(spinnerSemester.getValue(), kursSchuelerHinzufuegenModel.getSemester());
+        boolean equalFieldAndModelValue = equalsNullSafe(spinnerSemester.getValue(), kursanmeldungErfassenModel.getSemester());
         setModelSemester();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
@@ -123,26 +139,32 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
 
     private void setModelSemester() {
         makeErrorLabelInvisible(Field.SEMESTER);
-        kursSchuelerHinzufuegenModel.setSemester((Semester) spinnerSemester.getValue());
+        kursanmeldungErfassenModel.setSemester((Semester) spinnerSemester.getValue());
     }
 
     public void setComboBoxWochentag(JComboBox<Wochentag> comboBoxWochentag) {
         this.comboBoxWochentag = comboBoxWochentag;
+        // Darf nicht bearbeitet werden, da Teil von Kurs und dieser Teil der ID!
+        if (isBearbeiten) {
+            this.comboBoxWochentag.setEnabled(false);
+        }
         comboBoxWochentag.setModel(new DefaultComboBoxModel<>(Wochentag.values()));
         comboBoxWochentag.removeItem(Wochentag.ALLE);
-        // Leeren ComboBox-Wert anzeigen
-        comboBoxWochentag.setSelectedItem(null);
         comboBoxWochentag.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onWochentagSelected();
             }
         });
+        if (!isBearbeiten) {
+            // Leeren ComboBox-Wert anzeigen
+            comboBoxWochentag.setSelectedItem(null);
+        }
     }
 
     private void onWochentagSelected() {
         LOGGER.trace("PersonController Event Wochentag selected=" + comboBoxWochentag.getSelectedItem());
-        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxWochentag.getSelectedItem(), kursSchuelerHinzufuegenModel.getWochentag());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxWochentag.getSelectedItem(), kursanmeldungErfassenModel.getWochentag());
         try {
             setModelWochentag();
         } catch (SvmValidationException e) {
@@ -158,7 +180,7 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
     private void setModelWochentag() throws SvmValidationException {
         makeErrorLabelInvisible(Field.WOCHENTAG);
         try {
-            kursSchuelerHinzufuegenModel.setWochentag((Wochentag) comboBoxWochentag.getSelectedItem());
+            kursanmeldungErfassenModel.setWochentag((Wochentag) comboBoxWochentag.getSelectedItem());
         } catch (SvmRequiredException e) {
             LOGGER.trace("KursErfassenController setModelWochentag RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
@@ -173,6 +195,10 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
 
     public void setTxtZeitBeginn(JTextField txtZeitBeginn) {
         this.txtZeitBeginn = txtZeitBeginn;
+        // Darf nicht bearbeitet werden, da Teil von Kurs und dieser Teil der ID!
+        if (isBearbeiten) {
+            this.txtZeitBeginn.setEnabled(false);
+        }
         this.txtZeitBeginn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -189,7 +215,7 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
 
     private void onZeitBeginnEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("KursSchuelerHinzufuegenController Event ZeitBeginn");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtZeitBeginn.getText(), kursSchuelerHinzufuegenModel.getZeitBeginn());
+        boolean equalFieldAndModelValue = equalsNullSafe(txtZeitBeginn.getText(), kursanmeldungErfassenModel.getZeitBeginn());
         try {
             setModelZeitBeginn(showRequiredErrMsg);
         } catch (SvmValidationException e) {
@@ -205,7 +231,7 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
     private void setModelZeitBeginn(boolean showRequiredErrMsg) throws SvmValidationException {
         makeErrorLabelInvisible(Field.ZEIT_BEGINN);
         try {
-            kursSchuelerHinzufuegenModel.setZeitBeginn(txtZeitBeginn.getText());
+            kursanmeldungErfassenModel.setZeitBeginn(txtZeitBeginn.getText());
         } catch (SvmRequiredException e) {
             LOGGER.trace("KursSchuelerHinzufuegenController setModelZeitBeginn RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
@@ -224,22 +250,33 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
 
     public void setComboBoxLehrkraft(JComboBox<Lehrkraft> comboBoxLehrkraft) {
         this.comboBoxLehrkraft = comboBoxLehrkraft;
+        // Darf nicht bearbeitet werden, da Teil von Kurs und dieser Teil der ID!
+        if (isBearbeiten) {
+            this.comboBoxLehrkraft.setEnabled(false);
+        }
         List<Lehrkraft> lehrkraefteList = svmContext.getSvmModel().getAktiveLehrkraefteAll();
-        Lehrkraft[] selectableLehrkraefte = lehrkraefteList.toArray(new Lehrkraft[lehrkraefteList.size()]);
+        Lehrkraft[] selectableLehrkraefte;
+        if (isBearbeiten) {
+            selectableLehrkraefte = kursanmeldungErfassenModel.getSelectableLehrkraftKursanmeldungOrigin();
+        } else {
+            selectableLehrkraefte = lehrkraefteList.toArray(new Lehrkraft[lehrkraefteList.size()]);
+        }
         comboBoxLehrkraft.setModel(new DefaultComboBoxModel<>(selectableLehrkraefte));
-        // Leeren ComboBox-Wert anzeigen
-        comboBoxLehrkraft.setSelectedItem(null);
         comboBoxLehrkraft.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onLehrkraftSelected();
             }
         });
+        if (!isBearbeiten) {
+            // Leeren ComboBox-Wert anzeigen
+            comboBoxLehrkraft.setSelectedItem(null);
+        }
     }
 
     private void onLehrkraftSelected() {
         LOGGER.trace("KursSchuelerHinzufuegenController Event Lehrkraft selected=" + comboBoxLehrkraft.getSelectedItem());
-        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft.getSelectedItem(), kursSchuelerHinzufuegenModel.getLehrkraft());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft.getSelectedItem(), kursanmeldungErfassenModel.getLehrkraft());
         try {
             setModelLehrkraft();
         } catch (SvmValidationException e) {
@@ -255,7 +292,7 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
     private void setModelLehrkraft() throws SvmValidationException {
         makeErrorLabelInvisible(Field.LEHRKRAFT1);
         try {
-            kursSchuelerHinzufuegenModel.setLehrkraft((Lehrkraft) comboBoxLehrkraft.getSelectedItem());
+            kursanmeldungErfassenModel.setLehrkraft((Lehrkraft) comboBoxLehrkraft.getSelectedItem());
         } catch (SvmRequiredException e) {
             LOGGER.trace("KursSchuelerHinzufuegenController setModelLehrkraft RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
@@ -264,6 +301,81 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
             } else {
                 showErrMsg(e);
             }
+            throw e;
+        }
+    }
+
+    public void setCheckBoxAbmeldungPerEndeSemester(JCheckBox checkBoxAbmeldungPerEndeSemester) {
+        this.checkBoxAbmeldungPerEndeSemester = checkBoxAbmeldungPerEndeSemester;
+        // Keine AbmeldungPerEndeSemester als Default-Wert
+        if (!isBearbeiten) {
+            kursanmeldungErfassenModel.setAbmeldungPerEndeSemester(false);
+        }
+        this.checkBoxAbmeldungPerEndeSemester.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                onAbmeldungPerEndeSemesterEvent();
+            }
+        });
+    }
+
+    private void setModelAbmeldungPerEndeSemester() {
+        kursanmeldungErfassenModel.setAbmeldungPerEndeSemester(checkBoxAbmeldungPerEndeSemester.isSelected());
+    }
+
+    private void onAbmeldungPerEndeSemesterEvent() {
+        LOGGER.trace("AngehoerigerController Event AbmeldungPerEndeSemester. Selected=" + checkBoxAbmeldungPerEndeSemester.isSelected());
+        setModelAbmeldungPerEndeSemester();
+    }
+
+
+    public void setTxtBemerkungen(JTextField txtBemerkungen) {
+        this.txtBemerkungen = txtBemerkungen;
+        this.txtBemerkungen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onBemerkungenEvent(true);
+            }
+        });
+        this.txtBemerkungen.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onBemerkungenEvent(false);
+            }
+        });
+    }
+
+    private void onBemerkungenEvent(boolean showRequiredErrMsg) {
+        LOGGER.trace("KurseinteilungErfassenController Event Bemerkungen");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtBemerkungen.getText(), kursanmeldungErfassenModel.getBemerkungen());
+        try {
+            setModelBemerkungen(showRequiredErrMsg);
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelBemerkungen(boolean showRequiredErrMsg) throws SvmValidationException {
+        makeErrorLabelInvisible(Field.BEMERKUNGEN);
+        try {
+            kursanmeldungErfassenModel.setBemerkungen(txtBemerkungen.getText());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("KurseinteilungErfassenController setModelBemerkungen RequiredException=" + e.getMessage());
+            if (isModelValidationMode() || !showRequiredErrMsg) {
+                txtBemerkungen.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        } catch (SvmValidationException e) {
+            LOGGER.trace("KurseinteilungErfassenController setModelBemerkungen Exception=" + e.getMessage());
+            showErrMsg(e);
             throw e;
         }
     }
@@ -278,6 +390,10 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
 
     public void setErrLblLehrkraft(JLabel errLblLehrkraft) {
         this.errLblLehrkraft = errLblLehrkraft;
+    }
+    
+    public void setErrLblBemerkungen(JLabel errLblBemerkungen) {
+        this.errLblBemerkungen = errLblBemerkungen;
     }
 
     public void setBtnOk(JButton btnOk) {
@@ -299,11 +415,11 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
             return;
         }
         int n = 0;
-        if (kursSchuelerHinzufuegenModel.checkIfSemesterIsInPast()) {
+        if (!isBearbeiten && kursanmeldungErfassenModel.checkIfSemesterIsInPast()) {
             Object[] options = {"Ja", "Nein"};
             n = JOptionPane.showOptionDialog(
                     null,
-                    "Das selektierte Semester liegt in der Vergangenheit. Kurs trotzdem speichern?",
+                    "Das selektierte Semester liegt in der Vergangenheit. Kursanmeldung trotzdem speichern?",
                     "Semester in Vergangenheit",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
@@ -312,19 +428,22 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
                     options[1]); //default button title
         }
         if (n == 0) {
-            AddKursToSchuelerAndSaveCommand.Result result = kursSchuelerHinzufuegenModel.hinzufuegen(kurseTableModel, schuelerDatenblattModel);
-            if (result == AddKursToSchuelerAndSaveCommand.Result.KURS_EXISTIERT_NICHT) {
-                JOptionPane.showMessageDialog(kursSchuelerHinzufuegenDialog, "Kurs existiert nicht.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            // Existiert der Kurs?
+            if (!isBearbeiten && kursanmeldungErfassenModel.findKurs() == FindKursCommand.Result.KURS_EXISTIERT_NICHT) {
+                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs existiert nicht.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 btnOk.setFocusPainted(false);
                 return;
             }
-            if (result == AddKursToSchuelerAndSaveCommand.Result.KURS_BEREITS_ERFASST) {
-                JOptionPane.showMessageDialog(kursSchuelerHinzufuegenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            // Kurs bereits erfasst
+            if (!isBearbeiten && kursanmeldungErfassenModel.checkIfKursBereitsErfasst(schuelerDatenblattModel)) {
+                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 btnOk.setFocusPainted(false);
                 return;
             }
+            // Speichern
+            kursanmeldungErfassenModel.speichern(kursanmeldungenTableModel, schuelerDatenblattModel);
         }
-        kursSchuelerHinzufuegenDialog.dispose();
+        kursanmeldungErfassenDialog.dispose();
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
@@ -337,10 +456,10 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
     }
 
     private void onAbbrechen() {
-        kursSchuelerHinzufuegenDialog.dispose();
+        kursanmeldungErfassenDialog.dispose();
     }
 
-    private void onKursSchuelerHinzufuegenModelCompleted(boolean completed) {
+    private void onKursanmeldungErfassenModelCompleted(boolean completed) {
         LOGGER.trace("KursSchuelerHinzufuegenModel completed=" + completed);
         if (completed) {
             btnOk.setToolTipText(null);
@@ -355,13 +474,17 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
     void doPropertyChange(PropertyChangeEvent evt) {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.SEMESTER, evt)) {
-            spinnerSemester.setValue(kursSchuelerHinzufuegenModel.getSemester());
+            spinnerSemester.setValue(kursanmeldungErfassenModel.getSemester());
         } else if (checkIsFieldChange(Field.WOCHENTAG, evt)) {
-            comboBoxWochentag.setSelectedItem(kursSchuelerHinzufuegenModel.getWochentag());
+            comboBoxWochentag.setSelectedItem(kursanmeldungErfassenModel.getWochentag());
         } else if (checkIsFieldChange(Field.ZEIT_BEGINN, evt)) {
-            txtZeitBeginn.setText(asString(kursSchuelerHinzufuegenModel.getZeitBeginn()));
-        } else if (checkIsFieldChange(Field.LEHRKRAFT1, evt)) {
-            comboBoxLehrkraft.setSelectedItem(kursSchuelerHinzufuegenModel.getLehrkraft());
+            txtZeitBeginn.setText(asString(kursanmeldungErfassenModel.getZeitBeginn()));
+        } else if (checkIsFieldChange(Field.LEHRKRAFT, evt)) {
+            comboBoxLehrkraft.setSelectedItem(kursanmeldungErfassenModel.getLehrkraft());
+        } else if (checkIsFieldChange(Field.ABMELDUNG_PER_ENDE_SEMESTER, evt)) {
+            checkBoxAbmeldungPerEndeSemester.setSelected(kursanmeldungErfassenModel.isAbmeldungPerEndeSemester());
+        } else if (checkIsFieldChange(Field.BEMERKUNGEN, evt)) {
+            txtBemerkungen.setText(kursanmeldungErfassenModel.getBemerkungen());
         }
     }
 
@@ -383,6 +506,10 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
             LOGGER.trace("Validate field Lehrkraft");
             setModelLehrkraft();
         }
+        if (txtBemerkungen.isEnabled()) {
+            LOGGER.trace("Validate field Bemerkungen");
+            setModelBemerkungen(true);
+        }
     }
 
     @Override
@@ -399,6 +526,10 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
             errLblLehrkraft.setVisible(true);
             errLblLehrkraft.setText(e.getMessage());
         }
+        if (e.getAffectedFields().contains(Field.BEMERKUNGEN)) {
+            errLblBemerkungen.setVisible(true);
+            errLblBemerkungen.setText(e.getMessage());
+        }
     }
 
     @Override
@@ -411,6 +542,9 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
         }
         if (e.getAffectedFields().contains(Field.LEHRKRAFT)) {
             comboBoxLehrkraft.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.BEMERKUNGEN)) {
+            txtBemerkungen.setToolTipText(e.getMessage());
         }
     }
 
@@ -427,6 +561,10 @@ public class KursSchuelerHinzufuegenController extends AbstractController {
         if (fields.contains(Field.ALLE) || fields.contains(Field.LEHRKRAFT)) {
             errLblLehrkraft.setVisible(false);
             comboBoxLehrkraft.setToolTipText(null);
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.BEMERKUNGEN)) {
+            errLblBemerkungen.setVisible(false);
+            txtBemerkungen.setToolTipText(null);
         }
     }
 

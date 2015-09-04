@@ -1,9 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.dataTypes.*;
 import ch.metzenthin.svm.persistence.daos.*;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
@@ -20,13 +17,12 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
  * @author Martin Schraner
  */
-public class RemoveKursFromSchuelerCommandTest {
+public class SaveOrUpdateKursanmeldungCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
@@ -53,8 +49,31 @@ public class RemoveKursFromSchuelerCommandTest {
         List<Kursort> erfassteKursorte = new ArrayList<>();
         List<Lehrkraft> erfassteLehrkraefte = new ArrayList<>();
         List<Kurs> erfassteKurse = new ArrayList<>();
+        List<Kursanmeldung> erfassteKursanmeldungen = new ArrayList<>();
 
-        // Semester, Kurstyp, Kursort und Lehrkräfte erzeugen
+        // Schüler und Kurse erzeugen
+        Schueler schueler1 = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
+        Adresse adresse1 = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
+        schueler1.setAdresse(adresse1);
+        schueler1.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
+        Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+        vater.setAdresse(adresse1);
+        schueler1.setVater(vater);
+        schueler1.setRechnungsempfaenger(vater);
+        SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler1);
+        commandInvoker.executeCommandAsTransaction(saveSchuelerCommand);
+
+        Schueler schueler2 = new Schueler("Hanna", "Hasler", new GregorianCalendar(2010, Calendar.JULY, 24), "044 422 69 33", null, null, Geschlecht.W, null);
+        Adresse adresse2 = new Adresse("Hohenklingenstrasse", "22", "8049", "Zürich");
+        schueler2.setAdresse(adresse2);
+        schueler2.addAnmeldung(new Anmeldung(new GregorianCalendar(2013, Calendar.JANUARY, 1), null));
+        Angehoeriger mutter2 = new Angehoeriger(Anrede.FRAU, "Adriana", "Hasler", "044 422 69 33", null, null);
+        mutter2.setAdresse(adresse2);
+        schueler2.setMutter(mutter2);
+        schueler2.setRechnungsempfaenger(mutter2);
+        saveSchuelerCommand = new SaveSchuelerCommand(schueler2);
+        commandInvoker.executeCommandAsTransaction(saveSchuelerCommand);
+
         Semester semester1 = new Semester("1911/1912", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1911, Calendar.AUGUST, 20), new GregorianCalendar(1912, Calendar.FEBRUARY, 10), 21);
         SaveOrUpdateSemesterCommand saveOrUpdateSemesterCommand = new SaveOrUpdateSemesterCommand(semester1, null, erfassteSemester);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterCommand);
@@ -77,81 +96,59 @@ public class RemoveKursFromSchuelerCommandTest {
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
 
         Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roostest1", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
-        Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-        SaveOrUpdateLehrkraftCommand saveOrUpdateLehrkraftCommand = new SaveOrUpdateLehrkraftCommand(lehrkraft1, adresse1, null, erfassteLehrkraefte);
+        Adresse adresselk1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
+        SaveOrUpdateLehrkraftCommand saveOrUpdateLehrkraftCommand = new SaveOrUpdateLehrkraftCommand(lehrkraft1, adresselk1, null, erfassteLehrkraefte);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateLehrkraftCommand);
         Lehrkraft lehrkraft2 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roostest2", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
-        Adresse adresse2 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-        saveOrUpdateLehrkraftCommand = new SaveOrUpdateLehrkraftCommand(lehrkraft2, adresse2, null, erfassteLehrkraefte);
+        Adresse adresselk2 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
+        saveOrUpdateLehrkraftCommand = new SaveOrUpdateLehrkraftCommand(lehrkraft2, adresselk2, null, erfassteLehrkraefte);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateLehrkraftCommand);
 
-        assertFalse(checkIfKursAvailable(semester1, kurstyp1, "2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), kursort1, lehrkraft1, null));
-        assertFalse(checkIfKursAvailable(semester2, kurstyp2, "2-3 J", "Vorkindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), kursort2, lehrkraft2, lehrkraft1));
-
-        // 1. Kurs erfassen
         Kurs kurs1 = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
         SaveOrUpdateKursCommand saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs1, semester1, kurstyp1, kursort1, lehrkraft1, null, null, erfassteKurse);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursCommand);
 
-        assertTrue(checkIfKursAvailable(semester1, kurstyp1, "2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), kursort1, lehrkraft1, null));
-
-        // 2. Kurs erfassen
         Kurs kurs2 = new Kurs("2-3 J", "Vorkindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
         saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs2, semester2, kurstyp2, kursort2, lehrkraft2, lehrkraft1, null, erfassteKurse);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursCommand);
 
-        assertTrue(checkIfKursAvailable(semester2, kurstyp2, "2-3 J", "Vorkindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), kursort2, lehrkraft2, lehrkraft1));
+        assertFalse(checkIfKursanmeldungAvailable(schueler1, kurs1, true, "Testbemerkung1"));
+        assertFalse(checkIfKursanmeldungAvailable(schueler2, kurs2, false, "Testbemerkung2"));
 
+        // 1. Kursanmeldung erfassen
+        Kursanmeldung kursanmeldung1 = new Kursanmeldung(schueler1, kurs1, true, "Testbemerkung1");
+        SaveOrUpdateKursanmeldungCommand saveOrUpdateKursanmeldungCommand = new SaveOrUpdateKursanmeldungCommand(kursanmeldung1, null, erfassteKursanmeldungen);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateKursanmeldungCommand);
 
-        // Schueler erfassen und Kurs hinzufügen
-        Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
-        Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
-        schueler.setAdresse(adresse);
-        schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.MAY, 1), null));
-        Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
-        vater.setAdresse(adresse);
-        schueler.setVater(vater);
-        schueler.setRechnungsempfaenger(vater);
+        assertTrue(checkIfKursanmeldungAvailable(schueler1, kurs1, true, "Testbemerkung1"));
 
-        SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
-        commandInvoker.executeCommandAsTransaction(saveSchuelerCommand);
-        Schueler schuelerSaved = saveSchuelerCommand.getSavedSchueler();
+        // 2. Kursanmeldung erfassen
+        Kursanmeldung kursanmeldung2 = new Kursanmeldung(schueler2, kurs2, false, "Testbemerkung2");
+        saveOrUpdateKursanmeldungCommand = new SaveOrUpdateKursanmeldungCommand(kursanmeldung2, null, erfassteKursanmeldungen);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateKursanmeldungCommand);
 
-        // Kurse hinzufügen
-        AddKursToSchuelerAndSaveCommand addKursToSchuelerAndSaveCommand = new AddKursToSchuelerAndSaveCommand(semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), lehrkraft1, schuelerSaved);
-        commandInvoker.executeCommandAsTransaction(addKursToSchuelerAndSaveCommand);
-        schuelerSaved = addKursToSchuelerAndSaveCommand.getSchuelerUpdated();
-        addKursToSchuelerAndSaveCommand = new AddKursToSchuelerAndSaveCommand(semester2, Wochentag.FREITAG, Time.valueOf("10:00:00"), lehrkraft2, schuelerSaved);
-        commandInvoker.executeCommandAsTransaction(addKursToSchuelerAndSaveCommand);
-        schuelerSaved = addKursToSchuelerAndSaveCommand.getSchuelerUpdated();
+        assertTrue(checkIfKursanmeldungAvailable(schueler2, kurs2, false, "Testbemerkung2"));
 
-        assertEquals(2, schuelerSaved.getKurse().size());
-        assertEquals(kursort2, schuelerSaved.getKurseAsList().get(0).getKursort());
-        assertEquals(kursort1, schuelerSaved.getKurseAsList().get(1).getKursort());
+        // 2. Kursanmeldung bearbeiten
+        Kursanmeldung kursanmeldung2Modif = new Kursanmeldung(schueler2, kurs2, true, "Testbemerkung22");
+        saveOrUpdateKursanmeldungCommand = new SaveOrUpdateKursanmeldungCommand(kursanmeldung2Modif, kursanmeldung2, erfassteKursanmeldungen);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateKursanmeldungCommand);
 
-        // 2. Kurs von Schüler löschen
-        RemoveKursFromSchuelerCommand removeKursFromSchuelerCommand = new RemoveKursFromSchuelerCommand(schuelerSaved.getKurseAsList().get(1), schuelerSaved);
-        commandInvoker.executeCommandAsTransaction(removeKursFromSchuelerCommand);
-
-        Schueler schuelerUpdated = removeKursFromSchuelerCommand.getSchuelerUpdated();
-        assertEquals(1, schuelerUpdated.getKurse().size());
-        assertEquals(kursort2, schuelerSaved.getKurseAsList().get(0).getKursort());
-
-        // 1. Kurs von Schüler löschen
-        removeKursFromSchuelerCommand = new RemoveKursFromSchuelerCommand(schuelerSaved.getKurseAsList().get(0), schuelerSaved);
-        commandInvoker.executeCommandAsTransaction(removeKursFromSchuelerCommand);
-
-        schuelerUpdated = removeKursFromSchuelerCommand.getSchuelerUpdated();
-        assertEquals(0, schuelerUpdated.getKurse().size());
+        assertFalse(checkIfKursanmeldungAvailable(schueler2, kurs2, false, "Testbemerkung2"));
+        assertTrue(checkIfKursanmeldungAvailable(schueler2, kurs2, true, "Testbemerkung22"));
 
         // Testdaten löschen
         EntityManager entityManager = null;
         try {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
-            SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-            Schueler schuelerToBeDeleted = schuelerDao.findById(schuelerSaved.getPersonId());
-            schuelerDao.remove(schuelerToBeDeleted);
+            KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
+            for (Kursanmeldung kursanmeldung : erfassteKursanmeldungen) {
+                Kursanmeldung kursanmeldungToBeDeleted = kursanmeldungDao.findById(new KursanmeldungId(kursanmeldung.getSchueler().getPersonId(), kursanmeldung.getKurs().getKursId()));
+                if (kursanmeldungToBeDeleted != null) {
+                    kursanmeldungDao.remove(kursanmeldungToBeDeleted);
+                }
+            }
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
             KursDao kursDao = new KursDao(entityManager);
@@ -198,37 +195,29 @@ public class RemoveKursFromSchuelerCommandTest {
                 }
             }
             entityManager.getTransaction().commit();
+            entityManager.getTransaction().begin();
+            SchuelerDao schuelerDao = new SchuelerDao(entityManager);
+            Schueler schuelerToBeRemoved1 = schuelerDao.findById(schueler1.getPersonId());
+            Schueler schuelerToBeRemoved2 = schuelerDao.findById(schueler2.getPersonId());
+            schuelerDao.remove(schuelerToBeRemoved1);
+            schuelerDao.remove(schuelerToBeRemoved2);
+            entityManager.getTransaction().commit();
         } finally {
             if (entityManager != null) {
                 entityManager.close();
             }
         }
-
     }
 
-    private boolean checkIfKursAvailable(Semester semester, Kurstyp kurstyp, String altersbereich, String stufe, Wochentag wochentag, Time zeitBeginn, Time zeitEnde, Kursort kursort, Lehrkraft lehrkraft1, Lehrkraft lehrkraft2) {
-        FindKurseSemesterCommand kurseSemesterCommand = new FindKurseSemesterCommand(semester);
-        commandInvoker.executeCommandAsTransaction(kurseSemesterCommand);
-        List<Kurs> kurseAll = kurseSemesterCommand.getKurseFound();
-        for (Kurs kurs : kurseAll) {
-            if (kurs.getSemester().equals(semester)
-                    && kurs.getKurstyp().equals(kurstyp)
-                    && kurs.getAltersbereich().equals(altersbereich)
-                    && kurs.getStufe().equals(stufe)
-                    && kurs.getWochentag().equals(wochentag)
-                    && kurs.getZeitBeginn().equals(zeitBeginn)
-                    && kurs.getZeitEnde().equals(zeitEnde)
-                    && kurs.getKursort().equals(kursort)
-                    && kurs.getLehrkraefte().get(0).equals(lehrkraft1)) {
-                if (kurs.getLehrkraefte().size() == 1) {
-                    if (lehrkraft2 == null) {
-                        return true;
-                    }
-                } else {
-                    if (kurs.getLehrkraefte().get(1).equals(lehrkraft2)) {
-                        return true;
-                    }
-                }
+    private boolean checkIfKursanmeldungAvailable(Schueler schueler, Kurs kurs, boolean abmeldungPerEndeSemester, String bemerkungen) {
+        FindKursanmeldungenSchuelerCommand findKursanmeldungenSchuelerCommand = new FindKursanmeldungenSchuelerCommand(schueler);
+        commandInvoker.executeCommandAsTransaction(findKursanmeldungenSchuelerCommand);
+        List<Kursanmeldung> kursanmeldungenSchueler = findKursanmeldungenSchuelerCommand.getKursanmeldungenFound();
+        for (Kursanmeldung kursanmeldung : kursanmeldungenSchueler) {
+            if (kursanmeldung.getKurs().equals(kurs)
+                    && kursanmeldung.getAbmeldungPerEndeSemester().equals(abmeldungPerEndeSemester)
+                    && kursanmeldung.getBemerkungen().equals(bemerkungen)) {
+                return true;
             }
         }
         return false;

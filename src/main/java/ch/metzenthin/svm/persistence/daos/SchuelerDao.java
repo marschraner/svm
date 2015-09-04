@@ -64,9 +64,11 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
             entityManager.refresh(schuelerCode);
         }
 
-        // Lösche zugewiesene Kurse
-        for (Kurs kurs : new ArrayList<>(schueler.getKurse())) {
-            schueler.deleteKurs(kurs);
+        // Lösche zugewiesene Kursanmeldungen
+        KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
+        List<Kursanmeldung> kurseinteilungenSchueler = kursanmeldungDao.findKursanmeldungenSchueler(schueler);
+        for (Kursanmeldung kursanmeldung : new ArrayList<>(kurseinteilungenSchueler)) {
+            kursanmeldungDao.remove(kursanmeldung);
         }
 
         // Lösche zugewiesenen Maercheneinteilungen

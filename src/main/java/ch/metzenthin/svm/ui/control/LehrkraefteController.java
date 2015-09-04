@@ -39,7 +39,6 @@ public class LehrkraefteController {
     public LehrkraefteController(LehrkraefteModel lehrkraefteModel, SvmContext svmContext) {
         this.lehrkraefteModel = lehrkraefteModel;
         this.svmContext = svmContext;
-        svmContext.getSvmModel().loadLehrkraefteAll();
     }
 
     public void setLehrkraefteTable(JTable lehrkraefteTable) {

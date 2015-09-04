@@ -58,17 +58,6 @@ public class CodesController {
         this.selectedRow = selectedRow;
         this.isFromSchuelerSuchenResult = isFromSchuelerSuchenResult;
         this.codetyp = codetyp;
-        switch (codetyp) {
-            case SCHUELER:
-                svmContext.getSvmModel().loadSchuelerCodesAll();
-                break;
-            case ELTERNMITHILFE:
-                svmContext.getSvmModel().loadElternmithilfeCodesAll();
-                break;
-            case SEMESTERRECHNUNG:
-                svmContext.getSvmModel().loadSemesterrechnungCodesAll();
-                break;
-        }
     }
 
     public void setCodesTable(JTable codesTable) {

@@ -47,7 +47,7 @@ public interface SchuelerDatenblattModel {
 
     DispensationenTableData getDispensationenTableData();
     CodesTableData getCodesTableData();
-    KurseTableData getKurseTableData();
+    KursanmeldungenTableData getKurseinteilungenTableData();
     MaercheneinteilungenTableData getMaercheneinteilungenTableData();
     SchuelerModel getSchuelerModel(SvmContext svmContext);
     AngehoerigerModel getMutterModel(SvmContext svmContext);

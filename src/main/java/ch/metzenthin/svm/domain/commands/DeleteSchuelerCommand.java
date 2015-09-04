@@ -26,7 +26,7 @@ public class DeleteSchuelerCommand extends GenericDaoCommand {
     @Override
     public void execute() {
         SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-        if (schueler.getKurse().size() > 0) {
+        if (schueler.getKursanmeldungen().size() > 0) {
             result = Result.SCHUELER_IN_KURSE_EINGESCHRIEBEN;
             return;
         }

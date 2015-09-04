@@ -64,6 +64,7 @@ public interface MaercheneinteilungErfassenModel extends Model {
     void setMaercheneinteilungOrigin(Maercheneinteilung maercheneinteilungOrigin);
 
     Maerchen getMaerchenInit(List<Maerchen> selectableMaerchens);
+    Maerchen[] getSelectableMaerchenMaercheneinteilungOrigin();
     boolean checkIfMaerchenIsInPast();
     Elternteil[] getSelectableElternmithilfen(SchuelerDatenblattModel schuelerDatenblattModel);
     ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel);
