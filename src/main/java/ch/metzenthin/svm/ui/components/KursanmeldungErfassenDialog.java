@@ -335,6 +335,7 @@ public class KursanmeldungErfassenDialog extends JDialog {
         buttonPanel.add(btnAbbrechen, gbc);
         label1.setLabelFor(spinnerSemester);
         label2.setLabelFor(comboBoxWochentag);
+        label3.setLabelFor(txtZeitBeginn);
         label4.setLabelFor(comboBoxLehrkraft);
         label6.setLabelFor(txtBemerkungen);
     }

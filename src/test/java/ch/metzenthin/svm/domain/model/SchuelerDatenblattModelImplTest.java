@@ -93,7 +93,7 @@ public class SchuelerDatenblattModelImplTest {
 
     @Test
     public void testGetSchuelerGleicherRechnungsempfaengerAsString() throws Exception {
-        assertEquals("-", schuelerDatenblattModel.getSchuelerGleicherRechnungsempfaengerAsString());
+        assertEquals("", schuelerDatenblattModel.getSchuelerGleicherRechnungsempfaengerAsString());
     }
 
     @Test
