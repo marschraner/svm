@@ -422,29 +422,29 @@ SELECT * FROM Kurs_Lehrkraft;
 -- Kursanmeldung
 -- **************
 
-INSERT INTO Kursanmeldung (person_id, kurs_id, abmeldung_per_ende_semester, bemerkungen) VALUES
-    (7, 13, 0, '2 Wochen später angefangen'),
-    (7, 14, 0, NULL),
-    (7, 18, 0, NULL),
-    (8, 7, 0, NULL),
-    (8, 8, 0, NULL),
-    (8, 6, 0, NULL),
-    (16, 20, 0, NULL),
-    (18, 20, 0, NULL),
-    (20, 20, 0, NULL),
-    (23, 20, 0, NULL),
-    (25, 20, 0, NULL),
-    (27, 20, 0, NULL),
-    (29, 20, 0, NULL),
-    (32, 20, 0, NULL),
-    (34, 20, 0, NULL),
-    (36, 20, 0, NULL),
-    (39, 20, 0, NULL),
-    (41, 20, 0, NULL),
-    (43, 20, 0, NULL),
-    (45, 21, 0, NULL),
-    (48, 21, 0, NULL),
-    (48, 22, 0, NULL);
+INSERT INTO Kursanmeldung (person_id, kurs_id, anmeldedatum, abmeldedatum, bemerkungen) VALUES
+    (7, 13, NULL, NULL, '2 Wochen später angefangen'),
+    (7, 14, NULL, NULL, NULL),
+    (7, 18, NULL, NULL, NULL),
+    (8, 7, NULL, NULL, NULL),
+    (8, 8, NULL, NULL, NULL),
+    (8, 6, NULL, NULL, NULL),
+    (16, 20, NULL, NULL, NULL),
+    (18, 20, NULL, NULL, NULL),
+    (20, 20, NULL, NULL, NULL),
+    (23, 20, NULL, NULL, NULL),
+    (25, 20, NULL, NULL, NULL),
+    (27, 20, NULL, NULL, NULL),
+    (29, 20, NULL, NULL, NULL),
+    (32, 20, NULL, NULL, NULL),
+    (34, 20, NULL, NULL, NULL),
+    (36, 20, NULL, NULL, NULL),
+    (39, 20, NULL, NULL, NULL),
+    (41, 20, NULL, NULL, NULL),
+    (43, 20, NULL, NULL, NULL),
+    (45, 21, NULL, NULL, NULL),
+    (48, 21, NULL, NULL, NULL),
+    (48, 22, NULL, NULL, NULL);
 
 SELECT * FROM Kursanmeldung;
 

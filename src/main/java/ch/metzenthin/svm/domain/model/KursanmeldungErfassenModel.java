@@ -10,6 +10,7 @@ import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.KursanmeldungenTableModel;
 
 import java.sql.Time;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -22,14 +23,16 @@ public interface KursanmeldungErfassenModel extends Model {
     Wochentag getWochentag();
     Time getZeitBeginn();
     Lehrkraft getLehrkraft();
-    Boolean isAbmeldungPerEndeSemester();
+    Calendar getAnmeldedatum();
+    Calendar getAbmeldedatum();
     String getBemerkungen();
 
     void setSemester(Semester semester);
     void setWochentag(Wochentag wochentag) throws SvmRequiredException;
     void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
     void setLehrkraft(Lehrkraft lehrkraft) throws SvmRequiredException;
-    void setAbmeldungPerEndeSemester(Boolean isSelected);
+    void setAnmeldedatum(String anmeldedatum) throws SvmValidationException;
+    void setAbmeldedatum(String abmeldedatum) throws SvmValidationException;
     void setBemerkungen(String bemerkungen) throws SvmValidationException;
 
     Semester[] getSelectableSemesterKursanmeldungOrigin();

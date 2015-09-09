@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.dataTypes.Schuljahre;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -107,16 +108,76 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
         }
     }
 
+    private CalendarModelAttribute anmeldedatumModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.ANMELDEDATUM, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX + 1, Calendar.DECEMBER, 31),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return kursanmeldung.getAnmeldedatum();
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    kursanmeldung.setAnmeldedatum(value);
+                }
+            }
+    );
+
     @Override
-    public void setAbmeldungPerEndeSemester(Boolean isSelected) {
-        Boolean oldValue = kursanmeldung.getAbmeldungPerEndeSemester();
-        kursanmeldung.setAbmeldungPerEndeSemester(isSelected);
-        firePropertyChange(Field.ABMELDUNG_PER_ENDE_SEMESTER, oldValue, isSelected);
+    public Calendar getAnmeldedatum() {
+        return anmeldedatumModelAttribute.getValue();
     }
 
     @Override
-    public Boolean isAbmeldungPerEndeSemester() {
-        return kursanmeldung.getAbmeldungPerEndeSemester();
+    public void setAnmeldedatum(String anmeldedatum) throws SvmValidationException {
+        anmeldedatumModelAttribute.setNewValue(true, anmeldedatum, isBulkUpdate());
+        if (!isBulkUpdate() && kursanmeldung.getAnmeldedatum() != null && kursanmeldung.getAbmeldedatum() != null && kursanmeldung.getAnmeldedatum().after(kursanmeldung.getAbmeldedatum())) {
+            kursanmeldung.setAnmeldedatum(null);
+            invalidate();
+            throw new SvmValidationException(2022, "Keine gültige Periode", Field.ANMELDEDATUM);
+        }
+        if (!isBulkUpdate() && kursanmeldung.getAnmeldedatum() != null && kursanmeldung.getAnmeldedatum().before(semester.getSemesterbeginn())) {
+            kursanmeldung.setAnmeldedatum(null);
+            invalidate();
+            throw new SvmValidationException(2026, "Anmeldedatum vor Semesterbeginn", Field.ANMELDEDATUM);
+        }
+    }
+
+    private CalendarModelAttribute abmeldedatumModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.ABMELDEDATUM, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX + 1, Calendar.DECEMBER, 31),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return kursanmeldung.getAbmeldedatum();
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    kursanmeldung.setAbmeldedatum(value);
+                }
+            }
+    );
+
+    @Override
+    public Calendar getAbmeldedatum() {
+        return abmeldedatumModelAttribute.getValue();
+    }
+
+    @Override
+    public void setAbmeldedatum(String abmeldedatum) throws SvmValidationException {
+        abmeldedatumModelAttribute.setNewValue(true, abmeldedatum, isBulkUpdate());
+        if (!isBulkUpdate() && kursanmeldung.getAnmeldedatum() != null && kursanmeldung.getAbmeldedatum() != null && kursanmeldung.getAnmeldedatum().after(kursanmeldung.getAbmeldedatum())) {
+            kursanmeldung.setAbmeldedatum(null);
+            invalidate();
+            throw new SvmValidationException(2024, "Keine gültige Periode", Field.ABMELDEDATUM);
+        }
+        if (!isBulkUpdate() && kursanmeldung.getAbmeldedatum() != null && kursanmeldung.getAbmeldedatum().after(semester.getSemesterende())) {
+            kursanmeldung.setAnmeldedatum(null);
+            invalidate();
+            throw new SvmValidationException(2028, "Abmeldedatum nach Semesterende", Field.ABMELDEDATUM);
+        }
     }
 
     private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(
@@ -231,8 +292,8 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
                 setZeitBeginn(asString(kursanmeldungOrigin.getKurs().getZeitBeginn()));
                 setLehrkraft(kursanmeldungOrigin.getKurs().getLehrkraefte().get(0));
                 kurs = kursanmeldungOrigin.getKurs();
-                setAbmeldungPerEndeSemester(!kursanmeldungOrigin.getAbmeldungPerEndeSemester());   // damit PropertyChange ausgelöst wird!
-                setAbmeldungPerEndeSemester(kursanmeldungOrigin.getAbmeldungPerEndeSemester());
+                setAnmeldedatum(asString(kursanmeldungOrigin.getAnmeldedatum()));
+                setAbmeldedatum(asString(kursanmeldungOrigin.getAbmeldedatum()));
                 setBemerkungen(kursanmeldungOrigin.getBemerkungen());
             } catch (SvmValidationException ignore) {
                 ignore.printStackTrace();

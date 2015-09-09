@@ -175,7 +175,6 @@ public enum Field {
     PRAEZISIERUNG_RESTBETRAG("Präzisierung Restbetrag"),
     PRAEZISIERUNG_DIFFERENZ_SCHULGELD("Präzisierung Differenz Schulgeld N-V"),
     SECHS_JAHRES_RABATT_NACHRECHNUNG("6-Jahres-Rabatt N"),
-    ABMELDUNG_PER_ENDE_SEMESTER("Abm. Ende Sem."),
     RECHNUNGSDATUM("Rechnungsdatum"),
     SEMESTERRECHNUNG_CODE_JA_NEIN("Semesterrechnung-Code ja/nein"),
     STIPENDIUM_JA_NEIN("Stipendium ja/nein");

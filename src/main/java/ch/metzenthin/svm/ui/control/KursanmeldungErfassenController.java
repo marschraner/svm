@@ -44,12 +44,15 @@ public class KursanmeldungErfassenController extends AbstractController {
     private JSpinner spinnerSemester;
     private JComboBox<Wochentag> comboBoxWochentag;
     private JComboBox<Lehrkraft> comboBoxLehrkraft;
-    private JCheckBox checkBoxAbmeldungPerEndeSemester;
     private JTextField txtZeitBeginn;
+    private JTextField txtAnmeldedatum;
+    private JTextField txtAbmeldedatum;
     private JTextField txtBemerkungen;
     private JLabel errLblWochentag;
     private JLabel errLblZeitBeginn;
     private JLabel errLblLehrkraft;
+    private JLabel errLblAnmeldedatum;
+    private JLabel errLblAbmeldedatum;
     private JLabel errLblBemerkungen;
     private JButton btnOk;
 
@@ -305,27 +308,106 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
     }
 
-    public void setCheckBoxAbmeldungPerEndeSemester(JCheckBox checkBoxAbmeldungPerEndeSemester) {
-        this.checkBoxAbmeldungPerEndeSemester = checkBoxAbmeldungPerEndeSemester;
-        // Keine AbmeldungPerEndeSemester als Default-Wert
-        if (!isBearbeiten) {
-            kursanmeldungErfassenModel.setAbmeldungPerEndeSemester(false);
-        }
-        this.checkBoxAbmeldungPerEndeSemester.addItemListener(new ItemListener() {
+    public void setTxtAnmeldedatum(JTextField txtAnmeldedatum) {
+        this.txtAnmeldedatum = txtAnmeldedatum;
+        this.txtAnmeldedatum.addActionListener(new ActionListener() {
             @Override
-            public void itemStateChanged(ItemEvent e) {
-                onAbmeldungPerEndeSemesterEvent();
+            public void actionPerformed(ActionEvent e) {
+                onAnmeldedatumEvent(true);
+            }
+        });
+        this.txtAnmeldedatum.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onAnmeldedatumEvent(false);
             }
         });
     }
 
-    private void setModelAbmeldungPerEndeSemester() {
-        kursanmeldungErfassenModel.setAbmeldungPerEndeSemester(checkBoxAbmeldungPerEndeSemester.isSelected());
+    private void onAnmeldedatumEvent(boolean showRequiredErrMsg) {
+        LOGGER.trace("KurseinteilungErfassenController Event Anmeldedatum");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtAnmeldedatum.getText(), kursanmeldungErfassenModel.getAnmeldedatum());
+        try {
+            setModelAnmeldedatum(showRequiredErrMsg);
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
     }
 
-    private void onAbmeldungPerEndeSemesterEvent() {
-        LOGGER.trace("AngehoerigerController Event AbmeldungPerEndeSemester. Selected=" + checkBoxAbmeldungPerEndeSemester.isSelected());
-        setModelAbmeldungPerEndeSemester();
+    private void setModelAnmeldedatum(boolean showRequiredErrMsg) throws SvmValidationException {
+        makeErrorLabelInvisible(Field.ANMELDEDATUM);
+        try {
+            kursanmeldungErfassenModel.setAnmeldedatum(txtAnmeldedatum.getText());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("KurseinteilungErfassenController setModelAnmeldedatum RequiredException=" + e.getMessage());
+            if (isModelValidationMode() || !showRequiredErrMsg) {
+                txtAnmeldedatum.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        } catch (SvmValidationException e) {
+            LOGGER.trace("KurseinteilungErfassenController setModelAnmeldedatum Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
+    public void setTxtAbmeldedatum(JTextField txtAbmeldedatum) {
+        this.txtAbmeldedatum = txtAbmeldedatum;
+        this.txtAbmeldedatum.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onAbmeldedatumEvent(true);
+            }
+        });
+        this.txtAbmeldedatum.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onAbmeldedatumEvent(false);
+            }
+        });
+    }
+
+    private void onAbmeldedatumEvent(boolean showRequiredErrMsg) {
+        LOGGER.trace("KurseinteilungErfassenController Event Abmeldedatum");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtAbmeldedatum.getText(), kursanmeldungErfassenModel.getAbmeldedatum());
+        try {
+            setModelAbmeldedatum(showRequiredErrMsg);
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelAbmeldedatum(boolean showRequiredErrMsg) throws SvmValidationException {
+        makeErrorLabelInvisible(Field.ABMELDEDATUM);
+        try {
+            kursanmeldungErfassenModel.setAbmeldedatum(txtAbmeldedatum.getText());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("KurseinteilungErfassenController setModelAbmeldedatum RequiredException=" + e.getMessage());
+            if (isModelValidationMode() || !showRequiredErrMsg) {
+                txtAbmeldedatum.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        } catch (SvmValidationException e) {
+            LOGGER.trace("KurseinteilungErfassenController setModelAbmeldedatum Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
     }
 
 
@@ -392,6 +474,14 @@ public class KursanmeldungErfassenController extends AbstractController {
         this.errLblLehrkraft = errLblLehrkraft;
     }
     
+    public void setErrLblAnmeldedatum(JLabel errLblAnmeldedatum) {
+        this.errLblAnmeldedatum = errLblAnmeldedatum;
+    }
+
+    public void setErrLblAbmeldedatum(JLabel errLblAbmeldedatum) {
+        this.errLblAbmeldedatum = errLblAbmeldedatum;
+    }
+
     public void setErrLblBemerkungen(JLabel errLblBemerkungen) {
         this.errLblBemerkungen = errLblBemerkungen;
     }
@@ -481,8 +571,10 @@ public class KursanmeldungErfassenController extends AbstractController {
             txtZeitBeginn.setText(asString(kursanmeldungErfassenModel.getZeitBeginn()));
         } else if (checkIsFieldChange(Field.LEHRKRAFT, evt)) {
             comboBoxLehrkraft.setSelectedItem(kursanmeldungErfassenModel.getLehrkraft());
-        } else if (checkIsFieldChange(Field.ABMELDUNG_PER_ENDE_SEMESTER, evt)) {
-            checkBoxAbmeldungPerEndeSemester.setSelected(kursanmeldungErfassenModel.isAbmeldungPerEndeSemester());
+        } else if (checkIsFieldChange(Field.ANMELDEDATUM, evt)) {
+            txtAnmeldedatum.setText(asString(kursanmeldungErfassenModel.getAnmeldedatum()));
+        } else if (checkIsFieldChange(Field.ABMELDEDATUM, evt)) {
+            txtAbmeldedatum.setText(asString(kursanmeldungErfassenModel.getAbmeldedatum()));
         } else if (checkIsFieldChange(Field.BEMERKUNGEN, evt)) {
             txtBemerkungen.setText(kursanmeldungErfassenModel.getBemerkungen());
         }
@@ -506,6 +598,14 @@ public class KursanmeldungErfassenController extends AbstractController {
             LOGGER.trace("Validate field Lehrkraft");
             setModelLehrkraft();
         }
+        if (txtAnmeldedatum.isEnabled()) {
+            LOGGER.trace("Validate field Anmeldedatum");
+            setModelAnmeldedatum(true);
+        }
+        if (txtAbmeldedatum.isEnabled()) {
+            LOGGER.trace("Validate field Abmeldedatum");
+            setModelAbmeldedatum(true);
+        }
         if (txtBemerkungen.isEnabled()) {
             LOGGER.trace("Validate field Bemerkungen");
             setModelBemerkungen(true);
@@ -526,6 +626,14 @@ public class KursanmeldungErfassenController extends AbstractController {
             errLblLehrkraft.setVisible(true);
             errLblLehrkraft.setText(e.getMessage());
         }
+        if (e.getAffectedFields().contains(Field.ANMELDEDATUM)) {
+            errLblAnmeldedatum.setVisible(true);
+            errLblAnmeldedatum.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.ABMELDEDATUM)) {
+            errLblAbmeldedatum.setVisible(true);
+            errLblAbmeldedatum.setText(e.getMessage());
+        }
         if (e.getAffectedFields().contains(Field.BEMERKUNGEN)) {
             errLblBemerkungen.setVisible(true);
             errLblBemerkungen.setText(e.getMessage());
@@ -542,6 +650,12 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
         if (e.getAffectedFields().contains(Field.LEHRKRAFT)) {
             comboBoxLehrkraft.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.ANMELDEDATUM)) {
+            txtAnmeldedatum.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.ABMELDEDATUM)) {
+            txtAbmeldedatum.setToolTipText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.BEMERKUNGEN)) {
             txtBemerkungen.setToolTipText(e.getMessage());
@@ -561,6 +675,14 @@ public class KursanmeldungErfassenController extends AbstractController {
         if (fields.contains(Field.ALLE) || fields.contains(Field.LEHRKRAFT)) {
             errLblLehrkraft.setVisible(false);
             comboBoxLehrkraft.setToolTipText(null);
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.ANMELDEDATUM)) {
+            errLblAnmeldedatum.setVisible(false);
+            txtAnmeldedatum.setToolTipText(null);
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.ABMELDEDATUM)) {
+            errLblAbmeldedatum.setVisible(false);
+            txtAbmeldedatum.setToolTipText(null);
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.BEMERKUNGEN)) {
             errLblBemerkungen.setVisible(false);

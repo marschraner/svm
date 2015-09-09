@@ -2,7 +2,9 @@ package ch.metzenthin.svm.persistence.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Calendar;
 
+import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
@@ -27,8 +29,13 @@ public class Kursanmeldung implements Comparable<Kursanmeldung> {
     @Column(name = "last_updated")
     private Timestamp version;
 
-    @Column(name = "abmeldung_per_ende_semester", nullable = false)
-    private Boolean abmeldungPerEndeSemester;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "anmeldedatum", nullable = true)
+    private Calendar anmeldedatum;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "abmeldedatum", nullable = true)
+    private Calendar abmeldedatum;
 
     @Column(name = "bemerkungen", nullable = true)
     private String bemerkungen;
@@ -36,10 +43,11 @@ public class Kursanmeldung implements Comparable<Kursanmeldung> {
     public Kursanmeldung() {
     }
 
-    public Kursanmeldung(Schueler schueler, Kurs kurs, Boolean abmeldungPerEndeSemester, String bemerkungen) {
+    public Kursanmeldung(Schueler schueler, Kurs kurs, Calendar anmeldedatum, Calendar abmeldedatum, String bemerkungen) {
         this.kurs = kurs;
         this.schueler = schueler;
-        this.abmeldungPerEndeSemester = abmeldungPerEndeSemester;
+        this.anmeldedatum = anmeldedatum;
+        this.abmeldedatum = abmeldedatum;
         this.bemerkungen = bemerkungen;
     }
 
@@ -56,32 +64,40 @@ public class Kursanmeldung implements Comparable<Kursanmeldung> {
     public boolean isIdenticalWith(Kursanmeldung otherKursanmeldung) {
         return otherKursanmeldung != null
                 && schueler.isIdenticalWith(otherKursanmeldung.getSchueler())
-                && kurs.isIdenticalWith(otherKursanmeldung.getKurs())
-                && abmeldungPerEndeSemester.equals(otherKursanmeldung.abmeldungPerEndeSemester);
+                && kurs.isIdenticalWith(otherKursanmeldung.getKurs());
     }
 
     public void copyAttributesFrom(Kursanmeldung otherKursanmeldung) {
-        this.abmeldungPerEndeSemester = otherKursanmeldung.getAbmeldungPerEndeSemester();
+        this.anmeldedatum = otherKursanmeldung.getAnmeldedatum();
+        this.abmeldedatum = otherKursanmeldung.getAbmeldedatum();
         this.bemerkungen = otherKursanmeldung.getBemerkungen();
     }
 
     @Override
     public String toString() {
-        String kursanmeldungStr = kurs.toString();
-        if (abmeldungPerEndeSemester || checkNotEmpty(bemerkungen)) {
-            kursanmeldungStr = kursanmeldungStr + "&nbsp &nbsp &nbsp (";
-            if (abmeldungPerEndeSemester) {
-                kursanmeldungStr = kursanmeldungStr + "Abmeldung per Ende Semester";
+        StringBuilder kursanmeldungSb = new StringBuilder(kurs.toString());
+        if (anmeldedatum != null || abmeldedatum != null || checkNotEmpty(bemerkungen)) {
+            kursanmeldungSb.append("&nbsp &nbsp &nbsp (");
+            if (anmeldedatum != null) {
+                kursanmeldungSb.append("Anmeldung: ").append(asString(anmeldedatum));
+                if (abmeldedatum != null) {
+                    kursanmeldungSb.append(", ");
+                } else if (checkNotEmpty(bemerkungen)) {
+                    kursanmeldungSb.append("; ");
+                }
+            }
+            if (abmeldedatum != null) {
+                kursanmeldungSb.append("Abmeldung: ").append(asString(abmeldedatum));
                 if (checkNotEmpty(bemerkungen)) {
-                    kursanmeldungStr = kursanmeldungStr + "; ";
+                    kursanmeldungSb.append("; ");
                 }
             }
             if (checkNotEmpty(bemerkungen)) {
-                kursanmeldungStr = kursanmeldungStr + bemerkungen;
+                kursanmeldungSb.append(bemerkungen);
             }
-            kursanmeldungStr = kursanmeldungStr + ")";
+            kursanmeldungSb.append(")");
         }
-        return kursanmeldungStr;
+        return kursanmeldungSb.toString();
     }
 
     public Schueler getSchueler() {
@@ -100,12 +116,20 @@ public class Kursanmeldung implements Comparable<Kursanmeldung> {
         this.kurs = kurs;
     }
 
-    public Boolean getAbmeldungPerEndeSemester() {
-        return abmeldungPerEndeSemester;
+    public Calendar getAnmeldedatum() {
+        return anmeldedatum;
     }
 
-    public void setAbmeldungPerEndeSemester(Boolean abmeldungPerEndeSemester) {
-        this.abmeldungPerEndeSemester = abmeldungPerEndeSemester;
+    public void setAnmeldedatum(Calendar anmeldedatum) {
+        this.anmeldedatum = anmeldedatum;
+    }
+
+    public Calendar getAbmeldedatum() {
+        return abmeldedatum;
+    }
+
+    public void setAbmeldedatum(Calendar abmeldedatum) {
+        this.abmeldedatum = abmeldedatum;
     }
 
     public String getBemerkungen() {

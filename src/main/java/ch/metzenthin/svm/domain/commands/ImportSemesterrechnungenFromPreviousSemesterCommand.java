@@ -83,7 +83,7 @@ public class ImportSemesterrechnungenFromPreviousSemesterCommand extends Generic
                     }
                     // 4.b Nur Kurse ohne Abmeldungen
                     for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungen()) {
-                        if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(previousSemester.getSemesterId()) && !kursanmeldung.getAbmeldungPerEndeSemester()) {
+                        if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(previousSemester.getSemesterId()) && kursanmeldung.getAbmeldedatum() != null) {
                             kurseOhneAbmeldungFound = true;
                             break Schueler;
                         }

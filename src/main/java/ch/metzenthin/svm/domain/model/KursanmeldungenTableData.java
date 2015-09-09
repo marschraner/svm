@@ -20,7 +20,7 @@ public class KursanmeldungenTableData {
     }
 
     private static final Field[] COLUMNS = {Field.SCHULJAHR, Field.SEMESTER, Field.KURSTYP_BEZEICHNUNG, Field.ALTERSBEREICH, Field.STUFE,
-            Field.TAG, Field.ZEIT_BEGINN, Field.ZEIT_ENDE, Field.ORT, Field.LEITUNG, Field.ABMELDUNG_PER_ENDE_SEMESTER, Field.BEMERKUNGEN};
+            Field.TAG, Field.ZEIT_BEGINN, Field.ZEIT_ENDE, Field.ORT, Field.LEITUNG, Field.ANMELDEDATUM, Field.ABMELDEDATUM, Field.BEMERKUNGEN};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -71,8 +71,11 @@ public class KursanmeldungenTableData {
                 }
                 value = leitung.toString();
                 break;
-            case ABMELDUNG_PER_ENDE_SEMESTER:
-                value = (kursanmeldung.getAbmeldungPerEndeSemester() ? "ja" : "");
+            case ANMELDEDATUM:
+                value = (kursanmeldung.getAnmeldedatum() == null ? "" : asString(kursanmeldung.getAnmeldedatum()));
+                break;
+            case ABMELDEDATUM:
+                value = (kursanmeldung.getAbmeldedatum() == null ? "" : asString(kursanmeldung.getAbmeldedatum()));
                 break;
             case BEMERKUNGEN:
                 value = kursanmeldung.getBemerkungen();

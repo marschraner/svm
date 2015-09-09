@@ -67,9 +67,9 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
 
                     // Nur Kurse ohne Kursabmeldungen und nur für nicht abgemeldete Schüler importieren
                     Anmeldung anmeldung = kursanmeldungPreviousSemester.getSchueler().getAnmeldungen().get(0);
-                    if (!kursanmeldungPreviousSemester.getAbmeldungPerEndeSemester()
+                    if (kursanmeldungPreviousSemester.getAbmeldedatum() != null
                             && (anmeldung.getAbmeldedatum() == null || anmeldung.getAbmeldedatum().after(currentSemester.getSemesterbeginn()))) {
-                        Kursanmeldung kursanmeldung = new Kursanmeldung(kursanmeldungPreviousSemester.getSchueler(), kurs, false, null);
+                        Kursanmeldung kursanmeldung = new Kursanmeldung(kursanmeldungPreviousSemester.getSchueler(), kurs, null, null, null);
                         kursanmeldungDao.save(kursanmeldung);
 
                         // Semesterrechnungen updaten
