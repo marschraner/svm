@@ -71,12 +71,23 @@ public class SimpleValidator {
 		return false;
 	}
 
+    public static int getNumberOfDaysOfPeriod(Calendar a, Calendar b) {
+        if (a == null || b == null) {
+            throw new RuntimeException("Start- oder Enddatum der Periode nicht gesetzt");
+        }
+
+        if (b.before(a)) {
+            return -getNumberOfDaysOfPeriod(b, a);
+        }
+        return (int) (((b.getTimeInMillis() - a.getTimeInMillis()) + 3600000) / 86400000);   // + 366000000 um auch bei Zeitumstellung korrekten Wert zu erhalten
+    }
+
     public static int getNumberOfWeeksBetween(Calendar a, Calendar b) {
         if (a == null || b == null) {
             throw new RuntimeException("Start- oder Enddatum der Periode nicht gesetzt");
         }
 
-        if (a.before(a)) {
+        if (b.before(a)) {
             return -getNumberOfWeeksBetween(b, a);
         }
 

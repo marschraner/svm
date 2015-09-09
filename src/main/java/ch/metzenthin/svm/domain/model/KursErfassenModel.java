@@ -44,5 +44,6 @@ public interface KursErfassenModel extends Model {
     Lehrkraft[] getSelectableLehrkraefte1(SvmModel svmModel);
     Lehrkraft[] getSelectableLehrkraefte2(SvmModel svmModel);
     boolean checkKursBereitsErfasst(KurseTableModel kurseTableModel);
+    boolean checkIfLektionsgebuehrenErfasst(SvmModel svmModel);
     void speichern(SvmModel svmModel, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel);
 }

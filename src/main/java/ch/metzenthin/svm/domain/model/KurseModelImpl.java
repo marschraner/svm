@@ -43,12 +43,17 @@ public class KurseModelImpl extends AbstractModel implements KurseModel {
     }
 
     @Override
-    public DeleteKursCommand.Result kursLoeschen(KurseTableModel kurseTableModel, int indexKursToBeRemoved) {
+    public boolean checkIfKursHasKursanmeldungen(KurseTableModel kurseTableModel, int indexKursToBeRemoved) {
+        Kurs kurs = kurseTableModel.getKurse().get(indexKursToBeRemoved);
+        return kurs.getKursanmeldungen().size() > 0;
+    }
+
+    @Override
+    public void kursLoeschen(KurseTableModel kurseTableModel, int indexKursToBeRemoved) {
         List<Kurs> kurse = kurseTableModel.getKurse();
         CommandInvoker commandInvoker = getCommandInvoker();
         DeleteKursCommand deleteKursCommand = new DeleteKursCommand(kurse, indexKursToBeRemoved);
         commandInvoker.executeCommandAsTransaction(deleteKursCommand);
-        return deleteKursCommand.getResult();
     }
 
     @Override

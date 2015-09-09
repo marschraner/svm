@@ -188,7 +188,7 @@ public class LehrkraefteController {
 
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
-        ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, null, lehrkraefteTableModel, null, ListenExportTyp.LEHRKRAEFTE);
+        ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, null, lehrkraefteTableModel, null, null, ListenExportTyp.LEHRKRAEFTE);
         listenExportDialog.pack();
         listenExportDialog.setVisible(true);
         btnExportieren.setFocusPainted(false);

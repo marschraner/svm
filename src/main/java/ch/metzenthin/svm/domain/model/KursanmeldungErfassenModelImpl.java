@@ -4,16 +4,14 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.FindKursCommand;
-import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
-import ch.metzenthin.svm.domain.commands.SaveOrUpdateKursanmeldungCommand;
+import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.KursanmeldungenTableModel;
 
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 
@@ -158,8 +156,9 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
     }
 
     @Override
-    public Semester getInitSemester(SvmModel svmModel) {
-        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
+    public Semester getInitSemester(List<Semester> semesterList) {
+        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(semesterList);
+        getCommandInvoker().executeCommand(findSemesterForCalendarCommand);
         Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
         Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
         Calendar dayToShowNextSemster = new GregorianCalendar();
@@ -178,7 +177,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
         if (initSemester != null) {
             return initSemester;
         } else {
-            return svmModel.getSemestersAll().get(0);
+            return semesterList.get(0);
         }
     }
 

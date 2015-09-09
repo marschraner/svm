@@ -2,10 +2,7 @@ package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.*;
 
 /**
@@ -76,5 +73,21 @@ public class Angehoeriger extends Person {
         List<Semesterrechnung> semesterrechnungenAsList = new ArrayList<>(semesterrechnungen);
         Collections.sort(semesterrechnungenAsList);
         return semesterrechnungenAsList;
+    }
+
+    @Transient
+    public String getSchuelerRechnungsempfaengerAsStr() {
+        List<Schueler> schuelerRechnungsempfaengerList = new ArrayList<>(schuelerRechnungsempfaenger);
+        // Bei Semesterrechnungen, bei denen der Rechnungsempfänger durch ein Ändern des Rechnungsempfängers des Kinds
+        // seine Schüler verloren hat
+        if (schuelerRechnungsempfaengerList.isEmpty()) {
+            return "-";
+        }
+        Collections.sort(schuelerRechnungsempfaengerList);
+        String schuelerStr = schuelerRechnungsempfaengerList.get(0).getNachname() + " " + schuelerRechnungsempfaengerList.get(0).getVorname();
+        for (int i = 1; i < schuelerRechnungsempfaengerList.size(); i++) {
+            schuelerStr = schuelerStr + ", " + schuelerRechnungsempfaengerList.get(i).getNachname() + " " + schuelerRechnungsempfaengerList.get(i).getVorname();
+        }
+        return schuelerStr;
     }
 }

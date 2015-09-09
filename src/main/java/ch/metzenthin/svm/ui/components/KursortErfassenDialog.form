@@ -69,7 +69,9 @@
                   </grid>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <text value=""/>
+                </properties>
               </component>
               <component id="b7c07" class="javax.swing.JLabel" binding="errLblBezeichnung">
                 <constraints>

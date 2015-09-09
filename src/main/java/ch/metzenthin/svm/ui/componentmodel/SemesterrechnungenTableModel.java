@@ -2,8 +2,10 @@ package ch.metzenthin.svm.ui.componentmodel;
 
 import ch.metzenthin.svm.domain.model.SemesterrechnungenTableData;
 import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.List;
 
 
 public class SemesterrechnungenTableModel extends AbstractTableModel {
@@ -43,5 +45,13 @@ public class SemesterrechnungenTableModel extends AbstractTableModel {
 
     public Semester getSemester() {
         return semesterrechnungenTableData.getSememester();
+    }
+
+    public List<Semesterrechnung> getSemesterrechnungen() {
+        return semesterrechnungenTableData.getSemesterrechnungen();
+    }
+
+    public SemesterrechnungenTableData getSemesterrechnungenTableData() {
+        return semesterrechnungenTableData;
     }
 }

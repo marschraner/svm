@@ -187,6 +187,18 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
     }
 
     @Override
+    public boolean checkIfUpdateAffectsSemesterrechnungen() {
+        return !(semesterOrigin == null || semester.getAnzahlSchulwochen().equals(semesterOrigin.getAnzahlSchulwochen()) || semesterOrigin.getSemesterrechnungen().isEmpty());
+    }
+
+    @Override
+    public void updateAnzWochenSemesterrechnungen() {
+        CommandInvoker commandInvoker = getCommandInvoker();
+        UpdateAnzWochenSemesterrechnungenCommand updateAnzWochenSemesterrechnungenCommand = new UpdateAnzWochenSemesterrechnungenCommand(semesterOrigin.getSemesterrechnungen(), semester.getAnzahlSchulwochen());
+        commandInvoker.executeCommandAsTransaction(updateAnzWochenSemesterrechnungenCommand);
+    }
+
+    @Override
     public void speichern(SvmModel svmModel, SemestersTableModel semestersTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         SaveOrUpdateSemesterCommand saveOrUpdateSemesterCommand = new SaveOrUpdateSemesterCommand(semester, semesterOrigin, svmModel.getSemestersAll());

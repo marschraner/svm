@@ -2,9 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.persistence.entities.*;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Martin Schraner
@@ -25,5 +23,4 @@ public interface SvmModel {
     List<Semester> getSemestersAll();
     List<Maerchen> getMaerchensAll();
     List<Lektionsgebuehren> getLektionsgebuehrenAllList();
-    Map<Integer, BigDecimal[]> getLektionsgebuehrenAllMap();
 }

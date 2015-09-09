@@ -373,7 +373,26 @@ public class SemesterErfassenController extends AbstractController {
                 JOptionPane.showMessageDialog(semesterErfassenDialog, "Semester dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 btnSpeichern.setFocusPainted(false);
             } else {
+                boolean affectsSemesterrechnungen = semesterErfassenModel.checkIfUpdateAffectsSemesterrechnungen();
+                int n = 0;
+                if (affectsSemesterrechnungen) {
+                    Object[] optionsImport = {"Ja", "Nein"};
+                    n = JOptionPane.showOptionDialog(
+                            null,
+                            "Soll die Anzahl Semesterwochen auch bei den Semesterrechnungen geändert werden? \n" +
+                                    "(Semesterrechnungen mit gesetztem Rechnungsdatum werden nicht verändert.)",
+                            "Anzahl Semesterwochen auch bei Semesterrechnungen ändern?",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,     //do not use a custom Icon
+                            optionsImport,  //the titles of buttons
+                            optionsImport[0]); //default button title
+
+                }
                 semesterErfassenModel.speichern(svmContext.getSvmModel(), semestersTableModel);
+                if (affectsSemesterrechnungen && n == 0) {
+                    semesterErfassenModel.updateAnzWochenSemesterrechnungen();
+                }
                 semesterErfassenDialog.dispose();
             }
         }

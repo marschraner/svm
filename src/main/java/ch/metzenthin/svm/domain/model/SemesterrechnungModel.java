@@ -65,4 +65,6 @@ public interface SemesterrechnungModel extends Model {
     void setBemerkungen(String bemerkungen) throws SvmValidationException;
 
     SemesterrechnungCode[] getSelectableSemesterrechnungCodes(SvmModel svmModel);
+    void invalidateRechnungsdatumVorrechnung();
+    void invalidateRechnungsdatumNachrechnung();
 }

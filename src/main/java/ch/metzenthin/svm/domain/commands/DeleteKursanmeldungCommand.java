@@ -1,7 +1,9 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.KursanmeldungDao;
+import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
+import ch.metzenthin.svm.persistence.entities.Semester;
 
 import java.util.List;
 
@@ -23,8 +25,14 @@ public class DeleteKursanmeldungCommand extends GenericDaoCommand {
     public void execute() {
         KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
         Kursanmeldung kursanmeldungToBeDeleted = kursanmeldungen.get(indexKursanmeldungToBeDeleted);
+        Angehoeriger rechnungsempfaenger = kursanmeldungToBeDeleted.getSchueler().getRechnungsempfaenger();
+        Semester semester = kursanmeldungToBeDeleted.getKurs().getSemester();
         kursanmeldungDao.remove(kursanmeldungToBeDeleted);
         kursanmeldungen.remove(indexKursanmeldungToBeDeleted);
+
+        // Semesterrechnung aktualisieren
+        UpdateWochenbetragCommand updateWochenbetragCommand = new UpdateWochenbetragCommand(rechnungsempfaenger, semester);
+        updateWochenbetragCommand.setEntityManager(entityManager);
+        updateWochenbetragCommand.execute();
     }
-    
 }

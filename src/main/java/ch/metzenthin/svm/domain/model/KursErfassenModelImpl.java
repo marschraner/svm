@@ -7,10 +7,7 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CheckKursBereitsErfasstCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateKursCommand;
-import ch.metzenthin.svm.persistence.entities.Kurs;
-import ch.metzenthin.svm.persistence.entities.Kursort;
-import ch.metzenthin.svm.persistence.entities.Kurstyp;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 
 import java.sql.Time;
@@ -346,6 +343,18 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
         CheckKursBereitsErfasstCommand checkKursBereitsErfasstCommand = new CheckKursBereitsErfasstCommand(kurs, kursOrigin, kurseTableModel.getKurse());
         commandInvoker.executeCommand(checkKursBereitsErfasstCommand);
         return checkKursBereitsErfasstCommand.isBereitsErfasst();
+    }
+
+    @Override
+    public boolean checkIfLektionsgebuehrenErfasst(SvmModel svmModel) {
+        List<Lektionsgebuehren> lektionsgebuehrenList = svmModel.getLektionsgebuehrenAllList();
+        int kurslaenge = kurs.getKurslaenge();
+        for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenList) {
+            if (lektionsgebuehren.getLektionslaenge() == kurslaenge) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

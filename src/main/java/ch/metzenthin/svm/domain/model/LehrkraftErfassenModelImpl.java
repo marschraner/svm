@@ -94,7 +94,7 @@ public class LehrkraftErfassenModelImpl extends PersonModelImpl implements Lehrk
 
     @Override
     public void setAhvNummer(String ahvNummer) throws SvmValidationException {
-        ahvNummerModelAttribute.setNewValue(true, ahvNummer, isBulkUpdate());
+        ahvNummerModelAttribute.setNewValue(false, ahvNummer, isBulkUpdate());
     }
 
     private final StringModelAttribute vertretungsmoeglichkeitenModelAttribute = new StringModelAttribute(

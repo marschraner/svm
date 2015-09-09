@@ -1,8 +1,10 @@
 package ch.metzenthin.svm.ui.componentmodel;
 
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenTableData;
+import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.List;
 
 
 public class LektionsgebuehrenTableModel extends AbstractTableModel {
@@ -38,6 +40,10 @@ public class LektionsgebuehrenTableModel extends AbstractTableModel {
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return lektionsgebuehrenTableData.getColumnClass(columnIndex);
+    }
+
+    public List<Lektionsgebuehren> getLektionsgebuehrenList() {
+        return lektionsgebuehrenTableData.getLektionsgebuehrenList();
     }
 
     public LektionsgebuehrenTableData getLektionsgebuehrenTableData() {

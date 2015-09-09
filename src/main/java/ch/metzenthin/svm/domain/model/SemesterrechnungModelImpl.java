@@ -644,6 +644,16 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     }
 
     @Override
+    public void invalidateRechnungsdatumVorrechnung() {
+        rechnungsdatumVorrechnungModelAttribute.initValue("");
+    }
+
+    @Override
+    public void invalidateRechnungsdatumNachrechnung() {
+        rechnungsdatumNachrechnungModelAttribute.initValue("");
+    }
+
+    @Override
     public boolean isCompleted() {
         return true;
     }

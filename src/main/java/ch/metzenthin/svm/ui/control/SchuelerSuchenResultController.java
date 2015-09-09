@@ -115,7 +115,7 @@ public class SchuelerSuchenResultController {
 
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
-        ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, schuelerSuchenTableModel, null, null, ListenExportTyp.SCHUELER);
+        ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, schuelerSuchenTableModel, null, null, null, ListenExportTyp.SCHUELER);
         listenExportDialog.pack();
         listenExportDialog.setVisible(true);
         btnExportieren.setFocusPainted(false);

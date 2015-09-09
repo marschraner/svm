@@ -116,17 +116,10 @@ public class LektionsgebuehrenController {
 
     private void onLoeschen() {
         btnLoeschen.setFocusPainted(true);
-        Object[] options = {"Ja", "Nein"};
-        int n = JOptionPane.showOptionDialog(
-                null,
-                "Wenn der Eintrag gelöscht wird, ist eine automatische Berechnung des Schulgelds für diese Kurslänge nicht mehr möglich.\nSoll der Eintrag aus der Datenbank gelöscht werden?",
-                "Lektionsgebühren löschen",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE,
-                null,     //do not use a custom Icon
-                options,  //the titles of buttons
-                options[1]); //default button title
-        if (n == 0) {
+        if (lektionsgebuehrenModel.checkIfLektionslaengeInVerwendung(lektionsgebuehrenTableModel, lektionsgebuehrenTable.getSelectedRow())) {
+            JOptionPane.showMessageDialog(null, "Die Lektionsgebühren können nicht gelöscht werden,\n" +
+                    "weil Kurse mit dieser Lektionslänge existieren.", "Fehler", JOptionPane.ERROR_MESSAGE);
+        } else {
             lektionsgebuehrenModel.eintragLoeschen(svmContext, lektionsgebuehrenTableModel, lektionsgebuehrenTable.getSelectedRow());
             lektionsgebuehrenTableModel.fireTableDataChanged();
             lektionsgebuehrenTable.addNotify();

@@ -4,6 +4,8 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.DeleteLektionsgebuehrenCommand;
+import ch.metzenthin.svm.domain.commands.FindKurseCommand;
+import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
 
@@ -16,6 +18,19 @@ public class LektionsgebuehrenModelImpl extends AbstractModel implements Lektion
 
     LektionsgebuehrenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
+    }
+
+    @Override
+    public boolean checkIfLektionslaengeInVerwendung(LektionsgebuehrenTableModel lektionsgebuehrenTableModel, int indexLektionsgebuehrenToBeRemoved) {
+        Lektionsgebuehren lektionsgebuehrenToBeRemoved = lektionsgebuehrenTableModel.getLektionsgebuehrenList().get(indexLektionsgebuehrenToBeRemoved);
+        FindKurseCommand findKurseCommand = new FindKurseCommand(null, null, null, null);
+        getCommandInvoker().executeCommand(findKurseCommand);
+        for (Kurs kurs : findKurseCommand.getKurseFound()) {
+            if (kurs.getKurslaenge() == lektionsgebuehrenToBeRemoved.getLektionslaenge()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

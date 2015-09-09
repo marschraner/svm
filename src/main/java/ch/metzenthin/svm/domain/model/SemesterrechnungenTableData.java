@@ -14,15 +14,18 @@ import java.util.List;
 public class SemesterrechnungenTableData {
 
     private List<Semesterrechnung> semesterrechnungen;
+    private Semester semester;
 
-    public SemesterrechnungenTableData(List<Semesterrechnung> semesterrechnungen) {
+    public SemesterrechnungenTableData(List<Semesterrechnung> semesterrechnungen, Semester semester) {
         this.semesterrechnungen = semesterrechnungen;
+        this.semester = semester;
     }
 
-    private static final Field[] COLUMNS = {Field.RECHNUNGSEMPFAENGER, Field.RECHNUNGSDATUM_VORRECHNUNG, Field.ERMAESSIGUNG_VORRECHNUNG,
+    private static final Field[] COLUMNS = {Field.RECHNUNGSEMPFAENGER, Field.SCHUELER, Field.RECHNUNGSDATUM_VORRECHNUNG, Field.ERMAESSIGUNG_VORRECHNUNG,
             Field.ZUSCHLAG_VORRECHNUNG, Field.ANZAHL_WOCHEN_VORRECHNUNG, Field.WOCHENBETRAG_VORRECHNUNG, Field.SCHULGELD_VORRECHNUNG,
             Field.RECHNUNGSDATUM_NACHRECHNUNG, Field.ERMAESSIGUNG_NACHRECHNUNG,
-            Field.ZUSCHLAG_NACHRECHNUNG, Field.ANZAHL_WOCHEN_NACHRECHNUNG, Field.WOCHENBETRAG_NACHRECHNUNG, Field.SCHULGELD_NACHRECHNUNG, Field.DIFFERENZ_SCHULGELD, Field.RESTBETRAG};
+            Field.ZUSCHLAG_NACHRECHNUNG, Field.ANZAHL_WOCHEN_NACHRECHNUNG, Field.WOCHENBETRAG_NACHRECHNUNG, Field.SCHULGELD_NACHRECHNUNG, Field.DIFFERENZ_SCHULGELD,
+            Field.BETRAG_ZAHLUNG_1, Field.BETRAG_ZAHLUNG_2, Field.BETRAG_ZAHLUNG_3, Field.RESTBETRAG};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -38,6 +41,9 @@ public class SemesterrechnungenTableData {
         switch (COLUMNS[columnIndex]) {
             case RECHNUNGSEMPFAENGER:
                 value = semesterrechnung.getRechnungsempfaenger().getNachname() + " " + semesterrechnung.getRechnungsempfaenger().getVorname();
+                break;
+            case SCHUELER:
+                value = semesterrechnung.getRechnungsempfaenger().getSchuelerRechnungsempfaengerAsStr();
                 break;
             case RECHNUNGSDATUM_VORRECHNUNG:
                 value = semesterrechnung.getRechnungsdatumVorrechnung();
@@ -78,6 +84,15 @@ public class SemesterrechnungenTableData {
             case DIFFERENZ_SCHULGELD:
                 value = semesterrechnung.getDifferenzSchulgeld();
                 break;
+            case BETRAG_ZAHLUNG_1:
+                value = semesterrechnung.getBetragZahlung1();
+                break;
+            case BETRAG_ZAHLUNG_2:
+                value = semesterrechnung.getBetragZahlung2();
+                break;
+            case BETRAG_ZAHLUNG_3:
+                value = semesterrechnung.getBetragZahlung3();
+                break;
             case RESTBETRAG:
                 value = semesterrechnung.getRestbetrag();
                 break;
@@ -115,6 +130,12 @@ public class SemesterrechnungenTableData {
                 return BigDecimal.class;
             case DIFFERENZ_SCHULGELD:
                 return BigDecimal.class;
+            case BETRAG_ZAHLUNG_1:
+                return BigDecimal.class;
+            case BETRAG_ZAHLUNG_2:
+                return BigDecimal.class;
+            case BETRAG_ZAHLUNG_3:
+                return BigDecimal.class;
             case RESTBETRAG:
                 return BigDecimal.class;
             default:
@@ -127,11 +148,14 @@ public class SemesterrechnungenTableData {
     }
 
     public Semester getSememester() {
-        if (semesterrechnungen.isEmpty()) {
-            return null;
-        }
-        // Alle Semesterrechnungen in der Liste haben dasselbe Semester
-        return semesterrechnungen.get(0).getSemester();
+        return semester;
     }
 
+    public List<Semesterrechnung> getSemesterrechnungen() {
+        return semesterrechnungen;
+    }
+
+    public void setSemesterrechnungen(List<Semesterrechnung> semesterrechnungen) {
+        this.semesterrechnungen = semesterrechnungen;
+    }
 }

@@ -117,6 +117,7 @@ public class KursortErfassenDialog extends JDialog {
         gbc.ipadx = 300;
         panel1.add(spacer5, gbc);
         txtBezeichnung = new JTextField();
+        txtBezeichnung.setText("");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 2;

@@ -39,6 +39,7 @@ public class SaveOrUpdateKursCommand extends GenericDaoCommand {
         KursDao kursDao = new KursDao(entityManager);
         if (kursOrigin != null) {
             // Update von kursOrigin mit Werten von kurs
+            int kurslaengeOrigin = kursOrigin.getKurslaenge();
             kursOrigin.copyAttributesFrom(kurs);
             kursOrigin.setSemester(semester);
             kursOrigin.setKurstyp(kurstyp);
@@ -51,6 +52,15 @@ public class SaveOrUpdateKursCommand extends GenericDaoCommand {
                 kursOrigin.addLehrkraft(lehrkraft2);
             }
             kursDao.save(kursOrigin);
+            // Semesterrechnungen aktualisieren, falls Kurslänge geändert hat
+            if (kurslaengeOrigin != kurs.getKurslaenge()) {
+                for (Kursanmeldung kursanmeldung : kursOrigin.getKursanmeldungen()) {
+                    Angehoeriger rechnungsempfaenger = kursanmeldung.getSchueler().getRechnungsempfaenger();
+                    UpdateWochenbetragCommand updateWochenbetragCommand = new UpdateWochenbetragCommand(rechnungsempfaenger, semester);
+                    updateWochenbetragCommand.setEntityManager(entityManager);
+                    updateWochenbetragCommand.execute();
+                }
+            }
         } else {
             kurs.setSemester(semester);
             kurs.setKurstyp(kurstyp);

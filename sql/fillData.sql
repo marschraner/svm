@@ -276,8 +276,7 @@ INSERT INTO Code (code_id, discriminator, kuerzel, beschreibung, selektierbar) V
     (2, 'Schueler', 'j', 'Jugendtheater', 1),
     (3, 'Elternmithilfe', 'b', 'Buffet', 1),
     (4, 'Elternmithilfe', 'g', 'Garderobe', 1),
-    (5, 'Semesterrechnung', '1', 'Stipendium', 1),
-    (6, 'Semesterrechnung', '2', 'Handrechnung', 1);
+    (5, 'Semesterrechnung', '1', 'Handrechnung', 1);
 
 SELECT * FROM Code;
 
@@ -316,8 +315,7 @@ SELECT * FROM ElternmithilfeCode;
 -- ********************
 
 INSERT INTO SemesterrechnungCode (code_id) VALUES
-    (5),
-    (6);
+    (5);
 
 SELECT * FROM SemesterrechnungCode;
 
@@ -426,7 +424,7 @@ SELECT * FROM Kurs_Lehrkraft;
 
 INSERT INTO Kursanmeldung (person_id, kurs_id, abmeldung_per_ende_semester, bemerkungen) VALUES
     (7, 13, 0, '2 Wochen später angefangen'),
-    (7, 14, 1, NULL),
+    (7, 14, 0, NULL),
     (7, 18, 0, NULL),
     (8, 7, 0, NULL),
     (8, 8, 0, NULL),
@@ -525,9 +523,7 @@ INSERT INTO Semesterrechnung (
     betrag_zahlung_3,
     code_id,
     bemerkungen) VALUES
-    (2, 1, NULL, 0, '2015-02-15', NULL, NULL, NULL, NULL, 18, 40.00, '2015-04-20', NULL, NULL, NULL, NULL, 18, 40.00, '2015-03-21', 720.00, NULL, NULL, NULL, NULL, NULL, NULL),
-    (3, 1, NULL, 0, '2015-07-30', NULL, NULL, NULL, NULL, 18, 40.00, '2015-09-01', NULL, NULL, NULL, NULL, 18, 40.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-    (2, 17, NULL, 0, '2015-02-15', NULL, NULL, NULL, NULL, 18, 20.00, '2015-04-20', NULL, NULL, NULL, NULL, 18, 20.00, '2015-03-21', 180.00, '2015-04-08', 180.00, NULL, NULL, NULL, NULL),
-    (3, 19, NULL, 0, '2015-07-30', 20.00, 'Gutschrift vom letzten Semester', NULL, NULL, 18, 20.00, '2015-09-01', 20.00, 'Gutschrift vom letzten Semester', NULL, NULL, 18, 25.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    (2, 1, NULL, 0, '2015-02-15', 0.00, NULL, 0.00, NULL, 18, 40.00, '2015-04-20', 0.00, NULL, 0.00, NULL, 18, 40.00, '2015-03-21', 720.00, NULL, NULL, NULL, NULL, NULL, NULL),
+    (2, 17, NULL, 0, '2015-03-14', 0.00, NULL, 0.00, NULL, 18, 22.00, '2015-03-21', 0.00, NULL, 0.00, NULL, 18, 22.00, '2015-04-02', 300.00, NULL, NULL, NULL, NULL, NULL, NULL);
 
 SELECT * FROM Semesterrechnung;

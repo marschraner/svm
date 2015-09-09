@@ -4,7 +4,7 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.FindOrCreateSemesterrechnungenCommand;
+import ch.metzenthin.svm.domain.commands.CreateAndFindSemesterrechnungenCommand;
 import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.persistence.entities.Semester;
 
@@ -21,14 +21,17 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private String nachname;
     private String vorname;
     private RolleSelected rolle;
+    private SemesterrechnungCodeJaNeinSelected semesterrechnungCodeJaNeinSelected;
+    private StipendiumJaNeinSelected stipendiumJaNeinSelected;
+    private RechnungsdatumGesetztVorrechnungSelected rechnungsdatumGesetztVorrechnungSelected;
     private PraezisierungRechnungsdatumVorrechnungSelected praezisierungRechnungsdatumVorrechnungSelected;
     private PraezisierungErmaessigungVorrechnungSelected praezisierungErmaessigungVorrechnungSelected;
     private PraezisierungZuschlagVorrechnungSelected praezisierungZuschlagVorrechnungSelected;
     private PraezisierungWochenbetragVorrechnungSelected praezisierungWochenbetragVorrechnungSelected;
     private PraezisierungSchulgeldVorrechnungSelected praezisierungSchulgeldVorrechnungSelected;
     private BigDecimal schulgeldVorrechnung;
-    private SechsJahresRabattVorrechnungSelected sechsJahresRabattVorrechnungSelected;
-    private VollstaendigkeitVorrechnungSelected vollstaendigkeitVorrechnungSelected;
+    private SechsJahresRabattJaNeinVorrechnungSelected sechsJahresRabattJaNeinVorrechnungSelected;
+    private RechnungsdatumGesetztNachrechnungSelected rechnungsdatumGesetztNachrechnungSelected;
     private PraezisierungRechnungsdatumNachrechnungSelected praezisierungRechnungsdatumNachrechnungSelected;
     private PraezisierungErmaessigungNachrechnungSelected praezisierungErmaessigungNachrechnungSelected;
     private PraezisierungZuschlagNachrechnungSelected praezisierungZuschlagNachrechnungSelected;
@@ -36,8 +39,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private PraezisierungWochenbetragNachrechnungSelected praezisierungWochenbetragNachrechnungSelected;
     private PraezisierungSchulgeldNachrechnungSelected praezisierungSchulgeldNachrechnungSelected;
     private BigDecimal schulgeldNachrechnung;
-    private SechsJahresRabattNachrechnungSelected sechsJahresRabattNachrechnungSelected;
-    private VollstaendigkeitNachrechnungSelected vollstaendigkeitNachrechnungSelected;
+    private SechsJahresRabattJaNeinNachrechnungSelected sechsJahresRabattJaNeinNachrechnungSelected;
     private PraezisierungDifferenzSchulgeldSelected praezisierungDifferenzSchulgeldSelected;
     private BigDecimal differenzSchulgeld;
     private PraezisierungRestbetragSelected praezisierungRestbetragSelected;
@@ -61,7 +63,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
 
     private final StringModelAttribute nachnameModelAttribute = new StringModelAttribute(
             this,
-            Field.NACHNAME, 2, 50,
+            Field.NACHNAME, 1, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -87,7 +89,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
 
     private final StringModelAttribute vornameModelAttribute = new StringModelAttribute(
             this,
-            Field.VORNAME, 2, 50,
+            Field.VORNAME, 1, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -121,6 +123,37 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         RolleSelected oldValue = this.rolle;
         this.rolle = rolle;
         firePropertyChange(Field.ROLLE, oldValue, this.rolle);
+    }
+
+    @Override
+    public SemesterrechnungCodeJaNeinSelected getSemesterrechnungCodeJaNeinSelected() {
+        return semesterrechnungCodeJaNeinSelected;
+    }
+
+    @Override
+    public void setSemesterrechnungCodeJaNeinSelected(SemesterrechnungCodeJaNeinSelected semesterrechnungCodeJaNeinSelected) {
+        SemesterrechnungCodeJaNeinSelected oldValue = this.semesterrechnungCodeJaNeinSelected;
+        this.semesterrechnungCodeJaNeinSelected = semesterrechnungCodeJaNeinSelected;
+        firePropertyChange(Field.SEMESTERRECHNUNG_CODE_JA_NEIN, oldValue, this.semesterrechnungCodeJaNeinSelected);
+    }
+
+    @Override
+    public StipendiumJaNeinSelected getStipendiumJaNeinSelected() {
+        return stipendiumJaNeinSelected;
+    }
+
+    @Override
+    public void setStipendiumJaNeinSelected(StipendiumJaNeinSelected stipendiumJaNeinSelected) {
+        StipendiumJaNeinSelected oldValue = this.stipendiumJaNeinSelected;
+        this.stipendiumJaNeinSelected = stipendiumJaNeinSelected;
+        firePropertyChange(Field.STIPENDIUM_JA_NEIN, oldValue, this.stipendiumJaNeinSelected);
+    }
+
+    @Override
+    public void setRechnungsdatumGesetztVorrechnungSelected(RechnungsdatumGesetztVorrechnungSelected rechnungsdatumGesetztVorrechnungSelected) {
+        RechnungsdatumGesetztVorrechnungSelected oldValue = this.rechnungsdatumGesetztVorrechnungSelected;
+        this.rechnungsdatumGesetztVorrechnungSelected = rechnungsdatumGesetztVorrechnungSelected;
+        firePropertyChange(Field.RECHNUNGSDATUM_GESETZT_VORRECHNUNG, oldValue, this.rechnungsdatumGesetztVorrechnungSelected);
     }
 
     @Override
@@ -210,27 +243,27 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     }
 
     @Override
-    public SechsJahresRabattVorrechnungSelected getSechsJahresRabattVorrechnungSelected() {
-        return sechsJahresRabattVorrechnungSelected;
+    public SechsJahresRabattJaNeinVorrechnungSelected getSechsJahresRabattJaNeinVorrechnungSelected() {
+        return sechsJahresRabattJaNeinVorrechnungSelected;
     }
 
     @Override
-    public void setSechsJahresRabattVorrechnungSelected(SechsJahresRabattVorrechnungSelected sechsJahresRabattVorrechnungSelected) {
-        SechsJahresRabattVorrechnungSelected oldValue = this.sechsJahresRabattVorrechnungSelected;
-        this.sechsJahresRabattVorrechnungSelected = sechsJahresRabattVorrechnungSelected;
-        firePropertyChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, oldValue, this.sechsJahresRabattVorrechnungSelected);
+    public void setSechsJahresRabattJaNeinVorrechnungSelected(SechsJahresRabattJaNeinVorrechnungSelected sechsJahresRabattJaNeinVorrechnungSelected) {
+        SechsJahresRabattJaNeinVorrechnungSelected oldValue = this.sechsJahresRabattJaNeinVorrechnungSelected;
+        this.sechsJahresRabattJaNeinVorrechnungSelected = sechsJahresRabattJaNeinVorrechnungSelected;
+        firePropertyChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, oldValue, this.sechsJahresRabattJaNeinVorrechnungSelected);
     }
 
     @Override
-    public VollstaendigkeitVorrechnungSelected getVollstaendigkeitVorrechnungSelected() {
-        return vollstaendigkeitVorrechnungSelected;
+    public RechnungsdatumGesetztVorrechnungSelected getRechnungsdatumGesetztVorrechnungSelected() {
+        return rechnungsdatumGesetztVorrechnungSelected;
     }
 
     @Override
-    public void setVollstaendigkeitVorrechnungSelected(VollstaendigkeitVorrechnungSelected vollstaendigkeitVorrechnungSelected) {
-        VollstaendigkeitVorrechnungSelected oldValue = this.vollstaendigkeitVorrechnungSelected;
-        this.vollstaendigkeitVorrechnungSelected = vollstaendigkeitVorrechnungSelected;
-        firePropertyChange(Field.VOLLSTAENDIGKEIT_VORRECHNUNG, oldValue, this.vollstaendigkeitVorrechnungSelected);
+    public void setRechnungsdatumGesetztNachrechnungSelected(RechnungsdatumGesetztNachrechnungSelected rechnungsdatumGesetztNachrechnungSelected) {
+        RechnungsdatumGesetztNachrechnungSelected oldValue = this.rechnungsdatumGesetztNachrechnungSelected;
+        this.rechnungsdatumGesetztNachrechnungSelected = rechnungsdatumGesetztNachrechnungSelected;
+        firePropertyChange(Field.RECHNUNGSDATUM_GESETZT_NACHRECHNUNG, oldValue, this.rechnungsdatumGesetztNachrechnungSelected);
     }
 
     @Override
@@ -332,27 +365,20 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     }
 
     @Override
-    public SechsJahresRabattNachrechnungSelected getSechsJahresRabattNachrechnungSelected() {
-        return sechsJahresRabattNachrechnungSelected;
+    public SechsJahresRabattJaNeinNachrechnungSelected getSechsJahresRabattJaNeinNachrechnungSelected() {
+        return sechsJahresRabattJaNeinNachrechnungSelected;
     }
 
     @Override
-    public void setSechsJahresRabattNachrechnungSelected(SechsJahresRabattNachrechnungSelected sechsJahresRabattNachrechnungSelected) {
-        SechsJahresRabattNachrechnungSelected oldValue = this.sechsJahresRabattNachrechnungSelected;
-        this.sechsJahresRabattNachrechnungSelected = sechsJahresRabattNachrechnungSelected;
-        firePropertyChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, oldValue, this.sechsJahresRabattNachrechnungSelected);
+    public void setSechsJahresRabattJaNeinNachrechnungSelected(SechsJahresRabattJaNeinNachrechnungSelected sechsJahresRabattJaNeinNachrechnungSelected) {
+        SechsJahresRabattJaNeinNachrechnungSelected oldValue = this.sechsJahresRabattJaNeinNachrechnungSelected;
+        this.sechsJahresRabattJaNeinNachrechnungSelected = sechsJahresRabattJaNeinNachrechnungSelected;
+        firePropertyChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, oldValue, this.sechsJahresRabattJaNeinNachrechnungSelected);
     }
 
     @Override
-    public VollstaendigkeitNachrechnungSelected getVollstaendigkeitNachrechnungSelected() {
-        return vollstaendigkeitNachrechnungSelected;
-    }
-
-    @Override
-    public void setVollstaendigkeitNachrechnungSelected(VollstaendigkeitNachrechnungSelected vollstaendigkeitNachrechnungSelected) {
-        VollstaendigkeitNachrechnungSelected oldValue = this.vollstaendigkeitNachrechnungSelected;
-        this.vollstaendigkeitNachrechnungSelected = vollstaendigkeitNachrechnungSelected;
-        firePropertyChange(Field.VOLLSTAENDIGKEIT_NACHRECHNUNG, oldValue, this.vollstaendigkeitNachrechnungSelected);
+    public RechnungsdatumGesetztNachrechnungSelected getRechnungsdatumGesetztNachrechnungSelected() {
+        return rechnungsdatumGesetztNachrechnungSelected;
     }
 
     @Override
@@ -453,7 +479,9 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     public boolean isSuchkriterienSelected() {
         return checkNotEmpty(nachname)
                 || checkNotEmpty(vorname)
+                || (semesterrechnungCodeJaNeinSelected != null && semesterrechnungCodeJaNeinSelected != SemesterrechnungCodeJaNeinSelected.ALLE)
                 || (getSemesterrechnungCode() != null && getSemesterrechnungCode() != SEMESTERRECHNUNG_CODE_ALLE)
+                || (stipendiumJaNeinSelected != null && stipendiumJaNeinSelected != StipendiumJaNeinSelected.ALLE)
                 || (getStipendium() != null && getStipendium() != Stipendium.KEINES)
                 || isGratiskinder()
                 || getRechnungsdatumVorrechnung() != null
@@ -461,16 +489,16 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
                 || getZuschlagVorrechnung() != null
                 || getWochenbetragVorrechnung() != null
                 || schulgeldVorrechnung != null
-                || (sechsJahresRabattVorrechnungSelected != null && sechsJahresRabattVorrechnungSelected != SechsJahresRabattVorrechnungSelected.ALLE)
-                || (vollstaendigkeitVorrechnungSelected != null && vollstaendigkeitVorrechnungSelected != VollstaendigkeitVorrechnungSelected.ALLE)
+                || (sechsJahresRabattJaNeinVorrechnungSelected != null && sechsJahresRabattJaNeinVorrechnungSelected != SechsJahresRabattJaNeinVorrechnungSelected.ALLE)
+                || (rechnungsdatumGesetztVorrechnungSelected != null && rechnungsdatumGesetztVorrechnungSelected != RechnungsdatumGesetztVorrechnungSelected.ALLE)
                 || getRechnungsdatumNachrechnung() != null
                 || getErmaessigungNachrechnung() != null
                 || getZuschlagNachrechnung() != null
                 || getAnzahlWochenNachrechnung() != null
                 || getWochenbetragNachrechnung() != null
                 || schulgeldNachrechnung != null
-                || (sechsJahresRabattNachrechnungSelected != null && sechsJahresRabattNachrechnungSelected != SechsJahresRabattNachrechnungSelected.ALLE)
-                || (vollstaendigkeitNachrechnungSelected != null && vollstaendigkeitNachrechnungSelected != VollstaendigkeitNachrechnungSelected.ALLE)
+                || (sechsJahresRabattJaNeinNachrechnungSelected != null && sechsJahresRabattJaNeinNachrechnungSelected != SechsJahresRabattJaNeinNachrechnungSelected.ALLE)
+                || (rechnungsdatumGesetztNachrechnungSelected != null && rechnungsdatumGesetztNachrechnungSelected != RechnungsdatumGesetztNachrechnungSelected.ALLE)
                 || differenzSchulgeld != null
                 || restbetrag != null;
     }
@@ -478,8 +506,8 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     @Override
     public SemesterrechnungenTableData suchen() {
         CommandInvoker commandInvoker = getCommandInvoker();
-        FindOrCreateSemesterrechnungenCommand findOrCreateSemesterrechnungenCommand = new FindOrCreateSemesterrechnungenCommand(this);
-        commandInvoker.executeCommandAsTransaction(findOrCreateSemesterrechnungenCommand);
-        return new SemesterrechnungenTableData(findOrCreateSemesterrechnungenCommand.getFoundOrCreatedSemesterrechnungen());
+        CreateAndFindSemesterrechnungenCommand createAndFindSemesterrechnungenCommand = new CreateAndFindSemesterrechnungenCommand(this);
+        commandInvoker.executeCommandAsTransaction(createAndFindSemesterrechnungenCommand);
+        return new SemesterrechnungenTableData(createAndFindSemesterrechnungenCommand.getSemesterrechnungenFound(), semester);
     }
 }

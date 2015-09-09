@@ -54,8 +54,8 @@ public class SaveOrUpdateSemesterrechnungCommand extends GenericDaoCommand {
             semesterrechnung.setSemester(semesterReloaded);
             Semesterrechnung semesterrechnungSaved = semesterrechnungDao.save(semesterrechnung);
             bereitsErfassteSemesterrechnungen.add(semesterrechnungSaved);
+            Collections.sort(bereitsErfassteSemesterrechnungen);
         }
-        Collections.sort(bereitsErfassteSemesterrechnungen);
     }
 
 }

@@ -61,12 +61,16 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuBar.add(menuDatei);
 
         JMenu menuSchueler = new JMenu("Schüler");
-        menuSchueler.setMnemonic(KeyEvent.VK_H);
+        menuSchueler.setMnemonic(KeyEvent.VK_C);
         menuBar.add(menuSchueler);
 
         JMenu menuLehrkraefte = new JMenu("Lehrkräfte");
         menuLehrkraefte.setMnemonic(KeyEvent.VK_L);
         menuBar.add(menuLehrkraefte);
+
+        JMenu menuSemester = new JMenu("Semester");
+        menuSemester.setMnemonic(KeyEvent.VK_E);
+        menuBar.add(menuSemester);
 
         JMenu menuKurse = new JMenu("Kurse");
         menuKurse.setMnemonic(KeyEvent.VK_K);
@@ -76,14 +80,18 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuMaerchen.setMnemonic(KeyEvent.VK_M);
         menuBar.add(menuMaerchen);
 
+        JMenu menuLektionsgebuehren = new JMenu("Lektionsgebühren");
+        menuLektionsgebuehren.setMnemonic(KeyEvent.VK_B);
+        menuBar.add(menuLektionsgebuehren);
+
         JMenu menuSemesterrechnungen = new JMenu("Rechnungen");
         menuSemesterrechnungen.setMnemonic(KeyEvent.VK_R);
         menuBar.add(menuSemesterrechnungen);
 
         // Set up the first menu item.
         JMenuItem menuItem = new JMenuItem("Schüler suchen / bearbeiten");
-        menuItem.setMnemonic(KeyEvent.VK_S);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_MASK));
+        menuItem.setMnemonic(KeyEvent.VK_C);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK));
         menuItem.setActionCommand("schuelerSuchen");
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
@@ -103,8 +111,8 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuSchueler.add(menuItem);
 
         menuItem = new JMenuItem("Schüler-Codes verwalten");
-        menuItem.setMnemonic(KeyEvent.VK_C);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK));
+        menuItem.setMnemonic(KeyEvent.VK_O);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.ALT_MASK));
         menuItem.setActionCommand("schuelerCodesVerwalten");
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
@@ -115,6 +123,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.setActionCommand("lehrkraefteVerwalten");
         menuItem.addActionListener(this);
         menuLehrkraefte.add(menuItem);
+
+        menuItem = new JMenuItem("Semester verwalten");
+        menuItem.setMnemonic(KeyEvent.VK_E);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("semesterVerwalten");
+        menuItem.addActionListener(this);
+        menuSemester.add(menuItem);
 
         menuItem = new JMenuItem("Kurse verwalten");
         menuItem.setMnemonic(KeyEvent.VK_K);
@@ -137,13 +152,6 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.addActionListener(this);
         menuKurse.add(menuItem);
 
-        menuItem = new JMenuItem("Semester verwalten");
-        menuItem.setMnemonic(KeyEvent.VK_S);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_MASK));
-        menuItem.setActionCommand("semesterVerwalten");
-        menuItem.addActionListener(this);
-        menuKurse.add(menuItem);
-
         menuItem = new JMenuItem("Märchen verwalten");
         menuItem.setMnemonic(KeyEvent.VK_M);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_MASK));
@@ -159,8 +167,8 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuMaerchen.add(menuItem);
 
         menuItem = new JMenuItem("Semesterrechnungen suchen / bearbeiten");
-        menuItem.setMnemonic(KeyEvent.VK_S);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_MASK));
+        menuItem.setMnemonic(KeyEvent.VK_R);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK));
         menuItem.setActionCommand("semesterrechnungenSuchen");
         menuItem.addActionListener(this);
         menuSemesterrechnungen.add(menuItem);
@@ -173,11 +181,11 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuSemesterrechnungen.add(menuItem);
 
         menuItem = new JMenuItem("Lektionsgebühren verwalten");
-        menuItem.setMnemonic(KeyEvent.VK_L);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.ALT_MASK));
+        menuItem.setMnemonic(KeyEvent.VK_B);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.ALT_MASK));
         menuItem.setActionCommand("lektionsgebuehrenVerwalten");
         menuItem.addActionListener(this);
-        menuSemesterrechnungen.add(menuItem);
+        menuLektionsgebuehren.add(menuItem);
 
         // Set up the second menu item.
         menuItem = new JMenuItem("Beenden");

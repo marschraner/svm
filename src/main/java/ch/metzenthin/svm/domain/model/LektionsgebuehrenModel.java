@@ -8,6 +8,7 @@ import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
  */
 public interface LektionsgebuehrenModel extends Model {
 
+    boolean checkIfLektionslaengeInVerwendung(LektionsgebuehrenTableModel lektionsgebuehrenTableModel, int indexLektionsgebuehrenToBeRemoved);
     void eintragLoeschen(SvmContext svmContext, LektionsgebuehrenTableModel lektionsgebuehrenTableModel, int indexLektionsgebuehrenToBeRemoved);
     LektionsgebuehrenErfassenModel getLektionsgebuehrenErfassenModel(SvmContext svmContext, int indexBearbeiten);
 }

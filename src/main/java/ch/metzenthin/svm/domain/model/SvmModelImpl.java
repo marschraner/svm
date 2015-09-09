@@ -3,10 +3,8 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Martin Schraner
@@ -146,12 +144,5 @@ public class SvmModelImpl implements SvmModel {
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
         commandInvoker.executeCommand(findAllLektionsgebuehrenCommand);
         return findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllList();
-    }
-
-    @Override
-    public Map<Integer, BigDecimal[]> getLektionsgebuehrenAllMap() {
-        FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        commandInvoker.executeCommand(findAllLektionsgebuehrenCommand);
-        return findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllMap();
     }
 }

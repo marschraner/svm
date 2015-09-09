@@ -38,6 +38,7 @@ public class KurseSemesterwahlModelImpl extends AbstractModel implements KurseSe
     @Override
     public Semester getInitSemester(SvmModel svmModel) {
         FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
+        getCommandInvoker().executeCommand(findSemesterForCalendarCommand);
         Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
         Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
         Calendar dayToShowNextSemester = new GregorianCalendar();

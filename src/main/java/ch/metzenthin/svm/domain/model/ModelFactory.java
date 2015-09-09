@@ -37,4 +37,6 @@ public interface ModelFactory {
     LektionsgebuehrenModel createLektionsgebuehrenModel();
     LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel();
     SemesterrechnungenSuchenModel createSemesterrechnungenSuchenModel();
+    SemesterrechnungenModel createSemesterrechnungenModel();
+    RechnungsdatumErfassenModel createRechnungsdatumErfassenModel();
 }

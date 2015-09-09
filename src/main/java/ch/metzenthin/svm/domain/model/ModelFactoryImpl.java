@@ -178,4 +178,14 @@ public class ModelFactoryImpl implements ModelFactory {
         return new SemesterrechnungenSuchenModelImpl(commandInvoker);
     }
 
+    @Override
+    public SemesterrechnungenModel createSemesterrechnungenModel() {
+        return new SemesterrechnungenModelImpl(commandInvoker);
+    }
+
+    @Override
+    public RechnungsdatumErfassenModel createRechnungsdatumErfassenModel() {
+        return new RechnungsdatumErfassenModelImpl(commandInvoker);
+    }
+
 }

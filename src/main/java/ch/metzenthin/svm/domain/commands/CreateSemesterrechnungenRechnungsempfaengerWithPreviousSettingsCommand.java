@@ -1,11 +1,15 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
+import ch.metzenthin.svm.persistence.daos.SemesterDao;
+import ch.metzenthin.svm.persistence.daos.SemesterrechnungDao;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Martin Schraner
@@ -14,40 +18,83 @@ public class CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsComm
 
     // input
     private List<Angehoeriger> rechnungsempfaengers;
-    private Semester semester;
+    private Semester currentSemester;
 
-    // output
-    private List<Semesterrechnung> semesterrechnungenCreated = new ArrayList<>();
-
-    public CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand(List<Angehoeriger> rechnungsempfaengers, Semester semester) {
+    public CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand(List<Angehoeriger> rechnungsempfaengers, Semester currentSemester) {
         this.rechnungsempfaengers = rechnungsempfaengers;
-        this.semester = semester;
+        this.currentSemester = currentSemester;
     }
 
     @Override
     public void execute() {
 
+        // 1. Vorhergehendes Semester
+        FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
+        findPreviousSemesterCommand.setEntityManager(entityManager);
+        findPreviousSemesterCommand.execute();
+        Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
+
+        // 2. Lektionsgebühren
+        FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
+        findAllLektionsgebuehrenCommand.setEntityManager(entityManager);
+        findAllLektionsgebuehrenCommand.execute();
+        Map<Integer, BigDecimal[]> lektionsgebuehrenMap = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllMap();
+
+        SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
+        SemesterDao semesterDao = new SemesterDao(entityManager);
+        // Reload zur Verhinderung von Lazy Loading-Problem
+        Semester currentSemesterReloaded = semesterDao.findById(currentSemester.getSemesterId());
+
         for (Angehoeriger rechnungsempfaenger : rechnungsempfaengers) {
+
+            // 3. Neue Semesterrechnung erzeugen
             Semesterrechnung semesterrechnung = new Semesterrechnung();
-            semesterrechnung.setSemester(semester);
+            semesterrechnung.setSemester(currentSemesterReloaded);
             semesterrechnung.setRechnungsempfaenger(rechnungsempfaenger);
-            semesterrechnung.setAnzahlWochenVorrechnung(semester.getAnzahlSchulwochen());
             semesterrechnung.setGratiskinder(false);
 
+            // 4. SemesterrechnungCode, Stipendium und Gratiskind von früher
             if (!rechnungsempfaenger.getSemesterrechnungen().isEmpty()) {
                 Semesterrechnung previousSemesterrechnung = rechnungsempfaenger.getSemesterrechnungenAsList().get(0);
-                semesterrechnung.setSemesterrechnungCode(previousSemesterrechnung.getSemesterrechnungCode());
                 semesterrechnung.setStipendium(previousSemesterrechnung.getStipendium());
                 semesterrechnung.setGratiskinder(previousSemesterrechnung.getGratiskinder());
+                semesterrechnung.setSemesterrechnungCode(previousSemesterrechnung.getSemesterrechnungCode());
             }
 
-            SaveOrUpdateSemesterrechnungCommand saveOrUpdateSemesterrechnungCommand = new SaveOrUpdateSemesterrechnungCommand(semesterrechnung, null, null, semesterrechnungenCreated);
-            saveOrUpdateSemesterrechnungCommand.setEntityManager(entityManager);
-            saveOrUpdateSemesterrechnungCommand.execute();
+            // 5.a Berechnung des Wochenbetrags Vorrechnung
+            CalculateWochenbetragCommand calculateWochenbetragCommand;
+            semesterrechnung.setAnzahlWochenVorrechnung(currentSemester.getAnzahlSchulwochen());
+            if (previousSemester != null) {
+                calculateWochenbetragCommand = new CalculateWochenbetragCommand(semesterrechnung, previousSemester, Rechnungstyp.VORRECHNUNG, lektionsgebuehrenMap);
+                calculateWochenbetragCommand.execute();
+                if (calculateWochenbetragCommand.getResult() == CalculateWochenbetragCommand.Result.WOCHENBETRAG_ERFOLGREICH_BERECHNET) {
+                    semesterrechnung.setWochenbetragVorrechnung(calculateWochenbetragCommand.getWochenbetrag());
+                } else {   // sollte nie eintreten
+                    semesterrechnung.setWochenbetragVorrechnung(new BigDecimal("-99999.99"));
+                }
+            } else {
+                semesterrechnung.setWochenbetragVorrechnung(BigDecimal.ZERO);
+            }
+
+            // 5.b Berechnung des Wochenbetrags Nachrechnung
+            semesterrechnung.setAnzahlWochenNachrechnung(currentSemester.getAnzahlSchulwochen());
+            calculateWochenbetragCommand = new CalculateWochenbetragCommand(semesterrechnung, currentSemester, Rechnungstyp.NACHRECHNUNG, lektionsgebuehrenMap);
+            calculateWochenbetragCommand.execute();
+            if (calculateWochenbetragCommand.getResult() == CalculateWochenbetragCommand.Result.WOCHENBETRAG_ERFOLGREICH_BERECHNET) {
+                semesterrechnung.setWochenbetragNachrechnung(calculateWochenbetragCommand.getWochenbetrag());
+            } else {   // sollte nie eintreten
+                semesterrechnung.setWochenbetragVorrechnung(new BigDecimal("-99999.99"));
+            }
+
+            // 5. Ermässigung und Zuschlag
+            semesterrechnung.setErmaessigungVorrechnung(BigDecimal.ZERO);
+            semesterrechnung.setZuschlagVorrechnung(BigDecimal.ZERO);
+            semesterrechnung.setErmaessigungNachrechnung(BigDecimal.ZERO);
+            semesterrechnung.setZuschlagNachrechnung(BigDecimal.ZERO);
+
+            // 6. Speichern
+            semesterrechnungDao.save(semesterrechnung);
         }
     }
 
-    public List<Semesterrechnung> getSemesterrechnungenCreated() {
-        return semesterrechnungenCreated;
-    }
 }

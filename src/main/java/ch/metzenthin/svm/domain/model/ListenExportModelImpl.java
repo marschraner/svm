@@ -3,17 +3,16 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Elternteil;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Listentyp;
+import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
-import ch.metzenthin.svm.persistence.entities.Kurs;
-import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
-import ch.metzenthin.svm.persistence.entities.Person;
-import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 
 import java.io.File;
 import java.util.*;
@@ -99,7 +98,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
     }
 
     @Override
-    public CreateListeCommand.Result createListenFile(File outputFile, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel) {
+    public CreateListeCommand.Result createListenFile(File outputFile, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         CreateListeCommand.Result result = null;
         switch (listentyp) {
@@ -184,9 +183,29 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 result = createAdressenCsvFileCommandLehrkraefte.getResult();
                 break;
             case KURSLISTE:
-                CreateKurselisteCommand kurselisteCommand = new CreateKurselisteCommand(kurseTableModel, titel, outputFile);
-                commandInvoker.executeCommand(kurselisteCommand);
-                result = kurselisteCommand.getResult();
+                CreateKurslisteCommand createKurslisteCommand = new CreateKurslisteCommand(kurseTableModel, titel, outputFile);
+                commandInvoker.executeCommand(createKurslisteCommand);
+                result = createKurslisteCommand.getResult();
+                break;
+            case VORRECHNUNGEN_SERIENBRIEF:
+                CreateRechnungenSerienbriefCsvFileCommand createVorrechnungenSerienbriefCsvFileCommand = new CreateRechnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), Rechnungstyp.VORRECHNUNG, outputFile);
+                commandInvoker.executeCommand(createVorrechnungenSerienbriefCsvFileCommand);
+                result = createVorrechnungenSerienbriefCsvFileCommand.getResult();
+                break;
+            case NACHRECHNUNGEN_SERIENBRIEF:
+                CreateRechnungenSerienbriefCsvFileCommand createNachrechnungenSerienbriefCsvFileCommand = new CreateRechnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), Rechnungstyp.NACHRECHNUNG, outputFile);
+                commandInvoker.executeCommand(createNachrechnungenSerienbriefCsvFileCommand);
+                result = createNachrechnungenSerienbriefCsvFileCommand.getResult();
+                break;
+            case MAHNUNGEN_SERIENBRIEF:
+                CreateMahnungenSerienbriefCsvFileCommand createMahnungenSerienbriefCsvFileCommand = new CreateMahnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), outputFile);
+                commandInvoker.executeCommand(createMahnungenSerienbriefCsvFileCommand);
+                result = createMahnungenSerienbriefCsvFileCommand.getResult();
+                break;
+            case RECHNUNGSLISTE:
+                CreateRechnungslisteCsvFileCommand createRechnungslisteCsvFileCommand = new CreateRechnungslisteCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), outputFile);
+                commandInvoker.executeCommand(createRechnungslisteCsvFileCommand);
+                result = createRechnungslisteCsvFileCommand.getResult();
                 break;
         }
         return result;
@@ -237,6 +256,14 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
             case KURSLISTE:
                 titleInit = "Kurse";
                 break;
+            case VORRECHNUNGEN_SERIENBRIEF:
+                break;
+            case NACHRECHNUNGEN_SERIENBRIEF:
+                break;
+            case MAHNUNGEN_SERIENBRIEF:
+                break;
+            case RECHNUNGSLISTE:
+                break;
         }
         return titleInit;
     }
@@ -266,6 +293,27 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
     private String getTitleMaerchen(SchuelerSuchenTableModel schuelerSuchenTableModel) {
         return schuelerSuchenTableModel.getMaerchen().getBezeichnung();
     }
+
+    @Override
+    public boolean checkIfRechnungsdatumVorrechnungUeberallGesetzt(SemesterrechnungenTableModel semesterrechnungenTableModel) {
+        for (Semesterrechnung semesterrechnung : semesterrechnungenTableModel.getSemesterrechnungen()) {
+            if (semesterrechnung.getRechnungsdatumVorrechnung() == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkIfRechnungsdatumNachrechnungUeberallGesetzt(SemesterrechnungenTableModel semesterrechnungenTableModel) {
+        for (Semesterrechnung semesterrechnung : semesterrechnungenTableModel.getSemesterrechnungen()) {
+            if (semesterrechnung.getRechnungsdatumNachrechnung() == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     @Override
     public boolean isCompleted() {

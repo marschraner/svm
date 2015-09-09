@@ -6,6 +6,7 @@ import ch.metzenthin.svm.common.dataTypes.Listentyp;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 import ch.metzenthin.svm.ui.control.ListenExportController;
 
 import javax.swing.*;
@@ -25,17 +26,17 @@ public class ListenExportDialog extends JDialog {
     private JButton btnOk;
     private JButton btnAbbrechen;
 
-    public ListenExportDialog(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel, ListenExportTyp listenExportTyp) {
+    public ListenExportDialog(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel, ListenExportTyp listenExportTyp) {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
         setTitle("Als Liste exportieren");
         initializeErrLbls();
-        createListenExportController(svmContext, schuelerSuchenTableModel, lehrkraefteTableModel, kurseTableModel, listenExportTyp);
+        createListenExportController(svmContext, schuelerSuchenTableModel, lehrkraefteTableModel, kurseTableModel, semesterrechnungenTableModel, listenExportTyp);
     }
 
-    private void createListenExportController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel, ListenExportTyp listenExportTyp) {
-        ListenExportController listenExportController = new ListenExportController(svmContext.getModelFactory().createListenExportModel(), schuelerSuchenTableModel, lehrkraefteTableModel, kurseTableModel, listenExportTyp);
+    private void createListenExportController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel, ListenExportTyp listenExportTyp) {
+        ListenExportController listenExportController = new ListenExportController(svmContext.getModelFactory().createListenExportModel(), schuelerSuchenTableModel, lehrkraefteTableModel, kurseTableModel, semesterrechnungenTableModel, listenExportTyp);
         listenExportController.setListenExportDialog(this);
         listenExportController.setContentPane(contentPane);
         listenExportController.setComboBoxListentyp(comboBoxListentyp);

@@ -631,10 +631,16 @@ public class KursErfassenController extends AbstractController {
         if (kursErfassenModel.checkKursBereitsErfasst(kurseTableModel)) {
             JOptionPane.showMessageDialog(kursErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
-        } else {
-            kursErfassenModel.speichern(svmContext.getSvmModel(), kurseSemesterwahlModel, kurseTableModel);
-            kursErfassenDialog.dispose();
+            return;
         }
+        if (!kursErfassenModel.checkIfLektionsgebuehrenErfasst(svmContext.getSvmModel())) {
+            JOptionPane.showMessageDialog(kursErfassenDialog, "Der Kurs kann nicht gespeichert werden, weil für die \n" +
+                    "Kurslänge noch keine Lektionsgebühren erfasst sind.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            btnSpeichern.setFocusPainted(false);
+            return;
+        }
+        kursErfassenModel.speichern(svmContext.getSvmModel(), kurseSemesterwahlModel, kurseTableModel);
+        kursErfassenDialog.dispose();
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {

@@ -101,12 +101,10 @@ public class DeleteKursCommandTest {
         // Kurse löschen
         DeleteKursCommand deleteKursCommand = new DeleteKursCommand(erfassteKurse, 1);
         commandInvoker.executeCommandAsTransaction(deleteKursCommand);
-        assertEquals(DeleteKursCommand.Result.LOESCHEN_ERFOLGREICH, deleteKursCommand.getResult());
         assertEquals(1, erfassteKurse.size());
 
         deleteKursCommand = new DeleteKursCommand(erfassteKurse, 0);
         commandInvoker.executeCommandAsTransaction(deleteKursCommand);
-        assertEquals(DeleteKursCommand.Result.LOESCHEN_ERFOLGREICH, deleteKursCommand.getResult());
         assertTrue(erfassteKurse.isEmpty());
 
         // Testdaten löschen

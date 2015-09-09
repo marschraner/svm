@@ -24,4 +24,10 @@ public class Schuljahre {
         return schuljahr1 + "/" + schuljahr2;
     }
 
+    public static String getNextSchuljahr(String schuljahr) {
+        int schuljahr1 = Integer.parseInt(schuljahr.substring(0, 4)) + 1;
+        int schuljahr2 = Integer.parseInt(schuljahr.substring(5, 9)) + 1;
+        return schuljahr1 + "/" + schuljahr2;
+    }
+
 }

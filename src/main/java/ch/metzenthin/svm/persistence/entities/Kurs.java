@@ -125,7 +125,6 @@ public class Kurs implements Comparable<Kurs> {
                 && semester.equals(otherKurs.semester)
                 && wochentag.equals(otherKurs.wochentag)
                 && zeitBeginn.equals(otherKurs.zeitBeginn)
-                && zeitEnde.equals(otherKurs.zeitEnde)
                 && commonLehrkraefte.size() > 0;
     }
 
@@ -299,6 +298,6 @@ public class Kurs implements Comparable<Kurs> {
 
     @Transient
     public int getKurslaenge() {
-        return (int) ((zeitEnde.getTime() - zeitBeginn.getTime()) / 6000 % 60);
+        return (int) ((zeitEnde.getTime() - zeitBeginn.getTime()) / 60000);
     }
 }

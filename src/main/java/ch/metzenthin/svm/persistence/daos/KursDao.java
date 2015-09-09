@@ -56,7 +56,10 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         if (lehrkraft != null) {
             selectStatementSb.append(" join k.lehrkraefte lk");
         }
-        selectStatementSb.append(" where k.semester.semesterId = :semesterId and");
+        selectStatementSb.append(" where");
+        if (semester != null) {
+            selectStatementSb.append(" k.semester.semesterId = :semesterId and");
+        }
         if (wochentag != null) {
             selectStatementSb.append(" k.wochentag = :wochentag and");
         }
@@ -70,9 +73,15 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         if (selectStatementSb.substring(selectStatementSb.length() - 4).equals(" and")) {
             selectStatementSb.setLength(selectStatementSb.length() - 4);
         }
+        // "where" löschen, falls dieses am Schluss steht
+        if (selectStatementSb.substring(selectStatementSb.length() - 5).equals("where")) {
+            selectStatementSb.setLength(selectStatementSb.length() - 5);
+        }
         // Query
         TypedQuery<Kurs> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Kurs.class);
-        typedQuery.setParameter("semesterId", semester.getSemesterId());
+        if (semester != null) {
+            typedQuery.setParameter("semesterId", semester.getSemesterId());
+        }
         if (wochentag != null) {
             typedQuery.setParameter("wochentag", wochentag);
         }

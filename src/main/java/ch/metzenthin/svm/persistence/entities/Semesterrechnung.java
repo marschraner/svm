@@ -40,44 +40,44 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     @Column(name = "rechnungsdatum_vorrechnung", nullable = true)
     private Calendar rechnungsdatumVorrechnung;
 
-    @Column(name = "ermaessigung_vorrechnung", nullable = true)
+    @Column(name = "ermaessigung_vorrechnung", nullable = false)
     private BigDecimal ermaessigungVorrechnung;
 
     @Column(name = "ermaessigungsgrund_vorrechnung", nullable = true)
     private String ermaessigungsgrundVorrechnung;
 
-    @Column(name = "zuschlag_vorrechnung", nullable = true)
+    @Column(name = "zuschlag_vorrechnung", nullable = false)
     private BigDecimal zuschlagVorrechnung;
 
     @Column(name = "zuschlagsgrund_vorrechnung", nullable = true)
     private String zuschlagsgrundVorrechnung;
 
-    @Column(name = "anzahl_wochen_vorrechnung", nullable = true)
+    @Column(name = "anzahl_wochen_vorrechnung", nullable = false)
     private Integer anzahlWochenVorrechnung;
 
-    @Column(name = "wochenbetrag_vorrechnung", nullable = true)
+    @Column(name = "wochenbetrag_vorrechnung", nullable = false)
     private BigDecimal wochenbetragVorrechnung;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "rechnungsdatum_nachrechnung", nullable = true)
     private Calendar rechnungsdatumNachrechnung;
 
-    @Column(name = "ermaessigung_nachrechnung", nullable = true)
+    @Column(name = "ermaessigung_nachrechnung", nullable = false)
     private BigDecimal ermaessigungNachrechnung;
 
     @Column(name = "ermaessigungsgrund_nachrechnung", nullable = true)
     private String ermaessigungsgrundNachrechnung;
 
-    @Column(name = "zuschlag_nachrechnung", nullable = true)
+    @Column(name = "zuschlag_nachrechnung", nullable = false)
     private BigDecimal zuschlagNachrechnung;
 
     @Column(name = "zuschlagsgrund_nachrechnung", nullable = true)
     private String zuschlagsgrundNachrechnung;
 
-    @Column(name = "anzahl_wochen_nachrechnung", nullable = true)
+    @Column(name = "anzahl_wochen_nachrechnung", nullable = false)
     private Integer anzahlWochenNachrechnung;
 
-    @Column(name = "wochenbetrag_nachrechnung", nullable = true)
+    @Column(name = "wochenbetrag_nachrechnung", nullable = false)
     private BigDecimal wochenbetragNachrechnung;
 
     @Temporal(TemporalType.DATE)
@@ -407,9 +407,6 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         if (gratiskinder) {
             return new BigDecimal("0.00");
         }
-        if (anzahlWochenVorrechnung == null || wochenbetragVorrechnung == null) {
-            return null;
-        }
         // Normale Rechnungen
         BigDecimal schulgeldVorrechnung = new BigDecimal(anzahlWochenVorrechnung).multiply(wochenbetragVorrechnung);
         // Stipendium
@@ -419,18 +416,9 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
             schulgeldVorrechnung = schulgeldVorrechnung.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         }
         // Zuschlag / Ermässigung
-        if (zuschlagVorrechnung != null) {
-            schulgeldVorrechnung = schulgeldVorrechnung.add(zuschlagVorrechnung);
-        }
-        if (ermaessigungVorrechnung != null) {
-            schulgeldVorrechnung = schulgeldVorrechnung.subtract(ermaessigungVorrechnung);
-        }
+        schulgeldVorrechnung = schulgeldVorrechnung.add(zuschlagVorrechnung);
+        schulgeldVorrechnung = schulgeldVorrechnung.subtract(ermaessigungVorrechnung);
         return schulgeldVorrechnung;
-    }
-
-    @Transient
-    public boolean isVollstaendigVorrechnung() {
-        return rechnungsdatumVorrechnung != null && anzahlWochenVorrechnung != null && wochenbetragVorrechnung != null;
     }
 
     @Transient
@@ -438,9 +426,6 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         // Gratiskinder haben immer 0.00 als Schulgeld
         if (gratiskinder) {
             return new BigDecimal("0.00");
-        }
-        if (anzahlWochenNachrechnung == null || wochenbetragNachrechnung == null) {
-            return null;
         }
         // Normale Rechnungen
         BigDecimal schulgeldNachrechnung = new BigDecimal(anzahlWochenNachrechnung).multiply(wochenbetragNachrechnung);
@@ -451,39 +436,36 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
             schulgeldNachrechnung = schulgeldNachrechnung.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         }
         // Zuschlag / Ermässigung
-        if (zuschlagNachrechnung != null) {
-            schulgeldNachrechnung = schulgeldNachrechnung.add(zuschlagNachrechnung);
-        }
-        if (ermaessigungNachrechnung != null) {
-            schulgeldNachrechnung = schulgeldNachrechnung.subtract(ermaessigungNachrechnung);
-        }
+        schulgeldNachrechnung = schulgeldNachrechnung.add(zuschlagNachrechnung);
+        schulgeldNachrechnung = schulgeldNachrechnung.subtract(ermaessigungNachrechnung);
         return schulgeldNachrechnung;
     }
 
     @Transient
-    public boolean isVollstaendigNachrechnung() {
-        return rechnungsdatumNachrechnung != null && anzahlWochenNachrechnung != null && wochenbetragNachrechnung != null;
-    }
-
-    @Transient
     public BigDecimal getDifferenzSchulgeld() {
-        if (getSchulgeldNachrechnung() != null && getSchulgeldVorrechnung() != null) {
-            return getSchulgeldNachrechnung().subtract(getSchulgeldVorrechnung());
-        }
-        return null;
+        return getSchulgeldNachrechnung().subtract(getSchulgeldVorrechnung());
     }
 
     @Transient
     public BigDecimal getRestbetrag() {
-        BigDecimal restbetrag = (getSchulgeldNachrechnung() == null ? getSchulgeldVorrechnung() : getSchulgeldNachrechnung());
-        if (betragZahlung1 != null) {
-            restbetrag = restbetrag.subtract(betragZahlung1);
+        BigDecimal restbetrag = null;
+        BigDecimal schulgeldVorrechnung = getSchulgeldVorrechnung();
+        BigDecimal schulgeldNachrechnung = getSchulgeldNachrechnung();
+        if (getRechnungsdatumNachrechnung() != null && schulgeldNachrechnung != null) {
+            restbetrag = schulgeldNachrechnung;
+        } else if (getRechnungsdatumVorrechnung() != null && schulgeldVorrechnung != null) {
+            restbetrag = schulgeldVorrechnung;
         }
-        if (betragZahlung2 != null) {
-            restbetrag = restbetrag.subtract(betragZahlung2);
-        }
-        if (betragZahlung3 != null) {
-            restbetrag = restbetrag.subtract(betragZahlung3);
+        if (restbetrag != null) {
+            if (betragZahlung1 != null) {
+                restbetrag = restbetrag.subtract(betragZahlung1);
+            }
+            if (betragZahlung2 != null) {
+                restbetrag = restbetrag.subtract(betragZahlung2);
+            }
+            if (betragZahlung3 != null) {
+                restbetrag = restbetrag.subtract(betragZahlung3);
+            }
         }
         return restbetrag;
     }

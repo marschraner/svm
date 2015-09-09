@@ -7,6 +7,7 @@ import ch.metzenthin.svm.domain.commands.CreateListeCommand;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 
 import java.io.File;
 
@@ -22,6 +23,9 @@ public interface ListenExportModel extends Model {
     void setTitel(String titel) throws SvmValidationException;
 
     File getSaveFileInit();
-    CreateListeCommand.Result createListenFile(File outputFile, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel);
+    CreateListeCommand.Result createListenFile(File outputFile, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel);
     String getTitleInit(SchuelerSuchenTableModel schuelerSuchenTableModel);
+    boolean checkIfRechnungsdatumVorrechnungUeberallGesetzt(SemesterrechnungenTableModel semesterrechnungenTableModel);
+    boolean checkIfRechnungsdatumNachrechnungUeberallGesetzt(SemesterrechnungenTableModel semesterrechnungenTableModel);
+
 }

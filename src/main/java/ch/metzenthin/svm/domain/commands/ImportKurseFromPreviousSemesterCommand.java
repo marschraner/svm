@@ -1,10 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Schuljahre;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.daos.KursDao;
 import ch.metzenthin.svm.persistence.daos.KursanmeldungDao;
-import ch.metzenthin.svm.persistence.daos.SemesterDao;
 import ch.metzenthin.svm.persistence.entities.*;
 
 import java.util.List;
@@ -16,49 +14,33 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
 
     // input
     private List<Kurs> kurseCurrentSemester;
-    private Semester semester;
+    private Semester currentSemester;
 
-    public ImportKurseFromPreviousSemesterCommand(List<Kurs> kurseCurrentSemester, Semester semester) {
+    public ImportKurseFromPreviousSemesterCommand(List<Kurs> kurseCurrentSemester, Semester currentSemester) {
         this.kurseCurrentSemester = kurseCurrentSemester;
-        this.semester = semester;
+        this.currentSemester = currentSemester;
     }
 
     @Override
     public void execute() {
-        // Kein Import, falls schon Kurse erfasst
-        if (kurseCurrentSemester.size() > 0) {
+
+        // Vorhergehendes Semester
+        FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
+        findPreviousSemesterCommand.setEntityManager(entityManager);
+        findPreviousSemesterCommand.execute();
+        Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
+        if (previousSemester == null) {
             return;
         }
 
         KursDao kursDao = new KursDao(entityManager);
         KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
-        String schuljahrPreviousSemester;
-        Semesterbezeichnung semesterbezeichnungPreviousSemester;
-        if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
-            schuljahrPreviousSemester = Schuljahre.getPreviousSchuljahr(semester.getSchuljahr());
-            semesterbezeichnungPreviousSemester = Semesterbezeichnung.ZWEITES_SEMESTER;
-
-        } else {
-            schuljahrPreviousSemester = semester.getSchuljahr();
-            semesterbezeichnungPreviousSemester = Semesterbezeichnung.ERSTES_SEMESTER;
-        }
-
-        SemesterDao semesterDao = new SemesterDao(entityManager);
-        List<Semester> semestersAll = semesterDao.findAll();
-        Semester previousSemester = null;
-        for (Semester semester : semestersAll) {
-            if (semester.getSchuljahr().equals(schuljahrPreviousSemester) && semester.getSemesterbezeichnung().equals(semesterbezeichnungPreviousSemester)) {
-                previousSemester = semester;
-                break;
-            }
-        }
-        if (previousSemester == null) {
-            return;
-        }
-
-        // Kurse kopieren
         List<Kurs> kursePreviousSemester = kursDao.findKurseSemester(previousSemester);
+
+        KursePreviousSemester:
         for (Kurs kursPreviousSemester : kursePreviousSemester) {
+
+            // Kurs kopieren
             Kurs kurs = new Kurs();
             kurs.copyAttributesFrom(kursPreviousSemester);
             kurs.setKurstyp(kursPreviousSemester.getKurstyp());
@@ -66,17 +48,34 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
             for (Lehrkraft lehrkraft : kursPreviousSemester.getLehrkraefte()) {
                 kurs.addLehrkraft(lehrkraft);
             }
-            kurs.setSemester(semester);
+            kurs.setSemester(currentSemester);
+
+            // Existiert der Kurs im jetzigen Semester bereits? Wenn ja, unverändert lassen.
+            for (Kurs kursCurrentSemester : kurseCurrentSemester) {
+                if (kurs.isIdenticalWith(kursCurrentSemester)) {
+                    continue KursePreviousSemester;
+                }
+            }
+
+            // Kurs speichern
             kursDao.save(kurs);
             kurseCurrentSemester.add(kurs);
 
             // Falls 2. Semester, auch Schüler bzw. Kurseinteilungen importieren
-            if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER) {
+            if (currentSemester.getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER) {
                 for (Kursanmeldung kursanmeldungPreviousSemester : kursPreviousSemester.getKursanmeldungen()) {
-                    // Nur Kurseinteilungen ohne Abmeldungen importieren
-                    if (!kursanmeldungPreviousSemester.getAbmeldungPerEndeSemester()) {
+
+                    // Nur Kurse ohne Kursabmeldungen und nur für nicht abgemeldete Schüler importieren
+                    Anmeldung anmeldung = kursanmeldungPreviousSemester.getSchueler().getAnmeldungen().get(0);
+                    if (!kursanmeldungPreviousSemester.getAbmeldungPerEndeSemester()
+                            && (anmeldung.getAbmeldedatum() == null || anmeldung.getAbmeldedatum().after(currentSemester.getSemesterbeginn()))) {
                         Kursanmeldung kursanmeldung = new Kursanmeldung(kursanmeldungPreviousSemester.getSchueler(), kurs, false, null);
                         kursanmeldungDao.save(kursanmeldung);
+
+                        // Semesterrechnungen updaten
+                        UpdateWochenbetragCommand updateWochenbetragCommand = new UpdateWochenbetragCommand(kursanmeldungPreviousSemester.getSchueler().getRechnungsempfaenger(), currentSemester);
+                        updateWochenbetragCommand.setEntityManager(entityManager);
+                        updateWochenbetragCommand.execute();
                     }
                 }
             }

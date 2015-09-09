@@ -15,7 +15,7 @@ import java.util.Set;
 @DiscriminatorValue("Lehrkraft")
 public class Lehrkraft extends Person {
 
-    @Column(name = "ahvnummer", nullable = false)
+    @Column(name = "ahvnummer", nullable = true)
     private String ahvNummer;
 
     @Column(name = "vertretungsmoeglichkeiten", nullable = true)

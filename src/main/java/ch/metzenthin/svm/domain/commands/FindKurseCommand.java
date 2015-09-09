@@ -20,7 +20,7 @@ public class FindKurseCommand extends GenericDaoCommand {
     }
 
     // input
-    private Semester semester;
+    private Semester semester;    // nullable
     private Wochentag wochentag;  // nullable
     private Time zeitBeginn;      // nullable
     private Lehrkraft lehrkraft;  // nullable

@@ -301,7 +301,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
             for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
                 Kurs kurs = kursanmeldung.getKurs();
                 if (!isKursToBeDisplayed(svmModel, kurs)) {
-                    break;
+                    continue;
                 }
                 gleichesSemester = previousSchuljahr != null && previousSemesterbezeichnung != null
                         && kurs.getSemester().getSchuljahr().equals(previousSchuljahr)
@@ -338,7 +338,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
             for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
                 Kurs kurs = kursanmeldung.getKurs();
                 if (!isKursToBeDisplayed(svmModel, kurs)) {
-                    break;
+                    continue;
                 }
                 boolean gleichesSemester = false;
                 if (previousSchuljahr != null && previousSemesterbezeichnung != null

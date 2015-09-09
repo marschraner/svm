@@ -10,6 +10,7 @@ import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.KursanmeldungenTableModel;
 
 import java.sql.Time;
+import java.util.List;
 
 /**
  * @author Martin Schraner
@@ -33,7 +34,7 @@ public interface KursanmeldungErfassenModel extends Model {
 
     Semester[] getSelectableSemesterKursanmeldungOrigin();
     Lehrkraft[] getSelectableLehrkraftKursanmeldungOrigin();
-    Semester getInitSemester(SvmModel svmModel);
+    Semester getInitSemester(List<Semester> semesterList);
     boolean checkIfSemesterIsInPast();
     FindKursCommand.Result findKurs();
     boolean checkIfKursBereitsErfasst(SchuelerDatenblattModel schuelerDatenblattModel);

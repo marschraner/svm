@@ -13,6 +13,7 @@ import ch.metzenthin.svm.domain.model.ListenExportModel;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -40,6 +41,7 @@ public class ListenExportController extends AbstractController {
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final LehrkraefteTableModel lehrkraefteTableModel;
     private final KurseTableModel kurseTableModel;
+    private SemesterrechnungenTableModel semesterrechnungenTableModel;
     private final ListenExportTyp listenExportTyp;
     private JDialog listenExportDialog;
     private JComboBox<Listentyp> comboBoxListentyp;
@@ -49,12 +51,13 @@ public class ListenExportController extends AbstractController {
     private JButton btnOk;
     private JButton btnAbbrechen;
 
-    public ListenExportController(ListenExportModel listenExportModel, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel, ListenExportTyp listenExportTyp) {
+    public ListenExportController(ListenExportModel listenExportModel, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel, ListenExportTyp listenExportTyp) {
         super(listenExportModel);
         this.listenExportModel = listenExportModel;
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.lehrkraefteTableModel = lehrkraefteTableModel;
         this.kurseTableModel = kurseTableModel;
+        this.semesterrechnungenTableModel = semesterrechnungenTableModel;
         this.listenExportTyp = listenExportTyp;
         this.listenExportModel.addPropertyChangeListener(this);
         this.listenExportModel.addDisableFieldsListener(this);
@@ -188,10 +191,35 @@ public class ListenExportController extends AbstractController {
         } else {
             comboBoxListentyp.removeItem(Listentyp.KURSLISTE);
         }
+        if (listenExportTyp == ListenExportTyp.SEMESTERRECHNUNGEN) {
+            // Initialisierung / Deaktivierungen, falls Rechnungsdatum nicht gesetzt
+            boolean rechnungsdatumVorrechnungUeberallGesetzt = listenExportModel.checkIfRechnungsdatumVorrechnungUeberallGesetzt(semesterrechnungenTableModel);
+            boolean rechnungsdatumNachrechnungUeberallGesetzt = listenExportModel.checkIfRechnungsdatumNachrechnungUeberallGesetzt(semesterrechnungenTableModel);
+            if (!rechnungsdatumVorrechnungUeberallGesetzt) {
+                comboBoxListentyp.removeItem(Listentyp.VORRECHNUNGEN_SERIENBRIEF);
+                comboBoxListentyp.setSelectedItem(Listentyp.RECHNUNGSLISTE);
+            } else {
+                comboBoxListentyp.setSelectedItem(Listentyp.VORRECHNUNGEN_SERIENBRIEF);
+            }
+            if (!rechnungsdatumNachrechnungUeberallGesetzt) {
+                comboBoxListentyp.removeItem(Listentyp.NACHRECHNUNGEN_SERIENBRIEF);
+            }
+            if (!rechnungsdatumVorrechnungUeberallGesetzt && !rechnungsdatumNachrechnungUeberallGesetzt) {
+                comboBoxListentyp.removeItem(Listentyp.MAHNUNGEN_SERIENBRIEF);
+            }
+        } else {
+            comboBoxListentyp.removeItem(Listentyp.VORRECHNUNGEN_SERIENBRIEF);
+            comboBoxListentyp.removeItem(Listentyp.NACHRECHNUNGEN_SERIENBRIEF);
+            comboBoxListentyp.removeItem(Listentyp.MAHNUNGEN_SERIENBRIEF);
+            comboBoxListentyp.removeItem(Listentyp.RECHNUNGSLISTE);
+        }
     }
     
     public void setTxtTitel(JTextField txtTitel) {
         this.txtTitel = txtTitel;
+        if (listenExportTyp == ListenExportTyp.SEMESTERRECHNUNGEN) {
+            this.txtTitel.setEnabled(false);
+        }
         this.txtTitel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -318,7 +346,7 @@ public class ListenExportController extends AbstractController {
         SwingWorker<CreateListeCommand.Result, String> worker = new SwingWorker<CreateListeCommand.Result, String>() {
             @Override
             protected CreateListeCommand.Result doInBackground() throws Exception {
-                return listenExportModel.createListenFile(outputFile, schuelerSuchenTableModel, lehrkraefteTableModel, kurseTableModel);
+                return listenExportModel.createListenFile(outputFile, schuelerSuchenTableModel, lehrkraefteTableModel, kurseTableModel, semesterrechnungenTableModel);
             }
             @Override
             protected void done() {

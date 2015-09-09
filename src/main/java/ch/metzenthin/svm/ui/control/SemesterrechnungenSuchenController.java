@@ -14,8 +14,12 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.HashSet;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
@@ -47,6 +51,15 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private JRadioButton radioBtnSchueler;
     private JRadioButton radioBtnEltern;
     private JRadioButton radioBtnRolleAlle;
+    private JRadioButton radioBtnSemesterrechnungCodeJa;
+    private JRadioButton radioBtnSemesterrechnungCodeNein;
+    private JRadioButton radioBtnSemesterrechnungCodeAlle;
+    private JRadioButton radioBtnStipendiumJa;
+    private JRadioButton radioBtnStipendiumNein;
+    private JRadioButton radioBtnStipendiumAlle;
+    private JRadioButton radioBtnRechnungsdatumGesetztVorrechnung;
+    private JRadioButton radioBtnRechnungsdatumNichtGesetztVorrechnung;
+    private JRadioButton radioBtnRechnungsdatumGesetztAlleVorrechnung;
     private JRadioButton radioBtnAmVorrechnung;
     private JRadioButton radioBtnVorVorrechnung;
     private JRadioButton radioBtnNachVorrechnung;
@@ -62,12 +75,12 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private JRadioButton radioBtnGleichSchulgeldVorrechnung;
     private JRadioButton radioBtnKleinerSchulgeldVorrechnung;
     private JRadioButton radioBtnGroesserSchulgeldVorrechnung;
-    private JRadioButton radioBtnSechsJahresRabattVorrechnung;
-    private JRadioButton radioBtnKeinSechsJahresRabattVorrechnung;
+    private JRadioButton radioBtnSechsJahresRabattJaVorrechnung;
+    private JRadioButton radioBtnSechsJahresRabattNeinVorrechnung;
     private JRadioButton radioBtnSechsJahresRabattAlleVorrechnung;
-    private JRadioButton radioBtnVollstaendigVorrechnung;
-    private JRadioButton radioBtnUnvollstaendigVorrechnung;
-    private JRadioButton radioBtnAlleVollstaendigkeitVorrechnung;
+    private JRadioButton radioBtnRechnungsdatumGesetztNachrechnung;
+    private JRadioButton radioBtnRechnungsdatumNichtGesetztNachrechnung;
+    private JRadioButton radioBtnRechnungsdatumGesetztAlleNachrechnung;
     private JRadioButton radioBtnAmNachrechnung;
     private JRadioButton radioBtnVorNachrechnung;
     private JRadioButton radioBtnNachNachrechnung;
@@ -86,12 +99,9 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private JRadioButton radioBtnGleichSchulgeldNachrechnung;
     private JRadioButton radioBtnKleinerSchulgeldNachrechnung;
     private JRadioButton radioBtnGroesserSchulgeldNachrechnung;
-    private JRadioButton radioBtnSechsJahresRabattNachrechnung;
-    private JRadioButton radioBtnKeinSechsJahresRabattNachrechnung;
+    private JRadioButton radioBtnSechsJahresRabattJaNachrechnung;
+    private JRadioButton radioBtnSechsJahresRabattNeinNachrechnung;
     private JRadioButton radioBtnSechsJahresRabattAlleNachrechnung;
-    private JRadioButton radioBtnVollstaendigNachrechnung;
-    private JRadioButton radioBtnUnvollstaendigNachrechnung;
-    private JRadioButton radioBtnAlleVollstaendigkeitNachrechnung;
     private JRadioButton radioBtnGleichDifferenzSchulgeld;
     private JRadioButton radioBtnKleinerDifferenzSchulgeld;
     private JRadioButton radioBtnGroesserDifferenzSchulgeld;
@@ -456,6 +466,57 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         semesterrechnungenSuchenModel.setRolle(SemesterrechnungenSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER);
     }
 
+    public void setRadioBtnGroupSemesterrechnungCodeJaNein(JRadioButton radioBtnSemesterrechnungCodeJa, JRadioButton radioBtnSemesterrechnungCodeNein, JRadioButton radioBtnSemesterrechnungCodeAlle) {
+        this.radioBtnSemesterrechnungCodeJa = radioBtnSemesterrechnungCodeJa;
+        this.radioBtnSemesterrechnungCodeNein = radioBtnSemesterrechnungCodeNein;
+        this.radioBtnSemesterrechnungCodeAlle = radioBtnSemesterrechnungCodeAlle;
+        // Action Commands
+        this.radioBtnSemesterrechnungCodeJa.setActionCommand(SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.JA.toString());
+        this.radioBtnSemesterrechnungCodeNein.setActionCommand(SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.NEIN.toString());
+        this.radioBtnSemesterrechnungCodeAlle.setActionCommand(SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.ALLE.toString());
+        // Listener
+        RadioBtnGroupSemesterrechnungCodeJaNeinListener radioBtnGroupSemesterrechnungCodeJaNeinListener = new RadioBtnGroupSemesterrechnungCodeJaNeinListener();
+        this.radioBtnSemesterrechnungCodeJa.addActionListener(radioBtnGroupSemesterrechnungCodeJaNeinListener);
+        this.radioBtnSemesterrechnungCodeNein.addActionListener(radioBtnGroupSemesterrechnungCodeJaNeinListener);
+        this.radioBtnSemesterrechnungCodeAlle.addActionListener(radioBtnGroupSemesterrechnungCodeJaNeinListener);
+        // Initialisieren mit Rechnungsempfänger
+        semesterrechnungenSuchenModel.setSemesterrechnungCodeJaNeinSelected(SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.ALLE);
+    }
+
+    public void setRadioBtnGroupStipendiumJaNein(JRadioButton radioBtnStipendiumJa, JRadioButton radioBtnStipendiumNein, JRadioButton radioBtnStipendiumAlle) {
+        this.radioBtnStipendiumJa = radioBtnStipendiumJa;
+        this.radioBtnStipendiumNein = radioBtnStipendiumNein;
+        this.radioBtnStipendiumAlle = radioBtnStipendiumAlle;
+        // Action Commands
+        this.radioBtnStipendiumJa.setActionCommand(SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.JA.toString());
+        this.radioBtnStipendiumNein.setActionCommand(SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.NEIN.toString());
+        this.radioBtnStipendiumAlle.setActionCommand(SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.ALLE.toString());
+        // Listener
+        RadioBtnGroupStipendiumJaNeinListener radioBtnGroupStipendiumJaNeinListener = new RadioBtnGroupStipendiumJaNeinListener();
+        this.radioBtnStipendiumJa.addActionListener(radioBtnGroupStipendiumJaNeinListener);
+        this.radioBtnStipendiumNein.addActionListener(radioBtnGroupStipendiumJaNeinListener);
+        this.radioBtnStipendiumAlle.addActionListener(radioBtnGroupStipendiumJaNeinListener);
+        // Initialisieren mit Rechnungsempfänger
+        semesterrechnungenSuchenModel.setStipendiumJaNeinSelected(SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.ALLE);
+    }
+
+    public void setRadioBtnGroupRechnungsdatumGesetztVorrechnung(JRadioButton radioBtnRechnungsdatumGesetztVorrechnung, JRadioButton radioBtnRechnungsdatumNichtGesetztVorrechnung, JRadioButton radioBtnRechnungsdatumGesetztAlleVorrechnung) {
+        this.radioBtnRechnungsdatumGesetztVorrechnung = radioBtnRechnungsdatumGesetztVorrechnung;
+        this.radioBtnRechnungsdatumNichtGesetztVorrechnung = radioBtnRechnungsdatumNichtGesetztVorrechnung;
+        this.radioBtnRechnungsdatumGesetztAlleVorrechnung = radioBtnRechnungsdatumGesetztAlleVorrechnung;
+        // Action Commands
+        this.radioBtnRechnungsdatumGesetztVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.GESETZT.toString());
+        this.radioBtnRechnungsdatumNichtGesetztVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.NICHT_GESETZT.toString());
+        this.radioBtnRechnungsdatumGesetztAlleVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.ALLE.toString());
+        // Listener
+        RadioBtnGroupRechnungsdatumGesetztVorrechnungListener radioBtnGroupRechnungsdatumGesetztVorrechnungListener = new RadioBtnGroupRechnungsdatumGesetztVorrechnungListener();
+        this.radioBtnRechnungsdatumGesetztVorrechnung.addActionListener(radioBtnGroupRechnungsdatumGesetztVorrechnungListener);
+        this.radioBtnRechnungsdatumNichtGesetztVorrechnung.addActionListener(radioBtnGroupRechnungsdatumGesetztVorrechnungListener);
+        this.radioBtnRechnungsdatumGesetztAlleVorrechnung.addActionListener(radioBtnGroupRechnungsdatumGesetztVorrechnungListener);
+        // Initialisieren mit alle
+        semesterrechnungenSuchenModel.setRechnungsdatumGesetztVorrechnungSelected(SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.ALLE);
+    }
+
     public void setRadioBtnGroupPraezisierungRechnungsdatumVorrechnung(JRadioButton radioBtnAmVorrechnung, JRadioButton radioBtnVorVorrechnung, JRadioButton radioBtnNachVorrechnung) {
         this.radioBtnAmVorrechnung = radioBtnAmVorrechnung;
         this.radioBtnVorVorrechnung = radioBtnVorVorrechnung;
@@ -541,38 +602,38 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         semesterrechnungenSuchenModel.setPraezisierungSchulgeldVorrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungSchulgeldVorrechnungSelected.GLEICH);
     }
 
-    public void setRadioBtnGroupSechsJahresRabattVorrechnung(JRadioButton radioBtnSechsJahresRabattVorrechnung, JRadioButton radioBtnKeinSechsJahresRabattVorrechnung, JRadioButton radioBtnSechsJahresRabattAlleVorrechnung) {
-        this.radioBtnSechsJahresRabattVorrechnung = radioBtnSechsJahresRabattVorrechnung;
-        this.radioBtnKeinSechsJahresRabattVorrechnung = radioBtnKeinSechsJahresRabattVorrechnung;
+    public void setRadioBtnGroupSechsJahresRabattJaNeinVorrechnung(JRadioButton radioBtnSechsJahresRabattJaVorrechnung, JRadioButton radioBtnSechsJahresRabattNeinVorrechnung, JRadioButton radioBtnSechsJahresRabattAlleVorrechnung) {
+        this.radioBtnSechsJahresRabattJaVorrechnung = radioBtnSechsJahresRabattJaVorrechnung;
+        this.radioBtnSechsJahresRabattNeinVorrechnung = radioBtnSechsJahresRabattNeinVorrechnung;
         this.radioBtnSechsJahresRabattAlleVorrechnung = radioBtnSechsJahresRabattAlleVorrechnung;
         // Action Commands
-        this.radioBtnSechsJahresRabattVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.SechsJahresRabattVorrechnungSelected.VORHANDEN.toString());
-        this.radioBtnKeinSechsJahresRabattVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.SechsJahresRabattVorrechnungSelected.NICHT_VORHANDEN.toString());
-        this.radioBtnSechsJahresRabattAlleVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.SechsJahresRabattVorrechnungSelected.ALLE.toString());
+        this.radioBtnSechsJahresRabattJaVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.JA.toString());
+        this.radioBtnSechsJahresRabattNeinVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.NEIN.toString());
+        this.radioBtnSechsJahresRabattAlleVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.ALLE.toString());
         // Listener
-        RadioBtnGroupSechsJahresRabattVorrechnungListener radioBtnGroupSechsJahresRabattVorrechnungListener = new RadioBtnGroupSechsJahresRabattVorrechnungListener();
-        this.radioBtnSechsJahresRabattVorrechnung.addActionListener(radioBtnGroupSechsJahresRabattVorrechnungListener);
-        this.radioBtnKeinSechsJahresRabattVorrechnung.addActionListener(radioBtnGroupSechsJahresRabattVorrechnungListener);
-        this.radioBtnSechsJahresRabattAlleVorrechnung.addActionListener(radioBtnGroupSechsJahresRabattVorrechnungListener);
+        RadioBtnGroupSechsJahresRabattJaNeinVorrechnungListener radioBtnGroupSechsJahresRabattJaNeinVorrechnungListener = new RadioBtnGroupSechsJahresRabattJaNeinVorrechnungListener();
+        this.radioBtnSechsJahresRabattJaVorrechnung.addActionListener(radioBtnGroupSechsJahresRabattJaNeinVorrechnungListener);
+        this.radioBtnSechsJahresRabattNeinVorrechnung.addActionListener(radioBtnGroupSechsJahresRabattJaNeinVorrechnungListener);
+        this.radioBtnSechsJahresRabattAlleVorrechnung.addActionListener(radioBtnGroupSechsJahresRabattJaNeinVorrechnungListener);
         // Initialisieren mit alle
-        semesterrechnungenSuchenModel.setSechsJahresRabattVorrechnungSelected(SemesterrechnungenSuchenModel.SechsJahresRabattVorrechnungSelected.ALLE);
+        semesterrechnungenSuchenModel.setSechsJahresRabattJaNeinVorrechnungSelected(SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.ALLE);
     }
 
-    public void setRadioBtnGroupVollstaendigkeitVorrechnung(JRadioButton radioBtnVollstaendigVorrechnung, JRadioButton radioBtnUnvollstaendigVorrechnung, JRadioButton radioBtnAlleVollstaendigkeitVorrechnung) {
-        this.radioBtnVollstaendigVorrechnung = radioBtnVollstaendigVorrechnung;
-        this.radioBtnUnvollstaendigVorrechnung = radioBtnUnvollstaendigVorrechnung;
-        this.radioBtnAlleVollstaendigkeitVorrechnung = radioBtnAlleVollstaendigkeitVorrechnung;
+    public void setRadioBtnGroupRechungsdatumGesetztNachrechnung(JRadioButton radioBtnRechnungsdatumGesetztNachrechnung, JRadioButton radioBtnRechnungsdatumNichtGesetztNachrechnung, JRadioButton radioBtnRechungsdatumGesetztAlleNachrechnung) {
+        this.radioBtnRechnungsdatumGesetztNachrechnung = radioBtnRechnungsdatumGesetztNachrechnung;
+        this.radioBtnRechnungsdatumNichtGesetztNachrechnung = radioBtnRechnungsdatumNichtGesetztNachrechnung;
+        this.radioBtnRechnungsdatumGesetztAlleNachrechnung = radioBtnRechungsdatumGesetztAlleNachrechnung;
         // Action Commands
-        this.radioBtnVollstaendigVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.VollstaendigkeitVorrechnungSelected.VOLLSTAENDIG.toString());
-        this.radioBtnUnvollstaendigVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.VollstaendigkeitVorrechnungSelected.UNVOLLSTAENDIG.toString());
-        this.radioBtnAlleVollstaendigkeitVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.VollstaendigkeitVorrechnungSelected.ALLE.toString());
+        this.radioBtnRechnungsdatumGesetztNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.GESETZT.toString());
+        this.radioBtnRechnungsdatumNichtGesetztNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.NICHT_GESETZT.toString());
+        this.radioBtnRechnungsdatumGesetztAlleNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.ALLE.toString());
         // Listener
-        RadioBtnGroupVollstaendigkeitVorrechnungListener radioBtnGroupVollstaendigkeitVorrechnungListener = new RadioBtnGroupVollstaendigkeitVorrechnungListener();
-        this.radioBtnVollstaendigVorrechnung.addActionListener(radioBtnGroupVollstaendigkeitVorrechnungListener);
-        this.radioBtnUnvollstaendigVorrechnung.addActionListener(radioBtnGroupVollstaendigkeitVorrechnungListener);
-        this.radioBtnAlleVollstaendigkeitVorrechnung.addActionListener(radioBtnGroupVollstaendigkeitVorrechnungListener);
+        RadioBtnGroupRechnungsdatumGesetztNachrechnungListener radioBtnGroupRechnungsdatumGesetztNachrechnungListener = new RadioBtnGroupRechnungsdatumGesetztNachrechnungListener();
+        this.radioBtnRechnungsdatumGesetztNachrechnung.addActionListener(radioBtnGroupRechnungsdatumGesetztNachrechnungListener);
+        this.radioBtnRechnungsdatumNichtGesetztNachrechnung.addActionListener(radioBtnGroupRechnungsdatumGesetztNachrechnungListener);
+        this.radioBtnRechnungsdatumGesetztAlleNachrechnung.addActionListener(radioBtnGroupRechnungsdatumGesetztNachrechnungListener);
         // Initialisieren mit alle
-        semesterrechnungenSuchenModel.setVollstaendigkeitVorrechnungSelected(SemesterrechnungenSuchenModel.VollstaendigkeitVorrechnungSelected.ALLE);
+        semesterrechnungenSuchenModel.setRechnungsdatumGesetztNachrechnungSelected(SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.ALLE);
     }
 
     public void setRadioBtnGroupPraezisierungRechnungsdatumNachrechnung(JRadioButton radioBtnAmNachrechnung, JRadioButton radioBtnVorNachrechnung, JRadioButton radioBtnNachNachrechnung) {
@@ -677,38 +738,21 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         semesterrechnungenSuchenModel.setPraezisierungSchulgeldNachrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungSchulgeldNachrechnungSelected.GLEICH);
     }
 
-    public void setRadioBtnGroupSechsJahresRabattNachrechnung(JRadioButton radioBtnSechsJahresRabattNachrechnung, JRadioButton radioBtnKeinSechsJahresRabattNachrechnung, JRadioButton radioBtnSechsJahresRabattAlleNachrechnung) {
-        this.radioBtnSechsJahresRabattNachrechnung = radioBtnSechsJahresRabattNachrechnung;
-        this.radioBtnKeinSechsJahresRabattNachrechnung = radioBtnKeinSechsJahresRabattNachrechnung;
+    public void setRadioBtnGroupSechsJahresRabattJaNeinNachrechnung(JRadioButton radioBtnSechsJahresRabattJaNachrechnung, JRadioButton radioBtnSechsJahresRabattNeinNachrechnung, JRadioButton radioBtnSechsJahresRabattAlleNachrechnung) {
+        this.radioBtnSechsJahresRabattJaNachrechnung = radioBtnSechsJahresRabattJaNachrechnung;
+        this.radioBtnSechsJahresRabattNeinNachrechnung = radioBtnSechsJahresRabattNeinNachrechnung;
         this.radioBtnSechsJahresRabattAlleNachrechnung = radioBtnSechsJahresRabattAlleNachrechnung;
         // Action Commands
-        this.radioBtnSechsJahresRabattNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.SechsJahresRabattNachrechnungSelected.VORHANDEN.toString());
-        this.radioBtnKeinSechsJahresRabattNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.SechsJahresRabattNachrechnungSelected.NICHT_VORHANDEN.toString());
-        this.radioBtnSechsJahresRabattAlleNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.SechsJahresRabattNachrechnungSelected.ALLE.toString());
+        this.radioBtnSechsJahresRabattJaNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.JA.toString());
+        this.radioBtnSechsJahresRabattNeinNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.NEIN.toString());
+        this.radioBtnSechsJahresRabattAlleNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.ALLE.toString());
         // Listener
-        RadioBtnGroupSechsJahresRabattNachrechnungListener radioBtnGroupSechsJahresRabattNachrechnungListener = new RadioBtnGroupSechsJahresRabattNachrechnungListener();
-        this.radioBtnSechsJahresRabattNachrechnung.addActionListener(radioBtnGroupSechsJahresRabattNachrechnungListener);
-        this.radioBtnKeinSechsJahresRabattNachrechnung.addActionListener(radioBtnGroupSechsJahresRabattNachrechnungListener);
-        this.radioBtnSechsJahresRabattAlleNachrechnung.addActionListener(radioBtnGroupSechsJahresRabattNachrechnungListener);
+        RadioBtnGroupSechsJahresRabattJaNeinNachrechnungListener radioBtnGroupSechsJahresRabattJaNeinNachrechnungListener = new RadioBtnGroupSechsJahresRabattJaNeinNachrechnungListener();
+        this.radioBtnSechsJahresRabattJaNachrechnung.addActionListener(radioBtnGroupSechsJahresRabattJaNeinNachrechnungListener);
+        this.radioBtnSechsJahresRabattNeinNachrechnung.addActionListener(radioBtnGroupSechsJahresRabattJaNeinNachrechnungListener);
+        this.radioBtnSechsJahresRabattAlleNachrechnung.addActionListener(radioBtnGroupSechsJahresRabattJaNeinNachrechnungListener);
         // Initialisieren mit alle
-        semesterrechnungenSuchenModel.setSechsJahresRabattNachrechnungSelected(SemesterrechnungenSuchenModel.SechsJahresRabattNachrechnungSelected.ALLE);
-    }
-
-    public void setRadioBtnGroupVollstaendigkeitNachrechnung(JRadioButton radioBtnVollstaendigNachrechnung, JRadioButton radioBtnUnvollstaendigNachrechnung, JRadioButton radioBtnAlleVollstaendigkeitNachrechnung) {
-        this.radioBtnVollstaendigNachrechnung = radioBtnVollstaendigNachrechnung;
-        this.radioBtnUnvollstaendigNachrechnung = radioBtnUnvollstaendigNachrechnung;
-        this.radioBtnAlleVollstaendigkeitNachrechnung = radioBtnAlleVollstaendigkeitNachrechnung;
-        // Action Commands
-        this.radioBtnVollstaendigNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.VollstaendigkeitNachrechnungSelected.VOLLSTAENDIG.toString());
-        this.radioBtnUnvollstaendigNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.VollstaendigkeitNachrechnungSelected.UNVOLLSTAENDIG.toString());
-        this.radioBtnAlleVollstaendigkeitNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.VollstaendigkeitNachrechnungSelected.ALLE.toString());
-        // Listener
-        RadioBtnGroupVollstaendigkeitNachrechnungListener radioBtnGroupVollstaendigkeitNachrechnungListener = new RadioBtnGroupVollstaendigkeitNachrechnungListener();
-        this.radioBtnVollstaendigNachrechnung.addActionListener(radioBtnGroupVollstaendigkeitNachrechnungListener);
-        this.radioBtnUnvollstaendigNachrechnung.addActionListener(radioBtnGroupVollstaendigkeitNachrechnungListener);
-        this.radioBtnAlleVollstaendigkeitNachrechnung.addActionListener(radioBtnGroupVollstaendigkeitNachrechnungListener);
-        // Initialisieren mit alle
-        semesterrechnungenSuchenModel.setVollstaendigkeitNachrechnungSelected(SemesterrechnungenSuchenModel.VollstaendigkeitNachrechnungSelected.ALLE);
+        semesterrechnungenSuchenModel.setSechsJahresRabattJaNeinNachrechnungSelected(SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.ALLE);
     }
 
     public void setRadioBtnGroupPraezisierungDifferenzSchulgeld(JRadioButton radioBtnGleichDifferenzSchulgeld, JRadioButton radioBtnKleinerDifferenzSchulgeld, JRadioButton radioBtnGroesserDifferenzSchulgeld) {
@@ -817,8 +861,104 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         this.zurueckListener = zurueckListener;
     }
 
+    void enableDisableFields() {
+        if (semesterrechnungenSuchenModel.getSemesterrechnungCodeJaNeinSelected() != null && semesterrechnungenSuchenModel.getSemesterrechnungCodeJaNeinSelected() != SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.JA) {
+            disableSemesterrechnungCode();
+        } else {
+            enableSemesterrechnungCode();
+        }
+        if (semesterrechnungenSuchenModel.getStipendiumJaNeinSelected() != null && semesterrechnungenSuchenModel.getStipendiumJaNeinSelected() != SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.JA) {
+            disableStipendium();
+        } else {
+            enableStipendium();
+        }
+        if (semesterrechnungenSuchenModel.getRechnungsdatumGesetztVorrechnungSelected() != null && semesterrechnungenSuchenModel.getRechnungsdatumGesetztVorrechnungSelected() != SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.GESETZT) {
+            disableRechungsdatumVorrechnung();
+        } else {
+            enableRechungsdatumVorrechnung();
+        }
+        if (semesterrechnungenSuchenModel.getRechnungsdatumGesetztNachrechnungSelected() != null && semesterrechnungenSuchenModel.getRechnungsdatumGesetztNachrechnungSelected() != SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.GESETZT) {
+            disableRechungsdatumNachrechnung();
+        } else {
+            enableRechungsdatumNachrechnung();
+        }
+    }
+
+    private void enableSemesterrechnungCode() {
+        semesterrechnungenSuchenModel.enableFields(getSemesterrechnungCodeFields());
+    }
+
+    private void disableSemesterrechnungCode() {
+        semesterrechnungenSuchenModel.disableFields(getSemesterrechnungCodeFields());
+    }
+
+    private void enableStipendium() {
+        semesterrechnungenSuchenModel.enableFields(getStipendiumFields());
+    }
+
+    private void disableStipendium() {
+        semesterrechnungenSuchenModel.disableFields(getStipendiumFields());
+    }
+
+    private void enableRechungsdatumVorrechnung() {
+        semesterrechnungenSuchenModel.enableFields(getRechnungsdatumVorrechnungFields());
+    }
+
+    private void disableRechungsdatumVorrechnung() {
+        semesterrechnungenSuchenModel.disableFields(getRechnungsdatumVorrechnungFields());
+        semesterrechnungenSuchenModel.makeErrorLabelsInvisible(getRechnungsdatumVorrechnungFields());
+        // Textfeld in jedem Fall leeren, auch wenn Model-Wert noch null und damit von
+        // semesterrechnungenSuchenModel.invalidateGeburtsdatumSuchperiode() kein Property Change-Event ausgelöst wird
+        txtRechnungsdatumVorrechnung.setText("");
+        semesterrechnungenSuchenModel.invalidateRechnungsdatumVorrechnung();
+    }
+
+    private void enableRechungsdatumNachrechnung() {
+        semesterrechnungenSuchenModel.enableFields(getRechnungsdatumNachrechnungFields());
+    }
+
+    private void disableRechungsdatumNachrechnung() {
+        semesterrechnungenSuchenModel.disableFields(getRechnungsdatumNachrechnungFields());
+        semesterrechnungenSuchenModel.makeErrorLabelsInvisible(getRechnungsdatumNachrechnungFields());
+        // Textfeld in jedem Fall leeren, auch wenn Model-Wert noch null und damit von
+        // semesterrechnungenSuchenModel.invalidateGeburtsdatumSuchperiode() kein Property Change-Event ausgelöst wird
+        txtRechnungsdatumNachrechnung.setText("");
+        semesterrechnungenSuchenModel.invalidateRechnungsdatumNachrechnung();
+    }
+
+    private Set<Field> getSemesterrechnungCodeFields() {
+        Set<Field> semesterrechungCodeComboBoxFields = new HashSet<>();
+        semesterrechungCodeComboBoxFields.add(Field.SEMESTERRECHNUNG_CODE);
+        return semesterrechungCodeComboBoxFields;
+    }
+
+    private Set<Field> getStipendiumFields() {
+        Set<Field> stipendiumComboBoxFields = new HashSet<>();
+        stipendiumComboBoxFields.add(Field.STIPENDIUM);
+        return stipendiumComboBoxFields;
+    }
+
+    private Set<Field> getRechnungsdatumVorrechnungFields() {
+        Set<Field> rechnungsdatumVorrechnungFields = new HashSet<>();
+        rechnungsdatumVorrechnungFields.add(Field.AM_VORRECHNUNG);
+        rechnungsdatumVorrechnungFields.add(Field.VOR_VORRECHNUNG);
+        rechnungsdatumVorrechnungFields.add(Field.NACH_VORRECHNUNG);
+        rechnungsdatumVorrechnungFields.add(Field.RECHNUNGSDATUM_VORRECHNUNG);
+        return rechnungsdatumVorrechnungFields;
+    }
+
+    private Set<Field> getRechnungsdatumNachrechnungFields() {
+        Set<Field> rechnungsdatumNachrechnungFields = new HashSet<>();
+        rechnungsdatumNachrechnungFields.add(Field.AM_NACHRECHNUNG);
+        rechnungsdatumNachrechnungFields.add(Field.VOR_NACHRECHNUNG);
+        rechnungsdatumNachrechnungFields.add(Field.NACH_NACHRECHNUNG);
+        rechnungsdatumNachrechnungFields.add(Field.RECHNUNGSDATUM_NACHRECHNUNG);
+        return rechnungsdatumNachrechnungFields;
+    }
+
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
+        enableDisableFields();
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.SEMESTER, evt)) {
             spinnerSemester.setValue(semesterrechnungenSuchenModel.getSemester());
@@ -840,6 +980,24 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
         else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RolleSelected.ALLE) {
             radioBtnRolleAlle.setSelected(true);
+        }
+        else if (checkIsFieldChange(Field.SEMESTERRECHNUNG_CODE_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.JA) {
+            radioBtnSemesterrechnungCodeJa.setSelected(true);
+        }
+        else if (checkIsFieldChange(Field.SEMESTERRECHNUNG_CODE_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.NEIN) {
+            radioBtnSemesterrechnungCodeNein.setSelected(true);
+        }
+        else if (checkIsFieldChange(Field.SEMESTERRECHNUNG_CODE_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.ALLE) {
+            radioBtnSemesterrechnungCodeAlle.setSelected(true);
+        }
+        else if (checkIsFieldChange(Field.STIPENDIUM_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.JA) {
+            radioBtnStipendiumJa.setSelected(true);
+        }
+        else if (checkIsFieldChange(Field.STIPENDIUM_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.NEIN) {
+            radioBtnStipendiumNein.setSelected(true);
+        }
+        else if (checkIsFieldChange(Field.STIPENDIUM_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.ALLE) {
+            radioBtnStipendiumAlle.setSelected(true);
         }
         else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumVorrechnungSelected.AM) {
             radioBtnAmVorrechnung.setSelected(true);
@@ -889,23 +1047,23 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         else if (checkIsFieldChange(Field.SCHULGELD_VORRECHNUNG, evt)) {
             txtSchulgeldVorrechnung.setText(semesterrechnungenSuchenModel.getSchulgeldVorrechnung() == null ? null : semesterrechnungenSuchenModel.getSchulgeldVorrechnung().toString());
         }
-        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattVorrechnungSelected.VORHANDEN) {
-            radioBtnSechsJahresRabattVorrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.JA) {
+            radioBtnSechsJahresRabattJaVorrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattVorrechnungSelected.NICHT_VORHANDEN) {
-            radioBtnKeinSechsJahresRabattVorrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.NEIN) {
+            radioBtnSechsJahresRabattNeinVorrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattVorrechnungSelected.ALLE) {
+        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.ALLE) {
             radioBtnSechsJahresRabattAlleVorrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.VOLLSTAENDIGKEIT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.VollstaendigkeitVorrechnungSelected.VOLLSTAENDIG) {
-            radioBtnVollstaendigVorrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.GESETZT) {
+            radioBtnRechnungsdatumGesetztVorrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.VOLLSTAENDIGKEIT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.VollstaendigkeitVorrechnungSelected.UNVOLLSTAENDIG) {
-            radioBtnUnvollstaendigVorrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.NICHT_GESETZT) {
+            radioBtnRechnungsdatumNichtGesetztVorrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.VOLLSTAENDIGKEIT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.VollstaendigkeitVorrechnungSelected.ALLE) {
-            radioBtnAlleVollstaendigkeitVorrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.ALLE) {
+            radioBtnRechnungsdatumGesetztAlleVorrechnung.setSelected(true);
         }
         else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumNachrechnungSelected.AM) {
             radioBtnAmNachrechnung.setSelected(true);
@@ -964,23 +1122,23 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         else if (checkIsFieldChange(Field.SCHULGELD_NACHRECHNUNG, evt)) {
             txtSchulgeldNachrechnung.setText(semesterrechnungenSuchenModel.getSchulgeldNachrechnung() == null ? null : semesterrechnungenSuchenModel.getSchulgeldNachrechnung().toString());
         }
-        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattNachrechnungSelected.VORHANDEN) {
-            radioBtnSechsJahresRabattNachrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.JA) {
+            radioBtnSechsJahresRabattJaNachrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattNachrechnungSelected.NICHT_VORHANDEN) {
-            radioBtnKeinSechsJahresRabattNachrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.NEIN) {
+            radioBtnSechsJahresRabattNeinNachrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattNachrechnungSelected.ALLE) {
+        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.ALLE) {
             radioBtnSechsJahresRabattAlleNachrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.VOLLSTAENDIGKEIT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.VollstaendigkeitNachrechnungSelected.VOLLSTAENDIG) {
-            radioBtnVollstaendigNachrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.GESETZT) {
+            radioBtnRechnungsdatumGesetztNachrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.VOLLSTAENDIGKEIT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.VollstaendigkeitNachrechnungSelected.UNVOLLSTAENDIG) {
-            radioBtnUnvollstaendigNachrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.NICHT_GESETZT) {
+            radioBtnRechnungsdatumNichtGesetztNachrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.VOLLSTAENDIGKEIT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.VollstaendigkeitNachrechnungSelected.ALLE) {
-            radioBtnAlleVollstaendigkeitNachrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.ALLE) {
+            radioBtnRechnungsdatumGesetztAlleNachrechnung.setSelected(true);
         }
         else if (checkIsFieldChange(Field.PRAEZISIERUNG_DIFFERENZ_SCHULGELD, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.GLEICH) {
             radioBtnGleichDifferenzSchulgeld.setSelected(true);
@@ -1145,6 +1303,24 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
         super.disableFields(disable, fields);
+        if (radioBtnAmVorrechnung != null && (fields.contains(Field.ALLE) || fields.contains(Field.AM_VORRECHNUNG))) {
+            radioBtnAmVorrechnung.setEnabled(!disable);
+        }
+        if (radioBtnVorVorrechnung != null && (fields.contains(Field.ALLE) || fields.contains(Field.VOR_VORRECHNUNG))) {
+            radioBtnVorVorrechnung.setEnabled(!disable);
+        }
+        if (radioBtnNachVorrechnung != null && (fields.contains(Field.ALLE) || fields.contains(Field.NACH_VORRECHNUNG))) {
+            radioBtnNachVorrechnung.setEnabled(!disable);
+        }
+        if (radioBtnAmNachrechnung != null && (fields.contains(Field.ALLE) || fields.contains(Field.AM_NACHRECHNUNG))) {
+            radioBtnAmNachrechnung.setEnabled(!disable);
+        }
+        if (radioBtnVorNachrechnung != null && (fields.contains(Field.ALLE) || fields.contains(Field.VOR_NACHRECHNUNG))) {
+            radioBtnVorNachrechnung.setEnabled(!disable);
+        }
+        if (radioBtnNachNachrechnung != null && (fields.contains(Field.ALLE) || fields.contains(Field.NACH_NACHRECHNUNG))) {
+            radioBtnNachNachrechnung.setEnabled(!disable);
+        }
     }
 
     class RadioBtnGroupRolleListener implements ActionListener {
@@ -1152,6 +1328,30 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController Rolle Event");
             semesterrechnungenSuchenModel.setRolle(SemesterrechnungenSuchenModel.RolleSelected.valueOf(e.getActionCommand()));
+        }
+    }
+
+    class RadioBtnGroupSemesterrechnungCodeJaNeinListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LOGGER.trace("SemesterrechnungenSuchenController SemesterrechnungCodeJaNein Event");
+            semesterrechnungenSuchenModel.setSemesterrechnungCodeJaNeinSelected(SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.valueOf(e.getActionCommand()));
+        }
+    }
+
+    class RadioBtnGroupStipendiumJaNeinListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LOGGER.trace("SemesterrechnungenSuchenController StipendiumJaNein Event");
+            semesterrechnungenSuchenModel.setStipendiumJaNeinSelected(SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.valueOf(e.getActionCommand()));
+        }
+    }
+
+    class RadioBtnGroupRechnungsdatumGesetztVorrechnungListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LOGGER.trace("SemesterrechnungenSuchenController RechungsdatumGesetztVorrechnung Event");
+            semesterrechnungenSuchenModel.setRechnungsdatumGesetztVorrechnungSelected(SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.valueOf(e.getActionCommand()));
         }
     }
 
@@ -1195,19 +1395,19 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupSechsJahresRabattVorrechnungListener implements ActionListener {
+    class RadioBtnGroupSechsJahresRabattJaNeinVorrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            LOGGER.trace("SemesterrechnungenSuchenController SechsJahresRabattVorrechnung Event");
-            semesterrechnungenSuchenModel.setSechsJahresRabattVorrechnungSelected(SemesterrechnungenSuchenModel.SechsJahresRabattVorrechnungSelected.valueOf(e.getActionCommand()));
+            LOGGER.trace("SemesterrechnungenSuchenController SechsJahresRabattJaNeinVorrechnung Event");
+            semesterrechnungenSuchenModel.setSechsJahresRabattJaNeinVorrechnungSelected(SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.valueOf(e.getActionCommand()));
         }
     }
 
-    class RadioBtnGroupVollstaendigkeitVorrechnungListener implements ActionListener {
+    class RadioBtnGroupRechnungsdatumGesetztNachrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            LOGGER.trace("SemesterrechnungenSuchenController VollstaendigkeitVorrechnung Event");
-            semesterrechnungenSuchenModel.setVollstaendigkeitVorrechnungSelected(SemesterrechnungenSuchenModel.VollstaendigkeitVorrechnungSelected.valueOf(e.getActionCommand()));
+            LOGGER.trace("SemesterrechnungenSuchenController RechnungsdatumGesetztNachrechnung Event");
+            semesterrechnungenSuchenModel.setRechnungsdatumGesetztNachrechnungSelected(SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.valueOf(e.getActionCommand()));
         }
     }
 
@@ -1259,19 +1459,11 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupSechsJahresRabattNachrechnungListener implements ActionListener {
+    class RadioBtnGroupSechsJahresRabattJaNeinNachrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            LOGGER.trace("SemesterrechnungenSuchenController SechsJahresRabattNachrechnung Event");
-            semesterrechnungenSuchenModel.setSechsJahresRabattNachrechnungSelected(SemesterrechnungenSuchenModel.SechsJahresRabattNachrechnungSelected.valueOf(e.getActionCommand()));
-        }
-    }
-
-    class RadioBtnGroupVollstaendigkeitNachrechnungListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            LOGGER.trace("SemesterrechnungenSuchenController VollstaendigkeitNachrechnung Event");
-            semesterrechnungenSuchenModel.setVollstaendigkeitNachrechnungSelected(SemesterrechnungenSuchenModel.VollstaendigkeitNachrechnungSelected.valueOf(e.getActionCommand()));
+            LOGGER.trace("SemesterrechnungenSuchenController SechsJahresRabattJaNeinNachrechnung Event");
+            semesterrechnungenSuchenModel.setSechsJahresRabattJaNeinNachrechnungSelected(SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.valueOf(e.getActionCommand()));
         }
     }
 

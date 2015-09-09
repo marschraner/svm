@@ -83,6 +83,10 @@ public class LektionsgebuehrenTableData {
         return COLUMNS[column].toString();
     }
 
+    public List<Lektionsgebuehren> getLektionsgebuehrenList() {
+        return lektionsgebuehrenList;
+    }
+
     public void setLektionsgebuehrenList(List<Lektionsgebuehren> lektionsgebuehrenList) {
         this.lektionsgebuehrenList = lektionsgebuehrenList;
     }

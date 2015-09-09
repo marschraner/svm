@@ -28,14 +28,14 @@ public abstract class SemesterrechnungController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private JTextField txtRechnungsdatumVorrechnung;
+    protected JTextField txtRechnungsdatumVorrechnung;
     private JTextField txtErmaessigungVorrechnung;
     private JTextField txtErmaessigungsgrundVorrechnung;
     private JTextField txtZuschlagVorrechnung;
     private JTextField txtZuschlagsgrundVorrechnung;
     private JTextField txtAnzahlWochenVorrechnung;
     private JTextField txtWochenbetragVorrechnung;
-    private JTextField txtRechnungsdatumNachrechnung;
+    protected JTextField txtRechnungsdatumNachrechnung;
     private JTextField txtErmaessigungNachrechnung;
     private JTextField txtErmaessigungsgrundNachrechnung;
     private JTextField txtZuschlagNachrechnung;
@@ -73,7 +73,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     private JComboBox<SemesterrechnungCode> comboBoxSemesterrechnungCode;
     private JComboBox<Stipendium> comboBoxStipendium;
     private JCheckBox checkBoxGratiskinder;
-    private SemesterrechnungModel semesterrechnungModel;
+    protected SemesterrechnungModel semesterrechnungModel;
     private SvmContext svmContext;
 
     public SemesterrechnungController(SvmContext svmContext, SemesterrechnungenSuchenModel semesterrechnungModel) {
@@ -1618,6 +1618,18 @@ public abstract class SemesterrechnungController extends AbstractController {
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
+        if (comboBoxSemesterrechnungCode != null && (fields.contains(Field.ALLE) || fields.contains(Field.SEMESTERRECHNUNG_CODE))) {
+            comboBoxSemesterrechnungCode.setEnabled(!disable);
+        }
+        if (comboBoxStipendium != null && (fields.contains(Field.ALLE) || fields.contains(Field.STIPENDIUM))) {
+            comboBoxStipendium.setEnabled(!disable);
+        }
+        if (txtRechnungsdatumVorrechnung != null && (fields.contains(Field.ALLE) || fields.contains(Field.RECHNUNGSDATUM_VORRECHNUNG))) {
+            txtRechnungsdatumVorrechnung.setEnabled(!disable);
+        }
+        if (txtRechnungsdatumNachrechnung != null && (fields.contains(Field.ALLE) || fields.contains(Field.RECHNUNGSDATUM_NACHRECHNUNG))) {
+            txtRechnungsdatumNachrechnung.setEnabled(!disable);
+        }
     }
 
 }

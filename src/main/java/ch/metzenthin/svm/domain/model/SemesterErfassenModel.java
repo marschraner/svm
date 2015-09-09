@@ -28,5 +28,7 @@ public interface SemesterErfassenModel extends Model {
     Semester getNaechstesNochNichtErfasstesSemester(SvmModel svmModel);
     boolean checkSemesterBereitsErfasst(SvmModel svmModel);
     boolean checkSemesterUeberlapptAndereSemester(SvmModel svmModel);
+    boolean checkIfUpdateAffectsSemesterrechnungen();
+    void updateAnzWochenSemesterrechnungen();
     void speichern(SvmModel svmModel, SemestersTableModel semestersTableModel);
 }

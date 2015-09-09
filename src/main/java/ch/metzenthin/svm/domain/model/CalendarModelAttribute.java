@@ -86,6 +86,10 @@ public class CalendarModelAttribute {
     /**
      * Achtung: Neuer Wert wird nicht geprüft!
      */
+    void initValue(String newValue) {
+        initValue(newValue, Converter.DD_MM_YYYY_DATE_FORMAT_STRING);
+    }
+
     void initValue(String newValue, String dateFormatString) {
         String oldValue = getValueAsString(dateFormatString);
         Calendar newValueAsCalendar = null;

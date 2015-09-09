@@ -3,7 +3,6 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.domain.commands.DeleteKursCommand;
 import ch.metzenthin.svm.domain.model.KurseModel;
 import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
@@ -157,36 +156,39 @@ public class KurseController {
 
     private void onLoeschenKurse() {
         btnLoeschen.setFocusPainted(true);
+        int n;
         Object[] options = {"Ja", "Nein"};
-        int n = JOptionPane.showOptionDialog(
-                null,
-                "Soll der Eintrag aus der Datenbank gelöscht werden?",
-                "Eintrag löschen?",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
-                options,  //the titles of buttons
-                options[1]); //default button title
+        if (kurseModel.checkIfKursHasKursanmeldungen(kurseTableModel, kurseTable.convertRowIndexToModel(kurseTable.getSelectedRow()))) {
+            n = JOptionPane.showOptionDialog(
+                    null,
+                    "Der Kurs wird durch mindestens eine Kursanmeldung referenziert. Beim Löschen des Kurses \n" +
+                            "werden die Kursanmeldungen ebenfalls unwiderruflich gelöscht. Fortfahren?",
+                    "Warnung",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,     //do not use a custom Icon
+                    options,  //the titles of buttons
+                    options[1]); //default button title
+        } else {
+            n = JOptionPane.showOptionDialog(
+                    null,
+                    "Soll der Eintrag aus der Datenbank gelöscht werden?",
+                    "Kurs löschen?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,     //do not use a custom Icon
+                    options,  //the titles of buttons
+                    options[1]); //default button title
+        }
         if (n == 0) {
-            DeleteKursCommand.Result result  = kurseModel.kursLoeschen(kurseTableModel, kurseTable.convertRowIndexToModel(kurseTable.getSelectedRow()));
-            switch (result) {
-                case KURS_VON_SCHUELER_REFERENZIERT:
-                    JOptionPane.showMessageDialog(null, "Der Kurs wird durch mindestens einen Schüler referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                    btnLoeschen.setFocusPainted(false);
-                    break;
-                case LOESCHEN_ERFOLGREICH:
-                    kurseTableModel.fireTableDataChanged();
-                    kurseTable.addNotify();
-                    break;
-            }
+            kurseModel.kursLoeschen(kurseTableModel, kurseTable.convertRowIndexToModel(kurseTable.getSelectedRow()));
+            kurseTableModel.fireTableDataChanged();
+            kurseTable.addNotify();
         }
         lblTotal.setText(kurseModel.getTotal(kurseTableModel));
         btnLoeschen.setFocusPainted(false);
         enableBtnLoeschen(false);
         kurseTable.clearSelection();
-        if (kurseTableModel.getRowCount() == 0) {
-            btnImportieren.setEnabled(true);
-        }
         if (kurseTableModel.getRowCount() > 0) {
             btnExportieren.setEnabled(true);
         } else {
@@ -196,10 +198,6 @@ public class KurseController {
 
     public void setBtnImportieren(JButton btnImportieren) {
         this.btnImportieren = btnImportieren;
-        if (kurseTableModel.getRowCount() > 0) {
-            btnImportieren.setEnabled(false);
-            return;
-        }
         btnImportieren.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -216,10 +214,11 @@ public class KurseController {
         } else {
             msg = "Sollen die Kurse vom 1. Semester (inklusive Schüler) importiert werden?";
         }
+        msg = msg + "\n(Bereits vorhandene Kurse werden nicht überschrieben.)";
         int n = JOptionPane.showOptionDialog(
                 null,
                 msg,
-                "Import Kurse vom vorherigen Semester?",
+                "Kurse vom vorherigen Semester importiert werden?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,     //do not use a custom Icon
@@ -229,11 +228,11 @@ public class KurseController {
             kurseModel.importKurseFromPreviousSemester(svmContext.getSvmModel(), kurseSemesterwahlModel, kurseTableModel);
             kurseTableModel.fireTableDataChanged();
             lblTotal.setText(kurseModel.getTotal(kurseTableModel));
-            btnImportieren.setEnabled(false);
             if (kurseTableModel.getRowCount() > 0) {
                 btnExportieren.setEnabled(true);
             }
         }
+        btnImportieren.setFocusPainted(false);
     }
 
     public void setBtnExportieren(JButton btnExportieren) {
@@ -251,7 +250,7 @@ public class KurseController {
 
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
-        ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, null, null, kurseTableModel, ListenExportTyp.KURSE);
+        ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, null, null, kurseTableModel, null, ListenExportTyp.KURSE);
         listenExportDialog.pack();
         listenExportDialog.setVisible(true);
         btnExportieren.setFocusPainted(false);

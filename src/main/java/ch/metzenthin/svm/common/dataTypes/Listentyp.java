@@ -16,7 +16,11 @@ public enum Listentyp {
     ELTERNMITHILFE_ADRESSETIKETTEN("Eltern-Mithilfe-Adressetiketten", null, Filetyp.CSV),
     LEHRKRAEFTE_ADRESSLISTE("Adressliste", null, Filetyp.DOCX),
     LEHRKRAEFTE_ADRESSETIKETTEN("Adressetiketten", null, Filetyp.CSV),
-    KURSLISTE("Kursliste", null, Filetyp.DOCX);
+    KURSLISTE("Kursliste", null, Filetyp.DOCX),
+    VORRECHNUNGEN_SERIENBRIEF("Vorrechnungen-Serienbrief", null, Filetyp.CSV),
+    NACHRECHNUNGEN_SERIENBRIEF("Nachrechnungen-Serienbrief", null, Filetyp.CSV),
+    MAHNUNGEN_SERIENBRIEF("Mahnungen-Serienbrief", null, Filetyp.CSV),
+    RECHNUNGSLISTE("Rechnungsliste", null, Filetyp.CSV);
 
     private String name;
     private String svmPropertiesKey;

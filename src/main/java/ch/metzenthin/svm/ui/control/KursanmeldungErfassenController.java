@@ -122,7 +122,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         });
         if (!isBearbeiten) {
             // Model initialisieren
-            kursanmeldungErfassenModel.setSemester(kursanmeldungErfassenModel.getInitSemester(svmContext.getSvmModel()));
+            kursanmeldungErfassenModel.setSemester(kursanmeldungErfassenModel.getInitSemester(semesterList));
         }
     }
 

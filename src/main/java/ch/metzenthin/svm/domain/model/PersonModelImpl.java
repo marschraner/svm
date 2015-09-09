@@ -47,7 +47,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute nachnameModelAttribute = new StringModelAttribute(
             this,
-            Field.NACHNAME, 2, 50,
+            Field.NACHNAME, 1, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -73,7 +73,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute vornameModelAttribute = new StringModelAttribute(
             this,
-            Field.VORNAME, 2, 50,
+            Field.VORNAME, 1, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -185,7 +185,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute strasseHausnummerModelAttribute = new StringModelAttribute(
             this,
-            Field.STRASSE_HAUSNUMMER, 2, 50,
+            Field.STRASSE_HAUSNUMMER, 1, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -247,7 +247,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute ortModelAttribute = new StringModelAttribute(
             this,
-            Field.ORT, 2, 50,
+            Field.ORT, 1, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
