@@ -11,12 +11,12 @@ import java.util.*;
 /**
  * @author Martin Schraner
  */
-public class MonatsstatistikModelImpl extends AbstractModel implements MonatsstatistikModel {
+public class MonatsstatistikSchuelerModelImpl extends AbstractModel implements MonatsstatistikSchuelerModel {
 
     private Calendar monatJahr;
     private AnAbmeldungenDispensationenSelected anAbmeldungenDispensationen;
 
-    public MonatsstatistikModelImpl(CommandInvoker commandInvoker) {
+    public MonatsstatistikSchuelerModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
     }
 

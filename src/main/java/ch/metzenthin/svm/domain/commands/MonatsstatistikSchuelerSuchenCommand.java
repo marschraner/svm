@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.domain.model.MonatsstatistikModel;
+import ch.metzenthin.svm.domain.model.MonatsstatistikSchuelerModel;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import org.apache.log4j.Logger;
 
@@ -17,7 +17,7 @@ public class MonatsstatistikSchuelerSuchenCommand extends GenericDaoCommand {
     private static final Logger LOGGER = Logger.getLogger(MonatsstatistikSchuelerSuchenCommand.class);
 
     // input
-    private MonatsstatistikModel.AnAbmeldungenDispensationenSelected anAbmeldungenDispensationen;
+    private MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected anAbmeldungenDispensationen;
     private Calendar monatJahr;
     private StringBuilder selectStatementSb;
     private TypedQuery<Schueler> typedQuery;
@@ -25,9 +25,9 @@ public class MonatsstatistikSchuelerSuchenCommand extends GenericDaoCommand {
     // output
     private List<Schueler> schuelerFound;
 
-    public MonatsstatistikSchuelerSuchenCommand(MonatsstatistikModel monatsstatistikModel) {
-        this.anAbmeldungenDispensationen = monatsstatistikModel.getAnAbmeldungenDispensationen();
-        this.monatJahr = monatsstatistikModel.getMonatJahr();
+    public MonatsstatistikSchuelerSuchenCommand(MonatsstatistikSchuelerModel monatsstatistikSchuelerModel) {
+        this.anAbmeldungenDispensationen = monatsstatistikSchuelerModel.getAnAbmeldungenDispensationen();
+        this.monatJahr = monatsstatistikSchuelerModel.getMonatJahr();
     }
 
     @Override
@@ -62,13 +62,13 @@ public class MonatsstatistikSchuelerSuchenCommand extends GenericDaoCommand {
     }
     
     private void createQuery() {
-        if (anAbmeldungenDispensationen == MonatsstatistikModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN) {
+        if (anAbmeldungenDispensationen == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN) {
             selectStatementSb.append(" exists (select anm from Anmeldung anm join anm.schueler sch where anm.anmeldedatum >= :statistikMonatBeginn and anm.anmeldedatum < :statistikMonatEnde and s.personId = sch.personId) and");
         }
-        if (anAbmeldungenDispensationen == MonatsstatistikModel.AnAbmeldungenDispensationenSelected.ABMELDUNGEN) {
+        if (anAbmeldungenDispensationen == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ABMELDUNGEN) {
             selectStatementSb.append(" exists (select anm from Anmeldung anm join anm.schueler sch where anm.abmeldedatum >= :statistikMonatBeginn and anm.abmeldedatum < :statistikMonatEnde and s.personId = sch.personId) and");
         }
-        if (anAbmeldungenDispensationen == MonatsstatistikModel.AnAbmeldungenDispensationenSelected.DISPENSATIONEN) {
+        if (anAbmeldungenDispensationen == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.DISPENSATIONEN) {
             selectStatementSb.append(" exists (select dis from Dispensation dis join dis.schueler sch where dis.dispensationsbeginn < :statistikMonatEnde and dis.dispensationsende >= :statistikMonatBeginn and s.personId = sch.personId) and");
         }
     }

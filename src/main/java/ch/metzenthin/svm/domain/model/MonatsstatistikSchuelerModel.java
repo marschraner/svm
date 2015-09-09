@@ -7,7 +7,7 @@ import java.util.Calendar;
 /**
  * @author Martin Schraner
  */
-public interface MonatsstatistikModel extends Model {
+public interface MonatsstatistikSchuelerModel extends Model {
 
     enum AnAbmeldungenDispensationenSelected {
         ANMELDUNGEN,
@@ -19,8 +19,9 @@ public interface MonatsstatistikModel extends Model {
 
     Calendar getMonatJahr();
     AnAbmeldungenDispensationenSelected getAnAbmeldungenDispensationen();
-    SchuelerSuchenTableData suchen(SvmModel svmModel);
 
     void setMonatJahr(String anAbmeldemonat) throws SvmValidationException;
     void setAnAbmeldungenDispensationen(AnAbmeldungenDispensationenSelected anAbmeldungen);
+
+    SchuelerSuchenTableData suchen(SvmModel svmModel);
 }

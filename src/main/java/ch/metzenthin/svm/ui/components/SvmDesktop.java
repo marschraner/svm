@@ -103,17 +103,17 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
 
-        menuItem = new JMenuItem("Monatsstatistik");
-        menuItem.setMnemonic(KeyEvent.VK_M);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_MASK));
-        menuItem.setActionCommand("monatsstatistik");
-        menuItem.addActionListener(this);
-        menuSchueler.add(menuItem);
-
         menuItem = new JMenuItem("Schüler-Codes verwalten");
         menuItem.setMnemonic(KeyEvent.VK_O);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.ALT_MASK));
         menuItem.setActionCommand("schuelerCodesVerwalten");
+        menuItem.addActionListener(this);
+        menuSchueler.add(menuItem);
+
+        menuItem = new JMenuItem("Monatsstatistik");
+        menuItem.setMnemonic(KeyEvent.VK_M);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("monatsstatistikSchueler");
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
 
@@ -149,6 +149,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.setMnemonic(KeyEvent.VK_O);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.ALT_MASK));
         menuItem.setActionCommand("kursorteVerwalten");
+        menuItem.addActionListener(this);
+        menuKurse.add(menuItem);
+
+        menuItem = new JMenuItem("Monatsstatistik");
+        menuItem.setMnemonic(KeyEvent.VK_M);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("monatsstatistikKurse");
         menuItem.addActionListener(this);
         menuKurse.add(menuItem);
 
@@ -204,9 +211,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
         if ((activeComponent != null) && !"beenden".equals(e.getActionCommand())) {
             svmContext.getCommandInvoker().clear();
             activeComponent.setVisible(false);
+
         }
 
-        if ("schuelerErfassen".equals(e.getActionCommand())) {
+        if ("schuelerSuchen".equals(e.getActionCommand())) {
+            setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), "Schüler suchen");
+
+        } else if ("schuelerErfassen".equals(e.getActionCommand())) {
             SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext);
             schuelerErfassenPanel.addCloseListener(new ActionListener() {
                 @Override
@@ -222,11 +233,18 @@ public class SvmDesktop extends JFrame implements ActionListener {
             });
             setAndShowActivePanel(schuelerErfassenPanel.$$$getRootComponent$$$(), "Neuen Schüler erfassen");
 
-        } else if ("schuelerSuchen".equals(e.getActionCommand())) {
-            setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), "Schüler suchen");
+        } else if ("schuelerCodesVerwalten".equals(e.getActionCommand())) {
+            CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.SCHUELER);
+            codesPanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFrameAbbrechen();
+                }
+            });
+            setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Schüler-Codes verwalten");
 
-        } else if ("monatsstatistik".equals(e.getActionCommand())) {
-            MonatsstatistikPanel anAbmeldestatistikPanel = new MonatsstatistikPanel(svmContext);
+        } else if ("monatsstatistikSchueler".equals(e.getActionCommand())) {
+            MonatsstatistikSchuelerPanel anAbmeldestatistikPanel = new MonatsstatistikSchuelerPanel(svmContext);
             anAbmeldestatistikPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -239,17 +257,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
                     onNextPanelAvailable(e.getSource());
                 }
             });
-            setAndShowActivePanel(anAbmeldestatistikPanel.$$$getRootComponent$$$(), "Monatsstatistik");
-
-        } else if ("schuelerCodesVerwalten".equals(e.getActionCommand())) {
-            CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.SCHUELER);
-            codesPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
-            setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Schüler-Codes verwalten");
+            setAndShowActivePanel(anAbmeldestatistikPanel.$$$getRootComponent$$$(), "Monatsstatistik Schüler");
 
         } else if ("lehrkraefteVerwalten".equals(e.getActionCommand())) {
             LehrkraeftePanel lehrkraeftePanel = new LehrkraeftePanel(svmContext);
@@ -296,6 +304,16 @@ public class SvmDesktop extends JFrame implements ActionListener {
                 }
             });
             setAndShowActivePanel(kursortePanel.$$$getRootComponent$$$(), "Kursorte verwalten");
+
+        } else if ("monatsstatistikKurse".equals(e.getActionCommand())) {
+            MonatsstatistikKursePanel monatsstatistikKursePanel = new MonatsstatistikKursePanel(svmContext);
+            monatsstatistikKursePanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFrameAbbrechen();
+                }
+            });
+            setAndShowActivePanel(monatsstatistikKursePanel.$$$getRootComponent$$$(), "Monatsstatistik Kurse");
 
         } else if ("semesterVerwalten".equals(e.getActionCommand())) {
             SemestersPanel semestersPanel = new SemestersPanel(svmContext);

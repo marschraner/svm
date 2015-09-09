@@ -9,7 +9,8 @@ public interface ModelFactory {
     AngehoerigerModel createAngehoerigerModel();
     SchuelerErfassenModel createSchuelerErfassenModel();
     SchuelerSuchenModel createSchuelerSuchenModel();
-    MonatsstatistikModel createMonatsstatistikModel();
+    MonatsstatistikSchuelerModel createMonatsstatistikSchuelerModel();
+    MonatsstatistikKurseModel createMonatsstatistikKurseModel();
     DispensationenModel createDispensationenModel();
     DispensationErfassenModel createDispensationErfassenModel();
     CodesModel createCodesModel();

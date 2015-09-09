@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.model.MonatsstatistikModel;
-import ch.metzenthin.svm.ui.control.MonatsstatistikController;
+import ch.metzenthin.svm.domain.model.MonatsstatistikSchuelerModel;
+import ch.metzenthin.svm.ui.control.MonatsstatistikSchuelerController;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 /**
  * @author Martin Schraner
  */
-public class MonatsstatistikPanel {
+public class MonatsstatistikSchuelerPanel {
 
     private JPanel panel;
     private JButton btnSuchen;
@@ -27,16 +27,16 @@ public class MonatsstatistikPanel {
     private JPanel titelPanel;
     private JPanel datenPanel;
     private JPanel buttonPanel;
-    private MonatsstatistikController monatsstatistikController;
-    private MonatsstatistikModel monatsstatistikModel;
+    private MonatsstatistikSchuelerController monatsstatistikSchuelerController;
+    private MonatsstatistikSchuelerModel monatsstatistikSchuelerModel;
     private ActionListener nextPanelListener;
 
-    public MonatsstatistikPanel(SvmContext svmContext) {
+    public MonatsstatistikSchuelerPanel(SvmContext svmContext) {
         $$$setupUI$$$();
-        monatsstatistikModel = svmContext.getModelFactory().createMonatsstatistikModel();
+        monatsstatistikSchuelerModel = svmContext.getModelFactory().createMonatsstatistikSchuelerModel();
         initializeErrLbls();
         btnSuchen.setEnabled(true);
-        createMonatsstatistikController(svmContext);
+        createMonatsstatistikSchuelerController(svmContext);
     }
 
     private void initializeErrLbls() {
@@ -44,14 +44,14 @@ public class MonatsstatistikPanel {
         errLblMonatJahr.setForeground(Color.RED);
     }
 
-    private void createMonatsstatistikController(SvmContext svmContext) {
-        monatsstatistikController = new MonatsstatistikController(svmContext, monatsstatistikModel);
-        monatsstatistikController.setTxtMonatJahr(txtMonatJahr);
-        monatsstatistikController.setRadioBtnGroupAnAbmeldungenDispensationen(radioBtnAnmeldungen, radioBtnAbmeldungen, radioBtnDispensationen);
-        monatsstatistikController.setBtnSuchen(btnSuchen);
-        monatsstatistikController.setBtnAbbrechen(btnAbbrechen);
-        monatsstatistikController.setErrLblMonatJahr(errLblMonatJahr);
-        monatsstatistikController.addZurueckListener(new ActionListener() {
+    private void createMonatsstatistikSchuelerController(SvmContext svmContext) {
+        monatsstatistikSchuelerController = new MonatsstatistikSchuelerController(svmContext, monatsstatistikSchuelerModel);
+        monatsstatistikSchuelerController.setTxtMonatJahr(txtMonatJahr);
+        monatsstatistikSchuelerController.setRadioBtnGroupAnAbmeldungenDispensationen(radioBtnAnmeldungen, radioBtnAbmeldungen, radioBtnDispensationen);
+        monatsstatistikSchuelerController.setBtnSuchen(btnSuchen);
+        monatsstatistikSchuelerController.setBtnAbbrechen(btnAbbrechen);
+        monatsstatistikSchuelerController.setErrLblMonatJahr(errLblMonatJahr);
+        monatsstatistikSchuelerController.addZurueckListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onZurueck();
@@ -64,12 +64,12 @@ public class MonatsstatistikPanel {
     }
 
     public void addCloseListener(ActionListener actionListener) {
-        monatsstatistikController.addCloseListener(actionListener);
+        monatsstatistikSchuelerController.addCloseListener(actionListener);
     }
 
     public void addNextPanelListener(ActionListener nextPanelListener) {
         this.nextPanelListener = nextPanelListener;
-        monatsstatistikController.addNextPanelListener(nextPanelListener);
+        monatsstatistikSchuelerController.addNextPanelListener(nextPanelListener);
     }
 
     /**
@@ -206,7 +206,7 @@ public class MonatsstatistikPanel {
         datenPanel.add(titelPanel, gbc);
         final JLabel label1 = new JLabel();
         label1.setFont(new Font(label1.getFont().getName(), label1.getFont().getStyle(), 36));
-        label1.setText("Monatsstatistik");
+        label1.setText("Monatsstatistik Schüler");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;

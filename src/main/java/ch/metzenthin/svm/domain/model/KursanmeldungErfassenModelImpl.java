@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Schuljahre;
+import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -140,7 +141,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
         if (!isBulkUpdate() && kursanmeldung.getAnmeldedatum() != null && kursanmeldung.getAnmeldedatum().before(semester.getSemesterbeginn())) {
             kursanmeldung.setAnmeldedatum(null);
             invalidate();
-            throw new SvmValidationException(2026, "Anmeldedatum vor Semesterbeginn", Field.ANMELDEDATUM);
+            throw new SvmValidationException(2026, "Datum darf nicht vor " + asString(semester.getSemesterbeginn()) + " liegen", Field.ANMELDEDATUM);
         }
     }
 
@@ -173,10 +174,11 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
             invalidate();
             throw new SvmValidationException(2024, "Keine gültige Periode", Field.ABMELDEDATUM);
         }
-        if (!isBulkUpdate() && kursanmeldung.getAbmeldedatum() != null && kursanmeldung.getAbmeldedatum().after(semester.getSemesterende())) {
+        Calendar semesterbeginnNaechstesSemesterMinusEinTag = getSemesterbeginnNaechstesSemesterMinusEinTag();
+        if (!isBulkUpdate() && kursanmeldung.getAbmeldedatum() != null && kursanmeldung.getAbmeldedatum().after(semesterbeginnNaechstesSemesterMinusEinTag)) {
             kursanmeldung.setAnmeldedatum(null);
             invalidate();
-            throw new SvmValidationException(2028, "Abmeldedatum nach Semesterende", Field.ABMELDEDATUM);
+            throw new SvmValidationException(2028, "Datum darf nicht nach " + asString(semesterbeginnNaechstesSemesterMinusEinTag) + " liegen", Field.ABMELDEDATUM);
         }
     }
 
@@ -195,6 +197,32 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
                 }
             }
     );
+
+    private Calendar getSemesterbeginnNaechstesSemesterMinusEinTag() {
+        CommandInvoker commandInvoker = getCommandInvoker();
+        FindNextSemesterCommand findNextSemesterCommand = new FindNextSemesterCommand(semester);
+        commandInvoker.executeCommand(findNextSemesterCommand);
+        Semester nextSemester = findNextSemesterCommand.getNextSemester();
+
+        // Nächstes Semester bereits erfasst
+        Calendar semesterbeginnNaechstesSemesterMinusEinTag;
+        if (nextSemester != null) {
+            semesterbeginnNaechstesSemesterMinusEinTag = findNextSemesterCommand.getNextSemester().getSemesterbeginn();
+            semesterbeginnNaechstesSemesterMinusEinTag.add(Calendar.DAY_OF_YEAR, -1);
+        }
+
+        // nächstes Semester noch nicht erfasst
+        else {
+            semesterbeginnNaechstesSemesterMinusEinTag = (Calendar) semester.getSemesterende().clone();
+            if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+                semesterbeginnNaechstesSemesterMinusEinTag.add(Calendar.DAY_OF_YEAR, 15);   // 2 Wochen Sportferien
+            } else {
+                semesterbeginnNaechstesSemesterMinusEinTag.add(Calendar.DAY_OF_YEAR, 35);
+            }
+        }
+        return semesterbeginnNaechstesSemesterMinusEinTag;
+
+    }
 
     @Override
     public String getBemerkungen() {
