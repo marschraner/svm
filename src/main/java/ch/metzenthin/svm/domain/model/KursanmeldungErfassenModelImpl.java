@@ -174,7 +174,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
             invalidate();
             throw new SvmValidationException(2024, "Keine gültige Periode", Field.ABMELDEDATUM);
         }
-        Calendar semesterbeginnNaechstesSemesterMinusEinTag = getSemesterbeginnNaechstesSemesterMinusEinTag();
+        Calendar semesterbeginnNaechstesSemesterMinusEinTag = getSemesterbeginnNaechstesSemester();
         if (!isBulkUpdate() && kursanmeldung.getAbmeldedatum() != null && kursanmeldung.getAbmeldedatum().after(semesterbeginnNaechstesSemesterMinusEinTag)) {
             kursanmeldung.setAnmeldedatum(null);
             invalidate();
@@ -198,29 +198,28 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
             }
     );
 
-    private Calendar getSemesterbeginnNaechstesSemesterMinusEinTag() {
+    private Calendar getSemesterbeginnNaechstesSemester() {
         CommandInvoker commandInvoker = getCommandInvoker();
         FindNextSemesterCommand findNextSemesterCommand = new FindNextSemesterCommand(semester);
         commandInvoker.executeCommand(findNextSemesterCommand);
         Semester nextSemester = findNextSemesterCommand.getNextSemester();
 
         // Nächstes Semester bereits erfasst
-        Calendar semesterbeginnNaechstesSemesterMinusEinTag;
+        Calendar semesterbeginnNaechstesSemester;
         if (nextSemester != null) {
-            semesterbeginnNaechstesSemesterMinusEinTag = findNextSemesterCommand.getNextSemester().getSemesterbeginn();
-            semesterbeginnNaechstesSemesterMinusEinTag.add(Calendar.DAY_OF_YEAR, -1);
+            semesterbeginnNaechstesSemester = findNextSemesterCommand.getNextSemester().getSemesterbeginn();
         }
 
         // nächstes Semester noch nicht erfasst
         else {
-            semesterbeginnNaechstesSemesterMinusEinTag = (Calendar) semester.getSemesterende().clone();
+            semesterbeginnNaechstesSemester = (Calendar) semester.getSemesterende().clone();
             if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
-                semesterbeginnNaechstesSemesterMinusEinTag.add(Calendar.DAY_OF_YEAR, 15);   // 2 Wochen Sportferien
+                semesterbeginnNaechstesSemester.add(Calendar.DAY_OF_YEAR, 16);   // 2 Wochen Sportferien
             } else {
-                semesterbeginnNaechstesSemesterMinusEinTag.add(Calendar.DAY_OF_YEAR, 35);
+                semesterbeginnNaechstesSemester.add(Calendar.DAY_OF_YEAR, 37);
             }
         }
-        return semesterbeginnNaechstesSemesterMinusEinTag;
+        return semesterbeginnNaechstesSemester;
 
     }
 

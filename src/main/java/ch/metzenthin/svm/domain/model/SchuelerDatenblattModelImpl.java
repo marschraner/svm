@@ -294,13 +294,18 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     @Override
     public String getSemesterKurseAsString(SvmModel svmModel) {
         if (!schueler.getKursanmeldungen().isEmpty()) {
+            FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
+            findSemesterForCalendarCommand.execute();
+            Semester previousSemester = findSemesterForCalendarCommand.getPreviousSemester();
+            Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
+            Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
             StringBuilder semesterSb = new StringBuilder("<html>");
             String previousSchuljahr = null;
             Semesterbezeichnung previousSemesterbezeichnung = null;
             boolean gleichesSemester = false;
             for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
                 Kurs kurs = kursanmeldung.getKurs();
-                if (!isKursToBeDisplayed(svmModel, kurs)) {
+                if (!isKursToBeDisplayed(kurs, previousSemester, currentSemester, nextSemester)) {
                     continue;
                 }
                 gleichesSemester = previousSchuljahr != null && previousSemesterbezeichnung != null
@@ -331,13 +336,18 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     @Override
     public String getKurseAsString(SvmModel svmModel) {
-        String previousSchuljahr = null;
-        Semesterbezeichnung previousSemesterbezeichnung = null;
         if (!schueler.getKursanmeldungen().isEmpty()) {
+            FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
+            findSemesterForCalendarCommand.execute();
+            Semester previousSemester = findSemesterForCalendarCommand.getPreviousSemester();
+            Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
+            Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
+            String previousSchuljahr = null;
+            Semesterbezeichnung previousSemesterbezeichnung = null;
             StringBuilder kurseSb = new StringBuilder("<html>");
             for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
                 Kurs kurs = kursanmeldung.getKurs();
-                if (!isKursToBeDisplayed(svmModel, kurs)) {
+                if (!isKursToBeDisplayed(kurs, previousSemester, currentSemester, nextSemester)) {
                     continue;
                 }
                 boolean gleichesSemester = false;
@@ -363,17 +373,12 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         return "";
     }
 
-    private boolean isKursToBeDisplayed(SvmModel svmModel, Kurs kurs) {
-        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
-        findSemesterForCalendarCommand.execute();
-        Semester previousSemester = findSemesterForCalendarCommand.getPreviousSemester();
-        Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
-        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
-        return (currentSemester != null && kurs.getSemester().isIdenticalWith(currentSemester))
+    private boolean isKursToBeDisplayed(Kurs kurs, Semester previousSemester, Semester currentSemester, Semester nextSemester) {
+        return (currentSemester != null && kurs.getSemester().getSemesterId().equals(currentSemester.getSemesterId()))
                 // bereits erfasstes nächstes Semester
-                || (nextSemester != null && kurs.getSemester().isIdenticalWith(nextSemester))
+                || (nextSemester != null && kurs.getSemester().getSemesterId().equals(nextSemester.getSemesterId()))
                 // zwischen zwei Semestern
-                || (currentSemester == null && previousSemester != null && kurs.getSemester().isIdenticalWith(previousSemester));
+                || (currentSemester == null && previousSemester != null && kurs.getSemester().getSemesterId().equals(previousSemester.getSemesterId()));
     }
 
     @Override

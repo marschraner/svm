@@ -330,7 +330,7 @@ DESCRIBE Kurs_Lehrkraft;
 CREATE TABLE IF NOT EXISTS Kursanmeldung (
     person_id                  INT           NOT NULL,
     kurs_id                    INT           NOT NULL,
-    anmeldedatum               DATE,
+    anmeldedatum               DATE          NOT NULL,
     abmeldedatum               DATE,
     bemerkungen                VARCHAR(100),
     last_updated               TIMESTAMP     NOT NULL,

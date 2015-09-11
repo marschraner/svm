@@ -30,7 +30,7 @@ public class Kursanmeldung implements Comparable<Kursanmeldung> {
     private Timestamp version;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "anmeldedatum", nullable = true)
+    @Column(name = "anmeldedatum", nullable = false)
     private Calendar anmeldedatum;
 
     @Temporal(TemporalType.DATE)

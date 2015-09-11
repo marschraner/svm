@@ -195,7 +195,7 @@ public class KursanmeldungDaoTest {
             schueler.setRechnungsempfaenger(vater);
 
             // Kurseinteilung
-            Kursanmeldung kursanmeldung = new Kursanmeldung(schueler, kurs, null, null, null);
+            Kursanmeldung kursanmeldung = new Kursanmeldung(schueler, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 30), null, null);
             Kursanmeldung kursanmeldungSaved = kursanmeldungDao.save(kursanmeldung);
             int personId = kursanmeldungSaved.getSchueler().getPersonId();
             int kursId = kursanmeldungSaved.getKurs().getKursId();
@@ -286,11 +286,11 @@ public class KursanmeldungDaoTest {
             kursDao.save(kurs2);
 
             // Kurseinteilungen
-            Kursanmeldung kursanmeldung1 = new Kursanmeldung(schueler1, kurs1, null, null, null);
+            Kursanmeldung kursanmeldung1 = new Kursanmeldung(schueler1, kurs1, new GregorianCalendar(2015, Calendar.AUGUST, 30), null, null);
             entityManager.persist(kursanmeldung1);
-            Kursanmeldung kursanmeldung2 = new Kursanmeldung(schueler2, kurs1, null, null, null);
+            Kursanmeldung kursanmeldung2 = new Kursanmeldung(schueler2, kurs1, new GregorianCalendar(2015, Calendar.AUGUST, 30), null, null);
             entityManager.persist(kursanmeldung2);
-            Kursanmeldung kursanmeldung3 = new Kursanmeldung(schueler1, kurs2, null, null, null);
+            Kursanmeldung kursanmeldung3 = new Kursanmeldung(schueler1, kurs2, new GregorianCalendar(2015, Calendar.AUGUST, 30), null, null);
             entityManager.persist(kursanmeldung3);
 
             entityManager.persist(kursanmeldung2);

@@ -115,15 +115,15 @@ public class SaveOrUpdateKursanmeldungCommandTest {
         saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs2, semester2, kurstyp2, kursort2, lehrkraft2, lehrkraft1, null, erfassteKurse);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursCommand);
 
-        assertFalse(checkIfKursanmeldungAvailable(schueler1, kurs1, null, null, "Testbemerkung1"));
+        assertFalse(checkIfKursanmeldungAvailable(schueler1, kurs1, new GregorianCalendar(2015, Calendar.AUGUST, 27), null, "Testbemerkung1"));
         assertFalse(checkIfKursanmeldungAvailable(schueler2, kurs2, new GregorianCalendar(2015, Calendar.AUGUST, 30), new GregorianCalendar(2016, Calendar.FEBRUARY, 2), "Testbemerkung2"));
 
         // 1. Kursanmeldung erfassen
-        Kursanmeldung kursanmeldung1 = new Kursanmeldung(schueler1, kurs1, null, null, "Testbemerkung1");
+        Kursanmeldung kursanmeldung1 = new Kursanmeldung(schueler1, kurs1, new GregorianCalendar(2015, Calendar.AUGUST, 27), null, "Testbemerkung1");
         SaveOrUpdateKursanmeldungCommand saveOrUpdateKursanmeldungCommand = new SaveOrUpdateKursanmeldungCommand(kursanmeldung1, null, erfassteKursanmeldungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursanmeldungCommand);
 
-        assertTrue(checkIfKursanmeldungAvailable(schueler1, kurs1, null, null, "Testbemerkung1"));
+        assertTrue(checkIfKursanmeldungAvailable(schueler1, kurs1, new GregorianCalendar(2015, Calendar.AUGUST, 27), null, "Testbemerkung1"));
 
         // 2. Kursanmeldung erfassen
         Kursanmeldung kursanmeldung2 = new Kursanmeldung(schueler2, kurs2, new GregorianCalendar(2015, Calendar.AUGUST, 30), new GregorianCalendar(2016, Calendar.FEBRUARY, 2), "Testbemerkung2");
@@ -133,12 +133,12 @@ public class SaveOrUpdateKursanmeldungCommandTest {
         assertTrue(checkIfKursanmeldungAvailable(schueler2, kurs2, new GregorianCalendar(2015, Calendar.AUGUST, 30), new GregorianCalendar(2016, Calendar.FEBRUARY, 2), "Testbemerkung2"));
 
         // 2. Kursanmeldung bearbeiten
-        Kursanmeldung kursanmeldung2Modif = new Kursanmeldung(schueler2, kurs2, null, null, "Testbemerkung22");
+        Kursanmeldung kursanmeldung2Modif = new Kursanmeldung(schueler2, kurs2, new GregorianCalendar(2015, Calendar.AUGUST, 25), null, "Testbemerkung22");
         saveOrUpdateKursanmeldungCommand = new SaveOrUpdateKursanmeldungCommand(kursanmeldung2Modif, kursanmeldung2, erfassteKursanmeldungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursanmeldungCommand);
 
         assertFalse(checkIfKursanmeldungAvailable(schueler2, kurs2, new GregorianCalendar(2015, Calendar.AUGUST, 30), new GregorianCalendar(2016, Calendar.FEBRUARY, 2), "Testbemerkung2"));
-        assertTrue(checkIfKursanmeldungAvailable(schueler2, kurs2, null, null, "Testbemerkung22"));
+        assertTrue(checkIfKursanmeldungAvailable(schueler2, kurs2, new GregorianCalendar(2015, Calendar.AUGUST, 25), null, "Testbemerkung22"));
 
         // Testdaten löschen
         EntityManager entityManager = null;
