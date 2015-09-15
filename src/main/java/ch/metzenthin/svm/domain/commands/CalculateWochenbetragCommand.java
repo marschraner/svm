@@ -49,7 +49,7 @@ public class CalculateWochenbetragCommand implements Command {
             }
 
             for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungen()) {
-                if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(relevantesSemester.getSemesterId()) && (rechnungstyp == Rechnungstyp.NACHRECHNUNG || kursanmeldung.getAbmeldedatum() != null)) {
+                if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(relevantesSemester.getSemesterId()) && (rechnungstyp == Rechnungstyp.NACHRECHNUNG || kursanmeldung.getAbmeldedatum() == null)) {
                     anzahlKurseRechnungsempfaenger++;
                 }
             }
@@ -72,7 +72,7 @@ public class CalculateWochenbetragCommand implements Command {
             // 2.b relevante Kurse für einen Schüler
             List<Kurs> relevanteKurseSchueler = new ArrayList<>();
             for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungen()) {
-                if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(relevantesSemester.getSemesterId()) && (rechnungstyp == Rechnungstyp.NACHRECHNUNG || kursanmeldung.getAbmeldedatum() != null)) {
+                if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(relevantesSemester.getSemesterId()) && (rechnungstyp == Rechnungstyp.NACHRECHNUNG || kursanmeldung.getAbmeldedatum() == null)) {
                     relevanteKurseSchueler.add(kursanmeldung.getKurs());
                 }
             }

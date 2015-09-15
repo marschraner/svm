@@ -169,7 +169,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
     public void setComboBoxGruppe(JComboBox<Gruppe> comboBoxGruppe) {
         this.comboBoxGruppe = comboBoxGruppe;
         comboBoxGruppe.setModel(new DefaultComboBoxModel<>(Gruppe.values()));
-        // Anrede: Alle nicht anzeigen:
+        // Alle nicht anzeigen:
         comboBoxGruppe.removeItem(Gruppe.ALLE);
         // Leeren ComboBox-Wert anzeigen
         comboBoxGruppe.setSelectedItem(null);

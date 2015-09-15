@@ -38,14 +38,15 @@ public class SaveOrUpdateKursanmeldungCommand extends GenericDaoCommand {
             // Neuanmeldung
             Kursanmeldung kursanmeldungSaved = kursanmeldungDao.save(kursanmeldung);
             bereitsErfassteKursanmeldungen.add(kursanmeldungSaved);
-
-            // Semesterrechnung aktualisieren
-            Angehoeriger rechnungsempfaenger = kursanmeldung.getSchueler().getRechnungsempfaenger();
-            Semester semester = kursanmeldung.getKurs().getSemester();
-            UpdateWochenbetragCommand updateWochenbetragCommand = new UpdateWochenbetragCommand(rechnungsempfaenger, semester);
-            updateWochenbetragCommand.setEntityManager(entityManager);
-            updateWochenbetragCommand.execute();
         }
+
+        // Semesterrechnung aktualisieren
+        Angehoeriger rechnungsempfaenger = kursanmeldung.getSchueler().getRechnungsempfaenger();
+        Semester semester = kursanmeldung.getKurs().getSemester();
+        UpdateWochenbetragCommand updateWochenbetragCommand = new UpdateWochenbetragCommand(rechnungsempfaenger, semester);
+        updateWochenbetragCommand.setEntityManager(entityManager);
+        updateWochenbetragCommand.execute();
+
         Collections.sort(bereitsErfassteKursanmeldungen);
     }
 }

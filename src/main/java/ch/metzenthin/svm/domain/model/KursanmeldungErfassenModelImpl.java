@@ -168,7 +168,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
 
     @Override
     public void setAbmeldedatum(String abmeldedatum) throws SvmValidationException {
-        abmeldedatumModelAttribute.setNewValue(true, abmeldedatum, isBulkUpdate());
+        abmeldedatumModelAttribute.setNewValue(false, abmeldedatum, isBulkUpdate());
         if (!isBulkUpdate() && kursanmeldung.getAnmeldedatum() != null && kursanmeldung.getAbmeldedatum() != null && kursanmeldung.getAnmeldedatum().after(kursanmeldung.getAbmeldedatum())) {
             kursanmeldung.setAbmeldedatum(null);
             invalidate();

@@ -91,6 +91,9 @@ public class MonatsstatistikSchuelerModelImpl extends AbstractModel implements M
     }
 
     private Maerchen determineMaerchenTableData(SvmModel svmModel, Semester semesterTableData) {
+        if (semesterTableData == null) {
+            return null;
+        }
         // Kein Märchen für 2. Semester
         if (semesterTableData.getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER) {
             return null;

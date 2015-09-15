@@ -403,11 +403,9 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
 
     @Transient
     public BigDecimal getSchulgeldVorrechnung() {
-        // Gratiskinder haben immer 0.00 als Schulgeld
-        if (gratiskinder) {
-            return new BigDecimal("0.00");
+        if (anzahlWochenVorrechnung == null || wochenbetragVorrechnung == null) {
+            return null;
         }
-        // Normale Rechnungen
         BigDecimal schulgeldVorrechnung = new BigDecimal(anzahlWochenVorrechnung).multiply(wochenbetragVorrechnung);
         // Stipendium
         if (stipendium != null && stipendium != Stipendium.KEINES) {
@@ -415,19 +413,25 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
             schulgeldVorrechnung = schulgeldVorrechnung.setScale(1, BigDecimal.ROUND_HALF_EVEN);  // Runden auf 10 Rappen
             schulgeldVorrechnung = schulgeldVorrechnung.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         }
+        // Gratiskinder
+        if (gratiskinder != null && gratiskinder) {
+            schulgeldVorrechnung = new BigDecimal("0.00");
+        }
         // Zuschlag / Ermässigung
-        schulgeldVorrechnung = schulgeldVorrechnung.add(zuschlagVorrechnung);
-        schulgeldVorrechnung = schulgeldVorrechnung.subtract(ermaessigungVorrechnung);
+        if (zuschlagVorrechnung != null) {
+            schulgeldVorrechnung = schulgeldVorrechnung.add(zuschlagVorrechnung);
+        }
+        if (ermaessigungVorrechnung != null) {
+            schulgeldVorrechnung = schulgeldVorrechnung.subtract(ermaessigungVorrechnung);
+        }
         return schulgeldVorrechnung;
     }
 
     @Transient
     public BigDecimal getSchulgeldNachrechnung() {
-        // Gratiskinder haben immer 0.00 als Schulgeld
-        if (gratiskinder) {
-            return new BigDecimal("0.00");
+        if (anzahlWochenNachrechnung == null || wochenbetragNachrechnung == null) {
+            return null;
         }
-        // Normale Rechnungen
         BigDecimal schulgeldNachrechnung = new BigDecimal(anzahlWochenNachrechnung).multiply(wochenbetragNachrechnung);
         // Stipendium
         if (stipendium != null && stipendium != Stipendium.KEINES) {
@@ -435,9 +439,17 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
             schulgeldNachrechnung = schulgeldNachrechnung.setScale(1, BigDecimal.ROUND_HALF_EVEN);  // Runden auf 10 Rappen
             schulgeldNachrechnung = schulgeldNachrechnung.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         }
+        // Gratiskinder
+        if (gratiskinder != null && gratiskinder) {
+            schulgeldNachrechnung = new BigDecimal("0.00");
+        }
         // Zuschlag / Ermässigung
-        schulgeldNachrechnung = schulgeldNachrechnung.add(zuschlagNachrechnung);
-        schulgeldNachrechnung = schulgeldNachrechnung.subtract(ermaessigungNachrechnung);
+        if (zuschlagNachrechnung != null) {
+            schulgeldNachrechnung = schulgeldNachrechnung.add(zuschlagNachrechnung);
+        }
+        if (ermaessigungNachrechnung != null) {
+            schulgeldNachrechnung = schulgeldNachrechnung.subtract(ermaessigungNachrechnung);
+        }
         return schulgeldNachrechnung;
     }
 

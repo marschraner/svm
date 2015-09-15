@@ -4,10 +4,12 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
+import ch.metzenthin.svm.domain.model.SemesterrechnungBearbeitenModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenSuchenModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenTableData;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
+import ch.metzenthin.svm.ui.components.SemesterrechnungBearbeitenPanel;
 import ch.metzenthin.svm.ui.components.SemesterrechnungenPanel;
 import org.apache.log4j.Logger;
 
@@ -810,14 +812,22 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
         SemesterrechnungenTableData semesterrechnungenTableData = semesterrechnungenSuchenModel.suchen();
         SemesterrechnungenTableModel semesterrechnungenTableModel = new SemesterrechnungenTableModel(semesterrechnungenTableData);
-        if (semesterrechnungenTableData.size() > 0 || !semesterrechnungenSuchenModel.isSuchkriterienSelected()) {
+        if (semesterrechnungenTableData.size() > 1 || !semesterrechnungenSuchenModel.isSuchkriterienSelected()) {
             SemesterrechnungenPanel semesterrechnungenPanel = new SemesterrechnungenPanel(svmContext, semesterrechnungenTableModel);
             semesterrechnungenPanel.addNextPanelListener(nextPanelListener);
             semesterrechnungenPanel.addCloseListener(closeListener);
             semesterrechnungenPanel.addZurueckListener(zurueckListener);
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{semesterrechnungenPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
-        }
-        else {
+        } else if (semesterrechnungenTableData.size() == 1) {
+            // Direkt zu Semesterrechnung bearbeiten
+            SemesterrechnungBearbeitenModel semesterrechnungBearbeitenModel = semesterrechnungenSuchenModel.getSemesterrechnungBearbeitenModel(svmContext, semesterrechnungenTableModel);
+            SemesterrechnungBearbeitenPanel semesterrechnungBearbeitenPanel = new SemesterrechnungBearbeitenPanel(svmContext, semesterrechnungBearbeitenModel, null, semesterrechnungenTableModel, null, 0);
+            semesterrechnungBearbeitenPanel.addNextPanelListener(nextPanelListener);
+            semesterrechnungBearbeitenPanel.addCloseListener(closeListener);
+            semesterrechnungBearbeitenPanel.addZurueckZuSemesterrechnungSuchenListener(zurueckListener);
+            String title = "Semesterrechnung " + semesterrechnungenSuchenModel.getSemester().getSemesterbezeichnung() + " " + semesterrechnungenSuchenModel.getSemester().getSchuljahr();
+            nextPanelListener.actionPerformed(new ActionEvent(new Object[]{semesterrechnungBearbeitenPanel.$$$getRootComponent$$$(), title}, ActionEvent.ACTION_PERFORMED, "Semesterrechnung ausgewählt"));
+        } else {
             JOptionPane.showMessageDialog(null, "Es wurden keine Semesterrechnungen gefunden, welche auf die Suchabfrage passen.", "Keine Semesterrechnungen gefunden", JOptionPane.INFORMATION_MESSAGE);
             btnSuchen.setFocusPainted(false);
         }

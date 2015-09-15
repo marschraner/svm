@@ -189,6 +189,11 @@ public class ModelFactoryImpl implements ModelFactory {
     }
 
     @Override
+    public SemesterrechnungBearbeitenModel createSemesterrechnungBearbeitenModel() {
+        return new SemesterrechnungBearbeitenModelImpl(commandInvoker);
+    }
+
+    @Override
     public RechnungsdatumErfassenModel createRechnungsdatumErfassenModel() {
         return new RechnungsdatumErfassenModelImpl(commandInvoker);
     }

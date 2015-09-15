@@ -51,7 +51,8 @@ public class SemesterrechnungenTableModel extends AbstractTableModel {
         return semesterrechnungenTableData.getSemesterrechnungen();
     }
 
-    public SemesterrechnungenTableData getSemesterrechnungenTableData() {
-        return semesterrechnungenTableData;
+    public Semesterrechnung getSemesterrechnungSelected(int rowIndex) {
+        return semesterrechnungenTableData.getSemesterrechnungSelected(rowIndex);
     }
+
 }

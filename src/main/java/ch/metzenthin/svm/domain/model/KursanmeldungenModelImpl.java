@@ -17,7 +17,7 @@ public class KursanmeldungenModelImpl extends AbstractModel implements Kursanmel
     }
 
     @Override
-    public KursanmeldungErfassenModel getKurseinteilungErfassenModel(SvmContext svmContext, KursanmeldungenTableModel kursanmeldungenTableModel, int rowSelected) {
+    public KursanmeldungErfassenModel getKursanmeldungErfassenModel(SvmContext svmContext, KursanmeldungenTableModel kursanmeldungenTableModel, int rowSelected) {
         KursanmeldungErfassenModel kursanmeldungErfassenModel = svmContext.getModelFactory().createKursanmeldungErfassenModel();
         Kursanmeldung kursanmeldungSelected = kursanmeldungenTableModel.getKursanmeldungSelected(rowSelected);
         kursanmeldungErfassenModel.setKursanmeldungOrigin(kursanmeldungSelected);

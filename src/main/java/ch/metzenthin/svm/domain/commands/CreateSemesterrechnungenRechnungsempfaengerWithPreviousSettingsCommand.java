@@ -28,6 +28,10 @@ public class CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsComm
     @Override
     public void execute() {
 
+        if (currentSemester == null) {
+            return;
+        }
+
         // 1. Vorhergehendes Semester
         FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
         findPreviousSemesterCommand.setEntityManager(entityManager);

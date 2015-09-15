@@ -5,42 +5,20 @@ import ch.metzenthin.svm.common.dataTypes.Schuljahre;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 /**
  * @author Martin Schraner
  */
 abstract class SemesterrechnungModelImpl extends AbstractModel implements SemesterrechnungModel  {
 
-    private SemesterrechnungCode semesterrechnungCode;
-    private Stipendium stipendium;
-    private Boolean gratiskinder;
-    private Calendar rechnungsdatumVorrechnung;
-    private BigDecimal ermaessigungVorrechnung;
-    private String ermaessigungsgrundVorrechnung;
-    private BigDecimal zuschlagVorrechnung;
-    private String zuschlagsgrundVorrechnung;
-    private Integer anzahlWochenVorrechnung;
-    private BigDecimal wochenbetragVorrechnung;
-    private Calendar rechnungsdatumNachrechnung;
-    private BigDecimal ermaessigungNachrechnung;
-    private String ermaessigungsgrundNachrechnung;
-    private BigDecimal zuschlagNachrechnung;
-    private String zuschlagsgrundNachrechnung;
-    private Integer anzahlWochenNachrechnung;
-    private BigDecimal wochenbetragNachrechnung;
-    private Calendar datumZahlung1;
-    private BigDecimal betragZahlung1;
-    private Calendar datumZahlung2;
-    private BigDecimal betragZahlung2;
-    private Calendar datumZahlung3;
-    private BigDecimal betragZahlung3;
-    private String bemerkungen;
+    protected Semesterrechnung semesterrechnung = new Semesterrechnung();
+    protected SemesterrechnungCode semesterrechnungCode = new SemesterrechnungCode();
 
     SemesterrechnungModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -49,6 +27,8 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     static {
         SEMESTERRECHNUNG_CODE_ALLE.setKuerzel("");
         SEMESTERRECHNUNG_CODE_ALLE.setBeschreibung("");
+        SEMESTERRECHNUNG_CODE_KEINER.setKuerzel("");
+        SEMESTERRECHNUNG_CODE_KEINER.setBeschreibung("");
     }
 
     @Override
@@ -58,6 +38,9 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     @Override
     public void setSemesterrechnungCode(SemesterrechnungCode semesterrechnungCode) {
+        if (semesterrechnungCode == SEMESTERRECHNUNG_CODE_KEINER) {
+            semesterrechnungCode = null;
+        }
         SemesterrechnungCode oldValue = this.semesterrechnungCode;
         this.semesterrechnungCode = semesterrechnungCode;
         firePropertyChange(Field.SEMESTERRECHNUNG_CODE, oldValue, this.semesterrechnungCode);
@@ -65,26 +48,29 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     @Override
     public Stipendium getStipendium() {
-        return stipendium;
+        return semesterrechnung.getStipendium();
     }
 
     @Override
     public void setStipendium(Stipendium stipendium) {
-        Stipendium oldValue = this.stipendium;
-        this.stipendium = stipendium;
-        firePropertyChange(Field.STIPENDIUM, oldValue, this.stipendium);
+        if (stipendium == Stipendium.KEINES) {
+            stipendium = null;
+        }
+        Stipendium oldValue = semesterrechnung.getStipendium();
+        semesterrechnung.setStipendium(stipendium);
+        firePropertyChange(Field.STIPENDIUM, oldValue, semesterrechnung.getStipendium());
     }
 
     @Override
     public Boolean isGratiskinder() {
-        return gratiskinder;
+        return semesterrechnung.getGratiskinder();
     }
 
     @Override
     public void setGratiskinder(Boolean gratiskinder) {
-        Boolean oldValue = this.gratiskinder;
-        this.gratiskinder = gratiskinder;
-        firePropertyChange(Field.GRATISKINDER, oldValue, gratiskinder);
+        Boolean oldValue = semesterrechnung.getGratiskinder();
+        semesterrechnung.setGratiskinder(gratiskinder);
+        firePropertyChange(Field.GRATISKINDER, oldValue, semesterrechnung.getGratiskinder());
     }
 
     private CalendarModelAttribute rechnungsdatumVorrechnungModelAttribute = new CalendarModelAttribute(
@@ -93,12 +79,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
-                    return rechnungsdatumVorrechnung;
+                    return semesterrechnung.getRechnungsdatumVorrechnung();
                 }
 
                 @Override
                 public void setValue(Calendar value) {
-                    rechnungsdatumVorrechnung = value;
+                    semesterrechnung.setRechnungsdatumVorrechnung(value);
                 }
             }
     );
@@ -119,12 +105,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return ermaessigungVorrechnung;
+                    return semesterrechnung.getErmaessigungVorrechnung();
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    ermaessigungVorrechnung = value;
+                    semesterrechnung.setErmaessigungVorrechnung(value);
                 }
             }
     );
@@ -145,12 +131,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return ermaessigungsgrundVorrechnung;
+                    return semesterrechnung.getErmaessigungsgrundVorrechnung();
                 }
 
                 @Override
                 public void setValue(String value) {
-                    ermaessigungsgrundVorrechnung = value;
+                    semesterrechnung.setErmaessigungsgrundVorrechnung(value);
                 }
             }
     );
@@ -171,12 +157,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return zuschlagVorrechnung;
+                    return semesterrechnung.getZuschlagVorrechnung();
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    zuschlagVorrechnung = value;
+                    semesterrechnung.setZuschlagVorrechnung(value);
                 }
             }
     );
@@ -197,12 +183,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return zuschlagsgrundVorrechnung;
+                    return semesterrechnung.getZuschlagsgrundVorrechnung();
                 }
 
                 @Override
                 public void setValue(String value) {
-                    zuschlagsgrundVorrechnung = value;
+                    semesterrechnung.setZuschlagsgrundVorrechnung(value);
                 }
             }
     );
@@ -223,12 +209,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<Integer>() {
                 @Override
                 public Integer getValue() {
-                    return anzahlWochenVorrechnung;
+                    return semesterrechnung.getAnzahlWochenVorrechnung();
                 }
 
                 @Override
                 public void setValue(Integer value) {
-                    anzahlWochenVorrechnung = value;
+                    semesterrechnung.setAnzahlWochenVorrechnung(value);
                 }
             }
     );
@@ -249,12 +235,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return wochenbetragVorrechnung;
+                    return semesterrechnung.getWochenbetragVorrechnung();
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    wochenbetragVorrechnung = value;
+                    semesterrechnung.setWochenbetragVorrechnung(value);
                 }
             }
     );
@@ -275,12 +261,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
-                    return rechnungsdatumNachrechnung;
+                    return semesterrechnung.getRechnungsdatumNachrechnung();
                 }
 
                 @Override
                 public void setValue(Calendar value) {
-                    rechnungsdatumNachrechnung = value;
+                    semesterrechnung.setRechnungsdatumNachrechnung(value);
                 }
             }
     );
@@ -301,12 +287,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return ermaessigungNachrechnung;
+                    return semesterrechnung.getErmaessigungNachrechnung();
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    ermaessigungNachrechnung = value;
+                    semesterrechnung.setErmaessigungNachrechnung(value);
                 }
             }
     );
@@ -327,12 +313,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return ermaessigungsgrundNachrechnung;
+                    return semesterrechnung.getErmaessigungsgrundNachrechnung();
                 }
 
                 @Override
                 public void setValue(String value) {
-                    ermaessigungsgrundNachrechnung = value;
+                    semesterrechnung.setErmaessigungsgrundNachrechnung(value);
                 }
             }
     );
@@ -353,12 +339,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return zuschlagNachrechnung;
+                    return semesterrechnung.getZuschlagNachrechnung();
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    zuschlagNachrechnung = value;
+                    semesterrechnung.setZuschlagNachrechnung(value);
                 }
             }
     );
@@ -379,12 +365,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return zuschlagsgrundNachrechnung;
+                    return semesterrechnung.getZuschlagsgrundNachrechnung();
                 }
 
                 @Override
                 public void setValue(String value) {
-                    zuschlagsgrundNachrechnung = value;
+                    semesterrechnung.setZuschlagsgrundNachrechnung(value);
                 }
             }
     );
@@ -405,12 +391,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<Integer>() {
                 @Override
                 public Integer getValue() {
-                    return anzahlWochenNachrechnung;
+                    return semesterrechnung.getAnzahlWochenNachrechnung();
                 }
 
                 @Override
                 public void setValue(Integer value) {
-                    anzahlWochenNachrechnung = value;
+                    semesterrechnung.setAnzahlWochenNachrechnung(value);
                 }
             }
     );
@@ -431,12 +417,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return wochenbetragNachrechnung;
+                    return semesterrechnung.getWochenbetragNachrechnung();
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    wochenbetragNachrechnung = value;
+                    semesterrechnung.setWochenbetragNachrechnung(value);
                 }
             }
     );
@@ -457,12 +443,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
-                    return datumZahlung1;
+                    return semesterrechnung.getDatumZahlung1();
                 }
 
                 @Override
                 public void setValue(Calendar value) {
-                    datumZahlung1 = value;
+                    semesterrechnung.setDatumZahlung1(value);
                 }
             }
     );
@@ -483,12 +469,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return betragZahlung1;
+                    return semesterrechnung.getBetragZahlung1();
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    betragZahlung1 = value;
+                    semesterrechnung.setBetragZahlung1(value);
                 }
             }
     );
@@ -509,12 +495,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
-                    return datumZahlung2;
+                    return semesterrechnung.getDatumZahlung2();
                 }
 
                 @Override
                 public void setValue(Calendar value) {
-                    datumZahlung2 = value;
+                    semesterrechnung.setDatumZahlung2(value);
                 }
             }
     );
@@ -535,12 +521,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return betragZahlung2;
+                    return semesterrechnung.getBetragZahlung2();
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    betragZahlung2 = value;
+                    semesterrechnung.setBetragZahlung2(value);
                 }
             }
     );
@@ -561,12 +547,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
-                    return datumZahlung3;
+                    return semesterrechnung.getDatumZahlung3();
                 }
 
                 @Override
                 public void setValue(Calendar value) {
-                    datumZahlung3 = value;
+                    semesterrechnung.setDatumZahlung3(value);
                 }
             }
     );
@@ -587,12 +573,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return betragZahlung3;
+                    return semesterrechnung.getBetragZahlung3();
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    betragZahlung3 = value;
+                    semesterrechnung.setBetragZahlung3(value);
                 }
             }
     );
@@ -613,12 +599,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return bemerkungen;
+                    return semesterrechnung.getBemerkungen();
                 }
 
                 @Override
                 public void setValue(String value) {
-                    bemerkungen = value;
+                    semesterrechnung.setBemerkungen(value);
                 }
             }
     );
@@ -634,31 +620,39 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     }
 
     @Override
-    public SemesterrechnungCode[] getSelectableSemesterrechnungCodes(SvmModel svmModel) {
-        List<SemesterrechnungCode> codesList = svmModel.getSelektierbareSemesterrechnungCodesAll();
-        // SemesterrechnungCode alle auch erlaubt
-        if (codesList.isEmpty() || !codesList.get(0).isIdenticalWith(SEMESTERRECHNUNG_CODE_ALLE)) {
-            codesList.add(0, SEMESTERRECHNUNG_CODE_ALLE);
-        }
-        return codesList.toArray(new SemesterrechnungCode[codesList.size()]);
-    }
-
-    @Override
     public void invalidateRechnungsdatumVorrechnung() {
-        rechnungsdatumVorrechnungModelAttribute.initValue("");
+        rechnungsdatumVorrechnungModelAttribute.initValue(null);
     }
 
     @Override
     public void invalidateRechnungsdatumNachrechnung() {
-        rechnungsdatumNachrechnungModelAttribute.initValue("");
+        rechnungsdatumNachrechnungModelAttribute.initValue(null);
     }
 
     @Override
-    public boolean isCompleted() {
-        return true;
-    }
-
-    @Override
-    void doValidate() throws SvmValidationException {
+    public void invalidateAll() {
+        setSemesterrechnungCode(null);
+        setStipendium(null);
+        rechnungsdatumVorrechnungModelAttribute.initValue(null);
+        ermaessigungVorrechnungModelAttribute.initValue(null);
+        ermaessigungsgrundVorrechnungModelAttribute.initValue(null);
+        zuschlagVorrechnungModelAttribute.initValue(null);
+        zuschlagsgrundVorrechnungModelAttribute.initValue(null);
+        anzahlWochenVorrechnungModelAttribute.initValue(null);
+        wochenbetragVorrechnungModelAttribute.initValue(null);
+        rechnungsdatumNachrechnungModelAttribute.initValue(null);
+        ermaessigungNachrechnungModelAttribute.initValue(null);
+        ermaessigungsgrundNachrechnungModelAttribute.initValue(null);
+        zuschlagNachrechnungModelAttribute.initValue(null);
+        zuschlagsgrundNachrechnungModelAttribute.initValue(null);
+        anzahlWochenNachrechnungModelAttribute.initValue(null);
+        wochenbetragNachrechnungModelAttribute.initValue(null);
+        datumZahlung1ModelAttribute.initValue(null);
+        betragZahlung1ModelAttribute.initValue(null);
+        datumZahlung2ModelAttribute.initValue(null);
+        betragZahlung2ModelAttribute.initValue(null);
+        datumZahlung3ModelAttribute.initValue(null);
+        betragZahlung3ModelAttribute.initValue(null);
+        bemerkungenModelAttribute.initValue(null);
     }
 }

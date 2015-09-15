@@ -1,9 +1,11 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.DeleteSemesterrechnungCommand;
 import ch.metzenthin.svm.domain.commands.ImportSemesterrechnungenFromPreviousSemesterCommand;
+import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 
 /**
@@ -13,6 +15,14 @@ public class SemesterrechnungenModelImpl extends AbstractModel implements Semest
 
     SemesterrechnungenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
+    }
+
+    @Override
+    public SemesterrechnungBearbeitenModel getSemesterrechnungBearbeitenModel(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel, int rowSelected) {
+        SemesterrechnungBearbeitenModel semesterrechnungBearbeitenModel = svmContext.getModelFactory().createSemesterrechnungBearbeitenModel();
+        Semesterrechnung semesterrechnungSelected = semesterrechnungenTableModel.getSemesterrechnungSelected(rowSelected);
+        semesterrechnungBearbeitenModel.setSemesterrechnungOrigin(semesterrechnungSelected);
+        return semesterrechnungBearbeitenModel;
     }
 
     @Override

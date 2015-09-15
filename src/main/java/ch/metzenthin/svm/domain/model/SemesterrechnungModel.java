@@ -13,6 +13,7 @@ import java.util.Calendar;
 public interface SemesterrechnungModel extends Model {
 
     SemesterrechnungCode SEMESTERRECHNUNG_CODE_ALLE = new SemesterrechnungCode();
+    SemesterrechnungCode SEMESTERRECHNUNG_CODE_KEINER = new SemesterrechnungCode();
 
     SemesterrechnungCode getSemesterrechnungCode();
     Stipendium getStipendium();
@@ -65,6 +66,8 @@ public interface SemesterrechnungModel extends Model {
     void setBemerkungen(String bemerkungen) throws SvmValidationException;
 
     SemesterrechnungCode[] getSelectableSemesterrechnungCodes(SvmModel svmModel);
+    Stipendium[] getSelectableStipendien();
     void invalidateRechnungsdatumVorrechnung();
     void invalidateRechnungsdatumNachrechnung();
+    void invalidateAll();
 }

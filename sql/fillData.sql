@@ -523,7 +523,6 @@ INSERT INTO Semesterrechnung (
     betrag_zahlung_3,
     code_id,
     bemerkungen) VALUES
-    (2, 1, NULL, 0, '2015-02-15', 0.00, NULL, 0.00, NULL, 18, 40.00, '2015-04-20', 0.00, NULL, 0.00, NULL, 18, 40.00, '2015-03-21', 720.00, NULL, NULL, NULL, NULL, NULL, NULL),
-    (2, 17, NULL, 0, '2015-03-14', 0.00, NULL, 0.00, NULL, 18, 22.00, '2015-03-21', 0.00, NULL, 0.00, NULL, 18, 22.00, '2015-04-02', 300.00, NULL, NULL, NULL, NULL, NULL, NULL);
+    (2, 1, NULL, 0, '2015-02-15', 0.00, NULL, 0.00, NULL, 18, 40.00, '2015-04-20', 0.00, NULL, 0.00, NULL, 18, 40.00, '2015-03-21', 720.00, NULL, NULL, NULL, NULL, NULL, NULL);
 
 SELECT * FROM Semesterrechnung;

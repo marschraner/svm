@@ -3,12 +3,14 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
 import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
+import ch.metzenthin.svm.domain.model.SemesterrechnungBearbeitenModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenModel;
 import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
 import ch.metzenthin.svm.ui.componentmodel.NumberTableCellRenderer;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 import ch.metzenthin.svm.ui.components.ListenExportDialog;
 import ch.metzenthin.svm.ui.components.RechnungsdatumErfassenDialog;
+import ch.metzenthin.svm.ui.components.SemesterrechnungBearbeitenPanel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -137,11 +139,13 @@ public class SemesterrechnungenController {
     }
 
     private void onDetailsBearbeiten() {
-//        SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, semesterrechnungenTableModel, semesterrechnungenTable, semesterrechnungenTable.getSelectedRow(), true);
-//        schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
-//        schuelerDatenblattPanel.addCloseListener(closeListener);
-//        schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckListener);
-//        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));
+        SemesterrechnungBearbeitenModel semesterrechnungBearbeitenModel = semesterrechnungenModel.getSemesterrechnungBearbeitenModel(svmContext, semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()));
+        SemesterrechnungBearbeitenPanel semesterrechnungBearbeitenPanel = new SemesterrechnungBearbeitenPanel(svmContext, semesterrechnungBearbeitenModel, semesterrechnungenModel, semesterrechnungenTableModel, semesterrechnungenTable, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()));
+        semesterrechnungBearbeitenPanel.addNextPanelListener(nextPanelListener);
+        semesterrechnungBearbeitenPanel.addCloseListener(closeListener);
+        semesterrechnungBearbeitenPanel.addZurueckZuSemesterrechnungSuchenListener(zurueckListener);
+        String title = "Semesterrechnung " + semesterrechnungenTableModel.getSemester().getSemesterbezeichnung() + " " + semesterrechnungenTableModel.getSemester().getSchuljahr();
+        nextPanelListener.actionPerformed(new ActionEvent(new Object[]{semesterrechnungBearbeitenPanel.$$$getRootComponent$$$(), title}, ActionEvent.ACTION_PERFORMED, "Semesterrechnung ausgewählt"));
     }
 
     public void setBtnImportieren(JButton btnImportieren) {
@@ -270,7 +274,7 @@ public class SemesterrechnungenController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            semesterrechnungenModel.semesterrechnungLoeschen(semesterrechnungenTableModel, semesterrechnungenTable.getSelectedRow());
+            semesterrechnungenModel.semesterrechnungLoeschen(semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()));
             semesterrechnungenTableModel.fireTableDataChanged();
             semesterrechnungenTable.addNotify();
         }

@@ -23,6 +23,9 @@ public class FindPreviousSemesterCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
+        if (currentSemester == null) {
+            return;
+        }
         String schuljahrPreviousSemester;
         Semesterbezeichnung semesterbezeichnungPreviousSemester;
         if (currentSemester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {

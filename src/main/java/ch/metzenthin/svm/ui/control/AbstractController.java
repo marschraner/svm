@@ -19,7 +19,7 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
 
     private static final Logger LOGGER = Logger.getLogger(AbstractController.class);
 
-    private final Model model;
+    private Model model;
     private boolean bulkUpdate = false;
 
     /**
@@ -127,4 +127,7 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
         model.setModelValidationMode(modelValidationMode);
     }
 
+    protected void setModel(Model model) {
+        this.model = model;
+    }
 }

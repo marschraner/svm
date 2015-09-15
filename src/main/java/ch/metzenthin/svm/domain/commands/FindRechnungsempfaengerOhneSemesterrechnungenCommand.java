@@ -25,6 +25,10 @@ public class FindRechnungsempfaengerOhneSemesterrechnungenCommand extends Generi
     @Override
     public void execute() {
 
+        if (semester == null) {
+            return;
+        }
+
         TypedQuery<Angehoeriger>typedQuery = entityManager.createQuery("select distinct rech from Angehoeriger rech" +
                 " join rech.schuelerRechnungsempfaenger sch" +
                 " join sch.kursanmeldungen kursanm" +

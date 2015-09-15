@@ -1166,7 +1166,7 @@ public class SchuelerDatenblattPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel10.add(spacer50, gbc);
         buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
+        buttonPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -1233,7 +1233,7 @@ public class SchuelerDatenblattPanel {
         leftButtonPanel.add(spacer55, gbc);
         rightButtonPanel = new JPanel();
         rightButtonPanel.setLayout(new GridBagLayout());
-        buttonPanel.add(rightButtonPanel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        buttonPanel.add(rightButtonPanel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         btnNachfolgender = new JButton();
         btnNachfolgender.setPreferredSize(new Dimension(143, 29));
         btnNachfolgender.setText("Nachfolgender");

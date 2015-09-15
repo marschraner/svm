@@ -77,7 +77,7 @@ public class Kursanmeldung implements Comparable<Kursanmeldung> {
     public String toString() {
         StringBuilder kursanmeldungSb = new StringBuilder(kurs.toString());
         if (anmeldedatum != null || abmeldedatum != null || checkNotEmpty(bemerkungen)) {
-            kursanmeldungSb.append("&nbsp &nbsp &nbsp (");
+            kursanmeldungSb.append("&nbsp &nbsp (");
             if (anmeldedatum != null) {
                 kursanmeldungSb.append("Anmeldung: ").append(asString(anmeldedatum));
                 if (abmeldedatum != null) {

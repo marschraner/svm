@@ -115,6 +115,10 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
     @Override
     public void execute() {
 
+        if (semester == null) {
+            return;
+        }
+
         selectStatementSb = new StringBuilder("select distinct semre from Semesterrechnung semre");
 
         // Inner-Joins erzeugen
@@ -204,7 +208,7 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
         }
         switch (stipendiumJaNeinSelected) {
             case JA:
-                if (stipendium != null && stipendium != Stipendium.KEINES) {
+                if (stipendium != null && stipendium != Stipendium.ALLE) {
                     selectStatementSb.append(" semre.stipendium = :stipendium and");
                 } else {
                     selectStatementSb.append(" semre.stipendium is not null and");

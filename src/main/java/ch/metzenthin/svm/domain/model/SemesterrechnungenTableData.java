@@ -151,6 +151,10 @@ public class SemesterrechnungenTableData {
         return semester;
     }
 
+    public Semesterrechnung getSemesterrechnungSelected(int rowIndex) {
+        return semesterrechnungen.get(rowIndex);
+    }
+
     public List<Semesterrechnung> getSemesterrechnungen() {
         return semesterrechnungen;
     }

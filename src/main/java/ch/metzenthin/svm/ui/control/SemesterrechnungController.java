@@ -5,7 +5,6 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.SemesterrechnungModel;
-import ch.metzenthin.svm.domain.model.SemesterrechnungenSuchenModel;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 import org.apache.log4j.Logger;
 
@@ -34,7 +33,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     private JTextField txtZuschlagVorrechnung;
     private JTextField txtZuschlagsgrundVorrechnung;
     private JTextField txtAnzahlWochenVorrechnung;
-    private JTextField txtWochenbetragVorrechnung;
+    protected JTextField txtWochenbetragVorrechnung;
     protected JTextField txtRechnungsdatumNachrechnung;
     private JTextField txtErmaessigungNachrechnung;
     private JTextField txtErmaessigungsgrundNachrechnung;
@@ -69,6 +68,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     private JLabel errLblBetragZahlung2;
     private JLabel errLblDatumZahlung3;
     private JLabel errLblBetragZahlung3;
+    private JLabel errLblStipendium;
     private JLabel errLblBemerkungen;
     private JComboBox<SemesterrechnungCode> comboBoxSemesterrechnungCode;
     private JComboBox<Stipendium> comboBoxStipendium;
@@ -76,7 +76,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     protected SemesterrechnungModel semesterrechnungModel;
     private SvmContext svmContext;
 
-    public SemesterrechnungController(SvmContext svmContext, SemesterrechnungenSuchenModel semesterrechnungModel) {
+    public SemesterrechnungController(SvmContext svmContext, SemesterrechnungModel semesterrechnungModel) {
         super(semesterrechnungModel);
         this.svmContext = svmContext;
         this.semesterrechnungModel = semesterrechnungModel;
@@ -111,15 +111,16 @@ public abstract class SemesterrechnungController extends AbstractController {
 
     public void setComboBoxStipendium(JComboBox<Stipendium> comboBoxStipendium) {
         this.comboBoxStipendium = comboBoxStipendium;
-        comboBoxStipendium.setModel(new DefaultComboBoxModel<>(Stipendium.values()));
+        Stipendium[] selectableStipendien = semesterrechnungModel.getSelectableStipendien();
+        comboBoxStipendium.setModel(new DefaultComboBoxModel<>(selectableStipendien));
         comboBoxStipendium.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onStipendiumSelected();
             }
         });
-        // SchuelerCode in Model initialisieren mit erstem ComboBox-Wert
-        semesterrechnungModel.setStipendium(Stipendium.values()[0]);
+        // Model initialisieren mit erstem ComboBox-Wert
+        semesterrechnungModel.setStipendium(selectableStipendien[0]);
     }
 
     private void onStipendiumSelected() {
@@ -1120,6 +1121,10 @@ public abstract class SemesterrechnungController extends AbstractController {
         this.errLblBetragZahlung3 = errLblBetragZahlung3;
     }
 
+    public void setErrLblStipendium(JLabel errLblStipendium) {
+        this.errLblStipendium = errLblStipendium;
+    }
+
     public void setErrLblBemerkungen(JLabel errLblBemerkungen) {
         this.errLblBemerkungen = errLblBemerkungen;
     }
@@ -1152,7 +1157,7 @@ public abstract class SemesterrechnungController extends AbstractController {
             txtZuschlagsgrundVorrechnung.setText(semesterrechnungModel.getZuschlagsgrundVorrechnung());
         }
         else if (checkIsFieldChange(Field.ANZAHL_WOCHEN_VORRECHNUNG, evt)) {
-            txtAnzahlWochenVorrechnung.setText(Integer.toString(semesterrechnungModel.getAnzahlWochenVorrechnung()));
+            txtAnzahlWochenVorrechnung.setText(semesterrechnungModel.getAnzahlWochenVorrechnung() == null ? null : Integer.toString(semesterrechnungModel.getAnzahlWochenVorrechnung()));
         }
         else if (checkIsFieldChange(Field.WOCHENBETRAG_VORRECHNUNG, evt)) {
             txtWochenbetragVorrechnung.setText(semesterrechnungModel.getWochenbetragVorrechnung() == null ? null : semesterrechnungModel.getWochenbetragVorrechnung().toString());
@@ -1173,7 +1178,7 @@ public abstract class SemesterrechnungController extends AbstractController {
             txtZuschlagsgrundNachrechnung.setText(semesterrechnungModel.getZuschlagsgrundNachrechnung());
         }
         else if (checkIsFieldChange(Field.ANZAHL_WOCHEN_NACHRECHNUNG, evt)) {
-            txtAnzahlWochenNachrechnung.setText(Integer.toString(semesterrechnungModel.getAnzahlWochenNachrechnung()));
+            txtAnzahlWochenNachrechnung.setText(semesterrechnungModel.getAnzahlWochenNachrechnung() == null ? null : Integer.toString(semesterrechnungModel.getAnzahlWochenNachrechnung()));
         }
         else if (checkIsFieldChange(Field.WOCHENBETRAG_NACHRECHNUNG, evt)) {
             txtWochenbetragNachrechnung.setText(semesterrechnungModel.getWochenbetragNachrechnung() == null ? null : semesterrechnungModel.getWochenbetragNachrechnung().toString());
@@ -1370,6 +1375,10 @@ public abstract class SemesterrechnungController extends AbstractController {
         if (e.getAffectedFields().contains(Field.BETRAG_ZAHLUNG_3)) {
             errLblBetragZahlung3.setVisible(true);
             errLblBetragZahlung3.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.STIPENDIUM)) {
+            errLblStipendium.setVisible(true);
+            errLblStipendium.setText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.BEMERKUNGEN)) {
             errLblBemerkungen.setVisible(true);
@@ -1606,6 +1615,14 @@ public abstract class SemesterrechnungController extends AbstractController {
                 txtBetragZahlung3.setToolTipText(null);
             }
         }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.STIPENDIUM)) {
+            if (errLblStipendium != null) {
+                errLblStipendium.setVisible(false);
+            }
+            if (comboBoxStipendium != null) {
+                comboBoxStipendium.setToolTipText(null);
+            }
+        }
         if (fields.contains(Field.ALLE) || fields.contains(Field.BEMERKUNGEN)) {
             if (errLblBemerkungen != null) {
                 errLblBemerkungen.setVisible(false);
@@ -1630,6 +1647,34 @@ public abstract class SemesterrechnungController extends AbstractController {
         if (txtRechnungsdatumNachrechnung != null && (fields.contains(Field.ALLE) || fields.contains(Field.RECHNUNGSDATUM_NACHRECHNUNG))) {
             txtRechnungsdatumNachrechnung.setEnabled(!disable);
         }
+        if (txtBetragZahlung1 != null && (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_ZAHLUNG_1))) {
+            txtBetragZahlung1.setEnabled(!disable);
+        }
+        if (txtDatumZahlung1 != null && (fields.contains(Field.ALLE) || fields.contains(Field.DATUM_ZAHLUNG_1))) {
+            txtDatumZahlung1.setEnabled(!disable);
+        }
+        if (txtBetragZahlung2 != null && (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_ZAHLUNG_2))) {
+            txtBetragZahlung2.setEnabled(!disable);
+        }
+        if (txtDatumZahlung2 != null && (fields.contains(Field.ALLE) || fields.contains(Field.DATUM_ZAHLUNG_2))) {
+            txtDatumZahlung2.setEnabled(!disable);
+        }
+        if (txtBetragZahlung3 != null && (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_ZAHLUNG_3))) {
+            txtBetragZahlung3.setEnabled(!disable);
+        }
+        if (txtDatumZahlung3 != null && (fields.contains(Field.ALLE) || fields.contains(Field.DATUM_ZAHLUNG_3))) {
+            txtDatumZahlung3.setEnabled(!disable);
+        }
     }
 
+    protected void setSemesterrechnungModel(SemesterrechnungModel semesterrechnungModel) {
+        this.semesterrechnungModel.removePropertyChangeListener(this);
+        this.semesterrechnungModel.removeDisableFieldsListener(this);
+        this.semesterrechnungModel.removeMakeErrorLabelsInvisibleListener(this);
+        this.semesterrechnungModel = semesterrechnungModel;
+        super.setModel(semesterrechnungModel);
+        this.semesterrechnungModel.addPropertyChangeListener(this);
+        this.semesterrechnungModel.addDisableFieldsListener(this);
+        this.semesterrechnungModel.addMakeErrorLabelsInvisibleListener(this);
+    }
 }

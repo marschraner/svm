@@ -43,7 +43,7 @@ public class KursanmeldungErfassenDialog extends JDialog {
     }
 
     private void createKursanmeldungErfassenController(SvmContext svmContext, KursanmeldungenModel kursanmeldungenModel, KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexBearbeiten, boolean isBearbeiten) {
-        KursanmeldungErfassenModel kursanmeldungErfassenModel = (isBearbeiten ? kursanmeldungenModel.getKurseinteilungErfassenModel(svmContext, kursanmeldungenTableModel, indexBearbeiten) : svmContext.getModelFactory().createKursanmeldungErfassenModel());
+        KursanmeldungErfassenModel kursanmeldungErfassenModel = (isBearbeiten ? kursanmeldungenModel.getKursanmeldungErfassenModel(svmContext, kursanmeldungenTableModel, indexBearbeiten) : svmContext.getModelFactory().createKursanmeldungErfassenModel());
         KursanmeldungErfassenController kursanmeldungErfassenController = new KursanmeldungErfassenController(svmContext, kursanmeldungErfassenModel, kursanmeldungenTableModel, schuelerDatenblattModel, isBearbeiten);
         kursanmeldungErfassenController.setKursanmeldungErfassenDialog(this);
         kursanmeldungErfassenController.setContentPane(contentPane);

@@ -4,6 +4,7 @@ package ch.metzenthin.svm.common.dataTypes;
  * @author Martin Schraner
  */
 public enum Stipendium {
+    ALLE("", 1),
     KEINES("", 1.),
     STIPENDIUM_10("10 %", 0.1),
     STIPENDIUM_20("20 %", 0.2),

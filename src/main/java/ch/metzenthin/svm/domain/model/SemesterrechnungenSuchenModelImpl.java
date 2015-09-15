@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -7,8 +8,12 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.CreateAndFindSemesterrechnungenCommand;
 import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
+import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
+import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
@@ -458,6 +463,29 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     }
 
     @Override
+    public SemesterrechnungCode[] getSelectableSemesterrechnungCodes(SvmModel svmModel) {
+        List<SemesterrechnungCode> codesList = svmModel.getSelektierbareSemesterrechnungCodesAll();
+        // SemesterrechnungCode alle auch erlaubt
+        if (codesList.isEmpty() || !codesList.get(0).isIdenticalWith(SEMESTERRECHNUNG_CODE_ALLE)) {
+            codesList.add(0, SEMESTERRECHNUNG_CODE_ALLE);
+        }
+        return codesList.toArray(new SemesterrechnungCode[codesList.size()]);
+    }
+
+    @Override
+    public Stipendium[] getSelectableStipendien() {
+        Stipendium[] selectableStipendien = new Stipendium[Stipendium.values().length - 1];
+        int j = 0;
+        for (int i = 0; i < Stipendium.values().length; i++) {
+            if (Stipendium.values()[i] != Stipendium.KEINES) {
+                selectableStipendien[j] = Stipendium.values()[i];
+                j++;
+            }
+        }
+        return selectableStipendien;
+    }
+
+    @Override
     public Semester getSemesterInit(SvmModel svmModel) {
         FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
         findSemesterForCalendarCommand.execute();
@@ -509,5 +537,22 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         CreateAndFindSemesterrechnungenCommand createAndFindSemesterrechnungenCommand = new CreateAndFindSemesterrechnungenCommand(this);
         commandInvoker.executeCommandAsTransaction(createAndFindSemesterrechnungenCommand);
         return new SemesterrechnungenTableData(createAndFindSemesterrechnungenCommand.getSemesterrechnungenFound(), semester);
+    }
+
+    @Override
+    public SemesterrechnungBearbeitenModel getSemesterrechnungBearbeitenModel(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel) {
+        SemesterrechnungBearbeitenModel semesterrechnungBearbeitenModel = svmContext.getModelFactory().createSemesterrechnungBearbeitenModel();
+        Semesterrechnung semesterrechnungSelected = semesterrechnungenTableModel.getSemesterrechnungSelected(0);
+        semesterrechnungBearbeitenModel.setSemesterrechnungOrigin(semesterrechnungSelected);
+        return semesterrechnungBearbeitenModel;
+    }
+
+    @Override
+    void doValidate() throws SvmValidationException {
+    }
+
+    @Override
+    public boolean isCompleted() {
+        return false;
     }
 }
