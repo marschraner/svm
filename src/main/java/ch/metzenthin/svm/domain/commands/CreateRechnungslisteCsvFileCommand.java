@@ -111,8 +111,7 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
             // Daten
             for (Semesterrechnung semesterrechnung : semesterrechnungList) {
                 Angehoeriger rechnungsempfaenger = semesterrechnung.getRechnungsempfaenger();
-                String anrede = rechnungsempfaenger.getAnrede().toString();
-                writer.append(anrede);
+                writer.append(rechnungsempfaenger.getAnrede().toString());
                 writer.append(separator);
                 writer.append(rechnungsempfaenger.getVorname());
                 writer.append(separator);

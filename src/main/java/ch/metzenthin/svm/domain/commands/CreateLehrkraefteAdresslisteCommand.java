@@ -175,7 +175,7 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
             cellsRow1.add(Integer.toString(i + 1));
             cellsRow1.add(lehrkraft.getNachname());
             cellsRow1.add(lehrkraft.getVorname());
-            cellsRow1.add(asString(lehrkraft.getGeburtsdatum()));
+            cellsRow1.add(nullAsEmptyString(asString(lehrkraft.getGeburtsdatum())));
             cellsRow1.add(nullAsEmptyString(lehrkraft.getFestnetz()));
             if (!vertretungsmoeglichkeitenLines.isEmpty()) {
                 cellsRow1.add(vertretungsmoeglichkeitenLines.get(0));
@@ -187,9 +187,9 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
             // 2. Zeile
             List<String> cellsRow2 = new ArrayList<>();
             cellsRow2.add("");
-            cellsRow2.add(lehrkraft.getAdresse().getStrHausnummer());
-            cellsRow2.add(lehrkraft.getAdresse().getPlz() + " " + lehrkraft.getAdresse().getOrt());
-            cellsRow2.add(lehrkraft.getAhvNummer());
+            cellsRow2.add(lehrkraft.getAdresse() == null ? "" : nullAsEmptyString(lehrkraft.getAdresse().getStrHausnummer()));
+            cellsRow2.add(lehrkraft.getAdresse() == null ? "" : nullAsEmptyString(lehrkraft.getAdresse().getPlz() + " " + lehrkraft.getAdresse().getOrt()));
+            cellsRow2.add(nullAsEmptyString(lehrkraft.getAhvNummer()));
             cellsRow2.add(nullAsEmptyString(lehrkraft.getNatel()));
             if (vertretungsmoeglichkeitenLines.size() > 1) {
                 cellsRow2.add(vertretungsmoeglichkeitenLines.get(1));

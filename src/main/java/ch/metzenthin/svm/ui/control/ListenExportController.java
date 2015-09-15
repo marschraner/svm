@@ -187,9 +187,10 @@ public class ListenExportController extends AbstractController {
         }
         if (listenExportTyp == ListenExportTyp.KURSE) {
             // Initialisierung
-            comboBoxListentyp.setSelectedItem(Listentyp.KURSLISTE);
+            comboBoxListentyp.setSelectedItem(Listentyp.KURSLISTE_WORD);
         } else {
-            comboBoxListentyp.removeItem(Listentyp.KURSLISTE);
+            comboBoxListentyp.removeItem(Listentyp.KURSLISTE_WORD);
+            comboBoxListentyp.removeItem(Listentyp.KURSLISTE_CSV);
         }
         if (listenExportTyp == ListenExportTyp.SEMESTERRECHNUNGEN) {
             // Initialisierung / Deaktivierungen, falls Rechnungsdatum nicht gesetzt

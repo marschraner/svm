@@ -90,6 +90,8 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
             }
         }
         String outputFile = listentyp + "." + listentyp.getFiletyp().getFileExtension();
+        outputFile = outputFile.replaceAll("\\p{Blank}\\(Word\\)", "");
+        outputFile = outputFile.replaceAll("\\p{Blank}\\(CSV\\)", "");
         outputFile = outputFile.replaceAll("\\p{Blank}", "_");
         outputFile = outputFile.replaceAll("ä", "ae");
         outputFile = outputFile.replaceAll("ö", "oe");
@@ -182,10 +184,15 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 commandInvoker.executeCommand(createAdressenCsvFileCommandLehrkraefte);
                 result = createAdressenCsvFileCommandLehrkraefte.getResult();
                 break;
-            case KURSLISTE:
-                CreateKurslisteCommand createKurslisteCommand = new CreateKurslisteCommand(kurseTableModel, titel, outputFile);
-                commandInvoker.executeCommand(createKurslisteCommand);
-                result = createKurslisteCommand.getResult();
+            case KURSLISTE_WORD:
+                CreateKurslisteWordFileCommand createKurslisteWordFileCommand = new CreateKurslisteWordFileCommand(kurseTableModel, titel, outputFile);
+                commandInvoker.executeCommand(createKurslisteWordFileCommand);
+                result = createKurslisteWordFileCommand.getResult();
+                break;
+            case KURSLISTE_CSV:
+                CreateKurslisteCsvFileCommand createKurslisteCsvFileCommand = new CreateKurslisteCsvFileCommand(kurseTableModel.getKurse(), outputFile);
+                commandInvoker.executeCommand(createKurslisteCsvFileCommand);
+                result = createKurslisteCsvFileCommand.getResult();
                 break;
             case VORRECHNUNGEN_SERIENBRIEF:
                 CreateRechnungenSerienbriefCsvFileCommand createVorrechnungenSerienbriefCsvFileCommand = new CreateRechnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), Rechnungstyp.VORRECHNUNG, outputFile);
@@ -253,8 +260,10 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 break;
             case LEHRKRAEFTE_ADRESSETIKETTEN:
                 break;
-            case KURSLISTE:
+            case KURSLISTE_WORD:
                 titleInit = "Kurse";
+                break;
+            case KURSLISTE_CSV:
                 break;
             case VORRECHNUNGEN_SERIENBRIEF:
                 break;

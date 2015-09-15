@@ -13,14 +13,14 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 /**
  * @author Martin Schraner
  */
-public class CreateKurslisteCommand extends CreateListeCommand {
+public class CreateKurslisteWordFileCommand extends CreateListeCommand {
 
     // input
     private final KurseTableModel kurseTableModel;
     private final String titel;
     private final File outputFile;
 
-    public CreateKurslisteCommand(KurseTableModel kurseTableModel, String titel, File outputFile) {
+    public CreateKurslisteWordFileCommand(KurseTableModel kurseTableModel, String titel, File outputFile) {
         this.kurseTableModel = kurseTableModel;
         this.titel = titel;
         this.outputFile = outputFile;
