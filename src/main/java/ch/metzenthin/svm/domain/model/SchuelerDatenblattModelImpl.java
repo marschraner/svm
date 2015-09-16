@@ -577,8 +577,8 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         Semester semester = schuelerSuchenTableModel.getSemester();
         Wochentag wochentag = schuelerSuchenTableModel.getWochentag();
         Time zeitBeginn = schuelerSuchenTableModel.getZeitBeginn();
-        Lehrkraft lehrkraft = schuelerSuchenTableModel.getLehrkraft();
-        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, wochentag, zeitBeginn, lehrkraft);
+        Mitarbeiter mitarbeiter = schuelerSuchenTableModel.getLehrkraft();
+        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, wochentag, zeitBeginn, mitarbeiter);
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
         schuelerSuchenTableModel.getSchuelerSuchenTableData().setKurse(findKurseMapSchuelerSemesterCommand.getKurseMap());
         // Maercheneinteilungen-Map neu setzen

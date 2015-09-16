@@ -3,7 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.persistence.entities.Kurs;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,11 +79,11 @@ public class KurseTableData {
                 break;
             case LEITUNG:
                 StringBuilder leitung = new StringBuilder();
-                for (Lehrkraft lehrkraft : kurs.getLehrkraefte()) {
+                for (Mitarbeiter mitarbeiter : kurs.getMitarbeiters()) {
                     if (leitung.length() > 0) {
                         leitung.append(" / ");
                     }
-                    leitung.append(lehrkraft.getVorname()).append(" ").append(lehrkraft.getNachname());
+                    leitung.append(mitarbeiter.getVorname()).append(" ").append(mitarbeiter.getNachname());
                 }
                 value = leitung.toString();
                 break;

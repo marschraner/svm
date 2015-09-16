@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
-import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
+import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,12 +18,12 @@ import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
 public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
 
     // input
-    private final LehrkraefteTableModel lehrkraefteTableModel;
+    private final MitarbeitersTableModel mitarbeitersTableModel;
     private final String titel;
     private final File outputFile;
 
-    public CreateLehrkraefteAdresslisteCommand(LehrkraefteTableModel lehrkraefteTableModel, String titel, File outputFile) {
-        this.lehrkraefteTableModel = lehrkraefteTableModel;
+    public CreateLehrkraefteAdresslisteCommand(MitarbeitersTableModel mitarbeitersTableModel, String titel, File outputFile) {
+        this.mitarbeitersTableModel = mitarbeitersTableModel;
         this.titel = titel;
         this.outputFile = outputFile;
     }
@@ -157,26 +157,26 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
         header.add(headerCellsRow3);
 
         // Inhalt
-        List<Lehrkraft> lehrkraefte = lehrkraefteTableModel.getLehrkraefte();
+        List<Mitarbeiter> lehrkraefte = mitarbeitersTableModel.getLehrkraefte();
         List<List<List<String>>> datasets = new ArrayList<>();
         int i = 0;
-        for (Lehrkraft lehrkraft : lehrkraefte) {
-            // Nur aktive Lehkräfte auflisten
-            if (!lehrkraft.getAktiv()) {
+        for (Mitarbeiter mitarbeiter : lehrkraefte) {
+            // Nur aktive Lehrkräfte auflisten
+            if (!mitarbeiter.getAktiv()) {
                 continue;
             }
             List<List<String>> dataset = new ArrayList<>();
             // Auf mehrere Zeilen aufzusplittende Felder:
-            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(lehrkraft.getVertretungsmoeglichkeiten(), 27, 3);
+            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(mitarbeiter.getVertretungsmoeglichkeiten(), 27, 3);
             splitStringIntoMultipleLinesCommand.execute();
             List<String> vertretungsmoeglichkeitenLines = splitStringIntoMultipleLinesCommand.getLines();
             // 1. Zeile
             List<String> cellsRow1 = new ArrayList<>();
             cellsRow1.add(Integer.toString(i + 1));
-            cellsRow1.add(lehrkraft.getNachname());
-            cellsRow1.add(lehrkraft.getVorname());
-            cellsRow1.add(nullAsEmptyString(asString(lehrkraft.getGeburtsdatum())));
-            cellsRow1.add(nullAsEmptyString(lehrkraft.getFestnetz()));
+            cellsRow1.add(mitarbeiter.getNachname());
+            cellsRow1.add(mitarbeiter.getVorname());
+            cellsRow1.add(nullAsEmptyString(asString(mitarbeiter.getGeburtsdatum())));
+            cellsRow1.add(nullAsEmptyString(mitarbeiter.getFestnetz()));
             if (!vertretungsmoeglichkeitenLines.isEmpty()) {
                 cellsRow1.add(vertretungsmoeglichkeitenLines.get(0));
             } else {
@@ -187,10 +187,10 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
             // 2. Zeile
             List<String> cellsRow2 = new ArrayList<>();
             cellsRow2.add("");
-            cellsRow2.add(lehrkraft.getAdresse() == null ? "" : nullAsEmptyString(lehrkraft.getAdresse().getStrHausnummer()));
-            cellsRow2.add(lehrkraft.getAdresse() == null ? "" : nullAsEmptyString(lehrkraft.getAdresse().getPlz() + " " + lehrkraft.getAdresse().getOrt()));
-            cellsRow2.add(nullAsEmptyString(lehrkraft.getAhvNummer()));
-            cellsRow2.add(nullAsEmptyString(lehrkraft.getNatel()));
+            cellsRow2.add(mitarbeiter.getAdresse() == null ? "" : nullAsEmptyString(mitarbeiter.getAdresse().getStrHausnummer()));
+            cellsRow2.add(mitarbeiter.getAdresse() == null ? "" : nullAsEmptyString(mitarbeiter.getAdresse().getPlz() + " " + mitarbeiter.getAdresse().getOrt()));
+            cellsRow2.add(nullAsEmptyString(mitarbeiter.getAhvNummer()));
+            cellsRow2.add(nullAsEmptyString(mitarbeiter.getNatel()));
             if (vertretungsmoeglichkeitenLines.size() > 1) {
                 cellsRow2.add(vertretungsmoeglichkeitenLines.get(1));
             } else {
@@ -202,7 +202,7 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
             List<String> cellsRow3 = new ArrayList<>();
             cellsRow3.add("");
             cellsRow3.add("");
-            cellsRow3.add(nullAsEmptyString(lehrkraft.getEmail()));
+            cellsRow3.add(nullAsEmptyString(mitarbeiter.getEmail()));
             cellsRow3.add("");
             cellsRow3.add("");
             if (vertretungsmoeglichkeitenLines.size() > 2) {

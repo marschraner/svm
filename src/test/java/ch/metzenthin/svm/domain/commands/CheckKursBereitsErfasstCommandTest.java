@@ -29,8 +29,8 @@ public class CheckKursBereitsErfasstCommandTest {
     private Kurstyp kurstyp2 = new Kurstyp("Testkurs1", true);
     private Kursort kursort1 = new Kursort("Testsaal1", true);
     private Kursort kursort2 = new Kursort("Testsaal2", true);
-    private Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos1", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
-    private Lehrkraft lehrkraft2 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos2", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+    private Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos1", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+    private Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos2", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
 
 
     @Before
@@ -39,7 +39,7 @@ public class CheckKursBereitsErfasstCommandTest {
         kurs.setSemester(semester1);
         kurs.setKurstyp(kurstyp1);
         kurs.setKursort(kursort1);
-        kurs.addLehrkraft(lehrkraft1);
+        kurs.addLehrkraft(mitarbeiter1);
         bereitsErfassteKurse.add(kurs);
     }
 
@@ -49,7 +49,7 @@ public class CheckKursBereitsErfasstCommandTest {
         kurs.setSemester(semester1);
         kurs.setKurstyp(kurstyp2);
         kurs.setKursort(kursort2);
-        kurs.addLehrkraft(lehrkraft1);
+        kurs.addLehrkraft(mitarbeiter1);
         CheckKursBereitsErfasstCommand checkKursBereitsErfasstCommand = new CheckKursBereitsErfasstCommand(kurs, null, bereitsErfassteKurse);
         commandInvoker.executeCommand(checkKursBereitsErfasstCommand);
         assertTrue(checkKursBereitsErfasstCommand.isBereitsErfasst());
@@ -61,7 +61,7 @@ public class CheckKursBereitsErfasstCommandTest {
         kurs.setSemester(semester1);
         kurs.setKurstyp(kurstyp2);
         kurs.setKursort(kursort2);
-        kurs.addLehrkraft(lehrkraft2);
+        kurs.addLehrkraft(mitarbeiter2);
         CheckKursBereitsErfasstCommand checkKursBereitsErfasstCommand = new CheckKursBereitsErfasstCommand(kurs, null, bereitsErfassteKurse);
         commandInvoker.executeCommand(checkKursBereitsErfasstCommand);
         assertFalse(checkKursBereitsErfasstCommand.isBereitsErfasst());
@@ -73,7 +73,7 @@ public class CheckKursBereitsErfasstCommandTest {
         kurs.setSemester(semester1);
         kurs.setKurstyp(kurstyp2);
         kurs.setKursort(kursort2);
-        kurs.addLehrkraft(lehrkraft1);
+        kurs.addLehrkraft(mitarbeiter1);
         CheckKursBereitsErfasstCommand checkKursBereitsErfasstCommand = new CheckKursBereitsErfasstCommand(kurs, null, bereitsErfassteKurse);
         commandInvoker.executeCommand(checkKursBereitsErfasstCommand);
         assertFalse(checkKursBereitsErfasstCommand.isBereitsErfasst());
@@ -85,7 +85,7 @@ public class CheckKursBereitsErfasstCommandTest {
         kurs.setSemester(semester1);
         kurs.setKurstyp(kurstyp2);
         kurs.setKursort(kursort2);
-        kurs.addLehrkraft(lehrkraft1);
+        kurs.addLehrkraft(mitarbeiter1);
         CheckKursBereitsErfasstCommand checkKursBereitsErfasstCommand = new CheckKursBereitsErfasstCommand(kurs, null, bereitsErfassteKurse);
         commandInvoker.executeCommand(checkKursBereitsErfasstCommand);
         assertFalse(checkKursBereitsErfasstCommand.isBereitsErfasst());
@@ -97,7 +97,7 @@ public class CheckKursBereitsErfasstCommandTest {
         kurs.setSemester(semester2);
         kurs.setKurstyp(kurstyp2);
         kurs.setKursort(kursort2);
-        kurs.addLehrkraft(lehrkraft1);
+        kurs.addLehrkraft(mitarbeiter1);
         CheckKursBereitsErfasstCommand checkKursBereitsErfasstCommand = new CheckKursBereitsErfasstCommand(kurs, null, bereitsErfassteKurse);
         commandInvoker.executeCommand(checkKursBereitsErfasstCommand);
         assertFalse(checkKursBereitsErfasstCommand.isBereitsErfasst());
@@ -109,7 +109,7 @@ public class CheckKursBereitsErfasstCommandTest {
         kurs.setSemester(semester1);
         kurs.setKurstyp(kurstyp2);
         kurs.setKursort(kursort2);
-        kurs.addLehrkraft(lehrkraft1);
+        kurs.addLehrkraft(mitarbeiter1);
         CheckKursBereitsErfasstCommand checkKursBereitsErfasstCommand = new CheckKursBereitsErfasstCommand(kurs, bereitsErfassteKurse.get(0), bereitsErfassteKurse);
         commandInvoker.executeCommand(checkKursBereitsErfasstCommand);
         assertFalse(checkKursBereitsErfasstCommand.isBereitsErfasst());

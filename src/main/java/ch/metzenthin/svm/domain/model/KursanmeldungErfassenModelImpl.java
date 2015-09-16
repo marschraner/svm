@@ -25,7 +25,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
     private Semester semester;
     private Wochentag wochentag;
     private Time zeitBeginn;
-    private Lehrkraft lehrkraft;
+    private Mitarbeiter mitarbeiter;
     private Kurs kurs;
     private Kursanmeldung kursanmeldung = new Kursanmeldung();
     private Kursanmeldung kursanmeldungOrigin;
@@ -94,16 +94,16 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
     }
 
     @Override
-    public Lehrkraft getLehrkraft() {
-        return lehrkraft;
+    public Mitarbeiter getMitarbeiter() {
+        return mitarbeiter;
     }
 
     @Override
-    public void setLehrkraft(Lehrkraft lehrkraft) throws SvmRequiredException {
-        Lehrkraft oldValue = this.lehrkraft;
-        this.lehrkraft = lehrkraft;
-        firePropertyChange(Field.LEHRKRAFT, oldValue, this.lehrkraft);
-        if (lehrkraft == null) {
+    public void setMitarbeiter(Mitarbeiter mitarbeiter) throws SvmRequiredException {
+        Mitarbeiter oldValue = this.mitarbeiter;
+        this.mitarbeiter = mitarbeiter;
+        firePropertyChange(Field.LEHRKRAFT, oldValue, this.mitarbeiter);
+        if (mitarbeiter == null) {
             invalidate();
             throw new SvmRequiredException(Field.LEHRKRAFT);
         }
@@ -239,8 +239,8 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
     }
 
     @Override
-    public Lehrkraft[] getSelectableLehrkraftKursanmeldungOrigin() {
-        return new Lehrkraft[]{kursanmeldungOrigin.getKurs().getLehrkraefte().get(0)};
+    public Mitarbeiter[] getSelectableLehrkraftKursanmeldungOrigin() {
+        return new Mitarbeiter[]{kursanmeldungOrigin.getKurs().getMitarbeiters().get(0)};
     }
 
     @Override
@@ -278,7 +278,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
     @Override
     public FindKursCommand.Result findKurs() {
         CommandInvoker commandInvoker = getCommandInvoker();
-        FindKursCommand findKursCommand = new FindKursCommand(semester, wochentag, zeitBeginn, lehrkraft);
+        FindKursCommand findKursCommand = new FindKursCommand(semester, wochentag, zeitBeginn, mitarbeiter);
         commandInvoker.executeCommand(findKursCommand);
         FindKursCommand.Result result = findKursCommand.getResult();
         if (result == FindKursCommand.Result.KURS_GEFUNDEN) {
@@ -317,7 +317,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
                 setSemester(kursanmeldungOrigin.getKurs().getSemester());
                 setWochentag(kursanmeldungOrigin.getKurs().getWochentag());
                 setZeitBeginn(asString(kursanmeldungOrigin.getKurs().getZeitBeginn()));
-                setLehrkraft(kursanmeldungOrigin.getKurs().getLehrkraefte().get(0));
+                setMitarbeiter(kursanmeldungOrigin.getKurs().getMitarbeiters().get(0));
                 kurs = kursanmeldungOrigin.getKurs();
                 setAnmeldedatum(asString(kursanmeldungOrigin.getAnmeldedatum()));
                 setAbmeldedatum(asString(kursanmeldungOrigin.getAbmeldedatum()));

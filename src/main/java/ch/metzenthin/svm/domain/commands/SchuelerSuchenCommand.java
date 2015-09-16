@@ -36,7 +36,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     private Semester semesterKurs;
     private Wochentag wochentag;
     private Time zeitBeginn;
-    private Lehrkraft lehrkraft;
+    private Mitarbeiter mitarbeiter;
     private boolean kursFuerSucheBeruecksichtigen;
     private Maerchen maerchen;
     private Gruppe gruppe;
@@ -66,7 +66,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         this.semesterKurs = schuelerSuchenModel.getSemesterKurs();
         this.wochentag = schuelerSuchenModel.getWochentag();
         this.zeitBeginn = schuelerSuchenModel.getZeitBeginn();
-        this.lehrkraft = schuelerSuchenModel.getLehrkraft();
+        this.mitarbeiter = schuelerSuchenModel.getMitarbeiter();
         this.kursFuerSucheBeruecksichtigen = schuelerSuchenModel.isKursFuerSucheBeruecksichtigen();
         this.maerchen = schuelerSuchenModel.getMaerchen();
         this.gruppe = schuelerSuchenModel.getGruppe();
@@ -135,7 +135,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     private void createJoinKurs() {
         if (kursFuerSucheBeruecksichtigen) {
             selectStatementSb.append(" join s.kursanmeldungen kursanm");
-            if (lehrkraft != SchuelerSuchenModel.LEHRKRAFT_ALLE) {
+            if (mitarbeiter != SchuelerSuchenModel.MITARBEITER_ALLE) {
                 selectStatementSb.append(" join kursanm.kurs.lehrkraefte lkr");
             }
         }
@@ -342,7 +342,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
             if (zeitBeginn != null) {
                 selectStatementSb.append(" kursanm.kurs.zeitBeginn = :zeitBeginn and");
             }
-            if (lehrkraft != SchuelerSuchenModel.LEHRKRAFT_ALLE) {
+            if (mitarbeiter != SchuelerSuchenModel.MITARBEITER_ALLE) {
                 selectStatementSb.append(" lkr.personId = :lehrkraftPersonId and");
             }
         }
@@ -495,7 +495,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
             typedQuery.setParameter("zeitBeginn", zeitBeginn);
         }
         if (selectStatementSb.toString().contains(":lehrkraftPersonId")) {
-            typedQuery.setParameter("lehrkraftPersonId", lehrkraft.getPersonId());
+            typedQuery.setParameter("lehrkraftPersonId", mitarbeiter.getPersonId());
         }
     }
 

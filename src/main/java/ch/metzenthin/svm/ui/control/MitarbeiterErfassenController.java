@@ -5,8 +5,8 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
-import ch.metzenthin.svm.domain.model.LehrkraftErfassenModel;
-import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
+import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
+import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -19,18 +19,18 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
-public class LehrkraftErfassenController extends PersonController {
+public class MitarbeiterErfassenController extends PersonController {
 
-    private static final Logger LOGGER = Logger.getLogger(LehrkraftErfassenController.class);
+    private static final Logger LOGGER = Logger.getLogger(MitarbeiterErfassenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private LehrkraefteTableModel lehrkraefteTableModel;
-    private LehrkraftErfassenModel lehrkraftErfassenModel;
+    private MitarbeitersTableModel mitarbeitersTableModel;
+    private MitarbeiterErfassenModel mitarbeiterErfassenModel;
     private final boolean isBearbeiten;
     private final SvmContext svmContext;
-    private JDialog lehrkraftErfassenDialog;
+    private JDialog mitarbeiterErfassenDialog;
     private JTextField txtAhvNummer;
     private JTextField txtVertretungsmoeglichkeiten;
     private JLabel errLblAhvNummer;
@@ -38,18 +38,18 @@ public class LehrkraftErfassenController extends PersonController {
     private JCheckBox checkBoxAktiv;
     private JButton btnSpeichern;
 
-    public LehrkraftErfassenController(SvmContext svmContext, LehrkraefteTableModel lehrkraefteTableModel, LehrkraftErfassenModel lehrkraftErfassenModel, boolean isBearbeiten) {
-        super(lehrkraftErfassenModel);
+    public MitarbeiterErfassenController(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, MitarbeiterErfassenModel mitarbeiterErfassenModel, boolean isBearbeiten) {
+        super(mitarbeiterErfassenModel);
         this.svmContext = svmContext;
-        this.lehrkraefteTableModel = lehrkraefteTableModel;
-        this.lehrkraftErfassenModel = lehrkraftErfassenModel;
-        this.lehrkraftErfassenModel.addPropertyChangeListener(this);
-        this.lehrkraftErfassenModel.addDisableFieldsListener(this);
-        this.lehrkraftErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.lehrkraftErfassenModel.addCompletedListener(new CompletedListener() {
+        this.mitarbeitersTableModel = mitarbeitersTableModel;
+        this.mitarbeiterErfassenModel = mitarbeiterErfassenModel;
+        this.mitarbeiterErfassenModel.addPropertyChangeListener(this);
+        this.mitarbeiterErfassenModel.addDisableFieldsListener(this);
+        this.mitarbeiterErfassenModel.addMakeErrorLabelsInvisibleListener(this);
+        this.mitarbeiterErfassenModel.addCompletedListener(new CompletedListener() {
             @Override
             public void completed(boolean completed) {
-                onLehrkraftErfassenModelCompleted(completed);
+                onMitarbeiterErfassenModelCompleted(completed);
             }
         });
         this.isBearbeiten = isBearbeiten;
@@ -57,14 +57,14 @@ public class LehrkraftErfassenController extends PersonController {
     }
 
     public void constructionDone() {
-        lehrkraftErfassenModel.initializeCompleted();
+        mitarbeiterErfassenModel.initializeCompleted();
     }
 
-    public void setLehrkraftErfassenDialog(JDialog lehrkraftErfassenDialog) {
+    public void setMitarbeiterErfassenDialog(JDialog mitarbeiterErfassenDialog) {
         // call onCancel() when cross is clicked
-        this.lehrkraftErfassenDialog = lehrkraftErfassenDialog;
-        lehrkraftErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        lehrkraftErfassenDialog.addWindowListener(new WindowAdapter() {
+        this.mitarbeiterErfassenDialog = mitarbeiterErfassenDialog;
+        mitarbeiterErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        mitarbeiterErfassenDialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 onAbbrechen();
             }
@@ -97,8 +97,8 @@ public class LehrkraftErfassenController extends PersonController {
     }
 
     private void onAhvNummerEvent(boolean showRequiredErrMsg) {
-        LOGGER.trace("LehrkraftErfassenController Event AhvNummer");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtAhvNummer.getText(), lehrkraftErfassenModel.getAhvNummer());
+        LOGGER.trace("MitarbeiterErfassenController Event AhvNummer");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtAhvNummer.getText(), mitarbeiterErfassenModel.getAhvNummer());
         try {
             setModelAhvNummer(showRequiredErrMsg);
         } catch (SvmValidationException e) {
@@ -114,9 +114,9 @@ public class LehrkraftErfassenController extends PersonController {
     private void setModelAhvNummer(boolean showRequiredErrMsg) throws SvmValidationException {
         makeErrorLabelInvisible(Field.AHV_NUMMER);
         try {
-            lehrkraftErfassenModel.setAhvNummer(txtAhvNummer.getText());
+            mitarbeiterErfassenModel.setAhvNummer(txtAhvNummer.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("LehrkraftErfassenController setModelAhvNummer RequiredException=" + e.getMessage());
+            LOGGER.trace("MitarbeiterErfassenController setModelAhvNummer RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtAhvNummer.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
@@ -125,7 +125,7 @@ public class LehrkraftErfassenController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("LehrkraftErfassenController setModelAhvNummer Exception=" + e.getMessage());
+            LOGGER.trace("MitarbeiterErfassenController setModelAhvNummer Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -148,8 +148,8 @@ public class LehrkraftErfassenController extends PersonController {
     }
 
     private void onVertretungsmoeglichkeitenEvent(boolean showRequiredErrMsg) {
-        LOGGER.trace("LehrkraftErfassenController Event Vertretungsmoeglichkeiten");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtVertretungsmoeglichkeiten.getText(), lehrkraftErfassenModel.getVertretungsmoeglichkeiten());
+        LOGGER.trace("MitarbeiterErfassenController Event Vertretungsmoeglichkeiten");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtVertretungsmoeglichkeiten.getText(), mitarbeiterErfassenModel.getVertretungsmoeglichkeiten());
         try {
             setModelVertretungsmoeglichkeiten(showRequiredErrMsg);
         } catch (SvmValidationException e) {
@@ -165,9 +165,9 @@ public class LehrkraftErfassenController extends PersonController {
     private void setModelVertretungsmoeglichkeiten(boolean showRequiredErrMsg) throws SvmValidationException {
         makeErrorLabelInvisible(Field.VERTRETUNGSMOEGLICHKEITEN);
         try {
-            lehrkraftErfassenModel.setVertretungsmoeglichkeiten(txtVertretungsmoeglichkeiten.getText());
+            mitarbeiterErfassenModel.setVertretungsmoeglichkeiten(txtVertretungsmoeglichkeiten.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("LehrkraftErfassenController setModelVertretungsmoeglichkeiten RequiredException=" + e.getMessage());
+            LOGGER.trace("MitarbeiterErfassenController setModelVertretungsmoeglichkeiten RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtVertretungsmoeglichkeiten.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
@@ -176,7 +176,7 @@ public class LehrkraftErfassenController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("LehrkraftErfassenController setModelVertretungsmoeglichkeiten Exception=" + e.getMessage());
+            LOGGER.trace("MitarbeiterErfassenController setModelVertretungsmoeglichkeiten Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -186,7 +186,7 @@ public class LehrkraftErfassenController extends PersonController {
         this.checkBoxAktiv = checkBoxAktiv;
         // Aktiv als Default-Wert
         if (!isBearbeiten) {
-            lehrkraftErfassenModel.setAktiv(true);
+            mitarbeiterErfassenModel.setAktiv(true);
         }
         this.checkBoxAktiv.addItemListener(new ItemListener() {
             @Override
@@ -197,7 +197,7 @@ public class LehrkraftErfassenController extends PersonController {
     }
 
     private void setModelAktiv() {
-        lehrkraftErfassenModel.setAktiv(checkBoxAktiv.isSelected());
+        mitarbeiterErfassenModel.setAktiv(checkBoxAktiv.isSelected());
     }
 
     private void onAktivEvent() {
@@ -231,12 +231,12 @@ public class LehrkraftErfassenController extends PersonController {
             btnSpeichern.setFocusPainted(false);
             return;
         }
-        if (lehrkraftErfassenModel.checkLehrkraftBereitsErfasst(svmContext.getSvmModel())) {
-            JOptionPane.showMessageDialog(lehrkraftErfassenDialog, "Die Lehrkraft ist bereits in der Datenbank gespeichert und kann nicht ein weiteres Mal erfasst werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+        if (mitarbeiterErfassenModel.checkMitarbeiterBereitsErfasst(svmContext.getSvmModel())) {
+            JOptionPane.showMessageDialog(mitarbeiterErfassenDialog, "Der Mitarbeiter ist bereits in der Datenbank gespeichert und kann nicht ein weiteres Mal erfasst werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
-            lehrkraftErfassenModel.speichern(svmContext.getSvmModel(), lehrkraefteTableModel);
-            lehrkraftErfassenDialog.dispose();
+            mitarbeiterErfassenModel.speichern(svmContext.getSvmModel(), mitarbeitersTableModel);
+            mitarbeiterErfassenDialog.dispose();
         }
     }
 
@@ -250,11 +250,11 @@ public class LehrkraftErfassenController extends PersonController {
     }
 
     private void onAbbrechen() {
-        lehrkraftErfassenDialog.dispose();
+        mitarbeiterErfassenDialog.dispose();
     }
 
-    private void onLehrkraftErfassenModelCompleted(boolean completed) {
-        LOGGER.trace("LehrkraftErfassenModel completed=" + completed);
+    private void onMitarbeiterErfassenModelCompleted(boolean completed) {
+        LOGGER.trace("MitarbeiterErfassenModel completed=" + completed);
         if (completed) {
             btnSpeichern.setToolTipText(null);
             btnSpeichern.setEnabled(true);
@@ -268,13 +268,13 @@ public class LehrkraftErfassenController extends PersonController {
     void doPropertyChange(PropertyChangeEvent evt) {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.AHV_NUMMER, evt)) {
-            txtAhvNummer.setText(lehrkraftErfassenModel.getAhvNummer());
+            txtAhvNummer.setText(mitarbeiterErfassenModel.getAhvNummer());
         }
         else if (checkIsFieldChange(Field.VERTRETUNGSMOEGLICHKEITEN, evt)) {
-            txtVertretungsmoeglichkeiten.setText(lehrkraftErfassenModel.getVertretungsmoeglichkeiten());
+            txtVertretungsmoeglichkeiten.setText(mitarbeiterErfassenModel.getVertretungsmoeglichkeiten());
         }
         else if (checkIsFieldChange(Field.AKTIV, evt)) {
-            checkBoxAktiv.setSelected(lehrkraftErfassenModel.isAktiv());
+            checkBoxAktiv.setSelected(mitarbeiterErfassenModel.isAktiv());
         }
     }
 

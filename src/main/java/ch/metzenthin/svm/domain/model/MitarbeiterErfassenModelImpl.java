@@ -3,12 +3,12 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CheckLehrkraftBereitsErfasstCommand;
+import ch.metzenthin.svm.domain.commands.CheckMitarbeiterBereitsErfasstCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.SaveOrUpdateLehrkraftCommand;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.domain.commands.SaveOrUpdateMitarbeiterCommand;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Person;
-import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
+import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 
 import java.util.Calendar;
 
@@ -19,28 +19,28 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 /**
  * @author Martin Schraner
  */
-public class LehrkraftErfassenModelImpl extends PersonModelImpl implements LehrkraftErfassenModel {
+public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements MitarbeiterErfassenModel {
 
-    private Lehrkraft lehrkraft = new Lehrkraft();
-    private Lehrkraft lehrkraftOrigin;
+    private Mitarbeiter mitarbeiter = new Mitarbeiter();
+    private Mitarbeiter mitarbeiterOrigin;
 
-    public LehrkraftErfassenModelImpl(CommandInvoker commandInvoker) {
+    public MitarbeiterErfassenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
     }
 
     @Override
     Person getPerson() {
-        return lehrkraft;
+        return mitarbeiter;
     }
 
     @Override
-    public Lehrkraft getLehrkraft() {
-        return lehrkraft;
+    public Mitarbeiter getMitarbeiter() {
+        return mitarbeiter;
     }
 
     @Override
-    public void setLehrkraftOrigin(Lehrkraft lehrkraftOrigin) {
-        this.lehrkraftOrigin = lehrkraftOrigin;
+    public void setMitarbeiterOrigin(Mitarbeiter mitarbeiterOrigin) {
+        this.mitarbeiterOrigin = mitarbeiterOrigin;
     }
 
     @Override
@@ -77,12 +77,12 @@ public class LehrkraftErfassenModelImpl extends PersonModelImpl implements Lehrk
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return lehrkraft.getAhvNummer();
+                    return mitarbeiter.getAhvNummer();
                 }
 
                 @Override
                 public void setValue(String value) {
-                    lehrkraft.setAhvNummer(value);
+                    mitarbeiter.setAhvNummer(value);
                 }
             }
     );
@@ -103,12 +103,12 @@ public class LehrkraftErfassenModelImpl extends PersonModelImpl implements Lehrk
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
-                    return lehrkraft.getVertretungsmoeglichkeiten();
+                    return mitarbeiter.getVertretungsmoeglichkeiten();
                 }
 
                 @Override
                 public void setValue(String value) {
-                    lehrkraft.setVertretungsmoeglichkeiten(value);
+                    mitarbeiter.setVertretungsmoeglichkeiten(value);
                 }
             }
     );
@@ -125,52 +125,52 @@ public class LehrkraftErfassenModelImpl extends PersonModelImpl implements Lehrk
 
     @Override
     public void setAktiv(Boolean isSelected) {
-        Boolean oldValue = lehrkraft.getAktiv();
-        lehrkraft.setAktiv(isSelected);
+        Boolean oldValue = mitarbeiter.getAktiv();
+        mitarbeiter.setAktiv(isSelected);
         firePropertyChange(Field.AKTIV, oldValue, isSelected);
     }
 
     @Override
     public Boolean isAktiv() {
-        return lehrkraft.getAktiv();
+        return mitarbeiter.getAktiv();
     }
 
     @Override
-    public boolean checkLehrkraftBereitsErfasst(SvmModel svmModel) {
+    public boolean checkMitarbeiterBereitsErfasst(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        CheckLehrkraftBereitsErfasstCommand checkLehrkraftBereitsErfasstCommand = new CheckLehrkraftBereitsErfasstCommand(lehrkraft, lehrkraftOrigin, svmModel.getLehrkraefteAll());
-        commandInvoker.executeCommand(checkLehrkraftBereitsErfasstCommand);
-        return checkLehrkraftBereitsErfasstCommand.isBereitsErfasst();
+        CheckMitarbeiterBereitsErfasstCommand checkMitarbeiterBereitsErfasstCommand = new CheckMitarbeiterBereitsErfasstCommand(mitarbeiter, mitarbeiterOrigin, svmModel.getMitarbeitersAll());
+        commandInvoker.executeCommand(checkMitarbeiterBereitsErfasstCommand);
+        return checkMitarbeiterBereitsErfasstCommand.isBereitsErfasst();
     }
 
     @Override
-    public void speichern(SvmModel svmModel, LehrkraefteTableModel lehrkraefteTableModel) {
+    public void speichern(SvmModel svmModel, MitarbeitersTableModel mitarbeitersTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        SaveOrUpdateLehrkraftCommand saveOrUpdateLehrkraftCommand = new SaveOrUpdateLehrkraftCommand(lehrkraft, getAdresse(), lehrkraftOrigin, svmModel.getLehrkraefteAll());
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateLehrkraftCommand);
-        // TableData mit von der Datenbank upgedateten Lehrkräften updaten
-        lehrkraefteTableModel.getLehrkraefteTableData().setLehrkraefte(svmModel.getLehrkraefteAll());
+        SaveOrUpdateMitarbeiterCommand saveOrUpdateMitarbeiterCommand = new SaveOrUpdateMitarbeiterCommand(mitarbeiter, getAdresse(), mitarbeiterOrigin, svmModel.getMitarbeitersAll());
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateMitarbeiterCommand);
+        // TableData mit von der Datenbank upgedateten Mitarbeitern updaten
+        mitarbeitersTableModel.getMitarbeitersTableData().setMitarbeiters(svmModel.getMitarbeitersAll());
     }
 
     @Override
     public void initializeCompleted() {
-        if (lehrkraftOrigin != null) {
+        if (mitarbeiterOrigin != null) {
             setBulkUpdate(true);
             try {
-                setAnrede(lehrkraftOrigin.getAnrede());
-                setNachname(lehrkraftOrigin.getNachname());
-                setVorname(lehrkraftOrigin.getVorname());
-                setStrasseHausnummer(lehrkraftOrigin.getAdresse().getStrasseHausnummer());
-                setPlz(lehrkraftOrigin.getAdresse().getPlz());
-                setOrt(lehrkraftOrigin.getAdresse().getOrt());
-                setFestnetz(lehrkraftOrigin.getFestnetz());
-                setNatel(lehrkraftOrigin.getNatel());
-                setEmail(lehrkraftOrigin.getEmail());
-                setGeburtsdatum(asString(lehrkraftOrigin.getGeburtsdatum()));
-                setAhvNummer(lehrkraftOrigin.getAhvNummer());
-                setVertretungsmoeglichkeiten(lehrkraftOrigin.getVertretungsmoeglichkeiten());
-                setAktiv(!lehrkraftOrigin.getAktiv()); // damit PropertyChange ausgelöst wird!
-                setAktiv(lehrkraftOrigin.getAktiv());
+                setAnrede(mitarbeiterOrigin.getAnrede());
+                setNachname(mitarbeiterOrigin.getNachname());
+                setVorname(mitarbeiterOrigin.getVorname());
+                setStrasseHausnummer(mitarbeiterOrigin.getAdresse().getStrasseHausnummer());
+                setPlz(mitarbeiterOrigin.getAdresse().getPlz());
+                setOrt(mitarbeiterOrigin.getAdresse().getOrt());
+                setFestnetz(mitarbeiterOrigin.getFestnetz());
+                setNatel(mitarbeiterOrigin.getNatel());
+                setEmail(mitarbeiterOrigin.getEmail());
+                setGeburtsdatum(asString(mitarbeiterOrigin.getGeburtsdatum()));
+                setAhvNummer(mitarbeiterOrigin.getAhvNummer());
+                setVertretungsmoeglichkeiten(mitarbeiterOrigin.getVertretungsmoeglichkeiten());
+                setAktiv(!mitarbeiterOrigin.getAktiv()); // damit PropertyChange ausgelöst wird!
+                setAktiv(mitarbeiterOrigin.getAktiv());
             } catch (SvmValidationException ignore) {
                 ignore.printStackTrace();
             }

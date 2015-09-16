@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.ui.control.LehrkraefteController;
+import ch.metzenthin.svm.ui.control.MitarbeitersController;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 
@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 /**
  * @author Martin Schraner
  */
-public class LehrkraeftePanel {
+public class MitarbeitersPanel {
     private JPanel panel1;
     private JPanel buttonPanel;
     private JPanel datenPanel;
@@ -25,25 +25,25 @@ public class LehrkraeftePanel {
     private JButton btnAbbrechen;
     private JTable lehrkraefteTable;
     private JPanel lehrkraefteTablePanel;
-    private LehrkraefteController lehrkraefteController;
+    private MitarbeitersController mitarbeitersController;
 
-    public LehrkraeftePanel(SvmContext svmContext) {
+    public MitarbeitersPanel(SvmContext svmContext) {
         createUIComponents();
         createLehrkraefteController(svmContext);
     }
 
     private void createLehrkraefteController(SvmContext svmContext) {
-        lehrkraefteController = new LehrkraefteController(svmContext.getModelFactory().createLehrkraefteModel(), svmContext);
-        lehrkraefteController.setLehrkraefteTable(lehrkraefteTable);
-        lehrkraefteController.setBtnNeu(btnNeu);
-        lehrkraefteController.setBtnBearbeiten(btnBearbeiten);
-        lehrkraefteController.setBtnLoeschen(btnLoeschen);
-        lehrkraefteController.setBtnExportieren(btnExportieren);
-        lehrkraefteController.setBtnAbbrechen(btnAbbrechen);
+        mitarbeitersController = new MitarbeitersController(svmContext.getModelFactory().createLehrkraefteModel(), svmContext);
+        mitarbeitersController.setMitarbeitersTable(lehrkraefteTable);
+        mitarbeitersController.setBtnNeu(btnNeu);
+        mitarbeitersController.setBtnBearbeiten(btnBearbeiten);
+        mitarbeitersController.setBtnLoeschen(btnLoeschen);
+        mitarbeitersController.setBtnExportieren(btnExportieren);
+        mitarbeitersController.setBtnAbbrechen(btnAbbrechen);
     }
 
     public void addCloseListener(ActionListener closeListener) {
-        lehrkraefteController.addCloseListener(closeListener);
+        mitarbeitersController.addCloseListener(closeListener);
     }
 
     private void createUIComponents() {
@@ -218,7 +218,7 @@ public class LehrkraeftePanel {
         datenPanel.add(titelPanel, gbc);
         final JLabel label1 = new JLabel();
         label1.setFont(new Font(label1.getFont().getName(), label1.getFont().getStyle(), 36));
-        label1.setText("Lehrkräfte verwalten");
+        label1.setText("Mitarbeiter verwalten");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -241,7 +241,7 @@ public class LehrkraeftePanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         datenPanel.add(panel5, gbc);
-        panel5.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Lehrkräfte", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel5.getFont().getName(), Font.BOLD, panel5.getFont().getSize()), new Color(-16777216)));
+        panel5.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mitarbeiter", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel5.getFont().getName(), Font.BOLD, panel5.getFont().getSize()), new Color(-16777216)));
         lehrkraefteTablePanel = new JPanel();
         lehrkraefteTablePanel.setLayout(new BorderLayout(0, 0));
         gbc = new GridBagConstraints();

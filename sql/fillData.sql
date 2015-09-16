@@ -16,7 +16,7 @@ DELETE FROM Semesterrechnung;
 DELETE FROM Maercheneinteilung;
 DELETE FROM Maerchen;
 DELETE FROM Kursanmeldung;
-DELETE FROM Kurs_Lehrkraft;
+DELETE FROM Kurs_Mitarbeiter;
 DELETE FROM Kurs;
 DELETE FROM Semester;
 DELETE FROM Kursort;
@@ -28,7 +28,7 @@ DELETE FROM SchuelerCode;
 DELETE FROM Code;
 DELETE FROM Dispensation;
 DELETE FROM Anmeldung;
-DELETE FROM Lehrkraft;
+DELETE FROM Mitarbeiter;
 DELETE FROM Schueler;
 DELETE FROM Angehoeriger;
 DELETE FROM Person;
@@ -115,13 +115,13 @@ INSERT INTO Person (person_id, discriminator, anrede, nachname, vorname, geburts
     (6, 'Angehoeriger', 'FRAU', 'Juchli', 'Eva', NULL, '044 271 53 69', '076 515 14 65', 'juchlischraner@gmail.com', 5),
     (7, 'Schueler', 'KEINE', 'Juchli', 'Lilly', '2008-01-13', '044 271 53 69', NULL, NULL, 6),
     (8, 'Schueler', 'KEINE', 'Juchli', 'Anna', '2010-03-05', '044 271 53 69', NULL, NULL, 7),
-    (9, 'Lehrkraft', 'FRAU', 'Metzenthin', 'Sibyll', '1972-05-17', '044 364 36 30', NULL, 'billa.metz@bluewin.ch', 8),
-    (10, 'Lehrkraft', 'FRAU', 'Schweizer', 'Sibylle', '1969-05-19', '043 322 00 08', '079 629 72 36', 'sibylle.schweizer@gmx.ch', 9),
-    (11, 'Lehrkraft', 'FRAU', 'Lüscher', 'Franziska', '1962-04-25', '032 631 07 76', '076 378 07 76', 'ziska@bluewin.ch', 10),
-    (12, 'Lehrkraft', 'FRAU', 'Höhn', 'Ursina', '1971-07-17', '043 499 02 20', '079 714 02 07', 'ursina.hoehn@bluewin.ch', 11),
-    (13, 'Lehrkraft', 'FRAU', 'Hofmann', 'Simona', '1980-07-24', NULL, '079 478 87 05', 'hofmannsimona@gmail.com', 12),
-    (14, 'Lehrkraft', 'FRAU', 'Fessler', 'Esther', '1981-06-19', '043 537 71 93', '076 449 39 63', 'esthifessler@gmail.com', 13),
-    (15, 'Lehrkraft', 'FRAU', 'Dorigo', 'Sara', '1980-11-26', NULL, '076 566 14 95', 'saradorigo@gmx.ch', 14),
+    (9, 'Mitarbeiter', 'FRAU', 'Metzenthin', 'Sibyll', '1972-05-17', '044 364 36 30', NULL, 'billa.metz@bluewin.ch', 8),
+    (10, 'Mitarbeiter', 'FRAU', 'Schweizer', 'Sibylle', '1969-05-19', '043 322 00 08', '079 629 72 36', 'sibylle.schweizer@gmx.ch', 9),
+    (11, 'Mitarbeiter', 'FRAU', 'Lüscher', 'Franziska', '1962-04-25', '032 631 07 76', '076 378 07 76', 'ziska@bluewin.ch', 10),
+    (12, 'Mitarbeiter', 'FRAU', 'Höhn', 'Ursina', '1971-07-17', '043 499 02 20', '079 714 02 07', 'ursina.hoehn@bluewin.ch', 11),
+    (13, 'Mitarbeiter', 'FRAU', 'Hofmann', 'Simona', '1980-07-24', NULL, '079 478 87 05', 'hofmannsimona@gmail.com', 12),
+    (14, 'Mitarbeiter', 'FRAU', 'Fessler', 'Esther', '1981-06-19', '043 537 71 93', '076 449 39 63', 'esthifessler@gmail.com', 13),
+    (15, 'Mitarbeiter', 'FRAU', 'Dorigo', 'Sara', '1980-11-26', NULL, '076 566 14 95', 'saradorigo@gmx.ch', 14),
     (16, 'Schueler', 'KEINE', 'Annen', 'Maude', '2005-08-01', '044 271 90 18', NULL, NULL, 16),
     (17, 'Angehoeriger', 'FRAU', 'Annen', 'Sabine', NULL, '044 271 90 18', '079 771 36 16', 'annen@rogerfrei.com', 17),
     (18, 'Schueler', 'KEINE', 'Baudouin-Psaulme', 'Eléonore', '2004-10-08', NULL, NULL, NULL, 18),
@@ -218,9 +218,9 @@ INSERT INTO Schueler (person_id, geschlecht, mutter_id, vater_id, rechnungsempfa
 SELECT * FROM Schueler;
 
 
--- Lehrkraft
+-- Mitarbeiter
 -- *********
-INSERT INTO Lehrkraft (person_id, ahvnummer, vertretungsmoeglichkeiten, aktiv) VALUES
+INSERT INTO Mitarbeiter (person_id, ahvnummer, vertretungsmoeglichkeiten, aktiv) VALUES
     (9, '756.9620.8222.54', NULL, 1),
     (10, '756.3201.3214.21', 'Mi, Sa', 1),
     (11, '756.8923.1873.08', NULL, 1),
@@ -229,7 +229,7 @@ INSERT INTO Lehrkraft (person_id, ahvnummer, vertretungsmoeglichkeiten, aktiv) V
     (14, '756.1232.1812.12', NULL, 1),
     (15, '756.2433.2373.47', NULL, 1);
 
-SELECT * FROM Lehrkraft;
+SELECT * FROM Mitarbeiter;
 
 
 -- Anmeldung
@@ -387,10 +387,10 @@ INSERT INTO Kurs (kurs_id, semester_id, kurstyp_id, altersbereich, stufe, wochen
 SELECT * FROM Kurs;
 
 
--- Kurs_Lehrkraft
+-- Kurs_Mitarbeiter
 -- **************
 
-INSERT INTO Kurs_Lehrkraft (kurs_id, person_id, lehrkraefte_ORDER) VALUES
+INSERT INTO Kurs_Mitarbeiter (kurs_id, person_id, mitarbeiters_ORDER) VALUES
     (1, 15, 0),
     (2, 15, 0),
     (3, 15, 0),
@@ -416,7 +416,7 @@ INSERT INTO Kurs_Lehrkraft (kurs_id, person_id, lehrkraefte_ORDER) VALUES
     (21, 11, 0),
     (22, 11, 0);
 
-SELECT * FROM Kurs_Lehrkraft;
+SELECT * FROM Kurs_Mitarbeiter;
 
 
 -- Kursanmeldung

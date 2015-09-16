@@ -21,14 +21,14 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.isTimePeriodValid;
  */
 public class KursErfassenModelImpl extends AbstractModel implements KursErfassenModel {
 
-    private static Lehrkraft LEHRKRAFT_KEINE = new Lehrkraft();
+    private static Mitarbeiter mitarbeiterKeine = new Mitarbeiter();
 
     private Kurs kurs = new Kurs();
     private Kurs kursOrigin;
     private Kurstyp kurstyp = new Kurstyp();
     private Kursort kursort = new Kursort();
-    private Lehrkraft lehrkraft1 = new Lehrkraft();
-    private Lehrkraft lehrkraft2 = new Lehrkraft();
+    private Mitarbeiter mitarbeiter1 = new Mitarbeiter();
+    private Mitarbeiter mitarbeiter2 = new Mitarbeiter();
 
     public KursErfassenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -245,70 +245,70 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     }
 
     @Override
-    public Lehrkraft[] getSelectableLehrkraefte1(SvmModel svmModel) {
-        List<Lehrkraft> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
+    public Mitarbeiter[] getSelectableLehrkraefte1(SvmModel svmModel) {
+        List<Mitarbeiter> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
         addInaktiveLehrkraefteOrigin(lehrkraefteList);
-        return lehrkraefteList.toArray(new Lehrkraft[lehrkraefteList.size()]);
+        return lehrkraefteList.toArray(new Mitarbeiter[lehrkraefteList.size()]);
     }
 
-    private void addInaktiveLehrkraefteOrigin(List<Lehrkraft> lehrkraefteList) {
+    private void addInaktiveLehrkraefteOrigin(List<Mitarbeiter> lehrkraefteList) {
         if (kursOrigin != null) {
-            for (Lehrkraft lehrkraftKursOrigin : kursOrigin.getLehrkraefte()) {
+            for (Mitarbeiter mitarbeiterKursOrigin : kursOrigin.getMitarbeiters()) {
                 // Beim Bearbeiten müssen ggf auch nicht mehr aktive Lehrkräfte angezeigt werden können
                 boolean found = false;
-                for (Lehrkraft lehrkraft : lehrkraefteList) {
-                    if (lehrkraftKursOrigin.isIdenticalWith(lehrkraft)) {
+                for (Mitarbeiter mitarbeiter : lehrkraefteList) {
+                    if (mitarbeiterKursOrigin.isIdenticalWith(mitarbeiter)) {
                         found = true;
                         break;
                     }
                 }
                 if (!found) {
-                    lehrkraefteList.add(lehrkraftKursOrigin);
+                    lehrkraefteList.add(mitarbeiterKursOrigin);
                 }
             }
         }
     }
 
     @Override
-    public Lehrkraft getLehrkraft1() {
-        return lehrkraft1;
+    public Mitarbeiter getMitarbeiter1() {
+        return mitarbeiter1;
     }
 
     @Override
-    public void setLehrkraft1(Lehrkraft lehrkraft1) throws SvmRequiredException {
-        Lehrkraft oldValue = this.lehrkraft1;
-        this.lehrkraft1 = lehrkraft1;
-        firePropertyChange(Field.LEHRKRAFT1, oldValue, this.lehrkraft1);
-        if (lehrkraft1 == null) {
+    public void setMitarbeiter1(Mitarbeiter mitarbeiter1) throws SvmRequiredException {
+        Mitarbeiter oldValue = this.mitarbeiter1;
+        this.mitarbeiter1 = mitarbeiter1;
+        firePropertyChange(Field.LEHRKRAFT1, oldValue, this.mitarbeiter1);
+        if (mitarbeiter1 == null) {
             invalidate();
             throw new SvmRequiredException(Field.LEHRKRAFT1);
         }
     }
 
     @Override
-    public Lehrkraft[] getSelectableLehrkraefte2(SvmModel svmModel) {
-        List<Lehrkraft> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
+    public Mitarbeiter[] getSelectableLehrkraefte2(SvmModel svmModel) {
+        List<Mitarbeiter> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
         // Lehrkraft2 kann auch leer sein
-        if (lehrkraefteList.size() == 0 || !lehrkraefteList.get(0).isIdenticalWith(LEHRKRAFT_KEINE)) {
-            lehrkraefteList.add(0, LEHRKRAFT_KEINE);
+        if (lehrkraefteList.size() == 0 || !lehrkraefteList.get(0).isIdenticalWith(mitarbeiterKeine)) {
+            lehrkraefteList.add(0, mitarbeiterKeine);
         }
         addInaktiveLehrkraefteOrigin(lehrkraefteList);
-        return lehrkraefteList.toArray(new Lehrkraft[lehrkraefteList.size()]);
+        return lehrkraefteList.toArray(new Mitarbeiter[lehrkraefteList.size()]);
     }
 
     @Override
-    public Lehrkraft getLehrkraft2() {
-        return lehrkraft2;
+    public Mitarbeiter getMitarbeiter2() {
+        return mitarbeiter2;
     }
 
     @Override
-    public void setLehrkraft2(Lehrkraft lehrkraft2) {
-        if (lehrkraft2 == LEHRKRAFT_KEINE) {
-            lehrkraft2 = null;
+    public void setMitarbeiter2(Mitarbeiter mitarbeiter2) {
+        if (mitarbeiter2 == mitarbeiterKeine) {
+            mitarbeiter2 = null;
         }
-        Lehrkraft oldValue = this.lehrkraft2;
-        this.lehrkraft2 = lehrkraft2;
-        firePropertyChange(Field.LEHRKRAFT2, oldValue, this.lehrkraft2);
+        Mitarbeiter oldValue = this.mitarbeiter2;
+        this.mitarbeiter2 = mitarbeiter2;
+        firePropertyChange(Field.LEHRKRAFT2, oldValue, this.mitarbeiter2);
     }
 
     private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(
@@ -360,7 +360,7 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     @Override
     public void speichern(SvmModel svmModel, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        SaveOrUpdateKursCommand saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs, kurseSemesterwahlModel.getSemester(), kurstyp, kursort, lehrkraft1, lehrkraft2, kursOrigin, kurseTableModel.getKurse());
+        SaveOrUpdateKursCommand saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs, kurseSemesterwahlModel.getSemester(), kurstyp, kursort, mitarbeiter1, mitarbeiter2, kursOrigin, kurseTableModel.getKurse());
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursCommand);
     }
 
@@ -376,9 +376,9 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
                 setZeitBeginn(asString(kursOrigin.getZeitBeginn()));
                 setZeitEnde(asString(kursOrigin.getZeitEnde()));
                 setKursort(kursOrigin.getKursort());
-                setLehrkraft1(kursOrigin.getLehrkraefte().get(0));
-                if (kursOrigin.getLehrkraefte().size() > 1) {
-                    setLehrkraft2(kursOrigin.getLehrkraefte().get(1));
+                setMitarbeiter1(kursOrigin.getMitarbeiters().get(0));
+                if (kursOrigin.getMitarbeiters().size() > 1) {
+                    setMitarbeiter2(kursOrigin.getMitarbeiters().get(1));
                 }
                 setBemerkungen(kursOrigin.getBemerkungen());
             } catch (SvmValidationException ignore) {
@@ -392,12 +392,12 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
 
     @Override
     public boolean isCompleted() {
-        return !lehrkraft1.isIdenticalWith(lehrkraft2);
+        return !mitarbeiter1.isIdenticalWith(mitarbeiter2);
     }
 
     @Override
     void doValidate() throws SvmValidationException {
-        if (!isBulkUpdate() && lehrkraft1.isIdenticalWith(lehrkraft2)) {
+        if (!isBulkUpdate() && mitarbeiter1.isIdenticalWith(mitarbeiter2)) {
             throw new SvmValidationException(2033, "Lehrkräfte 1 und 2 dürfen nicht identisch sein", Field.LEHRKRAFT2);
         }
     }

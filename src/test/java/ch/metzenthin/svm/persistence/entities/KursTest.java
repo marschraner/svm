@@ -16,10 +16,10 @@ public class KursTest {
     @Test
     public void testToString() throws Exception {
         Kurs kurs = new Kurs("11/12", "1", Wochentag.DIENSTAG, toTime("18.00"), toTime("19.00"), "test");
-        Lehrkraft lehrkraft = new Lehrkraft(Anrede.FRAU, "Vorname", "Lehrkraft1", toCalendar("11.11.95"), null, null, null, "111.11.111.1111.11", null, true);
-        Lehrkraft lehrkraft2 = new Lehrkraft(Anrede.FRAU, "Vorname", "Lehrkraft2", toCalendar("11.11.95"), null, null, null, "222.22.222.2222.22", null, true);
-        kurs.addLehrkraft(lehrkraft);
-        kurs.addLehrkraft(lehrkraft2);
+        Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Vorname", "Lehrkraft1", toCalendar("11.11.95"), null, null, null, "111.11.111.1111.11", null, true);
+        Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "Vorname", "Lehrkraft2", toCalendar("11.11.95"), null, null, null, "222.22.222.2222.22", null, true);
+        kurs.addLehrkraft(mitarbeiter);
+        kurs.addLehrkraft(mitarbeiter2);
         kurs.setKurstyp(new Kurstyp("Kurstyp Test", true));
         assertEquals("Kurstyp Test 1, Dienstag 18.00-19.00 (Vorname Lehrkraft1 / Vorname Lehrkraft2)", kurs.toString());
     }

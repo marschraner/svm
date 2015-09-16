@@ -10,7 +10,7 @@ import ch.metzenthin.svm.domain.model.KursErfassenModel;
 import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import org.apache.log4j.Logger;
 
@@ -40,8 +40,8 @@ public class KursErfassenController extends AbstractController {
     private JComboBox<Kurstyp> comboBoxKurstyp;
     private JComboBox<Wochentag> comboBoxWochentag;
     private JComboBox<Kursort> comboBoxKursort;
-    private JComboBox<Lehrkraft> comboBoxLehrkraft1;
-    private JComboBox<Lehrkraft> comboBoxLehrkraft2;
+    private JComboBox<Mitarbeiter> comboBoxLehrkraft1;
+    private JComboBox<Mitarbeiter> comboBoxLehrkraft2;
     private JTextField txtAltersbereich;
     private JTextField txtStufe;
     private JTextField txtZeitBeginn;
@@ -440,9 +440,9 @@ public class KursErfassenController extends AbstractController {
         }
     }
 
-    public void setComboBoxLehrkraft1(JComboBox<Lehrkraft> comboBoxLehrkraft1) {
+    public void setComboBoxLehrkraft1(JComboBox<Mitarbeiter> comboBoxLehrkraft1) {
         this.comboBoxLehrkraft1 = comboBoxLehrkraft1;
-        Lehrkraft[] selectableLehrkraefte1 = kursErfassenModel.getSelectableLehrkraefte1(svmContext.getSvmModel());
+        Mitarbeiter[] selectableLehrkraefte1 = kursErfassenModel.getSelectableLehrkraefte1(svmContext.getSvmModel());
         comboBoxLehrkraft1.setModel(new DefaultComboBoxModel<>(selectableLehrkraefte1));
         // Leeren ComboBox-Wert anzeigen
         comboBoxLehrkraft1.setSelectedItem(null);
@@ -456,7 +456,7 @@ public class KursErfassenController extends AbstractController {
 
     private void onLehrkraft1Selected() {
         LOGGER.trace("KursErfassenController Event Lehrkraft1 selected=" + comboBoxLehrkraft1.getSelectedItem());
-        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft1.getSelectedItem(), kursErfassenModel.getLehrkraft1());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft1.getSelectedItem(), kursErfassenModel.getMitarbeiter1());
         try {
             setModelLehrkraft1();
         } catch (SvmValidationException e) {
@@ -472,7 +472,7 @@ public class KursErfassenController extends AbstractController {
     private void setModelLehrkraft1() throws SvmValidationException {
         makeErrorLabelInvisible(Field.LEHRKRAFT1);
         try {
-            kursErfassenModel.setLehrkraft1((Lehrkraft) comboBoxLehrkraft1.getSelectedItem());
+            kursErfassenModel.setMitarbeiter1((Mitarbeiter) comboBoxLehrkraft1.getSelectedItem());
         } catch (SvmRequiredException e) {
             LOGGER.trace("KursErfassenController setModelLehrkraft1 RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
@@ -485,12 +485,12 @@ public class KursErfassenController extends AbstractController {
         }
     }
 
-    public void setComboBoxLehrkraft2(JComboBox<Lehrkraft> comboBoxLehrkraft2) {
+    public void setComboBoxLehrkraft2(JComboBox<Mitarbeiter> comboBoxLehrkraft2) {
         this.comboBoxLehrkraft2 = comboBoxLehrkraft2;
-        Lehrkraft[] selectableLehrkraefte2 = kursErfassenModel.getSelectableLehrkraefte2(svmContext.getSvmModel());
+        Mitarbeiter[] selectableLehrkraefte2 = kursErfassenModel.getSelectableLehrkraefte2(svmContext.getSvmModel());
         comboBoxLehrkraft2.setModel(new DefaultComboBoxModel<>(selectableLehrkraefte2));
         // Model initialisieren mit erstem ComboBox-Wert
-        kursErfassenModel.setLehrkraft2(selectableLehrkraefte2[0]);
+        kursErfassenModel.setMitarbeiter2(selectableLehrkraefte2[0]);
         comboBoxLehrkraft2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -501,7 +501,7 @@ public class KursErfassenController extends AbstractController {
 
     private void onLehrkraft2Selected() {
         LOGGER.trace("KursErfassenController Event Lehrkraft2 selected=" + comboBoxLehrkraft2.getSelectedItem());
-        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft2.getSelectedItem(), kursErfassenModel.getLehrkraft2());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft2.getSelectedItem(), kursErfassenModel.getMitarbeiter2());
         try {
             setModelLehrkraft2();
         } catch (SvmValidationException e) {
@@ -516,7 +516,7 @@ public class KursErfassenController extends AbstractController {
 
     private void setModelLehrkraft2() throws SvmValidationException {
         makeErrorLabelInvisible(Field.LEHRKRAFT2);
-        kursErfassenModel.setLehrkraft2((Lehrkraft) comboBoxLehrkraft2.getSelectedItem());
+        kursErfassenModel.setMitarbeiter2((Mitarbeiter) comboBoxLehrkraft2.getSelectedItem());
     }
 
     public void setTxtBemerkungen(JTextField txtBemerkungen) {
@@ -685,9 +685,9 @@ public class KursErfassenController extends AbstractController {
         } else if (checkIsFieldChange(Field.KURSORT, evt)) {
             comboBoxKursort.setSelectedItem(kursErfassenModel.getKursort());
         } else if (checkIsFieldChange(Field.LEHRKRAFT1, evt)) {
-            comboBoxLehrkraft1.setSelectedItem(kursErfassenModel.getLehrkraft1());
+            comboBoxLehrkraft1.setSelectedItem(kursErfassenModel.getMitarbeiter1());
         } else if (checkIsFieldChange(Field.LEHRKRAFT2, evt)) {
-            comboBoxLehrkraft2.setSelectedItem(kursErfassenModel.getLehrkraft2());
+            comboBoxLehrkraft2.setSelectedItem(kursErfassenModel.getMitarbeiter2());
         } else if (checkIsFieldChange(Field.BEMERKUNGEN, evt)) {
             txtBemerkungen.setText(kursErfassenModel.getBemerkungen());
         }

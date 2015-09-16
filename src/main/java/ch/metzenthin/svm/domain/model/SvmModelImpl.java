@@ -72,18 +72,18 @@ public class SvmModelImpl implements SvmModel {
     }
 
     @Override
-    public List<Lehrkraft> getLehrkraefteAll() {
-        FindAllLehrkraefteCommand findAllLehrkraefteCommand = new FindAllLehrkraefteCommand();
-        commandInvoker.executeCommand(findAllLehrkraefteCommand);
-        return findAllLehrkraefteCommand.getLehrkraefteAll();
+    public List<Mitarbeiter> getMitarbeitersAll() {
+        FindAllMitarbeitersCommand findAllMitarbeitersCommand = new FindAllMitarbeitersCommand();
+        commandInvoker.executeCommand(findAllMitarbeitersCommand);
+        return findAllMitarbeitersCommand.getLehrkraefteAll();
     }
 
     @Override
-    public List<Lehrkraft> getAktiveLehrkraefteAll() {
-        List<Lehrkraft> aktiveLehrkraefteAll = new ArrayList<>();
-        for (Lehrkraft lehrkraft : getLehrkraefteAll()) {
-            if (lehrkraft.getAktiv()) {
-                aktiveLehrkraefteAll.add(lehrkraft);
+    public List<Mitarbeiter> getAktiveLehrkraefteAll() {
+        List<Mitarbeiter> aktiveLehrkraefteAll = new ArrayList<>();
+        for (Mitarbeiter mitarbeiter : getMitarbeitersAll()) {
+            if (mitarbeiter.getAktiv()) {
+                aktiveLehrkraefteAll.add(mitarbeiter);
             }
         }
         return aktiveLehrkraefteAll;

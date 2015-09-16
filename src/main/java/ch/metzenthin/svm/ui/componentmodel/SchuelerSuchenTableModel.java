@@ -75,8 +75,8 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
         return schuelerSuchenTableData.getZeitBeginn();
     }
 
-    public Lehrkraft getLehrkraft() {
-        return schuelerSuchenTableData.getLehrkraft();
+    public Mitarbeiter getLehrkraft() {
+        return schuelerSuchenTableData.getMitarbeiter();
     }
 
     public SchuelerSuchenTableData getSchuelerSuchenTableData() {

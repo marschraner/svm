@@ -17,19 +17,19 @@ public class SaveOrUpdateKursCommand extends GenericDaoCommand {
     private final Semester semester;
     private final Kurstyp kurstyp;
     private final Kursort kursort;
-    private final Lehrkraft lehrkraft1;
-    private final Lehrkraft lehrkraft2;
+    private final Mitarbeiter mitarbeiter1;
+    private final Mitarbeiter mitarbeiter2;
     private Kurs kursOrigin;
     private List<Kurs> bereitsErfassteKurse;
 
 
-    public SaveOrUpdateKursCommand(Kurs kurs, Semester semester, Kurstyp kurstyp, Kursort kursort, Lehrkraft lehrkraft1, Lehrkraft lehrkraft2, Kurs kursOrigin, List<Kurs> bereitsErfassteKurse) {
+    public SaveOrUpdateKursCommand(Kurs kurs, Semester semester, Kurstyp kurstyp, Kursort kursort, Mitarbeiter mitarbeiter1, Mitarbeiter mitarbeiter2, Kurs kursOrigin, List<Kurs> bereitsErfassteKurse) {
         this.kurs = kurs;
         this.semester = semester;
         this.kurstyp = kurstyp;
         this.kursort = kursort;
-        this.lehrkraft1 = lehrkraft1;
-        this.lehrkraft2 = lehrkraft2;
+        this.mitarbeiter1 = mitarbeiter1;
+        this.mitarbeiter2 = mitarbeiter2;
         this.kursOrigin = kursOrigin;
         this.bereitsErfassteKurse = bereitsErfassteKurse;
     }
@@ -44,12 +44,12 @@ public class SaveOrUpdateKursCommand extends GenericDaoCommand {
             kursOrigin.setSemester(semester);
             kursOrigin.setKurstyp(kurstyp);
             kursOrigin.setKursort(kursort);
-            for (Lehrkraft lehrkraft : new ArrayList<>(kursOrigin.getLehrkraefte())) {
-                kursOrigin.deleteLehrkraft(lehrkraft);
+            for (Mitarbeiter mitarbeiter : new ArrayList<>(kursOrigin.getMitarbeiters())) {
+                kursOrigin.deleteLehrkraft(mitarbeiter);
             }
-            kursOrigin.addLehrkraft(lehrkraft1);
-            if (lehrkraft2 != null) {
-                kursOrigin.addLehrkraft(lehrkraft2);
+            kursOrigin.addLehrkraft(mitarbeiter1);
+            if (mitarbeiter2 != null) {
+                kursOrigin.addLehrkraft(mitarbeiter2);
             }
             kursDao.save(kursOrigin);
             // Semesterrechnungen aktualisieren, falls Kurslänge geändert hat
@@ -65,9 +65,9 @@ public class SaveOrUpdateKursCommand extends GenericDaoCommand {
             kurs.setSemester(semester);
             kurs.setKurstyp(kurstyp);
             kurs.setKursort(kursort);
-            kurs.addLehrkraft(lehrkraft1);
-            if (lehrkraft2 != null) {
-                kurs.addLehrkraft(lehrkraft2);
+            kurs.addLehrkraft(mitarbeiter1);
+            if (mitarbeiter2 != null) {
+                kurs.addLehrkraft(mitarbeiter2);
             }
             Kurs kursSaved = kursDao.save(kurs);
             bereitsErfassteKurse.add(kursSaved);

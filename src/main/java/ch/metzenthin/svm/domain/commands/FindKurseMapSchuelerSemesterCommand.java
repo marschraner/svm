@@ -20,17 +20,17 @@ public class FindKurseMapSchuelerSemesterCommand extends GenericDaoCommand {
     private final Semester semester;
     private final Wochentag wochentag;  // nullable
     private final Time zeitBeginn;      // nullable
-    private final Lehrkraft lehrkraft;  // nullable
+    private final Mitarbeiter mitarbeiter;  // nullable
 
     // output
     private Map<Schueler, List<Kurs>> kurseMap = new HashMap<>();
 
-    public FindKurseMapSchuelerSemesterCommand(List<Schueler> schuelerList, Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft) {
+    public FindKurseMapSchuelerSemesterCommand(List<Schueler> schuelerList, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter) {
         this.schuelerList = schuelerList;
         this.semester = semester;
         this.wochentag = wochentag;
         this.zeitBeginn = zeitBeginn;
-        this.lehrkraft = lehrkraft;
+        this.mitarbeiter = mitarbeiter;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class FindKurseMapSchuelerSemesterCommand extends GenericDaoCommand {
         }
         KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
         for (Schueler schueler : schuelerList) {
-            List<Kursanmeldung> kurseinteilungenFound = kursanmeldungDao.findKursanmeldungen(schueler, semester, wochentag, zeitBeginn, lehrkraft);
+            List<Kursanmeldung> kurseinteilungenFound = kursanmeldungDao.findKursanmeldungen(schueler, semester, wochentag, zeitBeginn, mitarbeiter);
             List<Kurs> kurse = new ArrayList<>();
             for (Kursanmeldung kursanmeldung : kurseinteilungenFound) {
                 kurse.add(kursanmeldung.getKurs());

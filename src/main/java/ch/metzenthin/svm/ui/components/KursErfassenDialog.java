@@ -7,7 +7,7 @@ import ch.metzenthin.svm.domain.model.KursErfassenModel;
 import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.control.KursErfassenController;
 
@@ -27,8 +27,8 @@ public class KursErfassenDialog extends JDialog {
     private JComboBox<Kurstyp> comboBoxKurstyp;
     private JComboBox<Wochentag> comboBoxWochentag;
     private JComboBox<Kursort> comboBoxKursort;
-    private JComboBox<Lehrkraft> comboBoxLehrkraft1;
-    private JComboBox<Lehrkraft> comboBoxLehrkraft2;
+    private JComboBox<Mitarbeiter> comboBoxLehrkraft1;
+    private JComboBox<Mitarbeiter> comboBoxLehrkraft2;
     private JLabel errLblKurstyp;
     private JLabel errLblAltersbereich;
     private JLabel errLblStufe;

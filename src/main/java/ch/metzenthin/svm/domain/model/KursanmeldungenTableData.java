@@ -2,7 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 
 import java.util.List;
 
@@ -63,11 +63,11 @@ public class KursanmeldungenTableData {
                 break;
             case LEITUNG:
                 StringBuilder leitung = new StringBuilder();
-                for (Lehrkraft lehrkraft : kursanmeldung.getKurs().getLehrkraefte()) {
+                for (Mitarbeiter mitarbeiter : kursanmeldung.getKurs().getMitarbeiters()) {
                     if (leitung.length() > 0) {
                         leitung.append(" / ");
                     }
-                    leitung.append(lehrkraft.getVorname()).append(" ").append(lehrkraft.getNachname());
+                    leitung.append(mitarbeiter.getVorname()).append(" ").append(mitarbeiter.getNachname());
                 }
                 value = leitung.toString();
                 break;

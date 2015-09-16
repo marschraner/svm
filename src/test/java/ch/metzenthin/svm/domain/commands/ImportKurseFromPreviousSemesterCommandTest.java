@@ -52,7 +52,7 @@ public class ImportKurseFromPreviousSemesterCommandTest {
         List<Semester> erfassteSemester = new ArrayList<>();
         List<Kurstyp> erfassteKurstypen = new ArrayList<>();
         List<Kursort> erfassteKursorte = new ArrayList<>();
-        List<Lehrkraft> erfassteLehrkraefte = new ArrayList<>();
+        List<Mitarbeiter> erfassteLehrkraefte = new ArrayList<>();
         List<Kurs> erfassteKurse = new ArrayList<>();
 
         // Semester, Kurstyp, Kursort und Lehrkräfte erzeugen
@@ -74,17 +74,17 @@ public class ImportKurseFromPreviousSemesterCommandTest {
         SaveOrUpdateKursortCommand saveOrUpdateKursortCommand = new SaveOrUpdateKursortCommand(kursort1, null, erfassteKursorte);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
 
-        Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roostest", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+        Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roostest", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
         Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-        SaveOrUpdateLehrkraftCommand saveOrUpdateLehrkraftCommand = new SaveOrUpdateLehrkraftCommand(lehrkraft1, adresse1, null, erfassteLehrkraefte);
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateLehrkraftCommand);
+        SaveOrUpdateMitarbeiterCommand saveOrUpdateMitarbeiterCommand = new SaveOrUpdateMitarbeiterCommand(mitarbeiter1, adresse1, null, erfassteLehrkraefte);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateMitarbeiterCommand);
 
         // 2 Kurse für semester1 erfassen
         Kurs kurs1 = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
-        SaveOrUpdateKursCommand saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs1, semester1, kurstyp1, kursort1, lehrkraft1, null, null, erfassteKurse);
+        SaveOrUpdateKursCommand saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs1, semester1, kurstyp1, kursort1, mitarbeiter1, null, null, erfassteKurse);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursCommand);
         Kurs kurs2 = new Kurs("2-3 J", "Vorkindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
-        saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs2, semester1, kurstyp1, kursort1, lehrkraft1, null, null, erfassteKurse);
+        saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs2, semester1, kurstyp1, kursort1, mitarbeiter1, null, null, erfassteKurse);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursCommand);
 
         assertEquals(2, erfassteKurse.size());
@@ -102,7 +102,7 @@ public class ImportKurseFromPreviousSemesterCommandTest {
         assertEquals(2, kurseSemester2.size());
         assertEquals(Wochentag.DONNERSTAG, kurseSemester2.get(0).getWochentag());
         assertEquals(Wochentag.FREITAG, kurseSemester2.get(1).getWochentag());
-        assertEquals("Roostest", kurseSemester2.get(0).getLehrkraefte().get(0).getNachname());
+        assertEquals("Roostest", kurseSemester2.get(0).getMitarbeiters().get(0).getNachname());
         assertEquals("Saal Test", kurseSemester2.get(0).getKursort().getBezeichnung());
         assertEquals("Kurs Test", kurseSemester2.get(0).getKurstyp().getBezeichnung());
 
@@ -135,11 +135,11 @@ public class ImportKurseFromPreviousSemesterCommandTest {
             }
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
-            LehrkraftDao lehrkraftDao = new LehrkraftDao(entityManager);
-            for (Lehrkraft lehrkraft : erfassteLehrkraefte) {
-                Lehrkraft lehrkraftToBeDeleted = lehrkraftDao.findById(lehrkraft.getPersonId());
-                if (lehrkraftToBeDeleted != null) {
-                    lehrkraftDao.remove(lehrkraftToBeDeleted);
+            MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
+            for (Mitarbeiter mitarbeiter : erfassteLehrkraefte) {
+                Mitarbeiter mitarbeiterToBeDeleted = mitarbeiterDao.findById(mitarbeiter.getPersonId());
+                if (mitarbeiterToBeDeleted != null) {
+                    mitarbeiterDao.remove(mitarbeiterToBeDeleted);
                 }
             }
             entityManager.getTransaction().commit();

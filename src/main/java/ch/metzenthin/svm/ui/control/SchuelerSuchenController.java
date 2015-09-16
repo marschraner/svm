@@ -56,7 +56,7 @@ public class SchuelerSuchenController extends PersonController {
     private JSpinner spinnerSemesterKurs;
     private JSpinner spinnerMaerchen;
     private JComboBox<Wochentag> comboBoxWochentag;
-    private JComboBox<Lehrkraft> comboBoxLehrkraft;
+    private JComboBox<Mitarbeiter> comboBoxLehrkraft;
     private JComboBox<SchuelerCode> comboBoxSchuelerCode;
     private JComboBox<Gruppe> comboBoxGruppe;
     private JComboBox<ElternmithilfeCode> comboBoxElternmithilfeCode;
@@ -331,12 +331,12 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
-    public void setComboBoxLehrkraft(JComboBox<Lehrkraft> comboBoxLehrkraft) {
+    public void setComboBoxLehrkraft(JComboBox<Mitarbeiter> comboBoxLehrkraft) {
         this.comboBoxLehrkraft = comboBoxLehrkraft;
-        Lehrkraft[] selectableLehrkraefte = schuelerSuchenModel.getSelectableLehrkraefte(svmContext.getSvmModel());
+        Mitarbeiter[] selectableLehrkraefte = schuelerSuchenModel.getSelectableLehrkraefte(svmContext.getSvmModel());
         comboBoxLehrkraft.setModel(new DefaultComboBoxModel<>(selectableLehrkraefte));
         // Model initialisieren mit erstem ComboBox-Wert
-        schuelerSuchenModel.setLehrkraft(selectableLehrkraefte[0]);
+        schuelerSuchenModel.setMitarbeiter(selectableLehrkraefte[0]);
         comboBoxLehrkraft.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -347,7 +347,7 @@ public class SchuelerSuchenController extends PersonController {
 
     private void onLehrkraftSelected() {
         LOGGER.trace("SchuelerSuchenController Event Lehrkraft selected=" + comboBoxLehrkraft.getSelectedItem());
-        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft.getSelectedItem(), schuelerSuchenModel.getLehrkraft());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft.getSelectedItem(), schuelerSuchenModel.getMitarbeiter());
         try {
             setModelLehrkraft();
         } catch (SvmValidationException e) {
@@ -362,7 +362,7 @@ public class SchuelerSuchenController extends PersonController {
 
     private void setModelLehrkraft() throws SvmValidationException {
         makeErrorLabelInvisible(Field.LEHRKRAFT);
-        schuelerSuchenModel.setLehrkraft((Lehrkraft) comboBoxLehrkraft.getSelectedItem());
+        schuelerSuchenModel.setMitarbeiter((Mitarbeiter) comboBoxLehrkraft.getSelectedItem());
     }
 
     public void setCheckBoxKursFuerSucheBeruecksichtigen(JCheckBox checkBoxKursFuerSucheBeruecksichtigen) {
@@ -975,7 +975,7 @@ public class SchuelerSuchenController extends PersonController {
             txtZeitBeginn.setText(asString(schuelerSuchenModel.getZeitBeginn()));
         }
         else if (checkIsFieldChange(Field.LEHRKRAFT, evt)) {
-            comboBoxLehrkraft.setSelectedItem(schuelerSuchenModel.getLehrkraft());
+            comboBoxLehrkraft.setSelectedItem(schuelerSuchenModel.getMitarbeiter());
         }
         else if (checkIsFieldChange(Field.KURS_FUER_SUCHE_BERUECKSICHTIGEN, evt)) {
             checkBoxKursFuerSucheBeruecksichtigen.setSelected(schuelerSuchenModel.isKursFuerSucheBeruecksichtigen());

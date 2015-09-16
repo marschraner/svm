@@ -13,7 +13,7 @@ import java.util.Calendar;
  */
 public interface SchuelerSuchenModel extends PersonModel {
 
-    Lehrkraft LEHRKRAFT_ALLE = new Lehrkraft();
+    Mitarbeiter MITARBEITER_ALLE = new Mitarbeiter();
     SchuelerCode SCHUELER_CODE_ALLE = new SchuelerCode();
     ElternmithilfeCode ELTERNMITHILFE_CODE_ALLE = new ElternmithilfeCode();
 
@@ -55,7 +55,7 @@ public interface SchuelerSuchenModel extends PersonModel {
     Semester getSemesterKurs();
     Wochentag getWochentag();
     Time getZeitBeginn();
-    Lehrkraft getLehrkraft();
+    Mitarbeiter getMitarbeiter();
     boolean isKursFuerSucheBeruecksichtigen();
     Maerchen getMaerchen();
     Gruppe getGruppe();
@@ -75,7 +75,7 @@ public interface SchuelerSuchenModel extends PersonModel {
     void setSemesterKurs(Semester semesterKurs);
     void setWochentag(Wochentag wochentag);
     void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
-    void setLehrkraft(Lehrkraft lehrkraft);
+    void setMitarbeiter(Mitarbeiter mitarbeiter);
     void setKursFuerSucheBeruecksichtigen(boolean isSelected);
     void setSchuelerCode(SchuelerCode schuelerCode);
     void setMaerchen(Maerchen maerchen);
@@ -90,7 +90,7 @@ public interface SchuelerSuchenModel extends PersonModel {
     boolean checkIfKurseExist();
     SchuelerSuchenTableData suchen(SvmModel svmModel);
     void invalidateGeburtsdatumSuchperiode();
-    Lehrkraft[] getSelectableLehrkraefte(SvmModel svmModel);
+    Mitarbeiter[] getSelectableLehrkraefte(SvmModel svmModel);
     SchuelerCode[] getSelectableSchuelerCodes(SvmModel svmModel);
     ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel);
     Semester getSemesterInit(SvmModel svmModel);

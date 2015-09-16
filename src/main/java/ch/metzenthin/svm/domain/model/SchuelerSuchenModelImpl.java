@@ -34,7 +34,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private Semester semesterKurs;
     private Wochentag wochentag;
     private Time zeitBeginn;
-    private Lehrkraft lehrkraft;
+    private Mitarbeiter mitarbeiter;
     private boolean kursFuerSucheBeruecksichtigen;
     private Maerchen maerchen;
     private Gruppe gruppe;
@@ -50,8 +50,8 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     static {
-        LEHRKRAFT_ALLE.setVorname("");
-        LEHRKRAFT_ALLE.setNachname("");
+        MITARBEITER_ALLE.setVorname("");
+        MITARBEITER_ALLE.setNachname("");
         SCHUELER_CODE_ALLE.setKuerzel("");
         SCHUELER_CODE_ALLE.setBeschreibung("");
     }
@@ -263,15 +263,15 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
-    public Lehrkraft getLehrkraft() {
-        return lehrkraft;
+    public Mitarbeiter getMitarbeiter() {
+        return mitarbeiter;
     }
 
     @Override
-    public void setLehrkraft(Lehrkraft lehrkraft) {
-        Lehrkraft oldValue = this.lehrkraft;
-        this.lehrkraft = lehrkraft;
-        firePropertyChange(Field.LEHRKRAFT, oldValue, this.lehrkraft);
+    public void setMitarbeiter(Mitarbeiter mitarbeiter) {
+        Mitarbeiter oldValue = this.mitarbeiter;
+        this.mitarbeiter = mitarbeiter;
+        firePropertyChange(Field.LEHRKRAFT, oldValue, this.mitarbeiter);
     }
 
     @Override
@@ -435,15 +435,15 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
    
     @Override
     public boolean searchForSpecificKurs() {
-        return (wochentag != null && wochentag != Wochentag.ALLE) && zeitBeginn != null && (lehrkraft != null && !lehrkraft.equals(LEHRKRAFT_ALLE));
+        return (wochentag != null && wochentag != Wochentag.ALLE) && zeitBeginn != null && (mitarbeiter != null && !mitarbeiter.equals(MITARBEITER_ALLE));
     }
 
     @Override
     public boolean checkIfKurseExist() {
         CommandInvoker commandInvoker = getCommandInvoker();
         Wochentag wochentagFind = (wochentag == Wochentag.ALLE ? null : wochentag);
-        Lehrkraft lehrkraftFind = (lehrkraft.equals(LEHRKRAFT_ALLE) ? null : lehrkraft);
-        FindKurseCommand findKurseCommand = new FindKurseCommand(semesterKurs, wochentagFind, zeitBeginn, lehrkraftFind);
+        Mitarbeiter mitarbeiterFind = (mitarbeiter.equals(MITARBEITER_ALLE) ? null : mitarbeiter);
+        FindKurseCommand findKurseCommand = new FindKurseCommand(semesterKurs, wochentagFind, zeitBeginn, mitarbeiterFind);
         commandInvoker.executeCommand(findKurseCommand);
         return findKurseCommand.getResult() == FindKurseCommand.Result.KURSE_GEFUNDEN;
     }
@@ -455,11 +455,11 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         commandInvoker.executeCommand(schuelerSuchenCommand);
         List<Schueler> schuelerList = schuelerSuchenCommand.getSchuelerFound();
         Semester semesterTableData = determineSemesterTableData(svmModel);
-        Map<Schueler, List<Kurs>> kurseMapTableData = determineKurseMapTableData(schuelerList, semesterTableData, wochentag, zeitBeginn, lehrkraft);
+        Map<Schueler, List<Kurs>> kurseMapTableData = determineKurseMapTableData(schuelerList, semesterTableData, wochentag, zeitBeginn, mitarbeiter);
         Maerchen maerchenTableData = determineMaerchenTableData(svmModel, semesterTableData);
         Map<Schueler, Maercheneinteilung> maercheneinteilungenMapTableData = determineMaercheneinteilungenMapTableData(schuelerList, maerchenTableData);
         return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData, (wochentag == Wochentag.ALLE ? null : wochentag),
-                zeitBeginn, (lehrkraft == LEHRKRAFT_ALLE ? null : lehrkraft), maercheneinteilungenMapTableData, maerchenTableData,
+                zeitBeginn, (mitarbeiter == MITARBEITER_ALLE ? null : mitarbeiter), maercheneinteilungenMapTableData, maerchenTableData,
                 (gruppe == Gruppe.ALLE ? null : gruppe), (elternmithilfeCode == ELTERNMITHILFE_CODE_ALLE ? null : elternmithilfeCode), maerchenFuerSucheBeruecksichtigen, (rollen != null));
     }
 
@@ -478,9 +478,9 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         }
     }
 
-    private Map<Schueler, List<Kurs>> determineKurseMapTableData(List<Schueler> schuelerList, Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft) {
+    private Map<Schueler, List<Kurs>> determineKurseMapTableData(List<Schueler> schuelerList, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, (wochentag == Wochentag.ALLE ? null : wochentag), zeitBeginn, (lehrkraft == LEHRKRAFT_ALLE ? null : lehrkraft));
+        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, (wochentag == Wochentag.ALLE ? null : wochentag), zeitBeginn, (mitarbeiter == MITARBEITER_ALLE ? null : mitarbeiter));
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
         return findKurseMapSchuelerSemesterCommand.getKurseMap();
     }
@@ -517,11 +517,11 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
-    public Lehrkraft[] getSelectableLehrkraefte(SvmModel svmModel) {
-        List<Lehrkraft> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
+    public Mitarbeiter[] getSelectableLehrkraefte(SvmModel svmModel) {
+        List<Mitarbeiter> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
         // Lehrkraft alle auch erlaubt
-        lehrkraefteList.add(0, LEHRKRAFT_ALLE);
-        return lehrkraefteList.toArray(new Lehrkraft[lehrkraefteList.size()]);
+        lehrkraefteList.add(0, MITARBEITER_ALLE);
+        return lehrkraefteList.toArray(new Mitarbeiter[lehrkraefteList.size()]);
     }
 
     @Override

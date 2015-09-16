@@ -11,7 +11,7 @@ import ch.metzenthin.svm.domain.commands.CreateListeCommand;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.ListenExportModel;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
-import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
+import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 import org.apache.log4j.Logger;
@@ -39,7 +39,7 @@ public class ListenExportController extends AbstractController {
 
     private ListenExportModel listenExportModel;
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
-    private final LehrkraefteTableModel lehrkraefteTableModel;
+    private final MitarbeitersTableModel mitarbeitersTableModel;
     private final KurseTableModel kurseTableModel;
     private SemesterrechnungenTableModel semesterrechnungenTableModel;
     private final ListenExportTyp listenExportTyp;
@@ -51,11 +51,11 @@ public class ListenExportController extends AbstractController {
     private JButton btnOk;
     private JButton btnAbbrechen;
 
-    public ListenExportController(ListenExportModel listenExportModel, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel, ListenExportTyp listenExportTyp) {
+    public ListenExportController(ListenExportModel listenExportModel, SchuelerSuchenTableModel schuelerSuchenTableModel, MitarbeitersTableModel mitarbeitersTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel, ListenExportTyp listenExportTyp) {
         super(listenExportModel);
         this.listenExportModel = listenExportModel;
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
-        this.lehrkraefteTableModel = lehrkraefteTableModel;
+        this.mitarbeitersTableModel = mitarbeitersTableModel;
         this.kurseTableModel = kurseTableModel;
         this.semesterrechnungenTableModel = semesterrechnungenTableModel;
         this.listenExportTyp = listenExportTyp;
@@ -178,7 +178,7 @@ public class ListenExportController extends AbstractController {
             comboBoxListentyp.removeItem(Listentyp.MUTTER_ODER_VATER_ADRESSETIKETTEN);
             comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_ADRESSETIKETTEN);
         }
-        if (listenExportTyp == ListenExportTyp.LEHRKRAEFTE) {
+        if (listenExportTyp == ListenExportTyp.MITARBEITERS) {
             // Initialisierung
             comboBoxListentyp.setSelectedItem(Listentyp.LEHRKRAEFTE_ADRESSLISTE);
         } else {
@@ -347,7 +347,7 @@ public class ListenExportController extends AbstractController {
         SwingWorker<CreateListeCommand.Result, String> worker = new SwingWorker<CreateListeCommand.Result, String>() {
             @Override
             protected CreateListeCommand.Result doInBackground() throws Exception {
-                return listenExportModel.createListenFile(outputFile, schuelerSuchenTableModel, lehrkraefteTableModel, kurseTableModel, semesterrechnungenTableModel);
+                return listenExportModel.createListenFile(outputFile, schuelerSuchenTableModel, mitarbeitersTableModel, kurseTableModel, semesterrechnungenTableModel);
             }
             @Override
             protected void done() {

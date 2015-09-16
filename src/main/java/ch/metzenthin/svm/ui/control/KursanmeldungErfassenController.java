@@ -9,7 +9,7 @@ import ch.metzenthin.svm.domain.commands.FindKursCommand;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.KursanmeldungErfassenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.KursanmeldungenTableModel;
 import org.apache.log4j.Logger;
@@ -43,7 +43,7 @@ public class KursanmeldungErfassenController extends AbstractController {
     private JDialog kursanmeldungErfassenDialog;
     private JSpinner spinnerSemester;
     private JComboBox<Wochentag> comboBoxWochentag;
-    private JComboBox<Lehrkraft> comboBoxLehrkraft;
+    private JComboBox<Mitarbeiter> comboBoxLehrkraft;
     private JTextField txtZeitBeginn;
     private JTextField txtAnmeldedatum;
     private JTextField txtAbmeldedatum;
@@ -251,18 +251,18 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
     }
 
-    public void setComboBoxLehrkraft(JComboBox<Lehrkraft> comboBoxLehrkraft) {
+    public void setComboBoxLehrkraft(JComboBox<Mitarbeiter> comboBoxLehrkraft) {
         this.comboBoxLehrkraft = comboBoxLehrkraft;
         // Darf nicht bearbeitet werden, da Teil von Kurs und dieser Teil der ID!
         if (isBearbeiten) {
             this.comboBoxLehrkraft.setEnabled(false);
         }
-        List<Lehrkraft> lehrkraefteList = svmContext.getSvmModel().getAktiveLehrkraefteAll();
-        Lehrkraft[] selectableLehrkraefte;
+        List<Mitarbeiter> lehrkraefteList = svmContext.getSvmModel().getAktiveLehrkraefteAll();
+        Mitarbeiter[] selectableLehrkraefte;
         if (isBearbeiten) {
             selectableLehrkraefte = kursanmeldungErfassenModel.getSelectableLehrkraftKursanmeldungOrigin();
         } else {
-            selectableLehrkraefte = lehrkraefteList.toArray(new Lehrkraft[lehrkraefteList.size()]);
+            selectableLehrkraefte = lehrkraefteList.toArray(new Mitarbeiter[lehrkraefteList.size()]);
         }
         comboBoxLehrkraft.setModel(new DefaultComboBoxModel<>(selectableLehrkraefte));
         comboBoxLehrkraft.addActionListener(new ActionListener() {
@@ -279,7 +279,7 @@ public class KursanmeldungErfassenController extends AbstractController {
 
     private void onLehrkraftSelected() {
         LOGGER.trace("KursSchuelerHinzufuegenController Event Lehrkraft selected=" + comboBoxLehrkraft.getSelectedItem());
-        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft.getSelectedItem(), kursanmeldungErfassenModel.getLehrkraft());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft.getSelectedItem(), kursanmeldungErfassenModel.getMitarbeiter());
         try {
             setModelLehrkraft();
         } catch (SvmValidationException e) {
@@ -295,7 +295,7 @@ public class KursanmeldungErfassenController extends AbstractController {
     private void setModelLehrkraft() throws SvmValidationException {
         makeErrorLabelInvisible(Field.LEHRKRAFT1);
         try {
-            kursanmeldungErfassenModel.setLehrkraft((Lehrkraft) comboBoxLehrkraft.getSelectedItem());
+            kursanmeldungErfassenModel.setMitarbeiter((Mitarbeiter) comboBoxLehrkraft.getSelectedItem());
         } catch (SvmRequiredException e) {
             LOGGER.trace("KursSchuelerHinzufuegenController setModelLehrkraft RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
@@ -570,7 +570,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         } else if (checkIsFieldChange(Field.ZEIT_BEGINN, evt)) {
             txtZeitBeginn.setText(asString(kursanmeldungErfassenModel.getZeitBeginn()));
         } else if (checkIsFieldChange(Field.LEHRKRAFT, evt)) {
-            comboBoxLehrkraft.setSelectedItem(kursanmeldungErfassenModel.getLehrkraft());
+            comboBoxLehrkraft.setSelectedItem(kursanmeldungErfassenModel.getMitarbeiter());
         } else if (checkIsFieldChange(Field.ANMELDEDATUM, evt)) {
             txtAnmeldedatum.setText(asString(kursanmeldungErfassenModel.getAnmeldedatum()));
         } else if (checkIsFieldChange(Field.ABMELDEDATUM, evt)) {

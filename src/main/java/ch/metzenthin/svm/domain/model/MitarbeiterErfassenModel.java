@@ -1,23 +1,23 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
-import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
+import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 
 /**
  * @author Martin Schraner
  */
-public interface LehrkraftErfassenModel extends PersonModel {
+public interface MitarbeiterErfassenModel extends PersonModel {
     String getAhvNummer();
     String getVertretungsmoeglichkeiten();
     Boolean isAktiv();
-    Lehrkraft getLehrkraft();
+    Mitarbeiter getMitarbeiter();
 
     void setAhvNummer(String ahvNummer) throws SvmValidationException;
     void setVertretungsmoeglichkeiten(String vertretungsmoeglichkeiten) throws SvmValidationException;
     void setAktiv(Boolean isSelected);
-    void setLehrkraftOrigin(Lehrkraft lehrkraftOrigin);
+    void setMitarbeiterOrigin(Mitarbeiter mitarbeiterOrigin);
 
-    boolean checkLehrkraftBereitsErfasst(SvmModel svmModel);
-    void speichern(SvmModel svmModel, LehrkraefteTableModel lehrkraefteTableModel);
+    boolean checkMitarbeiterBereitsErfasst(SvmModel svmModel);
+    void speichern(SvmModel svmModel, MitarbeitersTableModel mitarbeitersTableModel);
 }

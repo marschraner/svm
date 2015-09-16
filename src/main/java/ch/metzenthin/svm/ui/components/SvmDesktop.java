@@ -64,9 +64,9 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuSchueler.setMnemonic(KeyEvent.VK_C);
         menuBar.add(menuSchueler);
 
-        JMenu menuLehrkraefte = new JMenu("Lehrkräfte");
-        menuLehrkraefte.setMnemonic(KeyEvent.VK_L);
-        menuBar.add(menuLehrkraefte);
+        JMenu menuMitarbeiter = new JMenu("Mitarbeiter");
+        menuMitarbeiter.setMnemonic(KeyEvent.VK_M);
+        menuBar.add(menuMitarbeiter);
 
         JMenu menuSemester = new JMenu("Semester");
         menuSemester.setMnemonic(KeyEvent.VK_E);
@@ -117,12 +117,12 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
 
-        menuItem = new JMenuItem("Lehrkräfte verwalten");
-        menuItem.setMnemonic(KeyEvent.VK_L);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.ALT_MASK));
-        menuItem.setActionCommand("lehrkraefteVerwalten");
+        menuItem = new JMenuItem("Mitarbeiter verwalten");
+        menuItem.setMnemonic(KeyEvent.VK_M);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("mitarbeiterVerwalten");
         menuItem.addActionListener(this);
-        menuLehrkraefte.add(menuItem);
+        menuMitarbeiter.add(menuItem);
 
         menuItem = new JMenuItem("Semester verwalten");
         menuItem.setMnemonic(KeyEvent.VK_E);
@@ -259,15 +259,15 @@ public class SvmDesktop extends JFrame implements ActionListener {
             });
             setAndShowActivePanel(anAbmeldestatistikPanel.$$$getRootComponent$$$(), "Monatsstatistik Schüler");
 
-        } else if ("lehrkraefteVerwalten".equals(e.getActionCommand())) {
-            LehrkraeftePanel lehrkraeftePanel = new LehrkraeftePanel(svmContext);
-            lehrkraeftePanel.addCloseListener(new ActionListener() {
+        } else if ("mitarbeiterVerwalten".equals(e.getActionCommand())) {
+            MitarbeitersPanel mitarbeitersPanel = new MitarbeitersPanel(svmContext);
+            mitarbeitersPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     onFrameAbbrechen();
                 }
             });
-            setAndShowActivePanel(lehrkraeftePanel.$$$getRootComponent$$$(), "Lehrkräfte verwalten");
+            setAndShowActivePanel(mitarbeitersPanel.$$$getRootComponent$$$(), "Mitarbeiter verwalten");
 
         } else if ("kurseVerwalten".equals(e.getActionCommand())) {
             KurseSemesterwahlPanel kurseSemesterwahlPanel = new KurseSemesterwahlPanel(svmContext);

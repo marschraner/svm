@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.LehrkraeftePanel">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.MitarbeitersPanel">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
       <xy x="20" y="20" width="1134" height="400"/>
@@ -179,7 +179,7 @@
                 </constraints>
                 <properties>
                   <font size="36"/>
-                  <text value="Lehrkräfte verwalten"/>
+                  <text value="Mitarbeiter verwalten"/>
                 </properties>
               </component>
               <hspacer id="d2a40">
@@ -196,7 +196,7 @@
               <gridbag top="10" left="10" bottom="10" right="10" weightx="1.0" weighty="1.0"/>
             </constraints>
             <properties/>
-            <border type="etched" title="Lehrkräfte">
+            <border type="etched" title="Mitarbeiter">
               <font style="1"/>
               <title-color color="-16777216"/>
             </border>

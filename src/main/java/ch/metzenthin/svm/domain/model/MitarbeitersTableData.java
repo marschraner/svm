@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 
 import java.util.Calendar;
 import java.util.List;
@@ -9,11 +9,11 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class LehrkraefteTableData {
+public class MitarbeitersTableData {
 
-    private List<Lehrkraft> lehrkraefte;
+    private List<Mitarbeiter> lehrkraefte;
 
-    public LehrkraefteTableData(List<Lehrkraft> lehrkraefte) {
+    public MitarbeitersTableData(List<Mitarbeiter> lehrkraefte) {
         this.lehrkraefte = lehrkraefte;
     }
 
@@ -28,44 +28,44 @@ public class LehrkraefteTableData {
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Lehrkraft lehrkraft = lehrkraefte.get(rowIndex);
+        Mitarbeiter mitarbeiter = lehrkraefte.get(rowIndex);
         Object value = null;
         switch (COLUMNS[columnIndex]) {
             case NACHNAME:
-                value = lehrkraft.getNachname();
+                value = mitarbeiter.getNachname();
                 break;
             case VORNAME:
-                value = lehrkraft.getVorname();
+                value = mitarbeiter.getVorname();
                 break;
             case STRASSE_HAUSNUMMER:
-                value = lehrkraft.getAdresse().getStrasseHausnummer();
+                value = mitarbeiter.getAdresse().getStrasseHausnummer();
                 break;
             case PLZ:
-                value = lehrkraft.getAdresse().getPlz();
+                value = mitarbeiter.getAdresse().getPlz();
                 break;
             case ORT:
-                value = lehrkraft.getAdresse().getOrt();
+                value = mitarbeiter.getAdresse().getOrt();
                 break;
             case FESTNETZ:
-                value = lehrkraft.getFestnetz();
+                value = mitarbeiter.getFestnetz();
                 break;
             case NATEL:
-                value = lehrkraft.getNatel();
+                value = mitarbeiter.getNatel();
                 break;
             case EMAIL:
-                value = lehrkraft.getEmail();
+                value = mitarbeiter.getEmail();
                 break;
             case GEBURTSDATUM:
-                value = lehrkraft.getGeburtsdatum();
+                value = mitarbeiter.getGeburtsdatum();
                 break;
             case AHV_NUMMER:
-                value = lehrkraft.getAhvNummer();
+                value = mitarbeiter.getAhvNummer();
                 break;
             case VERTRETUNGSMOEGLICHKEITEN:
-                value = lehrkraft.getVertretungsmoeglichkeiten();
+                value = mitarbeiter.getVertretungsmoeglichkeiten();
                 break;
             case AKTIV:
-                value = (lehrkraft.getAktiv() ? "ja" : "nein");
+                value = (mitarbeiter.getAktiv() ? "ja" : "nein");
                 break;
             default:
                 break;
@@ -86,11 +86,11 @@ public class LehrkraefteTableData {
         return COLUMNS[column].toString();
     }
 
-    public List<Lehrkraft> getLehrkraefte() {
+    public List<Mitarbeiter> getLehrkraefte() {
         return lehrkraefte;
     }
 
-    public void setLehrkraefte(List<Lehrkraft> lehrkraefte) {
+    public void setMitarbeiters(List<Mitarbeiter> lehrkraefte) {
         this.lehrkraefte = lehrkraefte;
     }
 }

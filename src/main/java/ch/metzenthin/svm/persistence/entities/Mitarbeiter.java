@@ -11,9 +11,9 @@ import java.util.Set;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Lehrkraft")
-@DiscriminatorValue("Lehrkraft")
-public class Lehrkraft extends Person {
+@Table(name="Mitarbeiter")
+@DiscriminatorValue("Mitarbeiter")
+public class Mitarbeiter extends Person {
 
     @Column(name = "ahvnummer", nullable = true)
     private String ahvNummer;
@@ -24,31 +24,31 @@ public class Lehrkraft extends Person {
     @Column(name = "aktiv", nullable = false)
     private Boolean aktiv;
 
-    @ManyToMany(mappedBy = "lehrkraefte")
+    @ManyToMany(mappedBy = "mitarbeiters")
     private Set<Kurs> kurse = new HashSet<>();
 
-    public Lehrkraft() {
+    public Mitarbeiter() {
     }
 
-    public Lehrkraft(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String festnetz, String natel, String email, String ahvNummer, String vertretungsmoeglichkeiten, Boolean aktiv) {
+    public Mitarbeiter(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String festnetz, String natel, String email, String ahvNummer, String vertretungsmoeglichkeiten, Boolean aktiv) {
         super(anrede, vorname, nachname, geburtsdatum, festnetz, natel, email);
         this.ahvNummer = ahvNummer;
         this.vertretungsmoeglichkeiten = vertretungsmoeglichkeiten;
         this.aktiv = aktiv;
     }
 
-    public boolean isIdenticalWith(Lehrkraft otherLehrkraft) {
-        return otherLehrkraft != null
-                && getVorname().equals(otherLehrkraft.getVorname())
-                && getNachname().equals(otherLehrkraft.getNachname())
-                && getGeburtsdatum().equals(otherLehrkraft.getGeburtsdatum());
+    public boolean isIdenticalWith(Mitarbeiter otherMitarbeiter) {
+        return otherMitarbeiter != null
+                && getVorname().equals(otherMitarbeiter.getVorname())
+                && getNachname().equals(otherMitarbeiter.getNachname())
+                && getGeburtsdatum().equals(otherMitarbeiter.getGeburtsdatum());
     }
 
-    public void copyAttributesFrom(Lehrkraft lehrkraftFrom) {
-        super.copyAttributesFrom(lehrkraftFrom);
-        ahvNummer = lehrkraftFrom.getAhvNummer();
-        vertretungsmoeglichkeiten = lehrkraftFrom.getVertretungsmoeglichkeiten();
-        aktiv = lehrkraftFrom.getAktiv();
+    public void copyAttributesFrom(Mitarbeiter mitarbeiterFrom) {
+        super.copyAttributesFrom(mitarbeiterFrom);
+        ahvNummer = mitarbeiterFrom.getAhvNummer();
+        vertretungsmoeglichkeiten = mitarbeiterFrom.getVertretungsmoeglichkeiten();
+        aktiv = mitarbeiterFrom.getAktiv();
     }
 
     @Override

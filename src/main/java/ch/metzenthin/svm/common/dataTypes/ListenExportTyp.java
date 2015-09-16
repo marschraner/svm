@@ -5,7 +5,7 @@ package ch.metzenthin.svm.common.dataTypes;
  */
 public enum ListenExportTyp {
     SCHUELER,
-    LEHRKRAEFTE,
+    MITARBEITERS,
     KURSE,
     SEMESTERRECHNUNGEN
 }

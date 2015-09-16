@@ -5,7 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.ui.control.SchuelerSuchenController;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -65,7 +65,7 @@ public class SchuelerSuchenPanel {
     private JSpinner spinnerSemesterKurs;
     private JSpinner spinnerMaerchen;
     private JComboBox<Wochentag> comboBoxWochentag;
-    private JComboBox<Lehrkraft> comboBoxLehrkraft;
+    private JComboBox<Mitarbeiter> comboBoxLehrkraft;
     private JComboBox<SchuelerCode> comboBoxSchuelerCode;
     private JComboBox<Gruppe> comboBoxGruppe;
     private JComboBox<ElternmithilfeCode> comboBoxElternmithilfeCode;

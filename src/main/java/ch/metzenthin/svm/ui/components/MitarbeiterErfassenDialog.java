@@ -2,16 +2,16 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.domain.model.LehrkraefteModel;
-import ch.metzenthin.svm.domain.model.LehrkraftErfassenModel;
-import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
-import ch.metzenthin.svm.ui.control.LehrkraftErfassenController;
+import ch.metzenthin.svm.domain.model.MitarbeitersModel;
+import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
+import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
+import ch.metzenthin.svm.ui.control.MitarbeiterErfassenController;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class LehrkraftErfassenDialog extends JDialog {
+public class MitarbeiterErfassenDialog extends JDialog {
     private JPanel contentPane;
     private JPanel datenPanel;
     private JComboBox<Anrede> comboBoxAnrede;
@@ -42,48 +42,48 @@ public class LehrkraftErfassenDialog extends JDialog {
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
 
-    public LehrkraftErfassenDialog(SvmContext svmContext, LehrkraefteTableModel lehrkraefteTableModel, LehrkraefteModel lehrkraefteModel, int indexBearbeiten, boolean isBearbeiten, String title) {
+    public MitarbeiterErfassenDialog(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, MitarbeitersModel mitarbeitersModel, int indexBearbeiten, boolean isBearbeiten, String title) {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
         setTitle(title);
-        createLehrkraftErfassenController(svmContext, lehrkraefteTableModel, lehrkraefteModel, indexBearbeiten, isBearbeiten);
+        createLehrkraftErfassenController(svmContext, mitarbeitersTableModel, mitarbeitersModel, indexBearbeiten, isBearbeiten);
         initializeErrLbls();
     }
 
-    private void createLehrkraftErfassenController(SvmContext svmContext, LehrkraefteTableModel lehrkraefteTableModel, LehrkraefteModel lehrkraefteModel, int indexBearbeiten, boolean isBearbeiten) {
-        LehrkraftErfassenModel lehrkraftErfassenModel = (isBearbeiten ? lehrkraefteModel.getLehrkraftErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createLehrkraftErfassenModel());
-        LehrkraftErfassenController lehrkraftErfassenController = new LehrkraftErfassenController(svmContext, lehrkraefteTableModel, lehrkraftErfassenModel, isBearbeiten);
-        lehrkraftErfassenController.setLehrkraftErfassenDialog(this);
-        lehrkraftErfassenController.setContentPane(contentPane);
-        lehrkraftErfassenController.setComboBoxAnrede(comboBoxAnrede);
-        lehrkraftErfassenController.setTxtNachname(txtNachname);
-        lehrkraftErfassenController.setTxtVorname(txtVorname);
-        lehrkraftErfassenController.setTxtStrasseHausnummer(txtStrasseHausnummer);
-        lehrkraftErfassenController.setTxtPlz(txtPlz);
-        lehrkraftErfassenController.setTxtOrt(txtOrt);
-        lehrkraftErfassenController.setTxtFestnetz(txtFestnetz);
-        lehrkraftErfassenController.setTxtNatel(txtNatel);
-        lehrkraftErfassenController.setTxtEmail(txtEmail);
-        lehrkraftErfassenController.setTxtGeburtsdatum(txtGeburtsdatum);
-        lehrkraftErfassenController.setTxtAhvNummer(txtAhvNummer);
-        lehrkraftErfassenController.setTxtVertretungsmoeglichkeiten(txtVertretungsmoeglichkeiten);
-        lehrkraftErfassenController.setCheckBoxAktiv(checkBoxAktiv);
-        lehrkraftErfassenController.setBtnSpeichern(btnSpeichern);
-        lehrkraftErfassenController.setBtnAbbrechen(btnAbbrechen);
-        lehrkraftErfassenController.setErrLblAnrede(errLblAnrede);
-        lehrkraftErfassenController.setErrLblNachname(errLblNachname);
-        lehrkraftErfassenController.setErrLblVorname(errLblVorname);
-        lehrkraftErfassenController.setErrLblStrasseHausnummer(errLblStrasseHausnummer);
-        lehrkraftErfassenController.setErrLblPlz(errLblPlz);
-        lehrkraftErfassenController.setErrLblOrt(errLblOrt);
-        lehrkraftErfassenController.setErrLblFestnetz(errLblFestnetz);
-        lehrkraftErfassenController.setErrLblNatel(errLblNatel);
-        lehrkraftErfassenController.setErrLblEmail(errLblEmail);
-        lehrkraftErfassenController.setErrLblGeburtsdatum(errLblGeburtsdatum);
-        lehrkraftErfassenController.setErrLblAhvNummer(errLblAhvNummer);
-        lehrkraftErfassenController.setErrLblVertretungsmoeglichkeiten(errLblVertretungsmoeglichkeiten);
-        lehrkraftErfassenController.constructionDone();
+    private void createLehrkraftErfassenController(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, MitarbeitersModel mitarbeitersModel, int indexBearbeiten, boolean isBearbeiten) {
+        MitarbeiterErfassenModel mitarbeiterErfassenModel = (isBearbeiten ? mitarbeitersModel.getMitarbeiterErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createMitarbeiterErfassenModel());
+        MitarbeiterErfassenController mitarbeiterErfassenController = new MitarbeiterErfassenController(svmContext, mitarbeitersTableModel, mitarbeiterErfassenModel, isBearbeiten);
+        mitarbeiterErfassenController.setMitarbeiterErfassenDialog(this);
+        mitarbeiterErfassenController.setContentPane(contentPane);
+        mitarbeiterErfassenController.setComboBoxAnrede(comboBoxAnrede);
+        mitarbeiterErfassenController.setTxtNachname(txtNachname);
+        mitarbeiterErfassenController.setTxtVorname(txtVorname);
+        mitarbeiterErfassenController.setTxtStrasseHausnummer(txtStrasseHausnummer);
+        mitarbeiterErfassenController.setTxtPlz(txtPlz);
+        mitarbeiterErfassenController.setTxtOrt(txtOrt);
+        mitarbeiterErfassenController.setTxtFestnetz(txtFestnetz);
+        mitarbeiterErfassenController.setTxtNatel(txtNatel);
+        mitarbeiterErfassenController.setTxtEmail(txtEmail);
+        mitarbeiterErfassenController.setTxtGeburtsdatum(txtGeburtsdatum);
+        mitarbeiterErfassenController.setTxtAhvNummer(txtAhvNummer);
+        mitarbeiterErfassenController.setTxtVertretungsmoeglichkeiten(txtVertretungsmoeglichkeiten);
+        mitarbeiterErfassenController.setCheckBoxAktiv(checkBoxAktiv);
+        mitarbeiterErfassenController.setBtnSpeichern(btnSpeichern);
+        mitarbeiterErfassenController.setBtnAbbrechen(btnAbbrechen);
+        mitarbeiterErfassenController.setErrLblAnrede(errLblAnrede);
+        mitarbeiterErfassenController.setErrLblNachname(errLblNachname);
+        mitarbeiterErfassenController.setErrLblVorname(errLblVorname);
+        mitarbeiterErfassenController.setErrLblStrasseHausnummer(errLblStrasseHausnummer);
+        mitarbeiterErfassenController.setErrLblPlz(errLblPlz);
+        mitarbeiterErfassenController.setErrLblOrt(errLblOrt);
+        mitarbeiterErfassenController.setErrLblFestnetz(errLblFestnetz);
+        mitarbeiterErfassenController.setErrLblNatel(errLblNatel);
+        mitarbeiterErfassenController.setErrLblEmail(errLblEmail);
+        mitarbeiterErfassenController.setErrLblGeburtsdatum(errLblGeburtsdatum);
+        mitarbeiterErfassenController.setErrLblAhvNummer(errLblAhvNummer);
+        mitarbeiterErfassenController.setErrLblVertretungsmoeglichkeiten(errLblVertretungsmoeglichkeiten);
+        mitarbeiterErfassenController.constructionDone();
     }
 
     private void initializeErrLbls() {
@@ -140,7 +140,7 @@ public class LehrkraftErfassenDialog extends JDialog {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         datenPanel.add(panel1, gbc);
-        panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Lehrkraft", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel1.getFont().getName(), Font.BOLD, panel1.getFont().getSize()), new Color(-16777216)));
+        panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mitarbeiter", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel1.getFont().getName(), Font.BOLD, panel1.getFont().getSize()), new Color(-16777216)));
         final JLabel label1 = new JLabel();
         label1.setText("Nachname");
         gbc = new GridBagConstraints();

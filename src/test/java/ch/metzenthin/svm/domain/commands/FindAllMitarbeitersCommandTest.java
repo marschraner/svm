@@ -2,9 +2,9 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.utils.PersistenceProperties;
-import ch.metzenthin.svm.persistence.daos.LehrkraftDao;
+import ch.metzenthin.svm.persistence.daos.MitarbeiterDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,11 +20,11 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Martin Schraner
  */
-public class FindAllLehrkraefteCommandTest {
+public class FindAllMitarbeitersCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
-    private Set<Lehrkraft> lehrkraefteTestdata = new HashSet<>();
+    private Set<Mitarbeiter> lehrkraefteTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
@@ -43,18 +43,18 @@ public class FindAllLehrkraefteCommandTest {
 
     @Test
     public void testExecute() {
-        FindAllLehrkraefteCommand findAllLehrkraefteCommand = new FindAllLehrkraefteCommand();
-            commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLehrkraefteCommand);
+        FindAllMitarbeitersCommand findAllMitarbeitersCommand = new FindAllMitarbeitersCommand();
+            commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllMitarbeitersCommand);
 
-        List<Lehrkraft> lehrkraefteFound = findAllLehrkraefteCommand.getLehrkraefteAll();
+        List<Mitarbeiter> lehrkraefteFound = findAllMitarbeitersCommand.getLehrkraefteAll();
         assertTrue(lehrkraefteFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;
-        for (Lehrkraft lehrkraft : lehrkraefteFound) {
-            if (lehrkraft.getVorname().equals("NoémiTest")) {
+        for (Mitarbeiter mitarbeiter : lehrkraefteFound) {
+            if (mitarbeiter.getVorname().equals("NoémiTest")) {
                 found1 = true;
             }
-            if (lehrkraft.getVorname().equals("NathalieTest")) {
+            if (mitarbeiter.getVorname().equals("NathalieTest")) {
                 found2 = true;
             }
         }
@@ -68,19 +68,19 @@ public class FindAllLehrkraefteCommandTest {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            LehrkraftDao lehrkraftDao = new LehrkraftDao(entityManager);
+            MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
 
-            Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "NoémiTest", "RoosTest", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "NoémiTest", "RoosTest", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-            lehrkraft1.setAdresse(adresse1);
-            Lehrkraft lehrkraftSaved = lehrkraftDao.save(lehrkraft1);
-            lehrkraefteTestdata.add(lehrkraftSaved);
+            mitarbeiter1.setAdresse(adresse1);
+            Mitarbeiter mitarbeiterSaved = mitarbeiterDao.save(mitarbeiter1);
+            lehrkraefteTestdata.add(mitarbeiterSaved);
 
-            Lehrkraft lehrkraft2 = new Lehrkraft(Anrede.FRAU, "NathalieTest", "DelleyTest", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "NathalieTest", "DelleyTest", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", "Mi, Fr, Sa", true);
             Adresse adresse2 = new Adresse("Im Schilf", "7", "8044", "Zürich");
-            lehrkraft2.setAdresse(adresse2);
-            lehrkraftSaved = lehrkraftDao.save(lehrkraft2);
-            lehrkraefteTestdata.add(lehrkraftSaved);
+            mitarbeiter2.setAdresse(adresse2);
+            mitarbeiterSaved = mitarbeiterDao.save(mitarbeiter2);
+            lehrkraefteTestdata.add(mitarbeiterSaved);
 
             entityManager.getTransaction().commit();
 
@@ -97,11 +97,11 @@ public class FindAllLehrkraefteCommandTest {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            LehrkraftDao lehrkraftDao = new LehrkraftDao(entityManager);
+            MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
 
-            for (Lehrkraft lehrkraft : lehrkraefteTestdata) {
-                Lehrkraft lehrkraftToBeRemoved = lehrkraftDao.findById(lehrkraft.getPersonId());
-                lehrkraftDao.remove(lehrkraftToBeRemoved);
+            for (Mitarbeiter mitarbeiter : lehrkraefteTestdata) {
+                Mitarbeiter mitarbeiterToBeRemoved = mitarbeiterDao.findById(mitarbeiter.getPersonId());
+                mitarbeiterDao.remove(mitarbeiterToBeRemoved);
             }
 
             entityManager.getTransaction().commit();

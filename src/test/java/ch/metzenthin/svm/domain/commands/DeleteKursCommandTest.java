@@ -53,7 +53,7 @@ public class DeleteKursCommandTest {
         List<Semester> erfassteSemester = new ArrayList<>();
         List<Kurstyp> erfassteKurstypen = new ArrayList<>();
         List<Kursort> erfassteKursorte = new ArrayList<>();
-        List<Lehrkraft> erfassteLehrkraefte = new ArrayList<>();
+        List<Mitarbeiter> erfassteLehrkraefte = new ArrayList<>();
         List<Kurs> erfassteKurse = new ArrayList<>();
 
         // Semester, Kurstyp, Kursort und Lehrkräfte erzeugen
@@ -78,25 +78,25 @@ public class DeleteKursCommandTest {
         saveOrUpdateKursortCommand = new SaveOrUpdateKursortCommand(kursort2, null, erfassteKursorte);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
 
-        Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roostest1", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+        Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roostest1", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
         Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-        SaveOrUpdateLehrkraftCommand saveOrUpdateLehrkraftCommand = new SaveOrUpdateLehrkraftCommand(lehrkraft1, adresse1, null, erfassteLehrkraefte);
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateLehrkraftCommand);
-        Lehrkraft lehrkraft2 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roostest2", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+        SaveOrUpdateMitarbeiterCommand saveOrUpdateMitarbeiterCommand = new SaveOrUpdateMitarbeiterCommand(mitarbeiter1, adresse1, null, erfassteLehrkraefte);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateMitarbeiterCommand);
+        Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roostest2", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
         Adresse adresse2 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-        saveOrUpdateLehrkraftCommand = new SaveOrUpdateLehrkraftCommand(lehrkraft2, adresse2, null, erfassteLehrkraefte);
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateLehrkraftCommand);
+        saveOrUpdateMitarbeiterCommand = new SaveOrUpdateMitarbeiterCommand(mitarbeiter2, adresse2, null, erfassteLehrkraefte);
+        commandInvoker.executeCommandAsTransaction(saveOrUpdateMitarbeiterCommand);
 
-        assertFalse(checkIfKursAvailable(semester1, kurstyp1, "2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), kursort1, lehrkraft1, null));
-        assertFalse(checkIfKursAvailable(semester2, kurstyp2, "2-3 J", "Vorkindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), kursort2, lehrkraft2, lehrkraft1));
+        assertFalse(checkIfKursAvailable(semester1, kurstyp1, "2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), kursort1, mitarbeiter1, null));
+        assertFalse(checkIfKursAvailable(semester2, kurstyp2, "2-3 J", "Vorkindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), kursort2, mitarbeiter2, mitarbeiter1));
 
         // 2 Kurse erfassen
         Kurs kurs1 = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
-        SaveOrUpdateKursCommand saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs1, semester1, kurstyp1, kursort1, lehrkraft1, null, null, erfassteKurse);
+        SaveOrUpdateKursCommand saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs1, semester1, kurstyp1, kursort1, mitarbeiter1, null, null, erfassteKurse);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursCommand);
 
         Kurs kurs2 = new Kurs("2-3 J", "Vorkindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
-        saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs2, semester2, kurstyp2, kursort2, lehrkraft2, lehrkraft1, null, erfassteKurse);
+        saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs2, semester2, kurstyp2, kursort2, mitarbeiter2, mitarbeiter1, null, erfassteKurse);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursCommand);
 
         assertEquals(2, erfassteKurse.size());
@@ -133,11 +133,11 @@ public class DeleteKursCommandTest {
             }
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
-            LehrkraftDao lehrkraftDao = new LehrkraftDao(entityManager);
-            for (Lehrkraft lehrkraft : erfassteLehrkraefte) {
-                Lehrkraft lehrkraftToBeDeleted = lehrkraftDao.findById(lehrkraft.getPersonId());
-                if (lehrkraftToBeDeleted != null) {
-                    lehrkraftDao.remove(lehrkraftToBeDeleted);
+            MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
+            for (Mitarbeiter mitarbeiter : erfassteLehrkraefte) {
+                Mitarbeiter mitarbeiterToBeDeleted = mitarbeiterDao.findById(mitarbeiter.getPersonId());
+                if (mitarbeiterToBeDeleted != null) {
+                    mitarbeiterDao.remove(mitarbeiterToBeDeleted);
                 }
             }
             entityManager.getTransaction().commit();
@@ -167,7 +167,7 @@ public class DeleteKursCommandTest {
 
     }
 
-    private boolean checkIfKursAvailable(Semester semester, Kurstyp kurstyp, String altersbereich, String stufe, Wochentag wochentag, Time zeitBeginn, Time zeitEnde, Kursort kursort, Lehrkraft lehrkraft1, Lehrkraft lehrkraft2) {
+    private boolean checkIfKursAvailable(Semester semester, Kurstyp kurstyp, String altersbereich, String stufe, Wochentag wochentag, Time zeitBeginn, Time zeitEnde, Kursort kursort, Mitarbeiter mitarbeiter1, Mitarbeiter mitarbeiter2) {
         FindKurseSemesterCommand kurseSemesterCommand = new FindKurseSemesterCommand(semester);
         commandInvoker.executeCommandAsTransaction(kurseSemesterCommand);
         List<Kurs> kurseAll = kurseSemesterCommand.getKurseFound();
@@ -180,13 +180,13 @@ public class DeleteKursCommandTest {
                     && kurs.getZeitBeginn().equals(zeitBeginn)
                     && kurs.getZeitEnde().equals(zeitEnde)
                     && kurs.getKursort().equals(kursort)
-                    && kurs.getLehrkraefte().get(0).equals(lehrkraft1)) {
-                if (kurs.getLehrkraefte().size() == 1) {
-                    if (lehrkraft2 == null) {
+                    && kurs.getMitarbeiters().get(0).equals(mitarbeiter1)) {
+                if (kurs.getMitarbeiters().size() == 1) {
+                    if (mitarbeiter2 == null) {
                         return true;
                     }
                 } else {
-                    if (kurs.getLehrkraefte().get(1).equals(lehrkraft2)) {
+                    if (kurs.getMitarbeiters().get(1).equals(mitarbeiter2)) {
                         return true;
                     }
                 }

@@ -10,7 +10,7 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
-import ch.metzenthin.svm.ui.componentmodel.LehrkraefteTableModel;
+import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 
@@ -100,7 +100,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
     }
 
     @Override
-    public CreateListeCommand.Result createListenFile(File outputFile, SchuelerSuchenTableModel schuelerSuchenTableModel, LehrkraefteTableModel lehrkraefteTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel) {
+    public CreateListeCommand.Result createListenFile(File outputFile, SchuelerSuchenTableModel schuelerSuchenTableModel, MitarbeitersTableModel mitarbeitersTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         CreateListeCommand.Result result = null;
         switch (listentyp) {
@@ -175,12 +175,12 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 result = createAdressenCsvFileCommandElternmithilfe.getResult();
                 break;
             case LEHRKRAEFTE_ADRESSLISTE:
-                CreateLehrkraefteAdresslisteCommand createLehrkraefteAdresslisteCommand = new CreateLehrkraefteAdresslisteCommand(lehrkraefteTableModel, titel, outputFile);
+                CreateLehrkraefteAdresslisteCommand createLehrkraefteAdresslisteCommand = new CreateLehrkraefteAdresslisteCommand(mitarbeitersTableModel, titel, outputFile);
                 commandInvoker.executeCommand(createLehrkraefteAdresslisteCommand);
                 result = createLehrkraefteAdresslisteCommand.getResult();
                 break;
             case LEHRKRAEFTE_ADRESSETIKETTEN:
-                CreateAdressenCsvFileCommand createAdressenCsvFileCommandLehrkraefte = new CreateAdressenCsvFileCommand(lehrkraefteTableModel.getLehrkraefte(), outputFile);
+                CreateAdressenCsvFileCommand createAdressenCsvFileCommandLehrkraefte = new CreateAdressenCsvFileCommand(mitarbeitersTableModel.getLehrkraefte(), outputFile);
                 commandInvoker.executeCommand(createAdressenCsvFileCommandLehrkraefte);
                 result = createAdressenCsvFileCommandLehrkraefte.getResult();
                 break;
@@ -280,7 +280,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
     private String getTitleSpecificKurs(SchuelerSuchenTableModel schuelerSuchenTableModel) {
         if (schuelerSuchenTableModel.getWochentag() != null && schuelerSuchenTableModel.getZeitBeginn() != null) {
             if (schuelerSuchenTableModel.getSchuelerList().size() > 0) {
-                String lehrkraefte = schuelerSuchenTableModel.getSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getLehrkraefteAsStr();
+                String lehrkraefte = schuelerSuchenTableModel.getSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getMitarbeitersAsStr();
                 String zeitEnde = asString(schuelerSuchenTableModel.getSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getZeitEnde());
                 String kursort = schuelerSuchenTableModel.getSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getKursort().getBezeichnung();
                 return lehrkraefte + " (" + schuelerSuchenTableModel.getWochentag() + " " + asString(schuelerSuchenTableModel.getZeitBeginn()) + "-" + zeitEnde + ", " + kursort + ")";
@@ -292,7 +292,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                     return "";
                 }
                 Kurs kursFound = findKursCommand.getKursFound();
-                return kursFound.getLehrkraefteAsStr() + " (" + kursFound.getWochentag() +  " " + asString(kursFound.getZeitBeginn()) + "-" + asString(kursFound.getZeitEnde()) + ", " + kursFound.getKursort() + ")";
+                return kursFound.getMitarbeitersAsStr() + " (" + kursFound.getWochentag() +  " " + asString(kursFound.getZeitBeginn()) + "-" + asString(kursFound.getZeitEnde()) + ", " + kursFound.getKursort() + ")";
             }
         } else {
             return schuelerSuchenTableModel.getLehrkraft().toString();

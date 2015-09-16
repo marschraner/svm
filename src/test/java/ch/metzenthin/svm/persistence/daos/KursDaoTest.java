@@ -32,7 +32,7 @@ public class KursDaoTest {
     private SemesterDao semesterDao;
     private KurstypDao kurstypDao;
     private KursortDao kursortDao;
-    private LehrkraftDao lehrkraftDao;
+    private MitarbeiterDao mitarbeiterDao;
 
     @Before
     public void setUp() throws Exception {
@@ -43,7 +43,7 @@ public class KursDaoTest {
         semesterDao = new SemesterDao(entityManager);
         kurstypDao = new KurstypDao(entityManager);
         kursortDao = new KursortDao(entityManager);
-        lehrkraftDao = new LehrkraftDao(entityManager);
+        mitarbeiterDao = new MitarbeiterDao(entityManager);
     }
 
     @After
@@ -70,17 +70,17 @@ public class KursDaoTest {
             kurstypDao.save(kurstyp);
             Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
-            Lehrkraft lehrkraft = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-            lehrkraft.setAdresse(adresse);
-            lehrkraftDao.save(lehrkraft);
+            mitarbeiter.setAdresse(adresse);
+            mitarbeiterDao.save(mitarbeiter);
 
             // Kurs
             Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), "Dies ist ein Test.");
             kurs.setSemester(semester);
             kurs.setKurstyp(kurstyp);
             kurs.setKursort(kursort);
-            kurs.addLehrkraft(lehrkraft);
+            kurs.addLehrkraft(mitarbeiter);
 
             entityManager.persist(kurs);
 
@@ -95,7 +95,7 @@ public class KursDaoTest {
             assertEquals("2011/2012", kursFound.getSemester().getSchuljahr());
             assertEquals("Testkurs", kursFound.getKurstyp().getBezeichnung());
             assertEquals("Testsaal", kursFound.getKursort().getBezeichnung());
-            assertEquals("Roos", kursFound.getLehrkraefte().get(0).getNachname());
+            assertEquals("Roos", kursFound.getMitarbeiters().get(0).getNachname());
 
         } finally {
             if (tx != null)
@@ -119,22 +119,22 @@ public class KursDaoTest {
             kurstypDao.save(kurstyp);
             Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
-            Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-            lehrkraft1.setAdresse(adresse1);
-            lehrkraftDao.save(lehrkraft1);
-            Lehrkraft lehrkraft2 = new Lehrkraft(Anrede.FRAU, "Nathalie", "Delley", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", "Mi, Fr, Sa", true);
+            mitarbeiter1.setAdresse(adresse1);
+            mitarbeiterDao.save(mitarbeiter1);
+            Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "Nathalie", "Delley", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", "Mi, Fr, Sa", true);
             Adresse adresse2 = new Adresse("Im Schilf", "7", "8044", "Zürich");
-            lehrkraft2.setAdresse(adresse2);
-            lehrkraftDao.save(lehrkraft2);
+            mitarbeiter2.setAdresse(adresse2);
+            mitarbeiterDao.save(mitarbeiter2);
 
             // Kurs
             Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
             kurs.setSemester(semester);
             kurs.setKurstyp(kurstyp);
             kurs.setKursort(kursort);
-            kurs.addLehrkraft(lehrkraft1);
-            kurs.addLehrkraft(lehrkraft2);
+            kurs.addLehrkraft(mitarbeiter1);
+            kurs.addLehrkraft(mitarbeiter2);
 
             Kurs kursSaved = kursDao.save(kurs);
 
@@ -163,16 +163,16 @@ public class KursDaoTest {
             assertTrue(kursFound.getKursort().getKurse().contains(kursFound));
 
             // Lehrkräfte in Reihenfolge der Erfassung geordnet?
-            assertEquals(2, kursFound.getLehrkraefte().size());
-            assertEquals("Roos", kursFound.getLehrkraefte().get(0).getNachname());
-            assertEquals("Delley", kursFound.getLehrkraefte().get(1).getNachname());
-            assertEquals(1, kursFound.getLehrkraefte().get(0).getKurse().size());
-            assertTrue(kursFound.getLehrkraefte().get(0).getKurse().contains(kursFound));
+            assertEquals(2, kursFound.getMitarbeiters().size());
+            assertEquals("Roos", kursFound.getMitarbeiters().get(0).getNachname());
+            assertEquals("Delley", kursFound.getMitarbeiters().get(1).getNachname());
+            assertEquals(1, kursFound.getMitarbeiters().get(0).getKurse().size());
+            assertTrue(kursFound.getMitarbeiters().get(0).getKurse().contains(kursFound));
 
             // 1. Lehrkraft löschen
-            kurs.deleteLehrkraft(kursFound.getLehrkraefte().get(0));
-            assertEquals(1, kursFound.getLehrkraefte().size());
-            assertEquals("Delley", kursFound.getLehrkraefte().get(0).getNachname());
+            kurs.deleteLehrkraft(kursFound.getMitarbeiters().get(0));
+            assertEquals(1, kursFound.getMitarbeiters().size());
+            assertEquals("Delley", kursFound.getMitarbeiters().get(0).getNachname());
 
         } finally {
             if (tx != null)
@@ -196,22 +196,22 @@ public class KursDaoTest {
             kurstypDao.save(kurstyp);
             Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
-            Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-            lehrkraft1.setAdresse(adresse1);
-            lehrkraftDao.save(lehrkraft1);
-            Lehrkraft lehrkraft2 = new Lehrkraft(Anrede.FRAU, "Nathalie", "Delley", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", "Mi, Fr, Sa", true);
+            mitarbeiter1.setAdresse(adresse1);
+            mitarbeiterDao.save(mitarbeiter1);
+            Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "Nathalie", "Delley", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", "Mi, Fr, Sa", true);
             Adresse adresse2 = new Adresse("Im Schilf", "7", "8044", "Zürich");
-            lehrkraft2.setAdresse(adresse2);
-            lehrkraftDao.save(lehrkraft2);
+            mitarbeiter2.setAdresse(adresse2);
+            mitarbeiterDao.save(mitarbeiter2);
 
             // Kurs
             Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
             kurs.setSemester(semester);
             kurs.setKurstyp(kurstyp);
             kurs.setKursort(kursort);
-            kurs.addLehrkraft(lehrkraft1);
-            kurs.addLehrkraft(lehrkraft2);
+            kurs.addLehrkraft(mitarbeiter1);
+            kurs.addLehrkraft(mitarbeiter2);
 
             Kurs kursSaved = kursDao.save(kurs);
 
@@ -221,30 +221,30 @@ public class KursDaoTest {
             int semesterId = kursSaved.getSemester().getSemesterId();
             int kurstypId = kursSaved.getKurstyp().getKurstypId();
             int kursortId = kursSaved.getKursort().getKursortId();
-            int lehrkraft1Id = kursSaved.getLehrkraefte().get(0).getPersonId();
-            int lehrkraft2Id = kursSaved.getLehrkraefte().get(1).getPersonId();
+            int lehrkraft1Id = kursSaved.getMitarbeiters().get(0).getPersonId();
+            int lehrkraft2Id = kursSaved.getMitarbeiters().get(1).getPersonId();
 
             Kurs kursFound = kursDao.findById(kursId);
             Semester semesterFound = semesterDao.findById(semesterId);
             Kurstyp kurstypFound = kurstypDao.findById(kurstypId);
             Kursort kursortFound = kursortDao.findById(kursortId);
-            Lehrkraft lehrkraft1Found = lehrkraftDao.findById(lehrkraft1Id);
-            Lehrkraft lehrkraft2Found = lehrkraftDao.findById(lehrkraft2Id);
+            Mitarbeiter mitarbeiter1Found = mitarbeiterDao.findById(lehrkraft1Id);
+            Mitarbeiter mitarbeiter2Found = mitarbeiterDao.findById(lehrkraft2Id);
 
             // Erzwingen, dass von DB gelesen wird
             entityManager.refresh(kursFound);
             entityManager.refresh(semesterFound);
             entityManager.refresh(kurstypFound);
             entityManager.refresh(kursortFound);
-            entityManager.refresh(lehrkraft1Found);
-            entityManager.refresh(lehrkraft2Found);
+            entityManager.refresh(mitarbeiter1Found);
+            entityManager.refresh(mitarbeiter2Found);
 
             assertEquals("Vorkindergarten", kursFound.getStufe());
             assertEquals(1, semesterFound.getKurse().size());
             assertEquals(1, kurstypFound.getKurse().size());
             assertEquals(1, kursortFound.getKurse().size());
-            assertEquals(1, lehrkraft1Found.getKurse().size());
-            assertEquals(1, lehrkraft2Found.getKurse().size());
+            assertEquals(1, mitarbeiter1Found.getKurse().size());
+            assertEquals(1, mitarbeiter2Found.getKurse().size());
 
             // Kurs löschen
             kursDao.remove(kursSaved);
@@ -254,8 +254,8 @@ public class KursDaoTest {
             assertEquals(0, semesterFound.getKurse().size());
             assertEquals(0, kurstypFound.getKurse().size());
             assertEquals(0, kursortFound.getKurse().size());
-            assertEquals(0, lehrkraft1Found.getKurse().size());
-            assertEquals(0, lehrkraft2Found.getKurse().size());
+            assertEquals(0, mitarbeiter1Found.getKurse().size());
+            assertEquals(0, mitarbeiter2Found.getKurse().size());
 
         } finally {
             if (tx != null) {
@@ -305,15 +305,15 @@ public class KursDaoTest {
             kursortDao.save(kursort4);
 
             // Lehrkräfte
-            Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-            lehrkraft1.setAdresse(adresse1);
-            lehrkraftDao.save(lehrkraft1);
+            mitarbeiter1.setAdresse(adresse1);
+            mitarbeiterDao.save(mitarbeiter1);
 
-            Lehrkraft lehrkraft2 = new Lehrkraft(Anrede.FRAU, "Nathalie", "Delley", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "Nathalie", "Delley", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", "Mi, Fr, Sa", true);
             Adresse adresse2 = new Adresse("Im Schilf", "7", "8044", "Zürich");
-            lehrkraft2.setAdresse(adresse2);
-            lehrkraftDao.save(lehrkraft2);
+            mitarbeiter2.setAdresse(adresse2);
+            mitarbeiterDao.save(mitarbeiter2);
 
             // 2 Kurse für Semester 1
             // Kurs1
@@ -321,7 +321,7 @@ public class KursDaoTest {
             kurs1.setSemester(semester1);
             kurs1.setKurstyp(kurstyp1);
             kurs1.setKursort(kursort1);
-            kurs1.addLehrkraft(lehrkraft1);
+            kurs1.addLehrkraft(mitarbeiter1);
             kursDao.save(kurs1);
 
             // Kurs2
@@ -329,7 +329,7 @@ public class KursDaoTest {
             kurs2.setSemester(semester1);
             kurs2.setKurstyp(kurstyp2);
             kurs2.setKursort(kursort2);
-            kurs2.addLehrkraft(lehrkraft2);
+            kurs2.addLehrkraft(mitarbeiter2);
             kursDao.save(kurs2);
 
             // 1 Kurs für Semester 2
@@ -337,7 +337,7 @@ public class KursDaoTest {
             kurs3.setSemester(semester2);
             kurs3.setKurstyp(kurstyp3);
             kurs3.setKursort(kursort3);
-            kurs3.addLehrkraft(lehrkraft1);
+            kurs3.addLehrkraft(mitarbeiter1);
             kursDao.save(kurs3);
 
             // 0 Kuse für Semester 3
@@ -347,7 +347,7 @@ public class KursDaoTest {
             kurs4.setSemester(semester4);
             kurs4.setKurstyp(kurstyp4);
             kurs4.setKursort(kursort4);
-            kurs4.addLehrkraft(lehrkraft1);
+            kurs4.addLehrkraft(mitarbeiter1);
             kursDao.save(kurs4);
 
             entityManager.flush();
@@ -373,15 +373,15 @@ public class KursDaoTest {
             assertEquals("Testkurs4", kursList4.get(0).getKurstyp().getBezeichnung());
 
             // Nach Kurs 1 suchen
-            Kurs kursFound = kursDao.findKurs(semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), lehrkraft1);
+            Kurs kursFound = kursDao.findKurs(semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), mitarbeiter1);
             assertNotNull(kursFound);
             assertTrue(kursFound.isIdenticalWith(kurs1));
 
             // Nach nicht vorhandenem Kurs suchen
-            assertNull(kursDao.findKurs(semester3, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), lehrkraft1));
-            assertNull(kursDao.findKurs(semester1, Wochentag.MITTWOCH, Time.valueOf("10:00:00"), lehrkraft1));
-            assertNull(kursDao.findKurs(semester1, Wochentag.DONNERSTAG, Time.valueOf("10:10:00"), lehrkraft1));
-            assertNull(kursDao.findKurs(semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), lehrkraft2));
+            assertNull(kursDao.findKurs(semester3, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), mitarbeiter1));
+            assertNull(kursDao.findKurs(semester1, Wochentag.MITTWOCH, Time.valueOf("10:00:00"), mitarbeiter1));
+            assertNull(kursDao.findKurs(semester1, Wochentag.DONNERSTAG, Time.valueOf("10:10:00"), mitarbeiter1));
+            assertNull(kursDao.findKurs(semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), mitarbeiter2));
 
         } finally {
             if (tx != null) {

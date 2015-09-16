@@ -5,7 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.model.KursanmeldungErfassenModel;
 import ch.metzenthin.svm.domain.model.KursanmeldungenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
-import ch.metzenthin.svm.persistence.entities.Lehrkraft;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.ui.componentmodel.KursanmeldungenTableModel;
 import ch.metzenthin.svm.ui.control.KursanmeldungErfassenController;
 
@@ -29,7 +29,7 @@ public class KursanmeldungErfassenDialog extends JDialog {
     private JLabel errLblBemerkungen;
     private JSpinner spinnerSemester;
     private JComboBox<Wochentag> comboBoxWochentag;
-    private JComboBox<Lehrkraft> comboBoxLehrkraft;
+    private JComboBox<Mitarbeiter> comboBoxLehrkraft;
     private JButton btnOk;
     private JButton btnAbbrechen;
 

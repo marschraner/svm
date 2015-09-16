@@ -67,7 +67,7 @@ public class CreateKurslisteCsvFileCommand extends CreateListeCommand {
                 writer.append(separator);
                 writer.append(kurs.getKursort().getBezeichnung());
                 writer.append(separator);
-                writer.append(kurs.getLehrkraefteShortAsStr());
+                writer.append(kurs.getMitarbeitersShortAsStr());
                 writer.append(separator);
                 if (checkNotEmpty(kurs.getBemerkungen())) {
                     writer.append(kurs.getBemerkungen());

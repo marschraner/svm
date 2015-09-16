@@ -14,8 +14,8 @@ public interface SvmModel {
     List<ElternmithilfeCode> getSelektierbareElternmithilfeCodesAll();
     List<SemesterrechnungCode> getSemesterrechnungCodesAll();
     List<SemesterrechnungCode> getSelektierbareSemesterrechnungCodesAll();
-    List<Lehrkraft> getLehrkraefteAll();
-    List<Lehrkraft> getAktiveLehrkraefteAll();
+    List<Mitarbeiter> getMitarbeitersAll();
+    List<Mitarbeiter> getAktiveLehrkraefteAll();
     List<Kursort> getKursorteAll();
     List<Kursort> getSelektierbareKursorteAll();
     List<Kurstyp> getKurstypenAll();

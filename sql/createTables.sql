@@ -27,7 +27,7 @@ DROP TABLE IF EXISTS Semesterrechnung;
 DROP TABLE IF EXISTS Maercheneinteilung;
 DROP TABLE IF EXISTS Maerchen;
 DROP TABLE IF EXISTS Kursanmeldung;
-DROP TABLE IF EXISTS Kurs_Lehrkraft;
+DROP TABLE IF EXISTS Kurs_Mitarbeiter;
 DROP TABLE IF EXISTS Kurs;
 DROP TABLE IF EXISTS Semester;
 DROP TABLE IF EXISTS Kursort;
@@ -39,7 +39,7 @@ DROP TABLE IF EXISTS SchuelerCode;
 DROP TABLE IF EXISTS Code;
 DROP TABLE IF EXISTS Dispensation;
 DROP TABLE IF EXISTS Anmeldung;
-DROP TABLE IF EXISTS Lehrkraft;
+DROP TABLE IF EXISTS Mitarbeiter;
 DROP TABLE IF EXISTS Schueler;
 DROP TABLE IF EXISTS Angehoeriger;
 DROP TABLE IF EXISTS Person;
@@ -132,10 +132,10 @@ CREATE TABLE IF NOT EXISTS Schueler (
 DESCRIBE Schueler;
 
 
--- Lehrkraft
+-- Mitarbeiter
 -- *********
 
-CREATE TABLE IF NOT EXISTS Lehrkraft (
+CREATE TABLE IF NOT EXISTS Mitarbeiter (
     person_id                  INT           NOT NULL,
     ahvnummer                  VARCHAR(16),
     vertretungsmoeglichkeiten  VARCHAR(100),
@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS Lehrkraft (
     PRIMARY KEY (person_id),
     FOREIGN KEY (person_id)    REFERENCES Person (person_id));
 
-DESCRIBE Lehrkraft;
+DESCRIBE Mitarbeiter;
 
 
 -- Anmeldung
@@ -309,19 +309,19 @@ CREATE TABLE IF NOT EXISTS Kurs (
 DESCRIBE Kurs;
 
 
--- Kurs_Lehrkraft
+-- Kurs_Mitarbeiter
 -- **************
 
-CREATE TABLE IF NOT EXISTS Kurs_Lehrkraft (
+CREATE TABLE IF NOT EXISTS Kurs_Mitarbeiter (
     kurs_id                    INT           NOT NULL,
     person_id                  INT           NOT NULL,
-    lehrkraefte_ORDER          INT           NOT NULL,
+    mitarbeiters_ORDER         INT           NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (kurs_id, person_id),
     FOREIGN KEY (kurs_id)      REFERENCES Kurs (kurs_id),
-    FOREIGN KEY (person_id)    REFERENCES Lehrkraft (person_id));
+    FOREIGN KEY (person_id)    REFERENCES Mitarbeiter (person_id));
 
-DESCRIBE Kurs_Lehrkraft;
+DESCRIBE Kurs_Mitarbeiter;
 
 
 -- Kursanmeldung

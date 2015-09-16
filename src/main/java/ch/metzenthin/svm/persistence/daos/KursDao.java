@@ -34,8 +34,8 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         kursort.getKurse().remove(kurs);
 
         // Entferne zugewiesene Lehrkräfte
-        for (Lehrkraft lehrkraft : new ArrayList<>(kurs.getLehrkraefte())) {
-            kurs.deleteLehrkraft(lehrkraft);
+        for (Mitarbeiter mitarbeiter : new ArrayList<>(kurs.getMitarbeiters())) {
+            kurs.deleteLehrkraft(mitarbeiter);
         }
 
         // Lösche Kurs aus DB
@@ -51,9 +51,9 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         return kurseFound;
     }
 
-    public List<Kurs> findKurse(Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft) {
+    public List<Kurs> findKurse(Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter) {
         StringBuilder selectStatementSb = new StringBuilder("select k from Kurs k");
-        if (lehrkraft != null) {
+        if (mitarbeiter != null) {
             selectStatementSb.append(" join k.lehrkraefte lk");
         }
         selectStatementSb.append(" where");
@@ -66,7 +66,7 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         if (zeitBeginn != null) {
             selectStatementSb.append(" k.zeitBeginn = :zeitBeginn and");
         }
-        if (lehrkraft != null) {
+        if (mitarbeiter != null) {
             selectStatementSb.append(" lk.personId = :lehrkraftPersonId and");
         }
         // Letztes " and" löschen
@@ -88,8 +88,8 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         if (zeitBeginn != null) {
             typedQuery.setParameter("zeitBeginn", zeitBeginn);
         }
-        if (lehrkraft != null) {
-            typedQuery.setParameter("lehrkraftPersonId", lehrkraft.getPersonId());
+        if (mitarbeiter != null) {
+            typedQuery.setParameter("lehrkraftPersonId", mitarbeiter.getPersonId());
         }
         List<Kurs> kurseFound = typedQuery.getResultList();
         // Sortieren gemäss compareTo in Kurs
@@ -97,16 +97,16 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         return kurseFound;
     }
 
-    public Kurs findKurs(Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft) {
+    public Kurs findKurs(Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter) {
         Kurs kursFound;
         try {
-            TypedQuery<Kurs> typedQuery = entityManager.createQuery("select k from Kurs k join k.lehrkraefte lk " +
+            TypedQuery<Kurs> typedQuery = entityManager.createQuery("select k from Kurs k join k.mitarbeiters lk " +
                     " where k.semester.semesterId = :semesterId and k.wochentag = :wochentag and k.zeitBeginn = :zeitBeginn " +
                     " and lk.personId = :lehrkraftPersonId", Kurs.class);
             typedQuery.setParameter("semesterId", semester.getSemesterId());
             typedQuery.setParameter("wochentag", wochentag);
             typedQuery.setParameter("zeitBeginn", zeitBeginn);
-            typedQuery.setParameter("lehrkraftPersonId", lehrkraft.getPersonId());
+            typedQuery.setParameter("lehrkraftPersonId", mitarbeiter.getPersonId());
             kursFound = typedQuery.getSingleResult();
         } catch (NoResultException e) {
             kursFound = null;

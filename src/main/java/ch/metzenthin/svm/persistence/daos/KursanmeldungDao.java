@@ -44,9 +44,9 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         return kurseinteilungenFound;
     }
 
-    public List<Kursanmeldung> findKursanmeldungen(Schueler schueler, Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft) {
+    public List<Kursanmeldung> findKursanmeldungen(Schueler schueler, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter) {
         StringBuilder selectStatementSb = new StringBuilder("select k from Kursanmeldung k");
-        if (lehrkraft != null) {
+        if (mitarbeiter != null) {
             selectStatementSb.append(" join k.kurs.lehrkraefte lk");
         }
         selectStatementSb.append(" where");
@@ -62,7 +62,7 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         if (zeitBeginn != null) {
             selectStatementSb.append(" k.kurs.zeitBeginn = :zeitBeginn and");
         }
-        if (lehrkraft != null) {
+        if (mitarbeiter != null) {
             selectStatementSb.append(" lk.personId = :lehrkraftPersonId and");
         }
         // Letztes " and" löschen
@@ -83,8 +83,8 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         if (zeitBeginn != null) {
             typedQuery.setParameter("zeitBeginn", zeitBeginn);
         }
-        if (lehrkraft != null) {
-            typedQuery.setParameter("lehrkraftPersonId", lehrkraft.getPersonId());
+        if (mitarbeiter != null) {
+            typedQuery.setParameter("lehrkraftPersonId", mitarbeiter.getPersonId());
         }
         List<Kursanmeldung> kurseinteilungenFound = typedQuery.getResultList();
         // Sortieren gemäss compareTo in Kurseinteilung

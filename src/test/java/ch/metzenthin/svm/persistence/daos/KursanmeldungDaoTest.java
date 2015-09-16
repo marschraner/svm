@@ -34,7 +34,7 @@ public class KursanmeldungDaoTest {
     private SemesterDao semesterDao;
     private KurstypDao kurstypDao;
     private KursortDao kursortDao;
-    private LehrkraftDao lehrkraftDao;
+    private MitarbeiterDao mitarbeiterDao;
 
     @Before
     public void setUp() throws Exception {
@@ -46,7 +46,7 @@ public class KursanmeldungDaoTest {
         semesterDao = new SemesterDao(entityManager);
         kurstypDao = new KurstypDao(entityManager);
         kursortDao = new KursortDao(entityManager);
-        lehrkraftDao = new LehrkraftDao(entityManager);
+        mitarbeiterDao = new MitarbeiterDao(entityManager);
     }
 
     @After
@@ -73,15 +73,15 @@ public class KursanmeldungDaoTest {
             kurstypDao.save(kurstyp);
             Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
-            Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-            lehrkraft1.setAdresse(adresse1);
-            lehrkraftDao.save(lehrkraft1);
+            mitarbeiter1.setAdresse(adresse1);
+            mitarbeiterDao.save(mitarbeiter1);
             Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
             kurs.setSemester(semester);
             kurs.setKurstyp(kurstyp);
             kurs.setKursort(kursort);
-            kurs.addLehrkraft(lehrkraft1);
+            kurs.addLehrkraft(mitarbeiter1);
             kursDao.save(kurs);
 
             // Schüler
@@ -124,15 +124,15 @@ public class KursanmeldungDaoTest {
             kurstypDao.save(kurstyp);
             Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
-            Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-            lehrkraft1.setAdresse(adresse1);
-            lehrkraftDao.save(lehrkraft1);
+            mitarbeiter1.setAdresse(adresse1);
+            mitarbeiterDao.save(mitarbeiter1);
             Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
             kurs.setSemester(semester);
             kurs.setKurstyp(kurstyp);
             kurs.setKursort(kursort);
-            kurs.addLehrkraft(lehrkraft1);
+            kurs.addLehrkraft(mitarbeiter1);
             kursDao.save(kurs);
 
             // Schüler
@@ -177,15 +177,15 @@ public class KursanmeldungDaoTest {
             kurstypDao.save(kurstyp);
             Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
-            Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-            lehrkraft1.setAdresse(adresse1);
-            lehrkraftDao.save(lehrkraft1);
+            mitarbeiter1.setAdresse(adresse1);
+            mitarbeiterDao.save(mitarbeiter1);
             Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
             kurs.setSemester(semester);
             kurs.setKurstyp(kurstyp);
             kurs.setKursort(kursort);
-            kurs.addLehrkraft(lehrkraft1);
+            kurs.addLehrkraft(mitarbeiter1);
             kursDao.save(kurs);
 
             // Schüler
@@ -269,23 +269,23 @@ public class KursanmeldungDaoTest {
             kurstypDao.save(kurstyp);
             Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
-            Lehrkraft lehrkraft1 = new Lehrkraft(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-            lehrkraft1.setAdresse(adresse1);
-            lehrkraftDao.save(lehrkraft1);
+            mitarbeiter1.setAdresse(adresse1);
+            mitarbeiterDao.save(mitarbeiter1);
 
             // Kurse
             Kurs kurs1 = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
             kurs1.setSemester(semester);
             kurs1.setKurstyp(kurstyp);
             kurs1.setKursort(kursort);
-            kurs1.addLehrkraft(lehrkraft1);
+            kurs1.addLehrkraft(mitarbeiter1);
             kursDao.save(kurs1);
             Kurs kurs2 = new Kurs("2-3 J", "Vorkindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
             kurs2.setSemester(semester);
             kurs2.setKurstyp(kurstyp);
             kurs2.setKursort(kursort);
-            kurs2.addLehrkraft(lehrkraft1);
+            kurs2.addLehrkraft(mitarbeiter1);
             kursDao.save(kurs2);
 
             // Kurseinteilungen

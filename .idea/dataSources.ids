@@ -1489,17 +1489,17 @@
       <foreign-key name="Kurs_ibfk_1" columns="semester_id" ref-table="Semester" ref-schema="" ref-catalog="svm" ref-columns="semester_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="Kurs_ibfk_2" columns="kurstyp_id" ref-table="Kurstyp" ref-schema="" ref-catalog="svm" ref-columns="kurstyp_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="Kurs_ibfk_3" columns="kursort_id" ref-table="Kursort" ref-schema="" ref-catalog="svm" ref-columns="kursort_id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <exported-key name="Kurs_Lehrkraft_ibfk_1" table="Kurs_Lehrkraft" schema="" catalog="svm" columns="kurs_id"/>
+      <exported-key name="Kurs_Mitarbeiter_ibfk_1" table="Kurs_Mitarbeiter" schema="" catalog="svm" columns="kurs_id"/>
       <exported-key name="Kursanmeldung_ibfk_2" table="Kursanmeldung" schema="" catalog="svm" columns="kurs_id"/>
     </table>
-    <table name="Kurs_Lehrkraft" schema="" catalog="svm" type="TABLE">
+    <table name="Kurs_Mitarbeiter" schema="" catalog="svm" type="TABLE">
       <column name="kurs_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="lehrkraefte_ORDER" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="mitarbeiters_ORDER" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="kurs_id,person_id"/>
-      <foreign-key name="Kurs_Lehrkraft_ibfk_1" columns="kurs_id" ref-table="Kurs" ref-schema="" ref-catalog="svm" ref-columns="kurs_id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="Kurs_Lehrkraft_ibfk_2" columns="person_id" ref-table="Lehrkraft" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Kurs_Mitarbeiter_ibfk_1" columns="kurs_id" ref-table="Kurs" ref-schema="" ref-catalog="svm" ref-columns="kurs_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Kurs_Mitarbeiter_ibfk_2" columns="person_id" ref-table="Mitarbeiter" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
     <table name="Kursanmeldung" schema="" catalog="svm" type="TABLE">
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -1527,16 +1527,6 @@
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="kurstyp_id"/>
       <exported-key name="Kurs_ibfk_2" table="Kurs" schema="" catalog="svm" columns="kurstyp_id"/>
-    </table>
-    <table name="Lehrkraft" schema="" catalog="svm" type="TABLE">
-      <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="ahvnummer" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
-      <column name="vertretungsmoeglichkeiten" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
-      <column name="aktiv" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
-      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
-      <primary-key name="PRIMARY" columns="person_id"/>
-      <foreign-key name="Lehrkraft_ibfk_1" columns="person_id" ref-table="Person" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <exported-key name="Kurs_Lehrkraft_ibfk_2" table="Kurs_Lehrkraft" schema="" catalog="svm" columns="person_id"/>
     </table>
     <table name="Lektionsgebuehren" schema="" catalog="svm" type="TABLE">
       <column name="lektionslaenge" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -1587,6 +1577,16 @@
       <foreign-key name="Maercheneinteilung_ibfk_2" columns="maerchen_id" ref-table="Maerchen" ref-schema="" ref-catalog="svm" ref-columns="maerchen_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="Maercheneinteilung_ibfk_3" columns="code_id" ref-table="ElternmithilfeCode" ref-schema="" ref-catalog="svm" ref-columns="code_id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
+    <table name="Mitarbeiter" schema="" catalog="svm" type="TABLE">
+      <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="ahvnummer" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
+      <column name="vertretungsmoeglichkeiten" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="aktiv" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="person_id"/>
+      <foreign-key name="Mitarbeiter_ibfk_1" columns="person_id" ref-table="Person" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="Kurs_Mitarbeiter_ibfk_2" table="Kurs_Mitarbeiter" schema="" catalog="svm" columns="person_id"/>
+    </table>
     <table name="Person" schema="" catalog="svm" type="TABLE">
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="discriminator" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
@@ -1602,7 +1602,7 @@
       <primary-key name="PRIMARY" columns="person_id"/>
       <foreign-key name="Person_ibfk_1" columns="adresse_id" ref-table="Adresse" ref-schema="" ref-catalog="svm" ref-columns="adresse_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="Angehoeriger_ibfk_1" table="Angehoeriger" schema="" catalog="svm" columns="person_id"/>
-      <exported-key name="Lehrkraft_ibfk_1" table="Lehrkraft" schema="" catalog="svm" columns="person_id"/>
+      <exported-key name="Mitarbeiter_ibfk_1" table="Mitarbeiter" schema="" catalog="svm" columns="person_id"/>
       <exported-key name="Schueler_ibfk_1" table="Schueler" schema="" catalog="svm" columns="person_id"/>
     </table>
     <table name="Schueler" schema="" catalog="svm" type="TABLE">

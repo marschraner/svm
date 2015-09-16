@@ -22,7 +22,7 @@ public class SchuelerSuchenTableData {
     private final Semester semester;
     private final Wochentag wochentag;
     private final Time zeitBeginn;
-    private final Lehrkraft lehrkraft;
+    private final Mitarbeiter mitarbeiter;
     private Map<Schueler, Maercheneinteilung> maercheneinteilungen;
     private Maerchen maerchen;
     private final Gruppe gruppe;
@@ -31,13 +31,13 @@ public class SchuelerSuchenTableData {
     private boolean nachRollenGesucht;
     private List<Field> columns = new ArrayList<>();
 
-    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Lehrkraft lehrkraft, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean maerchenFuerSucheBeruecksichtigen, boolean nachRollenGesucht) {
+    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean maerchenFuerSucheBeruecksichtigen, boolean nachRollenGesucht) {
         this.schuelerList = schuelerList;
         this.kurse = kurse;
         this.semester = semester;
         this.wochentag = wochentag;
         this.zeitBeginn = zeitBeginn;
-        this.lehrkraft = lehrkraft;
+        this.mitarbeiter = mitarbeiter;
         this.maercheneinteilungen = maercheneinteilungen;
         this.maerchen = maerchen;
         this.gruppe = gruppe;
@@ -192,8 +192,8 @@ public class SchuelerSuchenTableData {
         return zeitBeginn;
     }
 
-    public Lehrkraft getLehrkraft() {
-        return lehrkraft;
+    public Mitarbeiter getMitarbeiter() {
+        return mitarbeiter;
     }
 
     public List<Schueler> getSchuelerList() {
