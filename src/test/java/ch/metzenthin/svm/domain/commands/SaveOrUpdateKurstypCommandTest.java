@@ -24,8 +24,8 @@ public class SaveOrUpdateKurstypCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        commandInvoker.openSession();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        commandInvoker.openSessionSvmTest();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
     }
 
     @After
@@ -95,7 +95,7 @@ public class SaveOrUpdateKurstypCommandTest {
 
     private boolean checkIfKurstypAvailable(String bezeichnung) {
         FindAllKurstypenCommand findAllKurstypenCommand = new FindAllKurstypenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllKurstypenCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllKurstypenCommand);
         List<Kurstyp> kurstypenAll = findAllKurstypenCommand.getKurstypenAll();
         for (Kurstyp kurstyp : kurstypenAll) {
             if (kurstyp.getBezeichnung().equals(bezeichnung)) {

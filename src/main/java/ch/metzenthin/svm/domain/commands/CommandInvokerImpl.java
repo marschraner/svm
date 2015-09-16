@@ -23,22 +23,22 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     @Override
-    public GenericDaoCommand executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand genericDaoCommand) {
-        LOGGER.trace("executeCommandAsTransactionWithOpenAndClose aufgerufen");
+    public GenericDaoCommand executeCommandAsTransactionWithOpenAndCloseSvmTest(GenericDaoCommand genericDaoCommand) {
+        LOGGER.trace("executeCommandAsTransactionWithOpenAndCloseSvmTest aufgerufen");
         EntityManagerFactory entityManagerFactory = null;
         EntityManager entityManager = null;
         EntityTransaction tx = null;
         try {
-            entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+            entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
             entityManager = entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             tx.begin();
             genericDaoCommand.setEntityManager(entityManager);
             genericDaoCommand.execute();
             tx.commit();
-            LOGGER.trace("executeCommandAsTransactionWithOpenAndClose durchgeführt");
+            LOGGER.trace("executeCommandAsTransactionWithOpenAndCloseSvmTest durchgeführt");
         } catch (RuntimeException e) {
-            LOGGER.error("Fehler in executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand)", e);
+            LOGGER.error("Fehler in executeCommandAsTransactionWithOpenAndCloseSvmTest(GenericDaoCommand)", e);
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
@@ -82,6 +82,15 @@ public class CommandInvokerImpl implements CommandInvoker {
         LOGGER.trace("openSession aufgerufen");
         if (entityManager == null || !entityManager.isOpen()) {
             entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+            entityManager = entityManagerFactory.createEntityManager();
+        }
+    }
+
+    @Override
+    public void openSessionSvmTest() {
+        LOGGER.trace("openSessionTest aufgerufen");
+        if (entityManager == null || !entityManager.isOpen()) {
+            entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
             entityManager = entityManagerFactory.createEntityManager();
         }
     }

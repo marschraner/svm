@@ -24,7 +24,7 @@ public class SemesterrechnungCodeDaoTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
         entityManager = entityManagerFactory.createEntityManager();
         semesterrechnungCodeDao = new SemesterrechnungCodeDao(entityManager);
     }

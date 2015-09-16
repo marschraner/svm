@@ -26,7 +26,7 @@ public class FindAllKursorteCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
         createTestdata();
     }
 
@@ -41,7 +41,7 @@ public class FindAllKursorteCommandTest {
     @Test
     public void testExecute() {
         FindAllKursorteCommand findAllKursorteCommand = new FindAllKursorteCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllKursorteCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllKursorteCommand);
 
         List<Kursort> kursorteFound = findAllKursorteCommand.getKursorteAll();
         assertTrue(kursorteFound.size() >= 2);

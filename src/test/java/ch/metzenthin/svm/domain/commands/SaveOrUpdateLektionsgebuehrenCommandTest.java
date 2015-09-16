@@ -25,8 +25,8 @@ public class SaveOrUpdateLektionsgebuehrenCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        commandInvoker.openSession();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        commandInvoker.openSessionSvmTest();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
     }
 
     @After
@@ -97,7 +97,7 @@ public class SaveOrUpdateLektionsgebuehrenCommandTest {
 
     private boolean checkIfLektionsgebuehrenAvailable(Integer lektionslaenge, BigDecimal betrag1Kind) {
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLektionsgebuehrenCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllLektionsgebuehrenCommand);
         List<Lektionsgebuehren> lektionsgebuehrenAll = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllList();
         for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenAll) {
             if (lektionsgebuehren.getLektionslaenge().equals(lektionslaenge) && lektionsgebuehren.getBetrag1Kind().equals(betrag1Kind)) {

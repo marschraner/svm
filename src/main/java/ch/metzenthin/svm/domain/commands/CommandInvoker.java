@@ -9,11 +9,13 @@ public interface CommandInvoker {
 
     GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand);
 
-    GenericDaoCommand executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand genericDaoCommand);
+    GenericDaoCommand executeCommandAsTransactionWithOpenAndCloseSvmTest(GenericDaoCommand genericDaoCommand);
 
     GenericDaoCommand executeCommandAsTransaction(GenericDaoCommand genericDaoCommand);
 
     void openSession();
+
+    void openSessionSvmTest();
 
     void closeSession();
 

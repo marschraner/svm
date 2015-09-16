@@ -29,7 +29,7 @@ public class SaveAngehoerigeCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
     }
 
     @After
@@ -55,7 +55,7 @@ public class SaveAngehoerigeCommandTest {
         angehoerige.add(angehoeriger1);
 
         SaveAngehoerigeCommand saveAngehoerigeCommand = new SaveAngehoerigeCommand(angehoerige);
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(saveAngehoerigeCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(saveAngehoerigeCommand);
         List<Angehoeriger> savedAngehoerige = saveAngehoerigeCommand.getSavedAngehoeriger();
 
         Angehoeriger savedAngehoeriger0 = savedAngehoerige.get(0);

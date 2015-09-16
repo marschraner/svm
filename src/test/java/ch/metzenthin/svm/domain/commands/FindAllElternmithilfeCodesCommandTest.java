@@ -26,7 +26,7 @@ public class FindAllElternmithilfeCodesCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
         createTestdata();
     }
 
@@ -41,7 +41,7 @@ public class FindAllElternmithilfeCodesCommandTest {
     @Test
     public void testExecute() {
         FindAllElternmithilfeCodesCommand findAllElternmithilfeCodesCommand = new FindAllElternmithilfeCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllElternmithilfeCodesCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllElternmithilfeCodesCommand);
 
         List<ElternmithilfeCode> codesFound = findAllElternmithilfeCodesCommand.getElternmithilfeCodesAll();
         assertTrue(codesFound.size() >= 2);

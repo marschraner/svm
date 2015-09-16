@@ -24,8 +24,8 @@ public class SaveOrUpdateElternmithilfeCodeCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        commandInvoker.openSession();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        commandInvoker.openSessionSvmTest();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
     }
 
     @After
@@ -97,7 +97,7 @@ public class SaveOrUpdateElternmithilfeCodeCommandTest {
 
     private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) {
         FindAllElternmithilfeCodesCommand findAllElternmithilfeCodesCommand = new FindAllElternmithilfeCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllElternmithilfeCodesCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllElternmithilfeCodesCommand);
         List<ElternmithilfeCode> codesAll = findAllElternmithilfeCodesCommand.getElternmithilfeCodesAll();
         for (ElternmithilfeCode elternmithilfeCode : codesAll) {
             if (elternmithilfeCode.getKuerzel().equals(kuerzel) && elternmithilfeCode.getBeschreibung().equals(beschreibung)) {

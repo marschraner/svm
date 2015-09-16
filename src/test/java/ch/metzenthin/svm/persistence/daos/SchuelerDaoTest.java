@@ -26,7 +26,7 @@ public class SchuelerDaoTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
         entityManager = entityManagerFactory.createEntityManager();
         schuelerDao = new SchuelerDao(entityManager);
     }

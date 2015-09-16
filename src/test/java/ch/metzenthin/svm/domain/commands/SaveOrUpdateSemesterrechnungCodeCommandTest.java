@@ -24,8 +24,8 @@ public class SaveOrUpdateSemesterrechnungCodeCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        commandInvoker.openSession();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        commandInvoker.openSessionSvmTest();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
     }
 
     @After
@@ -97,7 +97,7 @@ public class SaveOrUpdateSemesterrechnungCodeCommandTest {
 
     private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) {
         FindAllSemesterrechnungCodesCommand findAllSemesterrechnungCodesCommand = new FindAllSemesterrechnungCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSemesterrechnungCodesCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllSemesterrechnungCodesCommand);
         List<SemesterrechnungCode> codesAll = findAllSemesterrechnungCodesCommand.getSemesterrechnungCodesAll();
         for (SemesterrechnungCode semesterrechnungCode : codesAll) {
             if (semesterrechnungCode.getKuerzel().equals(kuerzel) && semesterrechnungCode.getBeschreibung().equals(beschreibung)) {

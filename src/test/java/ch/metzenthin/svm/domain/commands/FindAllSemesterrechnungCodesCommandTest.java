@@ -26,7 +26,7 @@ public class FindAllSemesterrechnungCodesCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
         createTestdata();
     }
 
@@ -41,7 +41,7 @@ public class FindAllSemesterrechnungCodesCommandTest {
     @Test
     public void testExecute() {
         FindAllSemesterrechnungCodesCommand findAllSemesterrechnungCodesCommand = new FindAllSemesterrechnungCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSemesterrechnungCodesCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllSemesterrechnungCodesCommand);
 
         List<SemesterrechnungCode> codesFound = findAllSemesterrechnungCodesCommand.getSemesterrechnungCodesAll();
         assertTrue(codesFound.size() >= 2);

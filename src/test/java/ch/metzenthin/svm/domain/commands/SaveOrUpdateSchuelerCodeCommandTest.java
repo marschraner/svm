@@ -24,8 +24,8 @@ public class SaveOrUpdateSchuelerCodeCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        commandInvoker.openSession();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        commandInvoker.openSessionSvmTest();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
     }
 
     @After
@@ -97,7 +97,7 @@ public class SaveOrUpdateSchuelerCodeCommandTest {
 
     private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) {
         FindAllSchuelerCodesCommand findAllSchuelerCodesCommand = new FindAllSchuelerCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSchuelerCodesCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllSchuelerCodesCommand);
         List<SchuelerCode> codesAll = findAllSchuelerCodesCommand.getSchuelerCodesAll();
         for (SchuelerCode schuelerCode : codesAll) {
             if (schuelerCode.getKuerzel().equals(kuerzel) && schuelerCode.getBeschreibung().equals(beschreibung)) {

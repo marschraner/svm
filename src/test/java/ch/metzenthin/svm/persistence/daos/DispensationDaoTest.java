@@ -32,7 +32,7 @@ public class DispensationDaoTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
         entityManager = entityManagerFactory.createEntityManager();
         dispensationDao = new DispensationDao(entityManager);
         schuelerDao = new SchuelerDao(entityManager);

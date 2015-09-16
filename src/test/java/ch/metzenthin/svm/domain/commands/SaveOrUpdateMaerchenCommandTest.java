@@ -24,8 +24,8 @@ public class SaveOrUpdateMaerchenCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        commandInvoker.openSession();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        commandInvoker.openSessionSvmTest();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
     }
 
     @After
@@ -107,7 +107,7 @@ public class SaveOrUpdateMaerchenCommandTest {
 
     private boolean checkIfMaerchenAvailable(String schuljahr, String bezeichnung, int anzahlVorstellungen) {
         FindAllMaerchensCommand findAllMaerchensCommand = new FindAllMaerchensCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllMaerchensCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllMaerchensCommand);
         List<Maerchen> maerchensAll = findAllMaerchensCommand.getMaerchensAll();
         for (Maerchen maerchen : maerchensAll) {
             if (maerchen.getSchuljahr().equals(schuljahr) && maerchen.getBezeichnung().equals(bezeichnung) && maerchen.getAnzahlVorstellungen().equals(anzahlVorstellungen)) {

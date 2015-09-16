@@ -28,8 +28,8 @@ public class SaveOrUpdateLehrkraftCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        commandInvoker.openSession();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        commandInvoker.openSessionSvmTest();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
     }
 
     @After
@@ -107,7 +107,7 @@ public class SaveOrUpdateLehrkraftCommandTest {
 
     private boolean checkIfLehrkraftAvailable(String nachname, String vorname, String email, String strasse) {
         FindAllLehrkraefteCommand findAllLehrkraefteCommand = new FindAllLehrkraefteCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLehrkraefteCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllLehrkraefteCommand);
         List<Lehrkraft> lehrkraefteAll = findAllLehrkraefteCommand.getLehrkraefteAll();
         for (Lehrkraft lehrkraft : lehrkraefteAll) {
             if (lehrkraft.getNachname().equals(nachname) && lehrkraft.getVorname().equals(vorname) && lehrkraft.getEmail().equals(email) && lehrkraft.getAdresse().getStrasse().equals(strasse)) {

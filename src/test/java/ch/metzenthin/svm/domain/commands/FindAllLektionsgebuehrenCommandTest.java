@@ -28,7 +28,7 @@ public class FindAllLektionsgebuehrenCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
         createTestdata();
     }
 
@@ -43,7 +43,7 @@ public class FindAllLektionsgebuehrenCommandTest {
     @Test
     public void testExecute_getList() {
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLektionsgebuehrenCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllLektionsgebuehrenCommand);
 
         List<Lektionsgebuehren> lektionsgebuehrenListFound = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllList();
         assertTrue(lektionsgebuehrenListFound.size() >= 2);
@@ -64,7 +64,7 @@ public class FindAllLektionsgebuehrenCommandTest {
     @Test
     public void testExecute_getMap() {
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLektionsgebuehrenCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllLektionsgebuehrenCommand);
 
         Map<Integer, BigDecimal[]> lektionsgebuehrenMapFound = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllMap();
         assertTrue(lektionsgebuehrenMapFound.size() >= 2);

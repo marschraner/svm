@@ -26,7 +26,7 @@ public class FindAllMaerchensCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
         createTestdata();
     }
 
@@ -41,7 +41,7 @@ public class FindAllMaerchensCommandTest {
     @Test
     public void testExecute() {
         FindAllMaerchensCommand findAllMaerchensCommand = new FindAllMaerchensCommand();
-            commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllMaerchensCommand);
+            commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllMaerchensCommand);
 
         List<Maerchen> maerchenFound = findAllMaerchensCommand.getMaerchensAll();
         assertTrue(maerchenFound.size() >= 2);

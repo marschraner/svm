@@ -30,7 +30,7 @@ public class SchuelerCodeDaoTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
         entityManager = entityManagerFactory.createEntityManager();
         schuelerCodeDao = new SchuelerCodeDao(entityManager);
         schuelerDao = new SchuelerDao(entityManager);

@@ -28,7 +28,7 @@ public class LehrkraftDaoTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
         entityManager = entityManagerFactory.createEntityManager();
         lehrkraftDao = new LehrkraftDao(entityManager);
     }

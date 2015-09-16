@@ -34,7 +34,7 @@ public class KursDaoTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
         entityManager = entityManagerFactory.createEntityManager();
         kursDao = new KursDao(entityManager);
         semesterDao = new SemesterDao(entityManager);

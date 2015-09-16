@@ -31,7 +31,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
         createTestdata();
     }
 
@@ -55,7 +55,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.MAY, 1), null));
 
         CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schueler);
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkSchuelerBereitsInDatenbankCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(checkSchuelerBereitsInDatenbankCommand);
 
         assertNull(checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(null));
     }
@@ -71,7 +71,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.MAY, 1), null));
 
         CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schueler);
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkSchuelerBereitsInDatenbankCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(checkSchuelerBereitsInDatenbankCommand);
 
         Schueler schuelerFound = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(null);
         assertNotNull(schuelerFound);
@@ -81,7 +81,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
     @Test
     public void testExecute_IN_DATENBANK_EIGENE() {
         CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schuelerTestdata);
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkSchuelerBereitsInDatenbankCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(checkSchuelerBereitsInDatenbankCommand);
 
         Schueler schuelerFound = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(schuelerTestdata);
         assertNull(schuelerFound);

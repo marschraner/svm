@@ -24,8 +24,8 @@ public class SaveOrUpdateKursortCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        commandInvoker.openSession();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        commandInvoker.openSessionSvmTest();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
     }
 
     @After
@@ -95,7 +95,7 @@ public class SaveOrUpdateKursortCommandTest {
 
     private boolean checkIfKursortAvailable(String bezeichnung) {
         FindAllKursorteCommand findAllKursorteCommand = new FindAllKursorteCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllKursorteCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllKursorteCommand);
         List<Kursort> kursorteAll = findAllKursorteCommand.getKursorteAll();
         for (Kursort kursort : kursorteAll) {
             if (kursort.getBezeichnung().equals(bezeichnung)) {

@@ -26,8 +26,8 @@ public class AddSchuelerCodeToSchuelerAndSaveCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
-        commandInvoker.openSession();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        commandInvoker.openSessionSvmTest();
     }
 
     @After

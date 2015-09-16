@@ -13,7 +13,7 @@ public class DummyCommandInvoker implements CommandInvoker {
         return null;
     }
     @Override
-    public GenericDaoCommand executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand genericDaoCommand) {
+    public GenericDaoCommand executeCommandAsTransactionWithOpenAndCloseSvmTest(GenericDaoCommand genericDaoCommand) {
         return null;
     }
 
@@ -24,6 +24,11 @@ public class DummyCommandInvoker implements CommandInvoker {
 
     @Override
     public void openSession() {
+
+    }
+
+    @Override
+    public void openSessionSvmTest() {
 
     }
 

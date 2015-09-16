@@ -28,7 +28,7 @@ public class AnmeldungDaoTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
         entityManager = entityManagerFactory.createEntityManager();
         anmeldungDao = new AnmeldungDao(entityManager);
         schuelerDao = new SchuelerDao(entityManager);

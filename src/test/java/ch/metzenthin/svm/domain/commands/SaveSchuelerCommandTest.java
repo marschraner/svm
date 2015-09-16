@@ -26,7 +26,7 @@ public class SaveSchuelerCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm");
+        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
     }
 
     @After
@@ -57,7 +57,7 @@ public class SaveSchuelerCommandTest {
         schueler.addDispensation(dispensation);
 
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schueler);
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(saveSchuelerCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(saveSchuelerCommand);
         Schueler savedSchueler = saveSchuelerCommand.getSavedSchueler();
 
         assertEquals("Vorname not found", "Jana", savedSchueler.getVorname());
