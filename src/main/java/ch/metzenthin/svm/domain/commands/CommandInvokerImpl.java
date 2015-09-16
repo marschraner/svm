@@ -110,8 +110,8 @@ public class CommandInvokerImpl implements CommandInvoker {
     @Override
     public void clear() {
         LOGGER.trace("clear aufgerufen");
-        closeSession();
-        openSession();
+        //closeSession();
+        //openSession();
         entityManager.clear();
 //        entityManagerFactory.getCache().evictAll();
     }
