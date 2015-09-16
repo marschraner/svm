@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
@@ -13,6 +14,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.List;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -29,7 +31,8 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         createTestdata();
     }
 
@@ -48,7 +51,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         angehoeriger.setAdresse(adresse);
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(checkAngehoerigerBereitsInDatenbankCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkAngehoerigerBereitsInDatenbankCommand);
 
         assertEquals("Angehöriger in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.NICHT_IN_DATENBANK, checkAngehoerigerBereitsInDatenbankCommand.getResult());
     }
@@ -60,7 +63,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         angehoeriger.setAdresse(adresse);
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(checkAngehoerigerBereitsInDatenbankCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkAngehoerigerBereitsInDatenbankCommand);
 
         assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.EIN_EINTRAG_PASST, checkAngehoerigerBereitsInDatenbankCommand.getResult());
         Angehoeriger angehoerigerFound = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
@@ -73,7 +76,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null, null);  // ohne Adresse
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(checkAngehoerigerBereitsInDatenbankCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkAngehoerigerBereitsInDatenbankCommand);
         assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.MEHRERE_EINTRAEGE_PASSEN, checkAngehoerigerBereitsInDatenbankCommand.getResult());
         List<Angehoeriger> angehoerigerFoundList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
         assertNotNull(angehoerigerFoundList);
@@ -90,7 +93,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         angehoeriger.setAdresse(adresse1);
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(checkAngehoerigerBereitsInDatenbankCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkAngehoerigerBereitsInDatenbankCommand);
 
         assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE, checkAngehoerigerBereitsInDatenbankCommand.getResult());
         Angehoeriger angehoerigerFound = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
@@ -105,7 +108,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         angehoeriger.setAdresse(adresse1);
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(checkAngehoerigerBereitsInDatenbankCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkAngehoerigerBereitsInDatenbankCommand);
 
         assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE, checkAngehoerigerBereitsInDatenbankCommand.getResult());
         List<Angehoeriger> angehoerigerFoundList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();

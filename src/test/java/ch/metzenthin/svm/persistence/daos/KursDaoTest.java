@@ -3,6 +3,7 @@ package ch.metzenthin.svm.persistence.daos;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
 import org.junit.Before;
@@ -17,6 +18,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.*;
 
 /**
@@ -34,7 +36,8 @@ public class KursDaoTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         entityManager = entityManagerFactory.createEntityManager();
         kursDao = new KursDao(entityManager);
         semesterDao = new SemesterDao(entityManager);

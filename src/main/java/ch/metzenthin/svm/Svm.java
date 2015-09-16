@@ -76,7 +76,7 @@ public class Svm {
             LOGGER.error("Fehler bei der Initialisierung der Applikation", e);
             JOptionPane.showMessageDialog(null,
                     "Bei der Initialisierung der Applikation ist ein Fehler aufgetreten.\n" +
-                            "Bitte Netzwerkverbindung, Datenbank-Server und Log-Files (im Ordner \"log\") überprüfen.",
+                            "Bitte Netzwerkverbindung, Datenbank-Server, Log-Files (im Ordner \"log\") und .svm-File (im home) überprüfen.",
                     "Fehler bei der Initialisierung der Applikation",
                     JOptionPane.ERROR_MESSAGE);
         }

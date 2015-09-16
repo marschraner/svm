@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.KurstypDao;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import org.junit.After;
@@ -13,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -26,7 +28,8 @@ public class FindAllKurstypenCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         createTestdata();
     }
 
@@ -41,7 +44,7 @@ public class FindAllKurstypenCommandTest {
     @Test
     public void testExecute() {
         FindAllKurstypenCommand findAllKurstypenCommand = new FindAllKurstypenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllKurstypenCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllKurstypenCommand);
 
         List<Kurstyp> kurstypenFound = findAllKurstypenCommand.getKurstypenAll();
         assertTrue(kurstypenFound.size() >= 2);

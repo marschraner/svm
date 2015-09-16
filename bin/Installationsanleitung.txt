@@ -23,7 +23,7 @@ Applikation installieren
 Datenbank installieren
 ======================
 - Voraussetzungen:
-  - Der MySQL-Server muss lokal installiert sein (momentan fix codierte URL).
+  - Der MySQL-Server kann lokal oder remote installiert sein.
   - mysql/mysqld muss bekannt sein (bin-Directory von MySQL muss im PATH vorhanden sein), ist unter Linux in der Regel der Fall
   - MySQL-Server muss gestartet sein (ist unter Linux in der Regel automatisch gestartet)
 - Datenbank-Erstellungs-Script ausführen (./createSvmDatabase.sh). Es wird das Passwort des Users "root" verlangt.
@@ -34,6 +34,7 @@ Applikation starten
   - MySQL-Server muss gestartet sein (ist unter Linux in der Regel automatisch gestartet)
   - java muss bekannt sein (bin-Directory von Java muss im PATH vorhanden sein), ist unter Linux in der Regel der Fall
 - Applikation starten (./runSvm.sh)
+- Achtung: Falls der MySQL-Server nicht lokal sondern remote läuft, muss die DB-URL nach dem ersten Start der Applikation in der .svm-Datei (im home-Verzeichnis) angepasst werden. Der erste Start der Applikation wird in diesem Fall fehlschlagen.
 
 
 --------------------------------------------------------------------------------
@@ -55,7 +56,7 @@ Applikation installieren
 Datenbank installieren
 ======================
 - Voraussetzungen:
-  - Der MySQL-Server muss lokal installiert sein (momentan fix codierte URL).
+  - Der MySQL-Server kann lokal oder remote installiert sein.
   - mysql/mysqld muss bekannt sein (bin-Directory von MySQL muss im PATH vorhanden sein)
   - MySQL-Server muss gestartet sein (mysqld)
 - Datenbank-Erstellungs-Script ausführen (createSvmDatabase.bat). Es wird das Passwort des Users "root" verlangt.
@@ -67,3 +68,4 @@ Applikation starten
   - java muss bekannt sein (bin-Directory von Java 7 muss im PATH vorhanden sein),
     oder das Script muss entsprechend angepasst werden.
 - Applikation starten (runSvm.bat)
+- Achtung: Falls der MySQL-Server nicht lokal sondern remote läuft, muss die DB-URL nach dem ersten Start der Applikation in der .svm-Datei (im Heimatverzeichnis) angepasst werden. Der erste Start der Applikation wird in diesem Fall fehlschlagen.

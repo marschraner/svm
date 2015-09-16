@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.daos.SemesterDao;
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungCodeDao;
@@ -22,6 +23,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -35,8 +37,9 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        commandInvoker.openSessionSvmTest();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
+        commandInvoker.openSession();
     }
 
     @After

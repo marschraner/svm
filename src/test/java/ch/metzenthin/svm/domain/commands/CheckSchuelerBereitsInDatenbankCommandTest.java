@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
@@ -17,6 +18,7 @@ import javax.persistence.Persistence;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -31,7 +33,8 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         createTestdata();
     }
 
@@ -55,7 +58,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.MAY, 1), null));
 
         CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schueler);
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(checkSchuelerBereitsInDatenbankCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkSchuelerBereitsInDatenbankCommand);
 
         assertNull(checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(null));
     }
@@ -71,7 +74,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.MAY, 1), null));
 
         CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schueler);
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(checkSchuelerBereitsInDatenbankCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkSchuelerBereitsInDatenbankCommand);
 
         Schueler schuelerFound = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(null);
         assertNotNull(schuelerFound);
@@ -81,7 +84,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
     @Test
     public void testExecute_IN_DATENBANK_EIGENE() {
         CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schuelerTestdata);
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(checkSchuelerBereitsInDatenbankCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkSchuelerBereitsInDatenbankCommand);
 
         Schueler schuelerFound = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(schuelerTestdata);
         assertNull(schuelerFound);

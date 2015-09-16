@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.persistence.daos;
 
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import org.junit.After;
 import org.junit.Before;
@@ -10,6 +11,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.*;
 
 /**
@@ -23,7 +25,8 @@ public class AdresseDaoTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         entityManager = entityManagerFactory.createEntityManager();
         adresseDao = new AdresseDao(entityManager);
     }

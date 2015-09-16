@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.ElternmithilfeCodeDao;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import org.junit.After;
@@ -12,6 +13,7 @@ import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.*;
 
 /**
@@ -24,8 +26,9 @@ public class SaveOrUpdateElternmithilfeCodeCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        commandInvoker.openSessionSvmTest();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
+        commandInvoker.openSession();
     }
 
     @After
@@ -97,7 +100,7 @@ public class SaveOrUpdateElternmithilfeCodeCommandTest {
 
     private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) {
         FindAllElternmithilfeCodesCommand findAllElternmithilfeCodesCommand = new FindAllElternmithilfeCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllElternmithilfeCodesCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllElternmithilfeCodesCommand);
         List<ElternmithilfeCode> codesAll = findAllElternmithilfeCodesCommand.getElternmithilfeCodesAll();
         for (ElternmithilfeCode elternmithilfeCode : codesAll) {
             if (elternmithilfeCode.getKuerzel().equals(kuerzel) && elternmithilfeCode.getBeschreibung().equals(beschreibung)) {

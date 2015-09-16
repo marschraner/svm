@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.SemesterDao;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import org.junit.After;
@@ -12,6 +13,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.*;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -25,7 +27,8 @@ public class FindAllSemestersCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         createTestdata();
     }
 
@@ -40,7 +43,7 @@ public class FindAllSemestersCommandTest {
     @Test
     public void testExecute() {
         FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
-            commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllSemestersCommand);
+            commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSemestersCommand);
 
         List<Semester> semesterFound = findAllSemestersCommand.getSemestersAll();
         assertTrue(semesterFound.size() >= 2);

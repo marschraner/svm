@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.LektionsgebuehrenDao;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import org.junit.After;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -28,7 +30,8 @@ public class FindAllLektionsgebuehrenCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         createTestdata();
     }
 
@@ -43,7 +46,7 @@ public class FindAllLektionsgebuehrenCommandTest {
     @Test
     public void testExecute_getList() {
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllLektionsgebuehrenCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLektionsgebuehrenCommand);
 
         List<Lektionsgebuehren> lektionsgebuehrenListFound = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllList();
         assertTrue(lektionsgebuehrenListFound.size() >= 2);
@@ -64,7 +67,7 @@ public class FindAllLektionsgebuehrenCommandTest {
     @Test
     public void testExecute_getMap() {
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllLektionsgebuehrenCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLektionsgebuehrenCommand);
 
         Map<Integer, BigDecimal[]> lektionsgebuehrenMapFound = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllMap();
         assertTrue(lektionsgebuehrenMapFound.size() >= 2);

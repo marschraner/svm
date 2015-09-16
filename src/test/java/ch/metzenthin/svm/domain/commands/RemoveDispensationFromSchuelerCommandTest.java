@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
@@ -14,6 +15,7 @@ import javax.persistence.Persistence;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.*;
 
 /**
@@ -26,8 +28,9 @@ public class RemoveDispensationFromSchuelerCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        commandInvoker.openSessionSvmTest();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
+        commandInvoker.openSession();
     }
 
     @After

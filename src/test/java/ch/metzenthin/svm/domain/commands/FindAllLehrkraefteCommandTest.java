@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.LehrkraftDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
@@ -13,6 +14,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.*;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -26,7 +28,8 @@ public class FindAllLehrkraefteCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         createTestdata();
     }
 
@@ -41,7 +44,7 @@ public class FindAllLehrkraefteCommandTest {
     @Test
     public void testExecute() {
         FindAllLehrkraefteCommand findAllLehrkraefteCommand = new FindAllLehrkraefteCommand();
-            commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllLehrkraefteCommand);
+            commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLehrkraefteCommand);
 
         List<Lehrkraft> lehrkraefteFound = findAllLehrkraefteCommand.getLehrkraefteAll();
         assertTrue(lehrkraefteFound.size() >= 2);

@@ -36,31 +36,10 @@
         <properties>
             <!-- Database connection settings -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/svm" />
+            <!-- Eintrag nicht benötigt, da in der Applikation dynamisch gesetzt /-->
+            <!-- property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/svm" /-->
             <property name="javax.persistence.jdbc.user" value="svm" />
             <property name="javax.persistence.jdbc.password" value="svm" />
-
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-            <property name="hibernate.show_sql" value="false" />
-            <!--property name="hibernate.hbm2ddl.auto" value="create" /-->
-            <property name="hibernate.hbm2ddl.auto" value="validate" />
-        </properties>
-
-    </persistence-unit>
-
-    <persistence-unit name="svmtest">
-        <description>
-            Persistence unit for the JPA tutorial of the Hibernate Getting Started Guide
-        </description>
-        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-
-        <properties>
-            <!-- Database connection settings -->
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/svmtest" />
-            <property name="javax.persistence.jdbc.user" value="svmtest" />
-            <property name="javax.persistence.jdbc.password" value="svmtest" />
-
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="hibernate.show_sql" value="false" />
             <!--property name="hibernate.hbm2ddl.auto" value="create" /-->

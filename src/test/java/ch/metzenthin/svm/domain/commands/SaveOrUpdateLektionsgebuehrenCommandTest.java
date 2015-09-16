@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.LektionsgebuehrenDao;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import org.junit.After;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.*;
 
 /**
@@ -25,8 +27,9 @@ public class SaveOrUpdateLektionsgebuehrenCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        commandInvoker.openSessionSvmTest();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
+        commandInvoker.openSession();
     }
 
     @After
@@ -97,7 +100,7 @@ public class SaveOrUpdateLektionsgebuehrenCommandTest {
 
     private boolean checkIfLektionsgebuehrenAvailable(Integer lektionslaenge, BigDecimal betrag1Kind) {
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllLektionsgebuehrenCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLektionsgebuehrenCommand);
         List<Lektionsgebuehren> lektionsgebuehrenAll = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllList();
         for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenAll) {
             if (lektionsgebuehren.getLektionslaenge().equals(lektionslaenge) && lektionsgebuehren.getBetrag1Kind().equals(betrag1Kind)) {

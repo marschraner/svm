@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.LehrkraftDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Lehrkraft;
@@ -16,6 +17,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.*;
 
 /**
@@ -28,8 +30,9 @@ public class SaveOrUpdateLehrkraftCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        commandInvoker.openSessionSvmTest();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
+        commandInvoker.openSession();
     }
 
     @After
@@ -107,7 +110,7 @@ public class SaveOrUpdateLehrkraftCommandTest {
 
     private boolean checkIfLehrkraftAvailable(String nachname, String vorname, String email, String strasse) {
         FindAllLehrkraefteCommand findAllLehrkraefteCommand = new FindAllLehrkraefteCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllLehrkraefteCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLehrkraefteCommand);
         List<Lehrkraft> lehrkraefteAll = findAllLehrkraefteCommand.getLehrkraefteAll();
         for (Lehrkraft lehrkraft : lehrkraefteAll) {
             if (lehrkraft.getNachname().equals(nachname) && lehrkraft.getVorname().equals(vorname) && lehrkraft.getEmail().equals(email) && lehrkraft.getAdresse().getStrasse().equals(strasse)) {

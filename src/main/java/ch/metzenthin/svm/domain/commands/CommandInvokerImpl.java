@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.SvmRuntimeException;
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import org.apache.log4j.Logger;
 import org.hibernate.StaleObjectStateException;
 
@@ -23,22 +24,22 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     @Override
-    public GenericDaoCommand executeCommandAsTransactionWithOpenAndCloseSvmTest(GenericDaoCommand genericDaoCommand) {
-        LOGGER.trace("executeCommandAsTransactionWithOpenAndCloseSvmTest aufgerufen");
+    public GenericDaoCommand executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand genericDaoCommand) {
+        LOGGER.trace("executeCommandAsTransactionWithOpenAndClose aufgerufen");
         EntityManagerFactory entityManagerFactory = null;
         EntityManager entityManager = null;
         EntityTransaction tx = null;
         try {
-            entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+            entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
             entityManager = entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             tx.begin();
             genericDaoCommand.setEntityManager(entityManager);
             genericDaoCommand.execute();
             tx.commit();
-            LOGGER.trace("executeCommandAsTransactionWithOpenAndCloseSvmTest durchgeführt");
+            LOGGER.trace("executeCommandAsTransactionWithOpenAndClose durchgeführt");
         } catch (RuntimeException e) {
-            LOGGER.error("Fehler in executeCommandAsTransactionWithOpenAndCloseSvmTest(GenericDaoCommand)", e);
+            LOGGER.error("Fehler in executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand)", e);
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
@@ -79,18 +80,9 @@ public class CommandInvokerImpl implements CommandInvoker {
 
     @Override
     public void openSession() {
-        LOGGER.trace("openSession aufgerufen");
-        if (entityManager == null || !entityManager.isOpen()) {
-            entityManagerFactory = Persistence.createEntityManagerFactory("svm");
-            entityManager = entityManagerFactory.createEntityManager();
-        }
-    }
-
-    @Override
-    public void openSessionSvmTest() {
         LOGGER.trace("openSessionTest aufgerufen");
         if (entityManager == null || !entityManager.isOpen()) {
-            entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+            entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
             entityManager = entityManagerFactory.createEntityManager();
         }
     }

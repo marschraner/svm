@@ -13,11 +13,19 @@ import java.util.TreeSet;
 public class SvmProperties {
 
     public static final String SVM_PROPERTIES_FILE_NAME = System.getProperty("user.home") + File.separator + ".svm";
+    public static final String KEY_DB_URL_HOSTNAME = "db_url_hostname";
+    public static final String KEY_DB_URL_PORT = "db_url_port";
     public static final String KEY_TEMPLATES_DIRECTORY = "templates_directory";
     public static final String KEY_DEFAULT_OUTPUT_DIRECTORY = "default_output_directory";
     public static final String KEY_ABSENZENLISTE_TEMPLATE = "absenzenlisten_template";
 
     public static void createSvmPropertiesFileDefault() {
+
+        File f = new File(SVM_PROPERTIES_FILE_NAME);
+
+        if (f.exists()) {
+            return;
+        }
 
         Properties prop = new Properties() {
             // Alphabetische statt zufällige Sortierung der Properties-Einträge
@@ -27,23 +35,22 @@ public class SvmProperties {
             }
         };
 
-        OutputStream propertiesFile;
-        File f = new File(SVM_PROPERTIES_FILE_NAME);
-        if (!f.exists()) {
-            try {
-                propertiesFile = new FileOutputStream(SVM_PROPERTIES_FILE_NAME);
+        try {
+            OutputStream propertiesFile = new FileOutputStream(SVM_PROPERTIES_FILE_NAME);
 
-                // set the properties value
-                prop.setProperty(KEY_TEMPLATES_DIRECTORY, System.getProperty("user.dir") + File.separator + "Listen-Templates");
-                prop.setProperty(KEY_DEFAULT_OUTPUT_DIRECTORY, System.getProperty("user.home") + File.separator + "Desktop");
-                prop.setProperty(KEY_ABSENZENLISTE_TEMPLATE, "<Schuljahr>" + File.separator + "Semester_<Semester>" + File.separator + "Absenzenliste-Template_<Schuljahr>_<Semester>_<Wochentag>.docx");
-                prop.store(propertiesFile, null);
+            // set the properties value
+            prop.setProperty(KEY_DB_URL_HOSTNAME, "localhost");
+            prop.setProperty(KEY_DB_URL_PORT, "3306");
+            prop.setProperty(KEY_TEMPLATES_DIRECTORY, System.getProperty("user.dir") + File.separator + "Listen-Templates");
+            prop.setProperty(KEY_DEFAULT_OUTPUT_DIRECTORY, System.getProperty("user.home") + File.separator + "Desktop");
+            prop.setProperty(KEY_ABSENZENLISTE_TEMPLATE, "<Schuljahr>" + File.separator + "Semester_<Semester>" + File.separator + "Absenzenliste-Template_<Schuljahr>_<Semester>_<Wochentag>.docx");
+            prop.store(propertiesFile, null);
 
-                propertiesFile.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            propertiesFile.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
     }
 
     public static Properties getSvmProperties() {

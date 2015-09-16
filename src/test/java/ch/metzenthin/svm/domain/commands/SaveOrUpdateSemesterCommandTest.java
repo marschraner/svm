@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.SemesterDao;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import org.junit.After;
@@ -15,6 +16,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.*;
 
 /**
@@ -27,8 +29,9 @@ public class SaveOrUpdateSemesterCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        commandInvoker.openSessionSvmTest();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
+        commandInvoker.openSession();
     }
 
     @After
@@ -110,7 +113,7 @@ public class SaveOrUpdateSemesterCommandTest {
 
     private boolean checkIfSemesterAvailable(String schuljahr, Semesterbezeichnung semesterbezeichnung, Calendar semesterbeginn, Calendar semesterende, int anzahlSchulwochen) {
         FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(findAllSemestersCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSemestersCommand);
         List<Semester> semestersAll = findAllSemestersCommand.getSemestersAll();
         for (Semester semester : semestersAll) {
             if (semester.getSchuljahr().equals(schuljahr) && semester.getSemesterbezeichnung().equals(semesterbezeichnung) && semester.getSemesterbeginn().equals(semesterbeginn) && semester.getSemesterende().equals(semesterende) && semester.getAnzahlSchulwochen().equals(anzahlSchulwochen)) {

@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -29,7 +31,8 @@ public class SaveAngehoerigeCommandTest {
 
     @Before
     public void setUp() throws Exception {
-        entityManagerFactory = Persistence.createEntityManagerFactory("svmtest");
+        createSvmPropertiesFileDefault();
+        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
     }
 
     @After
@@ -55,7 +58,7 @@ public class SaveAngehoerigeCommandTest {
         angehoerige.add(angehoeriger1);
 
         SaveAngehoerigeCommand saveAngehoerigeCommand = new SaveAngehoerigeCommand(angehoerige);
-        commandInvoker.executeCommandAsTransactionWithOpenAndCloseSvmTest(saveAngehoerigeCommand);
+        commandInvoker.executeCommandAsTransactionWithOpenAndClose(saveAngehoerigeCommand);
         List<Angehoeriger> savedAngehoerige = saveAngehoerigeCommand.getSavedAngehoeriger();
 
         Angehoeriger savedAngehoeriger0 = savedAngehoerige.get(0);

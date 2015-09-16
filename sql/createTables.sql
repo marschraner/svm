@@ -1,16 +1,18 @@
 -- Erzeugen von DB und User für svm
 -- ********************************
 
--- Als svm bzw. svmtest auszuführen:
+-- Als svm auszuführen.
 
--- mysql -u svm -psvm    
--- bzw.  mysql -u svmtest -psvmtest
--- mysql> source createTables.sql;
+-- mysql -u svm -psvm 
+-- mysql> source createTables.sql
 
 -- Auf Jenkins-Server (Immer durchführen wenn DB ändert, damit Tests durchlaufen!):
 -- ssh root@sinv-56059.edu.hsr.ch
 -- cd /var/lib/jenkins/workspace/SVM/
--- mysql -u svmtest -psvmtest -e "USE svmtest; SOURCE ../sql/createTables.sql;"
+-- mysql -u svm -psvm < sql/createTables.sql
+
+USE svm;
+
 
 -- Engine auf InnoDB setzen
 -- ************************
