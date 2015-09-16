@@ -7,11 +7,5 @@
     <data-source name="MySQL - svm@localhost" uuid="a50a8aba-80b6-4854-a358-9d38f4fd7cd9">
       <user-name>svm</user-name>
     </data-source>
-    <data-source name="MySQL - svmtest@localhost" uuid="bf4792ca-4722-4444-8b29-64924fc87b0b">
-      <secret-storage>master_key</secret-storage>
-      <user-name>svmtest</user-name>
-      <schema-pattern>svmtest.*</schema-pattern>
-      <default-schemas>svmtest.*</default-schemas>
-    </data-source>
   </component>
 </project>
