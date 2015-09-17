@@ -102,7 +102,7 @@ public class ImportKurseFromPreviousSemesterCommandTest {
         assertEquals(2, kurseSemester2.size());
         assertEquals(Wochentag.DONNERSTAG, kurseSemester2.get(0).getWochentag());
         assertEquals(Wochentag.FREITAG, kurseSemester2.get(1).getWochentag());
-        assertEquals("Roostest", kurseSemester2.get(0).getMitarbeiters().get(0).getNachname());
+        assertEquals("Roostest", kurseSemester2.get(0).getLehrkraefte().get(0).getNachname());
         assertEquals("Saal Test", kurseSemester2.get(0).getKursort().getBezeichnung());
         assertEquals("Kurs Test", kurseSemester2.get(0).getKurstyp().getBezeichnung());
 

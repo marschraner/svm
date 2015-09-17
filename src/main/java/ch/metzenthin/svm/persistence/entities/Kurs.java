@@ -56,10 +56,10 @@ public class Kurs implements Comparable<Kurs> {
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @OrderColumn
-    @JoinTable(name = "Kurs_Mitarbeiter",
+    @JoinTable(name = "Kurs_Lehrkraft",
             joinColumns = {@JoinColumn(name = "kurs_id")},
             inverseJoinColumns = {@JoinColumn(name = "person_id")})
-    private List<Mitarbeiter> mitarbeiters = new ArrayList<>();
+    private List<Mitarbeiter> lehrkraefte = new ArrayList<>();
 
     @Column(name = "bemerkungen", nullable = true)
     private String bemerkungen;
@@ -81,51 +81,51 @@ public class Kurs implements Comparable<Kurs> {
 
     @Override
     public String toString() {
-        StringBuilder kursAsStr = new StringBuilder(kurstyp + " " + stufe + ", " + wochentag + " " + asString(zeitBeginn) + "-" + asString(zeitEnde) + " (" + mitarbeiters.get(0));
-        for (int i = 1; i < mitarbeiters.size(); i++) {
-            kursAsStr.append(" / ").append(mitarbeiters.get(i));
+        StringBuilder kursAsStr = new StringBuilder(kurstyp + " " + stufe + ", " + wochentag + " " + asString(zeitBeginn) + "-" + asString(zeitEnde) + " (" + lehrkraefte.get(0));
+        for (int i = 1; i < lehrkraefte.size(); i++) {
+            kursAsStr.append(" / ").append(lehrkraefte.get(i));
         }
         kursAsStr.append(")");
         return kursAsStr.toString();
     }
 
     public String toStringShort() {
-        StringBuilder kursAsStr = new StringBuilder(wochentag + " " + asString(zeitBeginn) + "-" + asString(zeitEnde) + " (" + mitarbeiters.get(0).toStringShort());
-        for (int i = 1; i < mitarbeiters.size(); i++) {
-            kursAsStr.append("/").append(mitarbeiters.get(i).toStringShort());
+        StringBuilder kursAsStr = new StringBuilder(wochentag + " " + asString(zeitBeginn) + "-" + asString(zeitEnde) + " (" + lehrkraefte.get(0).toStringShort());
+        for (int i = 1; i < lehrkraefte.size(); i++) {
+            kursAsStr.append("/").append(lehrkraefte.get(i).toStringShort());
         }
         kursAsStr.append(")");
         return kursAsStr.toString();
     }
 
-    public String getMitarbeitersAsStr() {
-        StringBuilder mitarbeitersAsStr = new StringBuilder(mitarbeiters.get(0).toString());
-        for (int i = 1; i < mitarbeiters.size(); i++) {
-            mitarbeitersAsStr.append(" / ").append(mitarbeiters.get(i).toString());
+    public String getLehrkraefteAsStr() {
+        StringBuilder lehrkraefteAsStr = new StringBuilder(lehrkraefte.get(0).toString());
+        for (int i = 1; i < lehrkraefte.size(); i++) {
+            lehrkraefteAsStr.append(" / ").append(lehrkraefte.get(i).toString());
         }
-        return mitarbeitersAsStr.toString();
+        return lehrkraefteAsStr.toString();
     }
 
-    public String getMitarbeitersShortAsStr() {
-        StringBuilder mitarbeitersAsStr = new StringBuilder(mitarbeiters.get(0).toStringShort());
-        for (int i = 1; i < mitarbeiters.size(); i++) {
-            mitarbeitersAsStr.append(" / ").append(mitarbeiters.get(i).toStringShort());
+    public String getLehrkraefteShortAsStr() {
+        StringBuilder lehrkraefteAsStr = new StringBuilder(lehrkraefte.get(0).toStringShort());
+        for (int i = 1; i < lehrkraefte.size(); i++) {
+            lehrkraefteAsStr.append(" / ").append(lehrkraefte.get(i).toStringShort());
         }
-        return mitarbeitersAsStr.toString();
+        return lehrkraefteAsStr.toString();
     }
 
     public boolean isIdenticalWith(Kurs otherKurs) {
         // Kurse identisch, falls Semester, Wochentag, Zeit und Mitarbeiter identisch
-        List<Mitarbeiter> commonMitarbeiters = new ArrayList<>(mitarbeiters);
-        // RetainAll: nur diejenigen Mitarbeiters in commonMitarbeiters behalten, die auch in otherKurs enthalten sind
+        List<Mitarbeiter> commonLehrkraefte = new ArrayList<>(lehrkraefte);
+        // RetainAll: nur diejenigen Lehrkraefte in commonLehrkraefte behalten, die auch in otherKurs enthalten sind
         if (otherKurs != null) {
-            commonMitarbeiters.retainAll(otherKurs.getMitarbeiters());
+            commonLehrkraefte.retainAll(otherKurs.getLehrkraefte());
         }
         return otherKurs != null
                 && semester.equals(otherKurs.semester)
                 && wochentag.equals(otherKurs.wochentag)
                 && zeitBeginn.equals(otherKurs.zeitBeginn)
-                && commonMitarbeiters.size() > 0;
+                && commonLehrkraefte.size() > 0;
     }
 
     public void copyAttributesFrom(Kurs otherKurs) {
@@ -270,18 +270,18 @@ public class Kurs implements Comparable<Kurs> {
         this.kursort = null;
     }
 
-    public List<Mitarbeiter> getMitarbeiters() {
-        return mitarbeiters;
+    public List<Mitarbeiter> getLehrkraefte() {
+        return lehrkraefte;
     }
 
     public void addLehrkraft(Mitarbeiter mitarbeiter) {
         mitarbeiter.getKurse().add(this);
-        mitarbeiters.add(mitarbeiter);
+        lehrkraefte.add(mitarbeiter);
     }
 
     public void deleteLehrkraft(Mitarbeiter mitarbeiter) {
         mitarbeiter.getKurse().remove(this);
-        mitarbeiters.remove(mitarbeiter);
+        lehrkraefte.remove(mitarbeiter);
     }
 
     public String getBemerkungen() {

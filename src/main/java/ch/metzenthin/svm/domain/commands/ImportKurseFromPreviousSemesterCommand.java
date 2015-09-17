@@ -45,7 +45,7 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
             kurs.copyAttributesFrom(kursPreviousSemester);
             kurs.setKurstyp(kursPreviousSemester.getKurstyp());
             kurs.setKursort(kursPreviousSemester.getKursort());
-            for (Mitarbeiter mitarbeiter : kursPreviousSemester.getMitarbeiters()) {
+            for (Mitarbeiter mitarbeiter : kursPreviousSemester.getLehrkraefte()) {
                 kurs.addLehrkraft(mitarbeiter);
             }
             kurs.setSemester(currentSemester);

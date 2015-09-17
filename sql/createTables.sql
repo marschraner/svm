@@ -27,7 +27,7 @@ DROP TABLE IF EXISTS Semesterrechnung;
 DROP TABLE IF EXISTS Maercheneinteilung;
 DROP TABLE IF EXISTS Maerchen;
 DROP TABLE IF EXISTS Kursanmeldung;
-DROP TABLE IF EXISTS Kurs_Mitarbeiter;
+DROP TABLE IF EXISTS Kurs_Lehrkraft;
 DROP TABLE IF EXISTS Kurs;
 DROP TABLE IF EXISTS Semester;
 DROP TABLE IF EXISTS Kursort;
@@ -133,7 +133,7 @@ DESCRIBE Schueler;
 
 
 -- Mitarbeiter
--- *********
+-- ***********
 
 CREATE TABLE IF NOT EXISTS Mitarbeiter (
     person_id                  INT           NOT NULL,
@@ -309,19 +309,19 @@ CREATE TABLE IF NOT EXISTS Kurs (
 DESCRIBE Kurs;
 
 
--- Kurs_Mitarbeiter
+-- Kurs_Lehrkraft
 -- **************
 
-CREATE TABLE IF NOT EXISTS Kurs_Mitarbeiter (
+CREATE TABLE IF NOT EXISTS Kurs_Lehrkraft (
     kurs_id                    INT           NOT NULL,
     person_id                  INT           NOT NULL,
-    mitarbeiters_ORDER         INT           NOT NULL,
+    lehrkraefte_ORDER         INT           NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (kurs_id, person_id),
     FOREIGN KEY (kurs_id)      REFERENCES Kurs (kurs_id),
     FOREIGN KEY (person_id)    REFERENCES Mitarbeiter (person_id));
 
-DESCRIBE Kurs_Mitarbeiter;
+DESCRIBE Kurs_Lehrkraft;
 
 
 -- Kursanmeldung

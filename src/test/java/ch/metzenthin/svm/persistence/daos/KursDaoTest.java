@@ -95,7 +95,7 @@ public class KursDaoTest {
             assertEquals("2011/2012", kursFound.getSemester().getSchuljahr());
             assertEquals("Testkurs", kursFound.getKurstyp().getBezeichnung());
             assertEquals("Testsaal", kursFound.getKursort().getBezeichnung());
-            assertEquals("Roos", kursFound.getMitarbeiters().get(0).getNachname());
+            assertEquals("Roos", kursFound.getLehrkraefte().get(0).getNachname());
 
         } finally {
             if (tx != null)
@@ -163,16 +163,16 @@ public class KursDaoTest {
             assertTrue(kursFound.getKursort().getKurse().contains(kursFound));
 
             // Lehrkräfte in Reihenfolge der Erfassung geordnet?
-            assertEquals(2, kursFound.getMitarbeiters().size());
-            assertEquals("Roos", kursFound.getMitarbeiters().get(0).getNachname());
-            assertEquals("Delley", kursFound.getMitarbeiters().get(1).getNachname());
-            assertEquals(1, kursFound.getMitarbeiters().get(0).getKurse().size());
-            assertTrue(kursFound.getMitarbeiters().get(0).getKurse().contains(kursFound));
+            assertEquals(2, kursFound.getLehrkraefte().size());
+            assertEquals("Roos", kursFound.getLehrkraefte().get(0).getNachname());
+            assertEquals("Delley", kursFound.getLehrkraefte().get(1).getNachname());
+            assertEquals(1, kursFound.getLehrkraefte().get(0).getKurse().size());
+            assertTrue(kursFound.getLehrkraefte().get(0).getKurse().contains(kursFound));
 
             // 1. Lehrkraft löschen
-            kurs.deleteLehrkraft(kursFound.getMitarbeiters().get(0));
-            assertEquals(1, kursFound.getMitarbeiters().size());
-            assertEquals("Delley", kursFound.getMitarbeiters().get(0).getNachname());
+            kurs.deleteLehrkraft(kursFound.getLehrkraefte().get(0));
+            assertEquals(1, kursFound.getLehrkraefte().size());
+            assertEquals("Delley", kursFound.getLehrkraefte().get(0).getNachname());
 
         } finally {
             if (tx != null)
@@ -221,8 +221,8 @@ public class KursDaoTest {
             int semesterId = kursSaved.getSemester().getSemesterId();
             int kurstypId = kursSaved.getKurstyp().getKurstypId();
             int kursortId = kursSaved.getKursort().getKursortId();
-            int lehrkraft1Id = kursSaved.getMitarbeiters().get(0).getPersonId();
-            int lehrkraft2Id = kursSaved.getMitarbeiters().get(1).getPersonId();
+            int lehrkraft1Id = kursSaved.getLehrkraefte().get(0).getPersonId();
+            int lehrkraft2Id = kursSaved.getLehrkraefte().get(1).getPersonId();
 
             Kurs kursFound = kursDao.findById(kursId);
             Semester semesterFound = semesterDao.findById(semesterId);

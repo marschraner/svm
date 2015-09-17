@@ -240,7 +240,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
 
     @Override
     public Mitarbeiter[] getSelectableLehrkraftKursanmeldungOrigin() {
-        return new Mitarbeiter[]{kursanmeldungOrigin.getKurs().getMitarbeiters().get(0)};
+        return new Mitarbeiter[]{kursanmeldungOrigin.getKurs().getLehrkraefte().get(0)};
     }
 
     @Override
@@ -317,7 +317,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
                 setSemester(kursanmeldungOrigin.getKurs().getSemester());
                 setWochentag(kursanmeldungOrigin.getKurs().getWochentag());
                 setZeitBeginn(asString(kursanmeldungOrigin.getKurs().getZeitBeginn()));
-                setMitarbeiter(kursanmeldungOrigin.getKurs().getMitarbeiters().get(0));
+                setMitarbeiter(kursanmeldungOrigin.getKurs().getLehrkraefte().get(0));
                 kurs = kursanmeldungOrigin.getKurs();
                 setAnmeldedatum(asString(kursanmeldungOrigin.getAnmeldedatum()));
                 setAbmeldedatum(asString(kursanmeldungOrigin.getAbmeldedatum()));

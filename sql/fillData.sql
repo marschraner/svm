@@ -16,7 +16,7 @@ DELETE FROM Semesterrechnung;
 DELETE FROM Maercheneinteilung;
 DELETE FROM Maerchen;
 DELETE FROM Kursanmeldung;
-DELETE FROM Kurs_Mitarbeiter;
+DELETE FROM Kurs_Lehrkraft;
 DELETE FROM Kurs;
 DELETE FROM Semester;
 DELETE FROM Kursort;
@@ -219,7 +219,7 @@ SELECT * FROM Schueler;
 
 
 -- Mitarbeiter
--- *********
+-- ***********
 INSERT INTO Mitarbeiter (person_id, ahvnummer, vertretungsmoeglichkeiten, aktiv) VALUES
     (9, '756.9620.8222.54', NULL, 1),
     (10, '756.3201.3214.21', 'Mi, Sa', 1),
@@ -387,10 +387,10 @@ INSERT INTO Kurs (kurs_id, semester_id, kurstyp_id, altersbereich, stufe, wochen
 SELECT * FROM Kurs;
 
 
--- Kurs_Mitarbeiter
+-- Kurs_Lehrkraft
 -- **************
 
-INSERT INTO Kurs_Mitarbeiter (kurs_id, person_id, mitarbeiters_ORDER) VALUES
+INSERT INTO Kurs_Lehrkraft (kurs_id, person_id, lehrkraefte_ORDER) VALUES
     (1, 15, 0),
     (2, 15, 0),
     (3, 15, 0),
@@ -416,7 +416,7 @@ INSERT INTO Kurs_Mitarbeiter (kurs_id, person_id, mitarbeiters_ORDER) VALUES
     (21, 11, 0),
     (22, 11, 0);
 
-SELECT * FROM Kurs_Mitarbeiter;
+SELECT * FROM Kurs_Lehrkraft;
 
 
 -- Kursanmeldung

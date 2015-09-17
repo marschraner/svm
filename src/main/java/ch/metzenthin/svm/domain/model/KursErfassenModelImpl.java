@@ -253,7 +253,7 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
 
     private void addInaktiveLehrkraefteOrigin(List<Mitarbeiter> lehrkraefteList) {
         if (kursOrigin != null) {
-            for (Mitarbeiter mitarbeiterKursOrigin : kursOrigin.getMitarbeiters()) {
+            for (Mitarbeiter mitarbeiterKursOrigin : kursOrigin.getLehrkraefte()) {
                 // Beim Bearbeiten müssen ggf auch nicht mehr aktive Lehrkräfte angezeigt werden können
                 boolean found = false;
                 for (Mitarbeiter mitarbeiter : lehrkraefteList) {
@@ -376,9 +376,9 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
                 setZeitBeginn(asString(kursOrigin.getZeitBeginn()));
                 setZeitEnde(asString(kursOrigin.getZeitEnde()));
                 setKursort(kursOrigin.getKursort());
-                setMitarbeiter1(kursOrigin.getMitarbeiters().get(0));
-                if (kursOrigin.getMitarbeiters().size() > 1) {
-                    setMitarbeiter2(kursOrigin.getMitarbeiters().get(1));
+                setMitarbeiter1(kursOrigin.getLehrkraefte().get(0));
+                if (kursOrigin.getLehrkraefte().size() > 1) {
+                    setMitarbeiter2(kursOrigin.getLehrkraefte().get(1));
                 }
                 setBemerkungen(kursOrigin.getBemerkungen());
             } catch (SvmValidationException ignore) {

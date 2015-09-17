@@ -195,10 +195,10 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
                 String lehrkraft2 = "";
                 if (schuelerKurse != null && schuelerKurse.size() > 0) {
                     Kurs kurs = schuelerKurse.get(j);
-                    String lehrkraft1 = kurs.getMitarbeiters().get(0).toStringShort();
-                    if (kurs.getMitarbeiters().size() == 2) {
+                    String lehrkraft1 = kurs.getLehrkraefte().get(0).toStringShort();
+                    if (kurs.getLehrkraefte().size() == 2) {
                         lehrkraft1 = lehrkraft1 + " /";
-                        lehrkraft2 = kurs.getMitarbeiters().get(1).toStringShort();
+                        lehrkraft2 = kurs.getLehrkraefte().get(1).toStringShort();
                     }
                     cellsRow1.add(lehrkraft1);
                 } else {

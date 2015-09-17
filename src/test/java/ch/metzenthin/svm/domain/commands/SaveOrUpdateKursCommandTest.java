@@ -181,13 +181,13 @@ public class SaveOrUpdateKursCommandTest {
                     && kurs.getZeitBeginn().equals(zeitBeginn)
                     && kurs.getZeitEnde().equals(zeitEnde)
                     && kurs.getKursort().equals(kursort)
-                    && kurs.getMitarbeiters().get(0).equals(mitarbeiter1)) {
-                if (kurs.getMitarbeiters().size() == 1) {
+                    && kurs.getLehrkraefte().get(0).equals(mitarbeiter1)) {
+                if (kurs.getLehrkraefte().size() == 1) {
                     if (mitarbeiter2 == null) {
                         return true;
                     }
                 } else {
-                    if (kurs.getMitarbeiters().get(1).equals(mitarbeiter2)) {
+                    if (kurs.getLehrkraefte().get(1).equals(mitarbeiter2)) {
                         return true;
                     }
                 }

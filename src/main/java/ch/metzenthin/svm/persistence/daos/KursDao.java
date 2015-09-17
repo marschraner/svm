@@ -34,7 +34,7 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         kursort.getKurse().remove(kurs);
 
         // Entferne zugewiesene Lehrkräfte
-        for (Mitarbeiter mitarbeiter : new ArrayList<>(kurs.getMitarbeiters())) {
+        for (Mitarbeiter mitarbeiter : new ArrayList<>(kurs.getLehrkraefte())) {
             kurs.deleteLehrkraft(mitarbeiter);
         }
 
@@ -100,7 +100,7 @@ public class KursDao extends GenericDao<Kurs, Integer> {
     public Kurs findKurs(Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter) {
         Kurs kursFound;
         try {
-            TypedQuery<Kurs> typedQuery = entityManager.createQuery("select k from Kurs k join k.mitarbeiters lk " +
+            TypedQuery<Kurs> typedQuery = entityManager.createQuery("select k from Kurs k join k.lehrkraefte lk " +
                     " where k.semester.semesterId = :semesterId and k.wochentag = :wochentag and k.zeitBeginn = :zeitBeginn " +
                     " and lk.personId = :lehrkraftPersonId", Kurs.class);
             typedQuery.setParameter("semesterId", semester.getSemesterId());

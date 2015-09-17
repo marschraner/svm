@@ -24,7 +24,7 @@ public class Mitarbeiter extends Person {
     @Column(name = "aktiv", nullable = false)
     private Boolean aktiv;
 
-    @ManyToMany(mappedBy = "mitarbeiters")
+    @ManyToMany(mappedBy = "lehrkraefte")
     private Set<Kurs> kurse = new HashSet<>();
 
     public Mitarbeiter() {

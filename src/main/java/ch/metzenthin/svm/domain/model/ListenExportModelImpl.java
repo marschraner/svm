@@ -280,7 +280,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
     private String getTitleSpecificKurs(SchuelerSuchenTableModel schuelerSuchenTableModel) {
         if (schuelerSuchenTableModel.getWochentag() != null && schuelerSuchenTableModel.getZeitBeginn() != null) {
             if (schuelerSuchenTableModel.getSchuelerList().size() > 0) {
-                String lehrkraefte = schuelerSuchenTableModel.getSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getMitarbeitersAsStr();
+                String lehrkraefte = schuelerSuchenTableModel.getSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getLehrkraefteAsStr();
                 String zeitEnde = asString(schuelerSuchenTableModel.getSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getZeitEnde());
                 String kursort = schuelerSuchenTableModel.getSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getKursort().getBezeichnung();
                 return lehrkraefte + " (" + schuelerSuchenTableModel.getWochentag() + " " + asString(schuelerSuchenTableModel.getZeitBeginn()) + "-" + zeitEnde + ", " + kursort + ")";
@@ -292,7 +292,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                     return "";
                 }
                 Kurs kursFound = findKursCommand.getKursFound();
-                return kursFound.getMitarbeitersAsStr() + " (" + kursFound.getWochentag() +  " " + asString(kursFound.getZeitBeginn()) + "-" + asString(kursFound.getZeitEnde()) + ", " + kursFound.getKursort() + ")";
+                return kursFound.getLehrkraefteAsStr() + " (" + kursFound.getWochentag() +  " " + asString(kursFound.getZeitBeginn()) + "-" + asString(kursFound.getZeitEnde()) + ", " + kursFound.getKursort() + ")";
             }
         } else {
             return schuelerSuchenTableModel.getLehrkraft().toString();

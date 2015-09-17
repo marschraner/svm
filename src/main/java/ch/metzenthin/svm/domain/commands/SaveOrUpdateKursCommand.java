@@ -44,7 +44,7 @@ public class SaveOrUpdateKursCommand extends GenericDaoCommand {
             kursOrigin.setSemester(semester);
             kursOrigin.setKurstyp(kurstyp);
             kursOrigin.setKursort(kursort);
-            for (Mitarbeiter mitarbeiter : new ArrayList<>(kursOrigin.getMitarbeiters())) {
+            for (Mitarbeiter mitarbeiter : new ArrayList<>(kursOrigin.getLehrkraefte())) {
                 kursOrigin.deleteLehrkraft(mitarbeiter);
             }
             kursOrigin.addLehrkraft(mitarbeiter1);

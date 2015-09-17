@@ -157,7 +157,7 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
             }
             cellsRow2.add(kurs.getStufe());
             cellsRow2.add(asString(kurs.getZeitBeginn()) + " - " + asString(kurs.getZeitEnde()));
-            cellsRow2.add(kurs.getMitarbeitersShortAsStr());
+            cellsRow2.add(kurs.getLehrkraefteShortAsStr());
             if (bemerkungenLines.size() > 1) {
                 cellsRow2.add(bemerkungenLines.get(1));
             } else {

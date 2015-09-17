@@ -63,7 +63,7 @@ public class KursanmeldungenTableData {
                 break;
             case LEITUNG:
                 StringBuilder leitung = new StringBuilder();
-                for (Mitarbeiter mitarbeiter : kursanmeldung.getKurs().getMitarbeiters()) {
+                for (Mitarbeiter mitarbeiter : kursanmeldung.getKurs().getLehrkraefte()) {
                     if (leitung.length() > 0) {
                         leitung.append(" / ");
                     }
