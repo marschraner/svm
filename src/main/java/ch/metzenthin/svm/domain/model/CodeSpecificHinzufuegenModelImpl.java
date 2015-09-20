@@ -5,38 +5,37 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.AddSchuelerCodeToSchuelerAndSaveCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
-import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 
 /**
  * @author Martin Schraner
  */
-public class SchuelerCodeSchuelerHinzufuegenModelImpl extends AbstractModel implements SchuelerCodeSchuelerHinzufuegenModel {
+public class CodeSpecificHinzufuegenModelImpl extends AbstractModel implements CodeSpecificHinzufuegenModel {
 
-    private SchuelerCode schuelerCode;
+    private Code code;
 
-    SchuelerCodeSchuelerHinzufuegenModelImpl(CommandInvoker commandInvoker) {
+    CodeSpecificHinzufuegenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
     }
 
     @Override
-    public SchuelerCode getSchuelerCode() {
-        return schuelerCode;
+    public Code getCode() {
+        return code;
     }
 
     @Override
-    public void setSchuelerCode(SchuelerCode schuelerCode) throws SvmRequiredException {
-        this.schuelerCode = schuelerCode;
-        if (schuelerCode == null) {
+    public void setCode(Code code) throws SvmRequiredException {
+        this.code = code;
+        if (code == null) {
             invalidate();
             throw new SvmRequiredException(Field.CODE);
         }
     }
 
     @Override
-    public void hinzufuegen(CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
-        AddSchuelerCodeToSchuelerAndSaveCommand addSchuelerCodeToSchuelerAndSaveCommand = new AddSchuelerCodeToSchuelerAndSaveCommand(schuelerCode, schuelerDatenblattModel.getSchueler());
+    public void schuelerCodeHinzufuegen(CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+        AddSchuelerCodeToSchuelerAndSaveCommand addSchuelerCodeToSchuelerAndSaveCommand = new AddSchuelerCodeToSchuelerAndSaveCommand((SchuelerCode) code, schuelerDatenblattModel.getSchueler());
         CommandInvoker commandInvoker = getCommandInvoker();
         commandInvoker.executeCommandAsTransaction(addSchuelerCodeToSchuelerAndSaveCommand);
         Schueler schuelerUpdated = addSchuelerCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
@@ -44,6 +43,13 @@ public class SchuelerCodeSchuelerHinzufuegenModelImpl extends AbstractModel impl
         if (schuelerUpdated != null) {
             codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getCodesAsList());
         }
+    }
+
+    @Override
+    public void mitarbeiterCodeHinzufuegen(CodesTableModel codesTableModel, MitarbeiterErfassenModel mitarbeiterErfassenModel) {
+        mitarbeiterErfassenModel.getMitarbeiterCodes().add((MitarbeiterCode) code);
+        // TableData updaten
+        codesTableModel.getCodesTableData().setCodes(mitarbeiterErfassenModel.getMitarbeiterCodesAsList());
     }
 
     @Override

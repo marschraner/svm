@@ -42,7 +42,7 @@ public class MitarbeitersTableModel extends AbstractTableModel {
         return mitarbeitersTableData.getColumnClass(columnIndex);
     }
 
-    public List<Mitarbeiter> getLehrkraefte() {
+    public List<Mitarbeiter> getMitarbeiters() {
         return mitarbeitersTableData.getLehrkraefte();
     }
 

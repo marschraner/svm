@@ -12,19 +12,19 @@ import java.util.List;
 public class CodesTableData {
 
     private List<? extends Code> codes;
-    private boolean isCodesSpecificSchueler;
+    private boolean isCodesSpecific;
     private List<Field> columns = new ArrayList<>();
 
-    public CodesTableData(List<? extends Code> codes, boolean isCodesSpecificSchueler) {
+    public CodesTableData(List<? extends Code> codes, boolean isCodesSpecific) {
         this.codes = codes;
-        this.isCodesSpecificSchueler = isCodesSpecificSchueler;
+        this.isCodesSpecific = isCodesSpecific;
         initColumns();
     }
 
     private void initColumns() {
         columns.add(Field.KUERZEL);
         columns.add(Field.BESCHREIBUNG);
-        if (!isCodesSpecificSchueler) {
+        if (!isCodesSpecific) {
             columns.add(Field.SELEKTIERBAR);
         }
     }

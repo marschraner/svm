@@ -4,10 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
-import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
-import ch.metzenthin.svm.persistence.entities.Schueler;
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
-import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
+import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 
 import java.util.ArrayList;
@@ -31,6 +28,17 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
         // TableData mit von der Datenbank upgedateten SchülerCodes updaten
         codesTableModel.getCodesTableData().setCodes(svmContext.getSvmModel().getSchuelerCodesAll());
         return deleteSchuelerCodeCommand.getResult();
+    }
+
+    @Override
+    public DeleteMitarbeiterCodeCommand.Result eintragLoeschenMitarbeiterCodesVerwalten(SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved) {
+        List<MitarbeiterCode> mitarbeiterCodes = svmContext.getSvmModel().getMitarbeiterCodesAll();
+        CommandInvoker commandInvoker = getCommandInvoker();
+        DeleteMitarbeiterCodeCommand deleteMitarbeiterCodeCommand = new DeleteMitarbeiterCodeCommand(mitarbeiterCodes, indexCodeToBeRemoved);
+        commandInvoker.executeCommandAsTransaction(deleteMitarbeiterCodeCommand);
+        // TableData mit von der Datenbank upgedateten MitarbeiterCodes updaten
+        codesTableModel.getCodesTableData().setCodes(svmContext.getSvmModel().getMitarbeiterCodesAll());
+        return deleteMitarbeiterCodeCommand.getResult();
     }
 
     @Override
@@ -66,12 +74,23 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
     }
 
     @Override
+    public void eintragLoeschenMitarbeiterCodesMitarbeiter(CodesTableModel codesTableModel, MitarbeiterCode mitarbeiterCodeToBeRemoved, MitarbeiterErfassenModel mitarbeiterErfassenModel) {
+        mitarbeiterErfassenModel.getMitarbeiterCodes().remove(mitarbeiterCodeToBeRemoved);
+        // TableData updaten
+        codesTableModel.getCodesTableData().setCodes(mitarbeiterErfassenModel.getMitarbeiterCodesAsList());
+    }
+
+    @Override
     public CodeErfassenModel getCodeErfassenModel(SvmContext svmContext, int indexCodeToBeModified, Codetyp codetyp) {
         CodeErfassenModel codeErfassenModel = svmContext.getModelFactory().createCodeErfassenModel();
         switch (codetyp) {
             case SCHUELER:
                 List<SchuelerCode> schuelerCodes = svmContext.getSvmModel().getSchuelerCodesAll();
                 codeErfassenModel.setSchuelerCodeOrigin(schuelerCodes.get(indexCodeToBeModified));
+                break;
+            case MITARBEITER:
+                List<MitarbeiterCode> mitarbeiterCodes = svmContext.getSvmModel().getMitarbeiterCodesAll();
+                codeErfassenModel.setMitarbeiterCodeOrigin(mitarbeiterCodes.get(indexCodeToBeModified));
                 break;
             case ELTERNMITHILFE:
                 List<ElternmithilfeCode> elternmithilfeCodes = svmContext.getSvmModel().getElternmithilfeCodesAll();
@@ -99,6 +118,22 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
         }
         selectableSchuelerCodes.removeAll(codesToBeRemoved);
         return selectableSchuelerCodes.toArray(new SchuelerCode[selectableSchuelerCodes.size()]);
+    }
+
+    @Override
+    public MitarbeiterCode[] getSelectableMitarbeiterCodes(SvmModel svmModel, MitarbeiterErfassenModel mitarbeiterErfassenModel) {
+        List<MitarbeiterCode> selectableMitarbeiterCodes = new ArrayList<>(svmModel.getSelektierbareMitarbeiterCodesAll());
+        List<MitarbeiterCode> codesToBeRemoved = new ArrayList<>();
+        for (MitarbeiterCode mitarbeiterCode : selectableMitarbeiterCodes) {
+            for (MitarbeiterCode mitarbeiterCodeMitarbeiter : mitarbeiterErfassenModel.getMitarbeiterCodes()) {
+                // Nur noch nicht zugewiesene Codes sollen selektierbar sein
+                if (mitarbeiterCodeMitarbeiter.isIdenticalWith(mitarbeiterCode)) {
+                    codesToBeRemoved.add(mitarbeiterCode);
+                }
+            }
+        }
+        selectableMitarbeiterCodes.removeAll(codesToBeRemoved);
+        return selectableMitarbeiterCodes.toArray(new MitarbeiterCode[selectableMitarbeiterCodes.size()]);
     }
 
     @Override

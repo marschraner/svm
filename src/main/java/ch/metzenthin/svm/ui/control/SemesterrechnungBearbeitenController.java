@@ -613,7 +613,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         this.zurueckZuSemesterrechnungSuchenListener = zurueckZuSemesterrechnungSuchenListener;
     }
 
-    private void recalculate() {
+    private void updateLabels() {
         setLblErmaessigungVorrechnung();
         setLblZuschlagVorrechnung();
         setLblMalRabattFaktorVorrechnung();
@@ -680,7 +680,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         super.doPropertyChange(evt);
-        recalculate();
+        updateLabels();
         enableDisableFields();
         enableSpeichernDisableNavigation();
     }

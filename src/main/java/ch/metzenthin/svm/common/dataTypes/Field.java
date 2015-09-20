@@ -177,7 +177,8 @@ public enum Field {
     SECHS_JAHRES_RABATT_NACHRECHNUNG("6-Jahres-Rabatt N"),
     RECHNUNGSDATUM("Rechnungsdatum"),
     SEMESTERRECHNUNG_CODE_JA_NEIN("Semesterrechnung-Code ja/nein"),
-    STIPENDIUM_JA_NEIN("Stipendium ja/nein");
+    STIPENDIUM_JA_NEIN("Stipendium ja/nein"),
+    CODES("Codes");
 
     private String name;
 

@@ -73,7 +73,7 @@ public class KursanmeldungDaoTest {
             kurstypDao.save(kurstyp);
             Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
-            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
             mitarbeiter1.setAdresse(adresse1);
             mitarbeiterDao.save(mitarbeiter1);
@@ -124,7 +124,7 @@ public class KursanmeldungDaoTest {
             kurstypDao.save(kurstyp);
             Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
-            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
             mitarbeiter1.setAdresse(adresse1);
             mitarbeiterDao.save(mitarbeiter1);
@@ -177,7 +177,7 @@ public class KursanmeldungDaoTest {
             kurstypDao.save(kurstyp);
             Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
-            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
             mitarbeiter1.setAdresse(adresse1);
             mitarbeiterDao.save(mitarbeiter1);
@@ -269,7 +269,7 @@ public class KursanmeldungDaoTest {
             kurstypDao.save(kurstyp);
             Kursort kursort = new Kursort("Testsaal", true);
             kursortDao.save(kursort);
-            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
             mitarbeiter1.setAdresse(adresse1);
             mitarbeiterDao.save(mitarbeiter1);

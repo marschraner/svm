@@ -3,9 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -32,182 +30,181 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
         Character separator = ';';
 
         try {
-            FileWriter writer = new FileWriter(outputFile);
+            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "8859_1"));
 
             // Header
-            writer.append("Anrede");
-            writer.append(separator);
-            writer.append("Vorname");
-            writer.append(separator);
-            writer.append("Nachname");
-            writer.append(separator);
-            writer.append("Strasse");
-            writer.append(separator);
-            writer.append("PLZ");
-            writer.append(separator);
-            writer.append("Ort");
-            writer.append(separator);
-            writer.append("R.Datum V");
-            writer.append(separator);
-            writer.append("Ermäss. V");
-            writer.append(separator);
-            writer.append("E.Grund V");
-            writer.append(separator);
-            writer.append("Zuschl. V");
-            writer.append(separator);
-            writer.append("Z.Grund V");
-            writer.append(separator);
-            writer.append("Anz. V");
-            writer.append(separator);
-            writer.append("Wochenb. V");
-            writer.append(separator);
-            writer.append("Schulgeld V");
-            writer.append(separator);
-            writer.append("R.Datum N");
-            writer.append(separator);
-            writer.append("Ermäss. N");
-            writer.append(separator);
-            writer.append("E.Grund N");
-            writer.append(separator);
-            writer.append("Zuschl. N");
-            writer.append(separator);
-            writer.append("Z.Grund N");
-            writer.append(separator);
-            writer.append("Anz. N");
-            writer.append(separator);
-            writer.append("Wochenb. N");
-            writer.append(separator);
-            writer.append("Schulgeld N");
-            writer.append(separator);
-            writer.append("D. 1. Zahlung");
-            writer.append(separator);
-            writer.append("1. Zahlung");
-            writer.append(separator);
-            writer.append("D. 2. Zahlung");
-            writer.append(separator);
-            writer.append("2. Zahlung");
-            writer.append(separator);
-            writer.append("D. 3. Zahlung");
-            writer.append(separator);
-            writer.append("3. Zahlung");
-            writer.append(separator);
-            writer.append("Restbetrag");
-            writer.append(separator);
-            writer.append("Bemerkungen");
-            writer.append(separator);
-            writer.append("1. Schüler");
-            writer.append(separator);
-            writer.append("2. Schüler");
-            writer.append(separator);
-            writer.append("3. Schüler");
-            writer.append(separator);
-            writer.append("4. Schüler");
-            writer.append(separator);
-            writer.append("5. Schüler");
-            writer.append(separator);
-            writer.append("6. Schüler");
-            writer.append('\n');
+            out.write("Anrede");
+            out.write(separator);
+            out.write("Vorname");
+            out.write(separator);
+            out.write("Nachname");
+            out.write(separator);
+            out.write("Strasse");
+            out.write(separator);
+            out.write("PLZ");
+            out.write(separator);
+            out.write("Ort");
+            out.write(separator);
+            out.write("R.Datum V");
+            out.write(separator);
+            out.write("Ermäss. V");
+            out.write(separator);
+            out.write("E.Grund V");
+            out.write(separator);
+            out.write("Zuschl. V");
+            out.write(separator);
+            out.write("Z.Grund V");
+            out.write(separator);
+            out.write("Anz. V");
+            out.write(separator);
+            out.write("Wochenb. V");
+            out.write(separator);
+            out.write("Schulgeld V");
+            out.write(separator);
+            out.write("R.Datum N");
+            out.write(separator);
+            out.write("Ermäss. N");
+            out.write(separator);
+            out.write("E.Grund N");
+            out.write(separator);
+            out.write("Zuschl. N");
+            out.write(separator);
+            out.write("Z.Grund N");
+            out.write(separator);
+            out.write("Anz. N");
+            out.write(separator);
+            out.write("Wochenb. N");
+            out.write(separator);
+            out.write("Schulgeld N");
+            out.write(separator);
+            out.write("D. 1. Zahlung");
+            out.write(separator);
+            out.write("1. Zahlung");
+            out.write(separator);
+            out.write("D. 2. Zahlung");
+            out.write(separator);
+            out.write("2. Zahlung");
+            out.write(separator);
+            out.write("D. 3. Zahlung");
+            out.write(separator);
+            out.write("3. Zahlung");
+            out.write(separator);
+            out.write("Restbetrag");
+            out.write(separator);
+            out.write("Bemerkungen");
+            out.write(separator);
+            out.write("1. Schüler");
+            out.write(separator);
+            out.write("2. Schüler");
+            out.write(separator);
+            out.write("3. Schüler");
+            out.write(separator);
+            out.write("4. Schüler");
+            out.write(separator);
+            out.write("5. Schüler");
+            out.write(separator);
+            out.write("6. Schüler");
+            out.write('\n');
 
             // Daten
             for (Semesterrechnung semesterrechnung : semesterrechnungList) {
                 Angehoeriger rechnungsempfaenger = semesterrechnung.getRechnungsempfaenger();
-                writer.append(rechnungsempfaenger.getAnrede().toString());
-                writer.append(separator);
-                writer.append(rechnungsempfaenger.getVorname());
-                writer.append(separator);
-                writer.append(rechnungsempfaenger.getNachname());
-                writer.append(separator);
-                writer.append(rechnungsempfaenger.getAdresse().getStrHausnummer());
-                writer.append(separator);
-                writer.append(rechnungsempfaenger.getAdresse().getPlz());
-                writer.append(separator);
-                writer.append(rechnungsempfaenger.getAdresse().getOrt());
-                writer.append(separator);
+                out.write(rechnungsempfaenger.getAnrede().toString());
+                out.write(separator);
+                out.write(rechnungsempfaenger.getVorname());
+                out.write(separator);
+                out.write(rechnungsempfaenger.getNachname());
+                out.write(separator);
+                out.write(rechnungsempfaenger.getAdresse().getStrasseHausnummer());
+                out.write(separator);
+                out.write(rechnungsempfaenger.getAdresse().getPlz());
+                out.write(separator);
+                out.write(rechnungsempfaenger.getAdresse().getOrt());
+                out.write(separator);
                 if (semesterrechnung.getRechnungsdatumVorrechnung() != null) {
-                    writer.append(asString(semesterrechnung.getRechnungsdatumVorrechnung()));
+                    out.write(asString(semesterrechnung.getRechnungsdatumVorrechnung()));
                 }
-                writer.append(separator);
-                writer.append(semesterrechnung.getErmaessigungVorrechnung().toString());
-                writer.append(separator);
+                out.write(separator);
+                out.write(semesterrechnung.getErmaessigungVorrechnung().toString());
+                out.write(separator);
                 if (checkNotEmpty(semesterrechnung.getErmaessigungsgrundVorrechnung())) {
-                    writer.append(semesterrechnung.getErmaessigungsgrundVorrechnung());
+                    out.write(semesterrechnung.getErmaessigungsgrundVorrechnung());
                 }
-                writer.append(separator);
-                writer.append(semesterrechnung.getZuschlagVorrechnung().toString());
-                writer.append(separator);
+                out.write(separator);
+                out.write(semesterrechnung.getZuschlagVorrechnung().toString());
+                out.write(separator);
                 if (checkNotEmpty(semesterrechnung.getZuschlagsgrundVorrechnung())) {
-                    writer.append(semesterrechnung.getZuschlagsgrundVorrechnung());
+                    out.write(semesterrechnung.getZuschlagsgrundVorrechnung());
                 }
-                writer.append(separator);
-                writer.append(Integer.toString(semesterrechnung.getAnzahlWochenVorrechnung()));
-                writer.append(separator);
-                writer.append(semesterrechnung.getWochenbetragVorrechnung().toString());
-                writer.append(separator);
-                writer.append(semesterrechnung.getSchulgeldVorrechnung().toString());
-                writer.append(separator);
+                out.write(separator);
+                out.write(Integer.toString(semesterrechnung.getAnzahlWochenVorrechnung()));
+                out.write(separator);
+                out.write(semesterrechnung.getWochenbetragVorrechnung().toString());
+                out.write(separator);
+                out.write(semesterrechnung.getSchulgeldVorrechnung().toString());
+                out.write(separator);
                 if (semesterrechnung.getRechnungsdatumNachrechnung() != null) {
-                    writer.append(asString(semesterrechnung.getRechnungsdatumNachrechnung()));
+                    out.write(asString(semesterrechnung.getRechnungsdatumNachrechnung()));
                 }
-                writer.append(separator);
-                writer.append(semesterrechnung.getErmaessigungNachrechnung().toString());
-                writer.append(separator);
+                out.write(separator);
+                out.write(semesterrechnung.getErmaessigungNachrechnung().toString());
+                out.write(separator);
                 if (checkNotEmpty(semesterrechnung.getErmaessigungsgrundNachrechnung())) {
-                    writer.append(semesterrechnung.getErmaessigungsgrundNachrechnung());
+                    out.write(semesterrechnung.getErmaessigungsgrundNachrechnung());
                 }
-                writer.append(separator);
-                writer.append(semesterrechnung.getZuschlagNachrechnung().toString());
-                writer.append(separator);
+                out.write(separator);
+                out.write(semesterrechnung.getZuschlagNachrechnung().toString());
+                out.write(separator);
                 if (checkNotEmpty(semesterrechnung.getZuschlagsgrundNachrechnung())) {
-                    writer.append(semesterrechnung.getZuschlagsgrundNachrechnung());
+                    out.write(semesterrechnung.getZuschlagsgrundNachrechnung());
                 }
-                writer.append(separator);
-                writer.append(Integer.toString(semesterrechnung.getAnzahlWochenNachrechnung()));
-                writer.append(separator);
-                writer.append(semesterrechnung.getWochenbetragNachrechnung().toString());
-                writer.append(separator);
-                writer.append(semesterrechnung.getSchulgeldNachrechnung().toString());
-                writer.append(separator);
+                out.write(separator);
+                out.write(Integer.toString(semesterrechnung.getAnzahlWochenNachrechnung()));
+                out.write(separator);
+                out.write(semesterrechnung.getWochenbetragNachrechnung().toString());
+                out.write(separator);
+                out.write(semesterrechnung.getSchulgeldNachrechnung().toString());
+                out.write(separator);
                 if (semesterrechnung.getDatumZahlung1() != null) {
-                    writer.append(asString(semesterrechnung.getDatumZahlung1()));
+                    out.write(asString(semesterrechnung.getDatumZahlung1()));
                 }
-                writer.append(separator);
+                out.write(separator);
                 if (semesterrechnung.getBetragZahlung1() != null) {
-                  writer.append(semesterrechnung.getBetragZahlung1().toString());
+                  out.write(semesterrechnung.getBetragZahlung1().toString());
                 }
-                writer.append(separator);
+                out.write(separator);
                 if (semesterrechnung.getDatumZahlung2() != null) {
-                    writer.append(asString(semesterrechnung.getDatumZahlung2()));
+                    out.write(asString(semesterrechnung.getDatumZahlung2()));
                 }
-                writer.append(separator);
+                out.write(separator);
                 if (semesterrechnung.getBetragZahlung2() != null) {
-                    writer.append(semesterrechnung.getBetragZahlung2().toString());
+                    out.write(semesterrechnung.getBetragZahlung2().toString());
                 }
-                writer.append(separator);
+                out.write(separator);
                 if (semesterrechnung.getDatumZahlung3() != null) {
-                    writer.append(asString(semesterrechnung.getDatumZahlung3()));
+                    out.write(asString(semesterrechnung.getDatumZahlung3()));
                 }
-                writer.append(separator);
+                out.write(separator);
                 if (semesterrechnung.getBetragZahlung3() != null) {
-                    writer.append(semesterrechnung.getBetragZahlung3().toString());
+                    out.write(semesterrechnung.getBetragZahlung3().toString());
                 }
-                writer.append(separator);
+                out.write(separator);
                 BigDecimal restbetrag = semesterrechnung.getRestbetrag();
                 if (restbetrag != null) {
-                    writer.append(restbetrag.toString());
+                    out.write(restbetrag.toString());
                 }
-                writer.append(separator);
+                out.write(separator);
                 if (checkNotEmpty(semesterrechnung.getBemerkungen())) {
-                    writer.append(semesterrechnung.getBemerkungen());
+                    out.write(semesterrechnung.getBemerkungen());
                 }
-                writer.append(separator);
+                out.write(separator);
                 String schuelerAsStr = rechnungsempfaenger.getSchuelerRechnungsempfaengerAsStr();
                 schuelerAsStr = schuelerAsStr.replaceAll(",\\s",",");
-                writer.append(schuelerAsStr);
-                writer.append('\n');
+                out.write(schuelerAsStr);
+                out.write('\n');
             }
 
-            writer.flush();
-            writer.close();
+            out.close();
 
             result = Result.LISTE_ERFOLGREICH_ERSTELLT;
 

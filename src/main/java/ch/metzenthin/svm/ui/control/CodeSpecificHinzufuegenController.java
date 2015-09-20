@@ -1,13 +1,15 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.SchuelerCodeSchuelerHinzufuegenModel;
 import ch.metzenthin.svm.domain.model.CodesModel;
+import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.domain.model.CodeSpecificHinzufuegenModel;
+import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import org.apache.log4j.Logger;
 
@@ -21,39 +23,43 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
-public class SchuelerCodeSchuelerHinzufuegenController extends AbstractController {
+public class CodeSpecificHinzufuegenController extends AbstractController {
 
-    private static final Logger LOGGER = Logger.getLogger(SchuelerCodeSchuelerHinzufuegenController.class);
+    private static final Logger LOGGER = Logger.getLogger(CodeSpecificHinzufuegenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private final SvmContext svmContext;
     private final SchuelerDatenblattModel schuelerDatenblattModel;
-    private SchuelerCodeSchuelerHinzufuegenModel schuelerCodeSchuelerHinzufuegenModel;
+    private CodeSpecificHinzufuegenModel codeSpecificHinzufuegenModel;
+    private MitarbeiterErfassenModel mitarbeiterErfassenModel;
+    private Codetyp codetyp;
     private CodesTableModel codesTableModel;
     private CodesModel codesModel;
-    private JDialog codeSchuelerHinzufuegenDialog;
-    private JComboBox<SchuelerCode> comboBoxCode;
+    private JDialog codeSpecificHinzufuegenDialog;
+    private JComboBox<Code> comboBoxCode;
     private JLabel errLblCode;
     private JButton btnOk;
 
-    public SchuelerCodeSchuelerHinzufuegenController(SvmContext svmContext, CodesTableModel codesTableModel, SchuelerCodeSchuelerHinzufuegenModel schuelerCodeSchuelerHinzufuegenModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
-        super(schuelerCodeSchuelerHinzufuegenModel);
+    public CodeSpecificHinzufuegenController(SvmContext svmContext, CodesTableModel codesTableModel, CodeSpecificHinzufuegenModel codeSpecificHinzufuegenModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel, MitarbeiterErfassenModel mitarbeiterErfassenModel, Codetyp codetyp) {
+        super(codeSpecificHinzufuegenModel);
         this.svmContext = svmContext;
         this.codesTableModel = codesTableModel;
         this.codesModel = codesModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
-        this.schuelerCodeSchuelerHinzufuegenModel = schuelerCodeSchuelerHinzufuegenModel;
-        this.schuelerCodeSchuelerHinzufuegenModel.addPropertyChangeListener(this);
+        this.codeSpecificHinzufuegenModel = codeSpecificHinzufuegenModel;
+        this.mitarbeiterErfassenModel = mitarbeiterErfassenModel;
+        this.codetyp = codetyp;
+        this.codeSpecificHinzufuegenModel.addPropertyChangeListener(this);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
-    public void setCodeSchuelerHinzufuegenDialog(JDialog codeSchuelerHinzufuegenDialog) {
+    public void setCodeSpecificHinzufuegenDialog(JDialog codeSpecificHinzufuegenDialog) {
         // call onCancel() when cross is clicked
-        this.codeSchuelerHinzufuegenDialog = codeSchuelerHinzufuegenDialog;
-        codeSchuelerHinzufuegenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        codeSchuelerHinzufuegenDialog.addWindowListener(new WindowAdapter() {
+        this.codeSpecificHinzufuegenDialog = codeSpecificHinzufuegenDialog;
+        codeSpecificHinzufuegenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        codeSpecificHinzufuegenDialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 onAbbrechen();
             }
@@ -69,10 +75,18 @@ public class SchuelerCodeSchuelerHinzufuegenController extends AbstractControlle
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    public void setComboBoxCode(JComboBox<SchuelerCode> comboBoxCode) {
+    public void setComboBoxCode(JComboBox<Code> comboBoxCode) {
         this.comboBoxCode = comboBoxCode;
-        SchuelerCode[] selectableSchuelerCodes = codesModel.getSelectableSchuelerCodes(svmContext.getSvmModel(), schuelerDatenblattModel);
-        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableSchuelerCodes));
+        Code[] selectableCodes = new Code[]{};
+        switch (codetyp) {
+            case SCHUELER:
+                selectableCodes = codesModel.getSelectableSchuelerCodes(svmContext.getSvmModel(), schuelerDatenblattModel);
+                break;
+            case MITARBEITER:
+                selectableCodes = codesModel.getSelectableMitarbeiterCodes(svmContext.getSvmModel(), mitarbeiterErfassenModel);
+                break;
+        }
+        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableCodes));
         // Leeren ComboBox-Wert anzeigen
         comboBoxCode.setSelectedItem(null);
         this.comboBoxCode.addActionListener(new ActionListener() {
@@ -84,8 +98,8 @@ public class SchuelerCodeSchuelerHinzufuegenController extends AbstractControlle
     }
 
     private void onCodeSelected() {
-        LOGGER.trace("SchuelerCodeSchuelerHinzufuegenController Event SchuelerCode selected=" + comboBoxCode.getSelectedItem());
-        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxCode.getSelectedItem(), schuelerCodeSchuelerHinzufuegenModel.getSchuelerCode());
+        LOGGER.trace("xCodeXHinzufuegenController Event SchuelerCode selected=" + comboBoxCode.getSelectedItem());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxCode.getSelectedItem(), codeSpecificHinzufuegenModel.getCode());
         try {
             setModelCode();
         } catch (SvmValidationException e) {
@@ -100,9 +114,9 @@ public class SchuelerCodeSchuelerHinzufuegenController extends AbstractControlle
 
     private void setModelCode() throws SvmRequiredException {
         try {
-            schuelerCodeSchuelerHinzufuegenModel.setSchuelerCode((SchuelerCode) comboBoxCode.getSelectedItem());
+            codeSpecificHinzufuegenModel.setCode((Code) comboBoxCode.getSelectedItem());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("SchuelerCodeSchuelerHinzufuegenController setModelCode RequiredException=" + e.getMessage());
+            LOGGER.trace("xCodeXHinzufuegenController setModelCode RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxCode.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
@@ -122,18 +136,34 @@ public class SchuelerCodeSchuelerHinzufuegenController extends AbstractControlle
         btnOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onHinzufuegen();
+                switch (codetyp) {
+                    case SCHUELER:
+                        onSchuelerCodeHinzufuegen();
+                        break;
+                    case MITARBEITER:
+                        onMitarbeiterCodeHinzufuegen();
+                        break;
+                }
             }
         });
     }
 
-    private void onHinzufuegen() {
+    private void onSchuelerCodeHinzufuegen() {
         if (!isModelValidationMode() && !validateOnSpeichern()) {
             btnOk.setFocusPainted(false);
             return;
         }
-        schuelerCodeSchuelerHinzufuegenModel.hinzufuegen(codesTableModel, schuelerDatenblattModel);
-        codeSchuelerHinzufuegenDialog.dispose();
+        codeSpecificHinzufuegenModel.schuelerCodeHinzufuegen(codesTableModel, schuelerDatenblattModel);
+        codeSpecificHinzufuegenDialog.dispose();
+    }
+
+    private void onMitarbeiterCodeHinzufuegen() {
+        if (!isModelValidationMode() && !validateOnSpeichern()) {
+            btnOk.setFocusPainted(false);
+            return;
+        }
+        codeSpecificHinzufuegenModel.mitarbeiterCodeHinzufuegen(codesTableModel, mitarbeiterErfassenModel);
+        codeSpecificHinzufuegenDialog.dispose();
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
@@ -146,13 +176,13 @@ public class SchuelerCodeSchuelerHinzufuegenController extends AbstractControlle
     }
 
     private void onAbbrechen() {
-        codeSchuelerHinzufuegenDialog.dispose();
+        codeSpecificHinzufuegenDialog.dispose();
     }
 
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         if (checkIsFieldChange(Field.CODE, evt)) {
-            comboBoxCode.setSelectedItem(schuelerCodeSchuelerHinzufuegenModel.getSchuelerCode());
+            comboBoxCode.setSelectedItem(codeSpecificHinzufuegenModel.getCode());
         }
     }
 

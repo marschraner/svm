@@ -23,6 +23,8 @@ DELETE FROM Kursort;
 DELETE FROM Kurstyp;
 DELETE FROM SemesterrechnungCode;
 DELETE FROM ElternmithilfeCode;
+DELETE FROM Mitarbeiter_MitarbeiterCode;
+DELETE FROM MitarbeiterCode;
 DELETE FROM Schueler_SchuelerCode;
 DELETE FROM SchuelerCode;
 DELETE FROM Code;
@@ -139,7 +141,7 @@ INSERT INTO Person (person_id, discriminator, anrede, nachname, vorname, geburts
     (30, 'Angehoeriger', 'FRAU', 'Nicolier', 'Isabelle', NULL, '044 363 95 42', '079 446 50 87', 'isabelle.nicolier@bluewin.ch', 30),
     (31, 'Angehoeriger', 'HERR', 'Gramigna', 'Ralph', NULL, '044 363 95 42', '078 653 29 07', NULL, 31),
     (32, 'Schueler', 'KEINE', 'Koch Medina', 'Anaïs', '2005-10-24', '044 381 13 05', NULL, NULL, 32),
-    (33, 'Angehoeriger', 'FRAU', 'Schim van der Loeff', 'Madelaine', NULL, '044 381 13 05', '079 354 63 23', 'madelaine.schirmvanderloeff@bluewin.ch', 33),
+    (33, 'Angehoeriger', 'FRAU', 'Schim van der Loeff', 'Madelaine', NULL, '044 381 13 05', '079 354 63 23', 'madelaine.schimvanderloeff@bluewin.ch', 33),
     (34, 'Schueler', 'KEINE', 'Mannweiler', 'Elena', '2005-05-15', '043 366 01 36', NULL, NULL, 34),
     (35, 'Angehoeriger', 'FRAU', 'Mannweiler', 'Petra', NULL, '043 366 01 36', '076 370 27 90', 'petra@mannweiler.ch', 35),
     (36, 'Schueler', 'KEINE', 'Müller', 'Jessica', '2006-02-16', '044 980 66 14', NULL, NULL, 36),
@@ -151,7 +153,7 @@ INSERT INTO Person (person_id, discriminator, anrede, nachname, vorname, geburts
     (42, 'Angehoeriger', 'HERR', 'Rotzler', 'Andreas', NULL, '044 364 54 33', '078 744 67 07', 'r.rodriguez@highspeed.ch', 42),
     (43, 'Schueler', 'KEINE', 'Stolarski', 'Kiara', '2005-06-29', '043 538 32 55', NULL, NULL, 43),
     (44, 'Angehoeriger', 'HERR', 'Stolarski', 'Michal', NULL, '043 538 32 55', '076 489 71 73', 'diafka@yahoo.fr', 44),
-    (45, 'Schueler', 'KEINE', 'Baier', 'Ida', '2004-07-28', '043 810 04 20', NULL, NULL, 43),
+    (45, 'Schueler', 'KEINE', 'Baier', 'Ida', '2004-07-28', '043 810 04 20', NULL, NULL, 45),
     (46, 'Angehoeriger', 'FRAU', 'Baier', 'Nina', NULL, '043 810 04 20', '076 392 79 87', 'nina@baierbischofberger.ch', 46),
     (47, 'Angehoeriger', 'FRAU', 'Bischofberger', 'Christina', NULL, NULL, NULL, NULL, 47),
     (48, 'Schueler', 'KEINE', 'Da Silva Goulart', 'Maria', '2003-09-26', NULL, NULL, NULL, 48),
@@ -220,14 +222,14 @@ SELECT * FROM Schueler;
 
 -- Mitarbeiter
 -- ***********
-INSERT INTO Mitarbeiter (person_id, ahvnummer, vertretungsmoeglichkeiten, aktiv) VALUES
-    (9, '756.9620.8222.54', NULL, 1),
-    (10, '756.3201.3214.21', 'Mi, Sa', 1),
-    (11, '756.8923.1873.08', NULL, 1),
-    (12, '756.3501.3214.21', NULL, 1),
-    (13, '756.8433.1873.08', NULL, 1),
-    (14, '756.1232.1812.12', NULL, 1),
-    (15, '756.2433.2373.47', NULL, 1);
+INSERT INTO Mitarbeiter (person_id, ahvnummer, lehrkraft, vertretungsmoeglichkeiten, bemerkungen, aktiv) VALUES
+    (9, '756.9620.8222.54', 1, NULL, NULL, 1),
+    (10, '756.3201.3214.21', 1, 'Mi, Sa', NULL, 1),
+    (11, '756.8923.1873.08', 1, NULL, NULL, 1),
+    (12, '756.3501.3214.21', 1, NULL, NULL, 1),
+    (13, '756.8433.1873.08', 1, NULL, NULL, 1),
+    (14, '756.1232.1812.12', 1, NULL, NULL, 1),
+    (15, '756.2433.2373.47', 1, NULL, NULL, 1);
 
 SELECT * FROM Mitarbeiter;
 
@@ -276,7 +278,9 @@ INSERT INTO Code (code_id, discriminator, kuerzel, beschreibung, selektierbar) V
     (2, 'Schueler', 'j', 'Jugendtheater', 1),
     (3, 'Elternmithilfe', 'b', 'Buffet', 1),
     (4, 'Elternmithilfe', 'g', 'Garderobe', 1),
-    (5, 'Semesterrechnung', '1', 'Handrechnung', 1);
+    (5, 'Semesterrechnung', '1', 'Handrechnung', 1),
+    (6, 'Mitarbeiter', 'h', 'Helfer', 1),
+    (7, 'Mitarbeiter', 'v', 'Vertretung', 1);
 
 SELECT * FROM Code;
 
@@ -299,6 +303,26 @@ INSERT INTO Schueler_SchuelerCode (person_id, code_id) VALUES
     (8, 1);
 
 SELECT * FROM Schueler_SchuelerCode;
+
+
+-- MitarbeiterCode
+-- ***************
+
+INSERT INTO MitarbeiterCode (code_id) VALUES
+    (6),
+    (7);
+
+SELECT * FROM MitarbeiterCode;
+
+
+-- Mitarbeiter_MitarbeiterCode
+-- ***************************
+
+INSERT INTO Mitarbeiter_MitarbeiterCode (person_id, code_id) VALUES
+    (13, 7),
+    (14, 7);
+
+SELECT * FROM Mitarbeiter_MitarbeiterCode;
 
 
 -- ElternmithilfeCode

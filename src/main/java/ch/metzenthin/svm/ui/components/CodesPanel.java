@@ -37,7 +37,7 @@ public class CodesPanel {
     }
 
     private void createCodesController(SvmContext svmContext, CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isCodesSpecificSchueler, boolean isFromSchuelerSuchenResult, Codetyp codetyp) {
-        codesController = new CodesController(svmContext.getModelFactory().createCodesModel(), svmContext, codesTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, isCodesSpecificSchueler, isFromSchuelerSuchenResult, codetyp);
+        codesController = new CodesController(svmContext.getModelFactory().createCodesModel(), svmContext, codesTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, schuelerSuchenResultTable, null, selectedRow, isCodesSpecificSchueler, isFromSchuelerSuchenResult, false, false, codetyp);
         codesController.setCodesTable(codesTable);
         codesController.setLblTitel(lblTitle);
         codesController.setBtnNeu(btnNeu);

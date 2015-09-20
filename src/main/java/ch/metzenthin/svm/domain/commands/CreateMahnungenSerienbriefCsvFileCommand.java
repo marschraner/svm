@@ -3,9 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -28,46 +26,45 @@ public class CreateMahnungenSerienbriefCsvFileCommand extends CreateListeCommand
         Character separator = ';';
 
         try {
-            FileWriter writer = new FileWriter(outputFile);
+            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "8859_1"));
 
             // Header
-            writer.append("Anrede");
-            writer.append(separator);
-            writer.append("Vorname");
-            writer.append(separator);
-            writer.append("Nachname");
-            writer.append(separator);
-            writer.append("Strasse");
-            writer.append(separator);
-            writer.append("PLZ");
-            writer.append(separator);
-            writer.append("Ort");
-            writer.append(separator);
-            writer.append("Restbetrag");
-            writer.append('\n');
+            out.write("Anrede");
+            out.write(separator);
+            out.write("Vorname");
+            out.write(separator);
+            out.write("Nachname");
+            out.write(separator);
+            out.write("Strasse");
+            out.write(separator);
+            out.write("PLZ");
+            out.write(separator);
+            out.write("Ort");
+            out.write(separator);
+            out.write("Restbetrag");
+            out.write('\n');
 
             // Daten
             for (Semesterrechnung semesterrechnung : semesterrechnungList) {
                 Angehoeriger rechnungsempfaenger = semesterrechnung.getRechnungsempfaenger();
                 String anrede = rechnungsempfaenger.getAnrede().toString();
-                writer.append(anrede);
-                writer.append(separator);
-                writer.append(rechnungsempfaenger.getVorname());
-                writer.append(separator);
-                writer.append(rechnungsempfaenger.getNachname());
-                writer.append(separator);
-                writer.append(rechnungsempfaenger.getAdresse().getStrHausnummer());
-                writer.append(separator);
-                writer.append(rechnungsempfaenger.getAdresse().getPlz());
-                writer.append(separator);
-                writer.append(rechnungsempfaenger.getAdresse().getOrt());
-                writer.append(separator);
-                writer.append(semesterrechnung.getRestbetrag().toString());
-                writer.append('\n');
+                out.write(anrede);
+                out.write(separator);
+                out.write(rechnungsempfaenger.getVorname());
+                out.write(separator);
+                out.write(rechnungsempfaenger.getNachname());
+                out.write(separator);
+                out.write(rechnungsempfaenger.getAdresse().getStrHausnummer());
+                out.write(separator);
+                out.write(rechnungsempfaenger.getAdresse().getPlz());
+                out.write(separator);
+                out.write(rechnungsempfaenger.getAdresse().getOrt());
+                out.write(separator);
+                out.write(semesterrechnung.getRestbetrag().toString());
+                out.write('\n');
             }
 
-            writer.flush();
-            writer.close();
+            out.close();
 
             result = Result.LISTE_ERFOLGREICH_ERSTELLT;
 

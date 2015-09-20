@@ -183,7 +183,8 @@ public class ListenExportController extends AbstractController {
             comboBoxListentyp.setSelectedItem(Listentyp.LEHRKRAEFTE_ADRESSLISTE);
         } else {
             comboBoxListentyp.removeItem(Listentyp.LEHRKRAEFTE_ADRESSLISTE);
-            comboBoxListentyp.removeItem(Listentyp.LEHRKRAEFTE_ADRESSETIKETTEN);
+            comboBoxListentyp.removeItem(Listentyp.MITARBEITER_LISTE);
+            comboBoxListentyp.removeItem(Listentyp.MITARBEITER_ADRESSETIKETTEN);
         }
         if (listenExportTyp == ListenExportTyp.KURSE) {
             // Initialisierung

@@ -20,7 +20,7 @@ public class FindAllMitarbeitersCommand extends GenericDaoCommand {
         lehrkraefteAll = mitarbeiterDao.findAll();
     }
 
-    public List<Mitarbeiter> getLehrkraefteAll() {
+    public List<Mitarbeiter> getMitarbeitersAll() {
         return lehrkraefteAll;
     }
 

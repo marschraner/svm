@@ -512,7 +512,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     public CodesTableData getCodesTableData() {
         List<SchuelerCode> schuelerCodes = new ArrayList<>(schueler.getSchuelerCodes());
         Collections.sort(schuelerCodes);
-        return new CodesTableData(new ArrayList<>(schueler.getSchuelerCodes()), true);
+        return new CodesTableData(schuelerCodes, true);
     }
 
     @Override

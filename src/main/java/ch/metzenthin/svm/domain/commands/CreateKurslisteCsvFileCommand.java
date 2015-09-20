@@ -2,9 +2,7 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.entities.Kurs;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
@@ -29,54 +27,53 @@ public class CreateKurslisteCsvFileCommand extends CreateListeCommand {
         Character separator = ';';
 
         try {
-            FileWriter writer = new FileWriter(outputFile);
+            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "8859_1"));
 
             // Header
-            writer.append("Kurstyp");
-            writer.append(separator);
-            writer.append("Alter");
-            writer.append(separator);
-            writer.append("Stufe");
-            writer.append(separator);
-            writer.append("Tag");
-            writer.append(separator);
-            writer.append("Von");
-            writer.append(separator);
-            writer.append("Bis");
-            writer.append(separator);
-            writer.append("Ort");
-            writer.append(separator);
-            writer.append("Leitung");
-            writer.append(separator);
-            writer.append("Bemerkungen");
-            writer.append('\n');
+            out.write("Kurstyp");
+            out.write(separator);
+            out.write("Alter");
+            out.write(separator);
+            out.write("Stufe");
+            out.write(separator);
+            out.write("Tag");
+            out.write(separator);
+            out.write("Von");
+            out.write(separator);
+            out.write("Bis");
+            out.write(separator);
+            out.write("Ort");
+            out.write(separator);
+            out.write("Leitung");
+            out.write(separator);
+            out.write("Bemerkungen");
+            out.write('\n');
 
             // Daten
             for (Kurs kurs : kursList) {
-                writer.append(kurs.getKurstyp().getBezeichnung());
-                writer.append(separator);
-                writer.append(kurs.getAltersbereich());
-                writer.append(separator);
-                writer.append(kurs.getStufe());
-                writer.append(separator);
-                writer.append(kurs.getWochentag().toString());
-                writer.append(separator);
-                writer.append(kurs.getZeitBeginn().toString());
-                writer.append(separator);
-                writer.append(kurs.getZeitEnde().toString());
-                writer.append(separator);
-                writer.append(kurs.getKursort().getBezeichnung());
-                writer.append(separator);
-                writer.append(kurs.getLehrkraefteShortAsStr());
-                writer.append(separator);
+                out.write(kurs.getKurstyp().getBezeichnung());
+                out.write(separator);
+                out.write(kurs.getAltersbereich());
+                out.write(separator);
+                out.write(kurs.getStufe());
+                out.write(separator);
+                out.write(kurs.getWochentag().toString());
+                out.write(separator);
+                out.write(kurs.getZeitBeginn().toString());
+                out.write(separator);
+                out.write(kurs.getZeitEnde().toString());
+                out.write(separator);
+                out.write(kurs.getKursort().getBezeichnung());
+                out.write(separator);
+                out.write(kurs.getLehrkraefteShortAsStr());
+                out.write(separator);
                 if (checkNotEmpty(kurs.getBemerkungen())) {
-                    writer.append(kurs.getBemerkungen());
+                    out.write(kurs.getBemerkungen());
                 }
-                writer.append('\n');
+                out.write('\n');
             }
 
-            writer.flush();
-            writer.close();
+            out.close();
 
             result = Result.LISTE_ERFOLGREICH_ERSTELLT;
 

@@ -71,7 +71,7 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
             kursanmeldungDao.remove(kursanmeldung);
         }
 
-        // Lösche zugewiesenen Maercheneinteilungen
+        // Lösche zugewiesene Maercheneinteilungen
         MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao(entityManager);
         List<Maercheneinteilung> maercheneinteilungenSchueler = maercheneinteilungDao.findMaercheneinteilungenSchueler(schueler);
         for (Maercheneinteilung maercheneinteilung : new ArrayList<>(maercheneinteilungenSchueler)) {

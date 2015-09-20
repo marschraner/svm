@@ -46,7 +46,7 @@ public class FindAllMitarbeitersCommandTest {
         FindAllMitarbeitersCommand findAllMitarbeitersCommand = new FindAllMitarbeitersCommand();
             commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllMitarbeitersCommand);
 
-        List<Mitarbeiter> lehrkraefteFound = findAllMitarbeitersCommand.getLehrkraefteAll();
+        List<Mitarbeiter> lehrkraefteFound = findAllMitarbeitersCommand.getMitarbeitersAll();
         assertTrue(lehrkraefteFound.size() >= 2);
         boolean found1 = false;
         boolean found2 = false;
@@ -70,13 +70,13 @@ public class FindAllMitarbeitersCommandTest {
 
             MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
 
-            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "NoémiTest", "RoosTest", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "NoémiTest", "RoosTest", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
             mitarbeiter1.setAdresse(adresse1);
             Mitarbeiter mitarbeiterSaved = mitarbeiterDao.save(mitarbeiter1);
             lehrkraefteTestdata.add(mitarbeiterSaved);
 
-            Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "NathalieTest", "DelleyTest", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", "Mi, Fr, Sa", true);
+            Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "NathalieTest", "DelleyTest", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", true, "Mi, Fr, Sa", null, true);
             Adresse adresse2 = new Adresse("Im Schilf", "7", "8044", "Zürich");
             mitarbeiter2.setAdresse(adresse2);
             mitarbeiterSaved = mitarbeiterDao.save(mitarbeiter2);

@@ -1031,7 +1031,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     }
 
     private void setModelBemerkungen() throws SvmValidationException {
-        makeErrorLabelInvisible(Field.BETRAG_ZAHLUNG_3);
+        makeErrorLabelInvisible(Field.BEMERKUNGEN);
         try {
             semesterrechnungModel.setBemerkungen(textAreaBemerkungen.getText());
         } catch (SvmValidationException e) {

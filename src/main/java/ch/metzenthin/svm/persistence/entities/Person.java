@@ -131,7 +131,8 @@ public abstract class Person implements Comparable<Person>  {
         personSb.append(vorname);
         personSb.append(" ").append(nachname);
         if (adresse != null) {
-            personSb.append(adresse.toString());
+            personSb.append(", ").append(adresse.getStrHausnummer());
+            personSb.append(", ").append(adresse.getPlz()).append(" ").append(adresse.getOrt());
         }
         if (festnetz != null && !festnetz.isEmpty()) {
             personSb.append(", ").append(festnetz);

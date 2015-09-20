@@ -3,9 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.persistence.entities.Person;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -28,41 +26,43 @@ public class CreateAdressenCsvFileCommand extends CreateListeCommand {
         Character separator = ';';
 
         try {
-            FileWriter writer = new FileWriter(outputFile);
+            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "8859_1"));
 
             // Header
-            writer.append("Anrede");
-            writer.append(separator);
-            writer.append("Vorname");
-            writer.append(separator);
-            writer.append("Nachname");
-            writer.append(separator);
-            writer.append("Strasse");
-            writer.append(separator);
-            writer.append("PLZ");
-            writer.append(separator);
-            writer.append("Ort");
-            writer.append('\n');
+            out.write("Anrede");
+            out.write(separator);
+            out.write("Vorname");
+            out.write(separator);
+            out.write("Nachname");
+            out.write(separator);
+            out.write("Strasse/Nr.");
+            out.write(separator);
+            out.write("PLZ");
+            out.write(separator);
+            out.write("Ort");
+            out.write('\n');
 
             // Daten
             for (Person person : personList) {
+                if (person.getAdresse() == null) {
+                    continue;
+                }
                 String anrede = (person.getAnrede() == Anrede.KEINE ? "" : person.getAnrede().toString());
-                writer.append(anrede);
-                writer.append(separator);
-                writer.append(person.getVorname());
-                writer.append(separator);
-                writer.append(person.getNachname());
-                writer.append(separator);
-                writer.append(person.getAdresse().getStrHausnummer());
-                writer.append(separator);
-                writer.append(person.getAdresse().getPlz());
-                writer.append(separator);
-                writer.append(person.getAdresse().getOrt());
-                writer.append('\n');
+                out.write(anrede);
+                out.write(separator);
+                out.write(person.getVorname());
+                out.write(separator);
+                out.write(person.getNachname());
+                out.write(separator);
+                out.write(person.getAdresse().getStrasseHausnummer());
+                out.write(separator);
+                out.write(person.getAdresse().getPlz());
+                out.write(separator);
+                out.write(person.getAdresse().getOrt());
+                out.write('\n');
             }
 
-            writer.flush();
-            writer.close();
+            out.close();
 
             result = Result.LISTE_ERFOLGREICH_ERSTELLT;
 

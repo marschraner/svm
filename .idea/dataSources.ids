@@ -1452,6 +1452,7 @@
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="code_id"/>
       <exported-key name="ElternmithilfeCode_ibfk_1" table="ElternmithilfeCode" schema="" catalog="svm" columns="code_id"/>
+      <exported-key name="MitarbeiterCode_ibfk_1" table="MitarbeiterCode" schema="" catalog="svm" columns="code_id"/>
       <exported-key name="SchuelerCode_ibfk_1" table="SchuelerCode" schema="" catalog="svm" columns="code_id"/>
       <exported-key name="SemesterrechnungCode_ibfk_1" table="SemesterrechnungCode" schema="" catalog="svm" columns="code_id"/>
     </table>
@@ -1580,12 +1581,30 @@
     <table name="Mitarbeiter" schema="" catalog="svm" type="TABLE">
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="ahvnummer" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
-      <column name="vertretungsmoeglichkeiten" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="lehrkraft" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="vertretungsmoeglichkeiten" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="bemerkungen" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
       <column name="aktiv" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="person_id"/>
       <foreign-key name="Mitarbeiter_ibfk_1" columns="person_id" ref-table="Person" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="Kurs_Lehrkraft_ibfk_2" table="Kurs_Lehrkraft" schema="" catalog="svm" columns="person_id"/>
+      <exported-key name="Mitarbeiter_MitarbeiterCode_ibfk_1" table="Mitarbeiter_MitarbeiterCode" schema="" catalog="svm" columns="person_id"/>
+    </table>
+    <table name="MitarbeiterCode" schema="" catalog="svm" type="TABLE">
+      <column name="code_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="code_id"/>
+      <foreign-key name="MitarbeiterCode_ibfk_1" columns="code_id" ref-table="Code" ref-schema="" ref-catalog="svm" ref-columns="code_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="Mitarbeiter_MitarbeiterCode_ibfk_2" table="Mitarbeiter_MitarbeiterCode" schema="" catalog="svm" columns="code_id"/>
+    </table>
+    <table name="Mitarbeiter_MitarbeiterCode" schema="" catalog="svm" type="TABLE">
+      <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="code_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="person_id,code_id"/>
+      <foreign-key name="Mitarbeiter_MitarbeiterCode_ibfk_1" columns="person_id" ref-table="Mitarbeiter" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Mitarbeiter_MitarbeiterCode_ibfk_2" columns="code_id" ref-table="MitarbeiterCode" ref-schema="" ref-catalog="svm" ref-columns="code_id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
     <table name="Person" schema="" catalog="svm" type="TABLE">
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>

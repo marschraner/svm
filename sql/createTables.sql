@@ -34,6 +34,8 @@ DROP TABLE IF EXISTS Kursort;
 DROP TABLE IF EXISTS Kurstyp;
 DROP TABLE IF EXISTS SemesterrechnungCode;
 DROP TABLE IF EXISTS ElternmithilfeCode;
+DROP TABLE IF EXISTS Mitarbeiter_MitarbeiterCode;
+DROP TABLE IF EXISTS MitarbeiterCode;
 DROP TABLE IF EXISTS Schueler_SchuelerCode;
 DROP TABLE IF EXISTS SchuelerCode;
 DROP TABLE IF EXISTS Code;
@@ -138,7 +140,9 @@ DESCRIBE Schueler;
 CREATE TABLE IF NOT EXISTS Mitarbeiter (
     person_id                  INT           NOT NULL,
     ahvnummer                  VARCHAR(16),
-    vertretungsmoeglichkeiten  VARCHAR(100),
+    lehrkraft                  BOOLEAN       NOT NULL,
+    vertretungsmoeglichkeiten  TEXT,
+    bemerkungen                TEXT,
     aktiv                      BOOLEAN       NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id),
@@ -201,7 +205,7 @@ CREATE TABLE IF NOT EXISTS SchuelerCode (
     code_id                    INT           NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (code_id),
-    FOREIGN KEY (code_id)    REFERENCES Code (code_id));
+    FOREIGN KEY (code_id)      REFERENCES Code (code_id));
 
 DESCRIBE SchuelerCode;
 
@@ -220,6 +224,32 @@ CREATE TABLE IF NOT EXISTS Schueler_SchuelerCode (
 DESCRIBE Schueler_SchuelerCode;
 
 
+-- MitarbeiterCode
+-- ***************
+
+CREATE TABLE IF NOT EXISTS MitarbeiterCode (
+    code_id                    INT           NOT NULL,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (code_id),
+    FOREIGN KEY (code_id)      REFERENCES Code (code_id));
+
+DESCRIBE MitarbeiterCode;
+
+
+-- Mitarbeiter_MitarbeiterCode
+-- ***************************
+
+CREATE TABLE IF NOT EXISTS Mitarbeiter_MitarbeiterCode (
+    person_id                  INT           NOT NULL,
+    code_id                    INT           NOT NULL,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (person_id, code_id),
+    FOREIGN KEY (person_id)    REFERENCES Mitarbeiter (person_id),
+    FOREIGN KEY (code_id)      REFERENCES MitarbeiterCode (code_id));
+
+DESCRIBE Mitarbeiter_MitarbeiterCode;
+
+
 -- ElternmithilfeCode
 -- ******************
 
@@ -227,7 +257,7 @@ CREATE TABLE IF NOT EXISTS ElternmithilfeCode (
     code_id                    INT           NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (code_id),
-    FOREIGN KEY (code_id)    REFERENCES Code (code_id));
+    FOREIGN KEY (code_id)      REFERENCES Code (code_id));
 
 DESCRIBE ElternmithilfeCode;
 
@@ -239,7 +269,7 @@ CREATE TABLE IF NOT EXISTS SemesterrechnungCode (
     code_id                    INT           NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (code_id),
-    FOREIGN KEY (code_id)    REFERENCES Code (code_id));
+    FOREIGN KEY (code_id)      REFERENCES Code (code_id));
 
 DESCRIBE SemesterrechnungCode;
 

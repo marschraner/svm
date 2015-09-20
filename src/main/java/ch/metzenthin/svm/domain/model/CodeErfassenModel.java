@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
+import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
@@ -12,6 +13,7 @@ import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
  */
 public interface CodeErfassenModel extends Model {
     void setSchuelerCodeOrigin(SchuelerCode schuelerCodeOrigin);
+    void setMitarbeiterCodeOrigin(MitarbeiterCode mitarbeiterCodeOrigin);
     void setElternmithilfeCodeOrigin(ElternmithilfeCode elternmithilfeCodeOrigin);
     void setSemesterrechnungCodeOrigin(SemesterrechnungCode semesterrechnungCodeOrigin);
 

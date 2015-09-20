@@ -1,15 +1,19 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
+import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
+import ch.metzenthin.svm.ui.components.CodesDialog;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
@@ -32,10 +36,15 @@ public class MitarbeiterErfassenController extends PersonController {
     private final SvmContext svmContext;
     private JDialog mitarbeiterErfassenDialog;
     private JTextField txtAhvNummer;
-    private JTextField txtVertretungsmoeglichkeiten;
+    private JTextArea textAreaVertretungsmoeglichkeiten;
+    private JTextArea textAreaBemerkungen;
     private JLabel errLblAhvNummer;
     private JLabel errLblVertretungsmoeglichkeiten;
+    private JLabel errLblBemerkungen;
+    private JCheckBox checkBoxLehrkraft;
     private JCheckBox checkBoxAktiv;
+    private JLabel lblCodes;
+    private JButton btnCodesBearbeiten;
     private JButton btnSpeichern;
 
     public MitarbeiterErfassenController(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, MitarbeiterErfassenModel mitarbeiterErfassenModel, boolean isBearbeiten) {
@@ -58,6 +67,7 @@ public class MitarbeiterErfassenController extends PersonController {
 
     public void constructionDone() {
         mitarbeiterErfassenModel.initializeCompleted();
+        updateCodesLabel();
     }
 
     public void setMitarbeiterErfassenDialog(JDialog mitarbeiterErfassenDialog) {
@@ -131,27 +141,46 @@ public class MitarbeiterErfassenController extends PersonController {
         }
     }
 
-    public void setTxtVertretungsmoeglichkeiten(JTextField txtVertretungsmoeglichkeiten) {
-        this.txtVertretungsmoeglichkeiten = txtVertretungsmoeglichkeiten;
-        this.txtVertretungsmoeglichkeiten.addActionListener(new ActionListener() {
+    public void setCheckBoxLehrkraft(JCheckBox checkBoxLehrkraft) {
+        this.checkBoxLehrkraft = checkBoxLehrkraft;
+        // Lehrkraft als Default-Wert
+        if (!isBearbeiten) {
+            mitarbeiterErfassenModel.setLehrkraft(true);
+        }
+        this.checkBoxLehrkraft.addItemListener(new ItemListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                onVertretungsmoeglichkeitenEvent(true);
-            }
-        });
-        this.txtVertretungsmoeglichkeiten.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onVertretungsmoeglichkeitenEvent(false);
+            public void itemStateChanged(ItemEvent e) {
+                onLehrkraftEvent();
             }
         });
     }
 
-    private void onVertretungsmoeglichkeitenEvent(boolean showRequiredErrMsg) {
+    private void setModelLehrkraft() {
+        mitarbeiterErfassenModel.setLehrkraft(checkBoxLehrkraft.isSelected());
+    }
+
+    private void onLehrkraftEvent() {
+        LOGGER.trace("MitarbeiterErfassenController Event Lehrkraft. Selected=" + checkBoxLehrkraft.isSelected());
+        setModelLehrkraft();
+    }
+
+    public void setTextAreaVertretungsmoeglichkeiten(JTextArea textAreaVertretungsmoeglichkeiten) {
+        this.textAreaVertretungsmoeglichkeiten = textAreaVertretungsmoeglichkeiten;
+        textAreaVertretungsmoeglichkeiten.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onVertretungsmoeglichkeitenEvent();
+            }
+        });
+        textAreaVertretungsmoeglichkeiten.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+        textAreaVertretungsmoeglichkeiten.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+    }
+
+    private void onVertretungsmoeglichkeitenEvent() {
         LOGGER.trace("MitarbeiterErfassenController Event Vertretungsmoeglichkeiten");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtVertretungsmoeglichkeiten.getText(), mitarbeiterErfassenModel.getVertretungsmoeglichkeiten());
+        boolean equalFieldAndModelValue = equalsNullSafe(textAreaVertretungsmoeglichkeiten.getText(), mitarbeiterErfassenModel.getVertretungsmoeglichkeiten());
         try {
-            setModelVertretungsmoeglichkeiten(showRequiredErrMsg);
+            setModelVertretungsmoeglichkeiten();
         } catch (SvmValidationException e) {
             return;
         }
@@ -162,21 +191,50 @@ public class MitarbeiterErfassenController extends PersonController {
         }
     }
 
-    private void setModelVertretungsmoeglichkeiten(boolean showRequiredErrMsg) throws SvmValidationException {
+    private void setModelVertretungsmoeglichkeiten() throws SvmValidationException {
         makeErrorLabelInvisible(Field.VERTRETUNGSMOEGLICHKEITEN);
         try {
-            mitarbeiterErfassenModel.setVertretungsmoeglichkeiten(txtVertretungsmoeglichkeiten.getText());
-        } catch (SvmRequiredException e) {
-            LOGGER.trace("MitarbeiterErfassenController setModelVertretungsmoeglichkeiten RequiredException=" + e.getMessage());
-            if (isModelValidationMode() || !showRequiredErrMsg) {
-                txtVertretungsmoeglichkeiten.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
-            } else {
-                showErrMsg(e);
-            }
-            throw e;
+            mitarbeiterErfassenModel.setVertretungsmoeglichkeiten(textAreaVertretungsmoeglichkeiten.getText());
         } catch (SvmValidationException e) {
             LOGGER.trace("MitarbeiterErfassenController setModelVertretungsmoeglichkeiten Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
+    public void setTextAreaBemerkungen(JTextArea textAreaBemerkungen) {
+        this.textAreaBemerkungen = textAreaBemerkungen;
+        textAreaBemerkungen.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onBemerkungenEvent();
+            }
+        });
+        textAreaBemerkungen.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+        textAreaBemerkungen.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+    }
+
+    private void onBemerkungenEvent() {
+        LOGGER.trace("MitarbeiterErfassenController Event Bemerkungen");
+        boolean equalFieldAndModelValue = equalsNullSafe(textAreaBemerkungen.getText(), mitarbeiterErfassenModel.getBemerkungen());
+        try {
+            setModelBemerkungen();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelBemerkungen() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.BEMERKUNGEN);
+        try {
+            mitarbeiterErfassenModel.setBemerkungen(textAreaBemerkungen.getText());
+        } catch (SvmValidationException e) {
+            LOGGER.trace("MitarbeiterErfassenController setModelBemerkungen Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -201,8 +259,17 @@ public class MitarbeiterErfassenController extends PersonController {
     }
 
     private void onAktivEvent() {
-        LOGGER.trace("AngehoerigerController Event Aktiv. Selected=" + checkBoxAktiv.isSelected());
+        LOGGER.trace("MitarbeiterErfassenController Event Aktiv. Selected=" + checkBoxAktiv.isSelected());
         setModelAktiv();
+    }
+
+    public void setLblCodes(JLabel lblCodes) {
+        this.lblCodes = lblCodes;
+        setLblCodes();
+    }
+
+    public void setLblCodes() {
+        lblCodes.setText(mitarbeiterErfassenModel.getCodesAsStr());
     }
 
     public void setErrLblAhvNummer(JLabel errLblAhvNummer) {
@@ -211,6 +278,33 @@ public class MitarbeiterErfassenController extends PersonController {
 
     public void setErrLblVertretungsmoeglichkeiten(JLabel errLblVertretungsmoeglichkeiten) {
         this.errLblVertretungsmoeglichkeiten = errLblVertretungsmoeglichkeiten;
+    }
+
+    public void setErrLblBemerkungen(JLabel errLblBemerkungen) {
+        this.errLblBemerkungen = errLblBemerkungen;
+    }
+
+    public void setBtnCodesBearbeiten(JButton btnCodesBearbeiten) {
+        this.btnCodesBearbeiten = btnCodesBearbeiten;
+        if (isModelValidationMode()) {
+            btnCodesBearbeiten.setEnabled(false);
+        }
+        btnCodesBearbeiten.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onCodesBearbeiten();
+            }
+        });
+    }
+
+    private void onCodesBearbeiten() {
+        CodesTableModel codesTableModel = new CodesTableModel(mitarbeiterErfassenModel.getCodesTableData());
+        String title = mitarbeiterErfassenModel.getCodesBearbeitenTitle();
+        CodesDialog codesDialog = new CodesDialog(svmContext, codesTableModel, mitarbeiterErfassenModel, true, Codetyp.MITARBEITER, title);
+        codesDialog.pack();
+        codesDialog.setVisible(true);
+        btnCodesBearbeiten.setFocusPainted(false);
+        updateCodesLabel();
     }
 
     public void setBtnSpeichern(JButton btnSpeichern) {
@@ -270,12 +364,22 @@ public class MitarbeiterErfassenController extends PersonController {
         if (checkIsFieldChange(Field.AHV_NUMMER, evt)) {
             txtAhvNummer.setText(mitarbeiterErfassenModel.getAhvNummer());
         }
+        else if (checkIsFieldChange(Field.LEHRKRAFT, evt)) {
+            checkBoxLehrkraft.setSelected(mitarbeiterErfassenModel.isLehrkraft());
+        }
         else if (checkIsFieldChange(Field.VERTRETUNGSMOEGLICHKEITEN, evt)) {
-            txtVertretungsmoeglichkeiten.setText(mitarbeiterErfassenModel.getVertretungsmoeglichkeiten());
+            textAreaVertretungsmoeglichkeiten.setText(mitarbeiterErfassenModel.getVertretungsmoeglichkeiten());
         }
         else if (checkIsFieldChange(Field.AKTIV, evt)) {
             checkBoxAktiv.setSelected(mitarbeiterErfassenModel.isAktiv());
         }
+        else if (checkIsFieldChange(Field.BEMERKUNGEN, evt)) {
+            textAreaBemerkungen.setText(mitarbeiterErfassenModel.getBemerkungen());
+        }
+    }
+
+    private void updateCodesLabel() {
+        setLblCodes();
     }
 
     @Override
@@ -285,9 +389,13 @@ public class MitarbeiterErfassenController extends PersonController {
             LOGGER.trace("Validate field AhvNummer");
             setModelAhvNummer(true);
         }
-        if (txtVertretungsmoeglichkeiten.isEnabled()) {
+        if (textAreaVertretungsmoeglichkeiten != null && textAreaVertretungsmoeglichkeiten.isEnabled()) {
             LOGGER.trace("Validate field Vertretungsmoeglichkeiten");
-            setModelVertretungsmoeglichkeiten(true);
+            setModelVertretungsmoeglichkeiten();
+        }
+        if (textAreaBemerkungen != null && textAreaBemerkungen.isEnabled()) {
+            LOGGER.trace("Validate field Bemerkungen");
+            setModelBemerkungen();
         }
     }
 
@@ -302,6 +410,10 @@ public class MitarbeiterErfassenController extends PersonController {
             errLblVertretungsmoeglichkeiten.setVisible(true);
             errLblVertretungsmoeglichkeiten.setText(e.getMessage());
         }
+        if (e.getAffectedFields().contains(Field.BEMERKUNGEN)) {
+            errLblBemerkungen.setVisible(true);
+            errLblBemerkungen.setText(e.getMessage());
+        }
     }
 
     @Override
@@ -311,7 +423,10 @@ public class MitarbeiterErfassenController extends PersonController {
             txtAhvNummer.setToolTipText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.VERTRETUNGSMOEGLICHKEITEN)) {
-            txtVertretungsmoeglichkeiten.setToolTipText(e.getMessage());
+            textAreaVertretungsmoeglichkeiten.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.BEMERKUNGEN)) {
+            textAreaBemerkungen.setToolTipText(e.getMessage());
         }
     }
 
@@ -324,11 +439,16 @@ public class MitarbeiterErfassenController extends PersonController {
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.VERTRETUNGSMOEGLICHKEITEN)) {
             errLblVertretungsmoeglichkeiten.setVisible(false);
-            txtVertretungsmoeglichkeiten.setToolTipText(null);
+            textAreaVertretungsmoeglichkeiten.setToolTipText(null);
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.BEMERKUNGEN)) {
+            errLblBemerkungen.setVisible(false);
+            textAreaBemerkungen.setToolTipText(null);
         }
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 }

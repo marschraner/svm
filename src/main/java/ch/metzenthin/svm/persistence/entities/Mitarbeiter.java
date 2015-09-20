@@ -3,9 +3,7 @@ package ch.metzenthin.svm.persistence.entities;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 
 import javax.persistence.*;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Martin Schraner
@@ -17,12 +15,24 @@ public class Mitarbeiter extends Person {
 
     @Column(name = "ahvnummer", nullable = true)
     private String ahvNummer;
+    
+    @Column(name = "lehrkraft", nullable = false)
+    private boolean lehrkraft;
 
-    @Column(name = "vertretungsmoeglichkeiten", nullable = true)
+    @Column(name = "vertretungsmoeglichkeiten", columnDefinition = "text", nullable = true)
     private String vertretungsmoeglichkeiten;
+
+    @Column(name = "bemerkungen", columnDefinition = "text", nullable = true)
+    private String bemerkungen;
 
     @Column(name = "aktiv", nullable = false)
     private Boolean aktiv;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "Mitarbeiter_MitarbeiterCode",
+            joinColumns = {@JoinColumn(name = "person_id")},
+            inverseJoinColumns = {@JoinColumn(name = "code_id")})
+    private Set<MitarbeiterCode> mitarbeiterCodes = new HashSet<>();
 
     @ManyToMany(mappedBy = "lehrkraefte")
     private Set<Kurs> kurse = new HashSet<>();
@@ -30,10 +40,12 @@ public class Mitarbeiter extends Person {
     public Mitarbeiter() {
     }
 
-    public Mitarbeiter(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String festnetz, String natel, String email, String ahvNummer, String vertretungsmoeglichkeiten, Boolean aktiv) {
+    public Mitarbeiter(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String festnetz, String natel, String email, String ahvNummer, boolean lehrkraft, String vertretungsmoeglichkeiten, String bemerkungen, Boolean aktiv) {
         super(anrede, vorname, nachname, geburtsdatum, festnetz, natel, email);
         this.ahvNummer = ahvNummer;
+        this.lehrkraft = lehrkraft;
         this.vertretungsmoeglichkeiten = vertretungsmoeglichkeiten;
+        this.bemerkungen = bemerkungen;
         this.aktiv = aktiv;
     }
 
@@ -41,13 +53,15 @@ public class Mitarbeiter extends Person {
         return otherMitarbeiter != null
                 && getVorname().equals(otherMitarbeiter.getVorname())
                 && getNachname().equals(otherMitarbeiter.getNachname())
-                && getGeburtsdatum().equals(otherMitarbeiter.getGeburtsdatum());
+                && ((getGeburtsdatum() == null && otherMitarbeiter.getGeburtsdatum() == null) || (getGeburtsdatum() != null && getGeburtsdatum().equals(otherMitarbeiter.getGeburtsdatum())));
     }
 
     public void copyAttributesFrom(Mitarbeiter mitarbeiterFrom) {
         super.copyAttributesFrom(mitarbeiterFrom);
         ahvNummer = mitarbeiterFrom.getAhvNummer();
+        lehrkraft = mitarbeiterFrom.getLehrkraft();
         vertretungsmoeglichkeiten = mitarbeiterFrom.getVertretungsmoeglichkeiten();
+        bemerkungen = mitarbeiterFrom.getBemerkungen();
         aktiv = mitarbeiterFrom.getAktiv();
     }
 
@@ -76,12 +90,28 @@ public class Mitarbeiter extends Person {
         this.ahvNummer = ahvNummer;
     }
 
+    public boolean getLehrkraft() {
+        return lehrkraft;
+    }
+
+    public void setLehrkraft(boolean lehrkraft) {
+        this.lehrkraft = lehrkraft;
+    }
+
     public String getVertretungsmoeglichkeiten() {
         return vertretungsmoeglichkeiten;
     }
 
     public void setVertretungsmoeglichkeiten(String vertretungsmoeglichkeiten) {
         this.vertretungsmoeglichkeiten = vertretungsmoeglichkeiten;
+    }
+
+    public String getBemerkungen() {
+        return bemerkungen;
+    }
+
+    public void setBemerkungen(String bemerkungen) {
+        this.bemerkungen = bemerkungen;
     }
 
     public Boolean getAktiv() {
@@ -92,7 +122,41 @@ public class Mitarbeiter extends Person {
         this.aktiv = aktiv;
     }
 
+    public Set<MitarbeiterCode> getMitarbeiterCodes() {
+        return mitarbeiterCodes;
+    }
+
+    public List<MitarbeiterCode> getMitarbeiterCodesAsList() {
+        List<MitarbeiterCode> mitarbeitercodesAsList = new ArrayList<>(mitarbeiterCodes);
+        Collections.sort(mitarbeitercodesAsList);
+        return mitarbeitercodesAsList;
+    }
+
+    public void addCode(MitarbeiterCode mitarbeiterCode) {
+        mitarbeiterCode.getMitarbeiters().add(this);
+        mitarbeiterCodes.add(mitarbeiterCode);
+    }
+
+    public void deleteCode(MitarbeiterCode mitarbeiterCode) {
+        // mitarbeiterCode.getMitarbeiter().remove(this); führt zu StaleObjectStateException!
+        // Stattdessen in MitarbeiterCodeDao.removeFromMitarbeiterAndUpdate() refresh(mitarbeiterCode) ausführen!
+        mitarbeiterCodes.remove(mitarbeiterCode);
+    }
+
+    @Transient
+    public String getMitarbeiterCodesAsStr() {
+        if (mitarbeiterCodes.isEmpty()) {
+            return "";
+        }
+        StringBuilder mitarbeiterCodesAsStr = new StringBuilder(getMitarbeiterCodesAsList().get(0).getKuerzel());
+        for (int i = 1; i < getMitarbeiterCodesAsList().size(); i++) {
+            mitarbeiterCodesAsStr.append(", ").append(getMitarbeiterCodesAsList().get(i).getKuerzel());
+        }
+        return mitarbeiterCodesAsStr.toString();
+    }
+
     public Set<Kurs> getKurse() {
         return kurse;
     }
+
 }

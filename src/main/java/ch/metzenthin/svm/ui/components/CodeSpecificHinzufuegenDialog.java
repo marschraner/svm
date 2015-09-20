@@ -1,44 +1,46 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.model.SchuelerCodeSchuelerHinzufuegenModel;
+import ch.metzenthin.svm.common.dataTypes.Codetyp;
+import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
+import ch.metzenthin.svm.domain.model.CodeSpecificHinzufuegenModel;
 import ch.metzenthin.svm.domain.model.CodesModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
-import ch.metzenthin.svm.ui.control.SchuelerCodeSchuelerHinzufuegenController;
+import ch.metzenthin.svm.ui.control.CodeSpecificHinzufuegenController;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class SchuelerCodeSchuelerHinzufuegenDialog extends JDialog {
+public class CodeSpecificHinzufuegenDialog extends JDialog {
     private JPanel contentPane;
     private JPanel dataPanel;
     private JPanel buttonPanel;
-    private JComboBox<SchuelerCode> comboBoxCode;
+    private JComboBox<Code> comboBoxCode;
     private JButton btnOk;
     private JButton btnAbbrechen;
     private JLabel errLblCode;
 
-    public SchuelerCodeSchuelerHinzufuegenDialog(SvmContext svmContext, CodesTableModel codesTableModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public CodeSpecificHinzufuegenDialog(SvmContext svmContext, CodesTableModel codesTableModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel, MitarbeiterErfassenModel mitarbeiterErfassenModel, Codetyp codetyp) {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
         setTitle("SchuelerCode hinzufügen");
         initializeErrLbls();
-        createCodeSchuelerHinzufuegenController(svmContext, codesTableModel, codesModel, schuelerDatenblattModel);
+        createCodeSchuelerHinzufuegenController(svmContext, codesTableModel, codesModel, schuelerDatenblattModel, mitarbeiterErfassenModel, codetyp);
     }
 
-    private void createCodeSchuelerHinzufuegenController(SvmContext svmContext, CodesTableModel codesTableModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel) {
-        SchuelerCodeSchuelerHinzufuegenModel schuelerCodeSchuelerHinzufuegenModel = svmContext.getModelFactory().createCodeSchuelerHinzufuegenModel();
-        SchuelerCodeSchuelerHinzufuegenController schuelerCodeSchuelerHinzufuegenController = new SchuelerCodeSchuelerHinzufuegenController(svmContext, codesTableModel, schuelerCodeSchuelerHinzufuegenModel, codesModel, schuelerDatenblattModel);
-        schuelerCodeSchuelerHinzufuegenController.setCodeSchuelerHinzufuegenDialog(this);
-        schuelerCodeSchuelerHinzufuegenController.setContentPane(contentPane);
-        schuelerCodeSchuelerHinzufuegenController.setComboBoxCode(comboBoxCode);
-        schuelerCodeSchuelerHinzufuegenController.setErrLblCode(errLblCode);
-        schuelerCodeSchuelerHinzufuegenController.setBtnOk(btnOk);
-        schuelerCodeSchuelerHinzufuegenController.setBtnAbbrechen(btnAbbrechen);
+    private void createCodeSchuelerHinzufuegenController(SvmContext svmContext, CodesTableModel codesTableModel, CodesModel codesModel, SchuelerDatenblattModel schuelerDatenblattModel, MitarbeiterErfassenModel mitarbeiterErfassenModel, Codetyp codetyp) {
+        CodeSpecificHinzufuegenModel codeSpecificHinzufuegenModel = svmContext.getModelFactory().createCodeSchuelerHinzufuegenModel();
+        CodeSpecificHinzufuegenController codeSpecificHinzufuegenController = new CodeSpecificHinzufuegenController(svmContext, codesTableModel, codeSpecificHinzufuegenModel, codesModel, schuelerDatenblattModel, mitarbeiterErfassenModel, codetyp);
+        codeSpecificHinzufuegenController.setCodeSpecificHinzufuegenDialog(this);
+        codeSpecificHinzufuegenController.setContentPane(contentPane);
+        codeSpecificHinzufuegenController.setComboBoxCode(comboBoxCode);
+        codeSpecificHinzufuegenController.setErrLblCode(errLblCode);
+        codeSpecificHinzufuegenController.setBtnOk(btnOk);
+        codeSpecificHinzufuegenController.setBtnAbbrechen(btnAbbrechen);
     }
 
     private void initializeErrLbls() {

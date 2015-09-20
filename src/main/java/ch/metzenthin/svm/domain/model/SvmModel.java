@@ -10,6 +10,8 @@ import java.util.List;
 public interface SvmModel {
     List<SchuelerCode> getSchuelerCodesAll();
     List<SchuelerCode> getSelektierbareSchuelerCodesAll();
+    List<MitarbeiterCode> getMitarbeiterCodesAll();
+    List<MitarbeiterCode> getSelektierbareMitarbeiterCodesAll();
     List<ElternmithilfeCode> getElternmithilfeCodesAll();
     List<ElternmithilfeCode> getSelektierbareElternmithilfeCodesAll();
     List<SemesterrechnungCode> getSemesterrechnungCodesAll();

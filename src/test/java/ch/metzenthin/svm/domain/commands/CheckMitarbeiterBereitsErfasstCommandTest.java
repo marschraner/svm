@@ -24,7 +24,7 @@ public class CheckMitarbeiterBereitsErfasstCommandTest {
 
     @Before
     public void setUp() {
-        Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Noémi", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+        Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Noémi", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
         Adresse adresse = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
         mitarbeiter.setAdresse(adresse);
         bereitsErfassteLehrkraefte.add(mitarbeiter);
@@ -32,7 +32,7 @@ public class CheckMitarbeiterBereitsErfasstCommandTest {
 
     @Test
     public void testExecute_LehrkraftBereitsErfasst() throws Exception {
-        Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Noémi", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "043 111 11 11", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+        Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Noémi", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "043 111 11 11", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
         Adresse adresse = new Adresse("Rebwiesenstrasse", "77", "8702", "Zollikon");
         mitarbeiter.setAdresse(adresse);
         CheckMitarbeiterBereitsErfasstCommand checkMitarbeiterBereitsErfasstCommand = new CheckMitarbeiterBereitsErfasstCommand(mitarbeiter, null, bereitsErfassteLehrkraefte);
@@ -42,7 +42,7 @@ public class CheckMitarbeiterBereitsErfasstCommandTest {
 
     @Test
     public void testExecute_LehrkraftNochNichtErfasst() throws Exception {
-        Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Nathalie", "Delley", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", "Mi, Fr, Sa", true);
+        Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Nathalie", "Delley", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", true, "Mi, Fr, Sa", null, true);
         Adresse adresse = new Adresse("Im Schilf", "7", "8044", "Zürich");
         mitarbeiter.setAdresse(adresse);
         CheckMitarbeiterBereitsErfasstCommand checkMitarbeiterBereitsErfasstCommand = new CheckMitarbeiterBereitsErfasstCommand(mitarbeiter, null, bereitsErfassteLehrkraefte);
@@ -52,7 +52,7 @@ public class CheckMitarbeiterBereitsErfasstCommandTest {
 
     @Test
     public void testExecute_LehrkraftOrigin() throws Exception {
-        Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Noémi", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "043 111 11 11", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+        Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Noémi", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "043 111 11 11", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
         Adresse adresse = new Adresse("Rebwiesenstrasse", "77", "8702", "Zollikon");
         mitarbeiter.setAdresse(adresse);
         CheckMitarbeiterBereitsErfasstCommand checkMitarbeiterBereitsErfasstCommand = new CheckMitarbeiterBereitsErfasstCommand(mitarbeiter, bereitsErfassteLehrkraefte.get(0), bereitsErfassteLehrkraefte);

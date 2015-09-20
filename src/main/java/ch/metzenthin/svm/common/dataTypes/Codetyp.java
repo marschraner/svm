@@ -5,6 +5,7 @@ package ch.metzenthin.svm.common.dataTypes;
  */
 public enum Codetyp {
     SCHUELER,
+    MITARBEITER,
     ELTERNMITHILFE,
     SEMESTERRECHNUNG
 }

@@ -5,6 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
+import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
@@ -19,6 +20,7 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     private Boolean selektierbar;
 
     private SchuelerCode schuelerCodeOrigin;
+    private MitarbeiterCode mitarbeiterCodeOrigin;
     private ElternmithilfeCode elternmithilfeCodeOrigin;
     private SemesterrechnungCode semesterrechnungCodeOrigin;
 
@@ -29,6 +31,11 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     @Override
     public void setSchuelerCodeOrigin(SchuelerCode schuelerCodeOrigin) {
         this.schuelerCodeOrigin = schuelerCodeOrigin;
+    }
+
+    @Override
+    public void setMitarbeiterCodeOrigin(MitarbeiterCode mitarbeiterCodeOrigin) {
+        this.mitarbeiterCodeOrigin = mitarbeiterCodeOrigin;
     }
 
     @Override
@@ -113,6 +120,9 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
             case SCHUELER:
                 checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, schuelerCodeOrigin, svmModel.getSchuelerCodesAll());
                 break;
+            case MITARBEITER:
+                checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, mitarbeiterCodeOrigin, svmModel.getMitarbeiterCodesAll());
+                break;
             case ELTERNMITHILFE:
                 checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, elternmithilfeCodeOrigin, svmModel.getElternmithilfeCodesAll());
                 break;
@@ -134,6 +144,13 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
                 commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
                 // TableData mit von der Datenbank upgedateten SchülerCodes updaten
                 codesTableModel.getCodesTableData().setCodes(svmModel.getSchuelerCodesAll());
+                break;
+            case MITARBEITER:
+                MitarbeiterCode mitarbeiterCode = new MitarbeiterCode(kuerzel, beschreibung, selektierbar);
+                SaveOrUpdateMitarbeiterCodeCommand saveOrUpdateMitarbeiterCodeCommand = new SaveOrUpdateMitarbeiterCodeCommand(mitarbeiterCode, mitarbeiterCodeOrigin, svmModel.getMitarbeiterCodesAll());
+                commandInvoker.executeCommandAsTransaction(saveOrUpdateMitarbeiterCodeCommand);
+                // TableData mit von der Datenbank upgedateten MitarbeiterCodes updaten
+                codesTableModel.getCodesTableData().setCodes(svmModel.getMitarbeiterCodesAll());
                 break;
             case ELTERNMITHILFE:
                 ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode(kuerzel, beschreibung, selektierbar);
@@ -161,6 +178,17 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
                 setBeschreibung(schuelerCodeOrigin.getBeschreibung());
                 setSelektierbar(!schuelerCodeOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
                 setSelektierbar(schuelerCodeOrigin.getSelektierbar());
+            } catch (SvmValidationException ignore) {
+                ignore.printStackTrace();
+            }
+            setBulkUpdate(false);
+        } else if (mitarbeiterCodeOrigin != null) {
+            setBulkUpdate(true);
+            try {
+                setKuerzel(mitarbeiterCodeOrigin.getKuerzel());
+                setBeschreibung(mitarbeiterCodeOrigin.getBeschreibung());
+                setSelektierbar(!mitarbeiterCodeOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
+                setSelektierbar(mitarbeiterCodeOrigin.getSelektierbar());
             } catch (SvmValidationException ignore) {
                 ignore.printStackTrace();
             }

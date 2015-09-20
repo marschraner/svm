@@ -36,6 +36,24 @@ public class SvmModelImpl implements SvmModel {
     }
 
     @Override
+    public List<MitarbeiterCode> getMitarbeiterCodesAll() {
+        FindAllMitarbeiterCodesCommand findAllMitarbeiterCodesCommand = new FindAllMitarbeiterCodesCommand();
+        commandInvoker.executeCommand(findAllMitarbeiterCodesCommand);
+        return findAllMitarbeiterCodesCommand.getMitarbeiterCodesAll();
+    }
+
+    @Override
+    public List<MitarbeiterCode> getSelektierbareMitarbeiterCodesAll() {
+        List<MitarbeiterCode> selektierbareMitarbeiterCodesAll = new ArrayList<>();
+        for (MitarbeiterCode mitarbeiterCode : getMitarbeiterCodesAll()) {
+            if (mitarbeiterCode.getSelektierbar()) {
+                selektierbareMitarbeiterCodesAll.add(mitarbeiterCode);
+            }
+        }
+        return selektierbareMitarbeiterCodesAll;
+    }
+
+    @Override
     public List<ElternmithilfeCode> getElternmithilfeCodesAll() {
         FindAllElternmithilfeCodesCommand findAllElternmithilfeCodesCommand = new FindAllElternmithilfeCodesCommand();
         commandInvoker.executeCommand(findAllElternmithilfeCodesCommand);
@@ -75,14 +93,14 @@ public class SvmModelImpl implements SvmModel {
     public List<Mitarbeiter> getMitarbeitersAll() {
         FindAllMitarbeitersCommand findAllMitarbeitersCommand = new FindAllMitarbeitersCommand();
         commandInvoker.executeCommand(findAllMitarbeitersCommand);
-        return findAllMitarbeitersCommand.getLehrkraefteAll();
+        return findAllMitarbeitersCommand.getMitarbeitersAll();
     }
 
     @Override
     public List<Mitarbeiter> getAktiveLehrkraefteAll() {
         List<Mitarbeiter> aktiveLehrkraefteAll = new ArrayList<>();
         for (Mitarbeiter mitarbeiter : getMitarbeitersAll()) {
-            if (mitarbeiter.getAktiv()) {
+            if (mitarbeiter.getAktiv() && mitarbeiter.getLehrkraft()) {
                 aktiveLehrkraefteAll.add(mitarbeiter);
             }
         }

@@ -191,7 +191,6 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         super.setWochenbetragNachrechnung(wochenbetragNachrechnung);
     }
 
-
     @Override
     public String getSechsJahresRabattNachrechnung() {
         CheckIfSemesterrechnungContainsSechsJahresRabattCommand checkIfSemesterrechnungContainsSechsJahresRabattCommand = new CheckIfSemesterrechnungContainsSechsJahresRabattCommand(semesterrechnungOrigin, previousSemester, Rechnungstyp.NACHRECHNUNG);

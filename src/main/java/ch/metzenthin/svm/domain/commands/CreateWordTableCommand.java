@@ -4,6 +4,7 @@ import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.WordprocessingML.StyleDefinitionsPart;
 import org.docx4j.wml.*;
 
 import java.io.File;
@@ -14,6 +15,8 @@ import java.util.List;
  * @author Martin Schraner
  */
 public class CreateWordTableCommand implements Command {
+
+    private static String[] FONT_SIZE_CELLS = {"20", "19", "18", "17", "16", "14", "12", "10"};  // Calibri Font size: 10, 9.5, 9, 8.5, 8, 7, 6, 5
 
     private WordprocessingMLPackage wordMLPackage;
     private ObjectFactory objectFactory;
@@ -32,8 +35,10 @@ public class CreateWordTableCommand implements Command {
     private int bottomMargin;
     private int leftMargin;
     private int rightMargin;
+    private int numberOfDatasetsFirstPage;
+    private int numberOfDatasetsNormalPage;
 
-    public CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLenghts, String title1, String title2, File outputFile, int topMargin, int bottomMargin, int leftMargin, int rightMargin) {
+    public CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLenghts, String title1, String title2, File outputFile, int topMargin, int bottomMargin, int leftMargin, int rightMargin, int numberOfDatasetsFirstPage, int numberOfDatasetsNormalPage) {
         this.headerRows = headerRows;
         this.datasets = datasets;
         this.columnWidths = columnWidths;
@@ -47,19 +52,22 @@ public class CreateWordTableCommand implements Command {
         this.bottomMargin = bottomMargin;
         this.leftMargin = leftMargin;
         this.rightMargin = rightMargin;
+        this.numberOfDatasetsFirstPage = numberOfDatasetsFirstPage;
+        this.numberOfDatasetsNormalPage = numberOfDatasetsNormalPage;
     }
 
     public CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLenghts, String title1, String title2, File outputFile) {
-        this(headerRows, datasets, columnWidths, boldCells, mergedCells, maxLenghts, title1, title2, outputFile, 90, 10, 650, 650);
+        this(headerRows, datasets, columnWidths, boldCells, mergedCells, maxLenghts, title1, title2, outputFile, 650, 300, 650, 650, 0, 0);
     }
 
-        @Override
+    @Override
     public void execute() {
+
+        if (numberOfDatasetsFirstPage == 0 || numberOfDatasetsNormalPage == 0) {
+            determineNumberOfDatasetsPerPage();
+        }
+
         // Source:http://blog.iprofs.nl/2012/09/06/creating-word-documents-with-docx4j/ (adapted)
-
-        String FONT_SIZE_TITLE = "28";
-        String[] FONT_SIZE_CELLS = {"20", "19", "18", "17", "16", "14", "12", "10"};  // Calibri Font size: 10, 9.5, 9, 8.5, 8, 7, 6, 5
-
         try {
             wordMLPackage = WordprocessingMLPackage.createPackage();
         } catch (InvalidFormatException e) {
@@ -67,61 +75,31 @@ public class CreateWordTableCommand implements Command {
         }
         objectFactory = Context.getWmlObjectFactory();
 
+        // Default-Schrift und -Schriftgrösse ändern
+        alterStyleSheet();
+
         // Titel
+        String FONT_SIZE_TITLE = "28";
         addTitle(FONT_SIZE_TITLE);
 
-        // Tabelle
-        Tbl table = objectFactory.createTbl();
+        // Einzelne Seiten
+        int n = 0;
+        int numberOfDatasetsPerPage = numberOfDatasetsFirstPage;
+        boolean header = true;
+        while (n < datasets.size()) {
 
-        // Header
-        // Iteration über Zeilen
-        for (int i = 0; i < headerRows.size(); i++) {
-            Tr tableRow = objectFactory.createTr();
-            List<String> headerRow = headerRows.get(i);
-            List<Integer> mergedRow = mergedCells.get(i);
-            boolean verticalSpace = (i == headerRows.size() - 1);
-            // Iteration über Spalten
-            for (int j = 0; j < headerRow.size(); j++) {
-                addTableCell(tableRow, headerRow.get(j), columnWidths.get(j), true, mergedRow.get(j), FONT_SIZE_CELLS[0], verticalSpace);
-                if (mergedRow.get(j) > 0) {
-                    j += mergedRow.get(j) - 1;
-                }
-            }
-            table.getContent().add(tableRow);
-        }
+            // Tabelle
+            addTable(n, numberOfDatasetsPerPage, header);
 
-        // Daten
-        for (List<List<String>> datasetRows : datasets) {
-            // Iteration über Zeilen
-            for (int i = 0; i < datasetRows.size(); i++) {
-                Tr tableRow = objectFactory.createTr();
-                List<String> datasetRow = datasetRows.get(i);
-                List<Boolean> boldsRow = boldCells.get(i);
-                List<Integer> mergedRow = mergedCells.get(i);
-                List<int[]> maxLenghtsRow = maxLenghts.get(i);
-                boolean verticalSpace = (i == datasetRows.size() - 1);
-                // Iteration über Spalten
-                for (int j = 0; j < datasetRow.size(); j++) {
+            n += numberOfDatasetsPerPage;
+            numberOfDatasetsPerPage = numberOfDatasetsNormalPage;
+            header = false;
 
-                    // Fontsize je nach Textlänge
-                    int k = 0;
-                    int[] maxLengthsCell = maxLenghtsRow.get(j);
-                    String fontSize = FONT_SIZE_CELLS[0];
-                    while (k < maxLengthsCell.length && k < FONT_SIZE_CELLS.length - 1 && maxLengthsCell[k] > 0 && datasetRow.get(j).length() > maxLengthsCell[k]) {
-                        fontSize = FONT_SIZE_CELLS[k + 1];
-                        k++;
-                    }
-
-                    addTableCell(tableRow, datasetRow.get(j), columnWidths.get(j), boldsRow.get(j), mergedRow.get(j), fontSize, verticalSpace);
-                    if (mergedRow.get(j) > 0) {
-                        j += mergedRow.get(j) - 1;
-                    }
-                }
-                table.getContent().add(tableRow);
+            // Zeilenumbruch
+            if (n < datasets.size()) {
+                addPageBreak();
             }
         }
-
-        wordMLPackage.getMainDocumentPart().addObject(table);
 
         // Seitenränder anpassen
         SetWordPageMarginsCommand setWordPageMarginsCommand = new SetWordPageMarginsCommand(wordMLPackage, objectFactory, topMargin, bottomMargin, leftMargin, rightMargin);
@@ -136,8 +114,20 @@ public class CreateWordTableCommand implements Command {
 
     }
 
-    private void addTitle(String fontSize) {
+    private void determineNumberOfDatasetsPerPage() {
+        if (headerRows.size() == 3) {
+            numberOfDatasetsFirstPage = 12;
+            numberOfDatasetsNormalPage = 15;
+        } else if (headerRows.size() == 2) {
+            numberOfDatasetsFirstPage = 16;
+            numberOfDatasetsFirstPage = 20;
+        } else {
+            numberOfDatasetsFirstPage = 6;
+            numberOfDatasetsNormalPage = 8;
+        }
+    }
 
+    private void addTitle(String fontSize) {
         P paragraph = objectFactory.createP();
         R run = objectFactory.createR();
         Br br = objectFactory.createBr(); // this Br element is used break the current and go for next line
@@ -164,7 +154,70 @@ public class CreateWordTableCommand implements Command {
 
         run.setRPr(runProperties);
         wordMLPackage.getMainDocumentPart().addObject(paragraph);
+    }
 
+    private void addTable(int datasetNumberStart, int numberOfDatasetsPerPage, boolean header) {
+        // Tabelle
+        Tbl table = objectFactory.createTbl();
+
+        // Header
+        // Iteration über Zeilen
+        if (header) {
+            for (int i = 0; i < headerRows.size(); i++) {
+                Tr tableRow = objectFactory.createTr();
+                List<String> headerRow = headerRows.get(i);
+                List<Integer> mergedRow = mergedCells.get(i);
+                boolean verticalSpace = (i == headerRows.size() - 1);
+                // Iteration über Spalten
+                for (int j = 0; j < headerRow.size(); j++) {
+                    addTableCell(tableRow, headerRow.get(j), columnWidths.get(j), true, mergedRow.get(j), FONT_SIZE_CELLS[0], verticalSpace);
+                    if (mergedRow.get(j) > 0) {
+                        j += mergedRow.get(j) - 1;
+                    }
+                }
+                table.getContent().add(tableRow);
+            }
+        }
+
+        // Daten
+        for (int n = datasetNumberStart; n < datasetNumberStart + numberOfDatasetsPerPage; n++) {
+
+            if (n == datasets.size()) {
+                break;
+            }
+
+            List<List<String>> datasetRows = datasets.get(n);
+            // Iteration über Zeilen
+            for (int i = 0; i < datasetRows.size(); i++) {
+                Tr tableRow = objectFactory.createTr();
+                List<String> datasetRow = datasetRows.get(i);
+                List<Boolean> boldsRow = boldCells.get(i);
+                List<Integer> mergedRow = mergedCells.get(i);
+                List<int[]> maxLenghtsRow = maxLenghts.get(i);
+
+                boolean verticalSpace = (i == datasetRows.size() - 1);
+                // Iteration über Spalten
+                for (int j = 0; j < datasetRow.size(); j++) {
+
+                    // Fontsize je nach Textlänge
+                    int k = 0;
+                    int[] maxLengthsCell = maxLenghtsRow.get(j);
+                    String fontSize = FONT_SIZE_CELLS[0];
+                    while (k < maxLengthsCell.length && k < FONT_SIZE_CELLS.length - 1 && maxLengthsCell[k] > 0 && datasetRow.get(j).length() > maxLengthsCell[k]) {
+                        fontSize = FONT_SIZE_CELLS[k + 1];
+                        k++;
+                    }
+
+                    addTableCell(tableRow, datasetRow.get(j), columnWidths.get(j), boldsRow.get(j), mergedRow.get(j), fontSize, verticalSpace);
+                    if (mergedRow.get(j) > 0) {
+                        j += mergedRow.get(j) - 1;
+                    }
+                }
+                table.getContent().add(tableRow);
+            }
+        }
+
+        wordMLPackage.getMainDocumentPart().addObject(table);
     }
 
     private void addTableCell(Tr tableRow, String content, int width, boolean bold, int mergedCells, String fontSize, boolean verticalSpace) {
@@ -199,6 +252,7 @@ public class CreateWordTableCommand implements Command {
         if (fontSize != null && !fontSize.isEmpty()) {
             setFontSize(runProperties, fontSize);
         }
+
         run.setRPr(runProperties);
 
         // Merged cell
@@ -255,6 +309,87 @@ public class CreateWordTableCommand implements Command {
         BooleanDefaultTrue b = new BooleanDefaultTrue();
         b.setVal(true);
         runProperties.setB(b);
+    }
+
+    /**
+     *  Change the font of the given run properties to Calibri.
+     *
+     *  A run font specifies the fonts which shall be used to display the contents
+     *  of the run. Of the four possible types of content, we change the styling of
+     *  two of them: ASCII and High ANSI.
+     *  Finally we add the run font to the run properties
+     */
+    private void changeFontToCalibri(RPr runProperties) {
+        RFonts runFont = new RFonts();
+        runFont.setAscii("Calibri");
+        runFont.setHAnsi("Calibri");
+        runProperties.setRFonts(runFont);
+    }
+
+
+    /**
+     * Adds a page break to the document.
+     */
+    private void addPageBreak() {
+        P paragraph = objectFactory.createP();
+        Br breakObj = new Br();
+
+        breakObj.setType(STBrType.PAGE);
+        paragraph.getContent().add(breakObj);
+        wordMLPackage.getMainDocumentPart().addObject(paragraph);
+    }
+
+    /**
+     *  This method alters the default style sheet that is part of each document.
+     *
+     *  To do this, we first retrieve the style sheet from the package and then
+     *  get the Styles object from it. From this object, we get the list of actual
+     *  styles and iterate over them.
+     *  We check against all styles we want to alter and apply the alterations if
+     *  applicable.
+     *
+     */
+    private void alterStyleSheet() {
+        StyleDefinitionsPart styleDefinitionsPart = wordMLPackage.getMainDocumentPart().getStyleDefinitionsPart();
+        Styles styles;
+        try {
+            styles = styleDefinitionsPart.getContents();
+        } catch (Docx4JException e) {
+            throw new RuntimeException(e);
+        }
+        List<Style>  stylesList = styles.getStyle();
+        for (Style style : stylesList) {
+            if (style.getStyleId().equals("Normal")) {
+                alterNormalStyle(style);
+            }
+            // Ändern Title, Subtitle (hier nicht benötigt) etc siehe
+            // http://blog.iprofs.nl/2012/11/19/adding-layout-to-your-docx4j-generated-word-documents-part-2/
+        }
+    }
+
+    /**
+     *  First we create a run properties object as we want to remove nearly all of
+     *  the existing styling. Then we change the font and font size and set the
+     *  run properties on the given style. As in previous examples, the font size
+     *  is defined to be in half-point size.
+     */
+    private void alterNormalStyle(Style style) {
+        // we want to change (or remove) almost all the run properties of the
+        // normal style, so we create a new one.
+        RPr runProperties = new RPr();
+        changeFontToCalibri(runProperties);
+        changeFontSize(runProperties, 6);
+        style.setRPr(runProperties);
+    }
+
+    /**
+     * Change the font size of the given run properties to the given value.
+     *
+     */
+    private void changeFontSize(RPr runProperties, int fontSize) {
+        HpsMeasure size = new HpsMeasure();
+        size.setVal(BigInteger.valueOf(fontSize));
+        runProperties.setSz(size);
     }
 
 }

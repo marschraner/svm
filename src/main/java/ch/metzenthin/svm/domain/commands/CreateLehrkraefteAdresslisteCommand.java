@@ -157,7 +157,7 @@ public class CreateLehrkraefteAdresslisteCommand extends CreateListeCommand {
         header.add(headerCellsRow3);
 
         // Inhalt
-        List<Mitarbeiter> lehrkraefte = mitarbeitersTableModel.getLehrkraefte();
+        List<Mitarbeiter> lehrkraefte = mitarbeitersTableModel.getMitarbeiters();
         List<List<List<String>>> datasets = new ArrayList<>();
         int i = 0;
         for (Mitarbeiter mitarbeiter : lehrkraefte) {

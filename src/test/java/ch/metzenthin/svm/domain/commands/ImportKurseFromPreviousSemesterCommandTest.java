@@ -74,9 +74,9 @@ public class ImportKurseFromPreviousSemesterCommandTest {
         SaveOrUpdateKursortCommand saveOrUpdateKursortCommand = new SaveOrUpdateKursortCommand(kursort1, null, erfassteKursorte);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
 
-        Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roostest", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "Mi, Fr, Sa", true);
+        Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roostest", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
         Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
-        SaveOrUpdateMitarbeiterCommand saveOrUpdateMitarbeiterCommand = new SaveOrUpdateMitarbeiterCommand(mitarbeiter1, adresse1, null, erfassteLehrkraefte);
+        SaveOrUpdateMitarbeiterCommand saveOrUpdateMitarbeiterCommand = new SaveOrUpdateMitarbeiterCommand(mitarbeiter1, adresse1, null, null, erfassteLehrkraefte);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMitarbeiterCommand);
 
         // 2 Kurse für semester1 erfassen

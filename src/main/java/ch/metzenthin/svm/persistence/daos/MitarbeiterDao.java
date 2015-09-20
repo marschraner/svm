@@ -1,9 +1,11 @@
 package ch.metzenthin.svm.persistence.daos;
 
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
+import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -16,10 +18,24 @@ public class MitarbeiterDao extends GenericDao<Mitarbeiter, Integer> {
     }
 
     @Override
-    public Mitarbeiter save(Mitarbeiter entity) {
-        super.save(entity);
-        entityManager.refresh(entity.getAdresse());
-        return entity;
+    public Mitarbeiter save(Mitarbeiter mitarbeiter) {
+        super.save(mitarbeiter);
+        if (mitarbeiter.getAdresse() != null) {
+            entityManager.refresh(mitarbeiter.getAdresse());
+        }
+        return mitarbeiter;
+    }
+
+    @Override
+    public void remove(Mitarbeiter mitarbeiter) {
+        // Lösche zugewiesene Codes
+        for (MitarbeiterCode mitarbeiterCode : new HashSet<>(mitarbeiter.getMitarbeiterCodes())) {
+            mitarbeiter.deleteCode(mitarbeiterCode);
+            entityManager.refresh(mitarbeiterCode);
+        }
+
+        // Lösche Mitarbeiter aus DB
+        entityManager.remove(mitarbeiter);
     }
 
     public List<Mitarbeiter> findAll() {

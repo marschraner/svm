@@ -61,11 +61,11 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuBar.add(menuDatei);
 
         JMenu menuSchueler = new JMenu("Schüler");
-        menuSchueler.setMnemonic(KeyEvent.VK_C);
+        menuSchueler.setMnemonic(KeyEvent.VK_H);
         menuBar.add(menuSchueler);
 
         JMenu menuMitarbeiter = new JMenu("Mitarbeiter");
-        menuMitarbeiter.setMnemonic(KeyEvent.VK_M);
+        menuMitarbeiter.setMnemonic(KeyEvent.VK_I);
         menuBar.add(menuMitarbeiter);
 
         JMenu menuSemester = new JMenu("Semester");
@@ -90,8 +90,8 @@ public class SvmDesktop extends JFrame implements ActionListener {
 
         // Set up the first menu item.
         JMenuItem menuItem = new JMenuItem("Schüler suchen / bearbeiten");
-        menuItem.setMnemonic(KeyEvent.VK_C);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK));
+        menuItem.setMnemonic(KeyEvent.VK_H);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.ALT_MASK));
         menuItem.setActionCommand("schuelerSuchen");
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
@@ -104,8 +104,8 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuSchueler.add(menuItem);
 
         menuItem = new JMenuItem("Schüler-Codes verwalten");
-        menuItem.setMnemonic(KeyEvent.VK_O);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.ALT_MASK));
+        menuItem.setMnemonic(KeyEvent.VK_C);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK));
         menuItem.setActionCommand("schuelerCodesVerwalten");
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
@@ -118,9 +118,16 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuSchueler.add(menuItem);
 
         menuItem = new JMenuItem("Mitarbeiter verwalten");
-        menuItem.setMnemonic(KeyEvent.VK_M);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_MASK));
+        menuItem.setMnemonic(KeyEvent.VK_I);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.ALT_MASK));
         menuItem.setActionCommand("mitarbeiterVerwalten");
+        menuItem.addActionListener(this);
+        menuMitarbeiter.add(menuItem);
+
+        menuItem = new JMenuItem("Mitarbeiter-Codes verwalten");
+        menuItem.setMnemonic(KeyEvent.VK_C);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK));
+        menuItem.setActionCommand("mitarbeiterCodesVerwalten");
         menuItem.addActionListener(this);
         menuMitarbeiter.add(menuItem);
 
@@ -269,6 +276,16 @@ public class SvmDesktop extends JFrame implements ActionListener {
             });
             setAndShowActivePanel(mitarbeitersPanel.$$$getRootComponent$$$(), "Mitarbeiter verwalten");
 
+        } else if ("mitarbeiterCodesVerwalten".equals(e.getActionCommand())) {
+            CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.MITARBEITER);
+            codesPanel.addCloseListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFrameAbbrechen();
+                }
+            });
+            setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Mitarbeiter-Codes verwalten");
+
         } else if ("kurseVerwalten".equals(e.getActionCommand())) {
             KurseSemesterwahlPanel kurseSemesterwahlPanel = new KurseSemesterwahlPanel(svmContext);
             kurseSemesterwahlPanel.addCloseListener(new ActionListener() {
@@ -360,7 +377,6 @@ public class SvmDesktop extends JFrame implements ActionListener {
                 }
             });
             setAndShowActivePanel(semesterrechnungenSuchenPanel.$$$getRootComponent$$$(), "Semesterrechnungen suchen");
-
 
         } else if ("semesterrechnungCodesVerwalten".equals(e.getActionCommand())) {
             CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.SEMESTERRECHNUNG);
