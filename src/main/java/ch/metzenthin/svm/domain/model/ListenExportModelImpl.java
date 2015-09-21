@@ -80,6 +80,66 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
     }
 
     @Override
+    public String[] getListenErstellenWarning(SemesterrechnungenTableModel semesterrechnungenTableModel) {
+        String[] listenErstellenWarning = null;
+        switch (listentyp) {
+            case SCHUELER_ADRESSLISTE:
+                break;
+            case SCHUELER_ABSENZENLISTE:
+                break;
+            case ROLLENLISTE:
+                break;
+            case ELTERNMITHILFE_LISTE:
+                break;
+            case SCHUELER_ADRESSETIKETTEN:
+                break;
+            case RECHNUNGSEMPFAENGER_ADRESSETIKETTEN:
+                break;
+            case MUTTER_ODER_VATER_ADRESSETIKETTEN:
+                break;
+            case ELTERNMITHILFE_ADRESSETIKETTEN:
+                break;
+            case LEHRKRAEFTE_ADRESSLISTE:
+                break;
+            case MITARBEITER_LISTE:
+                break;
+            case MITARBEITER_ADRESSETIKETTEN:
+                break;
+            case KURSLISTE_WORD:
+                break;
+            case KURSLISTE_CSV:
+                break;
+            case VORRECHNUNGEN_SERIENBRIEF:
+                if (!checkIfRechnungsdatumVorrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
+                    String listenErstellenWarningMessage = "Die Rechnungsauswahl enthält Vorrechnungen ohne Rechnungsdatum. \n" +
+                            "Es werden nur Rechnungen mit gesetztem Rechnungsdatum exportiert. Forfahren?";
+                    String listenErstellenWarningTitle = "Rechnungsdatum nicht überall gesetzt";
+                    listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
+                }
+                break;
+            case NACHRECHNUNGEN_SERIENBRIEF:
+                if (!checkIfRechnungsdatumNachrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
+                    String listenErstellenWarningMessage = "Die Rechnungsauswahl enthält Nachrechnungen ohne Rechnungsdatum. \n" +
+                            "Es werden nur Rechnungen mit gesetztem Rechnungsdatum exportiert. Forfahren?";
+                    String listenErstellenWarningTitle = "Rechnungsdatum nicht überall gesetzt";
+                    listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
+                }
+                break;
+            case MAHNUNGEN_SERIENBRIEF:
+                if (!checkIfRechnungsdatumVorrechnungUeberallGesetzt(semesterrechnungenTableModel) && !checkIfRechnungsdatumNachrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
+                    String listenErstellenWarningMessage = "Die Rechnungsauswahl enthält Rechnungen ohne Rechnungsdatum. \n" +
+                            "Es werden nur Rechnungen mit gesetztem Rechnungsdatum als Mahnung exportiert. Forfahren?";
+                    String listenErstellenWarningTitle = "Rechnungsdatum nicht überall gesetzt";
+                    listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
+                }
+                break;
+            case RECHNUNGSLISTE:
+                break;
+        }
+        return listenErstellenWarning;
+    }
+
+    @Override
     public File getSaveFileInit() {
         Properties prop = SvmProperties.getSvmProperties();
         File listenDirectoryInit = new File(prop.getProperty(SvmProperties.KEY_DEFAULT_OUTPUT_DIRECTORY) + File.separator);
@@ -310,8 +370,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
         return schuelerSuchenTableModel.getMaerchen().getBezeichnung();
     }
 
-    @Override
-    public boolean checkIfRechnungsdatumVorrechnungUeberallGesetzt(SemesterrechnungenTableModel semesterrechnungenTableModel) {
+    private boolean checkIfRechnungsdatumVorrechnungUeberallGesetzt(SemesterrechnungenTableModel semesterrechnungenTableModel) {
         for (Semesterrechnung semesterrechnung : semesterrechnungenTableModel.getSemesterrechnungen()) {
             if (semesterrechnung.getRechnungsdatumVorrechnung() == null) {
                 return false;
@@ -320,8 +379,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
         return true;
     }
 
-    @Override
-    public boolean checkIfRechnungsdatumNachrechnungUeberallGesetzt(SemesterrechnungenTableModel semesterrechnungenTableModel) {
+    private boolean checkIfRechnungsdatumNachrechnungUeberallGesetzt(SemesterrechnungenTableModel semesterrechnungenTableModel) {
         for (Semesterrechnung semesterrechnung : semesterrechnungenTableModel.getSemesterrechnungen()) {
             if (semesterrechnung.getRechnungsdatumNachrechnung() == null) {
                 return false;

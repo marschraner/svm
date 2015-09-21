@@ -57,6 +57,19 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
 
             // Daten
             for (Semesterrechnung semesterrechnung : semesterrechnungList) {
+                if (rechnungstyp == Rechnungstyp.VORRECHNUNG) {
+                    if (semesterrechnung.getRechnungsdatumVorrechnung() == null ||
+                            semesterrechnung.getWochenbetragVorrechnung() == null ||
+                            semesterrechnung.getSchulgeldVorrechnung() == null) {
+                        continue;
+                    }
+                } else {
+                    if (semesterrechnung.getRechnungsdatumNachrechnung() == null ||
+                            semesterrechnung.getWochenbetragNachrechnung() == null ||
+                            semesterrechnung.getSchulgeldNachrechnung() == null) {
+                        continue;
+                    }
+                }
                 Angehoeriger rechnungsempfaenger = semesterrechnung.getRechnungsempfaenger();
                 String anrede = rechnungsempfaenger.getAnrede().toString();
                 out.write(anrede);

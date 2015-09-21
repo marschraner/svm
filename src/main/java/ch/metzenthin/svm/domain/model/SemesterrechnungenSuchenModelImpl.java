@@ -510,16 +510,14 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
                 || (semesterrechnungCodeJaNeinSelected != null && semesterrechnungCodeJaNeinSelected != SemesterrechnungCodeJaNeinSelected.ALLE)
                 || (getSemesterrechnungCode() != null && getSemesterrechnungCode() != SEMESTERRECHNUNG_CODE_ALLE)
                 || (stipendiumJaNeinSelected != null && stipendiumJaNeinSelected != StipendiumJaNeinSelected.ALLE)
-                || (getStipendium() != null && getStipendium() != Stipendium.KEINES)
                 || isGratiskinder()
-                || getRechnungsdatumVorrechnung() != null
                 || getErmaessigungVorrechnung() != null
                 || getZuschlagVorrechnung() != null
+                || getAnzahlWochenVorrechnung() != null
                 || getWochenbetragVorrechnung() != null
                 || schulgeldVorrechnung != null
                 || (sechsJahresRabattJaNeinVorrechnungSelected != null && sechsJahresRabattJaNeinVorrechnungSelected != SechsJahresRabattJaNeinVorrechnungSelected.ALLE)
                 || (rechnungsdatumGesetztVorrechnungSelected != null && rechnungsdatumGesetztVorrechnungSelected != RechnungsdatumGesetztVorrechnungSelected.ALLE)
-                || getRechnungsdatumNachrechnung() != null
                 || getErmaessigungNachrechnung() != null
                 || getZuschlagNachrechnung() != null
                 || getAnzahlWochenNachrechnung() != null

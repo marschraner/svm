@@ -46,6 +46,9 @@ public class CreateMahnungenSerienbriefCsvFileCommand extends CreateListeCommand
 
             // Daten
             for (Semesterrechnung semesterrechnung : semesterrechnungList) {
+                if (semesterrechnung.getRestbetrag() == null) {
+                    continue;
+                }
                 Angehoeriger rechnungsempfaenger = semesterrechnung.getRechnungsempfaenger();
                 String anrede = rechnungsempfaenger.getAnrede().toString();
                 out.write(anrede);

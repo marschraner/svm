@@ -194,21 +194,7 @@ public class ListenExportController extends AbstractController {
             comboBoxListentyp.removeItem(Listentyp.KURSLISTE_CSV);
         }
         if (listenExportTyp == ListenExportTyp.SEMESTERRECHNUNGEN) {
-            // Initialisierung / Deaktivierungen, falls Rechnungsdatum nicht gesetzt
-            boolean rechnungsdatumVorrechnungUeberallGesetzt = listenExportModel.checkIfRechnungsdatumVorrechnungUeberallGesetzt(semesterrechnungenTableModel);
-            boolean rechnungsdatumNachrechnungUeberallGesetzt = listenExportModel.checkIfRechnungsdatumNachrechnungUeberallGesetzt(semesterrechnungenTableModel);
-            if (!rechnungsdatumVorrechnungUeberallGesetzt) {
-                comboBoxListentyp.removeItem(Listentyp.VORRECHNUNGEN_SERIENBRIEF);
-                comboBoxListentyp.setSelectedItem(Listentyp.RECHNUNGSLISTE);
-            } else {
-                comboBoxListentyp.setSelectedItem(Listentyp.VORRECHNUNGEN_SERIENBRIEF);
-            }
-            if (!rechnungsdatumNachrechnungUeberallGesetzt) {
-                comboBoxListentyp.removeItem(Listentyp.NACHRECHNUNGEN_SERIENBRIEF);
-            }
-            if (!rechnungsdatumVorrechnungUeberallGesetzt && !rechnungsdatumNachrechnungUeberallGesetzt) {
-                comboBoxListentyp.removeItem(Listentyp.MAHNUNGEN_SERIENBRIEF);
-            }
+            comboBoxListentyp.setSelectedItem(Listentyp.VORRECHNUNGEN_SERIENBRIEF);
         } else {
             comboBoxListentyp.removeItem(Listentyp.VORRECHNUNGEN_SERIENBRIEF);
             comboBoxListentyp.removeItem(Listentyp.NACHRECHNUNGEN_SERIENBRIEF);
@@ -308,6 +294,25 @@ public class ListenExportController extends AbstractController {
             return;
         }
         enableButtons(false);
+        // Vorprüfung
+        String[] listenErstellenWarning = listenExportModel.getListenErstellenWarning(semesterrechnungenTableModel);
+        if (listenErstellenWarning != null) {
+            Object[] options = {"Ja", "Nein"};
+            int n = JOptionPane.showOptionDialog(
+                    listenExportDialog,
+                    listenErstellenWarning[0],
+                    listenErstellenWarning[1],
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,     //do not use a custom Icon
+                    options,  //the titles of buttons
+                    options[1]); //default button title
+            if (n != 0) {
+                btnOk.setFocusPainted(false);
+                enableButtons(true);
+                return;
+            }
+        }
         // Speichern-Dialog
         JFileChooser fileChooser = setupFileChooser();
         int returnVal = fileChooser.showSaveDialog(listenExportDialog);

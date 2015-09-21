@@ -22,10 +22,8 @@ public interface ListenExportModel extends Model {
     void setListentyp(Listentyp listentyp) throws SvmRequiredException;
     void setTitel(String titel) throws SvmValidationException;
 
+    String[] getListenErstellenWarning(SemesterrechnungenTableModel semesterrechnungenTableModel);
     File getSaveFileInit();
     CreateListeCommand.Result createListenFile(File outputFile, SchuelerSuchenTableModel schuelerSuchenTableModel, MitarbeitersTableModel mitarbeitersTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel);
     String getTitleInit(SchuelerSuchenTableModel schuelerSuchenTableModel);
-    boolean checkIfRechnungsdatumVorrechnungUeberallGesetzt(SemesterrechnungenTableModel semesterrechnungenTableModel);
-    boolean checkIfRechnungsdatumNachrechnungUeberallGesetzt(SemesterrechnungenTableModel semesterrechnungenTableModel);
-
 }
