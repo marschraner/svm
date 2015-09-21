@@ -81,7 +81,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         mergedRow2.add(0);
         mergedRow2.add(0);
         mergedRow2.add(0);
-        mergedRow2.add(0);
+        mergedRow2.add(2);
         mergedRow2.add(0);
         mergedCells.add(mergedRow2);
         // 3. Zeile
@@ -100,7 +100,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         mergedRow3.add(2);
         mergedRow3.add(0);
         mergedRow3.add(0);
-        mergedRow3.add(0);
+        mergedRow3.add(2);
         mergedRow3.add(0);
         mergedCells.add(mergedRow3);
 
