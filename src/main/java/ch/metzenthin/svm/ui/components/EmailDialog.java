@@ -28,7 +28,7 @@ public class EmailDialog extends JDialog {
 
     private void createemailController(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel) {
         EmailModel emailModel = svmContext.getModelFactory().createEmailModel();
-        EmailController emailController = new EmailController(emailModel, schuelerDatenblattModel);
+        EmailController emailController = new EmailController(emailModel, svmContext, schuelerDatenblattModel);
         emailController.setEmailDialog(this);
         emailController.setContentPane(contentPane);
         emailController.setComboBoxEmailEmpfaenger(comboBoxEmailEmpfaenger);

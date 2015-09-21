@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.EmailEmpfaenger;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
@@ -28,15 +29,17 @@ public class EmailController extends AbstractController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private EmailModel emailModel;
+    private SvmContext svmContext;
     private SchuelerDatenblattModel schuelerDatenblattModel;
     private JDialog emailDialog;
     private JComboBox<EmailEmpfaenger> comboBoxEmailEmpfaenger;
     private JButton btnOk;
     private EmailEmpfaenger[] selectableEmailEmpfaengers;
 
-    public EmailController(EmailModel emailModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public EmailController(EmailModel emailModel, SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel) {
         super(emailModel);
         this.emailModel = emailModel;
+        this.svmContext = svmContext;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.emailModel.addPropertyChangeListener(this);
         this.emailModel.addDisableFieldsListener(this);
@@ -133,7 +136,7 @@ public class EmailController extends AbstractController {
         }
         CallDefaultEmailClientCommand.Result result = emailModel.callEmailClient(schuelerDatenblattModel);
         if (result == CallDefaultEmailClientCommand.Result.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT) {
-            JOptionPane.showMessageDialog(emailDialog, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(emailDialog, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
         }
         emailDialog.dispose();
     }

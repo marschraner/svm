@@ -4,7 +4,9 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
+import ch.metzenthin.svm.ui.componentmodel.NumberTableCellRenderer;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.componentmodel.StringTableCellRenderer;
 import ch.metzenthin.svm.ui.components.ListenExportDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 
@@ -15,7 +17,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Calendar;
 
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAccordingToCellContentAndHeader;
 
@@ -38,8 +39,26 @@ public class SchuelerSuchenResultController {
         this.svmContext = svmContext;
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.schuelerSuchenResultTable = schuelerSuchenResultTable;
+        setupSchuelerSuchenResultTable();
+    }
+
+    private void setupSchuelerSuchenResultTable() {
         schuelerSuchenResultTable.setModel(schuelerSuchenTableModel);
-        schuelerSuchenResultTable.setDefaultRenderer(Calendar.class, new CalendarTableCellRenderer());
+        schuelerSuchenResultTable.getColumnModel().getColumn(0).setCellRenderer(new StringTableCellRenderer());
+        schuelerSuchenResultTable.getColumnModel().getColumn(1).setCellRenderer(new StringTableCellRenderer());
+        schuelerSuchenResultTable.getColumnModel().getColumn(2).setCellRenderer(new StringTableCellRenderer());
+        schuelerSuchenResultTable.getColumnModel().getColumn(3).setCellRenderer(new StringTableCellRenderer());
+        schuelerSuchenResultTable.getColumnModel().getColumn(4).setCellRenderer(new StringTableCellRenderer());
+        schuelerSuchenResultTable.getColumnModel().getColumn(5).setCellRenderer(new CalendarTableCellRenderer());
+        schuelerSuchenResultTable.getColumnModel().getColumn(6).setCellRenderer(new StringTableCellRenderer());
+        schuelerSuchenResultTable.getColumnModel().getColumn(7).setCellRenderer(new StringTableCellRenderer());
+        schuelerSuchenResultTable.getColumnModel().getColumn(8).setCellRenderer(new StringTableCellRenderer());
+        schuelerSuchenResultTable.getColumnModel().getColumn(9).setCellRenderer(new StringTableCellRenderer());
+        schuelerSuchenResultTable.getColumnModel().getColumn(10).setCellRenderer(new NumberTableCellRenderer());
+        if (schuelerSuchenTableModel.getSemester() != null && schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+            // Märchen nur im 1. Semester anzeigen
+            schuelerSuchenResultTable.getColumnModel().getColumn(11).setCellRenderer(new StringTableCellRenderer());
+        }
         setJTableColumnWidthAccordingToCellContentAndHeader(schuelerSuchenResultTable);
         schuelerSuchenResultTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override

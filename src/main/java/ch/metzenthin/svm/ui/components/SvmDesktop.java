@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
+import com.apple.eawt.Application;
 import org.apache.log4j.Logger;
 import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import javax.swing.*;
@@ -44,6 +45,10 @@ public class SvmDesktop extends JFrame implements ActionListener {
         URL iconURL = getClass().getResource("/images/buehne.gif");
         if (iconURL != null) {
             setIconImage(new ImageIcon(iconURL).getImage());
+            // Mac Dock-Icon
+            if (System.getProperty("os.name").toLowerCase().startsWith("mac")) {
+                Application.getApplication().setDockIconImage(new ImageIcon(iconURL).getImage());
+            }
         }
 
         setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), "Schüler suchen");
@@ -476,7 +481,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
                     "Applikation beenden",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
-                    null,     //do not use a custom Icon
+                    svmContext.getDialogIcons().getQuestionIcon(),
                     options,  //the titles of buttons
                     options[0]);
         }
@@ -503,4 +508,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
         root.getGlassPane().setVisible(false);
     }
 
+    public SvmContext getSvmContext() {
+        return svmContext;
+    }
 }

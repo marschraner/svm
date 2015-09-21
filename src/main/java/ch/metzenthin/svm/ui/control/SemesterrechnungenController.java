@@ -5,9 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
 import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
 import ch.metzenthin.svm.domain.model.SemesterrechnungBearbeitenModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenModel;
-import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
-import ch.metzenthin.svm.ui.componentmodel.NumberTableCellRenderer;
-import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
+import ch.metzenthin.svm.ui.componentmodel.*;
 import ch.metzenthin.svm.ui.components.ListenExportDialog;
 import ch.metzenthin.svm.ui.components.RechnungsdatumErfassenDialog;
 import ch.metzenthin.svm.ui.components.SemesterrechnungBearbeitenPanel;
@@ -15,7 +13,6 @@ import ch.metzenthin.svm.ui.components.SemesterrechnungBearbeitenPanel;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -74,40 +71,26 @@ public class SemesterrechnungenController {
             }
         });
         // Farben für Spalten
-        semesterrechnungenTable.setDefaultRenderer(Calendar.class, new CalendarTableCellRenderer());
-        TableColumn tm = semesterrechnungenTable.getColumnModel().getColumn(2);
-        tm.setCellRenderer(new CalendarTableCellRenderer(Color.BLUE));
-        tm = semesterrechnungenTable.getColumnModel().getColumn(3);
-        tm.setCellRenderer(new NumberTableCellRenderer(Color.BLUE));
-        tm = semesterrechnungenTable.getColumnModel().getColumn(4);
-        tm.setCellRenderer(new NumberTableCellRenderer(Color.BLUE));
-        tm = semesterrechnungenTable.getColumnModel().getColumn(5);
-        tm.setCellRenderer(new NumberTableCellRenderer(Color.BLUE));
-        tm = semesterrechnungenTable.getColumnModel().getColumn(6);
-        tm.setCellRenderer(new NumberTableCellRenderer(Color.BLUE));
-        tm = semesterrechnungenTable.getColumnModel().getColumn(7);
-        tm.setCellRenderer(new NumberTableCellRenderer(Color.BLUE));
-        tm = semesterrechnungenTable.getColumnModel().getColumn(8);
-        tm.setCellRenderer(new CalendarTableCellRenderer(Color.RED));
-        tm = semesterrechnungenTable.getColumnModel().getColumn(9);
-        tm.setCellRenderer(new NumberTableCellRenderer(Color.RED));
-        tm = semesterrechnungenTable.getColumnModel().getColumn(10);
-        tm.setCellRenderer(new NumberTableCellRenderer(Color.RED));
-        tm = semesterrechnungenTable.getColumnModel().getColumn(11);
-        tm.setCellRenderer(new NumberTableCellRenderer(Color.RED));
-        tm = semesterrechnungenTable.getColumnModel().getColumn(12);
-        tm.setCellRenderer(new NumberTableCellRenderer(Color.RED));
-        tm = semesterrechnungenTable.getColumnModel().getColumn(13);
-        tm.setCellRenderer(new NumberTableCellRenderer(Color.RED));
-        Color darkGreen = new Color(200, 0, 200);
-        tm = semesterrechnungenTable.getColumnModel().getColumn(15);
-        tm.setCellRenderer(new NumberTableCellRenderer(darkGreen));
-        tm = semesterrechnungenTable.getColumnModel().getColumn(16);
-        tm.setCellRenderer(new NumberTableCellRenderer(darkGreen));
-        tm = semesterrechnungenTable.getColumnModel().getColumn(17);
-        tm.setCellRenderer(new NumberTableCellRenderer(darkGreen));
-        tm = semesterrechnungenTable.getColumnModel().getColumn(18);
-        tm.setCellRenderer(new NumberTableCellRenderer(darkGreen));
+        Color lila = new Color(200, 0, 200);
+        semesterrechnungenTable.getColumnModel().getColumn(0).setCellRenderer(new StringTableCellRenderer());
+        semesterrechnungenTable.getColumnModel().getColumn(1).setCellRenderer(new StringTableCellRenderer());
+        semesterrechnungenTable.getColumnModel().getColumn(2).setCellRenderer(new CalendarColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(3).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(4).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(5).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(6).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(7).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(8).setCellRenderer(new CalendarColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(9).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(10).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(11).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(12).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(13).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(14).setCellRenderer(new NumberTableCellRenderer());
+        semesterrechnungenTable.getColumnModel().getColumn(15).setCellRenderer(new NumberColorTableCellRenderer(lila));
+        semesterrechnungenTable.getColumnModel().getColumn(16).setCellRenderer(new NumberColorTableCellRenderer(lila));
+        semesterrechnungenTable.getColumnModel().getColumn(17).setCellRenderer(new NumberColorTableCellRenderer(lila));
+        semesterrechnungenTable.getColumnModel().getColumn(18).setCellRenderer(new NumberColorTableCellRenderer(lila));
     }
 
     public void setLblTotal(JLabel lblTotal) {
@@ -166,7 +149,7 @@ public class SemesterrechnungenController {
                 "Semesterrechnungen vom vorherigen Semester importieren?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 1) {
@@ -181,7 +164,7 @@ public class SemesterrechnungenController {
                 "Offene Restbeträge",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getQuestionIcon(),
                 optionsQuestion,  //the titles of buttons
                 optionsQuestion[1]); //default button title
         boolean importRestbetraege = n != 1;
@@ -194,7 +177,7 @@ public class SemesterrechnungenController {
                 "Bereits vorhandene Semesterrechnungen überschreiben?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getQuestionIcon(),
                 optionsUeberschreiben,  //the titles of buttons
                 optionsUeberschreiben[1]); //default button title
         boolean bisherigeUeberschreiben = n != 1;
@@ -207,7 +190,7 @@ public class SemesterrechnungenController {
                     "Warnung",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
-                    null,     //do not use a custom Icon
+                    svmContext.getDialogIcons().getWarningIcon(),
                     optionsWarning,  //the titles of buttons
                     optionsWarning[1]); //default button title
             if (n == 1) {
@@ -270,7 +253,7 @@ public class SemesterrechnungenController {
                 "Eintrag löschen?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getWarningIcon(),
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
@@ -308,7 +291,7 @@ public class SemesterrechnungenController {
                 "Wahl des Rechnungstyps",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getQuestionIcon(),
                 optionsRechnungstyp,  //the titles of buttons
                 optionsRechnungstyp[0]); //default button title
         Rechnungstyp rechnungstyp = (n == 1 ? Rechnungstyp.NACHRECHNUNG : Rechnungstyp.VORRECHNUNG);

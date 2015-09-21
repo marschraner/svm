@@ -142,14 +142,14 @@ public class MitarbeitersController {
                 "Eintrag löschen?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getWarningIcon(),
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
             DeleteMitarbeiterCommand.Result result  = mitarbeitersModel.mitarbeiterLoeschen(svmContext, mitarbeitersTableModel, mitarbeitersTable.convertRowIndexToModel(mitarbeitersTable.getSelectedRow()));
             switch (result) {
                 case MITARBEITER_VON_KURS_REFERENZIERT:
-                    JOptionPane.showMessageDialog(null, "Der Mitarbeiter wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Der Mitarbeiter wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
@@ -159,7 +159,8 @@ public class MitarbeitersController {
                             null,
                             "Der Mitarbeiter wurde erfolgreich aus der Datenbank gelöscht.",
                             "Löschen erfolgreich",
-                            JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.INFORMATION_MESSAGE,
+                            svmContext.getDialogIcons().getInformationIcon());
                     break;
             }
         }

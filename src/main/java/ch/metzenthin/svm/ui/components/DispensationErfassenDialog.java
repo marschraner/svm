@@ -47,7 +47,7 @@ public class DispensationErfassenDialog extends JDialog {
 
     private void createDispensationErfassenController(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, DispensationenModel dispensationenModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexBearbeiten, boolean isBearbeiten) {
         DispensationErfassenModel dispensationErfassenModel = (isBearbeiten ? dispensationenModel.getDispensationErfassenModel(svmContext, schuelerDatenblattModel, indexBearbeiten) : svmContext.getModelFactory().createDispensationErfassenModel());
-        DispensationErfassenController dispensationErfassenController = new DispensationErfassenController(dispensationenTableModel, dispensationErfassenModel, schuelerDatenblattModel);
+        DispensationErfassenController dispensationErfassenController = new DispensationErfassenController(svmContext, dispensationenTableModel, dispensationErfassenModel, schuelerDatenblattModel);
         dispensationErfassenController.setDispensationErfassenDialog(this);
         dispensationErfassenController.setContentPane(contentPane);
         dispensationErfassenController.setTxtDispensationsbeginn(txtDispensationsbeginn);

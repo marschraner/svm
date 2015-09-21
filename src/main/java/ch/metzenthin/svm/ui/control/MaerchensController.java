@@ -130,14 +130,14 @@ public class MaerchensController {
                 "Eintrag löschen?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
             DeleteMaerchenCommand.Result result  = maerchensModel.maerchenLoeschen(svmContext, maerchensTableModel, maerchensTable.getSelectedRow());
             switch (result) {
                 case MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT:
-                    JOptionPane.showMessageDialog(null, "Das Maerchen wird durch mindestens eine Märcheneinteilung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Das Maerchen wird durch mindestens eine Märcheneinteilung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:

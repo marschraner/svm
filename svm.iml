@@ -115,5 +115,6 @@
     <orderEntry type="library" name="Maven: org.antlr:antlr-runtime:3.3" level="project" />
     <orderEntry type="library" name="Maven: org.antlr:stringtemplate:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:17.0" level="project" />
+    <orderEntry type="library" name="Maven: com.apple:AppleJavaExtensions:1.4" level="project" />
   </component>
 </module>

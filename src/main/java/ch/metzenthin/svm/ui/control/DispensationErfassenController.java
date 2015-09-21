@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -28,6 +29,7 @@ public class DispensationErfassenController extends AbstractController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private DispensationErfassenModel dispensationErfassenModel;
+    private SvmContext svmContext;
     private DispensationenTableModel dispensationenTableModel;
     private SchuelerDatenblattModel schuelerDatenblattModel;
     private JDialog dispensationErfassenDialog;
@@ -41,8 +43,9 @@ public class DispensationErfassenController extends AbstractController {
     private JLabel errLblVoraussichtlicheDauer;
     private JButton btnSpeichern;
 
-    public DispensationErfassenController(DispensationenTableModel dispensationenTableModel, DispensationErfassenModel dispensationErfassenModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public DispensationErfassenController(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, DispensationErfassenModel dispensationErfassenModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         super(dispensationErfassenModel);
+        this.svmContext = svmContext;
         this.dispensationenTableModel = dispensationenTableModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.dispensationErfassenModel = dispensationErfassenModel;
@@ -321,7 +324,7 @@ public class DispensationErfassenController extends AbstractController {
             return;
         }
         if (dispensationErfassenModel.checkDispensationUeberlapptAndereDispensationen(schuelerDatenblattModel)) {
-            JOptionPane.showMessageDialog(dispensationErfassenDialog, "Dispensationen dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(dispensationErfassenDialog, "Dispensationen dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
             btnSpeichern.setFocusPainted(false);
         } else {
             dispensationErfassenModel.speichern(dispensationenTableModel, schuelerDatenblattModel);

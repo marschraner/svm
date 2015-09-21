@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -33,15 +34,17 @@ public class MonatsstatistikKurseController extends AbstractController {
     private static final String MONAT_JAHR_DATE_FORMAT_STRING = "MM.yyyy";
 
     private MonatsstatistikKurseModel monatsstatistikKurseModel;
+    private SvmContext svmContext;
     private ActionListener closeListener;
     private JTextField txtMonatJahr;
     private JLabel errLblMonatJahr;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
 
-    public MonatsstatistikKurseController(MonatsstatistikKurseModel monatsstatistikKurseModel) {
+    public MonatsstatistikKurseController(MonatsstatistikKurseModel monatsstatistikKurseModel, SvmContext svmContext) {
         super(monatsstatistikKurseModel);
         this.monatsstatistikKurseModel = monatsstatistikKurseModel;
+        this.svmContext = svmContext;
         this.monatsstatistikKurseModel.addPropertyChangeListener(this);
         this.monatsstatistikKurseModel.addDisableFieldsListener(this);
         this.monatsstatistikKurseModel.addMakeErrorLabelsInvisibleListener(this);
@@ -157,7 +160,7 @@ public class MonatsstatistikKurseController extends AbstractController {
         String statistik = "Anmeldungen: " + result[0] +
                 "\nAbmeldungen: " + result[1] +
                 "\nBesuchte Lektionen: " + result[2];
-        JOptionPane.showMessageDialog(null, statistik, "Statistik per Ende Monat", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, statistik, "Statistik per Ende Monat", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
     }
 
     private void onMonatsstatistikModelCompleted(boolean completed) {

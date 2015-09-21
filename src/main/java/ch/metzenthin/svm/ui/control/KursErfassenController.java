@@ -629,13 +629,13 @@ public class KursErfassenController extends AbstractController {
             return;
         }
         if (kursErfassenModel.checkKursBereitsErfasst(kurseTableModel)) {
-            JOptionPane.showMessageDialog(kursErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(kursErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
             btnSpeichern.setFocusPainted(false);
             return;
         }
         if (!kursErfassenModel.checkIfLektionsgebuehrenErfasst(svmContext.getSvmModel())) {
             JOptionPane.showMessageDialog(kursErfassenDialog, "Der Kurs kann nicht gespeichert werden, weil für die \n" +
-                    "Kurslänge noch keine Lektionsgebühren erfasst sind.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    "Kurslänge noch keine Lektionsgebühren erfasst sind.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
             btnSpeichern.setFocusPainted(false);
             return;
         }

@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenTableData;
 import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
+import ch.metzenthin.svm.ui.componentmodel.NumberTableCellRenderer;
 import ch.metzenthin.svm.ui.components.LektionsgebuehrenErfassenDialog;
 
 import javax.swing.*;
@@ -38,6 +39,13 @@ public class LektionsgebuehrenController {
         LektionsgebuehrenTableData lektionsgebuehrenTableData = new LektionsgebuehrenTableData(svmContext.getSvmModel().getLektionsgebuehrenAllList());
         lektionsgebuehrenTableModel = new LektionsgebuehrenTableModel(lektionsgebuehrenTableData);
         lektionsgebuehrenTable.setModel(lektionsgebuehrenTableModel);
+        lektionsgebuehrenTable.getColumnModel().getColumn(0).setCellRenderer(new NumberTableCellRenderer());
+        lektionsgebuehrenTable.getColumnModel().getColumn(1).setCellRenderer(new NumberTableCellRenderer());
+        lektionsgebuehrenTable.getColumnModel().getColumn(2).setCellRenderer(new NumberTableCellRenderer());
+        lektionsgebuehrenTable.getColumnModel().getColumn(3).setCellRenderer(new NumberTableCellRenderer());
+        lektionsgebuehrenTable.getColumnModel().getColumn(4).setCellRenderer(new NumberTableCellRenderer());
+        lektionsgebuehrenTable.getColumnModel().getColumn(5).setCellRenderer(new NumberTableCellRenderer());
+        lektionsgebuehrenTable.getColumnModel().getColumn(6).setCellRenderer(new NumberTableCellRenderer());
         lektionsgebuehrenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -118,7 +126,7 @@ public class LektionsgebuehrenController {
         btnLoeschen.setFocusPainted(true);
         if (lektionsgebuehrenModel.checkIfLektionslaengeInVerwendung(lektionsgebuehrenTableModel, lektionsgebuehrenTable.getSelectedRow())) {
             JOptionPane.showMessageDialog(null, "Die Lektionsgebühren können nicht gelöscht werden,\n" +
-                    "weil Kurse mit dieser Lektionslänge existieren.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    "weil Kurse mit dieser Lektionslänge existieren.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
         } else {
             lektionsgebuehrenModel.eintragLoeschen(svmContext, lektionsgebuehrenTableModel, lektionsgebuehrenTable.getSelectedRow());
             lektionsgebuehrenTableModel.fireTableDataChanged();

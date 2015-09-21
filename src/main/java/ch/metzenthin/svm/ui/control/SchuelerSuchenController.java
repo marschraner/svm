@@ -749,7 +749,7 @@ public class SchuelerSuchenController extends PersonController {
                 errMsg = "Es wurden keine Kurse gefunden, welche auf die Suchabfrage passen.";
                 title = "Keine Kurse gefunden";
             }
-            JOptionPane.showMessageDialog(null, errMsg, title, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, errMsg, title, JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
             btnSuchen.setFocusPainted(false);
             return;
         }
@@ -771,7 +771,7 @@ public class SchuelerSuchenController extends PersonController {
             schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckListener);
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler gespeichert"));
         } else {
-            JOptionPane.showMessageDialog(null, "Es wurden keine Schüler gefunden, welche auf die Suchabfrage passen.", "Keine Schüler gefunden", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Es wurden keine Schüler gefunden, welche auf die Suchabfrage passen.", "Keine Schüler gefunden", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
             btnSuchen.setFocusPainted(false);
         }
     }

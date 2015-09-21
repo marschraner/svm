@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.common;
 
+import ch.metzenthin.svm.common.utils.DialogIcons;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.model.ModelFactory;
 import ch.metzenthin.svm.domain.model.SvmModel;
@@ -12,6 +13,7 @@ public class SvmContext {
     private final ModelFactory modelFactory;
     private final CommandInvoker commandInvoker;
     private final SvmModel svmModel;
+    private DialogIcons dialogIcons = new DialogIcons();
 
     public SvmContext(ModelFactory modelFactory, CommandInvoker commandInvoker, SvmModel svmModel) {
         this.modelFactory = modelFactory;
@@ -29,5 +31,9 @@ public class SvmContext {
 
     public SvmModel getSvmModel() {
         return svmModel;
+    }
+
+    public DialogIcons getDialogIcons() {
+        return dialogIcons;
     }
 }

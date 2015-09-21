@@ -366,11 +366,11 @@ public class SemesterErfassenController extends AbstractController {
             return;
         }
         if (semesterErfassenModel.checkSemesterBereitsErfasst(svmContext.getSvmModel())) {
-            JOptionPane.showMessageDialog(semesterErfassenDialog, semesterErfassenModel.getSemester() + " bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(semesterErfassenDialog, semesterErfassenModel.getSemester() + " bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
             btnSpeichern.setFocusPainted(false);
         } else {
             if (semesterErfassenModel.checkSemesterUeberlapptAndereSemester(svmContext.getSvmModel())) {
-                JOptionPane.showMessageDialog(semesterErfassenDialog, "Semester dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(semesterErfassenDialog, "Semester dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
                 btnSpeichern.setFocusPainted(false);
             } else {
                 boolean affectsSemesterrechnungen = semesterErfassenModel.checkIfUpdateAffectsSemesterrechnungen();
@@ -384,7 +384,7 @@ public class SemesterErfassenController extends AbstractController {
                             "Anzahl Semesterwochen auch bei Semesterrechnungen ändern?",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE,
-                            null,     //do not use a custom Icon
+                            svmContext.getDialogIcons().getQuestionIcon(),
                             optionsImport,  //the titles of buttons
                             optionsImport[0]); //default button title
 

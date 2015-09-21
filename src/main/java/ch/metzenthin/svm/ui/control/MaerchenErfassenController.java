@@ -258,7 +258,7 @@ public class MaerchenErfassenController extends AbstractController {
             return;
         }
         if (maerchenErfassenModel.checkMaerchenBereitsErfasst(svmContext.getSvmModel())) {
-            JOptionPane.showMessageDialog(maerchenErfassenDialog, "Märchen für Schuljahr " + maerchenErfassenModel.getMaerchen().getSchuljahr() + " bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(maerchenErfassenDialog, "Märchen für Schuljahr " + maerchenErfassenModel.getMaerchen().getSchuljahr() + " bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
             btnSpeichern.setFocusPainted(false);
         } else {
             if (maerchenErfassenModel.checkIfMaerchenIsInPast()) {
@@ -269,7 +269,7 @@ public class MaerchenErfassenController extends AbstractController {
                         "Schuljahr in Vergangenheit",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE,
-                        null,     //do not use a custom Icon
+                        svmContext.getDialogIcons().getWarningIcon(),
                         options,  //the titles of buttons
                         options[1]); //default button title
                 if (n == 1) {

@@ -513,20 +513,20 @@ public class KursanmeldungErfassenController extends AbstractController {
                     "Semester in Vergangenheit",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
-                    null,     //do not use a custom Icon
+                    svmContext.getDialogIcons().getWarningIcon(),
                     options,  //the titles of buttons
                     options[1]); //default button title
         }
         if (n == 0) {
             // Existiert der Kurs?
             if (!isBearbeiten && kursanmeldungErfassenModel.findKurs() == FindKursCommand.Result.KURS_EXISTIERT_NICHT) {
-                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs existiert nicht.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs existiert nicht.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
                 btnOk.setFocusPainted(false);
                 return;
             }
             // Kurs bereits erfasst
             if (!isBearbeiten && kursanmeldungErfassenModel.checkIfKursBereitsErfasst(schuelerDatenblattModel)) {
-                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
                 btnOk.setFocusPainted(false);
                 return;
             }

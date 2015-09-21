@@ -326,7 +326,7 @@ public class MitarbeiterErfassenController extends PersonController {
             return;
         }
         if (mitarbeiterErfassenModel.checkMitarbeiterBereitsErfasst(svmContext.getSvmModel())) {
-            JOptionPane.showMessageDialog(mitarbeiterErfassenDialog, "Der Mitarbeiter ist bereits in der Datenbank gespeichert und kann nicht ein weiteres Mal erfasst werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(mitarbeiterErfassenDialog, "Der Mitarbeiter ist bereits in der Datenbank gespeichert und kann nicht ein weiteres Mal erfasst werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
             btnSpeichern.setFocusPainted(false);
         } else {
             mitarbeiterErfassenModel.speichern(svmContext.getSvmModel(), mitarbeitersTableModel);

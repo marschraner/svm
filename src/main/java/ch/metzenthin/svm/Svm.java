@@ -31,14 +31,6 @@ public class Svm {
         for (UIManager.LookAndFeelInfo lookAndFeelInfo : UIManager.getInstalledLookAndFeels()) {
             String laf = lookAndFeelInfo.getName();
             switch (laf) {
-                case "Macintosh" :
-                    System.setProperty("apple.laf.useScreenMenuBar", "true");
-                    System.setProperty("com.apple.mrj.application.apple.menu.about.name", "WikiTeX");
-                    try {
-                        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    } catch (Exception ignore) {
-                    }
-                    break;
                 case "Mac" :
                 case "GTK+" :
                 case "Windows" :
@@ -52,6 +44,9 @@ public class Svm {
             }
             if ("GTK+".equals(laf)) {
                 GtkPlusLookAndFeelWorkaround.installGtkPopupBugWorkaround();
+            }
+            if ("Mac".equals(laf)) {
+                svmContext.getDialogIcons().createDialogIcons();
             }
         }
 

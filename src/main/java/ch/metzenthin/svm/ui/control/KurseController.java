@@ -94,7 +94,7 @@ public class KurseController {
                     "Schuljahr / Semester in Vergangenheit",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
-                    null,     //do not use a custom Icon
+                    svmContext.getDialogIcons().getWarningIcon(),
                     options,  //the titles of buttons
                     options[1]); //default button title
             if (n == 1) {
@@ -166,7 +166,7 @@ public class KurseController {
                     "Warnung",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
-                    null,     //do not use a custom Icon
+                    svmContext.getDialogIcons().getWarningIcon(),
                     options,  //the titles of buttons
                     options[1]); //default button title
         } else {
@@ -176,7 +176,7 @@ public class KurseController {
                     "Kurs löschen?",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
-                    null,     //do not use a custom Icon
+                    svmContext.getDialogIcons().getQuestionIcon(),
                     options,  //the titles of buttons
                     options[1]); //default button title
         }
@@ -221,7 +221,7 @@ public class KurseController {
                 "Kurse vom vorherigen Semester importiert werden?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {

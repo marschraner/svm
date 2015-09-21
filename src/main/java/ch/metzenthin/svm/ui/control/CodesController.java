@@ -14,6 +14,7 @@ import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.componentmodel.StringTableCellRenderer;
 import ch.metzenthin.svm.ui.components.CodeErfassenDialog;
 import ch.metzenthin.svm.ui.components.CodeSpecificHinzufuegenDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
@@ -81,6 +82,11 @@ public class CodesController {
     public void setCodesTable(JTable codesTable) {
         this.codesTable = codesTable;
         initializeCodesTable();
+        codesTable.getColumnModel().getColumn(0).setCellRenderer(new StringTableCellRenderer());
+        codesTable.getColumnModel().getColumn(1).setCellRenderer(new StringTableCellRenderer());
+        if (!isCodesSpecificSchueler && !isCodesSpecificMitarbeiter) {
+            codesTable.getColumnModel().getColumn(2).setCellRenderer(new StringTableCellRenderer());
+        }
         codesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -330,14 +336,14 @@ public class CodesController {
                 "Schueler-Code löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
             DeleteSchuelerCodeCommand.Result result  = codesModel.eintragLoeschenSchuelerCodesVerwalten(svmContext, codesTableModel, codesTable.getSelectedRow());
             switch (result) {
                 case CODE_VON_SCHUELER_REFERENZIERT:
-                    JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens einen Schüler referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens einen Schüler referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
@@ -360,7 +366,7 @@ public class CodesController {
                 "Schueler-Code löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
@@ -382,14 +388,14 @@ public class CodesController {
                 "Mitarbeiter-Code löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
             DeleteMitarbeiterCodeCommand.Result result  = codesModel.eintragLoeschenMitarbeiterCodesVerwalten(svmContext, codesTableModel, codesTable.getSelectedRow());
             switch (result) {
                 case CODE_VON_MITARBEITER_REFERENZIERT:
-                    JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens einen Mitarbeiter referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens einen Mitarbeiter referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
@@ -423,14 +429,14 @@ public class CodesController {
                 "Märchen-Code löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
             DeleteElternmithilfeCodeCommand.Result result  = codesModel.eintragLoeschenElternmithilfeCodesVerwalten(svmContext, codesTableModel, codesTable.getSelectedRow());
             switch (result) {
                 case CODE_VON_MAERCHENEINTEILUNGEN_REFERENZIERT:
-                    JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens eine Märcheneinteilung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens eine Märcheneinteilung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
@@ -453,14 +459,14 @@ public class CodesController {
                 "Semesterrechnung-Code löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
             DeleteSemesterrechnungCodeCommand.Result result  = codesModel.eintragLoeschenSemesterrechnungCodesVerwalten(svmContext, codesTableModel, codesTable.getSelectedRow());
             switch (result) {
                 case CODE_VON_SEMESTERRECHNUNGEN_REFERENZIERT:
-                    JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens eine Semesterrechnung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Der Code wird durch mindestens eine Semesterrechnung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:

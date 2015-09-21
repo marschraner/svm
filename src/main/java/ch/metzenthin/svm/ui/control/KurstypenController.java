@@ -126,14 +126,14 @@ public class KurstypenController {
                 "Kurstyp löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
             DeleteKurstypCommand.Result result  = kurstypenModel.eintragLoeschen(svmContext, kurstypenTableModel, kurstypenTable.getSelectedRow());
             switch (result) {
                 case KURSTYP_VON_KURS_REFERENZIERT:
-                    JOptionPane.showMessageDialog(null, "Der Kurstyp wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Der Kurstyp wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:

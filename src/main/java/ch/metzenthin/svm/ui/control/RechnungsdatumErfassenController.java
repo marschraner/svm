@@ -163,7 +163,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
                 "Warnung",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
-                null,     //do not use a custom Icon
+                svmContext.getDialogIcons().getWarningIcon(),
                 optionsWarnung,  //the titles of buttons
                 optionsWarnung[1]); //default button title
         if (n == 0) {

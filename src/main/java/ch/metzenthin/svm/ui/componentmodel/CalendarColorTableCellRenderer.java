@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.componentmodel;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.*;
 import java.util.Calendar;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -9,10 +9,10 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 /**
  * @author Hans Stamm
  */
-public class CalendarTableCellRenderer extends DefaultTableCellRenderer {
+public class CalendarColorTableCellRenderer extends ColorTableCellRenderer {
 
-    public CalendarTableCellRenderer() {
-        super();
+    public CalendarColorTableCellRenderer(Color schriftfarbe) {
+        super(schriftfarbe);
         setHorizontalAlignment(SwingConstants.LEFT);
     }
 

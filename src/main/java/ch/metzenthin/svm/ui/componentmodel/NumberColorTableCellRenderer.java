@@ -1,15 +1,15 @@
 package ch.metzenthin.svm.ui.componentmodel;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.*;
 
 /**
  * @author Martin Schraner
  */
-public class NumberTableCellRenderer extends DefaultTableCellRenderer {
+public class NumberColorTableCellRenderer extends ColorTableCellRenderer {
 
-    public NumberTableCellRenderer() {
-        super();
+    public NumberColorTableCellRenderer(Color schriftfarbe) {
+        super(schriftfarbe);
         setHorizontalAlignment(SwingConstants.RIGHT);
     }
 
