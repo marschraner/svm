@@ -12,3 +12,6 @@ log/
 .idea/tasks.xml
 .idea/dictionaries/
 .idea/fileTemplates/
+
+# fillData
+sql/fillData.sql
