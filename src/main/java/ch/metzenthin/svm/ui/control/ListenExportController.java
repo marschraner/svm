@@ -180,6 +180,7 @@ public class ListenExportController extends AbstractController {
             comboBoxListentyp.removeItem(Listentyp.RECHNUNGSEMPFAENGER_ADRESSETIKETTEN);
             comboBoxListentyp.removeItem(Listentyp.MUTTER_ODER_VATER_ADRESSETIKETTEN);
             comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_ADRESSETIKETTEN);
+            comboBoxListentyp.removeItem(Listentyp.SCHUELERLISTE_CSV);
         }
         if (listenExportTyp == ListenExportTyp.MITARBEITERS) {
             // Initialisierung

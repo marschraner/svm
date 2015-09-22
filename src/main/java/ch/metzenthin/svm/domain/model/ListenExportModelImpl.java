@@ -99,6 +99,8 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 break;
             case ELTERNMITHILFE_ADRESSETIKETTEN:
                 break;
+            case SCHUELERLISTE_CSV:
+                break;
             case LEHRKRAEFTE_ADRESSLISTE:
                 break;
             case MITARBEITER_LISTE:
@@ -233,6 +235,11 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 CreateAdressenCsvFileCommand createAdressenCsvFileCommandElternmithilfe = new CreateAdressenCsvFileCommand(elternmithilfeList, outputFile);
                 commandInvoker.executeCommand(createAdressenCsvFileCommandElternmithilfe);
                 result = createAdressenCsvFileCommandElternmithilfe.getResult();
+                break;
+            case SCHUELERLISTE_CSV:
+                CreateSchuelerlisteCsvFileCommand createSchuelerlisteCsvFileCommand = new CreateSchuelerlisteCsvFileCommand(schuelerSuchenTableModel, outputFile);
+                commandInvoker.executeCommand(createSchuelerlisteCsvFileCommand);
+                result = createSchuelerlisteCsvFileCommand.getResult();
                 break;
             case LEHRKRAEFTE_ADRESSLISTE:
                 CreateLehrkraefteAdresslisteCommand createLehrkraefteAdresslisteCommand = new CreateLehrkraefteAdresslisteCommand(mitarbeitersTableModel, titel, outputFile);

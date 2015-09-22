@@ -6,7 +6,7 @@ import ch.metzenthin.svm.common.utils.SvmProperties;
  * @author Martin Schraner
  */
 public enum Listentyp {
-    SCHUELER_ADRESSLISTE("Adressliste", null, Filetyp.DOCX),
+    SCHUELER_ADRESSLISTE("Schüler-Adressliste", null, Filetyp.DOCX),
     SCHUELER_ABSENZENLISTE("Absenzenliste", SvmProperties.KEY_ABSENZENLISTE_TEMPLATE, Filetyp.DOCX),
     ROLLENLISTE("Rollenliste", null, Filetyp.DOCX),
     ELTERNMITHILFE_LISTE("Eltern-Mithilfe-Liste", null, Filetyp.DOCX),
@@ -14,6 +14,7 @@ public enum Listentyp {
     RECHNUNGSEMPFAENGER_ADRESSETIKETTEN("Rechnungsempfaenger-Adressetiketten", null, Filetyp.CSV),
     MUTTER_ODER_VATER_ADRESSETIKETTEN("Mutter- oder Vater-Adressetiketten", null, Filetyp.CSV),
     ELTERNMITHILFE_ADRESSETIKETTEN("Eltern-Mithilfe-Adressetiketten", null, Filetyp.CSV),
+    SCHUELERLISTE_CSV("Schülerliste (CSV)", null, Filetyp.CSV),
     LEHRKRAEFTE_ADRESSLISTE("Lehrkräfte-Adressliste (Word)", null, Filetyp.DOCX),
     MITARBEITER_LISTE("Mitarbeiter-Liste (CSV)", null, Filetyp.CSV),
     MITARBEITER_ADRESSETIKETTEN("Mitarbeiter-Adressetiketten", null, Filetyp.CSV),

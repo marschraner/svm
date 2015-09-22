@@ -206,9 +206,9 @@ public class Schueler extends Person {
     }
 
     public List<Kursanmeldung> getKursanmeldungenAsList() {
-        List<Kursanmeldung> kurseinteilungenAsList = new ArrayList<>(kursanmeldungen);
-        Collections.sort(kurseinteilungenAsList);
-        return kurseinteilungenAsList;
+        List<Kursanmeldung> kursanmeldungenAsList = new ArrayList<>(kursanmeldungen);
+        Collections.sort(kursanmeldungenAsList);
+        return kursanmeldungenAsList;
     }
 
     public Set<Maercheneinteilung> getMaercheneinteilungen() {

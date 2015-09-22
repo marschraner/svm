@@ -57,7 +57,7 @@ public class CreateWordTableCommand implements Command {
     }
 
     public CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLenghts, String title1, String title2, File outputFile) {
-        this(headerRows, datasets, columnWidths, boldCells, mergedCells, maxLenghts, title1, title2, outputFile, 650, 300, 650, 650, 0, 0);
+        this(headerRows, datasets, columnWidths, boldCells, mergedCells, maxLenghts, title1, title2, outputFile, 650, 1, 650, 650, 0, 0);
     }
 
     @Override
@@ -119,8 +119,8 @@ public class CreateWordTableCommand implements Command {
             numberOfDatasetsFirstPage = 12;
             numberOfDatasetsNormalPage = 15;
         } else if (headerRows.size() == 2) {
-            numberOfDatasetsFirstPage = 16;
-            numberOfDatasetsFirstPage = 20;
+            numberOfDatasetsFirstPage = 17;
+            numberOfDatasetsNormalPage = 21;
         } else {
             numberOfDatasetsFirstPage = 6;
             numberOfDatasetsNormalPage = 8;
