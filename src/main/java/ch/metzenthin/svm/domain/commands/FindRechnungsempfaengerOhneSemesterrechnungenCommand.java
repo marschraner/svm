@@ -13,29 +13,49 @@ import java.util.List;
 public class FindRechnungsempfaengerOhneSemesterrechnungenCommand extends GenericDaoCommand {
 
     // input
-    private Semester semester;
+    private Semester currentSemester;
 
     // output
     private List<Angehoeriger> rechnungsempfaengersFound = new ArrayList<>();
 
-    public FindRechnungsempfaengerOhneSemesterrechnungenCommand(Semester semester) {
-        this.semester = semester;
+    public FindRechnungsempfaengerOhneSemesterrechnungenCommand(Semester currentSemester) {
+        this.currentSemester = currentSemester;
     }
 
     @Override
     public void execute() {
 
-        if (semester == null) {
+        if (currentSemester == null) {
             return;
         }
 
-        TypedQuery<Angehoeriger>typedQuery = entityManager.createQuery("select distinct rech from Angehoeriger rech" +
-                " join rech.schuelerRechnungsempfaenger sch" +
-                " join sch.kursanmeldungen kursanm" +
-                " where kursanm.kurs.semester.semesterId = :semesterId and " +
-                " not exists (select semre.rechnungsempfaenger from Semesterrechnung semre where semre.rechnungsempfaenger.personId = rech.personId and semre.semester.semesterId = :semesterId)", Angehoeriger.class);
+        // 1. Vorhergehendes Semester
+        FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
+        findPreviousSemesterCommand.setEntityManager(entityManager);
+        findPreviousSemesterCommand.execute();
+        Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
 
-        typedQuery.setParameter("semesterId", semester.getSemesterId());
+        TypedQuery<Angehoeriger> typedQuery;
+        if (previousSemester != null) {
+            // Suche nach aktuellen Kursen und Kursen des Vorsemesters ohne Abmeldung
+            typedQuery = entityManager.createQuery("select distinct rech from Angehoeriger rech" +
+                    " join rech.schuelerRechnungsempfaenger sch" +
+                    " join sch.kursanmeldungen kursanm" +
+                    " where (kursanm.kurs.semester.semesterId = :currentSemesterId or" +
+                    " (kursanm.kurs.semester.semesterId = :previousSemesterId and kursanm.abmeldedatum is null)) and" +
+                    " not exists (select semre.rechnungsempfaenger from Semesterrechnung semre where semre.rechnungsempfaenger.personId = rech.personId and semre.semester.semesterId = :currentSemesterId)", Angehoeriger.class);
+
+            typedQuery.setParameter("previousSemesterId", previousSemester.getSemesterId());
+        } else {
+            // Nur Suche nach aktuellen Kursen, da Vorsemester nicht erfasst
+            typedQuery = entityManager.createQuery("select distinct rech from Angehoeriger rech" +
+                    " join rech.schuelerRechnungsempfaenger sch" +
+                    " join sch.kursanmeldungen kursanm" +
+                    " where kursanm.kurs.semester.semesterId = :currentSemesterId and" +
+                    " not exists (select semre.rechnungsempfaenger from Semesterrechnung semre where semre.rechnungsempfaenger.personId = rech.personId and semre.semester.semesterId = :currentSemesterId)", Angehoeriger.class);
+        }
+
+        typedQuery.setParameter("currentSemesterId", currentSemester.getSemesterId());
 
         rechnungsempfaengersFound = typedQuery.getResultList();
     }

@@ -147,7 +147,7 @@ public class SchuelerSuchenTableData {
     private String getString(Angehoeriger angehoeriger) {
         String value = null;
         if (angehoeriger != null) {
-            value = angehoeriger.getVorname() + " " + angehoeriger.getNachname();
+            value = angehoeriger.getNachname() + " " + angehoeriger.getVorname();
         }
         return value;
     }

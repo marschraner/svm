@@ -30,9 +30,7 @@ public class SemesterrechnungenController {
     private SemesterrechnungenModel semesterrechnungenModel;
     private final SemesterrechnungenTableModel semesterrechnungenTableModel;
     private JTable semesterrechnungenTable;
-    private JLabel lblTotal;
     private JButton btnDatenblatt;
-    private JButton btnImportieren;
     private JButton btnExportieren;
     private JButton btnRechnungsdatum;
     private JButton btnLoeschen;
@@ -46,7 +44,6 @@ public class SemesterrechnungenController {
         this.svmContext = svmContext;
         this.semesterrechnungenModel = semesterrechnungenModel;
         this.semesterrechnungenTableModel = semesterrechnungenTableModel;
-
     }
 
     public void setSemesterrechnungenTable(JTable semesterrechnungenTable) {
@@ -97,7 +94,6 @@ public class SemesterrechnungenController {
     }
 
     public void setLblTotal(JLabel lblTotal) {
-        this.lblTotal = lblTotal;
         if (semesterrechnungenTableModel.getSemester() == null) {
             lblTotal.setText("Noch keine Semesterrechnungen erfasst.");
             return;
@@ -132,83 +128,6 @@ public class SemesterrechnungenController {
         semesterrechnungBearbeitenPanel.addZurueckZuSemesterrechnungSuchenListener(zurueckListener);
         String title = "Semesterrechnung " + semesterrechnungenTableModel.getSemester().getSemesterbezeichnung() + " " + semesterrechnungenTableModel.getSemester().getSchuljahr();
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{semesterrechnungBearbeitenPanel.$$$getRootComponent$$$(), title}, ActionEvent.ACTION_PERFORMED, "Semesterrechnung ausgewählt"));
-    }
-
-    public void setBtnImportieren(JButton btnImportieren) {
-        this.btnImportieren = btnImportieren;
-        btnImportieren.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onImportieren();
-            }
-        });
-    }
-
-    private void onImportieren() {
-        Object[] options = {"Ja", "Nein"};
-        int n = JOptionPane.showOptionDialog(
-                null,
-                "Sollen die Semesterrechnungen vom vorherigen Semester importiert werden?",
-                "Semesterrechnungen vom vorherigen Semester importieren?",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                svmContext.getDialogIcons().getQuestionIcon(),
-                options,  //the titles of buttons
-                options[1]); //default button title
-        if (n == 1) {
-            btnImportieren.setFocusPainted(false);
-            return;
-        }
-        Object[] optionsQuestion = {"Ja", "Nein"};
-        n = JOptionPane.showOptionDialog(
-                null,
-                "Sollen offene Restbeträge von Semesterrechnungen des vorherigen Semesters \n" +
-                        "als Zuschlag bzw. Ermässigung verbucht werden?",
-                "Offene Restbeträge",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                svmContext.getDialogIcons().getQuestionIcon(),
-                optionsQuestion,  //the titles of buttons
-                optionsQuestion[1]); //default button title
-        boolean importRestbetraege = n != 1;
-        Object[] optionsUeberschreiben = {"Ja", "Nein"};
-        n = JOptionPane.showOptionDialog(
-                null,
-                "Sollen allfällige im jetzigen Semester bereits bestehende Semesterrechnungen nochmals\n" +
-                        "importiert und überschrieben werden?\n" +
-                        "(Davon ausgenommen sind Semesterrechnungen mit gesetztem Rechnungsdatum.)",
-                "Bereits vorhandene Semesterrechnungen überschreiben?",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                svmContext.getDialogIcons().getQuestionIcon(),
-                optionsUeberschreiben,  //the titles of buttons
-                optionsUeberschreiben[1]); //default button title
-        boolean bisherigeUeberschreiben = n != 1;
-        if (bisherigeUeberschreiben) {
-            Object[] optionsWarning = {"OK", "Abbrechen"};
-            n = JOptionPane.showOptionDialog(
-                    null,
-                    "Warnung: Allfällige bereits bestehende Semesterrechnungen werden durch das Importieren überschrieben.\n" +
-                            "Davon ausgenommen sind Semesterrechnungen mit gesetztem Rechnungsdatum.",
-                    "Warnung",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.WARNING_MESSAGE,
-                    svmContext.getDialogIcons().getWarningIcon(),
-                    optionsWarning,  //the titles of buttons
-                    optionsWarning[1]); //default button title
-            if (n == 1) {
-                btnImportieren.setFocusPainted(false);
-                return;
-            }
-        }
-        semesterrechnungenModel.importSemesterrechnungenFromPreviousSemester(semesterrechnungenTableModel, bisherigeUeberschreiben, importRestbetraege);
-        semesterrechnungenTableModel.fireTableDataChanged();
-        lblTotal.setText(semesterrechnungenModel.getTotal(semesterrechnungenTableModel));
-        btnImportieren.setFocusPainted(false);
-        if (semesterrechnungenTableModel.getRowCount() > 0) {
-            btnExportieren.setEnabled(true);
-            btnRechnungsdatum.setEnabled(true);
-        }
     }
 
     public void setBtnExportieren(JButton btnExportieren) {

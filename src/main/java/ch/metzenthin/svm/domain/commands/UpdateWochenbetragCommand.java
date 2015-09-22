@@ -65,7 +65,12 @@ public class UpdateWochenbetragCommand extends GenericDaoCommand {
                 result = calculateWochenbetragCommand.getResult();
                 semesterrechnungCurrentSemester.setWochenbetragNachrechnung(new BigDecimal("-99999.99"));
             }
-            semesterrechnungDao.save(semesterrechnungCurrentSemester);
+            if (!semesterrechnungCurrentSemester.isNullrechnung()) {
+                semesterrechnungDao.save(semesterrechnungCurrentSemester);
+            } else {
+                // löschen, falls Nullrechnung
+                semesterrechnungDao.remove(semesterrechnungCurrentSemester);
+            }
         }
 
         // 4.b Nachfolgendes Semesters: Berechnung des Wochenbetrags Vorrechnung und Update
@@ -78,7 +83,12 @@ public class UpdateWochenbetragCommand extends GenericDaoCommand {
                 result = calculateWochenbetragCommand.getResult();
                 semesterrechnungNextSemester.setWochenbetragVorrechnung(new BigDecimal("-99999.99"));
             }
-            semesterrechnungDao.save(semesterrechnungNextSemester);
+            if (!semesterrechnungNextSemester.isNullrechnung()) {
+                semesterrechnungDao.save(semesterrechnungNextSemester);
+            } else {
+                // löschen, falls Nullrechnung
+                semesterrechnungDao.remove(semesterrechnungNextSemester);
+            }
         }
     }
 

@@ -68,11 +68,11 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
                 out.write(asString(schueler.getGeburtsdatum()));
                 out.write(separator);
                 if (schueler.getMutter() != null) {
-                    out.write(schueler.getMutter().getVorname() + " " + schueler.getMutter().getNachname());
+                    out.write(schueler.getMutter().getNachname() + " " + schueler.getMutter().getVorname());
                 }
                 out.write(separator);
                 if (schueler.getVater() != null) {
-                    out.write(schueler.getVater().getVorname() + " " + schueler.getVater().getNachname());
+                    out.write(schueler.getVater().getNachname() + " " + schueler.getVater().getVorname());
                 }
                 out.write(separator);
                 String rechnungsempfaenger;
@@ -81,7 +81,7 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
                 } else if (schueler.getVater() != null && schueler.getVater().isIdenticalWith(schueler.getRechnungsempfaenger())) {
                     rechnungsempfaenger = "Vater";
                 } else {
-                    rechnungsempfaenger = schueler.getRechnungsempfaenger().getVorname() + " " + schueler.getRechnungsempfaenger().getNachname();
+                    rechnungsempfaenger = schueler.getRechnungsempfaenger().getNachname() + " " + schueler.getRechnungsempfaenger().getVorname();
                 }
                 out.write(rechnungsempfaenger);
                 out.write(separator);

@@ -26,7 +26,7 @@ public class CreateAndFindSemesterrechnungenCommand extends GenericDaoCommand {
     @Override
     public void execute() {
 
-        // 1. Suche noch nicht erfasste Semesterrechnungen, d.h. Rechnungsempfänger mit aktuellen Kursen ohne Semesterrechnung
+        // 1. Suche noch nicht erfasste Semesterrechnungen, d.h. Rechnungsempfänger ohne Semesterrechnung mit aktuellen Kursen (-> Nachrechnung) oder Kursen vom Vorsemester ohne Abmeldung (-> Vorrechnung)
         FindRechnungsempfaengerOhneSemesterrechnungenCommand findRechnungsempfaengerOhneSemesterrechnungenCommand = new FindRechnungsempfaengerOhneSemesterrechnungenCommand(semesterrechnungenSuchenModel.getSemester());
         findRechnungsempfaengerOhneSemesterrechnungenCommand.setEntityManager(entityManager);
         findRechnungsempfaengerOhneSemesterrechnungenCommand.execute();

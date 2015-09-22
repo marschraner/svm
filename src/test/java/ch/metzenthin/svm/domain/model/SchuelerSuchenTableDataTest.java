@@ -64,21 +64,21 @@ public class SchuelerSuchenTableDataTest {
 
     @Test
     public void testGetValueAt_Mutter() throws Exception {
-        assertEquals("V1A N1A", schuelerSuchenTableData.getValueAt(0, getColumnIndex(Field.MUTTER.toString())));
+        assertEquals("N1A V1A", schuelerSuchenTableData.getValueAt(0, getColumnIndex(Field.MUTTER.toString())));
         assertNull(schuelerSuchenTableData.getValueAt(0, getColumnIndex(Field.VATER.toString())));
         assertEquals("Mutter", schuelerSuchenTableData.getValueAt(0, getColumnIndex(Field.RECHNUNGSEMPFAENGER.toString())));
     }
 
     @Test
     public void testGetValueAt_Vater() throws Exception {
-        assertEquals("V2A N2A", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.VATER.toString())));
+        assertEquals("N2A V2A", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.VATER.toString())));
         assertNull(schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.MUTTER.toString())));
         assertEquals("Vater", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.RECHNUNGSEMPFAENGER.toString())));
     }
 
     @Test
     public void testGetValueAt_Rechnungsempfaenger() throws Exception {
-        assertEquals("V3A N3A", schuelerSuchenTableData.getValueAt(2, getColumnIndex(Field.RECHNUNGSEMPFAENGER.toString())));
+        assertEquals("N3A V3A", schuelerSuchenTableData.getValueAt(2, getColumnIndex(Field.RECHNUNGSEMPFAENGER.toString())));
         assertNull(schuelerSuchenTableData.getValueAt(2, getColumnIndex(Field.MUTTER.toString())));
         assertNull(schuelerSuchenTableData.getValueAt(2, getColumnIndex(Field.VATER.toString())));
     }

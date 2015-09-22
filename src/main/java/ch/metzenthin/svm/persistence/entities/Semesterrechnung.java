@@ -485,4 +485,17 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         return restbetrag;
     }
 
+    @Transient
+    public boolean isNullrechnung() {
+        return (ermaessigungsgrundVorrechnung == null || ermaessigungVorrechnung.compareTo(BigDecimal.ZERO) == 0) &&
+                (zuschlagVorrechnung == null || zuschlagVorrechnung.compareTo(BigDecimal.ZERO) == 0) &&
+                (wochenbetragVorrechnung == null || wochenbetragVorrechnung.compareTo(BigDecimal.ZERO) == 0) &&
+                (ermaessigungNachrechnung == null || ermaessigungNachrechnung.compareTo(BigDecimal.ZERO) == 0) &&
+                (zuschlagNachrechnung == null || zuschlagNachrechnung.compareTo(BigDecimal.ZERO) == 0) &&
+                (wochenbetragNachrechnung == null || wochenbetragNachrechnung.compareTo(BigDecimal.ZERO) == 0) &&
+                (betragZahlung1 == null || betragZahlung1.compareTo(BigDecimal.ZERO) == 0) &&
+                (betragZahlung2 == null || betragZahlung2.compareTo(BigDecimal.ZERO) == 0) &&
+                (betragZahlung3 == null || betragZahlung3.compareTo(BigDecimal.ZERO) == 0);
+    }
+
 }
