@@ -65,6 +65,12 @@ public class Angehoeriger extends Person {
         return schuelerRechnungsempfaenger;
     }
 
+    public List<Schueler> getSchuelerRechnungsempfaengerAsList() {
+        List<Schueler> schuelerRechnungsempfaengerAsList = new ArrayList<>(schuelerRechnungsempfaenger);
+        Collections.sort(schuelerRechnungsempfaengerAsList);
+        return schuelerRechnungsempfaengerAsList;
+    }
+
     public Set<Semesterrechnung> getSemesterrechnungen() {
         return semesterrechnungen;
     }

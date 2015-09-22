@@ -28,6 +28,10 @@ public class CheckIfSemesterrechnungContainsSechsJahresRabattCommand implements 
         // 1. Relevantes Semester
         Semester relevantesSemester = (rechnungstyp == Rechnungstyp.NACHRECHNUNG ? semesterrechnung.getSemester() : previousSemester);
 
+        if (relevantesSemester == null) {
+            return;
+        }
+
         for (Schueler schueler : semesterrechnung.getRechnungsempfaenger().getSchuelerRechnungsempfaenger()) {
 
             // 2.a abgemeldete Schüler nicht berücksichtigen

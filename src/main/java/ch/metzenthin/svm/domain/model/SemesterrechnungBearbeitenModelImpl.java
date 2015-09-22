@@ -228,6 +228,9 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         }
         Collections.sort(schuelersRechnungsempfaenger);
         Semester relevantesSemester = (rechnungstyp == Rechnungstyp.VORRECHNUNG ? previousSemester : semesterrechnung.getSemester());
+        if (relevantesSemester == null) {
+            return "-";
+        }
         StringBuilder schuelersSb = new StringBuilder("<html>");
         boolean neuerSchueler = true;
         for (Schueler schueler : schuelersRechnungsempfaenger) {
@@ -267,6 +270,9 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         }
         Collections.sort(schuelersRechnungsempfaenger);
         Semester relevantesSemester = (rechnungstyp == Rechnungstyp.VORRECHNUNG ? previousSemester : semesterrechnung.getSemester());
+        if (relevantesSemester == null) {
+            return "-";
+        }
         StringBuilder kurseSb = new StringBuilder("<html>");
         boolean neuerSchueler = true;
         for (Schueler schueler : schuelersRechnungsempfaenger) {
@@ -339,11 +345,16 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         getCommandInvoker().executeCommand(findAllLektionsgebuehrenCommand);
         Map<Integer, BigDecimal[]> lektionsgebuehrenMap = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllMap();
         Semester relevantesSemester = (rechnungstyp == Rechnungstyp.VORRECHNUNG ? previousSemester : semesterrechnung.getSemester());
-        CalculateWochenbetragCommand calculateWochenbetragCommand = new CalculateWochenbetragCommand(semesterrechnung, relevantesSemester, rechnungstyp, lektionsgebuehrenMap);
-        getCommandInvoker().executeCommand(calculateWochenbetragCommand);
-        BigDecimal wochenbetrag = calculateWochenbetragCommand.getWochenbetrag();
-        if (wochenbetrag == null) {
+        BigDecimal wochenbetrag;
+        if (relevantesSemester == null) {
             wochenbetrag = BigDecimal.ZERO;
+        } else {
+            CalculateWochenbetragCommand calculateWochenbetragCommand = new CalculateWochenbetragCommand(semesterrechnung, relevantesSemester, rechnungstyp, lektionsgebuehrenMap);
+            getCommandInvoker().executeCommand(calculateWochenbetragCommand);
+            wochenbetrag = calculateWochenbetragCommand.getWochenbetrag();
+            if (wochenbetrag == null) {
+                wochenbetrag = BigDecimal.ZERO;
+            }
         }
         try {
             switch (rechnungstyp) {
