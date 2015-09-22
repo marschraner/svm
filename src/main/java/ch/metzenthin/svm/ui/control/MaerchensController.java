@@ -6,7 +6,6 @@ import ch.metzenthin.svm.domain.model.MaerchensModel;
 import ch.metzenthin.svm.domain.model.MaerchensTableData;
 import ch.metzenthin.svm.ui.componentmodel.MaerchensTableModel;
 import ch.metzenthin.svm.ui.components.MaerchenErfassenDialog;
-import ch.metzenthin.svm.ui.components.UiComponentsUtils;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -15,6 +14,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAsPercentages;
 
 /**
  * @author Martin Schraner
@@ -60,7 +62,8 @@ public class MaerchensController {
         MaerchensTableData maerchensTableData = new MaerchensTableData(svmContext.getSvmModel().getMaerchensAll());
         maerchensTableModel = new MaerchensTableModel(maerchensTableData);
         maerchensTable.setModel(maerchensTableModel);
-        UiComponentsUtils.setJTableColumnWidthAsPercentages(maerchensTable, 0.15, 0.55, 0.15, 0.15);
+        setColumnCellRenderers(maerchensTable, maerchensTableModel);
+        setJTableColumnWidthAsPercentages(maerchensTable, 0.15, 0.55, 0.15, 0.15);
     }
 
     public void setBtnNeu(JButton btnNeu) {

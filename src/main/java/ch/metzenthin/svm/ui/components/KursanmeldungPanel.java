@@ -38,7 +38,7 @@ public class KursanmeldungPanel {
 
     private void createKurseinteilungenController(SvmContext svmContext, KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isFromSchuelerSuchenResult) {
         kursanmeldungenController = new KursanmeldungenController(svmContext.getModelFactory().createKursanmeldungenModel(), svmContext, kursanmeldungenTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, isFromSchuelerSuchenResult);
-        kursanmeldungenController.setKurseinteilungenTable(kurseinteilungenTable);
+        kursanmeldungenController.setKursanmeldungenTable(kurseinteilungenTable);
         kursanmeldungenController.setBtnNeu(btnNeu);
         kursanmeldungenController.setBtnBearbeiten(btnBearbeiten);
         kursanmeldungenController.setBtnLoeschen(btnLoeschen);

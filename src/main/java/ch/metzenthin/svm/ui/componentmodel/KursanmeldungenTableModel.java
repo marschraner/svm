@@ -36,6 +36,11 @@ public class KursanmeldungenTableModel extends AbstractTableModel {
         return kursanmeldungenTableData.getColumnName(column);
     }
 
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return kursanmeldungenTableData.getColumnClass(columnIndex);
+    }
+
     public Kursanmeldung getKursanmeldungSelected(int rowIndex) {
         return kursanmeldungenTableData.getKursanmeldungSelected(rowIndex);
     }

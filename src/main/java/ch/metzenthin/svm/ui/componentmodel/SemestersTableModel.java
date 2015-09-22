@@ -35,6 +35,11 @@ public class SemestersTableModel extends AbstractTableModel {
         return semestersTableData.getColumnName(column);
     }
 
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return semestersTableData.getColumnClass(columnIndex);
+    }
+
     public SemestersTableData getSemestersTableData() {
         return semestersTableData;
     }

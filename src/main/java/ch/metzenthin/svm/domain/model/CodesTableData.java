@@ -56,6 +56,13 @@ public class CodesTableData {
         return value;
     }
 
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (columns.get(columnIndex)) {
+            default:
+                return String.class;
+        }
+    }
+
     public void setCodes(List<? extends Code> codes) {
         this.codes = codes;
     }

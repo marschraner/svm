@@ -1,11 +1,16 @@
 package ch.metzenthin.svm.ui.components;
 
+import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
+import ch.metzenthin.svm.ui.componentmodel.NumberTableCellRenderer;
+import ch.metzenthin.svm.ui.componentmodel.StringTableCellRenderer;
+import ch.metzenthin.svm.ui.componentmodel.WochentagTableCellRenderer;
+
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.*;
 import java.awt.*;
+import java.math.BigDecimal;
+import java.util.Calendar;
 
 /**
  * @author Martin Schraner
@@ -60,5 +65,21 @@ public class UiComponentsUtils {
         table.setPreferredScrollableViewportSize(table.getPreferredSize());
     }
 
+    public static void setColumnCellRenderers(JTable table, AbstractTableModel tableModel) {
+        for (int i = 0; i < tableModel.getColumnCount(); i++) {
+            TableCellRenderer tableCellRenderer = null;
+            Class columnClass = tableModel.getColumnClass(i);
+            if (columnClass.equals(String.class)) {
+                tableCellRenderer = new StringTableCellRenderer();
+            } else if (columnClass.equals(Integer.class) || columnClass.equals(Double.class) || columnClass.equals(BigDecimal.class)) {
+                tableCellRenderer = new NumberTableCellRenderer();
+            } else if (columnClass.equals(Calendar.class)) {
+                tableCellRenderer = new CalendarTableCellRenderer();
+            } else if (columnClass.equals(Wochentag.class)) {
+                tableCellRenderer = new WochentagTableCellRenderer();
+            }
+            table.getColumnModel().getColumn(i).setCellRenderer(tableCellRenderer);
+        }
+    }
 
 }

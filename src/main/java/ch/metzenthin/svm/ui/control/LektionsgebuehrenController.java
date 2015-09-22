@@ -4,7 +4,6 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenTableData;
 import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
-import ch.metzenthin.svm.ui.componentmodel.NumberTableCellRenderer;
 import ch.metzenthin.svm.ui.components.LektionsgebuehrenErfassenDialog;
 
 import javax.swing.*;
@@ -14,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
 
 /**
  * @author Martin Schraner
@@ -39,13 +40,7 @@ public class LektionsgebuehrenController {
         LektionsgebuehrenTableData lektionsgebuehrenTableData = new LektionsgebuehrenTableData(svmContext.getSvmModel().getLektionsgebuehrenAllList());
         lektionsgebuehrenTableModel = new LektionsgebuehrenTableModel(lektionsgebuehrenTableData);
         lektionsgebuehrenTable.setModel(lektionsgebuehrenTableModel);
-        lektionsgebuehrenTable.getColumnModel().getColumn(0).setCellRenderer(new NumberTableCellRenderer());
-        lektionsgebuehrenTable.getColumnModel().getColumn(1).setCellRenderer(new NumberTableCellRenderer());
-        lektionsgebuehrenTable.getColumnModel().getColumn(2).setCellRenderer(new NumberTableCellRenderer());
-        lektionsgebuehrenTable.getColumnModel().getColumn(3).setCellRenderer(new NumberTableCellRenderer());
-        lektionsgebuehrenTable.getColumnModel().getColumn(4).setCellRenderer(new NumberTableCellRenderer());
-        lektionsgebuehrenTable.getColumnModel().getColumn(5).setCellRenderer(new NumberTableCellRenderer());
-        lektionsgebuehrenTable.getColumnModel().getColumn(6).setCellRenderer(new NumberTableCellRenderer());
+        setColumnCellRenderers(lektionsgebuehrenTable, lektionsgebuehrenTableModel);
         lektionsgebuehrenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {

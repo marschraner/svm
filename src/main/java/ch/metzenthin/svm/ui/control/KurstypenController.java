@@ -5,6 +5,7 @@ import ch.metzenthin.svm.domain.commands.DeleteKurstypCommand;
 import ch.metzenthin.svm.domain.model.KurstypenModel;
 import ch.metzenthin.svm.domain.model.KurstypenTableData;
 import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
+import ch.metzenthin.svm.ui.componentmodel.StringTableCellRenderer;
 import ch.metzenthin.svm.ui.components.KurstypErfassenDialog;
 import ch.metzenthin.svm.ui.components.UiComponentsUtils;
 
@@ -15,6 +16,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAsPercentages;
 
 /**
  * @author Martin Schraner
@@ -40,7 +44,8 @@ public class KurstypenController {
         KurstypenTableData kurstypenTableData = new KurstypenTableData(svmContext.getSvmModel().getKurstypenAll());
         kurstypenTableModel = new KurstypenTableModel(kurstypenTableData);
         kurstypenTable.setModel(kurstypenTableModel);
-        UiComponentsUtils.setJTableColumnWidthAsPercentages(kurstypenTable, 0.75, 0.25);
+        setColumnCellRenderers(kurstypenTable, kurstypenTableModel);
+        setJTableColumnWidthAsPercentages(kurstypenTable, 0.75, 0.25);
         kurstypenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {

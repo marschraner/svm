@@ -35,6 +35,11 @@ public class MaerchensTableModel extends AbstractTableModel {
         return maerchensTableData.getColumnName(column);
     }
 
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return maerchensTableData.getColumnClass(columnIndex);
+    }
+
     public MaerchensTableData getMaerchensTableData() {
         return maerchensTableData;
     }

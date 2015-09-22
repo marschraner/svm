@@ -53,24 +53,8 @@ public class SemesterrechnungenController {
         this.semesterrechnungenTable = semesterrechnungenTable;
         semesterrechnungenTable.setModel(semesterrechnungenTableModel);
         semesterrechnungenTable.setDefaultRenderer(Calendar.class, new CalendarTableCellRenderer());
-        setJTableColumnWidthAccordingToCellContentAndHeader(semesterrechnungenTable);
-        semesterrechnungenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-                onListSelection();
-            }
-        });
-        semesterrechnungenTable.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent me) {
-                if (me.getClickCount() == 2) {
-                    onDetailsBearbeiten();
-                }
-            }
-        });
-        // Farben für Spalten
+
+        // Spaltenausrichtung und Farben
         Color lila = new Color(200, 0, 200);
         semesterrechnungenTable.getColumnModel().getColumn(0).setCellRenderer(new StringTableCellRenderer());
         semesterrechnungenTable.getColumnModel().getColumn(1).setCellRenderer(new StringTableCellRenderer());
@@ -91,6 +75,25 @@ public class SemesterrechnungenController {
         semesterrechnungenTable.getColumnModel().getColumn(16).setCellRenderer(new NumberColorTableCellRenderer(lila));
         semesterrechnungenTable.getColumnModel().getColumn(17).setCellRenderer(new NumberColorTableCellRenderer(lila));
         semesterrechnungenTable.getColumnModel().getColumn(18).setCellRenderer(new NumberColorTableCellRenderer(lila));
+
+        setJTableColumnWidthAccordingToCellContentAndHeader(semesterrechnungenTable);
+
+        semesterrechnungenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
+                onListSelection();
+            }
+        });
+        semesterrechnungenTable.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                if (me.getClickCount() == 2) {
+                    onDetailsBearbeiten();
+                }
+            }
+        });
     }
 
     public void setLblTotal(JLabel lblTotal) {

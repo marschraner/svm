@@ -15,6 +15,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
+
 /**
  * @author Martin Schraner
  */
@@ -59,6 +61,7 @@ public class SemestersController {
         SemestersTableData semestersTableData = new SemestersTableData(svmContext.getSvmModel().getSemestersAll());
         semestersTableModel = new SemestersTableModel(semestersTableData);
         semestersTable.setModel(semestersTableModel);
+        setColumnCellRenderers(semestersTable, semestersTableModel);
     }
 
     public void setBtnNeu(JButton btnNeu) {

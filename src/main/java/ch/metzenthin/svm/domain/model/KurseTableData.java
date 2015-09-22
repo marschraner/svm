@@ -18,12 +18,8 @@ public class KurseTableData {
     private List<Kurs> kurse;
     private List<Field> columns = new ArrayList<>();
 
-    public KurseTableData(List<Kurs> kurse, boolean isKurseSchueler) {
+    public KurseTableData(List<Kurs> kurse) {
         this.kurse = kurse;
-        if (isKurseSchueler) {
-            columns.add(Field.SCHULJAHR);
-            columns.add(Field.SEMESTERBEZEICHNUNG);
-        }
         columns.add(Field.KURSTYP_BEZEICHNUNG);
         columns.add(Field.ALTERSBEREICH);
         columns.add(Field.STUFE);
@@ -33,9 +29,7 @@ public class KurseTableData {
         columns.add(Field.ORT);
         columns.add(Field.LEITUNG);
         columns.add(Field.BEMERKUNGEN);
-        if (!isKurseSchueler) {
-            columns.add(Field.ANZAHL_SCHUELER);
-        }
+        columns.add(Field.ANZAHL_SCHUELER);
     }
 
     public int getColumnCount() {

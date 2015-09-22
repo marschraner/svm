@@ -48,6 +48,17 @@ public class MaerchensTableData {
         return value;
     }
 
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (COLUMNS[columnIndex]) {
+            case ANZAHL_VORSTELLUNGEN:
+                return Integer.class;
+            case ANZAHL_KINDER:
+                return Integer.class;
+            default:
+                return String.class;
+        }
+    }
+
     public String getColumnName(int column) {
         return COLUMNS[column].toString();
     }

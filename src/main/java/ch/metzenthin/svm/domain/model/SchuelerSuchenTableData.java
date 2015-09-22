@@ -133,6 +133,17 @@ public class SchuelerSuchenTableData {
         return value;
     }
 
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (columns.get(columnIndex)) {
+            case GEBURTSDATUM_SHORT:
+                return Calendar.class;
+            case ANZAHL_KURSE:
+                return Integer.class;
+            default:
+                return String.class;
+        }
+    }
+
     private String getString(Angehoeriger angehoeriger) {
         String value = null;
         if (angehoeriger != null) {
@@ -143,17 +154,6 @@ public class SchuelerSuchenTableData {
 
     public String getColumnName(int columnIndex) {
         return columns.get(columnIndex).toString();
-    }
-
-    public Class<?> getColumnClass(int columnIndex) {
-        switch (columns.get(columnIndex)) {
-            case GEBURTSDATUM_SHORT:
-                return Calendar.class;
-            case ANZAHL_KURSE:
-                return Integer.class;
-            default:
-                return String.class;
-        }
     }
 
     public SchuelerDatenblattModel getSchuelerDatenblattModel(int rowIndex) {

@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAccordingToCellContentAndHeader;
 
 /**
@@ -52,6 +53,7 @@ public class MaercheneinteilungenController {
     public void setMaercheneinteilungenTable(JTable maercheneinteilungenTable) {
         this.maercheneinteilungenTable = maercheneinteilungenTable;
         maercheneinteilungenTable.setModel(maercheneinteilungenTableModel);
+        setColumnCellRenderers(maercheneinteilungenTable, maercheneinteilungenTableModel);
         setJTableColumnWidthAccordingToCellContentAndHeader(maercheneinteilungenTable);
         maercheneinteilungenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override

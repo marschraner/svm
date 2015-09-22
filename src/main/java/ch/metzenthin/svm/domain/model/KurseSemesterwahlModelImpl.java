@@ -67,7 +67,7 @@ public class KurseSemesterwahlModelImpl extends AbstractModel implements KurseSe
         FindKurseSemesterCommand findKurseSemesterCommand = new FindKurseSemesterCommand(semester);
         commandInvoker.executeCommand(findKurseSemesterCommand);
         List<Kurs> kurseFound = findKurseSemesterCommand.getKurseFound();
-        return new KurseTableData(kurseFound, false);
+        return new KurseTableData(kurseFound);
     }
 
     @Override

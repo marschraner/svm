@@ -50,6 +50,13 @@ public class DispensationenTableData {
         return value;
     }
 
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (COLUMNS[columnIndex]) {
+            default:
+                return String.class;
+        }
+    }
+
     public String getColumnName(int column) {
         return COLUMNS[column].toString();
     }

@@ -19,6 +19,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Calendar;
 
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAccordingToCellContentAndHeader;
 
 /**
@@ -67,6 +68,7 @@ public class MitarbeitersController {
         mitarbeitersTableModel = new MitarbeitersTableModel(mitarbeitersTableData);
         mitarbeitersTable.setModel(mitarbeitersTableModel);
         mitarbeitersTable.setDefaultRenderer(Calendar.class, new CalendarTableCellRenderer());
+        setColumnCellRenderers(mitarbeitersTable, mitarbeitersTableModel);
         setJTableColumnWidthAccordingToCellContentAndHeader(mitarbeitersTable);
     }
 

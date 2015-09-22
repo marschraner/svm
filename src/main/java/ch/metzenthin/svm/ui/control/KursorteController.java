@@ -6,7 +6,6 @@ import ch.metzenthin.svm.domain.model.KursorteModel;
 import ch.metzenthin.svm.domain.model.KursorteTableData;
 import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
 import ch.metzenthin.svm.ui.components.KursortErfassenDialog;
-import ch.metzenthin.svm.ui.components.UiComponentsUtils;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -15,6 +14,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAsPercentages;
 
 /**
  * @author Martin Schraner
@@ -40,7 +42,8 @@ public class KursorteController {
         KursorteTableData kursorteTableData = new KursorteTableData(svmContext.getSvmModel().getKursorteAll());
         kursorteTableModel = new KursorteTableModel(kursorteTableData);
         kursorteTable.setModel(kursorteTableModel);
-        UiComponentsUtils.setJTableColumnWidthAsPercentages(kursorteTable, 0.75, 0.25);
+        setColumnCellRenderers(kursorteTable, kursorteTableModel);
+        setJTableColumnWidthAsPercentages(kursorteTable, 0.75, 0.25);
         kursorteTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {

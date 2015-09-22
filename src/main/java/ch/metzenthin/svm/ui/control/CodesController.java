@@ -14,16 +14,17 @@ import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
-import ch.metzenthin.svm.ui.componentmodel.StringTableCellRenderer;
 import ch.metzenthin.svm.ui.components.CodeErfassenDialog;
 import ch.metzenthin.svm.ui.components.CodeSpecificHinzufuegenDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
-import ch.metzenthin.svm.ui.components.UiComponentsUtils;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.*;
+
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAsPercentages;
 
 /**
  * @author Martin Schraner
@@ -82,11 +83,6 @@ public class CodesController {
     public void setCodesTable(JTable codesTable) {
         this.codesTable = codesTable;
         initializeCodesTable();
-        codesTable.getColumnModel().getColumn(0).setCellRenderer(new StringTableCellRenderer());
-        codesTable.getColumnModel().getColumn(1).setCellRenderer(new StringTableCellRenderer());
-        if (!isCodesSpecificSchueler && !isCodesSpecificMitarbeiter) {
-            codesTable.getColumnModel().getColumn(2).setCellRenderer(new StringTableCellRenderer());
-        }
         codesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -153,10 +149,11 @@ public class CodesController {
             }
         }
         codesTable.setModel(codesTableModel);
+        setColumnCellRenderers(codesTable, codesTableModel);
         if (isCodesSpecificSchueler || isCodesSpecificMitarbeiter) {
-            UiComponentsUtils.setJTableColumnWidthAsPercentages(codesTable, 0.2, 0.8);
+            setJTableColumnWidthAsPercentages(codesTable, 0.2, 0.8);
         } else {
-            UiComponentsUtils.setJTableColumnWidthAsPercentages(codesTable, 0.15, 0.65, 0.2);
+            setJTableColumnWidthAsPercentages(codesTable, 0.15, 0.65, 0.2);
         }
     }
 

@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAccordingToCellContentAndHeader;
 
 /**
@@ -30,7 +31,7 @@ public class KursanmeldungenController {
     private final boolean isFromSchuelerSuchenResult;
     private final KursanmeldungenModel kursanmeldungenModel;
     private KursanmeldungenTableModel kursanmeldungenTableModel;
-    private JTable kurseinteilungenTable;
+    private JTable kursanmeldungenTable;
     private JButton btnNeu;
     private JButton btnBearbeiten;
     private JButton btnLoeschen;
@@ -49,11 +50,12 @@ public class KursanmeldungenController {
         this.isFromSchuelerSuchenResult = isFromSchuelerSuchenResult;
     }
 
-    public void setKurseinteilungenTable(JTable kurseinteilungenTable) {
-        this.kurseinteilungenTable = kurseinteilungenTable;
-        kurseinteilungenTable.setModel(kursanmeldungenTableModel);
-        setJTableColumnWidthAccordingToCellContentAndHeader(kurseinteilungenTable);
-        kurseinteilungenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+    public void setKursanmeldungenTable(JTable kursanmeldungenTable) {
+        this.kursanmeldungenTable = kursanmeldungenTable;
+        kursanmeldungenTable.setModel(kursanmeldungenTableModel);
+        setColumnCellRenderers(kursanmeldungenTable, kursanmeldungenTableModel);
+        setJTableColumnWidthAccordingToCellContentAndHeader(kursanmeldungenTable);
+        kursanmeldungenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (e.getValueIsAdjusting()) {
@@ -62,7 +64,7 @@ public class KursanmeldungenController {
                 onListSelection();
             }
         });
-        kurseinteilungenTable.addMouseListener(new MouseAdapter() {
+        kursanmeldungenTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     onBearbeiten();
@@ -83,7 +85,7 @@ public class KursanmeldungenController {
 
     private void onNeu() {
         btnNeu.setFocusPainted(true);
-        KursanmeldungErfassenDialog kursanmeldungErfassenDialog = new KursanmeldungErfassenDialog(svmContext, kursanmeldungenModel, kursanmeldungenTableModel, schuelerDatenblattModel, kurseinteilungenTable.getSelectedRow(), false, "Kursanmeldung erfassen");
+        KursanmeldungErfassenDialog kursanmeldungErfassenDialog = new KursanmeldungErfassenDialog(svmContext, kursanmeldungenModel, kursanmeldungenTableModel, schuelerDatenblattModel, kursanmeldungenTable.getSelectedRow(), false, "Kursanmeldung erfassen");
         kursanmeldungErfassenDialog.pack();
         kursanmeldungErfassenDialog.setVisible(true);
         kursanmeldungenTableModel.fireTableDataChanged();
@@ -107,7 +109,7 @@ public class KursanmeldungenController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        KursanmeldungErfassenDialog kursanmeldungErfassenDialog = new KursanmeldungErfassenDialog(svmContext, kursanmeldungenModel, kursanmeldungenTableModel, schuelerDatenblattModel, kurseinteilungenTable.getSelectedRow(), true, "Kursanmeldung bearbeiten");
+        KursanmeldungErfassenDialog kursanmeldungErfassenDialog = new KursanmeldungErfassenDialog(svmContext, kursanmeldungenModel, kursanmeldungenTableModel, schuelerDatenblattModel, kursanmeldungenTable.getSelectedRow(), true, "Kursanmeldung bearbeiten");
         kursanmeldungErfassenDialog.pack();
         kursanmeldungErfassenDialog.setVisible(true);
         kursanmeldungenTableModel.fireTableDataChanged();
@@ -142,17 +144,17 @@ public class KursanmeldungenController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            kursanmeldungenModel.kurseinteilungLoeschen(kursanmeldungenTableModel, schuelerDatenblattModel, kurseinteilungenTable.getSelectedRow());
+            kursanmeldungenModel.kurseinteilungLoeschen(kursanmeldungenTableModel, schuelerDatenblattModel, kursanmeldungenTable.getSelectedRow());
             kursanmeldungenTableModel.fireTableDataChanged();
-            kurseinteilungenTable.addNotify();
+            kursanmeldungenTable.addNotify();
         }
         btnLoeschen.setFocusPainted(false);
         enableBtnLoeschen(false);
-        kurseinteilungenTable.clearSelection();
+        kursanmeldungenTable.clearSelection();
     }
 
     private void onListSelection() {
-        int selectedRowIndex = kurseinteilungenTable.getSelectedRow();
+        int selectedRowIndex = kursanmeldungenTable.getSelectedRow();
         enableBtnBearbeiten(selectedRowIndex >= 0);
         enableBtnLoeschen(selectedRowIndex >= 0);
     }

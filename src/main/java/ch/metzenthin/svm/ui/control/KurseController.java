@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAccordingToCellContentAndHeader;
 
 /**
@@ -47,6 +48,7 @@ public class KurseController {
     public void setKurseTable(JTable kurseTable) {
         this.kurseTable = kurseTable;
         kurseTable.setModel(kurseTableModel);
+        setColumnCellRenderers(kurseTable, kurseTableModel);
         setJTableColumnWidthAccordingToCellContentAndHeader(kurseTable);
         kurseTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override

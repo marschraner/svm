@@ -35,6 +35,11 @@ public class KurstypenTableModel extends AbstractTableModel {
         return kurstypenTableData.getColumnName(column);
     }
 
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return kurstypenTableData.getColumnClass(columnIndex);
+    }
+
     public KurstypenTableData getKurstypenTableData() {
         return kurstypenTableData;
     }
