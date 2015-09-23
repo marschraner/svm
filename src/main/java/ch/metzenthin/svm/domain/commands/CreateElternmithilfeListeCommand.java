@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Elternteil;
-import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
+import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -152,18 +152,25 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         Map<Schueler, Maercheneinteilung> maercheneinteilungen = schuelerSuchenTableModel.getMaercheneinteilungen();
 
         // Map mit Elternmithilfe als Key, damit nach Elternmithilfe sortiert werden kann
-        Map<Angehoeriger, Maercheneinteilung> maercheneinteilungenElternmithilfe = new TreeMap<>();
+        Map<Person, Maercheneinteilung> maercheneinteilungenElternmithilfe = new TreeMap<>();
         for (Schueler schueler: schuelerList) {
             Maercheneinteilung maercheneinteilung = maercheneinteilungen.get(schueler);
             if (maercheneinteilung == null || maercheneinteilung.getElternmithilfe() == null) {
                 continue;
             }
-            Angehoeriger elternmithilfe = (maercheneinteilung.getElternmithilfe() == Elternteil.MUTTER ? schueler.getMutter() : schueler.getVater());
+            Person elternmithilfe;
+            if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER) {
+                elternmithilfe = schueler.getMutter();
+            } else if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.VATER) {
+                elternmithilfe = schueler.getVater();
+            } else {
+                elternmithilfe = maercheneinteilung.getElternmithilfeDrittperson();
+            }
             maercheneinteilungenElternmithilfe.put(elternmithilfe, maercheneinteilung);
         }
 
         List<List<List<String>>> datasets = new ArrayList<>();
-        for (Angehoeriger elternmithilfe : maercheneinteilungenElternmithilfe.keySet()) {
+        for (Person elternmithilfe : maercheneinteilungenElternmithilfe.keySet()) {
             List<List<String>> dataset = new ArrayList<>();
             Maercheneinteilung maercheneinteilung = maercheneinteilungenElternmithilfe.get(elternmithilfe);
             // Auf mehrere Zeilen aufzusplittende Felder:

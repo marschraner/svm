@@ -95,7 +95,7 @@ public enum Field {
     BILDER_ROLLE2("Bilder Rolle 2"), 
     ROLLE3("Rolle 3"), 
     BILDER_ROLLE3("Bilder Rolle 3"),
-    ELTERNMITHILFE("Elternmithilfe"),
+    ELTERNMITHILFE("Eltern-Mithilfe"),
     SCHUELER_CODE("Code"),
     ELTERNMITHILFE_CODE("Code"),
     KUCHEN_VORSTELLUNGEN("Vorst. m. Kuchen"),

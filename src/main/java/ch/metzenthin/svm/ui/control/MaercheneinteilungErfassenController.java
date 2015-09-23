@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Elternteil;
+import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.domain.SvmRequiredException;
@@ -21,6 +21,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
-public class MaercheneinteilungErfassenController extends AbstractController {
+public class MaercheneinteilungErfassenController extends PersonController {
 
     private static final Logger LOGGER = Logger.getLogger(MaercheneinteilungErfassenController.class);
 
@@ -52,7 +53,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
     private JTextField txtBilderRolle2;
     private JTextField txtRolle3;
     private JTextField txtBilderRolle3;
-    private JComboBox<Elternteil> comboBoxElternmithilfe;
+    private JComboBox<Elternmithilfe> comboBoxElternmithilfe;
     private JComboBox<ElternmithilfeCode> comboBoxElternmithilfeCode;
     private JCheckBox checkBoxKuchenVorstellung1;
     private JCheckBox checkBoxKuchenVorstellung2;
@@ -518,12 +519,12 @@ public class MaercheneinteilungErfassenController extends AbstractController {
         }
     }
 
-    public void setComboBoxElternmithilfe(JComboBox<Elternteil> comboBoxElternmithilfe) {
+    public void setComboBoxElternmithilfe(JComboBox<Elternmithilfe> comboBoxElternmithilfe) {
         this.comboBoxElternmithilfe = comboBoxElternmithilfe;
-        Elternteil[] selectableElternmithilfen = maercheneinteilungErfassenModel.getSelectableElternmithilfen(schuelerDatenblattModel);
+        Elternmithilfe[] selectableElternmithilfen = maercheneinteilungErfassenModel.getSelectableElternmithilfen(schuelerDatenblattModel);
         comboBoxElternmithilfe.setModel(new DefaultComboBoxModel<>(selectableElternmithilfen));
         // Elternmithilfe in Model initialisieren mit erstem ComboBox-Wert
-        maercheneinteilungErfassenModel.setElternmithilfe(Elternteil.KEINER);
+        maercheneinteilungErfassenModel.setElternmithilfe(Elternmithilfe.KEINER);
         comboBoxElternmithilfe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -545,7 +546,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
 
     private void setModelElternmithilfe() {
         makeErrorLabelInvisible(Field.ELTERNMITHILFE);
-        maercheneinteilungErfassenModel.setElternmithilfe((Elternteil) comboBoxElternmithilfe.getSelectedItem());
+        maercheneinteilungErfassenModel.setElternmithilfe((Elternmithilfe) comboBoxElternmithilfe.getSelectedItem());
     }
 
     public void setComboBoxElternmithilfeCode(JComboBox<ElternmithilfeCode> comboBoxElternmithilfeCode) {
@@ -1069,6 +1070,37 @@ public class MaercheneinteilungErfassenController extends AbstractController {
         }
     }
 
+    private void enableDisableFields() {
+        if (maercheneinteilungErfassenModel.getElternmithilfe() == null || maercheneinteilungErfassenModel.getElternmithilfe() != Elternmithilfe.DRITTPERSON) {
+            disableEltermithilfeDrittperson();
+        } else {
+            enableElternmithilfeDrittperson();
+        }
+    }
+
+    private void enableElternmithilfeDrittperson() {
+        maercheneinteilungErfassenModel.enableFields(getElternmithilfeDrittpersonFields());
+    }
+
+    private void disableEltermithilfeDrittperson() {
+        maercheneinteilungErfassenModel.disableFields(getElternmithilfeDrittpersonFields());
+        makeErrorLabelsInvisible(getElternmithilfeDrittpersonFields());
+    }
+
+    private Set<Field> getElternmithilfeDrittpersonFields() {
+        Set<Field> zahlungenFields = new HashSet<>();
+        zahlungenFields.add(Field.ANREDE);
+        zahlungenFields.add(Field.NACHNAME);
+        zahlungenFields.add(Field.VORNAME);
+        zahlungenFields.add(Field.STRASSE_HAUSNUMMER);
+        zahlungenFields.add(Field.PLZ);
+        zahlungenFields.add(Field.ORT);
+        zahlungenFields.add(Field.FESTNETZ);
+        zahlungenFields.add(Field.NATEL);
+        zahlungenFields.add(Field.EMAIL);
+        return zahlungenFields;
+    }
+
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         super.doPropertyChange(evt);
@@ -1123,10 +1155,12 @@ public class MaercheneinteilungErfassenController extends AbstractController {
         } else if (checkIsFieldChange(Field.BEMERKUNGEN, evt)) {
             txtBemerkungen.setText(maercheneinteilungErfassenModel.getBemerkungen());
         }
+        enableDisableFields();
     }
 
     @Override
     void validateFields() throws SvmValidationException {
+        super.validateFields();
         if (spinnerMaerchen.isEnabled()) {
             LOGGER.trace("Validate field Maerchen");
             setModelMaerchen();
@@ -1179,6 +1213,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
 
     @Override
     void showErrMsg(SvmValidationException e) {
+        super.showErrMsg(e);
         if (e.getAffectedFields().contains(Field.MAERCHEN)) {
             errLblMaerchen.setVisible(true);
             errLblMaerchen.setText(e.getMessage());
@@ -1231,6 +1266,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
 
     @Override
     void showErrMsgAsToolTip(SvmValidationException e) {
+        super.showErrMsgAsToolTip(e);
         if (e.getAffectedFields().contains(Field.MAERCHEN)) {
             spinnerMaerchen.setToolTipText(e.getMessage());
         }
@@ -1271,6 +1307,7 @@ public class MaercheneinteilungErfassenController extends AbstractController {
 
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
+        super.makeErrorLabelsInvisible(fields);
         if (fields.contains(Field.ALLE) || fields.contains(Field.MAERCHEN)) {
             errLblMaerchen.setVisible(false);
             spinnerMaerchen.setToolTipText(null);
@@ -1322,6 +1359,8 @@ public class MaercheneinteilungErfassenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+        super.disableFields(disable, fields);
+    }
 
 }

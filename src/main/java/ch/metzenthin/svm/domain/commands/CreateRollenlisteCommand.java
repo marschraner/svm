@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.utils.StringNumberComparator;
-import ch.metzenthin.svm.common.dataTypes.Elternteil;
+import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
@@ -262,10 +262,10 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
             List<String> cellsRow3 = new ArrayList<>();
             cellsRow3.add("");
             String email = "";
-            // Wenn vorhanden Email des Schülers, sonst der Elternmithilfe, sonst der Mutter, sonst des Vaters; andernfalls leer
+            // Wenn vorhanden Email des Schülers, sonst der Elternmithilfe (falls nicht Drittperson), sonst der Mutter, sonst des Vaters, sonst Elternmithilfe Drittperson; andernfalls leer
             Angehoeriger elternmithilfe = null;
-            if (maercheneinteilung.getElternmithilfe() != null) {
-                elternmithilfe = (maercheneinteilung.getElternmithilfe() == Elternteil.MUTTER ? schueler.getMutter() : schueler.getVater());
+            if (maercheneinteilung.getElternmithilfe() != null && maercheneinteilung.getElternmithilfe() != Elternmithilfe.DRITTPERSON) {
+                elternmithilfe = (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER ? schueler.getMutter() : schueler.getVater());
             }
             if (checkNotEmpty(schueler.getEmail())) {
                 email = schueler.getEmail();
@@ -275,6 +275,8 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
                 email = schueler.getMutter().getEmail();
             } else if (schueler.getVater() != null && checkNotEmpty(schueler.getVater().getEmail())) {
                 email = schueler.getVater().getEmail();
+            } else if (maercheneinteilung.getElternmithilfeDrittperson() != null && checkNotEmpty(maercheneinteilung.getElternmithilfeDrittperson().getEmail())) {
+                email = maercheneinteilung.getElternmithilfeDrittperson().getEmail();
             }
             cellsRow3.add(email);
             cellsRow3.add("");

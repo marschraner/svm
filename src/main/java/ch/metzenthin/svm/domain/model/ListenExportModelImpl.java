@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Elternteil;
+import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Listentyp;
 import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
@@ -228,7 +228,15 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                     if (maercheneinteilung == null || maercheneinteilung.getElternmithilfe() == null) {
                         continue;
                     }
-                    elternmithilfeSet.add((maercheneinteilung.getElternmithilfe() == Elternteil.MUTTER ? schueler.getMutter() : schueler.getVater()));
+                    Person elternmithilfe;
+                    if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER) {
+                        elternmithilfe = schueler.getMutter();
+                    } else if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.VATER) {
+                        elternmithilfe = schueler.getVater();
+                    } else {
+                        elternmithilfe = maercheneinteilung.getElternmithilfeDrittperson();
+                    }
+                    elternmithilfeSet.add(elternmithilfe);
                 }
                 List<Person> elternmithilfeList = new ArrayList<>(elternmithilfeSet);
                 Collections.sort(elternmithilfeList);

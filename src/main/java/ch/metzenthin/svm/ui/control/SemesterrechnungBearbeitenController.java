@@ -627,7 +627,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         setLblRestbetrag();
     }
 
-    void enableDisableFields() {
+    private void enableDisableFields() {
         if (semesterrechnungBearbeitenModel.getRechnungsdatumVorrechnung() == null && semesterrechnungBearbeitenModel.getRechnungsdatumNachrechnung() == null) {
             disableZahlungen();
         } else {

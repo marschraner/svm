@@ -80,7 +80,6 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
         super.setVorname(vorname);
     }
 
-
     @Override
     protected Calendar getEarliestValidDateGeburtstag() {
         return getNYearsBeforeNow(80);

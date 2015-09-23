@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Elternteil;
+import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.common.utils.PersistenceProperties;
@@ -93,33 +93,37 @@ public class SaveOrUpdateMaercheneinteilungCommandTest {
         saveOrUpdateElternmithilfeCodeCommand = new SaveOrUpdateElternmithilfeCodeCommand(elternmithilfeCode2, null, erfassteElternmithilfeCodes);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);
 
-        assertFalse(checkIfMaercheneinteilungAvailable(schueler1, maerchen1, Gruppe.A, Elternteil.VATER, elternmithilfeCode1, "Komödiant 1", "1, 2"));
-        assertFalse(checkIfMaercheneinteilungAvailable(schueler2, maerchen2, Gruppe.B, Elternteil.MUTTER, elternmithilfeCode2, "Komödiant 2", "1, 2"));
+        ElternmithilfeDrittperson elternmithilfeDrittperson = new ElternmithilfeDrittperson(Anrede.HERR, "Hans", "Schraner", "044 720 85 51", null, "hschraner@bluewin.ch");
+        Adresse adresseElternmithilfeDrittperson = new Adresse("Hintere Bergstrasse", "15", "8942", "Oberrieden");
+        elternmithilfeDrittperson.setAdresse(adresseElternmithilfeDrittperson);
+
+        assertFalse(checkIfMaercheneinteilungAvailable(schueler1, maerchen1, Gruppe.A, Elternmithilfe.VATER, elternmithilfeCode1, "Komödiant 1", "1, 2", elternmithilfeDrittperson));
+        assertFalse(checkIfMaercheneinteilungAvailable(schueler2, maerchen2, Gruppe.B, Elternmithilfe.MUTTER, elternmithilfeCode2, "Komödiant 2", "1, 2", null));
         
         // 1. Maercheneinteilung erfassen
-        Maercheneinteilung maercheneinteilung1 = new Maercheneinteilung(schueler1, maerchen1, Gruppe.A, "Komödiant 1", "1, 2", "Hase 1", "2, 3", "Frosch 1", "3, 4", Elternteil.VATER,
+        Maercheneinteilung maercheneinteilung1 = new Maercheneinteilung(schueler1, maerchen1, Gruppe.A, "Komödiant 1", "1, 2", "Hase 1", "2, 3", "Frosch 1", "3, 4", Elternmithilfe.VATER,
                 true, true, true, false, false, false, false, false, false, null, null);
-        SaveOrUpdateMaercheneinteilungCommand saveOrUpdateMaercheneinteilungCommand = new SaveOrUpdateMaercheneinteilungCommand(maercheneinteilung1, elternmithilfeCode1, null, erfassteMaercheneinteilungen);
+        SaveOrUpdateMaercheneinteilungCommand saveOrUpdateMaercheneinteilungCommand = new SaveOrUpdateMaercheneinteilungCommand(maercheneinteilung1, elternmithilfeCode1, elternmithilfeDrittperson, adresseElternmithilfeDrittperson, null, erfassteMaercheneinteilungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaercheneinteilungCommand);
 
-        assertTrue(checkIfMaercheneinteilungAvailable(schueler1, maerchen1, Gruppe.A, Elternteil.VATER, elternmithilfeCode1, "Komödiant 1", "1, 2"));
+        assertTrue(checkIfMaercheneinteilungAvailable(schueler1, maerchen1, Gruppe.A, Elternmithilfe.VATER, elternmithilfeCode1, "Komödiant 1", "1, 2", elternmithilfeDrittperson));
 
         // 2. Maercheneinteilung erfassen
-        Maercheneinteilung maercheneinteilung2 = new Maercheneinteilung(schueler2, maerchen2, Gruppe.B, "Komödiant 2", "1, 2", "Hase 2", "2, 3", "Frosch 2", "3, 4", Elternteil.MUTTER,
+        Maercheneinteilung maercheneinteilung2 = new Maercheneinteilung(schueler2, maerchen2, Gruppe.B, "Komödiant 2", "1, 2", "Hase 2", "2, 3", "Frosch 2", "3, 4", Elternmithilfe.MUTTER,
                 true, true, true, false, false, false, false, false, false, null, null);
-        saveOrUpdateMaercheneinteilungCommand = new SaveOrUpdateMaercheneinteilungCommand(maercheneinteilung2, elternmithilfeCode2, null, erfassteMaercheneinteilungen);
+        saveOrUpdateMaercheneinteilungCommand = new SaveOrUpdateMaercheneinteilungCommand(maercheneinteilung2, elternmithilfeCode2, null, null, null, erfassteMaercheneinteilungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaercheneinteilungCommand);
 
-        assertTrue(checkIfMaercheneinteilungAvailable(schueler2, maerchen2, Gruppe.B, Elternteil.MUTTER, elternmithilfeCode2, "Komödiant 2", "1, 2"));
+        assertTrue(checkIfMaercheneinteilungAvailable(schueler2, maerchen2, Gruppe.B, Elternmithilfe.MUTTER, elternmithilfeCode2, "Komödiant 2", "1, 2", null));
 
         // 2. Maercheneinteilung bearbeiten
-        Maercheneinteilung maercheneinteilung2Modif = new Maercheneinteilung(schueler2, maerchen2, Gruppe.A, "Pilz 2", "2, 7", "Hase 2", "2, 3", "Frosch 2", "3, 4", Elternteil.VATER,
+        Maercheneinteilung maercheneinteilung2Modif = new Maercheneinteilung(schueler2, maerchen2, Gruppe.A, "Pilz 2", "2, 7", "Hase 2", "2, 3", "Frosch 2", "3, 4", Elternmithilfe.VATER,
                 true, true, true, false, false, false, false, false, false, null, null);
-        saveOrUpdateMaercheneinteilungCommand = new SaveOrUpdateMaercheneinteilungCommand(maercheneinteilung2Modif, elternmithilfeCode1, maercheneinteilung2, erfassteMaercheneinteilungen);
+        saveOrUpdateMaercheneinteilungCommand = new SaveOrUpdateMaercheneinteilungCommand(maercheneinteilung2Modif, elternmithilfeCode1, null, null, maercheneinteilung2, erfassteMaercheneinteilungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaercheneinteilungCommand);
 
-        assertFalse(checkIfMaercheneinteilungAvailable(schueler2, maerchen2, Gruppe.B, Elternteil.MUTTER, elternmithilfeCode2, "Komödiant 2", "1, 2"));
-        assertTrue(checkIfMaercheneinteilungAvailable(schueler2, maerchen2, Gruppe.A, Elternteil.VATER, elternmithilfeCode1, "Pilz 2", "2, 7"));
+        assertFalse(checkIfMaercheneinteilungAvailable(schueler2, maerchen2, Gruppe.B, Elternmithilfe.MUTTER, elternmithilfeCode2, "Komödiant 2", "1, 2", null));
+        assertTrue(checkIfMaercheneinteilungAvailable(schueler2, maerchen2, Gruppe.A, Elternmithilfe.VATER, elternmithilfeCode1, "Pilz 2", "2, 7", null));
 
         // Testdaten löschen
         EntityManager entityManager = null;
@@ -166,7 +170,7 @@ public class SaveOrUpdateMaercheneinteilungCommandTest {
         }
     }
 
-    private boolean checkIfMaercheneinteilungAvailable(Schueler schueler, Maerchen maerchen, Gruppe gruppe, Elternteil elternmithilfe, ElternmithilfeCode elternmithilfeCode, String rolle1, String bilderRolle1) {
+    private boolean checkIfMaercheneinteilungAvailable(Schueler schueler, Maerchen maerchen, Gruppe gruppe, Elternmithilfe elternmithilfe, ElternmithilfeCode elternmithilfeCode, String rolle1, String bilderRolle1, ElternmithilfeDrittperson elternmithilfeDrittperson) {
         FindMaercheneinteilungenSchuelerCommand findMaercheneinteilungenSchuelerCommand = new FindMaercheneinteilungenSchuelerCommand(schueler);
         commandInvoker.executeCommandAsTransaction(findMaercheneinteilungenSchuelerCommand);
         List<Maercheneinteilung> maercheneinteilungenSchueler = findMaercheneinteilungenSchuelerCommand.getMaercheneinteilungenFound();
@@ -176,7 +180,9 @@ public class SaveOrUpdateMaercheneinteilungCommandTest {
                     && maercheneinteilung.getElternmithilfe().equals(elternmithilfe)
                     && maercheneinteilung.getElternmithilfeCode().equals(elternmithilfeCode)
                     && maercheneinteilung.getRolle1().equals(rolle1)
-                    && maercheneinteilung.getBilderRolle1().equals(bilderRolle1)) {
+                    && maercheneinteilung.getBilderRolle1().equals(bilderRolle1)
+                    && ((maercheneinteilung.getElternmithilfeDrittperson() == null && elternmithilfeDrittperson == null)
+                    || (maercheneinteilung.getElternmithilfeDrittperson() != null && elternmithilfeDrittperson != null && maercheneinteilung.getElternmithilfeDrittperson().isIdenticalWith(elternmithilfeDrittperson)))) {
                 return true;
             }
         }

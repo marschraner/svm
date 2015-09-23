@@ -1474,6 +1474,13 @@
       <foreign-key name="ElternmithilfeCode_ibfk_1" columns="code_id" ref-table="Code" ref-schema="" ref-catalog="svm" ref-columns="code_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="Maercheneinteilung_ibfk_3" table="Maercheneinteilung" schema="" catalog="svm" columns="code_id"/>
     </table>
+    <table name="ElternmithilfeDrittperson" schema="" catalog="svm" type="TABLE">
+      <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="person_id"/>
+      <foreign-key name="ElternmithilfeDrittperson_ibfk_1" columns="person_id" ref-table="Person" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="Maercheneinteilung_ibfk_4" table="Maercheneinteilung" schema="" catalog="svm" columns="drittperson_id"/>
+    </table>
     <table name="Kurs" schema="" catalog="svm" type="TABLE">
       <column name="kurs_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="semester_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -1572,11 +1579,13 @@
       <column name="kuchen_vorstellung_9" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="zusatzattribut" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
       <column name="bemerkungen" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="drittperson_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="person_id,maerchen_id"/>
       <foreign-key name="Maercheneinteilung_ibfk_1" columns="person_id" ref-table="Schueler" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="Maercheneinteilung_ibfk_2" columns="maerchen_id" ref-table="Maerchen" ref-schema="" ref-catalog="svm" ref-columns="maerchen_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="Maercheneinteilung_ibfk_3" columns="code_id" ref-table="ElternmithilfeCode" ref-schema="" ref-catalog="svm" ref-columns="code_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="Maercheneinteilung_ibfk_4" columns="drittperson_id" ref-table="ElternmithilfeDrittperson" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
     <table name="Mitarbeiter" schema="" catalog="svm" type="TABLE">
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -1621,6 +1630,7 @@
       <primary-key name="PRIMARY" columns="person_id"/>
       <foreign-key name="Person_ibfk_1" columns="adresse_id" ref-table="Adresse" ref-schema="" ref-catalog="svm" ref-columns="adresse_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="Angehoeriger_ibfk_1" table="Angehoeriger" schema="" catalog="svm" columns="person_id"/>
+      <exported-key name="ElternmithilfeDrittperson_ibfk_1" table="ElternmithilfeDrittperson" schema="" catalog="svm" columns="person_id"/>
       <exported-key name="Mitarbeiter_ibfk_1" table="Mitarbeiter" schema="" catalog="svm" columns="person_id"/>
       <exported-key name="Schueler_ibfk_1" table="Schueler" schema="" catalog="svm" columns="person_id"/>
     </table>

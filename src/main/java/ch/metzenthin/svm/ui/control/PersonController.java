@@ -754,43 +754,43 @@ public abstract class PersonController extends AbstractController {
 
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
-        if ((fields.contains(Field.ALLE) || fields.contains(Field.ANREDE)) && errLblAnrede != null) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.ANREDE)) && errLblAnrede != null && comboBoxAnrede != null) {
             errLblAnrede.setVisible(false);
             comboBoxAnrede.setToolTipText(null);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.VORNAME)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.VORNAME)) && errLblAnrede != null && txtVorname != null) {
             errLblVorname.setVisible(false);
             txtVorname.setToolTipText(null);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.NACHNAME)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.NACHNAME)) && errLblNachname != null && txtNachname != null) {
             errLblNachname.setVisible(false);
             txtNachname.setToolTipText(null);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.STRASSE_HAUSNUMMER)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.STRASSE_HAUSNUMMER)) && errLblStrasseHausnummer != null && txtStrasseHausnummer != null) {
             errLblStrasseHausnummer.setVisible(false);
             txtStrasseHausnummer.setToolTipText(null);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.PLZ)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.PLZ)) && errLblPlz != null && txtPlz != null) {
             errLblPlz.setVisible(false);
             txtPlz.setToolTipText(null);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ORT)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.ORT)) && errLblOrt != null && txtOrt != null) {
             errLblOrt.setVisible(false);
             txtOrt.setToolTipText(null);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.FESTNETZ)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.FESTNETZ)) && errLblFestnetz != null && txtFestnetz != null) {
             errLblFestnetz.setVisible(false);
             txtFestnetz.setToolTipText(null);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.NATEL)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.NATEL)) && errLblNatel != null && txtNatel != null) {
             errLblNatel.setVisible(false);
             txtNatel.setToolTipText(null);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.EMAIL)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.EMAIL)) && errLblEmail != null && txtEmail != null) {
             errLblEmail.setVisible(false);
             txtEmail.setToolTipText(null);
         }
-        if ((fields.contains(Field.ALLE) || fields.contains(Field.GEBURTSDATUM)) && errLblGeburtsdatum != null) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.GEBURTSDATUM)) && errLblGeburtsdatum != null && txtGeburtsdatum != null) {
             errLblGeburtsdatum.setVisible(false);
             txtGeburtsdatum.setToolTipText(null);
         }
@@ -798,31 +798,31 @@ public abstract class PersonController extends AbstractController {
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ANREDE)) {
+        if (comboBoxAnrede != null && (fields.contains(Field.ALLE) || fields.contains(Field.ANREDE)) && comboBoxAnrede != null) {
             comboBoxAnrede.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.NACHNAME)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.NACHNAME)) && txtNachname != null) {
             txtNachname.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.VORNAME)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.VORNAME)) && txtVorname != null) {
             txtVorname.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.STRASSE_HAUSNUMMER)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.STRASSE_HAUSNUMMER)) && txtStrasseHausnummer != null) {
             txtStrasseHausnummer.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.PLZ)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.PLZ)) && txtPlz != null) {
             txtPlz.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ORT)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.ORT)) && txtOrt != null) {
             txtOrt.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.FESTNETZ)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.FESTNETZ)) && txtFestnetz != null) {
             txtFestnetz.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.NATEL)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.NATEL)) && txtNatel != null) {
             txtNatel.setEnabled(!disable);
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.EMAIL)) {
+        if ((fields.contains(Field.ALLE) || fields.contains(Field.EMAIL)) && txtEmail != null) {
             txtEmail.setEnabled(!disable);
         }
         if ((fields.contains(Field.ALLE) || fields.contains(Field.GEBURTSDATUM)) && txtGeburtsdatum != null) {

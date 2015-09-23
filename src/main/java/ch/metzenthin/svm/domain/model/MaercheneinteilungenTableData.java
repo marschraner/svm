@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 
@@ -57,7 +58,11 @@ public class MaercheneinteilungenTableData {
                 value = maercheneinteilung.getBilderRolle3();
                 break;
             case ELTERNMITHILFE:
-                value = maercheneinteilung.getElternmithilfe();
+                if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.DRITTPERSON) {
+                    value = maercheneinteilung.getElternmithilfeDrittperson().toString();
+                } else {
+                    value = maercheneinteilung.getElternmithilfe();
+                }
                 break;
             case ELTERNMITHILFE_CODE:
                 value = maercheneinteilung.getElternmithilfeCode();

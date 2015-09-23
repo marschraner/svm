@@ -43,6 +43,7 @@ DROP TABLE IF EXISTS Dispensation;
 DROP TABLE IF EXISTS Anmeldung;
 DROP TABLE IF EXISTS Mitarbeiter;
 DROP TABLE IF EXISTS Schueler;
+DROP TABLE IF EXISTS ElternmithilfeDrittperson;
 DROP TABLE IF EXISTS Angehoeriger;
 DROP TABLE IF EXISTS Person;
 DROP TABLE IF EXISTS Adresse;
@@ -86,7 +87,7 @@ DESCRIBE Adresse;
 
 CREATE TABLE IF NOT EXISTS Person (
     person_id                  INT           NOT NULL AUTO_INCREMENT,
-    discriminator              VARCHAR(20)   NOT NULL,
+    discriminator              VARCHAR(30)   NOT NULL,
     anrede                     VARCHAR(5),
     vorname                    VARCHAR(50)   NOT NULL,
     nachname                   VARCHAR(50)   NOT NULL,
@@ -112,6 +113,18 @@ CREATE TABLE IF NOT EXISTS Angehoeriger (
     FOREIGN KEY (person_id)    REFERENCES Person (person_id));
 
 DESCRIBE Angehoeriger;
+
+
+-- ElternmithilfeDrittperson
+-- *************************
+
+CREATE TABLE IF NOT EXISTS ElternmithilfeDrittperson (
+    person_id                  INT           NOT NULL,
+    last_updated               TIMESTAMP     NOT NULL,
+    PRIMARY KEY (person_id),
+    FOREIGN KEY (person_id)    REFERENCES Person (person_id));
+
+DESCRIBE ElternmithilfeDrittperson;
 
 
 -- Schueler
@@ -345,7 +358,7 @@ DESCRIBE Kurs;
 CREATE TABLE IF NOT EXISTS Kurs_Lehrkraft (
     kurs_id                    INT           NOT NULL,
     person_id                  INT           NOT NULL,
-    lehrkraefte_ORDER         INT           NOT NULL,
+    lehrkraefte_ORDER          INT           NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (kurs_id, person_id),
     FOREIGN KEY (kurs_id)      REFERENCES Kurs (kurs_id),
@@ -398,7 +411,7 @@ CREATE TABLE IF NOT EXISTS Maercheneinteilung (
     bilder_rolle_2             VARCHAR(60),
     rolle_3                    VARCHAR(60),
     bilder_rolle_3             VARCHAR(60),
-    elternmithilfe             VARCHAR(6),
+    elternmithilfe             VARCHAR(12),
     code_id                    INT,
     kuchen_vorstellung_1       BOOLEAN       NOT NULL,
     kuchen_vorstellung_2       BOOLEAN       NOT NULL,
@@ -411,11 +424,13 @@ CREATE TABLE IF NOT EXISTS Maercheneinteilung (
     kuchen_vorstellung_9       BOOLEAN       NOT NULL,
     zusatzattribut             VARCHAR(30),
     bemerkungen                VARCHAR(100),
+    drittperson_id             INT,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id, maerchen_id),
     FOREIGN KEY (person_id)    REFERENCES Schueler (person_id),
     FOREIGN KEY (maerchen_id)  REFERENCES Maerchen (maerchen_id),
-    FOREIGN KEY (code_id)      REFERENCES ElternmithilfeCode (code_id));
+    FOREIGN KEY (code_id)      REFERENCES ElternmithilfeCode (code_id),
+    FOREIGN KEY (drittperson_id) REFERENCES ElternmithilfeDrittperson (person_id));
 
 DESCRIBE Maercheneinteilung;
 

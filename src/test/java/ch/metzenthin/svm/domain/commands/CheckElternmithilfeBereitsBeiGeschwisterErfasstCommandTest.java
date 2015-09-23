@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Elternteil;
+import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -31,7 +31,7 @@ public class CheckElternmithilfeBereitsBeiGeschwisterErfasstCommandTest {
         geschwister1.setRechnungsempfaenger(vater);
         Maerchen maerchen = new Maerchen("2011/2012", "Schneewittchen", 7);
         ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode("f", "Frisieren", true);
-        Maercheneinteilung maercheneinteilung1 = new Maercheneinteilung(geschwister1, maerchen, Gruppe.A, "Komödiant 1", "1, 2", "Hase 2", "2, 3", "Frosch 3", "3, 4", Elternteil.VATER,
+        Maercheneinteilung maercheneinteilung1 = new Maercheneinteilung(geschwister1, maerchen, Gruppe.A, "Komödiant 1", "1, 2", "Hase 2", "2, 3", "Frosch 3", "3, 4", Elternmithilfe.VATER,
                 true, true, true, false, false, false, false, false, false, null, null);
         maercheneinteilung1.setElternmithilfeCode(elternmithilfeCode);
         maercheneinteilung1.getSchueler().getMaercheneinteilungen().add(maercheneinteilung1);

@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.common.dataTypes.Elternteil;
+import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
 
 import javax.persistence.*;
@@ -52,7 +52,7 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
 
     @Enumerated(EnumType.STRING)
     @JoinColumn(name = "elternmithilfe", nullable = true)
-    private Elternteil elternmithilfe;
+    private Elternmithilfe elternmithilfe;
 
     @ManyToOne
     @JoinColumn(name = "code_id", nullable = true)
@@ -91,10 +91,14 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
     @Column(name = "bemerkungen", nullable = true)
     private String bemerkungen;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "drittperson_id", nullable = true)
+    private ElternmithilfeDrittperson elternmithilfeDrittperson;
+
     public Maercheneinteilung() {
     }
 
-    public Maercheneinteilung(Schueler schueler, Maerchen maerchen, Gruppe gruppe, String rolle1, String bilderRolle1, String rolle2, String bilderRolle2, String rolle3, String bilderRolle3, Elternteil elternmithilfe,
+    public Maercheneinteilung(Schueler schueler, Maerchen maerchen, Gruppe gruppe, String rolle1, String bilderRolle1, String rolle2, String bilderRolle2, String rolle3, String bilderRolle3, Elternmithilfe elternmithilfe,
                               Boolean kuchenVorstellung1, Boolean kuchenVorstellung2, Boolean kuchenVorstellung3, Boolean kuchenVorstellung4, Boolean kuchenVorstellung5,
                               Boolean kuchenVorstellung6, Boolean kuchenVorstellung7, Boolean kuchenVorstellung8, Boolean kuchenVorstellung9, String zusatzattribut, String bemerkungen) {
         this.maerchen = maerchen;
@@ -148,7 +152,8 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
                 && kuchenVorstellung7.equals(otherMaercheneinteilung.kuchenVorstellung7)
                 && kuchenVorstellung8.equals(otherMaercheneinteilung.kuchenVorstellung8)
                 && kuchenVorstellung9.equals(otherMaercheneinteilung.kuchenVorstellung9)
-                && ((zusatzattribut == null && otherMaercheneinteilung.zusatzattribut == null) || (zusatzattribut != null && zusatzattribut.equals(otherMaercheneinteilung.zusatzattribut)));
+                && ((zusatzattribut == null && otherMaercheneinteilung.zusatzattribut == null) || (zusatzattribut != null && zusatzattribut.equals(otherMaercheneinteilung.zusatzattribut)))
+                && ((elternmithilfeDrittperson == null && otherMaercheneinteilung.elternmithilfeDrittperson == null) || (elternmithilfeDrittperson != null && elternmithilfeDrittperson.isIdenticalWith(otherMaercheneinteilung.elternmithilfeDrittperson)));
     }
 
     public void copyAttributesFrom(Maercheneinteilung otherMaercheneinteilung) {
@@ -245,11 +250,11 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
         this.bilderRolle3 = bilderRolle3;
     }
 
-    public Elternteil getElternmithilfe() {
+    public Elternmithilfe getElternmithilfe() {
         return elternmithilfe;
     }
 
-    public void setElternmithilfe(Elternteil elternmithilfe) {
+    public void setElternmithilfe(Elternmithilfe elternmithilfe) {
         this.elternmithilfe = elternmithilfe;
     }
 
@@ -394,5 +399,13 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
 
     public void setBemerkungen(String bemerkungen) {
         this.bemerkungen = bemerkungen;
+    }
+
+    public ElternmithilfeDrittperson getElternmithilfeDrittperson() {
+        return elternmithilfeDrittperson;
+    }
+
+    public void setElternmithilfeDrittperson(ElternmithilfeDrittperson elternmithilfeDrittperson) {
+        this.elternmithilfeDrittperson = elternmithilfeDrittperson;
     }
 }

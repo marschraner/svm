@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Elternteil;
+import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public interface MaercheneinteilungErfassenModel extends Model {
+public interface MaercheneinteilungErfassenModel extends PersonModel {
     Gruppe getGruppe();
     String getRolle1();
     String getBilderRolle1();
@@ -24,7 +24,7 @@ public interface MaercheneinteilungErfassenModel extends Model {
     String getRolle3();
     String getBilderRolle3();
 
-    Elternteil getElternmithilfe();
+    Elternmithilfe getElternmithilfe();
     ElternmithilfeCode getElternmithilfeCode();
     Boolean isKuchenVorstellung1();
     Boolean isKuchenVorstellung2();
@@ -48,7 +48,7 @@ public interface MaercheneinteilungErfassenModel extends Model {
     void setRolle3(String rolle3) throws SvmValidationException;
     void setBilderRolle3(String bilderRolle3) throws SvmValidationException;
 
-    void setElternmithilfe(Elternteil elternmithilfe);
+    void setElternmithilfe(Elternmithilfe elternmithilfe);
     void setElternmithilfeCode(ElternmithilfeCode elternmithilfeCode);
     void setKuchenVorstellung1(Boolean isSelected);
     void setKuchenVorstellung2(Boolean isSelected);
@@ -66,7 +66,7 @@ public interface MaercheneinteilungErfassenModel extends Model {
     Maerchen getMaerchenInit(List<Maerchen> selectableMaerchens);
     Maerchen[] getSelectableMaerchenMaercheneinteilungOrigin();
     boolean checkIfMaerchenIsInPast();
-    Elternteil[] getSelectableElternmithilfen(SchuelerDatenblattModel schuelerDatenblattModel);
+    Elternmithilfe[] getSelectableElternmithilfen(SchuelerDatenblattModel schuelerDatenblattModel);
     ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel);
     boolean checkIfElternmithilfeHasEmail(SchuelerDatenblattModel schuelerDatenblattModel);
     boolean checkIfElternmithilfeHasTelefon(SchuelerDatenblattModel schuelerDatenblattModel);
