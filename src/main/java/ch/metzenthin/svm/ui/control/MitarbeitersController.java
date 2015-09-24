@@ -4,11 +4,10 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
 import ch.metzenthin.svm.domain.commands.DeleteMitarbeiterCommand;
 import ch.metzenthin.svm.domain.model.MitarbeitersModel;
-import ch.metzenthin.svm.domain.model.MitarbeitersTableData;
 import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
-import ch.metzenthin.svm.ui.components.MitarbeiterErfassenDialog;
 import ch.metzenthin.svm.ui.components.ListenExportDialog;
+import ch.metzenthin.svm.ui.components.MitarbeiterErfassenDialog;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -35,11 +34,14 @@ public class MitarbeitersController {
     private JButton btnLoeschen;
     private JButton btnExportieren;
     private JButton btnAbbrechen;
+    private JButton btnZurueck;
     private ActionListener closeListener;
+    private ActionListener zurueckListener;
 
-    public MitarbeitersController(MitarbeitersModel mitarbeitersModel, SvmContext svmContext) {
+    public MitarbeitersController(MitarbeitersModel mitarbeitersModel, SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel) {
         this.mitarbeitersModel = mitarbeitersModel;
         this.svmContext = svmContext;
+        this.mitarbeitersTableModel = mitarbeitersTableModel;
     }
 
     public void setMitarbeitersTable(JTable mitarbeitersTable) {
@@ -64,13 +66,16 @@ public class MitarbeitersController {
     }
 
     private void initializeMitarbeitersTable() {
-        MitarbeitersTableData mitarbeitersTableData = new MitarbeitersTableData(svmContext.getSvmModel().getMitarbeitersAll());
-        mitarbeitersTableModel = new MitarbeitersTableModel(mitarbeitersTableData);
         mitarbeitersTable.setModel(mitarbeitersTableModel);
         mitarbeitersTable.setDefaultRenderer(Calendar.class, new CalendarTableCellRenderer());
         setColumnCellRenderers(mitarbeitersTable, mitarbeitersTableModel);
         setJTableColumnWidthAccordingToCellContentAndHeader(mitarbeitersTable);
     }
+
+    public void setLblTotal(JLabel lblTotal) {
+        lblTotal.setText(mitarbeitersModel.getTotal(mitarbeitersTableModel));
+    }
+
 
     public void setBtnNeu(JButton btnNeu) {
         this.btnNeu = btnNeu;
@@ -219,6 +224,24 @@ public class MitarbeitersController {
 
     public void addCloseListener(ActionListener closeListener) {
         this.closeListener = closeListener;
+    }
+
+    public void setBtnZurueck(JButton btnZurueck) {
+        this.btnZurueck = btnZurueck;
+        btnZurueck.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onZurueck();
+            }
+        });
+    }
+
+    private void onZurueck() {
+        zurueckListener.actionPerformed(new ActionEvent(btnZurueck, ActionEvent.ACTION_PERFORMED, "Zurück"));
+    }
+
+    public void addZurueckListener(ActionListener zurueckListener) {
+        this.zurueckListener = zurueckListener;
     }
 
 }

@@ -41,4 +41,5 @@ public interface ModelFactory {
     SemesterrechnungenModel createSemesterrechnungenModel();
     SemesterrechnungBearbeitenModel createSemesterrechnungBearbeitenModel();
     RechnungsdatumErfassenModel createRechnungsdatumErfassenModel();
+    MitarbeitersSuchenModel createMitarbeitersSuchenModel();
 }

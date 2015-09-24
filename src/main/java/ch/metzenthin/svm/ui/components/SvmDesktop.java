@@ -122,10 +122,10 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
 
-        menuItem = new JMenuItem("Mitarbeiter verwalten");
+        menuItem = new JMenuItem("Mitarbeiter suchen / bearbeiten");
         menuItem.setMnemonic(KeyEvent.VK_I);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.ALT_MASK));
-        menuItem.setActionCommand("mitarbeiterVerwalten");
+        menuItem.setActionCommand("mitarbeiterSuchen");
         menuItem.addActionListener(this);
         menuMitarbeiter.add(menuItem);
 
@@ -271,15 +271,21 @@ public class SvmDesktop extends JFrame implements ActionListener {
             });
             setAndShowActivePanel(anAbmeldestatistikPanel.$$$getRootComponent$$$(), "Monatsstatistik Schüler");
 
-        } else if ("mitarbeiterVerwalten".equals(e.getActionCommand())) {
-            MitarbeitersPanel mitarbeitersPanel = new MitarbeitersPanel(svmContext);
-            mitarbeitersPanel.addCloseListener(new ActionListener() {
+        } else if ("mitarbeiterSuchen".equals(e.getActionCommand())) {
+            MitarbeitersSuchenPanel mitarbeitersSuchenPanel = new MitarbeitersSuchenPanel(svmContext);
+            mitarbeitersSuchenPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     onFrameAbbrechen();
                 }
             });
-            setAndShowActivePanel(mitarbeitersPanel.$$$getRootComponent$$$(), "Mitarbeiter verwalten");
+            mitarbeitersSuchenPanel.addNextPanelListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onNextPanelAvailable(e.getSource());
+                }
+            });
+            setAndShowActivePanel(mitarbeitersSuchenPanel.$$$getRootComponent$$$(), "Mitarbeiter suchen");
 
         } else if ("mitarbeiterCodesVerwalten".equals(e.getActionCommand())) {
             CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.MITARBEITER);

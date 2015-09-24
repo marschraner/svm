@@ -65,7 +65,7 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
     private SemesterrechnungenSuchenModel.PraezisierungRestbetragSelected praezisierungRestbetragSelected;
     private BigDecimal restbetrag;
     private StringBuilder selectStatementSb;
-    TypedQuery<Semesterrechnung> typedQuery;
+    private TypedQuery<Semesterrechnung> typedQuery;
 
     // output
     private List<Semesterrechnung> semesterrechnungenFound = new ArrayList<>();

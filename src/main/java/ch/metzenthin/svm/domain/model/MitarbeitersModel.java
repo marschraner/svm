@@ -11,4 +11,5 @@ public interface MitarbeitersModel {
     MitarbeiterErfassenModel getMitarbeiterErfassenModel(SvmContext svmContext, int indexBearbeiten);
 
     DeleteMitarbeiterCommand.Result mitarbeiterLoeschen(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, int selectedRow);
+    String getTotal(MitarbeitersTableModel mitarbeitersTableModel);
 }

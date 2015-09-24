@@ -11,17 +11,17 @@ import java.util.List;
 public class FindAllMitarbeitersCommand extends GenericDaoCommand {
 
     // output
-    private List<Mitarbeiter> lehrkraefteAll;
+    private List<Mitarbeiter> mitarbeitersAll;
 
     @Override
     public void execute() {
 
         MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
-        lehrkraefteAll = mitarbeiterDao.findAll();
+        mitarbeitersAll = mitarbeiterDao.findAll();
     }
 
     public List<Mitarbeiter> getMitarbeitersAll() {
-        return lehrkraefteAll;
+        return mitarbeitersAll;
     }
 
 }

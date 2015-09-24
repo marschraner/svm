@@ -38,6 +38,11 @@ public class MitarbeitersModelImpl extends AbstractModel implements Mitarbeiters
     }
 
     @Override
+    public String getTotal(MitarbeitersTableModel mitarbeitersTableModel) {
+        return "Total: " + mitarbeitersTableModel.getRowCount() + " Mitarbeiter";
+    }
+
+    @Override
     void doValidate() throws SvmValidationException {}
 
     @Override

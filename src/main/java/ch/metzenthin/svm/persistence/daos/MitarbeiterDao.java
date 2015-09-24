@@ -39,7 +39,7 @@ public class MitarbeiterDao extends GenericDao<Mitarbeiter, Integer> {
     }
 
     public List<Mitarbeiter> findAll() {
-        TypedQuery<Mitarbeiter> typedQuery = entityManager.createQuery("select l from Mitarbeiter l order by l.nachname, l.vorname, l.geburtsdatum", Mitarbeiter.class);
+        TypedQuery<Mitarbeiter> typedQuery = entityManager.createQuery("select m from Mitarbeiter m order by m.nachname, m.vorname, m.geburtsdatum", Mitarbeiter.class);
         return typedQuery.getResultList();
     }
 

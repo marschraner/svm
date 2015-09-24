@@ -198,4 +198,9 @@ public class ModelFactoryImpl implements ModelFactory {
         return new RechnungsdatumErfassenModelImpl(commandInvoker);
     }
 
+    @Override
+    public MitarbeitersSuchenModel createMitarbeitersSuchenModel() {
+        return new MitarbeitersSuchenModelImpl(commandInvoker);
+    }
+
 }
