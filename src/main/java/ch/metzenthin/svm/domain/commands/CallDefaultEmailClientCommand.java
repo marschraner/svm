@@ -38,6 +38,7 @@ public class CallDefaultEmailClientCommand implements Command {
             //
             // mailto:dummy@domain.com?cc=test@domain.com&
             // subject=First%20Email&&body=Hello%20World
+            emailAdresse = emailAdresse.replaceAll(",\\p{Blank}*", ";");   // ; als Trenner zwischen mehreren Emails verwenden
             String message = "mailto:" + emailAdresse;
             URI uri = URI.create(message);
             desktop.mail(uri);

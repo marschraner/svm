@@ -324,7 +324,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     private final StringModelAttribute rollenModelAttribute = new StringModelAttribute(
             this,
-            Field.ROLLEN, 2, 1000,
+            Field.ROLLEN, 1, 1000,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {

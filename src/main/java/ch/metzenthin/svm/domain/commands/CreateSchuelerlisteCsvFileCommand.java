@@ -50,6 +50,8 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
             out.write(separator);
             out.write("Rechnungsempfänger");
             out.write(separator);
+            out.write("Anmeldedatum");
+            out.write(separator);
             out.write("Kurse");
             out.write('\n');
 
@@ -84,6 +86,8 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
                     rechnungsempfaenger = schueler.getRechnungsempfaenger().getNachname() + " " + schueler.getRechnungsempfaenger().getVorname();
                 }
                 out.write(rechnungsempfaenger);
+                out.write(separator);
+                out.write(asString(schueler.getAnmeldungen().get(0).getAnmeldedatum()));
                 out.write(separator);
                 out.write(getKurseSchueler(schueler));
                 out.write('\n');
