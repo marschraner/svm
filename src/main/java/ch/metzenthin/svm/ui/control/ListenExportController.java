@@ -184,11 +184,14 @@ public class ListenExportController extends AbstractController {
         }
         if (listenExportTyp == ListenExportTyp.MITARBEITERS) {
             // Initialisierung
-            comboBoxListentyp.setSelectedItem(Listentyp.LEHRKRAEFTE_ADRESSLISTE);
+            comboBoxListentyp.setSelectedItem(Listentyp.MITARBEITER_ADRESSLISTE);
         } else {
-            comboBoxListentyp.removeItem(Listentyp.LEHRKRAEFTE_ADRESSLISTE);
-            comboBoxListentyp.removeItem(Listentyp.MITARBEITER_LISTE);
+            comboBoxListentyp.removeItem(Listentyp.MITARBEITER_ADRESSLISTE);
+            comboBoxListentyp.removeItem(Listentyp.MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM);
+            comboBoxListentyp.removeItem(Listentyp.MITARBEITER_ADRESSLISTE_MIT_VERTRETUNGSMOEGLICHKEITEN);
+            comboBoxListentyp.removeItem(Listentyp.MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN);
             comboBoxListentyp.removeItem(Listentyp.MITARBEITER_ADRESSETIKETTEN);
+            comboBoxListentyp.removeItem(Listentyp.MITARBEITER_LISTE_CSV);
         }
         if (listenExportTyp == ListenExportTyp.KURSE) {
             // Initialisierung

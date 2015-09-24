@@ -101,11 +101,17 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 break;
             case SCHUELERLISTE_CSV:
                 break;
-            case LEHRKRAEFTE_ADRESSLISTE:
+            case MITARBEITER_ADRESSLISTE:
                 break;
-            case MITARBEITER_LISTE:
+            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM:
+                break;
+            case MITARBEITER_ADRESSLISTE_MIT_VERTRETUNGSMOEGLICHKEITEN:
+                break;
+            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN:
                 break;
             case MITARBEITER_ADRESSETIKETTEN:
+                break;
+            case MITARBEITER_LISTE_CSV:
                 break;
             case KURSLISTE_WORD:
                 break;
@@ -154,6 +160,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
         String outputFile = listentyp + "." + listentyp.getFiletyp().getFileExtension();
         outputFile = outputFile.replaceAll("\\p{Blank}\\(Word\\)", "");
         outputFile = outputFile.replaceAll("\\p{Blank}\\(CSV\\)", "");
+        outputFile = outputFile.replaceAll(",\\p{Blank}", "_");
         outputFile = outputFile.replaceAll("\\p{Blank}", "_");
         outputFile = outputFile.replaceAll("ä", "ae");
         outputFile = outputFile.replaceAll("ö", "oe");
@@ -249,20 +256,35 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 commandInvoker.executeCommand(createSchuelerlisteCsvFileCommand);
                 result = createSchuelerlisteCsvFileCommand.getResult();
                 break;
-            case LEHRKRAEFTE_ADRESSLISTE:
-                CreateLehrkraefteAdresslisteCommand createLehrkraefteAdresslisteCommand = new CreateLehrkraefteAdresslisteCommand(mitarbeitersTableModel, titel, outputFile);
-                commandInvoker.executeCommand(createLehrkraefteAdresslisteCommand);
-                result = createLehrkraefteAdresslisteCommand.getResult();
+            case MITARBEITER_ADRESSLISTE:
+                CreateMitarbeiterAdresslisteCommand createMitarbeiterAdresslisteCommand = new CreateMitarbeiterAdresslisteCommand(mitarbeitersTableModel, titel, outputFile, listentyp);
+                commandInvoker.executeCommand(createMitarbeiterAdresslisteCommand);
+                result = createMitarbeiterAdresslisteCommand.getResult();
                 break;
-            case MITARBEITER_LISTE:
+            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM:
+                CreateMitarbeiterAdresslisteCommand createMitarbeiterAdresslisteMitGeburtsdatumCommand = new CreateMitarbeiterAdresslisteCommand(mitarbeitersTableModel, titel, outputFile, listentyp);
+                commandInvoker.executeCommand(createMitarbeiterAdresslisteMitGeburtsdatumCommand);
+                result = createMitarbeiterAdresslisteMitGeburtsdatumCommand.getResult();
+                break;
+            case MITARBEITER_ADRESSLISTE_MIT_VERTRETUNGSMOEGLICHKEITEN:
+                CreateMitarbeiterAdresslisteCommand createMitarbeiterAdresslisteMitVertretungsmoeglichkeitenCommand = new CreateMitarbeiterAdresslisteCommand(mitarbeitersTableModel, titel, outputFile, listentyp);
+                commandInvoker.executeCommand(createMitarbeiterAdresslisteMitVertretungsmoeglichkeitenCommand);
+                result = createMitarbeiterAdresslisteMitVertretungsmoeglichkeitenCommand.getResult();
+                break;
+            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN:
+                CreateMitarbeiterAdresslisteAlleAttributeCommand createMitarbeiterAdresslisteAlleAttributeCommand = new CreateMitarbeiterAdresslisteAlleAttributeCommand(mitarbeitersTableModel, titel, outputFile);
+                commandInvoker.executeCommand(createMitarbeiterAdresslisteAlleAttributeCommand);
+                result = createMitarbeiterAdresslisteAlleAttributeCommand.getResult();
+                break;
+            case MITARBEITER_ADRESSETIKETTEN:
+                CreateAdressenCsvFileCommand createAdressenCsvFileCommandMitarbeiter = new CreateAdressenCsvFileCommand(mitarbeitersTableModel.getMitarbeiters(), outputFile);
+                commandInvoker.executeCommand(createAdressenCsvFileCommandMitarbeiter);
+                result = createAdressenCsvFileCommandMitarbeiter.getResult();
+                break;
+            case MITARBEITER_LISTE_CSV:
                 CreateMitarbeiterlisteCsvFileCommand createMitarbeiterlisteCsvFileCommand = new CreateMitarbeiterlisteCsvFileCommand(mitarbeitersTableModel.getMitarbeiters(), outputFile);
                 commandInvoker.executeCommand(createMitarbeiterlisteCsvFileCommand);
                 result = createMitarbeiterlisteCsvFileCommand.getResult();
-                break;
-            case MITARBEITER_ADRESSETIKETTEN:
-                CreateAdressenCsvFileCommand createAdressenCsvFileCommandLehrkraefte = new CreateAdressenCsvFileCommand(mitarbeitersTableModel.getMitarbeiters(), outputFile);
-                commandInvoker.executeCommand(createAdressenCsvFileCommandLehrkraefte);
-                result = createAdressenCsvFileCommandLehrkraefte.getResult();
                 break;
             case KURSLISTE_WORD:
                 CreateKurslisteWordFileCommand createKurslisteWordFileCommand = new CreateKurslisteWordFileCommand(kurseTableModel, titel, outputFile);
@@ -335,12 +357,21 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 break;
             case ELTERNMITHILFE_ADRESSETIKETTEN:
                 break;
-            case LEHRKRAEFTE_ADRESSLISTE:
-                titleInit = "Lehrkräfte";
+            case MITARBEITER_ADRESSLISTE:
+                titleInit = "Mitarbeitende";
                 break;
-            case MITARBEITER_LISTE:
+            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM:
+                titleInit = "Mitarbeitende";
+                break;
+            case MITARBEITER_ADRESSLISTE_MIT_VERTRETUNGSMOEGLICHKEITEN:
+                titleInit = "Mitarbeitende";
+                break;
+            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN:
+                titleInit = "Mitarbeitende";
                 break;
             case MITARBEITER_ADRESSETIKETTEN:
+                break;
+            case MITARBEITER_LISTE_CSV:
                 break;
             case KURSLISTE_WORD:
                 titleInit = "Kurse";
