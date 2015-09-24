@@ -1,11 +1,14 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 
 /**
  * @author Martin Schraner
  */
-public interface MitarbeitersSuchenModel extends Model {
+public interface MitarbeiterSuchenModel extends Model {
+
+    MitarbeiterCode MITARBEITER_CODE_ALLE = new MitarbeiterCode();
 
     enum LehrkraftJaNeinSelected {
         JA,
@@ -21,16 +24,16 @@ public interface MitarbeitersSuchenModel extends Model {
 
     String getNachname();
     String getVorname();
-    String getMitarbeiterCodes();
+    MitarbeiterCode getMitarbeiterCode();
     LehrkraftJaNeinSelected getLehrkraftJaNeinSelected();
     AktivJaNeinSelected getAktivJaNeinSelected();
 
     void setNachname(String nachname) throws SvmValidationException;
     void setVorname(String vorname) throws SvmValidationException;
-    void setMitarbeiterCodes(String mitarbeiterCodes) throws SvmValidationException;
+    void setMitarbeiterCode(MitarbeiterCode mitarbeiterCode);
     void setLehrkraftJaNeinSelected(LehrkraftJaNeinSelected lehrkraftJaNeinSelected);
     void setAktivJaNeinSelected(AktivJaNeinSelected aktivJaNeinSelected);
 
-    String checkIfCodeKuerzelsExist(SvmModel svmModel);
+    MitarbeiterCode[] getSelectableMitarbeiterCodes(SvmModel svmModel);
     MitarbeitersTableData suchen();
 }

@@ -1,7 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.domain.model.MitarbeitersSuchenModel;
+import ch.metzenthin.svm.domain.model.MitarbeiterSuchenModel;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
+import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import org.apache.log4j.Logger;
 
 import javax.persistence.TypedQuery;
@@ -12,28 +13,28 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 /**
  * @author Martin Schraner
  */
-public class MitarbeitersSuchenCommand extends GenericDaoCommand {
+public class MitarbeiterSuchenCommand extends GenericDaoCommand {
 
-    private static final Logger LOGGER = Logger.getLogger(MitarbeitersSuchenCommand.class);
+    private static final Logger LOGGER = Logger.getLogger(MitarbeiterSuchenCommand.class);
 
     // input
     private String nachname;
     private String vorname;
-    private String mitarbeiterCodes;
-    private MitarbeitersSuchenModel.LehrkraftJaNeinSelected lehrkraftJaNeinSelected;
-    private MitarbeitersSuchenModel.AktivJaNeinSelected aktivJaNeinSelected;
+    private MitarbeiterCode mitarbeiterCode;
+    private MitarbeiterSuchenModel.LehrkraftJaNeinSelected lehrkraftJaNeinSelected;
+    private MitarbeiterSuchenModel.AktivJaNeinSelected aktivJaNeinSelected;
     private StringBuilder selectStatementSb;
     private TypedQuery<Mitarbeiter> typedQuery;
 
     // output
     private List<Mitarbeiter> mitarbeitersFound;
 
-    public MitarbeitersSuchenCommand(MitarbeitersSuchenModel mitarbeitersSuchenModel) {
-        this.nachname = mitarbeitersSuchenModel.getNachname();
-        this.vorname = mitarbeitersSuchenModel.getVorname();
-        this.mitarbeiterCodes = mitarbeitersSuchenModel.getMitarbeiterCodes();
-        this.lehrkraftJaNeinSelected = mitarbeitersSuchenModel.getLehrkraftJaNeinSelected();
-        this.aktivJaNeinSelected = mitarbeitersSuchenModel.getAktivJaNeinSelected();
+    public MitarbeiterSuchenCommand(MitarbeiterSuchenModel mitarbeiterSuchenModel) {
+        this.nachname = mitarbeiterSuchenModel.getNachname();
+        this.vorname = mitarbeiterSuchenModel.getVorname();
+        this.mitarbeiterCode = mitarbeiterSuchenModel.getMitarbeiterCode();
+        this.lehrkraftJaNeinSelected = mitarbeiterSuchenModel.getLehrkraftJaNeinSelected();
+        this.aktivJaNeinSelected = mitarbeiterSuchenModel.getAktivJaNeinSelected();
     }
 
     @Override
@@ -72,7 +73,7 @@ public class MitarbeitersSuchenCommand extends GenericDaoCommand {
     }
 
     private void createJoinMitarbeiterCodes() {
-        if (checkNotEmpty(mitarbeiterCodes)) {
+        if (mitarbeiterCode != null) {
             selectStatementSb.append(" join m.mitarbeiterCodes c");
         }
     }
@@ -84,14 +85,8 @@ public class MitarbeitersSuchenCommand extends GenericDaoCommand {
         if (checkNotEmpty(vorname)) {
             selectStatementSb.append(" lower(m.vorname) like :vorname and");
         }
-        if (checkNotEmpty(mitarbeiterCodes)) {
-            selectStatementSb.append(" (");
-            for (int i = 0; i < mitarbeiterCodes.split("[,;]").length; i ++) {
-                selectStatementSb.append(" lower(trim(c.kuerzel)) = :codeKuerzel").append(i).append(" or");
-            }
-            // letztes or löschen
-            selectStatementSb.setLength(selectStatementSb.length() - 3);
-            selectStatementSb.append(") and");
+        if (mitarbeiterCode != null) {
+                selectStatementSb.append(" c.codeId = :codeId and");
         }
         switch (lehrkraftJaNeinSelected) {
             case JA:
@@ -122,12 +117,8 @@ public class MitarbeitersSuchenCommand extends GenericDaoCommand {
         if (selectStatementSb.toString().contains(":nachname")) {
             typedQuery.setParameter("nachname", nachname.toLowerCase() + "%");
         }
-        if (selectStatementSb.toString().contains(":codeKuerzel")) {
-            String[] mitarbeiterCodesSplitted = mitarbeiterCodes.split("[,;]");
-            for (int i = 0; i < mitarbeiterCodesSplitted.length; i++) {
-                String mitarbeiterCode = mitarbeiterCodesSplitted[i].trim().toLowerCase();
-                typedQuery.setParameter("codeKuerzel" + i, mitarbeiterCode);
-            }
+        if (selectStatementSb.toString().contains(":codeId")) {
+            typedQuery.setParameter("codeId", mitarbeiterCode.getCodeId());
         }
     }
 

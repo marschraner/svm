@@ -1,7 +1,8 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.ui.control.MitarbeitersSuchenController;
+import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
+import ch.metzenthin.svm.ui.control.MitarbeiterSuchenController;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -12,14 +13,13 @@ import java.awt.event.ActionListener;
 /**
  * @author Martin Schraner
  */
-public class MitarbeitersSuchenPanel {
+public class MitarbeiterSuchenPanel {
     private JPanel panel1;
     private JPanel datenPanel;
     private JPanel titelPanel;
     private JPanel buttonPanel;
     private JTextField txtNachname;
     private JTextField txtVorname;
-    private JTextField txtMitarbeiterCodes;
     private JRadioButton radioBtnLehrkraftJa;
     private JRadioButton radioBtnLehrkraftNein;
     private JRadioButton radioBtnLehrkraftAlle;
@@ -28,13 +28,13 @@ public class MitarbeitersSuchenPanel {
     private JRadioButton radioBtnAktivAlle;
     private JLabel errLblNachname;
     private JLabel errLblVorname;
-    private JLabel errLblMitarbeiterCodes;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
-    private MitarbeitersSuchenController mitarbeitersSuchenController;
+    private JComboBox<MitarbeiterCode> comboBoxMitarbeiterCode;
+    private MitarbeiterSuchenController mitarbeiterSuchenController;
     private ActionListener nextPanelListener;
 
-    public MitarbeitersSuchenPanel(SvmContext svmContext) {
+    public MitarbeiterSuchenPanel(SvmContext svmContext) {
         $$$setupUI$$$();
         initializeErrLbls();
         createMitarbeitersSuchenController(svmContext);
@@ -45,23 +45,20 @@ public class MitarbeitersSuchenPanel {
         errLblNachname.setForeground(Color.RED);
         errLblVorname.setVisible(false);
         errLblVorname.setForeground(Color.RED);
-        errLblMitarbeiterCodes.setVisible(false);
-        errLblMitarbeiterCodes.setForeground(Color.RED);
     }
 
     private void createMitarbeitersSuchenController(SvmContext svmContext) {
-        mitarbeitersSuchenController = new MitarbeitersSuchenController(svmContext, svmContext.getModelFactory().createMitarbeitersSuchenModel());
-        mitarbeitersSuchenController.setTxtNachname(txtNachname);
-        mitarbeitersSuchenController.setTxtVorname(txtVorname);
-        mitarbeitersSuchenController.setTxtMitarbeiterCodes(txtMitarbeiterCodes);
-        mitarbeitersSuchenController.setRadioBtnGroupLehrkraftJaNein(radioBtnLehrkraftJa, radioBtnLehrkraftNein, radioBtnLehrkraftAlle);
-        mitarbeitersSuchenController.setRadioBtnGroupAktivJaNein(radioBtnAktivJa, radioBtnAktivNein, radioBtnAktivAlle);
-        mitarbeitersSuchenController.setErrLblNachname(errLblNachname);
-        mitarbeitersSuchenController.setErrLblVorname(errLblVorname);
-        mitarbeitersSuchenController.setErrLblMitarbeiterCodes(errLblMitarbeiterCodes);
-        mitarbeitersSuchenController.setBtnSuchen(btnSuchen);
-        mitarbeitersSuchenController.setBtnAbbrechen(btnAbbrechen);
-        mitarbeitersSuchenController.addZurueckListener(new ActionListener() {
+        mitarbeiterSuchenController = new MitarbeiterSuchenController(svmContext, svmContext.getModelFactory().createMitarbeitersSuchenModel());
+        mitarbeiterSuchenController.setTxtNachname(txtNachname);
+        mitarbeiterSuchenController.setTxtVorname(txtVorname);
+        mitarbeiterSuchenController.setComboBoxMitarbeiterCode(comboBoxMitarbeiterCode);
+        mitarbeiterSuchenController.setRadioBtnGroupLehrkraftJaNein(radioBtnLehrkraftJa, radioBtnLehrkraftNein, radioBtnLehrkraftAlle);
+        mitarbeiterSuchenController.setRadioBtnGroupAktivJaNein(radioBtnAktivJa, radioBtnAktivNein, radioBtnAktivAlle);
+        mitarbeiterSuchenController.setErrLblNachname(errLblNachname);
+        mitarbeiterSuchenController.setErrLblVorname(errLblVorname);
+        mitarbeiterSuchenController.setBtnSuchen(btnSuchen);
+        mitarbeiterSuchenController.setBtnAbbrechen(btnAbbrechen);
+        mitarbeiterSuchenController.addZurueckListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onZurueck();
@@ -74,12 +71,16 @@ public class MitarbeitersSuchenPanel {
     }
 
     public void addCloseListener(ActionListener actionListener) {
-        mitarbeitersSuchenController.addCloseListener(actionListener);
+        mitarbeiterSuchenController.addCloseListener(actionListener);
     }
 
     public void addNextPanelListener(ActionListener nextPanelListener) {
         this.nextPanelListener = nextPanelListener;
-        mitarbeitersSuchenController.addNextPanelListener(nextPanelListener);
+        mitarbeiterSuchenController.addNextPanelListener(nextPanelListener);
+    }
+
+    private void createUIComponents() {
+        comboBoxMitarbeiterCode = new JComboBox<>();
     }
 
     /**
@@ -90,6 +91,7 @@ public class MitarbeitersSuchenPanel {
      * @noinspection ALL
      */
     private void $$$setupUI$$$() {
+        createUIComponents();
         panel1 = new JPanel();
         panel1.setLayout(new BorderLayout(0, 0));
         datenPanel = new JPanel();
@@ -222,7 +224,7 @@ public class MitarbeitersSuchenPanel {
         gbc.fill = GridBagConstraints.VERTICAL;
         panel2.add(spacer9, gbc);
         final JLabel label4 = new JLabel();
-        label4.setText("Code(s)");
+        label4.setText("Code");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 5;
@@ -234,20 +236,6 @@ public class MitarbeitersSuchenPanel {
         gbc.gridy = 6;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel2.add(spacer10, gbc);
-        txtMitarbeiterCodes = new JTextField();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 5;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(txtMitarbeiterCodes, gbc);
-        errLblMitarbeiterCodes = new JLabel();
-        errLblMitarbeiterCodes.setText("errLblCodes");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 4;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel2.add(errLblMitarbeiterCodes, gbc);
         final JLabel label5 = new JLabel();
         label5.setText("Lehrkraft");
         gbc = new GridBagConstraints();
@@ -342,6 +330,12 @@ public class MitarbeitersSuchenPanel {
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         panel4.add(radioBtnAktivAlle, gbc);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 5;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel2.add(comboBoxMitarbeiterCode, gbc);
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridBagLayout());
         panel1.add(buttonPanel, BorderLayout.SOUTH);
@@ -385,7 +379,7 @@ public class MitarbeitersSuchenPanel {
         buttonPanel.add(spacer16, gbc);
         label2.setLabelFor(txtNachname);
         label3.setLabelFor(txtVorname);
-        label4.setLabelFor(txtMitarbeiterCodes);
+        label4.setLabelFor(comboBoxMitarbeiterCode);
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(radioBtnLehrkraftJa);

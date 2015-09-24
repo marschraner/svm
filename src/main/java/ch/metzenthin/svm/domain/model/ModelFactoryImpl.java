@@ -199,8 +199,8 @@ public class ModelFactoryImpl implements ModelFactory {
     }
 
     @Override
-    public MitarbeitersSuchenModel createMitarbeitersSuchenModel() {
-        return new MitarbeitersSuchenModelImpl(commandInvoker);
+    public MitarbeiterSuchenModel createMitarbeitersSuchenModel() {
+        return new MitarbeiterSuchenModelImpl(commandInvoker);
     }
 
 }

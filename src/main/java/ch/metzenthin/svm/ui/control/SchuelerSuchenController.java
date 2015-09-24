@@ -269,7 +269,7 @@ public class SchuelerSuchenController extends PersonController {
                 onWochentagSelected();
             }
         });
-        // SchuelerCode in Model initialisieren mit erstem ComboBox-Wert
+        // Wochentag in Model initialisieren mit erstem ComboBox-Wert
         schuelerSuchenModel.setWochentag(Wochentag.values()[0]);
     }
 
@@ -436,7 +436,7 @@ public class SchuelerSuchenController extends PersonController {
                 onGruppeSelected();
             }
         });
-        // SchuelerCode in Model initialisieren mit erstem ComboBox-Wert
+        // Gruppe in Model initialisieren mit erstem ComboBox-Wert
         schuelerSuchenModel.setGruppe(Gruppe.values()[0]);
     }
 

@@ -3,24 +3,23 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.MitarbeitersSuchenCommand;
+import ch.metzenthin.svm.domain.commands.MitarbeiterSuchenCommand;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Martin Schraner
  */
-final class MitarbeitersSuchenModelImpl extends AbstractModel implements MitarbeitersSuchenModel {
+final class MitarbeiterSuchenModelImpl extends AbstractModel implements MitarbeiterSuchenModel {
 
     private String nachname;
     private String vorname;
-    private String mitarbeiterCodes;
+    private MitarbeiterCode mitarbeiterCode;
     private LehrkraftJaNeinSelected lehrkraftJaNeinSelected;
     private AktivJaNeinSelected aktivJaNeinSelected;
     
-    MitarbeitersSuchenModelImpl(CommandInvoker commandInvoker) {
+    MitarbeiterSuchenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
     }
     
@@ -76,30 +75,16 @@ final class MitarbeitersSuchenModelImpl extends AbstractModel implements Mitarbe
         vornameModelAttribute.setNewValue(false, vorname, isBulkUpdate());
     }
 
-    private final StringModelAttribute mitarbeiterCodesModelAttribute = new StringModelAttribute(
-            this,
-            Field.MITARBEITER_CODES, 1, 50,
-            new AttributeAccessor<String>() {
-                @Override
-                public String getValue() {
-                    return mitarbeiterCodes;
-                }
-
-                @Override
-                public void setValue(String value) {
-                    mitarbeiterCodes = value;
-                }
-            }
-    );
-
     @Override
-    public String getMitarbeiterCodes() {
-        return mitarbeiterCodesModelAttribute.getValue();
+    public MitarbeiterCode getMitarbeiterCode() {
+        return mitarbeiterCode;
     }
 
     @Override
-    public void setMitarbeiterCodes(String mitarbeiterCodes) throws SvmValidationException {
-        mitarbeiterCodesModelAttribute.setNewValue(false, mitarbeiterCodes, isBulkUpdate());
+    public void setMitarbeiterCode(MitarbeiterCode mitarbeiterCode) {
+        MitarbeiterCode oldValue = this.mitarbeiterCode;
+        this.mitarbeiterCode = mitarbeiterCode;
+        firePropertyChange(Field.MITARBEITER_CODE, oldValue, this.mitarbeiterCode);
     }
 
     @Override
@@ -127,32 +112,21 @@ final class MitarbeitersSuchenModelImpl extends AbstractModel implements Mitarbe
     }
 
     @Override
-    public String checkIfCodeKuerzelsExist(SvmModel svmModel) {
-        if (mitarbeiterCodes == null) {
-            return "";
-        }
-        List<String> codesKuerzel = new ArrayList<>();
-        StringBuilder erfassteCodes = new StringBuilder();
-        for (MitarbeiterCode mitarbeiterCode : svmModel.getMitarbeiterCodesAll()) {
-            codesKuerzel.add(mitarbeiterCode.getKuerzel());
-            erfassteCodes.append(mitarbeiterCode.toString()).append(",\n");
-        }
-        // letztes ", " entfernen
-        erfassteCodes.setLength(erfassteCodes.length() - 2);
-        String[] mitarbeiterCodesSplitted = mitarbeiterCodes.split("[,;]");
-        for (String mitarbeiterCodeSuchabfrage : mitarbeiterCodesSplitted) {
-            if (!codesKuerzel.contains(mitarbeiterCodeSuchabfrage.trim())) {
-                return "'" + mitarbeiterCodeSuchabfrage + "' ist kein erfasster Mitarbeiter-Code. Erfasste Codes sind:\n" + erfassteCodes.toString() + ".";
-            }
-        }
-        return "";
+    public MitarbeiterCode[] getSelectableMitarbeiterCodes(SvmModel svmModel) {
+        List<MitarbeiterCode> codesList = svmModel.getSelektierbareMitarbeiterCodesAll();
+        // MitarbeiterCode alle auch erlaubt
+        codesList.add(0, MITARBEITER_CODE_ALLE);
+        return codesList.toArray(new MitarbeiterCode[codesList.size()]);
     }
 
     @Override
     public MitarbeitersTableData suchen() {
-        MitarbeitersSuchenCommand mitarbeitersSuchenCommand = new MitarbeitersSuchenCommand(this);
-        getCommandInvoker().executeCommand(mitarbeitersSuchenCommand);
-        return new MitarbeitersTableData(mitarbeitersSuchenCommand.getMitarbeitersFound());
+        if (mitarbeiterCode == MITARBEITER_CODE_ALLE) {
+            mitarbeiterCode = null;
+        }
+        MitarbeiterSuchenCommand mitarbeiterSuchenCommand = new MitarbeiterSuchenCommand(this);
+        getCommandInvoker().executeCommand(mitarbeiterSuchenCommand);
+        return new MitarbeitersTableData(mitarbeiterSuchenCommand.getMitarbeitersFound());
     }
 
     @Override

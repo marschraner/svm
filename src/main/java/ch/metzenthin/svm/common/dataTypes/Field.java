@@ -179,7 +179,7 @@ public enum Field {
     SEMESTERRECHNUNG_CODE_JA_NEIN("Semesterrechnung-Code ja/nein"),
     STIPENDIUM_JA_NEIN("Stipendium ja/nein"),
     CODES("Codes"),
-    MITARBEITER_CODES("Codes"),
+    MITARBEITER_CODE("Code"),
     LEHRKRAFT_JA_NEIN("Lehrkraft"),
     AKTIV_JA_NEIN("aktiv");
 

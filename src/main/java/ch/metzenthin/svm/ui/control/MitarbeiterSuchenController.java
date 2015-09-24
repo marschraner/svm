@@ -4,8 +4,9 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
-import ch.metzenthin.svm.domain.model.MitarbeitersSuchenModel;
+import ch.metzenthin.svm.domain.model.MitarbeiterSuchenModel;
 import ch.metzenthin.svm.domain.model.MitarbeitersTableData;
+import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 import ch.metzenthin.svm.ui.components.MitarbeitersPanel;
 import org.apache.log4j.Logger;
@@ -23,21 +24,20 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
-public class MitarbeitersSuchenController extends AbstractController {
+public class MitarbeiterSuchenController extends AbstractController {
 
-    private static final Logger LOGGER = Logger.getLogger(MitarbeitersSuchenController.class);
+    private static final Logger LOGGER = Logger.getLogger(MitarbeiterSuchenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private final SvmContext svmContext;
-    private MitarbeitersSuchenModel mitarbeitersSuchenModel;
+    private MitarbeiterSuchenModel mitarbeiterSuchenModel;
     private JTextField txtNachname;
     private JTextField txtVorname;
-    private JTextField txtMitarbeiterCodes;
     private JLabel errLblNachname;
     private JLabel errLblVorname;
-    private JLabel errLblMitarbeiterCodes;
+    private JComboBox<MitarbeiterCode> comboBoxMitarbeiterCode;
     private JRadioButton radioBtnLehrkraftJa;
     private JRadioButton radioBtnLehrkraftNein;
     private JRadioButton radioBtnLehrkraftAlle;
@@ -50,14 +50,14 @@ public class MitarbeitersSuchenController extends AbstractController {
     private ActionListener nextPanelListener;
     private ActionListener zurueckListener;
 
-    public MitarbeitersSuchenController(SvmContext svmContext, MitarbeitersSuchenModel mitarbeitersSuchenModel) {
-        super(mitarbeitersSuchenModel);
+    public MitarbeiterSuchenController(SvmContext svmContext, MitarbeiterSuchenModel mitarbeiterSuchenModel) {
+        super(mitarbeiterSuchenModel);
         this.svmContext = svmContext;
-        this.mitarbeitersSuchenModel = mitarbeitersSuchenModel;
-        this.mitarbeitersSuchenModel.addPropertyChangeListener(this);
-        this.mitarbeitersSuchenModel.addDisableFieldsListener(this);
-        this.mitarbeitersSuchenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.mitarbeitersSuchenModel.addCompletedListener(new CompletedListener() {
+        this.mitarbeiterSuchenModel = mitarbeiterSuchenModel;
+        this.mitarbeiterSuchenModel.addPropertyChangeListener(this);
+        this.mitarbeiterSuchenModel.addDisableFieldsListener(this);
+        this.mitarbeiterSuchenModel.addMakeErrorLabelsInvisibleListener(this);
+        this.mitarbeiterSuchenModel.addCompletedListener(new CompletedListener() {
             @Override
             public void completed(boolean completed) {
                 onMitarbeitersSuchenModelCompleted(completed);
@@ -84,7 +84,7 @@ public class MitarbeitersSuchenController extends AbstractController {
 
     private void onNachnameEvent() {
         LOGGER.trace("mitarbeitersSuchenController Event Nachname");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtNachname.getText(), mitarbeitersSuchenModel.getNachname());
+        boolean equalFieldAndModelValue = equalsNullSafe(txtNachname.getText(), mitarbeiterSuchenModel.getNachname());
         try {
             setModelNachname();
         } catch (SvmValidationException e) {
@@ -100,7 +100,7 @@ public class MitarbeitersSuchenController extends AbstractController {
     private void setModelNachname() throws SvmValidationException {
         makeErrorLabelInvisible(Field.NACHNAME);
         try {
-            mitarbeitersSuchenModel.setNachname(txtNachname.getText());
+            mitarbeiterSuchenModel.setNachname(txtNachname.getText());
         } catch (SvmValidationException e) {
             LOGGER.trace("MitarbeitersSuchenController setModelNachname Exception=" + e.getMessage());
             showErrMsg(e);
@@ -126,7 +126,7 @@ public class MitarbeitersSuchenController extends AbstractController {
 
     private void onVornameEvent() {
         LOGGER.trace("MitarbeitersSuchenController Event Vorname");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtVorname.getText(), mitarbeitersSuchenModel.getVorname());
+        boolean equalFieldAndModelValue = equalsNullSafe(txtVorname.getText(), mitarbeiterSuchenModel.getVorname());
         try {
             setModelVorname();
         } catch (SvmValidationException e) {
@@ -142,7 +142,7 @@ public class MitarbeitersSuchenController extends AbstractController {
     private void setModelVorname() throws SvmValidationException {
         makeErrorLabelInvisible(Field.VORNAME);
         try {
-            mitarbeitersSuchenModel.setVorname(txtVorname.getText());
+            mitarbeiterSuchenModel.setVorname(txtVorname.getText());
         } catch (SvmValidationException e) {
             LOGGER.trace("MitarbeitersSuchenController setModelVorname Exception=" + e.getMessage());
             showErrMsg(e);
@@ -150,46 +150,27 @@ public class MitarbeitersSuchenController extends AbstractController {
         }
     }
 
-    public void setTxtMitarbeiterCodes(JTextField txtMitarbeiterCodes) {
-        this.txtMitarbeiterCodes = txtMitarbeiterCodes;
-        this.txtMitarbeiterCodes.addActionListener(new ActionListener() {
+    public void setComboBoxMitarbeiterCode(JComboBox<MitarbeiterCode> comboBoxCode) {
+        this.comboBoxMitarbeiterCode = comboBoxCode;
+        MitarbeiterCode[] selectableMitarbeiterCodes = mitarbeiterSuchenModel.getSelectableMitarbeiterCodes(svmContext.getSvmModel());
+        comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableMitarbeiterCodes));
+        // Model initialisieren mit erstem ComboBox-Wert
+        mitarbeiterSuchenModel.setMitarbeiterCode(selectableMitarbeiterCodes[0]);
+        this.comboBoxMitarbeiterCode.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onMitarbeiterCodesEvent();
-            }
-        });
-        this.txtMitarbeiterCodes.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onMitarbeiterCodesEvent();
+                onMitarbeiterCodeSelected();
             }
         });
     }
 
-    private void onMitarbeiterCodesEvent() {
-        LOGGER.trace("MitarbeitersSuchenController Event MitarbeiterCodes");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtMitarbeiterCodes.getText(), mitarbeitersSuchenModel.getMitarbeiterCodes());
-        try {
-            setModelMitarbeiterCodes();
-        } catch (SvmValidationException e) {
-            return;
-        }
-        if (equalFieldAndModelValue && isModelValidationMode()) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
+    private void onMitarbeiterCodeSelected() {
+        LOGGER.trace("MitarbeiterSuchenController Event MitarbeiterCode selected=" + comboBoxMitarbeiterCode.getSelectedItem());
+        setModelMitarbeiterCode();
     }
 
-    private void setModelMitarbeiterCodes() throws SvmValidationException {
-        makeErrorLabelInvisible(Field.MITARBEITER_CODES);
-        try {
-            mitarbeitersSuchenModel.setMitarbeiterCodes(txtMitarbeiterCodes.getText());
-        } catch (SvmValidationException e) {
-            LOGGER.trace("MitarbeitersSuchenController setModelMitarbeiterCodes Exception=" + e.getMessage());
-            showErrMsg(e);
-            throw e;
-        }
+    private void setModelMitarbeiterCode() {
+        mitarbeiterSuchenModel.setMitarbeiterCode((MitarbeiterCode) comboBoxMitarbeiterCode.getSelectedItem());
     }
 
     public void setErrLblNachname(JLabel errLblNachname) {
@@ -200,25 +181,21 @@ public class MitarbeitersSuchenController extends AbstractController {
         this.errLblVorname = errLblVorname;
     }
 
-    public void setErrLblMitarbeiterCodes(JLabel errLblMitarbeiterCodes) {
-        this.errLblMitarbeiterCodes = errLblMitarbeiterCodes;
-    }
-
     public void setRadioBtnGroupLehrkraftJaNein(JRadioButton radioBtnLehrkraftJa, JRadioButton radioBtnLehrkraftNein, JRadioButton radioBtnLehrkraftAlle) {
         this.radioBtnLehrkraftJa = radioBtnLehrkraftJa;
         this.radioBtnLehrkraftNein = radioBtnLehrkraftNein;
         this.radioBtnLehrkraftAlle = radioBtnLehrkraftAlle;
         // Action Commands
-        this.radioBtnLehrkraftJa.setActionCommand(MitarbeitersSuchenModel.LehrkraftJaNeinSelected.JA.toString());
-        this.radioBtnLehrkraftNein.setActionCommand(MitarbeitersSuchenModel.LehrkraftJaNeinSelected.NEIN.toString());
-        this.radioBtnLehrkraftAlle.setActionCommand(MitarbeitersSuchenModel.LehrkraftJaNeinSelected.ALLE.toString());
+        this.radioBtnLehrkraftJa.setActionCommand(MitarbeiterSuchenModel.LehrkraftJaNeinSelected.JA.toString());
+        this.radioBtnLehrkraftNein.setActionCommand(MitarbeiterSuchenModel.LehrkraftJaNeinSelected.NEIN.toString());
+        this.radioBtnLehrkraftAlle.setActionCommand(MitarbeiterSuchenModel.LehrkraftJaNeinSelected.ALLE.toString());
         // Listener
         RadioBtnGroupLehrkraftJaNeinListener radioBtnGroupLehrkraftJaNeinListener = new RadioBtnGroupLehrkraftJaNeinListener();
         this.radioBtnLehrkraftJa.addActionListener(radioBtnGroupLehrkraftJaNeinListener);
         this.radioBtnLehrkraftNein.addActionListener(radioBtnGroupLehrkraftJaNeinListener);
         this.radioBtnLehrkraftAlle.addActionListener(radioBtnGroupLehrkraftJaNeinListener);
         // Initialisieren mit ALLE
-        mitarbeitersSuchenModel.setLehrkraftJaNeinSelected(MitarbeitersSuchenModel.LehrkraftJaNeinSelected.ALLE);
+        mitarbeiterSuchenModel.setLehrkraftJaNeinSelected(MitarbeiterSuchenModel.LehrkraftJaNeinSelected.ALLE);
     }
 
     public void setRadioBtnGroupAktivJaNein(JRadioButton radioBtnAktivJa, JRadioButton radioBtnAktivNein, JRadioButton radioBtnAktivAlle) {
@@ -226,16 +203,16 @@ public class MitarbeitersSuchenController extends AbstractController {
         this.radioBtnAktivNein = radioBtnAktivNein;
         this.radioBtnAktivAlle = radioBtnAktivAlle;
         // Action Commands
-        this.radioBtnAktivJa.setActionCommand(MitarbeitersSuchenModel.AktivJaNeinSelected.JA.toString());
-        this.radioBtnAktivNein.setActionCommand(MitarbeitersSuchenModel.AktivJaNeinSelected.NEIN.toString());
-        this.radioBtnAktivAlle.setActionCommand(MitarbeitersSuchenModel.AktivJaNeinSelected.ALLE.toString());
+        this.radioBtnAktivJa.setActionCommand(MitarbeiterSuchenModel.AktivJaNeinSelected.JA.toString());
+        this.radioBtnAktivNein.setActionCommand(MitarbeiterSuchenModel.AktivJaNeinSelected.NEIN.toString());
+        this.radioBtnAktivAlle.setActionCommand(MitarbeiterSuchenModel.AktivJaNeinSelected.ALLE.toString());
         // Listener
         RadioBtnGroupAktivJaNeinListener radioBtnGroupAktivJaNeinListener = new RadioBtnGroupAktivJaNeinListener();
         this.radioBtnAktivJa.addActionListener(radioBtnGroupAktivJaNeinListener);
         this.radioBtnAktivNein.addActionListener(radioBtnGroupAktivJaNeinListener);
         this.radioBtnAktivAlle.addActionListener(radioBtnGroupAktivJaNeinListener);
         // Initialisieren mit JA
-        mitarbeitersSuchenModel.setAktivJaNeinSelected(MitarbeitersSuchenModel.AktivJaNeinSelected.JA);
+        mitarbeiterSuchenModel.setAktivJaNeinSelected(MitarbeiterSuchenModel.AktivJaNeinSelected.JA);
     }
 
     public void setBtnSuchen(JButton btnSuchen) {
@@ -257,13 +234,7 @@ public class MitarbeitersSuchenController extends AbstractController {
             btnSuchen.setFocusPainted(false);
             return;
         }
-        String errMsg = mitarbeitersSuchenModel.checkIfCodeKuerzelsExist(svmContext.getSvmModel());
-        if (!errMsg.isEmpty()) {
-            JOptionPane.showMessageDialog(null, errMsg, "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
-            btnSuchen.setFocusPainted(false);
-            return;
-        }
-        MitarbeitersTableData mitarbeitersTableData = mitarbeitersSuchenModel.suchen();
+        MitarbeitersTableData mitarbeitersTableData = mitarbeiterSuchenModel.suchen();
         MitarbeitersTableModel mitarbeitersTableModel = new MitarbeitersTableModel(mitarbeitersTableData);
         // Auch bei einem Suchresultat Liste anzeigen, da nur von dort gelöscht werden kann
         if (mitarbeitersTableData.size() > 0) {
@@ -318,30 +289,30 @@ public class MitarbeitersSuchenController extends AbstractController {
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         if (checkIsFieldChange(Field.NACHNAME, evt)) {
-            txtNachname.setText(mitarbeitersSuchenModel.getNachname());
+            txtNachname.setText(mitarbeiterSuchenModel.getNachname());
         }
         else if (checkIsFieldChange(Field.VORNAME, evt)) {
-            txtVorname.setText(mitarbeitersSuchenModel.getVorname());
+            txtVorname.setText(mitarbeiterSuchenModel.getVorname());
         }
-        else if (checkIsFieldChange(Field.MITARBEITER_CODES, evt)) {
-            txtMitarbeiterCodes.setText(mitarbeitersSuchenModel.getMitarbeiterCodes());
+        else if (checkIsFieldChange(Field.MITARBEITER_CODE, evt)) {
+            comboBoxMitarbeiterCode.setSelectedItem(mitarbeiterSuchenModel.getMitarbeiterCode());
         }
-        else if (checkIsFieldChange(Field.LEHRKRAFT_JA_NEIN, evt) && evt.getNewValue() == MitarbeitersSuchenModel.LehrkraftJaNeinSelected.JA) {
+        else if (checkIsFieldChange(Field.LEHRKRAFT_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.LehrkraftJaNeinSelected.JA) {
             radioBtnLehrkraftJa.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.LEHRKRAFT_JA_NEIN, evt) && evt.getNewValue() == MitarbeitersSuchenModel.LehrkraftJaNeinSelected.NEIN) {
+        else if (checkIsFieldChange(Field.LEHRKRAFT_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.LehrkraftJaNeinSelected.NEIN) {
             radioBtnLehrkraftNein.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.LEHRKRAFT_JA_NEIN, evt) && evt.getNewValue() == MitarbeitersSuchenModel.LehrkraftJaNeinSelected.ALLE) {
+        else if (checkIsFieldChange(Field.LEHRKRAFT_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.LehrkraftJaNeinSelected.ALLE) {
             radioBtnLehrkraftAlle.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.AKTIV_JA_NEIN, evt) && evt.getNewValue() == MitarbeitersSuchenModel.AktivJaNeinSelected.JA) {
+        else if (checkIsFieldChange(Field.AKTIV_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.AktivJaNeinSelected.JA) {
             radioBtnAktivJa.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.AKTIV_JA_NEIN, evt) && evt.getNewValue() == MitarbeitersSuchenModel.AktivJaNeinSelected.NEIN) {
+        else if (checkIsFieldChange(Field.AKTIV_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.AktivJaNeinSelected.NEIN) {
             radioBtnAktivNein.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.AKTIV_JA_NEIN, evt) && evt.getNewValue() == MitarbeitersSuchenModel.AktivJaNeinSelected.ALLE) {
+        else if (checkIsFieldChange(Field.AKTIV_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.AktivJaNeinSelected.ALLE) {
             radioBtnAktivAlle.setSelected(true);
         }
     }
@@ -356,10 +327,6 @@ public class MitarbeitersSuchenController extends AbstractController {
             LOGGER.trace("Validate field Vorname");
             setModelVorname();
         }
-        if (txtMitarbeiterCodes.isEnabled()) {
-            LOGGER.trace("Validate field MitarbeiterCodes");
-            setModelMitarbeiterCodes();
-        }
     }
 
     @Override
@@ -372,10 +339,6 @@ public class MitarbeitersSuchenController extends AbstractController {
             errLblVorname.setVisible(true);
             errLblVorname.setText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.MITARBEITER_CODES)) {
-            errLblMitarbeiterCodes.setVisible(true);
-            errLblMitarbeiterCodes.setText(e.getMessage());
-        }
     }
 
     @Override
@@ -385,9 +348,6 @@ public class MitarbeitersSuchenController extends AbstractController {
         }
         if (e.getAffectedFields().contains(Field.VORNAME)) {
             txtVorname.setToolTipText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.MITARBEITER_CODES)) {
-            txtMitarbeiterCodes.setToolTipText(e.getMessage());
         }
     }
 
@@ -409,14 +369,6 @@ public class MitarbeitersSuchenController extends AbstractController {
                 txtVorname.setToolTipText(null);
             }
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.MITARBEITER_CODES)) {
-            if (errLblMitarbeiterCodes != null) {
-                errLblMitarbeiterCodes.setVisible(false);
-            }
-            if (txtMitarbeiterCodes != null) {
-                txtMitarbeiterCodes.setToolTipText(null);
-            }
-        }
     }
 
     @Override
@@ -427,7 +379,7 @@ public class MitarbeitersSuchenController extends AbstractController {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("MitarbeitersSuchenController LehrkraftJaNein Event");
-            mitarbeitersSuchenModel.setLehrkraftJaNeinSelected(MitarbeitersSuchenModel.LehrkraftJaNeinSelected.valueOf(e.getActionCommand()));
+            mitarbeiterSuchenModel.setLehrkraftJaNeinSelected(MitarbeiterSuchenModel.LehrkraftJaNeinSelected.valueOf(e.getActionCommand()));
         }
     }
 
@@ -435,7 +387,7 @@ public class MitarbeitersSuchenController extends AbstractController {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("MitarbeitersSuchenController AktivJaNein Event");
-            mitarbeitersSuchenModel.setAktivJaNeinSelected(MitarbeitersSuchenModel.AktivJaNeinSelected.valueOf(e.getActionCommand()));
+            mitarbeiterSuchenModel.setAktivJaNeinSelected(MitarbeiterSuchenModel.AktivJaNeinSelected.valueOf(e.getActionCommand()));
         }
     }
 }

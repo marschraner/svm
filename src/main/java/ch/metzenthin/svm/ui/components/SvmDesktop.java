@@ -272,20 +272,20 @@ public class SvmDesktop extends JFrame implements ActionListener {
             setAndShowActivePanel(anAbmeldestatistikPanel.$$$getRootComponent$$$(), "Monatsstatistik Schüler");
 
         } else if ("mitarbeiterSuchen".equals(e.getActionCommand())) {
-            MitarbeitersSuchenPanel mitarbeitersSuchenPanel = new MitarbeitersSuchenPanel(svmContext);
-            mitarbeitersSuchenPanel.addCloseListener(new ActionListener() {
+            MitarbeiterSuchenPanel mitarbeiterSuchenPanel = new MitarbeiterSuchenPanel(svmContext);
+            mitarbeiterSuchenPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     onFrameAbbrechen();
                 }
             });
-            mitarbeitersSuchenPanel.addNextPanelListener(new ActionListener() {
+            mitarbeiterSuchenPanel.addNextPanelListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     onNextPanelAvailable(e.getSource());
                 }
             });
-            setAndShowActivePanel(mitarbeitersSuchenPanel.$$$getRootComponent$$$(), "Mitarbeiter suchen");
+            setAndShowActivePanel(mitarbeiterSuchenPanel.$$$getRootComponent$$$(), "Mitarbeiter suchen");
 
         } else if ("mitarbeiterCodesVerwalten".equals(e.getActionCommand())) {
             CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.MITARBEITER);
