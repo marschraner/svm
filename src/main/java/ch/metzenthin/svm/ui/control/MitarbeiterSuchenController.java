@@ -41,9 +41,9 @@ public class MitarbeiterSuchenController extends AbstractController {
     private JRadioButton radioBtnLehrkraftJa;
     private JRadioButton radioBtnLehrkraftNein;
     private JRadioButton radioBtnLehrkraftAlle;
-    private JRadioButton radioBtnAktivJa;
-    private JRadioButton radioBtnAktivNein;
-    private JRadioButton radioBtnAktivAlle;
+    private JRadioButton radioBtnStatusAktiv;
+    private JRadioButton radioBtnStatusNichtAktiv;
+    private JRadioButton radioBtnStatusAlle;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
@@ -198,21 +198,21 @@ public class MitarbeiterSuchenController extends AbstractController {
         mitarbeiterSuchenModel.setLehrkraftJaNeinSelected(MitarbeiterSuchenModel.LehrkraftJaNeinSelected.ALLE);
     }
 
-    public void setRadioBtnGroupAktivJaNein(JRadioButton radioBtnAktivJa, JRadioButton radioBtnAktivNein, JRadioButton radioBtnAktivAlle) {
-        this.radioBtnAktivJa = radioBtnAktivJa;
-        this.radioBtnAktivNein = radioBtnAktivNein;
-        this.radioBtnAktivAlle = radioBtnAktivAlle;
+    public void setRadioBtnGroupStatus(JRadioButton radioBtnStatusAktiv, JRadioButton radioBtnStatusNichtAktiv, JRadioButton radioBtnStatusAlle) {
+        this.radioBtnStatusAktiv = radioBtnStatusAktiv;
+        this.radioBtnStatusNichtAktiv = radioBtnStatusNichtAktiv;
+        this.radioBtnStatusAlle = radioBtnStatusAlle;
         // Action Commands
-        this.radioBtnAktivJa.setActionCommand(MitarbeiterSuchenModel.AktivJaNeinSelected.JA.toString());
-        this.radioBtnAktivNein.setActionCommand(MitarbeiterSuchenModel.AktivJaNeinSelected.NEIN.toString());
-        this.radioBtnAktivAlle.setActionCommand(MitarbeiterSuchenModel.AktivJaNeinSelected.ALLE.toString());
+        this.radioBtnStatusAktiv.setActionCommand(MitarbeiterSuchenModel.StatusSelected.AKTIV.toString());
+        this.radioBtnStatusNichtAktiv.setActionCommand(MitarbeiterSuchenModel.StatusSelected.NICHT_AKTIV.toString());
+        this.radioBtnStatusAlle.setActionCommand(MitarbeiterSuchenModel.StatusSelected.ALLE.toString());
         // Listener
-        RadioBtnGroupAktivJaNeinListener radioBtnGroupAktivJaNeinListener = new RadioBtnGroupAktivJaNeinListener();
-        this.radioBtnAktivJa.addActionListener(radioBtnGroupAktivJaNeinListener);
-        this.radioBtnAktivNein.addActionListener(radioBtnGroupAktivJaNeinListener);
-        this.radioBtnAktivAlle.addActionListener(radioBtnGroupAktivJaNeinListener);
-        // Initialisieren mit JA
-        mitarbeiterSuchenModel.setAktivJaNeinSelected(MitarbeiterSuchenModel.AktivJaNeinSelected.JA);
+        RadioBtnGroupStatusListener radioBtnGroupStatusListener = new RadioBtnGroupStatusListener();
+        this.radioBtnStatusAktiv.addActionListener(radioBtnGroupStatusListener);
+        this.radioBtnStatusNichtAktiv.addActionListener(radioBtnGroupStatusListener);
+        this.radioBtnStatusAlle.addActionListener(radioBtnGroupStatusListener);
+        // Initialisieren mit AKTIV
+        mitarbeiterSuchenModel.setStatusSelected(MitarbeiterSuchenModel.StatusSelected.AKTIV);
     }
 
     public void setBtnSuchen(JButton btnSuchen) {
@@ -306,14 +306,14 @@ public class MitarbeiterSuchenController extends AbstractController {
         else if (checkIsFieldChange(Field.LEHRKRAFT_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.LehrkraftJaNeinSelected.ALLE) {
             radioBtnLehrkraftAlle.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.AKTIV_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.AktivJaNeinSelected.JA) {
-            radioBtnAktivJa.setSelected(true);
+        else if (checkIsFieldChange(Field.STATUS, evt) && evt.getNewValue() == MitarbeiterSuchenModel.StatusSelected.AKTIV) {
+            radioBtnStatusAktiv.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.AKTIV_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.AktivJaNeinSelected.NEIN) {
-            radioBtnAktivNein.setSelected(true);
+        else if (checkIsFieldChange(Field.STATUS, evt) && evt.getNewValue() == MitarbeiterSuchenModel.StatusSelected.NICHT_AKTIV) {
+            radioBtnStatusNichtAktiv.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.AKTIV_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.AktivJaNeinSelected.ALLE) {
-            radioBtnAktivAlle.setSelected(true);
+        else if (checkIsFieldChange(Field.STATUS, evt) && evt.getNewValue() == MitarbeiterSuchenModel.StatusSelected.ALLE) {
+            radioBtnStatusAlle.setSelected(true);
         }
     }
 
@@ -383,11 +383,11 @@ public class MitarbeiterSuchenController extends AbstractController {
         }
     }
 
-    class RadioBtnGroupAktivJaNeinListener implements ActionListener {
+    class RadioBtnGroupStatusListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            LOGGER.trace("MitarbeitersSuchenController AktivJaNein Event");
-            mitarbeiterSuchenModel.setAktivJaNeinSelected(MitarbeiterSuchenModel.AktivJaNeinSelected.valueOf(e.getActionCommand()));
+            LOGGER.trace("MitarbeitersSuchenController Status Event");
+            mitarbeiterSuchenModel.setStatusSelected(MitarbeiterSuchenModel.StatusSelected.valueOf(e.getActionCommand()));
         }
     }
 }

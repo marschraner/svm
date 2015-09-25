@@ -16,9 +16,9 @@ public interface MitarbeiterSuchenModel extends Model {
         ALLE
     }
 
-    enum AktivJaNeinSelected {
-        JA,
-        NEIN,
+    enum StatusSelected {
+        AKTIV,
+        NICHT_AKTIV,
         ALLE
     }
 
@@ -26,13 +26,13 @@ public interface MitarbeiterSuchenModel extends Model {
     String getVorname();
     MitarbeiterCode getMitarbeiterCode();
     LehrkraftJaNeinSelected getLehrkraftJaNeinSelected();
-    AktivJaNeinSelected getAktivJaNeinSelected();
+    StatusSelected getStatusSelected();
 
     void setNachname(String nachname) throws SvmValidationException;
     void setVorname(String vorname) throws SvmValidationException;
     void setMitarbeiterCode(MitarbeiterCode mitarbeiterCode);
     void setLehrkraftJaNeinSelected(LehrkraftJaNeinSelected lehrkraftJaNeinSelected);
-    void setAktivJaNeinSelected(AktivJaNeinSelected aktivJaNeinSelected);
+    void setStatusSelected(StatusSelected statusSelected);
 
     MitarbeiterCode[] getSelectableMitarbeiterCodes(SvmModel svmModel);
     MitarbeitersTableData suchen();

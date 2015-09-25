@@ -22,7 +22,7 @@ public class MitarbeiterSuchenCommand extends GenericDaoCommand {
     private String vorname;
     private MitarbeiterCode mitarbeiterCode;
     private MitarbeiterSuchenModel.LehrkraftJaNeinSelected lehrkraftJaNeinSelected;
-    private MitarbeiterSuchenModel.AktivJaNeinSelected aktivJaNeinSelected;
+    private MitarbeiterSuchenModel.StatusSelected statusSelected;
     private StringBuilder selectStatementSb;
     private TypedQuery<Mitarbeiter> typedQuery;
 
@@ -34,7 +34,7 @@ public class MitarbeiterSuchenCommand extends GenericDaoCommand {
         this.vorname = mitarbeiterSuchenModel.getVorname();
         this.mitarbeiterCode = mitarbeiterSuchenModel.getMitarbeiterCode();
         this.lehrkraftJaNeinSelected = mitarbeiterSuchenModel.getLehrkraftJaNeinSelected();
-        this.aktivJaNeinSelected = mitarbeiterSuchenModel.getAktivJaNeinSelected();
+        this.statusSelected = mitarbeiterSuchenModel.getStatusSelected();
     }
 
     @Override
@@ -98,11 +98,11 @@ public class MitarbeiterSuchenCommand extends GenericDaoCommand {
             case ALLE:
                 break;
         }
-        switch (aktivJaNeinSelected) {
-            case JA:
+        switch (statusSelected) {
+            case AKTIV:
                 selectStatementSb.append(" m.aktiv = 1 and");
                 break;
-            case NEIN:
+            case NICHT_AKTIV:
                 selectStatementSb.append(" m.aktiv = 0 and");
                 break;
             case ALLE:

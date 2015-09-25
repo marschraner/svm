@@ -23,9 +23,9 @@ public class MitarbeiterSuchenPanel {
     private JRadioButton radioBtnLehrkraftJa;
     private JRadioButton radioBtnLehrkraftNein;
     private JRadioButton radioBtnLehrkraftAlle;
-    private JRadioButton radioBtnAktivJa;
-    private JRadioButton radioBtnAktivNein;
-    private JRadioButton radioBtnAktivAlle;
+    private JRadioButton radioBtnStatusAktiv;
+    private JRadioButton radioBtnStatusNichtAktiv;
+    private JRadioButton radioBtnStatusAlle;
     private JLabel errLblNachname;
     private JLabel errLblVorname;
     private JButton btnSuchen;
@@ -53,7 +53,7 @@ public class MitarbeiterSuchenPanel {
         mitarbeiterSuchenController.setTxtVorname(txtVorname);
         mitarbeiterSuchenController.setComboBoxMitarbeiterCode(comboBoxMitarbeiterCode);
         mitarbeiterSuchenController.setRadioBtnGroupLehrkraftJaNein(radioBtnLehrkraftJa, radioBtnLehrkraftNein, radioBtnLehrkraftAlle);
-        mitarbeiterSuchenController.setRadioBtnGroupAktivJaNein(radioBtnAktivJa, radioBtnAktivNein, radioBtnAktivAlle);
+        mitarbeiterSuchenController.setRadioBtnGroupStatus(radioBtnStatusAktiv, radioBtnStatusNichtAktiv, radioBtnStatusAlle);
         mitarbeiterSuchenController.setErrLblNachname(errLblNachname);
         mitarbeiterSuchenController.setErrLblVorname(errLblVorname);
         mitarbeiterSuchenController.setBtnSuchen(btnSuchen);
@@ -287,7 +287,7 @@ public class MitarbeiterSuchenPanel {
         gbc.fill = GridBagConstraints.VERTICAL;
         panel2.add(spacer12, gbc);
         final JLabel label6 = new JLabel();
-        label6.setText("Aktiv");
+        label6.setText("Status");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 9;
@@ -300,14 +300,14 @@ public class MitarbeiterSuchenPanel {
         gbc.gridy = 9;
         gbc.fill = GridBagConstraints.BOTH;
         panel2.add(panel4, gbc);
-        radioBtnAktivJa = new JRadioButton();
-        radioBtnAktivJa.setText("ja");
+        radioBtnStatusAktiv = new JRadioButton();
+        radioBtnStatusAktiv.setText("aktiv");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 0, 0, 5);
-        panel4.add(radioBtnAktivJa, gbc);
+        panel4.add(radioBtnStatusAktiv, gbc);
         final JPanel spacer13 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
@@ -315,21 +315,21 @@ public class MitarbeiterSuchenPanel {
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel4.add(spacer13, gbc);
-        radioBtnAktivNein = new JRadioButton();
-        radioBtnAktivNein.setText("nein");
+        radioBtnStatusNichtAktiv = new JRadioButton();
+        radioBtnStatusNichtAktiv.setText("nicht aktiv");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 0, 0, 5);
-        panel4.add(radioBtnAktivNein, gbc);
-        radioBtnAktivAlle = new JRadioButton();
-        radioBtnAktivAlle.setText("alle");
+        panel4.add(radioBtnStatusNichtAktiv, gbc);
+        radioBtnStatusAlle = new JRadioButton();
+        radioBtnStatusAlle.setText("alle");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
-        panel4.add(radioBtnAktivAlle, gbc);
+        panel4.add(radioBtnStatusAlle, gbc);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 5;
@@ -386,9 +386,9 @@ public class MitarbeiterSuchenPanel {
         buttonGroup.add(radioBtnLehrkraftNein);
         buttonGroup.add(radioBtnLehrkraftAlle);
         buttonGroup = new ButtonGroup();
-        buttonGroup.add(radioBtnAktivJa);
-        buttonGroup.add(radioBtnAktivNein);
-        buttonGroup.add(radioBtnAktivAlle);
+        buttonGroup.add(radioBtnStatusAktiv);
+        buttonGroup.add(radioBtnStatusNichtAktiv);
+        buttonGroup.add(radioBtnStatusAlle);
     }
 
     /**

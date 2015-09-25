@@ -181,7 +181,7 @@ public enum Field {
     CODES("Codes"),
     MITARBEITER_CODE("Code"),
     LEHRKRAFT_JA_NEIN("Lehrkraft"),
-    AKTIV_JA_NEIN("aktiv");
+    STATUS("Status");
 
     private String name;
 

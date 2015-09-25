@@ -17,7 +17,7 @@ final class MitarbeiterSuchenModelImpl extends AbstractModel implements Mitarbei
     private String vorname;
     private MitarbeiterCode mitarbeiterCode;
     private LehrkraftJaNeinSelected lehrkraftJaNeinSelected;
-    private AktivJaNeinSelected aktivJaNeinSelected;
+    private StatusSelected statusSelected;
     
     MitarbeiterSuchenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -100,15 +100,15 @@ final class MitarbeiterSuchenModelImpl extends AbstractModel implements Mitarbei
     }
 
     @Override
-    public AktivJaNeinSelected getAktivJaNeinSelected() {
-        return aktivJaNeinSelected;
+    public StatusSelected getStatusSelected() {
+        return statusSelected;
     }
 
     @Override
-    public void setAktivJaNeinSelected(AktivJaNeinSelected aktivJaNeinSelected) {
-        AktivJaNeinSelected oldValue = this.aktivJaNeinSelected;
-        this.aktivJaNeinSelected = aktivJaNeinSelected;
-        firePropertyChange(Field.AKTIV_JA_NEIN, oldValue, this.aktivJaNeinSelected);
+    public void setStatusSelected(StatusSelected statusSelected) {
+        StatusSelected oldValue = this.statusSelected;
+        this.statusSelected = statusSelected;
+        firePropertyChange(Field.STATUS, oldValue, this.statusSelected);
     }
 
     @Override
