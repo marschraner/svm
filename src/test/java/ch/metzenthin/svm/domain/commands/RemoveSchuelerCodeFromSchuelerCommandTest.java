@@ -80,19 +80,19 @@ public class RemoveSchuelerCodeFromSchuelerCommandTest {
         schuelerSaved = addSchuelerCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
 
         assertEquals(2, schuelerSaved.getSchuelerCodes().size());
-        assertEquals("jt", schuelerSaved.getCodesAsList().get(0).getKuerzel());
-        assertEquals("zt", schuelerSaved.getCodesAsList().get(1).getKuerzel());
+        assertEquals("jt", schuelerSaved.getSchuelerCodesAsList().get(0).getKuerzel());
+        assertEquals("zt", schuelerSaved.getSchuelerCodesAsList().get(1).getKuerzel());
 
         // 2. SchuelerCode von Schüler löschen
-        RemoveSchuelerCodeFromSchuelerCommand removeSchuelerCodeFromSchuelerCommand = new RemoveSchuelerCodeFromSchuelerCommand(schuelerSaved.getCodesAsList().get(1), schuelerSaved);
+        RemoveSchuelerCodeFromSchuelerCommand removeSchuelerCodeFromSchuelerCommand = new RemoveSchuelerCodeFromSchuelerCommand(schuelerSaved.getSchuelerCodesAsList().get(1), schuelerSaved);
         commandInvoker.executeCommandAsTransaction(removeSchuelerCodeFromSchuelerCommand);
 
         Schueler schuelerUpdated = removeSchuelerCodeFromSchuelerCommand.getSchuelerUpdated();
         assertEquals(1, schuelerUpdated.getSchuelerCodes().size());
-        assertEquals("jt", schuelerUpdated.getCodesAsList().get(0).getKuerzel());
+        assertEquals("jt", schuelerUpdated.getSchuelerCodesAsList().get(0).getKuerzel());
 
         // 1. SchuelerCode von Schüler löschen
-        removeSchuelerCodeFromSchuelerCommand = new RemoveSchuelerCodeFromSchuelerCommand(schuelerUpdated.getCodesAsList().get(0), schuelerSaved);
+        removeSchuelerCodeFromSchuelerCommand = new RemoveSchuelerCodeFromSchuelerCommand(schuelerUpdated.getSchuelerCodesAsList().get(0), schuelerSaved);
         commandInvoker.executeCommandAsTransaction(removeSchuelerCodeFromSchuelerCommand);
 
         schuelerUpdated = removeSchuelerCodeFromSchuelerCommand.getSchuelerUpdated();

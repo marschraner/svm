@@ -35,12 +35,16 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
     public void execute() {
 
         // Spaltenbreiten
+        // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein (bei linkem Default-Rand von 650)!
+        //          Bei > 11200 hinten schmalerer Rand!
+        //          Bei > 11500 Spaltenbreite durch Inhalt beieinflusst!!!
+        // Hier linker-Rand auf 850 gesetzt, d.h. von obigen Werten muss 200 subtrahiert werden.
         List<Integer> columnWidths = new ArrayList<>();
-        columnWidths.add(2500);
-        columnWidths.add(2800);
-        columnWidths.add(1800);
-        columnWidths.add(3100);
-        columnWidths.add(1000);
+        columnWidths.add(2700);
+        columnWidths.add(2900);
+        columnWidths.add(1700);
+        columnWidths.add(2600);
+        columnWidths.add(900);
 
         // Bold / horiz. merged (Anzahl zu mergende Zellen; 0: kein Merging)::
         List<List<Boolean>> boldCells = new ArrayList<>();
@@ -96,16 +100,16 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         List<List<int[]>> maxLengths = new ArrayList<>();
         // 1. Zeile
         List<int[]> maxLengthsRow1 = new ArrayList<>();
-        maxLengthsRow1.add(new int[]{21, 22, 23, 24, 25, 27});
-        maxLengthsRow1.add(new int[]{25, 26, 27, 28, 29, 31});
+        maxLengthsRow1.add(new int[]{23, 24, 25, 26, 27, 29});
+        maxLengthsRow1.add(new int[]{24, 25, 26, 27, 28, 30});
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{0});
         maxLengths.add(maxLengthsRow1);
         // 2. Zeile
         List<int[]> maxLengthsRow2 = new ArrayList<>();
-        maxLengthsRow2.add(new int[]{21, 22, 23, 24, 25, 27});
-        maxLengthsRow2.add(new int[]{25, 26, 27, 28, 29, 31});
+        maxLengthsRow2.add(new int[]{23, 24, 25, 26, 27, 29});
+        maxLengthsRow2.add(new int[]{24, 25, 26, 27, 28, 30});
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{0});
@@ -113,10 +117,10 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         // 3. Zeile
         List<int[]> maxLengthsRow3 = new ArrayList<>();
         maxLengthsRow3.add(new int[]{0});
-        maxLengthsRow3.add(new int[]{38, 39, 40, 41, 43, 45});
+        maxLengthsRow3.add(new int[]{39, 40, 41, 42, 44, 46});
         maxLengthsRow3.add(new int[]{0});
         maxLengthsRow3.add(new int[]{0});
-        maxLengthsRow3.add(new int[]{27, 28, 29, 30, 31, 33});
+        maxLengthsRow3.add(new int[]{21, 22, 23, 24, 25, 27});
         maxLengths.add(maxLengthsRow3);
 
         // Header
@@ -176,7 +180,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
             // Auf mehrere Zeilen aufzusplittende Felder:
             List<String> elternmithilfeCodeLines = null;
             if (maercheneinteilung.getElternmithilfeCode() != null) {
-                SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(maercheneinteilung.getElternmithilfeCode().getBeschreibung(), 29, 3);
+                SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(maercheneinteilung.getElternmithilfeCode().getBeschreibung(), 21, 3);
                 splitStringIntoMultipleLinesCommand.execute();
                 elternmithilfeCodeLines = splitStringIntoMultipleLinesCommand.getLines();
             }
@@ -227,8 +231,8 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         // Tabelle erzeugen
         Semester semester = schuelerSuchenTableModel.getSemester();
         String maerchenspielSchuljahr = "Märchenspiel " + semester.getSchuljahr();
-        String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                                  " + maerchenspielSchuljahr;
-        CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile);
+        String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                             " + maerchenspielSchuljahr;
+        CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile, 850, 1, 850, 1, 0, 0);
         createWordTableCommand.execute();
 
         result = Result.LISTE_ERFOLGREICH_ERSTELLT;

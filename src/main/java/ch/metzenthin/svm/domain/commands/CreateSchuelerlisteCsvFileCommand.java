@@ -50,9 +50,13 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
             out.write(separator);
             out.write("Rechnungsempfänger");
             out.write(separator);
+            out.write("Kurse");
+            out.write(separator);
+            out.write("Gruppe");
+            out.write(separator);
             out.write("Anmeldedatum");
             out.write(separator);
-            out.write("Kurse");
+            out.write("Codes");
             out.write('\n');
 
             // Daten
@@ -61,7 +65,7 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
                 out.write(separator);
                 out.write(schueler.getVorname());
                 out.write(separator);
-                out.write(schueler.getAdresse().getStrasseHausnummer());
+                out.write(schueler.getAdresse().getStrHausnummer());
                 out.write(separator);
                 out.write(schueler.getAdresse().getPlz());
                 out.write(separator);
@@ -87,9 +91,13 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
                 }
                 out.write(rechnungsempfaenger);
                 out.write(separator);
+                out.write(getKurseSchueler(schueler));
+                out.write(separator);
+                out.write(schuelerSuchenTableModel.getGruppe() != null ? schuelerSuchenTableModel.getGruppe().toString() : "");
+                out.write(separator);
                 out.write(asString(schueler.getAnmeldungen().get(0).getAnmeldedatum()));
                 out.write(separator);
-                out.write(getKurseSchueler(schueler));
+                out.write(schueler.getSchuelerCodesAsStr());
                 out.write('\n');
             }
 

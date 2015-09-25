@@ -68,7 +68,7 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
                 out.write(mitarbeiter.getVorname());
                 out.write(separator);
                 if (mitarbeiter.getAdresse() != null) {
-                    out.write(mitarbeiter.getAdresse().getStrasseHausnummer());
+                    out.write(mitarbeiter.getAdresse().getStrHausnummer());
                 }
                 out.write(separator);
                 if (mitarbeiter.getAdresse() != null) {

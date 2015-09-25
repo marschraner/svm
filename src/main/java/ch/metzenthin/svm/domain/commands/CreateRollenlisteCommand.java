@@ -34,13 +34,17 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
     public void execute() {
 
         // Spaltenbreiten
+        // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein (bei linkem Default-Rand von 650)!
+        //          Bei > 11200 hinten schmalerer Rand!
+        //          Bei > 11500 Spaltenbreite durch Inhalt beieinflusst!!!
+        // Hier linker-Rand auf 850 gesetzt, d.h. von obigen Werten muss 200 subtrahiert werden.
         List<Integer> columnWidths = new ArrayList<>();
+        columnWidths.add(2300);
         columnWidths.add(2500);
-        columnWidths.add(2800);
+        columnWidths.add(1400);
+        columnWidths.add(1400);
+        columnWidths.add(2100);
         columnWidths.add(1600);
-        columnWidths.add(1700);
-        columnWidths.add(2200);
-        columnWidths.add(2200);
 
         // Bold / horiz. merged (Anzahl zu mergende Zellen; 0: kein Merging):
         List<List<Boolean>> boldCells = new ArrayList<>();
@@ -103,20 +107,20 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
         // 1. Zeile
         List<int[]> maxLengthsRow1 = new ArrayList<>();
         maxLengthsRow1.add(new int[]{21, 22, 23, 24, 25, 27});
-        maxLengthsRow1.add(new int[]{25, 26, 27, 28, 29, 31});
+        maxLengthsRow1.add(new int[]{22, 23, 24, 25, 26, 28});
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{0});
-        maxLengthsRow1.add(new int[]{19, 20, 21, 22, 23, 25});
-        maxLengthsRow1.add(new int[]{19, 20, 21, 22, 23, 25});
+        maxLengthsRow1.add(new int[]{20, 21, 22, 23, 24, 26});
+        maxLengthsRow1.add(new int[]{18, 19, 20, 21, 22, 23});
         maxLengths.add(maxLengthsRow1);
         // 2. Zeile
         List<int[]> maxLengthsRow2 = new ArrayList<>();
         maxLengthsRow2.add(new int[]{21, 22, 23, 24, 25, 27});
-        maxLengthsRow2.add(new int[]{25, 26, 27, 28, 29, 31});
+        maxLengthsRow2.add(new int[]{22, 23, 24, 25, 26, 28});
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{0});
-        maxLengthsRow2.add(new int[]{19, 20, 21, 22, 23, 25});
-        maxLengthsRow2.add(new int[]{19, 20, 21, 22, 23, 25});
+        maxLengthsRow2.add(new int[]{20, 21, 22, 23, 24, 26});
+        maxLengthsRow2.add(new int[]{18, 19, 20, 21, 22, 23});
         maxLengths.add(maxLengthsRow2);
         // 3. Zeile
         List<int[]> maxLengthsRow3 = new ArrayList<>();
@@ -124,8 +128,8 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
         maxLengthsRow3.add(new int[]{38, 39, 40, 41, 43, 45});
         maxLengthsRow3.add(new int[]{0});
         maxLengthsRow3.add(new int[]{0});
-        maxLengthsRow3.add(new int[]{19, 20, 21, 22, 23, 25});
-        maxLengthsRow3.add(new int[]{19, 20, 21, 22, 23, 25});
+        maxLengthsRow3.add(new int[]{20, 21, 22, 23, 24, 26});
+        maxLengthsRow3.add(new int[]{18, 19, 20, 21, 22, 23});
         maxLengths.add(maxLengthsRow3);
 
         // Header
@@ -187,11 +191,11 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
                 maxLines = 1;
             }
             List<String> bilderRolle1Lines = null;
-            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(maercheneinteilung.getRolle1(), 19, maxLines);
+            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(maercheneinteilung.getRolle1(), 18, maxLines);
             splitStringIntoMultipleLinesCommand.execute();
             List<String> rolle1Lines = splitStringIntoMultipleLinesCommand.getLines();
             if (maercheneinteilung.getBilderRolle1() != null) {
-                splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(maercheneinteilung.getBilderRolle1(), 19, maxLines);
+                splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(maercheneinteilung.getBilderRolle1(), 18, maxLines);
                 splitStringIntoMultipleLinesCommand.execute();
                 bilderRolle1Lines = splitStringIntoMultipleLinesCommand.getLines();
             }
@@ -204,12 +208,12 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
             List<String> rolle2Lines = null;
             List<String> bilderRolle2Lines = null;
             if (maercheneinteilung.getRolle2() != null) {
-                splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(maercheneinteilung.getRolle2(), 19, maxLines);
+                splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(maercheneinteilung.getRolle2(), 18, maxLines);
                 splitStringIntoMultipleLinesCommand.execute();
                 rolle2Lines = splitStringIntoMultipleLinesCommand.getLines();
             }
             if (maercheneinteilung.getBilderRolle2() != null) {
-                splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(maercheneinteilung.getBilderRolle2(), 19, maxLines);
+                splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(maercheneinteilung.getBilderRolle2(), 18, maxLines);
                 splitStringIntoMultipleLinesCommand.execute();
                 bilderRolle2Lines = splitStringIntoMultipleLinesCommand.getLines();
             }
@@ -308,8 +312,8 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
         // Tabelle erzeugen
         Semester semester = schuelerSuchenTableModel.getSemester();
         String maerchenspielSchuljahr = "Märchenspiel " + semester.getSchuljahr();
-        String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                                  " + maerchenspielSchuljahr;
-        CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile);
+        String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                             " + maerchenspielSchuljahr;
+        CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile, 850, 1, 850, 1, 0, 0);
         createWordTableCommand.execute();
 
         result = Result.LISTE_ERFOLGREICH_ERSTELLT;

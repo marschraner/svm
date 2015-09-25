@@ -41,7 +41,7 @@ public class CodeSpecificHinzufuegenModelImpl extends AbstractModel implements C
         Schueler schuelerUpdated = addSchuelerCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
         // TableData mit von der Datenbank upgedatetem Schüler updaten
         if (schuelerUpdated != null) {
-            codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getCodesAsList());
+            codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getSchuelerCodesAsList());
         }
     }
 

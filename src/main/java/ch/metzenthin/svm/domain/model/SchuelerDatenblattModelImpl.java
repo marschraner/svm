@@ -277,7 +277,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     public String getSchuelerCodesAsString() {
         if (!schueler.getSchuelerCodes().isEmpty()) {
             StringBuilder codesSb = new StringBuilder("<html>");
-            for (SchuelerCode schuelerCode : schueler.getCodesAsList()) {
+            for (SchuelerCode schuelerCode : schueler.getSchuelerCodesAsList()) {
                 if (codesSb.length() > 6) {
                     codesSb.append("<br>");
                 }

@@ -78,7 +78,7 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                 out.write(separator);
                 out.write(rechnungsempfaenger.getNachname());
                 out.write(separator);
-                out.write(rechnungsempfaenger.getAdresse().getStrasseHausnummer());
+                out.write(rechnungsempfaenger.getAdresse().getStrHausnummer());
                 out.write(separator);
                 out.write(rechnungsempfaenger.getAdresse().getPlz());
                 out.write(separator);

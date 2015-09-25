@@ -70,7 +70,7 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
         commandInvoker.executeCommandAsTransaction(removeSchuelerCodeFromSchuelerCommand);
         Schueler schuelerUpdated = removeSchuelerCodeFromSchuelerCommand.getSchuelerUpdated();
         // TableData mit von der Datenbank upgedateten SchülerCodes updaten
-        codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getCodesAsList());
+        codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getSchuelerCodesAsList());
     }
 
     @Override

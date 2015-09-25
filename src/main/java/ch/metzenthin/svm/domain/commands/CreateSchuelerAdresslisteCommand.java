@@ -34,14 +34,17 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
     public void execute() {
 
         // Spaltenbreiten
+        // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein!
+        //          Bei > 11200 hinten schmalerer Rand!
+        //          Bei > 11500 Spaltenbreite durch Inhalt beieinflusst!!!
         List<Integer> columnWidths = new ArrayList<>();
-        columnWidths.add(0);
+        columnWidths.add(550);
+        columnWidths.add(2300);
         columnWidths.add(2500);
-        columnWidths.add(2900);
-        columnWidths.add(1500);
-        columnWidths.add(1700);
-        columnWidths.add(2000);
-        columnWidths.add(0);
+        columnWidths.add(1400);
+        columnWidths.add(1400);
+        columnWidths.add(1850);
+        columnWidths.add(1200);
 
         // Bold / horiz. merged (Anzahl zu mergende Zellen; 0: kein Merging):
         List<List<Boolean>> boldCells = new ArrayList<>();
@@ -111,7 +114,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         List<int[]> maxLengthsRow1 = new ArrayList<>();
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{21, 22, 23, 24, 25, 27});
-        maxLengthsRow1.add(new int[]{25, 26, 27, 28, 29, 31});
+        maxLengthsRow1.add(new int[]{22, 23, 24, 25, 26, 28});
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{17, 18, 19, 20, 21, 23});
@@ -121,7 +124,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         List<int[]> maxLengthsRow2 = new ArrayList<>();
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{21, 22, 23, 24, 25, 27});
-        maxLengthsRow2.add(new int[]{25, 26, 27, 28, 29, 31});
+        maxLengthsRow2.add(new int[]{22, 23, 24, 25, 26, 28});
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{0});

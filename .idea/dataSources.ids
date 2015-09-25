@@ -1566,7 +1566,7 @@
       <column name="bilder_rolle_2" sqlType="VARCHAR" precision="60" scale="0" nullable="true" jdbcType="12"/>
       <column name="rolle_3" sqlType="VARCHAR" precision="60" scale="0" nullable="true" jdbcType="12"/>
       <column name="bilder_rolle_3" sqlType="VARCHAR" precision="60" scale="0" nullable="true" jdbcType="12"/>
-      <column name="elternmithilfe" sqlType="VARCHAR" precision="6" scale="0" nullable="true" jdbcType="12"/>
+      <column name="elternmithilfe" sqlType="VARCHAR" precision="12" scale="0" nullable="true" jdbcType="12"/>
       <column name="code_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="kuchen_vorstellung_1" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="kuchen_vorstellung_2" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
@@ -1582,10 +1582,10 @@
       <column name="drittperson_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="last_updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="person_id,maerchen_id"/>
+      <foreign-key name="Maercheneinteilung_ibfk_4" columns="drittperson_id" ref-table="ElternmithilfeDrittperson" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="Maercheneinteilung_ibfk_1" columns="person_id" ref-table="Schueler" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="Maercheneinteilung_ibfk_2" columns="maerchen_id" ref-table="Maerchen" ref-schema="" ref-catalog="svm" ref-columns="maerchen_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="Maercheneinteilung_ibfk_3" columns="code_id" ref-table="ElternmithilfeCode" ref-schema="" ref-catalog="svm" ref-columns="code_id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="Maercheneinteilung_ibfk_4" columns="drittperson_id" ref-table="ElternmithilfeDrittperson" ref-schema="" ref-catalog="svm" ref-columns="person_id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
     <table name="Mitarbeiter" schema="" catalog="svm" type="TABLE">
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -1617,7 +1617,7 @@
     </table>
     <table name="Person" schema="" catalog="svm" type="TABLE">
       <column name="person_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="discriminator" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
+      <column name="discriminator" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
       <column name="anrede" sqlType="VARCHAR" precision="5" scale="0" nullable="true" jdbcType="12"/>
       <column name="vorname" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
       <column name="nachname" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>

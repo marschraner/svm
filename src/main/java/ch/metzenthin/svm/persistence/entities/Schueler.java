@@ -184,10 +184,10 @@ public class Schueler extends Person {
         return schuelerCodes;
     }
 
-    public List<SchuelerCode> getCodesAsList() {
-        List<SchuelerCode> codesAsList = new ArrayList<>(schuelerCodes);
-        Collections.sort(codesAsList);
-        return codesAsList;
+    public List<SchuelerCode> getSchuelerCodesAsList() {
+        List<SchuelerCode> schuelerCodesAsList = new ArrayList<>(schuelerCodes);
+        Collections.sort(schuelerCodesAsList);
+        return schuelerCodesAsList;
     }
 
     public void addCode(SchuelerCode schuelerCode) {
@@ -199,6 +199,18 @@ public class Schueler extends Person {
         // schuelerCode.getSchueler().remove(this); führt zu StaleObjectStateException!
         // Stattdessen in SchuelerCodeDao.removeFromSchuelerAndUpdate() refresh(schuelerCode) ausführen!
         schuelerCodes.remove(schuelerCode);
+    }
+
+    @Transient
+    public String getSchuelerCodesAsStr() {
+        if (schuelerCodes.isEmpty()) {
+            return "";
+        }
+        StringBuilder schuelerCodesAsStr = new StringBuilder(getSchuelerCodesAsList().get(0).getKuerzel());
+        for (int i = 1; i < getSchuelerCodesAsList().size(); i++) {
+            schuelerCodesAsStr.append(", ").append(getSchuelerCodesAsList().get(i).getKuerzel());
+        }
+        return schuelerCodesAsStr.toString();
     }
 
     public Set<Kursanmeldung> getKursanmeldungen() {

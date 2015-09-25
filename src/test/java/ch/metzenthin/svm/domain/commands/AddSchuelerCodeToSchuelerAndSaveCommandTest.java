@@ -79,7 +79,7 @@ public class AddSchuelerCodeToSchuelerAndSaveCommandTest {
         schuelerSaved = addSchuelerCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
 
         assertEquals(1, schuelerSaved.getSchuelerCodes().size());
-        assertEquals("zt", schuelerSaved.getCodesAsList().get(0).getKuerzel());
+        assertEquals("zt", schuelerSaved.getSchuelerCodesAsList().get(0).getKuerzel());
 
 
         // Weiteren SchuelerCode hinzufügen:
@@ -89,8 +89,8 @@ public class AddSchuelerCodeToSchuelerAndSaveCommandTest {
 
         assertEquals(2, schuelerSaved.getSchuelerCodes().size());
         // Alphabetisch geordnet?
-        assertEquals("jt", schuelerSaved.getCodesAsList().get(0).getKuerzel());
-        assertEquals("zt", schuelerSaved.getCodesAsList().get(1).getKuerzel());
+        assertEquals("jt", schuelerSaved.getSchuelerCodesAsList().get(0).getKuerzel());
+        assertEquals("zt", schuelerSaved.getSchuelerCodesAsList().get(1).getKuerzel());
 
 
         // Testdaten löschen

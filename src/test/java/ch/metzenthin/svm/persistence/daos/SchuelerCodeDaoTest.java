@@ -172,8 +172,8 @@ public class SchuelerCodeDaoTest {
             entityManager.refresh(schuelerFound);
             assertEquals(2, schuelerFound.getSchuelerCodes().size());
             // Alphatbetisch geordnet?
-            assertEquals("r6", schuelerFound.getCodesAsList().get(0).getKuerzel());
-            assertEquals("z", schuelerFound.getCodesAsList().get(1).getKuerzel());
+            assertEquals("r6", schuelerFound.getSchuelerCodesAsList().get(0).getKuerzel());
+            assertEquals("z", schuelerFound.getSchuelerCodesAsList().get(1).getKuerzel());
 
             // SchuelerCode prüfen
             SchuelerCode schuelerCode1Found = schuelerCodeDao.findById(schuelerCode1.getCodeId());
@@ -218,8 +218,8 @@ public class SchuelerCodeDaoTest {
             Schueler schuelerFound = schuelerDao.findById(schuelerSaved.getPersonId());
             entityManager.refresh(schuelerFound);
             assertEquals(2, schuelerFound.getSchuelerCodes().size());
-            assertEquals("r6", schuelerFound.getCodesAsList().get(0).getKuerzel());
-            assertEquals("z", schuelerFound.getCodesAsList().get(1).getKuerzel());
+            assertEquals("r6", schuelerFound.getSchuelerCodesAsList().get(0).getKuerzel());
+            assertEquals("z", schuelerFound.getSchuelerCodesAsList().get(1).getKuerzel());
 
             // Codes prüfen
             SchuelerCode schuelerCode1Found = schuelerCodeDao.findById(schuelerCode1.getCodeId());
@@ -236,7 +236,7 @@ public class SchuelerCodeDaoTest {
             schuelerFound = schuelerDao.findById(schuelerUpdated.getPersonId());
             entityManager.refresh(schuelerFound);
             assertEquals(1, schuelerFound.getSchuelerCodes().size());
-            assertEquals("r6", schuelerFound.getCodesAsList().get(0).getKuerzel());
+            assertEquals("r6", schuelerFound.getSchuelerCodesAsList().get(0).getKuerzel());
 
             assertEquals(0, schuelerCode1Found.getSchueler().size());
             assertEquals(1, schuelerCode2Found.getSchueler().size());

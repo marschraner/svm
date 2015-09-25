@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import org.docx4j.jaxb.Context;
+import org.docx4j.model.structure.PageSizePaper;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
@@ -57,7 +58,7 @@ public class CreateWordTableCommand implements Command {
     }
 
     public CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLenghts, String title1, String title2, File outputFile) {
-        this(headerRows, datasets, columnWidths, boldCells, mergedCells, maxLenghts, title1, title2, outputFile, 650, 1, 650, 650, 0, 0);
+        this(headerRows, datasets, columnWidths, boldCells, mergedCells, maxLenghts, title1, title2, outputFile, 850, 1, 650, 1, 0, 0);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class CreateWordTableCommand implements Command {
 
         // Source:http://blog.iprofs.nl/2012/09/06/creating-word-documents-with-docx4j/ (adapted)
         try {
-            wordMLPackage = WordprocessingMLPackage.createPackage();
+            wordMLPackage = WordprocessingMLPackage.createPackage(PageSizePaper.A4, false);
         } catch (InvalidFormatException e) {
             throw new RuntimeException(e);
         }
@@ -117,10 +118,10 @@ public class CreateWordTableCommand implements Command {
     private void determineNumberOfDatasetsPerPage() {
         if (headerRows.size() == 3) {
             numberOfDatasetsFirstPage = 12;
-            numberOfDatasetsNormalPage = 15;
+            numberOfDatasetsNormalPage = 14;
         } else if (headerRows.size() == 2) {
             numberOfDatasetsFirstPage = 17;
-            numberOfDatasetsNormalPage = 21;
+            numberOfDatasetsNormalPage = 20;
         } else {
             numberOfDatasetsFirstPage = 6;
             numberOfDatasetsNormalPage = 8;
@@ -195,7 +196,9 @@ public class CreateWordTableCommand implements Command {
                 List<Integer> mergedRow = mergedCells.get(i);
                 List<int[]> maxLenghtsRow = maxLenghts.get(i);
 
-                boolean verticalSpace = (i == datasetRows.size() - 1);
+                // Abstand am Ende eines Datensatzes, ausser am Ende der Seite
+                boolean verticalSpace = (i == datasetRows.size() - 1) && !(n == datasetNumberStart + numberOfDatasetsPerPage - 1);
+
                 // Iteration über Spalten
                 for (int j = 0; j < datasetRow.size(); j++) {
 
