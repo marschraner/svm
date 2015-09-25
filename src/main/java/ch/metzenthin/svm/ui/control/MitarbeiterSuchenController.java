@@ -237,7 +237,7 @@ public class MitarbeiterSuchenController extends AbstractController {
         MitarbeitersTableData mitarbeitersTableData = mitarbeiterSuchenModel.suchen();
         MitarbeitersTableModel mitarbeitersTableModel = new MitarbeitersTableModel(mitarbeitersTableData);
         // Auch bei einem Suchresultat Liste anzeigen, da nur von dort gelöscht werden kann
-        if (mitarbeitersTableData.size() > 0) {
+        if (mitarbeitersTableData.size() > 0 || !mitarbeiterSuchenModel.isSuchkriterienSelected()) {
             MitarbeitersPanel mitarbeitersPanel = new MitarbeitersPanel(svmContext, mitarbeitersTableModel);
             mitarbeitersPanel.addCloseListener(closeListener);
             mitarbeitersPanel.addZurueckListener(zurueckListener);

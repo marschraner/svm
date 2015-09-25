@@ -35,5 +35,6 @@ public interface MitarbeiterSuchenModel extends Model {
     void setStatusSelected(StatusSelected statusSelected);
 
     MitarbeiterCode[] getSelectableMitarbeiterCodes(SvmModel svmModel);
+    boolean isSuchkriterienSelected();
     MitarbeitersTableData suchen();
 }

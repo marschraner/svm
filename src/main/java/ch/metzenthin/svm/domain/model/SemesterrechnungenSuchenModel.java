@@ -1,9 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Semester;
-import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 
 import java.math.BigDecimal;
 
@@ -190,7 +188,5 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     void setRestbetrag(String restbetrag) throws SvmValidationException;
 
     Semester getSemesterInit(SvmModel svmModel);
-    boolean isSuchkriterienSelected();
     SemesterrechnungenTableData suchen();
-    SemesterrechnungBearbeitenModel getSemesterrechnungBearbeitenModel(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel);
 }

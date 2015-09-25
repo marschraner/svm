@@ -8,8 +8,8 @@ import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
  * @author Martin Schraner
  */
 public interface MitarbeitersModel {
-    MitarbeiterErfassenModel getMitarbeiterErfassenModel(SvmContext svmContext, int indexBearbeiten);
+    MitarbeiterErfassenModel getMitarbeiterErfassenModel(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, int indexBearbeiten);
 
-    DeleteMitarbeiterCommand.Result mitarbeiterLoeschen(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, int selectedRow);
+    DeleteMitarbeiterCommand.Result mitarbeiterLoeschen(MitarbeitersTableModel mitarbeitersTableModel, int selectedRow);
     String getTotal(MitarbeitersTableModel mitarbeitersTableModel);
 }

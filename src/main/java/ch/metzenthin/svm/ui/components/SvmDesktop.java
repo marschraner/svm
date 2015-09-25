@@ -122,10 +122,10 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.addActionListener(this);
         menuSchueler.add(menuItem);
 
-        menuItem = new JMenuItem("Mitarbeiter suchen / bearbeiten");
+        menuItem = new JMenuItem("Mitarbeiter verwalten");
         menuItem.setMnemonic(KeyEvent.VK_I);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.ALT_MASK));
-        menuItem.setActionCommand("mitarbeiterSuchen");
+        menuItem.setActionCommand("mitarbeiterVerwalten");
         menuItem.addActionListener(this);
         menuMitarbeiter.add(menuItem);
 
@@ -271,7 +271,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             });
             setAndShowActivePanel(anAbmeldestatistikPanel.$$$getRootComponent$$$(), "Monatsstatistik Schüler");
 
-        } else if ("mitarbeiterSuchen".equals(e.getActionCommand())) {
+        } else if ("mitarbeiterVerwalten".equals(e.getActionCommand())) {
             MitarbeiterSuchenPanel mitarbeiterSuchenPanel = new MitarbeiterSuchenPanel(svmContext);
             mitarbeiterSuchenPanel.addCloseListener(new ActionListener() {
                 @Override

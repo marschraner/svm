@@ -57,7 +57,7 @@ public class MitarbeiterErfassenDialog extends JDialog {
     }
 
     private void createLehrkraftErfassenController(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, MitarbeitersModel mitarbeitersModel, int indexBearbeiten, boolean isBearbeiten) {
-        MitarbeiterErfassenModel mitarbeiterErfassenModel = (isBearbeiten ? mitarbeitersModel.getMitarbeiterErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createMitarbeiterErfassenModel());
+        MitarbeiterErfassenModel mitarbeiterErfassenModel = (isBearbeiten ? mitarbeitersModel.getMitarbeiterErfassenModel(svmContext, mitarbeitersTableModel, indexBearbeiten) : svmContext.getModelFactory().createMitarbeiterErfassenModel());
         MitarbeiterErfassenController mitarbeiterErfassenController = new MitarbeiterErfassenController(svmContext, mitarbeitersTableModel, mitarbeiterErfassenModel, isBearbeiten);
         mitarbeiterErfassenController.setMitarbeiterErfassenDialog(this);
         mitarbeiterErfassenController.setContentPane(contentPane);

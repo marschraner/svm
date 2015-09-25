@@ -13,10 +13,10 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 public class MitarbeitersTableData {
 
-    private List<Mitarbeiter> lehrkraefte;
+    private List<Mitarbeiter> mitarbeiters;
 
-    public MitarbeitersTableData(List<Mitarbeiter> lehrkraefte) {
-        this.lehrkraefte = lehrkraefte;
+    public MitarbeitersTableData(List<Mitarbeiter> mitarbeiters) {
+        this.mitarbeiters = mitarbeiters;
     }
 
     private static final Field[] COLUMNS = {Field.NACHNAME, Field.VORNAME, Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT, Field.FESTNETZ, Field.NATEL, Field.EMAIL, Field.GEBURTSDATUM, Field.AHV_NUMMER, Field.LEHRKRAFT, Field.CODES, Field.VERTRETUNGSMOEGLICHKEITEN, Field.BEMERKUNGEN, Field.AKTIV};
@@ -26,11 +26,11 @@ public class MitarbeitersTableData {
     }
 
     public int size() {
-        return lehrkraefte.size();
+        return mitarbeiters.size();
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Mitarbeiter mitarbeiter = lehrkraefte.get(rowIndex);
+        Mitarbeiter mitarbeiter = mitarbeiters.get(rowIndex);
         Object value = null;
         switch (COLUMNS[columnIndex]) {
             case NACHNAME:
@@ -97,11 +97,7 @@ public class MitarbeitersTableData {
         return COLUMNS[column].toString();
     }
 
-    public List<Mitarbeiter> getLehrkraefte() {
-        return lehrkraefte;
-    }
-
-    public void setMitarbeiters(List<Mitarbeiter> lehrkraefte) {
-        this.lehrkraefte = lehrkraefte;
+    public List<Mitarbeiter> getMitarbeiters() {
+        return mitarbeiters;
     }
 }

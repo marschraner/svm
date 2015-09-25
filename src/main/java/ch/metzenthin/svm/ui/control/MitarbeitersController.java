@@ -29,6 +29,7 @@ public class MitarbeitersController {
     private final MitarbeitersModel mitarbeitersModel;
     private MitarbeitersTableModel mitarbeitersTableModel;
     private JTable mitarbeitersTable;
+    private JLabel lblTotal;
     private JButton btnNeu;
     private JButton btnBearbeiten;
     private JButton btnLoeschen;
@@ -73,9 +74,13 @@ public class MitarbeitersController {
     }
 
     public void setLblTotal(JLabel lblTotal) {
-        lblTotal.setText(mitarbeitersModel.getTotal(mitarbeitersTableModel));
+        this.lblTotal = lblTotal;
+        setLblTotal();
     }
 
+    public void setLblTotal() {
+        lblTotal.setText(mitarbeitersModel.getTotal(mitarbeitersTableModel));
+    }
 
     public void setBtnNeu(JButton btnNeu) {
         this.btnNeu = btnNeu;
@@ -92,6 +97,7 @@ public class MitarbeitersController {
         MitarbeiterErfassenDialog mitarbeiterErfassenDialog = new MitarbeiterErfassenDialog(svmContext, mitarbeitersTableModel, mitarbeitersModel, 0, false, "Neuen Mitarbeiter");
         mitarbeiterErfassenDialog.pack();
         mitarbeiterErfassenDialog.setVisible(true);
+        setLblTotal();
         mitarbeitersTableModel.fireTableDataChanged();
         btnNeu.setFocusPainted(false);
     }
@@ -153,7 +159,7 @@ public class MitarbeitersController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteMitarbeiterCommand.Result result  = mitarbeitersModel.mitarbeiterLoeschen(svmContext, mitarbeitersTableModel, mitarbeitersTable.convertRowIndexToModel(mitarbeitersTable.getSelectedRow()));
+            DeleteMitarbeiterCommand.Result result  = mitarbeitersModel.mitarbeiterLoeschen(mitarbeitersTableModel, mitarbeitersTable.convertRowIndexToModel(mitarbeitersTable.getSelectedRow()));
             switch (result) {
                 case MITARBEITER_VON_KURS_REFERENZIERT:
                     JOptionPane.showMessageDialog(null, "Der Mitarbeiter wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
@@ -171,6 +177,8 @@ public class MitarbeitersController {
                     break;
             }
         }
+        setLblTotal();
+        mitarbeitersTableModel.fireTableDataChanged();
         btnLoeschen.setFocusPainted(false);
         enableBtnLoeschen(false);
         mitarbeitersTable.clearSelection();

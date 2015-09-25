@@ -19,21 +19,19 @@ public class MitarbeitersModelImpl extends AbstractModel implements Mitarbeiters
     }
 
     @Override
-    public MitarbeiterErfassenModel getMitarbeiterErfassenModel(SvmContext svmContext, int indexMitarbeiterToBeModified) {
+    public MitarbeiterErfassenModel getMitarbeiterErfassenModel(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, int indexMitarbeiterToBeModified) {
         MitarbeiterErfassenModel mitarbeiterErfassenModel = svmContext.getModelFactory().createMitarbeiterErfassenModel();
-        List<Mitarbeiter> mitarbeiters = svmContext.getSvmModel().getMitarbeitersAll();
+        List<Mitarbeiter> mitarbeiters = mitarbeitersTableModel.getMitarbeitersTableData().getMitarbeiters();
         mitarbeiterErfassenModel.setMitarbeiterOrigin(mitarbeiters.get(indexMitarbeiterToBeModified));
         return mitarbeiterErfassenModel;
     }
 
     @Override
-    public DeleteMitarbeiterCommand.Result mitarbeiterLoeschen(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, int indexMitarbeiterToBeRemoved) {
-        List<Mitarbeiter> mitarbeiters = svmContext.getSvmModel().getMitarbeitersAll();
+    public DeleteMitarbeiterCommand.Result mitarbeiterLoeschen(MitarbeitersTableModel mitarbeitersTableModel, int indexMitarbeiterToBeRemoved) {
+        List<Mitarbeiter> mitarbeiters = mitarbeitersTableModel.getMitarbeiters();
         CommandInvoker commandInvoker = getCommandInvoker();
         DeleteMitarbeiterCommand deleteMitarbeiterCommand = new DeleteMitarbeiterCommand(mitarbeiters, indexMitarbeiterToBeRemoved);
         commandInvoker.executeCommandAsTransaction(deleteMitarbeiterCommand);
-        // TableData mit von der Datenbank upgedateten Mitarbeitern updaten
-        mitarbeitersTableModel.getMitarbeitersTableData().setMitarbeiters(svmContext.getSvmModel().getMitarbeitersAll());
         return deleteMitarbeiterCommand.getResult();
     }
 

@@ -224,11 +224,9 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
     @Override
     public void speichern(SvmModel svmModel, MitarbeitersTableModel mitarbeitersTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        SaveOrUpdateMitarbeiterCommand saveOrUpdateMitarbeiterCommand = new SaveOrUpdateMitarbeiterCommand(mitarbeiter, getAdresse(), mitarbeiterCodes, mitarbeiterOrigin, svmModel.getMitarbeitersAll());
+        SaveOrUpdateMitarbeiterCommand saveOrUpdateMitarbeiterCommand = new SaveOrUpdateMitarbeiterCommand(mitarbeiter, getAdresse(), mitarbeiterCodes, mitarbeiterOrigin, mitarbeitersTableModel.getMitarbeiters());
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMitarbeiterCommand);
         saveOrUpdateMitarbeiterCommand.getMitarbeiterSaved();
-        // TableData mit von der Datenbank upgedateten Mitarbeitern updaten
-        mitarbeitersTableModel.getMitarbeitersTableData().setMitarbeiters(svmModel.getMitarbeitersAll());
     }
 
     @Override

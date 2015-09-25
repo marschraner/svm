@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -8,14 +7,10 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.CreateAndFindSemesterrechnungenCommand;
 import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.persistence.entities.Semester;
-import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
-import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
  * @author Martin Schraner
@@ -504,45 +499,11 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     }
 
     @Override
-    public boolean isSuchkriterienSelected() {
-        return checkNotEmpty(nachname)
-                || checkNotEmpty(vorname)
-                || (semesterrechnungCodeJaNeinSelected != null && semesterrechnungCodeJaNeinSelected != SemesterrechnungCodeJaNeinSelected.ALLE)
-                || (getSemesterrechnungCode() != null && getSemesterrechnungCode() != SEMESTERRECHNUNG_CODE_ALLE)
-                || (stipendiumJaNeinSelected != null && stipendiumJaNeinSelected != StipendiumJaNeinSelected.ALLE)
-                || isGratiskinder()
-                || getErmaessigungVorrechnung() != null
-                || getZuschlagVorrechnung() != null
-                || getAnzahlWochenVorrechnung() != null
-                || getWochenbetragVorrechnung() != null
-                || schulgeldVorrechnung != null
-                || (sechsJahresRabattJaNeinVorrechnungSelected != null && sechsJahresRabattJaNeinVorrechnungSelected != SechsJahresRabattJaNeinVorrechnungSelected.ALLE)
-                || (rechnungsdatumGesetztVorrechnungSelected != null && rechnungsdatumGesetztVorrechnungSelected != RechnungsdatumGesetztVorrechnungSelected.ALLE)
-                || getErmaessigungNachrechnung() != null
-                || getZuschlagNachrechnung() != null
-                || getAnzahlWochenNachrechnung() != null
-                || getWochenbetragNachrechnung() != null
-                || schulgeldNachrechnung != null
-                || (sechsJahresRabattJaNeinNachrechnungSelected != null && sechsJahresRabattJaNeinNachrechnungSelected != SechsJahresRabattJaNeinNachrechnungSelected.ALLE)
-                || (rechnungsdatumGesetztNachrechnungSelected != null && rechnungsdatumGesetztNachrechnungSelected != RechnungsdatumGesetztNachrechnungSelected.ALLE)
-                || differenzSchulgeld != null
-                || restbetrag != null;
-    }
-
-    @Override
     public SemesterrechnungenTableData suchen() {
         CommandInvoker commandInvoker = getCommandInvoker();
         CreateAndFindSemesterrechnungenCommand createAndFindSemesterrechnungenCommand = new CreateAndFindSemesterrechnungenCommand(this);
         commandInvoker.executeCommandAsTransaction(createAndFindSemesterrechnungenCommand);
         return new SemesterrechnungenTableData(createAndFindSemesterrechnungenCommand.getSemesterrechnungenFound(), semester);
-    }
-
-    @Override
-    public SemesterrechnungBearbeitenModel getSemesterrechnungBearbeitenModel(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel) {
-        SemesterrechnungBearbeitenModel semesterrechnungBearbeitenModel = svmContext.getModelFactory().createSemesterrechnungBearbeitenModel();
-        Semesterrechnung semesterrechnungSelected = semesterrechnungenTableModel.getSemesterrechnungSelected(0);
-        semesterrechnungBearbeitenModel.setSemesterrechnungOrigin(semesterrechnungSelected);
-        return semesterrechnungBearbeitenModel;
     }
 
     @Override

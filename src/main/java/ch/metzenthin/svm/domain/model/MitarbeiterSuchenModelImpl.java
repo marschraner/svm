@@ -8,6 +8,8 @@ import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 
 import java.util.List;
 
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
+
 /**
  * @author Martin Schraner
  */
@@ -117,6 +119,15 @@ final class MitarbeiterSuchenModelImpl extends AbstractModel implements Mitarbei
         // MitarbeiterCode alle auch erlaubt
         codesList.add(0, MITARBEITER_CODE_ALLE);
         return codesList.toArray(new MitarbeiterCode[codesList.size()]);
+    }
+
+    @Override
+    public boolean isSuchkriterienSelected() {
+        return checkNotEmpty(nachname)
+                || checkNotEmpty(vorname)
+                || (mitarbeiterCode != null && mitarbeiterCode != MITARBEITER_CODE_ALLE)
+                || (lehrkraftJaNeinSelected != LehrkraftJaNeinSelected.ALLE)
+                || (statusSelected != StatusSelected.AKTIV);
     }
 
     @Override

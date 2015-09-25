@@ -327,21 +327,21 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     public void doValidate() throws SvmValidationException {
         if (isAdresseRequired()) {
             if (!isSetName()) {
-                throw new SvmValidationException(2000, "Nachname und Vorname obligatorisch", Field.NACHNAME, Field.VORNAME);
+                throw new SvmValidationException(2000, "Nachname und Vorname obligatorisch", Field.NACHNAME);
             }
             if (!isSetAdresse()) {
-                throw new SvmValidationException(2001, "Adresse ist obligatorisch", Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT);
+                throw new SvmValidationException(2001, "Adresse ist obligatorisch", Field.STRASSE_HAUSNUMMER);
             }
         } else {
             if (isSetAnyNameElement() && !isSetName()) {
-                throw new SvmValidationException(2002, "Nachname und Vorname müssen zusammen angegeben werden", Field.NACHNAME, Field.VORNAME);
+                throw new SvmValidationException(2002, "Nachname und Vorname müssen zusammen angegeben werden", Field.NACHNAME);
             }
             if (isSetAnyAdresseElement()) {
                 if (!isSetName()) {
-                    throw new SvmValidationException(2003, "Nachname und Vorname müssen angegeben werden, wenn eine Adresse vorhanden ist", Field.NACHNAME, Field.VORNAME);
+                    throw new SvmValidationException(2003, "Nachname und Vorname müssen angegeben werden, wenn eine Adresse vorhanden ist", Field.NACHNAME);
                 }
                 if (!isSetAdresse()) {
-                    throw new SvmValidationException(2004, "Adresse ist unvollständig", Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT);
+                    throw new SvmValidationException(2004, "Adresse ist unvollständig", Field.STRASSE_HAUSNUMMER);
                 }
             }
         }
