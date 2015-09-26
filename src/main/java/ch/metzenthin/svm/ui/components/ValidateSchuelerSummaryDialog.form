@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.ValidateSchuelerSummaryDialog">
   <grid id="cbd77" binding="contentPane" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="577" y="305" width="904" height="428"/>
+      <xy x="577" y="305" width="904" height="452"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -134,7 +134,7 @@
               </component>
               <component id="cc54d" class="javax.swing.JLabel" binding="infoIdentischeAdressen">
                 <constraints>
-                  <grid row="19" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="20" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
@@ -224,7 +224,7 @@
               </vspacer>
               <vspacer id="7abbf">
                 <constraints>
-                  <grid row="20" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="21" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
               </vspacer>
@@ -257,7 +257,7 @@
               </component>
               <vspacer id="138af">
                 <constraints>
-                  <grid row="18" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="19" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
               </vspacer>
@@ -272,7 +272,7 @@
               </component>
               <vspacer id="7b903">
                 <constraints>
-                  <grid row="17" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="18" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
               </vspacer>
@@ -298,6 +298,24 @@
                 </constraints>
                 <properties>
                   <text value="GeburtsdatumValue"/>
+                </properties>
+              </component>
+              <component id="3fb86" class="javax.swing.JLabel" binding="abmeldedatum">
+                <constraints>
+                  <grid row="17" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Abmeldedatum:"/>
+                </properties>
+              </component>
+              <component id="3d8ee" class="javax.swing.JLabel" binding="abmeldedatumValue">
+                <constraints>
+                  <grid row="17" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="10" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="AbmeldedatumValue"/>
                 </properties>
               </component>
             </children>

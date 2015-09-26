@@ -14,7 +14,9 @@ public interface SchuelerErfassenModel extends Model {
     SchuelerErfassenSaveResult speichern(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
     SchuelerErfassenSaveResult proceedUebernehmen(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
     SchuelerErfassenSaveResult proceedWeiterfahren(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
-    DeleteSchuelerCommand.Result loeschen();
+    DeleteSchuelerCommand.Result schuelerLoeschen();
+    void fruehereAnmeldungenLoeschen();
+    boolean hasFruehereAnmeldungen();
     void abbrechen();
     SchuelerSuchenTableData getSchuelerSuchenTableData();
 }

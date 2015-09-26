@@ -3,10 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.DeleteSchuelerCommand;
-import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
-import ch.metzenthin.svm.domain.commands.ValidateSchuelerModel;
+import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.apache.log4j.Logger;
 
@@ -425,7 +422,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     }
 
     @Override
-    public DeleteSchuelerCommand.Result loeschen() {
+    public DeleteSchuelerCommand.Result schuelerLoeschen() {
         DeleteSchuelerCommand deleteSchuelerCommand = new DeleteSchuelerCommand(getSchuelerOrigin());
         CommandInvoker commandInvoker = getCommandInvoker();
         try {
@@ -435,6 +432,17 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             // Rollback wurde bereits in CommandInvoker durchgeführt
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void fruehereAnmeldungenLoeschen() {
+        RemoveFruehereAnmeldungenFromSchuelerCommand removeFruehereAnmeldungenFromSchuelerCommand = new RemoveFruehereAnmeldungenFromSchuelerCommand(getSchuelerOrigin());
+        getCommandInvoker().executeCommandAsTransaction(removeFruehereAnmeldungenFromSchuelerCommand);
+    }
+
+    @Override
+    public boolean hasFruehereAnmeldungen() {
+        return getSchuelerOrigin().getAnmeldungen().size() > 1;
     }
 
     @Override

@@ -28,7 +28,8 @@ public class SchuelerErfassenPanel {
     private JPanel buttonPanel;
     private JLabel lblTitel;
     private JPanel datenPanel;
-    private JButton btnLoeschen;
+    private JButton btnSchuelerLoeschen;
+    private JButton btnFruehereAnmeldungenLoeschen;
     private SchuelerErfassenController schuelerErfassenController;
 
     public SchuelerErfassenPanel(SvmContext svmContext) {
@@ -49,7 +50,8 @@ public class SchuelerErfassenPanel {
         schuelerErfassenController.setDrittempfaengerPanel(drittempfaengerPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createAngehoerigerModel() : schuelerDatenblattModel.getRechnungsempfaengerModel(svmContext));
         schuelerErfassenController.setBtnSpeichern(btnSpeichern);
         schuelerErfassenController.setBtnAbbrechen(btnAbbrechen);
-        schuelerErfassenController.setBtnLoeschen(btnLoeschen);
+        schuelerErfassenController.setBtnSchuelerLoeschen(btnSchuelerLoeschen);
+        schuelerErfassenController.setBtnFruehereAnmeldungenLoeschen(btnFruehereAnmeldungenLoeschen);
         schuelerErfassenController.constructionDone();
     }
 
@@ -330,22 +332,9 @@ public class SchuelerErfassenPanel {
         final JPanel panel10 = new JPanel();
         panel10.setLayout(new GridBagLayout());
         buttonPanel.add(panel10, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        btnLoeschen = new JButton();
-        btnLoeschen.setMaximumSize(new Dimension(114, 29));
-        btnLoeschen.setMinimumSize(new Dimension(114, 29));
-        btnLoeschen.setPreferredSize(new Dimension(114, 29));
-        btnLoeschen.setText("Löschen");
-        btnLoeschen.setMnemonic('L');
-        btnLoeschen.setDisplayedMnemonicIndex(0);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(0, 10, 0, 0);
-        panel10.add(btnLoeschen, gbc);
         final JPanel spacer18 = new JPanel();
         gbc = new GridBagConstraints();
-        gbc.gridx = 1;
+        gbc.gridx = 4;
         gbc.gridy = 1;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -362,6 +351,32 @@ public class SchuelerErfassenPanel {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel10.add(spacer20, gbc);
+        btnFruehereAnmeldungenLoeschen = new JButton();
+        btnFruehereAnmeldungenLoeschen.setMaximumSize(new Dimension(252, 29));
+        btnFruehereAnmeldungenLoeschen.setMinimumSize(new Dimension(252, 29));
+        btnFruehereAnmeldungenLoeschen.setPreferredSize(new Dimension(252, 29));
+        btnFruehereAnmeldungenLoeschen.setText("Frühere Anmeldungen löschen");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel10.add(btnFruehereAnmeldungenLoeschen, gbc);
+        final JPanel spacer21 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel10.add(spacer21, gbc);
+        btnSchuelerLoeschen = new JButton();
+        btnSchuelerLoeschen.setMaximumSize(new Dimension(148, 29));
+        btnSchuelerLoeschen.setMinimumSize(new Dimension(148, 29));
+        btnSchuelerLoeschen.setPreferredSize(new Dimension(148, 29));
+        btnSchuelerLoeschen.setText("Schüler löschen");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel10.add(btnSchuelerLoeschen, gbc);
         final JPanel panel11 = new JPanel();
         panel11.setLayout(new GridBagLayout());
         buttonPanel.add(panel11, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -378,18 +393,18 @@ public class SchuelerErfassenPanel {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel11.add(btnSpeichern, gbc);
-        final JPanel spacer21 = new JPanel();
+        final JPanel spacer22 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel11.add(spacer21, gbc);
-        final JPanel spacer22 = new JPanel();
+        panel11.add(spacer22, gbc);
+        final JPanel spacer23 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel11.add(spacer22, gbc);
+        panel11.add(spacer23, gbc);
     }
 
     /**

@@ -133,7 +133,6 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
         findSemesterForCalendarCommand.execute();
         Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
         Semester previousSemester = findSemesterForCalendarCommand.getPreviousSemester();
-
         if (currentSemester != null) {
             // Innerhalb Semester
             return currentSemester;

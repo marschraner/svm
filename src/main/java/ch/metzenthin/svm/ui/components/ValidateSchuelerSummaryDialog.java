@@ -34,6 +34,8 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
     private JLabel geburtsdatumValue;
     private JLabel lblAndereSchuelerGleicherRechnungsempfaenger1;
     private JLabel lblAndereSchuelerGleicherRechnungsempfaenger2;
+    private JLabel abmeldedatum;
+    private JLabel abmeldedatumValue;
 
     public ValidateSchuelerSummaryDialog(
             ValidateSchuelerSummaryResult validateSchuelerSummaryResult,
@@ -56,6 +58,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
             setSchuelerGleicherRechnungsempfaenger();
             setGeburtsdatum();
             setAnmeldedatum();
+            setAbmeldedatum();
             setInfoIdentischeAdressen();
         }
 
@@ -127,7 +130,16 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
     }
 
     private void setAnmeldedatum() {
-        anmeldedatumValue.setText(validateSchuelerSummaryResult.getSchueler().getAnmeldungen().get(0).toString());
+        anmeldedatumValue.setText(asString(validateSchuelerSummaryResult.getSchueler().getAnmeldungen().get(0).getAnmeldedatum()));
+    }
+
+    private void setAbmeldedatum() {
+        if (validateSchuelerSummaryResult.getSchueler().getAnmeldungen().get(0).getAbmeldedatum() == null) {
+            abmeldedatum.setVisible(false);
+            abmeldedatumValue.setVisible(false);
+        } else {
+            abmeldedatumValue.setText(asString(validateSchuelerSummaryResult.getSchueler().getAnmeldungen().get(0).getAbmeldedatum()));
+        }
     }
 
     private void setInfoIdentischeAdressen() {
@@ -316,7 +328,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         infoIdentischeAdressen.setText("Info identische Adressen");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 19;
+        gbc.gridy = 20;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.WEST;
         panel3.add(infoIdentischeAdressen, gbc);
@@ -399,7 +411,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         final JPanel spacer10 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 20;
+        gbc.gridy = 21;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel3.add(spacer10, gbc);
         lblAndereSchuelerGleicherRechnungsempfaenger2 = new JLabel();
@@ -427,7 +439,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         final JPanel spacer11 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 18;
+        gbc.gridy = 19;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel3.add(spacer11, gbc);
         anmeldedatumValue = new JLabel();
@@ -440,7 +452,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         final JPanel spacer12 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 17;
+        gbc.gridy = 18;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel3.add(spacer12, gbc);
         final JLabel label3 = new JLabel();
@@ -463,6 +475,22 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         gbc.gridy = 14;
         gbc.anchor = GridBagConstraints.WEST;
         panel3.add(geburtsdatumValue, gbc);
+        abmeldedatum = new JLabel();
+        abmeldedatum.setText("Abmeldedatum:");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 17;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(10, 0, 0, 0);
+        panel3.add(abmeldedatum, gbc);
+        abmeldedatumValue = new JLabel();
+        abmeldedatumValue.setText("AbmeldedatumValue");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 17;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(10, 0, 0, 0);
+        panel3.add(abmeldedatumValue, gbc);
     }
 
     /**

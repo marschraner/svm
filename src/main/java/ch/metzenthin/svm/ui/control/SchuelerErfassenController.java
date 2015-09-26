@@ -29,7 +29,8 @@ public class SchuelerErfassenController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private JButton btnSpeichern;
-    private JButton btnLoeschen;
+    private JButton btnSchuelerLoeschen;
+    private JButton btnFruehereAnmeldungenLoeschen;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
 
@@ -159,15 +160,30 @@ public class SchuelerErfassenController {
         });
     }
 
-    public void setBtnLoeschen(JButton btnLoeschen) {
-        this.btnLoeschen = btnLoeschen;
+    public void setBtnSchuelerLoeschen(JButton btnSchuelerLoeschen) {
+        this.btnSchuelerLoeschen = btnSchuelerLoeschen;
         if (!isBearbeiten) {
-            btnLoeschen.setVisible(false);
+            btnSchuelerLoeschen.setVisible(false);
         }
-        btnLoeschen.addActionListener(new ActionListener() {
+        btnSchuelerLoeschen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onLoeschen();
+                onSchuelerLoeschen();
+            }
+        });
+    }
+
+    public void setBtnFruehereAnmeldungenLoeschen(JButton btnFruehereAnmeldungenLoeschen) {
+        this.btnFruehereAnmeldungenLoeschen = btnFruehereAnmeldungenLoeschen;
+        if (!isBearbeiten) {
+            btnFruehereAnmeldungenLoeschen.setVisible(false);
+        } else if (!schuelerErfassenModel.hasFruehereAnmeldungen()) {
+            btnFruehereAnmeldungenLoeschen.setEnabled(false);
+        }
+        btnFruehereAnmeldungenLoeschen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onFruehereAnmeldungenLoeschen();
             }
         });
     }
@@ -256,7 +272,7 @@ public class SchuelerErfassenController {
         return true;
     }
 
-    private void onLoeschen() {
+    private void onSchuelerLoeschen() {
         Object[] options = {"Ja", "Nein"};
         int n = JOptionPane.showOptionDialog(
                 null,
@@ -268,19 +284,19 @@ public class SchuelerErfassenController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteSchuelerCommand.Result result = schuelerErfassenModel.loeschen();
+            DeleteSchuelerCommand.Result result = schuelerErfassenModel.schuelerLoeschen();
             switch (result) {
                 case SCHUELER_IN_KURSE_EINGESCHRIEBEN:
                     JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einen Kurs eingeschrieben und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
-                    btnLoeschen.setFocusPainted(false);
+                    btnSchuelerLoeschen.setFocusPainted(false);
                     break;
                 case SCHUELER_IN_MAERCHEN_EINGETEILT:
                     JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einem Märchen eingeteilt und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
-                    btnLoeschen.setFocusPainted(false);
+                    btnSchuelerLoeschen.setFocusPainted(false);
                     break;
                 case RECHNUNGSEMPFAENGER_HAT_SEMESTERRECHNUNGEN:
                     JOptionPane.showMessageDialog(null, "Der Rechnungsempfänger des Schülers hat mindestens eine Semesterrechnung. Der Schüler kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
-                    btnLoeschen.setFocusPainted(false);
+                    btnSchuelerLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
                     JOptionPane.showMessageDialog(
@@ -292,6 +308,28 @@ public class SchuelerErfassenController {
                     closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Löschen"));
                     break;
             }
+        } else {
+            btnSchuelerLoeschen.setFocusPainted(false);
+        }
+    }
+
+    private void onFruehereAnmeldungenLoeschen() {
+        Object[] options = {"Ja", "Nein"};
+        int n = JOptionPane.showOptionDialog(
+                null,
+                "Durch Drücken des Ja-Buttons werden alle früheren Schüler-Anmeldungen, ausser der aktuellsten, gelöscht. \n" +
+                        "Kurs-Anmeldungen werden nicht gelöscht. Fortfahren?",
+                "Frühere Schüler-Anmeldungen löschen",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                svmContext.getDialogIcons().getWarningIcon(),
+                options,  //the titles of buttons
+                options[1]); //default button title
+        if (n == 0) {
+            schuelerErfassenModel.fruehereAnmeldungenLoeschen();
+            zurueckZuDatenblattListener.actionPerformed(new ActionEvent(btnSpeichern, ActionEvent.ACTION_PERFORMED, "Frühere Anmeldungen erfolgreich gelöscht"));
+        } else {
+            btnFruehereAnmeldungenLoeschen.setFocusPainted(false);
         }
     }
 
