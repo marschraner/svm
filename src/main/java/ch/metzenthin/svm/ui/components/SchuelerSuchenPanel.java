@@ -225,6 +225,8 @@ public class SchuelerSuchenPanel {
         btnSuchen.setPreferredSize(new Dimension(114, 29));
         btnSuchen.setSelected(true);
         btnSuchen.setText("Suchen");
+        btnSuchen.setMnemonic('S');
+        btnSuchen.setDisplayedMnemonicIndex(0);
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -237,6 +239,8 @@ public class SchuelerSuchenPanel {
         btnAbbrechen.setMinimumSize(new Dimension(114, 29));
         btnAbbrechen.setPreferredSize(new Dimension(114, 29));
         btnAbbrechen.setText("Abbrechen");
+        btnAbbrechen.setMnemonic('A');
+        btnAbbrechen.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;

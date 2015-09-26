@@ -130,7 +130,7 @@
               <maximumSize width="129" height="29"/>
               <minimumSize width="129" height="29"/>
               <preferredSize width="129" height="29"/>
-              <text value="Suchen"/>
+              <text value="&amp;Suchen"/>
             </properties>
           </component>
           <hspacer id="1c1fb">
@@ -160,7 +160,7 @@
               <maximumSize width="129" height="29"/>
               <minimumSize width="129" height="29"/>
               <preferredSize width="129" height="29"/>
-              <text value="Abbrechen"/>
+              <text value="&amp;Abbrechen"/>
             </properties>
           </component>
         </children>

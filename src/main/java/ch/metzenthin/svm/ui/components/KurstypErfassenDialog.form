@@ -123,7 +123,7 @@
               <maximumSize width="114" height="29"/>
               <minimumSize width="114" height="29"/>
               <preferredSize width="114" height="29"/>
-              <text value="Speichern"/>
+              <text value="&amp;Speichern"/>
             </properties>
           </component>
           <hspacer id="a55e8">
@@ -153,7 +153,7 @@
               <maximumSize width="114" height="29"/>
               <minimumSize width="114" height="29"/>
               <preferredSize width="114" height="29"/>
-              <text value="Abbrechen"/>
+              <text value="&amp;Abbrechen"/>
             </properties>
           </component>
         </children>

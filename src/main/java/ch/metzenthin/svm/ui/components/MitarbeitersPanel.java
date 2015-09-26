@@ -99,6 +99,8 @@ public class MitarbeitersPanel {
         btnExportieren.setMinimumSize(new Dimension(120, 29));
         btnExportieren.setPreferredSize(new Dimension(120, 29));
         btnExportieren.setText("Exportieren");
+        btnExportieren.setMnemonic('E');
+        btnExportieren.setDisplayedMnemonicIndex(0);
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -133,6 +135,8 @@ public class MitarbeitersPanel {
         btnAbbrechen.setMinimumSize(new Dimension(114, 29));
         btnAbbrechen.setPreferredSize(new Dimension(114, 29));
         btnAbbrechen.setText("Abbrechen");
+        btnAbbrechen.setMnemonic('A');
+        btnAbbrechen.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 1;
@@ -163,6 +167,8 @@ public class MitarbeitersPanel {
         btnZurueck.setMinimumSize(new Dimension(114, 29));
         btnZurueck.setPreferredSize(new Dimension(114, 29));
         btnZurueck.setText("Zurück");
+        btnZurueck.setMnemonic('Z');
+        btnZurueck.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -182,6 +188,8 @@ public class MitarbeitersPanel {
         btnNeu.setMinimumSize(new Dimension(114, 29));
         btnNeu.setPreferredSize(new Dimension(114, 29));
         btnNeu.setText("Neu");
+        btnNeu.setMnemonic('N');
+        btnNeu.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -210,6 +218,8 @@ public class MitarbeitersPanel {
         btnBearbeiten.setMinimumSize(new Dimension(114, 29));
         btnBearbeiten.setPreferredSize(new Dimension(114, 29));
         btnBearbeiten.setText("Bearbeiten");
+        btnBearbeiten.setMnemonic('B');
+        btnBearbeiten.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
@@ -220,6 +230,8 @@ public class MitarbeitersPanel {
         btnLoeschen.setMinimumSize(new Dimension(114, 29));
         btnLoeschen.setPreferredSize(new Dimension(114, 29));
         btnLoeschen.setText("Löschen");
+        btnLoeschen.setMnemonic('L');
+        btnLoeschen.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 4;
         gbc.gridy = 1;

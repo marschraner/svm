@@ -183,6 +183,8 @@ public class SemesterrechnungenPanel {
         btnLoeschen.setMinimumSize(new Dimension(120, 29));
         btnLoeschen.setPreferredSize(new Dimension(120, 29));
         btnLoeschen.setText("Löschen");
+        btnLoeschen.setMnemonic('L');
+        btnLoeschen.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -212,6 +214,8 @@ public class SemesterrechnungenPanel {
         btnExportieren.setMinimumSize(new Dimension(120, 29));
         btnExportieren.setPreferredSize(new Dimension(120, 29));
         btnExportieren.setText("Exportieren");
+        btnExportieren.setMnemonic('E');
+        btnExportieren.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
@@ -228,6 +232,8 @@ public class SemesterrechnungenPanel {
         btnRechnungsdatum.setMinimumSize(new Dimension(158, 29));
         btnRechnungsdatum.setPreferredSize(new Dimension(158, 29));
         btnRechnungsdatum.setText("Rechnungsdatum");
+        btnRechnungsdatum.setMnemonic('C');
+        btnRechnungsdatum.setDisplayedMnemonicIndex(2);
         gbc = new GridBagConstraints();
         gbc.gridx = 4;
         gbc.gridy = 1;
@@ -254,6 +260,8 @@ public class SemesterrechnungenPanel {
         btnAbbrechen.setMinimumSize(new Dimension(114, 29));
         btnAbbrechen.setPreferredSize(new Dimension(114, 29));
         btnAbbrechen.setText("Abbrechen");
+        btnAbbrechen.setMnemonic('A');
+        btnAbbrechen.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 1;
@@ -277,6 +285,8 @@ public class SemesterrechnungenPanel {
         btnZurueck.setMinimumSize(new Dimension(114, 29));
         btnZurueck.setPreferredSize(new Dimension(114, 29));
         btnZurueck.setText("Zurück");
+        btnZurueck.setMnemonic('Z');
+        btnZurueck.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -297,6 +307,8 @@ public class SemesterrechnungenPanel {
         btnDetailsBearbeiten.setMinimumSize(new Dimension(176, 29));
         btnDetailsBearbeiten.setPreferredSize(new Dimension(176, 29));
         btnDetailsBearbeiten.setText("Details / Bearbeiten");
+        btnDetailsBearbeiten.setMnemonic('B');
+        btnDetailsBearbeiten.setDisplayedMnemonicIndex(10);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;

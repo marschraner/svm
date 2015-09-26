@@ -140,7 +140,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="Abbrechen"/>
+                  <text value="&amp;Abbrechen"/>
                 </properties>
               </component>
               <component id="a5e6a" class="javax.swing.JButton" binding="btnZurueck">
@@ -152,7 +152,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="Zurück"/>
+                  <text value="&amp;Zurück"/>
                 </properties>
               </component>
               <vspacer id="8cf42">
@@ -185,7 +185,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="Löschen"/>
+                  <text value="&amp;Löschen"/>
                 </properties>
               </component>
               <component id="bc623" class="javax.swing.JButton" binding="btnBearbeiten">
@@ -198,7 +198,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="Bearbeiten"/>
+                  <text value="&amp;Bearbeiten"/>
                 </properties>
               </component>
               <component id="7b86e" class="javax.swing.JButton" binding="btnNeu">
@@ -210,7 +210,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="Neu"/>
+                  <text value="&amp;Neu"/>
                 </properties>
               </component>
               <vspacer id="f9b41">

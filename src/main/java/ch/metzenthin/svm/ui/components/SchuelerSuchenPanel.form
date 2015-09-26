@@ -22,7 +22,7 @@
               <minimumSize width="114" height="29"/>
               <preferredSize width="114" height="29"/>
               <selected value="true"/>
-              <text value="Suchen"/>
+              <text value="&amp;Suchen"/>
             </properties>
           </component>
           <component id="d8137" class="javax.swing.JButton" binding="btnAbbrechen">
@@ -34,7 +34,7 @@
               <maximumSize width="114" height="29"/>
               <minimumSize width="114" height="29"/>
               <preferredSize width="114" height="29"/>
-              <text value="Abbrechen"/>
+              <text value="&amp;Abbrechen"/>
             </properties>
           </component>
           <vspacer id="2b90c">

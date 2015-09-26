@@ -216,6 +216,8 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         buttonAbbrechen.setMinimumSize(new Dimension(114, 29));
         buttonAbbrechen.setPreferredSize(new Dimension(114, 29));
         buttonAbbrechen.setText("Abbrechen");
+        buttonAbbrechen.setMnemonic('A');
+        buttonAbbrechen.setDisplayedMnemonicIndex(0);
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -231,6 +233,8 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         buttonSpeichern.setOpaque(false);
         buttonSpeichern.setPreferredSize(new Dimension(114, 29));
         buttonSpeichern.setText("Speichern");
+        buttonSpeichern.setMnemonic('S');
+        buttonSpeichern.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;

@@ -208,7 +208,7 @@
               <minimumSize width="114" height="29"/>
               <preferredSize width="114" height="29"/>
               <selected value="false"/>
-              <text value="Speichern"/>
+              <text value="&amp;Speichern"/>
             </properties>
           </component>
           <component id="db2b1" class="javax.swing.JButton" binding="btnAbbrechen">
@@ -220,7 +220,7 @@
               <maximumSize width="114" height="29"/>
               <minimumSize width="114" height="29"/>
               <preferredSize width="114" height="29"/>
-              <text value="Abbrechen"/>
+              <text value="&amp;Abbrechen"/>
             </properties>
           </component>
         </children>

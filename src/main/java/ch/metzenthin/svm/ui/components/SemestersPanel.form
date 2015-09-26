@@ -120,7 +120,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="Abbrechen"/>
+                  <text value="&amp;Abbrechen"/>
                 </properties>
               </component>
               <hspacer id="9487f">
@@ -159,7 +159,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="Neu"/>
+                  <text value="&amp;Neu"/>
                 </properties>
               </component>
               <hspacer id="e13e6">
@@ -189,7 +189,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="Bearbeiten"/>
+                  <text value="&amp;Bearbeiten"/>
                 </properties>
               </component>
               <hspacer id="350b">
@@ -207,7 +207,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="Löschen"/>
+                  <text value="&amp;Löschen"/>
                 </properties>
               </component>
             </children>

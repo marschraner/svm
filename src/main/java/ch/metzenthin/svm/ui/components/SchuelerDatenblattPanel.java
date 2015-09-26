@@ -1178,6 +1178,8 @@ public class SchuelerDatenblattPanel {
         btnErster = new JButton();
         btnErster.setPreferredSize(new Dimension(143, 29));
         btnErster.setText("Erster");
+        btnErster.setMnemonic('E');
+        btnErster.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 1;
@@ -1194,6 +1196,8 @@ public class SchuelerDatenblattPanel {
         btnVorheriger.setMinimumSize(new Dimension(143, 29));
         btnVorheriger.setPreferredSize(new Dimension(143, 29));
         btnVorheriger.setText("Vorheriger");
+        btnVorheriger.setMnemonic('V');
+        btnVorheriger.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 5;
         gbc.gridy = 1;
@@ -1237,6 +1241,8 @@ public class SchuelerDatenblattPanel {
         btnNachfolgender = new JButton();
         btnNachfolgender.setPreferredSize(new Dimension(143, 29));
         btnNachfolgender.setText("Nachfolgender");
+        btnNachfolgender.setMnemonic('N');
+        btnNachfolgender.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -1251,6 +1257,8 @@ public class SchuelerDatenblattPanel {
         btnLetzter = new JButton();
         btnLetzter.setPreferredSize(new Dimension(143, 29));
         btnLetzter.setText("Letzter");
+        btnLetzter.setMnemonic('L');
+        btnLetzter.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
@@ -1268,6 +1276,8 @@ public class SchuelerDatenblattPanel {
         btnZurueck.setMinimumSize(new Dimension(114, 29));
         btnZurueck.setPreferredSize(new Dimension(114, 29));
         btnZurueck.setText("Zurück");
+        btnZurueck.setMnemonic('Z');
+        btnZurueck.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 4;
         gbc.gridy = 1;
@@ -1291,6 +1301,8 @@ public class SchuelerDatenblattPanel {
         btnAbbrechen.setMinimumSize(new Dimension(114, 29));
         btnAbbrechen.setPreferredSize(new Dimension(114, 29));
         btnAbbrechen.setText("Abbrechen");
+        btnAbbrechen.setMnemonic('A');
+        btnAbbrechen.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 5;
         gbc.gridy = 1;

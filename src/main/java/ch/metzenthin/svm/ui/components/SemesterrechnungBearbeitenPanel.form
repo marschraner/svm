@@ -2195,7 +2195,7 @@
                       <maximumSize width="143" height="29"/>
                       <minimumSize width="143" height="29"/>
                       <preferredSize width="143" height="29"/>
-                      <text value="Erster"/>
+                      <text value="&amp;Erster"/>
                     </properties>
                   </component>
                   <hspacer id="1ac2d">
@@ -2213,7 +2213,7 @@
                       <maximumSize width="143" height="29"/>
                       <minimumSize width="143" height="29"/>
                       <preferredSize width="143" height="29"/>
-                      <text value="Vorheriger"/>
+                      <text value="&amp;Vorheriger"/>
                     </properties>
                   </component>
                   <component id="30c2b" class="javax.swing.JButton" binding="btnSpeichern">
@@ -2225,7 +2225,7 @@
                       <maximumSize width="114" height="29"/>
                       <minimumSize width="114" height="29"/>
                       <preferredSize width="114" height="29"/>
-                      <text value="Speichern"/>
+                      <text value="&amp;Speichern"/>
                     </properties>
                   </component>
                   <component id="fc4f3" class="javax.swing.JButton" binding="btnVerwerfen">
@@ -2237,7 +2237,7 @@
                       <maximumSize width="114" height="29"/>
                       <minimumSize width="114" height="29"/>
                       <preferredSize width="114" height="29"/>
-                      <text value="Verwerfen"/>
+                      <text value="Ver&amp;werfen"/>
                     </properties>
                   </component>
                   <vspacer id="e2e5f">
@@ -2276,7 +2276,7 @@
                       <maximumSize width="143" height="29"/>
                       <minimumSize width="143" height="29"/>
                       <preferredSize width="143" height="29"/>
-                      <text value="Nachfolgender"/>
+                      <text value="&amp;Nachfolgender"/>
                     </properties>
                   </component>
                   <hspacer id="82aa6">
@@ -2306,7 +2306,7 @@
                       <maximumSize width="143" height="29"/>
                       <minimumSize width="143" height="29"/>
                       <preferredSize width="143" height="29"/>
-                      <text value="Letzter"/>
+                      <text value="&amp;Letzter"/>
                     </properties>
                   </component>
                   <hspacer id="d7c55">
@@ -2330,7 +2330,7 @@
                       <maximumSize width="114" height="29"/>
                       <minimumSize width="114" height="29"/>
                       <preferredSize width="114" height="29"/>
-                      <text value="Zurück"/>
+                      <text value="&amp;Zurück"/>
                     </properties>
                   </component>
                 </children>

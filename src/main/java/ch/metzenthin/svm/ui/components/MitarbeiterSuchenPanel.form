@@ -303,7 +303,7 @@
               <maximumSize width="114" height="29"/>
               <minimumSize width="114" height="29"/>
               <preferredSize width="114" height="29"/>
-              <text value="Suchen"/>
+              <text value="&amp;Suchen"/>
             </properties>
           </component>
           <vspacer id="25f33">
@@ -327,7 +327,7 @@
               <maximumSize width="114" height="29"/>
               <minimumSize width="114" height="29"/>
               <preferredSize width="114" height="29"/>
-              <text value="Abbrechen"/>
+              <text value="&amp;Abbrechen"/>
             </properties>
           </component>
           <hspacer id="1a330">

@@ -147,8 +147,6 @@ public class SchuelerPanel {
         panel.add(mainPanel, BorderLayout.CENTER);
         final JLabel label1 = new JLabel();
         label1.setText("Vorname");
-        label1.setDisplayedMnemonic('V');
-        label1.setDisplayedMnemonicIndex(0);
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -165,8 +163,6 @@ public class SchuelerPanel {
         mainPanel.add(txtVorname, gbc);
         final JLabel label2 = new JLabel();
         label2.setText("Strasse/Nr.");
-        label2.setDisplayedMnemonic('S');
-        label2.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 5;
@@ -180,8 +176,6 @@ public class SchuelerPanel {
         mainPanel.add(spacer1, gbc);
         final JLabel label3 = new JLabel();
         label3.setText("PLZ/Ort");
-        label3.setDisplayedMnemonic('P');
-        label3.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 7;
@@ -212,8 +206,6 @@ public class SchuelerPanel {
         panel1.add(txtStrasseHausnummer, gbc);
         final JLabel label4 = new JLabel();
         label4.setText("Festnetz");
-        label4.setDisplayedMnemonic('F');
-        label4.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 9;
@@ -229,8 +221,6 @@ public class SchuelerPanel {
         mainPanel.add(txtFestnetz, gbc);
         final JLabel label5 = new JLabel();
         label5.setText("Geburtsdatum");
-        label5.setDisplayedMnemonic('G');
-        label5.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 17;
@@ -246,8 +236,6 @@ public class SchuelerPanel {
         mainPanel.add(txtGeburtsdatum, gbc);
         final JLabel label6 = new JLabel();
         label6.setText("Natel");
-        label6.setDisplayedMnemonic('N');
-        label6.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 11;
@@ -269,8 +257,6 @@ public class SchuelerPanel {
         mainPanel.add(spacer3, gbc);
         final JLabel label7 = new JLabel();
         label7.setText("E-Mail");
-        label7.setDisplayedMnemonic('E');
-        label7.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 13;
@@ -298,8 +284,6 @@ public class SchuelerPanel {
         mainPanel.add(spacer5, gbc);
         lblAbmeldedatum = new JLabel();
         lblAbmeldedatum.setText("Abmeldedatum");
-        lblAbmeldedatum.setDisplayedMnemonic('B');
-        lblAbmeldedatum.setDisplayedMnemonicIndex(1);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 21;
@@ -321,8 +305,6 @@ public class SchuelerPanel {
         mainPanel.add(spacer6, gbc);
         final JLabel label8 = new JLabel();
         label8.setText("Anmeldedatum");
-        label8.setDisplayedMnemonic('M');
-        label8.setDisplayedMnemonicIndex(2);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 19;
@@ -356,8 +338,6 @@ public class SchuelerPanel {
         scrollPane1.setViewportView(textAreaBemerkungen);
         final JLabel label9 = new JLabel();
         label9.setText("Bemerkungen");
-        label9.setDisplayedMnemonic('R');
-        label9.setDisplayedMnemonicIndex(4);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 23;
@@ -414,8 +394,6 @@ public class SchuelerPanel {
         mainPanel.add(spacer11, gbc);
         final JLabel label10 = new JLabel();
         label10.setText("Geschlecht");
-        label10.setDisplayedMnemonic('H');
-        label10.setDisplayedMnemonicIndex(4);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 15;
@@ -436,8 +414,6 @@ public class SchuelerPanel {
         mainPanel.add(comboBoxGeschlecht, gbc);
         final JLabel label11 = new JLabel();
         label11.setText("Nachname");
-        label11.setDisplayedMnemonic('C');
-        label11.setDisplayedMnemonicIndex(2);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;

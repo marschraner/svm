@@ -29,7 +29,7 @@
                   <maximumSize width="120" height="29"/>
                   <minimumSize width="120" height="29"/>
                   <preferredSize width="120" height="29"/>
-                  <text value="Exportieren"/>
+                  <text value="&amp;Exportieren"/>
                 </properties>
               </component>
               <vspacer id="31332">
@@ -68,7 +68,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="Abbrechen"/>
+                  <text value="&amp;Abbrechen"/>
                 </properties>
               </component>
               <vspacer id="7d99a">
@@ -98,7 +98,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="Zurück"/>
+                  <text value="&amp;Zurück"/>
                 </properties>
               </component>
               <hspacer id="fa270">
@@ -125,7 +125,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="Neu"/>
+                  <text value="&amp;Neu"/>
                 </properties>
               </component>
               <hspacer id="a70f9">
@@ -155,7 +155,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="Bearbeiten"/>
+                  <text value="&amp;Bearbeiten"/>
                 </properties>
               </component>
               <component id="2b7d" class="javax.swing.JButton" binding="btnLoeschen">
@@ -167,7 +167,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="Löschen"/>
+                  <text value="&amp;Löschen"/>
                 </properties>
               </component>
               <hspacer id="64fc1">

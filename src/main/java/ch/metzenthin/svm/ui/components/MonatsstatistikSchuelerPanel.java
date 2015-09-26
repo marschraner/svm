@@ -98,8 +98,6 @@ public class MonatsstatistikSchuelerPanel {
         panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Monatsstatistik", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel1.getFont().getName(), Font.BOLD, panel1.getFont().getSize()), new Color(-16777216)));
         lblMonatJahr = new JLabel();
         lblMonatJahr.setText("Monat/Jahr (MM.JJJJ)");
-        lblMonatJahr.setDisplayedMnemonic('M');
-        lblMonatJahr.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 2;
@@ -228,6 +226,8 @@ public class MonatsstatistikSchuelerPanel {
         btnSuchen.setPreferredSize(new Dimension(114, 29));
         btnSuchen.setSelected(true);
         btnSuchen.setText("Suchen");
+        btnSuchen.setMnemonic('S');
+        btnSuchen.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -238,6 +238,8 @@ public class MonatsstatistikSchuelerPanel {
         btnAbbrechen.setMinimumSize(new Dimension(114, 29));
         btnAbbrechen.setPreferredSize(new Dimension(114, 29));
         btnAbbrechen.setText("Abbrechen");
+        btnAbbrechen.setMnemonic('A');
+        btnAbbrechen.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;

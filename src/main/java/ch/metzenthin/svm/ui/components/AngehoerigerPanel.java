@@ -144,8 +144,6 @@ public class AngehoerigerPanel {
         panel.add(mainPanel, BorderLayout.CENTER);
         final JLabel label1 = new JLabel();
         label1.setText("Nachname");
-        label1.setDisplayedMnemonic('C');
-        label1.setDisplayedMnemonicIndex(2);
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -169,8 +167,6 @@ public class AngehoerigerPanel {
         mainPanel.add(txtNachname, gbc);
         final JLabel label2 = new JLabel();
         label2.setText("Vorname");
-        label2.setDisplayedMnemonic('V');
-        label2.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 5;
@@ -186,8 +182,6 @@ public class AngehoerigerPanel {
         mainPanel.add(txtVorname, gbc);
         final JLabel label3 = new JLabel();
         label3.setText("Strasse/Nr.");
-        label3.setDisplayedMnemonic('S');
-        label3.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 7;
@@ -201,8 +195,6 @@ public class AngehoerigerPanel {
         mainPanel.add(spacer2, gbc);
         final JLabel label4 = new JLabel();
         label4.setText("PLZ/Ort");
-        label4.setDisplayedMnemonic('P');
-        label4.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 9;
@@ -237,8 +229,6 @@ public class AngehoerigerPanel {
         panel1.add(txtStrasseHausnummer, gbc);
         final JLabel label5 = new JLabel();
         label5.setText("Festnetz");
-        label5.setDisplayedMnemonic('F');
-        label5.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 11;
@@ -254,8 +244,6 @@ public class AngehoerigerPanel {
         mainPanel.add(txtFestnetz, gbc);
         lblAnrede = new JLabel();
         lblAnrede.setText("Anrede");
-        lblAnrede.setDisplayedMnemonic('A');
-        lblAnrede.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -272,8 +260,6 @@ public class AngehoerigerPanel {
         mainPanel.add(comboBoxAnrede, gbc);
         final JLabel label6 = new JLabel();
         label6.setText("Natel");
-        label6.setDisplayedMnemonic('N');
-        label6.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 13;
@@ -295,8 +281,6 @@ public class AngehoerigerPanel {
         mainPanel.add(spacer5, gbc);
         final JLabel label7 = new JLabel();
         label7.setText("E-Mail");
-        label7.setDisplayedMnemonic('E');
-        label7.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 15;

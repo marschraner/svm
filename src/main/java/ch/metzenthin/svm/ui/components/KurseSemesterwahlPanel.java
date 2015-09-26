@@ -154,6 +154,8 @@ public class KurseSemesterwahlPanel {
         btnOk.setMinimumSize(new Dimension(114, 29));
         btnOk.setPreferredSize(new Dimension(114, 29));
         btnOk.setText("OK");
+        btnOk.setMnemonic('O');
+        btnOk.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -176,6 +178,8 @@ public class KurseSemesterwahlPanel {
         btnAbbrechen.setMinimumSize(new Dimension(114, 29));
         btnAbbrechen.setPreferredSize(new Dimension(114, 29));
         btnAbbrechen.setText("Abbrechen");
+        btnAbbrechen.setMnemonic('A');
+        btnAbbrechen.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 0;

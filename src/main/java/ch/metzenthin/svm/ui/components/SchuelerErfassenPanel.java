@@ -335,6 +335,8 @@ public class SchuelerErfassenPanel {
         btnLoeschen.setMinimumSize(new Dimension(114, 29));
         btnLoeschen.setPreferredSize(new Dimension(114, 29));
         btnLoeschen.setText("Löschen");
+        btnLoeschen.setMnemonic('L');
+        btnLoeschen.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;

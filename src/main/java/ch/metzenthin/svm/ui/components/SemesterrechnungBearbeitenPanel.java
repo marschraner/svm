@@ -2196,6 +2196,8 @@ public class SemesterrechnungBearbeitenPanel {
         btnErster.setMinimumSize(new Dimension(143, 29));
         btnErster.setPreferredSize(new Dimension(143, 29));
         btnErster.setText("Erster");
+        btnErster.setMnemonic('E');
+        btnErster.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 8;
         gbc.gridy = 1;
@@ -2212,6 +2214,8 @@ public class SemesterrechnungBearbeitenPanel {
         btnVorheriger.setMinimumSize(new Dimension(143, 29));
         btnVorheriger.setPreferredSize(new Dimension(143, 29));
         btnVorheriger.setText("Vorheriger");
+        btnVorheriger.setMnemonic('V');
+        btnVorheriger.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 10;
         gbc.gridy = 1;
@@ -2222,6 +2226,8 @@ public class SemesterrechnungBearbeitenPanel {
         btnSpeichern.setMinimumSize(new Dimension(114, 29));
         btnSpeichern.setPreferredSize(new Dimension(114, 29));
         btnSpeichern.setText("Speichern");
+        btnSpeichern.setMnemonic('S');
+        btnSpeichern.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 1;
@@ -2232,6 +2238,8 @@ public class SemesterrechnungBearbeitenPanel {
         btnVerwerfen.setMinimumSize(new Dimension(114, 29));
         btnVerwerfen.setPreferredSize(new Dimension(114, 29));
         btnVerwerfen.setText("Verwerfen");
+        btnVerwerfen.setMnemonic('W');
+        btnVerwerfen.setDisplayedMnemonicIndex(3);
         gbc = new GridBagConstraints();
         gbc.gridx = 5;
         gbc.gridy = 1;
@@ -2263,6 +2271,8 @@ public class SemesterrechnungBearbeitenPanel {
         btnNachfolgender.setMinimumSize(new Dimension(143, 29));
         btnNachfolgender.setPreferredSize(new Dimension(143, 29));
         btnNachfolgender.setText("Nachfolgender");
+        btnNachfolgender.setMnemonic('N');
+        btnNachfolgender.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -2291,6 +2301,8 @@ public class SemesterrechnungBearbeitenPanel {
         btnLetzter.setMinimumSize(new Dimension(143, 29));
         btnLetzter.setPreferredSize(new Dimension(143, 29));
         btnLetzter.setText("Letzter");
+        btnLetzter.setMnemonic('L');
+        btnLetzter.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
@@ -2314,6 +2326,8 @@ public class SemesterrechnungBearbeitenPanel {
         btnZurück.setMinimumSize(new Dimension(114, 29));
         btnZurück.setPreferredSize(new Dimension(114, 29));
         btnZurück.setText("Zurück");
+        btnZurück.setMnemonic('Z');
+        btnZurück.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 4;
         gbc.gridy = 1;

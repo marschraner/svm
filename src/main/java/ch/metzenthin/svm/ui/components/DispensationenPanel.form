@@ -144,7 +144,7 @@
                       <maximumSize width="114" height="29"/>
                       <minimumSize width="114" height="29"/>
                       <preferredSize width="114" height="29"/>
-                      <text value="Zurück"/>
+                      <text value="&amp;Zurück"/>
                     </properties>
                   </component>
                   <hspacer id="52be4">
@@ -185,7 +185,7 @@
                       <minimumSize width="114" height="29"/>
                       <preferredSize width="114" height="29"/>
                       <selected value="true"/>
-                      <text value="Neu"/>
+                      <text value="&amp;Neu"/>
                     </properties>
                   </component>
                   <component id="9e0ba" class="javax.swing.JButton" binding="btnBearbeiten">
@@ -197,7 +197,7 @@
                       <maximumSize width="114" height="29"/>
                       <minimumSize width="114" height="29"/>
                       <preferredSize width="114" height="29"/>
-                      <text value="Bearbeiten"/>
+                      <text value="&amp;Bearbeiten"/>
                     </properties>
                   </component>
                   <component id="bb3" class="javax.swing.JButton" binding="btnLoeschen">
@@ -209,7 +209,7 @@
                       <maximumSize width="114" height="29"/>
                       <minimumSize width="114" height="29"/>
                       <preferredSize width="114" height="29"/>
-                      <text value="Löschen"/>
+                      <text value="&amp;Löschen"/>
                     </properties>
                   </component>
                   <vspacer id="2bfdc">

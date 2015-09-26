@@ -175,6 +175,8 @@ public class ListenExportDialog extends JDialog {
         btnOk.setOpaque(false);
         btnOk.setPreferredSize(new Dimension(114, 29));
         btnOk.setText("OK");
+        btnOk.setMnemonic('O');
+        btnOk.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -203,6 +205,8 @@ public class ListenExportDialog extends JDialog {
         btnAbbrechen.setMinimumSize(new Dimension(114, 29));
         btnAbbrechen.setPreferredSize(new Dimension(114, 29));
         btnAbbrechen.setText("Abbrechen");
+        btnAbbrechen.setMnemonic('A');
+        btnAbbrechen.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;

@@ -304,7 +304,7 @@
                   <maximumSize width="115" height="29"/>
                   <minimumSize width="115" height="29"/>
                   <preferredSize width="115" height="29"/>
-                  <text value="OK"/>
+                  <text value="&amp;OK"/>
                 </properties>
               </component>
               <hspacer id="ac49e">
@@ -334,7 +334,7 @@
                   <maximumSize width="115" height="29"/>
                   <minimumSize width="115" height="29"/>
                   <preferredSize width="115" height="29"/>
-                  <text value="Abbrechen"/>
+                  <text value="&amp;Abbrechen"/>
                 </properties>
               </component>
             </children>

@@ -88,6 +88,8 @@ public class SchuelerSuchenResultPanel {
         btnExportieren.setMinimumSize(new Dimension(120, 29));
         btnExportieren.setPreferredSize(new Dimension(120, 29));
         btnExportieren.setText("Exportieren");
+        btnExportieren.setMnemonic('E');
+        btnExportieren.setDisplayedMnemonicIndex(0);
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -122,6 +124,8 @@ public class SchuelerSuchenResultPanel {
         btnDatenblatt.setMinimumSize(new Dimension(114, 29));
         btnDatenblatt.setPreferredSize(new Dimension(114, 29));
         btnDatenblatt.setText("Datenblatt");
+        btnDatenblatt.setMnemonic('D');
+        btnDatenblatt.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -146,6 +150,8 @@ public class SchuelerSuchenResultPanel {
         btnZurueck.setMinimumSize(new Dimension(114, 29));
         btnZurueck.setPreferredSize(new Dimension(114, 29));
         btnZurueck.setText("Zurück");
+        btnZurueck.setMnemonic('Z');
+        btnZurueck.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -167,6 +173,8 @@ public class SchuelerSuchenResultPanel {
         btnAbbrechen.setMinimumSize(new Dimension(114, 29));
         btnAbbrechen.setPreferredSize(new Dimension(114, 29));
         btnAbbrechen.setText("Abbrechen");
+        btnAbbrechen.setMnemonic('A');
+        btnAbbrechen.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 1;

@@ -156,7 +156,7 @@
               <maximumSize width="114" height="29"/>
               <minimumSize width="114" height="29"/>
               <preferredSize width="114" height="29"/>
-              <text value="Speichern"/>
+              <text value="&amp;Speichern"/>
             </properties>
           </component>
           <component id="d6b5" class="javax.swing.JButton" binding="btnAbbrechen">
@@ -168,7 +168,7 @@
               <maximumSize width="114" height="29"/>
               <minimumSize width="114" height="29"/>
               <preferredSize width="114" height="29"/>
-              <text value="Abbrechen"/>
+              <text value="&amp;Abbrechen"/>
             </properties>
           </component>
         </children>

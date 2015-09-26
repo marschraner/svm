@@ -104,6 +104,8 @@ public class CodesDialog extends JDialog {
         btnNeu.setMinimumSize(new Dimension(114, 29));
         btnNeu.setPreferredSize(new Dimension(114, 29));
         btnNeu.setText("Neu");
+        btnNeu.setMnemonic('N');
+        btnNeu.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -133,6 +135,8 @@ public class CodesDialog extends JDialog {
         btnLoeschen.setMinimumSize(new Dimension(114, 29));
         btnLoeschen.setPreferredSize(new Dimension(114, 29));
         btnLoeschen.setText("Löschen");
+        btnLoeschen.setMnemonic('L');
+        btnLoeschen.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
@@ -149,6 +153,8 @@ public class CodesDialog extends JDialog {
         btnSchliessen.setMinimumSize(new Dimension(114, 29));
         btnSchliessen.setPreferredSize(new Dimension(114, 29));
         btnSchliessen.setText("Schliessen");
+        btnSchliessen.setMnemonic('S');
+        btnSchliessen.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 4;
         gbc.gridy = 1;
