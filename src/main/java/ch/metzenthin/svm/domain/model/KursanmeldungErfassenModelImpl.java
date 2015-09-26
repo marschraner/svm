@@ -174,11 +174,11 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
             invalidate();
             throw new SvmValidationException(2024, "Keine gültige Periode", Field.ABMELDEDATUM);
         }
-        Calendar semesterbeginnNaechstesSemesterMinusEinTag = getSemesterbeginnNaechstesSemester();
-        if (!isBulkUpdate() && kursanmeldung.getAbmeldedatum() != null && kursanmeldung.getAbmeldedatum().after(semesterbeginnNaechstesSemesterMinusEinTag)) {
+        Calendar semesterbeginnNaechstesSemester = getSemesterbeginnNaechstesSemester();
+        if (!isBulkUpdate() && kursanmeldung.getAbmeldedatum() != null && kursanmeldung.getAbmeldedatum().after(semesterbeginnNaechstesSemester)) {
             kursanmeldung.setAnmeldedatum(null);
             invalidate();
-            throw new SvmValidationException(2028, "Datum darf nicht nach " + asString(semesterbeginnNaechstesSemesterMinusEinTag) + " liegen", Field.ABMELDEDATUM);
+            throw new SvmValidationException(2028, "Datum darf nicht nach " + asString(semesterbeginnNaechstesSemester) + " liegen", Field.ABMELDEDATUM);
         }
     }
 

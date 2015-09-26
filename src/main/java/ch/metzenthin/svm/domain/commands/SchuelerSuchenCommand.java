@@ -301,20 +301,22 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     }
 
     private void createWhereSelectionsDispensation() {
+        // Eine Dispensation dauert bis und mit Dispensationsende
         if (dispensation == SchuelerSuchenModel.DispensationSelected.DISPENSIERT) {
-            selectStatementSb.append(" exists (select dis from Dispensation dis join dis.schueler sch where dis.dispensationsbeginn <= :stichtag and (dis.dispensationsende is null or dis.dispensationsende > :stichtag) and s.personId = sch.personId) and");
+            selectStatementSb.append(" exists (select dis from Dispensation dis join dis.schueler sch where dis.dispensationsbeginn <= :stichtag and (dis.dispensationsende is null or dis.dispensationsende >= :stichtag) and s.personId = sch.personId) and");
         }
         if (dispensation == SchuelerSuchenModel.DispensationSelected.NICHT_DISPENSIERT) {
-            selectStatementSb.append(" not exists (select dis from Dispensation dis join dis.schueler sch where dis.dispensationsende is null and s.personId = sch.personId) and :stichtag >= all (select dis.dispensationsende from Dispensation dis join dis.schueler sch where dis.dispensationsende is not null and s.personId = sch.personId) and");
+            selectStatementSb.append(" not exists (select dis from Dispensation dis join dis.schueler sch where dis.dispensationsbeginn <= :stichtag and (dis.dispensationsende is null or dis.dispensationsende >= :stichtag) and s.personId = sch.personId) and");
         }
     }
 
     private void createWhereSelectionsAnmeldestatus() {
+        // Eine Anmeldung dauert bis einen Tag vor Abmeldedatum
         if (anmeldestatus == SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET) {
             selectStatementSb.append(" exists (select anm from Anmeldung anm join anm.schueler sch where anm.anmeldedatum <= :stichtag and (anm.abmeldedatum is null or anm.abmeldedatum > :stichtag) and s.personId = sch.personId) and");
         }
         if (anmeldestatus == SchuelerSuchenModel.AnmeldestatusSelected.ABGEMELDET) {
-            selectStatementSb.append(" not exists (select anm from Anmeldung anm join anm.schueler sch where anm.abmeldedatum is null and s.personId = sch.personId) and :stichtag >= all (select anm.abmeldedatum from Anmeldung anm join anm.schueler sch where anm.abmeldedatum is not null and s.personId = sch.personId) and");
+            selectStatementSb.append(" not exists (select anm from Anmeldung anm join anm.schueler sch where anm.anmeldedatum <= :stichtag and (anm.abmeldedatum is null or anm.abmeldedatum > :stichtag) and s.personId = sch.personId) and");
         }
     }
 

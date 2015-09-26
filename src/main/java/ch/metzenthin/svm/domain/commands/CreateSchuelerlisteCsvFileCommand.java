@@ -1,6 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Kurs;
+import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
@@ -54,7 +56,7 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
             out.write(separator);
             out.write("Gruppe");
             out.write(separator);
-            out.write("Anmeldedatum");
+            out.write("Anmeldung(en)");
             out.write(separator);
             out.write("Codes");
             out.write('\n');
@@ -93,9 +95,12 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
                 out.write(separator);
                 out.write(getKurseSchueler(schueler));
                 out.write(separator);
-                out.write(schuelerSuchenTableModel.getGruppe() != null ? schuelerSuchenTableModel.getGruppe().toString() : "");
+                Maercheneinteilung maercheneinteilung = schuelerSuchenTableModel.getMaercheneinteilungen().get(schueler);
+                if (maercheneinteilung != null) {
+                    out.write(maercheneinteilung.getGruppe().toString());
+                }
                 out.write(separator);
-                out.write(asString(schueler.getAnmeldungen().get(0).getAnmeldedatum()));
+                out.write(getAnmeldungen(schueler));
                 out.write(separator);
                 out.write(schueler.getSchuelerCodesAsStr());
                 out.write('\n');
@@ -121,6 +126,15 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
             kurseAsStr.append(", ").append(kurse.get(i).toStringShort());
         }
         return kurseAsStr.toString();
+    }
+
+    public String getAnmeldungen(Schueler schueler) {
+        List<Anmeldung> anmeldungen = schueler.getAnmeldungen();
+        StringBuilder anmeldungenAsStr = new StringBuilder(anmeldungen.get(anmeldungen.size() - 1).toString());
+        for (int i = anmeldungen.size() - 2; i >= 0; i--) {
+            anmeldungenAsStr.append(", ").append(anmeldungen.get(i).toString());
+        }
+        return anmeldungenAsStr.toString();
     }
 
 }

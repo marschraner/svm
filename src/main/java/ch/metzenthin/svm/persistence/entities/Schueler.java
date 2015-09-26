@@ -159,10 +159,12 @@ public class Schueler extends Person {
     }
 
     public List<Anmeldung> getAnmeldungen() {
+        Collections.sort(anmeldungen);
         return anmeldungen;
     }
 
     public List<Dispensation> getDispensationen() {
+        Collections.sort(dispensationen);
         return dispensationen;
     }
 

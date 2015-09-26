@@ -188,7 +188,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     private final CalendarModelAttribute stichtagModelAttribute = new CalendarModelAttribute(
             this,
-            Field.STICHTAG, new GregorianCalendar(2000, Calendar.JANUARY, 1), new GregorianCalendar(),
+            Field.STICHTAG, new GregorianCalendar(2000, Calendar.JANUARY, 1), getNMonthsAfterNow(1),
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {

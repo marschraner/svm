@@ -63,13 +63,13 @@ public class MonatsstatistikSchuelerSuchenCommand extends GenericDaoCommand {
     
     private void createQuery() {
         if (anAbmeldungenDispensationen == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN) {
-            selectStatementSb.append(" exists (select anm from Anmeldung anm join anm.schueler sch where anm.anmeldedatum >= :statistikMonatBeginn and anm.anmeldedatum < :statistikMonatEnde and s.personId = sch.personId) and");
+            selectStatementSb.append(" exists (select anm from Anmeldung anm join anm.schueler sch where anm.anmeldedatum >= :statistikMonatBeginn and anm.anmeldedatum <= :statistikMonatEnde and s.personId = sch.personId) and");
         }
         if (anAbmeldungenDispensationen == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ABMELDUNGEN) {
-            selectStatementSb.append(" exists (select anm from Anmeldung anm join anm.schueler sch where anm.abmeldedatum >= :statistikMonatBeginn and anm.abmeldedatum < :statistikMonatEnde and s.personId = sch.personId) and");
+            selectStatementSb.append(" exists (select anm from Anmeldung anm join anm.schueler sch where anm.abmeldedatum >= :statistikMonatBeginn and anm.abmeldedatum <= :statistikMonatEnde and s.personId = sch.personId) and");
         }
         if (anAbmeldungenDispensationen == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.DISPENSATIONEN) {
-            selectStatementSb.append(" exists (select dis from Dispensation dis join dis.schueler sch where dis.dispensationsbeginn < :statistikMonatEnde and dis.dispensationsende >= :statistikMonatBeginn and s.personId = sch.personId) and");
+            selectStatementSb.append(" exists (select dis from Dispensation dis join dis.schueler sch where dis.dispensationsbeginn <= :statistikMonatEnde and (dis.dispensationsende is null or dis.dispensationsende >= :statistikMonatBeginn) and s.personId = sch.personId) and");
         }
     }
 
@@ -85,6 +85,7 @@ public class MonatsstatistikSchuelerSuchenCommand extends GenericDaoCommand {
             } else {
                 statistikMonatEnde = new GregorianCalendar(monatJahr.get(Calendar.YEAR), monatJahr.get(Calendar.MONTH) + 1, 1);
             }
+            statistikMonatEnde.add(Calendar.DAY_OF_YEAR, -1);
             typedQuery.setParameter("statistikMonatEnde", statistikMonatEnde);
         }
     }

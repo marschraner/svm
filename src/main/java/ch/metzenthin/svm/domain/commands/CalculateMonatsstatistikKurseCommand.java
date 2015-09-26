@@ -40,10 +40,9 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
         calculateAnzahlAbmeldungenSchueler();
         Semester previousSemesterBeforeSemesterbeginn = checkIfMonatContainsSemesterbeginnAndGetPreviousSemester();
         if (previousSemesterBeforeSemesterbeginn != null) {
-           calculateAnzahlImpliziteAbmeldungenVorkurseSchueler(previousSemesterBeforeSemesterbeginn);
+           calculateAnzahlImpliziteAbmeldungenVorhergehendesSemesterSchueler(previousSemesterBeforeSemesterbeginn);
         }
         calculateAnzahlAnmeldungenAbmeldungenTotal();
-
     }
 
     private void calculateAnzahlLektionen() {
@@ -84,7 +83,7 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
         }
     }
 
-    private void calculateAnzahlImpliziteAbmeldungenVorkurseSchueler(Semester previousSemesterBeforeSemesterbeginn) {
+    private void calculateAnzahlImpliziteAbmeldungenVorhergehendesSemesterSchueler(Semester previousSemesterBeforeSemesterbeginn) {
         TypedQuery<Object[]> typedQuery = entityManager.createQuery("select k.schueler.personId, count(k) from Kursanmeldung k where" +
                 " k.kurs.semester.semesterId = :semesterIdPreviousSemester and k.abmeldedatum is null group by k.schueler.personId", Object[].class);
         typedQuery.setParameter("semesterIdPreviousSemester", previousSemesterBeforeSemesterbeginn.getSemesterId());
@@ -156,8 +155,8 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
         Collections.sort(semestersAll);
         for (int i = 0; i < semestersAll.size(); i++) {
             if (!semestersAll.get(i).getSemesterbeginn().before(statistikMonatBeginn) && !semestersAll.get(i).getSemesterbeginn().after(statistikMonatEnde)) {
-                if (i < semestersAll.size()) {
-                    return semestersAll.get(i+1);
+                if (i < semestersAll.size() - 1) {
+                    return semestersAll.get(i+1);  // vorhergehendes Semester
                 } else {
                     return null;
                 }

@@ -246,7 +246,11 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
                     schuelersSb.append("<p style='margin-top:12'>");
                 }
                 if (neuerSchueler) {
-                    schuelersSb.append(schueler.getVorname()).append(" ").append(schueler.getNachname()).append("&nbsp &nbsp (Eintritt: ").append(asString(schueler.getAnmeldungen().get(schueler.getAnmeldungen().size() - 1).getAnmeldedatum())).append("):");
+                    String mehrAlsEineAnmeldungenStern = "";
+                    if (schueler.getAnmeldungen().size() > 1) {
+                        mehrAlsEineAnmeldungenStern = "*";
+                    }
+                    schuelersSb.append(schueler.getVorname()).append(" ").append(schueler.getNachname()).append("&nbsp &nbsp (Eintritt: ").append(asString(schueler.getAnmeldungen().get(0).getAnmeldedatum())).append(mehrAlsEineAnmeldungenStern).append("):");
                 }
                 if (!neuerSchueler) {
                     // Hack damit Leerzeile nicht ignoriert wird (<p></html>: <p> wird ignoriert)

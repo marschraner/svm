@@ -11,7 +11,6 @@ import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import static ch.metzenthin.svm.common.utils.Converter.*;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
@@ -75,7 +74,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     private final CalendarModelAttribute anmeldedatumModelAttribute = new CalendarModelAttribute(
             this,
-            Field.ANMELDEDATUM, getNYearsBeforeNow(20), new GregorianCalendar(),
+            Field.ANMELDEDATUM, getNYearsBeforeNow(20), getNMonthsAfterNow(1),
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {

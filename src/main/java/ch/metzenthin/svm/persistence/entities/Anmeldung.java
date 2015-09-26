@@ -46,7 +46,10 @@ public class Anmeldung implements Comparable<Anmeldung> {
         StringBuilder anmeldungSb = new StringBuilder();
         anmeldungSb.append(String.format("%1$td.%1$tm.%1$tY", anmeldedatum));
         if (abmeldedatum != null) {
-            anmeldungSb.append(" - ").append(String.format("%1$td.%1$tm.%1$tY", abmeldedatum));
+            // Eine Anmeldung dauert bis zum Tag vor dem Abmeldedatum
+            Calendar abmeldedatumMinusEinTag = (Calendar) abmeldedatum.clone();
+            abmeldedatumMinusEinTag.add(Calendar.DAY_OF_YEAR, -1);
+            anmeldungSb.append(" - ").append(String.format("%1$td.%1$tm.%1$tY", abmeldedatumMinusEinTag));
         }
         return anmeldungSb.toString();
     }
@@ -58,11 +61,7 @@ public class Anmeldung implements Comparable<Anmeldung> {
 
         Anmeldung anmeldung = (Anmeldung) o;
 
-        if (!anmeldedatum.equals(anmeldung.anmeldedatum)) return false;
-        if (abmeldedatum != null ? !abmeldedatum.equals(anmeldung.abmeldedatum) : anmeldung.abmeldedatum != null)
-            return false;
-        return schueler.equals(anmeldung.schueler);
-
+        return anmeldedatum.equals(anmeldung.anmeldedatum) && !(abmeldedatum != null ? !abmeldedatum.equals(anmeldung.abmeldedatum) : anmeldung.abmeldedatum != null) && schueler.equals(anmeldung.schueler);
     }
 
     @Override
