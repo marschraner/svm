@@ -15,10 +15,10 @@ public enum Listentyp {
     MUTTER_ODER_VATER_ADRESSETIKETTEN("Mutter- oder Vater-Adressetiketten", null, Filetyp.CSV),
     ELTERNMITHILFE_ADRESSETIKETTEN("Eltern-Mithilfe-Adressetiketten", null, Filetyp.CSV),
     SCHUELERLISTE_CSV("Schülerliste (CSV)", null, Filetyp.CSV),
-    MITARBEITER_ADRESSLISTE("Mitarbeiter-Adressliste", null, Filetyp.DOCX),
     MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM("Mitarbeiter-Adressliste mit Geburtsdatum", null, Filetyp.DOCX),
-    MITARBEITER_ADRESSLISTE_MIT_VERTRETUNGSMOEGLICHKEITEN("Mitarbeiter-Adressliste mit Vertretungsmöglichkeiten", null, Filetyp.DOCX),
+    MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM("Mitarbeiter-Adressliste ohne Geburtsdatum", null, Filetyp.DOCX),
     MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN("Mitarbeiter-Adressliste mit Geb.Datum, AHV-Nr., Vertr.mögl.", null, Filetyp.DOCX),
+    VERTRETUNGSLISTE("Vertretungsliste", null, Filetyp.DOCX),
     MITARBEITER_ADRESSETIKETTEN("Mitarbeiter-Adressetiketten", null, Filetyp.CSV),
     MITARBEITER_LISTE_CSV("Mitarbeiter-Liste (CSV)", null, Filetyp.CSV),
     KURSLISTE_WORD("Kursliste (Word)", null, Filetyp.DOCX),
@@ -26,6 +26,7 @@ public enum Listentyp {
     VORRECHNUNGEN_SERIENBRIEF("Vorrechnungen-Serienbrief", null, Filetyp.CSV),
     NACHRECHNUNGEN_SERIENBRIEF("Nachrechnungen-Serienbrief", null, Filetyp.CSV),
     MAHNUNGEN_SERIENBRIEF("Mahnungen-Serienbrief", null, Filetyp.CSV),
+    SEMESTERRECHNUNGEN_ADRESSETIKETTEN("Rechnungsempfänger-Adressetiketten", null, Filetyp.CSV),
     RECHNUNGSLISTE("Rechnungsliste", null, Filetyp.CSV);
 
     private String name;

@@ -184,11 +184,11 @@ public class ListenExportController extends AbstractController {
         }
         if (listenExportTyp == ListenExportTyp.MITARBEITERS) {
             // Initialisierung
-            comboBoxListentyp.setSelectedItem(Listentyp.MITARBEITER_ADRESSLISTE);
+            comboBoxListentyp.setSelectedItem(Listentyp.MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM);
         } else {
-            comboBoxListentyp.removeItem(Listentyp.MITARBEITER_ADRESSLISTE);
+            comboBoxListentyp.removeItem(Listentyp.MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM);
             comboBoxListentyp.removeItem(Listentyp.MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM);
-            comboBoxListentyp.removeItem(Listentyp.MITARBEITER_ADRESSLISTE_MIT_VERTRETUNGSMOEGLICHKEITEN);
+            comboBoxListentyp.removeItem(Listentyp.VERTRETUNGSLISTE);
             comboBoxListentyp.removeItem(Listentyp.MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN);
             comboBoxListentyp.removeItem(Listentyp.MITARBEITER_ADRESSETIKETTEN);
             comboBoxListentyp.removeItem(Listentyp.MITARBEITER_LISTE_CSV);
@@ -206,6 +206,7 @@ public class ListenExportController extends AbstractController {
             comboBoxListentyp.removeItem(Listentyp.VORRECHNUNGEN_SERIENBRIEF);
             comboBoxListentyp.removeItem(Listentyp.NACHRECHNUNGEN_SERIENBRIEF);
             comboBoxListentyp.removeItem(Listentyp.MAHNUNGEN_SERIENBRIEF);
+            comboBoxListentyp.removeItem(Listentyp.SEMESTERRECHNUNGEN_ADRESSETIKETTEN);
             comboBoxListentyp.removeItem(Listentyp.RECHNUNGSLISTE);
         }
     }

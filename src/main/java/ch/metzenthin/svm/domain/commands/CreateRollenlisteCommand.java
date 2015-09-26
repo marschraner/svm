@@ -115,8 +115,8 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
         maxLengths.add(maxLengthsRow1);
         // 2. Zeile
         List<int[]> maxLengthsRow2 = new ArrayList<>();
-        maxLengthsRow2.add(new int[]{21, 22, 23, 24, 25, 27});
         maxLengthsRow2.add(new int[]{22, 23, 24, 25, 26, 28});
+        maxLengthsRow2.add(new int[]{23, 24, 25, 26, 27, 29});
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{20, 21, 22, 23, 24, 26});

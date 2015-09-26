@@ -18,20 +18,13 @@ public class StrasseFormatterTest {
     }
 
     @Test
-    public void testFormat() throws Exception {
+    public void testFormatStr1() throws Exception {
         assertEquals("Austrasse 5", strasseFormatter.format("Austr. 5"));
     }
 
     @Test
-    public void testFormat_SameInAsOut() throws Exception {
-        String strasse = "Austrasse 5";
-        assertEquals(strasse, strasseFormatter.format(strasse));
-    }
-
-    @Test
-    public void testFormat_NoFormat() throws Exception {
-        String strasse = "Au Str. 5";
-        assertEquals(strasse, strasseFormatter.format(strasse));
+    public void testFormatStr2() throws Exception {
+        assertEquals("Au-Strasse 5", strasseFormatter.format("Au-Str. 5"));
     }
 
     @Test

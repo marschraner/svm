@@ -121,10 +121,10 @@ public class CreateWordTableCommand implements Command {
             numberOfDatasetsNormalPage = 14;
         } else if (headerRows.size() == 2) {
             numberOfDatasetsFirstPage = 17;
-            numberOfDatasetsNormalPage = 20;
+            numberOfDatasetsNormalPage = 19;
         } else {
-            numberOfDatasetsFirstPage = 6;
-            numberOfDatasetsNormalPage = 8;
+            numberOfDatasetsFirstPage = 28;
+            numberOfDatasetsNormalPage = 31;
         }
     }
 
@@ -196,8 +196,8 @@ public class CreateWordTableCommand implements Command {
                 List<Integer> mergedRow = mergedCells.get(i);
                 List<int[]> maxLenghtsRow = maxLenghts.get(i);
 
-                // Abstand am Ende eines Datensatzes, ausser am Ende der Seite
-                boolean verticalSpace = (i == datasetRows.size() - 1) && !(n == datasetNumberStart + numberOfDatasetsPerPage - 1);
+                // Abstand am Ende eines Datensatzes
+                boolean verticalSpace = (i == datasetRows.size() - 1);
 
                 // Iteration über Spalten
                 for (int j = 0; j < datasetRow.size(); j++) {

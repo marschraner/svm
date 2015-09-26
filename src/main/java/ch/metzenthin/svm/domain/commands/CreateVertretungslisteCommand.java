@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Listentyp;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 
@@ -16,29 +15,27 @@ import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
 /**
  * @author Martin Schraner
  */
-public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
+public class CreateVertretungslisteCommand extends CreateListeCommand {
 
     // input
     private final MitarbeitersTableModel mitarbeitersTableModel;
     private final String titel;
     private final File outputFile;
-    private Listentyp listentyp;
 
-    public CreateMitarbeiterAdresslisteCommand(MitarbeitersTableModel mitarbeitersTableModel, String titel, File outputFile, Listentyp listentyp) {
+    public CreateVertretungslisteCommand(MitarbeitersTableModel mitarbeitersTableModel, String titel, File outputFile) {
         this.mitarbeitersTableModel = mitarbeitersTableModel;
         this.titel = titel;
         this.outputFile = outputFile;
-        this.listentyp = listentyp;
     }
 
     @Override
     public void execute() {
 
         // Spaltenbreiten
-        // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein (bei linkem Default-Rand von 650)!
+        // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein!
         //          Bei > 11200 hinten schmalerer Rand!
         //          Bei > 11500 Spaltenbreite durch Inhalt beieinflusst!!!
-        // Hier linker-Rand auf 850 gesetzt, d.h. von obigen Werten muss 200 subtrahiert werden.
+         // Hier linker-Rand auf 850 gesetzt, d.h. von obigen Werten muss 200 subtrahiert werden.
         List<Integer> columnWidths = new ArrayList<>();
         columnWidths.add(0);  // enspricht einer Breite von max 550 (wenn 3-stellig)
         columnWidths.add(2700);
@@ -79,6 +76,21 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
         mergedRow2.add(0);
         mergedRow2.add(0);
         mergedCells.add(mergedRow2);
+        // 3. Zeile
+        List<Boolean> boldRow3 = new ArrayList<>();
+        boldRow3.add(false);
+        boldRow3.add(false);
+        boldRow3.add(false);
+        boldRow3.add(false);
+        boldRow3.add(false);
+        boldCells.add(boldRow3);
+        List<Integer> mergedRow3 = new ArrayList<>();
+        mergedRow3.add(0);
+        mergedRow3.add(0);
+        mergedRow3.add(2);
+        mergedRow3.add(0);
+        mergedRow3.add(0);
+        mergedCells.add(mergedRow3);
 
         // Maximale Anzahl Zeichen (wenn überschritten wird Schrift verkleinert),
         // wenn 0 nicht zu prüfen
@@ -89,7 +101,7 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
         maxLengthsRow1.add(new int[]{23, 24, 25, 26, 27, 29});
         maxLengthsRow1.add(new int[]{24, 25, 26, 27, 28, 30});
         maxLengthsRow1.add(new int[]{0});
-        maxLengthsRow1.add(new int[]{35, 36, 37, 38, 39, 41});
+        maxLengthsRow1.add(new int[]{32, 33, 34, 35, 36, 38});
         maxLengths.add(maxLengthsRow1);
         // 2. Zeile
         List<int[]> maxLengthsRow2 = new ArrayList<>();
@@ -97,8 +109,16 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
         maxLengthsRow2.add(new int[]{24, 25, 26, 27, 28, 30});
         maxLengthsRow2.add(new int[]{25, 26, 27, 28, 29, 31});
         maxLengthsRow2.add(new int[]{0});
-        maxLengthsRow2.add(new int[]{35, 36, 37, 38, 39, 41});
+        maxLengthsRow2.add(new int[]{32, 33, 34, 35, 36, 38});
         maxLengths.add(maxLengthsRow2);
+        // 3. Zeile
+        List<int[]> maxLengthsRow3 = new ArrayList<>();
+        maxLengthsRow3.add(new int[]{0});
+        maxLengthsRow3.add(new int[]{0});
+        maxLengthsRow3.add(new int[]{38, 39, 40, 41, 43, 45});
+        maxLengthsRow3.add(new int[]{0});
+        maxLengthsRow3.add(new int[]{32, 33, 34, 35, 36, 38});
+        maxLengths.add(maxLengthsRow3);
 
         // Header
         List<List<String>> header = new ArrayList<>();
@@ -108,13 +128,7 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
         headerCellsRow1.add("Name");
         headerCellsRow1.add("Vorname");
         headerCellsRow1.add("Festnetz");
-        String title;
-        if (listentyp == Listentyp.MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM) {
-            title = "Geburtsdatum";
-        } else {
-            title = "E-Mail";
-        }
-        headerCellsRow1.add(title);
+        headerCellsRow1.add("Vertretungsmöglichkeiten");
         header.add(headerCellsRow1);
         // 2. Zeile
         List<String> headerCellsRow2 = new ArrayList<>();
@@ -122,12 +136,16 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
         headerCellsRow2.add("Strasse/Nr.");
         headerCellsRow2.add("PLZ/Ort");
         headerCellsRow2.add("Natel");
-        title = "";
-        if (listentyp == Listentyp.MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM) {
-            title = "E-Mail";
-        }
-        headerCellsRow2.add(title);
+        headerCellsRow2.add("");
         header.add(headerCellsRow2);
+        // 3. Spalte
+        List<String> headerCellsRow3 = new ArrayList<>();
+        headerCellsRow3.add("");
+        headerCellsRow3.add("");
+        headerCellsRow3.add("E-Mail");
+        headerCellsRow3.add("");
+        headerCellsRow3.add("");
+        header.add(headerCellsRow3);
 
         // Inhalt
         List<Mitarbeiter> lehrkraefte = mitarbeitersTableModel.getMitarbeiters();
@@ -139,19 +157,21 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
                 continue;
             }
             List<List<String>> dataset = new ArrayList<>();
+            // Auf mehrere Zeilen aufzusplittende Felder:
+            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(mitarbeiter.getVertretungsmoeglichkeiten(), 32, 3);
+            splitStringIntoMultipleLinesCommand.execute();
+            List<String> vertretungsmoeglichkeitenLines = splitStringIntoMultipleLinesCommand.getLines();
             // 1. Zeile
             List<String> cellsRow1 = new ArrayList<>();
             cellsRow1.add(Integer.toString(i + 1));
             cellsRow1.add(mitarbeiter.getNachname());
             cellsRow1.add(mitarbeiter.getVorname());
             cellsRow1.add(nullAsEmptyString(mitarbeiter.getFestnetz()));
-            String value;
-            if (listentyp == Listentyp.MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM) {
-                value = nullAsEmptyString(asString(mitarbeiter.getGeburtsdatum()));
+            if (!vertretungsmoeglichkeitenLines.isEmpty()) {
+                cellsRow1.add(vertretungsmoeglichkeitenLines.get(0));
             } else {
-                value = nullAsEmptyString(mitarbeiter.getEmail());
+                cellsRow1.add("");
             }
-            cellsRow1.add(value);
             dataset.add(cellsRow1);
 
             // 2. Zeile
@@ -160,12 +180,25 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
             cellsRow2.add(mitarbeiter.getAdresse() == null ? "" : nullAsEmptyString(mitarbeiter.getAdresse().getStrHausnummer()));
             cellsRow2.add(mitarbeiter.getAdresse() == null ? "" : nullAsEmptyString(mitarbeiter.getAdresse().getPlz() + " " + mitarbeiter.getAdresse().getOrt()));
             cellsRow2.add(nullAsEmptyString(mitarbeiter.getNatel()));
-            value = "";
-            if (listentyp == Listentyp.MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM) {
-                value = nullAsEmptyString(mitarbeiter.getEmail());
+            if (vertretungsmoeglichkeitenLines.size() > 1) {
+                cellsRow2.add(vertretungsmoeglichkeitenLines.get(1));
+            } else {
+                cellsRow2.add("");
             }
-            cellsRow2.add(value);
             dataset.add(cellsRow2);
+
+            // 3. Zeile
+            List<String> cellsRow3 = new ArrayList<>();
+            cellsRow3.add("");
+            cellsRow3.add("");
+            cellsRow3.add(nullAsEmptyString(mitarbeiter.getEmail()));
+            cellsRow3.add("");
+            if (vertretungsmoeglichkeitenLines.size() > 2) {
+                cellsRow3.add(vertretungsmoeglichkeitenLines.get(2));
+            } else {
+                cellsRow3.add("");
+            }
+            dataset.add(cellsRow3);
 
             // Einzelner Datensatz der Liste von Datensätzen hinzufügen
             datasets.add(dataset);

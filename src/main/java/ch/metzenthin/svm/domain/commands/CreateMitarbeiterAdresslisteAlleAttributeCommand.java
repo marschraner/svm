@@ -32,13 +32,16 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
     public void execute() {
 
         // Spaltenbreiten
+        // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein!
+        //          Bei > 11200 hinten schmalerer Rand!
+        //          Bei > 11500 Spaltenbreite durch Inhalt beieinflusst!!!
         List<Integer> columnWidths = new ArrayList<>();
-        columnWidths.add(0);
+        columnWidths.add(0);  // enspricht einer Breite von max 550 (wenn 3-stellig)
+        columnWidths.add(2300);
         columnWidths.add(2500);
-        columnWidths.add(2800);
-        columnWidths.add(1800);
-        columnWidths.add(1600);
-        columnWidths.add(2900);
+        columnWidths.add(1400);
+        columnWidths.add(1750);
+        columnWidths.add(3050);
 
         // Bold / horiz. merged (Anzahl zu mergende Zellen; 0: kein Merging):
         List<List<Boolean>> boldCells = new ArrayList<>();
@@ -102,19 +105,19 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
         List<int[]> maxLengthsRow1 = new ArrayList<>();
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{21, 22, 23, 24, 25, 27});
-        maxLengthsRow1.add(new int[]{25, 26, 27, 28, 29, 31});
+        maxLengthsRow1.add(new int[]{22, 23, 24, 25, 26, 28});
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{0});
-        maxLengthsRow1.add(new int[]{0});
+        maxLengthsRow1.add(new int[]{29, 30, 31, 32, 33, 35});
         maxLengths.add(maxLengthsRow1);
         // 2. Zeile
         List<int[]> maxLengthsRow2 = new ArrayList<>();
         maxLengthsRow2.add(new int[]{0});
-        maxLengthsRow2.add(new int[]{21, 22, 23, 24, 25, 27});
-        maxLengthsRow2.add(new int[]{25, 26, 27, 28, 29, 31});
+        maxLengthsRow2.add(new int[]{22, 23, 24, 25, 26, 28});
+        maxLengthsRow2.add(new int[]{23, 24, 25, 26, 27, 29});
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{0});
-        maxLengthsRow2.add(new int[]{0});
+        maxLengthsRow2.add(new int[]{29, 30, 31, 32, 33, 35});
         maxLengths.add(maxLengthsRow2);
         // 3. Zeile
         List<int[]> maxLengthsRow3 = new ArrayList<>();
@@ -123,7 +126,7 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
         maxLengthsRow3.add(new int[]{38, 39, 40, 41, 43, 45});
         maxLengthsRow3.add(new int[]{0});
         maxLengthsRow3.add(new int[]{0});
-        maxLengthsRow3.add(new int[]{0});
+        maxLengthsRow3.add(new int[]{29, 30, 31, 32, 33, 35});
         maxLengths.add(maxLengthsRow3);
 
         // Header
@@ -133,8 +136,8 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
         headerCellsRow1.add("");
         headerCellsRow1.add("Name");
         headerCellsRow1.add("Vorname");
-        headerCellsRow1.add("Geburtsdatum");
         headerCellsRow1.add("Festnetz");
+        headerCellsRow1.add("Geburtsdatum");
         headerCellsRow1.add("Vertretungsmöglichkeiten");
         header.add(headerCellsRow1);
         // 2. Zeile
@@ -142,8 +145,8 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
         headerCellsRow2.add("");
         headerCellsRow2.add("Strasse/Nr.");
         headerCellsRow2.add("PLZ/Ort");
-        headerCellsRow2.add("AHV-Nummer");
         headerCellsRow2.add("Natel");
+        headerCellsRow2.add("AHV-Nummer");
         headerCellsRow2.add("");
         header.add(headerCellsRow2);
         // 3. Spalte
@@ -167,7 +170,7 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
             }
             List<List<String>> dataset = new ArrayList<>();
             // Auf mehrere Zeilen aufzusplittende Felder:
-            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(mitarbeiter.getVertretungsmoeglichkeiten(), 27, 3);
+            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(mitarbeiter.getVertretungsmoeglichkeiten(), 29, 3);
             splitStringIntoMultipleLinesCommand.execute();
             List<String> vertretungsmoeglichkeitenLines = splitStringIntoMultipleLinesCommand.getLines();
             // 1. Zeile
@@ -175,8 +178,8 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
             cellsRow1.add(Integer.toString(i + 1));
             cellsRow1.add(mitarbeiter.getNachname());
             cellsRow1.add(mitarbeiter.getVorname());
-            cellsRow1.add(nullAsEmptyString(asString(mitarbeiter.getGeburtsdatum())));
             cellsRow1.add(nullAsEmptyString(mitarbeiter.getFestnetz()));
+            cellsRow1.add(nullAsEmptyString(asString(mitarbeiter.getGeburtsdatum())));
             if (!vertretungsmoeglichkeitenLines.isEmpty()) {
                 cellsRow1.add(vertretungsmoeglichkeitenLines.get(0));
             } else {
@@ -189,8 +192,8 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
             cellsRow2.add("");
             cellsRow2.add(mitarbeiter.getAdresse() == null ? "" : nullAsEmptyString(mitarbeiter.getAdresse().getStrHausnummer()));
             cellsRow2.add(mitarbeiter.getAdresse() == null ? "" : nullAsEmptyString(mitarbeiter.getAdresse().getPlz() + " " + mitarbeiter.getAdresse().getOrt()));
-            cellsRow2.add(nullAsEmptyString(mitarbeiter.getAhvNummer()));
             cellsRow2.add(nullAsEmptyString(mitarbeiter.getNatel()));
+            cellsRow2.add(nullAsEmptyString(mitarbeiter.getAhvNummer()));
             if (vertretungsmoeglichkeitenLines.size() > 1) {
                 cellsRow2.add(vertretungsmoeglichkeitenLines.get(1));
             } else {

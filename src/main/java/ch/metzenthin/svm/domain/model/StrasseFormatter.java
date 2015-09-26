@@ -10,7 +10,8 @@ public class StrasseFormatter implements Formatter<String> {
         if (strasse == null) {
             return null;
         }
-        return strasse.replace("str.", "strasse");
+        strasse = strasse.replace("str.", "strasse");
+        return strasse.replace("Str.", "Strasse");
     }
 
 }

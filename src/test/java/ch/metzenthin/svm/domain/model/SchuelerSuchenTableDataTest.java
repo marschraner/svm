@@ -57,7 +57,7 @@ public class SchuelerSuchenTableDataTest {
         assertEquals("V2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.VORNAME.toString())));
         assertEquals("N2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.NACHNAME.toString())));
         assertEquals(new GregorianCalendar(2002, Calendar.APRIL, 12), schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.GEBURTSDATUM_SHORT.toString())));
-        assertEquals("Strasse2 99", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.STRASSE_HAUSNUMMER.toString())));
+        assertEquals("Str.2 99", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.STRASSE_HAUSNUMMER.toString())));
         assertEquals("8000", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.PLZ.toString())));
         assertEquals("Ort2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.ORT.toString())));
     }

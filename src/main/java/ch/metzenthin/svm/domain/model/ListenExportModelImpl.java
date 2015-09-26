@@ -101,11 +101,11 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 break;
             case SCHUELERLISTE_CSV:
                 break;
-            case MITARBEITER_ADRESSLISTE:
-                break;
             case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM:
                 break;
-            case MITARBEITER_ADRESSLISTE_MIT_VERTRETUNGSMOEGLICHKEITEN:
+            case MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM:
+                break;
+            case VERTRETUNGSLISTE:
                 break;
             case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN:
                 break;
@@ -140,6 +140,8 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                     String listenErstellenWarningTitle = "Rechnungsdatum nicht überall gesetzt";
                     listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
                 }
+                break;
+            case SEMESTERRECHNUNGEN_ADRESSETIKETTEN:
                 break;
             case RECHNUNGSLISTE:
                 break;
@@ -256,20 +258,20 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 commandInvoker.executeCommand(createSchuelerlisteCsvFileCommand);
                 result = createSchuelerlisteCsvFileCommand.getResult();
                 break;
-            case MITARBEITER_ADRESSLISTE:
-                CreateMitarbeiterAdresslisteCommand createMitarbeiterAdresslisteCommand = new CreateMitarbeiterAdresslisteCommand(mitarbeitersTableModel, titel, outputFile, listentyp);
-                commandInvoker.executeCommand(createMitarbeiterAdresslisteCommand);
-                result = createMitarbeiterAdresslisteCommand.getResult();
-                break;
             case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM:
                 CreateMitarbeiterAdresslisteCommand createMitarbeiterAdresslisteMitGeburtsdatumCommand = new CreateMitarbeiterAdresslisteCommand(mitarbeitersTableModel, titel, outputFile, listentyp);
                 commandInvoker.executeCommand(createMitarbeiterAdresslisteMitGeburtsdatumCommand);
                 result = createMitarbeiterAdresslisteMitGeburtsdatumCommand.getResult();
                 break;
-            case MITARBEITER_ADRESSLISTE_MIT_VERTRETUNGSMOEGLICHKEITEN:
-                CreateMitarbeiterAdresslisteCommand createMitarbeiterAdresslisteMitVertretungsmoeglichkeitenCommand = new CreateMitarbeiterAdresslisteCommand(mitarbeitersTableModel, titel, outputFile, listentyp);
-                commandInvoker.executeCommand(createMitarbeiterAdresslisteMitVertretungsmoeglichkeitenCommand);
-                result = createMitarbeiterAdresslisteMitVertretungsmoeglichkeitenCommand.getResult();
+            case MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM:
+                CreateMitarbeiterAdresslisteCommand createMitarbeiterAdresslisteCommand = new CreateMitarbeiterAdresslisteCommand(mitarbeitersTableModel, titel, outputFile, listentyp);
+                commandInvoker.executeCommand(createMitarbeiterAdresslisteCommand);
+                result = createMitarbeiterAdresslisteCommand.getResult();
+                break;
+            case VERTRETUNGSLISTE:
+                CreateVertretungslisteCommand createVertretungslisteCommand = new CreateVertretungslisteCommand(mitarbeitersTableModel, titel, outputFile);
+                commandInvoker.executeCommand(createVertretungslisteCommand);
+                result = createVertretungslisteCommand.getResult();
                 break;
             case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN:
                 CreateMitarbeiterAdresslisteAlleAttributeCommand createMitarbeiterAdresslisteAlleAttributeCommand = new CreateMitarbeiterAdresslisteAlleAttributeCommand(mitarbeitersTableModel, titel, outputFile);
@@ -310,6 +312,17 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 CreateMahnungenSerienbriefCsvFileCommand createMahnungenSerienbriefCsvFileCommand = new CreateMahnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), outputFile);
                 commandInvoker.executeCommand(createMahnungenSerienbriefCsvFileCommand);
                 result = createMahnungenSerienbriefCsvFileCommand.getResult();
+                break;
+            case SEMESTERRECHNUNGEN_ADRESSETIKETTEN:
+                Set<Person> rechnungsempfaengerSemesterrechnungSet = new HashSet<>();
+                for (Semesterrechnung semesterrechnung : semesterrechnungenTableModel.getSemesterrechnungen()) {
+                    rechnungsempfaengerSemesterrechnungSet.add(semesterrechnung.getRechnungsempfaenger());
+                }
+                List<Person> rechnungsempfaengerSemesterrechnungList = new ArrayList<>(rechnungsempfaengerSemesterrechnungSet);
+                Collections.sort(rechnungsempfaengerSemesterrechnungList);
+                CreateAdressenCsvFileCommand createAdressenCsvFileCommandRechnungsempfaengerSemesterrechnung = new CreateAdressenCsvFileCommand(rechnungsempfaengerSemesterrechnungList, outputFile);
+                commandInvoker.executeCommand(createAdressenCsvFileCommandRechnungsempfaengerSemesterrechnung);
+                result = createAdressenCsvFileCommandRechnungsempfaengerSemesterrechnung.getResult();
                 break;
             case RECHNUNGSLISTE:
                 CreateRechnungslisteCsvFileCommand createRechnungslisteCsvFileCommand = new CreateRechnungslisteCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), outputFile);
@@ -357,14 +370,14 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 break;
             case ELTERNMITHILFE_ADRESSETIKETTEN:
                 break;
-            case MITARBEITER_ADRESSLISTE:
-                titleInit = "Mitarbeitende";
-                break;
             case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM:
                 titleInit = "Mitarbeitende";
                 break;
-            case MITARBEITER_ADRESSLISTE_MIT_VERTRETUNGSMOEGLICHKEITEN:
+            case MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM:
                 titleInit = "Mitarbeitende";
+                break;
+            case VERTRETUNGSLISTE:
+                titleInit = "Vertretungsliste";
                 break;
             case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN:
                 titleInit = "Mitarbeitende";
@@ -383,6 +396,8 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
             case NACHRECHNUNGEN_SERIENBRIEF:
                 break;
             case MAHNUNGEN_SERIENBRIEF:
+                break;
+            case SEMESTERRECHNUNGEN_ADRESSETIKETTEN:
                 break;
             case RECHNUNGSLISTE:
                 break;

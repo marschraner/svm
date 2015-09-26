@@ -30,13 +30,17 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
     public void execute() {
 
         // Spaltenbreiten
+        // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein (bei linkem Default-Rand von 650)!
+        //          Bei > 11200 hinten schmalerer Rand!
+        //          Bei > 11500 Spaltenbreite durch Inhalt beieinflusst!!!
+        // Hier linker-Rand auf 850 gesetzt, d.h. von obigen Werten muss 200 subtrahiert werden.
         List<Integer> columnWidths = new ArrayList<>();
-        columnWidths.add(0);
+        columnWidths.add(0);  // entspricht 500
         columnWidths.add(2100);
         columnWidths.add(2100);
         columnWidths.add(1900);
         columnWidths.add(2800);
-        columnWidths.add(0);
+        columnWidths.add(1600);
 
         // Bold / horiz. merged:
         List<List<Boolean>> boldCells = new ArrayList<>();
@@ -85,8 +89,8 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{22, 23, 24, 25, 26, 28});
         maxLengthsRow1.add(new int[]{0});
-        maxLengthsRow1.add(new int[]{28, 29, 30, 31, 32, 34});
-        maxLengthsRow1.add(new int[]{0});
+        maxLengthsRow1.add(new int[]{26, 27, 28, 29, 30, 32});
+        maxLengthsRow1.add(new int[]{16, 17, 18, 19, 20, 22});
         maxLengths.add(maxLengthsRow1);
         // 2. Zeile
         List<int[]> maxLengthsRow2 = new ArrayList<>();
@@ -94,8 +98,8 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
         maxLengthsRow2.add(new int[]{20, 21, 22, 23, 24, 26});
         maxLengthsRow2.add(new int[]{22, 23, 24, 25, 26, 28});
         maxLengthsRow2.add(new int[]{0});
-        maxLengthsRow2.add(new int[]{28, 29, 30, 31, 32, 34});
-        maxLengthsRow2.add(new int[]{20, 21, 22, 23, 24, 26});
+        maxLengthsRow2.add(new int[]{26, 27, 28, 29, 30, 32});
+        maxLengthsRow2.add(new int[]{16, 17, 18, 19, 20, 22});
         maxLengths.add(maxLengthsRow2);
 
         // Header
@@ -106,7 +110,7 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
         headerCellsRow1.add("Kurstyp");
         headerCellsRow1.add("Alter");
         headerCellsRow1.add("Tag");
-        headerCellsRow1.add("Ort");
+        headerCellsRow1.add("Leitung");
         headerCellsRow1.add("Bemerkungen");
         header.add(headerCellsRow1);
         // 2. Zeile
@@ -115,7 +119,7 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
         headerCellsRow2.add("");
         headerCellsRow2.add("Stufe");
         headerCellsRow2.add("Zeit");
-        headerCellsRow2.add("Leitung");
+        headerCellsRow2.add("Ort");
         headerCellsRow2.add("");
         header.add(headerCellsRow2);
 
@@ -127,10 +131,10 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
         for (Kurs kurs : kurse) {
             List<List<String>> dataset = new ArrayList<>();
             // Auf mehrere Zeilen aufzusplittende Felder:
-            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(kurs.getKurstyp().getBezeichnung(), 20, 2);
+            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(kurs.getKurstyp().getBezeichnung(), 22, 2);
             splitStringIntoMultipleLinesCommand.execute();
             List<String> kurstypLines = splitStringIntoMultipleLinesCommand.getLines();
-            splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(kurs.getBemerkungen(), 20, 2);
+            splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(kurs.getBemerkungen(), 16, 2);
             splitStringIntoMultipleLinesCommand.execute();
             List<String> bemerkungenLines = splitStringIntoMultipleLinesCommand.getLines();
             // 1. Zeile
@@ -139,7 +143,7 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
             cellsRow1.add(kurstypLines.get(0));
             cellsRow1.add(kurs.getAltersbereich());
             cellsRow1.add(kurs.getWochentag().toString());
-            cellsRow1.add(kurs.getKursort().getBezeichnung());
+            cellsRow1.add(kurs.getLehrkraefteShortAsStr());
             if (!bemerkungenLines.isEmpty()) {
                 cellsRow1.add(bemerkungenLines.get(0));
             } else {
@@ -157,7 +161,7 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
             }
             cellsRow2.add(kurs.getStufe());
             cellsRow2.add(asString(kurs.getZeitBeginn()) + " - " + asString(kurs.getZeitEnde()));
-            cellsRow2.add(kurs.getLehrkraefteShortAsStr());
+            cellsRow2.add(kurs.getKursort().getBezeichnung());
             if (bemerkungenLines.size() > 1) {
                 cellsRow2.add(bemerkungenLines.get(1));
             } else {
@@ -176,8 +180,8 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
             Semester semester = kurse.get(0).getSemester();
             schuljahrSemester = "Schuljahr " + semester.getSchuljahr() + ", " + semester.getSemesterbezeichnung();
         }
-        String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                 " + schuljahrSemester;
-        CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile);
+        String titel1 = "Kinder- und Jugendtheater Metzenthin AG                              " + schuljahrSemester;
+        CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile, 850, 1, 850, 1, 0, 0);
         createWordTableCommand.execute();
 
         result = Result.LISTE_ERFOLGREICH_ERSTELLT;
