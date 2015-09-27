@@ -35,7 +35,6 @@ public class CreateVertretungslisteCommand extends CreateListeCommand {
         // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein!
         //          Bei > 11200 hinten schmalerer Rand!
         //          Bei > 11500 Spaltenbreite durch Inhalt beieinflusst!!!
-         // Hier linker-Rand auf 850 gesetzt, d.h. von obigen Werten muss 200 subtrahiert werden.
         List<Integer> columnWidths = new ArrayList<>();
         columnWidths.add(0);  // enspricht einer Breite von max 550 (wenn 3-stellig)
         columnWidths.add(2700);
@@ -208,7 +207,7 @@ public class CreateVertretungslisteCommand extends CreateListeCommand {
         // Tabelle erzeugen
         Calendar today = new GregorianCalendar();
         String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                                                      " + asString(today);
-        CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile, 850, 1, 850, 1, 0, 0);
+        CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile);
         createWordTableCommand.execute();
 
         result = Result.LISTE_ERFOLGREICH_ERSTELLT;
