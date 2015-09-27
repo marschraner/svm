@@ -1,11 +1,12 @@
 package ch.metzenthin.svm.common.utils;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * @author Martin Schraner
  */
-public class StringNumberComparator implements Comparator<String> {
+public class StringNumberComparator implements Comparator<String>, Serializable {
 
     @Override
     public int compare(String string1, String string2) {

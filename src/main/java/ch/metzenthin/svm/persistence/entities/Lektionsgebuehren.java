@@ -11,8 +11,8 @@ import java.sql.Timestamp;
 @Table(name="Lektionsgebuehren")
 public class Lektionsgebuehren implements Comparable<Lektionsgebuehren> {
 
-    public static int MAX_KINDER = 6;
-    public static int MIN_ANZAHL_TAGE_SECHS_JAHRES_RABATT = 2125;   // 5 Jahre und 10 Monate
+    public static final int MAX_KINDER = 6;
+    public static final int MIN_ANZAHL_TAGE_SECHS_JAHRES_RABATT = 2125;   // 5 Jahre und 10 Monate
 
     @Id
     @Column(name = "lektionslaenge")

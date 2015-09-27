@@ -124,8 +124,8 @@ public class SchuelerSuchenResultPanel {
         btnDatenblatt.setMinimumSize(new Dimension(114, 29));
         btnDatenblatt.setPreferredSize(new Dimension(114, 29));
         btnDatenblatt.setText("Datenblatt");
-        btnDatenblatt.setMnemonic('D');
-        btnDatenblatt.setDisplayedMnemonicIndex(0);
+        btnDatenblatt.setMnemonic('B');
+        btnDatenblatt.setDisplayedMnemonicIndex(5);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;

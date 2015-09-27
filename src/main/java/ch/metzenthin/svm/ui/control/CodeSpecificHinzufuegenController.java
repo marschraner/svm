@@ -85,6 +85,8 @@ public class CodeSpecificHinzufuegenController extends AbstractController {
             case MITARBEITER:
                 selectableCodes = codesModel.getSelectableMitarbeiterCodes(svmContext.getSvmModel(), mitarbeiterErfassenModel);
                 break;
+            default:
+                break;
         }
         comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableCodes));
         // Leeren ComboBox-Wert anzeigen
@@ -142,6 +144,8 @@ public class CodeSpecificHinzufuegenController extends AbstractController {
                         break;
                     case MITARBEITER:
                         onMitarbeiterCodeHinzufuegen();
+                        break;
+                    default:
                         break;
                 }
             }

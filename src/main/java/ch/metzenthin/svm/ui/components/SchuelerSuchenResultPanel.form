@@ -68,7 +68,7 @@
                   <maximumSize width="114" height="29"/>
                   <minimumSize width="114" height="29"/>
                   <preferredSize width="114" height="29"/>
-                  <text value="&amp;Datenblatt"/>
+                  <text value="Daten&amp;blatt"/>
                 </properties>
               </component>
               <vspacer id="3d1f8">

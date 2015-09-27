@@ -60,13 +60,13 @@ public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
                     (e instanceof SvmRuntimeException) ? e.getMessage() : e.getCause().getMessage() + " " + leaveMessage,
                     "Fehler",
                     JOptionPane.ERROR_MESSAGE,
-                    svmDesktop.getSvmContext().getDialogIcons().getErrorIcon());
+                    (svmDesktop == null ? null : svmDesktop.getSvmContext().getDialogIcons().getErrorIcon()));
         } else {
             JOptionPane.showMessageDialog(findActiveOrVisibleFrame(),
                     scrollPane,
                     "Ein unerwarteter Fehler ist aufgetreten. " + leaveMessage,
                     JOptionPane.ERROR_MESSAGE,
-                    svmDesktop.getSvmContext().getDialogIcons().getErrorIcon());
+                    (svmDesktop == null ? null : svmDesktop.getSvmContext().getDialogIcons().getErrorIcon()));
         }
         if (svmDesktop != null) {
             LOGGER.info("Svm wird neu initialisiert.");

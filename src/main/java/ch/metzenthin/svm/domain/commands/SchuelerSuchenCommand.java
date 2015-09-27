@@ -414,6 +414,8 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
                     case (9):
                         selectStatementSb.append(" mae.kuchenVorstellung9 = 1 and");
                         break;
+                    default:
+                        break;
                 }
             }
             if (checkNotEmpty(zusatzattributMaerchen)) {
