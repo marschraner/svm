@@ -1,6 +1,9 @@
 # target
 target/
 
+# Installation
+doc/Installation
+
 # backup-Files
 *~
 
