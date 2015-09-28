@@ -191,7 +191,8 @@ public class ListenExportController extends AbstractController {
             comboBoxListentyp.removeItem(Listentyp.VERTRETUNGSLISTE);
             comboBoxListentyp.removeItem(Listentyp.MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN);
             comboBoxListentyp.removeItem(Listentyp.MITARBEITER_ADRESSETIKETTEN);
-            comboBoxListentyp.removeItem(Listentyp.MITARBEITER_LISTE_CSV);
+            comboBoxListentyp.removeItem(Listentyp.MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV);
+            comboBoxListentyp.removeItem(Listentyp.MITARBEITER_LISTE_NAME_EINSPALTIG_CSV);
         }
         if (listenExportTyp == ListenExportTyp.KURSE) {
             // Initialisierung

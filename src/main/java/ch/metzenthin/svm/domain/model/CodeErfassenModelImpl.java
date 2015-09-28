@@ -50,7 +50,7 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
 
     private final StringModelAttribute kuerzelModelAttribute = new StringModelAttribute(
             this,
-            Field.KUERZEL, 1, 2,
+            Field.KUERZEL, 1, 3,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {

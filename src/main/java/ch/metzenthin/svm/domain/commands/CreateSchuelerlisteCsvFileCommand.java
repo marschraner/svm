@@ -40,9 +40,7 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
             out.write(separator);
             out.write("Strasse/Nr.");
             out.write(separator);
-            out.write("PLZ");
-            out.write(separator);
-            out.write("Ort");
+            out.write("PLZ/Ort");
             out.write(separator);
             out.write("Geburtsdatum");
             out.write(separator);
@@ -69,9 +67,7 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
                 out.write(separator);
                 out.write(schueler.getAdresse().getStrHausnummer());
                 out.write(separator);
-                out.write(schueler.getAdresse().getPlz());
-                out.write(separator);
-                out.write(schueler.getAdresse().getOrt());
+                out.write(schueler.getAdresse().getPlzOrt());
                 out.write(separator);
                 out.write(asString(schueler.getGeburtsdatum()));
                 out.write(separator);

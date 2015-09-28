@@ -41,9 +41,7 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
             out.write(separator);
             out.write("Strasse");
             out.write(separator);
-            out.write("PLZ");
-            out.write(separator);
-            out.write("Ort");
+            out.write("PLZ/Ort");
             out.write(separator);
             out.write("R.Datum V");
             out.write(separator);
@@ -117,9 +115,7 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
                 out.write(separator);
                 out.write(rechnungsempfaenger.getAdresse().getStrasseHausnummer());
                 out.write(separator);
-                out.write(rechnungsempfaenger.getAdresse().getPlz());
-                out.write(separator);
-                out.write(rechnungsempfaenger.getAdresse().getOrt());
+                out.write(rechnungsempfaenger.getAdresse().getPlzOrt());
                 out.write(separator);
                 if (semesterrechnung.getRechnungsdatumVorrechnung() != null) {
                     out.write(asString(semesterrechnung.getRechnungsdatumVorrechnung()));

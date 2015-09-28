@@ -111,7 +111,9 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 break;
             case MITARBEITER_ADRESSETIKETTEN:
                 break;
-            case MITARBEITER_LISTE_CSV:
+            case MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV:
+                break;
+            case MITARBEITER_LISTE_NAME_EINSPALTIG_CSV:
                 break;
             case KURSLISTE_WORD:
                 break;
@@ -283,10 +285,15 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 commandInvoker.executeCommand(createAdressenCsvFileCommandMitarbeiter);
                 result = createAdressenCsvFileCommandMitarbeiter.getResult();
                 break;
-            case MITARBEITER_LISTE_CSV:
-                CreateMitarbeiterlisteCsvFileCommand createMitarbeiterlisteCsvFileCommand = new CreateMitarbeiterlisteCsvFileCommand(mitarbeitersTableModel.getMitarbeiters(), outputFile);
-                commandInvoker.executeCommand(createMitarbeiterlisteCsvFileCommand);
-                result = createMitarbeiterlisteCsvFileCommand.getResult();
+            case MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV:
+                CreateMitarbeiterlisteCsvFileCommand createMitarbeiterlisteNameZweispaltigCsvFileCommand = new CreateMitarbeiterlisteCsvFileCommand(mitarbeitersTableModel.getMitarbeiters(), outputFile, false);
+                commandInvoker.executeCommand(createMitarbeiterlisteNameZweispaltigCsvFileCommand);
+                result = createMitarbeiterlisteNameZweispaltigCsvFileCommand.getResult();
+                break;
+            case MITARBEITER_LISTE_NAME_EINSPALTIG_CSV:
+                CreateMitarbeiterlisteCsvFileCommand createMitarbeiterlisteNameEinspaltigCsvFileCommand = new CreateMitarbeiterlisteCsvFileCommand(mitarbeitersTableModel.getMitarbeiters(), outputFile, true);
+                commandInvoker.executeCommand(createMitarbeiterlisteNameEinspaltigCsvFileCommand);
+                result = createMitarbeiterlisteNameEinspaltigCsvFileCommand.getResult();
                 break;
             case KURSLISTE_WORD:
                 CreateKurslisteWordFileCommand createKurslisteWordFileCommand = new CreateKurslisteWordFileCommand(kurseTableModel, titel, outputFile);
@@ -384,7 +391,9 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 break;
             case MITARBEITER_ADRESSETIKETTEN:
                 break;
-            case MITARBEITER_LISTE_CSV:
+            case MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV:
+                break;
+            case MITARBEITER_LISTE_NAME_EINSPALTIG_CSV:
                 break;
             case KURSLISTE_WORD:
                 titleInit = "Kurse";

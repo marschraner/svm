@@ -15,10 +15,12 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
     // input
     private List<? extends Mitarbeiter> mitarbeiterList;
     private final File outputFile;
+    private boolean nameEinspaltig;
 
-    public CreateMitarbeiterlisteCsvFileCommand(List<? extends Mitarbeiter> mitarbeiterList, File outputFile) {
+    public CreateMitarbeiterlisteCsvFileCommand(List<? extends Mitarbeiter> mitarbeiterList, File outputFile, boolean nameEinspaltig) {
         this.mitarbeiterList = mitarbeiterList;
         this.outputFile = outputFile;
+        this.nameEinspaltig = nameEinspaltig;
     }
 
     @Override
@@ -30,15 +32,17 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
             Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "8859_1"));
 
             // Header
-            out.write("Nachname");
-            out.write(separator);
-            out.write("Vorname");
+            if (nameEinspaltig) {
+                out.write("Name");
+            } else {
+                out.write("Nachname");
+                out.write(separator);
+                out.write("Vorname");
+            }
             out.write(separator);
             out.write("Strasse/Nr.");
             out.write(separator);
-            out.write("PLZ");
-            out.write(separator);
-            out.write("Ort");
+            out.write("PLZ/Ort");
             out.write(separator);
             out.write("Festnetz");
             out.write(separator);
@@ -63,20 +67,20 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
 
             // Daten
             for (Mitarbeiter mitarbeiter : mitarbeiterList) {
-                out.write(mitarbeiter.getNachname());
-                out.write(separator);
-                out.write(mitarbeiter.getVorname());
+                if (nameEinspaltig) {
+                    out.write(mitarbeiter.getNachname() + " " + mitarbeiter.getVorname());
+                } else {
+                    out.write(mitarbeiter.getNachname());
+                    out.write(separator);
+                    out.write(mitarbeiter.getVorname());
+                }
                 out.write(separator);
                 if (mitarbeiter.getAdresse() != null) {
                     out.write(mitarbeiter.getAdresse().getStrHausnummer());
                 }
                 out.write(separator);
                 if (mitarbeiter.getAdresse() != null) {
-                    out.write(mitarbeiter.getAdresse().getPlz());
-                }
-                out.write(separator);
-                if (mitarbeiter.getAdresse() != null) {
-                    out.write(mitarbeiter.getAdresse().getOrt());
+                    out.write(mitarbeiter.getAdresse().getPlzOrt());
                 }
                 out.write(separator);
                 if (mitarbeiter.getFestnetz() != null) {

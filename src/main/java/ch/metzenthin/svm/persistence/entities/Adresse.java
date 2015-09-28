@@ -145,4 +145,9 @@ public class Adresse {
         return strHausnummer.replaceAll("Strasse", "Str.");
     }
 
+    @Transient
+    public String getPlzOrt() {
+        return plz + " " + ort;
+    }
+
 }
