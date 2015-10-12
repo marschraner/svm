@@ -22,4 +22,5 @@ CREATE DATABASE IF NOT EXISTS svm
 -- DROP USER svm; Macht Probleme, wenn der User nicht existiert.
 GRANT ALL ON svm.* TO 'svm'@'localhost' IDENTIFIED BY 'svm';
 GRANT ALL ON svm.* TO 'svm'@'%' IDENTIFIED BY 'svm';
+GRANT FILE ON *.* to 'svm'@'localhost';
 
