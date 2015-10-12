@@ -47,6 +47,8 @@ public class SaveOrUpdateKursCommand extends GenericDaoCommand {
             for (Mitarbeiter mitarbeiter : new ArrayList<>(kursOrigin.getLehrkraefte())) {
                 kursOrigin.deleteLehrkraft(mitarbeiter);
             }
+            // bereits nach Löschen (ein erstes Mal) speichern, weil sonst Exception, falls Reihenfolge der Lehrkräfte vertauscht werden
+            kursDao.save(kursOrigin);
             kursOrigin.addLehrkraft(mitarbeiter1);
             if (mitarbeiter2 != null) {
                 kursOrigin.addLehrkraft(mitarbeiter2);

@@ -94,7 +94,7 @@ public class MitarbeitersController {
 
     private void onNeu() {
         btnNeu.setFocusPainted(true);
-        MitarbeiterErfassenDialog mitarbeiterErfassenDialog = new MitarbeiterErfassenDialog(svmContext, mitarbeitersTableModel, mitarbeitersModel, 0, false, "Neuen Mitarbeiter");
+        MitarbeiterErfassenDialog mitarbeiterErfassenDialog = new MitarbeiterErfassenDialog(svmContext, mitarbeitersTableModel, mitarbeitersModel, 0, false, "Neuer Mitarbeiter");
         mitarbeiterErfassenDialog.pack();
         mitarbeiterErfassenDialog.setVisible(true);
         setLblTotal();

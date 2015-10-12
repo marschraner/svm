@@ -143,9 +143,9 @@ public class MitarbeiterErfassenController extends PersonController {
 
     public void setCheckBoxLehrkraft(JCheckBox checkBoxLehrkraft) {
         this.checkBoxLehrkraft = checkBoxLehrkraft;
-        // Lehrkraft als Default-Wert
+        // keine Lehrkraft als Default-Wert
         if (!isBearbeiten) {
-            mitarbeiterErfassenModel.setLehrkraft(true);
+            mitarbeiterErfassenModel.setLehrkraft(false);
         }
         this.checkBoxLehrkraft.addItemListener(new ItemListener() {
             @Override
