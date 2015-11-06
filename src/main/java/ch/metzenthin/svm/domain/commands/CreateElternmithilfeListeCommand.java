@@ -99,16 +99,16 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         List<List<int[]>> maxLengths = new ArrayList<>();
         // 1. Zeile
         List<int[]> maxLengthsRow1 = new ArrayList<>();
-        maxLengthsRow1.add(new int[]{23, 24, 25, 26, 27, 29});
-        maxLengthsRow1.add(new int[]{24, 25, 26, 27, 28, 30});
+        maxLengthsRow1.add(new int[]{24, 25, 26, 28, 30, 32});
+        maxLengthsRow1.add(new int[]{25, 26, 27, 29, 31, 33});
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{0});
         maxLengths.add(maxLengthsRow1);
         // 2. Zeile
         List<int[]> maxLengthsRow2 = new ArrayList<>();
-        maxLengthsRow2.add(new int[]{24, 25, 26, 27, 28, 30});
-        maxLengthsRow2.add(new int[]{25, 26, 27, 28, 29, 31});
+        maxLengthsRow2.add(new int[]{25, 26, 27, 29, 31, 33});
+        maxLengthsRow2.add(new int[]{26, 27, 28, 30, 32, 34});
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{0});
@@ -186,7 +186,14 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
 
             // 1. Zeile
             List<String> cellsRow1 = new ArrayList<>();
-            cellsRow1.add(elternmithilfe.getNachname());
+            // Wenn Elternmithilfe und Schüler unterschiedliche Nachnamen haben, soll zudem Nachname des Schülers angegeben werden
+            String nachnameElternmithilfeUndGgfSchueler = elternmithilfe.getNachname();
+            String nachnameSchueler = maercheneinteilung.getSchueler().getNachname();
+            if (!nachnameSchueler.contains(nachnameElternmithilfeUndGgfSchueler) &&
+                    !nachnameElternmithilfeUndGgfSchueler.contains(nachnameSchueler)) {
+                nachnameElternmithilfeUndGgfSchueler += " " + nachnameSchueler;
+            }
+            cellsRow1.add(nachnameElternmithilfeUndGgfSchueler);
             cellsRow1.add(elternmithilfe.getVorname());
             cellsRow1.add(nullAsEmptyString(elternmithilfe.getFestnetz()));
             if (elternmithilfeCodeLines != null) {
