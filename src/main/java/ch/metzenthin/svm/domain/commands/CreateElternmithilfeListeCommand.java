@@ -42,7 +42,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         columnWidths.add(2700);
         columnWidths.add(2900);
         columnWidths.add(1700);
-        columnWidths.add(2600);
+        columnWidths.add(2100);
         columnWidths.add(900);
 
         // Bold / horiz. merged (Anzahl zu mergende Zellen; 0: kein Merging)::
@@ -99,8 +99,8 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         List<List<int[]>> maxLengths = new ArrayList<>();
         // 1. Zeile
         List<int[]> maxLengthsRow1 = new ArrayList<>();
-        maxLengthsRow1.add(new int[]{24, 25, 26, 28, 30, 32});
         maxLengthsRow1.add(new int[]{25, 26, 27, 29, 31, 33});
+        maxLengthsRow1.add(new int[]{26, 27, 28, 30, 32, 34});
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{0});
@@ -237,8 +237,8 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         // Tabelle erzeugen
         Semester semester = schuelerSuchenTableModel.getSemester();
         String maerchenspielSchuljahr = "Märchenspiel " + semester.getSchuljahr();
-        String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                             " + maerchenspielSchuljahr;
-        CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile);
+        String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                      " + maerchenspielSchuljahr;
+        CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile, 850, 1, 1000, 1, 0, 0);
         createWordTableCommand.execute();
 
         result = Result.LISTE_ERFOLGREICH_ERSTELLT;
