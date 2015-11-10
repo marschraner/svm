@@ -43,6 +43,12 @@ public class CreateAndFindSemesterrechnungenCommand extends GenericDaoCommand {
         findSemesterrechnungenCommand.setEntityManager(entityManager);
         findSemesterrechnungenCommand.execute();
         semesterrechnungenFound = findSemesterrechnungenCommand.getSemesterrechnungenFound();
+
+        // 4. Lösche Semesterrechnungen mit verwaisten Rechnungsempfängern (Rechnungsempfänger ohne Schüler)
+        DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand deleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand = new DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand(semesterrechnungenFound);
+        deleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand.setEntityManager(entityManager);
+        deleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand.execute();
+
         Collections.sort(semesterrechnungenFound);
     }
 
