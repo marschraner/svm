@@ -84,17 +84,24 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
         // Lösche Vater, Mutter und Rechnungsempfänger aus DB, falls diese nicht mehr referenziert werden
         // Achtung: dies muss NACH dem Löschen des Schülers erfolgen!
         AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
-        if (vater != null && entityManager.contains(vater) && vater.getKinderVater().size() == 0 && vater.getSchuelerRechnungsempfaenger().size() == 0) {
+        if (vater != null && entityManager.contains(vater) && vater.getKinderVater().size() == 0 && vater.getSchuelerRechnungsempfaenger().size() == 0 && (!isAngehoerigerInSemesterrechnung(vater))) {
             angehoerigerDao.remove(vater);
         }
 
-        if (mutter != null && entityManager.contains(mutter) && mutter.getKinderMutter().size() == 0 && mutter.getSchuelerRechnungsempfaenger().size() == 0) {
+        if (mutter != null && entityManager.contains(mutter) && mutter.getKinderMutter().size() == 0 && mutter.getSchuelerRechnungsempfaenger().size() == 0 && (!isAngehoerigerInSemesterrechnung(mutter))) {
             angehoerigerDao.remove(mutter);
         }
 
-        if (entityManager.contains(rechnungsempfaenger) && rechnungsempfaenger.getKinderVater().size() == 0 && rechnungsempfaenger.getKinderMutter().size() == 0 && rechnungsempfaenger.getSchuelerRechnungsempfaenger().size() == 0) {
+        if (entityManager.contains(rechnungsempfaenger) && rechnungsempfaenger.getKinderVater().size() == 0 && rechnungsempfaenger.getKinderMutter().size() == 0 && rechnungsempfaenger.getSchuelerRechnungsempfaenger().size() == 0  && (!isAngehoerigerInSemesterrechnung(rechnungsempfaenger))) {
             angehoerigerDao.remove(rechnungsempfaenger);
         }
+    }
+
+    private boolean isAngehoerigerInSemesterrechnung(Angehoeriger angehoeriger) {
+        // Kommt Angehoeriger als Rechnungsempfänger in irgend einer (früheren) Semesterrechnung vor?
+        TypedQuery<Long> typedQuery = entityManager.createQuery("select count(s) from Semesterrechnung s where s.rechnungsempfaenger.personId = :angehoerigerPersonId", Long.class);
+        typedQuery.setParameter("angehoerigerPersonId", angehoeriger.getPersonId());
+        return typedQuery.getSingleResult() > 0;
     }
 
     /**

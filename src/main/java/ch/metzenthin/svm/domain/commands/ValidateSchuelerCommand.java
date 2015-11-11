@@ -132,9 +132,6 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         }
     }
 
-    // Original Schüler von Datenbank (Schüler bearbeiten). Wenn null, isBearbeiten() returns true
-    private final Schueler schuelerOrigin;
-
     // input
     private Schueler schueler;
     private Adresse adresseSchueler;
@@ -148,6 +145,12 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     private Angehoeriger rechnungsempfaengerDrittperson;
     private Adresse adresseRechnungsempfaengerDrittperson;
     private Entry entry;
+
+    // Original Schüler von Datenbank (Schüler bearbeiten). Wenn null, isBearbeiten() returns true
+    private final Schueler schuelerOrigin;
+    private final Angehoeriger mutterOrigin;
+    private final Angehoeriger vaterOrigin;
+    private final Angehoeriger rechnungsempfaengerOrigin;
 
     // output
     private SchuelerErfassenSaveResult result = null;
@@ -180,6 +183,9 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         this.rechnungsempfaengerDrittperson = validateSchuelerModel.getRechnungsempfaengerDrittperson();
         this.adresseRechnungsempfaengerDrittperson= validateSchuelerModel.getAdresseRechnungsempfaengerDrittperson();
         this.schuelerOrigin = validateSchuelerModel.getSchuelerOrigin();
+        this.mutterOrigin = (this.schuelerOrigin == null ? null : this.schuelerOrigin.getMutter());
+        this.vaterOrigin = (this.schuelerOrigin == null ? null : this.schuelerOrigin.getVater());
+        this.rechnungsempfaengerOrigin = (this.schuelerOrigin == null ? null : this.schuelerOrigin.getRechnungsempfaenger());
     }
 
     private boolean isBearbeiten() {
@@ -349,13 +355,38 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             return;   // -> Summary-Dialog
         }
 
-        // 7. Schüler validieren
+        // 7. Schüler speichern
         Schueler schuelerToSave = prepareSchuelerForSave();
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schuelerToSave);
         saveSchuelerCommand.setEntityManager(entityManager);
         saveSchuelerCommand.execute();
+
+        // 8. Lösche ggf verwaiste Angehörige
+        if (isBearbeiten()) {
+            entityManager.flush();
+            checkIfAngehoerigeVerwaistAndDelete();
+        }
+
         result = new SchuelerErfassenSaveOkResult(Result.SPEICHERUNG_ERFOLGREICH, schuelerToSave.getGeschlecht());
 
+    }
+
+    private void checkIfAngehoerigeVerwaistAndDelete() {
+        if (rechnungsempfaengerOrigin != null && (mutterOrigin == null || !mutterOrigin.isIdenticalWith(rechnungsempfaengerOrigin)) && (vaterOrigin == null || !vaterOrigin.isIdenticalWith(rechnungsempfaengerOrigin))) {
+            CheckIfAngehoerigerVerwaistAndDeleteCommand checkIfAngehoerigerVerwaistAndDeleteCommand = new CheckIfAngehoerigerVerwaistAndDeleteCommand(rechnungsempfaengerOrigin);
+            checkIfAngehoerigerVerwaistAndDeleteCommand.setEntityManager(entityManager);
+            checkIfAngehoerigerVerwaistAndDeleteCommand.execute();
+        }
+        if (mutterOrigin != null) {
+            CheckIfAngehoerigerVerwaistAndDeleteCommand checkIfAngehoerigerVerwaistAndDeleteCommand = new CheckIfAngehoerigerVerwaistAndDeleteCommand(mutterOrigin);
+            checkIfAngehoerigerVerwaistAndDeleteCommand.setEntityManager(entityManager);
+            checkIfAngehoerigerVerwaistAndDeleteCommand.execute();
+        }
+        if (vaterOrigin != null) {
+            CheckIfAngehoerigerVerwaistAndDeleteCommand checkIfAngehoerigerVerwaistAndDeleteCommand = new CheckIfAngehoerigerVerwaistAndDeleteCommand(vaterOrigin);
+            checkIfAngehoerigerVerwaistAndDeleteCommand.setEntityManager(entityManager);
+            checkIfAngehoerigerVerwaistAndDeleteCommand.execute();
+        }
     }
 
     private void resetAnmeldung() {

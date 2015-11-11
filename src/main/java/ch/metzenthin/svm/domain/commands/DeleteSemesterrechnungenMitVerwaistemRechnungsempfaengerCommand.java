@@ -27,9 +27,18 @@ public class DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand ext
         while (it.hasNext()) {
             Semesterrechnung semesterrechnungToBeChecked = it.next();
             Angehoeriger rechnungsempfaenger = semesterrechnungToBeChecked.getRechnungsempfaenger();
-            if (rechnungsempfaenger.getSchuelerRechnungsempfaenger() == null || rechnungsempfaenger.getSchuelerRechnungsempfaenger().isEmpty()) {
+            if ((rechnungsempfaenger.getSchuelerRechnungsempfaenger() == null || rechnungsempfaenger.getSchuelerRechnungsempfaenger().isEmpty())
+                    // Rechnungsempfänger von früheren (bezahlten) Rechnungen sind inzwischen möglicherweise verwaist (falls Rechnungsempfänger gewechselt hatte)
+                    && semesterrechnungToBeChecked.getRechnungsdatumVorrechnung() == null
+                    && semesterrechnungToBeChecked.getRechnungsdatumNachrechnung() == null) {
                 it.remove();
                 semesterrechnungDao.remove(semesterrechnungToBeChecked);
+                entityManager.flush();
+
+                // Möglicherweise ist Rechnungsempfänger verwaist und kann gelöscht werden
+                CheckIfAngehoerigerVerwaistAndDeleteCommand checkIfAngehoerigerVerwaistAndDeleteCommand = new CheckIfAngehoerigerVerwaistAndDeleteCommand(rechnungsempfaenger);
+                checkIfAngehoerigerVerwaistAndDeleteCommand.setEntityManager(entityManager);
+                checkIfAngehoerigerVerwaistAndDeleteCommand.execute();
             }
         }
 

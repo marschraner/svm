@@ -29,7 +29,7 @@ public class SaveAngehoerigeCommand extends GenericDaoCommand {
         }
     }
 
-    public List<Angehoeriger> getSavedAngehoeriger() {
+    public List<Angehoeriger> getSavedAngehoerige() {
         return savedAngehoerige;
     }
 

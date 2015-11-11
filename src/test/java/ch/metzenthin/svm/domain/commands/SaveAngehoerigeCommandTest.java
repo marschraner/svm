@@ -59,7 +59,7 @@ public class SaveAngehoerigeCommandTest {
 
         SaveAngehoerigeCommand saveAngehoerigeCommand = new SaveAngehoerigeCommand(angehoerige);
         commandInvoker.executeCommandAsTransactionWithOpenAndClose(saveAngehoerigeCommand);
-        List<Angehoeriger> savedAngehoerige = saveAngehoerigeCommand.getSavedAngehoeriger();
+        List<Angehoeriger> savedAngehoerige = saveAngehoerigeCommand.getSavedAngehoerige();
 
         Angehoeriger savedAngehoeriger0 = savedAngehoerige.get(0);
         assertEquals("Vorname not found", "Eugen", savedAngehoeriger0.getVorname());
