@@ -58,7 +58,8 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
                 public void setValue(String value) {
                     getPerson().setNachname(value);
                 }
-            }
+            },
+            new BindestrichLeerzeichenFormatter()
     );
 
     @Override
@@ -84,7 +85,8 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
                 public void setValue(String value) {
                     getPerson().setVorname(value);
                 }
-            }
+            },
+            new BindestrichLeerzeichenFormatter()
     );
 
     @Override
@@ -258,7 +260,8 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
                 public void setValue(String value) {
                     adresse.setOrt(value);
                 }
-            }
+            },
+            new BindestrichLeerzeichenFormatter()
     );
 
     @Override
