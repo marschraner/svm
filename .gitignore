@@ -15,6 +15,11 @@ log/
 .idea/tasks.xml
 .idea/dictionaries/
 .idea/fileTemplates/
+.idea/misc.xml
+.idea/dataSources.xml
+.idea/findbugs-idea.xml
+svm.iml
+
 
 # fillData
 sql/fillData.sql
