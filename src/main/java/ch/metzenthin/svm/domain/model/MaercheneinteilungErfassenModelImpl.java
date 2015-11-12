@@ -604,7 +604,8 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
                 && !(isSetBilderRolle3() && !isSetRolle3())
                 && !(isSetRolle3() && !isSetRolle2())
                 && !(isSetRolle2() && !isSetRolle1())
-                && !(isSetElternmithilfe() && !isSetElternmithilfeCode()) && !(isSetAnyMithilfeArtElement() && !isSetElternmithilfe())
+                && !(isSetElternmithilfe() && !isSetAnyMithilfeArtElement())
+                && !(isSetAnyMithilfeArtElement() && !isSetElternmithilfe())
                 && !(isSetElternmithilfeDrittperson() && !isSetAnschriftElternmithilfeDrittperson());
     }
 
@@ -615,7 +616,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
             throw new SvmValidationException(3001, "Rolle nicht gesetzt", Field.ROLLE1);
         }
         if (isSetBilderRolle2() && !isSetRolle2()) {
-            throw new SvmValidationException(3001, "Rolle nicht gesetzt", Field.ROLLE2);
+            throw new SvmValidationException(3002, "Rolle nicht gesetzt", Field.ROLLE2);
         }
         if (isSetBilderRolle3() && !isSetRolle3()) {
             throw new SvmValidationException(3003, "Rolle nicht gesetzt", Field.ROLLE3);
@@ -626,11 +627,11 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
         if (isSetRolle2() && !isSetRolle1()) {
             throw new SvmValidationException(3005, "Rolle nicht gesetzt", Field.ROLLE1);
         }
-        if (isSetElternmithilfe() && !isSetElternmithilfeCode()) {
-            throw new SvmValidationException(3007, "Kein Eltern-Mithilfe-Code ausgewählt", Field.ELTERNMITHILFE_CODE);
+        if (isSetElternmithilfe() && !isSetAnyMithilfeArtElement()) {
+            throw new SvmValidationException(3007, "Weder Code noch Kuchen ausgewählt", Field.ELTERNMITHILFE_CODE);
         }
         if (isSetAnyMithilfeArtElement() && !isSetElternmithilfe()) {
-            throw new SvmValidationException(3008, "Kein Eltern-Mithilfe ausgewählt", Field.ELTERNMITHILFE);
+            throw new SvmValidationException(3008, "Keine Eltern-Mithilfe ausgewählt", Field.ELTERNMITHILFE);
         }
         if (isSetElternmithilfeDrittperson() && !isSetAnschriftElternmithilfeDrittperson()) {
             throw new SvmValidationException(3009, "Unvollständige Anschrift", Field.ANREDE);

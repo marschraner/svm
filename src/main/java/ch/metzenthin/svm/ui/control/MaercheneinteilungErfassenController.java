@@ -102,6 +102,13 @@ public class MaercheneinteilungErfassenController extends PersonController {
 
     public void constructionDone() {
         maercheneinteilungErfassenModel.initializeCompleted();
+        Schueler geschwister = maercheneinteilungErfassenModel.findGeschwisterElternmithilfeBereitsErfasst(schuelerDatenblattModel);
+        if (geschwister != null) {
+            disableElternmithilfeFields(true);
+            writeElternhilfeBereitsErfasstBemerkung(geschwister);
+        } else {
+            disableElternmithilfeFields(false);
+        }
     }
 
     public void setMaercheneinteilungErfassenDialog(JDialog maercheneinteilungErfassenDialog) {
