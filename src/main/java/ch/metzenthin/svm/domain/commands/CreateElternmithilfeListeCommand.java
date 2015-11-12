@@ -169,7 +169,10 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
             } else {
                 elternmithilfe = maercheneinteilung.getElternmithilfeDrittperson();
             }
-            maercheneinteilungenElternmithilfe.put(elternmithilfe, maercheneinteilung);
+            // Falls Elternteil nach Erfassen der Eltern-Mithilfe gelöscht wurde, kann Elternmithilfe null sein.
+            if (elternmithilfe != null) {
+                maercheneinteilungenElternmithilfe.put(elternmithilfe, maercheneinteilung);
+            }
         }
 
         List<List<List<String>>> datasets = new ArrayList<>();
