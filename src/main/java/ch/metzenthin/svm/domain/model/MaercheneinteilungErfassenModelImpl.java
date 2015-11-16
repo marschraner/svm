@@ -604,8 +604,8 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
                 && !(isSetBilderRolle3() && !isSetRolle3())
                 && !(isSetRolle3() && !isSetRolle2())
                 && !(isSetRolle2() && !isSetRolle1())
-                && !(isSetElternmithilfe() && !isSetAnyMithilfeArtElement())
-                && !(isSetAnyMithilfeArtElement() && !isSetElternmithilfe())
+                && !(isSetElternmithilfe() && !isSetElternmithilfeCode())
+                && !(isSetElternmithilfeCode() && !isSetElternmithilfe())
                 && !(isSetElternmithilfeDrittperson() && !isSetAnschriftElternmithilfeDrittperson());
     }
 
@@ -627,10 +627,10 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
         if (isSetRolle2() && !isSetRolle1()) {
             throw new SvmValidationException(3005, "Rolle nicht gesetzt", Field.ROLLE1);
         }
-        if (isSetElternmithilfe() && !isSetAnyMithilfeArtElement()) {
-            throw new SvmValidationException(3007, "Weder Code noch Kuchen ausgewählt", Field.ELTERNMITHILFE_CODE);
+        if (isSetElternmithilfe() && !isSetElternmithilfeCode()) {
+            throw new SvmValidationException(3007, "Kein Eltern-Mithilfe-Code ausgewählt", Field.ELTERNMITHILFE_CODE);
         }
-        if (isSetAnyMithilfeArtElement() && !isSetElternmithilfe()) {
+        if (isSetElternmithilfeCode() && !isSetElternmithilfe()) {
             throw new SvmValidationException(3008, "Keine Eltern-Mithilfe ausgewählt", Field.ELTERNMITHILFE);
         }
         if (isSetElternmithilfeDrittperson() && !isSetAnschriftElternmithilfeDrittperson()) {
@@ -668,19 +668,6 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
 
     private boolean isSetElternmithilfeCode() {
         return elternmithilfeCode != null && !elternmithilfeCode.isIdenticalWith(ELTERNMITHILFE_CODE_KEINER);
-    }
-
-    private boolean isSetAnyMithilfeArtElement() {
-        return isSetElternmithilfeCode()
-                || maercheneinteilung.getKuchenVorstellung1()
-                || maercheneinteilung.getKuchenVorstellung2()
-                || maercheneinteilung.getKuchenVorstellung3()
-                || maercheneinteilung.getKuchenVorstellung4()
-                || maercheneinteilung.getKuchenVorstellung5()
-                || maercheneinteilung.getKuchenVorstellung6()
-                || maercheneinteilung.getKuchenVorstellung7()
-                || maercheneinteilung.getKuchenVorstellung8()
-                || maercheneinteilung.getKuchenVorstellung9();
     }
 
     private boolean isSetElternmithilfeDrittperson() {

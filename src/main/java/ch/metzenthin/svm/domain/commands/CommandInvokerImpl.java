@@ -80,7 +80,7 @@ public class CommandInvokerImpl implements CommandInvoker {
 
     @Override
     public void openSession() {
-        LOGGER.trace("openSessionTest aufgerufen");
+        LOGGER.trace("openSession aufgerufen");
         if (entityManager == null || !entityManager.isOpen()) {
             entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
             entityManager = entityManagerFactory.createEntityManager();

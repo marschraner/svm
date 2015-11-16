@@ -346,7 +346,7 @@ public class MaercheneinteilungErfassenDialog extends JDialog {
         gbc.fill = GridBagConstraints.VERTICAL;
         panel2.add(spacer7, gbc);
         final JLabel label5 = new JLabel();
-        label5.setText("Elternmithilfe");
+        label5.setText("Eltern-Mithilfe");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 9;
