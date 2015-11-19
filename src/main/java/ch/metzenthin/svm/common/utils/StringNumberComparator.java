@@ -1,7 +1,9 @@
 package ch.metzenthin.svm.common.utils;
 
 import java.io.Serializable;
+import java.text.Collator;
 import java.util.Comparator;
+import java.util.Locale;
 
 /**
  * @author Martin Schraner
@@ -10,6 +12,10 @@ public class StringNumberComparator implements Comparator<String>, Serializable 
 
     @Override
     public int compare(String string1, String string2) {
+
+        // Alphabetische Sortierung mit Berücksichtigung von Umlauten http://50226.de/sortieren-mit-umlauten-in-java.html
+        Collator collator = Collator.getInstance(Locale.GERMAN);
+        collator.setStrength(Collator.SECONDARY);// a == A, a < Ä
 
         // Zerlegung mit ein oder mehreren nicht Wortzeichen (d.h. weder Zahl noch Buchstabe) als Trenner
         String[] spl1 = string1.split("(\\W)+");
@@ -30,7 +36,7 @@ public class StringNumberComparator implements Comparator<String>, Serializable 
             } else if (isInt(ws2)) {
                 return -1;
             } else {
-                res = ws1.compareTo(ws2);
+                res = collator.compare(ws1, ws2);
             }
             if (res != 0) {
                 return res;

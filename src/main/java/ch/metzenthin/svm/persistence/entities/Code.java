@@ -2,6 +2,8 @@ package ch.metzenthin.svm.persistence.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.text.Collator;
+import java.util.Locale;
 
 /**
  * @author Martin Schraner
@@ -61,8 +63,10 @@ public abstract class Code implements Comparable<Code> {
 
     @Override
     public int compareTo(Code otherDispensation) {
-        // aufsteigend nach Kuerzel sortieren, d.h. neuste Einträge zuoberst
-        return kuerzel.compareTo(otherDispensation.kuerzel);
+        // Alphabetische Sortierung mit Berücksichtigung von Umlauten http://50226.de/sortieren-mit-umlauten-in-java.html
+        Collator collator = Collator.getInstance(Locale.GERMAN);
+        collator.setStrength(Collator.SECONDARY);// a == A, a < Ä
+        return collator.compare(kuerzel, otherDispensation.kuerzel);
     }
 
     public Integer getCodeId() {

@@ -2,7 +2,9 @@ package ch.metzenthin.svm.persistence.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.text.Collator;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -58,8 +60,10 @@ public class Kurstyp implements Comparable<Kurstyp> {
 
     @Override
     public int compareTo(Kurstyp otherKurstyp) {
-        // Alphabetische Sortierung
-        return bezeichnung.compareTo(otherKurstyp.bezeichnung);
+        // Sortierung nach Umlauten http://50226.de/sortieren-mit-umlauten-in-java.html
+        Collator collator = Collator.getInstance(Locale.GERMAN);
+        collator.setStrength(Collator.SECONDARY);// a == A, a < Ä
+        return collator.compare(bezeichnung, otherKurstyp.bezeichnung);
     }
 
     public Integer getKurstypId() {

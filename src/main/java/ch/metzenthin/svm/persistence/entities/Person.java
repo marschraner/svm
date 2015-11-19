@@ -4,7 +4,9 @@ import ch.metzenthin.svm.common.dataTypes.Anrede;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.text.Collator;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * @author Martin Schraner
@@ -109,13 +111,16 @@ public abstract class Person implements Comparable<Person>  {
 
     @Override
     public int compareTo(Person otherPerson) {
-        int result = nachname.compareTo(otherPerson.nachname);
+        // Alphabetische Sortierung mit Berücksichtigung von Umlauten http://50226.de/sortieren-mit-umlauten-in-java.html
+        Collator collator = Collator.getInstance(Locale.GERMAN);
+        collator.setStrength(Collator.SECONDARY);// a == A, a < Ä
+        int result = collator.compare(nachname, otherPerson.nachname);
         if (result == 0) {
-            result = vorname.compareTo(otherPerson.vorname);
+            result = collator.compare(vorname, otherPerson.vorname);
             if (result == 0 && adresse != null && otherPerson.adresse != null) {
-                result = adresse.getOrt().compareTo(otherPerson.adresse.getOrt());
+                result = collator.compare(adresse.getOrt(), otherPerson.adresse.getOrt());
                 if (result == 0) {
-                    result = adresse.getStrasse().compareTo(otherPerson.adresse.getStrasse());
+                    result = collator.compare(adresse.getStrasse(), otherPerson.adresse.getStrasse());
                 }
             }
         }
