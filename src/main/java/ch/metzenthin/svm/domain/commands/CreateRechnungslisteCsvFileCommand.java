@@ -91,17 +91,7 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
             out.write(separator);
             out.write("Bemerkungen");
             out.write(separator);
-            out.write("1. Schüler");
-            out.write(separator);
-            out.write("2. Schüler");
-            out.write(separator);
-            out.write("3. Schüler");
-            out.write(separator);
-            out.write("4. Schüler");
-            out.write(separator);
-            out.write("5. Schüler");
-            out.write(separator);
-            out.write("6. Schüler");
+            out.write("Schüler");
             out.write('\n');
 
             // Daten
@@ -195,7 +185,6 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
                 }
                 out.write(separator);
                 String schuelerAsStr = rechnungsempfaenger.getSchuelerRechnungsempfaengerAsStr();
-                schuelerAsStr = schuelerAsStr.replaceAll(",\\s",",");
                 out.write(schuelerAsStr);
                 out.write('\n');
             }
