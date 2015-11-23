@@ -81,11 +81,11 @@ public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
             if (angehoeriger.getAnrede() == Anrede.FRAU) {
                 lblAngehoeriger.setText("Rechnungsempfängerin:");
                 lblSchuelerRechnungsempfaenger1.setText("Schüler mit dieser");
-                lblSchuelerRechnungsempfaenger1.setText("Rechnungsempfängerin:");
+                lblSchuelerRechnungsempfaenger2.setText("Rechnungsempfängerin:");
             } else {
                 lblAngehoeriger.setText("Rechnungsempfänger:");
                 lblSchuelerRechnungsempfaenger1.setText("Schüler mit diesem");
-                lblSchuelerRechnungsempfaenger1.setText("Rechnungsempfänger:");
+                lblSchuelerRechnungsempfaenger2.setText("Rechnungsempfänger:");
             }
             schuelerList = angehoeriger.getSchuelerRechnungsempfaenger();
         }

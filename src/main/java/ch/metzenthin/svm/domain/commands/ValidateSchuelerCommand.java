@@ -262,6 +262,8 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             checkAngehoerigerBereitsInDatenbankCommand.setEntityManager(entityManager);
             checkAngehoerigerBereitsInDatenbankCommand.execute();
             switch (checkAngehoerigerBereitsInDatenbankCommand.getResult()) {
+                case EINTRAG_WIRD_MUTIERT:
+                    break;
                 case NICHT_IN_DATENBANK:
                     isMutterNeu = true;
                     break;
@@ -318,6 +320,8 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             checkAngehoerigerBereitsInDatenbankCommand.setEntityManager(entityManager);
             checkAngehoerigerBereitsInDatenbankCommand.execute();
             switch (checkAngehoerigerBereitsInDatenbankCommand.getResult()) {
+                case EINTRAG_WIRD_MUTIERT:
+                    break;
                 case NICHT_IN_DATENBANK:
                     isRechnungsempfaengerDrittpersonNeu = true;
                     break;
