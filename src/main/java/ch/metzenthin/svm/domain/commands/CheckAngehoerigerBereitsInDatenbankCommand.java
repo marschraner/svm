@@ -78,7 +78,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
         Angehoeriger angehoerigerNurVornameNachname = new Angehoeriger(null, angehoeriger.getVorname(), angehoeriger.getNachname(), null, null, null);
 
         angehoerigerFoundList = new ArrayList<>(angehoerigerDao.findAngehoerige(angehoerigerNurVornameNachname));
-        boolean angehoerigerToBeExcludedFound = removeAngehoerigerToBeExcluded(angehoerigerFoundList);
+        removeAngehoerigerToBeExcluded(angehoerigerFoundList);
         if (angehoerigerFoundList.size() == 1) {
             angehoerigerFound = angehoerigerFoundList.get(0);
             result = Result.EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE;
@@ -91,23 +91,20 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
         }
 
         // Nicht gefunden
-        result = angehoerigerToBeExcludedFound ? Result.EINTRAG_WIRD_MUTIERT : Result.NICHT_IN_DATENBANK;
+        result = (angehoerigerToBeExcluded != null) ? Result.EINTRAG_WIRD_MUTIERT : Result.NICHT_IN_DATENBANK;
     }
 
-    private boolean removeAngehoerigerToBeExcluded(List<Angehoeriger> angehoerigeFound) {
+    private void removeAngehoerigerToBeExcluded(List<Angehoeriger> angehoerigeFound) {
         if (angehoerigerToBeExcluded == null) {
-            return false;
+            return;
         }
-        boolean excluded = false;
         Iterator<Angehoeriger> iterator = angehoerigeFound.iterator();
         while (iterator.hasNext()) {
             Angehoeriger angehoeriger = iterator.next();
             if (angehoerigerToBeExcluded.getPersonId().equals(angehoeriger.getPersonId())) {
                 iterator.remove();
-                excluded = true;
             }
         }
-        return excluded;
     }
 
     public Angehoeriger getAngehoerigerFound() {
