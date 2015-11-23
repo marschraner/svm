@@ -25,6 +25,7 @@ public class SchuelerDatenblattController {
     private JButton btnVorheriger;
     private JButton btnZurueck;
     private JButton btnAbbrechen;
+    private JButton btnStammdatenBearbeiten;
     private JButton btnEmail;
     private JLabel labelVornameNachname;
     private JLabel labelSchueler;
@@ -943,6 +944,8 @@ public class SchuelerDatenblattController {
     }
 
     public void setBtnStammdatenBearbeiten(JButton btnStammdatenBearbeiten) {
+        this.btnStammdatenBearbeiten = btnStammdatenBearbeiten;
+        btnStammdatenBearbeiten.setFocusPainted(false);
         btnStammdatenBearbeiten.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -952,6 +955,7 @@ public class SchuelerDatenblattController {
     }
 
     private void onStammdatenBearbeiten() {
+        btnStammdatenBearbeiten.setFocusPainted(true);
         SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext, schuelerDatenblattModel);
         schuelerErfassenPanel.addCloseListener(closeListener);
         schuelerErfassenPanel.addZurueckZuDatenblattListener(new ActionListener() {

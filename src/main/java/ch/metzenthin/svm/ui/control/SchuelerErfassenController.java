@@ -257,6 +257,7 @@ public class SchuelerErfassenController {
                 nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler ausgewählt"));
             }
         }
+        btnSpeichern.setFocusPainted(false);
     }
 
     private boolean validateOnSpeichern() {
