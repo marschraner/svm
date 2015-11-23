@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
+import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
 import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
@@ -33,6 +34,8 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
 
     @Override
     public void execute() {
+
+        NachnameGratiskindFormatter nachnameGratiskindFormatter = new NachnameGratiskindFormatter();
 
         // Spaltenbreiten
         // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein!
@@ -196,7 +199,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
                     !nachnameElternmithilfeUndGgfSchueler.contains(nachnameSchueler)) {
                 nachnameElternmithilfeUndGgfSchueler += " " + nachnameSchueler;
             }
-            cellsRow1.add(nachnameElternmithilfeUndGgfSchueler);
+            cellsRow1.add(nachnameGratiskindFormatter.format(nachnameElternmithilfeUndGgfSchueler));
             cellsRow1.add(elternmithilfe.getVorname());
             cellsRow1.add(nullAsEmptyString(elternmithilfe.getFestnetz()));
             if (elternmithilfeCodeLines != null) {

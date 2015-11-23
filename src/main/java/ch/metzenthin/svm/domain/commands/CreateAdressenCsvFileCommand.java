@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
 import ch.metzenthin.svm.persistence.entities.Person;
 
 import java.io.*;
@@ -24,6 +25,8 @@ public class CreateAdressenCsvFileCommand extends CreateListeCommand {
     public void execute() {
 
         Character separator = ';';
+
+        NachnameGratiskindFormatter nachnameGratiskindFormatter = new NachnameGratiskindFormatter();
 
         try {
             Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "8859_1"));
@@ -52,7 +55,7 @@ public class CreateAdressenCsvFileCommand extends CreateListeCommand {
                 out.write(separator);
                 out.write(person.getVorname());
                 out.write(separator);
-                out.write(person.getNachname());
+                out.write(nachnameGratiskindFormatter.format(person.getNachname()));
                 out.write(separator);
                 out.write(person.getAdresse().getStrasseHausnummer());
                 out.write(separator);

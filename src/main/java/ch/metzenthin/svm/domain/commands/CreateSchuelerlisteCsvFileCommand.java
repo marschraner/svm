@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
@@ -29,6 +30,8 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
     public void execute() {
 
         Character separator = ';';
+
+        NachnameGratiskindFormatter nachnameGratiskindFormatter = new NachnameGratiskindFormatter();
 
         try {
             Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "8859_1"));
@@ -72,11 +75,11 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
                 out.write(asString(schueler.getGeburtsdatum()));
                 out.write(separator);
                 if (schueler.getMutter() != null) {
-                    out.write(schueler.getMutter().getNachname() + " " + schueler.getMutter().getVorname());
+                    out.write(nachnameGratiskindFormatter.format(schueler.getMutter().getNachname()) + " " + schueler.getMutter().getVorname());
                 }
                 out.write(separator);
                 if (schueler.getVater() != null) {
-                    out.write(schueler.getVater().getNachname() + " " + schueler.getVater().getVorname());
+                    out.write(nachnameGratiskindFormatter.format(schueler.getVater().getNachname()) + " " + schueler.getVater().getVorname());
                 }
                 out.write(separator);
                 String rechnungsempfaenger;
@@ -85,7 +88,7 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
                 } else if (schueler.getVater() != null && schueler.getVater().isIdenticalWith(schueler.getRechnungsempfaenger())) {
                     rechnungsempfaenger = "Vater";
                 } else {
-                    rechnungsempfaenger = schueler.getRechnungsempfaenger().getNachname() + " " + schueler.getRechnungsempfaenger().getVorname();
+                    rechnungsempfaenger = nachnameGratiskindFormatter.format(schueler.getRechnungsempfaenger().getNachname()) + " " + schueler.getRechnungsempfaenger().getVorname();
                 }
                 out.write(rechnungsempfaenger);
                 out.write(separator);
