@@ -34,15 +34,6 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
             if (angehoeriger.getNachname() != null) {
                 selectStatementSb.append(" lower(a.nachname) = lower(:nachname) and");
             }
-            if (angehoeriger.getFestnetz() != null) {
-                selectStatementSb.append(" replace(a.festnetz, ' ', '') = replace(:festnetz, ' ', '') and");
-            }
-            if (angehoeriger.getNatel() != null) {
-                selectStatementSb.append(" replace(a.natel, ' ', '') = replace(:natel, ' ', '') and");
-            }
-            if (angehoeriger.getEmail() != null) {
-                selectStatementSb.append(" lower(a.email) = lower(:email) and");
-            }
             if (angehoeriger.getAdresse() != null) {
                 if (angehoeriger.getAdresse().getStrasse() != null) {
                     selectStatementSb.append(" lower(a.adresse.strasse) = lower(:strasse) and");
@@ -84,15 +75,6 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
             }
             if (angehoeriger.getNachname() != null) {
                 typedQuery.setParameter("nachname", angehoeriger.getNachname());
-            }
-            if (angehoeriger.getFestnetz() != null) {
-                typedQuery.setParameter("festnetz", angehoeriger.getFestnetz());
-            }
-            if (angehoeriger.getNatel() != null) {
-                typedQuery.setParameter("natel", angehoeriger.getNatel());
-            }
-            if (angehoeriger.getEmail() != null) {
-                typedQuery.setParameter("email", angehoeriger.getEmail());
             }
             if (angehoeriger.getAdresse() != null) {
                 if (angehoeriger.getAdresse().getStrasse() != null) {

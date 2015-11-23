@@ -123,15 +123,6 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
             if (schueler.getNachname() != null) {
                 selectStatementSb.append(" lower(s.nachname) = lower(:nachname) and");
             }
-            if (schueler.getFestnetz() != null) {
-                selectStatementSb.append(" replace(s.festnetz, ' ', '') = replace(:festnetz, ' ', '') and");
-            }
-            if (schueler.getNatel() != null) {
-                selectStatementSb.append(" replace(s.natel, ' ', '') = replace(:natel, ' ', '') and");
-            }
-            if (schueler.getEmail() != null) {
-                selectStatementSb.append(" lower(s.email) = lower(:email) and");
-            }
             if (schueler.getAdresse() != null) {
                 if (schueler.getAdresse().getStrasse() != null) {
                     selectStatementSb.append(" lower(s.adresse.strasse) = lower(:strasse) and");
@@ -170,15 +161,6 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
             }
             if (schueler.getVorname() != null) {
                 typedQuery.setParameter("nachname", schueler.getNachname());
-            }
-            if (schueler.getFestnetz() != null) {
-                typedQuery.setParameter("festnetz", schueler.getFestnetz());
-            }
-            if (schueler.getNatel() != null) {
-                typedQuery.setParameter("natel", schueler.getNatel());
-            }
-            if (schueler.getEmail() != null) {
-                typedQuery.setParameter("email", schueler.getEmail());
             }
             if (schueler.getAdresse() != null) {
                 if (schueler.getAdresse().getStrasse() != null) {
