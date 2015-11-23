@@ -1,7 +1,9 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.*;
+import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.dataTypes.Gruppe;
+import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
@@ -19,7 +21,9 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
-import java.util.*;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
@@ -753,6 +757,7 @@ public class SchuelerSuchenController extends PersonController {
             btnSuchen.setFocusPainted(false);
             return;
         }
+        btnSuchen.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         SchuelerSuchenTableData schuelerSuchenTableData = schuelerSuchenModel.suchen(svmContext.getSvmModel());
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenTableData);
         if (schuelerSuchenTableData.size() > 1
@@ -762,6 +767,7 @@ public class SchuelerSuchenController extends PersonController {
             schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
             schuelerSuchenResultPanel.addCloseListener(closeListener);
             schuelerSuchenResultPanel.addZurueckListener(zurueckListener);
+            btnSuchen.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
         } else if (schuelerSuchenTableData.size() == 1) {
             // Direkt zum Datenblatt, falls nur ein Suchresultat und nicht nach einem spezifischen Kurs gesucht wurde
@@ -769,8 +775,10 @@ public class SchuelerSuchenController extends PersonController {
             schuelerDatenblattPanel.addCloseListener(closeListener);
             schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
             schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckListener);
+            btnSuchen.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler gespeichert"));
         } else {
+            btnSuchen.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(null, "Es wurden keine Schüler gefunden, welche auf die Suchabfrage passen.", "Keine Schüler gefunden", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
             btnSuchen.setFocusPainted(false);
         }

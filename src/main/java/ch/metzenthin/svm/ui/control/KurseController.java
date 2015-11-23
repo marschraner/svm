@@ -12,6 +12,7 @@ import ch.metzenthin.svm.ui.components.ListenExportDialog;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -227,7 +228,9 @@ public class KurseController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
+            btnImportieren.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             kurseModel.importKurseFromPreviousSemester(svmContext.getSvmModel(), kurseSemesterwahlModel, kurseTableModel);
+            btnImportieren.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             kurseTableModel.fireTableDataChanged();
             lblTotal.setText(kurseModel.getTotal(kurseTableModel));
             if (kurseTableModel.getRowCount() > 0) {

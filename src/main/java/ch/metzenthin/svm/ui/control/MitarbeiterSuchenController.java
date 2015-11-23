@@ -12,6 +12,7 @@ import ch.metzenthin.svm.ui.components.MitarbeitersPanel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -234,6 +235,7 @@ public class MitarbeiterSuchenController extends AbstractController {
             btnSuchen.setFocusPainted(false);
             return;
         }
+        btnSuchen.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         MitarbeitersTableData mitarbeitersTableData = mitarbeiterSuchenModel.suchen();
         MitarbeitersTableModel mitarbeitersTableModel = new MitarbeitersTableModel(mitarbeitersTableData);
         // Auch bei einem Suchresultat Liste anzeigen, da nur von dort gelöscht werden kann
@@ -241,8 +243,10 @@ public class MitarbeiterSuchenController extends AbstractController {
             MitarbeitersPanel mitarbeitersPanel = new MitarbeitersPanel(svmContext, mitarbeitersTableModel);
             mitarbeitersPanel.addCloseListener(closeListener);
             mitarbeitersPanel.addZurueckListener(zurueckListener);
+            btnSuchen.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{mitarbeitersPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
         } else {
+            btnSuchen.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(null, "Es wurden keine Mitarbeiter gefunden, welche auf die Suchabfrage passen.", "Keine Mitarbeiter gefunden", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
             btnSuchen.setFocusPainted(false);
         }

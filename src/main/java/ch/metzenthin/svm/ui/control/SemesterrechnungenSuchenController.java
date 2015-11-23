@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -808,6 +809,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             btnSuchen.setFocusPainted(false);
             return;
         }
+        btnSuchen.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         SemesterrechnungenTableData semesterrechnungenTableData = semesterrechnungenSuchenModel.suchen();
         SemesterrechnungenTableModel semesterrechnungenTableModel = new SemesterrechnungenTableModel(semesterrechnungenTableData);
         // Auch bei einem Suchresultat Liste anzeigen, da nur von dort gelöscht werden kann
@@ -816,8 +818,10 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             semesterrechnungenPanel.addNextPanelListener(nextPanelListener);
             semesterrechnungenPanel.addCloseListener(closeListener);
             semesterrechnungenPanel.addZurueckListener(zurueckListener);
+            btnSuchen.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{semesterrechnungenPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
         } else {
+            btnSuchen.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(null, "Es wurden keine Semesterrechnungen gefunden, welche auf die Suchabfrage passen.", "Keine Semesterrechnungen gefunden", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
             btnSuchen.setFocusPainted(false);
         }
