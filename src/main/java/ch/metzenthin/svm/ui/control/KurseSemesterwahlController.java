@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -117,11 +118,13 @@ public class KurseSemesterwahlController extends AbstractController {
             btnOk.setFocusPainted(false);
             return;
         }
+        btnOk.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         KurseTableData kurseTableData = kurseSemesterwahlModel.suchen();
         KurseTableModel kurseTableModel = new KurseTableModel(kurseTableData);
         String titel = "Kurse " + kurseSemesterwahlModel.getSemester().getSemesterbezeichnung() + " " + kurseSemesterwahlModel.getSemester().getSchuljahr();
         KursePanel kursePanel = new KursePanel(svmContext, kurseSemesterwahlModel, kurseTableModel, titel);
         kursePanel.addCloseListener(closeListener);
+        btnOk.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{kursePanel.$$$getRootComponent$$$(), titel}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
     }
 

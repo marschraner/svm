@@ -12,7 +12,6 @@ import ch.metzenthin.svm.ui.components.ListenExportDialog;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -228,14 +227,34 @@ public class KurseController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            btnImportieren.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            kurseModel.importKurseFromPreviousSemester(svmContext.getSvmModel(), kurseSemesterwahlModel, kurseTableModel);
-            btnImportieren.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            kurseTableModel.fireTableDataChanged();
-            lblTotal.setText(kurseModel.getTotal(kurseTableModel));
-            if (kurseTableModel.getRowCount() > 0) {
-                btnExportieren.setEnabled(true);
-            }
+            // Wait-Cursor funktioniert hier nicht (wegen vorhergehendem Dialog)
+            final JDialog dialog = new JDialog();
+            dialog.setUndecorated(true);
+            JPanel panel = new JPanel();
+            final JLabel label = new JLabel("Die Kurse werden importiert. Bitte warten ...");
+            panel.add(label);
+            dialog.add(panel);
+            // Public method to center the dialog after calling pack()
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+                @Override
+                protected Void doInBackground() throws Exception {
+                    kurseModel.importKurseFromPreviousSemester(svmContext.getSvmModel(), kurseSemesterwahlModel, kurseTableModel);
+                    return null;
+                }
+                @Override
+                protected void done() {
+                    dialog.dispose();
+                    kurseTableModel.fireTableDataChanged();
+                    lblTotal.setText(kurseModel.getTotal(kurseTableModel));
+                    if (kurseTableModel.getRowCount() > 0) {
+                        btnExportieren.setEnabled(true);
+                    }
+                }
+            };
+            worker.execute();
+            dialog.setVisible(true);
         }
         btnImportieren.setFocusPainted(false);
     }
