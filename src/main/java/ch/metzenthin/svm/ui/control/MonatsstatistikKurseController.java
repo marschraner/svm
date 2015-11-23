@@ -152,6 +152,7 @@ public class MonatsstatistikKurseController extends AbstractController {
 
     private void onSuchen() {
         LOGGER.trace("MonatsstatistikController Suchen gedrückt");
+        btnSuchen.setFocusPainted(true);
         if (!isModelValidationMode() && !validateOnSpeichern()) {
             btnSuchen.setFocusPainted(false);
             return;
@@ -161,6 +162,7 @@ public class MonatsstatistikKurseController extends AbstractController {
                 "\nAbmeldungen: " + result[1] +
                 "\nBesuchte Lektionen: " + result[2];
         JOptionPane.showMessageDialog(null, statistik, "Statistik per Ende Monat", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+        btnSuchen.setFocusPainted(false);
     }
 
     private void onMonatsstatistikModelCompleted(boolean completed) {
