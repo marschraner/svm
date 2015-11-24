@@ -351,11 +351,10 @@ public class ListenExportController extends AbstractController {
         }
         // Ouput-File erzeugen
         final JDialog dialog = new JDialog(listenExportDialog);
-        dialog.setUndecorated(true);
-        JPanel panel = new JPanel();
-        final JLabel label = new JLabel("Die Datei wird erstellt. Bitte warten ...");
-        panel.add(label);
-        dialog.add(panel);
+        final JOptionPane optionPane = new JOptionPane("Die Datei wird erstellt. Bitte warten ...", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, svmContext.getDialogIcons().getInformationIcon(), new Object[]{}, null);
+        dialog.setContentPane(optionPane);
+        dialog.setTitle("Datei wird erstellt");
+        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);  // Schliessen soll keinen Effekt haben
         // Public method to center the dialog after calling pack()
         dialog.pack();
         dialog.setLocationRelativeTo(listenExportDialog);

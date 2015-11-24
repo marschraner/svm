@@ -229,11 +229,10 @@ public class KurseController {
         if (n == 0) {
             // Wait-Cursor funktioniert hier nicht (wegen vorhergehendem Dialog)
             final JDialog dialog = new JDialog();
-            dialog.setUndecorated(true);
-            JPanel panel = new JPanel();
-            final JLabel label = new JLabel("Die Kurse werden importiert. Bitte warten ...");
-            panel.add(label);
-            dialog.add(panel);
+            final JOptionPane optionPane = new JOptionPane("Die Kurse werden importiert. Bitte warten ...", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, svmContext.getDialogIcons().getInformationIcon(), new Object[]{}, null);
+            dialog.setContentPane(optionPane);
+            dialog.setTitle("Kurse werden importiert");
+            dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);  // Schliessen soll keinen Effekt haben
             // Public method to center the dialog after calling pack()
             dialog.pack();
             dialog.setLocationRelativeTo(null);
