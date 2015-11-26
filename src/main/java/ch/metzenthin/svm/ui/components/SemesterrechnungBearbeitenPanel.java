@@ -1847,7 +1847,7 @@ public class SemesterrechnungBearbeitenPanel {
         panel17.setLayout(new GridBagLayout());
         zahlungenPanel.add(panel17, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label41 = new JLabel();
-        label41.setText("Zahlung 3:");
+        label41.setText("3. Zahlung:");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 2;

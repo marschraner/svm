@@ -1792,7 +1792,7 @@
                                 </constraints>
                                 <properties>
                                   <labelFor value="3f61"/>
-                                  <text value="Zahlung 3:"/>
+                                  <text value="3. Zahlung:"/>
                                 </properties>
                               </component>
                               <hspacer id="2aa">
