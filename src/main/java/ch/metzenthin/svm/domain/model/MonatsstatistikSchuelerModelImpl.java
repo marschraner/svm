@@ -8,6 +8,8 @@ import ch.metzenthin.svm.persistence.entities.*;
 
 import java.util.*;
 
+import static ch.metzenthin.svm.common.utils.Converter.getNMonthsAfterNow;
+
 /**
  * @author Martin Schraner
  */
@@ -22,7 +24,7 @@ public class MonatsstatistikSchuelerModelImpl extends AbstractModel implements M
 
     private final CalendarModelAttribute monatJahrModelAttribute = new CalendarModelAttribute(
             this,
-            Field.MONAT_JAHR, new GregorianCalendar(2000, Calendar.JANUARY, 1), new GregorianCalendar(),
+            Field.MONAT_JAHR, new GregorianCalendar(2000, Calendar.JANUARY, 1), getNMonthsAfterNow(12),
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
