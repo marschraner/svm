@@ -39,8 +39,9 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
         calculateAnzahlAnmeldungenSchueler();
         calculateAnzahlAbmeldungenSchueler();
         Semester previousSemesterBeforeSemesterbeginn = checkIfMonatContainsSemesterbeginnAndGetPreviousSemester();
-        if (previousSemesterBeforeSemesterbeginn != null) {
-           calculateAnzahlImpliziteAbmeldungenVorhergehendesSemesterSchueler(previousSemesterBeforeSemesterbeginn);
+        if (previousSemesterBeforeSemesterbeginn != null && !schuelerIdsAnzahlAnmeldungen.isEmpty()) {
+            // Implizite Abmeldungen nur berücksichtigen, falls bereits Schüler fürs nächste Semester erfasst wurden
+            calculateAnzahlImpliziteAbmeldungenVorhergehendesSemesterSchueler(previousSemesterBeforeSemesterbeginn);
         }
         calculateAnzahlAnmeldungenAbmeldungenTotal();
     }
