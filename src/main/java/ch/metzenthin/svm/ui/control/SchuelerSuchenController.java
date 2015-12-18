@@ -6,6 +6,7 @@ import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.commands.SchuelerSuchenCommand;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
@@ -760,6 +761,13 @@ public class SchuelerSuchenController extends PersonController {
         btnSuchen.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         SchuelerSuchenTableData schuelerSuchenTableData = schuelerSuchenModel.suchen(svmContext.getSvmModel());
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenTableData);
+
+        int maxResults = SchuelerSuchenCommand.MAX_RESULTS;
+        if (schuelerSuchenTableData.size() == maxResults) {
+            JOptionPane.showMessageDialog(null, maxResults + " oder mehr Schüler gefunden. Es werden nur die ersten " + maxResults + " Suchresultate angezeigt.\n" +
+                    "Bitte Suchabfrage einschränken!", "Suchabfrage einschränken", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+        }
+
         if (schuelerSuchenTableData.size() > 1
                 || (schuelerSuchenTableData.size() == 1 && (schuelerSuchenModel.isKursFuerSucheBeruecksichtigen() || schuelerSuchenModel.isMaerchenFuerSucheBeruecksichtigen()))
                 || (schuelerSuchenTableData.size() == 0 && schuelerSuchenModel.isKursFuerSucheBeruecksichtigen() && !schuelerSuchenModel.isMaerchenFuerSucheBeruecksichtigen())) {

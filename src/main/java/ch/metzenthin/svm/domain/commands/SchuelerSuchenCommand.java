@@ -19,6 +19,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 public class SchuelerSuchenCommand extends GenericDaoCommand {
 
+    public static final int MAX_RESULTS = 5000;
+
     private static final Logger LOGGER = Logger.getLogger(SchuelerSuchenCommand.class);
 
     // input
@@ -114,6 +116,9 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         LOGGER.trace("JPQL Select-Statement: " + selectStatementSb.toString());
 
         typedQuery = entityManager.createQuery(selectStatementSb.toString(), Schueler.class);
+
+        // Maximale Anzahl zurückzuliefernde Werte
+        typedQuery.setMaxResults(MAX_RESULTS);
 
         // Suchparameter setzen
         setParameterStammdatenOhneGeburtsdatumSuchperiode();
