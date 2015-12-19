@@ -70,24 +70,42 @@ public class MonatsstatistikSchuelerModelImpl extends AbstractModel implements M
         Map<Schueler, List<Kurs>> kurseMapTableData = determineKurseMapTableData(schuelerList, semesterTableData);
         Maerchen maerchenTableData = determineMaerchenTableData(svmModel, semesterTableData);
         Map<Schueler, Maercheneinteilung> maercheneinteilungenMapTableData = determineMaercheneinteilungenMapTableData(schuelerList, maerchenTableData);
-        return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData, null, null, null, maercheneinteilungenMapTableData, maerchenTableData, null, null, false, false);
+        return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData, null, null, null,
+                (anAbmeldungenDispensationen == AnAbmeldungenDispensationenSelected.ANMELDUNGEN_KURSE ? monatJahr : null),
+                (anAbmeldungenDispensationen == AnAbmeldungenDispensationenSelected.ABMELDUNGEN_KURSE ? monatJahr : null),
+                maercheneinteilungenMapTableData, maerchenTableData, null, null, false, false);
     }
 
     private Semester determineSemesterTableData(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         List<Semester> erfassteSemester = svmModel.getSemestersAll();
-        Calendar lastDayOfMonth = new GregorianCalendar(monatJahr.get(Calendar.YEAR), monatJahr.get(Calendar.MONTH), monatJahr.getActualMaximum(Calendar.DAY_OF_MONTH));
-        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(lastDayOfMonth, erfassteSemester);
+        int day;
+        // Bei Abmeldungen nicht letzten, sondern ersten Tag des Monats nehmen, damit altes Semester angezeigt wird
+        if (anAbmeldungenDispensationen == AnAbmeldungenDispensationenSelected.ABMELDUNGEN_KINDERTHEATER || anAbmeldungenDispensationen == AnAbmeldungenDispensationenSelected.ABMELDUNGEN_KURSE) {
+            day = 1;
+        } else {
+            day = monatJahr.getActualMaximum(Calendar.DAY_OF_MONTH);
+        }
+        Calendar firstOrLastDayOfMonth = new GregorianCalendar(monatJahr.get(Calendar.YEAR), monatJahr.get(Calendar.MONTH), day);
+        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(firstOrLastDayOfMonth, erfassteSemester);
         commandInvoker.executeCommand(findSemesterForCalendarCommand);
         Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
-        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
-        // Wenn in Ferien zwischen 2 Semestern Folgesemester nehmen
-        return  (currentSemester == null ? nextSemester : currentSemester);
+        // Wenn in Ferien zwischen 2 Semestern vorhergehendes Semester falls Abmeldungen, sonst Folgesemester
+        if (currentSemester == null) {
+            if (anAbmeldungenDispensationen == AnAbmeldungenDispensationenSelected.ABMELDUNGEN_KINDERTHEATER || anAbmeldungenDispensationen == AnAbmeldungenDispensationenSelected.ABMELDUNGEN_KURSE) {
+                return findSemesterForCalendarCommand.getPreviousSemester();
+            } else {
+                return findSemesterForCalendarCommand.getNextSemester();
+            }
+        }
+        return currentSemester;
     }
 
     private Map<Schueler, List<Kurs>> determineKurseMapTableData(List<Schueler> schuelerList, Semester semester) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, null, null, null);
+        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, null, null, null,
+                (anAbmeldungenDispensationen == AnAbmeldungenDispensationenSelected.ANMELDUNGEN_KURSE ? monatJahr : null),
+                (anAbmeldungenDispensationen == AnAbmeldungenDispensationenSelected.ABMELDUNGEN_KURSE ? monatJahr : null));
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
         return findKurseMapSchuelerSemesterCommand.getKurseMap();
     }

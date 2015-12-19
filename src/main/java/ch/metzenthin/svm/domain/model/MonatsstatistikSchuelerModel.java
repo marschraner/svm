@@ -10,8 +10,10 @@ import java.util.Calendar;
 public interface MonatsstatistikSchuelerModel extends Model {
 
     enum AnAbmeldungenDispensationenSelected {
-        ANMELDUNGEN,
-        ABMELDUNGEN,
+        ANMELDUNGEN_KINDERTHEATER,
+        ABMELDUNGEN_KINDERTHEATER,
+        ANMELDUNGEN_KURSE,
+        ABMELDUNGEN_KURSE,
         DISPENSATIONEN
     }
 

@@ -23,6 +23,8 @@ public class SchuelerSuchenTableData {
     private final Wochentag wochentag;
     private final Time zeitBeginn;
     private final Mitarbeiter mitarbeiter;
+    private final Calendar anmeldemonat;
+    private final Calendar abmeldemonat;
     private Map<Schueler, Maercheneinteilung> maercheneinteilungen;
     private Maerchen maerchen;
     private final Gruppe gruppe;
@@ -31,13 +33,15 @@ public class SchuelerSuchenTableData {
     private boolean nachRollenGesucht;
     private List<Field> columns = new ArrayList<>();
 
-    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean maerchenFuerSucheBeruecksichtigen, boolean nachRollenGesucht) {
+    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean maerchenFuerSucheBeruecksichtigen, boolean nachRollenGesucht) {
         this.schuelerList = schuelerList;
         this.kurse = kurse;
         this.semester = semester;
         this.wochentag = wochentag;
         this.zeitBeginn = zeitBeginn;
         this.mitarbeiter = mitarbeiter;
+        this.anmeldemonat = anmeldemonat;
+        this.abmeldemonat = abmeldemonat;
         this.maercheneinteilungen = maercheneinteilungen;
         this.maerchen = maerchen;
         this.gruppe = gruppe;
@@ -194,6 +198,14 @@ public class SchuelerSuchenTableData {
 
     public Mitarbeiter getMitarbeiter() {
         return mitarbeiter;
+    }
+
+    public Calendar getAnmeldemonat() {
+        return anmeldemonat;
+    }
+
+    public Calendar getAbmeldemonat() {
+        return abmeldemonat;
     }
 
     public List<Schueler> getSchuelerList() {

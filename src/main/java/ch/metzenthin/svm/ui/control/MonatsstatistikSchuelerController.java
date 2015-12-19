@@ -42,8 +42,10 @@ public class MonatsstatistikSchuelerController extends AbstractController {
     private ActionListener nextPanelListener;
     private JTextField txtMonatJahr;
     private JLabel errLblMonatJahr;
-    private JRadioButton radioBtnAnmeldungen;
-    private JRadioButton radioBtnAbmeldungen;
+    private JRadioButton radioBtnAnmeldungenKindertheater;
+    private JRadioButton radioBtnAbmeldungenKindertheater;
+    private JRadioButton radioBtnAnmeldungenKurse;
+    private JRadioButton radioBtnAbmeldungenKurse;
     private JRadioButton radioBtnDispensationen;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
@@ -91,21 +93,27 @@ public class MonatsstatistikSchuelerController extends AbstractController {
         }
     }
 
-    public void setRadioBtnGroupAnAbmeldungenDispensationen(JRadioButton radioBtnAnmeldungen, JRadioButton radioBtnAbmeldungen, JRadioButton radioBtnDispensationen) {
-        this.radioBtnAnmeldungen = radioBtnAnmeldungen;
-        this.radioBtnAbmeldungen = radioBtnAbmeldungen;
+    public void setRadioBtnGroupAnAbmeldungenDispensationen(JRadioButton radioBtnAnmeldungenKindertheater, JRadioButton radioBtnAbmeldungenKindertheater, JRadioButton radioBtnAnmeldungenKurse, JRadioButton radioBtnAbmeldungenKurse, JRadioButton radioBtnDispensationen) {
+        this.radioBtnAnmeldungenKindertheater = radioBtnAnmeldungenKindertheater;
+        this.radioBtnAbmeldungenKindertheater = radioBtnAbmeldungenKindertheater;
+        this.radioBtnAnmeldungenKurse = radioBtnAnmeldungenKurse;
+        this.radioBtnAbmeldungenKurse = radioBtnAbmeldungenKurse;
         this.radioBtnDispensationen = radioBtnDispensationen;
         // Action Commands
-        this.radioBtnAnmeldungen.setActionCommand(MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN.toString());
-        this.radioBtnAbmeldungen.setActionCommand(MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ABMELDUNGEN.toString());
+        this.radioBtnAnmeldungenKindertheater.setActionCommand(MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN_KINDERTHEATER.toString());
+        this.radioBtnAbmeldungenKindertheater.setActionCommand(MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ABMELDUNGEN_KINDERTHEATER.toString());
+        this.radioBtnAnmeldungenKurse.setActionCommand(MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN_KURSE.toString());
+        this.radioBtnAbmeldungenKurse.setActionCommand(MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ABMELDUNGEN_KURSE.toString());
         this.radioBtnDispensationen.setActionCommand(MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.DISPENSATIONEN.toString());
         // Listener
         RadioBtnGroupAnAbmeldungenDispensationenListener radioBtnGroupAnAbmeldungenDispensationenListener = new RadioBtnGroupAnAbmeldungenDispensationenListener();
-        this.radioBtnAnmeldungen.addActionListener(radioBtnGroupAnAbmeldungenDispensationenListener);
-        this.radioBtnAbmeldungen.addActionListener(radioBtnGroupAnAbmeldungenDispensationenListener);
+        this.radioBtnAnmeldungenKindertheater.addActionListener(radioBtnGroupAnAbmeldungenDispensationenListener);
+        this.radioBtnAbmeldungenKindertheater.addActionListener(radioBtnGroupAnAbmeldungenDispensationenListener);
+        this.radioBtnAnmeldungenKurse.addActionListener(radioBtnGroupAnAbmeldungenDispensationenListener);
+        this.radioBtnAbmeldungenKurse.addActionListener(radioBtnGroupAnAbmeldungenDispensationenListener);
         this.radioBtnDispensationen.addActionListener(radioBtnGroupAnAbmeldungenDispensationenListener);
-        // Initialisieren mit Anmeldungen
-        monatsstatistikSchuelerModel.setAnAbmeldungenDispensationen(MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN);
+        // Initialisieren mit Anmeldungen Kindertheater
+        monatsstatistikSchuelerModel.setAnAbmeldungenDispensationen(MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN_KINDERTHEATER);
     }
 
     public void setBtnSuchen(JButton btnSuchen) {
@@ -223,10 +231,14 @@ public class MonatsstatistikSchuelerController extends AbstractController {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.MONAT_JAHR, evt)) {
             txtMonatJahr.setText(asString(monatsstatistikSchuelerModel.getMonatJahr(), MONAT_JAHR_DATE_FORMAT_STRING));
-        } else if (checkIsFieldChange(Field.AN_ABMELDUNGEN_DISPENSATIONEN, evt) && evt.getNewValue() == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN) {
-            radioBtnAnmeldungen.setSelected(true);
-        } else if (checkIsFieldChange(Field.AN_ABMELDUNGEN_DISPENSATIONEN, evt) && evt.getNewValue() == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ABMELDUNGEN) {
-            radioBtnAbmeldungen.setSelected(true);
+        } else if (checkIsFieldChange(Field.AN_ABMELDUNGEN_DISPENSATIONEN, evt) && evt.getNewValue() == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN_KINDERTHEATER) {
+            radioBtnAnmeldungenKindertheater.setSelected(true);
+        } else if (checkIsFieldChange(Field.AN_ABMELDUNGEN_DISPENSATIONEN, evt) && evt.getNewValue() == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ABMELDUNGEN_KINDERTHEATER) {
+            radioBtnAbmeldungenKindertheater.setSelected(true);
+        } else if (checkIsFieldChange(Field.AN_ABMELDUNGEN_DISPENSATIONEN, evt) && evt.getNewValue() == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN_KURSE) {
+            radioBtnAnmeldungenKurse.setSelected(true);
+        } else if (checkIsFieldChange(Field.AN_ABMELDUNGEN_DISPENSATIONEN, evt) && evt.getNewValue() == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ABMELDUNGEN_KURSE) {
+            radioBtnAbmeldungenKurse.setSelected(true);
         } else if (checkIsFieldChange(Field.AN_ABMELDUNGEN_DISPENSATIONEN, evt) && evt.getNewValue() == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.DISPENSATIONEN) {
             radioBtnDispensationen.setSelected(true);
         }

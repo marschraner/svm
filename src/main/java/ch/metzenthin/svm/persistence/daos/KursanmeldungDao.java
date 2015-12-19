@@ -6,7 +6,9 @@ import ch.metzenthin.svm.persistence.entities.*;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.sql.Time;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -44,7 +46,7 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         return kurseinteilungenFound;
     }
 
-    public List<Kursanmeldung> findKursanmeldungen(Schueler schueler, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter) {
+    public List<Kursanmeldung> findKursanmeldungen(Schueler schueler, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat) {
         StringBuilder selectStatementSb = new StringBuilder("select k from Kursanmeldung k");
         if (mitarbeiter != null) {
             selectStatementSb.append(" join k.kurs.lehrkraefte lk");
@@ -64,6 +66,12 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         }
         if (mitarbeiter != null) {
             selectStatementSb.append(" lk.personId = :lehrkraftPersonId and");
+        }
+        if (anmeldemonat != null) {
+            selectStatementSb.append(" k.anmeldedatum >= :anmeldemonatBeginn and k.anmeldedatum <= :anmeldemonatEnde and");
+        }
+        if (abmeldemonat != null) {
+            selectStatementSb.append(" k.abmeldedatum >= :abmeldemonatBeginn and k.abmeldedatum <= :abmeldemonatEnde and");
         }
         // Letztes " and" löschen
         if (selectStatementSb.substring(selectStatementSb.length() - 4).equals(" and")) {
@@ -86,10 +94,33 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         if (mitarbeiter != null) {
             typedQuery.setParameter("lehrkraftPersonId", mitarbeiter.getPersonId());
         }
+        if (anmeldemonat != null) {
+            typedQuery.setParameter("anmeldemonatBeginn", getMonatBeginn(anmeldemonat));
+            typedQuery.setParameter("anmeldemonatEnde", getMonatEnde(anmeldemonat));
+        }
+        if (abmeldemonat != null) {
+            typedQuery.setParameter("abmeldemonatBeginn", getMonatBeginn(abmeldemonat));
+            typedQuery.setParameter("abmeldemonatEnde", getMonatEnde(abmeldemonat));
+        }
         List<Kursanmeldung> kurseinteilungenFound = typedQuery.getResultList();
         // Sortieren gemäss compareTo in Kurseinteilung
         Collections.sort(kurseinteilungenFound);
         return kurseinteilungenFound;
+    }
+
+    private Calendar getMonatBeginn(Calendar monatJahr) {
+        return new GregorianCalendar(monatJahr.get(Calendar.YEAR), monatJahr.get(Calendar.MONTH), 1);
+    }
+
+    private Calendar getMonatEnde(Calendar monatJahr) {
+        Calendar statistikMonatEnde;
+        if (monatJahr.get(Calendar.MONTH) == Calendar.DECEMBER) {
+            statistikMonatEnde = new GregorianCalendar(monatJahr.get(Calendar.YEAR) + 1, Calendar.JANUARY, 1);
+        } else {
+            statistikMonatEnde = new GregorianCalendar(monatJahr.get(Calendar.YEAR), monatJahr.get(Calendar.MONTH) + 1, 1);
+        }
+        statistikMonatEnde.add(Calendar.DAY_OF_YEAR, -1);
+        return statistikMonatEnde;
     }
 
 

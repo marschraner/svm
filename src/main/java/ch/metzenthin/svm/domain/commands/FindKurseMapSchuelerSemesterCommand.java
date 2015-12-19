@@ -5,10 +5,7 @@ import ch.metzenthin.svm.persistence.daos.KursanmeldungDao;
 import ch.metzenthin.svm.persistence.entities.*;
 
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Martin Schraner
@@ -21,16 +18,20 @@ public class FindKurseMapSchuelerSemesterCommand extends GenericDaoCommand {
     private final Wochentag wochentag;  // nullable
     private final Time zeitBeginn;      // nullable
     private final Mitarbeiter mitarbeiter;  // nullable
+    private final Calendar anmeldemonat;  // nullable
+    private final Calendar abmeldemonat;  // nullable
 
     // output
     private Map<Schueler, List<Kurs>> kurseMap = new HashMap<>();
 
-    public FindKurseMapSchuelerSemesterCommand(List<Schueler> schuelerList, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter) {
+    public FindKurseMapSchuelerSemesterCommand(List<Schueler> schuelerList, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat) {
         this.schuelerList = schuelerList;
         this.semester = semester;
         this.wochentag = wochentag;
         this.zeitBeginn = zeitBeginn;
         this.mitarbeiter = mitarbeiter;
+        this.anmeldemonat = anmeldemonat;
+        this.abmeldemonat = abmeldemonat;
     }
 
     @Override
@@ -40,9 +41,9 @@ public class FindKurseMapSchuelerSemesterCommand extends GenericDaoCommand {
         }
         KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
         for (Schueler schueler : schuelerList) {
-            List<Kursanmeldung> kurseinteilungenFound = kursanmeldungDao.findKursanmeldungen(schueler, semester, wochentag, zeitBeginn, mitarbeiter);
+            List<Kursanmeldung> kursanmeldungenFound = kursanmeldungDao.findKursanmeldungen(schueler, semester, wochentag, zeitBeginn, mitarbeiter, anmeldemonat, abmeldemonat);
             List<Kurs> kurse = new ArrayList<>();
-            for (Kursanmeldung kursanmeldung : kurseinteilungenFound) {
+            for (Kursanmeldung kursanmeldung : kursanmeldungenFound) {
                 kurse.add(kursanmeldung.getKurs());
             }
             kurseMap.put(schueler, kurse);

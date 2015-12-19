@@ -8,6 +8,7 @@ import ch.metzenthin.svm.persistence.entities.*;
 
 import javax.swing.table.AbstractTableModel;
 import java.sql.Time;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -77,6 +78,14 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
 
     public Mitarbeiter getLehrkraft() {
         return schuelerSuchenTableData.getMitarbeiter();
+    }
+
+    public Calendar getAnmledemonat() {
+        return schuelerSuchenTableData.getAnmeldemonat();
+    }
+
+    public Calendar getAbmledemonat() {
+        return schuelerSuchenTableData.getAbmeldemonat();
     }
 
     public SchuelerSuchenTableData getSchuelerSuchenTableData() {

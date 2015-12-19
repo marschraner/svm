@@ -459,7 +459,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         Maerchen maerchenTableData = determineMaerchenTableData(svmModel, semesterTableData);
         Map<Schueler, Maercheneinteilung> maercheneinteilungenMapTableData = determineMaercheneinteilungenMapTableData(schuelerList, maerchenTableData);
         return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData, (wochentag == Wochentag.ALLE ? null : wochentag),
-                zeitBeginn, (mitarbeiter == MITARBEITER_ALLE ? null : mitarbeiter), maercheneinteilungenMapTableData, maerchenTableData,
+                zeitBeginn, (mitarbeiter == MITARBEITER_ALLE ? null : mitarbeiter), null, null, maercheneinteilungenMapTableData, maerchenTableData,
                 (gruppe == Gruppe.ALLE ? null : gruppe), (elternmithilfeCode == ELTERNMITHILFE_CODE_ALLE ? null : elternmithilfeCode), maerchenFuerSucheBeruecksichtigen, (rollen != null));
     }
 
@@ -480,7 +480,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     private Map<Schueler, List<Kurs>> determineKurseMapTableData(List<Schueler> schuelerList, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, (wochentag == Wochentag.ALLE ? null : wochentag), zeitBeginn, (mitarbeiter == MITARBEITER_ALLE ? null : mitarbeiter));
+        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, (wochentag == Wochentag.ALLE ? null : wochentag), zeitBeginn, (mitarbeiter == MITARBEITER_ALLE ? null : mitarbeiter), null, null);
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
         return findKurseMapSchuelerSemesterCommand.getKurseMap();
     }

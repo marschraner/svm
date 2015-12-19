@@ -33,7 +33,7 @@ public class MonatsstatistikSchuelerSuchenCommand extends GenericDaoCommand {
     @Override
     public void execute() {
 
-        selectStatementSb = new StringBuilder("select s from Schueler s where");
+        selectStatementSb = new StringBuilder();
 
         // Query erzeugen
         createQuery();
@@ -62,14 +62,22 @@ public class MonatsstatistikSchuelerSuchenCommand extends GenericDaoCommand {
     }
     
     private void createQuery() {
-        if (anAbmeldungenDispensationen == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ANMELDUNGEN) {
-            selectStatementSb.append(" exists (select anm from Anmeldung anm join anm.schueler sch where anm.anmeldedatum >= :statistikMonatBeginn and anm.anmeldedatum <= :statistikMonatEnde and s.personId = sch.personId) and");
-        }
-        if (anAbmeldungenDispensationen == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.ABMELDUNGEN) {
-            selectStatementSb.append(" exists (select anm from Anmeldung anm join anm.schueler sch where anm.abmeldedatum >= :statistikMonatBeginn and anm.abmeldedatum <= :statistikMonatEnde and s.personId = sch.personId) and");
-        }
-        if (anAbmeldungenDispensationen == MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected.DISPENSATIONEN) {
-            selectStatementSb.append(" exists (select dis from Dispensation dis join dis.schueler sch where dis.dispensationsbeginn <= :statistikMonatEnde and (dis.dispensationsende is null or dis.dispensationsende >= :statistikMonatBeginn) and s.personId = sch.personId) and");
+        switch (anAbmeldungenDispensationen) {
+            case ANMELDUNGEN_KINDERTHEATER:
+                selectStatementSb.append("select s from Schueler s where exists (select anm from Anmeldung anm join anm.schueler sch where anm.anmeldedatum >= :statistikMonatBeginn and anm.anmeldedatum <= :statistikMonatEnde and s.personId = sch.personId) and");
+                break;
+            case ABMELDUNGEN_KINDERTHEATER:
+                selectStatementSb.append("select s from Schueler s where exists (select anm from Anmeldung anm join anm.schueler sch where anm.abmeldedatum >= :statistikMonatBeginn and anm.abmeldedatum <= :statistikMonatEnde and s.personId = sch.personId) and");
+                break;
+            case ANMELDUNGEN_KURSE:
+                selectStatementSb.append("select distinct s from Schueler s join s.kursanmeldungen k where k.anmeldedatum >= :statistikMonatBeginn and k.anmeldedatum <= :statistikMonatEnde and");
+                break;
+            case ABMELDUNGEN_KURSE:
+                selectStatementSb.append("select distinct s from Schueler s join s.kursanmeldungen k where k.abmeldedatum >= :statistikMonatBeginn and k.abmeldedatum <= :statistikMonatEnde and");
+                break;
+            case DISPENSATIONEN:
+                selectStatementSb.append("select s from Schueler s where exists (select dis from Dispensation dis join dis.schueler sch where dis.dispensationsbeginn <= :statistikMonatEnde and (dis.dispensationsende is null or dis.dispensationsende >= :statistikMonatBeginn) and s.personId = sch.personId) and");
+                break;
         }
     }
 
