@@ -10,6 +10,8 @@ import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -483,19 +485,27 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     @Override
     public Semester getSemesterInit(SvmModel svmModel) {
         FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
-        findSemesterForCalendarCommand.execute();
+        getCommandInvoker().executeCommand(findSemesterForCalendarCommand);
         Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
         Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
-        // Innerhalb Semester
-        if (currentSemester != null) {
-            return currentSemester;
+        Calendar dayToShowNextSemester = new GregorianCalendar();
+        dayToShowNextSemester.add(Calendar.DAY_OF_YEAR, 40);
+        Semester initSemester;
+        if (currentSemester == null) {
+            // Ferien zwischen 2 Semestern
+            initSemester = nextSemester;
+        } else if (dayToShowNextSemester.after(currentSemester.getSemesterende()) && nextSemester != null) {
+            // weniger als 40 Tage vor Semesterende
+            initSemester = nextSemester;
+        } else {
+            // Neues Semester noch nicht erfasst
+            initSemester = currentSemester;
         }
-        // Ferien zwischen 2 Semestern
-        if (nextSemester != null) {
-            return nextSemester;
+        if (initSemester != null) {
+            return initSemester;
+        } else {
+            return svmModel.getSemestersAll().get(0);
         }
-        // Kein passendes Semester erfasst
-        return svmModel.getSemestersAll().get(0);
     }
 
     @Override
