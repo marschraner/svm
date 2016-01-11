@@ -43,7 +43,7 @@ public class AnmeldungTest {
 
     @Test
     public void testIsInPast_AbmeldungInFuture() throws Exception{
-        Anmeldung anmeldung = new Anmeldung(toCalendar("01.01.2015"), toCalendar("31.12.2015"));
+        Anmeldung anmeldung = new Anmeldung(toCalendar("01.01.2015"), toCalendar("31.12.2115"));
         assertFalse(anmeldung.isInPast());
     }
 
@@ -55,7 +55,7 @@ public class AnmeldungTest {
 
     @Test
     public void testIsInPast_AnmeldungInFuture() throws Exception{
-        Anmeldung anmeldung = new Anmeldung(toCalendar("01.01.2016"), toCalendar("30.06.2016"));
+        Anmeldung anmeldung = new Anmeldung(toCalendar("01.01.2116"), toCalendar("30.06.2116"));
         assertFalse(anmeldung.isInPast());
     }
 
