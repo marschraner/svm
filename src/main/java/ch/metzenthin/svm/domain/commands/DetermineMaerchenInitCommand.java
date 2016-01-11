@@ -44,7 +44,7 @@ public class DetermineMaerchenInitCommand implements Command {
             }
         }
         // Neustes erfasstes Märchen, falls für gewünschtes Schuljahr noch kein Märchen erfasst
-        if (selectableMaerchens.size() > 1) {
+        if (selectableMaerchens.size() >= 1) {
             maerchenInit = selectableMaerchens.get(0);
             return;
         }
