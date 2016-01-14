@@ -446,6 +446,8 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
 
     public void setBtnWochenbetragVorrechnung(JButton btnWochenbetragVorrechnung) {
         this.btnWochenbetragVorrechnung = btnWochenbetragVorrechnung;
+        // Nicht sichtbar, da verwirrend und nicht benötigt. Ggf später ganz löschen.
+        btnWochenbetragVorrechnung.setVisible(false);
         btnWochenbetragVorrechnung.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -462,6 +464,8 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
 
     public void setBtnWochenbetragNachrechnung(JButton btnWochenbetragNachrechnung) {
         this.btnWochenbetragNachrechnung = btnWochenbetragNachrechnung;
+        // Nicht sichtbar, da verwirrend und nicht benötigt. Ggf später ganz löschen.
+        btnWochenbetragNachrechnung.setVisible(false);
         btnWochenbetragNachrechnung.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
