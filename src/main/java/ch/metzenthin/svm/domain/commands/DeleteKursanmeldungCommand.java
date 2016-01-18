@@ -31,8 +31,8 @@ public class DeleteKursanmeldungCommand extends GenericDaoCommand {
         kursanmeldungen.remove(indexKursanmeldungToBeDeleted);
 
         // Semesterrechnung aktualisieren
-        UpdateWochenbetragCommand updateWochenbetragCommand = new UpdateWochenbetragCommand(rechnungsempfaenger, semester);
-        updateWochenbetragCommand.setEntityManager(entityManager);
-        updateWochenbetragCommand.execute();
+        UpdateWochenbetragUndAnzWochenCommand updateWochenbetragUndAnzWochenCommand = new UpdateWochenbetragUndAnzWochenCommand(rechnungsempfaenger, semester, null);
+        updateWochenbetragUndAnzWochenCommand.setEntityManager(entityManager);
+        updateWochenbetragUndAnzWochenCommand.execute();
     }
 }

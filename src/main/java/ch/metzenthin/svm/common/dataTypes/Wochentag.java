@@ -1,21 +1,29 @@
 package ch.metzenthin.svm.common.dataTypes;
 
+import java.util.Calendar;
+
 /**
  * @author Martin Schraner
  */
 public enum Wochentag {
-    ALLE(""),
-    MONTAG("Montag"),
-    DIENSTAG("Dienstag"),
-    MITTWOCH("Mittwoch"),
-    DONNERSTAG("Donnerstag"),
-    FREITAG("Freitag"),
-    SAMSTAG("Samstag");
+    ALLE("", -1),
+    MONTAG("Montag", Calendar.MONDAY),
+    DIENSTAG("Dienstag", Calendar.TUESDAY),
+    MITTWOCH("Mittwoch", Calendar.WEDNESDAY),
+    DONNERSTAG("Donnerstag", Calendar.THURSDAY),
+    FREITAG("Freitag", Calendar.FRIDAY),
+    SAMSTAG("Samstag", Calendar.SATURDAY);
 
     private String name;
+    private int dayOfWeekCalendar;
 
-    Wochentag(String name) {
+    Wochentag(String name, int dayOfWeekCalendar) {
         this.name = name;
+        this.dayOfWeekCalendar = dayOfWeekCalendar;
+    }
+
+    public int getDayOfWeekCalendar() {
+        return dayOfWeekCalendar;
     }
 
     @Override

@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungDao;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
@@ -12,18 +13,22 @@ import java.util.Map;
 /**
  * @author Martin Schraner
  */
-public class UpdateWochenbetragCommand extends GenericDaoCommand {
+public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
 
     // input
     private Angehoeriger rechnungsempfaenger;
     private Semester currentSemester;
+    private Kursanmeldung kursanmeldung;   // nullable
+    private boolean isCalculateAnzWochen;
 
     // output
     private CalculateWochenbetragCommand.Result result = CalculateWochenbetragCommand.Result.WOCHENBETRAG_ERFOLGREICH_BERECHNET;
 
-    public UpdateWochenbetragCommand(Angehoeriger rechnungsempfaenger, Semester currentSemester) {
+    public UpdateWochenbetragUndAnzWochenCommand(Angehoeriger rechnungsempfaenger, Semester currentSemester, Kursanmeldung kursanmeldung) {
         this.rechnungsempfaenger = rechnungsempfaenger;
         this.currentSemester = currentSemester;
+        this.kursanmeldung = kursanmeldung;
+        this.isCalculateAnzWochen = kursanmeldung != null;
     }
 
     @Override
@@ -55,25 +60,51 @@ public class UpdateWochenbetragCommand extends GenericDaoCommand {
         findAllLektionsgebuehrenCommand.execute();
         Map<Integer, BigDecimal[]> lektionsgebuehrenMap = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllMap();
 
-        // 4.a Jetziges Semesters: Berechnung des Wochenbetrags Nachrechnung und Update
-        if (semesterrechnungCurrentSemester != null && semesterrechnungCurrentSemester.getRechnungsdatumNachrechnung() == null) {
-            CalculateWochenbetragCommand calculateWochenbetragCommand = new CalculateWochenbetragCommand(semesterrechnungCurrentSemester, currentSemester, Rechnungstyp.NACHRECHNUNG, lektionsgebuehrenMap);
-            calculateWochenbetragCommand.execute();
-            if (calculateWochenbetragCommand.getResult() == CalculateWochenbetragCommand.Result.WOCHENBETRAG_ERFOLGREICH_BERECHNET) {
-                semesterrechnungCurrentSemester.setWochenbetragNachrechnung(calculateWochenbetragCommand.getWochenbetrag());
-            } else {  // sollte nie eintreten
-                result = calculateWochenbetragCommand.getResult();
-                semesterrechnungCurrentSemester.setWochenbetragNachrechnung(new BigDecimal("-99999.99"));
+        // 4. Berechnung der Anzahl Wochen
+        CalculateAnzWochenCommand calculateAnzWochenCommand = new CalculateAnzWochenCommand(currentSemester, kursanmeldung);
+        if (isCalculateAnzWochen) {
+            calculateAnzWochenCommand.execute();
+        }
+
+        // 5.a Jetziges Semesters
+        if (semesterrechnungCurrentSemester != null) {
+
+            boolean currentSemesterToBeUpdated = false;
+
+            // Vorrechnung: Update Anzahl Wochen
+            if (semesterrechnungCurrentSemester.getRechnungsdatumVorrechnung() == null && isCalculateAnzWochen) {
+                semesterrechnungCurrentSemester.setAnzahlWochenVorrechnung(calculateAnzWochenCommand.getAnzahlWochen());
+                currentSemesterToBeUpdated = true;
             }
-            if (!semesterrechnungCurrentSemester.isNullrechnung()) {
-                semesterrechnungDao.save(semesterrechnungCurrentSemester);
-            } else {
-                // löschen, falls Nullrechnung
-                semesterrechnungDao.remove(semesterrechnungCurrentSemester);
+
+            // Nachrechnung: Update Anzahl Wochen und Berechnung des Wochenbetrags
+            if (semesterrechnungCurrentSemester.getRechnungsdatumNachrechnung() == null) {
+                if (isCalculateAnzWochen) {
+                    semesterrechnungCurrentSemester.setAnzahlWochenNachrechnung(calculateAnzWochenCommand.getAnzahlWochen());
+                }
+                CalculateWochenbetragCommand calculateWochenbetragCommand = new CalculateWochenbetragCommand(semesterrechnungCurrentSemester, currentSemester, Rechnungstyp.NACHRECHNUNG, lektionsgebuehrenMap);
+                calculateWochenbetragCommand.execute();
+                if (calculateWochenbetragCommand.getResult() == CalculateWochenbetragCommand.Result.WOCHENBETRAG_ERFOLGREICH_BERECHNET) {
+                    semesterrechnungCurrentSemester.setWochenbetragNachrechnung(calculateWochenbetragCommand.getWochenbetrag());
+                } else {  // sollte nie eintreten
+                    result = calculateWochenbetragCommand.getResult();
+                    semesterrechnungCurrentSemester.setWochenbetragNachrechnung(new BigDecimal("-99999.99"));
+                }
+                currentSemesterToBeUpdated = true;
+            }
+
+            // Update
+            if (currentSemesterToBeUpdated) {
+                if (!semesterrechnungCurrentSemester.isNullrechnung()) {
+                    semesterrechnungDao.save(semesterrechnungCurrentSemester);
+                } else {
+                    // löschen, falls Nullrechnung
+                    semesterrechnungDao.remove(semesterrechnungCurrentSemester);
+                }
             }
         }
 
-        // 4.b Nachfolgendes Semesters: Berechnung des Wochenbetrags Vorrechnung und Update
+        // 5.b Nachfolgendes Semesters: Berechnung des Wochenbetrags Vorrechnung und Update
         if (semesterrechnungNextSemester != null && semesterrechnungNextSemester.getRechnungsdatumVorrechnung() == null) {
             CalculateWochenbetragCommand calculateWochenbetragCommand = new CalculateWochenbetragCommand(semesterrechnungNextSemester, currentSemester, Rechnungstyp.VORRECHNUNG, lektionsgebuehrenMap);
             calculateWochenbetragCommand.execute();
