@@ -6,7 +6,7 @@ import ch.metzenthin.svm.persistence.entities.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static ch.metzenthin.svm.common.utils.SimpleValidator.getNumberOfDaysOfPeriod;
+import static ch.metzenthin.svm.common.utils.CalendarUtils.getNumberOfDaysOfPeriod;
 
 /**
  * @author Martin Schraner

@@ -4,7 +4,7 @@ import ch.metzenthin.svm.persistence.entities.Dispensation;
 
 import java.util.List;
 
-import static ch.metzenthin.svm.common.utils.SimpleValidator.checkIfTwoPeriodsOverlap;
+import static ch.metzenthin.svm.common.utils.CalendarUtils.checkIfTwoPeriodsOverlap;
 
 /**
  * @author Martin Schraner

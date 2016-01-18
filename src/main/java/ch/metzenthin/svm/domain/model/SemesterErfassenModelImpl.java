@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
-import static ch.metzenthin.svm.common.utils.SimpleValidator.getNumberOfWeeksBetween;
+import static ch.metzenthin.svm.common.utils.CalendarUtils.getNumberOfWeeksBetween;
 
 /**
  * @author Martin Schraner
