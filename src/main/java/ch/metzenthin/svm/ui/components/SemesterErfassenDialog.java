@@ -20,10 +20,8 @@ public class SemesterErfassenDialog extends JDialog {
     private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
     private JTextField txtSemesterbeginn;
     private JTextField txtSemesterende;
-    private JTextField txtAnzahlSchulwochen;
     private JLabel errLblSemesterende;
     private JLabel errLblSemesterbeginn;
-    private JLabel errLblAnzahlSchulwochen;
     private JButton btnSpeichern;
     private JButton btnAbbrechen;
 
@@ -45,12 +43,10 @@ public class SemesterErfassenDialog extends JDialog {
         semesterErfassenController.setComboBoxSemesterbezeichnung(comboBoxSemesterbezeichnung);
         semesterErfassenController.setTxtSemesterbeginn(txtSemesterbeginn);
         semesterErfassenController.setTxtSemesterende(txtSemesterende);
-        semesterErfassenController.setTxtAnzahlSchulwochen(txtAnzahlSchulwochen);
         semesterErfassenController.setBtnSpeichern(btnSpeichern);
         semesterErfassenController.setBtnAbbrechen(btnAbbrechen);
         semesterErfassenController.setErrLblSemesterbeginn(errLblSemesterbeginn);
         semesterErfassenController.setErrLblSemesterende(errLblSemesterende);
-        semesterErfassenController.setErrLblAnzahlSchulwochen(errLblAnzahlSchulwochen);
         semesterErfassenController.constructionDone();
     }
 
@@ -59,8 +55,6 @@ public class SemesterErfassenDialog extends JDialog {
         errLblSemesterbeginn.setForeground(Color.RED);
         errLblSemesterende.setVisible(false);
         errLblSemesterende.setForeground(Color.RED);
-        errLblAnzahlSchulwochen.setVisible(false);
-        errLblAnzahlSchulwochen.setForeground(Color.RED);
     }
 
     private void createUIComponents() {
@@ -156,6 +150,7 @@ public class SemesterErfassenDialog extends JDialog {
         gbc.gridx = 1;
         gbc.gridy = 5;
         gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 0, 0, 15);
         panel1.add(label3, gbc);
         txtSemesterbeginn = new JTextField();
         gbc = new GridBagConstraints();
@@ -212,34 +207,6 @@ public class SemesterErfassenDialog extends JDialog {
         gbc.gridy = 8;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel1.add(spacer8, gbc);
-        final JLabel label5 = new JLabel();
-        label5.setText("Anzahl Schulwochen");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 9;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 0, 0, 15);
-        panel1.add(label5, gbc);
-        txtAnzahlSchulwochen = new JTextField();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 9;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel1.add(txtAnzahlSchulwochen, gbc);
-        errLblAnzahlSchulwochen = new JLabel();
-        errLblAnzahlSchulwochen.setText("errLblAnzahlSchulwochen");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 8;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel1.add(errLblAnzahlSchulwochen, gbc);
-        final JPanel spacer9 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 10;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel1.add(spacer9, gbc);
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridBagLayout());
         contentPane.add(buttonPanel, BorderLayout.SOUTH);
@@ -255,24 +222,24 @@ public class SemesterErfassenDialog extends JDialog {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         buttonPanel.add(btnSpeichern, gbc);
-        final JPanel spacer10 = new JPanel();
+        final JPanel spacer9 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        buttonPanel.add(spacer10, gbc);
-        final JPanel spacer11 = new JPanel();
+        buttonPanel.add(spacer9, gbc);
+        final JPanel spacer10 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
-        buttonPanel.add(spacer11, gbc);
-        final JPanel spacer12 = new JPanel();
+        buttonPanel.add(spacer10, gbc);
+        final JPanel spacer11 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
-        buttonPanel.add(spacer12, gbc);
+        buttonPanel.add(spacer11, gbc);
         btnAbbrechen = new JButton();
         btnAbbrechen.setMaximumSize(new Dimension(114, 29));
         btnAbbrechen.setMinimumSize(new Dimension(114, 29));
@@ -289,7 +256,6 @@ public class SemesterErfassenDialog extends JDialog {
         label2.setLabelFor(comboBoxSemesterbezeichnung);
         errLblSemesterbeginn.setLabelFor(txtSemesterbeginn);
         errLblSemesterende.setLabelFor(txtSemesterende);
-        label5.setLabelFor(txtAnzahlSchulwochen);
     }
 
     /**

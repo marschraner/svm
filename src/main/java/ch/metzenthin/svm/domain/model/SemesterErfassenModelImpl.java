@@ -136,32 +136,6 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         }
     }
 
-    private final IntegerModelAttribute anzahlSchulwochenModelAttribute = new IntegerModelAttribute(
-            this,
-            Field.ANZAHL_SCHULWOCHEN, 10, 50,
-            new AttributeAccessor<Integer>() {
-                @Override
-                public Integer getValue() {
-                    return semester.getAnzahlSchulwochen();
-                }
-
-                @Override
-                public void setValue(Integer value) {
-                    semester.setAnzahlSchulwochen(value);
-                }
-            }
-    );
-
-    @Override
-    public Integer getAnzahlSchulwochen() {
-        return anzahlSchulwochenModelAttribute.getValue();
-    }
-
-    @Override
-    public void setAnzahlSchulwochen(String anzahlSchulwochen) throws SvmValidationException {
-        anzahlSchulwochenModelAttribute.setNewValue(true, anzahlSchulwochen, isBulkUpdate());
-    }
-
     @Override
     public boolean checkSemesterBereitsErfasst(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
@@ -188,7 +162,7 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
 
     @Override
     public boolean checkIfUpdateAffectsSemesterrechnungen() {
-        return !(semesterOrigin == null || semester.getAnzahlSchulwochen().equals(semesterOrigin.getAnzahlSchulwochen()) || semesterOrigin.getSemesterrechnungen().isEmpty());
+        return !(semesterOrigin == null || semester.getAnzahlSchulwochen() == semesterOrigin.getAnzahlSchulwochen() || semesterOrigin.getSemesterrechnungen().isEmpty());
     }
 
     @Override
@@ -216,7 +190,6 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
                 setSemesterbezeichnung(semesterOrigin.getSemesterbezeichnung());
                 setSemesterbeginn(asString(semesterOrigin.getSemesterbeginn()));
                 setSemesterende(asString(semesterOrigin.getSemesterende()));
-                setAnzahlSchulwochen(Integer.toString(semesterOrigin.getAnzahlSchulwochen()));
             } catch (SvmValidationException ignore) {
                 ignore.printStackTrace();
             }

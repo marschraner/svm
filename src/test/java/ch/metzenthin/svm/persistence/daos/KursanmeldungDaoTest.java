@@ -67,7 +67,7 @@ public class KursanmeldungDaoTest {
             tx.begin();
 
             // Kurs
-            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
+            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10));
             semesterDao.save(semester);
             Kurstyp kurstyp = new Kurstyp("Testkurs", true);
             kurstypDao.save(kurstyp);
@@ -118,7 +118,7 @@ public class KursanmeldungDaoTest {
             tx.begin();
 
             // Kurs
-            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
+            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10));
             semesterDao.save(semester);
             Kurstyp kurstyp = new Kurstyp("Testkurs", true);
             kurstypDao.save(kurstyp);
@@ -171,7 +171,7 @@ public class KursanmeldungDaoTest {
             tx.begin();
 
             // Kurs
-            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
+            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10));
             semesterDao.save(semester);
             Kurstyp kurstyp = new Kurstyp("Testkurs", true);
             kurstypDao.save(kurstyp);
@@ -263,7 +263,7 @@ public class KursanmeldungDaoTest {
             entityManager.persist(schueler3);
 
             // Semester, Kurstyp, Kursort und Lehrkräfte erzeugen
-            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
+            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10));
             semesterDao.save(semester);
             Kurstyp kurstyp = new Kurstyp("Testkurs", true);
             kurstypDao.save(kurstyp);

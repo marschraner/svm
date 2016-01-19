@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
+import static ch.metzenthin.svm.common.utils.CalendarUtils.getNumberOfWeeksBetween;
+
 /**
  * @author Martin Schraner
  */
@@ -39,9 +41,6 @@ public class Semester implements Comparable<Semester> {
     @Column(name = "semesterende", nullable = false)
     private Calendar semesterende;
 
-    @Column(name = "anzahl_schulwochen", nullable = false)
-    private Integer anzahlSchulwochen;
-
     @OneToMany(mappedBy = "semester")
     private Set<Kurs> kurse = new HashSet<>();
 
@@ -51,12 +50,11 @@ public class Semester implements Comparable<Semester> {
     public Semester() {
     }
 
-    public Semester(String schuljahr, Semesterbezeichnung semesterbezeichnung, Calendar semesterbeginn, Calendar semesterende, Integer anzahlSchulwochen) {
+    public Semester(String schuljahr, Semesterbezeichnung semesterbezeichnung, Calendar semesterbeginn, Calendar semesterende) {
         this.schuljahr = schuljahr;
         this.semesterbezeichnung = semesterbezeichnung;
         this.semesterbeginn = semesterbeginn;
         this.semesterende = semesterende;
-        this.anzahlSchulwochen = anzahlSchulwochen;
     }
 
     public boolean isIdenticalWith(Semester otherSemester) {
@@ -64,8 +62,7 @@ public class Semester implements Comparable<Semester> {
                 && ((schuljahr == null && otherSemester.getSchuljahr() == null) || (schuljahr != null && schuljahr.equals(otherSemester.getSchuljahr())))
                 && ((semesterbezeichnung == null && otherSemester.getSemesterbezeichnung() == null) || (semesterbezeichnung != null && semesterbezeichnung.equals(otherSemester.getSemesterbezeichnung())))
                 && ((semesterbeginn == null && otherSemester.getSemesterbeginn() == null) || (semesterbeginn != null && semesterbeginn.equals(otherSemester.getSemesterbeginn())))
-                && ((semesterende == null && otherSemester.getSemesterende() == null) || (semesterende != null && semesterende.equals(otherSemester.getSemesterende())))
-                && ((anzahlSchulwochen == null && otherSemester.getAnzahlSchulwochen() == null) || (anzahlSchulwochen != null && anzahlSchulwochen.equals(otherSemester.getAnzahlSchulwochen())));
+                && ((semesterende == null && otherSemester.getSemesterende() == null) || (semesterende != null && semesterende.equals(otherSemester.getSemesterende())));
     }
 
     public void copyAttributesFrom(Semester otherSemester) {
@@ -73,7 +70,6 @@ public class Semester implements Comparable<Semester> {
         this.semesterbezeichnung = otherSemester.getSemesterbezeichnung();
         this.semesterbeginn = otherSemester.getSemesterbeginn();
         this.semesterende = otherSemester.getSemesterende();
-        this.anzahlSchulwochen = otherSemester.getAnzahlSchulwochen();
     }
 
     @Override
@@ -137,12 +133,16 @@ public class Semester implements Comparable<Semester> {
         this.semesterende = semesterende;
     }
 
-    public Integer getAnzahlSchulwochen() {
-        return anzahlSchulwochen;
-    }
-
-    public void setAnzahlSchulwochen(Integer anzahlSchulwochen) {
-        this.anzahlSchulwochen = anzahlSchulwochen;
+    @Transient
+    public int getAnzahlSchulwochen() {
+        int anzahlSchulwochen = getNumberOfWeeksBetween(semesterbeginn, semesterende);
+        int anzFerienWochen;
+        if (semesterbezeichnung == Semesterbezeichnung.ERSTES_SEMESTER) {
+            anzFerienWochen = 4;
+        } else {
+            anzFerienWochen = 2;
+        }
+        return anzahlSchulwochen - anzFerienWochen;
     }
 
     public Set<Kurs> getKurse() {

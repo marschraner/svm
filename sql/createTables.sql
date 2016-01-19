@@ -322,7 +322,6 @@ CREATE TABLE IF NOT EXISTS Semester (
     semesterbezeichnung        VARCHAR(20)   NOT NULL,
     semesterbeginn             DATE          NOT NULL,
     semesterende               DATE          NOT NULL,
-    anzahl_schulwochen         INT           NOT NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (semester_id));
 

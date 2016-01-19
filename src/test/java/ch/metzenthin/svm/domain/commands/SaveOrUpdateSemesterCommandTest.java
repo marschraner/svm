@@ -46,33 +46,33 @@ public class SaveOrUpdateSemesterCommandTest {
     public void testExecute() throws Exception {
 
         // Vor Transaktionen
-        assertFalse(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 20), new GregorianCalendar(1913, Calendar.JULY, 10), 19));
-        assertFalse(checkIfSemesterAvailable("1911/1912", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1911, Calendar.AUGUST, 20), new GregorianCalendar(1912, Calendar.FEBRUARY, 10), 21));
-        assertFalse(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1912, Calendar.AUGUST, 22), new GregorianCalendar(1913, Calendar.FEBRUARY, 22), 23));
+        assertFalse(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 20), new GregorianCalendar(1913, Calendar.JULY, 10)));
+        assertFalse(checkIfSemesterAvailable("1911/1912", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1911, Calendar.AUGUST, 20), new GregorianCalendar(1912, Calendar.FEBRUARY, 10)));
+        assertFalse(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1912, Calendar.AUGUST, 22), new GregorianCalendar(1913, Calendar.FEBRUARY, 22)));
         List<Semester> semestersSaved = new ArrayList<>();
 
         // Semester hinzufügen
-        Semester semester1 = new Semester("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 20), new GregorianCalendar(1913, Calendar.JULY, 10), 19);
+        Semester semester1 = new Semester("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 20), new GregorianCalendar(1913, Calendar.JULY, 10));
         SaveOrUpdateSemesterCommand saveOrUpdateSemesterCommand = new SaveOrUpdateSemesterCommand(semester1, null, semestersSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterCommand);
         assertEquals(1, semestersSaved.size());
-        assertTrue(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 20), new GregorianCalendar(1913, Calendar.JULY, 10), 19));
+        assertTrue(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 20), new GregorianCalendar(1913, Calendar.JULY, 10)));
 
         // Weiteres Semester hinzufügen
-        Semester semester2 = new Semester("1911/1912", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1911, Calendar.AUGUST, 20), new GregorianCalendar(1912, Calendar.FEBRUARY, 10), 21);
+        Semester semester2 = new Semester("1911/1912", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1911, Calendar.AUGUST, 20), new GregorianCalendar(1912, Calendar.FEBRUARY, 10));
         saveOrUpdateSemesterCommand = new SaveOrUpdateSemesterCommand(semester2, null, semestersSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterCommand);
         assertEquals(2, semestersSaved.size());
-        assertTrue(checkIfSemesterAvailable("1911/1912", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1911, Calendar.AUGUST, 20), new GregorianCalendar(1912, Calendar.FEBRUARY, 10), 21));
+        assertTrue(checkIfSemesterAvailable("1911/1912", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1911, Calendar.AUGUST, 20), new GregorianCalendar(1912, Calendar.FEBRUARY, 10)));
 
         // Weiteres Semester hinzufügen
-        Semester semester3 = new Semester("1912/1913", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1912, Calendar.AUGUST, 22), new GregorianCalendar(1913, Calendar.FEBRUARY, 22), 23);
+        Semester semester3 = new Semester("1912/1913", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1912, Calendar.AUGUST, 22), new GregorianCalendar(1913, Calendar.FEBRUARY, 22));
         saveOrUpdateSemesterCommand = new SaveOrUpdateSemesterCommand(semester3, null, semestersSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterCommand);
         assertEquals(3, semestersSaved.size());
-        assertTrue(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 20), new GregorianCalendar(1913, Calendar.JULY, 10), 19));
-        assertTrue(checkIfSemesterAvailable("1911/1912", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1911, Calendar.AUGUST, 20), new GregorianCalendar(1912, Calendar.FEBRUARY, 10), 21));
-        assertTrue(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1912, Calendar.AUGUST, 22), new GregorianCalendar(1913, Calendar.FEBRUARY, 22), 23));
+        assertTrue(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 20), new GregorianCalendar(1913, Calendar.JULY, 10)));
+        assertTrue(checkIfSemesterAvailable("1911/1912", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1911, Calendar.AUGUST, 20), new GregorianCalendar(1912, Calendar.FEBRUARY, 10)));
+        assertTrue(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1912, Calendar.AUGUST, 22), new GregorianCalendar(1913, Calendar.FEBRUARY, 22)));
         // Zeitlich absteigend geordnet?
         assertEquals("1911/1912", semestersSaved.get(2).getSchuljahr());
         assertEquals(Semesterbezeichnung.ERSTES_SEMESTER, semestersSaved.get(2).getSemesterbezeichnung());
@@ -82,12 +82,12 @@ public class SaveOrUpdateSemesterCommandTest {
         assertEquals(Semesterbezeichnung.ZWEITES_SEMESTER, semestersSaved.get(0).getSemesterbezeichnung());
 
         // Semester bearbeiten (neuer Semesterbeginn, neues Semesterende)
-        Semester semester1Modif = new Semester("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 27), new GregorianCalendar(1913, Calendar.JULY, 17), 19);
+        Semester semester1Modif = new Semester("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 27), new GregorianCalendar(1913, Calendar.JULY, 17));
         saveOrUpdateSemesterCommand = new SaveOrUpdateSemesterCommand(semester1Modif, semester1, semestersSaved);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterCommand);
         assertEquals(3, semestersSaved.size());
-        assertFalse(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 20), new GregorianCalendar(1913, Calendar.JULY, 10), 19));
-        assertTrue(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 27), new GregorianCalendar(1913, Calendar.JULY, 17), 19));
+        assertFalse(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 20), new GregorianCalendar(1913, Calendar.JULY, 10)));
+        assertTrue(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 27), new GregorianCalendar(1913, Calendar.JULY, 17)));
 
         // Testdaten löschen
         EntityManager entityManager = null;
@@ -111,12 +111,12 @@ public class SaveOrUpdateSemesterCommandTest {
 
     }
 
-    private boolean checkIfSemesterAvailable(String schuljahr, Semesterbezeichnung semesterbezeichnung, Calendar semesterbeginn, Calendar semesterende, int anzahlSchulwochen) {
+    private boolean checkIfSemesterAvailable(String schuljahr, Semesterbezeichnung semesterbezeichnung, Calendar semesterbeginn, Calendar semesterende) {
         FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
         commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSemestersCommand);
         List<Semester> semestersAll = findAllSemestersCommand.getSemestersAll();
         for (Semester semester : semestersAll) {
-            if (semester.getSchuljahr().equals(schuljahr) && semester.getSemesterbezeichnung().equals(semesterbezeichnung) && semester.getSemesterbeginn().equals(semesterbeginn) && semester.getSemesterende().equals(semesterende) && semester.getAnzahlSchulwochen().equals(anzahlSchulwochen)) {
+            if (semester.getSchuljahr().equals(schuljahr) && semester.getSemesterbezeichnung().equals(semesterbezeichnung) && semester.getSemesterbeginn().equals(semesterbeginn) && semester.getSemesterende().equals(semesterende)) {
                 return true;
             }
         }

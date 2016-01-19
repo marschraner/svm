@@ -39,7 +39,6 @@ public class SemesterErfassenController extends AbstractController {
     private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
     private JTextField txtSemesterbeginn;
     private JTextField txtSemesterende;
-    private JTextField txtAnzahlSchulwochen;
     private JLabel errLblSemesterbeginn;
     private JLabel errLblSemesterende;
     private JLabel errLblAnzahlSchulwochen;
@@ -284,57 +283,6 @@ public class SemesterErfassenController extends AbstractController {
         }
     }
 
-    public void setTxtAnzahlSchulwochen(JTextField txtAnzahlSchulwochen) {
-        this.txtAnzahlSchulwochen = txtAnzahlSchulwochen;
-        this.txtAnzahlSchulwochen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAnzahlSchulwochenEvent(true);
-            }
-        });
-        this.txtAnzahlSchulwochen.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onAnzahlSchulwochenEvent(false);
-            }
-        });
-    }
-
-    private void onAnzahlSchulwochenEvent(boolean showRequiredErrMsg) {
-        LOGGER.trace("SemesterErfassenController Event AnzahlSchulwochen");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtAnzahlSchulwochen.getText(), semesterErfassenModel.getAnzahlSchulwochen());
-        try {
-            setModelAnzahlSchulwochen(showRequiredErrMsg);
-        } catch (SvmValidationException e) {
-            return;
-        }
-        if (equalFieldAndModelValue && isModelValidationMode()) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-            validate();
-        }
-    }
-
-    private void setModelAnzahlSchulwochen(boolean showRequiredErrMsg) throws SvmValidationException {
-        makeErrorLabelInvisible(Field.ANZAHL_SCHULWOCHEN);
-        try {
-            semesterErfassenModel.setAnzahlSchulwochen(txtAnzahlSchulwochen.getText());
-        } catch (SvmRequiredException e) {
-            LOGGER.trace("SemesterErfassenController setModelAnzahlSchulwochen RequiredException=" + e.getMessage());
-            if (isModelValidationMode() || !showRequiredErrMsg) {
-                txtAnzahlSchulwochen.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
-            } else {
-                showErrMsg(e);
-            }
-            throw e;
-        } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterErfassenController setModelAnzahlSchulwochen Exception=" + e.getMessage());
-            showErrMsg(e);
-            throw e;
-        }
-    }
-
     public void setErrLblSemesterbeginn(JLabel errLblSemesterbeginn) {
         this.errLblSemesterbeginn = errLblSemesterbeginn;
     }
@@ -435,9 +383,6 @@ public class SemesterErfassenController extends AbstractController {
         else if (checkIsFieldChange(Field.SEMESTERENDE, evt)) {
             txtSemesterende.setText(asString(semesterErfassenModel.getSemesterende()));
         }
-        else if (checkIsFieldChange(Field.ANZAHL_SCHULWOCHEN, evt)) {
-            txtAnzahlSchulwochen.setText(Integer.toString(semesterErfassenModel.getAnzahlSchulwochen()));
-        }
     }
 
     @Override
@@ -449,10 +394,6 @@ public class SemesterErfassenController extends AbstractController {
         if (txtSemesterende.isEnabled()) {
             LOGGER.trace("Validate field Semesterende");
             setModelSemesterende(true);
-        }
-        if (txtAnzahlSchulwochen.isEnabled()) {
-            LOGGER.trace("Validate field AnzahlSchulwochen");
-            setModelAnzahlSchulwochen(true);
         }
     }
 
@@ -480,9 +421,6 @@ public class SemesterErfassenController extends AbstractController {
         if (e.getAffectedFields().contains(Field.SEMESTERENDE)) {
             txtSemesterende.setToolTipText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.ANZAHL_SCHULWOCHEN)) {
-            txtAnzahlSchulwochen.setToolTipText(e.getMessage());
-        }
     }
 
     @Override
@@ -494,10 +432,6 @@ public class SemesterErfassenController extends AbstractController {
         if (fields.contains(Field.ALLE) || fields.contains(Field.SEMESTERENDE)) {
             errLblSemesterende.setVisible(false);
             txtSemesterende.setToolTipText(null);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.ANZAHL_SCHULWOCHEN)) {
-            errLblAnzahlSchulwochen.setVisible(false);
-            txtAnzahlSchulwochen.setToolTipText(null);
         }
     }
 

@@ -64,7 +64,7 @@ public class KursDaoTest {
             tx.begin();
 
             // Semester, Kurstyp, Kursort und Lehrkraft erzeugen
-            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
+            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10));
             semesterDao.save(semester);
             Kurstyp kurstyp = new Kurstyp("Testkurs", true);
             kurstypDao.save(kurstyp);
@@ -113,7 +113,7 @@ public class KursDaoTest {
             tx.begin();
 
             // Semester, Kurstyp, Kursort und Lehrkräfte erzeugen
-            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
+            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10));
             semesterDao.save(semester);
             Kurstyp kurstyp = new Kurstyp("Testkurs", true);
             kurstypDao.save(kurstyp);
@@ -190,7 +190,7 @@ public class KursDaoTest {
             tx.begin();
 
             // Semester, Kurstyp, Kursort und Lehrkräfte erzeugen
-            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
+            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10));
             semesterDao.save(semester);
             Kurstyp kurstyp = new Kurstyp("Testkurs", true);
             kurstypDao.save(kurstyp);
@@ -275,13 +275,13 @@ public class KursDaoTest {
             tx.begin();
 
             // Semester
-            Semester semester1 = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), 21);
+            Semester semester1 = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10));
             semesterDao.save(semester1);
-            Semester semester2 = new Semester("2011/2012", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(2012, Calendar.FEBRUARY, 20), new GregorianCalendar(2012, Calendar.JULY, 10), 21);
+            Semester semester2 = new Semester("2011/2012", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(2012, Calendar.FEBRUARY, 20), new GregorianCalendar(2012, Calendar.JULY, 10));
             semesterDao.save(semester2);
-            Semester semester3 = new Semester("2012/2013", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2012, Calendar.AUGUST, 20), new GregorianCalendar(2013, Calendar.FEBRUARY, 10), 21);
+            Semester semester3 = new Semester("2012/2013", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2012, Calendar.AUGUST, 20), new GregorianCalendar(2013, Calendar.FEBRUARY, 10));
             semesterDao.save(semester3);
-            Semester semester4 = new Semester("2013/2014", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2013, Calendar.AUGUST, 20), new GregorianCalendar(2014, Calendar.FEBRUARY, 10), 21);
+            Semester semester4 = new Semester("2013/2014", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2013, Calendar.AUGUST, 20), new GregorianCalendar(2014, Calendar.FEBRUARY, 10));
             semesterDao.save(semester4);
 
             // Kurstyp

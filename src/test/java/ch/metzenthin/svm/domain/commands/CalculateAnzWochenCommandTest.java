@@ -17,8 +17,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class CalculateAnzWochenCommandTest {
 
-    private Semester erstesSemester = new Semester("2015/2016", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2015, Calendar.AUGUST, 17), new GregorianCalendar(2016, Calendar.FEBRUARY, 13), 22);
-    private Semester zweitesSemester = new Semester("2015/2015", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(2016, Calendar.FEBRUARY, 29), new GregorianCalendar(2016, Calendar.JULY, 16), 18);
+    private Semester erstesSemester = new Semester("2015/2016", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2015, Calendar.AUGUST, 17), new GregorianCalendar(2016, Calendar.FEBRUARY, 13));
+    private Semester zweitesSemester = new Semester("2015/2015", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(2016, Calendar.FEBRUARY, 29), new GregorianCalendar(2016, Calendar.JULY, 16));
     Kurs kurs = new Kurs(null, null, Wochentag.MITTWOCH, null, null, null);
 
     @Test

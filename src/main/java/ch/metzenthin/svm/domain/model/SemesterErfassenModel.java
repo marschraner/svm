@@ -15,14 +15,12 @@ public interface SemesterErfassenModel extends Model {
     String getSchuljahr();
     Calendar getSemesterbeginn();
     Calendar getSemesterende();
-    Integer getAnzahlSchulwochen();
     Semester getSemester();
 
     void setSemesterbezeichnung(Semesterbezeichnung semesterbezeichnung) throws SvmValidationException;
     void setSchuljahr(String text) throws SvmValidationException;
     void setSemesterbeginn(String text) throws SvmValidationException;
     void setSemesterende(String text) throws SvmValidationException;
-    void setAnzahlSchulwochen(String text) throws SvmValidationException;
     void setSemesterOrigin(Semester semesterOrigin);
 
     Semester getNaechstesNochNichtErfasstesSemester(SvmModel svmModel);
