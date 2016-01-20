@@ -5,13 +5,13 @@ import org.junit.Test;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static ch.metzenthin.svm.common.utils.CalendarUtils.*;
+import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.*;
 import static org.junit.Assert.*;
 
 /**
  * @author Martin Schraner
  */
-public class CalendarUtilsTest {
+public class DateAndTimeUtilsTest {
 
     @Test
     public void testGetNumberOfDaysOfPeriod() throws Exception {

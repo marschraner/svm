@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import static ch.metzenthin.svm.common.utils.CalendarUtils.getNumberOfWeeksBetween;
+import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNumberOfWeeksBetween;
 
 /**
  * @author Martin Schraner

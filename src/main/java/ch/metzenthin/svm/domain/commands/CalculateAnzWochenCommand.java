@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 
-import static ch.metzenthin.svm.common.utils.CalendarUtils.getNumberOfDaysOfPeriod;
+import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNumberOfDaysOfPeriod;
 
 /**
  * @author Martin Schraner

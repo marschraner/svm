@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
 /**
  * @author Martin Schraner
  */
-public class CalendarUtils {
+public class DateAndTimeUtils {
 
     public static boolean checkIfTwoPeriodsOverlap(Calendar startTime1, Calendar endTime1, Calendar startTime2, Calendar endTime2) {
         // EndTime1 = null oder endTime2 = null bedeutet, dass die Perioden offen sind
