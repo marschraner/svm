@@ -65,9 +65,13 @@ public class CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsComm
                 semesterrechnung.setSemesterrechnungCode(previousSemesterrechnung.getSemesterrechnungCode());
             }
 
-            // 5.a Berechnung des Wochenbetrags Vorrechnung
+            // 5. Berechnung der Anzahl Wochen
+            CalculateAnzWochenCommand calculateAnzWochenCommand = new CalculateAnzWochenCommand(rechnungsempfaenger.getSchuelerRechnungsempfaenger(), currentSemester);
+            calculateAnzWochenCommand.execute();
+
+            // 6.a Berechnung des Wochenbetrags Vorrechnung
             CalculateWochenbetragCommand calculateWochenbetragCommand;
-            semesterrechnung.setAnzahlWochenVorrechnung(currentSemester.getAnzahlSchulwochen());
+            semesterrechnung.setAnzahlWochenVorrechnung(calculateAnzWochenCommand.getAnzahlWochen());
             if (previousSemester != null) {
                 calculateWochenbetragCommand = new CalculateWochenbetragCommand(semesterrechnung, previousSemester, Rechnungstyp.VORRECHNUNG, lektionsgebuehrenMap);
                 calculateWochenbetragCommand.execute();
@@ -80,8 +84,8 @@ public class CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsComm
                 semesterrechnung.setWochenbetragVorrechnung(BigDecimal.ZERO);
             }
 
-            // 5.b Berechnung des Wochenbetrags Nachrechnung
-            semesterrechnung.setAnzahlWochenNachrechnung(currentSemester.getAnzahlSchulwochen());
+            // 6.b Berechnung des Wochenbetrags Nachrechnung
+            semesterrechnung.setAnzahlWochenNachrechnung(calculateAnzWochenCommand.getAnzahlWochen());
             calculateWochenbetragCommand = new CalculateWochenbetragCommand(semesterrechnung, currentSemester, Rechnungstyp.NACHRECHNUNG, lektionsgebuehrenMap);
             calculateWochenbetragCommand.execute();
             if (calculateWochenbetragCommand.getResult() == CalculateWochenbetragCommand.Result.WOCHENBETRAG_ERFOLGREICH_BERECHNET) {

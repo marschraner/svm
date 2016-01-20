@@ -19,107 +19,77 @@ public class CalculateAnzWochenCommandTest {
 
     private Semester erstesSemester = new Semester("2015/2016", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2015, Calendar.AUGUST, 17), new GregorianCalendar(2016, Calendar.FEBRUARY, 13));
     private Semester zweitesSemester = new Semester("2015/2015", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(2016, Calendar.FEBRUARY, 29), new GregorianCalendar(2016, Calendar.JULY, 16));
-    Kurs kurs = new Kurs(null, null, Wochentag.MITTWOCH, null, null, null);
+    private CalculateAnzWochenCommand calculateAnzWochenCommandErstesSemester = new CalculateAnzWochenCommand(null, erstesSemester);
+    private CalculateAnzWochenCommand calculateAnzWochenCommandZweitesSemester = new CalculateAnzWochenCommand(null, zweitesSemester);
+    private Kurs kurs = new Kurs(null, null, Wochentag.MITTWOCH, null, null, null);
 
     @Test
-    public void testExecute() throws Exception {
+    public void testCalculateAnzWochenKursanmeldung() throws Exception {
 
         // 1. Semester
         Kursanmeldung kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 17), new GregorianCalendar(2016, Calendar.FEBRUARY, 13), null);
-        CalculateAnzWochenCommand calculateAnzWochenCommand = new CalculateAnzWochenCommand(erstesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(22, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(22, calculateAnzWochenCommandErstesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // Anmeldung vor Semesterbeginn
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 16), new GregorianCalendar(2016, Calendar.FEBRUARY, 13), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(erstesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(22, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(22, calculateAnzWochenCommandErstesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // Anmeldung am ersten Kurstag
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 19), new GregorianCalendar(2016, Calendar.FEBRUARY, 13), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(erstesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(22, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(22, calculateAnzWochenCommandErstesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // Spätere Anmeldung
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 20), new GregorianCalendar(2016, Calendar.FEBRUARY, 13), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(erstesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(21, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(21, calculateAnzWochenCommandErstesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // vor Herbstferien
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2015, Calendar.OCTOBER, 5), new GregorianCalendar(2016, Calendar.FEBRUARY, 13), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(erstesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(15, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(15, calculateAnzWochenCommandErstesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // nach Herbstferien
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2015, Calendar.OCTOBER, 26), new GregorianCalendar(2016, Calendar.FEBRUARY, 13), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(erstesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(14, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(14, calculateAnzWochenCommandErstesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // Anmeldung nach Semesterende
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 17), new GregorianCalendar(2016, Calendar.FEBRUARY, 14), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(erstesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(22, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(22, calculateAnzWochenCommandErstesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // Abmeldung am letzten Kurstag
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 17), new GregorianCalendar(2016, Calendar.FEBRUARY, 10), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(erstesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(22, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(22, calculateAnzWochenCommandErstesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // Frühere Abmeldung
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 17), new GregorianCalendar(2016, Calendar.FEBRUARY, 9), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(erstesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(21, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(21, calculateAnzWochenCommandErstesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // nach Weihnachtsferien
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 17), new GregorianCalendar(2016, Calendar.JANUARY, 9), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(erstesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(17, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(17, calculateAnzWochenCommandErstesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // vor Weihnachtsferien
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 17), new GregorianCalendar(2015, Calendar.DECEMBER, 19), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(erstesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(16, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(16, calculateAnzWochenCommandErstesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // 2. Semester
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2016, Calendar.FEBRUARY, 29), new GregorianCalendar(2016, Calendar.JULY, 16), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(zweitesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(18, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(18, calculateAnzWochenCommandZweitesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // Spätere Anmeldung
         // Vor Frühlingsferien
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2016, Calendar.APRIL, 20), new GregorianCalendar(2016, Calendar.JULY, 16), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(zweitesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(11, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(11, calculateAnzWochenCommandZweitesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // Nach Frühlingsferien
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2016, Calendar.MAY, 17), new GregorianCalendar(2016, Calendar.JULY, 16), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(zweitesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(9, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(9, calculateAnzWochenCommandZweitesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // Frühere Abmeldung
         // Vor Frühlingsferien
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2016, Calendar.FEBRUARY, 29), new GregorianCalendar(2016, Calendar.APRIL, 2), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(zweitesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(5, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(5, calculateAnzWochenCommandZweitesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
 
         // Nach Frühlingsferien
         kursanmeldung = new Kursanmeldung(null, kurs, new GregorianCalendar(2016, Calendar.FEBRUARY, 29), new GregorianCalendar(2016, Calendar.JUNE, 18), null);
-        calculateAnzWochenCommand = new CalculateAnzWochenCommand(zweitesSemester, kursanmeldung);
-        calculateAnzWochenCommand.execute();
-        assertEquals(14, calculateAnzWochenCommand.getAnzahlWochen());
+        assertEquals(14, calculateAnzWochenCommandZweitesSemester.calculateAnzWochenKursanmeldung(kursanmeldung));
     }
 }

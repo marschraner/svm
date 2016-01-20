@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungDao;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
-import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
@@ -18,17 +17,13 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
     // input
     private Angehoeriger rechnungsempfaenger;
     private Semester currentSemester;
-    private Kursanmeldung kursanmeldung;   // nullable
-    private boolean isCalculateAnzWochen;
 
     // output
     private CalculateWochenbetragCommand.Result result = CalculateWochenbetragCommand.Result.WOCHENBETRAG_ERFOLGREICH_BERECHNET;
 
-    public UpdateWochenbetragUndAnzWochenCommand(Angehoeriger rechnungsempfaenger, Semester currentSemester, Kursanmeldung kursanmeldung) {
+    public UpdateWochenbetragUndAnzWochenCommand(Angehoeriger rechnungsempfaenger, Semester currentSemester) {
         this.rechnungsempfaenger = rechnungsempfaenger;
         this.currentSemester = currentSemester;
-        this.kursanmeldung = kursanmeldung;
-        this.isCalculateAnzWochen = kursanmeldung != null;
     }
 
     @Override
@@ -60,28 +55,24 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
         findAllLektionsgebuehrenCommand.execute();
         Map<Integer, BigDecimal[]> lektionsgebuehrenMap = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllMap();
 
-        // 4. Berechnung der Anzahl Wochen
-        CalculateAnzWochenCommand calculateAnzWochenCommand = new CalculateAnzWochenCommand(currentSemester, kursanmeldung);
-        if (isCalculateAnzWochen) {
-            calculateAnzWochenCommand.execute();
-        }
-
-        // 5.a Jetziges Semesters
+        // 4.a Jetziges Semesters
         if (semesterrechnungCurrentSemester != null) {
 
-            boolean currentSemesterToBeUpdated = false;
+            boolean dataChanged = false;
+
+            // Berechnung der Anzahl Wochen
+            CalculateAnzWochenCommand calculateAnzWochenCommand = new CalculateAnzWochenCommand(semesterrechnungCurrentSemester.getRechnungsempfaenger().getSchuelerRechnungsempfaenger(), currentSemester);
+            calculateAnzWochenCommand.execute();
 
             // Vorrechnung: Update Anzahl Wochen
-            if (semesterrechnungCurrentSemester.getRechnungsdatumVorrechnung() == null && isCalculateAnzWochen) {
+            if (semesterrechnungCurrentSemester.getRechnungsdatumVorrechnung() == null) {
                 semesterrechnungCurrentSemester.setAnzahlWochenVorrechnung(calculateAnzWochenCommand.getAnzahlWochen());
-                currentSemesterToBeUpdated = true;
+                dataChanged = true;
             }
 
             // Nachrechnung: Update Anzahl Wochen und Berechnung des Wochenbetrags
             if (semesterrechnungCurrentSemester.getRechnungsdatumNachrechnung() == null) {
-                if (isCalculateAnzWochen) {
-                    semesterrechnungCurrentSemester.setAnzahlWochenNachrechnung(calculateAnzWochenCommand.getAnzahlWochen());
-                }
+                semesterrechnungCurrentSemester.setAnzahlWochenNachrechnung(calculateAnzWochenCommand.getAnzahlWochen());
                 CalculateWochenbetragCommand calculateWochenbetragCommand = new CalculateWochenbetragCommand(semesterrechnungCurrentSemester, currentSemester, Rechnungstyp.NACHRECHNUNG, lektionsgebuehrenMap);
                 calculateWochenbetragCommand.execute();
                 if (calculateWochenbetragCommand.getResult() == CalculateWochenbetragCommand.Result.WOCHENBETRAG_ERFOLGREICH_BERECHNET) {
@@ -90,11 +81,11 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
                     result = calculateWochenbetragCommand.getResult();
                     semesterrechnungCurrentSemester.setWochenbetragNachrechnung(new BigDecimal("-99999.99"));
                 }
-                currentSemesterToBeUpdated = true;
+                dataChanged = true;
             }
 
             // Update
-            if (currentSemesterToBeUpdated) {
+            if (dataChanged) {
                 if (!semesterrechnungCurrentSemester.isNullrechnung()) {
                     semesterrechnungDao.save(semesterrechnungCurrentSemester);
                 } else {
@@ -104,7 +95,7 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
             }
         }
 
-        // 5.b Nachfolgendes Semesters: Berechnung des Wochenbetrags Vorrechnung und Update
+        // 4.b Nachfolgendes Semesters: Berechnung des Wochenbetrags Vorrechnung und Update
         if (semesterrechnungNextSemester != null && semesterrechnungNextSemester.getRechnungsdatumVorrechnung() == null) {
             CalculateWochenbetragCommand calculateWochenbetragCommand = new CalculateWochenbetragCommand(semesterrechnungNextSemester, currentSemester, Rechnungstyp.VORRECHNUNG, lektionsgebuehrenMap);
             calculateWochenbetragCommand.execute();

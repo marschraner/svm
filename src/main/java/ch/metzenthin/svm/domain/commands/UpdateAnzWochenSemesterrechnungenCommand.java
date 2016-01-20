@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungDao;
-import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
+import ch.metzenthin.svm.persistence.entities.*;
 
 import java.util.Collection;
 
@@ -12,12 +12,12 @@ public class UpdateAnzWochenSemesterrechnungenCommand extends GenericDaoCommand 
 
     // input
     private Collection<Semesterrechnung> semesterrechnungen;
-    private int anzahlSchulwochen;
+    private Semester semester;
 
 
-    public UpdateAnzWochenSemesterrechnungenCommand(Collection<Semesterrechnung> semesterrechnungen, int anzahlSchulwochen) {
+    public UpdateAnzWochenSemesterrechnungenCommand(Collection<Semesterrechnung> semesterrechnungen, Semester semester) {
         this.semesterrechnungen = semesterrechnungen;
-        this.anzahlSchulwochen = anzahlSchulwochen;
+        this.semester = semester;
     }
 
     @Override
@@ -27,16 +27,19 @@ public class UpdateAnzWochenSemesterrechnungenCommand extends GenericDaoCommand 
 
         for (Semesterrechnung semesterrechnung : semesterrechnungen) {
 
-            boolean dataChanged = false;
-            if (semesterrechnung.getRechnungsdatumVorrechnung() == null) {
-                semesterrechnung.setAnzahlWochenVorrechnung(anzahlSchulwochen);
-                dataChanged = true;
-            }
-            if (semesterrechnung.getRechnungsdatumNachrechnung() == null) {
-                semesterrechnung.setAnzahlWochenNachrechnung(anzahlSchulwochen);
-                dataChanged = true;
-            }
-            if (dataChanged) {
+            if (semesterrechnung.getRechnungsdatumVorrechnung() == null || semesterrechnung.getRechnungsdatumNachrechnung() == null) {
+
+                // Berechnung der Anzahl Wochen
+                CalculateAnzWochenCommand calculateAnzWochenCommand = new CalculateAnzWochenCommand(semesterrechnung.getRechnungsempfaenger().getSchuelerRechnungsempfaenger(), semester);
+                calculateAnzWochenCommand.execute();
+
+                if (semesterrechnung.getRechnungsdatumVorrechnung() == null) {
+                    semesterrechnung.setAnzahlWochenVorrechnung(calculateAnzWochenCommand.getAnzahlWochen());
+                }
+                if (semesterrechnung.getRechnungsdatumNachrechnung() == null) {
+                    semesterrechnung.setAnzahlWochenNachrechnung(calculateAnzWochenCommand.getAnzahlWochen());
+                }
+
                 semesterrechnungDao.save(semesterrechnung);
             }
         }

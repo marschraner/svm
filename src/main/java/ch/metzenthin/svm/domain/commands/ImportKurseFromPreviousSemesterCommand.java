@@ -73,7 +73,7 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
                         kursanmeldungDao.save(kursanmeldung);
 
                         // Semesterrechnungen updaten
-                        UpdateWochenbetragUndAnzWochenCommand updateWochenbetragUndAnzWochenCommand = new UpdateWochenbetragUndAnzWochenCommand(kursanmeldungPreviousSemester.getSchueler().getRechnungsempfaenger(), currentSemester, null);
+                        UpdateWochenbetragUndAnzWochenCommand updateWochenbetragUndAnzWochenCommand = new UpdateWochenbetragUndAnzWochenCommand(kursanmeldungPreviousSemester.getSchueler().getRechnungsempfaenger(), currentSemester);
                         updateWochenbetragUndAnzWochenCommand.setEntityManager(entityManager);
                         updateWochenbetragUndAnzWochenCommand.execute();
                     }

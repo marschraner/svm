@@ -58,7 +58,7 @@ public class SaveOrUpdateKursCommand extends GenericDaoCommand {
             if (kurslaengeOrigin != kurs.getKurslaenge()) {
                 for (Kursanmeldung kursanmeldung : kursOrigin.getKursanmeldungen()) {
                     Angehoeriger rechnungsempfaenger = kursanmeldung.getSchueler().getRechnungsempfaenger();
-                    UpdateWochenbetragUndAnzWochenCommand updateWochenbetragUndAnzWochenCommand = new UpdateWochenbetragUndAnzWochenCommand(rechnungsempfaenger, semester, null);
+                    UpdateWochenbetragUndAnzWochenCommand updateWochenbetragUndAnzWochenCommand = new UpdateWochenbetragUndAnzWochenCommand(rechnungsempfaenger, semester);
                     updateWochenbetragUndAnzWochenCommand.setEntityManager(entityManager);
                     updateWochenbetragUndAnzWochenCommand.execute();
                 }

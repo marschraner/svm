@@ -168,7 +168,7 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
     @Override
     public void updateAnzWochenSemesterrechnungen() {
         CommandInvoker commandInvoker = getCommandInvoker();
-        UpdateAnzWochenSemesterrechnungenCommand updateAnzWochenSemesterrechnungenCommand = new UpdateAnzWochenSemesterrechnungenCommand(semesterOrigin.getSemesterrechnungen(), semester.getAnzahlSchulwochen());
+        UpdateAnzWochenSemesterrechnungenCommand updateAnzWochenSemesterrechnungenCommand = new UpdateAnzWochenSemesterrechnungenCommand(semesterOrigin.getSemesterrechnungen(), semester);
         commandInvoker.executeCommandAsTransaction(updateAnzWochenSemesterrechnungenCommand);
     }
 
