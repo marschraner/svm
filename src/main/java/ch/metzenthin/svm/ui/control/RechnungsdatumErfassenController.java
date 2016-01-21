@@ -167,7 +167,33 @@ public class RechnungsdatumErfassenController extends AbstractController {
                 optionsWarnung,  //the titles of buttons
                 optionsWarnung[1]); //default button title
         if (n == 0) {
-            rechnungsdatumErfassenModel.replaceRechnungsdatumAndUpdateSemesterrechnung(svmContext, semesterrechnungenTableModel, rechnungstyp);
+            // Wait-Cursor funktioniert hier nicht (wegen vorhergehendem Dialog)
+            final JDialog dialog = new JDialog();
+            dialog.setModal(true);
+            // Kein Maximierung-Button
+            dialog.setResizable(false);
+            // Schliessen soll keinen Effekt haben
+            dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+            dialog.setTitle("Rechnungsdatum wird gesetzt");
+            final JOptionPane optionPane = new JOptionPane("Das Rechnungsdatum wird gesetzt. Bitte warten ...", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, svmContext.getDialogIcons().getInformationIcon(), new Object[]{}, null);
+            dialog.setContentPane(optionPane);
+            // Public method to center the dialog after calling pack()
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+                @Override
+                protected Void doInBackground() throws Exception {
+                    rechnungsdatumErfassenModel.replaceRechnungsdatumAndUpdateSemesterrechnung(svmContext, semesterrechnungenTableModel, rechnungstyp);
+                    return null;
+                }
+                @Override
+                protected void done() {
+                    dialog.dispose();
+                }
+            };
+            worker.execute();
+            dialog.setVisible(true);
+
         }
         rechnungsdatumErfassenDialog.dispose();
     }
