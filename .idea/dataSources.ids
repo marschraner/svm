@@ -716,6 +716,7 @@ code_id</columns>
         <data-type>int(11)</data-type>
       </column>
       <column id="185" parent="20" name="discriminator">
+        <mandatory>1</mandatory>
         <data-type>varchar(30)</data-type>
       </column>
       <column id="186" parent="20" name="anrede">
@@ -902,154 +903,168 @@ code_id</columns>
         <mandatory>1</mandatory>
         <data-type>date</data-type>
       </column>
-      <column id="229" parent="24" name="last_updated">
+      <column id="229" parent="24" name="ferienbeginn1">
+        <mandatory>1</mandatory>
+        <data-type>date</data-type>
+      </column>
+      <column id="230" parent="24" name="ferienende1">
+        <mandatory>1</mandatory>
+        <data-type>date</data-type>
+      </column>
+      <column id="231" parent="24" name="ferienbeginn2">
+        <data-type>date</data-type>
+      </column>
+      <column id="232" parent="24" name="ferienende2">
+        <data-type>date</data-type>
+      </column>
+      <column id="233" parent="24" name="last_updated">
         <mandatory>1</mandatory>
         <data-type>timestamp</data-type>
         <default-expression>&apos;CURRENT_TIMESTAMP&apos;</default-expression>
       </column>
-      <key id="230" parent="24" name="PRIMARY">
+      <key id="234" parent="24" name="PRIMARY">
         <columns>semester_id</columns>
         <primary>1</primary>
       </key>
-      <column id="231" parent="25" name="semester_id">
+      <column id="235" parent="25" name="semester_id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="232" parent="25" name="person_id">
+      <column id="236" parent="25" name="person_id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="233" parent="25" name="stipendium">
+      <column id="237" parent="25" name="stipendium">
         <data-type>varchar(13)</data-type>
       </column>
-      <column id="234" parent="25" name="gratiskinder">
+      <column id="238" parent="25" name="gratiskinder">
         <mandatory>1</mandatory>
         <data-type>tinyint(1)</data-type>
       </column>
-      <column id="235" parent="25" name="rechnungsdatum_vorrechnung">
+      <column id="239" parent="25" name="rechnungsdatum_vorrechnung">
         <data-type>date</data-type>
       </column>
-      <column id="236" parent="25" name="ermaessigung_vorrechnung">
+      <column id="240" parent="25" name="ermaessigung_vorrechnung">
         <mandatory>1</mandatory>
         <data-type>decimal(8,2)</data-type>
       </column>
-      <column id="237" parent="25" name="ermaessigungsgrund_vorrechnung">
+      <column id="241" parent="25" name="ermaessigungsgrund_vorrechnung">
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="238" parent="25" name="zuschlag_vorrechnung">
+      <column id="242" parent="25" name="zuschlag_vorrechnung">
         <mandatory>1</mandatory>
         <data-type>decimal(8,2)</data-type>
       </column>
-      <column id="239" parent="25" name="zuschlagsgrund_vorrechnung">
+      <column id="243" parent="25" name="zuschlagsgrund_vorrechnung">
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="240" parent="25" name="anzahl_wochen_vorrechnung">
+      <column id="244" parent="25" name="anzahl_wochen_vorrechnung">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="241" parent="25" name="wochenbetrag_vorrechnung">
+      <column id="245" parent="25" name="wochenbetrag_vorrechnung">
         <mandatory>1</mandatory>
         <data-type>decimal(7,2)</data-type>
       </column>
-      <column id="242" parent="25" name="rechnungsdatum_nachrechnung">
+      <column id="246" parent="25" name="rechnungsdatum_nachrechnung">
         <data-type>date</data-type>
       </column>
-      <column id="243" parent="25" name="ermaessigung_nachrechnung">
+      <column id="247" parent="25" name="ermaessigung_nachrechnung">
         <mandatory>1</mandatory>
         <data-type>decimal(8,2)</data-type>
       </column>
-      <column id="244" parent="25" name="ermaessigungsgrund_nachrechnung">
+      <column id="248" parent="25" name="ermaessigungsgrund_nachrechnung">
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="245" parent="25" name="zuschlag_nachrechnung">
+      <column id="249" parent="25" name="zuschlag_nachrechnung">
         <mandatory>1</mandatory>
         <data-type>decimal(8,2)</data-type>
       </column>
-      <column id="246" parent="25" name="zuschlagsgrund_nachrechnung">
+      <column id="250" parent="25" name="zuschlagsgrund_nachrechnung">
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="247" parent="25" name="anzahl_wochen_nachrechnung">
+      <column id="251" parent="25" name="anzahl_wochen_nachrechnung">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="248" parent="25" name="wochenbetrag_nachrechnung">
+      <column id="252" parent="25" name="wochenbetrag_nachrechnung">
         <mandatory>1</mandatory>
         <data-type>decimal(7,2)</data-type>
       </column>
-      <column id="249" parent="25" name="datum_zahlung_1">
+      <column id="253" parent="25" name="datum_zahlung_1">
         <data-type>date</data-type>
       </column>
-      <column id="250" parent="25" name="betrag_zahlung_1">
+      <column id="254" parent="25" name="betrag_zahlung_1">
         <data-type>decimal(8,2)</data-type>
       </column>
-      <column id="251" parent="25" name="datum_zahlung_2">
+      <column id="255" parent="25" name="datum_zahlung_2">
         <data-type>date</data-type>
       </column>
-      <column id="252" parent="25" name="betrag_zahlung_2">
+      <column id="256" parent="25" name="betrag_zahlung_2">
         <data-type>decimal(8,2)</data-type>
       </column>
-      <column id="253" parent="25" name="datum_zahlung_3">
+      <column id="257" parent="25" name="datum_zahlung_3">
         <data-type>date</data-type>
       </column>
-      <column id="254" parent="25" name="betrag_zahlung_3">
+      <column id="258" parent="25" name="betrag_zahlung_3">
         <data-type>decimal(8,2)</data-type>
       </column>
-      <column id="255" parent="25" name="code_id">
+      <column id="259" parent="25" name="code_id">
         <data-type>int(11)</data-type>
       </column>
-      <column id="256" parent="25" name="bemerkungen">
+      <column id="260" parent="25" name="bemerkungen">
         <data-type>text</data-type>
       </column>
-      <column id="257" parent="25" name="last_updated">
+      <column id="261" parent="25" name="last_updated">
         <mandatory>1</mandatory>
         <data-type>timestamp</data-type>
         <default-expression>&apos;CURRENT_TIMESTAMP&apos;</default-expression>
       </column>
-      <index id="258" parent="25" name="code_id">
+      <index id="262" parent="25" name="code_id">
         <columns>code_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="259" parent="25" name="person_id">
+      <index id="263" parent="25" name="person_id">
         <columns>person_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="260" parent="25" name="PRIMARY">
+      <key id="264" parent="25" name="PRIMARY">
         <columns>semester_id
 person_id</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="261" parent="25" name="Semesterrechnung_ibfk_1">
+      <foreign-key id="265" parent="25" name="Semesterrechnung_ibfk_1">
         <columns>semester_id</columns>
         <ref-key>~.Semester.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="262" parent="25" name="Semesterrechnung_ibfk_2">
+      <foreign-key id="266" parent="25" name="Semesterrechnung_ibfk_2">
         <columns>person_id</columns>
         <ref-key>~.Angehoeriger.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="263" parent="25" name="Semesterrechnung_ibfk_3">
+      <foreign-key id="267" parent="25" name="Semesterrechnung_ibfk_3">
         <columns>code_id</columns>
         <ref-key>~.SemesterrechnungCode.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="264" parent="26" name="code_id">
+      <column id="268" parent="26" name="code_id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="265" parent="26" name="last_updated">
+      <column id="269" parent="26" name="last_updated">
         <mandatory>1</mandatory>
         <data-type>timestamp</data-type>
         <default-expression>&apos;CURRENT_TIMESTAMP&apos;</default-expression>
       </column>
-      <key id="266" parent="26" name="PRIMARY">
+      <key id="270" parent="26" name="PRIMARY">
         <columns>code_id</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="267" parent="26" name="SemesterrechnungCode_ibfk_1">
+      <foreign-key id="271" parent="26" name="SemesterrechnungCode_ibfk_1">
         <columns>code_id</columns>
         <ref-key>~.Code.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>

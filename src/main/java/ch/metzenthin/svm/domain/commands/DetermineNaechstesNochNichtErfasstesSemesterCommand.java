@@ -50,7 +50,7 @@ public class DetermineNaechstesNochNichtErfasstesSemesterCommand implements Comm
                 naechtesSchuljahr = schuljahr1 + "/" + schuljahr2;
             }
         }
-        naechstesNochNichtErfasstesSemester = new Semester(naechtesSchuljahr, naechsteSemesterbezeichnung, null, null);
+        naechstesNochNichtErfasstesSemester = new Semester(naechtesSchuljahr, naechsteSemesterbezeichnung, null, null, null, null, null, null);
     }
 
     private boolean isSemesterBereitsErfasst(String naechtesSchuljahr, Semesterbezeichnung naechsteSemesterbezeichnung) {

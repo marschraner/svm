@@ -56,13 +56,13 @@ public class ImportKurseFromPreviousSemesterCommandTest {
         List<Kurs> erfassteKurse = new ArrayList<>();
 
         // Semester, Kurstyp, Kursort und Lehrkräfte erzeugen
-        Semester semester1 = new Semester("1911/1912", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1911, Calendar.AUGUST, 20), new GregorianCalendar(1912, Calendar.FEBRUARY, 10));
+        Semester semester1 = new Semester("1911/1912", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1911, Calendar.AUGUST, 20), new GregorianCalendar(1912, Calendar.FEBRUARY, 10), new GregorianCalendar(1911, Calendar.OCTOBER, 5), new GregorianCalendar(1911, Calendar.OCTOBER, 17), new GregorianCalendar(1911, Calendar.DECEMBER, 21), new GregorianCalendar(1912, Calendar.JANUARY, 2));
         SaveOrUpdateSemesterCommand saveOrUpdateSemesterCommand = new SaveOrUpdateSemesterCommand(semester1, null, erfassteSemester);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterCommand);
-        Semester semester2 = new Semester("1911/1912", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1912, Calendar.FEBRUARY, 20), new GregorianCalendar(1912, Calendar.JULY, 10));
+        Semester semester2 = new Semester("1911/1912", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1912, Calendar.FEBRUARY, 20), new GregorianCalendar(1912, Calendar.JULY, 10), new GregorianCalendar(1912, Calendar.APRIL, 25), new GregorianCalendar(1912, Calendar.MAY, 7), null, null);
         saveOrUpdateSemesterCommand = new SaveOrUpdateSemesterCommand(semester2, null, erfassteSemester);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterCommand);
-        Semester semester3 = new Semester("1912/1913", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1912, Calendar.AUGUST, 20), new GregorianCalendar(1913, Calendar.FEBRUARY, 10));
+        Semester semester3 = new Semester("1912/1913", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(1912, Calendar.AUGUST, 20), new GregorianCalendar(1913, Calendar.FEBRUARY, 10), new GregorianCalendar(1912, Calendar.OCTOBER, 5), new GregorianCalendar(1912, Calendar.OCTOBER, 17), new GregorianCalendar(1912, Calendar.DECEMBER, 21), new GregorianCalendar(1913, Calendar.JANUARY, 2));
         saveOrUpdateSemesterCommand = new SaveOrUpdateSemesterCommand(semester3, null, erfassteSemester);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterCommand);
 

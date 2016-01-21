@@ -41,6 +41,22 @@ public class Semester implements Comparable<Semester> {
     @Column(name = "semesterende", nullable = false)
     private Calendar semesterende;
 
+    @Temporal(TemporalType.DATE)
+    @Column(name = "ferienbeginn1", nullable = false)
+    private Calendar ferienbeginn1;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "ferienende1", nullable = false)
+    private Calendar ferienende1;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "ferienbeginn2", nullable = true)
+    private Calendar ferienbeginn2;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "ferienende2", nullable = true)
+    private Calendar ferienende2;
+
     @OneToMany(mappedBy = "semester")
     private Set<Kurs> kurse = new HashSet<>();
 
@@ -50,11 +66,15 @@ public class Semester implements Comparable<Semester> {
     public Semester() {
     }
 
-    public Semester(String schuljahr, Semesterbezeichnung semesterbezeichnung, Calendar semesterbeginn, Calendar semesterende) {
+    public Semester(String schuljahr, Semesterbezeichnung semesterbezeichnung, Calendar semesterbeginn, Calendar semesterende, Calendar ferienbeginn1, Calendar ferienende1, Calendar ferienbeginn2, Calendar ferienende2) {
         this.schuljahr = schuljahr;
         this.semesterbezeichnung = semesterbezeichnung;
         this.semesterbeginn = semesterbeginn;
         this.semesterende = semesterende;
+        this.ferienbeginn1 = ferienbeginn1;
+        this.ferienende1 = ferienende1;
+        this.ferienbeginn2 = ferienbeginn2;
+        this.ferienende2 = ferienende2;
     }
 
     public boolean isIdenticalWith(Semester otherSemester) {
@@ -70,6 +90,10 @@ public class Semester implements Comparable<Semester> {
         this.semesterbezeichnung = otherSemester.getSemesterbezeichnung();
         this.semesterbeginn = otherSemester.getSemesterbeginn();
         this.semesterende = otherSemester.getSemesterende();
+        this.ferienbeginn1 = otherSemester.getFerienbeginn1();
+        this.ferienende1 = otherSemester.getFerienende1();
+        this.ferienbeginn2 = otherSemester.getFerienbeginn2();
+        this.ferienende2 = otherSemester.getFerienende2();
     }
 
     @Override
@@ -131,6 +155,38 @@ public class Semester implements Comparable<Semester> {
 
     public void setSemesterende(Calendar semesterende) {
         this.semesterende = semesterende;
+    }
+
+    public Calendar getFerienbeginn1() {
+        return ferienbeginn1;
+    }
+
+    public void setFerienbeginn1(Calendar ferienbeginn1) {
+        this.ferienbeginn1 = ferienbeginn1;
+    }
+
+    public Calendar getFerienende1() {
+        return ferienende1;
+    }
+
+    public void setFerienende1(Calendar ferienende1) {
+        this.ferienende1 = ferienende1;
+    }
+
+    public Calendar getFerienbeginn2() {
+        return ferienbeginn2;
+    }
+
+    public void setFerienbeginn2(Calendar ferienbeginn2) {
+        this.ferienbeginn2 = ferienbeginn2;
+    }
+
+    public Calendar getFerienende2() {
+        return ferienende2;
+    }
+
+    public void setFerienende2(Calendar ferienende2) {
+        this.ferienende2 = ferienende2;
     }
 
     @Transient

@@ -322,6 +322,10 @@ CREATE TABLE IF NOT EXISTS Semester (
     semesterbezeichnung        VARCHAR(20)   NOT NULL,
     semesterbeginn             DATE          NOT NULL,
     semesterende               DATE          NOT NULL,
+    ferienbeginn1              DATE          NOT NULL,
+    ferienende1                DATE          NOT NULL,
+    ferienbeginn2              DATE          NULL,
+    ferienende2                DATE          NULL,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (semester_id));
 

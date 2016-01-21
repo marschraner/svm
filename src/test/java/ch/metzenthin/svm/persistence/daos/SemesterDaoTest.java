@@ -52,7 +52,7 @@ public class SemesterDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10));
+            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), new GregorianCalendar(2011, Calendar.OCTOBER, 5), new GregorianCalendar(2011, Calendar.OCTOBER, 17), new GregorianCalendar(2011, Calendar.DECEMBER, 21), new GregorianCalendar(2012, Calendar.JANUARY, 2));
 
             entityManager.persist(semester);
 
@@ -62,6 +62,10 @@ public class SemesterDaoTest {
             assertEquals(Semesterbezeichnung.ERSTES_SEMESTER, semesterFound.getSemesterbezeichnung());
             assertEquals(new GregorianCalendar(2011, Calendar.AUGUST, 20), semesterFound.getSemesterbeginn());
             assertEquals(new GregorianCalendar(2012, Calendar.FEBRUARY, 10), semesterFound.getSemesterende());
+            assertEquals(new GregorianCalendar(2011, Calendar.OCTOBER, 5), semesterFound.getFerienbeginn1());
+            assertEquals(new GregorianCalendar(2011, Calendar.OCTOBER, 17), semesterFound.getFerienende1());
+            assertEquals(new GregorianCalendar(2011, Calendar.DECEMBER, 21), semesterFound.getFerienbeginn2());
+            assertEquals(new GregorianCalendar(2012, Calendar.JANUARY, 2), semesterFound.getFerienende2());
 
         } finally {
             if (tx != null) {
@@ -77,7 +81,7 @@ public class SemesterDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10));
+            Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), new GregorianCalendar(2011, Calendar.OCTOBER, 5), new GregorianCalendar(2011, Calendar.OCTOBER, 17), new GregorianCalendar(2011, Calendar.DECEMBER, 21), new GregorianCalendar(2012, Calendar.JANUARY, 2));
             Semester semesterSaved = semesterDao.save(semester);
 
             entityManager.flush();
@@ -91,6 +95,11 @@ public class SemesterDaoTest {
             assertEquals(Semesterbezeichnung.ERSTES_SEMESTER, semesterFound.getSemesterbezeichnung());
             assertEquals(new GregorianCalendar(2011, Calendar.AUGUST, 20), semesterFound.getSemesterbeginn());
             assertEquals(new GregorianCalendar(2012, Calendar.FEBRUARY, 10), semesterFound.getSemesterende());
+            assertEquals(new GregorianCalendar(2011, Calendar.OCTOBER, 5), semesterFound.getFerienbeginn1());
+            assertEquals(new GregorianCalendar(2011, Calendar.OCTOBER, 17), semesterFound.getFerienende1());
+            assertEquals(new GregorianCalendar(2011, Calendar.DECEMBER, 21), semesterFound.getFerienbeginn2());
+            assertEquals(new GregorianCalendar(2012, Calendar.JANUARY, 2), semesterFound.getFerienende2());
+
 
         } finally {
             if (tx != null) {
@@ -107,11 +116,11 @@ public class SemesterDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Semester semester1 = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10));
+            Semester semester1 = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), new GregorianCalendar(2011, Calendar.OCTOBER, 5), new GregorianCalendar(2011, Calendar.OCTOBER, 17), new GregorianCalendar(2011, Calendar.DECEMBER, 21), new GregorianCalendar(2012, Calendar.JANUARY, 2));
             Semester semester1Saved = semesterDao.save(semester1);
             int semester1Id = semester1Saved.getSemesterId();
 
-            Semester semester2 = new Semester("2011/2012", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(2012, Calendar.FEBRUARY, 20), new GregorianCalendar(2012, Calendar.JULY, 10));
+            Semester semester2 = new Semester("2011/2012", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(2012, Calendar.FEBRUARY, 20), new GregorianCalendar(2012, Calendar.JULY, 10), new GregorianCalendar(2012, Calendar.APRIL, 25), new GregorianCalendar(2012, Calendar.MAY, 7), null, null);
             Semester semester2Saved = semesterDao.save(semester2);
             int semester2Id = semester2Saved.getSemesterId();
 
@@ -150,10 +159,10 @@ public class SemesterDaoTest {
             tx.begin();
 
             // Semester hinzufügen
-            Semester semester1 = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10));
+            Semester semester1 = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), new GregorianCalendar(2011, Calendar.OCTOBER, 5), new GregorianCalendar(2011, Calendar.OCTOBER, 17), new GregorianCalendar(2011, Calendar.DECEMBER, 21), new GregorianCalendar(2012, Calendar.JANUARY, 2));
             semesterDao.save(semester1);
 
-            Semester semester2 = new Semester("2011/2012", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(2012, Calendar.FEBRUARY, 20), new GregorianCalendar(2012, Calendar.JULY, 10));
+            Semester semester2 = new Semester("2011/2012", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(2012, Calendar.FEBRUARY, 20), new GregorianCalendar(2012, Calendar.JULY, 10), new GregorianCalendar(2012, Calendar.APRIL, 25), new GregorianCalendar(2012, Calendar.MAY, 7), null, null);
             semesterDao.save(semester2);
 
             entityManager.flush();
