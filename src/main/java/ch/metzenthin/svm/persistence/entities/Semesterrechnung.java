@@ -405,16 +405,37 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     }
 
     @Transient
+    public BigDecimal getZwischensummeVorrechnung() {
+        if (anzahlWochenVorrechnung == null || wochenbetragVorrechnung == null) {
+            return null;
+        }
+        return new BigDecimal(anzahlWochenVorrechnung).multiply(wochenbetragVorrechnung);
+    }
+
+    @Transient
+    public BigDecimal getErmaessigungStipendiumVorrechnung() {
+        if (anzahlWochenVorrechnung == null || wochenbetragVorrechnung == null) {
+            return null;
+        }
+        if (stipendium != null && stipendium != Stipendium.KEINES) {
+            BigDecimal ermaessigungStipendiumVorrechnung = getZwischensummeVorrechnung();
+            ermaessigungStipendiumVorrechnung = ermaessigungStipendiumVorrechnung.multiply(new BigDecimal(1- stipendium.getFaktor()));
+            ermaessigungStipendiumVorrechnung = ermaessigungStipendiumVorrechnung.setScale(1, BigDecimal.ROUND_HALF_EVEN);  // Runden auf 10 Rappen
+            return ermaessigungStipendiumVorrechnung.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        } else {
+            return new BigDecimal("0.00");
+        }
+    }
+
+    @Transient
     public BigDecimal getSchulgeldVorrechnung() {
         if (anzahlWochenVorrechnung == null || wochenbetragVorrechnung == null) {
             return null;
         }
-        BigDecimal schulgeldVorrechnung = new BigDecimal(anzahlWochenVorrechnung).multiply(wochenbetragVorrechnung);
+        BigDecimal schulgeldVorrechnung = getZwischensummeVorrechnung();
         // Stipendium
         if (stipendium != null && stipendium != Stipendium.KEINES) {
-            schulgeldVorrechnung = schulgeldVorrechnung.multiply(new BigDecimal(stipendium.getFaktor()));
-            schulgeldVorrechnung = schulgeldVorrechnung.setScale(1, BigDecimal.ROUND_HALF_EVEN);  // Runden auf 10 Rappen
-            schulgeldVorrechnung = schulgeldVorrechnung.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+            schulgeldVorrechnung = schulgeldVorrechnung.subtract(getErmaessigungStipendiumVorrechnung());
         }
         // Gratiskinder
         if (gratiskinder != null && gratiskinder) {
@@ -431,16 +452,37 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     }
 
     @Transient
+    public BigDecimal getZwischensummeNachrechnung() {
+        if (anzahlWochenNachrechnung == null || wochenbetragNachrechnung == null) {
+            return null;
+        }
+        return new BigDecimal(anzahlWochenNachrechnung).multiply(wochenbetragNachrechnung);
+    }
+
+    @Transient
+    public BigDecimal getErmaessigungStipendiumNachrechnung() {
+        if (anzahlWochenNachrechnung == null || wochenbetragNachrechnung == null) {
+            return null;
+        }
+        if (stipendium != null && stipendium != Stipendium.KEINES) {
+            BigDecimal ermaessigungStipendiumNachrechnung = getZwischensummeNachrechnung();
+            ermaessigungStipendiumNachrechnung = ermaessigungStipendiumNachrechnung.multiply(new BigDecimal(1- stipendium.getFaktor()));
+            ermaessigungStipendiumNachrechnung = ermaessigungStipendiumNachrechnung.setScale(1, BigDecimal.ROUND_HALF_EVEN);  // Runden auf 10 Rappen
+            return ermaessigungStipendiumNachrechnung.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        } else {
+            return new BigDecimal("0.00");
+        }
+    }
+
+    @Transient
     public BigDecimal getSchulgeldNachrechnung() {
         if (anzahlWochenNachrechnung == null || wochenbetragNachrechnung == null) {
             return null;
         }
-        BigDecimal schulgeldNachrechnung = new BigDecimal(anzahlWochenNachrechnung).multiply(wochenbetragNachrechnung);
+        BigDecimal schulgeldNachrechnung = getZwischensummeNachrechnung();
         // Stipendium
         if (stipendium != null && stipendium != Stipendium.KEINES) {
-            schulgeldNachrechnung = schulgeldNachrechnung.multiply(new BigDecimal(stipendium.getFaktor()));
-            schulgeldNachrechnung = schulgeldNachrechnung.setScale(1, BigDecimal.ROUND_HALF_EVEN);  // Runden auf 10 Rappen
-            schulgeldNachrechnung = schulgeldNachrechnung.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+            schulgeldNachrechnung = schulgeldNachrechnung.subtract(getErmaessigungStipendiumNachrechnung());
         }
         // Gratiskinder
         if (gratiskinder != null && gratiskinder) {
