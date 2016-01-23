@@ -47,7 +47,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
     private JLabel lblZuschlagVorrechnung;
     private JLabel lblMalRabattFaktorVorrechnung;
     private JLabel lblRabattFaktorVorrechnung;
-    private JLabel lblSchulgeldVorrechnung;
+    private JLabel lblRechnungsbetragVorrechnung;
     private JLabel lblSchuelersNachrechnung;
     private JLabel lblKurseNachrechnung;
     private JLabel lblSechsJahresRabattNachrechnung;
@@ -55,7 +55,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
     private JLabel lblZuschlagNachrechnung;
     private JLabel lblMalRabattFaktorNachrechnung;
     private JLabel lblRabattFaktorNachrechnung;
-    private JLabel lblSchulgeldNachrechnung;
+    private JLabel lblRechnungsbetragNachrechnung;
     private JLabel lblRestbetrag;
     private JLabel lblScrollPosition;
     private JButton btnEmail;
@@ -124,7 +124,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         setLblZuschlagVorrechnung();
         setLblMalRabattFaktorVorrechnung();
         setLblRabattFaktorVorrechnung();
-        setLblSchulgeldVorrechnung();
+        setLblRechnungsbetragVorrechnung();
         setLblSchuelersNachrechnung();
         setLblKurseNachrechnung();
         setLblSechsJahresRabattNachrechnung();
@@ -132,7 +132,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         setLblZuschlagNachrechnung();
         setLblMalRabattFaktorNachrechnung();
         setLblRabattFaktorNachrechnung();
-        setLblSchulgeldNachrechnung();
+        setLblRechnungsbetragNachrechnung();
         setLblRestbetrag();
         setLblScrollPosition();
         constructionDone();
@@ -307,13 +307,13 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         }
     }
 
-    public void setLblSchulgeldVorrechnung(JLabel lblSchulgeldVorrechnung) {
-        this.lblSchulgeldVorrechnung = lblSchulgeldVorrechnung;
-        setLblSchulgeldVorrechnung();
+    public void setLblRechnungsbetragVorrechnung(JLabel lblRechnungsbetragVorrechnung) {
+        this.lblRechnungsbetragVorrechnung = lblRechnungsbetragVorrechnung;
+        setLblRechnungsbetragVorrechnung();
     }
 
-    private void setLblSchulgeldVorrechnung() {
-        lblSchulgeldVorrechnung.setText(semesterrechnungBearbeitenModel.getSchulgeldVorrechnung());
+    private void setLblRechnungsbetragVorrechnung() {
+        lblRechnungsbetragVorrechnung.setText(semesterrechnungBearbeitenModel.getRechnungsbetragVorrechnung());
     }
 
     public void setLblSchuelersNachrechnung(JLabel lblSchuelersNachrechnung) {
@@ -392,13 +392,13 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         }
     }
 
-    public void setLblSchulgeldNachrechnung(JLabel lblSchulgeldNachrechnung) {
-        this.lblSchulgeldNachrechnung = lblSchulgeldNachrechnung;
-        setLblSchulgeldNachrechnung();
+    public void setLblRechnungsbetragNachrechnung(JLabel lblRechnungsbetragNachrechnung) {
+        this.lblRechnungsbetragNachrechnung = lblRechnungsbetragNachrechnung;
+        setLblRechnungsbetragNachrechnung();
     }
 
-    private void setLblSchulgeldNachrechnung() {
-        lblSchulgeldNachrechnung.setText(semesterrechnungBearbeitenModel.getSchulgeldNachrechnung());
+    private void setLblRechnungsbetragNachrechnung() {
+        lblRechnungsbetragNachrechnung.setText(semesterrechnungBearbeitenModel.getRechnungsbetragNachrechnung());
     }
 
     public void setLblRestbetrag(JLabel lblRestbetrag) {
@@ -622,12 +622,12 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         setLblZuschlagVorrechnung();
         setLblMalRabattFaktorVorrechnung();
         setLblRabattFaktorVorrechnung();
-        setLblSchulgeldVorrechnung();
+        setLblRechnungsbetragVorrechnung();
         setLblErmaessigungNachrechnung();
         setLblZuschlagNachrechnung();
         setLblMalRabattFaktorNachrechnung();
         setLblRabattFaktorNachrechnung();
-        setLblSchulgeldNachrechnung();
+        setLblRechnungsbetragNachrechnung();
         setLblRestbetrag();
     }
 

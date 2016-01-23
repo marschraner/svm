@@ -56,7 +56,7 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
             out.write(separator);
             out.write("Wochenbetrag");
             out.write(separator);
-            out.write("Zwischensumme");
+            out.write("Schulgeld");
             out.write(separator);
             out.write("Ermässigung");
             out.write(separator);
@@ -64,7 +64,7 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
             out.write(separator);
             out.write("Stipendium");
             out.write(separator);
-            out.write("Schulgeld");
+            out.write("Rechnungsbetrag");
             out.write('\n');
 
             // Daten
@@ -72,13 +72,13 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                 if (rechnungstyp == Rechnungstyp.VORRECHNUNG) {
                     if (semesterrechnung.getRechnungsdatumVorrechnung() == null ||
                             semesterrechnung.getWochenbetragVorrechnung() == null ||
-                            semesterrechnung.getSchulgeldVorrechnung() == null) {
+                            semesterrechnung.getRechnungsbetragVorrechnung() == null) {
                         continue;
                     }
                 } else {
                     if (semesterrechnung.getRechnungsdatumNachrechnung() == null ||
                             semesterrechnung.getWochenbetragNachrechnung() == null ||
-                            semesterrechnung.getSchulgeldNachrechnung() == null) {
+                            semesterrechnung.getRechnungsbetragNachrechnung() == null) {
                         continue;
                     }
                 }
@@ -103,7 +103,7 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                     out.write(separator);
                     out.write(semesterrechnung.getWochenbetragVorrechnung().toString());
                     out.write(separator);
-                    out.write(semesterrechnung.getZwischensummeVorrechnung().toString());
+                    out.write(semesterrechnung.getSchulgeldVorrechnung().toString());
                     out.write(separator);
                     BigDecimal ermaessigungVorrechnung = semesterrechnung.getErmaessigungVorrechnung();
                     if (ermaessigungVorrechnung != null && !ermaessigungVorrechnung.equals(BigDecimal.ZERO)) {
@@ -120,7 +120,7 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                         out.write(ermaessigungStipendiumVorrechnung.toString());
                     }
                     out.write(separator);
-                    out.write(semesterrechnung.getSchulgeldVorrechnung().toString());
+                    out.write(semesterrechnung.getRechnungsbetragVorrechnung().toString());
                 } else {
                     out.write(asString(semesterrechnung.getRechnungsdatumNachrechnung()));
                     out.write(separator);
@@ -128,7 +128,7 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                     out.write(separator);
                     out.write(semesterrechnung.getWochenbetragNachrechnung().toString());
                     out.write(separator);
-                    out.write(semesterrechnung.getZwischensummeNachrechnung().toString());
+                    out.write(semesterrechnung.getSchulgeldNachrechnung().toString());
                     out.write(separator);
                     BigDecimal ermaessigungNachrechnung = semesterrechnung.getErmaessigungNachrechnung();
                     if (ermaessigungNachrechnung != null && !ermaessigungNachrechnung.equals(BigDecimal.ZERO)) {
@@ -145,7 +145,7 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                         out.write(ermaessigungStipendiumNachrechnung.toString());
                     }
                     out.write(separator);
-                    out.write(semesterrechnung.getSchulgeldNachrechnung().toString());
+                    out.write(semesterrechnung.getRechnungsbetragNachrechnung().toString());
                 }
                 out.write('\n');
             }

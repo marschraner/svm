@@ -23,11 +23,11 @@ public interface SemesterrechnungBearbeitenModel extends SemesterrechnungModel {
     String getRechnungsempfaengerKurseVorrechnung();
     String getSechsJahresRabattVorrechnung();
     String getRabattFaktor();
-    String getSchulgeldVorrechnung();
+    String getRechnungsbetragVorrechnung();
     String getRechnungsempfaengerSchuelersNachrechnung();
     String getRechnungsempfaengerKurseNachrechnung();
     String getSechsJahresRabattNachrechnung();
-    String getSchulgeldNachrechnung();
+    String getRechnungsbetragNachrechnung();
     String getRestbetrag();
 
     void setSemesterrechnungOrigin(Semesterrechnung semesterrechnungOrigin);

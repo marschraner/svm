@@ -59,7 +59,7 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
         GROESSER
     }
 
-    enum PraezisierungSchulgeldVorrechnungSelected {
+    enum PraezisierungRechnungsbetragVorrechnungSelected {
         GLEICH,
         KLEINER,
         GROESSER
@@ -107,7 +107,7 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
         GROESSER
     }
 
-    enum PraezisierungSchulgeldNachrechnungSelected {
+    enum PraezisierungRechnungsbetragNachrechnungSelected {
         GLEICH,
         KLEINER,
         GROESSER
@@ -119,7 +119,7 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
         ALLE
     }
 
-    enum PraezisierungDifferenzSchulgeldSelected {
+    enum PraezisierungDifferenzRechnungsbetragSelected {
         GLEICH,
         KLEINER,
         GROESSER
@@ -142,8 +142,8 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     PraezisierungErmaessigungVorrechnungSelected getPraezisierungErmaessigungVorrechnungSelected();
     PraezisierungZuschlagVorrechnungSelected getPraezisierungZuschlagVorrechnungSelected();
     PraezisierungWochenbetragVorrechnungSelected getPraezisierungWochenbetragVorrechnungSelected();
-    PraezisierungSchulgeldVorrechnungSelected getPraezisierungSchulgeldVorrechnungSelected();
-    BigDecimal getSchulgeldVorrechnung();
+    PraezisierungRechnungsbetragVorrechnungSelected getPraezisierungRechnungsbetragVorrechnungSelected();
+    BigDecimal getRechnungsbetragVorrechnung();
     SechsJahresRabattJaNeinVorrechnungSelected getSechsJahresRabattJaNeinVorrechnungSelected();
     RechnungsdatumGesetztNachrechnungSelected getRechnungsdatumGesetztNachrechnungSelected();
     PraezisierungRechnungsdatumNachrechnungSelected getPraezisierungRechnungsdatumNachrechnungSelected();
@@ -151,11 +151,11 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     PraezisierungZuschlagNachrechnungSelected getPraezisierungZuschlagNachrechnungSelected();
     PraezisierungAnzahlWochenNachrechnungSelected getPraezisierungAnzahlWochenNachrechnungSelected();
     PraezisierungWochenbetragNachrechnungSelected getPraezisierungWochenbetragNachrechnungSelected();
-    PraezisierungSchulgeldNachrechnungSelected getPraezisierungSchulgeldNachrechnungSelected();
-    BigDecimal getSchulgeldNachrechnung();
+    PraezisierungRechnungsbetragNachrechnungSelected getPraezisierungRechnungsbetragNachrechnungSelected();
+    BigDecimal getRechnungsbetragNachrechnung();
     SechsJahresRabattJaNeinNachrechnungSelected getSechsJahresRabattJaNeinNachrechnungSelected();
-    PraezisierungDifferenzSchulgeldSelected getPraezisierungDifferenzSchulgeldSelected();
-    BigDecimal getDifferenzSchulgeld();
+    PraezisierungDifferenzRechnungsbetragSelected getPraezisierungDifferenzRechnungsbetragSelected();
+    BigDecimal getDifferenzRechnungsbetrag();
     PraezisierungRestbetragSelected getPraezisierungRestbetragSelected();
     BigDecimal getRestbetrag();
 
@@ -170,8 +170,8 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     void setPraezisierungErmaessigungVorrechnungSelected(PraezisierungErmaessigungVorrechnungSelected praezisierungErmaessigungVorrechnungSelected);
     void setPraezisierungZuschlagVorrechnungSelected(PraezisierungZuschlagVorrechnungSelected praezisierungZuschlagVorrechnungSelected);
     void setPraezisierungWochenbetragVorrechnungSelected(PraezisierungWochenbetragVorrechnungSelected praezisierungWochenbetragVorrechnungSelected);
-    void setPraezisierungSchulgeldVorrechnungSelected(PraezisierungSchulgeldVorrechnungSelected praezisierungSchulgeldVorrechnungSelected);
-    void setSchulgeldVorrechnung(String schulgeldVorrechnung) throws SvmValidationException;
+    void setPraezisierungRechnungsbetragVorrechnungSelected(PraezisierungRechnungsbetragVorrechnungSelected praezisierungRechnungsbetragVorrechnungSelected);
+    void setRechnungsbetragVorrechnung(String rechnungsbetragVorrechnung) throws SvmValidationException;
     void setSechsJahresRabattJaNeinVorrechnungSelected(SechsJahresRabattJaNeinVorrechnungSelected sechsJahresRabattJaNeinVorrechnungSelected);
     void setRechnungsdatumGesetztNachrechnungSelected(RechnungsdatumGesetztNachrechnungSelected rechnungsdatumGesetztNachrechnungSelected);
     void setPraezisierungRechnungsdatumNachrechnungSelected(PraezisierungRechnungsdatumNachrechnungSelected praezisierungRechnungsdatumNachrechnungSelected);
@@ -179,11 +179,11 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     void setPraezisierungZuschlagNachrechnungSelected(PraezisierungZuschlagNachrechnungSelected praezisierungZuschlagNachrechnungSelected);
     void setPraezisierungAnzahlWochenNachrechnungSelected(PraezisierungAnzahlWochenNachrechnungSelected praezisierungAnzahlWochenNachrechnungSelected);
     void setPraezisierungWochenbetragNachrechnungSelected(PraezisierungWochenbetragNachrechnungSelected praezisierungWochenbetragNachrechnungSelected);
-    void setPraezisierungSchulgeldNachrechnungSelected(PraezisierungSchulgeldNachrechnungSelected praezisierungSchulgeldNachrechnungSelected);
-    void setSchulgeldNachrechnung(String schulgeldNachrechnung) throws SvmValidationException;
+    void setPraezisierungRechnungsbetragNachrechnungSelected(PraezisierungRechnungsbetragNachrechnungSelected praezisierungRechnungsbetragNachrechnungSelected);
+    void setRechnungsbetragNachrechnung(String rechnungsbetragNachrechnung) throws SvmValidationException;
     void setSechsJahresRabattJaNeinNachrechnungSelected(SechsJahresRabattJaNeinNachrechnungSelected sechsJahresRabattJaNeinNachrechnungSelected);
-    void setPraezisierungDifferenzSchulgeldSelected(PraezisierungDifferenzSchulgeldSelected praezisierungDifferenzSchulgeldSelected);
-    void setDifferenzSchulgeld(String differenzSchulgeld) throws SvmValidationException;
+    void setPraezisierungDifferenzRechnungsbetragSelected(PraezisierungDifferenzRechnungsbetragSelected praezisierungDifferenzRechnungsbetragSelected);
+    void setDifferenzRechnungsbetrag(String differenzRechnungsbetrag) throws SvmValidationException;
     void setPraezisierungRestbetragSelected(PraezisierungRestbetragSelected praezisierungRestbetragSelected);
     void setRestbetrag(String restbetrag) throws SvmValidationException;
 

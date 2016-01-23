@@ -535,10 +535,10 @@
                         </constraints>
                         <properties>
                           <labelFor value="d5962"/>
-                          <text value="Differenz Schulgeld"/>
+                          <text value="Differenz Rechnungsbetrag"/>
                         </properties>
                       </component>
-                      <component id="d5962" class="javax.swing.JTextField" binding="txtDifferenzSchulgeld">
+                      <component id="d5962" class="javax.swing.JTextField" binding="txtDifferenzRechnungsbetrag">
                         <constraints>
                           <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
@@ -547,13 +547,13 @@
                         </constraints>
                         <properties/>
                       </component>
-                      <component id="468c7" class="javax.swing.JLabel" binding="errLblDifferenzSchulgeld">
+                      <component id="468c7" class="javax.swing.JLabel" binding="errLblDifferenzRechnungsbetrag">
                         <constraints>
                           <grid row="1" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                           <gridbag weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <text value="errLblDifferenzSchulgeld"/>
+                          <text value="errLblDifferenzRechnungsbetrag"/>
                         </properties>
                       </component>
                       <vspacer id="db49b">
@@ -582,7 +582,7 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="bf02d" class="javax.swing.JRadioButton" binding="radioBtnDifferenzSchulgeldGleich">
+                          <component id="bf02d" class="javax.swing.JRadioButton" binding="radioBtnDifferenzRechnungsbetragGleich">
                             <constraints>
                               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
@@ -591,7 +591,7 @@
                               <text value="gleich"/>
                             </properties>
                           </component>
-                          <component id="de323" class="javax.swing.JRadioButton" binding="radioBtnDifferenzSchulgeldKleiner">
+                          <component id="de323" class="javax.swing.JRadioButton" binding="radioBtnDifferenzRechnungsbetragKleiner">
                             <constraints>
                               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
@@ -600,7 +600,7 @@
                               <text value="kleiner"/>
                             </properties>
                           </component>
-                          <component id="5130e" class="javax.swing.JRadioButton" binding="radioBtnDifferenzSchulgeldGroesser">
+                          <component id="5130e" class="javax.swing.JRadioButton" binding="radioBtnDifferenzRechnungsbetragGroesser">
                             <constraints>
                               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
@@ -804,10 +804,10 @@
                         </constraints>
                         <properties>
                           <labelFor value="6cd96"/>
-                          <text value="Schulgeld"/>
+                          <text value="Rechnungsbetrag"/>
                         </properties>
                       </component>
-                      <component id="6cd96" class="javax.swing.JTextField" binding="txtSchulgeldVorrechnung">
+                      <component id="6cd96" class="javax.swing.JTextField" binding="txtRechnungsbetragVorrechnung">
                         <constraints>
                           <grid row="11" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
@@ -816,13 +816,13 @@
                         </constraints>
                         <properties/>
                       </component>
-                      <component id="b67ab" class="javax.swing.JLabel" binding="errLblSchulgeldVorrechnung">
+                      <component id="b67ab" class="javax.swing.JLabel" binding="errLblRechnungsbetragVorrechnung">
                         <constraints>
                           <grid row="10" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                           <gridbag weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <text value="errLblSchulgeld"/>
+                          <text value="errLblRechnungsbetrag"/>
                         </properties>
                       </component>
                       <component id="ebe8b" class="javax.swing.JTextField" binding="txtRechnungsdatumVorrechnung">
@@ -1119,7 +1119,7 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="8cec1" class="javax.swing.JRadioButton" binding="radioBtnGleichSchulgeldVorrechnung">
+                          <component id="8cec1" class="javax.swing.JRadioButton" binding="radioBtnGleichRechnungsbetragVorrechnung">
                             <constraints>
                               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
@@ -1128,7 +1128,7 @@
                               <text value="gleich"/>
                             </properties>
                           </component>
-                          <component id="7d9d2" class="javax.swing.JRadioButton" binding="radioBtnKleinerSchulgeldVorrechnung">
+                          <component id="7d9d2" class="javax.swing.JRadioButton" binding="radioBtnKleinerRechnungsbetragVorrechnung">
                             <constraints>
                               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
@@ -1137,7 +1137,7 @@
                               <text value="kleiner"/>
                             </properties>
                           </component>
-                          <component id="5e2fd" class="javax.swing.JRadioButton" binding="radioBtnGroesserSchulgeldVorrechnung">
+                          <component id="5e2fd" class="javax.swing.JRadioButton" binding="radioBtnGroesserRechnungsbetragVorrechnung">
                             <constraints>
                               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
@@ -1728,10 +1728,10 @@
                         </constraints>
                         <properties>
                           <labelFor value="eeef4"/>
-                          <text value="Schulgeld"/>
+                          <text value="Rechnungsbetrag"/>
                         </properties>
                       </component>
-                      <component id="eeef4" class="javax.swing.JTextField" binding="txtSchulgeldNachrechnung">
+                      <component id="eeef4" class="javax.swing.JTextField" binding="txtRechnungsbetragNachrechnung">
                         <constraints>
                           <grid row="13" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
@@ -1748,7 +1748,7 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="1fd59" class="javax.swing.JRadioButton" binding="radioBtnGleichSchulgeldNachrechnung">
+                          <component id="1fd59" class="javax.swing.JRadioButton" binding="radioBtnGleichRechnungsbetragNachrechnung">
                             <constraints>
                               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
@@ -1757,7 +1757,7 @@
                               <text value="gleich"/>
                             </properties>
                           </component>
-                          <component id="11329" class="javax.swing.JRadioButton" binding="radioBtnKleinerSchulgeldNachrechnung">
+                          <component id="11329" class="javax.swing.JRadioButton" binding="radioBtnKleinerRechnungsbetragNachrechnung">
                             <constraints>
                               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
@@ -1766,7 +1766,7 @@
                               <text value="kleiner"/>
                             </properties>
                           </component>
-                          <component id="1a7be" class="javax.swing.JRadioButton" binding="radioBtnGroesserSchulgeldNachrechnung">
+                          <component id="1a7be" class="javax.swing.JRadioButton" binding="radioBtnGroesserRechnungsbetragNachrechnung">
                             <constraints>
                               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                               <gridbag weightx="0.0" weighty="0.0"/>
@@ -1783,13 +1783,13 @@
                           </hspacer>
                         </children>
                       </grid>
-                      <component id="33715" class="javax.swing.JLabel" binding="errLblSchulgeldNachrechnung">
+                      <component id="33715" class="javax.swing.JLabel" binding="errLblRechnungsbetragNachrechnung">
                         <constraints>
                           <grid row="12" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                           <gridbag weightx="0.0" weighty="0.0"/>
                         </constraints>
                         <properties>
-                          <text value="errLblNachrechnung"/>
+                          <text value="errLblRechnungsbetragNachrechnung"/>
                         </properties>
                       </component>
                       <vspacer id="7c462">

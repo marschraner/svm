@@ -38,15 +38,15 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private JSpinner spinnerSemester;
     private JTextField txtNachname;
     private JTextField txtVorname;
-    private JTextField txtSchulgeldVorrechnung;
-    private JTextField txtSchulgeldNachrechnung;
-    private JTextField txtDifferenzSchulgeld;
+    private JTextField txtRechnungsbetragVorrechnung;
+    private JTextField txtRechnungsbetragNachrechnung;
+    private JTextField txtDifferenzRechnungsbetrag;
     private JTextField txtRestbetrag;
     private JLabel errLblNachname;
     private JLabel errLblVorname;
-    private JLabel errLblSchulgeldVorrechnung;
-    private JLabel errLblSchulgeldNachrechnung;
-    private JLabel errLblDifferenzSchulgeld;
+    private JLabel errLblRechnungsbetragVorrechnung;
+    private JLabel errLblRechnungsbetragNachrechnung;
+    private JLabel errLblDifferenzRechnungsbetrag;
     private JLabel errLblRestbetrag;
     private JRadioButton radioBtnRechnungsempfaenger;
     private JRadioButton radioBtnSchueler;
@@ -73,9 +73,9 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private JRadioButton radioBtnGleichWochenbetragVorrechnung;
     private JRadioButton radioBtnKleinerWochenbetragVorrechnung;
     private JRadioButton radioBtnGroesserWochenbetragVorrechnung;
-    private JRadioButton radioBtnGleichSchulgeldVorrechnung;
-    private JRadioButton radioBtnKleinerSchulgeldVorrechnung;
-    private JRadioButton radioBtnGroesserSchulgeldVorrechnung;
+    private JRadioButton radioBtnGleichRechnungsbetragVorrechnung;
+    private JRadioButton radioBtnKleinerRechnungsbetragVorrechnung;
+    private JRadioButton radioBtnGroesserRechnungsbetragVorrechnung;
     private JRadioButton radioBtnSechsJahresRabattJaVorrechnung;
     private JRadioButton radioBtnSechsJahresRabattNeinVorrechnung;
     private JRadioButton radioBtnSechsJahresRabattAlleVorrechnung;
@@ -97,15 +97,15 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private JRadioButton radioBtnGleichWochenbetragNachrechnung;
     private JRadioButton radioBtnKleinerWochenbetragNachrechnung;
     private JRadioButton radioBtnGroesserWochenbetragNachrechnung;
-    private JRadioButton radioBtnGleichSchulgeldNachrechnung;
-    private JRadioButton radioBtnKleinerSchulgeldNachrechnung;
-    private JRadioButton radioBtnGroesserSchulgeldNachrechnung;
+    private JRadioButton radioBtnGleichRechnungsbetragNachrechnung;
+    private JRadioButton radioBtnKleinerRechnungsbetragNachrechnung;
+    private JRadioButton radioBtnGroesserRechnungsbetragNachrechnung;
     private JRadioButton radioBtnSechsJahresRabattJaNachrechnung;
     private JRadioButton radioBtnSechsJahresRabattNeinNachrechnung;
     private JRadioButton radioBtnSechsJahresRabattAlleNachrechnung;
-    private JRadioButton radioBtnGleichDifferenzSchulgeld;
-    private JRadioButton radioBtnKleinerDifferenzSchulgeld;
-    private JRadioButton radioBtnGroesserDifferenzSchulgeld;
+    private JRadioButton radioBtnGleichDifferenzRechnungsbetrag;
+    private JRadioButton radioBtnKleinerDifferenzRechnungsbetrag;
+    private JRadioButton radioBtnGroesserDifferenzRechnungsbetrag;
     private JRadioButton radioBtnGleichRestbetrag;
     private JRadioButton radioBtnKleinerRestbetrag;
     private JRadioButton radioBtnGroesserRestbetrag;
@@ -255,27 +255,27 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    public void setTxtSchulgeldVorrechnung(JTextField txtSchulgeldVorrechnung) {
-        this.txtSchulgeldVorrechnung = txtSchulgeldVorrechnung;
-        this.txtSchulgeldVorrechnung.addActionListener(new ActionListener() {
+    public void setTxtRechnungsbetragVorrechnung(JTextField txtRechnungsbetragVorrechnung) {
+        this.txtRechnungsbetragVorrechnung = txtRechnungsbetragVorrechnung;
+        this.txtRechnungsbetragVorrechnung.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onSchulgeldVorrechnungEvent();
+                onRechnungsbetragVorrechnungEvent();
             }
         });
-        this.txtSchulgeldVorrechnung.addFocusListener(new FocusAdapter() {
+        this.txtRechnungsbetragVorrechnung.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                onSchulgeldVorrechnungEvent();
+                onRechnungsbetragVorrechnungEvent();
             }
         });
     }
 
-    private void onSchulgeldVorrechnungEvent() {
-        LOGGER.trace("SemesterrechnungenSuchenController Event SchulgeldVorrechnung");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtSchulgeldVorrechnung.getText(), semesterrechnungenSuchenModel.getSchulgeldVorrechnung());
+    private void onRechnungsbetragVorrechnungEvent() {
+        LOGGER.trace("SemesterrechnungenSuchenController Event RechnungsbetragVorrechnung");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtRechnungsbetragVorrechnung.getText(), semesterrechnungenSuchenModel.getRechnungsbetragVorrechnung());
         try {
-            setModelSchulgeldVorrechnung();
+            setModelRechnungsbetragVorrechnung();
         } catch (SvmValidationException e) {
             return;
         }
@@ -286,38 +286,38 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    private void setModelSchulgeldVorrechnung() throws SvmValidationException {
-        makeErrorLabelInvisible(Field.SCHULGELD_VORRECHNUNG);
+    private void setModelRechnungsbetragVorrechnung() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.RECHNUNGSBETRAG_VORRECHNUNG);
         try {
-            semesterrechnungenSuchenModel.setSchulgeldVorrechnung(txtSchulgeldVorrechnung.getText());
+            semesterrechnungenSuchenModel.setRechnungsbetragVorrechnung(txtRechnungsbetragVorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungenSuchenController setModelSchulgeldVorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungenSuchenController setModelRechnungsbetragVorrechnung Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
     }
 
-    public void setTxtSchulgeldNachrechnung(JTextField txtSchulgeldNachrechnung) {
-        this.txtSchulgeldNachrechnung = txtSchulgeldNachrechnung;
-        this.txtSchulgeldNachrechnung.addActionListener(new ActionListener() {
+    public void setTxtRechnungsbetragNachrechnung(JTextField txtRechnungsbetragNachrechnung) {
+        this.txtRechnungsbetragNachrechnung = txtRechnungsbetragNachrechnung;
+        this.txtRechnungsbetragNachrechnung.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onSchulgeldNachrechnungEvent();
+                onRechnungsbetragNachrechnungEvent();
             }
         });
-        this.txtSchulgeldNachrechnung.addFocusListener(new FocusAdapter() {
+        this.txtRechnungsbetragNachrechnung.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                onSchulgeldNachrechnungEvent();
+                onRechnungsbetragNachrechnungEvent();
             }
         });
     }
 
-    private void onSchulgeldNachrechnungEvent() {
-        LOGGER.trace("SemesterrechnungenSuchenController Event SchulgeldNachrechnung");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtSchulgeldNachrechnung.getText(), semesterrechnungenSuchenModel.getSchulgeldNachrechnung());
+    private void onRechnungsbetragNachrechnungEvent() {
+        LOGGER.trace("SemesterrechnungenSuchenController Event RechnungsbetragNachrechnung");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtRechnungsbetragNachrechnung.getText(), semesterrechnungenSuchenModel.getRechnungsbetragNachrechnung());
         try {
-            setModelSchulgeldNachrechnung();
+            setModelRechnungsbetragNachrechnung();
         } catch (SvmValidationException e) {
             return;
         }
@@ -328,38 +328,38 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    private void setModelSchulgeldNachrechnung() throws SvmValidationException {
-        makeErrorLabelInvisible(Field.SCHULGELD_NACHRECHNUNG);
+    private void setModelRechnungsbetragNachrechnung() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.RECHNUNGSBETRAG_NACHRECHNUNG);
         try {
-            semesterrechnungenSuchenModel.setSchulgeldNachrechnung(txtSchulgeldNachrechnung.getText());
+            semesterrechnungenSuchenModel.setRechnungsbetragNachrechnung(txtRechnungsbetragNachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungenSuchenController setModelSchulgeldNachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungenSuchenController setModelRechnungsbetragNachrechnung Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
     }
 
-    public void setTxtDifferenzSchulgeld(JTextField txtDifferenzSchulgeld) {
-        this.txtDifferenzSchulgeld = txtDifferenzSchulgeld;
-        this.txtDifferenzSchulgeld.addActionListener(new ActionListener() {
+    public void setTxtDifferenzRechnungsbetrag(JTextField txtDifferenzRechnungsbetrag) {
+        this.txtDifferenzRechnungsbetrag = txtDifferenzRechnungsbetrag;
+        this.txtDifferenzRechnungsbetrag.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onDifferenzSchulgeldEvent();
+                onDifferenzRechnungsbetragEvent();
             }
         });
-        this.txtDifferenzSchulgeld.addFocusListener(new FocusAdapter() {
+        this.txtDifferenzRechnungsbetrag.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                onDifferenzSchulgeldEvent();
+                onDifferenzRechnungsbetragEvent();
             }
         });
     }
 
-    private void onDifferenzSchulgeldEvent() {
-        LOGGER.trace("SemesterrechnungenSuchenController Event DifferenzSchulgeld");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtDifferenzSchulgeld.getText(), semesterrechnungenSuchenModel.getDifferenzSchulgeld());
+    private void onDifferenzRechnungsbetragEvent() {
+        LOGGER.trace("SemesterrechnungenSuchenController Event DifferenzRechnungsbetrag");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtDifferenzRechnungsbetrag.getText(), semesterrechnungenSuchenModel.getDifferenzRechnungsbetrag());
         try {
-            setModelDifferenzSchulgeld();
+            setModelDifferenzRechnungsbetrag();
         } catch (SvmValidationException e) {
             return;
         }
@@ -370,12 +370,12 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    private void setModelDifferenzSchulgeld() throws SvmValidationException {
-        makeErrorLabelInvisible(Field.DIFFERENZ_SCHULGELD);
+    private void setModelDifferenzRechnungsbetrag() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.DIFFERENZ_RECHNUNGSBETRAG);
         try {
-            semesterrechnungenSuchenModel.setDifferenzSchulgeld(txtDifferenzSchulgeld.getText());
+            semesterrechnungenSuchenModel.setDifferenzRechnungsbetrag(txtDifferenzRechnungsbetrag.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungenSuchenController setModelDifferenzSchulgeld Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungenSuchenController setModelDifferenzRechnungsbetrag Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -431,16 +431,16 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         this.errLblVorname = errLblVorname;
     }
 
-    public void setErrLblSchulgeldVorrechnung(JLabel errLblSchulgeldVorrechnung) {
-        this.errLblSchulgeldVorrechnung = errLblSchulgeldVorrechnung;
+    public void setErrLblRechnungsbetragVorrechnung(JLabel errLblRechnungsbetragVorrechnung) {
+        this.errLblRechnungsbetragVorrechnung = errLblRechnungsbetragVorrechnung;
     }
 
-    public void setErrLblSchulgeldNachrechnung(JLabel errLblSchulgeldNachrechnung) {
-        this.errLblSchulgeldNachrechnung = errLblSchulgeldNachrechnung;
+    public void setErrLblRechnungsbetragNachrechnung(JLabel errLblRechnungsbetragNachrechnung) {
+        this.errLblRechnungsbetragNachrechnung = errLblRechnungsbetragNachrechnung;
     }
 
-    public void setErrLblDifferenzSchulgeld(JLabel errLblDifferenzSchulgeld) {
-        this.errLblDifferenzSchulgeld = errLblDifferenzSchulgeld;
+    public void setErrLblDifferenzRechnungsbetrag(JLabel errLblDifferenzRechnungsbetrag) {
+        this.errLblDifferenzRechnungsbetrag = errLblDifferenzRechnungsbetrag;
     }
 
     public void setErrLblRestbetrag(JLabel errLblRestbetrag) {
@@ -586,21 +586,21 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         semesterrechnungenSuchenModel.setPraezisierungWochenbetragVorrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungWochenbetragVorrechnungSelected.GLEICH);
     }
 
-    public void setRadioBtnGroupPraezisierungSchulgeldVorrechnung(JRadioButton radioBtnGleichSchulgeldVorrechnung, JRadioButton radioBtnKleinerSchulgeldVorrechnung, JRadioButton radioBtnGroesserSchulgeldVorrechnung) {
-        this.radioBtnGleichSchulgeldVorrechnung = radioBtnGleichSchulgeldVorrechnung;
-        this.radioBtnKleinerSchulgeldVorrechnung = radioBtnKleinerSchulgeldVorrechnung;
-        this.radioBtnGroesserSchulgeldVorrechnung = radioBtnGroesserSchulgeldVorrechnung;
+    public void setRadioBtnGroupPraezisierungRechnungsbetragVorrechnung(JRadioButton radioBtnGleichRechnungsbetragVorrechnung, JRadioButton radioBtnKleinerRechnungsbetragVorrechnung, JRadioButton radioBtnGroesserRechnungsbetragVorrechnung) {
+        this.radioBtnGleichRechnungsbetragVorrechnung = radioBtnGleichRechnungsbetragVorrechnung;
+        this.radioBtnKleinerRechnungsbetragVorrechnung = radioBtnKleinerRechnungsbetragVorrechnung;
+        this.radioBtnGroesserRechnungsbetragVorrechnung = radioBtnGroesserRechnungsbetragVorrechnung;
         // Action Commands
-        this.radioBtnGleichSchulgeldVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungSchulgeldVorrechnungSelected.GLEICH.toString());
-        this.radioBtnKleinerSchulgeldVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungSchulgeldVorrechnungSelected.KLEINER.toString());
-        this.radioBtnGroesserSchulgeldVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungSchulgeldVorrechnungSelected.GROESSER.toString());
+        this.radioBtnGleichRechnungsbetragVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected.GLEICH.toString());
+        this.radioBtnKleinerRechnungsbetragVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected.KLEINER.toString());
+        this.radioBtnGroesserRechnungsbetragVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected.GROESSER.toString());
         // Listener
-        RadioBtnGroupPraezisierungSchulgeldVorrechnungListener radioBtnGroupPraezisierungSchulgeldVorrechnungListener = new RadioBtnGroupPraezisierungSchulgeldVorrechnungListener();
-        this.radioBtnGleichSchulgeldVorrechnung.addActionListener(radioBtnGroupPraezisierungSchulgeldVorrechnungListener);
-        this.radioBtnKleinerSchulgeldVorrechnung.addActionListener(radioBtnGroupPraezisierungSchulgeldVorrechnungListener);
-        this.radioBtnGroesserSchulgeldVorrechnung.addActionListener(radioBtnGroupPraezisierungSchulgeldVorrechnungListener);
+        RadioBtnGroupPraezisierungRechnungsbetragVorrechnungListener radioBtnGroupPraezisierungRechnungsbetragVorrechnungListener = new RadioBtnGroupPraezisierungRechnungsbetragVorrechnungListener();
+        this.radioBtnGleichRechnungsbetragVorrechnung.addActionListener(radioBtnGroupPraezisierungRechnungsbetragVorrechnungListener);
+        this.radioBtnKleinerRechnungsbetragVorrechnung.addActionListener(radioBtnGroupPraezisierungRechnungsbetragVorrechnungListener);
+        this.radioBtnGroesserRechnungsbetragVorrechnung.addActionListener(radioBtnGroupPraezisierungRechnungsbetragVorrechnungListener);
         // Initialisieren mit gleich
-        semesterrechnungenSuchenModel.setPraezisierungSchulgeldVorrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungSchulgeldVorrechnungSelected.GLEICH);
+        semesterrechnungenSuchenModel.setPraezisierungRechnungsbetragVorrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected.GLEICH);
     }
 
     public void setRadioBtnGroupSechsJahresRabattJaNeinVorrechnung(JRadioButton radioBtnSechsJahresRabattJaVorrechnung, JRadioButton radioBtnSechsJahresRabattNeinVorrechnung, JRadioButton radioBtnSechsJahresRabattAlleVorrechnung) {
@@ -722,21 +722,21 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         semesterrechnungenSuchenModel.setPraezisierungWochenbetragNachrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungWochenbetragNachrechnungSelected.GLEICH);
     }
 
-    public void setRadioBtnGroupPraezisierungSchulgeldNachrechnung(JRadioButton radioBtnGleichSchulgeldNachrechnung, JRadioButton radioBtnKleinerSchulgeldNachrechnung, JRadioButton radioBtnGroesserSchulgeldNachrechnung) {
-        this.radioBtnGleichSchulgeldNachrechnung = radioBtnGleichSchulgeldNachrechnung;
-        this.radioBtnKleinerSchulgeldNachrechnung = radioBtnKleinerSchulgeldNachrechnung;
-        this.radioBtnGroesserSchulgeldNachrechnung = radioBtnGroesserSchulgeldNachrechnung;
+    public void setRadioBtnGroupPraezisierungRechnungsbetragNachrechnung(JRadioButton radioBtnGleichRechnungsbetragNachrechnung, JRadioButton radioBtnKleinerRechnungsbetragNachrechnung, JRadioButton radioBtnGroesserRechnungsbetragNachrechnung) {
+        this.radioBtnGleichRechnungsbetragNachrechnung = radioBtnGleichRechnungsbetragNachrechnung;
+        this.radioBtnKleinerRechnungsbetragNachrechnung = radioBtnKleinerRechnungsbetragNachrechnung;
+        this.radioBtnGroesserRechnungsbetragNachrechnung = radioBtnGroesserRechnungsbetragNachrechnung;
         // Action Commands
-        this.radioBtnGleichSchulgeldNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungSchulgeldNachrechnungSelected.GLEICH.toString());
-        this.radioBtnKleinerSchulgeldNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungSchulgeldNachrechnungSelected.KLEINER.toString());
-        this.radioBtnGroesserSchulgeldNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungSchulgeldNachrechnungSelected.GROESSER.toString());
+        this.radioBtnGleichRechnungsbetragNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected.GLEICH.toString());
+        this.radioBtnKleinerRechnungsbetragNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected.KLEINER.toString());
+        this.radioBtnGroesserRechnungsbetragNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected.GROESSER.toString());
         // Listener
-        RadioBtnGroupPraezisierungSchulgeldNachrechnungListener radioBtnGroupPraezisierungSchulgeldNachrechnungListener = new RadioBtnGroupPraezisierungSchulgeldNachrechnungListener();
-        this.radioBtnGleichSchulgeldNachrechnung.addActionListener(radioBtnGroupPraezisierungSchulgeldNachrechnungListener);
-        this.radioBtnKleinerSchulgeldNachrechnung.addActionListener(radioBtnGroupPraezisierungSchulgeldNachrechnungListener);
-        this.radioBtnGroesserSchulgeldNachrechnung.addActionListener(radioBtnGroupPraezisierungSchulgeldNachrechnungListener);
+        RadioBtnGroupPraezisierungRechnungsbetragNachrechnungListener radioBtnGroupPraezisierungRechnungsbetragNachrechnungListener = new RadioBtnGroupPraezisierungRechnungsbetragNachrechnungListener();
+        this.radioBtnGleichRechnungsbetragNachrechnung.addActionListener(radioBtnGroupPraezisierungRechnungsbetragNachrechnungListener);
+        this.radioBtnKleinerRechnungsbetragNachrechnung.addActionListener(radioBtnGroupPraezisierungRechnungsbetragNachrechnungListener);
+        this.radioBtnGroesserRechnungsbetragNachrechnung.addActionListener(radioBtnGroupPraezisierungRechnungsbetragNachrechnungListener);
         // Initialisieren mit gleich
-        semesterrechnungenSuchenModel.setPraezisierungSchulgeldNachrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungSchulgeldNachrechnungSelected.GLEICH);
+        semesterrechnungenSuchenModel.setPraezisierungRechnungsbetragNachrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected.GLEICH);
     }
 
     public void setRadioBtnGroupSechsJahresRabattJaNeinNachrechnung(JRadioButton radioBtnSechsJahresRabattJaNachrechnung, JRadioButton radioBtnSechsJahresRabattNeinNachrechnung, JRadioButton radioBtnSechsJahresRabattAlleNachrechnung) {
@@ -756,21 +756,21 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         semesterrechnungenSuchenModel.setSechsJahresRabattJaNeinNachrechnungSelected(SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.ALLE);
     }
 
-    public void setRadioBtnGroupPraezisierungDifferenzSchulgeld(JRadioButton radioBtnGleichDifferenzSchulgeld, JRadioButton radioBtnKleinerDifferenzSchulgeld, JRadioButton radioBtnGroesserDifferenzSchulgeld) {
-        this.radioBtnGleichDifferenzSchulgeld = radioBtnGleichDifferenzSchulgeld;
-        this.radioBtnKleinerDifferenzSchulgeld = radioBtnKleinerDifferenzSchulgeld;
-        this.radioBtnGroesserDifferenzSchulgeld = radioBtnGroesserDifferenzSchulgeld;
+    public void setRadioBtnGroupPraezisierungDifferenzRechnungsbetrag(JRadioButton radioBtnGleichDifferenzRechnungsbetrag, JRadioButton radioBtnKleinerDifferenzRechnungsbetrag, JRadioButton radioBtnGroesserDifferenzRechnungsbetrag) {
+        this.radioBtnGleichDifferenzRechnungsbetrag = radioBtnGleichDifferenzRechnungsbetrag;
+        this.radioBtnKleinerDifferenzRechnungsbetrag = radioBtnKleinerDifferenzRechnungsbetrag;
+        this.radioBtnGroesserDifferenzRechnungsbetrag = radioBtnGroesserDifferenzRechnungsbetrag;
         // Action Commands
-        this.radioBtnGleichDifferenzSchulgeld.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.GLEICH.toString());
-        this.radioBtnKleinerDifferenzSchulgeld.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.KLEINER.toString());
-        this.radioBtnGroesserDifferenzSchulgeld.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.GROESSER.toString());
+        this.radioBtnGleichDifferenzRechnungsbetrag.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungDifferenzRechnungsbetragSelected.GLEICH.toString());
+        this.radioBtnKleinerDifferenzRechnungsbetrag.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungDifferenzRechnungsbetragSelected.KLEINER.toString());
+        this.radioBtnGroesserDifferenzRechnungsbetrag.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungDifferenzRechnungsbetragSelected.GROESSER.toString());
         // Listener
-        RadioBtnGroupPraezisierungDifferenzSchulgeldListener radioBtnGroupPraezisierungDifferenzSchulgeldListener = new RadioBtnGroupPraezisierungDifferenzSchulgeldListener();
-        this.radioBtnGleichDifferenzSchulgeld.addActionListener(radioBtnGroupPraezisierungDifferenzSchulgeldListener);
-        this.radioBtnKleinerDifferenzSchulgeld.addActionListener(radioBtnGroupPraezisierungDifferenzSchulgeldListener);
-        this.radioBtnGroesserDifferenzSchulgeld.addActionListener(radioBtnGroupPraezisierungDifferenzSchulgeldListener);
+        RadioBtnGroupPraezisierungDifferenzRechnungsbetragListener radioBtnGroupPraezisierungDifferenzRechnungsbetragListener = new RadioBtnGroupPraezisierungDifferenzRechnungsbetragListener();
+        this.radioBtnGleichDifferenzRechnungsbetrag.addActionListener(radioBtnGroupPraezisierungDifferenzRechnungsbetragListener);
+        this.radioBtnKleinerDifferenzRechnungsbetrag.addActionListener(radioBtnGroupPraezisierungDifferenzRechnungsbetragListener);
+        this.radioBtnGroesserDifferenzRechnungsbetrag.addActionListener(radioBtnGroupPraezisierungDifferenzRechnungsbetragListener);
         // Initialisieren mit gleich
-        semesterrechnungenSuchenModel.setPraezisierungDifferenzSchulgeldSelected(SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.GLEICH);
+        semesterrechnungenSuchenModel.setPraezisierungDifferenzRechnungsbetragSelected(SemesterrechnungenSuchenModel.PraezisierungDifferenzRechnungsbetragSelected.GLEICH);
     }
 
     public void setRadioBtnGroupPraezisierungRestbetrag(JRadioButton radioBtnGleichRestbetrag, JRadioButton radioBtnKleinerRestbetrag, JRadioButton radioBtnGroesserRestbetrag) {
@@ -1039,17 +1039,17 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragVorrechnungSelected.GROESSER) {
             radioBtnGroesserWochenbetragVorrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_SCHULGELD_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungSchulgeldVorrechnungSelected.GLEICH) {
-            radioBtnGleichSchulgeldVorrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected.GLEICH) {
+            radioBtnGleichRechnungsbetragVorrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_SCHULGELD_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungSchulgeldVorrechnungSelected.KLEINER) {
-            radioBtnKleinerSchulgeldVorrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected.KLEINER) {
+            radioBtnKleinerRechnungsbetragVorrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_SCHULGELD_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungSchulgeldVorrechnungSelected.GROESSER) {
-            radioBtnGroesserSchulgeldVorrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected.GROESSER) {
+            radioBtnGroesserRechnungsbetragVorrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.SCHULGELD_VORRECHNUNG, evt)) {
-            txtSchulgeldVorrechnung.setText(semesterrechnungenSuchenModel.getSchulgeldVorrechnung() == null ? null : semesterrechnungenSuchenModel.getSchulgeldVorrechnung().toString());
+        else if (checkIsFieldChange(Field.RECHNUNGSBETRAG_VORRECHNUNG, evt)) {
+            txtRechnungsbetragVorrechnung.setText(semesterrechnungenSuchenModel.getRechnungsbetragVorrechnung() == null ? null : semesterrechnungenSuchenModel.getRechnungsbetragVorrechnung().toString());
         }
         else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.JA) {
             radioBtnSechsJahresRabattJaVorrechnung.setSelected(true);
@@ -1114,17 +1114,17 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragNachrechnungSelected.GROESSER) {
             radioBtnGroesserWochenbetragNachrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_SCHULGELD_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungSchulgeldNachrechnungSelected.GLEICH) {
-            radioBtnGleichSchulgeldNachrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected.GLEICH) {
+            radioBtnGleichRechnungsbetragNachrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_SCHULGELD_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungSchulgeldNachrechnungSelected.KLEINER) {
-            radioBtnKleinerSchulgeldNachrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected.KLEINER) {
+            radioBtnKleinerRechnungsbetragNachrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_SCHULGELD_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungSchulgeldNachrechnungSelected.GROESSER) {
-            radioBtnGroesserSchulgeldNachrechnung.setSelected(true);
+        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected.GROESSER) {
+            radioBtnGroesserRechnungsbetragNachrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.SCHULGELD_NACHRECHNUNG, evt)) {
-            txtSchulgeldNachrechnung.setText(semesterrechnungenSuchenModel.getSchulgeldNachrechnung() == null ? null : semesterrechnungenSuchenModel.getSchulgeldNachrechnung().toString());
+        else if (checkIsFieldChange(Field.RECHNUNGSBETRAG_NACHRECHNUNG, evt)) {
+            txtRechnungsbetragNachrechnung.setText(semesterrechnungenSuchenModel.getRechnungsbetragNachrechnung() == null ? null : semesterrechnungenSuchenModel.getRechnungsbetragNachrechnung().toString());
         }
         else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.JA) {
             radioBtnSechsJahresRabattJaNachrechnung.setSelected(true);
@@ -1144,17 +1144,17 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.ALLE) {
             radioBtnRechnungsdatumGesetztAlleNachrechnung.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_DIFFERENZ_SCHULGELD, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.GLEICH) {
-            radioBtnGleichDifferenzSchulgeld.setSelected(true);
+        else if (checkIsFieldChange(Field.PRAEZISIERUNG_DIFFERENZ_RECHNUNGSBETRAG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungDifferenzRechnungsbetragSelected.GLEICH) {
+            radioBtnGleichDifferenzRechnungsbetrag.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_DIFFERENZ_SCHULGELD, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.KLEINER) {
-            radioBtnKleinerDifferenzSchulgeld.setSelected(true);
+        else if (checkIsFieldChange(Field.PRAEZISIERUNG_DIFFERENZ_RECHNUNGSBETRAG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungDifferenzRechnungsbetragSelected.KLEINER) {
+            radioBtnKleinerDifferenzRechnungsbetrag.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_DIFFERENZ_SCHULGELD, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.GROESSER) {
-            radioBtnGroesserDifferenzSchulgeld.setSelected(true);
+        else if (checkIsFieldChange(Field.PRAEZISIERUNG_DIFFERENZ_RECHNUNGSBETRAG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungDifferenzRechnungsbetragSelected.GROESSER) {
+            radioBtnGroesserDifferenzRechnungsbetrag.setSelected(true);
         }
-        else if (checkIsFieldChange(Field.DIFFERENZ_SCHULGELD, evt)) {
-            txtDifferenzSchulgeld.setText(semesterrechnungenSuchenModel.getDifferenzSchulgeld() == null ? null : semesterrechnungenSuchenModel.getDifferenzSchulgeld().toString());
+        else if (checkIsFieldChange(Field.DIFFERENZ_RECHNUNGSBETRAG, evt)) {
+            txtDifferenzRechnungsbetrag.setText(semesterrechnungenSuchenModel.getDifferenzRechnungsbetrag() == null ? null : semesterrechnungenSuchenModel.getDifferenzRechnungsbetrag().toString());
         }
         else if (checkIsFieldChange(Field.PRAEZISIERUNG_RESTBETRAG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRestbetragSelected.GLEICH) {
             radioBtnGleichRestbetrag.setSelected(true);
@@ -1181,17 +1181,17 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             LOGGER.trace("Validate field Vorname");
             setModelVorname();
         }
-        if (txtSchulgeldVorrechnung.isEnabled()) {
-            LOGGER.trace("Validate field SchulgeldVorrechnung");
-            setModelSchulgeldVorrechnung();
+        if (txtRechnungsbetragVorrechnung.isEnabled()) {
+            LOGGER.trace("Validate field RechnungsbetragVorrechnung");
+            setModelRechnungsbetragVorrechnung();
         }
-        if (txtSchulgeldNachrechnung.isEnabled()) {
-            LOGGER.trace("Validate field SchulgeldNachrechnung");
-            setModelSchulgeldNachrechnung();
+        if (txtRechnungsbetragNachrechnung.isEnabled()) {
+            LOGGER.trace("Validate field RechnungsbetragNachrechnung");
+            setModelRechnungsbetragNachrechnung();
         }
-        if (txtDifferenzSchulgeld.isEnabled()) {
-            LOGGER.trace("Validate field DifferenzSchulgeld");
-            setModelDifferenzSchulgeld();
+        if (txtDifferenzRechnungsbetrag.isEnabled()) {
+            LOGGER.trace("Validate field DifferenzRechnungsbetrag");
+            setModelDifferenzRechnungsbetrag();
         }
         if (txtRestbetrag.isEnabled()) {
             LOGGER.trace("Validate field Restbetrag");
@@ -1210,17 +1210,17 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             errLblVorname.setVisible(true);
             errLblVorname.setText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.SCHULGELD_VORRECHNUNG)) {
-            errLblSchulgeldVorrechnung.setVisible(true);
-            errLblSchulgeldVorrechnung.setText(e.getMessage());
+        if (e.getAffectedFields().contains(Field.RECHNUNGSBETRAG_VORRECHNUNG)) {
+            errLblRechnungsbetragVorrechnung.setVisible(true);
+            errLblRechnungsbetragVorrechnung.setText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.SCHULGELD_NACHRECHNUNG)) {
-            errLblSchulgeldNachrechnung.setVisible(true);
-            errLblSchulgeldNachrechnung.setText(e.getMessage());
+        if (e.getAffectedFields().contains(Field.RECHNUNGSBETRAG_NACHRECHNUNG)) {
+            errLblRechnungsbetragNachrechnung.setVisible(true);
+            errLblRechnungsbetragNachrechnung.setText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.DIFFERENZ_SCHULGELD)) {
-            errLblDifferenzSchulgeld.setVisible(true);
-            errLblDifferenzSchulgeld.setText(e.getMessage());
+        if (e.getAffectedFields().contains(Field.DIFFERENZ_RECHNUNGSBETRAG)) {
+            errLblDifferenzRechnungsbetrag.setVisible(true);
+            errLblDifferenzRechnungsbetrag.setText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.RESTBETRAG)) {
             errLblRestbetrag.setVisible(true);
@@ -1237,14 +1237,14 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         if (e.getAffectedFields().contains(Field.VORNAME)) {
             txtVorname.setToolTipText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.SCHULGELD_VORRECHNUNG)) {
-            txtSchulgeldVorrechnung.setToolTipText(e.getMessage());
+        if (e.getAffectedFields().contains(Field.RECHNUNGSBETRAG_VORRECHNUNG)) {
+            txtRechnungsbetragVorrechnung.setToolTipText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.SCHULGELD_NACHRECHNUNG)) {
-            txtSchulgeldNachrechnung.setToolTipText(e.getMessage());
+        if (e.getAffectedFields().contains(Field.RECHNUNGSBETRAG_NACHRECHNUNG)) {
+            txtRechnungsbetragNachrechnung.setToolTipText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.DIFFERENZ_SCHULGELD)) {
-            txtDifferenzSchulgeld.setToolTipText(e.getMessage());
+        if (e.getAffectedFields().contains(Field.DIFFERENZ_RECHNUNGSBETRAG)) {
+            txtDifferenzRechnungsbetrag.setToolTipText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.RESTBETRAG)) {
             txtRestbetrag.setToolTipText(e.getMessage());
@@ -1270,28 +1270,28 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
                 txtVorname.setToolTipText(null);
             }
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.SCHULGELD_VORRECHNUNG)) {
-            if (errLblSchulgeldVorrechnung != null) {
-                errLblSchulgeldVorrechnung.setVisible(false);
+        if (fields.contains(Field.ALLE) || fields.contains(Field.RECHNUNGSBETRAG_VORRECHNUNG)) {
+            if (errLblRechnungsbetragVorrechnung != null) {
+                errLblRechnungsbetragVorrechnung.setVisible(false);
             }
-            if (txtSchulgeldVorrechnung != null) {
-                txtSchulgeldVorrechnung.setToolTipText(null);
-            }
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.SCHULGELD_NACHRECHNUNG)) {
-            if (errLblSchulgeldNachrechnung != null) {
-                errLblSchulgeldNachrechnung.setVisible(false);
-            }
-            if (txtSchulgeldNachrechnung != null) {
-                txtSchulgeldNachrechnung.setToolTipText(null);
+            if (txtRechnungsbetragVorrechnung != null) {
+                txtRechnungsbetragVorrechnung.setToolTipText(null);
             }
         }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.DIFFERENZ_SCHULGELD)) {
-            if (errLblDifferenzSchulgeld != null) {
-                errLblDifferenzSchulgeld.setVisible(false);
+        if (fields.contains(Field.ALLE) || fields.contains(Field.RECHNUNGSBETRAG_NACHRECHNUNG)) {
+            if (errLblRechnungsbetragNachrechnung != null) {
+                errLblRechnungsbetragNachrechnung.setVisible(false);
             }
-            if (txtDifferenzSchulgeld != null) {
-                txtDifferenzSchulgeld.setToolTipText(null);
+            if (txtRechnungsbetragNachrechnung != null) {
+                txtRechnungsbetragNachrechnung.setToolTipText(null);
+            }
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.DIFFERENZ_RECHNUNGSBETRAG)) {
+            if (errLblDifferenzRechnungsbetrag != null) {
+                errLblDifferenzRechnungsbetrag.setVisible(false);
+            }
+            if (txtDifferenzRechnungsbetrag != null) {
+                txtDifferenzRechnungsbetrag.setToolTipText(null);
             }
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.RESTBETRAG)) {
@@ -1391,11 +1391,11 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungSchulgeldVorrechnungListener implements ActionListener {
+    class RadioBtnGroupPraezisierungRechnungsbetragVorrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            LOGGER.trace("SemesterrechnungenSuchenController PraezisierungSchulgeldVorrechnung Event");
-            semesterrechnungenSuchenModel.setPraezisierungSchulgeldVorrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungSchulgeldVorrechnungSelected.valueOf(e.getActionCommand()));
+            LOGGER.trace("SemesterrechnungenSuchenController PraezisierungRechnungsbetragVorrechnung Event");
+            semesterrechnungenSuchenModel.setPraezisierungRechnungsbetragVorrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected.valueOf(e.getActionCommand()));
         }
     }
 
@@ -1455,11 +1455,11 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungSchulgeldNachrechnungListener implements ActionListener {
+    class RadioBtnGroupPraezisierungRechnungsbetragNachrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            LOGGER.trace("SemesterrechnungenSuchenController PraezisierungSchulgeldNachrechnung Event");
-            semesterrechnungenSuchenModel.setPraezisierungSchulgeldNachrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungSchulgeldNachrechnungSelected.valueOf(e.getActionCommand()));
+            LOGGER.trace("SemesterrechnungenSuchenController PraezisierungRechnungsbetragNachrechnung Event");
+            semesterrechnungenSuchenModel.setPraezisierungRechnungsbetragNachrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected.valueOf(e.getActionCommand()));
         }
     }
 
@@ -1471,11 +1471,11 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungDifferenzSchulgeldListener implements ActionListener {
+    class RadioBtnGroupPraezisierungDifferenzRechnungsbetragListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            LOGGER.trace("SemesterrechnungenSuchenController PraezisierungDifferenzSchulgeld Event");
-            semesterrechnungenSuchenModel.setPraezisierungDifferenzSchulgeldSelected(SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.valueOf(e.getActionCommand()));
+            LOGGER.trace("SemesterrechnungenSuchenController PraezisierungDifferenzRechnungsbetrag Event");
+            semesterrechnungenSuchenModel.setPraezisierungDifferenzRechnungsbetragSelected(SemesterrechnungenSuchenModel.PraezisierungDifferenzRechnungsbetragSelected.valueOf(e.getActionCommand()));
         }
     }
 

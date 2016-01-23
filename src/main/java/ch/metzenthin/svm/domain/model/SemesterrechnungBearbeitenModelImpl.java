@@ -141,8 +141,8 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
     }
 
     @Override
-    public String getSchulgeldVorrechnung() {
-        return (semesterrechnung.getSchulgeldVorrechnung() == null ? "-" : semesterrechnung.getSchulgeldVorrechnung().toString());
+    public String getRechnungsbetragVorrechnung() {
+        return (semesterrechnung.getRechnungsbetragVorrechnung() == null ? "-" : semesterrechnung.getRechnungsbetragVorrechnung().toString());
     }
 
     @Override
@@ -200,8 +200,8 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
     }
 
     @Override
-    public String getSchulgeldNachrechnung() {
-        return (semesterrechnung.getSchulgeldNachrechnung() == null ? "-" : semesterrechnung.getSchulgeldNachrechnung().toString());
+    public String getRechnungsbetragNachrechnung() {
+        return (semesterrechnung.getRechnungsbetragNachrechnung() == null ? "-" : semesterrechnung.getRechnungsbetragNachrechnung().toString());
     }
 
     @Override

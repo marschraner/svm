@@ -30,8 +30,8 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private PraezisierungErmaessigungVorrechnungSelected praezisierungErmaessigungVorrechnungSelected;
     private PraezisierungZuschlagVorrechnungSelected praezisierungZuschlagVorrechnungSelected;
     private PraezisierungWochenbetragVorrechnungSelected praezisierungWochenbetragVorrechnungSelected;
-    private PraezisierungSchulgeldVorrechnungSelected praezisierungSchulgeldVorrechnungSelected;
-    private BigDecimal schulgeldVorrechnung;
+    private PraezisierungRechnungsbetragVorrechnungSelected praezisierungRechnungsbetragVorrechnungSelected;
+    private BigDecimal rechnungsbetragVorrechnung;
     private SechsJahresRabattJaNeinVorrechnungSelected sechsJahresRabattJaNeinVorrechnungSelected;
     private RechnungsdatumGesetztNachrechnungSelected rechnungsdatumGesetztNachrechnungSelected;
     private PraezisierungRechnungsdatumNachrechnungSelected praezisierungRechnungsdatumNachrechnungSelected;
@@ -39,11 +39,11 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private PraezisierungZuschlagNachrechnungSelected praezisierungZuschlagNachrechnungSelected;
     private PraezisierungAnzahlWochenNachrechnungSelected praezisierungAnzahlWochenNachrechnungSelected;
     private PraezisierungWochenbetragNachrechnungSelected praezisierungWochenbetragNachrechnungSelected;
-    private PraezisierungSchulgeldNachrechnungSelected praezisierungSchulgeldNachrechnungSelected;
-    private BigDecimal schulgeldNachrechnung;
+    private PraezisierungRechnungsbetragNachrechnungSelected praezisierungRechnungsbetragNachrechnungSelected;
+    private BigDecimal rechnungsbetragNachrechnung;
     private SechsJahresRabattJaNeinNachrechnungSelected sechsJahresRabattJaNeinNachrechnungSelected;
-    private PraezisierungDifferenzSchulgeldSelected praezisierungDifferenzSchulgeldSelected;
-    private BigDecimal differenzSchulgeld;
+    private PraezisierungDifferenzRechnungsbetragSelected praezisierungDifferenzRechnungsbetragSelected;
+    private BigDecimal differenzRechnungsbetrag;
     private PraezisierungRestbetragSelected praezisierungRestbetragSelected;
     private BigDecimal restbetrag;
 
@@ -206,42 +206,40 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         firePropertyChange(Field.PRAEZISIERUNG_WOCHENBETRAG_VORRECHNUNG, oldValue, this.praezisierungWochenbetragVorrechnungSelected);
     }
 
-    @Override
-    public PraezisierungSchulgeldVorrechnungSelected getPraezisierungSchulgeldVorrechnungSelected() {
-        return praezisierungSchulgeldVorrechnungSelected;
+    public PraezisierungRechnungsbetragVorrechnungSelected getPraezisierungRechnungsbetragVorrechnungSelected() {
+        return praezisierungRechnungsbetragVorrechnungSelected;
     }
 
-    @Override
-    public void setPraezisierungSchulgeldVorrechnungSelected(PraezisierungSchulgeldVorrechnungSelected praezisierungSchulgeldVorrechnungSelected) {
-        PraezisierungSchulgeldVorrechnungSelected oldValue = this.praezisierungSchulgeldVorrechnungSelected;
-        this.praezisierungSchulgeldVorrechnungSelected = praezisierungSchulgeldVorrechnungSelected;
-        firePropertyChange(Field.PRAEZISIERUNG_SCHULGELD_VORRECHNUNG, oldValue, this.praezisierungSchulgeldVorrechnungSelected);
+    public void setPraezisierungRechnungsbetragVorrechnungSelected(PraezisierungRechnungsbetragVorrechnungSelected praezisierungRechnungsbetragVorrechnungSelected) {
+        PraezisierungRechnungsbetragVorrechnungSelected oldValue = this.praezisierungRechnungsbetragVorrechnungSelected;
+        this.praezisierungRechnungsbetragVorrechnungSelected = praezisierungRechnungsbetragVorrechnungSelected;
+        firePropertyChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_VORRECHNUNG, oldValue, this.praezisierungRechnungsbetragVorrechnungSelected);
     }
 
-    private final PreisModelAttribute schulgeldVorrechnungModelAttribute = new PreisModelAttribute(
+    private final PreisModelAttribute rechnungsbetragVorrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.SCHULGELD_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.RECHNUNGSBETRAG_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return schulgeldVorrechnung;
+                    return rechnungsbetragVorrechnung;
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    schulgeldVorrechnung = value;
+                    rechnungsbetragVorrechnung = value;
                 }
             }
     );
 
     @Override
-    public BigDecimal getSchulgeldVorrechnung() {
-        return schulgeldVorrechnungModelAttribute.getValue();
+    public BigDecimal getRechnungsbetragVorrechnung() {
+        return rechnungsbetragVorrechnungModelAttribute.getValue();
     }
 
     @Override
-    public void setSchulgeldVorrechnung(String schulgeldVorrechnung) throws SvmValidationException {
-        schulgeldVorrechnungModelAttribute.setNewValue(false, schulgeldVorrechnung, isBulkUpdate());
+    public void setRechnungsbetragVorrechnung(String rechnungsbetragVorrechnung) throws SvmValidationException {
+        rechnungsbetragVorrechnungModelAttribute.setNewValue(false, rechnungsbetragVorrechnung, isBulkUpdate());
     }
 
     @Override
@@ -328,42 +326,40 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         firePropertyChange(Field.PRAEZISIERUNG_WOCHENBETRAG_NACHRECHNUNG, oldValue, this.praezisierungWochenbetragNachrechnungSelected);
     }
 
-    @Override
-    public PraezisierungSchulgeldNachrechnungSelected getPraezisierungSchulgeldNachrechnungSelected() {
-        return praezisierungSchulgeldNachrechnungSelected;
+    public PraezisierungRechnungsbetragNachrechnungSelected getPraezisierungRechnungsbetragNachrechnungSelected() {
+        return praezisierungRechnungsbetragNachrechnungSelected;
     }
 
-    @Override
-    public void setPraezisierungSchulgeldNachrechnungSelected(PraezisierungSchulgeldNachrechnungSelected praezisierungSchulgeldNachrechnungSelected) {
-        PraezisierungSchulgeldNachrechnungSelected oldValue = this.praezisierungSchulgeldNachrechnungSelected;
-        this.praezisierungSchulgeldNachrechnungSelected = praezisierungSchulgeldNachrechnungSelected;
-        firePropertyChange(Field.PRAEZISIERUNG_SCHULGELD_NACHRECHNUNG, oldValue, this.praezisierungSchulgeldNachrechnungSelected);
+    public void setPraezisierungRechnungsbetragNachrechnungSelected(PraezisierungRechnungsbetragNachrechnungSelected praezisierungRechnungsbetragNachrechnungSelected) {
+        PraezisierungRechnungsbetragNachrechnungSelected oldValue = this.praezisierungRechnungsbetragNachrechnungSelected;
+        this.praezisierungRechnungsbetragNachrechnungSelected = praezisierungRechnungsbetragNachrechnungSelected;
+        firePropertyChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_NACHRECHNUNG, oldValue, this.praezisierungRechnungsbetragNachrechnungSelected);
     }
 
-    private final PreisModelAttribute schulgeldNachrechnungModelAttribute = new PreisModelAttribute(
+    private final PreisModelAttribute rechnungsbetragNachrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.SCHULGELD_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.RECHNUNGSBETRAG_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return schulgeldNachrechnung;
+                    return rechnungsbetragNachrechnung;
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    schulgeldNachrechnung = value;
+                    rechnungsbetragNachrechnung = value;
                 }
             }
     );
 
     @Override
-    public BigDecimal getSchulgeldNachrechnung() {
-        return schulgeldNachrechnungModelAttribute.getValue();
+    public BigDecimal getRechnungsbetragNachrechnung() {
+        return rechnungsbetragNachrechnungModelAttribute.getValue();
     }
 
     @Override
-    public void setSchulgeldNachrechnung(String schulgeldNachrechnung) throws SvmValidationException {
-        schulgeldNachrechnungModelAttribute.setNewValue(false, schulgeldNachrechnung, isBulkUpdate());
+    public void setRechnungsbetragNachrechnung(String rechnungsbetragNachrechnung) throws SvmValidationException {
+        rechnungsbetragNachrechnungModelAttribute.setNewValue(false, rechnungsbetragNachrechnung, isBulkUpdate());
     }
 
     @Override
@@ -383,42 +379,40 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         return rechnungsdatumGesetztNachrechnungSelected;
     }
 
-    @Override
-    public PraezisierungDifferenzSchulgeldSelected getPraezisierungDifferenzSchulgeldSelected() {
-        return praezisierungDifferenzSchulgeldSelected;
+    public PraezisierungDifferenzRechnungsbetragSelected getPraezisierungDifferenzRechnungsbetragSelected() {
+        return praezisierungDifferenzRechnungsbetragSelected;
     }
 
-    @Override
-    public void setPraezisierungDifferenzSchulgeldSelected(PraezisierungDifferenzSchulgeldSelected praezisierungDifferenzSchulgeldSelected) {
-        PraezisierungDifferenzSchulgeldSelected oldValue = this.praezisierungDifferenzSchulgeldSelected;
-        this.praezisierungDifferenzSchulgeldSelected = praezisierungDifferenzSchulgeldSelected;
-        firePropertyChange(Field.PRAEZISIERUNG_DIFFERENZ_SCHULGELD, oldValue, this.praezisierungDifferenzSchulgeldSelected);
+    public void setPraezisierungDifferenzRechnungsbetragSelected(PraezisierungDifferenzRechnungsbetragSelected praezisierungDifferenzRechnungsbetragSelected) {
+        PraezisierungDifferenzRechnungsbetragSelected oldValue = this.praezisierungDifferenzRechnungsbetragSelected;
+        this.praezisierungDifferenzRechnungsbetragSelected = praezisierungDifferenzRechnungsbetragSelected;
+        firePropertyChange(Field.PRAEZISIERUNG_DIFFERENZ_RECHNUNGSBETRAG, oldValue, this.praezisierungDifferenzRechnungsbetragSelected);
     }
 
-    private final PreisModelAttribute differenzSchulgeldModelAttribute = new PreisModelAttribute(
+    private final PreisModelAttribute differenzRechnungsbetragModelAttribute = new PreisModelAttribute(
             this,
-            Field.DIFFERENZ_SCHULGELD, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.DIFFERENZ_RECHNUNGSBETRAG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return differenzSchulgeld;
+                    return differenzRechnungsbetrag;
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    differenzSchulgeld = value;
+                    differenzRechnungsbetrag = value;
                 }
             }
     );
 
     @Override
-    public BigDecimal getDifferenzSchulgeld() {
-        return differenzSchulgeldModelAttribute.getValue();
+    public BigDecimal getDifferenzRechnungsbetrag() {
+        return differenzRechnungsbetragModelAttribute.getValue();
     }
 
     @Override
-    public void setDifferenzSchulgeld(String differenzSchulgeld) throws SvmValidationException {
-        differenzSchulgeldModelAttribute.setNewValue(false, differenzSchulgeld, isBulkUpdate());
+    public void setDifferenzRechnungsbetrag(String differenzRechnungsbetrag) throws SvmValidationException {
+        differenzRechnungsbetragModelAttribute.setNewValue(false, differenzRechnungsbetrag, isBulkUpdate());
     }
 
     @Override

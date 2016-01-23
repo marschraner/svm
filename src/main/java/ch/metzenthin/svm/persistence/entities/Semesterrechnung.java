@@ -405,7 +405,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     }
 
     @Transient
-    public BigDecimal getZwischensummeVorrechnung() {
+    public BigDecimal getSchulgeldVorrechnung() {
         if (anzahlWochenVorrechnung == null || wochenbetragVorrechnung == null) {
             return null;
         }
@@ -418,7 +418,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
             return null;
         }
         if (stipendium != null && stipendium != Stipendium.KEINES) {
-            BigDecimal ermaessigungStipendiumVorrechnung = getZwischensummeVorrechnung();
+            BigDecimal ermaessigungStipendiumVorrechnung = getSchulgeldVorrechnung();
             ermaessigungStipendiumVorrechnung = ermaessigungStipendiumVorrechnung.multiply(new BigDecimal(1- stipendium.getFaktor()));
             ermaessigungStipendiumVorrechnung = ermaessigungStipendiumVorrechnung.setScale(1, BigDecimal.ROUND_HALF_EVEN);  // Runden auf 10 Rappen
             return ermaessigungStipendiumVorrechnung.setScale(2, BigDecimal.ROUND_HALF_EVEN);
@@ -428,31 +428,31 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     }
 
     @Transient
-    public BigDecimal getSchulgeldVorrechnung() {
+    public BigDecimal getRechnungsbetragVorrechnung() {
         if (anzahlWochenVorrechnung == null || wochenbetragVorrechnung == null) {
             return null;
         }
-        BigDecimal schulgeldVorrechnung = getZwischensummeVorrechnung();
+        BigDecimal rechnungsbetragVorrechnung = getSchulgeldVorrechnung();
         // Stipendium
         if (stipendium != null && stipendium != Stipendium.KEINES) {
-            schulgeldVorrechnung = schulgeldVorrechnung.subtract(getErmaessigungStipendiumVorrechnung());
+            rechnungsbetragVorrechnung = rechnungsbetragVorrechnung.subtract(getErmaessigungStipendiumVorrechnung());
         }
         // Gratiskinder
         if (gratiskinder != null && gratiskinder) {
-            schulgeldVorrechnung = new BigDecimal("0.00");
+            rechnungsbetragVorrechnung = new BigDecimal("0.00");
         }
         // Zuschlag / Ermässigung
         if (zuschlagVorrechnung != null) {
-            schulgeldVorrechnung = schulgeldVorrechnung.add(zuschlagVorrechnung);
+            rechnungsbetragVorrechnung = rechnungsbetragVorrechnung.add(zuschlagVorrechnung);
         }
         if (ermaessigungVorrechnung != null) {
-            schulgeldVorrechnung = schulgeldVorrechnung.subtract(ermaessigungVorrechnung);
+            rechnungsbetragVorrechnung = rechnungsbetragVorrechnung.subtract(ermaessigungVorrechnung);
         }
-        return schulgeldVorrechnung;
+        return rechnungsbetragVorrechnung;
     }
 
     @Transient
-    public BigDecimal getZwischensummeNachrechnung() {
+    public BigDecimal getSchulgeldNachrechnung() {
         if (anzahlWochenNachrechnung == null || wochenbetragNachrechnung == null) {
             return null;
         }
@@ -465,7 +465,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
             return null;
         }
         if (stipendium != null && stipendium != Stipendium.KEINES) {
-            BigDecimal ermaessigungStipendiumNachrechnung = getZwischensummeNachrechnung();
+            BigDecimal ermaessigungStipendiumNachrechnung = getSchulgeldNachrechnung();
             ermaessigungStipendiumNachrechnung = ermaessigungStipendiumNachrechnung.multiply(new BigDecimal(1- stipendium.getFaktor()));
             ermaessigungStipendiumNachrechnung = ermaessigungStipendiumNachrechnung.setScale(1, BigDecimal.ROUND_HALF_EVEN);  // Runden auf 10 Rappen
             return ermaessigungStipendiumNachrechnung.setScale(2, BigDecimal.ROUND_HALF_EVEN);
@@ -475,43 +475,43 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     }
 
     @Transient
-    public BigDecimal getSchulgeldNachrechnung() {
+    public BigDecimal getRechnungsbetragNachrechnung() {
         if (anzahlWochenNachrechnung == null || wochenbetragNachrechnung == null) {
             return null;
         }
-        BigDecimal schulgeldNachrechnung = getZwischensummeNachrechnung();
+        BigDecimal rechnungsbetragNachrechnung = getSchulgeldNachrechnung();
         // Stipendium
         if (stipendium != null && stipendium != Stipendium.KEINES) {
-            schulgeldNachrechnung = schulgeldNachrechnung.subtract(getErmaessigungStipendiumNachrechnung());
+            rechnungsbetragNachrechnung = rechnungsbetragNachrechnung.subtract(getErmaessigungStipendiumNachrechnung());
         }
         // Gratiskinder
         if (gratiskinder != null && gratiskinder) {
-            schulgeldNachrechnung = new BigDecimal("0.00");
+            rechnungsbetragNachrechnung = new BigDecimal("0.00");
         }
         // Zuschlag / Ermässigung
         if (zuschlagNachrechnung != null) {
-            schulgeldNachrechnung = schulgeldNachrechnung.add(zuschlagNachrechnung);
+            rechnungsbetragNachrechnung = rechnungsbetragNachrechnung.add(zuschlagNachrechnung);
         }
         if (ermaessigungNachrechnung != null) {
-            schulgeldNachrechnung = schulgeldNachrechnung.subtract(ermaessigungNachrechnung);
+            rechnungsbetragNachrechnung = rechnungsbetragNachrechnung.subtract(ermaessigungNachrechnung);
         }
-        return schulgeldNachrechnung;
+        return rechnungsbetragNachrechnung;
     }
 
     @Transient
-    public BigDecimal getDifferenzSchulgeld() {
-        return getSchulgeldNachrechnung().subtract(getSchulgeldVorrechnung());
+    public BigDecimal getDifferenzRechnungsbetrag() {
+        return getRechnungsbetragNachrechnung().subtract(getRechnungsbetragVorrechnung());
     }
 
     @Transient
     public BigDecimal getRestbetrag() {
         BigDecimal restbetrag = null;
-        BigDecimal schulgeldVorrechnung = getSchulgeldVorrechnung();
-        BigDecimal schulgeldNachrechnung = getSchulgeldNachrechnung();
-        if (getRechnungsdatumNachrechnung() != null && schulgeldNachrechnung != null) {
-            restbetrag = schulgeldNachrechnung;
-        } else if (getRechnungsdatumVorrechnung() != null && schulgeldVorrechnung != null) {
-            restbetrag = schulgeldVorrechnung;
+        BigDecimal rechnungsbetragVorrechnung = getRechnungsbetragVorrechnung();
+        BigDecimal rechnungsbetragNachrechnung = getRechnungsbetragNachrechnung();
+        if (getRechnungsdatumNachrechnung() != null && rechnungsbetragNachrechnung != null) {
+            restbetrag = rechnungsbetragNachrechnung;
+        } else if (getRechnungsdatumVorrechnung() != null && rechnungsbetragVorrechnung != null) {
+            restbetrag = rechnungsbetragVorrechnung;
         }
         if (restbetrag != null) {
             if (betragZahlung1 != null) {

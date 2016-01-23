@@ -60,7 +60,7 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
             out.write(separator);
             out.write("Wochenb. V");
             out.write(separator);
-            out.write("Schulgeld V");
+            out.write("Rechnungsb. V");
             out.write(separator);
             out.write("R.Datum N");
             out.write(separator);
@@ -76,7 +76,7 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
             out.write(separator);
             out.write("Wochenb. N");
             out.write(separator);
-            out.write("Schulgeld N");
+            out.write("Rechnungsb. N");
             out.write(separator);
             out.write("D. 1. Zahlung");
             out.write(separator);
@@ -130,7 +130,7 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
                 out.write(separator);
                 out.write(semesterrechnung.getWochenbetragVorrechnung().toString());
                 out.write(separator);
-                out.write(semesterrechnung.getSchulgeldVorrechnung().toString());
+                out.write(semesterrechnung.getRechnungsbetragVorrechnung().toString());
                 out.write(separator);
                 if (semesterrechnung.getRechnungsdatumNachrechnung() != null) {
                     out.write(asString(semesterrechnung.getRechnungsdatumNachrechnung()));
@@ -152,7 +152,7 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
                 out.write(separator);
                 out.write(semesterrechnung.getWochenbetragNachrechnung().toString());
                 out.write(separator);
-                out.write(semesterrechnung.getSchulgeldNachrechnung().toString());
+                out.write(semesterrechnung.getRechnungsbetragNachrechnung().toString());
                 out.write(separator);
                 if (semesterrechnung.getDatumZahlung1() != null) {
                     out.write(asString(semesterrechnung.getDatumZahlung1()));
