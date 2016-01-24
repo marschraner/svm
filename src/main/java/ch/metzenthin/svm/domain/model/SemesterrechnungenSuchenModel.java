@@ -53,6 +53,12 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
         GROESSER
     }
 
+    enum PraezisierungAnzahlWochenVorrechnungSelected {
+        GLEICH,
+        KLEINER,
+        GROESSER
+    }
+
     enum PraezisierungWochenbetragVorrechnungSelected {
         GLEICH,
         KLEINER,
@@ -147,6 +153,7 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     PraezisierungRechnungsdatumVorrechnungSelected getPraezisierungRechnungsdatumVorrechnungSelected();
     PraezisierungErmaessigungVorrechnungSelected getPraezisierungErmaessigungVorrechnungSelected();
     PraezisierungZuschlagVorrechnungSelected getPraezisierungZuschlagVorrechnungSelected();
+    PraezisierungAnzahlWochenVorrechnungSelected getPraezisierungAnzahlWochenVorrechnungSelected();
     PraezisierungWochenbetragVorrechnungSelected getPraezisierungWochenbetragVorrechnungSelected();
     PraezisierungRechnungsbetragVorrechnungSelected getPraezisierungRechnungsbetragVorrechnungSelected();
     BigDecimal getRechnungsbetragVorrechnung();
@@ -177,6 +184,7 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     void setPraezisierungRechnungsdatumVorrechnungSelected(PraezisierungRechnungsdatumVorrechnungSelected praezisierungRechnungsdatumVorrechnungSelected);
     void setPraezisierungErmaessigungVorrechnungSelected(PraezisierungErmaessigungVorrechnungSelected praezisierungErmaessigungVorrechnungSelected);
     void setPraezisierungZuschlagVorrechnungSelected(PraezisierungZuschlagVorrechnungSelected praezisierungZuschlagVorrechnungSelected);
+    void setPraezisierungAnzahlWochenVorrechnungSelected(PraezisierungAnzahlWochenVorrechnungSelected praezisierungAnzahlWochenVorrechnungSelected);
     void setPraezisierungWochenbetragVorrechnungSelected(PraezisierungWochenbetragVorrechnungSelected praezisierungWochenbetragVorrechnungSelected);
     void setPraezisierungRechnungsbetragVorrechnungSelected(PraezisierungRechnungsbetragVorrechnungSelected praezisierungRechnungsbetragVorrechnungSelected);
     void setRechnungsbetragVorrechnung(String rechnungsbetragVorrechnung) throws SvmValidationException;

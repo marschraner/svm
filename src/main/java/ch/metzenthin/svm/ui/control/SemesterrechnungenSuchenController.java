@@ -72,6 +72,9 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private JRadioButton radioBtnGleichZuschlagVorrechnung;
     private JRadioButton radioBtnKleinerZuschlagVorrechnung;
     private JRadioButton radioBtnGroesserZuschlagVorrechnung;
+    private JRadioButton radioBtnGleichAnzahlWochenVorrechnung;
+    private JRadioButton radioBtnKleinerAnzahlWochenVorrechnung;
+    private JRadioButton radioBtnGroesserAnzahlWochenVorrechnung;
     private JRadioButton radioBtnGleichWochenbetragVorrechnung;
     private JRadioButton radioBtnKleinerWochenbetragVorrechnung;
     private JRadioButton radioBtnGroesserWochenbetragVorrechnung;
@@ -620,6 +623,23 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         semesterrechnungenSuchenModel.setPraezisierungZuschlagVorrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungZuschlagVorrechnungSelected.GLEICH);
     }
 
+    public void setRadioBtnGroupPraezisierungAnzahlWochenVorrechnung(JRadioButton radioBtnGleichAnzahlWochenVorrechnung, JRadioButton radioBtnKleinerAnzahlWochenVorrechnung, JRadioButton radioBtnGroesserAnzahlWochenVorrechnung) {
+        this.radioBtnGleichAnzahlWochenVorrechnung = radioBtnGleichAnzahlWochenVorrechnung;
+        this.radioBtnKleinerAnzahlWochenVorrechnung = radioBtnKleinerAnzahlWochenVorrechnung;
+        this.radioBtnGroesserAnzahlWochenVorrechnung = radioBtnGroesserAnzahlWochenVorrechnung;
+        // Action Commands
+        this.radioBtnGleichAnzahlWochenVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected.GLEICH.toString());
+        this.radioBtnKleinerAnzahlWochenVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected.KLEINER.toString());
+        this.radioBtnGroesserAnzahlWochenVorrechnung.setActionCommand(SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected.GROESSER.toString());
+        // Listener
+        RadioBtnGroupPraezisierungAnzahlWochenVorrechnungListener radioBtnGroupPraezisierungAnzahlWochenVorrechnungListener = new RadioBtnGroupPraezisierungAnzahlWochenVorrechnungListener();
+        this.radioBtnGleichAnzahlWochenVorrechnung.addActionListener(radioBtnGroupPraezisierungAnzahlWochenVorrechnungListener);
+        this.radioBtnKleinerAnzahlWochenVorrechnung.addActionListener(radioBtnGroupPraezisierungAnzahlWochenVorrechnungListener);
+        this.radioBtnGroesserAnzahlWochenVorrechnung.addActionListener(radioBtnGroupPraezisierungAnzahlWochenVorrechnungListener);
+        // Initialisieren mit gleich
+        semesterrechnungenSuchenModel.setPraezisierungAnzahlWochenVorrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected.GLEICH);
+    }
+
     public void setRadioBtnGroupPraezisierungWochenbetragVorrechnung(JRadioButton radioBtnGleichWochenbetragVorrechnung, JRadioButton radioBtnKleinerWochenbetragVorrechnung, JRadioButton radioBtnGroesserWochenbetragVorrechnung) {
         this.radioBtnGleichWochenbetragVorrechnung = radioBtnGleichWochenbetragVorrechnung;
         this.radioBtnKleinerWochenbetragVorrechnung = radioBtnKleinerWochenbetragVorrechnung;
@@ -1098,6 +1118,15 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         else if (checkIsFieldChange(Field.PRAEZISIERUNG_ZUSCHLAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungZuschlagVorrechnungSelected.GROESSER) {
             radioBtnGroesserZuschlagVorrechnung.setSelected(true);
         }
+        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected.GLEICH) {
+            radioBtnGleichAnzahlWochenVorrechnung.setSelected(true);
+        }
+        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected.KLEINER) {
+            radioBtnKleinerAnzahlWochenVorrechnung.setSelected(true);
+        }
+        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected.GROESSER) {
+            radioBtnGroesserAnzahlWochenVorrechnung.setSelected(true);
+        }
         else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragVorrechnungSelected.GLEICH) {
             radioBtnGleichWochenbetragVorrechnung.setSelected(true);
         }
@@ -1328,11 +1357,11 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         if (e.getAffectedFields().contains(Field.RECHNUNGSBETRAG_VORRECHNUNG)) {
             txtRechnungsbetragVorrechnung.setToolTipText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.RESTBETRAG_NACHRECHNUNG)) {
-            txtRestbetragNachrechnung.setToolTipText(e.getMessage());
+        if (e.getAffectedFields().contains(Field.RESTBETRAG_VORRECHNUNG)) {
+            txtRestbetragVorrechnung.setToolTipText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.RECHNUNGSBETRAG_VORRECHNUNG)) {
-            txtRechnungsbetragVorrechnung.setToolTipText(e.getMessage());
+        if (e.getAffectedFields().contains(Field.RECHNUNGSBETRAG_NACHRECHNUNG)) {
+            txtRechnungsbetragNachrechnung.setToolTipText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.RESTBETRAG_NACHRECHNUNG)) {
             txtRestbetragNachrechnung.setToolTipText(e.getMessage());
@@ -1479,6 +1508,14 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungZuschlagVorrechnung Event");
             semesterrechnungenSuchenModel.setPraezisierungZuschlagVorrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungZuschlagVorrechnungSelected.valueOf(e.getActionCommand()));
+        }
+    }
+
+    class RadioBtnGroupPraezisierungAnzahlWochenVorrechnungListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LOGGER.trace("SemesterrechnungenSuchenController PraezisierungAnzahlWochenVorrechnung Event");
+            semesterrechnungenSuchenModel.setPraezisierungAnzahlWochenVorrechnungSelected(SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected.valueOf(e.getActionCommand()));
         }
     }
 

@@ -167,6 +167,7 @@ public enum Field {
     NACH_VORRECHNUNG("Nach V"),
     PRAEZISIERUNG_ERMAESSIGUNG_VORRECHNUNG("Präzisierung Ermässigung V"),
     PRAEZISIERUNG_ZUSCHLAG_VORRECHNUNG("Präzisierung Zuschlag V"),
+    PRAEZISIERUNG_ANZAHL_WOCHEN_VORRECHNUNG("Präzisierung Anzahl Wochen V"),
     PRAEZISIERUNG_WOCHENBETRAG_VORRECHNUNG("Präzisierung Wochenbetrag V"),
     PRAEZISIERUNG_RECHNUNGSBETRAG_VORRECHNUNG("Präzisierung Rechnungsbetrag V"),
     RECHNUNGSDATUM_GESETZT_NACHRECHNUNG("Vollständigkeit N"),

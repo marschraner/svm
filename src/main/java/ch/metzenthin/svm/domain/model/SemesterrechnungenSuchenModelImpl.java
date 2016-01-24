@@ -29,6 +29,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private PraezisierungRechnungsdatumVorrechnungSelected praezisierungRechnungsdatumVorrechnungSelected;
     private PraezisierungErmaessigungVorrechnungSelected praezisierungErmaessigungVorrechnungSelected;
     private PraezisierungZuschlagVorrechnungSelected praezisierungZuschlagVorrechnungSelected;
+    private PraezisierungAnzahlWochenVorrechnungSelected praezisierungAnzahlWochenVorrechnungSelected;
     private PraezisierungWochenbetragVorrechnungSelected praezisierungWochenbetragVorrechnungSelected;
     private PraezisierungRechnungsbetragVorrechnungSelected praezisierungRechnungsbetragVorrechnungSelected;
     private BigDecimal rechnungsbetragVorrechnung;
@@ -199,6 +200,18 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         PraezisierungZuschlagVorrechnungSelected oldValue = this.praezisierungZuschlagVorrechnungSelected;
         this.praezisierungZuschlagVorrechnungSelected = praezisierungZuschlagVorrechnungSelected;
         firePropertyChange(Field.PRAEZISIERUNG_ZUSCHLAG_VORRECHNUNG, oldValue, this.praezisierungZuschlagVorrechnungSelected);
+    }
+
+    @Override
+    public PraezisierungAnzahlWochenVorrechnungSelected getPraezisierungAnzahlWochenVorrechnungSelected() {
+        return praezisierungAnzahlWochenVorrechnungSelected;
+    }
+
+    @Override
+    public void setPraezisierungAnzahlWochenVorrechnungSelected(PraezisierungAnzahlWochenVorrechnungSelected praezisierungAnzahlWochenVorrechnungSelected) {
+        PraezisierungAnzahlWochenVorrechnungSelected oldValue = this.praezisierungAnzahlWochenVorrechnungSelected;
+        this.praezisierungAnzahlWochenVorrechnungSelected = praezisierungAnzahlWochenVorrechnungSelected;
+        firePropertyChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_VORRECHNUNG, oldValue, this.praezisierungAnzahlWochenVorrechnungSelected);
     }
 
     @Override

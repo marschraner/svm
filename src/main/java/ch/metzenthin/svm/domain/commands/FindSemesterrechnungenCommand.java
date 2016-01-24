@@ -42,6 +42,8 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
     private SemesterrechnungenSuchenModel.PraezisierungZuschlagVorrechnungSelected praezisierungZuschlagVorrechnungSelected;
     private BigDecimal zuschlagVorrechnung;
     private SemesterrechnungenSuchenModel.PraezisierungWochenbetragVorrechnungSelected praezisierungWochenbetragVorrechnungSelected;
+    private SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected praezisierungAnzahlWochenVorrechnungSelected;
+    private Integer anzahlWochenVorrechnung;
     private BigDecimal wochenbetragVorrechnung;
     private SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected praezisierungRechnungsbetragVorrechnungSelected;
     private BigDecimal rechnungsbetragVorrechnung;
@@ -89,6 +91,8 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
         this.ermaessigungVorrechnung = semesterrechnungenSuchenModel.getErmaessigungVorrechnung();
         this.praezisierungZuschlagVorrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungZuschlagVorrechnungSelected();
         this.zuschlagVorrechnung = semesterrechnungenSuchenModel.getZuschlagVorrechnung();
+        this.praezisierungAnzahlWochenVorrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungAnzahlWochenVorrechnungSelected();
+        this.anzahlWochenVorrechnung = semesterrechnungenSuchenModel.getAnzahlWochenVorrechnung();
         this.praezisierungWochenbetragVorrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungWochenbetragVorrechnungSelected();
         this.wochenbetragVorrechnung = semesterrechnungenSuchenModel.getWochenbetragVorrechnung();
         this.praezisierungRechnungsbetragVorrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungRechnungsbetragVorrechnungSelected();
@@ -279,6 +283,19 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
                     break;
             }
         }
+        if (anzahlWochenVorrechnung != null) {
+            switch (praezisierungAnzahlWochenVorrechnungSelected) {
+                case GLEICH:
+                    selectStatementSb.append(" semre.anzahlWochenVorrechnung = :anzahlWochenVorrechnung and");
+                    break;
+                case KLEINER:
+                    selectStatementSb.append(" semre.anzahlWochenVorrechnung < :anzahlWochenVorrechnung and");
+                    break;
+                case GROESSER:
+                    selectStatementSb.append(" semre.anzahlWochenVorrechnung > :anzahlWochenVorrechnung and");
+                    break;
+            }
+        }
         if (wochenbetragVorrechnung != null) {
             switch (praezisierungWochenbetragVorrechnungSelected) {
                 case GLEICH:
@@ -393,6 +410,9 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
         }
         if (selectStatementSb.toString().contains(":zuschlagVorrechnung")) {
             typedQuery.setParameter("zuschlagVorrechnung", zuschlagVorrechnung);
+        }
+        if (selectStatementSb.toString().contains(":anzahlWochenVorrechnung")) {
+            typedQuery.setParameter("anzahlWochenVorrechnung", anzahlWochenVorrechnung);
         }
         if (selectStatementSb.toString().contains(":wochenbetragVorrechnung")) {
             typedQuery.setParameter("wochenbetragVorrechnung", wochenbetragVorrechnung);
