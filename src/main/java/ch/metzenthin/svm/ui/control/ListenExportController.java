@@ -380,7 +380,8 @@ public class ListenExportController extends AbstractController {
                 if (result != null) {
                     switch (result) {
                         case TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR:
-                            JOptionPane.showMessageDialog(listenExportDialog, "Template-Datei '" + listenExportModel.getTemplateFile() + "' nicht gefunden. Bitte Template-Datei erstellen.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                            JOptionPane.showMessageDialog(listenExportDialog, "Template-Datei '" + listenExportModel.getTemplateFile() + "' nicht gefunden." +
+                                    "\nBitte Template-Datei erstellen.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
                             break;
                         case FEHLER_BEIM_LESEN_DES_PROPERTY_FILE:
                             JOptionPane.showMessageDialog(listenExportDialog, "Fehler beim Lesen der Svm-Property-Datei '" + SvmProperties.SVM_PROPERTIES_FILE_NAME

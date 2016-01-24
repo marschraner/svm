@@ -466,6 +466,15 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private Semester determineSemesterTableData(SvmModel svmModel) {
         if (kursFuerSucheBeruecksichtigen) {
             return semesterKurs;
+        } else if (maerchenFuerSucheBeruecksichtigen) {
+            List<Semester> semestersAll = svmModel.getSemestersAll();
+            for (Semester semester : semestersAll) {
+                if (semester.getSchuljahr().equals(maerchen.getSchuljahr()) && semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+                    return semester;
+                }
+            }
+            // Sollte nie eintreten
+            return semestersAll.get(0);
         } else {
             CommandInvoker commandInvoker = getCommandInvoker();
             List<Semester> erfassteSemester = svmModel.getSemestersAll();
@@ -478,9 +487,16 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         }
     }
 
-    private Map<Schueler, List<Kurs>> determineKurseMapTableData(List<Schueler> schuelerList, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter) {
+    private Map<Schueler, List<Kurs>> determineKurseMapTableData(List<Schueler> schuelerList, Semester semesterTableData, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, (wochentag == Wochentag.ALLE ? null : wochentag), zeitBeginn, (mitarbeiter == MITARBEITER_ALLE ? null : mitarbeiter), null, null);
+        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(
+                schuelerList,
+                semesterTableData,
+                (!kursFuerSucheBeruecksichtigen || wochentag == Wochentag.ALLE ? null : wochentag),
+                (!kursFuerSucheBeruecksichtigen ? null : zeitBeginn),
+                (!kursFuerSucheBeruecksichtigen || mitarbeiter == MITARBEITER_ALLE ? null : mitarbeiter),
+                null,
+                null);
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
         return findKurseMapSchuelerSemesterCommand.getKurseMap();
     }
