@@ -535,6 +535,26 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     }
 
     @Transient
+    public BigDecimal getRestbetragVorrechnung() {
+        BigDecimal restbetragVorrechnung = null;
+        BigDecimal rechnungsbetragVorrechnung = getRechnungsbetragVorrechnung();
+        if (getRechnungsdatumVorrechnung() != null && rechnungsbetragVorrechnung != null) {
+            restbetragVorrechnung = rechnungsbetragVorrechnung;
+            if (betragZahlung1Vorrechnung != null) {
+                restbetragVorrechnung = restbetragVorrechnung.subtract(betragZahlung1Vorrechnung);
+            }
+            if (betragZahlung2Vorrechnung != null) {
+                restbetragVorrechnung = restbetragVorrechnung.subtract(betragZahlung2Vorrechnung);
+            }
+            if (betragZahlung3Vorrechnung != null) {
+                restbetragVorrechnung = restbetragVorrechnung.subtract(betragZahlung3Vorrechnung);
+            }
+        }
+        return restbetragVorrechnung;
+    }
+
+
+    @Transient
     public BigDecimal getSchulgeldNachrechnung() {
         if (anzahlWochenNachrechnung == null || wochenbetragNachrechnung == null) {
             return null;
@@ -582,30 +602,6 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     }
 
     @Transient
-    public BigDecimal getDifferenzRechnungsbetrag() {
-        return getRechnungsbetragNachrechnung().subtract(getRechnungsbetragVorrechnung());
-    }
-
-    @Transient
-    public BigDecimal getRestbetragVorrechnung() {
-        BigDecimal restbetragVorrechnung = null;
-        BigDecimal rechnungsbetragVorrechnung = getRechnungsbetragVorrechnung();
-        if (getRechnungsdatumVorrechnung() != null && rechnungsbetragVorrechnung != null) {
-            restbetragVorrechnung = rechnungsbetragVorrechnung;
-            if (betragZahlung1Vorrechnung != null) {
-                restbetragVorrechnung = restbetragVorrechnung.subtract(betragZahlung1Vorrechnung);
-            }
-            if (betragZahlung2Vorrechnung != null) {
-                restbetragVorrechnung = restbetragVorrechnung.subtract(betragZahlung2Vorrechnung);
-            }
-            if (betragZahlung3Vorrechnung != null) {
-                restbetragVorrechnung = restbetragVorrechnung.subtract(betragZahlung3Vorrechnung);
-            }
-        }
-        return restbetragVorrechnung;
-    }
-
-    @Transient
     public BigDecimal getRestbetragNachrechnung() {
         BigDecimal restbetragNachrechnung = null;
         BigDecimal rechnungsbetragNachrechnung = getRechnungsbetragNachrechnung();
@@ -622,6 +618,11 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
             }
         }
         return restbetragNachrechnung;
+    }
+
+    @Transient
+    public BigDecimal getDifferenzSchulgeld() {
+        return getSchulgeldNachrechnung().subtract(getSchulgeldVorrechnung());
     }
 
     @Transient

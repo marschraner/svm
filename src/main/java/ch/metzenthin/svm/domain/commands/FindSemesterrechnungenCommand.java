@@ -66,8 +66,8 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
     private SemesterrechnungenSuchenModel.PraezisierungRestbetragNachrechnungSelected praezisierungRestbetragNachrechnungSelected;
     private BigDecimal restbetragNachrechnung;
     private SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected sechsJahresRabattJaNeinNachrechnungSelected;
-    private SemesterrechnungenSuchenModel.PraezisierungDifferenzRechnungsbetragSelected praezisierungDifferenzRechnungsbetragSelected;
-    private BigDecimal differenzRechnungsbetrag;
+    private SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected praezisierungDifferenzSchulgeldSelected;
+    private BigDecimal differenzSchulgeld;
     private StringBuilder selectStatementSb;
     private TypedQuery<Semesterrechnung> typedQuery;
 
@@ -116,8 +116,8 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
         this.praezisierungRestbetragNachrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungRestbetragNachrechnungSelected();
         this.restbetragNachrechnung = semesterrechnungenSuchenModel.getRestbetragNachrechnung();
         this.sechsJahresRabattJaNeinNachrechnungSelected = semesterrechnungenSuchenModel.getSechsJahresRabattJaNeinNachrechnungSelected();
-        this.praezisierungDifferenzRechnungsbetragSelected = semesterrechnungenSuchenModel.getPraezisierungDifferenzRechnungsbetragSelected();
-        this.differenzRechnungsbetrag = semesterrechnungenSuchenModel.getDifferenzRechnungsbetrag();
+        this.praezisierungDifferenzSchulgeldSelected = semesterrechnungenSuchenModel.getPraezisierungDifferenzSchulgeldSelected();
+        this.differenzSchulgeld = semesterrechnungenSuchenModel.getDifferenzSchulgeld();
     }
 
     @Override
@@ -436,9 +436,9 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
 
     private void filterSemesterrechnungenFound() {
         filterRechnungsbetrag();
-        filterDifferenzRechnungsbetrag();
         filterRestbetrag();
         filterSechsJahresRabatt();
+        filterDifferenzSchulgeld();
     }
 
     private void filterRechnungsbetrag() {
@@ -499,39 +499,6 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
                     }
                     break;
             }
-        }
-    }
-
-    private void filterDifferenzRechnungsbetrag() {
-        if (differenzRechnungsbetrag == null) {
-            return;
-        }
-        Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
-        switch (praezisierungDifferenzRechnungsbetragSelected) {
-            case GLEICH:
-                while (it.hasNext()) {
-                    Semesterrechnung semesterrechnungIt = it.next();
-                    if (semesterrechnungIt.getDifferenzRechnungsbetrag() == null || semesterrechnungIt.getDifferenzRechnungsbetrag().compareTo(differenzRechnungsbetrag) != 0) {
-                        it.remove();
-                    }
-                }
-                break;
-            case KLEINER:
-                while (it.hasNext()) {
-                    Semesterrechnung semesterrechnungIt = it.next();
-                    if (semesterrechnungIt.getDifferenzRechnungsbetrag() == null || semesterrechnungIt.getDifferenzRechnungsbetrag().compareTo(differenzRechnungsbetrag) != -1) {
-                        it.remove();
-                    }
-                }
-                break;
-            case GROESSER:
-                while (it.hasNext()) {
-                    Semesterrechnung semesterrechnungIt = it.next();
-                    if (semesterrechnungIt.getDifferenzRechnungsbetrag() == null || semesterrechnungIt.getDifferenzRechnungsbetrag().compareTo(differenzRechnungsbetrag) != 1) {
-                        it.remove();
-                    }
-                }
-                break;
         }
     }
 
@@ -653,6 +620,40 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
         }
 
     }
+
+    private void filterDifferenzSchulgeld() {
+        if (differenzSchulgeld == null) {
+            return;
+        }
+        Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
+        switch (praezisierungDifferenzSchulgeldSelected) {
+            case GLEICH:
+                while (it.hasNext()) {
+                    Semesterrechnung semesterrechnungIt = it.next();
+                    if (semesterrechnungIt.getDifferenzSchulgeld() == null || semesterrechnungIt.getDifferenzSchulgeld().compareTo(differenzSchulgeld) != 0) {
+                        it.remove();
+                    }
+                }
+                break;
+            case KLEINER:
+                while (it.hasNext()) {
+                    Semesterrechnung semesterrechnungIt = it.next();
+                    if (semesterrechnungIt.getDifferenzSchulgeld() == null || semesterrechnungIt.getDifferenzSchulgeld().compareTo(differenzSchulgeld) != -1) {
+                        it.remove();
+                    }
+                }
+                break;
+            case GROESSER:
+                while (it.hasNext()) {
+                    Semesterrechnung semesterrechnungIt = it.next();
+                    if (semesterrechnungIt.getDifferenzSchulgeld() == null || semesterrechnungIt.getDifferenzSchulgeld().compareTo(differenzSchulgeld) != 1) {
+                        it.remove();
+                    }
+                }
+                break;
+        }
+    }
+
 
     public List<Semesterrechnung> getSemesterrechnungenFound() {
         return semesterrechnungenFound;

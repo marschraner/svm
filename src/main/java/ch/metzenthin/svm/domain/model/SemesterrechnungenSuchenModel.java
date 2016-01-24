@@ -137,7 +137,7 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
         ALLE
     }
 
-    enum PraezisierungDifferenzRechnungsbetragSelected {
+    enum PraezisierungDifferenzSchulgeldSelected {
         GLEICH,
         KLEINER,
         GROESSER
@@ -171,8 +171,8 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     PraezisierungRestbetragNachrechnungSelected getPraezisierungRestbetragNachrechnungSelected();
     BigDecimal getRestbetragNachrechnung();
     SechsJahresRabattJaNeinNachrechnungSelected getSechsJahresRabattJaNeinNachrechnungSelected();
-    PraezisierungDifferenzRechnungsbetragSelected getPraezisierungDifferenzRechnungsbetragSelected();
-    BigDecimal getDifferenzRechnungsbetrag();
+    PraezisierungDifferenzSchulgeldSelected getPraezisierungDifferenzSchulgeldSelected();
+    BigDecimal getDifferenzSchulgeld();
 
     void setSemester(Semester semester);
     void setNachname(String nachname) throws SvmValidationException;
@@ -202,8 +202,8 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     void setPraezisierungRestbetragNachrechnungSelected(PraezisierungRestbetragNachrechnungSelected praezisierungRestbetragNachrechnungSelected);
     void setRestbetragNachrechnung(String restbetragNachrechnung) throws SvmValidationException;
     void setSechsJahresRabattJaNeinNachrechnungSelected(SechsJahresRabattJaNeinNachrechnungSelected sechsJahresRabattJaNeinNachrechnungSelected);
-    void setPraezisierungDifferenzRechnungsbetragSelected(PraezisierungDifferenzRechnungsbetragSelected praezisierungDifferenzRechnungsbetragSelected);
-    void setDifferenzRechnungsbetrag(String differenzRechnungsbetrag) throws SvmValidationException;
+    void setPraezisierungDifferenzSchulgeldSelected(PraezisierungDifferenzSchulgeldSelected praezisierungDifferenzSchulgeldSelected);
+    void setDifferenzSchulgeld(String differenzSchulgeld) throws SvmValidationException;
 
     Semester getSemesterInit(SvmModel svmModel);
     SemesterrechnungenTableData suchen();

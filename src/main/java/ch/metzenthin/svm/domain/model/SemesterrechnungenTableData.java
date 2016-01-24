@@ -24,7 +24,7 @@ public class SemesterrechnungenTableData {
     private static final Field[] COLUMNS = {Field.RECHNUNGSEMPFAENGER, Field.SCHUELER, Field.RECHNUNGSDATUM_VORRECHNUNG, Field.ERMAESSIGUNG_VORRECHNUNG,
             Field.ZUSCHLAG_VORRECHNUNG, Field.ANZAHL_WOCHEN_VORRECHNUNG, Field.WOCHENBETRAG_VORRECHNUNG, Field.RECHNUNGSBETRAG_VORRECHNUNG,
             Field.RECHNUNGSDATUM_NACHRECHNUNG, Field.ERMAESSIGUNG_NACHRECHNUNG,
-            Field.ZUSCHLAG_NACHRECHNUNG, Field.ANZAHL_WOCHEN_NACHRECHNUNG, Field.WOCHENBETRAG_NACHRECHNUNG, Field.RECHNUNGSBETRAG_NACHRECHNUNG, Field.DIFFERENZ_RECHNUNGSBETRAG,
+            Field.ZUSCHLAG_NACHRECHNUNG, Field.ANZAHL_WOCHEN_NACHRECHNUNG, Field.WOCHENBETRAG_NACHRECHNUNG, Field.RECHNUNGSBETRAG_NACHRECHNUNG, Field.DIFFERENZ_SCHULGELD,
             Field.BETRAG_ZAHLUNG_1_NACHRECHNUNG, Field.BETRAG_ZAHLUNG_2_NACHRECHNUNG, Field.BETRAG_ZAHLUNG_3_NACHRECHNUNG, Field.RESTBETRAG_NACHRECHNUNG};
 
     public int getColumnCount() {
@@ -81,8 +81,8 @@ public class SemesterrechnungenTableData {
             case RECHNUNGSBETRAG_NACHRECHNUNG:
                 value = semesterrechnung.getRechnungsbetragNachrechnung();
                 break;
-            case DIFFERENZ_RECHNUNGSBETRAG:
-                value = semesterrechnung.getDifferenzRechnungsbetrag();
+            case DIFFERENZ_SCHULGELD:
+                value = semesterrechnung.getDifferenzSchulgeld();
                 break;
             case BETRAG_ZAHLUNG_1_NACHRECHNUNG:
                 value = semesterrechnung.getBetragZahlung1Nachrechnung();
@@ -128,7 +128,7 @@ public class SemesterrechnungenTableData {
                 return BigDecimal.class;
             case RECHNUNGSBETRAG_NACHRECHNUNG:
                 return BigDecimal.class;
-            case DIFFERENZ_RECHNUNGSBETRAG:
+            case DIFFERENZ_SCHULGELD:
                 return BigDecimal.class;
             case BETRAG_ZAHLUNG_1_NACHRECHNUNG:
                 return BigDecimal.class;

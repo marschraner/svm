@@ -600,10 +600,10 @@
                                 </constraints>
                                 <properties>
                                   <labelFor value="d5962"/>
-                                  <text value="Differenz Rechnungsbetrag"/>
+                                  <text value="Differenz Schulgeld"/>
                                 </properties>
                               </component>
-                              <component id="d5962" class="javax.swing.JTextField" binding="txtDifferenzRechnungsbetrag">
+                              <component id="d5962" class="javax.swing.JTextField" binding="txtDifferenzSchulgeld">
                                 <constraints>
                                   <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                     <preferred-size width="150" height="-1"/>
@@ -612,13 +612,13 @@
                                 </constraints>
                                 <properties/>
                               </component>
-                              <component id="468c7" class="javax.swing.JLabel" binding="errLblDifferenzRechnungsbetrag">
+                              <component id="468c7" class="javax.swing.JLabel" binding="errLblDifferenzSchulgeld">
                                 <constraints>
                                   <grid row="1" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
-                                  <text value="errLblDifferenzRechnungsbetrag"/>
+                                  <text value="errLblDifferenzSchulgeld"/>
                                 </properties>
                               </component>
                               <vspacer id="db49b">
@@ -647,7 +647,7 @@
                                 <properties/>
                                 <border type="none"/>
                                 <children>
-                                  <component id="bf02d" class="javax.swing.JRadioButton" binding="radioBtnDifferenzRechnungsbetragGleich">
+                                  <component id="bf02d" class="javax.swing.JRadioButton" binding="radioBtnGleichDifferenzSchulgeld">
                                     <constraints>
                                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                       <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
@@ -656,7 +656,7 @@
                                       <text value="gleich"/>
                                     </properties>
                                   </component>
-                                  <component id="de323" class="javax.swing.JRadioButton" binding="radioBtnDifferenzRechnungsbetragKleiner">
+                                  <component id="de323" class="javax.swing.JRadioButton" binding="radioBtnKleinerDifferenzSchulgeld">
                                     <constraints>
                                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                       <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
@@ -665,7 +665,7 @@
                                       <text value="kleiner"/>
                                     </properties>
                                   </component>
-                                  <component id="5130e" class="javax.swing.JRadioButton" binding="radioBtnDifferenzRechnungsbetragGroesser">
+                                  <component id="5130e" class="javax.swing.JRadioButton" binding="radioBtnGroesserDifferenzSchulgeld">
                                     <constraints>
                                       <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                       <gridbag weightx="0.0" weighty="0.0"/>
