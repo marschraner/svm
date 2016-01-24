@@ -135,9 +135,17 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                     listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
                 }
                 break;
-            case MAHNUNGEN_SERIENBRIEF:
-                if (!checkIfRechnungsdatumVorrechnungUeberallGesetzt(semesterrechnungenTableModel) && !checkIfRechnungsdatumNachrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
-                    String listenErstellenWarningMessage = "Die Rechnungsauswahl enthält Rechnungen ohne Rechnungsdatum. \n" +
+            case MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF:
+                if (!checkIfRechnungsdatumVorrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
+                    String listenErstellenWarningMessage = "Die Rechnungsauswahl enthält Vorrechnungen ohne Rechnungsdatum. \n" +
+                            "Es werden nur Rechnungen mit gesetztem Rechnungsdatum als Mahnung exportiert. Forfahren?";
+                    String listenErstellenWarningTitle = "Rechnungsdatum nicht überall gesetzt";
+                    listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
+                }
+                break;
+            case MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF:
+                if (!checkIfRechnungsdatumNachrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
+                    String listenErstellenWarningMessage = "Die Rechnungsauswahl enthält Nachrechnungen ohne Rechnungsdatum. \n" +
                             "Es werden nur Rechnungen mit gesetztem Rechnungsdatum als Mahnung exportiert. Forfahren?";
                     String listenErstellenWarningTitle = "Rechnungsdatum nicht überall gesetzt";
                     listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
@@ -315,10 +323,15 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 commandInvoker.executeCommand(createNachrechnungenSerienbriefCsvFileCommand);
                 result = createNachrechnungenSerienbriefCsvFileCommand.getResult();
                 break;
-            case MAHNUNGEN_SERIENBRIEF:
-                CreateMahnungenSerienbriefCsvFileCommand createMahnungenSerienbriefCsvFileCommand = new CreateMahnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), outputFile);
-                commandInvoker.executeCommand(createMahnungenSerienbriefCsvFileCommand);
-                result = createMahnungenSerienbriefCsvFileCommand.getResult();
+            case MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF:
+                CreateMahnungenSerienbriefCsvFileCommand createMahnungenVorrechnungenSerienbriefCsvFileCommand = new CreateMahnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), Rechnungstyp.VORRECHNUNG, outputFile);
+                commandInvoker.executeCommand(createMahnungenVorrechnungenSerienbriefCsvFileCommand);
+                result = createMahnungenVorrechnungenSerienbriefCsvFileCommand.getResult();
+                break;
+            case MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF:
+                CreateMahnungenSerienbriefCsvFileCommand createMahnungenNachrechnungenSerienbriefCsvFileCommand = new CreateMahnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), Rechnungstyp.NACHRECHNUNG, outputFile);
+                commandInvoker.executeCommand(createMahnungenNachrechnungenSerienbriefCsvFileCommand);
+                result = createMahnungenNachrechnungenSerienbriefCsvFileCommand.getResult();
                 break;
             case SEMESTERRECHNUNGEN_ADRESSETIKETTEN:
                 Set<Person> rechnungsempfaengerSemesterrechnungSet = new HashSet<>();
@@ -404,7 +417,9 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 break;
             case NACHRECHNUNGEN_SERIENBRIEF:
                 break;
-            case MAHNUNGEN_SERIENBRIEF:
+            case MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF:
+                break;
+            case MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF:
                 break;
             case SEMESTERRECHNUNGEN_ADRESSETIKETTEN:
                 break;

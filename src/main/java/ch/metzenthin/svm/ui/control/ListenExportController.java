@@ -206,7 +206,8 @@ public class ListenExportController extends AbstractController {
         } else {
             comboBoxListentyp.removeItem(Listentyp.VORRECHNUNGEN_SERIENBRIEF);
             comboBoxListentyp.removeItem(Listentyp.NACHRECHNUNGEN_SERIENBRIEF);
-            comboBoxListentyp.removeItem(Listentyp.MAHNUNGEN_SERIENBRIEF);
+            comboBoxListentyp.removeItem(Listentyp.MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF);
+            comboBoxListentyp.removeItem(Listentyp.MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF);
             comboBoxListentyp.removeItem(Listentyp.SEMESTERRECHNUNGEN_ADRESSETIKETTEN);
             comboBoxListentyp.removeItem(Listentyp.RECHNUNGSLISTE);
         }

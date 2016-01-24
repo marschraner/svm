@@ -1,10 +1,12 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
 import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -14,10 +16,12 @@ public class CreateMahnungenSerienbriefCsvFileCommand extends CreateListeCommand
 
     // input
     private List<? extends Semesterrechnung> semesterrechnungList;
+    private Rechnungstyp rechnungstyp;
     private final File outputFile;
 
-    public CreateMahnungenSerienbriefCsvFileCommand(List<? extends Semesterrechnung> semesterrechnungList, File outputFile) {
+    public CreateMahnungenSerienbriefCsvFileCommand(List<? extends Semesterrechnung> semesterrechnungList, Rechnungstyp rechnungstyp, File outputFile) {
         this.semesterrechnungList = semesterrechnungList;
+        this.rechnungstyp = rechnungstyp;
         this.outputFile = outputFile;
     }
 
@@ -49,7 +53,19 @@ public class CreateMahnungenSerienbriefCsvFileCommand extends CreateListeCommand
 
             // Daten
             for (Semesterrechnung semesterrechnung : semesterrechnungList) {
-                if (semesterrechnung.getRestbetragNachrechnung() == null) {
+                BigDecimal restbetrag;
+                if (rechnungstyp == Rechnungstyp.VORRECHNUNG) {
+                    if (semesterrechnung.getRechnungsdatumVorrechnung() == null) {
+                        continue;
+                    }
+                    restbetrag = semesterrechnung.getRestbetragVorrechnung();
+                } else {
+                    if (semesterrechnung.getRechnungsdatumNachrechnung() == null) {
+                        continue;
+                    }
+                    restbetrag = semesterrechnung.getRestbetragNachrechnung();
+                }
+                if (restbetrag == null || restbetrag.compareTo(BigDecimal.ZERO) == 0) {
                     continue;
                 }
                 Angehoeriger rechnungsempfaenger = semesterrechnung.getRechnungsempfaenger();
@@ -66,7 +82,7 @@ public class CreateMahnungenSerienbriefCsvFileCommand extends CreateListeCommand
                 out.write(separator);
                 out.write(rechnungsempfaenger.getAdresse().getOrt());
                 out.write(separator);
-                out.write(semesterrechnung.getRestbetragNachrechnung().toString());
+                out.write(restbetrag.toString());
                 out.write('\n');
             }
 

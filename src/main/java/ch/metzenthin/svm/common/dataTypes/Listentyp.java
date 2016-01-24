@@ -26,7 +26,8 @@ public enum Listentyp {
     KURSLISTE_CSV("Kursliste (CSV)", null, Filetyp.CSV),
     VORRECHNUNGEN_SERIENBRIEF("Vorrechnungen-Serienbrief", null, Filetyp.CSV),
     NACHRECHNUNGEN_SERIENBRIEF("Nachrechnungen-Serienbrief", null, Filetyp.CSV),
-    MAHNUNGEN_SERIENBRIEF("Mahnungen-Serienbrief", null, Filetyp.CSV),
+    MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF("Mahnungen Vorrechnungen-Serienbrief", null, Filetyp.CSV),
+    MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF("Mahnungen Nachrechnungen-Serienbrief", null, Filetyp.CSV),
     SEMESTERRECHNUNGEN_ADRESSETIKETTEN("Rechnungsempfänger-Adressetiketten", null, Filetyp.CSV),
     RECHNUNGSLISTE("Rechnungsliste", null, Filetyp.CSV);
 
