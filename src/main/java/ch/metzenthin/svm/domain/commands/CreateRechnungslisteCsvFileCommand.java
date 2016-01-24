@@ -46,51 +46,73 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
             out.write(separator);
             out.write("PLZ/Ort");
             out.write(separator);
+
+            // Vorrechnung
             out.write("R.Datum V");
-            out.write(separator);
-            out.write("Ermäss. V");
-            out.write(separator);
-            out.write("E.Grund V");
-            out.write(separator);
-            out.write("Zuschl. V");
-            out.write(separator);
-            out.write("Z.Grund V");
             out.write(separator);
             out.write("Anz. V");
             out.write(separator);
             out.write("Wochenb. V");
             out.write(separator);
+            out.write("Schulg. V");
+            out.write(separator);
+            out.write("Ermäss. V");
+            out.write(separator);
+            out.write("Zuschl. V");
+            out.write(separator);
+            out.write("Stipend. V");
+            out.write(separator);
             out.write("Rechnungsb. V");
             out.write(separator);
+            out.write("1. Zahl. V");
+            out.write(separator);
+            out.write("D. 1. Zahl. V");
+            out.write(separator);
+            out.write("2. Zahl. V");
+            out.write(separator);
+            out.write("D. 2. Zahl. V");
+            out.write(separator);
+            out.write("3. Zahl. V");
+            out.write(separator);
+            out.write("D. 3. Zahl. V");
+            out.write(separator);
+            out.write("Restb. V");
+            out.write(separator);
+
+            // Nachrechnung
             out.write("R.Datum N");
-            out.write(separator);
-            out.write("Ermäss. N");
-            out.write(separator);
-            out.write("E.Grund N");
-            out.write(separator);
-            out.write("Zuschl. N");
-            out.write(separator);
-            out.write("Z.Grund N");
             out.write(separator);
             out.write("Anz. N");
             out.write(separator);
             out.write("Wochenb. N");
             out.write(separator);
+            out.write("Schulg. N");
+            out.write(separator);
+            out.write("Ermäss. N");
+            out.write(separator);
+            out.write("Zuschl. N");
+            out.write(separator);
+            out.write("Stipend. N");
+            out.write(separator);
             out.write("Rechnungsb. N");
             out.write(separator);
-            out.write("D. 1. Zahlung");
+            out.write("1. Zahl. N");
             out.write(separator);
-            out.write("1. Zahlung");
+            out.write("D. 1. Zahl. N");
             out.write(separator);
-            out.write("D. 2. Zahlung");
+            out.write("2. Zahl. N");
             out.write(separator);
-            out.write("2. Zahlung");
+            out.write("D. 2. Zahl. N");
             out.write(separator);
-            out.write("D. 3. Zahlung");
+            out.write("3. Zahl. N");
             out.write(separator);
-            out.write("3. Zahlung");
+            out.write("D. 3. Zahl. N");
             out.write(separator);
-            out.write("Restbetrag");
+            out.write("Restb. N");
+            out.write(separator);
+
+            // Rest
+            out.write("Diff. Schulg.");
             out.write(separator);
             out.write("Bemerkungen");
             out.write(separator);
@@ -110,77 +132,139 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
                 out.write(separator);
                 out.write(rechnungsempfaenger.getAdresse().getPlzOrt());
                 out.write(separator);
+
+                // Vorrechnung
                 if (semesterrechnung.getRechnungsdatumVorrechnung() != null) {
                     out.write(asString(semesterrechnung.getRechnungsdatumVorrechnung()));
-                }
-                out.write(separator);
-                out.write(semesterrechnung.getErmaessigungVorrechnung().toString());
-                out.write(separator);
-                if (checkNotEmpty(semesterrechnung.getErmaessigungsgrundVorrechnung())) {
-                    out.write(semesterrechnung.getErmaessigungsgrundVorrechnung());
-                }
-                out.write(separator);
-                out.write(semesterrechnung.getZuschlagVorrechnung().toString());
-                out.write(separator);
-                if (checkNotEmpty(semesterrechnung.getZuschlagsgrundVorrechnung())) {
-                    out.write(semesterrechnung.getZuschlagsgrundVorrechnung());
                 }
                 out.write(separator);
                 out.write(Integer.toString(semesterrechnung.getAnzahlWochenVorrechnung()));
                 out.write(separator);
                 out.write(semesterrechnung.getWochenbetragVorrechnung().toString());
                 out.write(separator);
-                out.write(semesterrechnung.getRechnungsbetragVorrechnung().toString());
+                BigDecimal schulgeldVorrechnung = semesterrechnung.getSchulgeldVorrechnung();
+                if (schulgeldVorrechnung != null) {
+                    out.write(schulgeldVorrechnung.toString());
+                }
                 out.write(separator);
+                BigDecimal ermaessigungVorrechnung = semesterrechnung.getErmaessigungVorrechnung();
+                if (ermaessigungVorrechnung != null && ermaessigungVorrechnung.compareTo(BigDecimal.ZERO) != 0) {
+                    out.write(ermaessigungVorrechnung.toString());
+                }
+                out.write(separator);
+                BigDecimal zuschlagVorrechnung = semesterrechnung.getZuschlagVorrechnung();
+                if (zuschlagVorrechnung != null && zuschlagVorrechnung.compareTo(BigDecimal.ZERO) != 0) {
+                    out.write(zuschlagVorrechnung.toString());
+                }
+                out.write(separator);
+                BigDecimal ermaessigungStipendiumVorrechnung = semesterrechnung.getErmaessigungStipendiumVorrechnung();
+                if (ermaessigungStipendiumVorrechnung != null && ermaessigungStipendiumVorrechnung.compareTo(BigDecimal.ZERO) != 0) {
+                    out.write(ermaessigungStipendiumVorrechnung.toString());
+                }
+                out.write(separator);
+                BigDecimal rechnungsbetragVorrechnung = semesterrechnung.getRechnungsbetragVorrechnung();
+                if (rechnungsbetragVorrechnung != null) {
+                    out.write(rechnungsbetragVorrechnung.toString());
+                }
+                out.write(separator);
+                if (semesterrechnung.getBetragZahlung1Vorrechnung() != null) {
+                    out.write(semesterrechnung.getBetragZahlung1Vorrechnung().toString());
+                }
+                out.write(separator);
+                if (semesterrechnung.getDatumZahlung1Vorrechnung() != null) {
+                    out.write(asString(semesterrechnung.getDatumZahlung1Vorrechnung()));
+                }
+                out.write(separator);
+                if (semesterrechnung.getBetragZahlung2Vorrechnung() != null) {
+                    out.write(semesterrechnung.getBetragZahlung2Vorrechnung().toString());
+                }
+                out.write(separator);
+                if (semesterrechnung.getDatumZahlung2Vorrechnung() != null) {
+                    out.write(asString(semesterrechnung.getDatumZahlung2Vorrechnung()));
+                }
+                out.write(separator);
+                if (semesterrechnung.getBetragZahlung3Vorrechnung() != null) {
+                    out.write(semesterrechnung.getBetragZahlung3Vorrechnung().toString());
+                }
+                out.write(separator);
+                if (semesterrechnung.getDatumZahlung3Vorrechnung() != null) {
+                    out.write(asString(semesterrechnung.getDatumZahlung3Vorrechnung()));
+                }
+                out.write(separator);
+                BigDecimal restbetragVorrechnung = semesterrechnung.getRestbetragVorrechnung();
+                if (restbetragVorrechnung != null) {
+                    out.write(restbetragVorrechnung.toString());
+                }
+                out.write(separator);
+
+                // Nachrechnung
                 if (semesterrechnung.getRechnungsdatumNachrechnung() != null) {
                     out.write(asString(semesterrechnung.getRechnungsdatumNachrechnung()));
-                }
-                out.write(separator);
-                out.write(semesterrechnung.getErmaessigungNachrechnung().toString());
-                out.write(separator);
-                if (checkNotEmpty(semesterrechnung.getErmaessigungsgrundNachrechnung())) {
-                    out.write(semesterrechnung.getErmaessigungsgrundNachrechnung());
-                }
-                out.write(separator);
-                out.write(semesterrechnung.getZuschlagNachrechnung().toString());
-                out.write(separator);
-                if (checkNotEmpty(semesterrechnung.getZuschlagsgrundNachrechnung())) {
-                    out.write(semesterrechnung.getZuschlagsgrundNachrechnung());
                 }
                 out.write(separator);
                 out.write(Integer.toString(semesterrechnung.getAnzahlWochenNachrechnung()));
                 out.write(separator);
                 out.write(semesterrechnung.getWochenbetragNachrechnung().toString());
                 out.write(separator);
-                out.write(semesterrechnung.getRechnungsbetragNachrechnung().toString());
+                BigDecimal schulgeldNachrechnung = semesterrechnung.getSchulgeldNachrechnung();
+                if (schulgeldNachrechnung != null) {
+                    out.write(schulgeldNachrechnung.toString());
+                }
                 out.write(separator);
-                if (semesterrechnung.getDatumZahlung1Nachrechnung() != null) {
-                    out.write(asString(semesterrechnung.getDatumZahlung1Nachrechnung()));
+                BigDecimal ermaessigungNachrechnung = semesterrechnung.getErmaessigungNachrechnung();
+                if (ermaessigungNachrechnung != null && ermaessigungNachrechnung.compareTo(BigDecimal.ZERO) != 0) {
+                    out.write(ermaessigungNachrechnung.toString());
+                }
+                out.write(separator);
+                BigDecimal zuschlagNachrechnung = semesterrechnung.getZuschlagNachrechnung();
+                if (zuschlagNachrechnung != null && zuschlagNachrechnung.compareTo(BigDecimal.ZERO) != 0) {
+                    out.write(zuschlagNachrechnung.toString());
+                }
+                out.write(separator);
+                BigDecimal ermaessigungStipendiumNachrechnung = semesterrechnung.getErmaessigungStipendiumNachrechnung();
+                if (ermaessigungStipendiumNachrechnung != null && ermaessigungStipendiumNachrechnung.compareTo(BigDecimal.ZERO) != 0) {
+                    out.write(ermaessigungStipendiumNachrechnung.toString());
+                }
+                out.write(separator);
+                BigDecimal rechnungsbetragNachrechnung = semesterrechnung.getRechnungsbetragNachrechnung();
+                if (rechnungsbetragNachrechnung != null) {
+                    out.write(rechnungsbetragNachrechnung.toString());
                 }
                 out.write(separator);
                 if (semesterrechnung.getBetragZahlung1Nachrechnung() != null) {
-                  out.write(semesterrechnung.getBetragZahlung1Nachrechnung().toString());
+                    out.write(semesterrechnung.getBetragZahlung1Nachrechnung().toString());
                 }
                 out.write(separator);
-                if (semesterrechnung.getDatumZahlung2Nachrechnung() != null) {
-                    out.write(asString(semesterrechnung.getDatumZahlung2Nachrechnung()));
+                if (semesterrechnung.getDatumZahlung1Nachrechnung() != null) {
+                    out.write(asString(semesterrechnung.getDatumZahlung1Nachrechnung()));
                 }
                 out.write(separator);
                 if (semesterrechnung.getBetragZahlung2Nachrechnung() != null) {
                     out.write(semesterrechnung.getBetragZahlung2Nachrechnung().toString());
                 }
                 out.write(separator);
-                if (semesterrechnung.getDatumZahlung3Nachrechnung() != null) {
-                    out.write(asString(semesterrechnung.getDatumZahlung3Nachrechnung()));
+                if (semesterrechnung.getDatumZahlung2Nachrechnung() != null) {
+                    out.write(asString(semesterrechnung.getDatumZahlung2Nachrechnung()));
                 }
                 out.write(separator);
                 if (semesterrechnung.getBetragZahlung3Nachrechnung() != null) {
                     out.write(semesterrechnung.getBetragZahlung3Nachrechnung().toString());
                 }
                 out.write(separator);
-                BigDecimal restbetrag = semesterrechnung.getRestbetragNachrechnung();
-                if (restbetrag != null) {
-                    out.write(restbetrag.toString());
+                if (semesterrechnung.getDatumZahlung3Nachrechnung() != null) {
+                    out.write(asString(semesterrechnung.getDatumZahlung3Nachrechnung()));
+                }
+                out.write(separator);
+                BigDecimal restbetragNachrechnung = semesterrechnung.getRestbetragNachrechnung();
+                if (restbetragNachrechnung != null) {
+                    out.write(restbetragNachrechnung.toString());
+                }
+                out.write(separator);
+
+                // Rest
+                BigDecimal differenzSchulgeld = semesterrechnung.getDifferenzSchulgeld();
+                if (differenzSchulgeld != null) {
+                    out.write(differenzSchulgeld.toString());
                 }
                 out.write(separator);
                 if (checkNotEmpty(semesterrechnung.getBemerkungen())) {

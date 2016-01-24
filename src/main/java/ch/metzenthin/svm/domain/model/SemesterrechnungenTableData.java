@@ -21,11 +21,14 @@ public class SemesterrechnungenTableData {
         this.semester = semester;
     }
 
-    private static final Field[] COLUMNS = {Field.RECHNUNGSEMPFAENGER, Field.SCHUELER, Field.RECHNUNGSDATUM_VORRECHNUNG, Field.ERMAESSIGUNG_VORRECHNUNG,
-            Field.ZUSCHLAG_VORRECHNUNG, Field.ANZAHL_WOCHEN_VORRECHNUNG, Field.WOCHENBETRAG_VORRECHNUNG, Field.RECHNUNGSBETRAG_VORRECHNUNG,
-            Field.RECHNUNGSDATUM_NACHRECHNUNG, Field.ERMAESSIGUNG_NACHRECHNUNG,
-            Field.ZUSCHLAG_NACHRECHNUNG, Field.ANZAHL_WOCHEN_NACHRECHNUNG, Field.WOCHENBETRAG_NACHRECHNUNG, Field.RECHNUNGSBETRAG_NACHRECHNUNG, Field.DIFFERENZ_SCHULGELD,
-            Field.BETRAG_ZAHLUNG_1_NACHRECHNUNG, Field.BETRAG_ZAHLUNG_2_NACHRECHNUNG, Field.BETRAG_ZAHLUNG_3_NACHRECHNUNG, Field.RESTBETRAG_NACHRECHNUNG};
+    private static final Field[] COLUMNS = {Field.RECHNUNGSEMPFAENGER, Field.SCHUELER,
+            Field.RECHNUNGSDATUM_VORRECHNUNG, Field.ANZAHL_WOCHEN_VORRECHNUNG, Field.WOCHENBETRAG_VORRECHNUNG,
+            Field.SCHULGELD_VORRECHNUNG, Field.ERMAESSIGUNG_VORRECHNUNG, Field.ZUSCHLAG_VORRECHNUNG,
+            Field.ERMAESSIGUNG_STIPENDIUM_VORRECHNUNG, Field.RECHNUNGSBETRAG_VORRECHNUNG, Field.RESTBETRAG_VORRECHNUNG,
+            Field.RECHNUNGSDATUM_NACHRECHNUNG, Field.ANZAHL_WOCHEN_NACHRECHNUNG, Field.WOCHENBETRAG_NACHRECHNUNG,
+            Field.SCHULGELD_NACHRECHNUNG, Field.ERMAESSIGUNG_NACHRECHNUNG, Field.ZUSCHLAG_NACHRECHNUNG,
+            Field.ERMAESSIGUNG_STIPENDIUM_NACHRECHNUNG, Field.RECHNUNGSBETRAG_NACHRECHNUNG, Field.RESTBETRAG_NACHRECHNUNG,
+            Field.DIFFERENZ_SCHULGELD};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -48,29 +51,32 @@ public class SemesterrechnungenTableData {
             case RECHNUNGSDATUM_VORRECHNUNG:
                 value = semesterrechnung.getRechnungsdatumVorrechnung();
                 break;
-            case ERMAESSIGUNG_VORRECHNUNG:
-                value = semesterrechnung.getErmaessigungVorrechnung();
-                break;
-            case ZUSCHLAG_VORRECHNUNG:
-                value = semesterrechnung.getZuschlagVorrechnung();
-                break;
             case ANZAHL_WOCHEN_VORRECHNUNG:
                 value = semesterrechnung.getAnzahlWochenVorrechnung();
                 break;
             case WOCHENBETRAG_VORRECHNUNG:
                 value = semesterrechnung.getWochenbetragVorrechnung();
                 break;
+            case SCHULGELD_VORRECHNUNG:
+                value = semesterrechnung.getSchulgeldVorrechnung();
+                break;
+            case ERMAESSIGUNG_VORRECHNUNG:
+                value = semesterrechnung.getErmaessigungVorrechnung();
+                break;
+            case ZUSCHLAG_VORRECHNUNG:
+                value = semesterrechnung.getZuschlagVorrechnung();
+                break;
+            case ERMAESSIGUNG_STIPENDIUM_VORRECHNUNG:
+                value = semesterrechnung.getErmaessigungStipendiumVorrechnung();
+                break;
             case RECHNUNGSBETRAG_VORRECHNUNG:
                 value = semesterrechnung.getRechnungsbetragVorrechnung();
                 break;
+            case RESTBETRAG_VORRECHNUNG:
+                value = semesterrechnung.getRestbetragVorrechnung();
+                break;
             case RECHNUNGSDATUM_NACHRECHNUNG:
                 value = semesterrechnung.getRechnungsdatumNachrechnung();
-                break;
-            case ERMAESSIGUNG_NACHRECHNUNG:
-                value = semesterrechnung.getErmaessigungNachrechnung();
-                break;
-            case ZUSCHLAG_NACHRECHNUNG:
-                value = semesterrechnung.getZuschlagNachrechnung();
                 break;
             case ANZAHL_WOCHEN_NACHRECHNUNG:
                 value = semesterrechnung.getAnzahlWochenNachrechnung();
@@ -78,23 +84,26 @@ public class SemesterrechnungenTableData {
             case WOCHENBETRAG_NACHRECHNUNG:
                 value = semesterrechnung.getWochenbetragNachrechnung();
                 break;
+            case SCHULGELD_NACHRECHNUNG:
+                value = semesterrechnung.getSchulgeldNachrechnung();
+                break;
+            case ERMAESSIGUNG_NACHRECHNUNG:
+                value = semesterrechnung.getErmaessigungNachrechnung();
+                break;
+            case ZUSCHLAG_NACHRECHNUNG:
+                value = semesterrechnung.getZuschlagNachrechnung();
+                break;
+            case ERMAESSIGUNG_STIPENDIUM_NACHRECHNUNG:
+                value = semesterrechnung.getErmaessigungStipendiumNachrechnung();
+                break;
             case RECHNUNGSBETRAG_NACHRECHNUNG:
                 value = semesterrechnung.getRechnungsbetragNachrechnung();
                 break;
-            case DIFFERENZ_SCHULGELD:
-                value = semesterrechnung.getDifferenzSchulgeld();
-                break;
-            case BETRAG_ZAHLUNG_1_NACHRECHNUNG:
-                value = semesterrechnung.getBetragZahlung1Nachrechnung();
-                break;
-            case BETRAG_ZAHLUNG_2_NACHRECHNUNG:
-                value = semesterrechnung.getBetragZahlung2Nachrechnung();
-                break;
-            case BETRAG_ZAHLUNG_3_NACHRECHNUNG:
-                value = semesterrechnung.getBetragZahlung3Nachrechnung();
-                break;
             case RESTBETRAG_NACHRECHNUNG:
                 value = semesterrechnung.getRestbetragNachrechnung();
+                break;
+            case DIFFERENZ_SCHULGELD:
+                value = semesterrechnung.getDifferenzSchulgeld();
                 break;
             default:
                 break;
@@ -106,37 +115,37 @@ public class SemesterrechnungenTableData {
         switch (COLUMNS[columnIndex]) {
             case RECHNUNGSDATUM_VORRECHNUNG:
                 return Calendar.class;
-            case ERMAESSIGUNG_VORRECHNUNG:
-                return BigDecimal.class;
-            case ZUSCHLAG_VORRECHNUNG:
-                return BigDecimal.class;
             case ANZAHL_WOCHEN_VORRECHNUNG:
                 return Integer.class;
             case WOCHENBETRAG_VORRECHNUNG:
                 return BigDecimal.class;
+            case ERMAESSIGUNG_VORRECHNUNG:
+                return BigDecimal.class;
+            case ZUSCHLAG_VORRECHNUNG:
+                return BigDecimal.class;
+            case ERMAESSIGUNG_STIPENDIUM_VORRECHNUNG:
+                return BigDecimal.class;
             case RECHNUNGSBETRAG_VORRECHNUNG:
+                return BigDecimal.class;
+            case RESTBETRAG_VORRECHNUNG:
                 return BigDecimal.class;
             case RECHNUNGSDATUM_NACHRECHNUNG:
                 return Calendar.class;
-            case ERMAESSIGUNG_NACHRECHNUNG:
-                return BigDecimal.class;
-            case ZUSCHLAG_NACHRECHNUNG:
-                return BigDecimal.class;
             case ANZAHL_WOCHEN_NACHRECHNUNG:
                 return Integer.class;
             case WOCHENBETRAG_NACHRECHNUNG:
                 return BigDecimal.class;
+            case ERMAESSIGUNG_NACHRECHNUNG:
+                return BigDecimal.class;
+            case ZUSCHLAG_NACHRECHNUNG:
+                return BigDecimal.class;
+            case ERMAESSIGUNG_STIPENDIUM_NACHRECHNUNG:
+                return BigDecimal.class;
             case RECHNUNGSBETRAG_NACHRECHNUNG:
                 return BigDecimal.class;
-            case DIFFERENZ_SCHULGELD:
-                return BigDecimal.class;
-            case BETRAG_ZAHLUNG_1_NACHRECHNUNG:
-                return BigDecimal.class;
-            case BETRAG_ZAHLUNG_2_NACHRECHNUNG:
-                return BigDecimal.class;
-            case BETRAG_ZAHLUNG_3_NACHRECHNUNG:
-                return BigDecimal.class;
             case RESTBETRAG_NACHRECHNUNG:
+                return BigDecimal.class;
+            case DIFFERENZ_SCHULGELD:
                 return BigDecimal.class;
             default:
                 return String.class;

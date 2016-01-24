@@ -61,17 +61,19 @@ public class SemesterrechnungenController {
         semesterrechnungenTable.getColumnModel().getColumn(5).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
         semesterrechnungenTable.getColumnModel().getColumn(6).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
         semesterrechnungenTable.getColumnModel().getColumn(7).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
-        semesterrechnungenTable.getColumnModel().getColumn(8).setCellRenderer(new CalendarColorTableCellRenderer(Color.RED));
-        semesterrechnungenTable.getColumnModel().getColumn(9).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
-        semesterrechnungenTable.getColumnModel().getColumn(10).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
-        semesterrechnungenTable.getColumnModel().getColumn(11).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(8).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(9).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(10).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(11).setCellRenderer(new CalendarColorTableCellRenderer(Color.RED));
         semesterrechnungenTable.getColumnModel().getColumn(12).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
         semesterrechnungenTable.getColumnModel().getColumn(13).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
-        semesterrechnungenTable.getColumnModel().getColumn(14).setCellRenderer(new NumberTableCellRenderer());
-        semesterrechnungenTable.getColumnModel().getColumn(15).setCellRenderer(new NumberColorTableCellRenderer(lila));
-        semesterrechnungenTable.getColumnModel().getColumn(16).setCellRenderer(new NumberColorTableCellRenderer(lila));
-        semesterrechnungenTable.getColumnModel().getColumn(17).setCellRenderer(new NumberColorTableCellRenderer(lila));
-        semesterrechnungenTable.getColumnModel().getColumn(18).setCellRenderer(new NumberColorTableCellRenderer(lila));
+        semesterrechnungenTable.getColumnModel().getColumn(14).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(15).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(16).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(17).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(18).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(19).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(20).setCellRenderer(new NumberColorTableCellRenderer(lila));
 
         setJTableColumnWidthAccordingToCellContentAndHeader(semesterrechnungenTable);
 

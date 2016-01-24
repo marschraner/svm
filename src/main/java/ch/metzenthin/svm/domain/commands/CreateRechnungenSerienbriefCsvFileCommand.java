@@ -97,13 +97,18 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                 out.write(rechnungsempfaenger.getAdresse().getOrt());
                 out.write(separator);
                 if (rechnungstyp == Rechnungstyp.VORRECHNUNG) {
-                    out.write(asString(semesterrechnung.getRechnungsdatumVorrechnung()));
+                    if (semesterrechnung.getRechnungsdatumVorrechnung() != null) {
+                        out.write(asString(semesterrechnung.getRechnungsdatumVorrechnung()));
+                    }
                     out.write(separator);
                     out.write(Integer.toString(semesterrechnung.getAnzahlWochenVorrechnung()));
                     out.write(separator);
                     out.write(semesterrechnung.getWochenbetragVorrechnung().toString());
                     out.write(separator);
-                    out.write(semesterrechnung.getSchulgeldVorrechnung().toString());
+                    BigDecimal schulgeldVorrechnung = semesterrechnung.getSchulgeldVorrechnung();
+                    if (schulgeldVorrechnung != null) {
+                        out.write(schulgeldVorrechnung.toString());
+                    }
                     out.write(separator);
                     BigDecimal ermaessigungVorrechnung = semesterrechnung.getErmaessigungVorrechnung();
                     if (ermaessigungVorrechnung != null && ermaessigungVorrechnung.compareTo(BigDecimal.ZERO) != 0) {
@@ -120,15 +125,23 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                         out.write(ermaessigungStipendiumVorrechnung.toString());
                     }
                     out.write(separator);
-                    out.write(semesterrechnung.getRechnungsbetragVorrechnung().toString());
+                    BigDecimal rechnungsbetragVorrechnung = semesterrechnung.getRechnungsbetragVorrechnung();
+                    if (rechnungsbetragVorrechnung != null) {
+                        out.write(rechnungsbetragVorrechnung.toString());
+                    }
                 } else {
-                    out.write(asString(semesterrechnung.getRechnungsdatumNachrechnung()));
+                    if (semesterrechnung.getRechnungsdatumNachrechnung() != null) {
+                        out.write(asString(semesterrechnung.getRechnungsdatumNachrechnung()));
+                    }
                     out.write(separator);
                     out.write(Integer.toString(semesterrechnung.getAnzahlWochenNachrechnung()));
                     out.write(separator);
                     out.write(semesterrechnung.getWochenbetragNachrechnung().toString());
                     out.write(separator);
-                    out.write(semesterrechnung.getSchulgeldNachrechnung().toString());
+                    BigDecimal schulgeldNachrechnung = semesterrechnung.getSchulgeldNachrechnung();
+                    if (schulgeldNachrechnung != null) {
+                        out.write(schulgeldNachrechnung.toString());
+                    }
                     out.write(separator);
                     BigDecimal ermaessigungNachrechnung = semesterrechnung.getErmaessigungNachrechnung();
                     if (ermaessigungNachrechnung != null && ermaessigungNachrechnung.compareTo(BigDecimal.ZERO) != 0) {
@@ -145,7 +158,10 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                         out.write(ermaessigungStipendiumNachrechnung.toString());
                     }
                     out.write(separator);
-                    out.write(semesterrechnung.getRechnungsbetragNachrechnung().toString());
+                    BigDecimal rechnungsbetragNachrechnung = semesterrechnung.getRechnungsbetragNachrechnung();
+                    if (rechnungsbetragNachrechnung != null) {
+                        out.write(rechnungsbetragNachrechnung.toString());
+                    }
                 }
                 out.write('\n');
             }
