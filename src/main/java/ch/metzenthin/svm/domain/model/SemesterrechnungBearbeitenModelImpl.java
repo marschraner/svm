@@ -146,6 +146,11 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
     }
 
     @Override
+    public String getRestbetragVorrechnung() {
+        return (semesterrechnung.getRestbetragVorrechnung() == null ? "-" :  semesterrechnung.getRestbetragVorrechnung().toString());
+    }
+
+    @Override
     public String getRechnungsempfaengerSchuelersNachrechnung() {
         return getRechnungsempfaengerSchuelers(Rechnungstyp.NACHRECHNUNG);
     }
@@ -205,8 +210,8 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
     }
 
     @Override
-    public String getRestbetrag() {
-        return (semesterrechnung.getRestbetrag() == null ? "-" :  semesterrechnung.getRestbetrag().toString());
+    public String getRestbetragNachrechnung() {
+        return (semesterrechnung.getRestbetragNachrechnung() == null ? "-" :  semesterrechnung.getRestbetragNachrechnung().toString());
     }
 
     @Override
@@ -393,6 +398,12 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
             setZuschlagsgrundVorrechnung(semesterrechnungOrigin.getZuschlagsgrundVorrechnung());
             setAnzahlWochenVorrechnung(semesterrechnungOrigin.getAnzahlWochenVorrechnung() == null ? null : semesterrechnungOrigin.getAnzahlWochenVorrechnung().toString());
             setWochenbetragVorrechnung(semesterrechnungOrigin.getWochenbetragVorrechnung() == null ? null : semesterrechnungOrigin.getWochenbetragVorrechnung().toString());
+            setBetragZahlung1Vorrechnung(semesterrechnungOrigin.getBetragZahlung1Vorrechnung() == null ? null : semesterrechnungOrigin.getBetragZahlung1Vorrechnung().toString());
+            setDatumZahlung1Vorrechnung(semesterrechnungOrigin.getDatumZahlung1Vorrechnung() == null ? null : asString(semesterrechnungOrigin.getDatumZahlung1Vorrechnung()));
+            setBetragZahlung2Vorrechnung(semesterrechnungOrigin.getBetragZahlung2Vorrechnung() == null ? null : semesterrechnungOrigin.getBetragZahlung2Vorrechnung().toString());
+            setDatumZahlung2Vorrechnung(semesterrechnungOrigin.getDatumZahlung2Vorrechnung() == null ? null : asString(semesterrechnungOrigin.getDatumZahlung2Vorrechnung()));
+            setBetragZahlung3Vorrechnung(semesterrechnungOrigin.getBetragZahlung3Vorrechnung() == null ? null : semesterrechnungOrigin.getBetragZahlung3Vorrechnung().toString());
+            setDatumZahlung3Vorrechnung(semesterrechnungOrigin.getDatumZahlung3Vorrechnung() == null ? null : asString(semesterrechnungOrigin.getDatumZahlung3Vorrechnung()));
             setRechnungsdatumNachrechnung(asString(semesterrechnungOrigin.getRechnungsdatumNachrechnung()));
             setErmaessigungNachrechnung(semesterrechnungOrigin.getErmaessigungNachrechnung() == null ? null : semesterrechnungOrigin.getErmaessigungNachrechnung().toString());
             setErmaessigungsgrundNachrechnung(semesterrechnungOrigin.getErmaessigungsgrundNachrechnung());
@@ -400,12 +411,12 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
             setZuschlagsgrundNachrechnung(semesterrechnungOrigin.getZuschlagsgrundNachrechnung());
             setAnzahlWochenNachrechnung(semesterrechnungOrigin.getAnzahlWochenNachrechnung() == null ? null : semesterrechnungOrigin.getAnzahlWochenNachrechnung().toString());
             setWochenbetragNachrechnung(semesterrechnungOrigin.getWochenbetragNachrechnung() == null ? null : semesterrechnungOrigin.getWochenbetragNachrechnung().toString());
-            setBetragZahlung1(semesterrechnungOrigin.getBetragZahlung1() == null ? null : semesterrechnungOrigin.getBetragZahlung1().toString());
-            setDatumZahlung1(semesterrechnungOrigin.getDatumZahlung1() == null ? null : asString(semesterrechnungOrigin.getDatumZahlung1()));
-            setBetragZahlung2(semesterrechnungOrigin.getBetragZahlung2() == null ? null : semesterrechnungOrigin.getBetragZahlung2().toString());
-            setDatumZahlung2(semesterrechnungOrigin.getDatumZahlung2() == null ? null : asString(semesterrechnungOrigin.getDatumZahlung2()));
-            setBetragZahlung3(semesterrechnungOrigin.getBetragZahlung3() == null ? null : semesterrechnungOrigin.getBetragZahlung3().toString());
-            setDatumZahlung3(semesterrechnungOrigin.getDatumZahlung3() == null ? null : asString(semesterrechnungOrigin.getDatumZahlung3()));
+            setBetragZahlung1Nachrechnung(semesterrechnungOrigin.getBetragZahlung1Nachrechnung() == null ? null : semesterrechnungOrigin.getBetragZahlung1Nachrechnung().toString());
+            setDatumZahlung1Nachrechnung(semesterrechnungOrigin.getDatumZahlung1Nachrechnung() == null ? null : asString(semesterrechnungOrigin.getDatumZahlung1Nachrechnung()));
+            setBetragZahlung2Nachrechnung(semesterrechnungOrigin.getBetragZahlung2Nachrechnung() == null ? null : semesterrechnungOrigin.getBetragZahlung2Nachrechnung().toString());
+            setDatumZahlung2Nachrechnung(semesterrechnungOrigin.getDatumZahlung2Nachrechnung() == null ? null : asString(semesterrechnungOrigin.getDatumZahlung2Nachrechnung()));
+            setBetragZahlung3Nachrechnung(semesterrechnungOrigin.getBetragZahlung3Nachrechnung() == null ? null : semesterrechnungOrigin.getBetragZahlung3Nachrechnung().toString());
+            setDatumZahlung3Nachrechnung(semesterrechnungOrigin.getDatumZahlung3Nachrechnung() == null ? null : asString(semesterrechnungOrigin.getDatumZahlung3Nachrechnung()));
             setBemerkungen(semesterrechnungOrigin.getBemerkungen());
         } catch (SvmValidationException ignore) {
             ignore.printStackTrace();
@@ -415,62 +426,110 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
 
     @Override
     public boolean isCompleted() {
-        return !(isSetBetragZahlung1() && !isSetDatumZahlung1()) &&
-                !(!isSetBetragZahlung1() && isSetDatumZahlung1()) &&
-                !(isSetBetragZahlung2() && !isSetDatumZahlung2()) &&
-                !(!isSetBetragZahlung2() && isSetDatumZahlung2()) &&
-                !(isSetBetragZahlung3() && !isSetDatumZahlung3()) &&
-                !(!isSetBetragZahlung3() && isSetDatumZahlung3()) &&
+        return !(isSetBetragZahlung1Vorrechnung() && !isSetDatumZahlung1Vorrechnung()) &&
+                !(!isSetBetragZahlung1Vorrechnung() && isSetDatumZahlung1Vorrechnung()) &&
+                !(isSetBetragZahlung2Vorrechnung() && !isSetDatumZahlung2Vorrechnung()) &&
+                !(!isSetBetragZahlung2Vorrechnung() && isSetDatumZahlung2Vorrechnung()) &&
+                !(isSetBetragZahlung3Vorrechnung() && !isSetDatumZahlung3Vorrechnung()) &&
+                !(!isSetBetragZahlung3Vorrechnung() && isSetDatumZahlung3Vorrechnung()) &&
+                !(isSetBetragZahlung1Nachrechnung() && !isSetDatumZahlung1Nachrechnung()) &&
+                !(!isSetBetragZahlung1Nachrechnung() && isSetDatumZahlung1Nachrechnung()) &&
+                !(isSetBetragZahlung2Nachrechnung() && !isSetDatumZahlung2Nachrechnung()) &&
+                !(!isSetBetragZahlung2Nachrechnung() && isSetDatumZahlung2Nachrechnung()) &&
+                !(isSetBetragZahlung3Nachrechnung() && !isSetDatumZahlung3Nachrechnung()) &&
+                !(!isSetBetragZahlung3Nachrechnung() && isSetDatumZahlung3Nachrechnung()) &&
                 !(isSetStipendium() && isSetGratiskinder());
     }
 
     @Override
     void doValidate() throws SvmValidationException {
-        if (isSetBetragZahlung1() && !isSetDatumZahlung1()) {
-            throw new SvmValidationException(3051, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_1);
+        if (isSetBetragZahlung1Vorrechnung() && !isSetDatumZahlung1Vorrechnung()) {
+            throw new SvmValidationException(3051, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_1_VORRECHNUNG);
         }
-        if (!isSetBetragZahlung1() && isSetDatumZahlung1()) {
-            throw new SvmValidationException(3052, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_1);
+        if (!isSetBetragZahlung1Vorrechnung() && isSetDatumZahlung1Vorrechnung()) {
+            throw new SvmValidationException(3052, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_1_VORRECHNUNG);
         }
-        if (isSetBetragZahlung2() && !isSetDatumZahlung2()) {
-            throw new SvmValidationException(3053, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_2);
+        if (isSetBetragZahlung2Vorrechnung() && !isSetDatumZahlung2Vorrechnung()) {
+            throw new SvmValidationException(3053, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_2_VORRECHNUNG);
         }
-        if (!isSetBetragZahlung2() && isSetDatumZahlung2()) {
-            throw new SvmValidationException(3054, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_2);
+        if (!isSetBetragZahlung2Vorrechnung() && isSetDatumZahlung2Vorrechnung()) {
+            throw new SvmValidationException(3054, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_2_VORRECHNUNG);
         }
-        if (isSetBetragZahlung3() && !isSetDatumZahlung3()) {
-            throw new SvmValidationException(3055, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_3);
+        if (isSetBetragZahlung3Vorrechnung() && !isSetDatumZahlung3Vorrechnung()) {
+            throw new SvmValidationException(3055, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_3_VORRECHNUNG);
         }
-        if (!isSetBetragZahlung3() && isSetDatumZahlung3()) {
-            throw new SvmValidationException(3056, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_3);
+        if (!isSetBetragZahlung3Vorrechnung() && isSetDatumZahlung3Vorrechnung()) {
+            throw new SvmValidationException(3056, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_3_VORRECHNUNG);
+        }
+        if (isSetBetragZahlung1Nachrechnung() && !isSetDatumZahlung1Nachrechnung()) {
+            throw new SvmValidationException(3057, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_1_NACHRECHNUNG);
+        }
+        if (!isSetBetragZahlung1Nachrechnung() && isSetDatumZahlung1Nachrechnung()) {
+            throw new SvmValidationException(3058, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_1_NACHRECHNUNG);
+        }
+        if (isSetBetragZahlung2Nachrechnung() && !isSetDatumZahlung2Nachrechnung()) {
+            throw new SvmValidationException(3059, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_2_NACHRECHNUNG);
+        }
+        if (!isSetBetragZahlung2Nachrechnung() && isSetDatumZahlung2Nachrechnung()) {
+            throw new SvmValidationException(3060, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_2_NACHRECHNUNG);
+        }
+        if (isSetBetragZahlung3Nachrechnung() && !isSetDatumZahlung3Nachrechnung()) {
+            throw new SvmValidationException(3061, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_3_NACHRECHNUNG);
+        }
+        if (!isSetBetragZahlung3Nachrechnung() && isSetDatumZahlung3Nachrechnung()) {
+            throw new SvmValidationException(3062, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_3_NACHRECHNUNG);
         }
         if (isSetStipendium() && isSetGratiskinder()) {
-            throw new SvmValidationException(3057, "Stipendium und Gratiskinder können nicht gleichzeitig gesetzt sein", Field.STIPENDIUM);
+            throw new SvmValidationException(3063, "Stipendium und Gratiskinder können nicht gleichzeitig gesetzt sein", Field.STIPENDIUM);
         }
     }
 
-    private boolean isSetBetragZahlung1() {
-        return semesterrechnung.getBetragZahlung1() != null;
+    private boolean isSetBetragZahlung1Vorrechnung() {
+        return semesterrechnung.getBetragZahlung1Vorrechnung() != null;
     }
 
-    private boolean isSetDatumZahlung1() {
-        return semesterrechnung.getDatumZahlung1() != null;
+    private boolean isSetDatumZahlung1Vorrechnung() {
+        return semesterrechnung.getDatumZahlung1Vorrechnung() != null;
     }
 
-    private boolean isSetBetragZahlung2() {
-        return semesterrechnung.getBetragZahlung2() != null;
+    private boolean isSetBetragZahlung2Vorrechnung() {
+        return semesterrechnung.getBetragZahlung2Vorrechnung() != null;
     }
 
-    private boolean isSetDatumZahlung2() {
-        return semesterrechnung.getDatumZahlung2() != null;
+    private boolean isSetDatumZahlung2Vorrechnung() {
+        return semesterrechnung.getDatumZahlung2Vorrechnung() != null;
     }
 
-    private boolean isSetBetragZahlung3() {
-        return semesterrechnung.getBetragZahlung3() != null;
+    private boolean isSetBetragZahlung3Vorrechnung() {
+        return semesterrechnung.getBetragZahlung3Vorrechnung() != null;
     }
 
-    private boolean isSetDatumZahlung3() {
-        return semesterrechnung.getDatumZahlung3() != null;
+    private boolean isSetDatumZahlung3Vorrechnung() {
+        return semesterrechnung.getDatumZahlung3Vorrechnung() != null;
+    }
+
+    private boolean isSetBetragZahlung1Nachrechnung() {
+        return semesterrechnung.getBetragZahlung1Nachrechnung() != null;
+    }
+
+    private boolean isSetDatumZahlung1Nachrechnung() {
+        return semesterrechnung.getDatumZahlung1Nachrechnung() != null;
+    }
+
+    private boolean isSetBetragZahlung2Nachrechnung() {
+        return semesterrechnung.getBetragZahlung2Nachrechnung() != null;
+    }
+
+    private boolean isSetDatumZahlung2Nachrechnung() {
+        return semesterrechnung.getDatumZahlung2Nachrechnung() != null;
+    }
+
+    private boolean isSetBetragZahlung3Nachrechnung() {
+        return semesterrechnung.getBetragZahlung3Nachrechnung() != null;
+    }
+
+    private boolean isSetDatumZahlung3Nachrechnung() {
+        return semesterrechnung.getDatumZahlung3Nachrechnung() != null;
     }
 
     private boolean isSetGratiskinder() {

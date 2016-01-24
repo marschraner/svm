@@ -32,6 +32,8 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private PraezisierungWochenbetragVorrechnungSelected praezisierungWochenbetragVorrechnungSelected;
     private PraezisierungRechnungsbetragVorrechnungSelected praezisierungRechnungsbetragVorrechnungSelected;
     private BigDecimal rechnungsbetragVorrechnung;
+    private PraezisierungRestbetragVorrechnungSelected praezisierungRestbetragVorrechnungSelected;
+    private BigDecimal restbetragVorrechnung;
     private SechsJahresRabattJaNeinVorrechnungSelected sechsJahresRabattJaNeinVorrechnungSelected;
     private RechnungsdatumGesetztNachrechnungSelected rechnungsdatumGesetztNachrechnungSelected;
     private PraezisierungRechnungsdatumNachrechnungSelected praezisierungRechnungsdatumNachrechnungSelected;
@@ -41,11 +43,11 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private PraezisierungWochenbetragNachrechnungSelected praezisierungWochenbetragNachrechnungSelected;
     private PraezisierungRechnungsbetragNachrechnungSelected praezisierungRechnungsbetragNachrechnungSelected;
     private BigDecimal rechnungsbetragNachrechnung;
+    private PraezisierungRestbetragNachrechnungSelected praezisierungRestbetragNachrechnungSelected;
+    private BigDecimal restbetragNachrechnung;
     private SechsJahresRabattJaNeinNachrechnungSelected sechsJahresRabattJaNeinNachrechnungSelected;
     private PraezisierungDifferenzRechnungsbetragSelected praezisierungDifferenzRechnungsbetragSelected;
     private BigDecimal differenzRechnungsbetrag;
-    private PraezisierungRestbetragSelected praezisierungRestbetragSelected;
-    private BigDecimal restbetrag;
 
     SemesterrechnungenSuchenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -152,6 +154,11 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     }
 
     @Override
+    public RechnungsdatumGesetztVorrechnungSelected getRechnungsdatumGesetztVorrechnungSelected() {
+        return rechnungsdatumGesetztVorrechnungSelected;
+    }
+
+    @Override
     public void setRechnungsdatumGesetztVorrechnungSelected(RechnungsdatumGesetztVorrechnungSelected rechnungsdatumGesetztVorrechnungSelected) {
         RechnungsdatumGesetztVorrechnungSelected oldValue = this.rechnungsdatumGesetztVorrechnungSelected;
         this.rechnungsdatumGesetztVorrechnungSelected = rechnungsdatumGesetztVorrechnungSelected;
@@ -242,6 +249,42 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         rechnungsbetragVorrechnungModelAttribute.setNewValue(false, rechnungsbetragVorrechnung, isBulkUpdate());
     }
 
+    public PraezisierungRestbetragVorrechnungSelected getPraezisierungRestbetragVorrechnungSelected() {
+        return praezisierungRestbetragVorrechnungSelected;
+    }
+
+    public void setPraezisierungRestbetragVorrechnungSelected(PraezisierungRestbetragVorrechnungSelected praezisierungRestbetragVorrechnungSelected) {
+        PraezisierungRestbetragVorrechnungSelected oldValue = this.praezisierungRestbetragVorrechnungSelected;
+        this.praezisierungRestbetragVorrechnungSelected = praezisierungRestbetragVorrechnungSelected;
+        firePropertyChange(Field.PRAEZISIERUNG_RESTBETRAG_VORRECHNUNG, oldValue, this.praezisierungRestbetragVorrechnungSelected);
+    }
+
+    private final PreisModelAttribute restbetragVorrechnungModelAttribute = new PreisModelAttribute(
+            this,
+            Field.RESTBETRAG_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            new AttributeAccessor<BigDecimal>() {
+                @Override
+                public BigDecimal getValue() {
+                    return restbetragVorrechnung;
+                }
+
+                @Override
+                public void setValue(BigDecimal value) {
+                    restbetragVorrechnung = value;
+                }
+            }
+    );
+
+    @Override
+    public BigDecimal getRestbetragVorrechnung() {
+        return restbetragVorrechnungModelAttribute.getValue();
+    }
+
+    @Override
+    public void setRestbetragVorrechnung(String restbetragVorrechnung) throws SvmValidationException {
+        restbetragVorrechnungModelAttribute.setNewValue(false, restbetragVorrechnung, isBulkUpdate());
+    }
+
     @Override
     public SechsJahresRabattJaNeinVorrechnungSelected getSechsJahresRabattJaNeinVorrechnungSelected() {
         return sechsJahresRabattJaNeinVorrechnungSelected;
@@ -255,8 +298,8 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     }
 
     @Override
-    public RechnungsdatumGesetztVorrechnungSelected getRechnungsdatumGesetztVorrechnungSelected() {
-        return rechnungsdatumGesetztVorrechnungSelected;
+    public RechnungsdatumGesetztNachrechnungSelected getRechnungsdatumGesetztNachrechnungSelected() {
+        return rechnungsdatumGesetztNachrechnungSelected;
     }
 
     @Override
@@ -362,6 +405,42 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         rechnungsbetragNachrechnungModelAttribute.setNewValue(false, rechnungsbetragNachrechnung, isBulkUpdate());
     }
 
+    public PraezisierungRestbetragNachrechnungSelected getPraezisierungRestbetragNachrechnungSelected() {
+        return praezisierungRestbetragNachrechnungSelected;
+    }
+
+    public void setPraezisierungRestbetragNachrechnungSelected(PraezisierungRestbetragNachrechnungSelected praezisierungRestbetragNachrechnungSelected) {
+        PraezisierungRestbetragNachrechnungSelected oldValue = this.praezisierungRestbetragNachrechnungSelected;
+        this.praezisierungRestbetragNachrechnungSelected = praezisierungRestbetragNachrechnungSelected;
+        firePropertyChange(Field.PRAEZISIERUNG_RESTBETRAG_NACHRECHNUNG, oldValue, this.praezisierungRestbetragNachrechnungSelected);
+    }
+
+    private final PreisModelAttribute restbetragNachrechnungModelAttribute = new PreisModelAttribute(
+            this,
+            Field.RESTBETRAG_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            new AttributeAccessor<BigDecimal>() {
+                @Override
+                public BigDecimal getValue() {
+                    return restbetragNachrechnung;
+                }
+
+                @Override
+                public void setValue(BigDecimal value) {
+                    restbetragNachrechnung = value;
+                }
+            }
+    );
+
+    @Override
+    public BigDecimal getRestbetragNachrechnung() {
+        return restbetragNachrechnungModelAttribute.getValue();
+    }
+
+    @Override
+    public void setRestbetragNachrechnung(String restbetragNachrechnung) throws SvmValidationException {
+        restbetragNachrechnungModelAttribute.setNewValue(false, restbetragNachrechnung, isBulkUpdate());
+    }
+
     @Override
     public SechsJahresRabattJaNeinNachrechnungSelected getSechsJahresRabattJaNeinNachrechnungSelected() {
         return sechsJahresRabattJaNeinNachrechnungSelected;
@@ -372,11 +451,6 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         SechsJahresRabattJaNeinNachrechnungSelected oldValue = this.sechsJahresRabattJaNeinNachrechnungSelected;
         this.sechsJahresRabattJaNeinNachrechnungSelected = sechsJahresRabattJaNeinNachrechnungSelected;
         firePropertyChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, oldValue, this.sechsJahresRabattJaNeinNachrechnungSelected);
-    }
-
-    @Override
-    public RechnungsdatumGesetztNachrechnungSelected getRechnungsdatumGesetztNachrechnungSelected() {
-        return rechnungsdatumGesetztNachrechnungSelected;
     }
 
     public PraezisierungDifferenzRechnungsbetragSelected getPraezisierungDifferenzRechnungsbetragSelected() {
@@ -413,44 +487,6 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     @Override
     public void setDifferenzRechnungsbetrag(String differenzRechnungsbetrag) throws SvmValidationException {
         differenzRechnungsbetragModelAttribute.setNewValue(false, differenzRechnungsbetrag, isBulkUpdate());
-    }
-
-    @Override
-    public PraezisierungRestbetragSelected getPraezisierungRestbetragSelected() {
-        return praezisierungRestbetragSelected;
-    }
-
-    @Override
-    public void setPraezisierungRestbetragSelected(PraezisierungRestbetragSelected praezisierungRestbetragSelected) {
-        PraezisierungRestbetragSelected oldValue = this.praezisierungRestbetragSelected;
-        this.praezisierungRestbetragSelected = praezisierungRestbetragSelected;
-        firePropertyChange(Field.PRAEZISIERUNG_RESTBETRAG, oldValue, this.praezisierungRestbetragSelected);
-    }
-
-    private final PreisModelAttribute restbetragModelAttribute = new PreisModelAttribute(
-            this,
-            Field.RESTBETRAG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
-                @Override
-                public BigDecimal getValue() {
-                    return restbetrag;
-                }
-
-                @Override
-                public void setValue(BigDecimal value) {
-                    restbetrag = value;
-                }
-            }
-    );
-
-    @Override
-    public BigDecimal getRestbetrag() {
-        return restbetragModelAttribute.getValue();
-    }
-
-    @Override
-    public void setRestbetrag(String restbetrag) throws SvmValidationException {
-        restbetragModelAttribute.setNewValue(false, restbetrag, isBulkUpdate());
     }
 
     @Override

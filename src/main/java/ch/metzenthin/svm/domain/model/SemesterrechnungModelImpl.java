@@ -255,6 +255,162 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
         wochenbetragVorrechnungModelAttribute.setNewValue(false, wochenbetragVorrechnung, isBulkUpdate());
     }
 
+    private CalendarModelAttribute datumZahlung1VorrechnungModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.DATUM_ZAHLUNG_1_VORRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return semesterrechnung.getDatumZahlung1Vorrechnung();
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    semesterrechnung.setDatumZahlung1Vorrechnung(value);
+                }
+            }
+    );
+
+    @Override
+    public Calendar getDatumZahlung1Vorrechnung() {
+        return datumZahlung1VorrechnungModelAttribute.getValue();
+    }
+
+    @Override
+    public void setDatumZahlung1Vorrechnung(String datumZahlung1Vorrechnung) throws SvmValidationException {
+        datumZahlung1VorrechnungModelAttribute.setNewValue(false, datumZahlung1Vorrechnung, isBulkUpdate());
+    }
+
+    private final PreisModelAttribute betragZahlung1VorrechnungModelAttribute = new PreisModelAttribute(
+            this,
+            Field.BETRAG_ZAHLUNG_1_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            new AttributeAccessor<BigDecimal>() {
+                @Override
+                public BigDecimal getValue() {
+                    return semesterrechnung.getBetragZahlung1Vorrechnung();
+                }
+
+                @Override
+                public void setValue(BigDecimal value) {
+                    semesterrechnung.setBetragZahlung1Vorrechnung(value);
+                }
+            }
+    );
+
+    @Override
+    public BigDecimal getBetragZahlung1Vorrechnung() {
+        return betragZahlung1VorrechnungModelAttribute.getValue();
+    }
+
+    @Override
+    public void setBetragZahlung1Vorrechnung(String betragZahlung1Vorrechnung) throws SvmValidationException {
+        betragZahlung1VorrechnungModelAttribute.setNewValue(false, betragZahlung1Vorrechnung, isBulkUpdate());
+    }
+
+    private CalendarModelAttribute datumZahlung2VorrechnungModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.DATUM_ZAHLUNG_2_VORRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 2), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 32),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return semesterrechnung.getDatumZahlung2Vorrechnung();
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    semesterrechnung.setDatumZahlung2Vorrechnung(value);
+                }
+            }
+    );
+
+    @Override
+    public Calendar getDatumZahlung2Vorrechnung() {
+        return datumZahlung2VorrechnungModelAttribute.getValue();
+    }
+
+    @Override
+    public void setDatumZahlung2Vorrechnung(String datumZahlung2Vorrechnung) throws SvmValidationException {
+        datumZahlung2VorrechnungModelAttribute.setNewValue(false, datumZahlung2Vorrechnung, isBulkUpdate());
+    }
+
+    private final PreisModelAttribute betragZahlung2VorrechnungModelAttribute = new PreisModelAttribute(
+            this,
+            Field.BETRAG_ZAHLUNG_2_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            new AttributeAccessor<BigDecimal>() {
+                @Override
+                public BigDecimal getValue() {
+                    return semesterrechnung.getBetragZahlung2Vorrechnung();
+                }
+
+                @Override
+                public void setValue(BigDecimal value) {
+                    semesterrechnung.setBetragZahlung2Vorrechnung(value);
+                }
+            }
+    );
+
+    @Override
+    public BigDecimal getBetragZahlung2Vorrechnung() {
+        return betragZahlung2VorrechnungModelAttribute.getValue();
+    }
+
+    @Override
+    public void setBetragZahlung2Vorrechnung(String betragZahlung2Vorrechnung) throws SvmValidationException {
+        betragZahlung2VorrechnungModelAttribute.setNewValue(false, betragZahlung2Vorrechnung, isBulkUpdate());
+    }
+
+    private CalendarModelAttribute datumZahlung3VorrechnungModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.DATUM_ZAHLUNG_3_VORRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 3), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 33),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return semesterrechnung.getDatumZahlung3Vorrechnung();
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    semesterrechnung.setDatumZahlung3Vorrechnung(value);
+                }
+            }
+    );
+
+    @Override
+    public Calendar getDatumZahlung3Vorrechnung() {
+        return datumZahlung3VorrechnungModelAttribute.getValue();
+    }
+
+    @Override
+    public void setDatumZahlung3Vorrechnung(String datumZahlung3Vorrechnung) throws SvmValidationException {
+        datumZahlung3VorrechnungModelAttribute.setNewValue(false, datumZahlung3Vorrechnung, isBulkUpdate());
+    }
+
+    private final PreisModelAttribute betragZahlung3VorrechnungModelAttribute = new PreisModelAttribute(
+            this,
+            Field.BETRAG_ZAHLUNG_3_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            new AttributeAccessor<BigDecimal>() {
+                @Override
+                public BigDecimal getValue() {
+                    return semesterrechnung.getBetragZahlung3Vorrechnung();
+                }
+
+                @Override
+                public void setValue(BigDecimal value) {
+                    semesterrechnung.setBetragZahlung3Vorrechnung(value);
+                }
+            }
+    );
+
+    @Override
+    public BigDecimal getBetragZahlung3Vorrechnung() {
+        return betragZahlung3VorrechnungModelAttribute.getValue();
+    }
+
+    @Override
+    public void setBetragZahlung3Vorrechnung(String betragZahlung3Vorrechnung) throws SvmValidationException {
+        betragZahlung3VorrechnungModelAttribute.setNewValue(false, betragZahlung3Vorrechnung, isBulkUpdate());
+    }
+
     private CalendarModelAttribute rechnungsdatumNachrechnungModelAttribute = new CalendarModelAttribute(
             this,
             Field.RECHNUNGSDATUM_NACHRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
@@ -437,160 +593,160 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
         wochenbetragNachrechnungModelAttribute.setNewValue(false, wochenbetragNachrechnung, isBulkUpdate());
     }
 
-    private CalendarModelAttribute datumZahlung1ModelAttribute = new CalendarModelAttribute(
+    private CalendarModelAttribute datumZahlung1NachrechnungModelAttribute = new CalendarModelAttribute(
             this,
-            Field.DATUM_ZAHLUNG_1, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
+            Field.DATUM_ZAHLUNG_1_NACHRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
-                    return semesterrechnung.getDatumZahlung1();
+                    return semesterrechnung.getDatumZahlung1Nachrechnung();
                 }
 
                 @Override
                 public void setValue(Calendar value) {
-                    semesterrechnung.setDatumZahlung1(value);
+                    semesterrechnung.setDatumZahlung1Nachrechnung(value);
                 }
             }
     );
 
     @Override
-    public Calendar getDatumZahlung1() {
-        return datumZahlung1ModelAttribute.getValue();
+    public Calendar getDatumZahlung1Nachrechnung() {
+        return datumZahlung1NachrechnungModelAttribute.getValue();
     }
 
     @Override
-    public void setDatumZahlung1(String datumZahlung1) throws SvmValidationException {
-        datumZahlung1ModelAttribute.setNewValue(false, datumZahlung1, isBulkUpdate());
+    public void setDatumZahlung1Nachrechnung(String datumZahlung1Nachrechnung) throws SvmValidationException {
+        datumZahlung1NachrechnungModelAttribute.setNewValue(false, datumZahlung1Nachrechnung, isBulkUpdate());
     }
 
-    private final PreisModelAttribute betragZahlung1ModelAttribute = new PreisModelAttribute(
+    private final PreisModelAttribute betragZahlung1NachrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_ZAHLUNG_1, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.BETRAG_ZAHLUNG_1_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return semesterrechnung.getBetragZahlung1();
+                    return semesterrechnung.getBetragZahlung1Nachrechnung();
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    semesterrechnung.setBetragZahlung1(value);
+                    semesterrechnung.setBetragZahlung1Nachrechnung(value);
                 }
             }
     );
 
     @Override
-    public BigDecimal getBetragZahlung1() {
-        return betragZahlung1ModelAttribute.getValue();
+    public BigDecimal getBetragZahlung1Nachrechnung() {
+        return betragZahlung1NachrechnungModelAttribute.getValue();
     }
 
     @Override
-    public void setBetragZahlung1(String betragZahlung1) throws SvmValidationException {
-        betragZahlung1ModelAttribute.setNewValue(false, betragZahlung1, isBulkUpdate());
+    public void setBetragZahlung1Nachrechnung(String betragZahlung1Nachrechnung) throws SvmValidationException {
+        betragZahlung1NachrechnungModelAttribute.setNewValue(false, betragZahlung1Nachrechnung, isBulkUpdate());
     }
 
-    private CalendarModelAttribute datumZahlung2ModelAttribute = new CalendarModelAttribute(
+    private CalendarModelAttribute datumZahlung2NachrechnungModelAttribute = new CalendarModelAttribute(
             this,
-            Field.DATUM_ZAHLUNG_2, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 2), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 32),
+            Field.DATUM_ZAHLUNG_2_NACHRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 2), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 32),
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
-                    return semesterrechnung.getDatumZahlung2();
+                    return semesterrechnung.getDatumZahlung2Nachrechnung();
                 }
 
                 @Override
                 public void setValue(Calendar value) {
-                    semesterrechnung.setDatumZahlung2(value);
+                    semesterrechnung.setDatumZahlung2Nachrechnung(value);
                 }
             }
     );
 
     @Override
-    public Calendar getDatumZahlung2() {
-        return datumZahlung2ModelAttribute.getValue();
+    public Calendar getDatumZahlung2Nachrechnung() {
+        return datumZahlung2NachrechnungModelAttribute.getValue();
     }
 
     @Override
-    public void setDatumZahlung2(String datumZahlung2) throws SvmValidationException {
-        datumZahlung2ModelAttribute.setNewValue(false, datumZahlung2, isBulkUpdate());
+    public void setDatumZahlung2Nachrechnung(String datumZahlung2Nachrechnung) throws SvmValidationException {
+        datumZahlung2NachrechnungModelAttribute.setNewValue(false, datumZahlung2Nachrechnung, isBulkUpdate());
     }
 
-    private final PreisModelAttribute betragZahlung2ModelAttribute = new PreisModelAttribute(
+    private final PreisModelAttribute betragZahlung2NachrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_ZAHLUNG_2, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.BETRAG_ZAHLUNG_2_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return semesterrechnung.getBetragZahlung2();
+                    return semesterrechnung.getBetragZahlung2Nachrechnung();
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    semesterrechnung.setBetragZahlung2(value);
+                    semesterrechnung.setBetragZahlung2Nachrechnung(value);
                 }
             }
     );
 
     @Override
-    public BigDecimal getBetragZahlung2() {
-        return betragZahlung2ModelAttribute.getValue();
+    public BigDecimal getBetragZahlung2Nachrechnung() {
+        return betragZahlung2NachrechnungModelAttribute.getValue();
     }
 
     @Override
-    public void setBetragZahlung2(String betragZahlung2) throws SvmValidationException {
-        betragZahlung2ModelAttribute.setNewValue(false, betragZahlung2, isBulkUpdate());
+    public void setBetragZahlung2Nachrechnung(String betragZahlung2Nachrechnung) throws SvmValidationException {
+        betragZahlung2NachrechnungModelAttribute.setNewValue(false, betragZahlung2Nachrechnung, isBulkUpdate());
     }
 
-    private CalendarModelAttribute datumZahlung3ModelAttribute = new CalendarModelAttribute(
+    private CalendarModelAttribute datumZahlung3NachrechnungModelAttribute = new CalendarModelAttribute(
             this,
-            Field.DATUM_ZAHLUNG_3, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 3), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 33),
+            Field.DATUM_ZAHLUNG_3_NACHRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 3), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 33),
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
-                    return semesterrechnung.getDatumZahlung3();
+                    return semesterrechnung.getDatumZahlung3Nachrechnung();
                 }
 
                 @Override
                 public void setValue(Calendar value) {
-                    semesterrechnung.setDatumZahlung3(value);
+                    semesterrechnung.setDatumZahlung3Nachrechnung(value);
                 }
             }
     );
 
     @Override
-    public Calendar getDatumZahlung3() {
-        return datumZahlung3ModelAttribute.getValue();
+    public Calendar getDatumZahlung3Nachrechnung() {
+        return datumZahlung3NachrechnungModelAttribute.getValue();
     }
 
     @Override
-    public void setDatumZahlung3(String datumZahlung3) throws SvmValidationException {
-        datumZahlung3ModelAttribute.setNewValue(false, datumZahlung3, isBulkUpdate());
+    public void setDatumZahlung3Nachrechnung(String datumZahlung3Nachrechnung) throws SvmValidationException {
+        datumZahlung3NachrechnungModelAttribute.setNewValue(false, datumZahlung3Nachrechnung, isBulkUpdate());
     }
 
-    private final PreisModelAttribute betragZahlung3ModelAttribute = new PreisModelAttribute(
+    private final PreisModelAttribute betragZahlung3NachrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_ZAHLUNG_3, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.BETRAG_ZAHLUNG_3_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
             new AttributeAccessor<BigDecimal>() {
                 @Override
                 public BigDecimal getValue() {
-                    return semesterrechnung.getBetragZahlung3();
+                    return semesterrechnung.getBetragZahlung3Nachrechnung();
                 }
 
                 @Override
                 public void setValue(BigDecimal value) {
-                    semesterrechnung.setBetragZahlung3(value);
+                    semesterrechnung.setBetragZahlung3Nachrechnung(value);
                 }
             }
     );
 
     @Override
-    public BigDecimal getBetragZahlung3() {
-        return betragZahlung3ModelAttribute.getValue();
+    public BigDecimal getBetragZahlung3Nachrechnung() {
+        return betragZahlung3NachrechnungModelAttribute.getValue();
     }
 
     @Override
-    public void setBetragZahlung3(String betragZahlung3) throws SvmValidationException {
-        betragZahlung3ModelAttribute.setNewValue(false, betragZahlung3, isBulkUpdate());
+    public void setBetragZahlung3Nachrechnung(String betragZahlung3Nachrechnung) throws SvmValidationException {
+        betragZahlung3NachrechnungModelAttribute.setNewValue(false, betragZahlung3Nachrechnung, isBulkUpdate());
     }
 
     private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(
@@ -640,6 +796,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
         zuschlagsgrundVorrechnungModelAttribute.initValue(null);
         anzahlWochenVorrechnungModelAttribute.initValue(null);
         wochenbetragVorrechnungModelAttribute.initValue(null);
+        datumZahlung1VorrechnungModelAttribute.initValue(null);
+        betragZahlung1VorrechnungModelAttribute.initValue(null);
+        datumZahlung2VorrechnungModelAttribute.initValue(null);
+        betragZahlung2VorrechnungModelAttribute.initValue(null);
+        datumZahlung3VorrechnungModelAttribute.initValue(null);
+        betragZahlung3VorrechnungModelAttribute.initValue(null);
         rechnungsdatumNachrechnungModelAttribute.initValue(null);
         ermaessigungNachrechnungModelAttribute.initValue(null);
         ermaessigungsgrundNachrechnungModelAttribute.initValue(null);
@@ -647,12 +809,12 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
         zuschlagsgrundNachrechnungModelAttribute.initValue(null);
         anzahlWochenNachrechnungModelAttribute.initValue(null);
         wochenbetragNachrechnungModelAttribute.initValue(null);
-        datumZahlung1ModelAttribute.initValue(null);
-        betragZahlung1ModelAttribute.initValue(null);
-        datumZahlung2ModelAttribute.initValue(null);
-        betragZahlung2ModelAttribute.initValue(null);
-        datumZahlung3ModelAttribute.initValue(null);
-        betragZahlung3ModelAttribute.initValue(null);
+        datumZahlung1NachrechnungModelAttribute.initValue(null);
+        betragZahlung1NachrechnungModelAttribute.initValue(null);
+        datumZahlung2NachrechnungModelAttribute.initValue(null);
+        betragZahlung2NachrechnungModelAttribute.initValue(null);
+        datumZahlung3NachrechnungModelAttribute.initValue(null);
+        betragZahlung3NachrechnungModelAttribute.initValue(null);
         bemerkungenModelAttribute.initValue(null);
     }
 }

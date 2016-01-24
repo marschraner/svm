@@ -48,6 +48,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
     private JLabel lblMalRabattFaktorVorrechnung;
     private JLabel lblRabattFaktorVorrechnung;
     private JLabel lblRechnungsbetragVorrechnung;
+    private JLabel lblRestbetragVorrechnung;
     private JLabel lblSchuelersNachrechnung;
     private JLabel lblKurseNachrechnung;
     private JLabel lblSechsJahresRabattNachrechnung;
@@ -56,7 +57,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
     private JLabel lblMalRabattFaktorNachrechnung;
     private JLabel lblRabattFaktorNachrechnung;
     private JLabel lblRechnungsbetragNachrechnung;
-    private JLabel lblRestbetrag;
+    private JLabel lblRestbetragNachrechnung;
     private JLabel lblScrollPosition;
     private JButton btnEmail;
     private JButton btnWochenbetragVorrechnung;
@@ -125,6 +126,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         setLblMalRabattFaktorVorrechnung();
         setLblRabattFaktorVorrechnung();
         setLblRechnungsbetragVorrechnung();
+        setLblRestbetragVorrechnung();
         setLblSchuelersNachrechnung();
         setLblKurseNachrechnung();
         setLblSechsJahresRabattNachrechnung();
@@ -133,7 +135,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         setLblMalRabattFaktorNachrechnung();
         setLblRabattFaktorNachrechnung();
         setLblRechnungsbetragNachrechnung();
-        setLblRestbetrag();
+        setLblRestbetragNachrechnung();
         setLblScrollPosition();
         constructionDone();
     }
@@ -316,6 +318,15 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         lblRechnungsbetragVorrechnung.setText(semesterrechnungBearbeitenModel.getRechnungsbetragVorrechnung());
     }
 
+    public void setLblRestbetragVorrechnung(JLabel lblRestbetragVorrechnung) {
+        this.lblRestbetragVorrechnung = lblRestbetragVorrechnung;
+        setLblRestbetragVorrechnung();
+    }
+
+    private void setLblRestbetragVorrechnung() {
+        lblRestbetragVorrechnung.setText(semesterrechnungBearbeitenModel.getRestbetragVorrechnung());
+    }
+
     public void setLblSchuelersNachrechnung(JLabel lblSchuelersNachrechnung) {
         this.lblSchuelersNachrechnung = lblSchuelersNachrechnung;
         setLblSchuelersNachrechnung();
@@ -401,13 +412,13 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         lblRechnungsbetragNachrechnung.setText(semesterrechnungBearbeitenModel.getRechnungsbetragNachrechnung());
     }
 
-    public void setLblRestbetrag(JLabel lblRestbetrag) {
-        this.lblRestbetrag = lblRestbetrag;
-        setLblRestbetrag();
+    public void setLblRestbetragNachrechnung(JLabel lblRestbetragNachrechnung) {
+        this.lblRestbetragNachrechnung = lblRestbetragNachrechnung;
+        setLblRestbetragNachrechnung();
     }
 
-    private void setLblRestbetrag() {
-        lblRestbetrag.setText(semesterrechnungBearbeitenModel.getRestbetrag());
+    private void setLblRestbetragNachrechnung() {
+        lblRestbetragNachrechnung.setText(semesterrechnungBearbeitenModel.getRestbetragNachrechnung());
     }
 
     public void setLblScrollPosition(JLabel lblScrollPosition) {
@@ -623,39 +634,64 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         setLblMalRabattFaktorVorrechnung();
         setLblRabattFaktorVorrechnung();
         setLblRechnungsbetragVorrechnung();
+        setLblRestbetragVorrechnung();
         setLblErmaessigungNachrechnung();
         setLblZuschlagNachrechnung();
         setLblMalRabattFaktorNachrechnung();
         setLblRabattFaktorNachrechnung();
         setLblRechnungsbetragNachrechnung();
-        setLblRestbetrag();
+        setLblRestbetragNachrechnung();
     }
 
     private void enableDisableFields() {
-        if (semesterrechnungBearbeitenModel.getRechnungsdatumVorrechnung() == null && semesterrechnungBearbeitenModel.getRechnungsdatumNachrechnung() == null) {
-            disableZahlungen();
+        if (semesterrechnungBearbeitenModel.getRechnungsdatumVorrechnung() == null) {
+            disableZahlungenVorrechnung();
         } else {
-            enableZahlungen();
+            enableZahlungenVorrechnung();
+        }
+        if (semesterrechnungBearbeitenModel.getRechnungsdatumNachrechnung() == null) {
+            disableZahlungenNachrechnung();
+        } else {
+            enableZahlungenNachrechnung();
         }
     }
 
-    private void enableZahlungen() {
-        semesterrechnungBearbeitenModel.enableFields(getZahlungenFields());
+    private void enableZahlungenVorrechnung() {
+        semesterrechnungBearbeitenModel.enableFields(getZahlungenVorrechnungenFields());
     }
 
-    private void disableZahlungen() {
-        semesterrechnungBearbeitenModel.disableFields(getZahlungenFields());
+    private void enableZahlungenNachrechnung() {
+        semesterrechnungBearbeitenModel.enableFields(getZahlungenNachrechnungenFields());
     }
 
-    private Set<Field> getZahlungenFields() {
-        Set<Field> zahlungenFields = new HashSet<>();
-        zahlungenFields.add(Field.BETRAG_ZAHLUNG_1);
-        zahlungenFields.add(Field.DATUM_ZAHLUNG_1);
-        zahlungenFields.add(Field.BETRAG_ZAHLUNG_2);
-        zahlungenFields.add(Field.DATUM_ZAHLUNG_2);
-        zahlungenFields.add(Field.BETRAG_ZAHLUNG_3);
-        zahlungenFields.add(Field.DATUM_ZAHLUNG_3);
-        return zahlungenFields;
+    private void disableZahlungenVorrechnung() {
+        semesterrechnungBearbeitenModel.disableFields(getZahlungenVorrechnungenFields());
+    }
+
+    private void disableZahlungenNachrechnung() {
+        semesterrechnungBearbeitenModel.disableFields(getZahlungenNachrechnungenFields());
+    }
+
+    private Set<Field> getZahlungenVorrechnungenFields() {
+        Set<Field> zahlungenVorrechnungenFields = new HashSet<>();
+        zahlungenVorrechnungenFields.add(Field.BETRAG_ZAHLUNG_1_VORRECHNUNG);
+        zahlungenVorrechnungenFields.add(Field.DATUM_ZAHLUNG_1_VORRECHNUNG);
+        zahlungenVorrechnungenFields.add(Field.BETRAG_ZAHLUNG_2_VORRECHNUNG);
+        zahlungenVorrechnungenFields.add(Field.DATUM_ZAHLUNG_2_VORRECHNUNG);
+        zahlungenVorrechnungenFields.add(Field.BETRAG_ZAHLUNG_3_VORRECHNUNG);
+        zahlungenVorrechnungenFields.add(Field.DATUM_ZAHLUNG_3_VORRECHNUNG);
+        return zahlungenVorrechnungenFields;
+    }
+
+    private Set<Field> getZahlungenNachrechnungenFields() {
+        Set<Field> zahlungenNachrechnungenFields = new HashSet<>();
+        zahlungenNachrechnungenFields.add(Field.BETRAG_ZAHLUNG_1_NACHRECHNUNG);
+        zahlungenNachrechnungenFields.add(Field.DATUM_ZAHLUNG_1_NACHRECHNUNG);
+        zahlungenNachrechnungenFields.add(Field.BETRAG_ZAHLUNG_2_NACHRECHNUNG);
+        zahlungenNachrechnungenFields.add(Field.DATUM_ZAHLUNG_2_NACHRECHNUNG);
+        zahlungenNachrechnungenFields.add(Field.BETRAG_ZAHLUNG_3_NACHRECHNUNG);
+        zahlungenNachrechnungenFields.add(Field.DATUM_ZAHLUNG_3_NACHRECHNUNG);
+        return zahlungenNachrechnungenFields;
     }
 
     private void enableNavigationDisableSpeichern() {

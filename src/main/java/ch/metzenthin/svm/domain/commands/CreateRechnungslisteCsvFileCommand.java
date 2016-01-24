@@ -154,31 +154,31 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
                 out.write(separator);
                 out.write(semesterrechnung.getRechnungsbetragNachrechnung().toString());
                 out.write(separator);
-                if (semesterrechnung.getDatumZahlung1() != null) {
-                    out.write(asString(semesterrechnung.getDatumZahlung1()));
+                if (semesterrechnung.getDatumZahlung1Nachrechnung() != null) {
+                    out.write(asString(semesterrechnung.getDatumZahlung1Nachrechnung()));
                 }
                 out.write(separator);
-                if (semesterrechnung.getBetragZahlung1() != null) {
-                  out.write(semesterrechnung.getBetragZahlung1().toString());
+                if (semesterrechnung.getBetragZahlung1Nachrechnung() != null) {
+                  out.write(semesterrechnung.getBetragZahlung1Nachrechnung().toString());
                 }
                 out.write(separator);
-                if (semesterrechnung.getDatumZahlung2() != null) {
-                    out.write(asString(semesterrechnung.getDatumZahlung2()));
+                if (semesterrechnung.getDatumZahlung2Nachrechnung() != null) {
+                    out.write(asString(semesterrechnung.getDatumZahlung2Nachrechnung()));
                 }
                 out.write(separator);
-                if (semesterrechnung.getBetragZahlung2() != null) {
-                    out.write(semesterrechnung.getBetragZahlung2().toString());
+                if (semesterrechnung.getBetragZahlung2Nachrechnung() != null) {
+                    out.write(semesterrechnung.getBetragZahlung2Nachrechnung().toString());
                 }
                 out.write(separator);
-                if (semesterrechnung.getDatumZahlung3() != null) {
-                    out.write(asString(semesterrechnung.getDatumZahlung3()));
+                if (semesterrechnung.getDatumZahlung3Nachrechnung() != null) {
+                    out.write(asString(semesterrechnung.getDatumZahlung3Nachrechnung()));
                 }
                 out.write(separator);
-                if (semesterrechnung.getBetragZahlung3() != null) {
-                    out.write(semesterrechnung.getBetragZahlung3().toString());
+                if (semesterrechnung.getBetragZahlung3Nachrechnung() != null) {
+                    out.write(semesterrechnung.getBetragZahlung3Nachrechnung().toString());
                 }
                 out.write(separator);
-                BigDecimal restbetrag = semesterrechnung.getRestbetrag();
+                BigDecimal restbetrag = semesterrechnung.getRestbetragNachrechnung();
                 if (restbetrag != null) {
                     out.write(restbetrag.toString());
                 }

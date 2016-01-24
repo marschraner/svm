@@ -25,6 +25,12 @@ public interface SemesterrechnungModel extends Model {
     String getZuschlagsgrundVorrechnung();
     Integer getAnzahlWochenVorrechnung();
     BigDecimal getWochenbetragVorrechnung();
+    Calendar getDatumZahlung1Vorrechnung();
+    BigDecimal getBetragZahlung1Vorrechnung();
+    Calendar getDatumZahlung2Vorrechnung();
+    BigDecimal getBetragZahlung2Vorrechnung();
+    Calendar getDatumZahlung3Vorrechnung();
+    BigDecimal getBetragZahlung3Vorrechnung();
     Calendar getRechnungsdatumNachrechnung();
     BigDecimal getErmaessigungNachrechnung();
     String getErmaessigungsgrundNachrechnung();
@@ -32,12 +38,12 @@ public interface SemesterrechnungModel extends Model {
     String getZuschlagsgrundNachrechnung();
     Integer getAnzahlWochenNachrechnung();
     BigDecimal getWochenbetragNachrechnung();
-    Calendar getDatumZahlung1();
-    BigDecimal getBetragZahlung1();
-    Calendar getDatumZahlung2();
-    BigDecimal getBetragZahlung2();
-    Calendar getDatumZahlung3();
-    BigDecimal getBetragZahlung3();
+    Calendar getDatumZahlung1Nachrechnung();
+    BigDecimal getBetragZahlung1Nachrechnung();
+    Calendar getDatumZahlung2Nachrechnung();
+    BigDecimal getBetragZahlung2Nachrechnung();
+    Calendar getDatumZahlung3Nachrechnung();
+    BigDecimal getBetragZahlung3Nachrechnung();
     String getBemerkungen();
 
     void setSemesterrechnungCode(SemesterrechnungCode semesterrechnungCode);
@@ -50,6 +56,12 @@ public interface SemesterrechnungModel extends Model {
     void setZuschlagsgrundVorrechnung(String zuschlagsgrundVorrechnung) throws SvmValidationException;
     void setAnzahlWochenVorrechnung(String anzahlWochenVorrechnung) throws SvmValidationException;
     void setWochenbetragVorrechnung(String wochenbetragVorrechnung) throws SvmValidationException;
+    void setDatumZahlung1Vorrechnung(String datumZahlung1Vorrechnung) throws SvmValidationException;
+    void setBetragZahlung1Vorrechnung(String betragZahlung1Vorrechnung) throws SvmValidationException;
+    void setDatumZahlung2Vorrechnung(String datumZahlung2Vorrechnung) throws SvmValidationException;
+    void setBetragZahlung2Vorrechnung(String betragZahlung2Vorrechnung) throws SvmValidationException;
+    void setDatumZahlung3Vorrechnung(String datumZahlung3Vorrechnung) throws SvmValidationException;
+    void setBetragZahlung3Vorrechnung(String betragZahlung3Vorrechnung) throws SvmValidationException;
     void setRechnungsdatumNachrechnung(String rechnungsdatumNachrechnung) throws SvmValidationException;
     void setErmaessigungNachrechnung(String ermaessigungNachrechnung) throws SvmValidationException;
     void setErmaessigungsgrundNachrechnung(String ermaessigunsgrundNachrechnung) throws SvmValidationException;
@@ -57,12 +69,12 @@ public interface SemesterrechnungModel extends Model {
     void setZuschlagsgrundNachrechnung(String zuschlagsgrundNachrechnung) throws SvmValidationException;
     void setAnzahlWochenNachrechnung(String anzahlWochenNachrechnung) throws SvmValidationException;
     void setWochenbetragNachrechnung(String wochenbetragNachrechnung) throws SvmValidationException;
-    void setDatumZahlung1(String datumZahlung1) throws SvmValidationException;
-    void setBetragZahlung1(String betragZahlung1) throws SvmValidationException;
-    void setDatumZahlung2(String datumZahlung2) throws SvmValidationException;
-    void setBetragZahlung2(String betragZahlung2) throws SvmValidationException;
-    void setDatumZahlung3(String datumZahlung3) throws SvmValidationException;
-    void setBetragZahlung3(String betragZahlung3) throws SvmValidationException;
+    void setDatumZahlung1Nachrechnung(String datumZahlung1Nachrechnung) throws SvmValidationException;
+    void setBetragZahlung1Nachrechnung(String betragZahlung1Nachrechnung) throws SvmValidationException;
+    void setDatumZahlung2Nachrechnung(String datumZahlung2Nachrechnung) throws SvmValidationException;
+    void setBetragZahlung2Nachrechnung(String betragZahlung2Nachrechnung) throws SvmValidationException;
+    void setDatumZahlung3Nachrechnung(String datumZahlung3Nachrechnung) throws SvmValidationException;
+    void setBetragZahlung3Nachrechnung(String betragZahlung3Nachrechnung) throws SvmValidationException;
     void setBemerkungen(String bemerkungen) throws SvmValidationException;
 
     SemesterrechnungCode[] getSelectableSemesterrechnungCodes(SvmModel svmModel);

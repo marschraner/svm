@@ -65,6 +65,12 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
         GROESSER
     }
 
+    enum PraezisierungRestbetragVorrechnungSelected {
+        GLEICH,
+        KLEINER,
+        GROESSER
+    }
+
     enum SechsJahresRabattJaNeinVorrechnungSelected {
         JA,
         NEIN,
@@ -113,6 +119,12 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
         GROESSER
     }
 
+    enum PraezisierungRestbetragNachrechnungSelected {
+        GLEICH,
+        KLEINER,
+        GROESSER
+    }
+
     enum SechsJahresRabattJaNeinNachrechnungSelected {
         JA,
         NEIN,
@@ -120,12 +132,6 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     }
 
     enum PraezisierungDifferenzRechnungsbetragSelected {
-        GLEICH,
-        KLEINER,
-        GROESSER
-    }
-
-    enum PraezisierungRestbetragSelected {
         GLEICH,
         KLEINER,
         GROESSER
@@ -144,6 +150,8 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     PraezisierungWochenbetragVorrechnungSelected getPraezisierungWochenbetragVorrechnungSelected();
     PraezisierungRechnungsbetragVorrechnungSelected getPraezisierungRechnungsbetragVorrechnungSelected();
     BigDecimal getRechnungsbetragVorrechnung();
+    PraezisierungRestbetragVorrechnungSelected getPraezisierungRestbetragVorrechnungSelected();
+    BigDecimal getRestbetragVorrechnung();
     SechsJahresRabattJaNeinVorrechnungSelected getSechsJahresRabattJaNeinVorrechnungSelected();
     RechnungsdatumGesetztNachrechnungSelected getRechnungsdatumGesetztNachrechnungSelected();
     PraezisierungRechnungsdatumNachrechnungSelected getPraezisierungRechnungsdatumNachrechnungSelected();
@@ -153,11 +161,11 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     PraezisierungWochenbetragNachrechnungSelected getPraezisierungWochenbetragNachrechnungSelected();
     PraezisierungRechnungsbetragNachrechnungSelected getPraezisierungRechnungsbetragNachrechnungSelected();
     BigDecimal getRechnungsbetragNachrechnung();
+    PraezisierungRestbetragNachrechnungSelected getPraezisierungRestbetragNachrechnungSelected();
+    BigDecimal getRestbetragNachrechnung();
     SechsJahresRabattJaNeinNachrechnungSelected getSechsJahresRabattJaNeinNachrechnungSelected();
     PraezisierungDifferenzRechnungsbetragSelected getPraezisierungDifferenzRechnungsbetragSelected();
     BigDecimal getDifferenzRechnungsbetrag();
-    PraezisierungRestbetragSelected getPraezisierungRestbetragSelected();
-    BigDecimal getRestbetrag();
 
     void setSemester(Semester semester);
     void setNachname(String nachname) throws SvmValidationException;
@@ -172,6 +180,8 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     void setPraezisierungWochenbetragVorrechnungSelected(PraezisierungWochenbetragVorrechnungSelected praezisierungWochenbetragVorrechnungSelected);
     void setPraezisierungRechnungsbetragVorrechnungSelected(PraezisierungRechnungsbetragVorrechnungSelected praezisierungRechnungsbetragVorrechnungSelected);
     void setRechnungsbetragVorrechnung(String rechnungsbetragVorrechnung) throws SvmValidationException;
+    void setPraezisierungRestbetragVorrechnungSelected(PraezisierungRestbetragVorrechnungSelected praezisierungRestbetragVorrechnungSelected);
+    void setRestbetragVorrechnung(String restbetragVorrechnung) throws SvmValidationException;
     void setSechsJahresRabattJaNeinVorrechnungSelected(SechsJahresRabattJaNeinVorrechnungSelected sechsJahresRabattJaNeinVorrechnungSelected);
     void setRechnungsdatumGesetztNachrechnungSelected(RechnungsdatumGesetztNachrechnungSelected rechnungsdatumGesetztNachrechnungSelected);
     void setPraezisierungRechnungsdatumNachrechnungSelected(PraezisierungRechnungsdatumNachrechnungSelected praezisierungRechnungsdatumNachrechnungSelected);
@@ -181,11 +191,11 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     void setPraezisierungWochenbetragNachrechnungSelected(PraezisierungWochenbetragNachrechnungSelected praezisierungWochenbetragNachrechnungSelected);
     void setPraezisierungRechnungsbetragNachrechnungSelected(PraezisierungRechnungsbetragNachrechnungSelected praezisierungRechnungsbetragNachrechnungSelected);
     void setRechnungsbetragNachrechnung(String rechnungsbetragNachrechnung) throws SvmValidationException;
+    void setPraezisierungRestbetragNachrechnungSelected(PraezisierungRestbetragNachrechnungSelected praezisierungRestbetragNachrechnungSelected);
+    void setRestbetragNachrechnung(String restbetragNachrechnung) throws SvmValidationException;
     void setSechsJahresRabattJaNeinNachrechnungSelected(SechsJahresRabattJaNeinNachrechnungSelected sechsJahresRabattJaNeinNachrechnungSelected);
     void setPraezisierungDifferenzRechnungsbetragSelected(PraezisierungDifferenzRechnungsbetragSelected praezisierungDifferenzRechnungsbetragSelected);
     void setDifferenzRechnungsbetrag(String differenzRechnungsbetrag) throws SvmValidationException;
-    void setPraezisierungRestbetragSelected(PraezisierungRestbetragSelected praezisierungRestbetragSelected);
-    void setRestbetrag(String restbetrag) throws SvmValidationException;
 
     Semester getSemesterInit(SvmModel svmModel);
     SemesterrechnungenTableData suchen();

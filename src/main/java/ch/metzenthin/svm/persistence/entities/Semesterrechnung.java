@@ -59,6 +59,27 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     private BigDecimal wochenbetragVorrechnung;
 
     @Temporal(TemporalType.DATE)
+    @Column(name = "datum_zahlung_1_vorrechnung", nullable = true)
+    private Calendar datumZahlung1Vorrechnung;
+
+    @Column(name = "betrag_zahlung_1_vorrechnung", nullable = true)
+    private BigDecimal betragZahlung1Vorrechnung;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "datum_zahlung_2_vorrechnung", nullable = true)
+    private Calendar datumZahlung2Vorrechnung;
+
+    @Column(name = "betrag_zahlung_2_vorrechnung", nullable = true)
+    private BigDecimal betragZahlung2Vorrechnung;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "datum_zahlung_3_vorrechnung", nullable = true)
+    private Calendar datumZahlung3Vorrechnung;
+
+    @Column(name = "betrag_zahlung_3_vorrechnung", nullable = true)
+    private BigDecimal betragZahlung3Vorrechnung;
+
+    @Temporal(TemporalType.DATE)
     @Column(name = "rechnungsdatum_nachrechnung", nullable = true)
     private Calendar rechnungsdatumNachrechnung;
 
@@ -81,25 +102,25 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     private BigDecimal wochenbetragNachrechnung;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "datum_zahlung_1", nullable = true)
-    private Calendar datumZahlung1;
+    @Column(name = "datum_zahlung_1_nachrechnung", nullable = true)
+    private Calendar datumZahlung1Nachrechnung;
 
-    @Column(name = "betrag_zahlung_1", nullable = true)
-    private BigDecimal betragZahlung1;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "datum_zahlung_2", nullable = true)
-    private Calendar datumZahlung2;
-
-    @Column(name = "betrag_zahlung_2", nullable = true)
-    private BigDecimal betragZahlung2;
+    @Column(name = "betrag_zahlung_1_nachrechnung", nullable = true)
+    private BigDecimal betragZahlung1Nachrechnung;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "datum_zahlung_3", nullable = true)
-    private Calendar datumZahlung3;
+    @Column(name = "datum_zahlung_2_nachrechnung", nullable = true)
+    private Calendar datumZahlung2Nachrechnung;
 
-    @Column(name = "betrag_zahlung_3", nullable = true)
-    private BigDecimal betragZahlung3;
+    @Column(name = "betrag_zahlung_2_nachrechnung", nullable = true)
+    private BigDecimal betragZahlung2Nachrechnung;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "datum_zahlung_3_nachrechnung", nullable = true)
+    private Calendar datumZahlung3Nachrechnung;
+
+    @Column(name = "betrag_zahlung_3_nachrechnung", nullable = true)
+    private BigDecimal betragZahlung3Nachrechnung;
 
     @ManyToOne
     @JoinColumn(name = "code_id", nullable = true)
@@ -112,7 +133,9 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     public Semesterrechnung() {
     }
 
-    public Semesterrechnung(Semester semester, Angehoeriger rechnungsempfaenger, Stipendium stipendium, Boolean gratiskinder, Calendar rechnungsdatumVorrechnung, BigDecimal ermaessigungVorrechnung, String ermaessigungsgrundVorrechnung, BigDecimal zuschlagVorrechnung, String zuschlagsgrundVorrechnung, Integer anzahlWochenVorrechnung, BigDecimal wochenbetragVorrechnung, Calendar rechnungsdatumNachrechnung, BigDecimal ermaessigungNachrechnung, String ermaessigungsgrundNachrechnung, BigDecimal zuschlagNachrechnung, String zuschlagsgrundNachrechnung, Integer anzahlWochenNachrechnung, BigDecimal wochenbetragNachrechnung, Calendar datumZahlung1, BigDecimal betragZahlung1, Calendar datumZahlung2, BigDecimal betragZahlung2, Calendar datumZahlung3, BigDecimal betragZahlung3, String bemerkungen) {
+    public Semesterrechnung(Semester semester, Angehoeriger rechnungsempfaenger, Stipendium stipendium, Boolean gratiskinder,
+                            Calendar rechnungsdatumVorrechnung, BigDecimal ermaessigungVorrechnung, String ermaessigungsgrundVorrechnung, BigDecimal zuschlagVorrechnung, String zuschlagsgrundVorrechnung, Integer anzahlWochenVorrechnung, BigDecimal wochenbetragVorrechnung, Calendar datumZahlung1Vorrechnung, BigDecimal betragZahlung1Vorrechnung, Calendar datumZahlung2Vorrechnung, BigDecimal betragZahlung2Vorrechnung, Calendar datumZahlung3Vorrechnung, BigDecimal betragZahlung3Vorrechnung,
+                            Calendar rechnungsdatumNachrechnung, BigDecimal ermaessigungNachrechnung, String ermaessigungsgrundNachrechnung, BigDecimal zuschlagNachrechnung, String zuschlagsgrundNachrechnung, Integer anzahlWochenNachrechnung, BigDecimal wochenbetragNachrechnung, Calendar datumZahlung1Nachrechnung, BigDecimal betragZahlung1Nachrechnung, Calendar datumZahlung2Nachrechnung, BigDecimal betragZahlung2Nachrechnung, Calendar datumZahlung3Nachrechnung, BigDecimal betragZahlung3Nachrechnung, String bemerkungen) {
         this.semester = semester;
         this.rechnungsempfaenger = rechnungsempfaenger;
         this.stipendium = stipendium;
@@ -124,6 +147,12 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.zuschlagsgrundVorrechnung = zuschlagsgrundVorrechnung;
         this.anzahlWochenVorrechnung = anzahlWochenVorrechnung;
         this.wochenbetragVorrechnung = wochenbetragVorrechnung;
+        this.datumZahlung1Vorrechnung = datumZahlung1Vorrechnung;
+        this.betragZahlung1Vorrechnung = betragZahlung1Vorrechnung;
+        this.datumZahlung2Vorrechnung = datumZahlung2Vorrechnung;
+        this.betragZahlung2Vorrechnung = betragZahlung2Vorrechnung;
+        this.datumZahlung3Vorrechnung = datumZahlung3Vorrechnung;
+        this.betragZahlung3Vorrechnung = betragZahlung3Vorrechnung;
         this.rechnungsdatumNachrechnung = rechnungsdatumNachrechnung;
         this.ermaessigungNachrechnung = ermaessigungNachrechnung;
         this.ermaessigungsgrundNachrechnung = ermaessigungsgrundNachrechnung;
@@ -131,12 +160,12 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.zuschlagsgrundNachrechnung = zuschlagsgrundNachrechnung;
         this.anzahlWochenNachrechnung = anzahlWochenNachrechnung;
         this.wochenbetragNachrechnung = wochenbetragNachrechnung;
-        this.datumZahlung1 = datumZahlung1;
-        this.betragZahlung1 = betragZahlung1;
-        this.datumZahlung2 = datumZahlung2;
-        this.betragZahlung2 = betragZahlung2;
-        this.datumZahlung3 = datumZahlung3;
-        this.betragZahlung3 = betragZahlung3;
+        this.datumZahlung1Nachrechnung = datumZahlung1Nachrechnung;
+        this.betragZahlung1Nachrechnung = betragZahlung1Nachrechnung;
+        this.datumZahlung2Nachrechnung = datumZahlung2Nachrechnung;
+        this.betragZahlung2Nachrechnung = betragZahlung2Nachrechnung;
+        this.datumZahlung3Nachrechnung = datumZahlung3Nachrechnung;
+        this.betragZahlung3Nachrechnung = betragZahlung3Nachrechnung;
         this.bemerkungen = bemerkungen;
     }
 
@@ -169,6 +198,12 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.zuschlagsgrundVorrechnung = otherSemesterrechnung.zuschlagsgrundVorrechnung;
         this.anzahlWochenVorrechnung = otherSemesterrechnung.anzahlWochenVorrechnung;
         this.wochenbetragVorrechnung = otherSemesterrechnung.wochenbetragVorrechnung;
+        this.datumZahlung1Vorrechnung = otherSemesterrechnung.datumZahlung1Vorrechnung;
+        this.betragZahlung1Vorrechnung = otherSemesterrechnung.betragZahlung1Vorrechnung;
+        this.datumZahlung2Vorrechnung = otherSemesterrechnung.datumZahlung2Vorrechnung;
+        this.betragZahlung2Vorrechnung = otherSemesterrechnung.betragZahlung2Vorrechnung;
+        this.datumZahlung3Vorrechnung = otherSemesterrechnung.datumZahlung3Vorrechnung;
+        this.betragZahlung3Vorrechnung = otherSemesterrechnung.betragZahlung3Vorrechnung;
         this.rechnungsdatumNachrechnung = otherSemesterrechnung.rechnungsdatumNachrechnung;
         this.ermaessigungNachrechnung = otherSemesterrechnung.ermaessigungNachrechnung;
         this.ermaessigungsgrundNachrechnung = otherSemesterrechnung.ermaessigungsgrundNachrechnung;
@@ -176,12 +211,12 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.zuschlagsgrundNachrechnung = otherSemesterrechnung.zuschlagsgrundNachrechnung;
         this.anzahlWochenNachrechnung = otherSemesterrechnung.anzahlWochenNachrechnung;
         this.wochenbetragNachrechnung = otherSemesterrechnung.wochenbetragNachrechnung;
-        this.datumZahlung1 = otherSemesterrechnung.datumZahlung1;
-        this.betragZahlung1 = otherSemesterrechnung.betragZahlung1;
-        this.datumZahlung2 = otherSemesterrechnung.datumZahlung2;
-        this.betragZahlung2 = otherSemesterrechnung.betragZahlung2;
-        this.datumZahlung3 = otherSemesterrechnung.datumZahlung3;
-        this.betragZahlung3 = otherSemesterrechnung.betragZahlung3;
+        this.datumZahlung1Nachrechnung = otherSemesterrechnung.datumZahlung1Nachrechnung;
+        this.betragZahlung1Nachrechnung = otherSemesterrechnung.betragZahlung1Nachrechnung;
+        this.datumZahlung2Nachrechnung = otherSemesterrechnung.datumZahlung2Nachrechnung;
+        this.betragZahlung2Nachrechnung = otherSemesterrechnung.betragZahlung2Nachrechnung;
+        this.datumZahlung3Nachrechnung = otherSemesterrechnung.datumZahlung3Nachrechnung;
+        this.betragZahlung3Nachrechnung = otherSemesterrechnung.betragZahlung3Nachrechnung;
         this.bemerkungen = otherSemesterrechnung.getBemerkungen();
     }
 
@@ -273,6 +308,54 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.wochenbetragVorrechnung = wochenbetragVorrechnung;
     }
 
+    public Calendar getDatumZahlung1Vorrechnung() {
+        return datumZahlung1Vorrechnung;
+    }
+
+    public void setDatumZahlung1Vorrechnung(Calendar datumZahlung1Vorrechnung) {
+        this.datumZahlung1Vorrechnung = datumZahlung1Vorrechnung;
+    }
+
+    public BigDecimal getBetragZahlung1Vorrechnung() {
+        return betragZahlung1Vorrechnung;
+    }
+
+    public void setBetragZahlung1Vorrechnung(BigDecimal betragZahlung1Vorrechnung) {
+        this.betragZahlung1Vorrechnung = betragZahlung1Vorrechnung;
+    }
+
+    public Calendar getDatumZahlung2Vorrechnung() {
+        return datumZahlung2Vorrechnung;
+    }
+
+    public void setDatumZahlung2Vorrechnung(Calendar datumZahlung2Vorrechnung) {
+        this.datumZahlung2Vorrechnung = datumZahlung2Vorrechnung;
+    }
+
+    public BigDecimal getBetragZahlung2Vorrechnung() {
+        return betragZahlung2Vorrechnung;
+    }
+
+    public void setBetragZahlung2Vorrechnung(BigDecimal betragZahlung2Vorrechnung) {
+        this.betragZahlung2Vorrechnung = betragZahlung2Vorrechnung;
+    }
+
+    public Calendar getDatumZahlung3Vorrechnung() {
+        return datumZahlung3Vorrechnung;
+    }
+
+    public void setDatumZahlung3Vorrechnung(Calendar datumZahlung3Vorrechnung) {
+        this.datumZahlung3Vorrechnung = datumZahlung3Vorrechnung;
+    }
+
+    public BigDecimal getBetragZahlung3Vorrechnung() {
+        return betragZahlung3Vorrechnung;
+    }
+
+    public void setBetragZahlung3Vorrechnung(BigDecimal betragZahlung3Vorrechnung) {
+        this.betragZahlung3Vorrechnung = betragZahlung3Vorrechnung;
+    }
+
     public Calendar getRechnungsdatumNachrechnung() {
         return rechnungsdatumNachrechnung;
     }
@@ -329,52 +412,52 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.wochenbetragNachrechnung = wochenbetragNachrechnung;
     }
 
-    public Calendar getDatumZahlung1() {
-        return datumZahlung1;
+    public Calendar getDatumZahlung1Nachrechnung() {
+        return datumZahlung1Nachrechnung;
     }
 
-    public void setDatumZahlung1(Calendar datumZahlung1) {
-        this.datumZahlung1 = datumZahlung1;
+    public void setDatumZahlung1Nachrechnung(Calendar datumZahlung1Nachrechnung) {
+        this.datumZahlung1Nachrechnung = datumZahlung1Nachrechnung;
     }
 
-    public BigDecimal getBetragZahlung1() {
-        return betragZahlung1;
+    public BigDecimal getBetragZahlung1Nachrechnung() {
+        return betragZahlung1Nachrechnung;
     }
 
-    public void setBetragZahlung1(BigDecimal betragZahlung1) {
-        this.betragZahlung1 = betragZahlung1;
+    public void setBetragZahlung1Nachrechnung(BigDecimal betragZahlung1Nachrechnung) {
+        this.betragZahlung1Nachrechnung = betragZahlung1Nachrechnung;
     }
 
-    public Calendar getDatumZahlung2() {
-        return datumZahlung2;
+    public Calendar getDatumZahlung2Nachrechnung() {
+        return datumZahlung2Nachrechnung;
     }
 
-    public void setDatumZahlung2(Calendar datumZahlung2) {
-        this.datumZahlung2 = datumZahlung2;
+    public void setDatumZahlung2Nachrechnung(Calendar datumZahlung2Nachrechnung) {
+        this.datumZahlung2Nachrechnung = datumZahlung2Nachrechnung;
     }
 
-    public BigDecimal getBetragZahlung2() {
-        return betragZahlung2;
+    public BigDecimal getBetragZahlung2Nachrechnung() {
+        return betragZahlung2Nachrechnung;
     }
 
-    public void setBetragZahlung2(BigDecimal betragZahlung2) {
-        this.betragZahlung2 = betragZahlung2;
+    public void setBetragZahlung2Nachrechnung(BigDecimal betragZahlung2Nachrechnung) {
+        this.betragZahlung2Nachrechnung = betragZahlung2Nachrechnung;
     }
 
-    public Calendar getDatumZahlung3() {
-        return datumZahlung3;
+    public Calendar getDatumZahlung3Nachrechnung() {
+        return datumZahlung3Nachrechnung;
     }
 
-    public void setDatumZahlung3(Calendar datumZahlung3) {
-        this.datumZahlung3 = datumZahlung3;
+    public void setDatumZahlung3Nachrechnung(Calendar datumZahlung3Nachrechnung) {
+        this.datumZahlung3Nachrechnung = datumZahlung3Nachrechnung;
     }
 
-    public BigDecimal getBetragZahlung3() {
-        return betragZahlung3;
+    public BigDecimal getBetragZahlung3Nachrechnung() {
+        return betragZahlung3Nachrechnung;
     }
 
-    public void setBetragZahlung3(BigDecimal betragZahlung3) {
-        this.betragZahlung3 = betragZahlung3;
+    public void setBetragZahlung3Nachrechnung(BigDecimal betragZahlung3Nachrechnung) {
+        this.betragZahlung3Nachrechnung = betragZahlung3Nachrechnung;
     }
 
     public SemesterrechnungCode getSemesterrechnungCode() {
@@ -504,27 +587,41 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     }
 
     @Transient
-    public BigDecimal getRestbetrag() {
-        BigDecimal restbetrag = null;
+    public BigDecimal getRestbetragVorrechnung() {
+        BigDecimal restbetragVorrechnung = null;
         BigDecimal rechnungsbetragVorrechnung = getRechnungsbetragVorrechnung();
+        if (getRechnungsdatumVorrechnung() != null && rechnungsbetragVorrechnung != null) {
+            restbetragVorrechnung = rechnungsbetragVorrechnung;
+            if (betragZahlung1Vorrechnung != null) {
+                restbetragVorrechnung = restbetragVorrechnung.subtract(betragZahlung1Vorrechnung);
+            }
+            if (betragZahlung2Vorrechnung != null) {
+                restbetragVorrechnung = restbetragVorrechnung.subtract(betragZahlung2Vorrechnung);
+            }
+            if (betragZahlung3Vorrechnung != null) {
+                restbetragVorrechnung = restbetragVorrechnung.subtract(betragZahlung3Vorrechnung);
+            }
+        }
+        return restbetragVorrechnung;
+    }
+
+    @Transient
+    public BigDecimal getRestbetragNachrechnung() {
+        BigDecimal restbetragNachrechnung = null;
         BigDecimal rechnungsbetragNachrechnung = getRechnungsbetragNachrechnung();
         if (getRechnungsdatumNachrechnung() != null && rechnungsbetragNachrechnung != null) {
-            restbetrag = rechnungsbetragNachrechnung;
-        } else if (getRechnungsdatumVorrechnung() != null && rechnungsbetragVorrechnung != null) {
-            restbetrag = rechnungsbetragVorrechnung;
-        }
-        if (restbetrag != null) {
-            if (betragZahlung1 != null) {
-                restbetrag = restbetrag.subtract(betragZahlung1);
+            restbetragNachrechnung = rechnungsbetragNachrechnung;
+            if (betragZahlung1Nachrechnung != null) {
+                restbetragNachrechnung = restbetragNachrechnung.subtract(betragZahlung1Nachrechnung);
             }
-            if (betragZahlung2 != null) {
-                restbetrag = restbetrag.subtract(betragZahlung2);
+            if (betragZahlung2Nachrechnung != null) {
+                restbetragNachrechnung = restbetragNachrechnung.subtract(betragZahlung2Nachrechnung);
             }
-            if (betragZahlung3 != null) {
-                restbetrag = restbetrag.subtract(betragZahlung3);
+            if (betragZahlung3Nachrechnung != null) {
+                restbetragNachrechnung = restbetragNachrechnung.subtract(betragZahlung3Nachrechnung);
             }
         }
-        return restbetrag;
+        return restbetragNachrechnung;
     }
 
     @Transient
@@ -532,12 +629,15 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         return (ermaessigungsgrundVorrechnung == null || ermaessigungVorrechnung.compareTo(BigDecimal.ZERO) == 0) &&
                 (zuschlagVorrechnung == null || zuschlagVorrechnung.compareTo(BigDecimal.ZERO) == 0) &&
                 (wochenbetragVorrechnung == null || wochenbetragVorrechnung.compareTo(BigDecimal.ZERO) == 0) &&
+                (betragZahlung1Vorrechnung == null || betragZahlung1Vorrechnung.compareTo(BigDecimal.ZERO) == 0) &&
+                (betragZahlung2Vorrechnung == null || betragZahlung2Vorrechnung.compareTo(BigDecimal.ZERO) == 0) &&
+                (betragZahlung3Vorrechnung == null || betragZahlung3Vorrechnung.compareTo(BigDecimal.ZERO) == 0) &&
                 (ermaessigungNachrechnung == null || ermaessigungNachrechnung.compareTo(BigDecimal.ZERO) == 0) &&
                 (zuschlagNachrechnung == null || zuschlagNachrechnung.compareTo(BigDecimal.ZERO) == 0) &&
                 (wochenbetragNachrechnung == null || wochenbetragNachrechnung.compareTo(BigDecimal.ZERO) == 0) &&
-                (betragZahlung1 == null || betragZahlung1.compareTo(BigDecimal.ZERO) == 0) &&
-                (betragZahlung2 == null || betragZahlung2.compareTo(BigDecimal.ZERO) == 0) &&
-                (betragZahlung3 == null || betragZahlung3.compareTo(BigDecimal.ZERO) == 0);
+                (betragZahlung1Nachrechnung == null || betragZahlung1Nachrechnung.compareTo(BigDecimal.ZERO) == 0) &&
+                (betragZahlung2Nachrechnung == null || betragZahlung2Nachrechnung.compareTo(BigDecimal.ZERO) == 0) &&
+                (betragZahlung3Nachrechnung == null || betragZahlung3Nachrechnung.compareTo(BigDecimal.ZERO) == 0);
     }
 
 }

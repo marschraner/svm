@@ -103,6 +103,12 @@ public class DeleteSemesterrechnungCommandTest {
                 "versäumte Zahlungen",
                 17,
                 new BigDecimal("22.00"),
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 24),
+                new BigDecimal("101.00"),
+                new GregorianCalendar(1912, Calendar.MARCH, 13),
+                new BigDecimal("151.00"),
+                new GregorianCalendar(1912, Calendar.APRIL, 22),
+                new BigDecimal("147.00"),
                 new GregorianCalendar(1912, Calendar.APRIL, 2),
                 new BigDecimal("25.00"),
                 "2.5 Wochen dispensiert",
@@ -128,6 +134,12 @@ public class DeleteSemesterrechnungCommandTest {
                 "versäumte Zahlung",
                 18,
                 new BigDecimal("32.00"),
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 29),
+                new BigDecimal("201.00"),
+                new GregorianCalendar(1912, Calendar.MARCH, 11),
+                new BigDecimal("161.00"),
+                new GregorianCalendar(1912, Calendar.APRIL, 21),
+                new BigDecimal("157.00"),
                 new GregorianCalendar(1912, Calendar.MAY, 1),
                 new BigDecimal("23.00"),
                 "1.5 Wochen dispensiert",
@@ -155,6 +167,12 @@ public class DeleteSemesterrechnungCommandTest {
                 "versäumte Zahlungen",
                 17,
                 new BigDecimal("22.00"),
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 24),
+                new BigDecimal("101.00"),
+                new GregorianCalendar(1912, Calendar.MARCH, 13),
+                new BigDecimal("151.00"),
+                new GregorianCalendar(1912, Calendar.APRIL, 22),
+                new BigDecimal("147.00"),
                 new GregorianCalendar(1912, Calendar.APRIL, 2),
                 new BigDecimal("25.00"),
                 "2.5 Wochen dispensiert",
@@ -181,6 +199,12 @@ public class DeleteSemesterrechnungCommandTest {
                 "versäumte Zahlung",
                 18,
                 new BigDecimal("32.00"),
+                new GregorianCalendar(1912, Calendar.FEBRUARY, 29),
+                new BigDecimal("201.00"),
+                new GregorianCalendar(1912, Calendar.MARCH, 11),
+                new BigDecimal("161.00"),
+                new GregorianCalendar(1912, Calendar.APRIL, 21),
+                new BigDecimal("157.00"),
                 new GregorianCalendar(1912, Calendar.MAY, 1),
                 new BigDecimal("23.00"),
                 "1.5 Wochen dispensiert",
@@ -254,7 +278,10 @@ public class DeleteSemesterrechnungCommandTest {
         }
     }
 
-    private boolean checkIfSemesterrechnungAvailable(Semester semester, Angehoeriger rechnungsempfaenger, Stipendium stipendium, Boolean gratiskinder, Calendar rechnungsdatumVorrechnung, BigDecimal ermaessigungVorrechnung, String ermaessigungsgrundVorrechnung, BigDecimal zuschlagVorrechnung, String zuschlagsgrundVorrechnung, Integer anzahlWochenVorrechnung, BigDecimal wochenbetragVorrechnung, Calendar rechnungsdatumNachrechnung, BigDecimal ermaessigungNachrechnung, String ermaessigungsgrundNachrechnung, BigDecimal zuschlagNachrechnung, String zuschlagsgrundNachrechnung, Integer anzahlWochenNachrechnung, BigDecimal wochenbetragNachrechnung, Calendar datumZahlung1, BigDecimal betragZahlung1, Calendar datumZahlung2, BigDecimal betragZahlung2, Calendar datumZahlung3, BigDecimal betragZahlung3, String bemerkungen, SemesterrechnungCode semesterrechnungCode) {
+    private boolean checkIfSemesterrechnungAvailable(Semester semester, Angehoeriger rechnungsempfaenger, Stipendium stipendium, Boolean gratiskinder,
+                                                     Calendar rechnungsdatumVorrechnung, BigDecimal ermaessigungVorrechnung, String ermaessigungsgrundVorrechnung, BigDecimal zuschlagVorrechnung, String zuschlagsgrundVorrechnung, Integer anzahlWochenVorrechnung, BigDecimal wochenbetragVorrechnung, Calendar datumZahlung1Vorrechnung, BigDecimal betragZahlung1Vorrechnung, Calendar datumZahlung2Vorrechnung, BigDecimal betragZahlung2Vorrechnung, Calendar datumZahlung3Vorrechnung, BigDecimal betragZahlung3Vorrechnung,
+                                                     Calendar rechnungsdatumNachrechnung, BigDecimal ermaessigungNachrechnung, String ermaessigungsgrundNachrechnung, BigDecimal zuschlagNachrechnung, String zuschlagsgrundNachrechnung, Integer anzahlWochenNachrechnung, BigDecimal wochenbetragNachrechnung, Calendar datumZahlung1Nachrechnung, BigDecimal betragZahlung1Nachrechnung, Calendar datumZahlung2Nachrechnung, BigDecimal betragZahlung2Nachrechnung, Calendar datumZahlung3Nachrechnung, BigDecimal betragZahlung3Nachrechnung,
+                                                     String bemerkungen, SemesterrechnungCode semesterrechnungCode) {
         FindSemesterrechnungenSemesterCommand findSemesterrechnungenSemesterCommand = new FindSemesterrechnungenSemesterCommand(semester);
         commandInvoker.executeCommandAsTransaction(findSemesterrechnungenSemesterCommand);
         List<Semesterrechnung> semesterrechnungenRechnungsempfaenger = findSemesterrechnungenSemesterCommand.getSemesterrechnungenFound();
@@ -269,6 +296,12 @@ public class DeleteSemesterrechnungCommandTest {
                     && semesterrechnung.getZuschlagsgrundVorrechnung().equals(zuschlagsgrundVorrechnung)
                     && semesterrechnung.getAnzahlWochenVorrechnung().equals(anzahlWochenVorrechnung)
                     && semesterrechnung.getWochenbetragVorrechnung().compareTo(wochenbetragVorrechnung) == 0
+                    && semesterrechnung.getDatumZahlung1Vorrechnung().equals(datumZahlung1Vorrechnung)
+                    && semesterrechnung.getBetragZahlung1Vorrechnung().compareTo(betragZahlung1Vorrechnung) == 0
+                    && semesterrechnung.getDatumZahlung2Vorrechnung().equals(datumZahlung2Vorrechnung)
+                    && semesterrechnung.getBetragZahlung2Vorrechnung().compareTo(betragZahlung2Vorrechnung) == 0
+                    && semesterrechnung.getDatumZahlung3Vorrechnung().equals(datumZahlung3Vorrechnung)
+                    && semesterrechnung.getBetragZahlung3Vorrechnung().compareTo(betragZahlung3Vorrechnung) == 0
                     && semesterrechnung.getRechnungsdatumNachrechnung().equals(rechnungsdatumNachrechnung)
                     && semesterrechnung.getErmaessigungNachrechnung().compareTo(ermaessigungNachrechnung) == 0
                     && semesterrechnung.getErmaessigungsgrundNachrechnung().equals(ermaessigungsgrundNachrechnung)
@@ -276,12 +309,12 @@ public class DeleteSemesterrechnungCommandTest {
                     && semesterrechnung.getZuschlagsgrundNachrechnung().equals(zuschlagsgrundNachrechnung)
                     && semesterrechnung.getAnzahlWochenNachrechnung().equals(anzahlWochenNachrechnung)
                     && semesterrechnung.getWochenbetragNachrechnung().compareTo(wochenbetragNachrechnung) == 0
-                    && semesterrechnung.getDatumZahlung1().equals(datumZahlung1)
-                    && semesterrechnung.getBetragZahlung1().compareTo(betragZahlung1) == 0
-                    && semesterrechnung.getDatumZahlung2().equals(datumZahlung2)
-                    && semesterrechnung.getBetragZahlung2().compareTo(betragZahlung2) == 0
-                    && semesterrechnung.getDatumZahlung3().equals(datumZahlung3)
-                    && semesterrechnung.getBetragZahlung3().compareTo(betragZahlung3) == 0
+                    && semesterrechnung.getDatumZahlung1Nachrechnung().equals(datumZahlung1Nachrechnung)
+                    && semesterrechnung.getBetragZahlung1Nachrechnung().compareTo(betragZahlung1Nachrechnung) == 0
+                    && semesterrechnung.getDatumZahlung2Nachrechnung().equals(datumZahlung2Nachrechnung)
+                    && semesterrechnung.getBetragZahlung2Nachrechnung().compareTo(betragZahlung2Nachrechnung) == 0
+                    && semesterrechnung.getDatumZahlung3Nachrechnung().equals(datumZahlung3Nachrechnung)
+                    && semesterrechnung.getBetragZahlung3Nachrechnung().compareTo(betragZahlung3Nachrechnung) == 0
                     && semesterrechnung.getBemerkungen().equals(bemerkungen)
                     && semesterrechnung.getSemesterrechnungCode().isIdenticalWith(semesterrechnungCode)) {
                 return true;

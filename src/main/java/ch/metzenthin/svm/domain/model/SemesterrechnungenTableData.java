@@ -25,7 +25,7 @@ public class SemesterrechnungenTableData {
             Field.ZUSCHLAG_VORRECHNUNG, Field.ANZAHL_WOCHEN_VORRECHNUNG, Field.WOCHENBETRAG_VORRECHNUNG, Field.RECHNUNGSBETRAG_VORRECHNUNG,
             Field.RECHNUNGSDATUM_NACHRECHNUNG, Field.ERMAESSIGUNG_NACHRECHNUNG,
             Field.ZUSCHLAG_NACHRECHNUNG, Field.ANZAHL_WOCHEN_NACHRECHNUNG, Field.WOCHENBETRAG_NACHRECHNUNG, Field.RECHNUNGSBETRAG_NACHRECHNUNG, Field.DIFFERENZ_RECHNUNGSBETRAG,
-            Field.BETRAG_ZAHLUNG_1, Field.BETRAG_ZAHLUNG_2, Field.BETRAG_ZAHLUNG_3, Field.RESTBETRAG};
+            Field.BETRAG_ZAHLUNG_1_NACHRECHNUNG, Field.BETRAG_ZAHLUNG_2_NACHRECHNUNG, Field.BETRAG_ZAHLUNG_3_NACHRECHNUNG, Field.RESTBETRAG_NACHRECHNUNG};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -84,17 +84,17 @@ public class SemesterrechnungenTableData {
             case DIFFERENZ_RECHNUNGSBETRAG:
                 value = semesterrechnung.getDifferenzRechnungsbetrag();
                 break;
-            case BETRAG_ZAHLUNG_1:
-                value = semesterrechnung.getBetragZahlung1();
+            case BETRAG_ZAHLUNG_1_NACHRECHNUNG:
+                value = semesterrechnung.getBetragZahlung1Nachrechnung();
                 break;
-            case BETRAG_ZAHLUNG_2:
-                value = semesterrechnung.getBetragZahlung2();
+            case BETRAG_ZAHLUNG_2_NACHRECHNUNG:
+                value = semesterrechnung.getBetragZahlung2Nachrechnung();
                 break;
-            case BETRAG_ZAHLUNG_3:
-                value = semesterrechnung.getBetragZahlung3();
+            case BETRAG_ZAHLUNG_3_NACHRECHNUNG:
+                value = semesterrechnung.getBetragZahlung3Nachrechnung();
                 break;
-            case RESTBETRAG:
-                value = semesterrechnung.getRestbetrag();
+            case RESTBETRAG_NACHRECHNUNG:
+                value = semesterrechnung.getRestbetragNachrechnung();
                 break;
             default:
                 break;
@@ -130,13 +130,13 @@ public class SemesterrechnungenTableData {
                 return BigDecimal.class;
             case DIFFERENZ_RECHNUNGSBETRAG:
                 return BigDecimal.class;
-            case BETRAG_ZAHLUNG_1:
+            case BETRAG_ZAHLUNG_1_NACHRECHNUNG:
                 return BigDecimal.class;
-            case BETRAG_ZAHLUNG_2:
+            case BETRAG_ZAHLUNG_2_NACHRECHNUNG:
                 return BigDecimal.class;
-            case BETRAG_ZAHLUNG_3:
+            case BETRAG_ZAHLUNG_3_NACHRECHNUNG:
                 return BigDecimal.class;
-            case RESTBETRAG:
+            case RESTBETRAG_NACHRECHNUNG:
                 return BigDecimal.class;
             default:
                 return String.class;

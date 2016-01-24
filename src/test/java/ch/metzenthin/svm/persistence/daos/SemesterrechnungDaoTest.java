@@ -82,6 +82,12 @@ public class SemesterrechnungDaoTest {
                     "versäumte Zahlung",
                     18,
                     new BigDecimal("23.00"),
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 29),
+                    new BigDecimal("101.00"),
+                    new GregorianCalendar(1912, Calendar.MARCH, 11),
+                    new BigDecimal("151.00"),
+                    new GregorianCalendar(1912, Calendar.APRIL, 21),
+                    new BigDecimal("147.00"),
                     new GregorianCalendar(1912, Calendar.MARCH, 1),
                     new BigDecimal("11.00"),
                     "1 Woche dispensiert",
@@ -109,12 +115,17 @@ public class SemesterrechnungDaoTest {
             assertEquals(new Integer(18), semesterrechnungFound.getAnzahlWochenVorrechnung());
             assertEquals(new BigDecimal("23.00"), semesterrechnungFound.getWochenbetragVorrechnung());
             assertEquals(new GregorianCalendar(1912, Calendar.FEBRUARY, 1), semesterrechnungFound.getRechnungsdatumVorrechnung());
-            assertEquals(new GregorianCalendar(1912, Calendar.FEBRUARY, 28), semesterrechnungFound.getDatumZahlung1());
-            assertEquals(new BigDecimal("100.00"), semesterrechnungFound.getBetragZahlung1());
-            assertEquals(new GregorianCalendar(1912, Calendar.MARCH, 10), semesterrechnungFound.getDatumZahlung2());
-            assertEquals(new BigDecimal("150.00"), semesterrechnungFound.getBetragZahlung2());
-            assertEquals(new GregorianCalendar(1912, Calendar.APRIL, 20), semesterrechnungFound.getDatumZahlung3());
-            assertEquals(new BigDecimal("146.00"), semesterrechnungFound.getBetragZahlung3());
+            assertEquals(new GregorianCalendar(1912, Calendar.FEBRUARY, 29), semesterrechnungFound.getDatumZahlung1Vorrechnung());
+            assertEquals(new BigDecimal("101.00"), semesterrechnungFound.getBetragZahlung1Vorrechnung());
+            assertEquals(new GregorianCalendar(1912, Calendar.MARCH, 11), semesterrechnungFound.getDatumZahlung2Vorrechnung());
+            assertEquals(new BigDecimal("151.00"), semesterrechnungFound.getBetragZahlung2Vorrechnung());
+            assertEquals(new GregorianCalendar(1912, Calendar.APRIL, 21), semesterrechnungFound.getDatumZahlung3Vorrechnung());
+            assertEquals(new BigDecimal("147.00"), semesterrechnungFound.getBetragZahlung3Vorrechnung());
+            assertEquals(new BigDecimal("100.00"), semesterrechnungFound.getBetragZahlung1Nachrechnung());
+            assertEquals(new GregorianCalendar(1912, Calendar.MARCH, 10), semesterrechnungFound.getDatumZahlung2Nachrechnung());
+            assertEquals(new BigDecimal("150.00"), semesterrechnungFound.getBetragZahlung2Nachrechnung());
+            assertEquals(new GregorianCalendar(1912, Calendar.APRIL, 20), semesterrechnungFound.getDatumZahlung3Nachrechnung());
+            assertEquals(new BigDecimal("146.00"), semesterrechnungFound.getBetragZahlung3Nachrechnung());
             assertEquals("Zahlt in Raten", semesterrechnungFound.getBemerkungen());
         } finally {
             if (tx != null) {
@@ -154,6 +165,12 @@ public class SemesterrechnungDaoTest {
                     "versäumte Zahlung",
                     18,
                     new BigDecimal("23.00"),
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 29),
+                    new BigDecimal("101.00"),
+                    new GregorianCalendar(1912, Calendar.MARCH, 11),
+                    new BigDecimal("151.00"),
+                    new GregorianCalendar(1912, Calendar.APRIL, 21),
+                    new BigDecimal("147.00"),
                     new GregorianCalendar(1912, Calendar.MARCH, 1),
                     new BigDecimal("11.00"),
                     "1 Woche dispensiert",
@@ -218,6 +235,12 @@ public class SemesterrechnungDaoTest {
                     "versäumte Zahlung",
                     18,
                     new BigDecimal("23.00"),
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 29),
+                    new BigDecimal("101.00"),
+                    new GregorianCalendar(1912, Calendar.MARCH, 11),
+                    new BigDecimal("151.00"),
+                    new GregorianCalendar(1912, Calendar.APRIL, 21),
+                    new BigDecimal("147.00"),
                     new GregorianCalendar(1912, Calendar.MARCH, 1),
                     new BigDecimal("11.00"),
                     "1 Woche dispensiert",
@@ -308,6 +331,12 @@ public class SemesterrechnungDaoTest {
                     "versäumte Zahlungen",
                     17,
                     new BigDecimal("22.00"),
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 24),
+                    new BigDecimal("101.00"),
+                    new GregorianCalendar(1912, Calendar.MARCH, 13),
+                    new BigDecimal("151.00"),
+                    new GregorianCalendar(1912, Calendar.APRIL, 22),
+                    new BigDecimal("147.00"),
                     new GregorianCalendar(1912, Calendar.MARCH, 5),
                     new BigDecimal("17.00"),
                     "2 Wochen dispensiert",
@@ -334,6 +363,12 @@ public class SemesterrechnungDaoTest {
                     "versäumte Zahlungen",
                     17,
                     new BigDecimal("22.00"),
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 24),
+                    new BigDecimal("101.00"),
+                    new GregorianCalendar(1912, Calendar.MARCH, 13),
+                    new BigDecimal("151.00"),
+                    new GregorianCalendar(1912, Calendar.APRIL, 22),
+                    new BigDecimal("147.00"),
                     new GregorianCalendar(1912, Calendar.FEBRUARY, 5),
                     new BigDecimal("17.00"),
                     "3 Wochen dispensiert",
@@ -360,6 +395,12 @@ public class SemesterrechnungDaoTest {
                     "versäumte Zahlung",
                     18,
                     new BigDecimal("32.00"),
+                    new GregorianCalendar(1912, Calendar.FEBRUARY, 29),
+                    new BigDecimal("201.00"),
+                    new GregorianCalendar(1912, Calendar.MARCH, 11),
+                    new BigDecimal("161.00"),
+                    new GregorianCalendar(1912, Calendar.APRIL, 21),
+                    new BigDecimal("157.00"),
                     new GregorianCalendar(1912, Calendar.FEBRUARY, 1),
                     new BigDecimal("20.00"),
                     "1 Woche dispensiert",

@@ -45,6 +45,8 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
     private BigDecimal wochenbetragVorrechnung;
     private SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected praezisierungRechnungsbetragVorrechnungSelected;
     private BigDecimal rechnungsbetragVorrechnung;
+    private SemesterrechnungenSuchenModel.PraezisierungRestbetragVorrechnungSelected praezisierungRestbetragVorrechnungSelected;
+    private BigDecimal restbetragVorrechnung;
     private SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected sechsJahresRabattJaNeinVorrechnungSelected;
     private SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected rechnungsdatumGesetztNachrechnungSelected;
     private SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumNachrechnungSelected praezisierungRechnungsdatumNachrechnungSelected;
@@ -59,11 +61,11 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
     private BigDecimal wochenbetragNachrechnung;
     private SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected praezisierungRechnungsbetragNachrechnungSelected;
     private BigDecimal rechnungsbetragNachrechnung;
+    private SemesterrechnungenSuchenModel.PraezisierungRestbetragNachrechnungSelected praezisierungRestbetragNachrechnungSelected;
+    private BigDecimal restbetragNachrechnung;
     private SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected sechsJahresRabattJaNeinNachrechnungSelected;
     private SemesterrechnungenSuchenModel.PraezisierungDifferenzRechnungsbetragSelected praezisierungDifferenzRechnungsbetragSelected;
     private BigDecimal differenzRechnungsbetrag;
-    private SemesterrechnungenSuchenModel.PraezisierungRestbetragSelected praezisierungRestbetragSelected;
-    private BigDecimal restbetrag;
     private StringBuilder selectStatementSb;
     private TypedQuery<Semesterrechnung> typedQuery;
 
@@ -91,6 +93,8 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
         this.wochenbetragVorrechnung = semesterrechnungenSuchenModel.getWochenbetragVorrechnung();
         this.praezisierungRechnungsbetragVorrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungRechnungsbetragVorrechnungSelected();
         this.rechnungsbetragVorrechnung = semesterrechnungenSuchenModel.getRechnungsbetragVorrechnung();
+        this.praezisierungRestbetragVorrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungRestbetragVorrechnungSelected();
+        this.restbetragVorrechnung = semesterrechnungenSuchenModel.getRestbetragVorrechnung();
         this.sechsJahresRabattJaNeinVorrechnungSelected = semesterrechnungenSuchenModel.getSechsJahresRabattJaNeinVorrechnungSelected();
         this.rechnungsdatumGesetztNachrechnungSelected = semesterrechnungenSuchenModel.getRechnungsdatumGesetztNachrechnungSelected();
         this.praezisierungRechnungsdatumNachrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungRechnungsdatumNachrechnungSelected();
@@ -105,11 +109,11 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
         this.wochenbetragNachrechnung = semesterrechnungenSuchenModel.getWochenbetragNachrechnung();
         this.praezisierungRechnungsbetragNachrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungRechnungsbetragNachrechnungSelected();
         this.rechnungsbetragNachrechnung = semesterrechnungenSuchenModel.getRechnungsbetragNachrechnung();
+        this.praezisierungRestbetragNachrechnungSelected = semesterrechnungenSuchenModel.getPraezisierungRestbetragNachrechnungSelected();
+        this.restbetragNachrechnung = semesterrechnungenSuchenModel.getRestbetragNachrechnung();
         this.sechsJahresRabattJaNeinNachrechnungSelected = semesterrechnungenSuchenModel.getSechsJahresRabattJaNeinNachrechnungSelected();
         this.praezisierungDifferenzRechnungsbetragSelected = semesterrechnungenSuchenModel.getPraezisierungDifferenzRechnungsbetragSelected();
         this.differenzRechnungsbetrag = semesterrechnungenSuchenModel.getDifferenzRechnungsbetrag();
-        this.praezisierungRestbetragSelected = semesterrechnungenSuchenModel.getPraezisierungRestbetragSelected();
-        this.restbetrag = semesterrechnungenSuchenModel.getRestbetrag();
     }
 
     @Override
@@ -512,35 +516,63 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
     }
 
     private void filterRestbetrag() {
-        if (restbetrag == null) {
-            return;
+        if (restbetragVorrechnung != null) {
+            Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
+            switch (praezisierungRestbetragVorrechnungSelected) {
+                case GLEICH:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getRestbetragVorrechnung() == null || semesterrechnungIt.getRestbetragVorrechnung().compareTo(restbetragVorrechnung) != 0) {
+                            it.remove();
+                        }
+                    }
+                    break;
+                case KLEINER:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getRestbetragVorrechnung() == null || semesterrechnungIt.getRestbetragVorrechnung().compareTo(restbetragVorrechnung) != -1) {
+                            it.remove();
+                        }
+                    }
+                    break;
+                case GROESSER:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getRestbetragVorrechnung() == null || semesterrechnungIt.getRestbetragVorrechnung().compareTo(restbetragVorrechnung) != 1) {
+                            it.remove();
+                        }
+                    }
+                    break;
+            }
         }
-        Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
-        switch (praezisierungRestbetragSelected) {
-            case GLEICH:
-                while (it.hasNext()) {
-                    Semesterrechnung semesterrechnungIt = it.next();
-                    if (semesterrechnungIt.getRestbetrag() == null || semesterrechnungIt.getRestbetrag().compareTo(restbetrag) != 0) {
-                        it.remove();
+        if (restbetragNachrechnung != null) {
+            Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
+            switch (praezisierungRestbetragNachrechnungSelected) {
+                case GLEICH:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getRestbetragNachrechnung() == null || semesterrechnungIt.getRestbetragNachrechnung().compareTo(restbetragNachrechnung) != 0) {
+                            it.remove();
+                        }
                     }
-                }
-                break;
-            case KLEINER:
-                while (it.hasNext()) {
-                    Semesterrechnung semesterrechnungIt = it.next();
-                    if (semesterrechnungIt.getRestbetrag() == null || semesterrechnungIt.getRestbetrag().compareTo(restbetrag) != -1) {
-                        it.remove();
+                    break;
+                case KLEINER:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getRestbetragNachrechnung() == null || semesterrechnungIt.getRestbetragNachrechnung().compareTo(restbetragNachrechnung) != -1) {
+                            it.remove();
+                        }
                     }
-                }
-                break;
-            case GROESSER:
-                while (it.hasNext()) {
-                    Semesterrechnung semesterrechnungIt = it.next();
-                    if (semesterrechnungIt.getRestbetrag() == null || semesterrechnungIt.getRestbetrag().compareTo(restbetrag) != 1) {
-                        it.remove();
+                    break;
+                case GROESSER:
+                    while (it.hasNext()) {
+                        Semesterrechnung semesterrechnungIt = it.next();
+                        if (semesterrechnungIt.getRestbetragNachrechnung() == null || semesterrechnungIt.getRestbetragNachrechnung().compareTo(restbetragNachrechnung) != 1) {
+                            it.remove();
+                        }
                     }
-                }
-                break;
+                    break;
+            }
         }
     }
 

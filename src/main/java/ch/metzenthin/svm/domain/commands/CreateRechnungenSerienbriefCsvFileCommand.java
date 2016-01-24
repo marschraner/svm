@@ -106,17 +106,17 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                     out.write(semesterrechnung.getSchulgeldVorrechnung().toString());
                     out.write(separator);
                     BigDecimal ermaessigungVorrechnung = semesterrechnung.getErmaessigungVorrechnung();
-                    if (ermaessigungVorrechnung != null && !ermaessigungVorrechnung.equals(BigDecimal.ZERO)) {
+                    if (ermaessigungVorrechnung != null && ermaessigungVorrechnung.compareTo(BigDecimal.ZERO) != 0) {
                         out.write(ermaessigungVorrechnung.toString());
                     }
                     out.write(separator);
                     BigDecimal zuschlagVorrechnung = semesterrechnung.getZuschlagVorrechnung();
-                    if (zuschlagVorrechnung != null && !zuschlagVorrechnung.equals(BigDecimal.ZERO)) {
+                    if (zuschlagVorrechnung != null && zuschlagVorrechnung.compareTo(BigDecimal.ZERO) != 0) {
                         out.write(zuschlagVorrechnung.toString());
                     }
                     out.write(separator);
                     BigDecimal ermaessigungStipendiumVorrechnung = semesterrechnung.getErmaessigungStipendiumVorrechnung();
-                    if (ermaessigungStipendiumVorrechnung != null && !ermaessigungStipendiumVorrechnung.equals(BigDecimal.ZERO)) {
+                    if (ermaessigungStipendiumVorrechnung != null && ermaessigungStipendiumVorrechnung.compareTo(BigDecimal.ZERO) != 0) {
                         out.write(ermaessigungStipendiumVorrechnung.toString());
                     }
                     out.write(separator);
@@ -131,17 +131,17 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                     out.write(semesterrechnung.getSchulgeldNachrechnung().toString());
                     out.write(separator);
                     BigDecimal ermaessigungNachrechnung = semesterrechnung.getErmaessigungNachrechnung();
-                    if (ermaessigungNachrechnung != null && !ermaessigungNachrechnung.equals(BigDecimal.ZERO)) {
+                    if (ermaessigungNachrechnung != null && ermaessigungNachrechnung.compareTo(BigDecimal.ZERO) != 0) {
                         out.write(ermaessigungNachrechnung.toString());
                     }
                     out.write(separator);
                     BigDecimal zuschlagNachrechnung = semesterrechnung.getZuschlagNachrechnung();
-                    if (zuschlagNachrechnung != null && !zuschlagNachrechnung.equals(BigDecimal.ZERO)) {
+                    if (zuschlagNachrechnung != null && zuschlagNachrechnung.compareTo(BigDecimal.ZERO) != 0) {
                         out.write(zuschlagNachrechnung.toString());
                     }
                     out.write(separator);
                     BigDecimal ermaessigungStipendiumNachrechnung = semesterrechnung.getErmaessigungStipendiumNachrechnung();
-                    if (ermaessigungStipendiumNachrechnung != null && !ermaessigungStipendiumNachrechnung.equals(BigDecimal.ZERO)) {
+                    if (ermaessigungStipendiumNachrechnung != null && ermaessigungStipendiumNachrechnung.compareTo(BigDecimal.ZERO) != 0) {
                         out.write(ermaessigungStipendiumNachrechnung.toString());
                     }
                     out.write(separator);

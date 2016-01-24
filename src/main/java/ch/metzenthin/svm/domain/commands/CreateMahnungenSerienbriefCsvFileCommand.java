@@ -49,7 +49,7 @@ public class CreateMahnungenSerienbriefCsvFileCommand extends CreateListeCommand
 
             // Daten
             for (Semesterrechnung semesterrechnung : semesterrechnungList) {
-                if (semesterrechnung.getRestbetrag() == null) {
+                if (semesterrechnung.getRestbetragNachrechnung() == null) {
                     continue;
                 }
                 Angehoeriger rechnungsempfaenger = semesterrechnung.getRechnungsempfaenger();
@@ -66,7 +66,7 @@ public class CreateMahnungenSerienbriefCsvFileCommand extends CreateListeCommand
                 out.write(separator);
                 out.write(rechnungsempfaenger.getAdresse().getOrt());
                 out.write(separator);
-                out.write(semesterrechnung.getRestbetrag().toString());
+                out.write(semesterrechnung.getRestbetragNachrechnung().toString());
                 out.write('\n');
             }
 
