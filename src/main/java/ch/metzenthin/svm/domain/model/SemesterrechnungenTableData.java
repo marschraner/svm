@@ -61,13 +61,20 @@ public class SemesterrechnungenTableData {
                 value = semesterrechnung.getSchulgeldVorrechnung();
                 break;
             case ERMAESSIGUNG_VORRECHNUNG:
-                value = semesterrechnung.getErmaessigungVorrechnung();
+                if (semesterrechnung.getErmaessigungVorrechnung() != null && semesterrechnung.getErmaessigungVorrechnung().compareTo(BigDecimal.ZERO) != 0) {
+                    value = semesterrechnung.getErmaessigungVorrechnung();
+                }
                 break;
             case ZUSCHLAG_VORRECHNUNG:
-                value = semesterrechnung.getZuschlagVorrechnung();
+                if (semesterrechnung.getZuschlagVorrechnung() != null && semesterrechnung.getZuschlagVorrechnung().compareTo(BigDecimal.ZERO) != 0) {
+                    value = semesterrechnung.getZuschlagVorrechnung();
+                }
                 break;
             case ERMAESSIGUNG_STIPENDIUM_VORRECHNUNG:
-                value = semesterrechnung.getErmaessigungStipendiumVorrechnung();
+                BigDecimal ermaessigungStipendiumVorrechnung = semesterrechnung.getErmaessigungStipendiumVorrechnung();
+                if (ermaessigungStipendiumVorrechnung != null && ermaessigungStipendiumVorrechnung.compareTo(BigDecimal.ZERO) != 0) {
+                    value = ermaessigungStipendiumVorrechnung.toString();
+                }
                 break;
             case RECHNUNGSBETRAG_VORRECHNUNG:
                 value = semesterrechnung.getRechnungsbetragVorrechnung();
@@ -88,13 +95,20 @@ public class SemesterrechnungenTableData {
                 value = semesterrechnung.getSchulgeldNachrechnung();
                 break;
             case ERMAESSIGUNG_NACHRECHNUNG:
-                value = semesterrechnung.getErmaessigungNachrechnung();
+                if (semesterrechnung.getErmaessigungNachrechnung() != null && semesterrechnung.getErmaessigungNachrechnung().compareTo(BigDecimal.ZERO) != 0) {
+                    value = semesterrechnung.getErmaessigungNachrechnung();
+                }
                 break;
             case ZUSCHLAG_NACHRECHNUNG:
-                value = semesterrechnung.getZuschlagNachrechnung();
+                if (semesterrechnung.getZuschlagNachrechnung() != null && semesterrechnung.getZuschlagNachrechnung().compareTo(BigDecimal.ZERO) != 0) {
+                    value = semesterrechnung.getZuschlagNachrechnung();
+                }
                 break;
             case ERMAESSIGUNG_STIPENDIUM_NACHRECHNUNG:
-                value = semesterrechnung.getErmaessigungStipendiumNachrechnung();
+                BigDecimal ermaessigungStipendiumNachrechnung = semesterrechnung.getErmaessigungStipendiumNachrechnung();
+                if (ermaessigungStipendiumNachrechnung != null && ermaessigungStipendiumNachrechnung.compareTo(BigDecimal.ZERO) != 0) {
+                    value = ermaessigungStipendiumNachrechnung.toString();
+                }
                 break;
             case RECHNUNGSBETRAG_NACHRECHNUNG:
                 value = semesterrechnung.getRechnungsbetragNachrechnung();
