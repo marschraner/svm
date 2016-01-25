@@ -50,9 +50,11 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
             out.write(separator);
             out.write("Ort");
             out.write(separator);
-            out.write("R.Datum");
+            out.write("Rechnungsdatum");
             out.write(separator);
-            out.write("Anz.");
+            out.write("Bemerkungen");
+            out.write(separator);
+            out.write("Anzahl Wochen");
             out.write(separator);
             out.write("Wochenbetrag");
             out.write(separator);
@@ -101,6 +103,10 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                         out.write(asString(semesterrechnung.getRechnungsdatumVorrechnung()));
                     }
                     out.write(separator);
+                    if (semesterrechnung.getBemerkungen() != null) {
+                        out.write(semesterrechnung.getBemerkungen());
+                    }
+                    out.write(separator);
                     out.write(Integer.toString(semesterrechnung.getAnzahlWochenVorrechnung()));
                     out.write(separator);
                     out.write(semesterrechnung.getWochenbetragVorrechnung().toString());
@@ -130,6 +136,10 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                 } else {
                     if (semesterrechnung.getRechnungsdatumNachrechnung() != null) {
                         out.write(asString(semesterrechnung.getRechnungsdatumNachrechnung()));
+                    }
+                    out.write(separator);
+                    if (semesterrechnung.getBemerkungen() != null) {
+                        out.write(semesterrechnung.getBemerkungen());
                     }
                     out.write(separator);
                     out.write(Integer.toString(semesterrechnung.getAnzahlWochenNachrechnung()));
