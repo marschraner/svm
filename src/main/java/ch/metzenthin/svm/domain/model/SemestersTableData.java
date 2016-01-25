@@ -19,7 +19,7 @@ public class SemestersTableData {
         this.semesters = semesters;
     }
 
-    private static final Field[] COLUMNS = {Field.SCHULJAHR, Field.SEMESTERBEZEICHNUNG, Field.SEMESTERBEGINN, Field.SEMESTERENDE, Field.ANZAHL_SCHULWOCHEN, Field.ANZAHL_KURSE};
+    private static final Field[] COLUMNS = {Field.SCHULJAHR, Field.SEMESTERBEZEICHNUNG, Field.SEMESTERBEGINN, Field.SEMESTERENDE, Field.FERIENBEGINN1, Field.FERIENENDE1, Field.FERIENBEGINN2, Field.FERIENENDE2, Field.ANZAHL_SCHULWOCHEN, Field.ANZAHL_KURSE};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -45,6 +45,18 @@ public class SemestersTableData {
             case SEMESTERENDE:
                 value = semester.getSemesterende();
                 break;
+            case FERIENBEGINN1:
+                value = semester.getFerienbeginn1();
+                break;
+            case FERIENENDE1:
+                value = semester.getFerienende1();
+                break;
+            case FERIENBEGINN2:
+                value = semester.getFerienbeginn2();
+                break;
+            case FERIENENDE2:
+                value = semester.getFerienende2();
+                break;
             case ANZAHL_SCHULWOCHEN:
                 value = semester.getAnzahlSchulwochen();
                 break;
@@ -62,6 +74,14 @@ public class SemestersTableData {
             case SEMESTERBEGINN:
                 return Calendar.class;
             case SEMESTERENDE:
+                return Calendar.class;
+            case FERIENBEGINN1:
+                return Calendar.class;
+            case FERIENENDE1:
+                return Calendar.class;
+            case FERIENBEGINN2:
+                return Calendar.class;
+            case FERIENENDE2:
                 return Calendar.class;
             case ANZAHL_SCHULWOCHEN:
                 return Integer.class;

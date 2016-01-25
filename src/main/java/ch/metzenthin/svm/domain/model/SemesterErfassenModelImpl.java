@@ -12,7 +12,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
-import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNumberOfWeeksBetween;
 
 /**
  * @author Martin Schraner
@@ -136,6 +135,130 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         }
     }
 
+    private CalendarModelAttribute ferienbeginn1ModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.FERIENBEGINN1, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX + 1, Calendar.DECEMBER, 31),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return semester.getFerienbeginn1();
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    semester.setFerienbeginn1(value);
+                }
+            }
+    );
+
+    @Override
+    public Calendar getFerienbeginn1() {
+        return ferienbeginn1ModelAttribute.getValue();
+    }
+
+    @Override
+    public void setFerienbeginn1(String ferienbeginn1) throws SvmValidationException {
+        ferienbeginn1ModelAttribute.setNewValue(true, ferienbeginn1, isBulkUpdate());
+        if (!isBulkUpdate() && semester.getFerienbeginn1() != null && semester.getFerienende1() != null && semester.getFerienbeginn1().after(semester.getFerienende1())) {
+            semester.setFerienbeginn1(null);
+            invalidate();
+            throw new SvmValidationException(2025, "Keine gültige Periode", Field.FERIENBEGINN1);
+        }
+    }
+
+    private CalendarModelAttribute ferienende1ModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.FERIENENDE1, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX + 1, Calendar.DECEMBER, 31),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return semester.getFerienende1();
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    semester.setFerienende1(value);
+                }
+            }
+    );
+
+    @Override
+    public Calendar getFerienende1() {
+        return ferienende1ModelAttribute.getValue();
+    }
+
+    @Override
+    public void setFerienende1(String ferienende1) throws SvmValidationException {
+        ferienende1ModelAttribute.setNewValue(true, ferienende1, isBulkUpdate());
+        if (!isBulkUpdate() && semester.getFerienbeginn1() != null && semester.getFerienende1() != null && semester.getFerienbeginn1().after(semester.getFerienende1())) {
+            semester.setFerienende1(null);
+            invalidate();
+            throw new SvmValidationException(2026, "Keine gültige Periode", Field.FERIENENDE1);
+        }
+    }
+
+    private CalendarModelAttribute ferienbeginn2ModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.FERIENBEGINN2, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX + 1, Calendar.DECEMBER, 31),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return semester.getFerienbeginn2();
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    semester.setFerienbeginn2(value);
+                }
+            }
+    );
+
+    @Override
+    public Calendar getFerienbeginn2() {
+        return ferienbeginn2ModelAttribute.getValue();
+    }
+
+    @Override
+    public void setFerienbeginn2(String ferienbeginn2) throws SvmValidationException {
+        ferienbeginn2ModelAttribute.setNewValue(false, ferienbeginn2, isBulkUpdate());
+        if (!isBulkUpdate() && semester.getFerienbeginn2() != null && semester.getFerienende2() != null && semester.getFerienbeginn2().after(semester.getFerienende2())) {
+            semester.setFerienbeginn2(null);
+            invalidate();
+            throw new SvmValidationException(2027, "Keine gültige Periode", Field.FERIENBEGINN2);
+        }
+    }
+
+    private CalendarModelAttribute ferienende2ModelAttribute = new CalendarModelAttribute(
+            this,
+            Field.FERIENENDE2, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX + 1, Calendar.DECEMBER, 31),
+            new AttributeAccessor<Calendar>() {
+                @Override
+                public Calendar getValue() {
+                    return semester.getFerienende2();
+                }
+
+                @Override
+                public void setValue(Calendar value) {
+                    semester.setFerienende2(value);
+                }
+            }
+    );
+
+    @Override
+    public Calendar getFerienende2() {
+        return ferienende2ModelAttribute.getValue();
+    }
+
+    @Override
+    public void setFerienende2(String ferienende2) throws SvmValidationException {
+        ferienende2ModelAttribute.setNewValue(false, ferienende2, isBulkUpdate());
+        if (!isBulkUpdate() && semester.getFerienbeginn2() != null && semester.getFerienende2() != null && semester.getFerienbeginn2().after(semester.getFerienende2())) {
+            semester.setFerienende2(null);
+            invalidate();
+            throw new SvmValidationException(2028, "Keine gültige Periode", Field.FERIENENDE2);
+        }
+    }
+
     @Override
     public boolean checkSemesterBereitsErfasst(SvmModel svmModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
@@ -190,6 +313,10 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
                 setSemesterbezeichnung(semesterOrigin.getSemesterbezeichnung());
                 setSemesterbeginn(asString(semesterOrigin.getSemesterbeginn()));
                 setSemesterende(asString(semesterOrigin.getSemesterende()));
+                setFerienbeginn1(asString(semesterOrigin.getFerienbeginn1()));
+                setFerienende1(asString(semesterOrigin.getFerienende1()));
+                setFerienbeginn2(asString(semesterOrigin.getFerienbeginn2()));
+                setFerienende2(asString(semesterOrigin.getFerienende2()));
             } catch (SvmValidationException ignore) {
                 ignore.printStackTrace();
             }
@@ -207,14 +334,10 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
     @Override
     void doValidate() throws SvmValidationException {
         if (!isBulkUpdate() && semester.getSchuljahr() != null && semester.getSemesterbeginn() != null && !semester.getSchuljahr().contains(Integer.toString(semester.getSemesterbeginn().get(Calendar.YEAR)))) {
-            throw new SvmValidationException(2023, "Datum liegt nicht im Schuljahr " + semester.getSchuljahr(), Field.SEMESTERBEGINN);
+            throw new SvmValidationException(2031, "Datum liegt nicht im Schuljahr " + semester.getSchuljahr(), Field.SEMESTERBEGINN);
         }
         if (!isBulkUpdate() && semester.getSchuljahr() != null && semester.getSemesterende() != null && !semester.getSchuljahr().contains(Integer.toString(semester.getSemesterende().get(Calendar.YEAR)))) {
-            throw new SvmValidationException(2025, "Datum liegt nicht im Schuljahr " + semester.getSchuljahr(), Field.SEMESTERENDE);
-        }
-        int anzahlSchulwochenMaxValid = getNumberOfWeeksBetween(semester.getSemesterbeginn(), semester.getSemesterende());
-        if (!isBulkUpdate() && (semester.getAnzahlSchulwochen() > anzahlSchulwochenMaxValid)) {
-            throw new SvmValidationException(2026, "Wert darf nicht grösser als  " + anzahlSchulwochenMaxValid + " sein", Field.ANZAHL_SCHULWOCHEN);
+            throw new SvmValidationException(2031, "Datum liegt nicht im Schuljahr " + semester.getSchuljahr(), Field.SEMESTERENDE);
         }
     }
 }

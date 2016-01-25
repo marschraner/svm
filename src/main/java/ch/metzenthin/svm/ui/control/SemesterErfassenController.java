@@ -39,9 +39,16 @@ public class SemesterErfassenController extends AbstractController {
     private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
     private JTextField txtSemesterbeginn;
     private JTextField txtSemesterende;
+    private JTextField txtFerienbeginn1;
+    private JTextField txtFerienende1;
+    private JTextField txtFerienbeginn2;
+    private JTextField txtFerienende2;
     private JLabel errLblSemesterbeginn;
     private JLabel errLblSemesterende;
-    private JLabel errLblAnzahlSchulwochen;
+    private JLabel errLblFerienbeginn1;
+    private JLabel errLblFerienende1;
+    private JLabel errLblFerienbeginn2;
+    private JLabel errLblFerienende2;
     private JButton btnSpeichern;
 
     public SemesterErfassenController(SvmContext svmContext, SemestersTableModel semestersTableModel, SemesterErfassenModel semesterErfassenModel, boolean isBearbeiten) {
@@ -283,6 +290,210 @@ public class SemesterErfassenController extends AbstractController {
         }
     }
 
+    public void setTxtFerienbeginn1(JTextField txtFerienbeginn1) {
+        this.txtFerienbeginn1 = txtFerienbeginn1;
+        this.txtFerienbeginn1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onFerienbeginn1Event(true);
+            }
+        });
+        this.txtFerienbeginn1.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onFerienbeginn1Event(false);
+            }
+        });
+    }
+
+    private void onFerienbeginn1Event(boolean showRequiredErrMsg) {
+        LOGGER.trace("SemesterErfassenController Event Ferienbeginn1");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtFerienbeginn1.getText(), semesterErfassenModel.getFerienbeginn1());
+        try {
+            setModelFerienbeginn1(showRequiredErrMsg);
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelFerienbeginn1(boolean showRequiredErrMsg) throws SvmValidationException {
+        makeErrorLabelInvisible(Field.FERIENBEGINN1);
+        try {
+            semesterErfassenModel.setFerienbeginn1(txtFerienbeginn1.getText());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("SemesterErfassenController setModelFerienbeginn1 RequiredException=" + e.getMessage());
+            if (isModelValidationMode() || !showRequiredErrMsg) {
+                txtFerienbeginn1.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        } catch (SvmValidationException e) {
+            LOGGER.trace("SemesterErfassenController setModelFerienbeginn1 Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
+    public void setTxtFerienende1(JTextField txtFerienende1) {
+        this.txtFerienende1 = txtFerienende1;
+        this.txtFerienende1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onFerienende1Event(true);
+            }
+        });
+        this.txtFerienende1.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onFerienende1Event(false);
+            }
+        });
+    }
+
+    private void onFerienende1Event(boolean showRequiredErrMsg) {
+        LOGGER.trace("SemesterErfassenController Event Ferienende1");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtFerienende1.getText(), semesterErfassenModel.getFerienende1());
+        try {
+            setModelFerienende1(showRequiredErrMsg);
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelFerienende1(boolean showRequiredErrMsg) throws SvmValidationException {
+        makeErrorLabelInvisible(Field.FERIENENDE1);
+        try {
+            semesterErfassenModel.setFerienende1(txtFerienende1.getText());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("SemesterErfassenController setModelFerienende1 RequiredException=" + e.getMessage());
+            if (isModelValidationMode() || !showRequiredErrMsg) {
+                txtFerienende1.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        } catch (SvmValidationException e) {
+            LOGGER.trace("SemesterErfassenController setModelFerienende1 Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
+    public void setTxtFerienbeginn2(JTextField txtFerienbeginn2) {
+        this.txtFerienbeginn2 = txtFerienbeginn2;
+        this.txtFerienbeginn2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onFerienbeginn2Event(true);
+            }
+        });
+        this.txtFerienbeginn2.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onFerienbeginn2Event(false);
+            }
+        });
+    }
+
+    private void onFerienbeginn2Event(boolean showRequiredErrMsg) {
+        LOGGER.trace("SemesterErfassenController Event Ferienbeginn2");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtFerienbeginn2.getText(), semesterErfassenModel.getFerienbeginn2());
+        try {
+            setModelFerienbeginn2(showRequiredErrMsg);
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelFerienbeginn2(boolean showRequiredErrMsg) throws SvmValidationException {
+        makeErrorLabelInvisible(Field.FERIENBEGINN2);
+        try {
+            semesterErfassenModel.setFerienbeginn2(txtFerienbeginn2.getText());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("SemesterErfassenController setModelFerienbeginn2 RequiredException=" + e.getMessage());
+            if (isModelValidationMode() || !showRequiredErrMsg) {
+                txtFerienbeginn2.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        } catch (SvmValidationException e) {
+            LOGGER.trace("SemesterErfassenController setModelFerienbeginn2 Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
+    public void setTxtFerienende2(JTextField txtFerienende2) {
+        this.txtFerienende2 = txtFerienende2;
+        this.txtFerienende2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onFerienende2Event(true);
+            }
+        });
+        this.txtFerienende2.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onFerienende2Event(false);
+            }
+        });
+    }
+
+    private void onFerienende2Event(boolean showRequiredErrMsg) {
+        LOGGER.trace("SemesterErfassenController Event Ferienende2");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtFerienende2.getText(), semesterErfassenModel.getFerienende2());
+        try {
+            setModelFerienende2(showRequiredErrMsg);
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelFerienende2(boolean showRequiredErrMsg) throws SvmValidationException {
+        makeErrorLabelInvisible(Field.FERIENENDE2);
+        try {
+            semesterErfassenModel.setFerienende2(txtFerienende2.getText());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("SemesterErfassenController setModelFerienende2 RequiredException=" + e.getMessage());
+            if (isModelValidationMode() || !showRequiredErrMsg) {
+                txtFerienende2.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        } catch (SvmValidationException e) {
+            LOGGER.trace("SemesterErfassenController setModelFerienende2 Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
     public void setErrLblSemesterbeginn(JLabel errLblSemesterbeginn) {
         this.errLblSemesterbeginn = errLblSemesterbeginn;
     }
@@ -291,8 +502,20 @@ public class SemesterErfassenController extends AbstractController {
         this.errLblSemesterende = errLblSemesterende;
     }
 
-    public void setErrLblAnzahlSchulwochen(JLabel errLblAnzahlSchulwochen) {
-        this.errLblAnzahlSchulwochen = errLblAnzahlSchulwochen;
+    public void setErrLblFerienbeginn1(JLabel errLblFerienbeginn1) {
+        this.errLblFerienbeginn1 = errLblFerienbeginn1;
+    }
+
+    public void setErrLblFerienende1(JLabel errLblFerienende1) {
+        this.errLblFerienende1 = errLblFerienende1;
+    }
+
+    public void setErrLblFerienbeginn2(JLabel errLblFerienbeginn2) {
+        this.errLblFerienbeginn2 = errLblFerienbeginn2;
+    }
+
+    public void setErrLblFerienende2(JLabel errLblFerienende2) {
+        this.errLblFerienende2 = errLblFerienende2;
     }
 
     public void setBtnSpeichern(JButton btnSpeichern) {
@@ -379,9 +602,16 @@ public class SemesterErfassenController extends AbstractController {
             comboBoxSemesterbezeichnung.setSelectedItem(semesterErfassenModel.getSemesterbezeichnung());
         } else if (checkIsFieldChange(Field.SEMESTERBEGINN, evt)) {
             txtSemesterbeginn.setText(asString(semesterErfassenModel.getSemesterbeginn()));
-        }
-        else if (checkIsFieldChange(Field.SEMESTERENDE, evt)) {
+        } else if (checkIsFieldChange(Field.SEMESTERENDE, evt)) {
             txtSemesterende.setText(asString(semesterErfassenModel.getSemesterende()));
+        } else if (checkIsFieldChange(Field.FERIENBEGINN1, evt)) {
+            txtFerienbeginn1.setText(asString(semesterErfassenModel.getFerienbeginn1()));
+        } else if (checkIsFieldChange(Field.FERIENENDE1, evt)) {
+            txtFerienende1.setText(asString(semesterErfassenModel.getFerienende1()));
+        } else if (checkIsFieldChange(Field.FERIENBEGINN2, evt)) {
+            txtFerienbeginn2.setText(asString(semesterErfassenModel.getFerienbeginn2()));
+        } else if (checkIsFieldChange(Field.FERIENENDE2, evt)) {
+            txtFerienende2.setText(asString(semesterErfassenModel.getFerienende2()));
         }
     }
 
@@ -395,6 +625,22 @@ public class SemesterErfassenController extends AbstractController {
             LOGGER.trace("Validate field Semesterende");
             setModelSemesterende(true);
         }
+        if (txtFerienbeginn1.isEnabled()) {
+            LOGGER.trace("Validate field Ferienbeginn1");
+            setModelFerienbeginn1(true);
+        }
+        if (txtFerienende1.isEnabled()) {
+            LOGGER.trace("Validate field Ferienende1");
+            setModelFerienende1(true);
+        }
+        if (txtFerienbeginn2.isEnabled()) {
+            LOGGER.trace("Validate field Ferienbeginn2");
+            setModelFerienbeginn2(true);
+        }
+        if (txtFerienende2.isEnabled()) {
+            LOGGER.trace("Validate field Ferienende2");
+            setModelFerienende2(true);
+        }
     }
 
     @Override
@@ -407,9 +653,21 @@ public class SemesterErfassenController extends AbstractController {
             errLblSemesterende.setVisible(true);
             errLblSemesterende.setText(e.getMessage());
         }
-        if (e.getAffectedFields().contains(Field.ANZAHL_SCHULWOCHEN)) {
-            errLblAnzahlSchulwochen.setVisible(true);
-            errLblAnzahlSchulwochen.setText(e.getMessage());
+        if (e.getAffectedFields().contains(Field.FERIENBEGINN1)) {
+            errLblFerienbeginn1.setVisible(true);
+            errLblFerienbeginn1.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.FERIENENDE1)) {
+            errLblFerienende1.setVisible(true);
+            errLblFerienende1.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.FERIENBEGINN2)) {
+            errLblFerienbeginn2.setVisible(true);
+            errLblFerienbeginn2.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.FERIENENDE2)) {
+            errLblFerienende2.setVisible(true);
+            errLblFerienende2.setText(e.getMessage());
         }
     }
 
@@ -420,6 +678,18 @@ public class SemesterErfassenController extends AbstractController {
         }
         if (e.getAffectedFields().contains(Field.SEMESTERENDE)) {
             txtSemesterende.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.FERIENBEGINN1)) {
+            txtFerienbeginn1.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.FERIENENDE1)) {
+            txtFerienende1.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.FERIENBEGINN2)) {
+            txtFerienbeginn2.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.FERIENENDE2)) {
+            txtFerienende2.setToolTipText(e.getMessage());
         }
     }
 
@@ -432,6 +702,22 @@ public class SemesterErfassenController extends AbstractController {
         if (fields.contains(Field.ALLE) || fields.contains(Field.SEMESTERENDE)) {
             errLblSemesterende.setVisible(false);
             txtSemesterende.setToolTipText(null);
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.FERIENBEGINN1)) {
+            errLblFerienbeginn1.setVisible(false);
+            txtFerienbeginn1.setToolTipText(null);
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.FERIENENDE1)) {
+            errLblFerienende1.setVisible(false);
+            txtFerienende1.setToolTipText(null);
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.FERIENBEGINN2)) {
+            errLblFerienbeginn2.setVisible(false);
+            txtFerienbeginn2.setToolTipText(null);
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.FERIENENDE2)) {
+            errLblFerienende2.setVisible(false);
+            txtFerienende2.setToolTipText(null);
         }
     }
 

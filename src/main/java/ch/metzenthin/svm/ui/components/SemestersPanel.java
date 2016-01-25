@@ -102,7 +102,7 @@ public class SemestersPanel {
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel2.add(scrollPane1, gbc);
-        semestersTable.setPreferredScrollableViewportSize(new Dimension(850, 400));
+        semestersTable.setPreferredScrollableViewportSize(new Dimension(1250, 400));
         scrollPane1.setViewportView(semestersTable);
         final JPanel spacer2 = new JPanel();
         gbc = new GridBagConstraints();

@@ -57,7 +57,7 @@
                   <component id="ab289" class="javax.swing.JTable" binding="semestersTable" custom-create="true">
                     <constraints/>
                     <properties>
-                      <preferredScrollableViewportSize width="850" height="400"/>
+                      <preferredScrollableViewportSize width="1250" height="400"/>
                     </properties>
                   </component>
                 </children>
