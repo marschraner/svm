@@ -203,4 +203,9 @@ public class ModelFactoryImpl implements ModelFactory {
         return new MitarbeiterSuchenModelImpl(commandInvoker);
     }
 
+    @Override
+    public EmailSchuelerListeModel createEmailSchuelerListeModel() {
+        return new EmailSchuelerListeModelImpl(commandInvoker);
+    }
+
 }

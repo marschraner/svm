@@ -343,7 +343,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
     @Override
     public CallDefaultEmailClientCommand.Result callEmailClient() {
         CommandInvoker commandInvoker = getCommandInvoker();
-        CallDefaultEmailClientCommand callDefaultEmailClientCommand = new CallDefaultEmailClientCommand(semesterrechnung.getRechnungsempfaenger().getEmail());
+        CallDefaultEmailClientCommand callDefaultEmailClientCommand = new CallDefaultEmailClientCommand(semesterrechnung.getRechnungsempfaenger().getEmail(), false);
         commandInvoker.executeCommand(callDefaultEmailClientCommand);
         return callDefaultEmailClientCommand.getResult();
     }

@@ -20,12 +20,14 @@ public class CallDefaultEmailClientCommand implements Command {
 
     // input
     private String emailAdresse;
+    private boolean blindkopien;
 
     // output
     private Result result;
 
-    public CallDefaultEmailClientCommand(String emailAdresse) {
+    public CallDefaultEmailClientCommand(String emailAdresse, boolean blindkopien) {
         this.emailAdresse = emailAdresse;
+        this.blindkopien = blindkopien;
     }
 
     @Override
@@ -39,7 +41,8 @@ public class CallDefaultEmailClientCommand implements Command {
             // mailto:dummy@domain.com?cc=test@domain.com&
             // subject=First%20Email&&body=Hello%20World
             emailAdresse = emailAdresse.replaceAll(",\\p{Blank}*", ";");   // ; als Trenner zwischen mehreren Emails verwenden
-            String message = "mailto:" + emailAdresse;
+            String mailtoCommand = (blindkopien ? "mailto:?bcc=" : "mailto:");
+            String message = mailtoCommand + emailAdresse;
             URI uri = URI.create(message);
             desktop.mail(uri);
             result = Result.EMAIL_CLIENT_ERFOLGREICH_AUFGERUFEN;

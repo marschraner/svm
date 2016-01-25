@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.components.EmailSchuelerListeDialog;
 import ch.metzenthin.svm.ui.components.ListenExportDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 
@@ -23,10 +24,11 @@ import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnW
  */
 public class SchuelerSuchenResultController {
     private final SvmContext svmContext;
-    private final SchuelerSuchenTableModel schuelerSuchenTableModel;
+    private SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final JTable schuelerSuchenResultTable;
     private JButton btnDatenblatt;
     private JButton btnExportieren;
+    private JButton btnEmail;
     private JButton btnAbbrechen;
     private JButton btnZurueck;
     private ActionListener nextPanelListener;
@@ -122,6 +124,24 @@ public class SchuelerSuchenResultController {
         listenExportDialog.pack();
         listenExportDialog.setVisible(true);
         btnExportieren.setFocusPainted(false);
+    }
+
+    public void setBtnEmail(JButton btnEmail) {
+        this.btnEmail = btnEmail;
+        btnEmail.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onEmail();
+            }
+        });
+    }
+
+    private void onEmail() {
+        btnEmail.setFocusPainted(true);
+        EmailSchuelerListeDialog emailSchuelerListeDialog = new EmailSchuelerListeDialog(svmContext, schuelerSuchenTableModel);
+        emailSchuelerListeDialog.pack();
+        emailSchuelerListeDialog.setVisible(true);
+        btnEmail.setFocusPainted(false);
     }
 
     private void onListSelection() {

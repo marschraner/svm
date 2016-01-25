@@ -75,7 +75,7 @@ public class EmailModelImpl extends AbstractModel implements EmailModel {
                 break;
         }
         CommandInvoker commandInvoker = getCommandInvoker();
-        CallDefaultEmailClientCommand callDefaultEmailClientCommand = new CallDefaultEmailClientCommand(emailAdresse);
+        CallDefaultEmailClientCommand callDefaultEmailClientCommand = new CallDefaultEmailClientCommand(emailAdresse, false);
         commandInvoker.executeCommand(callDefaultEmailClientCommand);
         return callDefaultEmailClientCommand.getResult();
     }

@@ -115,6 +115,8 @@ public enum Field {
     KUCHEN_VORSTELLUNG8("8. Vorstellung mit Kuchen"),
     KUCHEN_VORSTELLUNG9("9. Vorstellung mit Kuchen"),
     EMAIL_EMPFAENGER("E-Mail-Empfänger"),
+    EMAIL_SCHUELER_LISTE_EMPFAENGER_GRUPPE("E-Mail-Empfänger"),
+    BLINDKOPIEN("Blindkopien"),
     MAERCHEN_FUER_SUCHE_BERUECKSICHTIGEN("Märchen für Suche berücksichtigen"),
     ZUSATZATTRIBUT_MAERCHEN("Zusatzattribut"),
     GEBURTSDATUM_SHORT("Geb.Datum"),
