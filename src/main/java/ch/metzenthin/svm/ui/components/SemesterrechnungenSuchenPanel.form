@@ -717,7 +717,7 @@
                             <children>
                               <component id="829bd" class="javax.swing.JLabel">
                                 <constraints>
-                                  <grid row="11" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <grid row="7" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
@@ -727,7 +727,7 @@
                               </component>
                               <component id="f128a" class="javax.swing.JTextField" binding="txtWochenbetragVorrechnung">
                                 <constraints>
-                                  <grid row="11" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                  <grid row="7" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                     <preferred-size width="150" height="-1"/>
                                   </grid>
                                   <gridbag weightx="0.0" weighty="0.0"/>
@@ -817,59 +817,12 @@
                                   <gridbag weightx="0.0" weighty="0.0" ipadx="200"/>
                                 </constraints>
                               </hspacer>
-                              <component id="b5e65" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="5" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <labelFor value="45b43"/>
-                                  <text value="Ermässigung"/>
-                                </properties>
-                              </component>
-                              <component id="45b43" class="javax.swing.JTextField" binding="txtErmaessigungVorrechnung">
-                                <constraints>
-                                  <grid row="5" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="150" height="-1"/>
-                                  </grid>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties/>
-                              </component>
                               <vspacer id="b8c10">
                                 <constraints>
                                   <grid row="14" column="2" row-span="1" col-span="2" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                               </vspacer>
-                              <component id="1356f" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="7" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <labelFor value="59497"/>
-                                  <text value="Zuschlag"/>
-                                </properties>
-                              </component>
-                              <component id="59497" class="javax.swing.JTextField" binding="txtZuschlagVorrechnung">
-                                <constraints>
-                                  <grid row="7" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="150" height="-1"/>
-                                  </grid>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <component id="e0879" class="javax.swing.JLabel" binding="errLblZuschlagVorrechnung">
-                                <constraints>
-                                  <grid row="6" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <text value="errLblZuschlag"/>
-                                </properties>
-                              </component>
                               <hspacer id="30dfb">
                                 <constraints>
                                   <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -919,95 +872,9 @@
                                   </hspacer>
                                 </children>
                               </grid>
-                              <grid id="eac59" layout-manager="GridBagLayout">
-                                <constraints>
-                                  <grid row="5" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties/>
-                                <border type="none"/>
-                                <children>
-                                  <component id="b91d4" class="javax.swing.JRadioButton" binding="radioBtnGleichErmaessigungVorrechnung">
-                                    <constraints>
-                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
-                                    </constraints>
-                                    <properties>
-                                      <text value="gleich"/>
-                                    </properties>
-                                  </component>
-                                  <hspacer id="fbe2">
-                                    <constraints>
-                                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                                      <gridbag weightx="1.0" weighty="0.0"/>
-                                    </constraints>
-                                  </hspacer>
-                                  <component id="c49a9" class="javax.swing.JRadioButton" binding="radioBtnKleinerErmaessigungVorrechnung">
-                                    <constraints>
-                                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
-                                    </constraints>
-                                    <properties>
-                                      <text value="kleiner"/>
-                                    </properties>
-                                  </component>
-                                  <component id="8b6bb" class="javax.swing.JRadioButton" binding="radioBtnGroesserErmaessigungVorrechnung">
-                                    <constraints>
-                                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                      <gridbag weightx="0.0" weighty="0.0"/>
-                                    </constraints>
-                                    <properties>
-                                      <text value="grösser"/>
-                                    </properties>
-                                  </component>
-                                </children>
-                              </grid>
-                              <grid id="88b51" layout-manager="GridBagLayout">
-                                <constraints>
-                                  <grid row="7" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties/>
-                                <border type="none"/>
-                                <children>
-                                  <component id="c48a0" class="javax.swing.JRadioButton" binding="radioBtnGleichZuschlagVorrechnung">
-                                    <constraints>
-                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
-                                    </constraints>
-                                    <properties>
-                                      <text value="gleich"/>
-                                    </properties>
-                                  </component>
-                                  <component id="d9210" class="javax.swing.JRadioButton" binding="radioBtnKleinerZuschlagVorrechnung">
-                                    <constraints>
-                                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
-                                    </constraints>
-                                    <properties>
-                                      <text value="kleiner"/>
-                                    </properties>
-                                  </component>
-                                  <component id="d7325" class="javax.swing.JRadioButton" binding="radioBtnGroesserZuschlagVorrechnung">
-                                    <constraints>
-                                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                      <gridbag weightx="0.0" weighty="0.0"/>
-                                    </constraints>
-                                    <properties>
-                                      <text value="grösser"/>
-                                    </properties>
-                                  </component>
-                                  <hspacer id="10cc7">
-                                    <constraints>
-                                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                                      <gridbag weightx="1.0" weighty="0.0"/>
-                                    </constraints>
-                                  </hspacer>
-                                </children>
-                              </grid>
                               <grid id="85117" layout-manager="GridBagLayout">
                                 <constraints>
-                                  <grid row="11" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                  <grid row="7" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties/>
@@ -1097,30 +964,9 @@
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                               </vspacer>
-                              <component id="1805" class="javax.swing.JLabel" binding="errLblErmaessigungVorrechnung">
-                                <constraints>
-                                  <grid row="4" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <text value="errLblErmaessigung"/>
-                                </properties>
-                              </component>
-                              <vspacer id="4f7b6">
-                                <constraints>
-                                  <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                              </vspacer>
-                              <vspacer id="edd5a">
-                                <constraints>
-                                  <grid row="6" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                              </vspacer>
                               <vspacer id="56f68">
                                 <constraints>
-                                  <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                  <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                               </vspacer>
@@ -1310,7 +1156,7 @@
                               </component>
                               <component id="61e3a" class="javax.swing.JLabel">
                                 <constraints>
-                                  <grid row="9" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <grid row="5" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
@@ -1320,13 +1166,13 @@
                               </component>
                               <vspacer id="671a3">
                                 <constraints>
-                                  <grid row="10" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                  <grid row="6" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                               </vspacer>
                               <component id="ca8fc" class="javax.swing.JLabel" binding="errLblWochenbetragVorrechnung">
                                 <constraints>
-                                  <grid row="10" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <grid row="6" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
@@ -1335,7 +1181,7 @@
                               </component>
                               <grid id="ff40c" layout-manager="GridBagLayout">
                                 <constraints>
-                                  <grid row="9" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                  <grid row="5" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties/>
@@ -1378,7 +1224,7 @@
                               </grid>
                               <component id="57b65" class="javax.swing.JTextField" binding="txtAnzahlWochenVorrechnung">
                                 <constraints>
-                                  <grid row="9" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                  <grid row="5" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                     <preferred-size width="150" height="-1"/>
                                   </grid>
                                   <gridbag weightx="0.0" weighty="0.0"/>
@@ -1387,12 +1233,166 @@
                               </component>
                               <component id="ae8d1" class="javax.swing.JLabel" binding="errLblAnzahlWochenVorrechnung">
                                 <constraints>
-                                  <grid row="8" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
                                   <text value="errLblWochenbetrag"/>
                                 </properties>
+                              </component>
+                              <component id="1356f" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="11" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <labelFor value="59497"/>
+                                  <text value="Zuschlag"/>
+                                </properties>
+                              </component>
+                              <vspacer id="67cc0">
+                                <constraints>
+                                  <grid row="10" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </vspacer>
+                              <component id="e0879" class="javax.swing.JLabel" binding="errLblZuschlagVorrechnung">
+                                <constraints>
+                                  <grid row="10" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="errLblZuschlag"/>
+                                </properties>
+                              </component>
+                              <grid id="96fbb" layout-manager="GridBagLayout">
+                                <constraints>
+                                  <grid row="11" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <component id="c48a0" class="javax.swing.JRadioButton" binding="radioBtnGleichZuschlagVorrechnung">
+                                    <constraints>
+                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="gleich"/>
+                                    </properties>
+                                  </component>
+                                  <component id="d9210" class="javax.swing.JRadioButton" binding="radioBtnKleinerZuschlagVorrechnung">
+                                    <constraints>
+                                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="kleiner"/>
+                                    </properties>
+                                  </component>
+                                  <component id="d7325" class="javax.swing.JRadioButton" binding="radioBtnGroesserZuschlagVorrechnung">
+                                    <constraints>
+                                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                      <gridbag weightx="0.0" weighty="0.0"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="grösser"/>
+                                    </properties>
+                                  </component>
+                                  <hspacer id="10cc7">
+                                    <constraints>
+                                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                      <gridbag weightx="1.0" weighty="0.0"/>
+                                    </constraints>
+                                  </hspacer>
+                                </children>
+                              </grid>
+                              <component id="59497" class="javax.swing.JTextField" binding="txtZuschlagVorrechnung">
+                                <constraints>
+                                  <grid row="11" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="b5e65" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="9" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <labelFor value="45b43"/>
+                                  <text value="Ermässigung"/>
+                                </properties>
+                              </component>
+                              <vspacer id="cc708">
+                                <constraints>
+                                  <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </vspacer>
+                              <component id="1805" class="javax.swing.JLabel" binding="errLblErmaessigungVorrechnung">
+                                <constraints>
+                                  <grid row="8" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="errLblErmaessigung"/>
+                                </properties>
+                              </component>
+                              <grid id="e9b8b" layout-manager="GridBagLayout">
+                                <constraints>
+                                  <grid row="9" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <component id="b91d4" class="javax.swing.JRadioButton" binding="radioBtnGleichErmaessigungVorrechnung">
+                                    <constraints>
+                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="gleich"/>
+                                    </properties>
+                                  </component>
+                                  <component id="c49a9" class="javax.swing.JRadioButton" binding="radioBtnKleinerErmaessigungVorrechnung">
+                                    <constraints>
+                                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="kleiner"/>
+                                    </properties>
+                                  </component>
+                                  <component id="8b6bb" class="javax.swing.JRadioButton" binding="radioBtnGroesserErmaessigungVorrechnung">
+                                    <constraints>
+                                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                      <gridbag weightx="0.0" weighty="0.0"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="grösser"/>
+                                    </properties>
+                                  </component>
+                                  <hspacer id="fbe2">
+                                    <constraints>
+                                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                      <gridbag weightx="1.0" weighty="0.0"/>
+                                    </constraints>
+                                  </hspacer>
+                                </children>
+                              </grid>
+                              <component id="45b43" class="javax.swing.JTextField" binding="txtErmaessigungVorrechnung">
+                                <constraints>
+                                  <grid row="9" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties/>
                               </component>
                             </children>
                           </grid>
@@ -1422,12 +1422,6 @@
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                               </hspacer>
-                              <vspacer id="fffef">
-                                <constraints>
-                                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                              </vspacer>
                               <hspacer id="dd3ed">
                                 <constraints>
                                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -1513,163 +1507,15 @@
                                   <text value="errLblRechnungsdatum"/>
                                 </properties>
                               </component>
-                              <component id="eb963" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <labelFor value="6add8"/>
-                                  <text value="Ermässigung"/>
-                                </properties>
-                              </component>
-                              <component id="6add8" class="javax.swing.JTextField" binding="txtErmaessigungNachrechnung">
-                                <constraints>
-                                  <grid row="5" column="5" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="150" height="-1"/>
-                                  </grid>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <grid id="10407" layout-manager="GridBagLayout">
-                                <constraints>
-                                  <grid row="5" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties/>
-                                <border type="none"/>
-                                <children>
-                                  <component id="c4104" class="javax.swing.JRadioButton" binding="radioBtnGleichErmaessigungNachrechnung">
-                                    <constraints>
-                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
-                                    </constraints>
-                                    <properties>
-                                      <text value="gleich"/>
-                                    </properties>
-                                  </component>
-                                  <component id="d2aa7" class="javax.swing.JRadioButton" binding="radioBtnKleinerErmaessigungNachrechnung">
-                                    <constraints>
-                                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
-                                    </constraints>
-                                    <properties>
-                                      <text value="kleiner"/>
-                                    </properties>
-                                  </component>
-                                  <component id="e194" class="javax.swing.JRadioButton" binding="radioBtnGroesserErmaessigungNachrechnung">
-                                    <constraints>
-                                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                      <gridbag weightx="0.0" weighty="0.0"/>
-                                    </constraints>
-                                    <properties>
-                                      <text value="grösser"/>
-                                    </properties>
-                                  </component>
-                                  <hspacer id="a077f">
-                                    <constraints>
-                                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                                      <gridbag weightx="1.0" weighty="0.0"/>
-                                    </constraints>
-                                  </hspacer>
-                                </children>
-                              </grid>
-                              <component id="c8148" class="javax.swing.JLabel" binding="errLblErmaessigungNachrechnung">
-                                <constraints>
-                                  <grid row="4" column="2" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <text value="errLblErmaessigung"/>
-                                </properties>
-                              </component>
-                              <vspacer id="7c2ce">
-                                <constraints>
-                                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                              </vspacer>
-                              <component id="1be16" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <labelFor value="632a"/>
-                                  <text value="Zuschlag"/>
-                                </properties>
-                              </component>
-                              <component id="632a" class="javax.swing.JTextField" binding="txtZuschlagNachrechnung">
-                                <constraints>
-                                  <grid row="7" column="5" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="150" height="-1"/>
-                                  </grid>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <grid id="441c2" layout-manager="GridBagLayout">
-                                <constraints>
-                                  <grid row="7" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties/>
-                                <border type="none"/>
-                                <children>
-                                  <component id="151da" class="javax.swing.JRadioButton" binding="radioBtnGleichZuschlagNachrechnung">
-                                    <constraints>
-                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
-                                    </constraints>
-                                    <properties>
-                                      <text value="gleich"/>
-                                    </properties>
-                                  </component>
-                                  <component id="78fbf" class="javax.swing.JRadioButton" binding="radioBtnKleinerZuschlagNachrechnung">
-                                    <constraints>
-                                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
-                                    </constraints>
-                                    <properties>
-                                      <text value="kleiner"/>
-                                    </properties>
-                                  </component>
-                                  <component id="6829f" class="javax.swing.JRadioButton" binding="radioBtnGroesserZuschlagNachrechnung">
-                                    <constraints>
-                                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                      <gridbag weightx="0.0" weighty="0.0"/>
-                                    </constraints>
-                                    <properties>
-                                      <text value="grösser"/>
-                                    </properties>
-                                  </component>
-                                  <hspacer id="d7806">
-                                    <constraints>
-                                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                                      <gridbag weightx="1.0" weighty="0.0"/>
-                                    </constraints>
-                                  </hspacer>
-                                </children>
-                              </grid>
-                              <component id="496a" class="javax.swing.JLabel" binding="errLblZuschlagNachrechnung">
-                                <constraints>
-                                  <grid row="6" column="2" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
-                                </constraints>
-                                <properties>
-                                  <text value="errLblZuschlag"/>
-                                </properties>
-                              </component>
                               <vspacer id="d225e">
                                 <constraints>
-                                  <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                               </vspacer>
                               <component id="391ee" class="javax.swing.JLabel">
                                 <constraints>
-                                  <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
@@ -1679,7 +1525,7 @@
                               </component>
                               <component id="a4146" class="javax.swing.JTextField" binding="txtAnzahlWochenNachrechnung">
                                 <constraints>
-                                  <grid row="9" column="5" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                  <grid row="5" column="5" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                     <preferred-size width="150" height="-1"/>
                                   </grid>
                                   <gridbag weightx="0.0" weighty="0.0"/>
@@ -1688,7 +1534,7 @@
                               </component>
                               <grid id="68482" layout-manager="GridBagLayout">
                                 <constraints>
-                                  <grid row="9" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                  <grid row="5" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties/>
@@ -1731,7 +1577,7 @@
                               </grid>
                               <component id="f09f8" class="javax.swing.JLabel" binding="errLblAnzahlWochenNachrechnung">
                                 <constraints>
-                                  <grid row="8" column="2" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <grid row="4" column="2" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
@@ -1740,13 +1586,13 @@
                               </component>
                               <vspacer id="853ca">
                                 <constraints>
-                                  <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                               </vspacer>
                               <component id="64381" class="javax.swing.JLabel">
                                 <constraints>
-                                  <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
@@ -1756,7 +1602,7 @@
                               </component>
                               <component id="502a0" class="javax.swing.JTextField" binding="txtWochenbetragNachrechnung">
                                 <constraints>
-                                  <grid row="11" column="5" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                  <grid row="7" column="5" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                     <preferred-size width="150" height="-1"/>
                                   </grid>
                                   <gridbag weightx="0.0" weighty="0.0"/>
@@ -1765,7 +1611,7 @@
                               </component>
                               <grid id="e7d75" layout-manager="GridBagLayout">
                                 <constraints>
-                                  <grid row="11" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                  <grid row="7" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties/>
@@ -1808,7 +1654,7 @@
                               </grid>
                               <component id="cd9a4" class="javax.swing.JLabel" binding="errLblWochenbetragNachrechnung">
                                 <constraints>
-                                  <grid row="10" column="2" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <grid row="6" column="2" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                   <gridbag weightx="0.0" weighty="0.0"/>
                                 </constraints>
                                 <properties>
@@ -2076,6 +1922,160 @@
                                   </hspacer>
                                 </children>
                               </grid>
+                              <component id="1be16" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <labelFor value="632a"/>
+                                  <text value="Zuschlag"/>
+                                </properties>
+                              </component>
+                              <vspacer id="8f77a">
+                                <constraints>
+                                  <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </vspacer>
+                              <component id="496a" class="javax.swing.JLabel" binding="errLblZuschlagNachrechnung">
+                                <constraints>
+                                  <grid row="10" column="2" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="errLblZuschlag"/>
+                                </properties>
+                              </component>
+                              <grid id="9394d" layout-manager="GridBagLayout">
+                                <constraints>
+                                  <grid row="11" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <component id="151da" class="javax.swing.JRadioButton" binding="radioBtnGleichZuschlagNachrechnung">
+                                    <constraints>
+                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="gleich"/>
+                                    </properties>
+                                  </component>
+                                  <component id="78fbf" class="javax.swing.JRadioButton" binding="radioBtnKleinerZuschlagNachrechnung">
+                                    <constraints>
+                                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="kleiner"/>
+                                    </properties>
+                                  </component>
+                                  <component id="6829f" class="javax.swing.JRadioButton" binding="radioBtnGroesserZuschlagNachrechnung">
+                                    <constraints>
+                                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                      <gridbag weightx="0.0" weighty="0.0"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="grösser"/>
+                                    </properties>
+                                  </component>
+                                  <hspacer id="d7806">
+                                    <constraints>
+                                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                      <gridbag weightx="1.0" weighty="0.0"/>
+                                    </constraints>
+                                  </hspacer>
+                                </children>
+                              </grid>
+                              <component id="632a" class="javax.swing.JTextField" binding="txtZuschlagNachrechnung">
+                                <constraints>
+                                  <grid row="11" column="5" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="eb963" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <labelFor value="6add8"/>
+                                  <text value="Ermässigung"/>
+                                </properties>
+                              </component>
+                              <vspacer id="d9f61">
+                                <constraints>
+                                  <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </vspacer>
+                              <component id="c8148" class="javax.swing.JLabel" binding="errLblErmaessigungNachrechnung">
+                                <constraints>
+                                  <grid row="8" column="2" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties>
+                                  <text value="errLblErmaessigung"/>
+                                </properties>
+                              </component>
+                              <grid id="fafad" layout-manager="GridBagLayout">
+                                <constraints>
+                                  <grid row="9" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <component id="c4104" class="javax.swing.JRadioButton" binding="radioBtnGleichErmaessigungNachrechnung">
+                                    <constraints>
+                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="gleich"/>
+                                    </properties>
+                                  </component>
+                                  <component id="d2aa7" class="javax.swing.JRadioButton" binding="radioBtnKleinerErmaessigungNachrechnung">
+                                    <constraints>
+                                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                      <gridbag top="0" left="0" bottom="0" right="5" weightx="0.0" weighty="0.0"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="kleiner"/>
+                                    </properties>
+                                  </component>
+                                  <component id="e194" class="javax.swing.JRadioButton" binding="radioBtnGroesserErmaessigungNachrechnung">
+                                    <constraints>
+                                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                      <gridbag weightx="0.0" weighty="0.0"/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="grösser"/>
+                                    </properties>
+                                  </component>
+                                  <hspacer id="a077f">
+                                    <constraints>
+                                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                      <gridbag weightx="1.0" weighty="0.0"/>
+                                    </constraints>
+                                  </hspacer>
+                                </children>
+                              </grid>
+                              <component id="6add8" class="javax.swing.JTextField" binding="txtErmaessigungNachrechnung">
+                                <constraints>
+                                  <grid row="9" column="5" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                                    <preferred-size width="150" height="-1"/>
+                                  </grid>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                                <properties/>
+                              </component>
                             </children>
                           </grid>
                         </children>
