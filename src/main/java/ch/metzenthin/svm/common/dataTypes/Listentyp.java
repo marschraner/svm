@@ -11,7 +11,7 @@ public enum Listentyp {
     ROLLENLISTE("Rollenliste", null, Filetyp.DOCX),
     ELTERNMITHILFE_LISTE("Eltern-Mithilfe-Liste", null, Filetyp.DOCX),
     SCHUELER_ADRESSETIKETTEN("Schüler-Adressetiketten", null, Filetyp.CSV),
-    RECHNUNGSEMPFAENGER_ADRESSETIKETTEN("Rechnungsempfaenger-Adressetiketten", null, Filetyp.CSV),
+    RECHNUNGSEMPFAENGER_ADRESSETIKETTEN("Rechnungsempfänger-Adressetiketten", null, Filetyp.CSV),
     MUTTER_ODER_VATER_ADRESSETIKETTEN("Mutter- oder Vater-Adressetiketten", null, Filetyp.CSV),
     ELTERNMITHILFE_ADRESSETIKETTEN("Eltern-Mithilfe-Adressetiketten", null, Filetyp.CSV),
     SCHUELERLISTE_CSV("Schülerliste (CSV)", null, Filetyp.CSV),
