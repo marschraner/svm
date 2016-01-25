@@ -1,14 +1,19 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Semester;
 
 import java.math.BigDecimal;
+import java.sql.Time;
 
 /**
  * @author Martin Schraner
  */
 public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
+
+    Mitarbeiter MITARBEITER_ALLE = new Mitarbeiter();
 
     enum RolleSelected {
         SCHUELER,
@@ -147,6 +152,9 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     String getNachname();
     String getVorname();
     RolleSelected getRolle();
+    Wochentag getWochentag();
+    Time getZeitBeginn();
+    Mitarbeiter getMitarbeiter();
     SemesterrechnungCodeJaNeinSelected getSemesterrechnungCodeJaNeinSelected();
     StipendiumJaNeinSelected getStipendiumJaNeinSelected();
     RechnungsdatumGesetztVorrechnungSelected getRechnungsdatumGesetztVorrechnungSelected();
@@ -178,6 +186,9 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     void setNachname(String nachname) throws SvmValidationException;
     void setVorname(String vorname) throws SvmValidationException;
     void setRolle(RolleSelected rolle);
+    void setWochentag(Wochentag wochentag);
+    void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
+    void setMitarbeiter(Mitarbeiter mitarbeiter);
     void setSemesterrechnungCodeJaNeinSelected(SemesterrechnungCodeJaNeinSelected semesterrechnungCodeJaNeinSelected);
     void setStipendiumJaNeinSelected(StipendiumJaNeinSelected stipendiumJaNeinSelected);
     void setRechnungsdatumGesetztVorrechnungSelected(RechnungsdatumGesetztVorrechnungSelected rechnungsdatumGesetztVorrechnungSelected);
@@ -205,6 +216,7 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     void setPraezisierungDifferenzSchulgeldSelected(PraezisierungDifferenzSchulgeldSelected praezisierungDifferenzSchulgeldSelected);
     void setDifferenzSchulgeld(String differenzSchulgeld) throws SvmValidationException;
 
+    Mitarbeiter[] getSelectableLehrkraefte(SvmModel svmModel);
     Semester getSemesterInit(SvmModel svmModel);
     SemesterrechnungenTableData suchen();
 }

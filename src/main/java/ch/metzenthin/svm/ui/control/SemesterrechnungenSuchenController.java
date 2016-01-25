@@ -2,10 +2,12 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenSuchenModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenTableData;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 import ch.metzenthin.svm.ui.components.SemesterrechnungenPanel;
@@ -23,6 +25,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
 import java.util.Set;
 
+import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 
 /**
@@ -38,6 +41,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private JSpinner spinnerSemester;
     private JTextField txtNachname;
     private JTextField txtVorname;
+    private JTextField txtZeitBeginn;
     private JTextField txtRechnungsbetragVorrechnung;
     private JTextField txtRestbetragVorrechnung;
     private JTextField txtRechnungsbetragNachrechnung;
@@ -45,6 +49,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private JTextField txtDifferenzSchulgeld;
     private JLabel errLblNachname;
     private JLabel errLblVorname;
+    private JLabel errLblZeitBeginn;
     private JLabel errLblRechnungsbetragVorrechnung;
     private JLabel errLblRestbetragVorrechnung;
     private JLabel errLblRechnungsbetragNachrechnung;
@@ -117,6 +122,8 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private JRadioButton radioBtnGleichDifferenzSchulgeld;
     private JRadioButton radioBtnKleinerDifferenzSchulgeld;
     private JRadioButton radioBtnGroesserDifferenzSchulgeld;
+    private JComboBox<Wochentag> comboBoxWochentag;
+    private JComboBox<Mitarbeiter> comboBoxLehrkraft;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
@@ -262,6 +269,112 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             throw e;
         }
     }
+
+    public void setComboBoxWochentag(JComboBox<Wochentag> comboBoxWochentag) {
+        this.comboBoxWochentag = comboBoxWochentag;
+        comboBoxWochentag.setModel(new DefaultComboBoxModel<>(Wochentag.values()));
+        comboBoxWochentag.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onWochentagSelected();
+            }
+        });
+        // Wochentag in Model initialisieren mit erstem ComboBox-Wert
+        semesterrechnungenSuchenModel.setWochentag(Wochentag.values()[0]);
+    }
+
+    private void onWochentagSelected() {
+        LOGGER.trace("KurseSemesterwahlController Event Wochentag selected=" + comboBoxWochentag.getSelectedItem());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxWochentag.getSelectedItem(), semesterrechnungenSuchenModel.getWochentag());
+        setModelWochentag();
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelWochentag() {
+        makeErrorLabelInvisible(Field.WOCHENTAG);
+        semesterrechnungenSuchenModel.setWochentag((Wochentag) comboBoxWochentag.getSelectedItem());
+    }
+
+    public void setTxtZeitBeginn(JTextField txtZeitBeginn) {
+        this.txtZeitBeginn = txtZeitBeginn;
+        this.txtZeitBeginn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onZeitBeginnEvent();
+            }
+        });
+        this.txtZeitBeginn.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onZeitBeginnEvent();
+            }
+        });
+    }
+
+    private void onZeitBeginnEvent() {
+        LOGGER.trace("SemesterrechnungenSuchenController Event ZeitBeginn");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtZeitBeginn.getText(), semesterrechnungenSuchenModel.getZeitBeginn());
+        try {
+            setModelZeitBeginn();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelZeitBeginn() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.ZEIT_BEGINN);
+        try {
+            semesterrechnungenSuchenModel.setZeitBeginn(txtZeitBeginn.getText());
+        } catch (SvmValidationException e) {
+            LOGGER.trace("SemesterrechnungenSuchenController setModelZeitBeginn Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
+    public void setComboBoxLehrkraft(JComboBox<Mitarbeiter> comboBoxLehrkraft) {
+        this.comboBoxLehrkraft = comboBoxLehrkraft;
+        Mitarbeiter[] selectableLehrkraefte = semesterrechnungenSuchenModel.getSelectableLehrkraefte(svmContext.getSvmModel());
+        comboBoxLehrkraft.setModel(new DefaultComboBoxModel<>(selectableLehrkraefte));
+        // Model initialisieren mit erstem ComboBox-Wert
+        semesterrechnungenSuchenModel.setMitarbeiter(selectableLehrkraefte[0]);
+        comboBoxLehrkraft.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onLehrkraftSelected();
+            }
+        });
+    }
+
+    private void onLehrkraftSelected() {
+        LOGGER.trace("SemesterrechnungenSuchenController Event Lehrkraft selected=" + comboBoxLehrkraft.getSelectedItem());
+        boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft.getSelectedItem(), semesterrechnungenSuchenModel.getMitarbeiter());
+        try {
+            setModelLehrkraft();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelLehrkraft() throws SvmValidationException {
+        makeErrorLabelInvisible(Field.LEHRKRAFT);
+        semesterrechnungenSuchenModel.setMitarbeiter((Mitarbeiter) comboBoxLehrkraft.getSelectedItem());
+    }
+
 
     public void setTxtRechnungsbetragVorrechnung(JTextField txtRechnungsbetragVorrechnung) {
         this.txtRechnungsbetragVorrechnung = txtRechnungsbetragVorrechnung;
@@ -479,6 +592,10 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
 
     public void setErrLblVorname(JLabel errLblVorname) {
         this.errLblVorname = errLblVorname;
+    }
+
+    public void setErrLblZeitBeginn(JLabel errLblZeitBeginn) {
+        this.errLblZeitBeginn = errLblZeitBeginn;
     }
 
     public void setErrLblRechnungsbetragVorrechnung(JLabel errLblRechnungsbetragVorrechnung) {
@@ -1061,6 +1178,15 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         else if (checkIsFieldChange(Field.VORNAME, evt)) {
             txtVorname.setText(semesterrechnungenSuchenModel.getVorname());
         }
+        else if (checkIsFieldChange(Field.WOCHENTAG, evt)) {
+            comboBoxWochentag.setSelectedItem(semesterrechnungenSuchenModel.getWochentag());
+        }
+        else if (checkIsFieldChange(Field.ZEIT_BEGINN, evt)) {
+            txtZeitBeginn.setText(asString(semesterrechnungenSuchenModel.getZeitBeginn()));
+        }
+        else if (checkIsFieldChange(Field.LEHRKRAFT, evt)) {
+            comboBoxLehrkraft.setSelectedItem(semesterrechnungenSuchenModel.getMitarbeiter());
+        }
         else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RolleSelected.SCHUELER) {
             radioBtnSchueler.setSelected(true);
         }
@@ -1290,6 +1416,10 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             LOGGER.trace("Validate field Vorname");
             setModelVorname();
         }
+        if (txtZeitBeginn.isEnabled()) {
+            LOGGER.trace("Validate field ZeitBeginn");
+            setModelZeitBeginn();
+        }
         if (txtRechnungsbetragVorrechnung.isEnabled()) {
             LOGGER.trace("Validate field RechnungsbetragVorrechnung");
             setModelRechnungsbetragVorrechnung();
@@ -1323,6 +1453,10 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             errLblVorname.setVisible(true);
             errLblVorname.setText(e.getMessage());
         }
+        if (e.getAffectedFields().contains(Field.ZEIT_BEGINN)) {
+            errLblZeitBeginn.setVisible(true);
+            errLblZeitBeginn.setText(e.getMessage());
+        }
         if (e.getAffectedFields().contains(Field.RECHNUNGSBETRAG_VORRECHNUNG)) {
             errLblRechnungsbetragVorrechnung.setVisible(true);
             errLblRechnungsbetragVorrechnung.setText(e.getMessage());
@@ -1353,6 +1487,9 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
         if (e.getAffectedFields().contains(Field.VORNAME)) {
             txtVorname.setToolTipText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.ZEIT_BEGINN)) {
+            txtZeitBeginn.setToolTipText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.RECHNUNGSBETRAG_VORRECHNUNG)) {
             txtRechnungsbetragVorrechnung.setToolTipText(e.getMessage());
@@ -1388,6 +1525,14 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             }
             if (txtVorname != null) {
                 txtVorname.setToolTipText(null);
+            }
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.ZEIT_BEGINN)) {
+            if (errLblZeitBeginn != null) {
+                errLblZeitBeginn.setVisible(false);
+            }
+            if (txtZeitBeginn != null) {
+                txtZeitBeginn.setToolTipText(null);
             }
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.RECHNUNGSBETRAG_VORRECHNUNG)) {

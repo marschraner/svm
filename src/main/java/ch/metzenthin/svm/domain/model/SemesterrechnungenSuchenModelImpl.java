@@ -2,14 +2,17 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
+import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.CreateAndFindSemesterrechnungenCommand;
 import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -23,6 +26,9 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private String nachname;
     private String vorname;
     private RolleSelected rolle;
+    private Wochentag wochentag;
+    private Time zeitBeginn;
+    private Mitarbeiter mitarbeiter;
     private SemesterrechnungCodeJaNeinSelected semesterrechnungCodeJaNeinSelected;
     private StipendiumJaNeinSelected stipendiumJaNeinSelected;
     private RechnungsdatumGesetztVorrechnungSelected rechnungsdatumGesetztVorrechnungSelected;
@@ -49,6 +55,11 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private SechsJahresRabattJaNeinNachrechnungSelected sechsJahresRabattJaNeinNachrechnungSelected;
     private PraezisierungDifferenzSchulgeldSelected praezisierungDifferenzSchulgeldSelected;
     private BigDecimal differenzSchulgeld;
+
+    static {
+        MITARBEITER_ALLE.setVorname("");
+        MITARBEITER_ALLE.setNachname("");
+    }
 
     SemesterrechnungenSuchenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -128,6 +139,56 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         RolleSelected oldValue = this.rolle;
         this.rolle = rolle;
         firePropertyChange(Field.ROLLE, oldValue, this.rolle);
+    }
+
+    @Override
+    public Wochentag getWochentag() {
+        return wochentag;
+    }
+
+    @Override
+    public void setWochentag(Wochentag wochentag) {
+        Wochentag oldValue = this.wochentag;
+        this.wochentag = wochentag;
+        firePropertyChange(Field.WOCHENTAG, oldValue, this.wochentag);
+    }
+
+    private final TimeModelAttribute zeitBeginnModelAttribute = new TimeModelAttribute(
+            this,
+            Field.ZEIT_BEGINN,
+            new AttributeAccessor<Time>() {
+                @Override
+                public Time getValue() {
+                    return zeitBeginn;
+                }
+
+                @Override
+                public void setValue(Time value) {
+                    zeitBeginn = value;
+                }
+            }
+    );
+
+    @Override
+    public Time getZeitBeginn() {
+        return zeitBeginnModelAttribute.getValue();
+    }
+
+    @Override
+    public void setZeitBeginn(String zeitBeginn) throws SvmValidationException {
+        zeitBeginnModelAttribute.setNewValue(false, zeitBeginn, isBulkUpdate());
+    }
+
+    @Override
+    public Mitarbeiter getMitarbeiter() {
+        return mitarbeiter;
+    }
+
+    @Override
+    public void setMitarbeiter(Mitarbeiter mitarbeiter) {
+        Mitarbeiter oldValue = this.mitarbeiter;
+        this.mitarbeiter = mitarbeiter;
+        firePropertyChange(Field.LEHRKRAFT, oldValue, this.mitarbeiter);
     }
 
     @Override
@@ -500,6 +561,14 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     @Override
     public void setDifferenzSchulgeld(String differenzSchulgeld) throws SvmValidationException {
         differenzSchulgeldModelAttribute.setNewValue(false, differenzSchulgeld, isBulkUpdate());
+    }
+
+    @Override
+    public Mitarbeiter[] getSelectableLehrkraefte(SvmModel svmModel) {
+        List<Mitarbeiter> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
+        // Lehrkraft alle auch erlaubt
+        lehrkraefteList.add(0, MITARBEITER_ALLE);
+        return lehrkraefteList.toArray(new Mitarbeiter[lehrkraefteList.size()]);
     }
 
     @Override

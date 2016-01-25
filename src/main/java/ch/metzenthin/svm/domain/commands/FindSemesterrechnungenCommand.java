@@ -2,7 +2,9 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
+import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenSuchenModel;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
@@ -10,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -29,6 +32,9 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
     private String nachname;
     private String vorname;
     private SemesterrechnungenSuchenModel.RolleSelected rolle;
+    private Wochentag wochentag;
+    private Time zeitBeginn;
+    private Mitarbeiter mitarbeiter;
     private SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected semesterrechnungCodeJaNeinSelected;
     private SemesterrechnungCode semesterrechnungCode;
     private SemesterrechnungenSuchenModel.StipendiumJaNeinSelected stipendiumJaNeinSelected;
@@ -79,6 +85,9 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
         this.nachname = semesterrechnungenSuchenModel.getNachname();
         this.vorname = semesterrechnungenSuchenModel.getVorname();
         this.rolle = semesterrechnungenSuchenModel.getRolle();
+        this.wochentag = semesterrechnungenSuchenModel.getWochentag();
+        this.zeitBeginn = semesterrechnungenSuchenModel.getZeitBeginn();
+        this.mitarbeiter = semesterrechnungenSuchenModel.getMitarbeiter();
         this.semesterrechnungCodeJaNeinSelected = semesterrechnungenSuchenModel.getSemesterrechnungCodeJaNeinSelected();
         this.semesterrechnungCode = semesterrechnungenSuchenModel.getSemesterrechnungCode();
         this.stipendiumJaNeinSelected = semesterrechnungenSuchenModel.getStipendiumJaNeinSelected();
@@ -131,6 +140,7 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
 
         // Inner-Joins erzeugen
         createJoinSchueler();
+        createJoinKurs();
 
         // Selection-Statements
         selectStatementSb.append(" where semre.semester.semesterId = :semesterId and");
@@ -155,8 +165,17 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
     }
 
     private void createJoinSchueler() {
-        if (rolle != SemesterrechnungenSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
+        if (rolle != SemesterrechnungenSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER || wochentag != Wochentag.ALLE || zeitBeginn != null || mitarbeiter != SemesterrechnungenSuchenModel.MITARBEITER_ALLE) {
             selectStatementSb.append(" join semre.rechnungsempfaenger.schuelerRechnungsempfaenger sch");
+        }
+    }
+
+    private void createJoinKurs() {
+        if (wochentag != Wochentag.ALLE || zeitBeginn != null || mitarbeiter != SemesterrechnungenSuchenModel.MITARBEITER_ALLE) {
+            selectStatementSb.append(" join sch.kursanmeldungen kursanm");
+            if (mitarbeiter != SemesterrechnungenSuchenModel.MITARBEITER_ALLE) {
+                selectStatementSb.append(" join kursanm.kurs.lehrkraefte lkr");
+            }
         }
     }
 
@@ -199,6 +218,18 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
                     selectStatementSb.append("(").append(selectRechnungsempfaenger).append(" or ").append(selectSchueler).append(" or ").append(selectEltern).append(")").append(" and");
                     break;
             }
+        }
+        if (wochentag != Wochentag.ALLE || zeitBeginn != null || mitarbeiter != SemesterrechnungenSuchenModel.MITARBEITER_ALLE) {
+            selectStatementSb.append(" kursanm.kurs.semester.semesterId = :semesterId and");
+        }
+        if (wochentag != Wochentag.ALLE) {
+            selectStatementSb.append(" kursanm.kurs.wochentag = :wochentag and");
+        }
+        if (zeitBeginn != null) {
+            selectStatementSb.append(" kursanm.kurs.zeitBeginn = :zeitBeginn and");
+        }
+        if (mitarbeiter != SemesterrechnungenSuchenModel.MITARBEITER_ALLE) {
+            selectStatementSb.append(" lkr.personId = :lehrkraftPersonId and");
         }
         switch (semesterrechnungCodeJaNeinSelected) {
             case JA:
@@ -395,6 +426,15 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
         }
         if (selectStatementSb.toString().contains(":nachname")) {
             typedQuery.setParameter("nachname", nachname.toLowerCase() + "%");
+        }
+        if (selectStatementSb.toString().contains(":wochentag")) {
+            typedQuery.setParameter("wochentag", wochentag);
+        }
+        if (selectStatementSb.toString().contains(":zeitBeginn")) {
+            typedQuery.setParameter("zeitBeginn", zeitBeginn);
+        }
+        if (selectStatementSb.toString().contains(":lehrkraftPersonId")) {
+            typedQuery.setParameter("lehrkraftPersonId", mitarbeiter.getPersonId());
         }
         if (selectStatementSb.toString().contains(":semesterrechnungCodeId")) {
             typedQuery.setParameter("semesterrechnungCodeId", semesterrechnungCode.getCodeId());
