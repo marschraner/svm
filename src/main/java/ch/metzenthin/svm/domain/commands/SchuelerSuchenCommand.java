@@ -261,16 +261,16 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
             }
         }
         if (person != null && checkNotEmpty(person.getEmail())) {
-            String selectSchueler = " lower(s.email) = :email";
-            String selectEltern = "(lower(s.email) = :email or exists (select s1 from Schueler s1 where lower(s1.mutter.email) = :email and s1.personId = s.personId) or exists (select s2 from Schueler s2 where lower(s2.vater.email) = :email and s2.personId = s.personId)";
+            String selectSchueler = " lower(s.email) like :email";
+            String selectEltern = "(lower(s.email) like :email or exists (select s1 from Schueler s1 where lower(s1.mutter.email) like :email and s1.personId = s.personId) or exists (select s2 from Schueler s2 where lower(s2.vater.email) like :email and s2.personId = s.personId)";
             if (rolle == SchuelerSuchenModel.RolleSelected.SCHUELER) {
                 selectStatementSb.append(selectSchueler).append(" and");
             } else if (rolle == SchuelerSuchenModel.RolleSelected.ELTERN) {
                 selectStatementSb.append(selectEltern).append(") and");
             } else if (rolle == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
-                selectStatementSb.append(" lower(s.rechnungsempfaenger.email) = :email and");
+                selectStatementSb.append(" lower(s.rechnungsempfaenger.email) like :email and");
             } else if (rolle == SchuelerSuchenModel.RolleSelected.ALLE) {
-                selectStatementSb.append(selectSchueler).append(" or ").append(selectEltern).append(" or exists (select s3 from Schueler s3 where lower(s3.rechnungsempfaenger.email) = :email and s3.personId = s.personId)) and");
+                selectStatementSb.append(selectSchueler).append(" or ").append(selectEltern).append(" or exists (select s3 from Schueler s3 where lower(s3.rechnungsempfaenger.email) like :email and s3.personId = s.personId)) and");
             }
         }
     }
@@ -455,7 +455,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
             typedQuery.setParameter("natel", person.getNatel().replaceAll("\\s+", ""));
         }
         if (selectStatementSb.toString().contains(":email")) {
-            typedQuery.setParameter("email", person.getEmail().toLowerCase());
+            typedQuery.setParameter("email", person.getEmail().toLowerCase() + "%");
         }
     }
 
