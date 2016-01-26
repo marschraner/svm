@@ -163,6 +163,24 @@ public class EmailSchuelerListeController extends AbstractController {
         if (result == CallDefaultEmailClientCommand.Result.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT) {
             JOptionPane.showMessageDialog(emailDialog, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
         }
+        if (!emailSchuelerListeModel.getFehlendeEmailAdressen().isEmpty()) {
+            StringBuilder fehlend = new StringBuilder();
+            for (String emailAdresse : emailSchuelerListeModel.getFehlendeEmailAdressen()) {
+                fehlend.append(emailAdresse);
+                fehlend.append("\n");
+            }
+            fehlend.setLength(fehlend.length() - 1);
+            JOptionPane.showMessageDialog(emailDialog, "Für folgende Schüler (resp. deren Eltern) ist keine E-Mail-Adresse erfasst:\n" + fehlend, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+        }
+        if (!emailSchuelerListeModel.getUngueltigeEmailAdressen().isEmpty()) {
+            StringBuilder ungueltig = new StringBuilder();
+            for (String emailAdresse : emailSchuelerListeModel.getUngueltigeEmailAdressen()) {
+                ungueltig.append(emailAdresse);
+                ungueltig.append("\n");
+            }
+            ungueltig.setLength(ungueltig.length() - 1);
+            JOptionPane.showMessageDialog(emailDialog, "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig:\n" + ungueltig, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+        }
         emailDialog.dispose();
     }
 

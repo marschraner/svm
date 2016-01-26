@@ -25,6 +25,8 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
 
     private EmailSchuelerListeEmpfaengerGruppe emailSchuelerListeEmpfaengerGruppe;
     private boolean blindkopien;
+    private List<String> fehlendeEmailAdressen;
+    private List<String> ungueltigeEmailAdressen;
 
     public EmailSchuelerListeModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -71,7 +73,8 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
     @Override
     public CallDefaultEmailClientCommand.Result callEmailClient(SchuelerSuchenTableModel schuelerSuchenTableModel) {
 
-        StringBuilder emailAdressenSb = new StringBuilder();
+        List<String> emailAdressen = new ArrayList<>();
+        fehlendeEmailAdressen = new ArrayList<>();
 
         switch (emailSchuelerListeEmpfaengerGruppe) {
 
@@ -85,10 +88,11 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                         email = schueler.getVater().getEmail();
                     } else if (checkNotEmpty(schueler.getRechnungsempfaenger().getEmail())) {
                         email = schueler.getRechnungsempfaenger().getEmail();
+                    } else {
+                        fehlendeEmailAdressen.add(schueler.getNachname() + " " + schueler.getVorname());
                     }
                     if (email != null) {
-                        emailAdressenSb.append(email);
-                        emailAdressenSb.append(";");
+                        emailAdressen.add(email);
                     }
                 }
                 break;
@@ -105,10 +109,11 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                         email = schueler.getVater().getEmail();
                     } else if (checkNotEmpty(schueler.getRechnungsempfaenger().getEmail())) {
                         email = schueler.getRechnungsempfaenger().getEmail();
+                    } else {
+                        fehlendeEmailAdressen.add(schueler.getNachname() + " " + schueler.getVorname());
                     }
                     if (email != null) {
-                        emailAdressenSb.append(email);
-                        emailAdressenSb.append(";");
+                        emailAdressen.add(email);
                     }
                 }
                 break;
@@ -136,10 +141,11 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                         email = schueler.getVater().getEmail();
                     } else if (maercheneinteilung.getElternmithilfeDrittperson() != null && checkNotEmpty(maercheneinteilung.getElternmithilfeDrittperson().getEmail())) {
                         email = maercheneinteilung.getElternmithilfeDrittperson().getEmail();
+                    } else {
+                        fehlendeEmailAdressen.add(schueler.getNachname() + " " + schueler.getVorname());
                     }
                     if (email != null) {
-                        emailAdressenSb.append(email);
-                        emailAdressenSb.append(";");
+                        emailAdressen.add(email);
                     }
                 }
 
@@ -164,26 +170,32 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                     // Falls Elternteil nach Erfassen der Eltern-Mithilfe gelöscht wurde, kann Elternmithilfe null sein.
                     if (elternmithilfe != null && checkNotEmpty(elternmithilfe.getEmail())) {
                         email = elternmithilfe.getEmail();
+                    } else {
+                        fehlendeEmailAdressen.add(schueler.getNachname() + " " + schueler.getVorname());
                     }
                     if (email != null) {
-                        emailAdressenSb.append(email);
-                        emailAdressenSb.append(";");
+                        emailAdressen.add(email);
                     }
                 }
                 break;
         }
 
-        // Letzten ; löschen
-        emailAdressenSb.setLength(emailAdressenSb.length() - 1);
-
-        if (emailAdressenSb.length() == 0) {
-            return CallDefaultEmailClientCommand.Result.EMAIL_CLIENT_ERFOLGREICH_AUFGERUFEN;
-        }
-
         CommandInvoker commandInvoker = getCommandInvoker();
-        CallDefaultEmailClientCommand callDefaultEmailClientCommand = new CallDefaultEmailClientCommand(emailAdressenSb.toString(), blindkopien);
+        CallDefaultEmailClientCommand callDefaultEmailClientCommand = new CallDefaultEmailClientCommand(emailAdressen, blindkopien);
         commandInvoker.executeCommand(callDefaultEmailClientCommand);
+        ungueltigeEmailAdressen = callDefaultEmailClientCommand.getUngueltigeEmailAdressen();
         return callDefaultEmailClientCommand.getResult();
+
+    }
+
+    @Override
+    public List<String> getFehlendeEmailAdressen() {
+        return fehlendeEmailAdressen;
+    }
+
+    @Override
+    public List<String> getUngueltigeEmailAdressen() {
+        return ungueltigeEmailAdressen;
     }
 
     @Override

@@ -1,10 +1,12 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.utils.EmailValidator;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
-import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Martin Schraner
@@ -13,26 +15,68 @@ public class CallDefaultEmailClientCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(CallDefaultEmailClientCommand.class);
 
+    private EmailValidator emailValidator = new EmailValidator();
+
     public enum Result {
         FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT,
         EMAIL_CLIENT_ERFOLGREICH_AUFGERUFEN
     }
 
     // input
-    private String emailAdresse;
+    private List<String> emailAdressen;
     private boolean blindkopien;
 
     // output
+    private List<String> ungueltigeEmailAdressen;
     private Result result;
 
+    public CallDefaultEmailClientCommand(List<String> emailAdressen, boolean blindkopien) {
+        this.emailAdressen = emailAdressen;
+        this.blindkopien = blindkopien;
+    }
+
     public CallDefaultEmailClientCommand(String emailAdresse, boolean blindkopien) {
-        this.emailAdresse = emailAdresse;
+        this.emailAdressen = new ArrayList<>();
+        this.emailAdressen.add(emailAdresse);
         this.blindkopien = blindkopien;
     }
 
     @Override
     public void execute() {
+
+        List<String> gueltigeEmailAdressen = new ArrayList<>();
+        ungueltigeEmailAdressen = new ArrayList<>();
+
+        // Validierung
+        for (String emailAdresse : emailAdressen) {
+            // emailAdresse enthält möglicherweise mehrere, durch Komma getrennte Emails
+            String[] emailAdressenSplitted = emailAdresse.split("[,;]\\p{Blank}*");
+            for (String emailAdresseSplitted : emailAdressenSplitted) {
+                if (emailValidator.isValid(emailAdresseSplitted.trim())) {
+                    if (!gueltigeEmailAdressen.contains(emailAdresseSplitted.trim())) {
+                        gueltigeEmailAdressen.add(emailAdresseSplitted.trim());
+                    }
+                } else {
+                    ungueltigeEmailAdressen.add(emailAdresseSplitted.trim());
+                }
+            }
+        }
+
+        if (gueltigeEmailAdressen.isEmpty()) {
+            return;
+        }
+
+        // Zusammensetzen zu einzigem String mit durch ";" getrennten Emails
+        StringBuilder emailAdressenAsSingleStringSb = new StringBuilder();
+        for (String emailAdresse : gueltigeEmailAdressen) {
+            emailAdressenAsSingleStringSb.append(emailAdresse);
+            emailAdressenAsSingleStringSb.append(";");
+        }
+        // Letzten ; löschen
+        emailAdressenAsSingleStringSb.setLength(emailAdressenAsSingleStringSb.length() - 1);
+
         // Source: http://stackoverflow.com/questions/527719/how-to-add-hyperlink-in-jlabel
+        String emailAdressenAsSingleString = emailAdressenAsSingleStringSb.toString();
         Desktop desktop = Desktop.getDesktop();
         try {
             // Open user-default mail client with the email message
@@ -40,13 +84,13 @@ public class CallDefaultEmailClientCommand implements Command {
             //
             // mailto:dummy@domain.com?cc=test@domain.com&
             // subject=First%20Email&&body=Hello%20World
-            emailAdresse = emailAdresse.replaceAll(",\\p{Blank}*", ";");   // ; als Trenner zwischen mehreren Emails verwenden
+            //emailAdressenAsSingleString = emailAdressenAsSingleString.replaceAll(",\\p{Blank}*", ";");   // ; als Trenner zwischen mehreren Emails verwenden
             String mailtoCommand = (blindkopien ? "mailto:?bcc=" : "mailto:");
-            String message = mailtoCommand + emailAdresse;
+            String message = mailtoCommand + emailAdressenAsSingleString;
             URI uri = URI.create(message);
             desktop.mail(uri);
             result = Result.EMAIL_CLIENT_ERFOLGREICH_AUFGERUFEN;
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.trace("CallDefaultEmailClientCommand IO-Exception: " + e.getMessage());
             result = Result.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT;
         }
@@ -54,5 +98,9 @@ public class CallDefaultEmailClientCommand implements Command {
 
     public Result getResult() {
         return result;
+    }
+
+    public List<String> getUngueltigeEmailAdressen() {
+        return ungueltigeEmailAdressen;
     }
 }
