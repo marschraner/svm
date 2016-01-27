@@ -184,8 +184,8 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
         CallDefaultEmailClientCommand callDefaultEmailClientCommand = new CallDefaultEmailClientCommand(emailAdressen, blindkopien);
         commandInvoker.executeCommand(callDefaultEmailClientCommand);
         ungueltigeEmailAdressen = callDefaultEmailClientCommand.getUngueltigeEmailAdressen();
-        return callDefaultEmailClientCommand.getResult();
 
+        return callDefaultEmailClientCommand.getResult();
     }
 
     @Override

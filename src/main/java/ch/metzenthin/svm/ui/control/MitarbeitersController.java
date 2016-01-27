@@ -2,6 +2,7 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
+import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.domain.commands.DeleteMitarbeiterCommand;
 import ch.metzenthin.svm.domain.model.MitarbeitersModel;
 import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
@@ -34,6 +35,7 @@ public class MitarbeitersController {
     private JButton btnBearbeiten;
     private JButton btnLoeschen;
     private JButton btnExportieren;
+    private JButton btnEmail;
     private JButton btnAbbrechen;
     private JButton btnZurueck;
     private ActionListener closeListener;
@@ -126,8 +128,10 @@ public class MitarbeitersController {
         btnBearbeiten.setFocusPainted(false);
         if (mitarbeitersTableModel.getRowCount() > 0) {
             btnExportieren.setEnabled(true);
+            btnEmail.setEnabled(true);
         } else {
             btnExportieren.setEnabled(false);
+            btnEmail.setEnabled(false);
         }
     }
 
@@ -184,8 +188,10 @@ public class MitarbeitersController {
         mitarbeitersTable.clearSelection();
         if (mitarbeitersTableModel.getRowCount() > 0) {
             btnExportieren.setEnabled(true);
+            btnEmail.setEnabled(true);
         } else {
             btnExportieren.setEnabled(false);
+            btnEmail.setEnabled(false);
         }
     }
 
@@ -209,6 +215,47 @@ public class MitarbeitersController {
         listenExportDialog.setVisible(true);
         btnExportieren.setFocusPainted(false);
     }
+
+    public void setBtnEmail(JButton btnEmail) {
+        this.btnEmail = btnEmail;
+        if (mitarbeitersTableModel.getRowCount() == 0) {
+            btnEmail.setEnabled(false);
+        }
+        btnEmail.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onEmail();
+            }
+        });
+    }
+
+    private void onEmail() {
+        btnEmail.setFocusPainted(true);
+        CallDefaultEmailClientCommand.Result result = mitarbeitersModel.callEmailClient(mitarbeitersTableModel);
+        if (result == CallDefaultEmailClientCommand.Result.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT) {
+            JOptionPane.showMessageDialog(null, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+        }
+        if (!mitarbeitersModel.getFehlendeEmailAdressen().isEmpty()) {
+            StringBuilder fehlend = new StringBuilder();
+            for (String emailAdresse : mitarbeitersModel.getFehlendeEmailAdressen()) {
+                fehlend.append(emailAdresse);
+                fehlend.append("\n");
+            }
+            fehlend.setLength(fehlend.length() - 1);
+            JOptionPane.showMessageDialog(null, "Für folgende Mitarbeiter ist keine E-Mail-Adresse erfasst:\n" + fehlend, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+        }
+        if (!mitarbeitersModel.getUngueltigeEmailAdressen().isEmpty()) {
+            StringBuilder ungueltig = new StringBuilder();
+            for (String emailAdresse : mitarbeitersModel.getUngueltigeEmailAdressen()) {
+                ungueltig.append(emailAdresse);
+                ungueltig.append("\n");
+            }
+            ungueltig.setLength(ungueltig.length() - 1);
+            JOptionPane.showMessageDialog(null, "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig:\n" + ungueltig, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+        }
+        btnEmail.setFocusPainted(false);
+    }
+
 
     private void onListSelection() {
         int selectedRowIndex = mitarbeitersTable.getSelectedRow();

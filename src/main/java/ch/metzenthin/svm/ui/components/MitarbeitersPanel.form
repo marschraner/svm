@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.MitarbeitersPanel">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="1134" height="400"/>
+      <xy x="20" y="20" width="1473" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -26,9 +26,9 @@
                   <gridbag top="0" left="10" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <maximumSize width="120" height="29"/>
-                  <minimumSize width="120" height="29"/>
-                  <preferredSize width="120" height="29"/>
+                  <maximumSize width="141" height="29"/>
+                  <minimumSize width="141" height="29"/>
+                  <preferredSize width="141" height="29"/>
                   <text value="&amp;Exportieren"/>
                 </properties>
               </component>
@@ -46,10 +46,28 @@
               </vspacer>
               <hspacer id="2e27d">
                 <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="1.0" weighty="0.0"/>
                 </constraints>
               </hspacer>
+              <hspacer id="7e55">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+              </hspacer>
+              <component id="8aeaf" class="javax.swing.JButton" binding="btnEmail">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <maximumSize width="151" height="29"/>
+                  <minimumSize width="151" height="29"/>
+                  <preferredSize width="151" height="29"/>
+                  <text value="(Gruppen-)E-Mail"/>
+                </properties>
+              </component>
             </children>
           </grid>
           <grid id="d27f4" layout-manager="GridBagLayout">
