@@ -316,7 +316,7 @@
                         </constraints>
                         <properties>
                           <labelFor value="88152"/>
-                          <text value="Email"/>
+                          <text value="E-Mail"/>
                         </properties>
                       </component>
                       <component id="88152" class="javax.swing.JTextField" binding="txtEmail" default-binding="true">

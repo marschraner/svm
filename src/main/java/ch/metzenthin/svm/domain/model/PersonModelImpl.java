@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.utils.EmailValidator;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
@@ -21,6 +22,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final Adresse adresse;
+
+    private EmailValidator emailValidator = new EmailValidator();
 
     PersonModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
@@ -125,7 +128,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         natelModelAttribute.setNewValue(false, natel, isBulkUpdate());
     }
 
-    private final StringModelAttribute emailModelAttribute = new StringModelAttribute(
+    protected final StringModelAttribute emailModelAttribute = new StringModelAttribute(
             this,
             Field.EMAIL, 1, 50,
             new AttributeAccessor<String>() {
@@ -148,7 +151,26 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setEmail(String email) throws SvmValidationException {
+        if (!isBulkUpdate() && checkNotEmpty(email) && !isEmailValid(email)) {
+            invalidate();
+            String errMsg = "Keine gültige E-Mail";
+            if (email.trim().contains(" ") && email.contains("@") && !email.contains(",") && !email.contains(";")) {
+                errMsg = "Mehrere E-Mails müssen durch Kommas getrennt werden";
+            }
+            throw new SvmValidationException(10001, errMsg, Field.EMAIL);
+        }
         emailModelAttribute.setNewValue(false, email, isBulkUpdate());
+    }
+
+    private boolean isEmailValid(String email) {
+        // emailAdresse enthält möglicherweise mehrere, durch Komma getrennte Emails
+        String[] emailAdressenSplitted = email.split("[,;]\\p{Blank}*");
+        for (String emailAdresseSplitted : emailAdressenSplitted) {
+            if (!emailValidator.isValid(emailAdresseSplitted.trim())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     protected Calendar getEarliestValidDateGeburtstag() {

@@ -472,7 +472,7 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         stammdatenPanel.add(txtNatel, gbc);
         final JLabel label9 = new JLabel();
-        label9.setText("Email");
+        label9.setText("E-Mail");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 13;

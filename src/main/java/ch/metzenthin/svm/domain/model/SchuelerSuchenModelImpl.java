@@ -62,6 +62,11 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     }
 
     @Override
+    public void setEmail(String email) throws SvmValidationException {
+        emailModelAttribute.setNewValue(false, email, isBulkUpdate());
+    }
+
+    @Override
     public String getGeburtsdatumSuchperiode() {
         if (geburtsdatumSuchperiodeBeginn == null && geburtsdatumSuchperiodeEnde == null) {
             return "";
