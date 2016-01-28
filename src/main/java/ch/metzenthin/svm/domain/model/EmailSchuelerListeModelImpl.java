@@ -168,20 +168,21 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                     if (maercheneinteilung == null) {
                         continue;
                     }
+                    Person elternmithilfe;
                     if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER) {
-                        elternmithilfen.add(schueler.getMutter());
+                        elternmithilfe = schueler.getMutter();
                     } else if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.VATER) {
-                        elternmithilfen.add(schueler.getVater());
+                        elternmithilfe = schueler.getVater();
                     } else {
-                        elternmithilfen.add(maercheneinteilung.getElternmithilfeDrittperson());
+                        elternmithilfe = maercheneinteilung.getElternmithilfeDrittperson();
+                    }
+                    // Falls Elternteil nach Erfassen der Eltern-Mithilfe gelöscht wurde, kann Elternmithilfe null sein.
+                    if (elternmithilfe != null) {
+                        elternmithilfen.add(elternmithilfe);
                     }
                 }
                 Collections.sort(elternmithilfen);
                 for (Person elternmithilfe : elternmithilfen) {
-                    // Falls Elternteil nach Erfassen der Eltern-Mithilfe gelöscht wurde, kann Elternmithilfe null sein.
-                    if (elternmithilfe == null) {
-                        continue;
-                    }
                     String email = null;
                     if (checkNotEmpty(elternmithilfe.getEmail())) {
                         email = elternmithilfe.getEmail();
