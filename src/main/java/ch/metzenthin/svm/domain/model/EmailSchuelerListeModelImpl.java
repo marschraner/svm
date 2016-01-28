@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.common.dataTypes.EmailSchuelerListeEmpfaengerGruppe;
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.utils.StringNumberComparator;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
@@ -12,9 +13,7 @@ import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
@@ -121,7 +120,17 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
             case ROLLENLISTE:
                 // Wenn vorhanden Email des Schülers, sonst der Elternmithilfe (falls nicht Drittperson), sonst der Mutter, sonst des Vaters, sonst Elternmithilfe Drittperson
                 Map<Schueler, Maercheneinteilung> maercheneinteilungen = schuelerSuchenTableModel.getMaercheneinteilungen();
-                for (Schueler schueler : schuelerSuchenTableModel.getMaercheneinteilungen().keySet()) {
+                // Wenn nach Rollen gesucht wurde, muss nach Rollen sortiert werden, sonst nach Schülern
+                Set<Schueler> keys;
+                if (schuelerSuchenTableModel.isNachRollenGesucht()) {
+                    // Wenn nach Rollen gesucht wurde, gibt es keine Keys mit leeren Values
+                    maercheneinteilungen = sortMaercheneinteilungenByRollen(maercheneinteilungen);
+                    keys = maercheneinteilungen.keySet();
+                } else {
+                    // Sortierung nach Keys
+                    keys = new TreeSet<>(maercheneinteilungen.keySet());
+                }
+                for (Schueler schueler : keys) {
                     Maercheneinteilung maercheneinteilung = maercheneinteilungen.get(schueler);
                     if (maercheneinteilung == null) {
                         continue;
@@ -153,25 +162,31 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
 
             case ELTERNMITHILFE:
                 Map<Schueler, Maercheneinteilung> maercheneinteilungenElternmithilfe = schuelerSuchenTableModel.getMaercheneinteilungen();
+                List<Person> elternmithilfen = new ArrayList<>();
                 for (Schueler schueler : schuelerSuchenTableModel.getMaercheneinteilungen().keySet()) {
                     Maercheneinteilung maercheneinteilung = maercheneinteilungenElternmithilfe.get(schueler);
                     if (maercheneinteilung == null) {
                         continue;
                     }
-                    String email = null;
-                    Person elternmithilfe;
                     if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER) {
-                        elternmithilfe = schueler.getMutter();
+                        elternmithilfen.add(schueler.getMutter());
                     } else if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.VATER) {
-                        elternmithilfe = schueler.getVater();
+                        elternmithilfen.add(schueler.getVater());
                     } else {
-                        elternmithilfe = maercheneinteilung.getElternmithilfeDrittperson();
+                        elternmithilfen.add(maercheneinteilung.getElternmithilfeDrittperson());
                     }
+                }
+                Collections.sort(elternmithilfen);
+                for (Person elternmithilfe : elternmithilfen) {
                     // Falls Elternteil nach Erfassen der Eltern-Mithilfe gelöscht wurde, kann Elternmithilfe null sein.
-                    if (elternmithilfe != null && checkNotEmpty(elternmithilfe.getEmail())) {
+                    if (elternmithilfe == null) {
+                        continue;
+                    }
+                    String email = null;
+                    if (checkNotEmpty(elternmithilfe.getEmail())) {
                         email = elternmithilfe.getEmail();
                     } else {
-                        fehlendeEmailAdressen.add(schueler.getNachname() + " " + schueler.getVorname());
+                        fehlendeEmailAdressen.add(elternmithilfe.getNachname() + " " + elternmithilfe.getVorname());
                     }
                     if (email != null) {
                         emailAdressen.add(email);
@@ -186,6 +201,23 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
         ungueltigeEmailAdressen = callDefaultEmailClientCommand.getUngueltigeEmailAdressen();
 
         return callDefaultEmailClientCommand.getResult();
+    }
+
+    private Map<Schueler, Maercheneinteilung> sortMaercheneinteilungenByRollen(Map<Schueler, Maercheneinteilung> maercheneinteilungen) {
+        List<Map.Entry<Schueler, Maercheneinteilung>> list = new LinkedList<>(maercheneinteilungen.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Schueler, Maercheneinteilung>>() {
+            @Override
+            public int compare(Map.Entry<Schueler, Maercheneinteilung> o1, Map.Entry<Schueler, Maercheneinteilung> o2) {
+                Comparator<String> stringNumberComparator = new StringNumberComparator();
+                return stringNumberComparator.compare(o1.getValue().getRolle1(), o2.getValue().getRolle1());
+            }
+        });
+
+        Map<Schueler, Maercheneinteilung> result = new LinkedHashMap<>();
+        for (Map.Entry<Schueler, Maercheneinteilung> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
     }
 
     @Override

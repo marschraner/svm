@@ -318,8 +318,6 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
         result = Result.LISTE_ERFOLGREICH_ERSTELLT;
     }
 
-
-
     private Map<Schueler, Maercheneinteilung> sortMaercheneinteilungenByRollen(Map<Schueler, Maercheneinteilung> maercheneinteilungen) {
         List<Map.Entry<Schueler, Maercheneinteilung>> list = new LinkedList<>(maercheneinteilungen.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<Schueler, Maercheneinteilung>>() {
