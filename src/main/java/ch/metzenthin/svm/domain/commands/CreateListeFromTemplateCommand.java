@@ -56,7 +56,7 @@ public class CreateListeFromTemplateCommand extends CreateListeCommand {
         }
 
         // Platzhalter in Template-File ersetzen
-        List<Schueler> schuelerList = schuelerSuchenTableModel.getSchuelerList();
+        List<Schueler> schuelerList = schuelerSuchenTableModel.getZuExportierendeSchuelerList();
         XWPFDocument doc;
         int maxRows = 50;
         try {

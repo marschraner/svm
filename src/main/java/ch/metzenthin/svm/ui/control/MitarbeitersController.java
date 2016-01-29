@@ -13,6 +13,8 @@ import ch.metzenthin.svm.ui.components.MitarbeiterErfassenDialog;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -47,7 +49,7 @@ public class MitarbeitersController {
         this.mitarbeitersTableModel = mitarbeitersTableModel;
     }
 
-    public void setMitarbeitersTable(JTable mitarbeitersTable) {
+    public void setMitarbeitersTable(final JTable mitarbeitersTable) {
         this.mitarbeitersTable = mitarbeitersTable;
         initializeMitarbeitersTable();
         mitarbeitersTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -63,6 +65,18 @@ public class MitarbeitersController {
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     onBearbeiten();
+                }
+            }
+        });
+        mitarbeitersTable.getModel().addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                if (mitarbeitersTableModel.getAnzExport() > 0) {
+                    btnExportieren.setEnabled(true);
+                    btnEmail.setEnabled(true);
+                } else {
+                    btnExportieren.setEnabled(false);
+                    btnEmail.setEnabled(false);
                 }
             }
         });

@@ -33,6 +33,17 @@ public class MitarbeitersTableModel extends AbstractTableModel {
     }
 
     @Override
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        mitarbeitersTableData.setValueAt(value, rowIndex, columnIndex);
+        fireTableCellUpdated(rowIndex, columnIndex);
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return mitarbeitersTableData.isCellEditable(columnIndex);
+    }
+
+    @Override
     public String getColumnName(int columnIndex) {
         return mitarbeitersTableData.getColumnName(columnIndex);
     }
@@ -49,4 +60,13 @@ public class MitarbeitersTableModel extends AbstractTableModel {
     public MitarbeitersTableData getMitarbeitersTableData() {
         return mitarbeitersTableData;
     }
+
+    public int getAnzExport() {
+        return mitarbeitersTableData.getAnzExport();
+    }
+
+    public List<Mitarbeiter> getZuExportierendeMitarbeiters() {
+        return mitarbeitersTableData.getZuExportierendeMitarbeiters();
+    }
+
 }

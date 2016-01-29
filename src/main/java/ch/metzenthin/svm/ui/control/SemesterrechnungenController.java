@@ -13,6 +13,8 @@ import ch.metzenthin.svm.ui.components.SemesterrechnungBearbeitenPanel;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -93,6 +95,16 @@ public class SemesterrechnungenController {
                 }
             }
         });
+        semesterrechnungenTable.getModel().addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                if (semesterrechnungenTableModel.getAnzExport() > 0) {
+                    btnExportieren.setEnabled(true);
+                } else {
+                    btnExportieren.setEnabled(false);
+                }
+            }
+        });
     }
 
     public void setLblTotal(JLabel lblTotal) {
@@ -134,7 +146,7 @@ public class SemesterrechnungenController {
 
     public void setBtnExportieren(JButton btnExportieren) {
         this.btnExportieren = btnExportieren;
-        if (semesterrechnungenTableModel.getSemesterrechnungen().isEmpty()) {
+        if (semesterrechnungenTableModel.getSemesterrechnungen().isEmpty() || semesterrechnungenTableModel.getAnzExport() == 0) {
             btnExportieren.setEnabled(false);
         }
         btnExportieren.addActionListener(new ActionListener() {

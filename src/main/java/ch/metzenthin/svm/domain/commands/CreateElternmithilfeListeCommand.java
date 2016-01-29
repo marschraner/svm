@@ -154,12 +154,11 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         header.add(headerCellsRow3);
 
         // Inhalt
-        List<Schueler> schuelerList = schuelerSuchenTableModel.getSchuelerList();
         Map<Schueler, Maercheneinteilung> maercheneinteilungen = schuelerSuchenTableModel.getMaercheneinteilungen();
 
         // Map mit Elternmithilfe als Key, damit nach Elternmithilfe sortiert werden kann
         Map<Person, Maercheneinteilung> maercheneinteilungenElternmithilfe = new TreeMap<>();
-        for (Schueler schueler: schuelerList) {
+        for (Schueler schueler : schuelerSuchenTableModel.getZuExportierendeSchuelerList()) {
             Maercheneinteilung maercheneinteilung = maercheneinteilungen.get(schueler);
             if (maercheneinteilung == null || maercheneinteilung.getElternmithilfe() == null) {
                 continue;

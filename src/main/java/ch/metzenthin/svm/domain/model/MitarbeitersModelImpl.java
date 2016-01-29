@@ -54,6 +54,9 @@ public class MitarbeitersModelImpl extends AbstractModel implements Mitarbeiters
         fehlendeEmailAdressen = new ArrayList<>();
 
         for (Mitarbeiter mitarbeiter : mitarbeitersTableModel.getMitarbeiters()) {
+            if (!mitarbeiter.isZuExportieren()) {
+                continue;
+            }
             if (checkNotEmpty(mitarbeiter.getEmail())) {
                 emailAdressen.add(mitarbeiter.getEmail());
             } else {

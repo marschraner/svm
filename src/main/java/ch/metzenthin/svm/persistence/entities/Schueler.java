@@ -22,6 +22,9 @@ public class Schueler extends Person {
     @Column(name = "bemerkungen", columnDefinition = "text", nullable = true)
     private String bemerkungen;
 
+    @Transient
+    private boolean zuExportieren = true;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "vater_id", nullable = true)
     private Angehoeriger vater;
@@ -93,6 +96,14 @@ public class Schueler extends Person {
 
     public void setBemerkungen(String bemerkungen) {
         this.bemerkungen = bemerkungen;
+    }
+
+    public boolean isZuExportieren() {
+        return zuExportieren;
+    }
+
+    public void setZuExportieren(boolean zuExportieren) {
+        this.zuExportieren = zuExportieren;
     }
 
     public Angehoeriger getVater() {

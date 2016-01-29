@@ -160,14 +160,9 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
         header.add(headerCellsRow3);
 
         // Inhalt
-        List<Mitarbeiter> lehrkraefte = mitarbeitersTableModel.getMitarbeiters();
         List<List<List<String>>> datasets = new ArrayList<>();
         int i = 0;
-        for (Mitarbeiter mitarbeiter : lehrkraefte) {
-            // Nur aktive Lehrkräfte auflisten
-            if (!mitarbeiter.getAktiv()) {
-                continue;
-            }
+        for (Mitarbeiter mitarbeiter : mitarbeitersTableModel.getZuExportierendeMitarbeiters()) {
             List<List<String>> dataset = new ArrayList<>();
             // Auf mehrere Zeilen aufzusplittende Felder:
             SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(mitarbeiter.getVertretungsmoeglichkeiten(), 29, 3);

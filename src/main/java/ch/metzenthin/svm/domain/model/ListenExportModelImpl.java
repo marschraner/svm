@@ -207,13 +207,13 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 result = createElternmithilfeListeCommand.getResult();
                 break;
             case SCHUELER_ADRESSETIKETTEN:
-                CreateAdressenCsvFileCommand createAdressenCsvFileCommandSchueler = new CreateAdressenCsvFileCommand(schuelerSuchenTableModel.getSchuelerList(), outputFile);
+                CreateAdressenCsvFileCommand createAdressenCsvFileCommandSchueler = new CreateAdressenCsvFileCommand(schuelerSuchenTableModel.getZuExportierendeSchuelerList(), outputFile);
                 commandInvoker.executeCommand(createAdressenCsvFileCommandSchueler);
                 result = createAdressenCsvFileCommandSchueler.getResult();
                 break;
             case RECHNUNGSEMPFAENGER_ADRESSETIKETTEN:
                 Set<Person> rechnungsempfaengerSet = new HashSet<>();
-                for (Schueler schueler : schuelerSuchenTableModel.getSchuelerList()) {
+                for (Schueler schueler : schuelerSuchenTableModel.getZuExportierendeSchuelerList()) {
                     rechnungsempfaengerSet.add(schueler.getRechnungsempfaenger());
                 }
                 List<Person> rechnungsempfaengerList = new ArrayList<>(rechnungsempfaengerSet);
@@ -224,7 +224,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 break;
             case MUTTER_ODER_VATER_ADRESSETIKETTEN:
                 Set<Person> mutterOderVaterSet = new HashSet<>();
-                for (Schueler schueler : schuelerSuchenTableModel.getSchuelerList()) {
+                for (Schueler schueler : schuelerSuchenTableModel.getZuExportierendeSchuelerList()) {
                     if (schueler.getMutter() != null && schueler.getMutter().getAdresse() != null) {
                         mutterOderVaterSet.add(schueler.getMutter());
                     } else if (schueler.getVater() != null && schueler.getVater().getAdresse() != null) {
@@ -244,7 +244,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 Map<Schueler, Maercheneinteilung> maercheneinteilungen = schuelerSuchenTableModel.getMaercheneinteilungen();
                 for (Schueler schueler : maercheneinteilungen.keySet()) {
                     Maercheneinteilung maercheneinteilung = maercheneinteilungen.get(schueler);
-                    if (maercheneinteilung == null || maercheneinteilung.getElternmithilfe() == null) {
+                    if (maercheneinteilung == null || maercheneinteilung.getElternmithilfe() == null || !schueler.isZuExportieren()) {
                         continue;
                     }
                     Person elternmithilfe;
@@ -289,17 +289,17 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 result = createMitarbeiterAdresslisteAlleAttributeCommand.getResult();
                 break;
             case MITARBEITER_ADRESSETIKETTEN:
-                CreateAdressenCsvFileCommand createAdressenCsvFileCommandMitarbeiter = new CreateAdressenCsvFileCommand(mitarbeitersTableModel.getMitarbeiters(), outputFile);
+                CreateAdressenCsvFileCommand createAdressenCsvFileCommandMitarbeiter = new CreateAdressenCsvFileCommand(mitarbeitersTableModel.getZuExportierendeMitarbeiters(), outputFile);
                 commandInvoker.executeCommand(createAdressenCsvFileCommandMitarbeiter);
                 result = createAdressenCsvFileCommandMitarbeiter.getResult();
                 break;
             case MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV:
-                CreateMitarbeiterlisteCsvFileCommand createMitarbeiterlisteNameZweispaltigCsvFileCommand = new CreateMitarbeiterlisteCsvFileCommand(mitarbeitersTableModel.getMitarbeiters(), outputFile, false);
+                CreateMitarbeiterlisteCsvFileCommand createMitarbeiterlisteNameZweispaltigCsvFileCommand = new CreateMitarbeiterlisteCsvFileCommand(mitarbeitersTableModel.getZuExportierendeMitarbeiters(), outputFile, false);
                 commandInvoker.executeCommand(createMitarbeiterlisteNameZweispaltigCsvFileCommand);
                 result = createMitarbeiterlisteNameZweispaltigCsvFileCommand.getResult();
                 break;
             case MITARBEITER_LISTE_NAME_EINSPALTIG_CSV:
-                CreateMitarbeiterlisteCsvFileCommand createMitarbeiterlisteNameEinspaltigCsvFileCommand = new CreateMitarbeiterlisteCsvFileCommand(mitarbeitersTableModel.getMitarbeiters(), outputFile, true);
+                CreateMitarbeiterlisteCsvFileCommand createMitarbeiterlisteNameEinspaltigCsvFileCommand = new CreateMitarbeiterlisteCsvFileCommand(mitarbeitersTableModel.getZuExportierendeMitarbeiters(), outputFile, true);
                 commandInvoker.executeCommand(createMitarbeiterlisteNameEinspaltigCsvFileCommand);
                 result = createMitarbeiterlisteNameEinspaltigCsvFileCommand.getResult();
                 break;
@@ -314,28 +314,28 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 result = createKurslisteCsvFileCommand.getResult();
                 break;
             case VORRECHNUNGEN_SERIENBRIEF:
-                CreateRechnungenSerienbriefCsvFileCommand createVorrechnungenSerienbriefCsvFileCommand = new CreateRechnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), Rechnungstyp.VORRECHNUNG, outputFile);
+                CreateRechnungenSerienbriefCsvFileCommand createVorrechnungenSerienbriefCsvFileCommand = new CreateRechnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getZuExportierendeSemesterrechnungen(), Rechnungstyp.VORRECHNUNG, outputFile);
                 commandInvoker.executeCommand(createVorrechnungenSerienbriefCsvFileCommand);
                 result = createVorrechnungenSerienbriefCsvFileCommand.getResult();
                 break;
             case NACHRECHNUNGEN_SERIENBRIEF:
-                CreateRechnungenSerienbriefCsvFileCommand createNachrechnungenSerienbriefCsvFileCommand = new CreateRechnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), Rechnungstyp.NACHRECHNUNG, outputFile);
+                CreateRechnungenSerienbriefCsvFileCommand createNachrechnungenSerienbriefCsvFileCommand = new CreateRechnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getZuExportierendeSemesterrechnungen(), Rechnungstyp.NACHRECHNUNG, outputFile);
                 commandInvoker.executeCommand(createNachrechnungenSerienbriefCsvFileCommand);
                 result = createNachrechnungenSerienbriefCsvFileCommand.getResult();
                 break;
             case MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF:
-                CreateMahnungenSerienbriefCsvFileCommand createMahnungenVorrechnungenSerienbriefCsvFileCommand = new CreateMahnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), Rechnungstyp.VORRECHNUNG, outputFile);
+                CreateMahnungenSerienbriefCsvFileCommand createMahnungenVorrechnungenSerienbriefCsvFileCommand = new CreateMahnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getZuExportierendeSemesterrechnungen(), Rechnungstyp.VORRECHNUNG, outputFile);
                 commandInvoker.executeCommand(createMahnungenVorrechnungenSerienbriefCsvFileCommand);
                 result = createMahnungenVorrechnungenSerienbriefCsvFileCommand.getResult();
                 break;
             case MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF:
-                CreateMahnungenSerienbriefCsvFileCommand createMahnungenNachrechnungenSerienbriefCsvFileCommand = new CreateMahnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), Rechnungstyp.NACHRECHNUNG, outputFile);
+                CreateMahnungenSerienbriefCsvFileCommand createMahnungenNachrechnungenSerienbriefCsvFileCommand = new CreateMahnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getZuExportierendeSemesterrechnungen(), Rechnungstyp.NACHRECHNUNG, outputFile);
                 commandInvoker.executeCommand(createMahnungenNachrechnungenSerienbriefCsvFileCommand);
                 result = createMahnungenNachrechnungenSerienbriefCsvFileCommand.getResult();
                 break;
             case SEMESTERRECHNUNGEN_ADRESSETIKETTEN:
                 Set<Person> rechnungsempfaengerSemesterrechnungSet = new HashSet<>();
-                for (Semesterrechnung semesterrechnung : semesterrechnungenTableModel.getSemesterrechnungen()) {
+                for (Semesterrechnung semesterrechnung : semesterrechnungenTableModel.getZuExportierendeSemesterrechnungen()) {
                     rechnungsempfaengerSemesterrechnungSet.add(semesterrechnung.getRechnungsempfaenger());
                 }
                 List<Person> rechnungsempfaengerSemesterrechnungList = new ArrayList<>(rechnungsempfaengerSemesterrechnungSet);
@@ -345,7 +345,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 result = createAdressenCsvFileCommandRechnungsempfaengerSemesterrechnung.getResult();
                 break;
             case RECHNUNGSLISTE:
-                CreateRechnungslisteCsvFileCommand createRechnungslisteCsvFileCommand = new CreateRechnungslisteCsvFileCommand(semesterrechnungenTableModel.getSemesterrechnungen(), outputFile);
+                CreateRechnungslisteCsvFileCommand createRechnungslisteCsvFileCommand = new CreateRechnungslisteCsvFileCommand(semesterrechnungenTableModel.getZuExportierendeSemesterrechnungen(), outputFile);
                 commandInvoker.executeCommand(createRechnungslisteCsvFileCommand);
                 result = createRechnungslisteCsvFileCommand.getResult();
                 break;
@@ -431,10 +431,10 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
 
     private String getTitleSpecificKurs(SchuelerSuchenTableModel schuelerSuchenTableModel) {
         if (schuelerSuchenTableModel.getWochentag() != null && schuelerSuchenTableModel.getZeitBeginn() != null) {
-            if (schuelerSuchenTableModel.getSchuelerList().size() > 0) {
-                String lehrkraefte = schuelerSuchenTableModel.getSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getLehrkraefteAsStr();
-                String zeitEnde = asString(schuelerSuchenTableModel.getSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getZeitEnde());
-                String kursort = schuelerSuchenTableModel.getSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getKursort().getBezeichnung();
+            if (schuelerSuchenTableModel.getZuExportierendeSchuelerList().size() > 0) {
+                String lehrkraefte = schuelerSuchenTableModel.getZuExportierendeSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getLehrkraefteAsStr();
+                String zeitEnde = asString(schuelerSuchenTableModel.getZuExportierendeSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getZeitEnde());
+                String kursort = schuelerSuchenTableModel.getZuExportierendeSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getKursort().getBezeichnung();
                 return lehrkraefte + " (" + schuelerSuchenTableModel.getWochentag() + " " + asString(schuelerSuchenTableModel.getZeitBeginn()) + "-" + zeitEnde + ", " + kursort + ")";
             } else {
                 CommandInvoker commandInvoker = getCommandInvoker();
@@ -456,7 +456,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
     }
 
     private boolean checkIfRechnungsdatumVorrechnungUeberallGesetzt(SemesterrechnungenTableModel semesterrechnungenTableModel) {
-        for (Semesterrechnung semesterrechnung : semesterrechnungenTableModel.getSemesterrechnungen()) {
+        for (Semesterrechnung semesterrechnung : semesterrechnungenTableModel.getZuExportierendeSemesterrechnungen()) {
             if (semesterrechnung.getRechnungsdatumVorrechnung() == null) {
                 return false;
             }
@@ -465,7 +465,7 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
     }
 
     private boolean checkIfRechnungsdatumNachrechnungUeberallGesetzt(SemesterrechnungenTableModel semesterrechnungenTableModel) {
-        for (Semesterrechnung semesterrechnung : semesterrechnungenTableModel.getSemesterrechnungen()) {
+        for (Semesterrechnung semesterrechnung : semesterrechnungenTableModel.getZuExportierendeSemesterrechnungen()) {
             if (semesterrechnung.getRechnungsdatumNachrechnung() == null) {
                 return false;
             }

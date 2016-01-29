@@ -11,6 +11,8 @@ import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -62,6 +64,18 @@ public class SchuelerSuchenResultController {
                 }
             }
         });
+        schuelerSuchenResultTable.getModel().addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                if (schuelerSuchenTableModel.getAnzExport() > 0) {
+                    btnExportieren.setEnabled(true);
+                    btnEmail.setEnabled(true);
+                } else {
+                    btnExportieren.setEnabled(false);
+                    btnEmail.setEnabled(false);
+                }
+            }
+        });
     }
 
     public void setLblTotal(JLabel lblTotal) {
@@ -110,6 +124,9 @@ public class SchuelerSuchenResultController {
 
     public void setBtnExportieren(JButton btnExportieren) {
         this.btnExportieren = btnExportieren;
+        if (schuelerSuchenTableModel.getAnzExport() == 0) {
+            btnExportieren.setEnabled(false);
+        }
         btnExportieren.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -128,6 +145,9 @@ public class SchuelerSuchenResultController {
 
     public void setBtnEmail(JButton btnEmail) {
         this.btnEmail = btnEmail;
+        if (schuelerSuchenTableModel.getAnzExport() == 0) {
+            btnEmail.setEnabled(false);
+        }
         btnEmail.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

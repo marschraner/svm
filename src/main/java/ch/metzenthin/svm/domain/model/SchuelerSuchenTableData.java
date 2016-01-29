@@ -67,6 +67,7 @@ public class SchuelerSuchenTableData {
             // Märchen nur im 1. Semester anzeigen
             columns.add(Field.GRUPPE);
         }
+        columns.add(Field.EXPORT_MAIL);
     }
 
     public int getColumnCount() {
@@ -75,6 +76,16 @@ public class SchuelerSuchenTableData {
 
     public int size() {
         return schuelerList.size();
+    }
+
+    public int getAnzExport() {
+        int anzExport = 0;
+        for (Schueler schueler : schuelerList) {
+            if (schueler.isZuExportieren()) {
+                anzExport++;
+            }
+        }
+        return anzExport;
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -131,10 +142,33 @@ public class SchuelerSuchenTableData {
                     value = maercheneinteilungen.get(schueler).getGruppe().toString();
                 }
                 break;
+            case EXPORT_MAIL:
+                value = schueler.isZuExportieren();
+                break;
             default:
                 break;
         }
         return value;
+    }
+
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        switch (columns.get(columnIndex)) {
+            case EXPORT_MAIL:
+                Schueler schueler = schuelerList.get(rowIndex);
+                schueler.setZuExportieren((boolean) value);
+                schuelerList.set(rowIndex, schueler);
+                break;
+            default:
+        }
+    }
+
+    public boolean isCellEditable(int columnIndex) {
+        switch (columns.get(columnIndex)) {
+            case EXPORT_MAIL:
+                return true;
+            default:
+                return false;
+        }
     }
 
     public Class<?> getColumnClass(int columnIndex) {
@@ -143,6 +177,8 @@ public class SchuelerSuchenTableData {
                 return Calendar.class;
             case ANZAHL_KURSE:
                 return Integer.class;
+            case EXPORT_MAIL:
+                return Boolean.class;
             default:
                 return String.class;
         }
@@ -210,6 +246,16 @@ public class SchuelerSuchenTableData {
 
     public List<Schueler> getSchuelerList() {
         return schuelerList;
+    }
+
+    public List<Schueler> getZuExportierendeSchuelerList() {
+        List<Schueler> zuExportierendeSchuelerList = new ArrayList<>();
+        for (Schueler schueler : schuelerList) {
+            if (schueler.isZuExportieren()) {
+                zuExportierendeSchuelerList.add(schueler);
+            }
+        }
+        return zuExportierendeSchuelerList;
     }
 
     public void setKurse(Map<Schueler, List<Kurs>> kurse) {

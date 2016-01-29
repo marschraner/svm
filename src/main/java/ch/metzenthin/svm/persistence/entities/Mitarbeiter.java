@@ -28,6 +28,9 @@ public class Mitarbeiter extends Person {
     @Column(name = "aktiv", nullable = false)
     private Boolean aktiv;
 
+    @Transient
+    private boolean zuExportieren = true;
+
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "Mitarbeiter_MitarbeiterCode",
             joinColumns = {@JoinColumn(name = "person_id")},
@@ -120,6 +123,14 @@ public class Mitarbeiter extends Person {
 
     public void setAktiv(Boolean aktiv) {
         this.aktiv = aktiv;
+    }
+
+    public boolean isZuExportieren() {
+        return zuExportieren;
+    }
+
+    public void setZuExportieren(boolean zuExportieren) {
+        this.zuExportieren = zuExportieren;
     }
 
     public Set<MitarbeiterCode> getMitarbeiterCodes() {

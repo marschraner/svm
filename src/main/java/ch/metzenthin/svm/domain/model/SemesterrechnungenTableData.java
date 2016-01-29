@@ -5,6 +5,7 @@ import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class SemesterrechnungenTableData {
             Field.RECHNUNGSDATUM_NACHRECHNUNG, Field.ANZAHL_WOCHEN_NACHRECHNUNG, Field.WOCHENBETRAG_NACHRECHNUNG,
             Field.SCHULGELD_NACHRECHNUNG, Field.ERMAESSIGUNG_NACHRECHNUNG, Field.ZUSCHLAG_NACHRECHNUNG,
             Field.ERMAESSIGUNG_STIPENDIUM_NACHRECHNUNG, Field.RECHNUNGSBETRAG_NACHRECHNUNG, Field.RESTBETRAG_NACHRECHNUNG,
-            Field.DIFFERENZ_SCHULGELD};
+            Field.DIFFERENZ_SCHULGELD, Field.EXPORT};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -36,6 +37,16 @@ public class SemesterrechnungenTableData {
 
     public int size() {
         return semesterrechnungen.size();
+    }
+
+    public int getAnzExport() {
+        int anzExport = 0;
+        for (Semesterrechnung semesterrechnung : semesterrechnungen) {
+            if (semesterrechnung.isZuExportieren()) {
+                anzExport++;
+            }
+        }
+        return anzExport;
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -119,10 +130,33 @@ public class SemesterrechnungenTableData {
             case DIFFERENZ_SCHULGELD:
                 value = semesterrechnung.getDifferenzSchulgeld();
                 break;
+            case EXPORT:
+                value = semesterrechnung.isZuExportieren();
+                break;
             default:
                 break;
         }
         return value;
+    }
+
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        switch (COLUMNS[columnIndex]) {
+            case EXPORT:
+                Semesterrechnung semesterrechnung = semesterrechnungen.get(rowIndex);
+                semesterrechnung.setZuExportieren((boolean) value);
+                semesterrechnungen.set(rowIndex, semesterrechnung);
+                break;
+            default:
+        }
+    }
+
+    public boolean isCellEditable(int columnIndex) {
+        switch (COLUMNS[columnIndex]) {
+            case EXPORT:
+                return true;
+            default:
+                return false;
+        }
     }
 
     public Class<?> getColumnClass(int columnIndex) {
@@ -161,6 +195,8 @@ public class SemesterrechnungenTableData {
                 return BigDecimal.class;
             case DIFFERENZ_SCHULGELD:
                 return BigDecimal.class;
+            case EXPORT:
+                return Boolean.class;
             default:
                 return String.class;
         }
@@ -184,5 +220,15 @@ public class SemesterrechnungenTableData {
 
     public void setSemesterrechnungen(List<Semesterrechnung> semesterrechnungen) {
         this.semesterrechnungen = semesterrechnungen;
+    }
+
+    public List<Semesterrechnung> getZuExportierendeSemesterrechnungen() {
+        List<Semesterrechnung> zuExportierendeSemesterrechnungen = new ArrayList<>();
+        for (Semesterrechnung semesterrechnung : semesterrechnungen) {
+            if (semesterrechnung.isZuExportieren()) {
+                zuExportierendeSemesterrechnungen.add(semesterrechnung);
+            }
+        }
+        return zuExportierendeSemesterrechnungen;
     }
 }

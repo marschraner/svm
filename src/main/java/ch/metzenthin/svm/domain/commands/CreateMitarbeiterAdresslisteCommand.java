@@ -129,14 +129,9 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
         header.add(headerCellsRow2);
 
         // Inhalt
-        List<Mitarbeiter> lehrkraefte = mitarbeitersTableModel.getMitarbeiters();
         List<List<List<String>>> datasets = new ArrayList<>();
         int i = 0;
-        for (Mitarbeiter mitarbeiter : lehrkraefte) {
-            // Nur aktive Lehrkräfte auflisten
-            if (!mitarbeiter.getAktiv()) {
-                continue;
-            }
+        for (Mitarbeiter mitarbeiter : mitarbeitersTableModel.getZuExportierendeMitarbeiters()) {
             List<List<String>> dataset = new ArrayList<>();
             // 1. Zeile
             List<String> cellsRow1 = new ArrayList<>();

@@ -34,6 +34,17 @@ public class SemesterrechnungenTableModel extends AbstractTableModel {
     }
 
     @Override
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        semesterrechnungenTableData.setValueAt(value, rowIndex, columnIndex);
+        fireTableCellUpdated(rowIndex, columnIndex);
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return semesterrechnungenTableData.isCellEditable(columnIndex);
+    }
+
+    @Override
     public String getColumnName(int column) {
         return semesterrechnungenTableData.getColumnName(column);
     }
@@ -53,6 +64,14 @@ public class SemesterrechnungenTableModel extends AbstractTableModel {
 
     public Semesterrechnung getSemesterrechnungSelected(int rowIndex) {
         return semesterrechnungenTableData.getSemesterrechnungSelected(rowIndex);
+    }
+
+    public int getAnzExport() {
+        return semesterrechnungenTableData.getAnzExport();
+    }
+
+    public List<Semesterrechnung> getZuExportierendeSemesterrechnungen() {
+        return semesterrechnungenTableData.getZuExportierendeSemesterrechnungen();
     }
 
 }

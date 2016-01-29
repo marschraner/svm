@@ -122,6 +122,9 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     @Column(name = "betrag_zahlung_3_nachrechnung", nullable = true)
     private BigDecimal betragZahlung3Nachrechnung;
 
+    @Transient
+    private boolean zuExportieren = true;
+
     @ManyToOne
     @JoinColumn(name = "code_id", nullable = true)
     private SemesterrechnungCode semesterrechnungCode;
@@ -485,6 +488,14 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
 
     public void setBemerkungen(String bemerkungen) {
         this.bemerkungen = bemerkungen;
+    }
+
+    public boolean isZuExportieren() {
+        return zuExportieren;
+    }
+
+    public void setZuExportieren(boolean zuExportieren) {
+        this.zuExportieren = zuExportieren;
     }
 
     @Transient

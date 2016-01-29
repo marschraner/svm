@@ -79,7 +79,7 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
 
             case MUTTER_ODER_VATER:
                 // Wenn vorhanden Email der Mutter, sonst des Vaters, sonst des Rechnungsempfängers
-                for (Schueler schueler : schuelerSuchenTableModel.getSchuelerList()) {
+                for (Schueler schueler : schuelerSuchenTableModel.getZuExportierendeSchuelerList()) {
                     String email = null;
                     if (schueler.getMutter() != null && checkNotEmpty(schueler.getMutter().getEmail())) {
                         email = schueler.getMutter().getEmail();
@@ -98,7 +98,7 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
 
             case SCHUELER:
                 // Wenn vorhanden Email des Schülers, sonst der Mutter, sonst des Vaters, sonst des Rechnungsempfängers
-                for (Schueler schueler : schuelerSuchenTableModel.getSchuelerList()) {
+                for (Schueler schueler : schuelerSuchenTableModel.getZuExportierendeSchuelerList()) {
                     String email = null;
                     if (checkNotEmpty(schueler.getEmail())) {
                         email = schueler.getEmail();
@@ -132,7 +132,7 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                 }
                 for (Schueler schueler : keys) {
                     Maercheneinteilung maercheneinteilung = maercheneinteilungen.get(schueler);
-                    if (maercheneinteilung == null) {
+                    if (maercheneinteilung == null || !schueler.isZuExportieren()) {
                         continue;
                     }
                     String email = null;
@@ -165,7 +165,7 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                 List<Person> elternmithilfen = new ArrayList<>();
                 for (Schueler schueler : schuelerSuchenTableModel.getMaercheneinteilungen().keySet()) {
                     Maercheneinteilung maercheneinteilung = maercheneinteilungenElternmithilfe.get(schueler);
-                    if (maercheneinteilung == null) {
+                    if (maercheneinteilung == null || !schueler.isZuExportieren()) {
                         continue;
                     }
                     Person elternmithilfe;

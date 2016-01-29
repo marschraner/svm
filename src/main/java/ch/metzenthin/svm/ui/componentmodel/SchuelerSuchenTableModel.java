@@ -39,6 +39,17 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
     }
 
     @Override
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        schuelerSuchenTableData.setValueAt(value, rowIndex, columnIndex);
+        fireTableCellUpdated(rowIndex, columnIndex);
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return schuelerSuchenTableData.isCellEditable(columnIndex);
+    }
+
+    @Override
     public String getColumnName(int columnIndex) {
         return schuelerSuchenTableData.getColumnName(columnIndex);
     }
@@ -62,6 +73,14 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
 
     public List<Schueler> getSchuelerList() {
         return getSchuelerSuchenTableData().getSchuelerList();
+    }
+
+    public int getAnzExport() {
+        return schuelerSuchenTableData.getAnzExport();
+    }
+
+    public List<Schueler> getZuExportierendeSchuelerList() {
+        return schuelerSuchenTableData.getZuExportierendeSchuelerList();
     }
 
     public Semester getSemester() {

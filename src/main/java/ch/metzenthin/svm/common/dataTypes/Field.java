@@ -4,6 +4,8 @@ package ch.metzenthin.svm.common.dataTypes;
  * @author Martin Schraner
  */
 public enum Field {
+    EXPORT_MAIL("Exp./Mail"),
+    EXPORT("Export"),
     ALLE("Alle"),
     ANREDE("Anrede"),
     NACHNAME("Nachname"),
