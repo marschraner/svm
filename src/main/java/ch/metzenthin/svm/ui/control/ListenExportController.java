@@ -147,7 +147,7 @@ public class ListenExportController extends AbstractController {
                 // Keine Absenzenlisten, falls in Suche nicht nach einem spezifischen Kurs gesucht wurde
                 comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
             }
-            if (schuelerSuchenTableModel.getMaerchen() == null || schuelerSuchenTableModel.getMaercheneinteilungen().size() == 0) {
+            if (schuelerSuchenTableModel.getMaerchen() == null || schuelerSuchenTableModel.getAnzZuExportierendeMaercheneinteilungen() == 0) {
                 // Keine Märchenlisten, falls kein Märchen oder keine Märcheneinteilungen
                 comboBoxListentyp.removeItem(Listentyp.ROLLENLISTE);
                 comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_LISTE);

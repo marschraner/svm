@@ -123,6 +123,10 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
         return schuelerSuchenTableData.getMaercheneinteilungen();
     }
 
+    public int getAnzZuExportierendeMaercheneinteilungen() {
+        return schuelerSuchenTableData.getAnzZuExportierendeMaercheneinteilungen();
+    }
+
     public Gruppe getGruppe() {
         return schuelerSuchenTableData.getGruppe();
     }

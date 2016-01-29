@@ -274,6 +274,16 @@ public class SchuelerSuchenTableData {
         return maercheneinteilungen;
     }
 
+    public int getAnzZuExportierendeMaercheneinteilungen() {
+        int anzZuExportierendeMaercheneinteilungen = 0;
+        for (Schueler schueler : maercheneinteilungen.keySet()) {
+            if (schueler.isZuExportieren() && maercheneinteilungen.get(schueler) != null) {
+                anzZuExportierendeMaercheneinteilungen++;
+            }
+        }
+        return anzZuExportierendeMaercheneinteilungen;
+    }
+
     public void setMaercheneinteilungen(Map<Schueler, Maercheneinteilung> maercheneinteilungen) {
         this.maercheneinteilungen = maercheneinteilungen;
     }

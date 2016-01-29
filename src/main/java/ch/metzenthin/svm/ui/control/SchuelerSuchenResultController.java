@@ -137,6 +137,20 @@ public class SchuelerSuchenResultController {
 
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
+        if (schuelerSuchenTableModel.getAnzExport() < schuelerSuchenTableModel.getRowCount()) {
+            String str1;
+            String str2;
+            if (schuelerSuchenTableModel.getAnzExport() > 1) {
+                str1 = "sind nur " + schuelerSuchenTableModel.getAnzExport();
+                str2 = "diese Einträge\nwerden";
+            } else {
+                str1 = "ist nur einer";
+                str2 = "dieser Eintrag\nwird";
+            }
+            JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
+                    + schuelerSuchenTableModel.getRowCount() + " Einträge selektiert. Nur " + str2
+                    + " beim Exportieren berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+        }
         ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, schuelerSuchenTableModel, null, null, null, ListenExportTyp.SCHUELER);
         listenExportDialog.pack();
         listenExportDialog.setVisible(true);
@@ -158,6 +172,20 @@ public class SchuelerSuchenResultController {
 
     private void onEmail() {
         btnEmail.setFocusPainted(true);
+        if (schuelerSuchenTableModel.getAnzExport() < schuelerSuchenTableModel.getRowCount()) {
+            String str1;
+            String str2;
+            if (schuelerSuchenTableModel.getAnzExport() > 1) {
+                str1 = "sind nur " + schuelerSuchenTableModel.getAnzExport();
+                str2 = "diese Einträge\nwerden";
+            } else {
+                str1 = "ist nur einer";
+                str2 = "dieser Eintrag\nwird";
+            }
+            JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
+                    + schuelerSuchenTableModel.getRowCount() + " Einträge selektiert. Nur " + str2
+                    + " für die Gruppen-E-Mail berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+        }
         EmailSchuelerListeDialog emailSchuelerListeDialog = new EmailSchuelerListeDialog(svmContext, schuelerSuchenTableModel);
         emailSchuelerListeDialog.pack();
         emailSchuelerListeDialog.setVisible(true);

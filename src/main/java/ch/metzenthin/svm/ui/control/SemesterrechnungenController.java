@@ -159,6 +159,20 @@ public class SemesterrechnungenController {
 
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
+        if (semesterrechnungenTableModel.getAnzExport() < semesterrechnungenTableModel.getRowCount()) {
+            String str1;
+            String str2;
+            if (semesterrechnungenTableModel.getAnzExport() > 1) {
+                str1 = "sind nur " + semesterrechnungenTableModel.getAnzExport();
+                str2 = "diese Einträge\nwerden";
+            } else {
+                str1 = "ist nur einer";
+                str2 = "dieser Eintrag\nwird";
+            }
+            JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
+                    + semesterrechnungenTableModel.getRowCount() + " Einträge selektiert. Nur " + str2
+                    + " beim Exportieren berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+        }
         ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, null, null, null, semesterrechnungenTableModel, ListenExportTyp.SEMESTERRECHNUNGEN);
         listenExportDialog.pack();
         listenExportDialog.setVisible(true);

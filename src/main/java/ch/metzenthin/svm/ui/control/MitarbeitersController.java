@@ -224,6 +224,20 @@ public class MitarbeitersController {
 
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
+        if (mitarbeitersTableModel.getAnzExport() < mitarbeitersTableModel.getRowCount()) {
+            String str1;
+            String str2;
+            if (mitarbeitersTableModel.getAnzExport() > 1) {
+                str1 = "sind nur " + mitarbeitersTableModel.getAnzExport();
+                str2 = "diese Einträge\nwerden";
+            } else {
+                str1 = "ist nur einer";
+                str2 = "dieser Eintrag\nwird";
+            }
+            JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
+                    + mitarbeitersTableModel.getRowCount() + " Einträge selektiert. Nur " + str2
+                    + " beim Exportieren berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+        }
         ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, null, mitarbeitersTableModel, null, null, ListenExportTyp.MITARBEITERS);
         listenExportDialog.pack();
         listenExportDialog.setVisible(true);
@@ -245,6 +259,20 @@ public class MitarbeitersController {
 
     private void onEmail() {
         btnEmail.setFocusPainted(true);
+        if (mitarbeitersTableModel.getAnzExport() < mitarbeitersTableModel.getRowCount()) {
+            String str1;
+            String str2;
+            if (mitarbeitersTableModel.getAnzExport() > 1) {
+                str1 = "sind nur " + mitarbeitersTableModel.getAnzExport();
+                str2 = "diese Einträge\nwerden";
+            } else {
+                str1 = "ist nur einer";
+                str2 = "dieser Eintrag\nwird";
+            }
+            JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
+                    + mitarbeitersTableModel.getRowCount() + " Einträge selektiert. Nur " + str2
+                    + " für die Gruppen-E-Mail berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+        }
         CallDefaultEmailClientCommand.Result result = mitarbeitersModel.callEmailClient(mitarbeitersTableModel);
         if (result == CallDefaultEmailClientCommand.Result.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT) {
             JOptionPane.showMessageDialog(null, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
@@ -265,7 +293,7 @@ public class MitarbeitersController {
                 ungueltig.append("\n");
             }
             ungueltig.setLength(ungueltig.length() - 1);
-            JOptionPane.showMessageDialog(null, "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig:\n" + ungueltig, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+            JOptionPane.showMessageDialog(null, "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig und wurde(n) ignoriert:\n" + ungueltig, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
         }
         btnEmail.setFocusPainted(false);
     }

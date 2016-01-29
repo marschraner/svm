@@ -179,7 +179,7 @@ public class EmailSchuelerListeController extends AbstractController {
                 ungueltig.append("\n");
             }
             ungueltig.setLength(ungueltig.length() - 1);
-            JOptionPane.showMessageDialog(emailDialog, "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig:\n" + ungueltig, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+            JOptionPane.showMessageDialog(emailDialog, "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig und wurde(n) ignoriert:\n" + ungueltig, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
         }
         emailDialog.dispose();
     }
