@@ -27,7 +27,7 @@ public class MitarbeitersPanel {
     private JButton btnEmail;
     private JButton btnZurueck;
     private JButton btnAbbrechen;
-    private JTable lehrkraefteTable;
+    private JTable mitarbeitersTable;
     private JPanel mitarbeiterTablePanel;
     private MitarbeitersController mitarbeitersController;
 
@@ -38,7 +38,7 @@ public class MitarbeitersPanel {
 
     private void createMitarbeitersController(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel) {
         mitarbeitersController = new MitarbeitersController(svmContext.getModelFactory().createLehrkraefteModel(), svmContext, mitarbeitersTableModel);
-        mitarbeitersController.setMitarbeitersTable(lehrkraefteTable);
+        mitarbeitersController.setMitarbeitersTable(mitarbeitersTable);
         mitarbeitersController.setLblTotal(lblTotal);
         mitarbeitersController.setBtnNeu(btnNeu);
         mitarbeitersController.setBtnBearbeiten(btnBearbeiten);
@@ -60,16 +60,16 @@ public class MitarbeitersPanel {
     private void createUIComponents() {
         // JTable mit optimiertem Scroll-Verhalten
         // http://stackoverflow.com/questions/6104916/how-to-make-jtable-both-autoresize-and-horizontall-scrollable
-        lehrkraefteTable = new JTable() {
+        mitarbeitersTable = new JTable() {
             @Override
             public boolean getScrollableTracksViewportWidth() {
                 return getPreferredSize().width < getParent().getWidth();
             }
         };
-        lehrkraefteTable.setAutoCreateRowSorter(true);
-        lehrkraefteTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        lehrkraefteTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        final JScrollPane scrollPane = new JScrollPane(lehrkraefteTable);
+        mitarbeitersTable.setAutoCreateRowSorter(true);
+        mitarbeitersTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        mitarbeitersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        final JScrollPane scrollPane = new JScrollPane(mitarbeitersTable);
         mitarbeiterTablePanel.add(scrollPane);
     }
 
