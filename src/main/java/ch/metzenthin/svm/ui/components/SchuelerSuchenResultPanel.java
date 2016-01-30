@@ -129,6 +129,8 @@ public class SchuelerSuchenResultPanel {
         btnEmail.setMinimumSize(new Dimension(141, 29));
         btnEmail.setPreferredSize(new Dimension(141, 29));
         btnEmail.setText("Gruppen-E-Mail");
+        btnEmail.setMnemonic('G');
+        btnEmail.setDisplayedMnemonicIndex(0);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;

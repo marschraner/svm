@@ -140,6 +140,8 @@ public class MitarbeitersPanel {
         btnEmail.setMinimumSize(new Dimension(151, 29));
         btnEmail.setPreferredSize(new Dimension(151, 29));
         btnEmail.setText("(Gruppen-)E-Mail");
+        btnEmail.setMnemonic('G');
+        btnEmail.setDisplayedMnemonicIndex(1);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;

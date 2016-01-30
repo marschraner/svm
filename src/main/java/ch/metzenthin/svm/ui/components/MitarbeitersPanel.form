@@ -65,7 +65,7 @@
                   <maximumSize width="151" height="29"/>
                   <minimumSize width="151" height="29"/>
                   <preferredSize width="151" height="29"/>
-                  <text value="(Gruppen-)E-Mail"/>
+                  <text value="(&amp;Gruppen-)E-Mail"/>
                 </properties>
               </component>
             </children>
