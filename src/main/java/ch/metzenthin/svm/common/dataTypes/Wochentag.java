@@ -12,7 +12,8 @@ public enum Wochentag {
     MITTWOCH("Mittwoch", Calendar.WEDNESDAY),
     DONNERSTAG("Donnerstag", Calendar.THURSDAY),
     FREITAG("Freitag", Calendar.FRIDAY),
-    SAMSTAG("Samstag", Calendar.SATURDAY);
+    SAMSTAG("Samstag", Calendar.SATURDAY),
+    SONNTAG("Sonntag", Calendar.SUNDAY);
 
     private String name;
     private int dayOfWeekCalendar;

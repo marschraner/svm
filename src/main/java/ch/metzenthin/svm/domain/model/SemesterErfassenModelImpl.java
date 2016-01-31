@@ -367,7 +367,7 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
             throw new SvmValidationException(2031, "Datum liegt nicht im Schuljahr " + semester.getSchuljahr(), Field.SEMESTERBEGINN);
         }
         if (!isBulkUpdate() && semester.getSchuljahr() != null && semester.getSemesterende() != null && !semester.getSchuljahr().contains(Integer.toString(semester.getSemesterende().get(Calendar.YEAR)))) {
-            throw new SvmValidationException(2031, "Datum liegt nicht im Schuljahr " + semester.getSchuljahr(), Field.SEMESTERENDE);
+            throw new SvmValidationException(2032, "Datum liegt nicht im Schuljahr " + semester.getSchuljahr(), Field.SEMESTERENDE);
         }
         if (semester.getFerienbeginn1() != null && semester.getSemesterbeginn() != null && !semester.getFerienbeginn1().after(semester.getSemesterbeginn())) {
             throw new SvmValidationException(2061, "Ferienbeginn muss nach Semesterbeginn liegen", Field.FERIENBEGINN1);

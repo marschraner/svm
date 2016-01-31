@@ -1,13 +1,15 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
+import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
+import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.Semester;
 
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 
 import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNumberOfDaysOfPeriod;
+import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNumberOfWeeksBetween;
 
 /**
  * @author Martin Schraner
@@ -21,21 +23,9 @@ public class CalculateAnzWochenCommand implements Command {
     // output
     private int anzahlWochen;
 
-    private Calendar repraesenativesDatumFruehlingsferien;
-    private Calendar repraesenativesDatumHerbstferien;
-    private Calendar repraesenativesDatumWeihnachtsferien;
-    private int anzahlWochenSemester;
-
     public CalculateAnzWochenCommand(Collection<Schueler> schuelerRechnungsempfaenger, Semester semester) {
         this.semester = semester;
         this.schuelerRechnungsempfaenger = schuelerRechnungsempfaenger;
-
-        // Repräsentative Daten für Schulferien (= Daten, die immer in Ferien liegen)
-        int year = semester.getSemesterbeginn().get(Calendar.YEAR);
-        repraesenativesDatumFruehlingsferien = new GregorianCalendar(year, Calendar.APRIL, 25);
-        repraesenativesDatumHerbstferien = new GregorianCalendar(year, Calendar.OCTOBER, 15);
-        repraesenativesDatumWeihnachtsferien = new GregorianCalendar(year, Calendar.DECEMBER, 31);
-        anzahlWochenSemester = semester.getAnzahlSchulwochen();
     }
 
     @Override
@@ -70,55 +60,88 @@ public class CalculateAnzWochenCommand implements Command {
 
     protected int calculateAnzWochenKursanmeldung(Kursanmeldung kursanmeldung) {
 
-        int anzahlWochenKursanmeldung = anzahlWochenSemester;
+        int anzahlWochenKursanmeldung = semester.getAnzahlSchulwochen();
 
         // Später angemeldet?
         if (kursanmeldung.getAnmeldedatum() != null && kursanmeldung.getAnmeldedatum().after(semester.getSemesterbeginn())) {
-            anzahlWochenKursanmeldung -= getNumberOfDaysOfPeriod(semester.getSemesterbeginn(), kursanmeldung.getAnmeldedatum()) / 7;
+
+            // Klonen, da ein Anmeldedatum innerhalb Ferien auf darauffolgenden Schulanfang geändert wird
+            Calendar anmeldedatum = (Calendar) kursanmeldung.getAnmeldedatum().clone();
+
+            // Anmeldedatum innerhalb 1. Schulferien -> Anmeldedatum auf darauffolgenden Schulanfang ändern
+            if (semester.getFerienbeginn1() != null && semester.getFerienende1() != null
+                    && (anmeldedatum.equals(semester.getFerienbeginn1()) || anmeldedatum.after(semester.getFerienbeginn1()))
+                    && (anmeldedatum.equals(semester.getFerienende1()) || anmeldedatum.before(semester.getFerienende1()))) {
+                anmeldedatum = (Calendar) semester.getFerienende1().clone();
+                anmeldedatum.add(Calendar.DAY_OF_YEAR, 1);
+            }
+
+            // Anmeldedatum innerhalb 2. Schulferien -> Anmeldedatum auf darauffolgenden Schulanfang ändern
+            if (semester.getFerienbeginn2() != null && semester.getFerienende2() != null &&
+                    (anmeldedatum.equals(semester.getFerienbeginn2()) || anmeldedatum.after(semester.getFerienbeginn2())) &&
+                    (anmeldedatum.equals(semester.getFerienende2()) || anmeldedatum.before(semester.getFerienende2()))) {
+                anmeldedatum = (Calendar) semester.getFerienende2().clone();
+                anmeldedatum.add(Calendar.DAY_OF_YEAR, 1);
+            }
+
+            anzahlWochenKursanmeldung -= getNumberOfDaysOfPeriod(semester.getSemesterbeginn(), anmeldedatum) / 7;
+
+            // Anmeldedatum nach Ende der 1. Schulferien
+            if (semester.getFerienbeginn1() != null && semester.getFerienende1() != null && anmeldedatum.after(semester.getFerienende1())) {
+                anzahlWochenKursanmeldung += getNumberOfWeeksBetween(semester.getFerienbeginn1(), semester.getFerienende1());
+            }
+
+            // Anmeldedatum nach Ende der 2. Schulferien
+            if (semester.getFerienbeginn2() != null && semester.getFerienende2() != null && anmeldedatum.after(semester.getFerienende2())) {
+                anzahlWochenKursanmeldung += getNumberOfWeeksBetween(semester.getFerienbeginn2(), semester.getFerienende2());
+            }
 
             // Wochentag des Anmeldedatums nach Wochentag des Kurses?
-            if (kursanmeldung.getAnmeldedatum().get(Calendar.DAY_OF_WEEK) > kursanmeldung.getKurs().getWochentag().getDayOfWeekCalendar()) {
+            if (anmeldedatum.get(Calendar.DAY_OF_WEEK) > kursanmeldung.getKurs().getWochentag().getDayOfWeekCalendar()
+                    // DAY_OF_WEEK von Sonntag ist 1!
+                    || anmeldedatum.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
                 anzahlWochenKursanmeldung--;
-            }
-
-            if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
-                if (kursanmeldung.getAnmeldedatum().after(repraesenativesDatumHerbstferien)) {
-                    anzahlWochenKursanmeldung += 2;
-                    if (kursanmeldung.getAnmeldedatum().after(repraesenativesDatumWeihnachtsferien)) {
-                        anzahlWochenKursanmeldung += 2;
-                    }
-                }
-            }
-
-            if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER) {
-                if (kursanmeldung.getAnmeldedatum().after(repraesenativesDatumFruehlingsferien)) {
-                    anzahlWochenKursanmeldung += 2;
-                }
             }
         }
 
         // Früher abgemeldet?
         if (kursanmeldung.getAbmeldedatum() != null && kursanmeldung.getAbmeldedatum().before(semester.getSemesterende())) {
-            anzahlWochenKursanmeldung -= getNumberOfDaysOfPeriod(kursanmeldung.getAbmeldedatum(), semester.getSemesterende()) / 7;
 
-            // Wochentag des Abmeldedatums vor Wochentag des Kurses?
-            if (kursanmeldung.getAbmeldedatum().get(Calendar.DAY_OF_WEEK) < kursanmeldung.getKurs().getWochentag().getDayOfWeekCalendar()) {
+            // Klonen, da ein Abmeldedatum innerhalb Ferien auf vorhergehendes Schulende geändert wird
+            Calendar abmeldedatum = (Calendar) kursanmeldung.getAbmeldedatum().clone();
+
+            // Abmeldedatum innerhalb 2. Schulferien -> Abmeldedatum auf vorhergehendes Schulende ändern
+            if (semester.getFerienbeginn2() != null && semester.getFerienende2() != null
+                    && (abmeldedatum.equals(semester.getFerienbeginn2()) || abmeldedatum.after(semester.getFerienbeginn2()))
+                    && (abmeldedatum.equals(semester.getFerienende2()) || abmeldedatum.before(semester.getFerienende2()))) {
+                abmeldedatum = (Calendar) semester.getFerienbeginn2().clone();
+                abmeldedatum.add(Calendar.DAY_OF_YEAR, -1);
+            }
+
+            // Abmeldedatum innerhalb 1. Schulferien -> Abmeldedatum auf vorhergehendes Schulende ändern
+            if (semester.getFerienbeginn1() != null && semester.getFerienende1() != null
+                    && (abmeldedatum.equals(semester.getFerienbeginn1()) || abmeldedatum.after(semester.getFerienbeginn1()))
+                    && (abmeldedatum.equals(semester.getFerienende1()) || abmeldedatum.before(semester.getFerienende1()))) {
+                abmeldedatum = (Calendar) semester.getFerienbeginn1().clone();
+                abmeldedatum.add(Calendar.DAY_OF_YEAR, -1);
+            }
+
+            anzahlWochenKursanmeldung -= getNumberOfDaysOfPeriod(abmeldedatum, semester.getSemesterende()) / 7;
+
+            // Abmeldedatum vor Beginn der 1. Schulferien
+            if (semester.getFerienbeginn1() != null && semester.getFerienende1() != null && abmeldedatum.before(semester.getFerienbeginn1())) {
+                anzahlWochenKursanmeldung += getNumberOfWeeksBetween(semester.getFerienbeginn1(), semester.getFerienende1());
+            }
+
+            // Abmeldedatum vor Beginn der 2. Schulferien
+            if (semester.getFerienbeginn2() != null && semester.getFerienende2() != null && abmeldedatum.before(semester.getFerienbeginn2())) {
+                anzahlWochenKursanmeldung += getNumberOfWeeksBetween(semester.getFerienbeginn2(), semester.getFerienende2());
+            }
+
+            // Wochentag des Abmeldedatums vor Wochentag des Kurses oder ein Sonntag?
+            if (abmeldedatum.get(Calendar.DAY_OF_WEEK) < kursanmeldung.getKurs().getWochentag().getDayOfWeekCalendar()) {
+                    // Sonntag schon dabei, da DAY_OF_WEEK von Sonntag ist 1!
                 anzahlWochenKursanmeldung--;
-            }
-
-            if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
-                if (kursanmeldung.getAbmeldedatum().before(repraesenativesDatumWeihnachtsferien)) {
-                    anzahlWochenKursanmeldung += 2;
-                    if (kursanmeldung.getAbmeldedatum().before(repraesenativesDatumHerbstferien)) {
-                        anzahlWochenKursanmeldung += 2;
-                    }
-                }
-            }
-
-            if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER) {
-                if (kursanmeldung.getAbmeldedatum().before(repraesenativesDatumFruehlingsferien)) {
-                    anzahlWochenKursanmeldung += 2;
-                }
             }
         }
 

@@ -192,11 +192,12 @@ public class Semester implements Comparable<Semester> {
     @Transient
     public int getAnzahlSchulwochen() {
         int anzahlSchulwochen = getNumberOfWeeksBetween(semesterbeginn, semesterende);
-        int anzFerienWochen;
-        if (semesterbezeichnung == Semesterbezeichnung.ERSTES_SEMESTER) {
-            anzFerienWochen = 4;
-        } else {
-            anzFerienWochen = 2;
+        int anzFerienWochen = 0;
+        if (ferienbeginn1 != null && ferienende1 != null) {
+            anzFerienWochen += getNumberOfWeeksBetween(ferienbeginn1, ferienende1);
+        }
+        if (ferienbeginn2 != null && ferienende2 != null) {
+            anzFerienWochen += getNumberOfWeeksBetween(ferienbeginn2, ferienende2);
         }
         return anzahlSchulwochen - anzFerienWochen;
     }
