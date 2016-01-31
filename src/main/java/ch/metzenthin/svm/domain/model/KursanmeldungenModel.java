@@ -9,5 +9,5 @@ import ch.metzenthin.svm.ui.componentmodel.KursanmeldungenTableModel;
 public interface KursanmeldungenModel extends Model {
     
     KursanmeldungErfassenModel getKursanmeldungErfassenModel(SvmContext svmContext, KursanmeldungenTableModel kursanmeldungenTableModel, int rowSelected);
-    void kurseinteilungLoeschen(KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int rowSelected);
+    void kursanmeldungLoeschen(KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int rowSelected);
 }

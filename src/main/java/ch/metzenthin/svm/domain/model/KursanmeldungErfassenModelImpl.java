@@ -299,7 +299,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
     }
 
     @Override
-    public void speichern(KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public CalculateAnzWochenCommand.Result speichern(KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         kursanmeldung.setKurs(kurs);
         kursanmeldung.setSchueler(schuelerDatenblattModel.getSchueler());
         CommandInvoker commandInvoker = getCommandInvoker();
@@ -307,6 +307,8 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursanmeldungCommand);
         // TableData mit von der Datenbank upgedateter Kursanmeldung updaten
         kursanmeldungenTableModel.getKursanmeldungenTableData().setKursanmeldungen(schuelerDatenblattModel.getSchueler().getKursanmeldungenAsList());
+
+        return saveOrUpdateKursanmeldungCommand.getResult();
     }
 
     @Override

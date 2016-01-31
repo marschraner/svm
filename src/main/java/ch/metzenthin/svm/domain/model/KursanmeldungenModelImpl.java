@@ -25,7 +25,7 @@ public class KursanmeldungenModelImpl extends AbstractModel implements Kursanmel
     }
 
     @Override
-    public void kurseinteilungLoeschen(KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int rowSelected) {
+    public void kursanmeldungLoeschen(KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int rowSelected) {
         CommandInvoker commandInvoker = getCommandInvoker();
         DeleteKursanmeldungCommand deleteKursanmeldungCommand = new DeleteKursanmeldungCommand(schuelerDatenblattModel.getSchueler().getKursanmeldungenAsList(), rowSelected);
         commandInvoker.executeCommandAsTransaction(deleteKursanmeldungCommand);

@@ -19,7 +19,7 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
     private Semester currentSemester;
 
     // output
-    private CalculateWochenbetragCommand.Result result = CalculateWochenbetragCommand.Result.WOCHENBETRAG_ERFOLGREICH_BERECHNET;
+    private CalculateAnzWochenCommand.Result result;
 
     public UpdateWochenbetragUndAnzWochenCommand(Angehoeriger rechnungsempfaenger, Semester currentSemester) {
         this.rechnungsempfaenger = rechnungsempfaenger;
@@ -30,6 +30,8 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
     public void execute() {
 
         SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
+
+        result = CalculateAnzWochenCommand.Result.ALLE_KURSE_GLEICHE_ANZAHL_WOCHEN;
 
         // 1. Nachfolgendes Semester
         FindNextSemesterCommand findNextSemesterCommand = new FindNextSemesterCommand(currentSemester);
@@ -63,6 +65,7 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
             // Berechnung der Anzahl Wochen
             CalculateAnzWochenCommand calculateAnzWochenCommand = new CalculateAnzWochenCommand(semesterrechnungCurrentSemester.getRechnungsempfaenger().getSchuelerRechnungsempfaenger(), currentSemester);
             calculateAnzWochenCommand.execute();
+            result = calculateAnzWochenCommand.getResult();
 
             // Vorrechnung: Update Anzahl Wochen
             if (semesterrechnungCurrentSemester.getRechnungsdatumVorrechnung() == null) {
@@ -75,10 +78,12 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
                 semesterrechnungCurrentSemester.setAnzahlWochenNachrechnung(calculateAnzWochenCommand.getAnzahlWochen());
                 CalculateWochenbetragCommand calculateWochenbetragCommand = new CalculateWochenbetragCommand(semesterrechnungCurrentSemester, currentSemester, Rechnungstyp.NACHRECHNUNG, lektionsgebuehrenMap);
                 calculateWochenbetragCommand.execute();
+                if (calculateAnzWochenCommand.getResult() != CalculateAnzWochenCommand.Result.ALLE_KURSE_GLEICHE_ANZAHL_WOCHEN) {
+                    result = calculateAnzWochenCommand.getResult();
+                }
                 if (calculateWochenbetragCommand.getResult() == CalculateWochenbetragCommand.Result.WOCHENBETRAG_ERFOLGREICH_BERECHNET) {
                     semesterrechnungCurrentSemester.setWochenbetragNachrechnung(calculateWochenbetragCommand.getWochenbetrag());
                 } else {  // sollte nie eintreten
-                    result = calculateWochenbetragCommand.getResult();
                     semesterrechnungCurrentSemester.setWochenbetragNachrechnung(new BigDecimal("-99999.99"));
                 }
                 dataChanged = true;
@@ -102,7 +107,6 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
             if (calculateWochenbetragCommand.getResult() == CalculateWochenbetragCommand.Result.WOCHENBETRAG_ERFOLGREICH_BERECHNET) {
                 semesterrechnungNextSemester.setWochenbetragVorrechnung(calculateWochenbetragCommand.getWochenbetrag());
             } else {  // sollte nie eintreten
-                result = calculateWochenbetragCommand.getResult();
                 semesterrechnungNextSemester.setWochenbetragVorrechnung(new BigDecimal("-99999.99"));
             }
             if (!semesterrechnungNextSemester.isNullrechnung()) {
@@ -114,7 +118,7 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
         }
     }
 
-    public CalculateWochenbetragCommand.Result getResult() {
+    public CalculateAnzWochenCommand.Result getResult() {
         return result;
     }
 }

@@ -5,6 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.commands.CalculateAnzWochenCommand;
 import ch.metzenthin.svm.domain.commands.FindKursCommand;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.KursanmeldungErfassenModel;
@@ -531,7 +532,13 @@ public class KursanmeldungErfassenController extends AbstractController {
                 return;
             }
             // Speichern
-            kursanmeldungErfassenModel.speichern(kursanmeldungenTableModel, schuelerDatenblattModel);
+            CalculateAnzWochenCommand.Result speichernResult = kursanmeldungErfassenModel.speichern(kursanmeldungenTableModel, schuelerDatenblattModel);
+
+            // Warnung, falls Kurse unterschiedliche Anzahl Wochen haben
+            if (speichernResult == CalculateAnzWochenCommand.Result.KURSE_MIT_UNTERSCHIEDLICHER_ANZAHL_WOCHEN) {
+                JOptionPane.showMessageDialog(null, "Die Kurse des Rechnungsempfängers haben nicht alle die gleiche Anzahl Wochen.\n" +
+                        "Die Semesterrechnung muss manuell nachbearbeitet werden.", "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+            }
         }
         kursanmeldungErfassenDialog.dispose();
     }

@@ -16,12 +16,18 @@ import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNumberOfWeeksBe
  */
 public class CalculateAnzWochenCommand implements Command {
 
+    public enum Result {
+        ALLE_KURSE_GLEICHE_ANZAHL_WOCHEN,
+        KURSE_MIT_UNTERSCHIEDLICHER_ANZAHL_WOCHEN
+    }
+
     // input
     private Semester semester;
     private Collection<Schueler> schuelerRechnungsempfaenger;
 
     // output
     private int anzahlWochen;
+    private Result result;
 
     public CalculateAnzWochenCommand(Collection<Schueler> schuelerRechnungsempfaenger, Semester semester) {
         this.semester = semester;
@@ -33,6 +39,8 @@ public class CalculateAnzWochenCommand implements Command {
 
         // Maximum über alle Kurse eines Rechnungsempfängers
         anzahlWochen = 0;
+        result = Result.ALLE_KURSE_GLEICHE_ANZAHL_WOCHEN;
+        boolean first = true;
         for (Schueler schueler : schuelerRechnungsempfaenger) {
 
             // abgemeldete Schüler nicht berücksichtigen
@@ -46,6 +54,10 @@ public class CalculateAnzWochenCommand implements Command {
                     int anzWochenKursanmeldung = calculateAnzWochenKursanmeldung(kursanmeldung);
                     if (anzWochenKursanmeldung > anzahlWochen) {
                         anzahlWochen = anzWochenKursanmeldung;
+                        if (!first) {
+                            result = Result.KURSE_MIT_UNTERSCHIEDLICHER_ANZAHL_WOCHEN;
+                        }
+                        first = false;
                     }
                 }
             }
@@ -150,5 +162,9 @@ public class CalculateAnzWochenCommand implements Command {
 
     public int getAnzahlWochen() {
         return anzahlWochen;
+    }
+
+    public Result getResult() {
+        return result;
     }
 }

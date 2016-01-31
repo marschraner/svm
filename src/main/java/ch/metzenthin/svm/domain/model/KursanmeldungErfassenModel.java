@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.commands.CalculateAnzWochenCommand;
 import ch.metzenthin.svm.domain.commands.FindKursCommand;
 import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
@@ -41,5 +42,5 @@ public interface KursanmeldungErfassenModel extends Model {
     boolean checkIfSemesterIsInPast();
     FindKursCommand.Result findKurs();
     boolean checkIfKursBereitsErfasst(SchuelerDatenblattModel schuelerDatenblattModel);
-    void speichern(KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel);
+    CalculateAnzWochenCommand.Result speichern(KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel);
 }

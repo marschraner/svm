@@ -19,6 +19,9 @@ public class SaveOrUpdateKursanmeldungCommand extends GenericDaoCommand {
     private Kursanmeldung kursanmeldungOrigin;
     private List<Kursanmeldung> bereitsErfassteKursanmeldungen;
 
+    // output
+    private CalculateAnzWochenCommand.Result result;
+
     public SaveOrUpdateKursanmeldungCommand(Kursanmeldung kursanmeldung, Kursanmeldung kursanmeldungOrigin, List<Kursanmeldung> bereitsErfassteKursanmeldungen) {
         this.kursanmeldung = kursanmeldung;
         this.kursanmeldungOrigin = kursanmeldungOrigin;
@@ -46,7 +49,12 @@ public class SaveOrUpdateKursanmeldungCommand extends GenericDaoCommand {
         UpdateWochenbetragUndAnzWochenCommand updateWochenbetragUndAnzWochenCommand = new UpdateWochenbetragUndAnzWochenCommand(rechnungsempfaenger, semester);
         updateWochenbetragUndAnzWochenCommand.setEntityManager(entityManager);
         updateWochenbetragUndAnzWochenCommand.execute();
+        result = updateWochenbetragUndAnzWochenCommand.getResult();
 
         Collections.sort(bereitsErfassteKursanmeldungen);
+    }
+
+    public CalculateAnzWochenCommand.Result getResult() {
+        return result;
     }
 }

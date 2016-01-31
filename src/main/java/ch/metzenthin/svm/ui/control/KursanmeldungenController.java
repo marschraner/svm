@@ -144,7 +144,7 @@ public class KursanmeldungenController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            kursanmeldungenModel.kurseinteilungLoeschen(kursanmeldungenTableModel, schuelerDatenblattModel, kursanmeldungenTable.getSelectedRow());
+            kursanmeldungenModel.kursanmeldungLoeschen(kursanmeldungenTableModel, schuelerDatenblattModel, kursanmeldungenTable.getSelectedRow());
             kursanmeldungenTableModel.fireTableDataChanged();
             kursanmeldungenTable.addNotify();
         }
