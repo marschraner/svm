@@ -97,6 +97,11 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
     @Override
     public void setSemesterbeginn(String semesterbeginn) throws SvmValidationException {
         semesterbeginnModelAttribute.setNewValue(true, semesterbeginn, isBulkUpdate());
+        if (!isBulkUpdate() && semester.getSemesterbeginn() != null && semester.getSemesterbeginn().get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+            semester.setSemesterbeginn(null);
+            invalidate();
+            throw new SvmValidationException(2042, "Semesterbeginn muss ein Montag sein", Field.SEMESTERBEGINN);
+        }
         if (!isBulkUpdate() && semester.getSemesterbeginn() != null && semester.getSemesterende() != null && semester.getSemesterbeginn().after(semester.getSemesterende())) {
             semester.setSemesterbeginn(null);
             invalidate();
@@ -128,6 +133,11 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
     @Override
     public void setSemesterende(String semesterende) throws SvmValidationException {
         semesterendeModelAttribute.setNewValue(true, semesterende, isBulkUpdate());
+        if (!isBulkUpdate() && semester.getSemesterende() != null && semester.getSemesterende().get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
+            semester.setSemesterende(null);
+            invalidate();
+            throw new SvmValidationException(2044, "Semesterende muss ein Samstag sein", Field.SEMESTERENDE);
+        }
         if (!isBulkUpdate() && semester.getSemesterbeginn() != null && semester.getSemesterende() != null && semester.getSemesterbeginn().after(semester.getSemesterende())) {
             semester.setSemesterende(null);
             invalidate();
@@ -159,6 +169,11 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
     @Override
     public void setFerienbeginn1(String ferienbeginn1) throws SvmValidationException {
         ferienbeginn1ModelAttribute.setNewValue(true, ferienbeginn1, isBulkUpdate());
+        if (!isBulkUpdate() && semester.getFerienbeginn1() != null && semester.getFerienbeginn1().get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+            semester.setFerienbeginn1(null);
+            invalidate();
+            throw new SvmValidationException(2045, "Ferienbeginn muss ein Montag sein", Field.FERIENBEGINN1);
+        }
         if (!isBulkUpdate() && semester.getFerienbeginn1() != null && semester.getFerienende1() != null && semester.getFerienbeginn1().after(semester.getFerienende1())) {
             semester.setFerienbeginn1(null);
             invalidate();
@@ -190,6 +205,11 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
     @Override
     public void setFerienende1(String ferienende1) throws SvmValidationException {
         ferienende1ModelAttribute.setNewValue(true, ferienende1, isBulkUpdate());
+        if (!isBulkUpdate() && semester.getFerienende1() != null && semester.getFerienende1().get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
+            semester.setFerienende1(null);
+            invalidate();
+            throw new SvmValidationException(2046, "Ferienende muss ein Samstag sein", Field.FERIENENDE1);
+        }
         if (!isBulkUpdate() && semester.getFerienbeginn1() != null && semester.getFerienende1() != null && semester.getFerienbeginn1().after(semester.getFerienende1())) {
             semester.setFerienende1(null);
             invalidate();
@@ -221,6 +241,11 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
     @Override
     public void setFerienbeginn2(String ferienbeginn2) throws SvmValidationException {
         ferienbeginn2ModelAttribute.setNewValue(false, ferienbeginn2, isBulkUpdate());
+        if (!isBulkUpdate() && semester.getFerienbeginn2() != null && semester.getFerienbeginn2().get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+            semester.setFerienbeginn2(null);
+            invalidate();
+            throw new SvmValidationException(2047, "Ferienbeginn muss ein Montag sein", Field.FERIENBEGINN2);
+        }
         if (!isBulkUpdate() && semester.getFerienbeginn2() != null && semester.getFerienende2() != null && semester.getFerienbeginn2().after(semester.getFerienende2())) {
             semester.setFerienbeginn2(null);
             invalidate();
@@ -252,6 +277,11 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
     @Override
     public void setFerienende2(String ferienende2) throws SvmValidationException {
         ferienende2ModelAttribute.setNewValue(false, ferienende2, isBulkUpdate());
+        if (!isBulkUpdate() && semester.getFerienende2() != null && semester.getFerienende2().get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
+            semester.setFerienende2(null);
+            invalidate();
+            throw new SvmValidationException(2044, "Ferienende muss ein Samstag sein", Field.FERIENENDE2);
+        }
         if (!isBulkUpdate() && semester.getFerienbeginn2() != null && semester.getFerienende2() != null && semester.getFerienbeginn2().after(semester.getFerienende2())) {
             semester.setFerienende2(null);
             invalidate();
@@ -338,6 +368,18 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         }
         if (!isBulkUpdate() && semester.getSchuljahr() != null && semester.getSemesterende() != null && !semester.getSchuljahr().contains(Integer.toString(semester.getSemesterende().get(Calendar.YEAR)))) {
             throw new SvmValidationException(2031, "Datum liegt nicht im Schuljahr " + semester.getSchuljahr(), Field.SEMESTERENDE);
+        }
+        if (semester.getFerienbeginn1() != null && semester.getSemesterbeginn() != null && !semester.getFerienbeginn1().after(semester.getSemesterbeginn())) {
+            throw new SvmValidationException(2061, "Ferienbeginn muss nach Semesterbeginn liegen", Field.FERIENBEGINN1);
+        }
+        if (semester.getFerienbeginn2() != null && semester.getSemesterbeginn() != null && !semester.getFerienbeginn2().after(semester.getSemesterbeginn())) {
+            throw new SvmValidationException(2062, "Ferienbeginn muss nach Semesterbeginn liegen", Field.FERIENBEGINN2);
+        }
+        if (semester.getFerienende1() != null && semester.getSemesterende() != null && !semester.getFerienende1().before(semester.getSemesterende())) {
+            throw new SvmValidationException(2063, "Ferienende muss vor Semesterende liegen", Field.FERIENENDE1);
+        }
+        if (semester.getFerienende2() != null && semester.getSemesterende() != null && !semester.getFerienende2().before(semester.getSemesterende())) {
+            throw new SvmValidationException(2064, "Ferienende muss vor Semesterende liegen", Field.FERIENENDE2);
         }
     }
 }
