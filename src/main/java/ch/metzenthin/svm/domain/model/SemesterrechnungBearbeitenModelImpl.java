@@ -313,6 +313,31 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
     }
 
     @Override
+    public boolean isVorrechnungEnabled() {
+        // Nur enablen, falls
+        // ... Rechnungsdatum gesetzt ist (oder Wochenbetrag nicht null ist)
+        if (semesterrechnung.getRechnungsdatumVorrechnung() != null || semesterrechnung.getWochenbetragVorrechnung().compareTo(BigDecimal.ZERO) != 0) {
+            return true;
+        }
+        // ... oder es im Vorsemester Kurse gibt (-> korrekter, aber teurerer Check als für Semesterrechnungsliste)
+        List<Schueler> schuelersRechnungsempfaenger = new ArrayList<>(semesterrechnung.getRechnungsempfaenger().getSchuelerRechnungsempfaenger());
+        if (schuelersRechnungsempfaenger.isEmpty()) {
+            return false;
+        }
+        if (previousSemester == null) {
+            return false;
+        }
+        for (Schueler schueler : schuelersRechnungsempfaenger) {
+            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+                if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(previousSemester.getSemesterId()) && kursanmeldung.getAbmeldedatum() == null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public SemesterrechnungCode[] getSelectableSemesterrechnungCodes(SvmModel svmModel) {
         List<SemesterrechnungCode> codesList = svmModel.getSelektierbareSemesterrechnungCodesAll();
         // SemesterrechnungCode keiner auch erlaubt

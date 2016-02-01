@@ -28,11 +28,11 @@ public abstract class SemesterrechnungController extends AbstractController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     protected JTextField txtRechnungsdatumVorrechnung;
-    private JTextField txtErmaessigungVorrechnung;
-    private JTextField txtErmaessigungsgrundVorrechnung;
-    private JTextField txtZuschlagVorrechnung;
-    private JTextField txtZuschlagsgrundVorrechnung;
-    private JTextField txtAnzahlWochenVorrechnung;
+    protected JTextField txtErmaessigungVorrechnung;
+    protected JTextField txtErmaessigungsgrundVorrechnung;
+    protected JTextField txtZuschlagVorrechnung;
+    protected JTextField txtZuschlagsgrundVorrechnung;
+    protected JTextField txtAnzahlWochenVorrechnung;
     protected JTextField txtWochenbetragVorrechnung;
     private JTextField txtDatumZahlung1Vorrechnung;
     private JTextField txtBetragZahlung1Vorrechnung;

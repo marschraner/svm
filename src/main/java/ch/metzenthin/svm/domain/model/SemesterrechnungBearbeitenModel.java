@@ -33,6 +33,7 @@ public interface SemesterrechnungBearbeitenModel extends SemesterrechnungModel {
 
     void setSemesterrechnungOrigin(Semesterrechnung semesterrechnungOrigin);
 
+    boolean isVorrechnungEnabled();
     boolean checkIfRechnungsempfaengerHasEmail();
     CallDefaultEmailClientCommand.Result callEmailClient();
     void calculateWochenbetrag(Rechnungstyp rechnungstyp);

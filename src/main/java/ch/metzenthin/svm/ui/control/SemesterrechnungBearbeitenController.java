@@ -87,6 +87,21 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
     public void constructionDone() {
         semesterrechnungBearbeitenModel.initializeCompleted();
         enableNavigationDisableSpeichern();
+        if (!semesterrechnungBearbeitenModel.isVorrechnungEnabled()) {
+            disableVorrechnung(true);
+        } else {
+            disableVorrechnung(false);
+        }
+    }
+
+    private void disableVorrechnung(boolean disable) {
+        txtRechnungsdatumVorrechnung.setEnabled(!disable);
+        txtErmaessigungVorrechnung.setEnabled(!disable);
+        txtErmaessigungsgrundVorrechnung.setEnabled(!disable);
+        txtZuschlagVorrechnung.setEnabled(!disable);
+        txtZuschlagsgrundVorrechnung.setEnabled(!disable);
+        txtAnzahlWochenVorrechnung.setEnabled(!disable);
+        txtWochenbetragVorrechnung.setEnabled(!disable);
     }
 
     private void scroll(int selectedRow) {

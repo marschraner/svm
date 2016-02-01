@@ -170,7 +170,7 @@ public class EmailSchuelerListeController extends AbstractController {
                 fehlend.append("\n");
             }
             fehlend.setLength(fehlend.length() - 1);
-            JOptionPane.showMessageDialog(emailDialog, "Für folgende Schüler (resp. deren Eltern) ist keine E-Mail-Adresse erfasst:\n" + fehlend, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+            JOptionPane.showMessageDialog(emailDialog, "Für folgende(n) Schüler (resp. dessen/deren Eltern) ist keine E-Mail-Adresse erfasst:\n" + fehlend, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
         }
         if (!emailSchuelerListeModel.getUngueltigeEmailAdressen().isEmpty()) {
             StringBuilder ungueltig = new StringBuilder();

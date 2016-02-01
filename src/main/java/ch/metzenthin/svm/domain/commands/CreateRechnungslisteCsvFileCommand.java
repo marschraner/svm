@@ -134,34 +134,39 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
                 out.write(separator);
 
                 // Vorrechnung
+                boolean showVorrechnung = semesterrechnung.getWochenbetragVorrechnung().compareTo(BigDecimal.ZERO) != 0 || semesterrechnung.getRechnungsdatumVorrechnung() != null;
                 if (semesterrechnung.getRechnungsdatumVorrechnung() != null) {
                     out.write(asString(semesterrechnung.getRechnungsdatumVorrechnung()));
                 }
                 out.write(separator);
-                out.write(Integer.toString(semesterrechnung.getAnzahlWochenVorrechnung()));
+                if (showVorrechnung) {
+                    out.write(Integer.toString(semesterrechnung.getAnzahlWochenVorrechnung()));
+                }
                 out.write(separator);
-                out.write(semesterrechnung.getWochenbetragVorrechnung().toString());
+                if (showVorrechnung) {
+                    out.write(semesterrechnung.getWochenbetragVorrechnung().toString());
+                }
                 out.write(separator);
                 BigDecimal schulgeldVorrechnung = semesterrechnung.getSchulgeldVorrechnung();
-                if (schulgeldVorrechnung != null) {
+                if (showVorrechnung && schulgeldVorrechnung != null) {
                     out.write(schulgeldVorrechnung.toString());
                 }
                 out.write(separator);
-                if (semesterrechnung.getErmaessigungVorrechnung() != null && semesterrechnung.getErmaessigungVorrechnung().compareTo(BigDecimal.ZERO) != 0) {
+                if (showVorrechnung && semesterrechnung.getErmaessigungVorrechnung() != null && semesterrechnung.getErmaessigungVorrechnung().compareTo(BigDecimal.ZERO) != 0) {
                     out.write(semesterrechnung.getErmaessigungVorrechnung().toString());
                 }
                 out.write(separator);
-                if (semesterrechnung.getZuschlagVorrechnung() != null && semesterrechnung.getZuschlagVorrechnung().compareTo(BigDecimal.ZERO) != 0) {
+                if (showVorrechnung && semesterrechnung.getZuschlagVorrechnung() != null && semesterrechnung.getZuschlagVorrechnung().compareTo(BigDecimal.ZERO) != 0) {
                     out.write(semesterrechnung.getZuschlagVorrechnung().toString());
                 }
                 out.write(separator);
                 BigDecimal ermaessigungStipendiumVorrechnung = semesterrechnung.getErmaessigungStipendiumVorrechnung();
-                if (ermaessigungStipendiumVorrechnung != null && ermaessigungStipendiumVorrechnung.compareTo(BigDecimal.ZERO) != 0) {
+                if (showVorrechnung && ermaessigungStipendiumVorrechnung != null && ermaessigungStipendiumVorrechnung.compareTo(BigDecimal.ZERO) != 0) {
                     out.write(ermaessigungStipendiumVorrechnung.toString());
                 }
                 out.write(separator);
                 BigDecimal rechnungsbetragVorrechnung = semesterrechnung.getRechnungsbetragVorrechnung();
-                if (rechnungsbetragVorrechnung != null) {
+                if (showVorrechnung && rechnungsbetragVorrechnung != null) {
                     out.write(rechnungsbetragVorrechnung.toString());
                 }
                 out.write(separator);

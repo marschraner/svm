@@ -52,6 +52,7 @@ public class SemesterrechnungenTableData {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Semesterrechnung semesterrechnung = semesterrechnungen.get(rowIndex);
         Object value = null;
+        boolean showVorrechnung = semesterrechnung.getWochenbetragVorrechnung().compareTo(BigDecimal.ZERO) != 0 || semesterrechnung.getRechnungsdatumVorrechnung() != null;
         switch (COLUMNS[columnIndex]) {
             case RECHNUNGSEMPFAENGER:
                 value = semesterrechnung.getRechnungsempfaenger().getNachname() + " " + semesterrechnung.getRechnungsempfaenger().getVorname();
@@ -63,35 +64,45 @@ public class SemesterrechnungenTableData {
                 value = semesterrechnung.getRechnungsdatumVorrechnung();
                 break;
             case ANZAHL_WOCHEN_VORRECHNUNG:
-                value = semesterrechnung.getAnzahlWochenVorrechnung();
+                if (showVorrechnung) {
+                    value = semesterrechnung.getAnzahlWochenVorrechnung();
+                }
                 break;
             case WOCHENBETRAG_VORRECHNUNG:
-                value = semesterrechnung.getWochenbetragVorrechnung();
+                if (showVorrechnung) {
+                    value = semesterrechnung.getWochenbetragVorrechnung();
+                }
                 break;
             case SCHULGELD_VORRECHNUNG:
-                value = semesterrechnung.getSchulgeldVorrechnung();
+                if (showVorrechnung) {
+                    value = semesterrechnung.getSchulgeldVorrechnung();
+                }
                 break;
             case ERMAESSIGUNG_VORRECHNUNG:
-                if (semesterrechnung.getErmaessigungVorrechnung() != null && semesterrechnung.getErmaessigungVorrechnung().compareTo(BigDecimal.ZERO) != 0) {
+                if (showVorrechnung && semesterrechnung.getErmaessigungVorrechnung() != null && semesterrechnung.getErmaessigungVorrechnung().compareTo(BigDecimal.ZERO) != 0) {
                     value = semesterrechnung.getErmaessigungVorrechnung();
                 }
                 break;
             case ZUSCHLAG_VORRECHNUNG:
-                if (semesterrechnung.getZuschlagVorrechnung() != null && semesterrechnung.getZuschlagVorrechnung().compareTo(BigDecimal.ZERO) != 0) {
+                if (showVorrechnung && semesterrechnung.getZuschlagVorrechnung() != null && semesterrechnung.getZuschlagVorrechnung().compareTo(BigDecimal.ZERO) != 0) {
                     value = semesterrechnung.getZuschlagVorrechnung();
                 }
                 break;
             case ERMAESSIGUNG_STIPENDIUM_VORRECHNUNG:
                 BigDecimal ermaessigungStipendiumVorrechnung = semesterrechnung.getErmaessigungStipendiumVorrechnung();
-                if (ermaessigungStipendiumVorrechnung != null && ermaessigungStipendiumVorrechnung.compareTo(BigDecimal.ZERO) != 0) {
+                if (showVorrechnung && ermaessigungStipendiumVorrechnung != null && ermaessigungStipendiumVorrechnung.compareTo(BigDecimal.ZERO) != 0) {
                     value = ermaessigungStipendiumVorrechnung.toString();
                 }
                 break;
             case RECHNUNGSBETRAG_VORRECHNUNG:
-                value = semesterrechnung.getRechnungsbetragVorrechnung();
+                if (showVorrechnung) {
+                    value = semesterrechnung.getRechnungsbetragVorrechnung();
+                }
                 break;
             case RESTBETRAG_VORRECHNUNG:
-                value = semesterrechnung.getRestbetragVorrechnung();
+                if (showVorrechnung) {
+                    value = semesterrechnung.getRestbetragVorrechnung();
+                }
                 break;
             case RECHNUNGSDATUM_NACHRECHNUNG:
                 value = semesterrechnung.getRechnungsdatumNachrechnung();
