@@ -18,6 +18,7 @@ public class SvmProperties {
     public static final String KEY_TEMPLATES_DIRECTORY = "templates_directory";
     public static final String KEY_DEFAULT_OUTPUT_DIRECTORY = "default_output_directory";
     public static final String KEY_ABSENZENLISTE_TEMPLATE = "absenzenlisten_template";
+    public static final String KEY_EMAIL_CLIENT_MULTIPLE_MAILS_SEPARATOR ="email_client_multiple_mails_separator";
 
     public static void createSvmPropertiesFileDefault() {
 
@@ -44,6 +45,7 @@ public class SvmProperties {
             prop.setProperty(KEY_TEMPLATES_DIRECTORY, System.getProperty("user.dir") + File.separator + "Listen-Templates");
             prop.setProperty(KEY_DEFAULT_OUTPUT_DIRECTORY, System.getProperty("user.home") + File.separator + "Desktop");
             prop.setProperty(KEY_ABSENZENLISTE_TEMPLATE, "<Schuljahr>" + File.separator + "Semester_<Semester>" + File.separator + "Absenzenliste-Template_<Schuljahr>_<Semester>_<Wochentag>.docx");
+            prop.setProperty(KEY_EMAIL_CLIENT_MULTIPLE_MAILS_SEPARATOR, ";");
             prop.store(propertiesFile, null);
 
             propertiesFile.close();

@@ -1,12 +1,14 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.utils.EmailValidator;
+import ch.metzenthin.svm.common.utils.SvmProperties;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * @author Martin Schraner
@@ -66,11 +68,15 @@ public class CallDefaultEmailClientCommand implements Command {
             return;
         }
 
-        // Zusammensetzen zu einzigem String mit durch ";" getrennten Emails
+        // Separator für mehrere E-Mails
+        Properties svmProperties = SvmProperties.getSvmProperties();
+        String emailClientMultipleMailsSeparator = svmProperties.getProperty(SvmProperties.KEY_EMAIL_CLIENT_MULTIPLE_MAILS_SEPARATOR);
+
+        // Zusammensetzen zu einzigem String mit durch ";" (oder anderem Separator gemäss .svm-Konfiguration) getrennten Emails
         StringBuilder emailAdressenAsSingleStringSb = new StringBuilder();
         for (String emailAdresse : gueltigeEmailAdressen) {
             emailAdressenAsSingleStringSb.append(emailAdresse);
-            emailAdressenAsSingleStringSb.append(";");
+            emailAdressenAsSingleStringSb.append(emailClientMultipleMailsSeparator);
         }
         // Letzten ; löschen
         emailAdressenAsSingleStringSb.setLength(emailAdressenAsSingleStringSb.length() - 1);
