@@ -134,7 +134,10 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
                 out.write(separator);
 
                 // Vorrechnung
-                boolean showVorrechnung = semesterrechnung.getWochenbetragVorrechnung().compareTo(BigDecimal.ZERO) != 0 || semesterrechnung.getRechnungsdatumVorrechnung() != null;
+                BigDecimal rechnungsbetragVorrechnung = semesterrechnung.getRechnungsbetragVorrechnung();
+                boolean showVorrechnung = semesterrechnung.getWochenbetragVorrechnung().compareTo(BigDecimal.ZERO) != 0
+                        || semesterrechnung.getRechnungsdatumVorrechnung() != null
+                        || (rechnungsbetragVorrechnung != null && rechnungsbetragVorrechnung.compareTo(BigDecimal.ZERO) != 0);
                 if (semesterrechnung.getRechnungsdatumVorrechnung() != null) {
                     out.write(asString(semesterrechnung.getRechnungsdatumVorrechnung()));
                 }
@@ -165,7 +168,6 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
                     out.write(ermaessigungStipendiumVorrechnung.toString());
                 }
                 out.write(separator);
-                BigDecimal rechnungsbetragVorrechnung = semesterrechnung.getRechnungsbetragVorrechnung();
                 if (showVorrechnung && rechnungsbetragVorrechnung != null) {
                     out.write(rechnungsbetragVorrechnung.toString());
                 }
