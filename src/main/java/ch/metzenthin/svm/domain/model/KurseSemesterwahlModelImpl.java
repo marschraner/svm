@@ -35,7 +35,7 @@ public class KurseSemesterwahlModelImpl extends AbstractModel implements KurseSe
 
     @Override
     public Semester getInitSemester(SvmModel svmModel) {
-        DetermineSemesterInitCommand determineSemesterInitCommand = new DetermineSemesterInitCommand(svmModel);
+        DetermineSemesterInitCommand determineSemesterInitCommand = new DetermineSemesterInitCommand(svmModel, 40);
         determineSemesterInitCommand.execute();
         return determineSemesterInitCommand.getSemesterInit();
     }

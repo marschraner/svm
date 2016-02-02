@@ -565,7 +565,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     @Override
     public Semester getSemesterInit(SvmModel svmModel) {
-        DetermineSemesterInitCommand determineSemesterInitCommand = new DetermineSemesterInitCommand(svmModel);
+        DetermineSemesterInitCommand determineSemesterInitCommand = new DetermineSemesterInitCommand(svmModel, 0);
         determineSemesterInitCommand.execute();
         return determineSemesterInitCommand.getSemesterInit();
     }

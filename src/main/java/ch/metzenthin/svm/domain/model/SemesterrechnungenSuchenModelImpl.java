@@ -594,7 +594,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
 
     @Override
     public Semester getSemesterInit(SvmModel svmModel) {
-        DetermineSemesterInitCommand determineSemesterInitCommand = new DetermineSemesterInitCommand(svmModel);
+        DetermineSemesterInitCommand determineSemesterInitCommand = new DetermineSemesterInitCommand(svmModel, 40);
         determineSemesterInitCommand.execute();
         return determineSemesterInitCommand.getSemesterInit();
     }

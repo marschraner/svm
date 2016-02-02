@@ -14,16 +14,18 @@ public class DetermineSemesterInitCommand implements Command {
 
     // input
     private List<Semester> selectableSemesters;
+    private int daysBeforeSemesterEndToShowNextSemester;
 
     // output
     private Semester semesterInit;
 
-    public DetermineSemesterInitCommand(SvmModel svmModel) {
-        this.selectableSemesters = svmModel.getSemestersAll();
+    public DetermineSemesterInitCommand(SvmModel svmModel, int daysBeforeSemesterEndToShowNextSemester) {
+        this(svmModel.getSemestersAll(), daysBeforeSemesterEndToShowNextSemester);
     }
 
-    public DetermineSemesterInitCommand(List<Semester> selectableSemesters) {
+    public DetermineSemesterInitCommand(List<Semester> selectableSemesters, int daysBeforeSemesterEndToShowNextSemester) {
         this.selectableSemesters = selectableSemesters;
+        this.daysBeforeSemesterEndToShowNextSemester = daysBeforeSemesterEndToShowNextSemester;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class DetermineSemesterInitCommand implements Command {
         Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
         Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
         Calendar dayToShowNextSemester = new GregorianCalendar();
-        dayToShowNextSemester.add(Calendar.DAY_OF_YEAR, 40);
+        dayToShowNextSemester.add(Calendar.DAY_OF_YEAR, daysBeforeSemesterEndToShowNextSemester);
         if (currentSemester == null) {
             // Ferien zwischen 2 Semestern
             semesterInit = nextSemester;

@@ -245,7 +245,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
 
     @Override
     public Semester getInitSemester(List<Semester> semesterList) {
-        DetermineSemesterInitCommand determineSemesterInitCommand = new DetermineSemesterInitCommand(semesterList);
+        DetermineSemesterInitCommand determineSemesterInitCommand = new DetermineSemesterInitCommand(semesterList, 40);
         determineSemesterInitCommand.execute();
         return determineSemesterInitCommand.getSemesterInit();
     }
