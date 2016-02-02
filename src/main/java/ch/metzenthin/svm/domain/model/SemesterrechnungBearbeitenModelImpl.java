@@ -315,11 +315,11 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
     @Override
     public boolean isVorrechnungEnabled() {
         // Nur enablen, falls
-        // ... Rechnungsdatum gesetzt ist (oder Wochenbetrag oder Rechnungsbetrag nicht null ist)
-        BigDecimal rechnungsbetragVorrechnung = semesterrechnung.getRechnungsbetragVorrechnung();
+        // ... Rechnungsdatum gesetzt ist (oder Wochenbetrag, Ermässigung oder Zuschlag nicht null ist)
         if (semesterrechnung.getRechnungsdatumVorrechnung() != null
-                || semesterrechnung.getWochenbetragVorrechnung().compareTo(BigDecimal.ZERO) != 0
-                || (rechnungsbetragVorrechnung != null && rechnungsbetragVorrechnung.compareTo(BigDecimal.ZERO) != 0)) {
+                || (semesterrechnung.getWochenbetragVorrechnung() != null && semesterrechnung.getWochenbetragVorrechnung().compareTo(BigDecimal.ZERO) != 0)
+                || (semesterrechnung.getErmaessigungVorrechnung() != null && semesterrechnung.getErmaessigungVorrechnung().compareTo(BigDecimal.ZERO) != 0)
+                || (semesterrechnung.getZuschlagVorrechnung() != null && semesterrechnung.getZuschlagVorrechnung().compareTo(BigDecimal.ZERO) != 0)) {
             return true;
         }
         // ... oder es im Vorsemester Kurse gibt (-> korrekter, aber teurerer Check als für Semesterrechnungsliste)

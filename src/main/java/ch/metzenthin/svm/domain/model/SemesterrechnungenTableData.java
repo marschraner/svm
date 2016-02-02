@@ -52,10 +52,10 @@ public class SemesterrechnungenTableData {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Semesterrechnung semesterrechnung = semesterrechnungen.get(rowIndex);
         Object value = null;
-        BigDecimal rechnungsbetragVorrechnung = semesterrechnung.getRechnungsbetragVorrechnung();
-        boolean showVorrechnung = semesterrechnung.getWochenbetragVorrechnung().compareTo(BigDecimal.ZERO) != 0
-                || semesterrechnung.getRechnungsdatumVorrechnung() != null
-                || (rechnungsbetragVorrechnung != null && rechnungsbetragVorrechnung.compareTo(BigDecimal.ZERO) != 0);
+        boolean showVorrechnung = semesterrechnung.getRechnungsdatumVorrechnung() != null
+                || (semesterrechnung.getWochenbetragVorrechnung() != null && semesterrechnung.getWochenbetragVorrechnung().compareTo(BigDecimal.ZERO) != 0)
+                || (semesterrechnung.getErmaessigungVorrechnung() != null && semesterrechnung.getErmaessigungVorrechnung().compareTo(BigDecimal.ZERO) != 0)
+                || (semesterrechnung.getZuschlagVorrechnung() != null && semesterrechnung.getZuschlagVorrechnung().compareTo(BigDecimal.ZERO) != 0);
         switch (COLUMNS[columnIndex]) {
             case RECHNUNGSEMPFAENGER:
                 value = semesterrechnung.getRechnungsempfaenger().getNachname() + " " + semesterrechnung.getRechnungsempfaenger().getVorname();
