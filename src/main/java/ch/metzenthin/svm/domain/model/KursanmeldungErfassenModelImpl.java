@@ -245,28 +245,9 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
 
     @Override
     public Semester getInitSemester(List<Semester> semesterList) {
-        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(semesterList);
-        getCommandInvoker().executeCommand(findSemesterForCalendarCommand);
-        Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
-        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
-        Calendar dayToShowNextSemster = new GregorianCalendar();
-        dayToShowNextSemster.add(Calendar.DAY_OF_YEAR, 40);
-        Semester initSemester;
-        if (currentSemester == null) {
-            // Ferien zwischen 2 Semestern
-            initSemester = nextSemester;
-        } else if (dayToShowNextSemster.after(currentSemester.getSemesterende()) && nextSemester != null) {
-            // weniger als 40 Tage vor Semesterende
-            initSemester = nextSemester;
-        } else {
-            // Neues Semester noch nicht erfasst
-            initSemester = currentSemester;
-        }
-        if (initSemester != null) {
-            return initSemester;
-        } else {
-            return semesterList.get(0);
-        }
+        DetermineSemesterInitCommand determineSemesterInitCommand = new DetermineSemesterInitCommand(semesterList);
+        determineSemesterInitCommand.execute();
+        return determineSemesterInitCommand.getSemesterInit();
     }
 
     @Override

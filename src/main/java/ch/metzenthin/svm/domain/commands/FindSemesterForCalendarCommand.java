@@ -27,6 +27,7 @@ public class FindSemesterForCalendarCommand implements Command {
     }
 
     public FindSemesterForCalendarCommand(List<Semester> erfassteSemester) {
+        // heutiges Datum
         calendar = new GregorianCalendar();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);

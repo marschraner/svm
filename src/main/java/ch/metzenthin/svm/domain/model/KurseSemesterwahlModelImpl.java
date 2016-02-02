@@ -3,13 +3,11 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.DetermineSemesterInitCommand;
 import ch.metzenthin.svm.domain.commands.FindKurseSemesterCommand;
-import ch.metzenthin.svm.domain.commands.FindSemesterForCalendarCommand;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Semester;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -37,28 +35,9 @@ public class KurseSemesterwahlModelImpl extends AbstractModel implements KurseSe
 
     @Override
     public Semester getInitSemester(SvmModel svmModel) {
-        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
-        getCommandInvoker().executeCommand(findSemesterForCalendarCommand);
-        Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
-        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
-        Calendar dayToShowNextSemester = new GregorianCalendar();
-        dayToShowNextSemester.add(Calendar.DAY_OF_YEAR, 40);
-        Semester initSemester;
-        if (currentSemester == null) {
-            // Ferien zwischen 2 Semestern
-            initSemester = nextSemester;
-        } else if (dayToShowNextSemester.after(currentSemester.getSemesterende()) && nextSemester != null) {
-            // weniger als 40 Tage vor Semesterende
-            initSemester = nextSemester;
-        } else {
-            // Neues Semester noch nicht erfasst
-            initSemester = currentSemester;
-        }
-        if (initSemester != null) {
-            return initSemester;
-        } else {
-            return svmModel.getSemestersAll().get(0);
-        }
+        DetermineSemesterInitCommand determineSemesterInitCommand = new DetermineSemesterInitCommand(svmModel);
+        determineSemesterInitCommand.execute();
+        return determineSemesterInitCommand.getSemesterInit();
     }
 
     @Override

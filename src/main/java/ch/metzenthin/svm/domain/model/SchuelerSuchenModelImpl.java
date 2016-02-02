@@ -565,20 +565,9 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
     @Override
     public Semester getSemesterInit(SvmModel svmModel) {
-        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(svmModel.getSemestersAll());
-        findSemesterForCalendarCommand.execute();
-        Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
-        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
-        // Innerhalb Semester
-        if (currentSemester != null) {
-            return currentSemester;
-        }
-        // Ferien zwischen 2 Semestern
-        if (nextSemester != null) {
-            return nextSemester;
-        }
-        // Kein passendes Semester erfasst
-        return svmModel.getSemestersAll().get(0);
+        DetermineSemesterInitCommand determineSemesterInitCommand = new DetermineSemesterInitCommand(svmModel);
+        determineSemesterInitCommand.execute();
+        return determineSemesterInitCommand.getSemesterInit();
     }
 
     @Override
