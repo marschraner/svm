@@ -40,7 +40,7 @@ public class DetermineSemesterInitCommand implements Command {
             // Ferien zwischen 2 Semestern
             semesterInit = nextSemester;
         } else if (dayToShowNextSemester.after(currentSemester.getSemesterende()) && nextSemester != null) {
-            // weniger als 40 Tage vor Semesterende
+            // weniger als daysBeforeSemesterEndToShowNextSemester Tage vor Semesterende
             semesterInit = nextSemester;
         } else {
             semesterInit = currentSemester;
