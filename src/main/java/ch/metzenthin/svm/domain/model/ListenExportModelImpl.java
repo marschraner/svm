@@ -431,21 +431,14 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
 
     private String getTitleSpecificKurs(SchuelerSuchenTableModel schuelerSuchenTableModel) {
         if (schuelerSuchenTableModel.getWochentag() != null && schuelerSuchenTableModel.getZeitBeginn() != null) {
-            if (schuelerSuchenTableModel.getZuExportierendeSchuelerList().size() > 0) {
-                String lehrkraefte = schuelerSuchenTableModel.getZuExportierendeSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getLehrkraefteAsStr();
-                String zeitEnde = asString(schuelerSuchenTableModel.getZuExportierendeSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getZeitEnde());
-                String kursort = schuelerSuchenTableModel.getZuExportierendeSchuelerList().get(0).getKursanmeldungenAsList().get(0).getKurs().getKursort().getBezeichnung();
-                return lehrkraefte + " (" + schuelerSuchenTableModel.getWochentag() + " " + asString(schuelerSuchenTableModel.getZeitBeginn()) + "-" + zeitEnde + ", " + kursort + ")";
-            } else {
-                CommandInvoker commandInvoker = getCommandInvoker();
-                FindKursCommand findKursCommand = new FindKursCommand(schuelerSuchenTableModel.getSemester(), schuelerSuchenTableModel.getWochentag(), schuelerSuchenTableModel.getZeitBeginn(), schuelerSuchenTableModel.getLehrkraft());
-                commandInvoker.executeCommand(findKursCommand);
-                if (findKursCommand.getResult() == FindKursCommand.Result.KURS_EXISTIERT_NICHT) {
-                    return "";
-                }
-                Kurs kursFound = findKursCommand.getKursFound();
-                return kursFound.getLehrkraefteAsStr() + " (" + kursFound.getWochentag() +  " " + asString(kursFound.getZeitBeginn()) + "-" + asString(kursFound.getZeitEnde()) + ", " + kursFound.getKursort() + ")";
+            CommandInvoker commandInvoker = getCommandInvoker();
+            FindKursCommand findKursCommand = new FindKursCommand(schuelerSuchenTableModel.getSemester(), schuelerSuchenTableModel.getWochentag(), schuelerSuchenTableModel.getZeitBeginn(), schuelerSuchenTableModel.getLehrkraft());
+            commandInvoker.executeCommand(findKursCommand);
+            if (findKursCommand.getResult() == FindKursCommand.Result.KURS_EXISTIERT_NICHT) {
+                return "";
             }
+            Kurs kursFound = findKursCommand.getKursFound();
+            return kursFound.getLehrkraefteAsStr() + " (" + kursFound.getWochentag() +  " " + asString(kursFound.getZeitBeginn()) + "-" + asString(kursFound.getZeitEnde()) + ", " + kursFound.getKursort().getBezeichnung() + ")";
         } else {
             return schuelerSuchenTableModel.getLehrkraft().toString();
         }
