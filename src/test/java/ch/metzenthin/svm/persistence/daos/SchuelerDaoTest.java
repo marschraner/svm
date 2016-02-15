@@ -3,6 +3,7 @@ package ch.metzenthin.svm.persistence.daos;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
 import org.junit.Before;
@@ -25,10 +26,13 @@ public class SchuelerDaoTest {
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
     private SchuelerDao schuelerDao;
+    private boolean neusteZuoberst;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        Properties svmProperties = SvmProperties.getSvmProperties();
+        neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
         entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         entityManager = entityManagerFactory.createEntityManager();
         schuelerDao = new SchuelerDao(entityManager);
@@ -141,8 +145,13 @@ public class SchuelerDaoTest {
             // Dispensationen
             List<Dispensation> dispensationen = schuelerFound.getDispensationen();
             assertEquals("2 Dispensationen erwartet", 2, dispensationen.size());
-            assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());   // neuste zuerst
-            assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
+            if (neusteZuoberst) {
+                assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());
+                assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
+            } else {
+                assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(1).getGrund());
+                assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(0).getGrund());
+            }
 
             // Erzwingen, dass von DB gelesen wird
             entityManager.refresh(schuelerFound);
@@ -156,11 +165,17 @@ public class SchuelerDaoTest {
             // Dispensationen
             dispensationen = schuelerFound.getDispensationen();
             assertEquals("2 Dispensationen erwartet", 2, dispensationen.size());
-            assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());   // neuste zuerst
-            assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
+            if (neusteZuoberst) {
+                assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());
+                assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
+            } else {
+                assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(1).getGrund());
+                assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(0).getGrund());
+            }
 
             // Arm gebrochen löschen
-            schuelerFound.deleteDispensation(dispensationen.get(0));
+            int indexArmgebrochen = (neusteZuoberst ? 0 : 1);
+            schuelerFound.deleteDispensation(dispensationen.get(indexArmgebrochen));
 
             List<Dispensation> dispensationen2 = schuelerFound.getDispensationen();
             assertEquals("1 Dispensation erwartet", 1, dispensationen2.size());
@@ -372,8 +387,13 @@ public class SchuelerDaoTest {
             // Dispensationen: Reihenfolge prüfen:
             List<Dispensation> dispensationen = schuelerFound2.getDispensationen();
             assertEquals("2 Dispensationen erwartet", 2, dispensationen.size());
-            assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());   // neuste zuerst
-            assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
+            if (neusteZuoberst) {
+                assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());
+                assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
+            } else {
+                assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(1).getGrund());
+                assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(0).getGrund());
+            }
 
             // Erzwingen, dass von DB gelesen wird
             entityManager.refresh(schuelerFound2);
@@ -387,8 +407,13 @@ public class SchuelerDaoTest {
             // Dispensationen: Reihenfolge prüfen:
             dispensationen = schuelerFound2.getDispensationen();
             assertEquals("2 Dispensationen erwartet", 2, dispensationen.size());
-            assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());   // neuste zuerst
-            assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
+            if (neusteZuoberst) {
+                assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());
+                assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
+            } else {
+                assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(1).getGrund());
+                assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(0).getGrund());
+            }
 
             // Ditto, aber andere Strasse:
             Schueler schueler3 = new Schueler("Lea", "Müller", new GregorianCalendar(2000, Calendar.MAY, 2), "044 491 69 33", null, null, Geschlecht.W, null);

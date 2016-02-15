@@ -1,15 +1,27 @@
 package ch.metzenthin.svm.persistence.entities;
 
+import ch.metzenthin.svm.common.utils.SvmProperties;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
 
+import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.*;
 
 /**
  * @author Martin Schraner
  */
 public class DispensationTest {
+
+    private boolean neusteZuoberst;
+
+    @Before
+    public void setUp() throws Exception {
+        createSvmPropertiesFileDefault();
+        Properties svmProperties = SvmProperties.getSvmProperties();
+        neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
+    }
 
     @Test
     public void testCompareTo() throws Exception {
@@ -22,10 +34,18 @@ public class DispensationTest {
         Collections.sort(dispensationen);
 
         // Neuste zuoberst
-        assertEquals("Arm gebrochen", dispensationen.get(0).getGrund());
-        assertEquals("Auslandaufenthalt USA", dispensationen.get(1).getGrund());
-        assertEquals("Impfung", dispensationen.get(2).getGrund());
-        assertEquals("Auslandaufenthalt Italien", dispensationen.get(3).getGrund());
-        assertEquals("Beinbruch", dispensationen.get(4).getGrund());
+        if (neusteZuoberst) {
+            assertEquals("Arm gebrochen", dispensationen.get(0).getGrund());
+            assertEquals("Auslandaufenthalt USA", dispensationen.get(1).getGrund());
+            assertEquals("Impfung", dispensationen.get(2).getGrund());
+            assertEquals("Auslandaufenthalt Italien", dispensationen.get(3).getGrund());
+            assertEquals("Beinbruch", dispensationen.get(4).getGrund());
+        } else {
+            assertEquals("Arm gebrochen", dispensationen.get(4).getGrund());
+            assertEquals("Auslandaufenthalt USA", dispensationen.get(3).getGrund());
+            assertEquals("Impfung", dispensationen.get(2).getGrund());
+            assertEquals("Auslandaufenthalt Italien", dispensationen.get(1).getGrund());
+            assertEquals("Beinbruch", dispensationen.get(0).getGrund());
+        }
     }
 }

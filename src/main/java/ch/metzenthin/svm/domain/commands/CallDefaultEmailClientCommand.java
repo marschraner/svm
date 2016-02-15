@@ -71,6 +71,9 @@ public class CallDefaultEmailClientCommand implements Command {
         // Separator für mehrere E-Mails
         Properties svmProperties = SvmProperties.getSvmProperties();
         String emailClientMultipleMailsSeparator = svmProperties.getProperty(SvmProperties.KEY_EMAIL_CLIENT_MULTIPLE_MAILS_SEPARATOR);
+        if (emailClientMultipleMailsSeparator.isEmpty()) {
+            emailClientMultipleMailsSeparator = ";";
+        }
 
         // Zusammensetzen zu einzigem String mit durch ";" (oder anderem Separator gemäss .svm-Konfiguration) getrennten Emails
         StringBuilder emailAdressenAsSingleStringSb = new StringBuilder();

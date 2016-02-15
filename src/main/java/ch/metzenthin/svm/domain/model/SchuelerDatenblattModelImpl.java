@@ -5,6 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
@@ -22,10 +23,13 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     private Schueler schueler;
     private Maercheneinteilung aktuelleMaercheneinteilung;
+    private boolean neusteZuoberst;
 
     public SchuelerDatenblattModelImpl(Schueler schueler) {
         this.schueler = schueler;
         this.aktuelleMaercheneinteilung = determineAktuelleMaercheneinteilung(schueler.getMaercheneinteilungenAsList());
+        Properties svmProperties = SvmProperties.getSvmProperties();
+        neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
     }
 
     @Override
@@ -188,11 +192,20 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         List<Anmeldung> anmeldungen = schueler.getAnmeldungen();
         if (anmeldungen.size() > 1) {
             StringBuilder fruehereAnmeldungen = new StringBuilder("<html>");
-            for (int i = 1; i < anmeldungen.size(); i++) {
-                if (fruehereAnmeldungen.length() > 6) {
-                    fruehereAnmeldungen.append("<br>");
+            if (neusteZuoberst) {
+                for (int i = 1; i < anmeldungen.size(); i++) {
+                    if (fruehereAnmeldungen.length() > 6) {
+                        fruehereAnmeldungen.append("<br>");
+                    }
+                    fruehereAnmeldungen.append(anmeldungen.get(i).toString());
                 }
-                fruehereAnmeldungen.append(anmeldungen.get(i).toString());
+            } else {
+                for (int i = anmeldungen.size() - 1; i >= 1; i--) {
+                    if (fruehereAnmeldungen.length() > 6) {
+                        fruehereAnmeldungen.append("<br>");
+                    }
+                    fruehereAnmeldungen.append(anmeldungen.get(i).toString());
+                }
             }
             fruehereAnmeldungen.append("</html>");
             return fruehereAnmeldungen.toString();
@@ -213,7 +226,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     public String getDispensationsdauerAsString() {
         List<Dispensation> dispensationen = schueler.getDispensationen();
         if (!dispensationen.isEmpty()) {
-            Dispensation dispensation = dispensationen.get(0);
+            Dispensation dispensation = (neusteZuoberst ? dispensationen.get(0) : dispensationen.get(dispensationen.size() - 1));
             if (isDispensationAktuell(dispensation)) {
                 String dauer;
                 if (dispensation.getDispensationsende() == null) {
@@ -239,7 +252,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     public String getDispensationsgrund() {
         List<Dispensation> dispensationen = schueler.getDispensationen();
         if (!dispensationen.isEmpty()) {
-            Dispensation dispensation = dispensationen.get(0);
+            Dispensation dispensation = (neusteZuoberst ? dispensationen.get(0) : dispensationen.get(dispensationen.size() - 1));
             if (isDispensationAktuell(dispensation)) {
                 return dispensation.getGrund();
             }

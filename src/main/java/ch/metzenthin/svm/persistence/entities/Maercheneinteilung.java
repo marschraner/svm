@@ -2,9 +2,11 @@ package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
+import ch.metzenthin.svm.common.utils.SvmProperties;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Properties;
 
 /**
  * @author Martin Schraner
@@ -95,12 +97,18 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
     @JoinColumn(name = "drittperson_id", nullable = true)
     private ElternmithilfeDrittperson elternmithilfeDrittperson;
 
+    @Transient
+    private boolean neusteZuoberst;
+
     public Maercheneinteilung() {
+        Properties svmProperties = SvmProperties.getSvmProperties();
+        neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
     }
 
     public Maercheneinteilung(Schueler schueler, Maerchen maerchen, Gruppe gruppe, String rolle1, String bilderRolle1, String rolle2, String bilderRolle2, String rolle3, String bilderRolle3, Elternmithilfe elternmithilfe,
                               Boolean kuchenVorstellung1, Boolean kuchenVorstellung2, Boolean kuchenVorstellung3, Boolean kuchenVorstellung4, Boolean kuchenVorstellung5,
                               Boolean kuchenVorstellung6, Boolean kuchenVorstellung7, Boolean kuchenVorstellung8, Boolean kuchenVorstellung9, String zusatzattribut, String bemerkungen) {
+        this();
         this.maerchen = maerchen;
         this.schueler = schueler;
         this.gruppe = gruppe;
@@ -126,8 +134,7 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
 
     @Override
     public int compareTo(Maercheneinteilung otherMaercheneinteilung) {
-        // absteigend nach Schuljahr sortieren, d.h. neuste Einträge zuoberst
-        return otherMaercheneinteilung.getMaerchen().getSchuljahr().compareTo(maerchen.getSchuljahr());
+        return (neusteZuoberst ? otherMaercheneinteilung.getMaerchen().getSchuljahr().compareTo(maerchen.getSchuljahr()) : maerchen.getSchuljahr().compareTo(otherMaercheneinteilung.getMaerchen().getSchuljahr()));
     }
 
     public boolean isIdenticalWith(Maercheneinteilung otherMaercheneinteilung) {

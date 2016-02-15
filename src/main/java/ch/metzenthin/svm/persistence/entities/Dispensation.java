@@ -1,8 +1,11 @@
 package ch.metzenthin.svm.persistence.entities;
 
+import ch.metzenthin.svm.common.utils.SvmProperties;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Properties;
 
 /**
  * @author Martin Schraner
@@ -40,10 +43,16 @@ public class Dispensation implements Comparable<Dispensation> {
     @JoinColumn(name = "schueler_id", nullable = false)
     private Schueler schueler;
 
+    @Transient
+    private boolean neusteZuoberst;
+
     public Dispensation() {
+        Properties svmProperties = SvmProperties.getSvmProperties();
+        neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
     }
 
     public Dispensation(Calendar dispensationsbeginn, Calendar dispensationsende, String voraussichtlicheDauer, String grund) {
+        this();
         this.dispensationsbeginn = dispensationsbeginn;
         this.dispensationsende = dispensationsende;
         this.voraussichtlicheDauer = voraussichtlicheDauer;
@@ -109,14 +118,28 @@ public class Dispensation implements Comparable<Dispensation> {
     @Override
     public int compareTo(Dispensation otherDispensation) {
         // absteigend nach Dispensationsbeginn und Dispensationsende sortieren, d.h. neuste Einträge zuoberst
-        int result = otherDispensation.dispensationsbeginn.compareTo(dispensationsbeginn);
-        if (result == 0) {
-            if (dispensationsende != null && otherDispensation.dispensationsende != null) {
-                result = otherDispensation.dispensationsende.compareTo(dispensationsende);
-            } else if (dispensationsende != null) {
-                result = 1;
-            } else if (otherDispensation.dispensationsende != null) {
-                result = -1;
+        int result;
+        if (neusteZuoberst) {
+            result = otherDispensation.dispensationsbeginn.compareTo(dispensationsbeginn);
+            if (result == 0) {
+                if (dispensationsende != null && otherDispensation.dispensationsende != null) {
+                    result = otherDispensation.dispensationsende.compareTo(dispensationsende);
+                } else if (dispensationsende != null) {
+                    result = 1;
+                } else if (otherDispensation.dispensationsende != null) {
+                    result = -1;
+                }
+            }
+        } else {
+            result = dispensationsbeginn.compareTo(otherDispensation.dispensationsbeginn);
+            if (result == 0) {
+                if (dispensationsende != null && otherDispensation.dispensationsende != null) {
+                    result = dispensationsende.compareTo(otherDispensation.dispensationsende);
+                } else if (dispensationsende != null) {
+                    result = -1;
+                } else if (otherDispensation.dispensationsende != null) {
+                    result = 1;
+                }
             }
         }
         return result;

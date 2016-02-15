@@ -5,6 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
 import org.junit.Before;
@@ -18,6 +19,7 @@ import javax.persistence.Persistence;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Properties;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.*;
@@ -30,10 +32,14 @@ public class MaercheneinteilungDaoTest {
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
     private MaercheneinteilungDao maercheneinteilungDao;
+    private boolean neusteZuoberst;
+
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        Properties svmProperties = SvmProperties.getSvmProperties();
+        neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
         entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         entityManager = entityManagerFactory.createEntityManager();
         maercheneinteilungDao = new MaercheneinteilungDao(entityManager);
@@ -270,8 +276,13 @@ public class MaercheneinteilungDaoTest {
             // Nach Märcheneinteilungen von Schüler 1 suchen
             List<Maercheneinteilung> maercheneinteilungList1 = maercheneinteilungDao.findMaercheneinteilungenSchueler(schueler1);
             assertEquals(2, maercheneinteilungList1.size());
-            assertEquals("Erzähltaube 2", maercheneinteilungList1.get(0).getRolle1());
-            assertEquals("Komödiant 1", maercheneinteilungList1.get(1).getRolle1());
+            if (neusteZuoberst) {
+                assertEquals("Erzähltaube 2", maercheneinteilungList1.get(0).getRolle1());
+                assertEquals("Komödiant 1", maercheneinteilungList1.get(1).getRolle1());
+            } else {
+                assertEquals("Erzähltaube 2", maercheneinteilungList1.get(1).getRolle1());
+                assertEquals("Komödiant 1", maercheneinteilungList1.get(0).getRolle1());
+            }
 
             // Nach Märcheneinteilungen von Schüler 2 suchen
             List<Maercheneinteilung> maercheneinteilungList2 = maercheneinteilungDao.findMaercheneinteilungenSchueler(schueler2);

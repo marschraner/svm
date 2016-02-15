@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
@@ -14,6 +15,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Properties;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.*;
@@ -25,10 +27,13 @@ public class AddDispensationToSchuelerAndSaveCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
+    private boolean neusteZuoberst;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        Properties svmProperties = SvmProperties.getSvmProperties();
+        neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
         entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         commandInvoker.openSession();
     }
@@ -87,7 +92,8 @@ public class AddDispensationToSchuelerAndSaveCommandTest {
         schuelerSaved = addDispensationToSchuelerAndSaveCommand.getSchuelerUpdated();
 
         assertEquals(2, schuelerSaved.getDispensationen().size());
-        assertEquals(new GregorianCalendar(2015, Calendar.DECEMBER, 31), schuelerSaved.getDispensationen().get(0).getDispensationsende());
+        Dispensation dispensation = (neusteZuoberst ? schuelerSaved.getDispensationen().get(0) : schuelerSaved.getDispensationen().get(schuelerSaved.getDispensationen().size() - 1));
+        assertEquals(new GregorianCalendar(2015, Calendar.DECEMBER, 31), dispensation.getDispensationsende());
 
 
         // Testdaten löschen

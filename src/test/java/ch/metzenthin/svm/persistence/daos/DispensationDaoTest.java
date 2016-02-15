@@ -3,6 +3,7 @@ package ch.metzenthin.svm.persistence.daos;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Dispensation;
@@ -18,6 +19,7 @@ import javax.persistence.Persistence;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Properties;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.*;
@@ -31,10 +33,13 @@ public class DispensationDaoTest {
     private EntityManager entityManager;
     private DispensationDao dispensationDao;
     private SchuelerDao schuelerDao;
+    private boolean neusteZuoberst;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        Properties svmProperties = SvmProperties.getSvmProperties();
+        neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
         entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         entityManager = entityManagerFactory.createEntityManager();
         dispensationDao = new DispensationDao(entityManager);
@@ -120,9 +125,13 @@ public class DispensationDaoTest {
             Schueler schuelerFound = schuelerDao.findById(schuelerSaved.getPersonId());
             entityManager.refresh(schuelerFound);
             assertEquals(2, schuelerFound.getDispensationen().size());
-            // Neuste zuerst?
-            assertEquals("Armbruch", schuelerFound.getDispensationen().get(0).getGrund());
-            assertEquals("Zu klein", schuelerFound.getDispensationen().get(1).getGrund());
+            if (neusteZuoberst) {
+                assertEquals("Armbruch", schuelerFound.getDispensationen().get(0).getGrund());
+                assertEquals("Zu klein", schuelerFound.getDispensationen().get(1).getGrund());
+            } else {
+                assertEquals("Armbruch", schuelerFound.getDispensationen().get(1).getGrund());
+                assertEquals("Zu klein", schuelerFound.getDispensationen().get(0).getGrund());
+            }
 
             // Dispensationen prüfen
             assertNotNull(dispensationDao.findById(dispensation1.getDispensationId()));
@@ -173,8 +182,13 @@ public class DispensationDaoTest {
             Schueler schuelerFound = schuelerDao.findById(schuelerSaved.getPersonId());
             entityManager.refresh(schuelerFound);
             assertEquals(2, schuelerFound.getDispensationen().size());
-            assertEquals("Armbruch", schuelerFound.getDispensationen().get(0).getGrund());
-            assertEquals("Zu klein", schuelerFound.getDispensationen().get(1).getGrund());
+            if (neusteZuoberst) {
+                assertEquals("Armbruch", schuelerFound.getDispensationen().get(0).getGrund());
+                assertEquals("Zu klein", schuelerFound.getDispensationen().get(1).getGrund());
+            } else {
+                assertEquals("Armbruch", schuelerFound.getDispensationen().get(1).getGrund());
+                assertEquals("Zu klein", schuelerFound.getDispensationen().get(0).getGrund());
+            }
             assertNotNull(dispensationDao.findById(dispensation1.getDispensationId()));
             assertNotNull(dispensationDao.findById(dispensation2.getDispensationId()));
 

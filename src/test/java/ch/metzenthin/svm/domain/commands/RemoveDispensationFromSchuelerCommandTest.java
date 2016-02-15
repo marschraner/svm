@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
@@ -14,6 +15,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Properties;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.*;
@@ -25,10 +27,13 @@ public class RemoveDispensationFromSchuelerCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
     private EntityManagerFactory entityManagerFactory;
+    private boolean neusteZuoberst;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        Properties svmProperties = SvmProperties.getSvmProperties();
+        neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
         entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         commandInvoker.openSession();
     }
@@ -87,8 +92,13 @@ public class RemoveDispensationFromSchuelerCommandTest {
         Schueler updatedSchueler = removeDispensationFromSchuelerCommand.getSchuelerUpdated();
 
         assertEquals(2, updatedSchueler.getDispensationen().size());
-        assertEquals("Armbruch", updatedSchueler.getDispensationen().get(0).getGrund());  // neuste zuoberst
-        assertEquals("Zu klein", updatedSchueler.getDispensationen().get(1).getGrund());
+        if (neusteZuoberst) {
+            assertEquals("Armbruch", updatedSchueler.getDispensationen().get(0).getGrund());  // neuste zuoberst
+            assertEquals("Zu klein", updatedSchueler.getDispensationen().get(1).getGrund());
+        } else {
+            assertEquals("Armbruch", updatedSchueler.getDispensationen().get(1).getGrund());  // neuste zuletzt
+            assertEquals("Zu klein", updatedSchueler.getDispensationen().get(0).getGrund());
+        }
 
 
         // Testdaten löschen

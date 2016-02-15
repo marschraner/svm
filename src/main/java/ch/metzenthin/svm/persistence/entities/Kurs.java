@@ -2,6 +2,7 @@ package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.common.utils.StringNumberComparator;
+import ch.metzenthin.svm.common.utils.SvmProperties;
 
 import javax.persistence.*;
 import java.sql.Time;
@@ -67,10 +68,16 @@ public class Kurs implements Comparable<Kurs> {
     @OneToMany(mappedBy = "kurs")
     private Set<Kursanmeldung> kursanmeldungen = new HashSet<>();
 
+    @Transient
+    private boolean neusteZuoberst;
+
     public Kurs() {
+        Properties svmProperties = SvmProperties.getSvmProperties();
+        neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
     }
 
     public Kurs(String altersbereich, String stufe, Wochentag wochentag, Time zeitBeginn, Time zeitEnde, String bemerkungen) {
+        this();
         this.altersbereich = altersbereich;
         this.stufe = stufe;
         this.wochentag = wochentag;
@@ -143,7 +150,7 @@ public class Kurs implements Comparable<Kurs> {
     @Override
     public int compareTo(Kurs otherKurs) {
         Comparator<String> stringNumberComparator = new StringNumberComparator();
-        int result = otherKurs.semester.getSemesterbeginn().compareTo(semester.getSemesterbeginn());   // Semester: absteigend
+        int result = (neusteZuoberst ? otherKurs.semester.getSemesterbeginn().compareTo(semester.getSemesterbeginn()) : semester.getSemesterbeginn().compareTo(otherKurs.semester.getSemesterbeginn()));
         if (result == 0) {
             result = kurstyp.compareTo(otherKurs.kurstyp);
             if (result == 0) {
