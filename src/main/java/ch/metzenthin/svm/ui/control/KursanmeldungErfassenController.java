@@ -154,6 +154,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
         comboBoxWochentag.setModel(new DefaultComboBoxModel<>(Wochentag.values()));
         comboBoxWochentag.removeItem(Wochentag.ALLE);
+        comboBoxWochentag.removeItem(Wochentag.SONNTAG);
         comboBoxWochentag.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -268,6 +268,7 @@ public class SchuelerSuchenController extends PersonController {
     public void setComboBoxWochentag(JComboBox<Wochentag> comboBoxWochentag) {
         this.comboBoxWochentag = comboBoxWochentag;
         comboBoxWochentag.setModel(new DefaultComboBoxModel<>(Wochentag.values()));
+        comboBoxWochentag.removeItem(Wochentag.SONNTAG);
         comboBoxWochentag.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

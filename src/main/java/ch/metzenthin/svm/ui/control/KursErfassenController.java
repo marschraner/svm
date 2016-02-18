@@ -252,6 +252,7 @@ public class KursErfassenController extends AbstractController {
         this.comboBoxWochentag = comboBoxWochentag;
         comboBoxWochentag.setModel(new DefaultComboBoxModel<>(Wochentag.values()));
         comboBoxWochentag.removeItem(Wochentag.ALLE);
+        comboBoxWochentag.removeItem(Wochentag.SONNTAG);
         // Leeren ComboBox-Wert anzeigen
         comboBoxWochentag.setSelectedItem(null);
         comboBoxWochentag.addActionListener(new ActionListener() {
