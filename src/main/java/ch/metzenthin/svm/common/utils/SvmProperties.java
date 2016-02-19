@@ -43,7 +43,7 @@ public class SvmProperties {
             // set the properties value
             prop.setProperty(KEY_DB_URL_HOSTNAME, "localhost");
             prop.setProperty(KEY_DB_URL_PORT, "3306");
-            prop.setProperty(KEY_TEMPLATES_DIRECTORY, System.getProperty("user.dir") + File.separator + "Listen-Templates");
+            prop.setProperty(KEY_TEMPLATES_DIRECTORY, System.getProperty("user.home") + File.separator + "svm" + File.separator + "Listen-Templates");
             prop.setProperty(KEY_DEFAULT_OUTPUT_DIRECTORY, System.getProperty("user.home") + File.separator + "Desktop");
             prop.setProperty(KEY_ABSENZENLISTE_TEMPLATE, "<Schuljahr>" + File.separator + "Semester_<Semester>" + File.separator + "Absenzenliste-Template_<Schuljahr>_<Semester>_<Wochentag>.docx");
             prop.setProperty(KEY_EMAIL_CLIENT_MULTIPLE_MAILS_SEPARATOR, ";");
