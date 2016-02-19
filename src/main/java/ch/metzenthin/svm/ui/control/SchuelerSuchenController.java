@@ -930,6 +930,17 @@ public class SchuelerSuchenController extends PersonController {
         return maerchenFields;
     }
 
+    private void switchAnmeldestatus() {
+        if (schuelerSuchenModel.getAnmeldestatus() == null) {
+            return;
+        }
+        if (schuelerSuchenModel.isKursFuerSucheBeruecksichtigen() || schuelerSuchenModel.isMaerchenFuerSucheBeruecksichtigen()) {
+            schuelerSuchenModel.setAnmeldestatus(SchuelerSuchenModel.AnmeldestatusSelected.ALLE);
+        } else {
+            schuelerSuchenModel.setAnmeldestatus(SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET);
+        }
+    }
+
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         enableDisableFields();
@@ -995,6 +1006,7 @@ public class SchuelerSuchenController extends PersonController {
             comboBoxLehrkraft.setSelectedItem(schuelerSuchenModel.getMitarbeiter());
         }
         else if (checkIsFieldChange(Field.KURS_FUER_SUCHE_BERUECKSICHTIGEN, evt)) {
+            switchAnmeldestatus();
             checkBoxKursFuerSucheBeruecksichtigen.setSelected(schuelerSuchenModel.isKursFuerSucheBeruecksichtigen());
         }
         else if (checkIsFieldChange(Field.MAERCHEN, evt)) {
@@ -1016,6 +1028,7 @@ public class SchuelerSuchenController extends PersonController {
             txtZusatzattributMaerchen.setText(schuelerSuchenModel.getZusatzattributMaerchen());
         }
         else if (checkIsFieldChange(Field.MAERCHEN_FUER_SUCHE_BERUECKSICHTIGEN, evt)) {
+            switchAnmeldestatus();
             checkBoxMaerchenFuerSucheBeruecksichtigen.setSelected(schuelerSuchenModel.isMaerchenFuerSucheBeruecksichtigen());
         }
     }
