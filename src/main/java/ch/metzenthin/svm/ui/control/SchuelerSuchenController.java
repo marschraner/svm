@@ -835,8 +835,10 @@ public class SchuelerSuchenController extends PersonController {
     void enableDisableFields() {
         if (schuelerSuchenModel.getRolle() != null && schuelerSuchenModel.getRolle() != SchuelerSuchenModel.RolleSelected.SCHUELER) {
             disableGeburtsdatumSuchperiode();
+            disableGeschlechtSelection();
         } else {
             enableGeburtsdatumSuchperiode();
+            enableGeschlechtSelection();
         }
         if (schuelerSuchenModel.getAnmeldestatus() != null && schuelerSuchenModel.getAnmeldestatus() != SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET) {
             disableDispensationSelection();
@@ -866,6 +868,15 @@ public class SchuelerSuchenController extends PersonController {
         // schuelerSuchenModel.invalidateGeburtsdatumSuchperiode() kein Property Change-Event ausgelöst wird
         txtGeburtsdatumSuchperiode.setText("");
         schuelerSuchenModel.invalidateGeburtsdatumSuchperiode();
+    }
+
+    private void enableGeschlechtSelection() {
+        schuelerSuchenModel.enableFields(getGeschlechtFields());
+    }
+
+    private void disableGeschlechtSelection() {
+        schuelerSuchenModel.disableFields(getGeschlechtFields());
+        schuelerSuchenModel.setGeschlecht(SchuelerSuchenModel.GeschlechtSelected.ALLE);
     }
 
     private void enableDispensationSelection() {
@@ -899,6 +910,14 @@ public class SchuelerSuchenController extends PersonController {
         Set<Field> geburtsdatumSuchperiodeFields = new HashSet<>();
         geburtsdatumSuchperiodeFields.add(Field.GEBURTSDATUM_SUCHPERIODE);
         return geburtsdatumSuchperiodeFields;
+    }
+
+    private Set<Field> getGeschlechtFields() {
+        Set<Field> geschlechtFields = new HashSet<>();
+        geschlechtFields.add(Field.WEIBLICH);
+        geschlechtFields.add(Field.MAENNLICH);
+        geschlechtFields.add(Field.GESCHLECHT_ALLE);
+        return geschlechtFields;
     }
 
     private Set<Field> getDispensationFields() {
