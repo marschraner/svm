@@ -3,7 +3,7 @@ package ch.metzenthin.svm.ui.components;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
 import ch.metzenthin.svm.domain.model.RechnungsdatumErfassenModel;
-import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
+import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.ui.control.RechnungsdatumErfassenController;
 
 import javax.swing.*;
@@ -19,17 +19,17 @@ public class RechnungsdatumErfassenDialog extends JDialog {
     private JButton btnOk;
     private JButton btnAbbrechen;
 
-    public RechnungsdatumErfassenDialog(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel, Rechnungstyp rechnungstyp) {
+    public RechnungsdatumErfassenDialog(SvmContext svmContext, java.util.List<Semesterrechnung> semesterrechnungen, Rechnungstyp rechnungstyp) {
         setContentPane(contentPane);
         setModal(true);
         setTitle("Rechnungsdatum");
         initializeErrLbls();
-        createRechnungsdatumErfassenController(svmContext, semesterrechnungenTableModel, rechnungstyp);
+        createRechnungsdatumErfassenController(svmContext, semesterrechnungen, rechnungstyp);
     }
 
-    private void createRechnungsdatumErfassenController(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel, Rechnungstyp rechnungstyp) {
+    private void createRechnungsdatumErfassenController(SvmContext svmContext, java.util.List<Semesterrechnung> semesterrechnungen, Rechnungstyp rechnungstyp) {
         RechnungsdatumErfassenModel rechnungsdatumErfassenModel = svmContext.getModelFactory().createRechnungsdatumErfassenModel();
-        RechnungsdatumErfassenController rechnungsdatumErfassenController = new RechnungsdatumErfassenController(svmContext, semesterrechnungenTableModel, rechnungsdatumErfassenModel, rechnungstyp);
+        RechnungsdatumErfassenController rechnungsdatumErfassenController = new RechnungsdatumErfassenController(svmContext, semesterrechnungen, rechnungsdatumErfassenModel, rechnungstyp);
         rechnungsdatumErfassenController.setRechnungsdatumErfassenDialog(this);
         rechnungsdatumErfassenController.setContentPane(contentPane);
         rechnungsdatumErfassenController.setTxtRechnungsdatum(txtRechnungsdatum);

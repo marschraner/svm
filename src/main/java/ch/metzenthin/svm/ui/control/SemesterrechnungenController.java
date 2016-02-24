@@ -247,9 +247,10 @@ public class SemesterrechnungenController {
         Rechnungstyp rechnungstyp = (n == 1 ? Rechnungstyp.NACHRECHNUNG : Rechnungstyp.VORRECHNUNG);
 
         // Rechnungsdatum erfassen-Dialog
-        RechnungsdatumErfassenDialog rechnungsdatumErfassenDialog = new RechnungsdatumErfassenDialog(svmContext, semesterrechnungenTableModel, rechnungstyp);
+        RechnungsdatumErfassenDialog rechnungsdatumErfassenDialog = new RechnungsdatumErfassenDialog(svmContext, semesterrechnungenTableModel.getSemesterrechnungen(), rechnungstyp);
         rechnungsdatumErfassenDialog.pack();
         rechnungsdatumErfassenDialog.setVisible(true);
+        semesterrechnungenTableModel.fireTableDataChanged();
         btnRechnungsdatum.setFocusPainted(false);
     }
 

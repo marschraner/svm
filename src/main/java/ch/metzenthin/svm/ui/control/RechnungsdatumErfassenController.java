@@ -7,13 +7,14 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.RechnungsdatumErfassenModel;
-import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
+import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -29,7 +30,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private SemesterrechnungenTableModel semesterrechnungenTableModel;
+    private List<Semesterrechnung> semesterrechnungen;
     private RechnungsdatumErfassenModel rechnungsdatumErfassenModel;
     private Rechnungstyp rechnungstyp;
     private final SvmContext svmContext;
@@ -38,10 +39,10 @@ public class RechnungsdatumErfassenController extends AbstractController {
     private JLabel errLblRechnungsdatum;
     private JButton btnOk;
 
-    public RechnungsdatumErfassenController(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel, RechnungsdatumErfassenModel rechnungsdatumErfassenModel, Rechnungstyp rechnungstyp) {
+    public RechnungsdatumErfassenController(SvmContext svmContext, List<Semesterrechnung> semesterrechnungen, RechnungsdatumErfassenModel rechnungsdatumErfassenModel, Rechnungstyp rechnungstyp) {
         super(rechnungsdatumErfassenModel);
         this.svmContext = svmContext;
-        this.semesterrechnungenTableModel = semesterrechnungenTableModel;
+        this.semesterrechnungen = semesterrechnungen;
         this.rechnungsdatumErfassenModel = rechnungsdatumErfassenModel;
         this.rechnungstyp = rechnungstyp;
         this.rechnungsdatumErfassenModel.addPropertyChangeListener(this);
@@ -183,7 +184,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
             SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
                 @Override
                 protected Void doInBackground() throws Exception {
-                    rechnungsdatumErfassenModel.replaceRechnungsdatumAndUpdateSemesterrechnung(svmContext, semesterrechnungenTableModel, rechnungstyp);
+                    rechnungsdatumErfassenModel.replaceRechnungsdatumAndUpdateSemesterrechnung(semesterrechnungen, rechnungstyp);
                     return null;
                 }
                 @Override

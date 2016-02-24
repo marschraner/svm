@@ -30,7 +30,7 @@ public class EmailSchuelerListeController extends AbstractController {
 
     private EmailSchuelerListeModel emailSchuelerListeModel;
     private SvmContext svmContext;
-    private SchuelerSuchenTableModel schuelerDatenblattModel;
+    private SchuelerSuchenTableModel schuelerSuchenTableModel;
     private JDialog emailDialog;
     private JCheckBox checkBoxBlindkopien;
     private JComboBox<EmailSchuelerListeEmpfaengerGruppe> comboBoxEmailSchuelerListeEmpfaengerGruppe;
@@ -41,7 +41,7 @@ public class EmailSchuelerListeController extends AbstractController {
         super(emailSchuelerListeModel);
         this.emailSchuelerListeModel = emailSchuelerListeModel;
         this.svmContext = svmContext;
-        this.schuelerDatenblattModel = schuelerSuchenTableModel;
+        this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.emailSchuelerListeModel.addPropertyChangeListener(this);
         this.emailSchuelerListeModel.addDisableFieldsListener(this);
         this.emailSchuelerListeModel.addMakeErrorLabelsInvisibleListener(this);
@@ -80,7 +80,7 @@ public class EmailSchuelerListeController extends AbstractController {
 
     public void setComboBoxEmailSchuelerListeEmpfaengerGruppe(JComboBox<EmailSchuelerListeEmpfaengerGruppe> comboBoxEmailSchuelerListeEmpfaengerGruppe) {
         this.comboBoxEmailSchuelerListeEmpfaengerGruppe = comboBoxEmailSchuelerListeEmpfaengerGruppe;
-        selectableEmailSchuelerListeEmpfaengerGruppen = emailSchuelerListeModel.getSelectableEmailSchuelerListeEmpfaengerGruppen(schuelerDatenblattModel);
+        selectableEmailSchuelerListeEmpfaengerGruppen = emailSchuelerListeModel.getSelectableEmailSchuelerListeEmpfaengerGruppen(schuelerSuchenTableModel);
         comboBoxEmailSchuelerListeEmpfaengerGruppe.setModel(new DefaultComboBoxModel<>(selectableEmailSchuelerListeEmpfaengerGruppen));
         // Model initialisieren mit erstem ComboBox-Wert
         if (selectableEmailSchuelerListeEmpfaengerGruppen.length > 0) {
@@ -159,7 +159,7 @@ public class EmailSchuelerListeController extends AbstractController {
             btnOk.setFocusPainted(false);
             return;
         }
-        CallDefaultEmailClientCommand.Result result = emailSchuelerListeModel.callEmailClient(schuelerDatenblattModel);
+        CallDefaultEmailClientCommand.Result result = emailSchuelerListeModel.callEmailClient(schuelerSuchenTableModel);
         if (result == CallDefaultEmailClientCommand.Result.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT) {
             JOptionPane.showMessageDialog(emailDialog, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
         }
