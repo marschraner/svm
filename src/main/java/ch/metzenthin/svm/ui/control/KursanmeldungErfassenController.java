@@ -506,10 +506,10 @@ public class KursanmeldungErfassenController extends AbstractController {
             btnOk.setFocusPainted(false);
             return;
         }
-        int n = 0;
+        int n1 = 0;
         if (!isBearbeiten && kursanmeldungErfassenModel.checkIfSemesterIsInPast()) {
             Object[] options = {"Ja", "Nein"};
-            n = JOptionPane.showOptionDialog(
+            n1 = JOptionPane.showOptionDialog(
                     null,
                     "Das selektierte Semester liegt in der Vergangenheit. Kursanmeldung trotzdem speichern?",
                     "Semester in Vergangenheit",
@@ -519,27 +519,66 @@ public class KursanmeldungErfassenController extends AbstractController {
                     options,  //the titles of buttons
                     options[1]); //default button title
         }
-        if (n == 0) {
-            // Existiert der Kurs?
-            if (!isBearbeiten && kursanmeldungErfassenModel.findKurs() == FindKursCommand.Result.KURS_EXISTIERT_NICHT) {
-                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs existiert nicht.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
-                btnOk.setFocusPainted(false);
-                return;
+        if (n1 == 0) {
+            // Warnung wenn Anmeldedatum vor Semesterbeginn
+            int n2 = 0;
+            if (kursanmeldungErfassenModel.isAnmeldedatumBeforeSemesterbeginn()) {
+                Object[] options = {"Ja", "Nein"};
+                n2 = JOptionPane.showOptionDialog(
+                        null,
+                        "Das Anmeldedatum liegt vor dem Semesterbeginn. Fortfahren?",
+                        "Warnung",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        svmContext.getDialogIcons().getWarningIcon(),
+                        options,  //the titles of buttons
+                        options[1]); //default button title
             }
-            // Kurs bereits erfasst
-            if (!isBearbeiten && kursanmeldungErfassenModel.checkIfKursBereitsErfasst(schuelerDatenblattModel)) {
-                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
-                btnOk.setFocusPainted(false);
-                return;
-            }
-            // Speichern
-            CalculateAnzWochenCommand.Result speichernResult = kursanmeldungErfassenModel.speichern(kursanmeldungenTableModel, schuelerDatenblattModel);
+            if (n2 == 0) {
+                // Warnung wenn Abmeldedatum nach Semesterbeginn Folgesemester
+                int n3 = 0;
+                if (kursanmeldungErfassenModel.isAbmeldedatumEqualsOrAfterSemesterbeginnNaechstesSemester()) {
+                    Object[] options = {"Ja", "Nein"};
+                    n3 = JOptionPane.showOptionDialog(
+                            null,
+                            "Das Abmeldedatum liegt im Folgesemester. Fortfahren?",
+                            "Warnung",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE,
+                            svmContext.getDialogIcons().getWarningIcon(),
+                            options,  //the titles of buttons
+                            options[1]); //default button title
+                }
+                if (n3 == 0) {
+                    // Existiert der Kurs?
+                    if (!isBearbeiten && kursanmeldungErfassenModel.findKurs() == FindKursCommand.Result.KURS_EXISTIERT_NICHT) {
+                        JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs existiert nicht.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                        btnOk.setFocusPainted(false);
+                        return;
+                    }
+                    // Kurs bereits erfasst
+                    if (!isBearbeiten && kursanmeldungErfassenModel.checkIfKursBereitsErfasst(schuelerDatenblattModel)) {
+                        JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                        btnOk.setFocusPainted(false);
+                        return;
+                    }
 
-            // Warnung, falls Kurse unterschiedliche Anzahl Wochen haben
-            if (speichernResult == CalculateAnzWochenCommand.Result.KURSE_MIT_UNTERSCHIEDLICHER_ANZAHL_WOCHEN) {
-                JOptionPane.showMessageDialog(null, "Die Kurse des Rechnungsempfängers haben nicht alle die gleiche Anzahl Wochen.\n" +
-                        "Die Semesterrechnung muss manuell nachbearbeitet werden.", "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+                    // Speichern
+                    CalculateAnzWochenCommand.Result speichernResult = kursanmeldungErfassenModel.speichern(kursanmeldungenTableModel, schuelerDatenblattModel);
+
+                    // Warnung, falls Kurse unterschiedliche Anzahl Wochen haben
+                    if (speichernResult == CalculateAnzWochenCommand.Result.KURSE_MIT_UNTERSCHIEDLICHER_ANZAHL_WOCHEN) {
+                        JOptionPane.showMessageDialog(null, "Die Kurse des Rechnungsempfängers haben nicht alle die gleiche Anzahl Wochen.\n" +
+                                "Die Semesterrechnung muss manuell nachbearbeitet werden.", "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+                    }
+
+                    if (kursanmeldungErfassenModel.isAnmeldedatumBeforeSemesterbeginn() || kursanmeldungErfassenModel.isAbmeldedatumEqualsOrAfterSemesterbeginnNaechstesSemester()) {
+                        JOptionPane.showMessageDialog(null, "Die Anzahl Wochen der Semesterrechnung kannn nicht automatisch berechnet werden.\n" +
+                                "Die Semesterrechnung muss manuell nachbearbeitet werden.", "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+                    }
+                }
             }
+
         }
         kursanmeldungErfassenDialog.dispose();
     }

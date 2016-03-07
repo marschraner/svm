@@ -47,19 +47,31 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
     }
 
     private void calculateAnzahlLektionen() {
-        Semester relevantesSemester = getRelevantesSemester(semestersAll);
-        if (relevantesSemester == null) {
+        Semester aktuellesSemester = getAktuellesSemester(semestersAll);
+        if (aktuellesSemester == null) {
             anzahllLektionen = 0;
             return;
         }
         // Eine Anmeldung dauert bis und mit Abmeldedatum
         // Eine Kursanmeldung des Vorsemesters darf bis zu 31 Tagen ins neue Semester hineinreichen (für Schüler,
         // die sich im laufenden Semester innerhalb 31 Tagen wieder abmelden und daher keine Rechnung erhalten sollen)
-        Query query = entityManager.createQuery("select count(k) from Kursanmeldung k where" +
-                " k.anmeldedatum <= :statistikMonatEnde and" +
-                " (k.abmeldedatum >= :statistikMonatEnde or" +
-                " (k.abmeldedatum is null and k.kurs.semester.semesterId = :semesterId))");
-        query.setParameter("semesterId", getRelevantesSemester(semestersAll).getSemesterId());
+        Semester nachfolgendesSemester = getNachfolgendesSemester(aktuellesSemester);
+        Query query;
+        if (nachfolgendesSemester != null) {
+            // Eine Kursanmeldung des Vorsemesters darf bis zu 90 Tagen ins alte Semester hineinreichen (für Schüler,
+            // die am Ende des vorhergehenden Semesters begonnen haben und keine Rechnung mehr fürs alte Semester erhalten sollen)
+            query = entityManager.createQuery("select count(k) from Kursanmeldung k where" +
+                    " k.anmeldedatum <= :statistikMonatEnde and" +
+                    " (k.abmeldedatum >= :statistikMonatEnde or" +
+                    " (k.abmeldedatum is null and (k.kurs.semester.semesterId = :semesterId or k.kurs.semester.semesterId = :semesterIdNachfolgendesSemester)))");
+            query.setParameter("semesterIdNachfolgendesSemester", nachfolgendesSemester.getSemesterId());
+        } else {
+            query = entityManager.createQuery("select count(k) from Kursanmeldung k where" +
+                    " k.anmeldedatum <= :statistikMonatEnde and" +
+                    " (k.abmeldedatum >= :statistikMonatEnde or" +
+                    " (k.abmeldedatum is null and k.kurs.semester.semesterId = :semesterId))");
+        }
+        query.setParameter("semesterId", aktuellesSemester.getSemesterId());
         query.setParameter("statistikMonatEnde", statistikMonatEnde);
         anzahllLektionen = (int) (long) query.getSingleResult();
     }
@@ -133,7 +145,7 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
         statistikMonatEnde.add(Calendar.DAY_OF_YEAR, -1);
     }
 
-    private Semester getRelevantesSemester(List<Semester> semestersAll) {
+    private Semester getAktuellesSemester(List<Semester> semestersAll) {
         FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(statistikMonatEnde, semestersAll);
         findSemesterForCalendarCommand.execute();
         Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
@@ -146,6 +158,13 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
             // Semesterferien (-> vorhergehendes Semester)
             return previousSemester;
         }
+    }
+
+    private Semester getNachfolgendesSemester(Semester aktuellesSemester) {
+        FindNextSemesterCommand findNextSemesterCommand = new FindNextSemesterCommand(aktuellesSemester);
+        findNextSemesterCommand.setEntityManager(entityManager);
+        findNextSemesterCommand.execute();
+        return findNextSemesterCommand.getNextSemester();
     }
 
     private void determineSemestersAll() {
