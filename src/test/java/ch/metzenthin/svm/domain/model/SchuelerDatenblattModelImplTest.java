@@ -120,7 +120,7 @@ public class SchuelerDatenblattModelImplTest {
 
     @Test
     public void testGetFruehereAnmeldungenAsString() throws Exception {
-        String expected = (neusteZuoberst ? "<html>01.06.2011 - 30.12.2012<br>11.11.2009 - 30.03.2010</html>" : "<html>11.11.2009 - 30.03.2010<br>01.06.2011 - 30.12.2012</html>");
+        String expected = (neusteZuoberst ? "<html>01.06.2011 - 31.12.2012<br>11.11.2009 - 31.03.2010</html>" : "<html>11.11.2009 - 30.03.2010<br>01.06.2011 - 30.12.2012</html>");
         assertEquals(expected, schuelerDatenblattModel.getFruehereAnmeldungenAsString());
     }
 
