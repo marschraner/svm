@@ -52,9 +52,13 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
             anzahllLektionen = 0;
             return;
         }
-        Query query = entityManager.createQuery("select count(k) from Kursanmeldung k where k.kurs.semester.semesterId = :semesterId and" +
+        // Eine Anmeldung dauert bis und mit Abmeldedatum
+        // Eine Kursanmeldung des Vorsemesters darf bis zu 31 Tagen ins neue Semester hineinreichen (für Schüler,
+        // die sich im laufenden Semester innerhalb 31 Tagen wieder abmelden und daher keine Rechnung erhalten sollen)
+        Query query = entityManager.createQuery("select count(k) from Kursanmeldung k where" +
                 " k.anmeldedatum <= :statistikMonatEnde and" +
-                " (k.abmeldedatum is null or k.abmeldedatum > :statistikMonatEnde)");
+                " (k.abmeldedatum >= :statistikMonatEnde or" +
+                " (k.abmeldedatum is null and k.kurs.semester.semesterId = :semesterId))");
         query.setParameter("semesterId", getRelevantesSemester(semestersAll).getSemesterId());
         query.setParameter("statistikMonatEnde", statistikMonatEnde);
         anzahllLektionen = (int) (long) query.getSingleResult();

@@ -46,10 +46,8 @@ public class Anmeldung implements Comparable<Anmeldung> {
         StringBuilder anmeldungSb = new StringBuilder();
         anmeldungSb.append(String.format("%1$td.%1$tm.%1$tY", anmeldedatum));
         if (abmeldedatum != null) {
-            // Eine Anmeldung dauert bis zum Tag vor dem Abmeldedatum
-            Calendar abmeldedatumMinusEinTag = (Calendar) abmeldedatum.clone();
-            abmeldedatumMinusEinTag.add(Calendar.DAY_OF_YEAR, -1);
-            anmeldungSb.append(" - ").append(String.format("%1$td.%1$tm.%1$tY", abmeldedatumMinusEinTag));
+            // Eine Anmeldung dauert bis und mit Abmeldedatum
+            anmeldungSb.append(" - ").append(String.format("%1$td.%1$tm.%1$tY", abmeldedatum));
         }
         return anmeldungSb.toString();
     }

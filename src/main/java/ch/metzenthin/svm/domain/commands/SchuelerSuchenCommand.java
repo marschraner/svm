@@ -316,12 +316,12 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     }
 
     private void createWhereSelectionsAnmeldestatus() {
-        // Eine Anmeldung dauert bis einen Tag vor Abmeldedatum
+        // Eine Anmeldung dauert bis und mit Abmeldedatum
         if (anmeldestatus == SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET) {
-            selectStatementSb.append(" exists (select anm from Anmeldung anm join anm.schueler sch where anm.anmeldedatum <= :stichtag and (anm.abmeldedatum is null or anm.abmeldedatum > :stichtag) and s.personId = sch.personId) and");
+            selectStatementSb.append(" exists (select anm from Anmeldung anm join anm.schueler sch where anm.anmeldedatum <= :stichtag and (anm.abmeldedatum is null or anm.abmeldedatum >= :stichtag) and s.personId = sch.personId) and");
         }
         if (anmeldestatus == SchuelerSuchenModel.AnmeldestatusSelected.ABGEMELDET) {
-            selectStatementSb.append(" not exists (select anm from Anmeldung anm join anm.schueler sch where anm.anmeldedatum <= :stichtag and (anm.abmeldedatum is null or anm.abmeldedatum > :stichtag) and s.personId = sch.personId) and");
+            selectStatementSb.append(" not exists (select anm from Anmeldung anm join anm.schueler sch where anm.anmeldedatum <= :stichtag and (anm.abmeldedatum is null or anm.abmeldedatum >= :stichtag) and s.personId = sch.personId) and");
         }
     }
 
