@@ -181,7 +181,6 @@ public class SemesterrechnungenController {
 
     public void setBtnLoeschen(JButton btnLoeschen) {
         this.btnLoeschen = btnLoeschen;
-        btnLoeschen.setVisible(false);   // Funktionalität nicht benötigt
         enableBtnLoeschen(false);
         btnLoeschen.addActionListener(new ActionListener() {
             @Override
