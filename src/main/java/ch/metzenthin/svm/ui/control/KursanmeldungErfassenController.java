@@ -573,7 +573,7 @@ public class KursanmeldungErfassenController extends AbstractController {
                     }
 
                     if (kursanmeldungErfassenModel.isAnmeldedatumBeforeSemesterbeginn() || kursanmeldungErfassenModel.isAbmeldedatumEqualsOrAfterSemesterbeginnNaechstesSemester()) {
-                        JOptionPane.showMessageDialog(null, "Die Anzahl Wochen der Semesterrechnung kannn nicht automatisch berechnet werden.\n" +
+                        JOptionPane.showMessageDialog(null, "Der Rechnungsbetrag kann nicht automatisch berechnet werden.\n" +
                                 "Die Semesterrechnung muss manuell nachbearbeitet werden.", "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
                     }
                 }
