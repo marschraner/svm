@@ -122,7 +122,8 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
                 new GregorianCalendar(1912, Calendar.APRIL, 21),
                 new BigDecimal("146.00"),
                 "Zahlt immer in Raten",
-                semesterrechnungCode1));
+                semesterrechnungCode1,
+                false));
         assertFalse(checkIfSemesterrechnungAvailable(semester2, rechnungsempfaenger2,
                 Stipendium.STIPENDIUM_70,
                 false,
@@ -153,7 +154,8 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
                 new GregorianCalendar(1912, Calendar.APRIL, 20),
                 new BigDecimal("156.00"),
                 "Zahlt in Raten",
-                semesterrechnungCode2));
+                semesterrechnungCode2,
+                false));
 
         // 1. Semesterrechnung erfassen
         Semesterrechnung semesterrechnung1 = new Semesterrechnung(semester1, rechnungsempfaenger1,
@@ -185,7 +187,7 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
                 new BigDecimal("150.00"),
                 new GregorianCalendar(1912, Calendar.APRIL, 21),
                 new BigDecimal("146.00"),
-                "Zahlt immer in Raten");
+                "Zahlt immer in Raten", false);
         SaveOrUpdateSemesterrechnungCommand saveOrUpdateSemesterrechnungCommand = new SaveOrUpdateSemesterrechnungCommand(semesterrechnung1, semesterrechnungCode1, null, erfassteSemesterrechnungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterrechnungCommand);
 
@@ -219,7 +221,8 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
                 new GregorianCalendar(1912, Calendar.APRIL, 21),
                 new BigDecimal("146.00"),
                 "Zahlt immer in Raten",
-                semesterrechnungCode1));
+                semesterrechnungCode1,
+                false));
 
         // 2. Semesterrechnung erfassen
         Semesterrechnung semesterrechnung2 = new Semesterrechnung(semester2, rechnungsempfaenger2,
@@ -251,7 +254,7 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
                 new BigDecimal("160.00"),
                 new GregorianCalendar(1912, Calendar.APRIL, 20),
                 new BigDecimal("156.00"),
-                "Zahlt in Raten");
+                "Zahlt in Raten", false);
         saveOrUpdateSemesterrechnungCommand = new SaveOrUpdateSemesterrechnungCommand(semesterrechnung2, semesterrechnungCode2, null, erfassteSemesterrechnungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterrechnungCommand);
 
@@ -285,7 +288,8 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
                 new GregorianCalendar(1912, Calendar.APRIL, 20),
                 new BigDecimal("156.00"),
                 "Zahlt in Raten",
-                semesterrechnungCode2));
+                semesterrechnungCode2,
+                false));
 
         // 2. Semesterrechnung bearbeiten
         Semesterrechnung semesterrechnung2Modif = new Semesterrechnung(semester2, rechnungsempfaenger2,
@@ -317,7 +321,8 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
                 new BigDecimal("161.00"),
                 new GregorianCalendar(1912, Calendar.APRIL, 20),
                 new BigDecimal("157.00"),
-                "Zahlt in Raten modif");
+                "Zahlt in Raten modif",
+                false);
         saveOrUpdateSemesterrechnungCommand = new SaveOrUpdateSemesterrechnungCommand(semesterrechnung2Modif, semesterrechnungCode1, semesterrechnung2, erfassteSemesterrechnungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterrechnungCommand);
 
@@ -351,7 +356,8 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
                 new GregorianCalendar(1912, Calendar.APRIL, 20),
                 new BigDecimal("156.00"),
                 "Zahlt in Raten",
-                semesterrechnungCode1));
+                semesterrechnungCode1,
+                false));
         assertTrue(checkIfSemesterrechnungAvailable(semester2, rechnungsempfaenger2,
                 Stipendium.STIPENDIUM_70,
                 false,
@@ -382,7 +388,8 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
                 new GregorianCalendar(1912, Calendar.APRIL, 20),
                 new BigDecimal("157.00"),
                 "Zahlt in Raten modif",
-                semesterrechnungCode1));
+                semesterrechnungCode1,
+                false));
 
         // Testdaten löschen
         EntityManager entityManager = null;
@@ -432,7 +439,7 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
     private boolean checkIfSemesterrechnungAvailable(Semester semester, Angehoeriger rechnungsempfaenger, Stipendium stipendium, Boolean gratiskinder,
                                                      Calendar rechnungsdatumVorrechnung, BigDecimal ermaessigungVorrechnung, String ermaessigungsgrundVorrechnung, BigDecimal zuschlagVorrechnung, String zuschlagsgrundVorrechnung, Integer anzahlWochenVorrechnung, BigDecimal wochenbetragVorrechnung, Calendar datumZahlung1Vorrechnung, BigDecimal betragZahlung1Vorrechnung, Calendar datumZahlung2Vorrechnung, BigDecimal betragZahlung2Vorrechnung, Calendar datumZahlung3Vorrechnung, BigDecimal betragZahlung3Vorrechnung,
                                                      Calendar rechnungsdatumNachrechnung, BigDecimal ermaessigungNachrechnung, String ermaessigungsgrundNachrechnung, BigDecimal zuschlagNachrechnung, String zuschlagsgrundNachrechnung, Integer anzahlWochenNachrechnung, BigDecimal wochenbetragNachrechnung, Calendar datumZahlung1Nachrechnung, BigDecimal betragZahlung1Nachrechnung, Calendar datumZahlung2Nachrechnung, BigDecimal betragZahlung2Nachrechnung, Calendar datumZahlung3Nachrechnung, BigDecimal betragZahlung3Nachrechnung,
-                                                     String bemerkungen, SemesterrechnungCode semesterrechnungCode) {
+                                                     String bemerkungen, SemesterrechnungCode semesterrechnungCode, Boolean deleted) {
         FindSemesterrechnungenSemesterCommand findSemesterrechnungenSemesterCommand = new FindSemesterrechnungenSemesterCommand(semester);
         commandInvoker.executeCommandAsTransaction(findSemesterrechnungenSemesterCommand);
         List<Semesterrechnung> semesterrechnungenRechnungsempfaenger = findSemesterrechnungenSemesterCommand.getSemesterrechnungenFound();
@@ -467,7 +474,8 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
                     && semesterrechnung.getDatumZahlung3Nachrechnung().equals(datumZahlung3Nachrechnung)
                     && semesterrechnung.getBetragZahlung3Nachrechnung().compareTo(betragZahlung3Nachrechnung) == 0
                     && semesterrechnung.getBemerkungen().equals(bemerkungen)
-                    && semesterrechnung.getSemesterrechnungCode().isIdenticalWith(semesterrechnungCode)) {
+                    && semesterrechnung.getSemesterrechnungCode().isIdenticalWith(semesterrechnungCode)
+                    && semesterrechnung.getDeleted().equals(deleted)) {
                 return true;
             }
         }

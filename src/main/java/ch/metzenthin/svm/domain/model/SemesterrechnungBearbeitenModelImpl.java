@@ -25,6 +25,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
 
     SemesterrechnungBearbeitenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
+        semesterrechnung.setDeleted(false);
     }
 
     @Override

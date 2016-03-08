@@ -133,12 +133,15 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     @Column(name = "bemerkungen", columnDefinition = "text", nullable = true)
     private String bemerkungen;
 
+    @Column(name = "deleted", nullable = false)
+    private Boolean deleted;
+
     public Semesterrechnung() {
     }
 
     public Semesterrechnung(Semester semester, Angehoeriger rechnungsempfaenger, Stipendium stipendium, Boolean gratiskinder,
                             Calendar rechnungsdatumVorrechnung, BigDecimal ermaessigungVorrechnung, String ermaessigungsgrundVorrechnung, BigDecimal zuschlagVorrechnung, String zuschlagsgrundVorrechnung, Integer anzahlWochenVorrechnung, BigDecimal wochenbetragVorrechnung, Calendar datumZahlung1Vorrechnung, BigDecimal betragZahlung1Vorrechnung, Calendar datumZahlung2Vorrechnung, BigDecimal betragZahlung2Vorrechnung, Calendar datumZahlung3Vorrechnung, BigDecimal betragZahlung3Vorrechnung,
-                            Calendar rechnungsdatumNachrechnung, BigDecimal ermaessigungNachrechnung, String ermaessigungsgrundNachrechnung, BigDecimal zuschlagNachrechnung, String zuschlagsgrundNachrechnung, Integer anzahlWochenNachrechnung, BigDecimal wochenbetragNachrechnung, Calendar datumZahlung1Nachrechnung, BigDecimal betragZahlung1Nachrechnung, Calendar datumZahlung2Nachrechnung, BigDecimal betragZahlung2Nachrechnung, Calendar datumZahlung3Nachrechnung, BigDecimal betragZahlung3Nachrechnung, String bemerkungen) {
+                            Calendar rechnungsdatumNachrechnung, BigDecimal ermaessigungNachrechnung, String ermaessigungsgrundNachrechnung, BigDecimal zuschlagNachrechnung, String zuschlagsgrundNachrechnung, Integer anzahlWochenNachrechnung, BigDecimal wochenbetragNachrechnung, Calendar datumZahlung1Nachrechnung, BigDecimal betragZahlung1Nachrechnung, Calendar datumZahlung2Nachrechnung, BigDecimal betragZahlung2Nachrechnung, Calendar datumZahlung3Nachrechnung, BigDecimal betragZahlung3Nachrechnung, String bemerkungen, Boolean deleted) {
         this.semester = semester;
         this.rechnungsempfaenger = rechnungsempfaenger;
         this.stipendium = stipendium;
@@ -170,6 +173,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.datumZahlung3Nachrechnung = datumZahlung3Nachrechnung;
         this.betragZahlung3Nachrechnung = betragZahlung3Nachrechnung;
         this.bemerkungen = bemerkungen;
+        this.deleted = deleted;
     }
 
     @Override
@@ -221,6 +225,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.datumZahlung3Nachrechnung = otherSemesterrechnung.datumZahlung3Nachrechnung;
         this.betragZahlung3Nachrechnung = otherSemesterrechnung.betragZahlung3Nachrechnung;
         this.bemerkungen = otherSemesterrechnung.getBemerkungen();
+        this.deleted = otherSemesterrechnung.getDeleted();
     }
 
     public Semester getSemester() {
@@ -488,6 +493,14 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
 
     public void setBemerkungen(String bemerkungen) {
         this.bemerkungen = bemerkungen;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public boolean isZuExportieren() {

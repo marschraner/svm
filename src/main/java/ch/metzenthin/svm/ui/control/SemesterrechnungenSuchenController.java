@@ -17,10 +17,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
 import java.util.Set;
@@ -124,6 +121,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private JRadioButton radioBtnGroesserDifferenzSchulgeld;
     private JComboBox<Wochentag> comboBoxWochentag;
     private JComboBox<Mitarbeiter> comboBoxLehrkraft;
+    private JCheckBox checkBoxGeloescht;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
     private ActionListener closeListener;
@@ -587,6 +585,30 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
+    public void setCheckBoxGeloescht(JCheckBox checkBoxGeloescht) {
+        this.checkBoxGeloescht = checkBoxGeloescht;
+        if (svmContext.getSvmModel().getSemestersAll().isEmpty()) {
+            checkBoxGeloescht.setEnabled(false);
+        }
+        this.checkBoxGeloescht.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                onGeloeschtEvent();
+            }
+        });
+        // Initialisierung
+        semesterrechnungenSuchenModel.setGeloescht(false);
+    }
+
+    private void onGeloeschtEvent() {
+        LOGGER.trace("SemesterrechnungController Event Geloescht. Selected=" + checkBoxGeloescht.isSelected());
+        setModelGeloescht();
+    }
+
+    private void setModelGeloescht() {
+        semesterrechnungenSuchenModel.setGeloescht(checkBoxGeloescht.isSelected());
+    }
+
     public void setErrLblNachname(JLabel errLblNachname) {
         this.errLblNachname = errLblNachname;
     }
@@ -1020,7 +1042,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         SemesterrechnungenTableModel semesterrechnungenTableModel = new SemesterrechnungenTableModel(semesterrechnungenTableData);
         // Auch bei einem Suchresultat Liste anzeigen, da nur von dort gelöscht werden kann
         if (semesterrechnungenTableData.size() > 0) {
-            SemesterrechnungenPanel semesterrechnungenPanel = new SemesterrechnungenPanel(svmContext, semesterrechnungenTableModel);
+            SemesterrechnungenPanel semesterrechnungenPanel = new SemesterrechnungenPanel(svmContext, semesterrechnungenTableModel, semesterrechnungenSuchenModel.isGeloescht());
             semesterrechnungenPanel.addNextPanelListener(nextPanelListener);
             semesterrechnungenPanel.addCloseListener(closeListener);
             semesterrechnungenPanel.addZurueckListener(zurueckListener);
@@ -1403,6 +1425,9 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
         else if (checkIsFieldChange(Field.DIFFERENZ_SCHULGELD, evt)) {
             txtDifferenzSchulgeld.setText(semesterrechnungenSuchenModel.getDifferenzSchulgeld() == null ? null : semesterrechnungenSuchenModel.getDifferenzSchulgeld().toString());
+        }
+        else if (checkIsFieldChange(Field.GELOESCHT, evt)) {
+            checkBoxGeloescht.setSelected(semesterrechnungenSuchenModel.isGeloescht());
         }
     }
 

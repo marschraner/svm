@@ -5,7 +5,7 @@ package ch.metzenthin.svm.common.dataTypes;
  */
 public enum Field {
     EXPORT_MAIL("Exp./Mail"),
-    EXPORT("Export"),
+    EXPORT_RECHNUNGSDATUM("Exp./Rechn.datum"),
     ALLE("Alle"),
     ANREDE("Anrede"),
     NACHNAME("Nachname"),
@@ -202,7 +202,8 @@ public enum Field {
     CODES("Codes"),
     MITARBEITER_CODE("Code"),
     LEHRKRAFT_JA_NEIN("Lehrkraft"),
-    STATUS("Status");
+    STATUS("Status"),
+    GELOESCHT("Gelöscht");
 
     private String name;
 

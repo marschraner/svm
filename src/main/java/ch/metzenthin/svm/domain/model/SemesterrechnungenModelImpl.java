@@ -3,7 +3,8 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.DeleteSemesterrechnungCommand;
+import ch.metzenthin.svm.domain.commands.DeleteSemesterrechnungLogicallyCommand;
+import ch.metzenthin.svm.domain.commands.RestoreSemesterrechnungCommand;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 
@@ -35,8 +36,15 @@ public class SemesterrechnungenModelImpl extends AbstractModel implements Semest
     @Override
     public void semesterrechnungLoeschen(SemesterrechnungenTableModel semesterrechnungenTableModel, int rowSelected) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        DeleteSemesterrechnungCommand deleteSemesterrechnungCommand = new DeleteSemesterrechnungCommand(semesterrechnungenTableModel.getSemesterrechnungen(), rowSelected);
+        DeleteSemesterrechnungLogicallyCommand deleteSemesterrechnungCommand = new DeleteSemesterrechnungLogicallyCommand(semesterrechnungenTableModel.getSemesterrechnungen(), rowSelected);
         commandInvoker.executeCommandAsTransaction(deleteSemesterrechnungCommand);
+    }
+
+    @Override
+    public void semesterrechnungWiederherstellen(SemesterrechnungenTableModel semesterrechnungenTableModel, int rowSelected) {
+        CommandInvoker commandInvoker = getCommandInvoker();
+        RestoreSemesterrechnungCommand restoreSemesterrechnungCommand = new RestoreSemesterrechnungCommand(semesterrechnungenTableModel.getSemesterrechnungen(), rowSelected);
+        commandInvoker.executeCommandAsTransaction(restoreSemesterrechnungCommand);
     }
 
     @Override

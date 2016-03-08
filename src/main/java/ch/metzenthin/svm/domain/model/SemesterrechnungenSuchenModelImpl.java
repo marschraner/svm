@@ -53,6 +53,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private SechsJahresRabattJaNeinNachrechnungSelected sechsJahresRabattJaNeinNachrechnungSelected;
     private PraezisierungDifferenzSchulgeldSelected praezisierungDifferenzSchulgeldSelected;
     private BigDecimal differenzSchulgeld;
+    private Boolean geloescht;
 
     static {
         MITARBEITER_ALLE.setVorname("");
@@ -562,6 +563,18 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     }
 
     @Override
+    public Boolean isGeloescht() {
+        return geloescht;
+    }
+
+    @Override
+    public void setGeloescht(Boolean geloescht) {
+        Boolean oldValue = this.geloescht;
+        this.geloescht = geloescht;
+        firePropertyChange(Field.GELOESCHT, oldValue, this.geloescht);
+    }
+
+    @Override
     public Mitarbeiter[] getSelectableLehrkraefte(SvmModel svmModel) {
         List<Mitarbeiter> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
         // Lehrkraft alle auch erlaubt
@@ -604,7 +617,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         CommandInvoker commandInvoker = getCommandInvoker();
         CreateAndFindSemesterrechnungenCommand createAndFindSemesterrechnungenCommand = new CreateAndFindSemesterrechnungenCommand(this);
         commandInvoker.executeCommandAsTransaction(createAndFindSemesterrechnungenCommand);
-        return new SemesterrechnungenTableData(createAndFindSemesterrechnungenCommand.getSemesterrechnungenFound(), semester);
+        return new SemesterrechnungenTableData(createAndFindSemesterrechnungenCommand.getSemesterrechnungenFound(), semester, geloescht);
     }
 
     @Override

@@ -31,21 +31,24 @@ public class SemesterrechnungenController {
     private final SvmContext svmContext;
     private SemesterrechnungenModel semesterrechnungenModel;
     private final SemesterrechnungenTableModel semesterrechnungenTableModel;
+    private boolean nachGeloeschtenGesucht;
     private JTable semesterrechnungenTable;
     private JButton btnDatenblatt;
     private JButton btnExportieren;
     private JButton btnRechnungsdatum;
     private JButton btnLoeschen;
+    private JButton btnWiederherstellen;
     private JButton btnAbbrechen;
     private JButton btnZurueck;
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
     private ActionListener zurueckListener;
 
-    public SemesterrechnungenController(SvmContext svmContext, SemesterrechnungenModel semesterrechnungenModel, SemesterrechnungenTableModel semesterrechnungenTableModel) {
+    public SemesterrechnungenController(SvmContext svmContext, SemesterrechnungenModel semesterrechnungenModel, SemesterrechnungenTableModel semesterrechnungenTableModel, boolean nachGeloeschtenGesucht) {
         this.svmContext = svmContext;
         this.semesterrechnungenModel = semesterrechnungenModel;
         this.semesterrechnungenTableModel = semesterrechnungenTableModel;
+        this.nachGeloeschtenGesucht = nachGeloeschtenGesucht;
     }
 
     public void setSemesterrechnungenTable(JTable semesterrechnungenTable) {
@@ -107,6 +110,10 @@ public class SemesterrechnungenController {
         });
     }
 
+    public void setLblTitel(JLabel lblTitel) {
+        lblTitel.setText(nachGeloeschtenGesucht ? "Gelöschte Semesterrechnungen" : "Suchresultat");
+    }
+
     public void setLblTotal(JLabel lblTotal) {
         if (semesterrechnungenTableModel.getSemester() == null) {
             lblTotal.setText("Noch keine Semesterrechnungen erfasst.");
@@ -121,6 +128,9 @@ public class SemesterrechnungenController {
 
     public void setBtnDetailsBearbeiten(JButton btnDatenblatt) {
         this.btnDatenblatt = btnDatenblatt;
+        if (nachGeloeschtenGesucht) {
+            btnDatenblatt.setVisible(false);
+        }
         enableBtnDetailsBearbeiten(false);
         btnDatenblatt.addActionListener(new ActionListener() {
             @Override
@@ -146,6 +156,9 @@ public class SemesterrechnungenController {
 
     public void setBtnExportieren(JButton btnExportieren) {
         this.btnExportieren = btnExportieren;
+        if (nachGeloeschtenGesucht) {
+            btnExportieren.setVisible(false);
+        }
         if (semesterrechnungenTableModel.getSemesterrechnungen().isEmpty() || semesterrechnungenTableModel.getAnzExport() == 0) {
             btnExportieren.setEnabled(false);
         }
@@ -181,6 +194,9 @@ public class SemesterrechnungenController {
 
     public void setBtnLoeschen(JButton btnLoeschen) {
         this.btnLoeschen = btnLoeschen;
+        if (nachGeloeschtenGesucht) {
+            btnLoeschen.setVisible(false);
+        }
         enableBtnLoeschen(false);
         btnLoeschen.addActionListener(new ActionListener() {
             @Override
@@ -199,11 +215,11 @@ public class SemesterrechnungenController {
         Object[] options = {"Ja", "Nein"};
         int n = JOptionPane.showOptionDialog(
                 null,
-                "Durch Drücken des Ja-Buttons wird die Semesterrechnung unwiderruflich aus der Datenbank gelöscht. Fortfahren?",
-                "Eintrag löschen?",
+                "Soll die Semesterrechnung gelöscht werden?",
+                "Semesterrechnung löschen",
                 JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE,
-                svmContext.getDialogIcons().getWarningIcon(),
+                JOptionPane.QUESTION_MESSAGE,
+                svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
@@ -216,9 +232,39 @@ public class SemesterrechnungenController {
         semesterrechnungenTable.clearSelection();
     }
 
+    public void setBtnWiederherstellen(JButton btnWiederherstellen) {
+        this.btnWiederherstellen = btnWiederherstellen;
+        if (!nachGeloeschtenGesucht) {
+            btnWiederherstellen.setVisible(false);
+        }
+        enableBtnWiederherstellen(false);
+        btnWiederherstellen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onWiederherstellen();
+            }
+        });
+    }
+
+    private void enableBtnWiederherstellen(boolean enabled) {
+        btnWiederherstellen.setEnabled(enabled);
+    }
+
+    private void onWiederherstellen() {
+        btnWiederherstellen.setFocusPainted(true);
+        semesterrechnungenModel.semesterrechnungWiederherstellen(semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()));
+        semesterrechnungenTableModel.fireTableDataChanged();
+        semesterrechnungenTable.addNotify();
+        btnWiederherstellen.setFocusPainted(false);
+        enableBtnWiederherstellen(false);
+        semesterrechnungenTable.clearSelection();
+    }
 
     public void setBtnRechnungsdatum(JButton btnRechnungsdatum) {
         this.btnRechnungsdatum = btnRechnungsdatum;
+        if (nachGeloeschtenGesucht) {
+            btnRechnungsdatum.setVisible(false);
+        }
         if (semesterrechnungenTableModel.getSemesterrechnungen().isEmpty()) {
             btnRechnungsdatum.setEnabled(false);
         }
@@ -232,6 +278,21 @@ public class SemesterrechnungenController {
 
     private void onRechnungsdatum() {
         btnRechnungsdatum.setFocusPainted(true);
+
+        if (semesterrechnungenTableModel.getAnzExport() < semesterrechnungenTableModel.getRowCount()) {
+            String str1;
+            String str2;
+            if (semesterrechnungenTableModel.getAnzExport() > 1) {
+                str1 = "sind nur " + semesterrechnungenTableModel.getAnzExport();
+                str2 = "diese Einträge\nwerden";
+            } else {
+                str1 = "ist nur einer";
+                str2 = "dieser Eintrag\nwird";
+            }
+            JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
+                    + semesterrechnungenTableModel.getRowCount() + " Einträge selektiert. Nur " + str2
+                    + " beim Setzen des Rechnungsdatums berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+        }
 
         // Wahl des Rechnungstyps
         Object[] optionsRechnungstyp = {"Vorrechnung", "Nachrechnung"};
@@ -247,7 +308,7 @@ public class SemesterrechnungenController {
         Rechnungstyp rechnungstyp = (n == 1 ? Rechnungstyp.NACHRECHNUNG : Rechnungstyp.VORRECHNUNG);
 
         // Rechnungsdatum erfassen-Dialog
-        RechnungsdatumErfassenDialog rechnungsdatumErfassenDialog = new RechnungsdatumErfassenDialog(svmContext, semesterrechnungenTableModel.getSemesterrechnungen(), rechnungstyp);
+        RechnungsdatumErfassenDialog rechnungsdatumErfassenDialog = new RechnungsdatumErfassenDialog(svmContext, semesterrechnungenTableModel.getZuExportierendeSemesterrechnungen(), rechnungstyp);
         rechnungsdatumErfassenDialog.pack();
         rechnungsdatumErfassenDialog.setVisible(true);
         semesterrechnungenTableModel.fireTableDataChanged();
@@ -258,6 +319,7 @@ public class SemesterrechnungenController {
         int selectedRowIndex = semesterrechnungenTable.getSelectedRow();
         enableBtnDetailsBearbeiten(selectedRowIndex >= 0);
         enableBtnLoeschen(selectedRowIndex >= 0);
+        enableBtnWiederherstellen(selectedRowIndex >= 0);
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {

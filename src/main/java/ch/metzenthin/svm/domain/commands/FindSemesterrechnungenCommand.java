@@ -74,6 +74,7 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
     private SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected sechsJahresRabattJaNeinNachrechnungSelected;
     private SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected praezisierungDifferenzSchulgeldSelected;
     private BigDecimal differenzSchulgeld;
+    private Boolean geloescht;
     private StringBuilder selectStatementSb;
     private TypedQuery<Semesterrechnung> typedQuery;
 
@@ -127,6 +128,7 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
         this.sechsJahresRabattJaNeinNachrechnungSelected = semesterrechnungenSuchenModel.getSechsJahresRabattJaNeinNachrechnungSelected();
         this.praezisierungDifferenzSchulgeldSelected = semesterrechnungenSuchenModel.getPraezisierungDifferenzSchulgeldSelected();
         this.differenzSchulgeld = semesterrechnungenSuchenModel.getDifferenzSchulgeld();
+        this.geloescht = semesterrechnungenSuchenModel.isGeloescht();
     }
 
     @Override
@@ -143,7 +145,7 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
         createJoinKurs();
 
         // Selection-Statements
-        selectStatementSb.append(" where semre.semester.semesterId = :semesterId and");
+        selectStatementSb.append(" where semre.semester.semesterId = :semesterId and semre.deleted = :deleted and");
         createWhereSelections();
 
         // Letztes " and" löschen
@@ -421,6 +423,7 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
     
     private void setSelectionParameters() {
         typedQuery.setParameter("semesterId", semester.getSemesterId());
+        typedQuery.setParameter("deleted", geloescht);
         if (selectStatementSb.toString().contains(":vorname")) {
             typedQuery.setParameter("vorname", vorname.toLowerCase() + "%");
         }

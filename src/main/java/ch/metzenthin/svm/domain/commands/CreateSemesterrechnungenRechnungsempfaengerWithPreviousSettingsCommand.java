@@ -56,6 +56,7 @@ public class CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsComm
             semesterrechnung.setSemester(currentSemesterReloaded);
             semesterrechnung.setRechnungsempfaenger(rechnungsempfaenger);
             semesterrechnung.setGratiskinder(false);
+            semesterrechnung.setDeleted(false);
 
             // 4. SemesterrechnungCode, Stipendium und Gratiskind von früher
             if (!rechnungsempfaenger.getSemesterrechnungen().isEmpty()) {

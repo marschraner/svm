@@ -16,23 +16,45 @@ public class SemesterrechnungenTableData {
 
     private List<Semesterrechnung> semesterrechnungen;
     private Semester semester;
+    private boolean nachGeloeschtenGesucht;
+    private List<Field> columns = new ArrayList<>();
 
-    public SemesterrechnungenTableData(List<Semesterrechnung> semesterrechnungen, Semester semester) {
+    public SemesterrechnungenTableData(List<Semesterrechnung> semesterrechnungen, Semester semester, boolean nachGeloeschtenGesucht) {
         this.semesterrechnungen = semesterrechnungen;
         this.semester = semester;
+        this.nachGeloeschtenGesucht = nachGeloeschtenGesucht;
+        initColumns();
     }
 
-    private static final Field[] COLUMNS = {Field.RECHNUNGSEMPFAENGER, Field.SCHUELER,
-            Field.RECHNUNGSDATUM_VORRECHNUNG, Field.ANZAHL_WOCHEN_VORRECHNUNG, Field.WOCHENBETRAG_VORRECHNUNG,
-            Field.SCHULGELD_VORRECHNUNG, Field.ERMAESSIGUNG_VORRECHNUNG, Field.ZUSCHLAG_VORRECHNUNG,
-            Field.ERMAESSIGUNG_STIPENDIUM_VORRECHNUNG, Field.RECHNUNGSBETRAG_VORRECHNUNG, Field.RESTBETRAG_VORRECHNUNG,
-            Field.RECHNUNGSDATUM_NACHRECHNUNG, Field.ANZAHL_WOCHEN_NACHRECHNUNG, Field.WOCHENBETRAG_NACHRECHNUNG,
-            Field.SCHULGELD_NACHRECHNUNG, Field.ERMAESSIGUNG_NACHRECHNUNG, Field.ZUSCHLAG_NACHRECHNUNG,
-            Field.ERMAESSIGUNG_STIPENDIUM_NACHRECHNUNG, Field.RECHNUNGSBETRAG_NACHRECHNUNG, Field.RESTBETRAG_NACHRECHNUNG,
-            Field.DIFFERENZ_SCHULGELD, Field.EXPORT};
+    private void initColumns() {
+        columns.add(Field.RECHNUNGSEMPFAENGER);
+        columns.add(Field.SCHUELER);
+        columns.add(Field.RECHNUNGSDATUM_VORRECHNUNG);
+        columns.add(Field.ANZAHL_WOCHEN_VORRECHNUNG);
+        columns.add(Field.WOCHENBETRAG_VORRECHNUNG);
+        columns.add(Field.SCHULGELD_VORRECHNUNG);
+        columns.add(Field.ERMAESSIGUNG_VORRECHNUNG);
+        columns.add(Field.ZUSCHLAG_VORRECHNUNG);
+        columns.add(Field.ERMAESSIGUNG_STIPENDIUM_VORRECHNUNG);
+        columns.add(Field.RECHNUNGSBETRAG_VORRECHNUNG);
+        columns.add(Field.RESTBETRAG_VORRECHNUNG);
+        columns.add(Field.RECHNUNGSDATUM_NACHRECHNUNG);
+        columns.add(Field.ANZAHL_WOCHEN_NACHRECHNUNG);
+        columns.add(Field.WOCHENBETRAG_NACHRECHNUNG);
+        columns.add(Field.SCHULGELD_NACHRECHNUNG);
+        columns.add(Field.ERMAESSIGUNG_NACHRECHNUNG);
+        columns.add(Field.ZUSCHLAG_NACHRECHNUNG);
+        columns.add(Field.ERMAESSIGUNG_STIPENDIUM_NACHRECHNUNG);
+        columns.add(Field.RECHNUNGSBETRAG_NACHRECHNUNG);
+        columns.add(Field.RESTBETRAG_NACHRECHNUNG);
+        columns.add(Field.DIFFERENZ_SCHULGELD);
+        if (!nachGeloeschtenGesucht) {
+            columns.add(Field.EXPORT_RECHNUNGSDATUM);
+        }
+    }
 
     public int getColumnCount() {
-        return COLUMNS.length;
+        return columns.size();
     }
 
     public int size() {
@@ -56,7 +78,7 @@ public class SemesterrechnungenTableData {
                 || (semesterrechnung.getWochenbetragVorrechnung() != null && semesterrechnung.getWochenbetragVorrechnung().compareTo(BigDecimal.ZERO) != 0)
                 || (semesterrechnung.getErmaessigungVorrechnung() != null && semesterrechnung.getErmaessigungVorrechnung().compareTo(BigDecimal.ZERO) != 0)
                 || (semesterrechnung.getZuschlagVorrechnung() != null && semesterrechnung.getZuschlagVorrechnung().compareTo(BigDecimal.ZERO) != 0);
-        switch (COLUMNS[columnIndex]) {
+        switch (columns.get(columnIndex)) {
             case RECHNUNGSEMPFAENGER:
                 value = semesterrechnung.getRechnungsempfaenger().getNachname() + " " + semesterrechnung.getRechnungsempfaenger().getVorname();
                 break;
@@ -144,7 +166,7 @@ public class SemesterrechnungenTableData {
             case DIFFERENZ_SCHULGELD:
                 value = semesterrechnung.getDifferenzSchulgeld();
                 break;
-            case EXPORT:
+            case EXPORT_RECHNUNGSDATUM:
                 value = semesterrechnung.isZuExportieren();
                 break;
             default:
@@ -154,8 +176,8 @@ public class SemesterrechnungenTableData {
     }
 
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        switch (COLUMNS[columnIndex]) {
-            case EXPORT:
+        switch (columns.get(columnIndex)) {
+            case EXPORT_RECHNUNGSDATUM:
                 Semesterrechnung semesterrechnung = semesterrechnungen.get(rowIndex);
                 semesterrechnung.setZuExportieren((boolean) value);
                 semesterrechnungen.set(rowIndex, semesterrechnung);
@@ -165,8 +187,8 @@ public class SemesterrechnungenTableData {
     }
 
     public boolean isCellEditable(int columnIndex) {
-        switch (COLUMNS[columnIndex]) {
-            case EXPORT:
+        switch (columns.get(columnIndex)) {
+            case EXPORT_RECHNUNGSDATUM:
                 return true;
             default:
                 return false;
@@ -174,7 +196,7 @@ public class SemesterrechnungenTableData {
     }
 
     public Class<?> getColumnClass(int columnIndex) {
-        switch (COLUMNS[columnIndex]) {
+        switch (columns.get(columnIndex)) {
             case RECHNUNGSDATUM_VORRECHNUNG:
                 return Calendar.class;
             case ANZAHL_WOCHEN_VORRECHNUNG:
@@ -209,15 +231,15 @@ public class SemesterrechnungenTableData {
                 return BigDecimal.class;
             case DIFFERENZ_SCHULGELD:
                 return BigDecimal.class;
-            case EXPORT:
+            case EXPORT_RECHNUNGSDATUM:
                 return Boolean.class;
             default:
                 return String.class;
         }
     }
 
-    public String getColumnName(int column) {
-        return COLUMNS[column].toString();
+    public String getColumnName(int columnIndex) {
+        return columns.get(columnIndex).toString();
     }
 
     public Semester getSememester() {

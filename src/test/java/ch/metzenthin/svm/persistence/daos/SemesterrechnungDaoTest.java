@@ -101,7 +101,8 @@ public class SemesterrechnungDaoTest {
                     new BigDecimal("150.00"),
                     new GregorianCalendar(1912, Calendar.APRIL, 20),
                     new BigDecimal("146.00"),
-                    "Zahlt in Raten");
+                    "Zahlt in Raten",
+                    false);
             semesterrechnung.setSemesterrechnungCode(semesterrechnungCode);
             entityManager.persist(semesterrechnung);
 
@@ -127,6 +128,7 @@ public class SemesterrechnungDaoTest {
             assertEquals(new GregorianCalendar(1912, Calendar.APRIL, 20), semesterrechnungFound.getDatumZahlung3Nachrechnung());
             assertEquals(new BigDecimal("146.00"), semesterrechnungFound.getBetragZahlung3Nachrechnung());
             assertEquals("Zahlt in Raten", semesterrechnungFound.getBemerkungen());
+            assertFalse(semesterrechnungFound.getDeleted());
         } finally {
             if (tx != null) {
                 tx.rollback();
@@ -184,7 +186,8 @@ public class SemesterrechnungDaoTest {
                     new BigDecimal("150.00"),
                     new GregorianCalendar(1912, Calendar.APRIL, 20),
                     new BigDecimal("146.00"),
-                    "Zahlt in Raten");
+                    "Zahlt in Raten",
+                    false);
             semesterrechnung.setSemesterrechnungCode(semesterrechnungCode);
             semesterrechnungDao.save(semesterrechnung);
 
@@ -254,7 +257,8 @@ public class SemesterrechnungDaoTest {
                     new BigDecimal("150.00"),
                     new GregorianCalendar(1912, Calendar.APRIL, 20),
                     new BigDecimal("146.00"),
-                    "Zahlt in Raten");
+                    "Zahlt in Raten",
+                    false);
             semesterrechnung.setSemesterrechnungCode(semesterrechnungCode);
             Semesterrechnung semesterrechnungSaved = semesterrechnungDao.save(semesterrechnung);
 
@@ -350,7 +354,8 @@ public class SemesterrechnungDaoTest {
                     new BigDecimal("150.00"),
                     new GregorianCalendar(1912, Calendar.APRIL, 21),
                     new BigDecimal("146.00"),
-                    "Zahlt immer in Raten");
+                    "Zahlt immer in Raten",
+                    false);
             semesterrechnung1.setSemesterrechnungCode(semesterrechnungCode1);
             entityManager.persist(semesterrechnung1);
             Semesterrechnung semesterrechnung2 = new Semesterrechnung(semester1, rechnungsempfaenger2,
@@ -382,7 +387,8 @@ public class SemesterrechnungDaoTest {
                     new BigDecimal("150.00"),
                     new GregorianCalendar(1912, Calendar.APRIL, 21),
                     new BigDecimal("146.00"),
-                    "Zahlt immer in Raten");
+                    "Zahlt immer in Raten",
+                    false);
             semesterrechnung2.setSemesterrechnungCode(semesterrechnungCode1);
             entityManager.persist(semesterrechnung2);
             Semesterrechnung semesterrechnung3 = new Semesterrechnung(semester2, rechnungsempfaenger1,
@@ -414,7 +420,8 @@ public class SemesterrechnungDaoTest {
                     new BigDecimal("160.00"),
                     new GregorianCalendar(1912, Calendar.APRIL, 20),
                     new BigDecimal("156.00"),
-                    "Zahlt in Raten");
+                    "Zahlt in Raten",
+                    false);
             semesterrechnung3.setSemesterrechnungCode(semesterrechnungCode2);
             entityManager.persist(semesterrechnung3);
 

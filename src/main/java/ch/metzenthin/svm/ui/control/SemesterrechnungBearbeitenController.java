@@ -518,7 +518,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
 
     private void onZurueck() {
         if (semesterrechnungenTableModel != null && semesterrechnungenTableModel.getRowCount() > 1) {
-            SemesterrechnungenPanel semesterrechnungenPanel = new SemesterrechnungenPanel(svmContext, semesterrechnungenTableModel);
+            SemesterrechnungenPanel semesterrechnungenPanel = new SemesterrechnungenPanel(svmContext, semesterrechnungenTableModel, false);
             semesterrechnungenPanel.addNextPanelListener(nextPanelListener);
             semesterrechnungenPanel.addCloseListener(closeListener);
             semesterrechnungenPanel.addZurueckListener(zurueckZuSemesterrechnungSuchenListener);

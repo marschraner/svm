@@ -181,6 +181,7 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     SechsJahresRabattJaNeinNachrechnungSelected getSechsJahresRabattJaNeinNachrechnungSelected();
     PraezisierungDifferenzSchulgeldSelected getPraezisierungDifferenzSchulgeldSelected();
     BigDecimal getDifferenzSchulgeld();
+    Boolean isGeloescht();
 
     void setSemester(Semester semester);
     void setNachname(String nachname) throws SvmValidationException;
@@ -215,6 +216,7 @@ public interface SemesterrechnungenSuchenModel extends SemesterrechnungModel {
     void setSechsJahresRabattJaNeinNachrechnungSelected(SechsJahresRabattJaNeinNachrechnungSelected sechsJahresRabattJaNeinNachrechnungSelected);
     void setPraezisierungDifferenzSchulgeldSelected(PraezisierungDifferenzSchulgeldSelected praezisierungDifferenzSchulgeldSelected);
     void setDifferenzSchulgeld(String differenzSchulgeld) throws SvmValidationException;
+    void setGeloescht(Boolean geloescht);
 
     Mitarbeiter[] getSelectableLehrkraefte(SvmModel svmModel);
     Semester getSemesterInit(SvmModel svmModel);

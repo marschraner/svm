@@ -11,4 +11,5 @@ public interface SemesterrechnungenModel extends Model {
     SemesterrechnungBearbeitenModel getSemesterrechnungBearbeitenModel(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel, int rowSelected);
     String getTotal(SemesterrechnungenTableModel semesterrechnungenTableModel);
     void semesterrechnungLoeschen(SemesterrechnungenTableModel semesterrechnungenTableModel, int rowSelected);
+    void semesterrechnungWiederherstellen(SemesterrechnungenTableModel semesterrechnungenTableModel, int rowSelected);
 }
