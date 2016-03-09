@@ -138,14 +138,10 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
             invalidate();
             throw new SvmValidationException(2022, "Keine gültige Periode", Field.ANMELDEDATUM);
         }
-        // Eine Kursanmeldung des Vorsemesters darf bis zu 90 Tagen ins alte Semester hineinreichen (für Schüler,
-        // die am Ende des vorhergehenden Semesters begonnen haben und keine Rechnung mehr fürs alte Semester erhalten sollen)
-        Calendar fruehstesGueltigesAnmeldedatum = (Calendar) semester.getSemesterbeginn().clone();
-        fruehstesGueltigesAnmeldedatum.add(Calendar.DAY_OF_YEAR, -90);
-        if (!isBulkUpdate() && kursanmeldung.getAnmeldedatum() != null && kursanmeldung.getAnmeldedatum().before(fruehstesGueltigesAnmeldedatum)) {
+        if (!isBulkUpdate() && kursanmeldung.getAnmeldedatum() != null && kursanmeldung.getAnmeldedatum().before(semester.getSemesterbeginn())) {
             kursanmeldung.setAnmeldedatum(null);
             invalidate();
-            throw new SvmValidationException(2026, "Datum darf nicht vor " + asString(fruehstesGueltigesAnmeldedatum) + " liegen", Field.ANMELDEDATUM);
+            throw new SvmValidationException(2026, "Datum darf nicht vor " + asString(semester.getSemesterbeginn()) + " liegen", Field.ANMELDEDATUM);
         }
     }
 
@@ -178,10 +174,9 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
             invalidate();
             throw new SvmValidationException(2024, "Keine gültige Periode", Field.ABMELDEDATUM);
         }
-        // Eine Kursanmeldung des Vorsemesters darf bis zu 31 Tagen ins neue Semester hineinreichen (für Schüler,
-        // die sich im laufenden Semester innerhalb 31 Tagen wieder abmelden und daher keine Rechnung erhalten sollen)
+        // Spätestes gültiges Abmeldedatum ist ein Tag vor Beginn des neuen Semesters
         Calendar spaetestesGueltigesAbmeldedatum = (Calendar) getSemesterbeginnNaechstesSemester().clone();
-        spaetestesGueltigesAbmeldedatum.add(Calendar.DAY_OF_YEAR, 31);
+        spaetestesGueltigesAbmeldedatum.add(Calendar.DAY_OF_YEAR, -1);
         if (!isBulkUpdate() && kursanmeldung.getAbmeldedatum() != null && kursanmeldung.getAbmeldedatum().after(spaetestesGueltigesAbmeldedatum)) {
             kursanmeldung.setAnmeldedatum(null);
             invalidate();
@@ -204,17 +199,6 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
                 }
             }
     );
-
-    @Override
-    public boolean isAnmeldedatumBeforeSemesterbeginn() {
-        return kursanmeldung.getAnmeldedatum() != null && kursanmeldung.getAnmeldedatum().before(semester.getSemesterbeginn());
-    }
-
-    @Override
-    public boolean isAbmeldedatumEqualsOrAfterSemesterbeginnNaechstesSemester() {
-        Calendar semesterbeginnNaechstesSemester = getSemesterbeginnNaechstesSemester();
-        return kursanmeldung.getAbmeldedatum() != null && (kursanmeldung.getAbmeldedatum().equals(semesterbeginnNaechstesSemester) || kursanmeldung.getAbmeldedatum().after(semesterbeginnNaechstesSemester));
-    }
 
     private Calendar getSemesterbeginnNaechstesSemester() {
         CommandInvoker commandInvoker = getCommandInvoker();
