@@ -33,6 +33,7 @@ public class SemesterrechnungenController {
     private final SemesterrechnungenTableModel semesterrechnungenTableModel;
     private boolean nachGeloeschtenGesucht;
     private JTable semesterrechnungenTable;
+    private JLabel lblTotal;
     private JButton btnDatenblatt;
     private JButton btnExportieren;
     private JButton btnRechnungsdatum;
@@ -115,6 +116,7 @@ public class SemesterrechnungenController {
     }
 
     public void setLblTotal(JLabel lblTotal) {
+        this.lblTotal = lblTotal;
         if (semesterrechnungenTableModel.getSemester() == null) {
             lblTotal.setText("Noch keine Semesterrechnungen erfasst.");
             return;
@@ -226,6 +228,7 @@ public class SemesterrechnungenController {
             semesterrechnungenModel.semesterrechnungLoeschen(semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()));
             semesterrechnungenTableModel.fireTableDataChanged();
             semesterrechnungenTable.addNotify();
+            lblTotal.setText(semesterrechnungenModel.getTotal(semesterrechnungenTableModel));
         }
         btnLoeschen.setFocusPainted(false);
         enableBtnLoeschen(false);
@@ -255,6 +258,7 @@ public class SemesterrechnungenController {
         semesterrechnungenModel.semesterrechnungWiederherstellen(semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()));
         semesterrechnungenTableModel.fireTableDataChanged();
         semesterrechnungenTable.addNotify();
+        lblTotal.setText(semesterrechnungenModel.getTotal(semesterrechnungenTableModel));
         btnWiederherstellen.setFocusPainted(false);
         enableBtnWiederherstellen(false);
         semesterrechnungenTable.clearSelection();
