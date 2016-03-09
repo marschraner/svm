@@ -94,7 +94,7 @@ public class SemesterrechnungenController {
         });
         semesterrechnungenTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
-                if (me.getClickCount() == 2) {
+                if (!nachGeloeschtenGesucht && me.getClickCount() == 2) {
                     onDetailsBearbeiten();
                 }
             }
