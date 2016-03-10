@@ -646,7 +646,16 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
 
     @Transient
     public BigDecimal getDifferenzSchulgeld() {
-        return getSchulgeldNachrechnung().subtract(getSchulgeldVorrechnung());
+        boolean showVorrechnung = rechnungsdatumVorrechnung != null
+                || (wochenbetragVorrechnung != null && wochenbetragVorrechnung.compareTo(BigDecimal.ZERO) != 0)
+                || (ermaessigungVorrechnung != null && ermaessigungVorrechnung.compareTo(BigDecimal.ZERO) != 0)
+                || (zuschlagVorrechnung != null && zuschlagVorrechnung.compareTo(BigDecimal.ZERO) != 0);
+        if (showVorrechnung) {
+            return getSchulgeldNachrechnung().subtract(getSchulgeldVorrechnung());
+        } else {
+            // für Rechnungen ohne Vorrechnung soll die Differenz des Schulgelds Null betragen
+            return new BigDecimal("0.00");
+        }
     }
 
     @Transient
