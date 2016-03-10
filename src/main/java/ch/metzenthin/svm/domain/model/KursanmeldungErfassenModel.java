@@ -42,5 +42,6 @@ public interface KursanmeldungErfassenModel extends Model {
     boolean checkIfSemesterIsInPast();
     FindKursCommand.Result findKurs();
     boolean checkIfKursBereitsErfasst(SchuelerDatenblattModel schuelerDatenblattModel);
+    boolean checkIfSchuelerIsAngemeldet(SchuelerDatenblattModel schuelerDatenblattModel);
     CalculateAnzWochenCommand.Result speichern(KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel);
 }

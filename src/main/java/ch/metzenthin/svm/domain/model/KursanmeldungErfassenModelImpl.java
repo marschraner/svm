@@ -282,6 +282,13 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
     }
 
     @Override
+    public boolean checkIfSchuelerIsAngemeldet(SchuelerDatenblattModel schuelerDatenblattModel) {
+        Schueler schueler = schuelerDatenblattModel.getSchueler();
+        Anmeldung anmeldung = schueler.getAnmeldungen().get(0);
+        return !(anmeldung.getAbmeldedatum() != null && !anmeldung.getAbmeldedatum().after(kursanmeldung.getAnmeldedatum()));
+    }
+
+    @Override
     public CalculateAnzWochenCommand.Result speichern(KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         kursanmeldung.setKurs(kurs);
         kursanmeldung.setSchueler(schuelerDatenblattModel.getSchueler());

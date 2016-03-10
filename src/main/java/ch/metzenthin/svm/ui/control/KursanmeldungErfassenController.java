@@ -532,6 +532,13 @@ public class KursanmeldungErfassenController extends AbstractController {
                 btnOk.setFocusPainted(false);
                 return;
             }
+            // Schüler angemeldet?
+            if (!kursanmeldungErfassenModel.checkIfSchuelerIsAngemeldet(schuelerDatenblattModel)) {
+                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Die Kursanmeldung kann nicht erfasst werden, weil der Schüler für das\n" +
+                        "Semester nicht mehr beim Kindertheater angemeldet ist.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                btnOk.setFocusPainted(false);
+                return;
+            }
             // Speichern
             CalculateAnzWochenCommand.Result speichernResult = kursanmeldungErfassenModel.speichern(kursanmeldungenTableModel, schuelerDatenblattModel);
 
