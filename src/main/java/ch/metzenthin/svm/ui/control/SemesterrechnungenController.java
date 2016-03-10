@@ -215,20 +215,43 @@ public class SemesterrechnungenController {
     private void onLoeschen() {
         btnLoeschen.setFocusPainted(true);
         Object[] options = {"Ja", "Nein"};
-        int n = JOptionPane.showOptionDialog(
-                null,
-                "Soll die Semesterrechnung gelöscht werden?",
-                "Semesterrechnung löschen",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                svmContext.getDialogIcons().getQuestionIcon(),
-                options,  //the titles of buttons
-                options[1]); //default button title
-        if (n == 0) {
-            semesterrechnungenModel.semesterrechnungLoeschen(semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()));
-            semesterrechnungenTableModel.fireTableDataChanged();
-            semesterrechnungenTable.addNotify();
-            lblTotal.setText(semesterrechnungenModel.getTotal(semesterrechnungenTableModel));
+        if (semesterrechnungenModel.hasSemesterrechnungKurse(semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()))) {
+            // Logisches Löschen für Semesterrechnungen mit Kursen im aktuellen Semester bzw. nicht abgemeldeten Kursen
+            // des vorhergenden Semesters, da bei physischem Löschen bei der nächsten Suche automatisch wieder eine neue
+            // Semesterrechnung erzeugt würde
+            int n = JOptionPane.showOptionDialog(
+                    null,
+                    "Soll die Semesterrechnung gelöscht werden?\n" +
+                    "(Die Rechnung kann später wenn nötig wiederhergestellt werden.)",
+                    "Eintrag löschen?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    svmContext.getDialogIcons().getQuestionIcon(),
+                    options,  //the titles of buttons
+                    options[1]); //default button title
+            if (n == 0) {
+                semesterrechnungenModel.semesterrechnungLogischLoeschen(semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()));
+                semesterrechnungenTableModel.fireTableDataChanged();
+                semesterrechnungenTable.addNotify();
+                lblTotal.setText(semesterrechnungenModel.getTotal(semesterrechnungenTableModel));
+            }
+        } else {
+            // Physisches Löschen
+            int n = JOptionPane.showOptionDialog(
+                    null,
+                    "Durch Drücken des Ja-Buttons wird die Semesterrechnung unwiderruflich aus der Datenbank gelöscht. Fortfahren?",
+                    "Eintrag löschen?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    svmContext.getDialogIcons().getWarningIcon(),
+                    options,  //the titles of buttons
+                    options[1]); //default button title
+            if (n == 0) {
+                semesterrechnungenModel.semesterrechnungPhysischLoeschen(semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()));
+                semesterrechnungenTableModel.fireTableDataChanged();
+                semesterrechnungenTable.addNotify();
+                lblTotal.setText(semesterrechnungenModel.getTotal(semesterrechnungenTableModel));
+            }
         }
         btnLoeschen.setFocusPainted(false);
         enableBtnLoeschen(false);
