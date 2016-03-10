@@ -246,7 +246,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Schüler-Codes verwalten");
 
         } else if ("monatsstatistikSchueler".equals(e.getActionCommand())) {
-            MonatsstatistikSchuelerPanel anAbmeldestatistikPanel = new MonatsstatistikSchuelerPanel(svmContext);
+            MonatsstatistikSchuelerPanel anAbmeldestatistikPanel = new MonatsstatistikSchuelerPanel(svmContext, getRootPane());
             anAbmeldestatistikPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -262,7 +262,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             setAndShowActivePanel(anAbmeldestatistikPanel.$$$getRootComponent$$$(), "Monatsstatistik Schüler");
 
         } else if ("mitarbeiterSuchen".equals(e.getActionCommand())) {
-            MitarbeiterSuchenPanel mitarbeiterSuchenPanel = new MitarbeiterSuchenPanel(svmContext);
+            MitarbeiterSuchenPanel mitarbeiterSuchenPanel = new MitarbeiterSuchenPanel(svmContext, getRootPane());
             mitarbeiterSuchenPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -288,7 +288,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Mitarbeiter-Codes verwalten");
 
         } else if ("kurseVerwalten".equals(e.getActionCommand())) {
-            KurseSemesterwahlPanel kurseSemesterwahlPanel = new KurseSemesterwahlPanel(svmContext);
+            KurseSemesterwahlPanel kurseSemesterwahlPanel = new KurseSemesterwahlPanel(svmContext, getRootPane());
             kurseSemesterwahlPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -324,7 +324,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             setAndShowActivePanel(kursortePanel.$$$getRootComponent$$$(), "Kursorte verwalten");
 
         } else if ("monatsstatistikKurse".equals(e.getActionCommand())) {
-            MonatsstatistikKursePanel monatsstatistikKursePanel = new MonatsstatistikKursePanel(svmContext);
+            MonatsstatistikKursePanel monatsstatistikKursePanel = new MonatsstatistikKursePanel(svmContext, getRootPane());
             monatsstatistikKursePanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -364,7 +364,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             setAndShowActivePanel(maerchensPanel.$$$getRootComponent$$$(), "Märchen verwalten");
 
         } else if ("semesterrechnungenSuchen".equals(e.getActionCommand())) {
-            SemesterrechnungenSuchenPanel semesterrechnungenSuchenPanel = new SemesterrechnungenSuchenPanel(svmContext);
+            SemesterrechnungenSuchenPanel semesterrechnungenSuchenPanel = new SemesterrechnungenSuchenPanel(svmContext, getRootPane());
             semesterrechnungenSuchenPanel.addCloseListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -410,7 +410,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
     }
 
     private SchuelerSuchenPanel createSchuelerSuchenPanel() {
-        SchuelerSuchenPanel schuelerSuchenPanel = new SchuelerSuchenPanel(svmContext);
+        SchuelerSuchenPanel schuelerSuchenPanel = new SchuelerSuchenPanel(svmContext, getRootPane());
         schuelerSuchenPanel.addCloseListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

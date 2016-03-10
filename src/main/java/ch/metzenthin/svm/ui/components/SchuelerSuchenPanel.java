@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
  */
 public class SchuelerSuchenPanel {
     private final SvmContext svmContext;
+    private JRootPane rootPane;
     private SchuelerSuchenController schuelerSuchenController;
     private JPanel panel;
     private JPanel stammdatenPanel;
@@ -90,11 +91,13 @@ public class SchuelerSuchenPanel {
     private SchuelerSuchenModel schuelerSuchenModel;
     private ActionListener nextPanelListener;
 
-    public SchuelerSuchenPanel(SvmContext svmContext) {
+    public SchuelerSuchenPanel(SvmContext svmContext, JRootPane rootPane) {
         this.svmContext = svmContext;
+        this.rootPane = rootPane;
         $$$setupUI$$$();
         schuelerSuchenModel = svmContext.getModelFactory().createSchuelerSuchenModel();
         initializeErrLbls();
+        setDefaultButton();
         createSchuelerSuchenController();
     }
 
@@ -193,6 +196,7 @@ public class SchuelerSuchenPanel {
     }
 
     private void onZurueck() {
+        setDefaultButton();
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{$$$getRootComponent$$$(), "Schüler suchen", Boolean.TRUE}, ActionEvent.ACTION_PERFORMED, "Zurück zu Schüler suchen"));
     }
 
@@ -203,6 +207,10 @@ public class SchuelerSuchenPanel {
     public void addNextPanelListener(ActionListener nextPanelListener) {
         this.nextPanelListener = nextPanelListener;
         schuelerSuchenController.addNextPanelListener(nextPanelListener);
+    }
+
+    private void setDefaultButton() {
+        rootPane.setDefaultButton(btnSuchen);
     }
 
     /**

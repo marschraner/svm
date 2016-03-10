@@ -22,10 +22,10 @@ public class MonatsstatistikKursePanel {
     private JButton btnAbbrechen;
     private MonatsstatistikKurseController monatsstatistikKurseController;
 
-    public MonatsstatistikKursePanel(SvmContext svmContext) {
+    public MonatsstatistikKursePanel(SvmContext svmContext, JRootPane rootPane) {
         $$$setupUI$$$();
         initializeErrLbls();
-        btnSuchen.setEnabled(true);
+        rootPane.setDefaultButton(btnSuchen);
         createMonatsstatistikKurseController(svmContext);
     }
 

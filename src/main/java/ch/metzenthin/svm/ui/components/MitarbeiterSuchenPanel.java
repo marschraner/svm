@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class MitarbeiterSuchenPanel {
+    private final JRootPane rootPane;
     private JPanel panel1;
     private JPanel datenPanel;
     private JPanel titelPanel;
@@ -34,9 +35,11 @@ public class MitarbeiterSuchenPanel {
     private MitarbeiterSuchenController mitarbeiterSuchenController;
     private ActionListener nextPanelListener;
 
-    public MitarbeiterSuchenPanel(SvmContext svmContext) {
+    public MitarbeiterSuchenPanel(SvmContext svmContext, JRootPane rootPane) {
+        this.rootPane = rootPane;
         $$$setupUI$$$();
         initializeErrLbls();
+        setDefaultButton();
         createMitarbeitersSuchenController(svmContext);
     }
 
@@ -67,6 +70,7 @@ public class MitarbeiterSuchenPanel {
     }
 
     private void onZurueck() {
+        setDefaultButton();
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{$$$getRootComponent$$$(), "Mitarbeiter suchen", Boolean.TRUE}, ActionEvent.ACTION_PERFORMED, "Zurück zu Schüler suchen"));
     }
 
@@ -81,6 +85,10 @@ public class MitarbeiterSuchenPanel {
 
     private void createUIComponents() {
         comboBoxMitarbeiterCode = new JComboBox<>();
+    }
+
+    private void setDefaultButton() {
+        rootPane.setDefaultButton(btnSuchen);
     }
 
     /**

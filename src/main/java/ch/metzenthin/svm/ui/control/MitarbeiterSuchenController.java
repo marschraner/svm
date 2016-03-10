@@ -69,12 +69,6 @@ public class MitarbeiterSuchenController extends AbstractController {
 
     public void setTxtNachname(JTextField txtNachname) {
         this.txtNachname = txtNachname;
-        this.txtNachname.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNachnameEvent();
-            }
-        });
         this.txtNachname.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -111,12 +105,6 @@ public class MitarbeiterSuchenController extends AbstractController {
 
     public void setTxtVorname(JTextField txtVorname) {
         this.txtVorname = txtVorname;
-        this.txtVorname.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onVornameEvent();
-            }
-        });
         this.txtVorname.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

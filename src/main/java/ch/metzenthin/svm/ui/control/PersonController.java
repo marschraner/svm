@@ -26,15 +26,15 @@ public abstract class PersonController extends AbstractController {
     private static final Logger LOGGER = Logger.getLogger(PersonController.class);
 
     private JComboBox<Anrede> comboBoxAnrede;
-    private JTextField txtNachname;
-    private JTextField txtVorname;
-    private JTextField txtStrasseHausnummer;
-    private JTextField txtPlz;
-    private JTextField txtOrt;
-    private JTextField txtFestnetz;
-    private JTextField txtNatel;
-    private JTextField txtEmail;
-    private JTextField txtGeburtsdatum;
+    protected JTextField txtNachname;
+    protected JTextField txtVorname;
+    protected JTextField txtStrasseHausnummer;
+    protected JTextField txtPlz;
+    protected JTextField txtOrt;
+    protected JTextField txtFestnetz;
+    protected JTextField txtNatel;
+    protected JTextField txtEmail;
+    protected JTextField txtGeburtsdatum;
     private JLabel errLblAnrede;
     private JLabel errLblNachname;
     private JLabel errLblVorname;
@@ -243,7 +243,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    private void onNachnameEvent(boolean showRequiredErrMsg) {
+    protected void onNachnameEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event Nachname");
         boolean equalFieldAndModelValue = equalsNullSafe(txtNachname.getText(), personModel.getNachname());
         try {
@@ -278,7 +278,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    private void onVornameEvent(boolean showRequiredErrMsg) {
+    protected void onVornameEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event Vorname");
         boolean equalFieldAndModelValue = equalsNullSafe(txtVorname.getText(), personModel.getVorname());
         try {
@@ -313,7 +313,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    private void onStrasseHausnummerEvent(boolean showRequiredErrMsg) {
+    protected void onStrasseHausnummerEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event StrasseHausnummer");
         boolean equalFieldAndModelValue = equalsNullSafe(txtStrasseHausnummer.getText(), personModel.getStrasseHausnummer());
         try {
@@ -348,7 +348,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    private void onPlzEvent(boolean showRequiredErrMsg) {
+    protected void onPlzEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event PLZ");
         boolean equalFieldAndModelValue = equalsNullSafe(txtPlz.getText(), personModel.getPlz());
         try {
@@ -383,7 +383,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    private void onOrtEvent(boolean showRequiredErrMsg) {
+    protected void onOrtEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event Ort");
         boolean equalFieldAndModelValue = equalsNullSafe(txtOrt.getText(), personModel.getOrt());
         try {
@@ -418,7 +418,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    private void onFestnetzEvent(boolean showRequiredErrMsg) {
+    protected void onFestnetzEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event Festnetz");
         boolean equalFieldAndModelValue = equalsNullSafe(txtFestnetz.getText(), personModel.getFestnetz());
         try {
@@ -453,7 +453,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    private void onNatelEvent(boolean showRequiredErrMsg) {
+    protected void onNatelEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event Natel");
         boolean equalFieldAndModelValue = equalsNullSafe(txtNatel.getText(), personModel.getNatel());
         try {
@@ -488,7 +488,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    private void onEmailEvent(boolean showRequiredErrMsg) {
+    protected void onEmailEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event Email");
         boolean equalFieldAndModelValue = equalsNullSafe(txtEmail.getText(), personModel.getEmail());
         try {
@@ -523,7 +523,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    private void onGeburtsdatumEvent(boolean showRequiredErrMsg) {
+    protected void onGeburtsdatumEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event Geburtsdatum");
         boolean equalFieldAndModelValue = equalsNullSafe(txtGeburtsdatum.getText(), personModel.getGeburtsdatum());
         try {

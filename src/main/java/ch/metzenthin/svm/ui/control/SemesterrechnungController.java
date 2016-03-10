@@ -41,12 +41,12 @@ public abstract class SemesterrechnungController extends AbstractController {
     private JTextField txtDatumZahlung3Vorrechnung;
     private JTextField txtBetragZahlung3Vorrechnung;
     protected JTextField txtRechnungsdatumNachrechnung;
-    private JTextField txtErmaessigungNachrechnung;
+    protected JTextField txtErmaessigungNachrechnung;
     private JTextField txtErmaessigungsgrundNachrechnung;
-    private JTextField txtZuschlagNachrechnung;
+    protected JTextField txtZuschlagNachrechnung;
     private JTextField txtZuschlagsgrundNachrechnung;
-    private JTextField txtAnzahlWochenNachrechnung;
-    private JTextField txtWochenbetragNachrechnung;
+    protected JTextField txtAnzahlWochenNachrechnung;
+    protected JTextField txtWochenbetragNachrechnung;
     private JTextField txtDatumZahlung1Nachrechnung;
     private JTextField txtBetragZahlung1Nachrechnung;
     private JTextField txtDatumZahlung2Nachrechnung;
@@ -191,7 +191,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         });
     }
 
-    private void onRechnungsdatumVorrechnungEvent() {
+    protected void onRechnungsdatumVorrechnungEvent() {
         LOGGER.trace("SemesterrechnungController Event Rechnungsdatum");
         boolean equalFieldAndModelValue = equalsNullSafe(txtRechnungsdatumVorrechnung.getText(), semesterrechnungModel.getRechnungsdatumVorrechnung());
         try {
@@ -233,7 +233,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         });
     }
 
-    private void onErmaessigungVorrechnungEvent() {
+    protected void onErmaessigungVorrechnungEvent() {
         LOGGER.trace("SemesterrechnungController Event Ermaessigung");
         boolean equalFieldAndModelValue = equalsNullSafe(txtErmaessigungVorrechnung.getText(), semesterrechnungModel.getErmaessigungVorrechnung());
         try {
@@ -317,7 +317,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         });
     }
 
-    private void onZuschlagVorrechnungEvent() {
+    protected void onZuschlagVorrechnungEvent() {
         LOGGER.trace("SemesterrechnungController Event Zuschlag");
         boolean equalFieldAndModelValue = equalsNullSafe(txtZuschlagVorrechnung.getText(), semesterrechnungModel.getZuschlagVorrechnung());
         try {
@@ -401,7 +401,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         });
     }
 
-    private void onAnzahlWochenVorrechnungEvent() {
+    protected void onAnzahlWochenVorrechnungEvent() {
         LOGGER.trace("SemesterrechnungController Event AnzahlWochen");
         boolean equalFieldAndModelValue = equalsNullSafe(txtAnzahlWochenVorrechnung.getText(), semesterrechnungModel.getAnzahlWochenVorrechnung());
         try {
@@ -443,7 +443,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         });
     }
 
-    private void onWochenbetragVorrechnungEvent() {
+    protected void onWochenbetragVorrechnungEvent() {
         LOGGER.trace("SemesterrechnungController Event WochenbetragVorrechnung");
         boolean equalFieldAndModelValue = equalsNullSafe(txtWochenbetragVorrechnung.getText(), semesterrechnungModel.getWochenbetragVorrechnung());
         try {
@@ -737,7 +737,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         });
     }
 
-    private void onRechnungsdatumNachrechnungEvent() {
+    protected void onRechnungsdatumNachrechnungEvent() {
         LOGGER.trace("SemesterrechnungController Event Rechnungsdatum");
         boolean equalFieldAndModelValue = equalsNullSafe(txtRechnungsdatumNachrechnung.getText(), semesterrechnungModel.getRechnungsdatumNachrechnung());
         try {
@@ -779,7 +779,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         });
     }
 
-    private void onErmaessigungNachrechnungEvent() {
+    protected void onErmaessigungNachrechnungEvent() {
         LOGGER.trace("SemesterrechnungController Event Ermaessigung");
         boolean equalFieldAndModelValue = equalsNullSafe(txtErmaessigungNachrechnung.getText(), semesterrechnungModel.getErmaessigungNachrechnung());
         try {
@@ -863,7 +863,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         });
     }
 
-    private void onZuschlagNachrechnungEvent() {
+    protected void onZuschlagNachrechnungEvent() {
         LOGGER.trace("SemesterrechnungController Event Zuschlag");
         boolean equalFieldAndModelValue = equalsNullSafe(txtZuschlagNachrechnung.getText(), semesterrechnungModel.getZuschlagNachrechnung());
         try {
@@ -947,7 +947,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         });
     }
 
-    private void onAnzahlWochenNachrechnungEvent() {
+    protected void onAnzahlWochenNachrechnungEvent() {
         LOGGER.trace("SemesterrechnungController Event AnzahlWochen");
         boolean equalFieldAndModelValue = equalsNullSafe(txtAnzahlWochenNachrechnung.getText(), semesterrechnungModel.getAnzahlWochenNachrechnung());
         try {
@@ -989,7 +989,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         });
     }
 
-    private void onWochenbetragNachrechnungEvent() {
+    protected void onWochenbetragNachrechnungEvent() {
         LOGGER.trace("SemesterrechnungController Event WochenbetragNachrechnung");
         boolean equalFieldAndModelValue = equalsNullSafe(txtWochenbetragNachrechnung.getText(), semesterrechnungModel.getWochenbetragNachrechnung());
         try {

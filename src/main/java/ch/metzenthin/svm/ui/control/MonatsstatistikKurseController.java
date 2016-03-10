@@ -59,12 +59,6 @@ public class MonatsstatistikKurseController extends AbstractController {
 
     public void setTxtMonatJahr(JTextField txtMonatJahr) {
         this.txtMonatJahr = txtMonatJahr;
-        this.txtMonatJahr.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onMonatJahrEvent();
-            }
-        });
         this.txtMonatJahr.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

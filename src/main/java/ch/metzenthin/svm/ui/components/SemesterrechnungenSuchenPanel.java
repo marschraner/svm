@@ -20,6 +20,7 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class SemesterrechnungenSuchenPanel {
+    private final JRootPane rootPane;
     private JPanel panel1;
     private JPanel titelPanel;
     private JPanel suchenPanel;
@@ -153,11 +154,13 @@ public class SemesterrechnungenSuchenPanel {
     private SemesterrechnungenSuchenModel semesterrechnungenSuchenModel;
     private ActionListener nextPanelListener;
 
-    public SemesterrechnungenSuchenPanel(SvmContext svmContext) {
+    public SemesterrechnungenSuchenPanel(SvmContext svmContext, JRootPane rootPane) {
         this.svmContext = svmContext;
+        this.rootPane = rootPane;
         $$$setupUI$$$();
         semesterrechnungenSuchenModel = svmContext.getModelFactory().createSemesterrechnungenSuchenModel();
         initializeErrLbls();
+        setDefaultButton();
         createSemesterrechnungenSuchenController();
     }
 
@@ -286,6 +289,7 @@ public class SemesterrechnungenSuchenPanel {
     }
 
     private void onZurueck() {
+        setDefaultButton();
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{$$$getRootComponent$$$(), "Semesterrechnungen suchen", Boolean.TRUE}, ActionEvent.ACTION_PERFORMED, "Zurück zu Schüler suchen"));
     }
 
@@ -296,6 +300,10 @@ public class SemesterrechnungenSuchenPanel {
     public void addNextPanelListener(ActionListener nextPanelListener) {
         this.nextPanelListener = nextPanelListener;
         semesterrechnungenSuchenController.addNextPanelListener(nextPanelListener);
+    }
+
+    private void setDefaultButton() {
+        rootPane.setDefaultButton(btnSuchen);
     }
 
     /**
