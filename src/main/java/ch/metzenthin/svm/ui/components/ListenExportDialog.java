@@ -32,6 +32,7 @@ public class ListenExportDialog extends JDialog {
         setModal(true);
         setTitle("Als Liste exportieren");
         initializeErrLbls();
+        getRootPane().setDefaultButton(btnOk);
         createListenExportController(svmContext, schuelerSuchenTableModel, mitarbeitersTableModel, kurseTableModel, semesterrechnungenTableModel, listenExportTyp);
     }
 

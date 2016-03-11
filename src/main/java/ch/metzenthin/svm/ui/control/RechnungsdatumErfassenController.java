@@ -83,12 +83,6 @@ public class RechnungsdatumErfassenController extends AbstractController {
     
     public void setTxtRechnungsdatum(JTextField txtRechnungsdatum) {
         this.txtRechnungsdatum = txtRechnungsdatum;
-        this.txtRechnungsdatum.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onRechnungsdatumEvent(true);
-            }
-        });
         this.txtRechnungsdatum.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

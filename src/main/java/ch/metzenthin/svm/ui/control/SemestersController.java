@@ -133,7 +133,7 @@ public class SemestersController {
                 JOptionPane.QUESTION_MESSAGE,
                 svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
-                options[1]); //default button title
+                options[0]); //default button title
         if (n == 0) {
             DeleteSemesterCommand.Result result  = semestersModel.semesterLoeschen(svmContext, semestersTableModel, semestersTable.getSelectedRow());
             switch (result) {

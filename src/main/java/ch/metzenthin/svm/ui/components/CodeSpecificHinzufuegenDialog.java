@@ -29,6 +29,7 @@ public class CodeSpecificHinzufuegenDialog extends JDialog {
         setModal(true);
         setTitle("SchuelerCode hinzufügen");
         initializeErrLbls();
+        getRootPane().setDefaultButton(btnOk);
         createCodeSchuelerHinzufuegenController(svmContext, codesTableModel, codesModel, schuelerDatenblattModel, mitarbeiterErfassenModel, codetyp);
     }
 

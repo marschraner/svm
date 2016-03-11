@@ -142,7 +142,7 @@ public class KursanmeldungenController {
                 JOptionPane.QUESTION_MESSAGE,
                 svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
-                options[1]); //default button title
+                options[0]); //default button title
         if (n == 0) {
             kursanmeldungenModel.kursanmeldungLoeschen(kursanmeldungenTableModel, schuelerDatenblattModel, kursanmeldungenTable.getSelectedRow());
             kursanmeldungenTableModel.fireTableDataChanged();

@@ -24,6 +24,7 @@ public class RechnungsdatumErfassenDialog extends JDialog {
         setModal(true);
         setTitle("Rechnungsdatum");
         initializeErrLbls();
+        getRootPane().setDefaultButton(btnOk);
         createRechnungsdatumErfassenController(svmContext, semesterrechnungen, rechnungstyp);
     }
 

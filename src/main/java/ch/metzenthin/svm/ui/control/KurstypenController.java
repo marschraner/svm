@@ -133,7 +133,7 @@ public class KurstypenController {
                 JOptionPane.QUESTION_MESSAGE,
                 svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
-                options[1]); //default button title
+                options[0]); //default button title
         if (n == 0) {
             DeleteKurstypCommand.Result result  = kurstypenModel.eintragLoeschen(svmContext, kurstypenTableModel, kurstypenTable.getSelectedRow());
             switch (result) {

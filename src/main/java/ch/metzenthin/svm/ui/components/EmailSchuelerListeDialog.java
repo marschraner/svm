@@ -24,6 +24,7 @@ public class EmailSchuelerListeDialog extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         setTitle("Wahl der E-Mail-Empfänger-Gruppe");
+        getRootPane().setDefaultButton(btnOk);
         createEmailController(svmContext, schuelerSuchenTableModel);
     }
 

@@ -218,12 +218,6 @@ public class ListenExportController extends AbstractController {
         if (listenExportTyp == ListenExportTyp.SEMESTERRECHNUNGEN) {
             this.txtTitel.setEnabled(false);
         }
-        this.txtTitel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onTitelEvent(true);
-            }
-        });
         this.txtTitel.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

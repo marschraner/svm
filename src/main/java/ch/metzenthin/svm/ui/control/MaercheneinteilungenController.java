@@ -149,7 +149,7 @@ public class MaercheneinteilungenController {
                 JOptionPane.QUESTION_MESSAGE,
                 svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
-                options[1]); //default button title
+                options[0]); //default button title
         if (n == 0) {
             maercheneinteilungenModel.maercheneinteilungLoeschen(maercheneinteilungenTableModel, schuelerDatenblattModel, maercheneinteilungenTable.getSelectedRow());
             maercheneinteilungenTableModel.fireTableDataChanged();

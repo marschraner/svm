@@ -972,7 +972,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
                     JOptionPane.WARNING_MESSAGE,
                     svmContext.getDialogIcons().getWarningIcon(),
                     options,  //the titles of buttons
-                    options[1]); //default button title
+                    options[0]); //default button title
         }
         if (n == 0) {
             if (!maercheneinteilungErfassenModel.checkIfElternmithilfeHasTelefon(schuelerDatenblattModel)) {

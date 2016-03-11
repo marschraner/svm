@@ -175,7 +175,7 @@ public class MitarbeitersController {
                 JOptionPane.WARNING_MESSAGE,
                 svmContext.getDialogIcons().getWarningIcon(),
                 options,  //the titles of buttons
-                options[1]); //default button title
+                options[0]); //default button title
         if (n == 0) {
             DeleteMitarbeiterCommand.Result result  = mitarbeitersModel.mitarbeiterLoeschen(mitarbeitersTableModel, mitarbeitersTable.convertRowIndexToModel(mitarbeitersTable.getSelectedRow()));
             switch (result) {

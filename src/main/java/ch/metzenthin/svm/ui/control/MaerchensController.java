@@ -135,7 +135,7 @@ public class MaerchensController {
                 JOptionPane.QUESTION_MESSAGE,
                 svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
-                options[1]); //default button title
+                options[0]); //default button title
         if (n == 0) {
             DeleteMaerchenCommand.Result result  = maerchensModel.maerchenLoeschen(svmContext, maerchensTableModel, maerchensTable.getSelectedRow());
             switch (result) {

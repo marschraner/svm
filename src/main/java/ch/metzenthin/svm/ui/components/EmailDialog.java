@@ -23,6 +23,7 @@ public class EmailDialog extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         setTitle("Wahl des E-Mail-Empfängers");
+        getRootPane().setDefaultButton(btnOk);
         createemailController(svmContext, schuelerDatenblattModel);
     }
 
