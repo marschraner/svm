@@ -5,6 +5,8 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.model.ModelFactory;
 import ch.metzenthin.svm.domain.model.SvmModel;
 
+import javax.swing.*;
+
 /**
  * @author Hans Stamm
  */
@@ -14,6 +16,7 @@ public class SvmContext {
     private final CommandInvoker commandInvoker;
     private final SvmModel svmModel;
     private DialogIcons dialogIcons = new DialogIcons();
+    private JRootPane rootPaneJFrame;
 
     public SvmContext(ModelFactory modelFactory, CommandInvoker commandInvoker, SvmModel svmModel) {
         this.modelFactory = modelFactory;
@@ -35,5 +38,13 @@ public class SvmContext {
 
     public DialogIcons getDialogIcons() {
         return dialogIcons;
+    }
+
+    public JRootPane getRootPaneJFrame() {
+        return rootPaneJFrame;
+    }
+
+    public void setRootPaneJFrame(JRootPane rootPaneJFrame) {
+        this.rootPaneJFrame = rootPaneJFrame;
     }
 }

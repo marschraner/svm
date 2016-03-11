@@ -20,7 +20,6 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class SemesterrechnungenSuchenPanel {
-    private final JRootPane rootPane;
     private JPanel panel1;
     private JPanel titelPanel;
     private JPanel suchenPanel;
@@ -154,9 +153,8 @@ public class SemesterrechnungenSuchenPanel {
     private SemesterrechnungenSuchenModel semesterrechnungenSuchenModel;
     private ActionListener nextPanelListener;
 
-    public SemesterrechnungenSuchenPanel(SvmContext svmContext, JRootPane rootPane) {
+    public SemesterrechnungenSuchenPanel(SvmContext svmContext) {
         this.svmContext = svmContext;
-        this.rootPane = rootPane;
         $$$setupUI$$$();
         semesterrechnungenSuchenModel = svmContext.getModelFactory().createSemesterrechnungenSuchenModel();
         initializeErrLbls();
@@ -303,7 +301,7 @@ public class SemesterrechnungenSuchenPanel {
     }
 
     private void setDefaultButton() {
-        rootPane.setDefaultButton(btnSuchen);
+        svmContext.getRootPaneJFrame().setDefaultButton(btnSuchen);
     }
 
     /**

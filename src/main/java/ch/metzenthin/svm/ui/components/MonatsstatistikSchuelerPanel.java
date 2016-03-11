@@ -14,8 +14,7 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class MonatsstatistikSchuelerPanel {
-
-    private final JRootPane rootPane;
+    private final SvmContext svmContext;
     private JPanel panel;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
@@ -34,8 +33,8 @@ public class MonatsstatistikSchuelerPanel {
     private MonatsstatistikSchuelerModel monatsstatistikSchuelerModel;
     private ActionListener nextPanelListener;
 
-    public MonatsstatistikSchuelerPanel(SvmContext svmContext, JRootPane rootPane) {
-        this.rootPane = rootPane;
+    public MonatsstatistikSchuelerPanel(SvmContext svmContext) {
+        this.svmContext = svmContext;
         $$$setupUI$$$();
         monatsstatistikSchuelerModel = svmContext.getModelFactory().createMonatsstatistikSchuelerModel();
         initializeErrLbls();
@@ -79,7 +78,7 @@ public class MonatsstatistikSchuelerPanel {
     }
 
     private void setDefaultButton() {
-        rootPane.setDefaultButton(btnSuchen);
+        svmContext.getRootPaneJFrame().setDefaultButton(btnSuchen);
     }
 
     /**

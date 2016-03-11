@@ -21,9 +21,9 @@ public class KurseSemesterwahlPanel {
     private JButton btnAbbrechen;
     private KurseSemesterwahlController kurseSemesterwahlController;
 
-    public KurseSemesterwahlPanel(SvmContext svmContext, JRootPane rootPane) {
+    public KurseSemesterwahlPanel(SvmContext svmContext) {
         $$$setupUI$$$();
-        rootPane.setDefaultButton(btnOk);
+        svmContext.getRootPaneJFrame().setDefaultButton(btnOk);
         createKurseSuchenController(svmContext);
     }
 
