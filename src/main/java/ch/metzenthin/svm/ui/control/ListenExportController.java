@@ -45,6 +45,7 @@ public class ListenExportController extends AbstractController {
     private final KurseTableModel kurseTableModel;
     private SemesterrechnungenTableModel semesterrechnungenTableModel;
     private final ListenExportTyp listenExportTyp;
+    private boolean defaultButtonEnabled;
     private JDialog listenExportDialog;
     private JComboBox<Listentyp> comboBoxListentyp;
     private JTextField txtTitel;
@@ -53,7 +54,7 @@ public class ListenExportController extends AbstractController {
     private JButton btnOk;
     private JButton btnAbbrechen;
 
-    public ListenExportController(ListenExportModel listenExportModel, SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, MitarbeitersTableModel mitarbeitersTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel, ListenExportTyp listenExportTyp) {
+    public ListenExportController(ListenExportModel listenExportModel, SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, MitarbeitersTableModel mitarbeitersTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel, ListenExportTyp listenExportTyp, boolean defaultButtonEnabled) {
         super(listenExportModel);
         this.listenExportModel = listenExportModel;
         this.svmContext = svmContext;
@@ -62,6 +63,7 @@ public class ListenExportController extends AbstractController {
         this.kurseTableModel = kurseTableModel;
         this.semesterrechnungenTableModel = semesterrechnungenTableModel;
         this.listenExportTyp = listenExportTyp;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.listenExportModel.addPropertyChangeListener(this);
         this.listenExportModel.addDisableFieldsListener(this);
         this.listenExportModel.addMakeErrorLabelsInvisibleListener(this);
@@ -217,6 +219,14 @@ public class ListenExportController extends AbstractController {
         this.txtTitel = txtTitel;
         if (listenExportTyp == ListenExportTyp.SEMESTERRECHNUNGEN) {
             this.txtTitel.setEnabled(false);
+        }
+        if (!defaultButtonEnabled) {
+            this.txtTitel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onTitelEvent(true);
+                }
+            });
         }
         this.txtTitel.addFocusListener(new FocusAdapter() {
             @Override

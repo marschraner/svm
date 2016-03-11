@@ -11,6 +11,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class KurstypErfassenDialog extends JDialog {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JPanel buttonPanel;
@@ -25,12 +29,15 @@ public class KurstypErfassenDialog extends JDialog {
         setModal(true);
         setTitle(title);
         initializeErrLbls();
+        if (DEFAULT_BUTTON_ENABLED) {
+            getRootPane().setDefaultButton(btnSpeichern);
+        }
         createKurstypErfassenController(svmContext, kurstypenTableModel, kurstypenModel, indexBearbeiten, isBearbeiten);
     }
 
     private void createKurstypErfassenController(SvmContext svmContext, KurstypenTableModel kurstypenTableModel, KurstypenModel kurstypenModel, int indexBearbeiten, boolean isBearbeiten) {
         KurstypErfassenModel kurstypErfassenModel = (isBearbeiten ? kurstypenModel.getKurstypErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createKurstypErfassenModel());
-        KurstypErfassenController kurstypErfassenController = new KurstypErfassenController(svmContext, kurstypenTableModel, kurstypErfassenModel, isBearbeiten);
+        KurstypErfassenController kurstypErfassenController = new KurstypErfassenController(svmContext, kurstypenTableModel, kurstypErfassenModel, isBearbeiten, DEFAULT_BUTTON_ENABLED);
         kurstypErfassenController.setKurstypErfassenDialog(this);
         kurstypErfassenController.setContentPane(contentPane);
         kurstypErfassenController.setTxtBezeichnung(txtBezeichnung);

@@ -38,6 +38,7 @@ public class MonatsstatistikSchuelerController extends AbstractController {
 
     private final SvmContext svmContext;
     private MonatsstatistikSchuelerModel monatsstatistikSchuelerModel;
+    private boolean defaultButtonEnabled;
     private ActionListener closeListener;
     private ActionListener nextPanelListener;
     private JTextField txtMonatJahr;
@@ -51,10 +52,11 @@ public class MonatsstatistikSchuelerController extends AbstractController {
     private JButton btnAbbrechen;
     private ActionListener zurueckListener;
 
-    public MonatsstatistikSchuelerController(SvmContext svmContext, MonatsstatistikSchuelerModel monatsstatistikSchuelerModel) {
+    public MonatsstatistikSchuelerController(SvmContext svmContext, MonatsstatistikSchuelerModel monatsstatistikSchuelerModel, boolean defaultButtonEnabled) {
         super(monatsstatistikSchuelerModel);
         this.svmContext = svmContext;
         this.monatsstatistikSchuelerModel = monatsstatistikSchuelerModel;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.monatsstatistikSchuelerModel.addPropertyChangeListener(this);
         this.monatsstatistikSchuelerModel.addDisableFieldsListener(this);
         this.monatsstatistikSchuelerModel.addMakeErrorLabelsInvisibleListener(this);
@@ -69,6 +71,14 @@ public class MonatsstatistikSchuelerController extends AbstractController {
 
     public void setTxtMonatJahr(JTextField txtMonatJahr) {
         this.txtMonatJahr = txtMonatJahr;
+        if (!defaultButtonEnabled) {
+            this.txtMonatJahr.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onMonatJahrEvent();
+                }
+            });
+        }
         this.txtMonatJahr.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

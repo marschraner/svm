@@ -11,6 +11,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class EmailSchuelerListeDialog extends JDialog {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JPanel buttonPanel;
@@ -24,7 +28,9 @@ public class EmailSchuelerListeDialog extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         setTitle("Wahl der E-Mail-Empfänger-Gruppe");
-        getRootPane().setDefaultButton(btnOk);
+        if (DEFAULT_BUTTON_ENABLED) {
+            getRootPane().setDefaultButton(btnOk);
+        }
         createEmailController(svmContext, schuelerSuchenTableModel);
     }
 

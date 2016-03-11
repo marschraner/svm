@@ -34,6 +34,7 @@ public class MitarbeiterSuchenController extends AbstractController {
 
     private final SvmContext svmContext;
     private MitarbeiterSuchenModel mitarbeiterSuchenModel;
+    private boolean defaultButtonEnabled;
     private JTextField txtNachname;
     private JTextField txtVorname;
     private JLabel errLblNachname;
@@ -51,10 +52,11 @@ public class MitarbeiterSuchenController extends AbstractController {
     private ActionListener nextPanelListener;
     private ActionListener zurueckListener;
 
-    public MitarbeiterSuchenController(SvmContext svmContext, MitarbeiterSuchenModel mitarbeiterSuchenModel) {
+    public MitarbeiterSuchenController(SvmContext svmContext, MitarbeiterSuchenModel mitarbeiterSuchenModel, boolean defaultButtonEnabled) {
         super(mitarbeiterSuchenModel);
         this.svmContext = svmContext;
         this.mitarbeiterSuchenModel = mitarbeiterSuchenModel;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.mitarbeiterSuchenModel.addPropertyChangeListener(this);
         this.mitarbeiterSuchenModel.addDisableFieldsListener(this);
         this.mitarbeiterSuchenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -69,6 +71,14 @@ public class MitarbeiterSuchenController extends AbstractController {
 
     public void setTxtNachname(JTextField txtNachname) {
         this.txtNachname = txtNachname;
+        if (!defaultButtonEnabled) {
+            this.txtNachname.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onNachnameEvent();
+                }
+            });
+        }
         this.txtNachname.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -105,6 +115,14 @@ public class MitarbeiterSuchenController extends AbstractController {
 
     public void setTxtVorname(JTextField txtVorname) {
         this.txtVorname = txtVorname;
+        if (!defaultButtonEnabled) {
+            this.txtVorname.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onVornameEvent();
+                }
+            });
+        }
         this.txtVorname.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

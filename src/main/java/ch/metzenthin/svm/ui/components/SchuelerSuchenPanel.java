@@ -21,6 +21,10 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class SchuelerSuchenPanel {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = true;
+
     private final SvmContext svmContext;
     private SchuelerSuchenController schuelerSuchenController;
     private JPanel panel;
@@ -131,7 +135,7 @@ public class SchuelerSuchenPanel {
     }
 
     private void createSchuelerSuchenController() {
-        schuelerSuchenController = new SchuelerSuchenController(svmContext, schuelerSuchenModel);
+        schuelerSuchenController = new SchuelerSuchenController(svmContext, schuelerSuchenModel, DEFAULT_BUTTON_ENABLED);
         schuelerSuchenController.setTxtNachname(txtNachname);
         schuelerSuchenController.setTxtVorname(txtVorname);
         schuelerSuchenController.setTxtStrasseHausnummer(txtStrasseHausnummer);
@@ -208,7 +212,9 @@ public class SchuelerSuchenPanel {
     }
 
     private void setDefaultButton() {
-        svmContext.getRootPaneJFrame().setDefaultButton(btnSuchen);
+        if (DEFAULT_BUTTON_ENABLED) {
+            svmContext.getRootPaneJFrame().setDefaultButton(btnSuchen);
+        }
     }
 
     /**

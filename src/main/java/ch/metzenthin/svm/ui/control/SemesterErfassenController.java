@@ -34,6 +34,7 @@ public class SemesterErfassenController extends AbstractController {
     private SemesterErfassenModel semesterErfassenModel;
     private final SvmContext svmContext;
     private boolean isBearbeiten;
+    private boolean defaultButtonEnabled;
     private JDialog semesterErfassenDialog;
     private JSpinner spinnerSchuljahre;
     private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
@@ -51,12 +52,13 @@ public class SemesterErfassenController extends AbstractController {
     private JLabel errLblFerienende2;
     private JButton btnSpeichern;
 
-    public SemesterErfassenController(SvmContext svmContext, SemestersTableModel semestersTableModel, SemesterErfassenModel semesterErfassenModel, boolean isBearbeiten) {
+    public SemesterErfassenController(SvmContext svmContext, SemestersTableModel semestersTableModel, SemesterErfassenModel semesterErfassenModel, boolean isBearbeiten, boolean defaultButtonEnabled) {
         super(semesterErfassenModel);
         this.svmContext = svmContext;
         this.semestersTableModel = semestersTableModel;
         this.semesterErfassenModel = semesterErfassenModel;
         this.isBearbeiten = isBearbeiten;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.semesterErfassenModel.addPropertyChangeListener(this);
         this.semesterErfassenModel.addDisableFieldsListener(this);
         this.semesterErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -190,12 +192,14 @@ public class SemesterErfassenController extends AbstractController {
 
     public void setTxtSemesterbeginn(JTextField txtSemesterbeginn) {
         this.txtSemesterbeginn = txtSemesterbeginn;
-        this.txtSemesterbeginn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSemesterbeginnEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtSemesterbeginn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onSemesterbeginnEvent(true);
+                }
+            });
+        }
         this.txtSemesterbeginn.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -241,12 +245,14 @@ public class SemesterErfassenController extends AbstractController {
 
     public void setTxtSemesterende(JTextField txtSemesterende) {
         this.txtSemesterende = txtSemesterende;
-        this.txtSemesterende.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSemesterendeEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtSemesterende.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onSemesterendeEvent(true);
+                }
+            });
+        }
         this.txtSemesterende.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -292,12 +298,14 @@ public class SemesterErfassenController extends AbstractController {
 
     public void setTxtFerienbeginn1(JTextField txtFerienbeginn1) {
         this.txtFerienbeginn1 = txtFerienbeginn1;
-        this.txtFerienbeginn1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onFerienbeginn1Event(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtFerienbeginn1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFerienbeginn1Event(true);
+                }
+            });
+        }
         this.txtFerienbeginn1.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -343,12 +351,14 @@ public class SemesterErfassenController extends AbstractController {
 
     public void setTxtFerienende1(JTextField txtFerienende1) {
         this.txtFerienende1 = txtFerienende1;
-        this.txtFerienende1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onFerienende1Event(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtFerienende1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFerienende1Event(true);
+                }
+            });
+        }
         this.txtFerienende1.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -394,12 +404,14 @@ public class SemesterErfassenController extends AbstractController {
 
     public void setTxtFerienbeginn2(JTextField txtFerienbeginn2) {
         this.txtFerienbeginn2 = txtFerienbeginn2;
-        this.txtFerienbeginn2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onFerienbeginn2Event(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtFerienbeginn2.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFerienbeginn2Event(true);
+                }
+            });
+        }
         this.txtFerienbeginn2.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -445,12 +457,14 @@ public class SemesterErfassenController extends AbstractController {
 
     public void setTxtFerienende2(JTextField txtFerienende2) {
         this.txtFerienende2 = txtFerienende2;
-        this.txtFerienende2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onFerienende2Event(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtFerienende2.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFerienende2Event(true);
+                }
+            });
+        }
         this.txtFerienende2.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

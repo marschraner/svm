@@ -14,6 +14,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class KursanmeldungErfassenDialog extends JDialog {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JPanel buttonPanel;
@@ -38,13 +42,16 @@ public class KursanmeldungErfassenDialog extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         setTitle(title);
+        if (DEFAULT_BUTTON_ENABLED) {
+            getRootPane().setDefaultButton(btnOk);
+        }
         createKursanmeldungErfassenController(svmContext, kursanmeldungenModel, kursanmeldungenTableModel, schuelerDatenblattModel, indexBearbeiten, isBearbeiten);
         initializeErrLbls();
     }
 
     private void createKursanmeldungErfassenController(SvmContext svmContext, KursanmeldungenModel kursanmeldungenModel, KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexBearbeiten, boolean isBearbeiten) {
         KursanmeldungErfassenModel kursanmeldungErfassenModel = (isBearbeiten ? kursanmeldungenModel.getKursanmeldungErfassenModel(svmContext, kursanmeldungenTableModel, indexBearbeiten) : svmContext.getModelFactory().createKursanmeldungErfassenModel());
-        KursanmeldungErfassenController kursanmeldungErfassenController = new KursanmeldungErfassenController(svmContext, kursanmeldungErfassenModel, kursanmeldungenTableModel, schuelerDatenblattModel, isBearbeiten);
+        KursanmeldungErfassenController kursanmeldungErfassenController = new KursanmeldungErfassenController(svmContext, kursanmeldungErfassenModel, kursanmeldungenTableModel, schuelerDatenblattModel, isBearbeiten, DEFAULT_BUTTON_ENABLED);
         kursanmeldungErfassenController.setKursanmeldungErfassenDialog(this);
         kursanmeldungErfassenController.setContentPane(contentPane);
         kursanmeldungErfassenController.setErrLblWochentag(errLblWochentag);

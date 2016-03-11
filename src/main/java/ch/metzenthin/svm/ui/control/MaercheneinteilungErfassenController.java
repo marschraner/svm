@@ -44,6 +44,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     private MaercheneinteilungenModel maercheneinteilungenModel;
     private SchuelerDatenblattModel schuelerDatenblattModel;
     private boolean isBearbeiten;
+    private boolean defaultButtonEnabled;
     private JDialog maercheneinteilungErfassenDialog;
     private JSpinner spinnerMaerchen;
     private JComboBox<Gruppe> comboBoxGruppe;
@@ -80,14 +81,15 @@ public class MaercheneinteilungErfassenController extends PersonController {
     private JLabel errLblBemerkungen;
     private JButton btnSpeichern;
 
-    public MaercheneinteilungErfassenController(SvmContext svmContext, MaercheneinteilungErfassenModel maercheneinteilungErfassenModel, MaercheneinteilungenTableModel maercheneinteilungenTableModel, MaercheneinteilungenModel maercheneinteilungenModel, SchuelerDatenblattModel schuelerDatenblattModel, boolean isBearbeiten) {
-        super(maercheneinteilungErfassenModel);
+    public MaercheneinteilungErfassenController(SvmContext svmContext, MaercheneinteilungErfassenModel maercheneinteilungErfassenModel, MaercheneinteilungenTableModel maercheneinteilungenTableModel, MaercheneinteilungenModel maercheneinteilungenModel, SchuelerDatenblattModel schuelerDatenblattModel, boolean isBearbeiten, boolean defaultButtonEnabled) {
+        super(maercheneinteilungErfassenModel, defaultButtonEnabled);
         this.svmContext = svmContext;
         this.maercheneinteilungErfassenModel = maercheneinteilungErfassenModel;
         this.maercheneinteilungenTableModel = maercheneinteilungenTableModel;
         this.maercheneinteilungenModel = maercheneinteilungenModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.isBearbeiten = isBearbeiten;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.maercheneinteilungErfassenModel.addPropertyChangeListener(this);
         this.maercheneinteilungErfassenModel.addDisableFieldsListener(this);
         this.maercheneinteilungErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -222,12 +224,14 @@ public class MaercheneinteilungErfassenController extends PersonController {
 
     public void setTxtRolle1(JTextField txtRolle1) {
         this.txtRolle1 = txtRolle1;
-        this.txtRolle1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onRolle1Event(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtRolle1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onRolle1Event(true);
+                }
+            });
+        }
         this.txtRolle1.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -273,12 +277,14 @@ public class MaercheneinteilungErfassenController extends PersonController {
 
     public void setTxtBilderRolle1(JTextField txtBilderRolle1) {
         this.txtBilderRolle1 = txtBilderRolle1;
-        this.txtBilderRolle1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBilderRolle1Event(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBilderRolle1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBilderRolle1Event(true);
+                }
+            });
+        }
         this.txtBilderRolle1.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -324,12 +330,14 @@ public class MaercheneinteilungErfassenController extends PersonController {
 
     public void setTxtRolle2(JTextField txtRolle2) {
         this.txtRolle2 = txtRolle2;
-        this.txtRolle2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onRolle2Event(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtRolle2.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onRolle2Event(true);
+                }
+            });
+        }
         this.txtRolle2.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -375,12 +383,14 @@ public class MaercheneinteilungErfassenController extends PersonController {
 
     public void setTxtBilderRolle2(JTextField txtBilderRolle2) {
         this.txtBilderRolle2 = txtBilderRolle2;
-        this.txtBilderRolle2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBilderRolle2Event(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBilderRolle2.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBilderRolle2Event(true);
+                }
+            });
+        }
         this.txtBilderRolle2.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -426,12 +436,14 @@ public class MaercheneinteilungErfassenController extends PersonController {
 
     public void setTxtRolle3(JTextField txtRolle3) {
         this.txtRolle3 = txtRolle3;
-        this.txtRolle3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onRolle3Event(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtRolle3.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onRolle3Event(true);
+                }
+            });
+        }
         this.txtRolle3.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -477,12 +489,14 @@ public class MaercheneinteilungErfassenController extends PersonController {
 
     public void setTxtBilderRolle3(JTextField txtBilderRolle3) {
         this.txtBilderRolle3 = txtBilderRolle3;
-        this.txtBilderRolle3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBilderRolle3Event(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBilderRolle3.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBilderRolle3Event(true);
+                }
+            });
+        }
         this.txtBilderRolle3.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -795,12 +809,14 @@ public class MaercheneinteilungErfassenController extends PersonController {
 
     public void setTxtZusatzattribut(JTextField txtZusatzattribut) {
         this.txtZusatzattribut = txtZusatzattribut;
-        this.txtZusatzattribut.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZusatzattributEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtZusatzattribut.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onZusatzattributEvent(true);
+                }
+            });
+        }
         this.txtZusatzattribut.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -846,12 +862,14 @@ public class MaercheneinteilungErfassenController extends PersonController {
 
     public void setTxtBemerkungen(JTextField txtBemerkungen) {
         this.txtBemerkungen = txtBemerkungen;
-        this.txtBemerkungen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBemerkungenEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBemerkungen.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBemerkungenEvent(true);
+                }
+            });
+        }
         this.txtBemerkungen.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

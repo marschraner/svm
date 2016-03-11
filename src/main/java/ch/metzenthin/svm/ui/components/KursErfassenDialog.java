@@ -16,6 +16,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class KursErfassenDialog extends JDialog {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JPanel buttonPanel;
@@ -47,13 +51,16 @@ public class KursErfassenDialog extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         setTitle(title);
+        if (DEFAULT_BUTTON_ENABLED) {
+            getRootPane().setDefaultButton(btnSpeichern);
+        }
         createKursErfassenController(svmContext, kurseModel, kurseSemesterwahlModel, kurseTableModel, indexBearbeiten, isBearbeiten);
         initializeErrLbls();
     }
 
     private void createKursErfassenController(SvmContext svmContext, KurseModel kurseModel, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel, int indexBearbeiten, boolean isBearbeiten) {
         KursErfassenModel kursErfassenModel = (isBearbeiten ? kurseModel.getKursErfassenModel(svmContext, kurseTableModel, indexBearbeiten) : svmContext.getModelFactory().createKursErfassenModel());
-        KursErfassenController kursErfassenController = new KursErfassenController(svmContext, kursErfassenModel, kurseSemesterwahlModel, kurseTableModel);
+        KursErfassenController kursErfassenController = new KursErfassenController(svmContext, kursErfassenModel, kurseSemesterwahlModel, kurseTableModel, DEFAULT_BUTTON_ENABLED);
         kursErfassenController.setKursErfassenDialog(this);
         kursErfassenController.setContentPane(contentPane);
         kursErfassenController.setComboBoxKurstyp(comboBoxKurstyp);

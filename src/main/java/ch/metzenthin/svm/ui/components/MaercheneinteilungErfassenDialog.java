@@ -16,6 +16,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class MaercheneinteilungErfassenDialog extends JDialog {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JPanel buttonPanel;
@@ -78,13 +82,16 @@ public class MaercheneinteilungErfassenDialog extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         setTitle(title);
+        if (DEFAULT_BUTTON_ENABLED) {
+            getRootPane().setDefaultButton(btnSpeichern);
+        }
         createMaercheneinteilungErfassenController(svmContext, maercheneinteilungenModel, maercheneinteilungenTableModel, schuelerDatenblattModel, indexBearbeiten, isBearbeiten);
         initializeErrLbls();
     }
 
     private void createMaercheneinteilungErfassenController(SvmContext svmContext, MaercheneinteilungenModel maercheneinteilungenModel, MaercheneinteilungenTableModel maercheneinteilungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexBearbeiten, boolean isBearbeiten) {
         MaercheneinteilungErfassenModel maercheneinteilungErfassenModel = (isBearbeiten ? maercheneinteilungenModel.getMaercheneinteilungErfassenModel(svmContext, maercheneinteilungenTableModel, indexBearbeiten) : svmContext.getModelFactory().createMaercheneinteilungErfassenModel());
-        MaercheneinteilungErfassenController maercheneinteilungErfassenController = new MaercheneinteilungErfassenController(svmContext, maercheneinteilungErfassenModel, maercheneinteilungenTableModel, maercheneinteilungenModel, schuelerDatenblattModel, isBearbeiten);
+        MaercheneinteilungErfassenController maercheneinteilungErfassenController = new MaercheneinteilungErfassenController(svmContext, maercheneinteilungErfassenModel, maercheneinteilungenTableModel, maercheneinteilungenModel, schuelerDatenblattModel, isBearbeiten, DEFAULT_BUTTON_ENABLED);
         maercheneinteilungErfassenController.setMaercheneinteilungErfassenDialog(this);
         maercheneinteilungErfassenController.setContentPane(contentPane);
         maercheneinteilungErfassenController.setComboBoxGruppe(comboBoxGruppe);

@@ -34,12 +34,13 @@ public class SchuelerController extends PersonController {
     private JLabel errLblAbmeldedatum;
     private JLabel errLblBemerkungen;
     private JLabel errLblGeschlecht;
-
     private SchuelerModel schuelerModel;
+    private boolean defaultButtonEnabled;
 
-    public SchuelerController(SchuelerModel schuelerModel) {
-        super(schuelerModel);
+    public SchuelerController(SchuelerModel schuelerModel, boolean defaultButtonEnabled) {
+        super(schuelerModel, defaultButtonEnabled);
         this.schuelerModel = schuelerModel;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.schuelerModel.addPropertyChangeListener(this);
     }
 
@@ -58,12 +59,14 @@ public class SchuelerController extends PersonController {
 
     public void setTxtAnmeldedatum(JTextField txtAnmeldedatum) {
         this.txtAnmeldedatum = txtAnmeldedatum;
-        this.txtAnmeldedatum.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAnmeldedatumEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtAnmeldedatum.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onAnmeldedatumEvent(true);
+                }
+            });
+        }
         this.txtAnmeldedatum.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -74,12 +77,14 @@ public class SchuelerController extends PersonController {
 
     public void setTxtAbmeldedatum(JTextField txtAbmeldedatum) {
         this.txtAbmeldedatum = txtAbmeldedatum;
-        this.txtAbmeldedatum.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbmeldedatumEvent();
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtAbmeldedatum.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onAbmeldedatumEvent();
+                }
+            });
+        }
         this.txtAbmeldedatum.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

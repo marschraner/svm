@@ -11,6 +11,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class EmailDialog extends JDialog {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JComboBox<EmailEmpfaenger> comboBoxEmailEmpfaenger;
@@ -23,7 +27,9 @@ public class EmailDialog extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         setTitle("Wahl des E-Mail-Empfängers");
-        getRootPane().setDefaultButton(btnOk);
+        if (DEFAULT_BUTTON_ENABLED) {
+            getRootPane().setDefaultButton(btnOk);
+        }
         createemailController(svmContext, schuelerDatenblattModel);
     }
 

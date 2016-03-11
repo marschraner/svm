@@ -13,6 +13,10 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class KurseSemesterwahlPanel {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = true;
+
     private JPanel panel1;
     private JPanel datenPanel;
     private JPanel titelPanel;
@@ -23,7 +27,9 @@ public class KurseSemesterwahlPanel {
 
     public KurseSemesterwahlPanel(SvmContext svmContext) {
         $$$setupUI$$$();
-        svmContext.getRootPaneJFrame().setDefaultButton(btnOk);
+        if (DEFAULT_BUTTON_ENABLED) {
+            svmContext.getRootPaneJFrame().setDefaultButton(btnOk);
+        }
         createKurseSuchenController(svmContext);
     }
 

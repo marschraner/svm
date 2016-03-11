@@ -46,13 +46,13 @@ public class SchuelerPanel {
         $$$setupUI$$$();
     }
 
-    public SchuelerController setModel(SchuelerModel schuelerModel) {
+    public SchuelerController setModel(SchuelerModel schuelerModel, boolean defaultButtonEnabled) {
         initializeErrLbls();
-        return createSchuelerController(schuelerModel);
+        return createSchuelerController(schuelerModel, defaultButtonEnabled);
     }
 
-    private SchuelerController createSchuelerController(SchuelerModel schuelerModel) {
-        SchuelerController schuelerController = new SchuelerController(schuelerModel);
+    private SchuelerController createSchuelerController(SchuelerModel schuelerModel, boolean defaultButtonEnabled) {
+        SchuelerController schuelerController = new SchuelerController(schuelerModel, defaultButtonEnabled);
         schuelerController.setTxtNachname(txtNachname);
         schuelerController.setTxtVorname(txtVorname);
         schuelerController.setTxtStrasseHausnummer(txtStrasseHausnummer);

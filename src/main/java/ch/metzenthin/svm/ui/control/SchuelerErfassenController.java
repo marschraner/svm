@@ -37,14 +37,16 @@ public class SchuelerErfassenController {
     private final SvmContext svmContext;
     private final SchuelerErfassenModel schuelerErfassenModel;
     private final boolean isBearbeiten;
+    private boolean defaultButtonEnabled;
     private ActionListener zurueckZuDatenblattListener;
     private ActionListener nextPanelListener;
     private boolean modelValidationMode;
 
-    public SchuelerErfassenController(SvmContext svmContext, SchuelerErfassenModel schuelerErfassenModel, boolean isBearbeiten) {
+    public SchuelerErfassenController(SvmContext svmContext, SchuelerErfassenModel schuelerErfassenModel, boolean isBearbeiten, boolean defaultButtonEnabled) {
         this.svmContext = svmContext;
         this.schuelerErfassenModel = schuelerErfassenModel;
         this.isBearbeiten = isBearbeiten;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.schuelerErfassenModel.addCompletedListener(new CompletedListener() {
             @Override
             public void completed(boolean completed) {
@@ -79,7 +81,7 @@ public class SchuelerErfassenController {
     private AbstractController schuelerController;
 
     public void setSchuelerPanel(SchuelerPanel schuelerPanel, SchuelerModel schuelerModel) {
-        schuelerController = schuelerPanel.setModel(schuelerModel);
+        schuelerController = schuelerPanel.setModel(schuelerModel, defaultButtonEnabled);
         schuelerController.setModelValidationMode(MODEL_VALIDATION_MODE);
         // Kein Abmeldedatum sichtbar
         schuelerPanel.getLblAbmeldedatum().setVisible(isBearbeiten);
@@ -90,7 +92,7 @@ public class SchuelerErfassenController {
     AbstractController mutterController;
 
     public void setMutterPanel(AngehoerigerPanel mutterPanel, AngehoerigerModel mutterModel) {
-        mutterController = mutterPanel.setModel(mutterModel);
+        mutterController = mutterPanel.setModel(mutterModel, defaultButtonEnabled);
         mutterController.setModelValidationMode(MODEL_VALIDATION_MODE);
         // Rechnungsempfänger-Label überschreiben
         mutterPanel.getLblRechnungsempfaenger().setText("Rechnungsempfängerin");
@@ -102,6 +104,9 @@ public class SchuelerErfassenController {
             mutterModel.setAnrede(Anrede.FRAU);
             // Default Rechungsempfängerin
             mutterModel.setIsRechnungsempfaenger(true);
+            // Default gleiche Adresse wie Schüler
+            mutterModel.setIsGleicheAdresseWieSchueler(true);
+            mutterModel.disableFields(schuelerErfassenModel.getAdresseFields());
         } catch (SvmValidationException ignore) {
         }
         schuelerErfassenModel.setMutterModel(mutterModel);
@@ -110,7 +115,7 @@ public class SchuelerErfassenController {
     AbstractController vaterController;
 
     public void setVaterPanel(AngehoerigerPanel vaterPanel, AngehoerigerModel vaterModel) {
-        vaterController = vaterPanel.setModel(vaterModel);
+        vaterController = vaterPanel.setModel(vaterModel, defaultButtonEnabled);
         vaterController.setModelValidationMode(MODEL_VALIDATION_MODE);
         // Keine Anrede anzeigen
         vaterPanel.getLblAnrede().setVisible(false);
@@ -126,7 +131,7 @@ public class SchuelerErfassenController {
     AbstractController drittempfaengerController;
 
     public void setDrittempfaengerPanel(AngehoerigerPanel drittempfaengerPanel, AngehoerigerModel drittempfaengerModel) {
-        drittempfaengerController = drittempfaengerPanel.setModel(drittempfaengerModel);
+        drittempfaengerController = drittempfaengerPanel.setModel(drittempfaengerModel, defaultButtonEnabled);
         drittempfaengerController.setModelValidationMode(MODEL_VALIDATION_MODE);
         // Keine Adresse Schüler übernehmen-Checkbox anzeigen
         drittempfaengerPanel.getLblGleicheAdresseWieSchueler().setVisible(false);

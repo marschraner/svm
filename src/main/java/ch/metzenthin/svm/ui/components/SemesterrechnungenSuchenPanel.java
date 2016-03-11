@@ -20,6 +20,10 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class SemesterrechnungenSuchenPanel {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = true;
+
     private JPanel panel1;
     private JPanel titelPanel;
     private JPanel suchenPanel;
@@ -202,7 +206,7 @@ public class SemesterrechnungenSuchenPanel {
     }
 
     private void createSemesterrechnungenSuchenController() {
-        semesterrechnungenSuchenController = new SemesterrechnungenSuchenController(svmContext, semesterrechnungenSuchenModel);
+        semesterrechnungenSuchenController = new SemesterrechnungenSuchenController(svmContext, semesterrechnungenSuchenModel, DEFAULT_BUTTON_ENABLED);
         semesterrechnungenSuchenController.setTxtNachname(txtNachname);
         semesterrechnungenSuchenController.setTxtVorname(txtVorname);
         semesterrechnungenSuchenController.setTxtZeitBeginn(txtZeitBeginn);
@@ -301,7 +305,9 @@ public class SemesterrechnungenSuchenPanel {
     }
 
     private void setDefaultButton() {
-        svmContext.getRootPaneJFrame().setDefaultButton(btnSuchen);
+        if (DEFAULT_BUTTON_ENABLED) {
+            svmContext.getRootPaneJFrame().setDefaultButton(btnSuchen);
+        }
     }
 
     /**

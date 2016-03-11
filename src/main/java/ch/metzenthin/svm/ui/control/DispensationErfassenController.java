@@ -29,6 +29,7 @@ public class DispensationErfassenController extends AbstractController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private DispensationErfassenModel dispensationErfassenModel;
+    private boolean defaultButtonEnabled;
     private SvmContext svmContext;
     private DispensationenTableModel dispensationenTableModel;
     private SchuelerDatenblattModel schuelerDatenblattModel;
@@ -43,12 +44,13 @@ public class DispensationErfassenController extends AbstractController {
     private JLabel errLblVoraussichtlicheDauer;
     private JButton btnSpeichern;
 
-    public DispensationErfassenController(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, DispensationErfassenModel dispensationErfassenModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public DispensationErfassenController(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, DispensationErfassenModel dispensationErfassenModel, SchuelerDatenblattModel schuelerDatenblattModel, boolean defaultButtonEnabled) {
         super(dispensationErfassenModel);
         this.svmContext = svmContext;
         this.dispensationenTableModel = dispensationenTableModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.dispensationErfassenModel = dispensationErfassenModel;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.dispensationErfassenModel.addPropertyChangeListener(this);
         this.dispensationErfassenModel.addDisableFieldsListener(this);
         this.dispensationErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -87,12 +89,14 @@ public class DispensationErfassenController extends AbstractController {
 
     public void setTxtDispensationsbeginn(JTextField txtDispensationsbeginn) {
         this.txtDispensationsbeginn = txtDispensationsbeginn;
-        this.txtDispensationsbeginn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onDispensationsbeginnEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtDispensationsbeginn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onDispensationsbeginnEvent(true);
+                }
+            });
+        }
         this.txtDispensationsbeginn.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -138,12 +142,14 @@ public class DispensationErfassenController extends AbstractController {
 
     public void setTxtDispensationsende(JTextField txtDispensationsende) {
         this.txtDispensationsende = txtDispensationsende;
-        this.txtDispensationsende.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onDispensationsendeEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtDispensationsende.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onDispensationsendeEvent(true);
+                }
+            });
+        }
         this.txtDispensationsende.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -189,12 +195,14 @@ public class DispensationErfassenController extends AbstractController {
 
     public void setTxtVoraussichtlicheDauer(JTextField txtVoraussichtlicheDauer) {
         this.txtVoraussichtlicheDauer = txtVoraussichtlicheDauer;
-        this.txtVoraussichtlicheDauer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onVoraussichtlicheDauerEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtVoraussichtlicheDauer.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onVoraussichtlicheDauerEvent(true);
+                }
+            });
+        }
         this.txtVoraussichtlicheDauer.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -240,12 +248,14 @@ public class DispensationErfassenController extends AbstractController {
 
     public void setTxtGrund(JTextField txtGrund) {
         this.txtGrund = txtGrund;
-        this.txtGrund.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onGrundEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtGrund.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onGrundEvent(true);
+                }
+            });
+        }
         this.txtGrund.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

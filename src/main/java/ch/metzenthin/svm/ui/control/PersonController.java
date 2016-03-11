@@ -26,15 +26,15 @@ public abstract class PersonController extends AbstractController {
     private static final Logger LOGGER = Logger.getLogger(PersonController.class);
 
     private JComboBox<Anrede> comboBoxAnrede;
-    protected JTextField txtNachname;
-    protected JTextField txtVorname;
-    protected JTextField txtStrasseHausnummer;
-    protected JTextField txtPlz;
-    protected JTextField txtOrt;
-    protected JTextField txtFestnetz;
-    protected JTextField txtNatel;
-    protected JTextField txtEmail;
-    protected JTextField txtGeburtsdatum;
+    private JTextField txtNachname;
+    private JTextField txtVorname;
+    private JTextField txtStrasseHausnummer;
+    private JTextField txtPlz;
+    private JTextField txtOrt;
+    private JTextField txtFestnetz;
+    private JTextField txtNatel;
+    private JTextField txtEmail;
+    private JTextField txtGeburtsdatum;
     private JLabel errLblAnrede;
     private JLabel errLblNachname;
     private JLabel errLblVorname;
@@ -47,10 +47,12 @@ public abstract class PersonController extends AbstractController {
     private JLabel errLblGeburtsdatum;
 
     private PersonModel personModel;
+    private boolean defaultButtonEnabled;
 
-    public PersonController(PersonModel personModel) {
+    public PersonController(PersonModel personModel, boolean defaultButtonEnabled) {
         super(personModel);
         this.personModel = personModel;
+        this.defaultButtonEnabled = defaultButtonEnabled;
     }
 
     public void setComboBoxAnrede(JComboBox<Anrede> comboBoxAnrede) {
@@ -70,12 +72,14 @@ public abstract class PersonController extends AbstractController {
 
     public void setTxtNachname(JTextField txtNachname) {
         this.txtNachname = txtNachname;
-        this.txtNachname.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNachnameEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtNachname.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onNachnameEvent(true);
+                }
+            });
+        }
         this.txtNachname.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -86,12 +90,14 @@ public abstract class PersonController extends AbstractController {
 
     public void setTxtVorname(JTextField txtVorname) {
         this.txtVorname = txtVorname;
-        this.txtVorname.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onVornameEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtVorname.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onVornameEvent(true);
+                }
+            });
+        }
         this.txtVorname.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -102,12 +108,14 @@ public abstract class PersonController extends AbstractController {
 
     public void setTxtStrasseHausnummer(JTextField txtStrasseHausnummer) {
         this.txtStrasseHausnummer = txtStrasseHausnummer;
-        this.txtStrasseHausnummer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onStrasseHausnummerEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtStrasseHausnummer.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onStrasseHausnummerEvent(true);
+                }
+            });
+        }
         this.txtStrasseHausnummer.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -118,12 +126,14 @@ public abstract class PersonController extends AbstractController {
 
     public void setTxtPlz(JTextField txtPlz) {
         this.txtPlz = txtPlz;
-        this.txtPlz.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onPlzEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtPlz.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onPlzEvent(true);
+                }
+            });
+        }
         this.txtPlz.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -134,12 +144,14 @@ public abstract class PersonController extends AbstractController {
 
     public void setTxtOrt(JTextField txtOrt) {
         this.txtOrt = txtOrt;
-        this.txtOrt.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onOrtEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtOrt.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onOrtEvent(true);
+                }
+            });
+        }
         this.txtOrt.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -150,12 +162,14 @@ public abstract class PersonController extends AbstractController {
 
     public void setTxtFestnetz(JTextField txtFestnetz) {
         this.txtFestnetz = txtFestnetz;
-        this.txtFestnetz.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onFestnetzEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtFestnetz.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onFestnetzEvent(true);
+                }
+            });
+        }
         this.txtFestnetz.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -166,12 +180,14 @@ public abstract class PersonController extends AbstractController {
 
     public void setTxtNatel(JTextField txtNatel) {
         this.txtNatel = txtNatel;
-        this.txtNatel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNatelEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtNatel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onNatelEvent(true);
+                }
+            });
+        }
         this.txtNatel.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -182,12 +198,14 @@ public abstract class PersonController extends AbstractController {
 
     public void setTxtEmail(JTextField txtEmail) {
         this.txtEmail = txtEmail;
-        this.txtEmail.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onEmailEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtEmail.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onEmailEvent(true);
+                }
+            });
+        }
         this.txtEmail.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -198,12 +216,14 @@ public abstract class PersonController extends AbstractController {
 
     public void setTxtGeburtsdatum(JTextField txtGeburtsdatum) {
         this.txtGeburtsdatum = txtGeburtsdatum;
-        this.txtGeburtsdatum.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onGeburtsdatumEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtGeburtsdatum.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onGeburtsdatumEvent(true);
+                }
+            });
+        }
         this.txtGeburtsdatum.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -243,7 +263,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    protected void onNachnameEvent(boolean showRequiredErrMsg) {
+    private void onNachnameEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event Nachname");
         boolean equalFieldAndModelValue = equalsNullSafe(txtNachname.getText(), personModel.getNachname());
         try {
@@ -278,7 +298,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    protected void onVornameEvent(boolean showRequiredErrMsg) {
+    private void onVornameEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event Vorname");
         boolean equalFieldAndModelValue = equalsNullSafe(txtVorname.getText(), personModel.getVorname());
         try {
@@ -313,7 +333,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    protected void onStrasseHausnummerEvent(boolean showRequiredErrMsg) {
+    private void onStrasseHausnummerEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event StrasseHausnummer");
         boolean equalFieldAndModelValue = equalsNullSafe(txtStrasseHausnummer.getText(), personModel.getStrasseHausnummer());
         try {
@@ -348,7 +368,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    protected void onPlzEvent(boolean showRequiredErrMsg) {
+    private void onPlzEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event PLZ");
         boolean equalFieldAndModelValue = equalsNullSafe(txtPlz.getText(), personModel.getPlz());
         try {
@@ -383,7 +403,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    protected void onOrtEvent(boolean showRequiredErrMsg) {
+    private void onOrtEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event Ort");
         boolean equalFieldAndModelValue = equalsNullSafe(txtOrt.getText(), personModel.getOrt());
         try {
@@ -418,7 +438,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    protected void onFestnetzEvent(boolean showRequiredErrMsg) {
+    private void onFestnetzEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event Festnetz");
         boolean equalFieldAndModelValue = equalsNullSafe(txtFestnetz.getText(), personModel.getFestnetz());
         try {
@@ -453,7 +473,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    protected void onNatelEvent(boolean showRequiredErrMsg) {
+    private void onNatelEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event Natel");
         boolean equalFieldAndModelValue = equalsNullSafe(txtNatel.getText(), personModel.getNatel());
         try {
@@ -488,7 +508,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    protected void onEmailEvent(boolean showRequiredErrMsg) {
+    private void onEmailEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event Email");
         boolean equalFieldAndModelValue = equalsNullSafe(txtEmail.getText(), personModel.getEmail());
         try {
@@ -523,7 +543,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
-    protected void onGeburtsdatumEvent(boolean showRequiredErrMsg) {
+    private void onGeburtsdatumEvent(boolean showRequiredErrMsg) {
         LOGGER.trace("PersonController Event Geburtsdatum");
         boolean equalFieldAndModelValue = equalsNullSafe(txtGeburtsdatum.getText(), personModel.getGeburtsdatum());
         try {

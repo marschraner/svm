@@ -12,6 +12,10 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class MonatsstatistikKursePanel {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = true;
+
     private JPanel panel1;
     private JPanel datenPanel;
     private JPanel titelPanel;
@@ -25,7 +29,9 @@ public class MonatsstatistikKursePanel {
     public MonatsstatistikKursePanel(SvmContext svmContext) {
         $$$setupUI$$$();
         initializeErrLbls();
-        svmContext.getRootPaneJFrame().setDefaultButton(btnSuchen);
+        if (DEFAULT_BUTTON_ENABLED) {
+            svmContext.getRootPaneJFrame().setDefaultButton(btnSuchen);
+        }
         createMonatsstatistikKurseController(svmContext);
     }
 
@@ -35,7 +41,7 @@ public class MonatsstatistikKursePanel {
     }
 
     private void createMonatsstatistikKurseController(SvmContext svmContext) {
-        monatsstatistikKurseController = new MonatsstatistikKurseController(svmContext.getModelFactory().createMonatsstatistikKurseModel(), svmContext);
+        monatsstatistikKurseController = new MonatsstatistikKurseController(svmContext.getModelFactory().createMonatsstatistikKurseModel(), svmContext, DEFAULT_BUTTON_ENABLED);
         monatsstatistikKurseController.setTxtMonatJahr(txtMonatJahr);
         monatsstatistikKurseController.setBtnSuchen(btnSuchen);
         monatsstatistikKurseController.setBtnAbbrechen(btnAbbrechen);

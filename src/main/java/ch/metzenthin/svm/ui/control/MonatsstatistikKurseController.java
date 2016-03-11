@@ -35,16 +35,18 @@ public class MonatsstatistikKurseController extends AbstractController {
 
     private MonatsstatistikKurseModel monatsstatistikKurseModel;
     private SvmContext svmContext;
+    private boolean defaultButtonEnabled;
     private ActionListener closeListener;
     private JTextField txtMonatJahr;
     private JLabel errLblMonatJahr;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
 
-    public MonatsstatistikKurseController(MonatsstatistikKurseModel monatsstatistikKurseModel, SvmContext svmContext) {
+    public MonatsstatistikKurseController(MonatsstatistikKurseModel monatsstatistikKurseModel, SvmContext svmContext, boolean defaultButtonEnabled) {
         super(monatsstatistikKurseModel);
         this.monatsstatistikKurseModel = monatsstatistikKurseModel;
         this.svmContext = svmContext;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.monatsstatistikKurseModel.addPropertyChangeListener(this);
         this.monatsstatistikKurseModel.addDisableFieldsListener(this);
         this.monatsstatistikKurseModel.addMakeErrorLabelsInvisibleListener(this);
@@ -59,6 +61,14 @@ public class MonatsstatistikKurseController extends AbstractController {
 
     public void setTxtMonatJahr(JTextField txtMonatJahr) {
         this.txtMonatJahr = txtMonatJahr;
+        if (!defaultButtonEnabled) {
+            this.txtMonatJahr.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onMonatJahrEvent();
+                }
+            });
+        }
         this.txtMonatJahr.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

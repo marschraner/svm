@@ -17,6 +17,9 @@ import java.awt.event.ActionListener;
  */
 public class SchuelerErfassenPanel {
 
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel panel;
     private SchuelerPanel schuelerPanel;
     private AngehoerigerPanel mutterPanel;
@@ -39,11 +42,14 @@ public class SchuelerErfassenPanel {
     public SchuelerErfassenPanel(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel) {
         $$$setupUI$$$();
         initTitel(schuelerDatenblattModel);
+        if (DEFAULT_BUTTON_ENABLED) {
+            svmContext.getRootPaneJFrame().setDefaultButton(btnSpeichern);
+        }
         createSchuelerErfassenController(svmContext, schuelerDatenblattModel);
     }
 
     private void createSchuelerErfassenController(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel) {
-        schuelerErfassenController = new SchuelerErfassenController(svmContext, svmContext.getModelFactory().createSchuelerErfassenModel(), (schuelerDatenblattModel != null));
+        schuelerErfassenController = new SchuelerErfassenController(svmContext, svmContext.getModelFactory().createSchuelerErfassenModel(), (schuelerDatenblattModel != null), DEFAULT_BUTTON_ENABLED);
         schuelerErfassenController.setSchuelerPanel(schuelerPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createSchuelerModel() : schuelerDatenblattModel.getSchuelerModel(svmContext));
         schuelerErfassenController.setMutterPanel(mutterPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createAngehoerigerModel() : schuelerDatenblattModel.getMutterModel(svmContext));
         schuelerErfassenController.setVaterPanel(vaterPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createAngehoerigerModel() : schuelerDatenblattModel.getVaterModel(svmContext));

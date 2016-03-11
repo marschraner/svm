@@ -70,8 +70,8 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
     private JButton btnSpeichern;
     private JButton btnVerwerfen;
 
-    public SemesterrechnungBearbeitenController(SvmContext svmContext, SemesterrechnungBearbeitenModel semesterrechnungBearbeitenModel, SemesterrechnungenModel semesterrechnungenModel, SemesterrechnungenTableModel semesterrechnungenTableModel, JTable semesterrechnungenTable, int selectedRow) {
-        super(svmContext, semesterrechnungBearbeitenModel);
+    public SemesterrechnungBearbeitenController(SvmContext svmContext, SemesterrechnungBearbeitenModel semesterrechnungBearbeitenModel, SemesterrechnungenModel semesterrechnungenModel, SemesterrechnungenTableModel semesterrechnungenTableModel, JTable semesterrechnungenTable, int selectedRow, boolean defaultButtonEnabled) {
+        super(svmContext, semesterrechnungBearbeitenModel, defaultButtonEnabled);
         this.svmContext = svmContext;
         this.semesterrechnungBearbeitenModel = semesterrechnungBearbeitenModel;
         this.semesterrechnungenModel = semesterrechnungenModel;

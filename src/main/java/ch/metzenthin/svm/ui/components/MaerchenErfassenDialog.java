@@ -12,6 +12,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class MaerchenErfassenDialog extends JDialog {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JPanel buttonPanel;
@@ -29,12 +33,15 @@ public class MaerchenErfassenDialog extends JDialog {
         setModal(true);
         setTitle(title);
         initializeErrLbls();
+        if (DEFAULT_BUTTON_ENABLED) {
+            getRootPane().setDefaultButton(btnSpeichern);
+        }
         createMaerchenErfassenController(svmContext, maerchensTableModel, maerchensModel, indexBearbeiten, isBearbeiten);
     }
 
     private void createMaerchenErfassenController(SvmContext svmContext, MaerchensTableModel maerchensTableModel, MaerchensModel maerchensModel, int indexBearbeiten, boolean isBearbeiten) {
         MaerchenErfassenModel maerchenErfassenModel = (isBearbeiten ? maerchensModel.getMaerchenErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createMaerchenErfassenModel());
-        MaerchenErfassenController maerchenErfassenController = new MaerchenErfassenController(svmContext, maerchensTableModel, maerchenErfassenModel, isBearbeiten);
+        MaerchenErfassenController maerchenErfassenController = new MaerchenErfassenController(svmContext, maerchensTableModel, maerchenErfassenModel, isBearbeiten, DEFAULT_BUTTON_ENABLED);
         maerchenErfassenController.setMaerchenErfassenDialog(this);
         maerchenErfassenController.setContentPane(contentPane);
         maerchenErfassenController.setSpinnerSchuljahre(spinnerSchuljahre);

@@ -36,6 +36,7 @@ public class KursErfassenController extends AbstractController {
     private final SvmContext svmContext;
     private final KurseSemesterwahlModel kurseSemesterwahlModel;
     private final KurseTableModel kurseTableModel;
+    private boolean defaultButtonEnabled;
     private JDialog kursErfassenDialog;
     private JComboBox<Kurstyp> comboBoxKurstyp;
     private JComboBox<Wochentag> comboBoxWochentag;
@@ -59,12 +60,13 @@ public class KursErfassenController extends AbstractController {
     private JLabel errLblBemerkungen;
     private JButton btnSpeichern;
 
-    public KursErfassenController(SvmContext svmContext, KursErfassenModel kursErfassenModel, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel) {
+    public KursErfassenController(SvmContext svmContext, KursErfassenModel kursErfassenModel, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel, boolean defaultButtonEnabled) {
         super(kursErfassenModel);
         this.svmContext = svmContext;
         this.kursErfassenModel = kursErfassenModel;
         this.kurseSemesterwahlModel = kurseSemesterwahlModel;
         this.kurseTableModel = kurseTableModel;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.kursErfassenModel.addPropertyChangeListener(this);
         this.kursErfassenModel.addDisableFieldsListener(this);
         this.kursErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -148,12 +150,14 @@ public class KursErfassenController extends AbstractController {
 
     public void setTxtAltersbereich(JTextField txtAltersbereich) {
         this.txtAltersbereich = txtAltersbereich;
-        this.txtAltersbereich.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAltersbereichEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtAltersbereich.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onAltersbereichEvent(true);
+                }
+            });
+        }
         this.txtAltersbereich.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -199,12 +203,14 @@ public class KursErfassenController extends AbstractController {
 
     public void setTxtStufe(JTextField txtStufe) {
         this.txtStufe = txtStufe;
-        this.txtStufe.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onStufeEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtStufe.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onStufeEvent(true);
+                }
+            });
+        }
         this.txtStufe.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -296,12 +302,14 @@ public class KursErfassenController extends AbstractController {
 
     public void setTxtZeitBeginn(JTextField txtZeitBeginn) {
         this.txtZeitBeginn = txtZeitBeginn;
-        this.txtZeitBeginn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZeitBeginnEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtZeitBeginn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onZeitBeginnEvent(true);
+                }
+            });
+        }
         this.txtZeitBeginn.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -347,12 +355,14 @@ public class KursErfassenController extends AbstractController {
 
     public void setTxtZeitEnde(JTextField txtZeitEnde) {
         this.txtZeitEnde = txtZeitEnde;
-        this.txtZeitEnde.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZeitEndeEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtZeitEnde.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onZeitEndeEvent(true);
+                }
+            });
+        }
         this.txtZeitEnde.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -522,12 +532,14 @@ public class KursErfassenController extends AbstractController {
 
     public void setTxtBemerkungen(JTextField txtBemerkungen) {
         this.txtBemerkungen = txtBemerkungen;
-        this.txtBemerkungen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBemerkungenEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBemerkungen.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBemerkungenEvent(true);
+                }
+            });
+        }
         this.txtBemerkungen.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

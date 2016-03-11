@@ -32,6 +32,7 @@ public class MitarbeiterErfassenController extends PersonController {
 
     private MitarbeitersTableModel mitarbeitersTableModel;
     private MitarbeiterErfassenModel mitarbeiterErfassenModel;
+    private boolean defaultButtonEnabled;
     private final boolean isBearbeiten;
     private final SvmContext svmContext;
     private JDialog mitarbeiterErfassenDialog;
@@ -47,11 +48,12 @@ public class MitarbeiterErfassenController extends PersonController {
     private JButton btnCodesBearbeiten;
     private JButton btnSpeichern;
 
-    public MitarbeiterErfassenController(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, MitarbeiterErfassenModel mitarbeiterErfassenModel, boolean isBearbeiten) {
-        super(mitarbeiterErfassenModel);
+    public MitarbeiterErfassenController(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, MitarbeiterErfassenModel mitarbeiterErfassenModel, boolean isBearbeiten, boolean defaultButtonEnabled) {
+        super(mitarbeiterErfassenModel, defaultButtonEnabled);
         this.svmContext = svmContext;
         this.mitarbeitersTableModel = mitarbeitersTableModel;
         this.mitarbeiterErfassenModel = mitarbeiterErfassenModel;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.mitarbeiterErfassenModel.addPropertyChangeListener(this);
         this.mitarbeiterErfassenModel.addDisableFieldsListener(this);
         this.mitarbeiterErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -92,12 +94,14 @@ public class MitarbeiterErfassenController extends PersonController {
 
     public void setTxtAhvNummer(JTextField txtAhvNummer) {
         this.txtAhvNummer = txtAhvNummer;
-        this.txtAhvNummer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAhvNummerEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtAhvNummer.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onAhvNummerEvent(true);
+                }
+            });
+        }
         this.txtAhvNummer.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

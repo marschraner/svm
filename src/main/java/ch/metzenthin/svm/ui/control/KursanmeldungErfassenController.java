@@ -41,6 +41,7 @@ public class KursanmeldungErfassenController extends AbstractController {
     private KursanmeldungErfassenModel kursanmeldungErfassenModel;
     private SchuelerDatenblattModel schuelerDatenblattModel;
     private boolean isBearbeiten;
+    private boolean defaultButtonEnabled;
     private JDialog kursanmeldungErfassenDialog;
     private JSpinner spinnerSemester;
     private JComboBox<Wochentag> comboBoxWochentag;
@@ -57,13 +58,14 @@ public class KursanmeldungErfassenController extends AbstractController {
     private JLabel errLblBemerkungen;
     private JButton btnOk;
 
-    public KursanmeldungErfassenController(SvmContext svmContext, KursanmeldungErfassenModel kursanmeldungErfassenModel, KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, boolean isBearbeiten) {
+    public KursanmeldungErfassenController(SvmContext svmContext, KursanmeldungErfassenModel kursanmeldungErfassenModel, KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, boolean isBearbeiten, boolean defaultButtonEnabled) {
         super(kursanmeldungErfassenModel);
         this.svmContext = svmContext;
         this.kursanmeldungenTableModel = kursanmeldungenTableModel;
         this.kursanmeldungErfassenModel = kursanmeldungErfassenModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.isBearbeiten = isBearbeiten;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.kursanmeldungErfassenModel.addPropertyChangeListener(this);
         this.kursanmeldungErfassenModel.addDisableFieldsListener(this);
         this.kursanmeldungErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -204,12 +206,14 @@ public class KursanmeldungErfassenController extends AbstractController {
         if (isBearbeiten) {
             this.txtZeitBeginn.setEnabled(false);
         }
-        this.txtZeitBeginn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZeitBeginnEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtZeitBeginn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onZeitBeginnEvent(true);
+                }
+            });
+        }
         this.txtZeitBeginn.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -312,12 +316,14 @@ public class KursanmeldungErfassenController extends AbstractController {
 
     public void setTxtAnmeldedatum(JTextField txtAnmeldedatum) {
         this.txtAnmeldedatum = txtAnmeldedatum;
-        this.txtAnmeldedatum.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAnmeldedatumEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtAnmeldedatum.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onAnmeldedatumEvent(true);
+                }
+            });
+        }
         this.txtAnmeldedatum.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -363,12 +369,14 @@ public class KursanmeldungErfassenController extends AbstractController {
 
     public void setTxtAbmeldedatum(JTextField txtAbmeldedatum) {
         this.txtAbmeldedatum = txtAbmeldedatum;
-        this.txtAbmeldedatum.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbmeldedatumEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtAbmeldedatum.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onAbmeldedatumEvent(true);
+                }
+            });
+        }
         this.txtAbmeldedatum.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -415,12 +423,14 @@ public class KursanmeldungErfassenController extends AbstractController {
 
     public void setTxtBemerkungen(JTextField txtBemerkungen) {
         this.txtBemerkungen = txtBemerkungen;
-        this.txtBemerkungen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBemerkungenEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBemerkungen.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBemerkungenEvent(true);
+                }
+            });
+        }
         this.txtBemerkungen.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

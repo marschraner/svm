@@ -13,6 +13,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class SemesterErfassenDialog extends JDialog {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JPanel buttonPanel;
@@ -39,12 +43,15 @@ public class SemesterErfassenDialog extends JDialog {
         setModal(true);
         setTitle(title);
         initializeErrLbls();
+        if (DEFAULT_BUTTON_ENABLED) {
+            getRootPane().setDefaultButton(btnSpeichern);
+        }
         createSemesterErfassenController(svmContext, semestersTableModel, semestersModel, indexBearbeiten, isBearbeiten);
     }
 
     private void createSemesterErfassenController(SvmContext svmContext, SemestersTableModel semestersTableModel, SemestersModel semestersModel, int indexBearbeiten, boolean isBearbeiten) {
         SemesterErfassenModel semesterErfassenModel = (isBearbeiten ? semestersModel.getSemesterErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createSemesterErfassenModel());
-        SemesterErfassenController semesterErfassenController = new SemesterErfassenController(svmContext, semestersTableModel, semesterErfassenModel, isBearbeiten);
+        SemesterErfassenController semesterErfassenController = new SemesterErfassenController(svmContext, semestersTableModel, semesterErfassenModel, isBearbeiten, DEFAULT_BUTTON_ENABLED);
         semesterErfassenController.setSemesterErfassenDialog(this);
         semesterErfassenController.setContentPane(contentPane);
         semesterErfassenController.setSpinnerSchuljahre(spinnerSchuljahre);

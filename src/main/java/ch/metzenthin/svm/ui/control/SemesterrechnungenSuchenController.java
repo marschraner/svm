@@ -128,12 +128,14 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private ActionListener nextPanelListener;
     private final SvmContext svmContext;
     private SemesterrechnungenSuchenModel semesterrechnungenSuchenModel;
+    private boolean defaultButtonEnabled;
     private ActionListener zurueckListener;
 
-    public SemesterrechnungenSuchenController(SvmContext svmContext, SemesterrechnungenSuchenModel semesterrechnungenSuchenModel) {
-        super(svmContext, semesterrechnungenSuchenModel);
+    public SemesterrechnungenSuchenController(SvmContext svmContext, SemesterrechnungenSuchenModel semesterrechnungenSuchenModel, boolean defaultButtonEnabled) {
+        super(svmContext, semesterrechnungenSuchenModel, defaultButtonEnabled);
         this.svmContext = svmContext;
         this.semesterrechnungenSuchenModel = semesterrechnungenSuchenModel;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.semesterrechnungenSuchenModel.addPropertyChangeListener(this);
         this.semesterrechnungenSuchenModel.addDisableFieldsListener(this);
         this.semesterrechnungenSuchenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -144,119 +146,6 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             }
         });
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
-    }
-
-    // Die folgenden Methoden werden überschrieben, da für einen funktionierenden Default-Button (Suchen) keine
-    // ActionListeners auf Textfeldern vorhanden sein dürfen.
-
-    @Override
-    public void setTxtRechnungsdatumVorrechnung(JTextField txtRechnungsdatumVorrechnung) {
-        this.txtRechnungsdatumVorrechnung = txtRechnungsdatumVorrechnung;
-        this.txtRechnungsdatumVorrechnung.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onRechnungsdatumVorrechnungEvent();
-            }
-        });
-    }
-
-    @Override
-    public void setTxtErmaessigungVorrechnung(JTextField txtErmaessigungVorrechnung) {
-        this.txtErmaessigungVorrechnung = txtErmaessigungVorrechnung;
-        this.txtErmaessigungVorrechnung.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onErmaessigungVorrechnungEvent();
-            }
-        });
-    }
-
-    @Override
-    public void setTxtZuschlagVorrechnung(JTextField txtZuschlagVorrechnung) {
-        this.txtZuschlagVorrechnung = txtZuschlagVorrechnung;
-        this.txtZuschlagVorrechnung.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onZuschlagVorrechnungEvent();
-            }
-        });
-    }
-
-    @Override
-    public void setTxtAnzahlWochenVorrechnung(JTextField txtAnzahlWochenVorrechnung) {
-        this.txtAnzahlWochenVorrechnung = txtAnzahlWochenVorrechnung;
-        this.txtAnzahlWochenVorrechnung.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onAnzahlWochenVorrechnungEvent();
-            }
-        });
-    }
-
-    @Override
-    public void setTxtWochenbetragVorrechnung(JTextField txtWochenbetragVorrechnung) {
-        this.txtWochenbetragVorrechnung = txtWochenbetragVorrechnung;
-        this.txtWochenbetragVorrechnung.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onWochenbetragVorrechnungEvent();
-            }
-        });
-    }
-
-    @Override
-    public void setTxtRechnungsdatumNachrechnung(JTextField txtRechnungsdatumNachrechnung) {
-        this.txtRechnungsdatumNachrechnung = txtRechnungsdatumNachrechnung;
-        this.txtRechnungsdatumNachrechnung.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onRechnungsdatumNachrechnungEvent();
-            }
-        });
-    }
-
-    @Override
-    public void setTxtErmaessigungNachrechnung(JTextField txtErmaessigungNachrechnung) {
-        this.txtErmaessigungNachrechnung = txtErmaessigungNachrechnung;
-        this.txtErmaessigungNachrechnung.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onErmaessigungNachrechnungEvent();
-            }
-        });
-    }
-
-    @Override
-    public void setTxtZuschlagNachrechnung(JTextField txtZuschlagNachrechnung) {
-        this.txtZuschlagNachrechnung = txtZuschlagNachrechnung;
-        this.txtZuschlagNachrechnung.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onZuschlagNachrechnungEvent();
-            }
-        });
-    }
-
-    @Override
-    public void setTxtAnzahlWochenNachrechnung(JTextField txtAnzahlWochenNachrechnung) {
-        this.txtAnzahlWochenNachrechnung = txtAnzahlWochenNachrechnung;
-        this.txtAnzahlWochenNachrechnung.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onAnzahlWochenNachrechnungEvent();
-            }
-        });
-    }
-
-    @Override
-    public void setTxtWochenbetragNachrechnung(JTextField txtWochenbetragNachrechnung) {
-        this.txtWochenbetragNachrechnung = txtWochenbetragNachrechnung;
-        this.txtWochenbetragNachrechnung.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onWochenbetragNachrechnungEvent();
-            }
-        });
     }
 
     public void setSpinnerSemester(JSpinner spinnerSemester) {
@@ -299,6 +188,14 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
 
     public void setTxtNachname(JTextField txtNachname) {
         this.txtNachname = txtNachname;
+        if (!defaultButtonEnabled) {
+            this.txtNachname.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onNachnameEvent();
+                }
+            });
+        }
         this.txtNachname.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -335,6 +232,14 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
 
     public void setTxtVorname(JTextField txtVorname) {
         this.txtVorname = txtVorname;
+        if (!defaultButtonEnabled) {
+            this.txtVorname.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onVornameEvent();
+                }
+            });
+        }
         this.txtVorname.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -401,6 +306,14 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
 
     public void setTxtZeitBeginn(JTextField txtZeitBeginn) {
         this.txtZeitBeginn = txtZeitBeginn;
+        if (!defaultButtonEnabled) {
+            this.txtZeitBeginn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onZeitBeginnEvent();
+                }
+            });
+        }
         this.txtZeitBeginn.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -472,6 +385,14 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
 
     public void setTxtRechnungsbetragVorrechnung(JTextField txtRechnungsbetragVorrechnung) {
         this.txtRechnungsbetragVorrechnung = txtRechnungsbetragVorrechnung;
+        if (!defaultButtonEnabled) {
+            this.txtRechnungsbetragVorrechnung.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onRechnungsbetragVorrechnungEvent();
+                }
+            });
+        }
         this.txtRechnungsbetragVorrechnung.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -508,6 +429,14 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
 
     public void setTxtRestbetragVorrechnung(JTextField txtRestbetragVorrechnung) {
         this.txtRestbetragVorrechnung = txtRestbetragVorrechnung;
+        if (!defaultButtonEnabled) {
+            this.txtRestbetragVorrechnung.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onRestbetragVorrechnungEvent();
+                }
+            });
+        }
         this.txtRestbetragVorrechnung.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -544,6 +473,14 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
 
     public void setTxtRechnungsbetragNachrechnung(JTextField txtRechnungsbetragNachrechnung) {
         this.txtRechnungsbetragNachrechnung = txtRechnungsbetragNachrechnung;
+        if (!defaultButtonEnabled) {
+            this.txtRechnungsbetragNachrechnung.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onRechnungsbetragNachrechnungEvent();
+                }
+            });
+        }
         this.txtRechnungsbetragNachrechnung.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -580,6 +517,14 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
 
     public void setTxtRestbetragNachrechnung(JTextField txtRestbetragNachrechnung) {
         this.txtRestbetragNachrechnung = txtRestbetragNachrechnung;
+        if (!defaultButtonEnabled) {
+            this.txtRestbetragNachrechnung.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onRestbetragNachrechnungEvent();
+                }
+            });
+        }
         this.txtRestbetragNachrechnung.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -616,6 +561,14 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
 
     public void setTxtDifferenzSchulgeld(JTextField txtDifferenzSchulgeld) {
         this.txtDifferenzSchulgeld = txtDifferenzSchulgeld;
+        if (!defaultButtonEnabled) {
+            this.txtDifferenzSchulgeld.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onDifferenzSchulgeldEvent();
+                }
+            });
+        }
         this.txtDifferenzSchulgeld.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

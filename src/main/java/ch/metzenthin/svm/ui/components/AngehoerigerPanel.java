@@ -43,13 +43,13 @@ public class AngehoerigerPanel {
         $$$setupUI$$$();
     }
 
-    public AngehoerigerController setModel(AngehoerigerModel angehoerigerModel) {
+    public AngehoerigerController setModel(AngehoerigerModel angehoerigerModel, boolean defaultButtonEnabled) {
         initializeErrLbls();
-        return createAngehoerigerController(angehoerigerModel);
+        return createAngehoerigerController(angehoerigerModel, defaultButtonEnabled);
     }
 
-    private AngehoerigerController createAngehoerigerController(AngehoerigerModel angehoerigerModel) {
-        AngehoerigerController angehoerigerController = new AngehoerigerController(angehoerigerModel);
+    private AngehoerigerController createAngehoerigerController(AngehoerigerModel angehoerigerModel, boolean defaultButtonEnabled) {
+        AngehoerigerController angehoerigerController = new AngehoerigerController(angehoerigerModel, defaultButtonEnabled);
         angehoerigerController.setComboBoxAnrede(comboBoxAnrede);
         angehoerigerController.setTxtNachname(txtNachname);
         angehoerigerController.setTxtVorname(txtVorname);

@@ -32,6 +32,7 @@ public class MaerchenErfassenController extends AbstractController {
     private MaerchenErfassenModel maerchenErfassenModel;
     private final SvmContext svmContext;
     private boolean isBearbeiten;
+    private boolean defaultButtonEnabled;
     private JDialog maerchenErfassenDialog;
     private JSpinner spinnerSchuljahre;
     private JTextField txtBezeichnung;
@@ -40,12 +41,13 @@ public class MaerchenErfassenController extends AbstractController {
     private JLabel errLblAnzahlVorstellungen;
     private JButton btnSpeichern;
 
-    public MaerchenErfassenController(SvmContext svmContext, MaerchensTableModel maerchensTableModel, MaerchenErfassenModel maerchenErfassenModel, boolean isBearbeiten) {
+    public MaerchenErfassenController(SvmContext svmContext, MaerchensTableModel maerchensTableModel, MaerchenErfassenModel maerchenErfassenModel, boolean isBearbeiten, boolean defaultButtonEnabled) {
         super(maerchenErfassenModel);
         this.svmContext = svmContext;
         this.maerchensTableModel = maerchensTableModel;
         this.maerchenErfassenModel = maerchenErfassenModel;
         this.isBearbeiten = isBearbeiten;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.maerchenErfassenModel.addPropertyChangeListener(this);
         this.maerchenErfassenModel.addDisableFieldsListener(this);
         this.maerchenErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -131,12 +133,14 @@ public class MaerchenErfassenController extends AbstractController {
 
     public void setTxtBezeichnung(JTextField txtBezeichnung) {
         this.txtBezeichnung = txtBezeichnung;
-        this.txtBezeichnung.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBezeichnungEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBezeichnung.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBezeichnungEvent(true);
+                }
+            });
+        }
         this.txtBezeichnung.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -182,12 +186,14 @@ public class MaerchenErfassenController extends AbstractController {
 
     public void setTxtAnzahlVorstellungen(JTextField txtAnzahlVorstellungen) {
         this.txtAnzahlVorstellungen = txtAnzahlVorstellungen;
-        this.txtAnzahlVorstellungen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAnzahlVorstellungenEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtAnzahlVorstellungen.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onAnzahlVorstellungenEvent(true);
+                }
+            });
+        }
         this.txtAnzahlVorstellungen.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

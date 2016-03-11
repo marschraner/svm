@@ -33,18 +33,20 @@ public class RechnungsdatumErfassenController extends AbstractController {
     private List<Semesterrechnung> semesterrechnungen;
     private RechnungsdatumErfassenModel rechnungsdatumErfassenModel;
     private Rechnungstyp rechnungstyp;
+    private boolean defaultButtonEnabled;
     private final SvmContext svmContext;
     private JDialog rechnungsdatumErfassenDialog;
     private JTextField txtRechnungsdatum;
     private JLabel errLblRechnungsdatum;
     private JButton btnOk;
 
-    public RechnungsdatumErfassenController(SvmContext svmContext, List<Semesterrechnung> semesterrechnungen, RechnungsdatumErfassenModel rechnungsdatumErfassenModel, Rechnungstyp rechnungstyp) {
+    public RechnungsdatumErfassenController(SvmContext svmContext, List<Semesterrechnung> semesterrechnungen, RechnungsdatumErfassenModel rechnungsdatumErfassenModel, Rechnungstyp rechnungstyp, boolean defaultButtonEnabled) {
         super(rechnungsdatumErfassenModel);
         this.svmContext = svmContext;
         this.semesterrechnungen = semesterrechnungen;
         this.rechnungsdatumErfassenModel = rechnungsdatumErfassenModel;
         this.rechnungstyp = rechnungstyp;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.rechnungsdatumErfassenModel.addPropertyChangeListener(this);
         this.rechnungsdatumErfassenModel.addDisableFieldsListener(this);
         this.rechnungsdatumErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -83,6 +85,14 @@ public class RechnungsdatumErfassenController extends AbstractController {
     
     public void setTxtRechnungsdatum(JTextField txtRechnungsdatum) {
         this.txtRechnungsdatum = txtRechnungsdatum;
+        if (!defaultButtonEnabled) {
+            this.txtRechnungsdatum.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onRechnungsdatumEvent(true);
+                }
+            });
+        }
         this.txtRechnungsdatum.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

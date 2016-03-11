@@ -29,6 +29,7 @@ public class KurstypErfassenController extends AbstractController {
     private KurstypenTableModel kurstypenTableModel;
     private KurstypErfassenModel kurstypErfassenModel;
     private boolean isBearbeiten;
+    private boolean defaultButtonEnabled;
     private final SvmContext svmContext;
     private JDialog kurstypErfassenDialog;
     private JTextField txtBezeichnung;
@@ -36,12 +37,13 @@ public class KurstypErfassenController extends AbstractController {
     private JLabel errLblBezeichnung;
     private JButton btnSpeichern;
 
-    public KurstypErfassenController(SvmContext svmContext, KurstypenTableModel kurstypenTableModel, KurstypErfassenModel kurstypErfassenModel, boolean isBearbeiten) {
+    public KurstypErfassenController(SvmContext svmContext, KurstypenTableModel kurstypenTableModel, KurstypErfassenModel kurstypErfassenModel, boolean isBearbeiten, boolean defaultButtonEnabled) {
         super(kurstypErfassenModel);
         this.svmContext = svmContext;
         this.kurstypenTableModel = kurstypenTableModel;
         this.kurstypErfassenModel = kurstypErfassenModel;
         this.isBearbeiten = isBearbeiten;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.kurstypErfassenModel.addPropertyChangeListener(this);
         this.kurstypErfassenModel.addDisableFieldsListener(this);
         this.kurstypErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -80,12 +82,14 @@ public class KurstypErfassenController extends AbstractController {
     
     public void setTxtBezeichnung(JTextField txtBezeichnung) {
         this.txtBezeichnung = txtBezeichnung;
-        this.txtBezeichnung.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBezeichnungEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBezeichnung.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBezeichnungEvent(true);
+                }
+            });
+        }
         this.txtBezeichnung.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

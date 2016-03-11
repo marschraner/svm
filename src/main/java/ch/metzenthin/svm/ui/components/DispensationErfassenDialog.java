@@ -12,6 +12,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class DispensationErfassenDialog extends JDialog {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JPanel buttonPanel;
@@ -31,6 +35,9 @@ public class DispensationErfassenDialog extends JDialog {
         setModal(true);
         setTitle(title);
         initializeErrLbls();
+        if (DEFAULT_BUTTON_ENABLED) {
+            getRootPane().setDefaultButton(btnSpeichern);
+        }
         createDispensationErfassenController(svmContext, dispensationenTableModel, dispensationenModel, schuelerDatenblattModel, indexBearbeiten, isBearbeiten);
     }
 
@@ -47,7 +54,7 @@ public class DispensationErfassenDialog extends JDialog {
 
     private void createDispensationErfassenController(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, DispensationenModel dispensationenModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexBearbeiten, boolean isBearbeiten) {
         DispensationErfassenModel dispensationErfassenModel = (isBearbeiten ? dispensationenModel.getDispensationErfassenModel(svmContext, schuelerDatenblattModel, indexBearbeiten) : svmContext.getModelFactory().createDispensationErfassenModel());
-        DispensationErfassenController dispensationErfassenController = new DispensationErfassenController(svmContext, dispensationenTableModel, dispensationErfassenModel, schuelerDatenblattModel);
+        DispensationErfassenController dispensationErfassenController = new DispensationErfassenController(svmContext, dispensationenTableModel, dispensationErfassenModel, schuelerDatenblattModel, DEFAULT_BUTTON_ENABLED);
         dispensationErfassenController.setDispensationErfassenDialog(this);
         dispensationErfassenController.setContentPane(contentPane);
         dispensationErfassenController.setTxtDispensationsbeginn(txtDispensationsbeginn);

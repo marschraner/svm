@@ -19,6 +19,9 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class SemesterrechnungBearbeitenPanel {
+
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel panel1;
     private JPanel titelPanel;
     private JPanel datenPanel;
@@ -129,12 +132,15 @@ public class SemesterrechnungBearbeitenPanel {
 
     public SemesterrechnungBearbeitenPanel(SvmContext svmContext, SemesterrechnungBearbeitenModel semesterrechnungBearbeitenModel, SemesterrechnungenModel semesterrechnungenModel, SemesterrechnungenTableModel semesterrechnungenTableModel, JTable semesterrechnungenTable, int selectedRow) {
         $$$setupUI$$$();
+        if (DEFAULT_BUTTON_ENABLED) {
+            svmContext.getRootPaneJFrame().setDefaultButton(btnSpeichern);
+        }
         createSemesterrechnungBearbeitenController(svmContext, semesterrechnungBearbeitenModel, semesterrechnungenModel, semesterrechnungenTableModel, semesterrechnungenTable, selectedRow);
         initializeErrLbls();
     }
 
     private void createSemesterrechnungBearbeitenController(SvmContext svmContext, SemesterrechnungBearbeitenModel semesterrechnungBearbeitenModel, SemesterrechnungenModel semesterrechnungenModel, SemesterrechnungenTableModel semesterrechnungenTableModel, JTable semesterrechnungenTable, int selectedRow) {
-        semesterrechnungBearbeitenController = new SemesterrechnungBearbeitenController(svmContext, semesterrechnungBearbeitenModel, semesterrechnungenModel, semesterrechnungenTableModel, semesterrechnungenTable, selectedRow);
+        semesterrechnungBearbeitenController = new SemesterrechnungBearbeitenController(svmContext, semesterrechnungBearbeitenModel, semesterrechnungenModel, semesterrechnungenTableModel, semesterrechnungenTable, selectedRow, DEFAULT_BUTTON_ENABLED);
         semesterrechnungBearbeitenController.setLblNachnameVorname(lblNachnameVorname);
         semesterrechnungBearbeitenController.setLblName(lblName);
         semesterrechnungBearbeitenController.setLblStrasseNr(lblStrasseNr);

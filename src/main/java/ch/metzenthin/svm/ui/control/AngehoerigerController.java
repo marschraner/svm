@@ -24,8 +24,8 @@ public class AngehoerigerController extends PersonController {
     private JLabel errLblRechnungsempfaenger;
     private AngehoerigerModel angehoerigerModel;
 
-    public AngehoerigerController(AngehoerigerModel angehoerigerModel) {
-        super(angehoerigerModel);
+    public AngehoerigerController(AngehoerigerModel angehoerigerModel, boolean defaultButtonEnabled) {
+        super(angehoerigerModel, defaultButtonEnabled);
         this.angehoerigerModel = angehoerigerModel;
         this.angehoerigerModel.addPropertyChangeListener(this);
         this.angehoerigerModel.addDisableFieldsListener(this);

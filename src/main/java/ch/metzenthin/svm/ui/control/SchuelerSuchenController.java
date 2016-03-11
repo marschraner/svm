@@ -79,12 +79,14 @@ public class SchuelerSuchenController extends PersonController {
     private ActionListener nextPanelListener;
     private final SvmContext svmContext;
     private SchuelerSuchenModel schuelerSuchenModel;
+    private boolean defaultButtonEnabled;
     private ActionListener zurueckListener;
 
-    public SchuelerSuchenController(SvmContext svmContext, SchuelerSuchenModel schuelerSuchenModel) {
-        super(schuelerSuchenModel);
+    public SchuelerSuchenController(SvmContext svmContext, SchuelerSuchenModel schuelerSuchenModel, boolean defaultButtonEnabled) {
+        super(schuelerSuchenModel, defaultButtonEnabled);
         this.svmContext = svmContext;
         this.schuelerSuchenModel = schuelerSuchenModel;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.schuelerSuchenModel.addPropertyChangeListener(this);
         this.schuelerSuchenModel.addDisableFieldsListener(this);
         this.schuelerSuchenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -97,110 +99,16 @@ public class SchuelerSuchenController extends PersonController {
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
-    // Die folgenden Methoden werden überschrieben, da für einen funktionierenden Default-Button (Suchen) keine
-    // ActionListeners auf Textfeldern vorhanden sein dürfen.
-
-    @Override
-    public void setTxtNachname(JTextField txtNachname) {
-        this.txtNachname = txtNachname;
-        this.txtNachname.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onNachnameEvent(false);
-            }
-        });
-    }
-
-    @Override
-    public void setTxtVorname(JTextField txtVorname) {
-        this.txtVorname = txtVorname;
-        this.txtVorname.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onVornameEvent(false);
-            }
-        });
-    }
-
-    @Override
-    public void setTxtStrasseHausnummer(JTextField txtStrasseHausnummer) {
-        this.txtStrasseHausnummer = txtStrasseHausnummer;
-        this.txtStrasseHausnummer.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onStrasseHausnummerEvent(false);
-            }
-        });
-    }
-
-    @Override
-    public void setTxtPlz(JTextField txtPlz) {
-        this.txtPlz = txtPlz;
-        this.txtPlz.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onPlzEvent(false);
-            }
-        });
-    }
-
-    @Override
-    public void setTxtOrt(JTextField txtOrt) {
-        this.txtOrt = txtOrt;
-        this.txtOrt.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onOrtEvent(false);
-            }
-        });
-    }
-
-    @Override
-    public void setTxtFestnetz(JTextField txtFestnetz) {
-        this.txtFestnetz = txtFestnetz;
-        this.txtFestnetz.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onFestnetzEvent(false);
-            }
-        });
-    }
-
-    @Override
-    public void setTxtNatel(JTextField txtNatel) {
-        this.txtNatel = txtNatel;
-        this.txtNatel.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onNatelEvent(false);
-            }
-        });
-    }
-
-    @Override
-    public void setTxtEmail(JTextField txtEmail) {
-        this.txtEmail = txtEmail;
-        this.txtEmail.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onEmailEvent(false);
-            }
-        });
-    }
-
-    @Override
-    public void setTxtGeburtsdatum(JTextField txtGeburtsdatum) {
-        this.txtGeburtsdatum = txtGeburtsdatum;
-        this.txtGeburtsdatum.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onGeburtsdatumEvent(false);
-            }
-        });
-    }
-
     public void setTxtGeburtsdatumSuchperiode(JTextField txtGeburtsdatumSuchperiode) {
         this.txtGeburtsdatumSuchperiode = txtGeburtsdatumSuchperiode;
+        if (!defaultButtonEnabled) {
+            this.txtGeburtsdatumSuchperiode.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onGeburtsdatumSuchperiodeEvent();
+                }
+            });
+        }
         this.txtGeburtsdatumSuchperiode.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -246,6 +154,14 @@ public class SchuelerSuchenController extends PersonController {
 
     public void setTxtStichtag(JTextField txtStichtag) {
         this.txtStichtag = txtStichtag;
+        if (!defaultButtonEnabled) {
+            this.txtStichtag.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onStichtagEvent();
+                }
+            });
+        }
         this.txtStichtag.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -387,6 +303,14 @@ public class SchuelerSuchenController extends PersonController {
 
     public void setTxtZeitBeginn(JTextField txtZeitBeginn) {
         this.txtZeitBeginn = txtZeitBeginn;
+        if (!defaultButtonEnabled) {
+            this.txtZeitBeginn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onZeitBeginnEvent();
+                }
+            });
+        }
         this.txtZeitBeginn.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -609,6 +533,14 @@ public class SchuelerSuchenController extends PersonController {
 
     public void setTxtKuchenVorstellung(JTextField txtKuchenVorstellung) {
         this.txtKuchenVorstellung = txtKuchenVorstellung;
+        if (!defaultButtonEnabled) {
+            this.txtKuchenVorstellung.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onKuchenVorstellungEvent();
+                }
+            });
+        }
         this.txtKuchenVorstellung.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -645,6 +577,14 @@ public class SchuelerSuchenController extends PersonController {
 
     public void setTxtZusatzattributMaerchen(JTextField txtZusatzattributMaerchen) {
         this.txtZusatzattributMaerchen = txtZusatzattributMaerchen;
+        if (!defaultButtonEnabled) {
+            this.txtZusatzattributMaerchen.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onZusatzattributMaerchenEvent();
+                }
+            });
+        }
         this.txtZusatzattributMaerchen.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

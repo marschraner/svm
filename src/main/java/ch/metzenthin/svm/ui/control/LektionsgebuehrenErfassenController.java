@@ -29,6 +29,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     private LektionsgebuehrenTableModel lektionsgebuehrenTableModel;
     private LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel;
     private boolean isBearbeiten;
+    private boolean defaultButtonEnabled;
     private final SvmContext svmContext;
     private JDialog lektionsgebuehrenErfassenDialog;
     private JTextField txtLektionslaenge;
@@ -47,12 +48,13 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     private JLabel errLblBetrag6Kinder;
     private JButton btnSpeichern;
 
-    public LektionsgebuehrenErfassenController(SvmContext svmContext, LektionsgebuehrenTableModel lektionsgebuehrenTableModel, LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel, boolean isBearbeiten) {
+    public LektionsgebuehrenErfassenController(SvmContext svmContext, LektionsgebuehrenTableModel lektionsgebuehrenTableModel, LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel, boolean isBearbeiten, boolean defaultButtonEnabled) {
         super(lektionsgebuehrenErfassenModel);
         this.svmContext = svmContext;
         this.lektionsgebuehrenTableModel = lektionsgebuehrenTableModel;
         this.lektionsgebuehrenErfassenModel = lektionsgebuehrenErfassenModel;
         this.isBearbeiten = isBearbeiten;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.lektionsgebuehrenErfassenModel.addPropertyChangeListener(this);
         this.lektionsgebuehrenErfassenModel.addDisableFieldsListener(this);
         this.lektionsgebuehrenErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -95,12 +97,14 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         if (isBearbeiten) {
             this.txtLektionslaenge.setEnabled(false);
         }
-        this.txtLektionslaenge.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLektionslaengeEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtLektionslaenge.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onLektionslaengeEvent(true);
+                }
+            });
+        }
         this.txtLektionslaenge.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -146,12 +150,14 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
 
     public void setTxtBetrag1Kind(JTextField txtBetrag1Kind) {
         this.txtBetrag1Kind = txtBetrag1Kind;
-        this.txtBetrag1Kind.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBetrag1KindEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBetrag1Kind.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBetrag1KindEvent(true);
+                }
+            });
+        }
         this.txtBetrag1Kind.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -197,12 +203,14 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
 
     public void setTxtBetrag2Kinder(JTextField txtBetrag2Kinder) {
         this.txtBetrag2Kinder = txtBetrag2Kinder;
-        this.txtBetrag2Kinder.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBetrag2KinderEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBetrag2Kinder.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBetrag2KinderEvent(true);
+                }
+            });
+        }
         this.txtBetrag2Kinder.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -248,12 +256,14 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
 
     public void setTxtBetrag3Kinder(JTextField txtBetrag3Kinder) {
         this.txtBetrag3Kinder = txtBetrag3Kinder;
-        this.txtBetrag3Kinder.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBetrag3KinderEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBetrag3Kinder.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBetrag3KinderEvent(true);
+                }
+            });
+        }
         this.txtBetrag3Kinder.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -299,12 +309,14 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
 
     public void setTxtBetrag4Kinder(JTextField txtBetrag4Kinder) {
         this.txtBetrag4Kinder = txtBetrag4Kinder;
-        this.txtBetrag4Kinder.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBetrag4KinderEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBetrag4Kinder.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBetrag4KinderEvent(true);
+                }
+            });
+        }
         this.txtBetrag4Kinder.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -350,12 +362,14 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
 
     public void setTxtBetrag5Kinder(JTextField txtBetrag5Kinder) {
         this.txtBetrag5Kinder = txtBetrag5Kinder;
-        this.txtBetrag5Kinder.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBetrag5KinderEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBetrag5Kinder.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBetrag5KinderEvent(true);
+                }
+            });
+        }
         this.txtBetrag5Kinder.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -401,12 +415,14 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
 
     public void setTxtBetrag6Kinder(JTextField txtBetrag6Kinder) {
         this.txtBetrag6Kinder = txtBetrag6Kinder;
-        this.txtBetrag6Kinder.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBetrag6KinderEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBetrag6Kinder.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBetrag6KinderEvent(true);
+                }
+            });
+        }
         this.txtBetrag6Kinder.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

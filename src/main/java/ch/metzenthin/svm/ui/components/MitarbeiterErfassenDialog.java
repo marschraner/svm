@@ -12,6 +12,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class MitarbeiterErfassenDialog extends JDialog {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JComboBox<Anrede> comboBoxAnrede;
@@ -52,13 +56,16 @@ public class MitarbeiterErfassenDialog extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         setTitle(title);
+        if (DEFAULT_BUTTON_ENABLED) {
+            getRootPane().setDefaultButton(btnSpeichern);
+        }
         createLehrkraftErfassenController(svmContext, mitarbeitersTableModel, mitarbeitersModel, indexBearbeiten, isBearbeiten);
         initializeErrLbls();
     }
 
     private void createLehrkraftErfassenController(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, MitarbeitersModel mitarbeitersModel, int indexBearbeiten, boolean isBearbeiten) {
         MitarbeiterErfassenModel mitarbeiterErfassenModel = (isBearbeiten ? mitarbeitersModel.getMitarbeiterErfassenModel(svmContext, mitarbeitersTableModel, indexBearbeiten) : svmContext.getModelFactory().createMitarbeiterErfassenModel());
-        MitarbeiterErfassenController mitarbeiterErfassenController = new MitarbeiterErfassenController(svmContext, mitarbeitersTableModel, mitarbeiterErfassenModel, isBearbeiten);
+        MitarbeiterErfassenController mitarbeiterErfassenController = new MitarbeiterErfassenController(svmContext, mitarbeitersTableModel, mitarbeiterErfassenModel, isBearbeiten, DEFAULT_BUTTON_ENABLED);
         mitarbeiterErfassenController.setMitarbeiterErfassenDialog(this);
         mitarbeiterErfassenController.setContentPane(contentPane);
         mitarbeiterErfassenController.setComboBoxAnrede(comboBoxAnrede);

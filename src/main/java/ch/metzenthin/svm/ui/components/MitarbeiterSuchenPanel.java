@@ -14,6 +14,10 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class MitarbeiterSuchenPanel {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = true;
+
     private final SvmContext svmContext;
     private JPanel panel1;
     private JPanel datenPanel;
@@ -51,7 +55,7 @@ public class MitarbeiterSuchenPanel {
     }
 
     private void createMitarbeitersSuchenController(SvmContext svmContext) {
-        mitarbeiterSuchenController = new MitarbeiterSuchenController(svmContext, svmContext.getModelFactory().createMitarbeitersSuchenModel());
+        mitarbeiterSuchenController = new MitarbeiterSuchenController(svmContext, svmContext.getModelFactory().createMitarbeitersSuchenModel(), DEFAULT_BUTTON_ENABLED);
         mitarbeiterSuchenController.setTxtNachname(txtNachname);
         mitarbeiterSuchenController.setTxtVorname(txtVorname);
         mitarbeiterSuchenController.setComboBoxMitarbeiterCode(comboBoxMitarbeiterCode);
@@ -88,7 +92,9 @@ public class MitarbeiterSuchenPanel {
     }
 
     private void setDefaultButton() {
-        svmContext.getRootPaneJFrame().setDefaultButton(btnSuchen);
+        if (DEFAULT_BUTTON_ENABLED) {
+            svmContext.getRootPaneJFrame().setDefaultButton(btnSuchen);
+        }
     }
 
     /**

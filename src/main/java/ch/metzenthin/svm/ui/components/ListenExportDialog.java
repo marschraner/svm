@@ -14,6 +14,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class ListenExportDialog extends JDialog {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JLabel txtListentyp;
@@ -32,12 +36,14 @@ public class ListenExportDialog extends JDialog {
         setModal(true);
         setTitle("Als Liste exportieren");
         initializeErrLbls();
-        getRootPane().setDefaultButton(btnOk);
+        if (DEFAULT_BUTTON_ENABLED) {
+            getRootPane().setDefaultButton(btnOk);
+        }
         createListenExportController(svmContext, schuelerSuchenTableModel, mitarbeitersTableModel, kurseTableModel, semesterrechnungenTableModel, listenExportTyp);
     }
 
     private void createListenExportController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, MitarbeitersTableModel mitarbeitersTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel, ListenExportTyp listenExportTyp) {
-        ListenExportController listenExportController = new ListenExportController(svmContext.getModelFactory().createListenExportModel(), svmContext, schuelerSuchenTableModel, mitarbeitersTableModel, kurseTableModel, semesterrechnungenTableModel, listenExportTyp);
+        ListenExportController listenExportController = new ListenExportController(svmContext.getModelFactory().createListenExportModel(), svmContext, schuelerSuchenTableModel, mitarbeitersTableModel, kurseTableModel, semesterrechnungenTableModel, listenExportTyp, DEFAULT_BUTTON_ENABLED);
         listenExportController.setListenExportDialog(this);
         listenExportController.setContentPane(contentPane);
         listenExportController.setComboBoxListentyp(comboBoxListentyp);

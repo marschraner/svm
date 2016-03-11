@@ -12,6 +12,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class CodeErfassenDialog extends JDialog {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JTextField txtKuerzel;
@@ -28,12 +32,15 @@ public class CodeErfassenDialog extends JDialog {
         setModal(true);
         setTitle(title);
         initializeErrLbls();
+        if (DEFAULT_BUTTON_ENABLED) {
+            getRootPane().setDefaultButton(btnSpeichern);
+        }
         createCodeErfassenController(svmContext, codesTableModel, codesModel, indexBearbeiten, isBearbeiten, codetyp);
     }
 
     private void createCodeErfassenController(SvmContext svmContext, CodesTableModel codesTableModel, CodesModel codesModel, int indexBearbeiten, boolean isBearbeiten, Codetyp codetyp) {
         CodeErfassenModel codeErfassenModel = (isBearbeiten ? codesModel.getCodeErfassenModel(svmContext, indexBearbeiten, codetyp) : svmContext.getModelFactory().createCodeErfassenModel());
-        CodeErfassenController codeErfassenController = new CodeErfassenController(svmContext, codesTableModel, codeErfassenModel, codetyp, isBearbeiten);
+        CodeErfassenController codeErfassenController = new CodeErfassenController(svmContext, codesTableModel, codeErfassenModel, codetyp, isBearbeiten, DEFAULT_BUTTON_ENABLED);
         codeErfassenController.setCodeErfassenDialog(this);
         codeErfassenController.setContentPane(contentPane);
         codeErfassenController.setTxtKuerzel(txtKuerzel);

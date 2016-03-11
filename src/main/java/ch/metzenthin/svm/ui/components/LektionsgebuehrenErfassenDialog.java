@@ -11,6 +11,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class LektionsgebuehrenErfassenDialog extends JDialog {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JPanel buttonPanel;
@@ -36,12 +40,15 @@ public class LektionsgebuehrenErfassenDialog extends JDialog {
         setModal(true);
         setTitle(title);
         initializeErrLbls();
+        if (DEFAULT_BUTTON_ENABLED) {
+            getRootPane().setDefaultButton(btnSpeichern);
+        }
         createLektionsgebuehrenErfassenController(svmContext, lektionsgebuehrenTableModel, lektionsgebuehrenModel, indexBearbeiten, isBearbeiten);
     }
 
     private void createLektionsgebuehrenErfassenController(SvmContext svmContext, LektionsgebuehrenTableModel lektionsgebuehrenTableModel, LektionsgebuehrenModel lektionsgebuehrenModel, int indexBearbeiten, boolean isBearbeiten) {
         LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel = (isBearbeiten ? lektionsgebuehrenModel.getLektionsgebuehrenErfassenModel(svmContext, indexBearbeiten) : svmContext.getModelFactory().createLektionsgebuehrenErfassenModel());
-        LektionsgebuehrenErfassenController lektionsgebuehrenErfassenController = new LektionsgebuehrenErfassenController(svmContext, lektionsgebuehrenTableModel, lektionsgebuehrenErfassenModel, isBearbeiten);
+        LektionsgebuehrenErfassenController lektionsgebuehrenErfassenController = new LektionsgebuehrenErfassenController(svmContext, lektionsgebuehrenTableModel, lektionsgebuehrenErfassenModel, isBearbeiten, DEFAULT_BUTTON_ENABLED);
         lektionsgebuehrenErfassenController.setLektionsgebuehrenErfassenDialog(this);
         lektionsgebuehrenErfassenController.setContentPane(contentPane);
         lektionsgebuehrenErfassenController.setTxtLektionslaenge(txtLektionslaenge);

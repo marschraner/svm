@@ -31,6 +31,7 @@ public class CodeErfassenController extends AbstractController {
     private CodeErfassenModel codeErfassenModel;
     private Codetyp codetyp;
     private boolean isBearbeiten;
+    private boolean defaultButtonEnabled;
     private final SvmContext svmContext;
     private JDialog codeErfassenDialog;
     private JTextField txtKuerzel;
@@ -40,13 +41,14 @@ public class CodeErfassenController extends AbstractController {
     private JLabel errLblBeschreibung;
     private JButton btnSpeichern;
 
-    public CodeErfassenController(SvmContext svmContext, CodesTableModel codesTableModel, CodeErfassenModel codeErfassenModel, Codetyp codetyp, boolean isBearbeiten) {
+    public CodeErfassenController(SvmContext svmContext, CodesTableModel codesTableModel, CodeErfassenModel codeErfassenModel, Codetyp codetyp, boolean isBearbeiten, boolean defaultButtonEnabled) {
         super(codeErfassenModel);
         this.svmContext = svmContext;
         this.codesTableModel = codesTableModel;
         this.codeErfassenModel = codeErfassenModel;
         this.codetyp = codetyp;
         this.isBearbeiten = isBearbeiten;
+        this.defaultButtonEnabled = defaultButtonEnabled;
         this.codeErfassenModel.addPropertyChangeListener(this);
         this.codeErfassenModel.addDisableFieldsListener(this);
         this.codeErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -85,12 +87,14 @@ public class CodeErfassenController extends AbstractController {
 
     public void setTxtKuerzel(JTextField txtKuerzel) {
         this.txtKuerzel = txtKuerzel;
-        this.txtKuerzel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onKuerzelEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtKuerzel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onKuerzelEvent(true);
+                }
+            });
+        }
         this.txtKuerzel.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -136,12 +140,14 @@ public class CodeErfassenController extends AbstractController {
 
     public void setTxtBeschreibung(JTextField txtBeschreibung) {
         this.txtBeschreibung = txtBeschreibung;
-        this.txtBeschreibung.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBeschreibungEvent(true);
-            }
-        });
+        if (!defaultButtonEnabled) {
+            this.txtBeschreibung.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onBeschreibungEvent(true);
+                }
+            });
+        }
         this.txtBeschreibung.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {

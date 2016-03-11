@@ -11,6 +11,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class RechnungsdatumErfassenDialog extends JDialog {
+
+    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JPanel buttonPanel;
@@ -24,13 +28,15 @@ public class RechnungsdatumErfassenDialog extends JDialog {
         setModal(true);
         setTitle("Rechnungsdatum");
         initializeErrLbls();
-        getRootPane().setDefaultButton(btnOk);
+        if (DEFAULT_BUTTON_ENABLED) {
+            getRootPane().setDefaultButton(btnOk);
+        }
         createRechnungsdatumErfassenController(svmContext, semesterrechnungen, rechnungstyp);
     }
 
     private void createRechnungsdatumErfassenController(SvmContext svmContext, java.util.List<Semesterrechnung> semesterrechnungen, Rechnungstyp rechnungstyp) {
         RechnungsdatumErfassenModel rechnungsdatumErfassenModel = svmContext.getModelFactory().createRechnungsdatumErfassenModel();
-        RechnungsdatumErfassenController rechnungsdatumErfassenController = new RechnungsdatumErfassenController(svmContext, semesterrechnungen, rechnungsdatumErfassenModel, rechnungstyp);
+        RechnungsdatumErfassenController rechnungsdatumErfassenController = new RechnungsdatumErfassenController(svmContext, semesterrechnungen, rechnungsdatumErfassenModel, rechnungstyp, DEFAULT_BUTTON_ENABLED);
         rechnungsdatumErfassenController.setRechnungsdatumErfassenDialog(this);
         rechnungsdatumErfassenController.setContentPane(contentPane);
         rechnungsdatumErfassenController.setTxtRechnungsdatum(txtRechnungsdatum);
