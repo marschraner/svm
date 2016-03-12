@@ -130,7 +130,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     protected final StringModelAttribute emailModelAttribute = new StringModelAttribute(
             this,
-            Field.EMAIL, 1, 50,
+            Field.EMAIL, 1, 150,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
