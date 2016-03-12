@@ -291,8 +291,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         angehoerigerModel.initAdresse(null);
     }
 
-    @Override
-    public Set<Field> getAdresseFields() {
+    private Set<Field> getAdresseFields() {
         Set<Field> adresseFields = new HashSet<>();
         adresseFields.add(Field.STRASSE_HAUSNUMMER);
         adresseFields.add(Field.PLZ);

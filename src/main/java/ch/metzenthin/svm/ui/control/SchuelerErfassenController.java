@@ -104,9 +104,6 @@ public class SchuelerErfassenController {
             mutterModel.setAnrede(Anrede.FRAU);
             // Default Rechungsempfängerin
             mutterModel.setIsRechnungsempfaenger(true);
-            // Default gleiche Adresse wie Schüler
-            mutterModel.setIsGleicheAdresseWieSchueler(true);
-            mutterModel.disableFields(schuelerErfassenModel.getAdresseFields());
         } catch (SvmValidationException ignore) {
         }
         schuelerErfassenModel.setMutterModel(mutterModel);

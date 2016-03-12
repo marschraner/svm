@@ -1,9 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.commands.DeleteSchuelerCommand;
-
-import java.util.Set;
 
 /**
  * @author Hans Stamm
@@ -13,7 +10,6 @@ public interface SchuelerErfassenModel extends Model {
     void setMutterModel(AngehoerigerModel mutterModel);
     void setVaterModel(AngehoerigerModel vaterModel);
     void setDrittempfaengerModel(AngehoerigerModel drittempfaengerModel);
-    Set<Field> getAdresseFields();
     SchuelerErfassenSaveResult validieren();
     SchuelerErfassenSaveResult speichern(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
     SchuelerErfassenSaveResult proceedUebernehmen(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
