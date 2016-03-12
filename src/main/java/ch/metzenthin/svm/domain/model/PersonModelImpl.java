@@ -104,7 +104,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute natelModelAttribute = new StringModelAttribute(
             this,
-            Field.NATEL, 13, 20,
+            Field.NATEL, 13, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -298,7 +298,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute festnetzModelAttribute = new StringModelAttribute(
             this,
-            Field.FESTNETZ, 13, 20,
+            Field.FESTNETZ, 13, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
