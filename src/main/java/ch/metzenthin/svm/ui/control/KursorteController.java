@@ -131,7 +131,7 @@ public class KursorteController {
                 JOptionPane.QUESTION_MESSAGE,
                 svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
-                options[0]); //default button title
+                options[1]); //default button title
         if (n == 0) {
             DeleteKursortCommand.Result result  = kursorteModel.eintragLoeschen(svmContext, kursorteTableModel, kursorteTable.getSelectedRow());
             switch (result) {

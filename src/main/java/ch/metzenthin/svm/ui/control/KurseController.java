@@ -98,7 +98,7 @@ public class KurseController {
                     JOptionPane.WARNING_MESSAGE,
                     svmContext.getDialogIcons().getWarningIcon(),
                     options,  //the titles of buttons
-                    options[0]); //default button title
+                    options[1]); //default button title
             if (n == 1) {
                 return;
             }
@@ -180,7 +180,7 @@ public class KurseController {
                     JOptionPane.QUESTION_MESSAGE,
                     svmContext.getDialogIcons().getQuestionIcon(),
                     options,  //the titles of buttons
-                    options[0]); //default button title
+                    options[1]); //default button title
         }
         if (n == 0) {
             kurseModel.kursLoeschen(kurseTableModel, kurseTable.convertRowIndexToModel(kurseTable.getSelectedRow()));

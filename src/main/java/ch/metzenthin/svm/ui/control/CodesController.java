@@ -335,7 +335,7 @@ public class CodesController {
                 JOptionPane.QUESTION_MESSAGE,
                 svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
-                options[0]); //default button title
+                options[1]); //default button title
         if (n == 0) {
             DeleteSchuelerCodeCommand.Result result  = codesModel.eintragLoeschenSchuelerCodesVerwalten(svmContext, codesTableModel, codesTable.getSelectedRow());
             switch (result) {
@@ -365,7 +365,7 @@ public class CodesController {
                 JOptionPane.QUESTION_MESSAGE,
                 svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
-                options[0]); //default button title
+                options[1]); //default button title
         if (n == 0) {
             codesModel.eintragLoeschenSchuelerCodesSchueler(codesTableModel, (SchuelerCode) codesTableModel.getCodeAt(codesTable.getSelectedRow()), schuelerDatenblattModel);
             codesTable.addNotify();
@@ -387,7 +387,7 @@ public class CodesController {
                 JOptionPane.QUESTION_MESSAGE,
                 svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
-                options[0]); //default button title
+                options[1]); //default button title
         if (n == 0) {
             DeleteMitarbeiterCodeCommand.Result result  = codesModel.eintragLoeschenMitarbeiterCodesVerwalten(svmContext, codesTableModel, codesTable.getSelectedRow());
             switch (result) {
@@ -428,7 +428,7 @@ public class CodesController {
                 JOptionPane.QUESTION_MESSAGE,
                 svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
-                options[0]); //default button title
+                options[1]); //default button title
         if (n == 0) {
             DeleteElternmithilfeCodeCommand.Result result  = codesModel.eintragLoeschenElternmithilfeCodesVerwalten(svmContext, codesTableModel, codesTable.getSelectedRow());
             switch (result) {
@@ -458,7 +458,7 @@ public class CodesController {
                 JOptionPane.QUESTION_MESSAGE,
                 svmContext.getDialogIcons().getQuestionIcon(),
                 options,  //the titles of buttons
-                options[0]); //default button title
+                options[1]); //default button title
         if (n == 0) {
             DeleteSemesterrechnungCodeCommand.Result result  = codesModel.eintragLoeschenSemesterrechnungCodesVerwalten(svmContext, codesTableModel, codesTable.getSelectedRow());
             switch (result) {

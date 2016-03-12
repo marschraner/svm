@@ -228,7 +228,7 @@ public class SemesterrechnungenController {
                     JOptionPane.QUESTION_MESSAGE,
                     svmContext.getDialogIcons().getQuestionIcon(),
                     options,  //the titles of buttons
-                    options[0]); //default button title
+                    options[1]); //default button title
             if (n == 0) {
                 semesterrechnungenModel.semesterrechnungLogischLoeschen(semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()));
                 semesterrechnungenTableModel.fireTableDataChanged();
@@ -245,7 +245,7 @@ public class SemesterrechnungenController {
                     JOptionPane.WARNING_MESSAGE,
                     svmContext.getDialogIcons().getWarningIcon(),
                     options,  //the titles of buttons
-                    options[0]); //default button title
+                    options[1]); //default button title
             if (n == 0) {
                 semesterrechnungenModel.semesterrechnungPhysischLoeschen(semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()));
                 semesterrechnungenTableModel.fireTableDataChanged();

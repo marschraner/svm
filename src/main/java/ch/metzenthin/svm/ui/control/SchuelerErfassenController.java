@@ -288,7 +288,7 @@ public class SchuelerErfassenController {
                 JOptionPane.WARNING_MESSAGE,
                 svmContext.getDialogIcons().getWarningIcon(),     //do not use a custom Icon
                 options,  //the titles of buttons
-                options[0]); //default button title
+                options[1]); //default button title
         if (n == 0) {
             DeleteSchuelerCommand.Result result = schuelerErfassenModel.schuelerLoeschen();
             switch (result) {
