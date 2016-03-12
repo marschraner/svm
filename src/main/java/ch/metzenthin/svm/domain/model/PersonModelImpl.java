@@ -104,7 +104,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute natelModelAttribute = new StringModelAttribute(
             this,
-            Field.NATEL, 13, 50,
+            Field.NATEL, 13, 20,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -130,7 +130,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     protected final StringModelAttribute emailModelAttribute = new StringModelAttribute(
             this,
-            Field.EMAIL, 1, 150,
+            Field.EMAIL, 1, 50,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -298,7 +298,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final StringModelAttribute festnetzModelAttribute = new StringModelAttribute(
             this,
-            Field.FESTNETZ, 13, 50,
+            Field.FESTNETZ, 13, 20,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
