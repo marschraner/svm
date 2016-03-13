@@ -99,7 +99,7 @@ public class CreateVertretungslisteCommand extends CreateListeCommand {
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{23, 24, 25, 26, 27, 29});
         maxLengthsRow1.add(new int[]{24, 25, 26, 27, 28, 30});
-        maxLengthsRow1.add(new int[]{0});
+        maxLengthsRow1.add(new int[]{15, 16, 17, 18, 19, 20});
         maxLengthsRow1.add(new int[]{32, 33, 34, 35, 36, 38});
         maxLengths.add(maxLengthsRow1);
         // 2. Zeile
@@ -107,7 +107,7 @@ public class CreateVertretungslisteCommand extends CreateListeCommand {
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{24, 25, 26, 27, 28, 30});
         maxLengthsRow2.add(new int[]{25, 26, 27, 28, 29, 31});
-        maxLengthsRow2.add(new int[]{0});
+        maxLengthsRow2.add(new int[]{15, 16, 17, 18, 19, 20});
         maxLengthsRow2.add(new int[]{32, 33, 34, 35, 36, 38});
         maxLengths.add(maxLengthsRow2);
         // 3. Zeile

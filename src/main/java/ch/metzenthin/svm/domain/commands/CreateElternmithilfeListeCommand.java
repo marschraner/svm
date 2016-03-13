@@ -104,7 +104,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         List<int[]> maxLengthsRow1 = new ArrayList<>();
         maxLengthsRow1.add(new int[]{25, 26, 27, 29, 31, 33});
         maxLengthsRow1.add(new int[]{26, 27, 28, 30, 32, 34});
-        maxLengthsRow1.add(new int[]{0});
+        maxLengthsRow1.add(new int[]{15, 16, 17, 18, 19, 20});
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{0});
         maxLengths.add(maxLengthsRow1);
@@ -112,7 +112,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         List<int[]> maxLengthsRow2 = new ArrayList<>();
         maxLengthsRow2.add(new int[]{25, 26, 27, 29, 31, 33});
         maxLengthsRow2.add(new int[]{26, 27, 28, 30, 32, 34});
-        maxLengthsRow2.add(new int[]{0});
+        maxLengthsRow2.add(new int[]{15, 16, 17, 18, 19, 20});
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{0});
         maxLengths.add(maxLengthsRow2);

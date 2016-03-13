@@ -17,7 +17,8 @@ import java.util.List;
  */
 public class CreateWordTableCommand implements Command {
 
-    private static String[] FONT_SIZE_CELLS = {"20", "19", "18", "17", "16", "14", "12", "10"};  // Calibri Font size: 10, 9.5, 9, 8.5, 8, 7, 6, 5
+    private static final String[] FONT_SIZE_CELLS = {"20", "19", "18", "17", "16", "14", "12", "10"};  // Calibri Font size: 10, 9.5, 9, 8.5, 8, 7, 6, 5
+    private static final String FONT_SIZE_TITLE = "28";
 
     private WordprocessingMLPackage wordMLPackage;
     private ObjectFactory objectFactory;
@@ -80,7 +81,6 @@ public class CreateWordTableCommand implements Command {
         alterStyleSheet();
 
         // Titel
-        String FONT_SIZE_TITLE = "28";
         addTitle(FONT_SIZE_TITLE);
 
         // Einzelne Seiten
