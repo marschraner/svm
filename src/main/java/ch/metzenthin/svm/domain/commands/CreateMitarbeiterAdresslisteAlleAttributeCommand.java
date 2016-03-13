@@ -200,7 +200,7 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
             List<String> cellsRow3 = new ArrayList<>();
             cellsRow3.add("");
             cellsRow3.add("");
-            cellsRow3.add(nullAsEmptyString(mitarbeiter.getEmail()));
+            cellsRow3.add(nullAsEmptyString(mitarbeiter.getEmailToBeDisplayedInWord()));
             cellsRow3.add("");
             cellsRow3.add("");
             if (vertretungsmoeglichkeitenLines.size() > 2) {

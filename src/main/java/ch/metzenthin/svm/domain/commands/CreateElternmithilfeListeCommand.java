@@ -225,7 +225,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
             // 3. Zeile
             List<String> cellsRow3 = new ArrayList<>();
             cellsRow3.add("");
-            cellsRow3.add(nullAsEmptyString(elternmithilfe.getEmail()));
+            cellsRow3.add(nullAsEmptyString(elternmithilfe.getEmailToBeDisplayedInWord()));
             cellsRow3.add("");
             cellsRow3.add("");
             if (elternmithilfeCodeLines != null && elternmithilfeCodeLines.size() > 2) {

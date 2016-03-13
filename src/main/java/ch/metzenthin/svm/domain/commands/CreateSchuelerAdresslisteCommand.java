@@ -239,11 +239,11 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
                 String email = "";
                 // Wenn vorhanden Email des Schülers, sonst der Mutter, sonst des Vaters; andernfalls leer
                 if (checkNotEmpty(schueler.getEmail())) {
-                    email = schueler.getEmail();
+                    email = schueler.getEmailToBeDisplayedInWord();
                 } else if (schueler.getMutter() != null && checkNotEmpty(schueler.getMutter().getEmail())) {
-                    email = schueler.getMutter().getEmail();
+                    email = schueler.getMutter().getEmailToBeDisplayedInWord();
                 } else if (schueler.getVater() != null && checkNotEmpty(schueler.getVater().getEmail())) {
-                    email = schueler.getVater().getEmail();
+                    email = schueler.getVater().getEmailToBeDisplayedInWord();
                 }
                 cellsRow3.add(email);
                 cellsRow3.add("");

@@ -271,15 +271,15 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
                 elternmithilfe = (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER ? schueler.getMutter() : schueler.getVater());
             }
             if (checkNotEmpty(schueler.getEmail())) {
-                email = schueler.getEmail();
+                email = schueler.getEmailToBeDisplayedInWord();
             } else if (elternmithilfe != null && checkNotEmpty(elternmithilfe.getEmail())) {
-                email = elternmithilfe.getEmail();
+                email = elternmithilfe.getEmailToBeDisplayedInWord();
             } else if (schueler.getMutter() != null && checkNotEmpty(schueler.getMutter().getEmail())) {
-                email = schueler.getMutter().getEmail();
+                email = schueler.getMutter().getEmailToBeDisplayedInWord();
             } else if (schueler.getVater() != null && checkNotEmpty(schueler.getVater().getEmail())) {
-                email = schueler.getVater().getEmail();
+                email = schueler.getVater().getEmailToBeDisplayedInWord();
             } else if (maercheneinteilung.getElternmithilfeDrittperson() != null && checkNotEmpty(maercheneinteilung.getElternmithilfeDrittperson().getEmail())) {
-                email = maercheneinteilung.getElternmithilfeDrittperson().getEmail();
+                email = maercheneinteilung.getElternmithilfeDrittperson().getEmailToBeDisplayedInWord();
             }
             cellsRow3.add(email);
             cellsRow3.add("");

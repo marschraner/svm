@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS Person (
     geburtsdatum               DATE,
     festnetz                   VARCHAR(20),
     natel                      VARCHAR(20),
-    email                      VARCHAR(50),
+    email                      VARCHAR(150),
     adresse_id                 INT,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id),

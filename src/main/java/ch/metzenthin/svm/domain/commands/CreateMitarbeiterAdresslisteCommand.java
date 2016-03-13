@@ -143,7 +143,7 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
             if (listentyp == Listentyp.MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM) {
                 value = nullAsEmptyString(asString(mitarbeiter.getGeburtsdatum()));
             } else {
-                value = nullAsEmptyString(mitarbeiter.getEmail());
+                value = nullAsEmptyString(mitarbeiter.getEmailToBeDisplayedInWord());
             }
             cellsRow1.add(value);
             dataset.add(cellsRow1);
@@ -156,7 +156,7 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
             cellsRow2.add(nullAsEmptyString(mitarbeiter.getNatel()));
             value = "";
             if (listentyp == Listentyp.MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM) {
-                value = nullAsEmptyString(mitarbeiter.getEmail());
+                value = nullAsEmptyString(mitarbeiter.getEmailToBeDisplayedInWord());
             }
             cellsRow2.add(value);
             dataset.add(cellsRow2);

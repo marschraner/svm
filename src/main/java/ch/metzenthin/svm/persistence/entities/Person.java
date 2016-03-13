@@ -8,6 +8,8 @@ import java.text.Collator;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
+
 /**
  * @author Martin Schraner
  */
@@ -221,5 +223,33 @@ public abstract class Person implements Comparable<Person>  {
 
     public void setAdresse(Adresse adresse) {
         this.adresse = adresse;
+    }
+
+    @Transient
+    public String getEmailToBeDisplayedInWord() {
+
+        if (!checkNotEmpty(email)) {
+            return "";
+        }
+
+        // Maximal zugelassene Zeichen für Anzeige
+        int maxLength = 38;
+
+        // emailAdresse enthält möglicherweise mehrere, durch Komma getrennte Email-Adressen
+        String[] emailAdressenSplitted = email.split("[,;]\\p{Blank}*");
+
+        // Erste Email wird immer angezeigt
+        StringBuilder emailToBeDisplayed = new StringBuilder(emailAdressenSplitted[0]);
+        int length = emailAdressenSplitted[0].length();
+
+        // Weitere werden nur angehängt, solange dadurch die Maximallänge nicht überschritten wird
+        for (int i = 1; i < emailAdressenSplitted.length - 1; i++) {
+            if (length + 2 + emailAdressenSplitted[i].length() <= maxLength) {
+                emailToBeDisplayed.append(", ").append(emailAdressenSplitted[i]);
+                length += 2 + emailAdressenSplitted[i].length();
+            }
+        }
+
+        return emailToBeDisplayed.toString();
     }
 }
