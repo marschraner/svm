@@ -92,7 +92,7 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
                 }
                 out.write(separator);
                 if (mitarbeiter.getEmail() != null) {
-                    out.write(mitarbeiter.getEmail());
+                    out.write(mitarbeiter.getEmail().replace(";", ","));
                 }
                 out.write(separator);
                 if (mitarbeiter.getGeburtsdatum() != null) {
@@ -108,11 +108,11 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
                 out.write(mitarbeiter.getMitarbeiterCodesAsStr());
                 out.write(separator);
                 if (mitarbeiter.getVertretungsmoeglichkeiten() != null) {
-                    out.write(mitarbeiter.getVertretungsmoeglichkeiten());
+                    out.write(mitarbeiter.getVertretungsmoeglichkeiten().replace(";", ","));
                 }
                 out.write(separator);
                 if (mitarbeiter.getBemerkungen() != null) {
-                    out.write(mitarbeiter.getBemerkungen());
+                    out.write(mitarbeiter.getBemerkungen().replace(";", ","));
                 }
                 out.write(separator);
                 out.write(mitarbeiter.getAktiv() ? "ja" : "nein");
