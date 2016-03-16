@@ -17,7 +17,7 @@ public class KurseSemesterwahlPanel {
     // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
     private static final boolean DEFAULT_BUTTON_ENABLED = true;
 
-    private JPanel panel1;
+    private JPanel mainPanel;
     private JPanel datenPanel;
     private JPanel titelPanel;
     private JSpinner spinnerSemester;
@@ -35,6 +35,7 @@ public class KurseSemesterwahlPanel {
 
     private void createKurseSuchenController(SvmContext svmContext) {
         kurseSemesterwahlController = new KurseSemesterwahlController(svmContext, svmContext.getModelFactory().createKurseSemesterwahlModel());
+        kurseSemesterwahlController.setMainPanel(mainPanel);
         kurseSemesterwahlController.setSpinnerSemester(spinnerSemester);
         kurseSemesterwahlController.setBtnOk(btnOk);
         kurseSemesterwahlController.setBtnAbbrechen(btnAbbrechen);
@@ -63,11 +64,11 @@ public class KurseSemesterwahlPanel {
      */
     private void $$$setupUI$$$() {
         createUIComponents();
-        panel1 = new JPanel();
-        panel1.setLayout(new BorderLayout(0, 0));
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout(0, 0));
         datenPanel = new JPanel();
         datenPanel.setLayout(new GridBagLayout());
-        panel1.add(datenPanel, BorderLayout.CENTER);
+        mainPanel.add(datenPanel, BorderLayout.CENTER);
         titelPanel = new JPanel();
         titelPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc;
@@ -93,15 +94,15 @@ public class KurseSemesterwahlPanel {
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         titelPanel.add(spacer1, gbc);
-        final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridBagLayout());
+        final JPanel panel1 = new JPanel();
+        panel1.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weighty = 1.0;
         gbc.insets = new Insets(10, 10, 10, 10);
-        datenPanel.add(panel2, gbc);
-        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schuljahr / Semester", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel2.getFont().getName(), Font.BOLD, panel2.getFont().getSize()), new Color(-16777216)));
+        datenPanel.add(panel1, gbc);
+        panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schuljahr / Semester", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel1.getFont().getName(), Font.BOLD, panel1.getFont().getSize()), new Color(-16777216)));
         final JLabel label2 = new JLabel();
         label2.setText("Schuljahr, Semester");
         gbc = new GridBagConstraints();
@@ -109,31 +110,31 @@ public class KurseSemesterwahlPanel {
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 0, 0, 15);
-        panel2.add(label2, gbc);
+        panel1.add(label2, gbc);
         final JPanel spacer2 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(spacer2, gbc);
+        panel1.add(spacer2, gbc);
         final JPanel spacer3 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(spacer3, gbc);
+        panel1.add(spacer3, gbc);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel2.add(spinnerSemester, gbc);
+        panel1.add(spinnerSemester, gbc);
         final JPanel spacer4 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer4, gbc);
+        panel1.add(spacer4, gbc);
         final JPanel spacer5 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -141,20 +142,20 @@ public class KurseSemesterwahlPanel {
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.ipadx = 300;
-        panel2.add(spacer5, gbc);
+        panel1.add(spacer5, gbc);
         final JPanel spacer6 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel2.add(spacer6, gbc);
-        final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridBagLayout());
+        panel1.add(spacer6, gbc);
+        final JPanel panel2 = new JPanel();
+        panel2.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.BOTH;
-        datenPanel.add(panel3, gbc);
+        datenPanel.add(panel2, gbc);
         btnOk = new JButton();
         btnOk.setMaximumSize(new Dimension(114, 29));
         btnOk.setMinimumSize(new Dimension(114, 29));
@@ -166,19 +167,19 @@ public class KurseSemesterwahlPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel3.add(btnOk, gbc);
+        panel2.add(btnOk, gbc);
         final JPanel spacer7 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel3.add(spacer7, gbc);
+        panel2.add(spacer7, gbc);
         final JPanel spacer8 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel3.add(spacer8, gbc);
+        panel2.add(spacer8, gbc);
         btnAbbrechen = new JButton();
         btnAbbrechen.setMaximumSize(new Dimension(114, 29));
         btnAbbrechen.setMinimumSize(new Dimension(114, 29));
@@ -190,13 +191,13 @@ public class KurseSemesterwahlPanel {
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel3.add(btnAbbrechen, gbc);
+        panel2.add(btnAbbrechen, gbc);
     }
 
     /**
      * @noinspection ALL
      */
     public JComponent $$$getRootComponent$$$() {
-        return panel1;
+        return mainPanel;
     }
 }

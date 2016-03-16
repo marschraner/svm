@@ -27,7 +27,7 @@ public class SchuelerSuchenPanel {
 
     private final SvmContext svmContext;
     private SchuelerSuchenController schuelerSuchenController;
-    private JPanel panel;
+    private JPanel mainPanel;
     private JPanel stammdatenPanel;
     private JPanel kursPanel;
     private JPanel codesPanel;
@@ -136,6 +136,7 @@ public class SchuelerSuchenPanel {
 
     private void createSchuelerSuchenController() {
         schuelerSuchenController = new SchuelerSuchenController(svmContext, schuelerSuchenModel, DEFAULT_BUTTON_ENABLED);
+        schuelerSuchenController.setMainPanel(mainPanel);
         schuelerSuchenController.setTxtNachname(txtNachname);
         schuelerSuchenController.setTxtVorname(txtVorname);
         schuelerSuchenController.setTxtStrasseHausnummer(txtStrasseHausnummer);
@@ -226,11 +227,11 @@ public class SchuelerSuchenPanel {
      */
     private void $$$setupUI$$$() {
         createUIComponents();
-        panel = new JPanel();
-        panel.setLayout(new BorderLayout(0, 0));
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout(0, 0));
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridBagLayout());
-        panel.add(buttonPanel, BorderLayout.SOUTH);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
         btnSuchen = new JButton();
         btnSuchen.setMaximumSize(new Dimension(114, 29));
         btnSuchen.setMinimumSize(new Dimension(114, 29));
@@ -273,7 +274,7 @@ public class SchuelerSuchenPanel {
         buttonPanel.add(spacer2, gbc);
         datenPanel = new JPanel();
         datenPanel.setLayout(new GridBagLayout());
-        panel.add(datenPanel, BorderLayout.CENTER);
+        mainPanel.add(datenPanel, BorderLayout.CENTER);
         titelPanel = new JPanel();
         titelPanel.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
@@ -1363,6 +1364,6 @@ public class SchuelerSuchenPanel {
      * @noinspection ALL
      */
     public JComponent $$$getRootComponent$$$() {
-        return panel;
+        return mainPanel;
     }
 }

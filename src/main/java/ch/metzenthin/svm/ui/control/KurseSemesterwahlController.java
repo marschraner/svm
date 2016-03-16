@@ -32,6 +32,7 @@ public class KurseSemesterwahlController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
+    private JPanel mainPanel;
     private ActionListener closeListener;
     private ActionListener nextPanelListener;
     private KurseSemesterwahlModel kurseSemesterwahlModel;
@@ -58,6 +59,10 @@ public class KurseSemesterwahlController extends AbstractController {
 
     public void constructionDone() {
         kurseSemesterwahlModel.initializeCompleted();
+    }
+
+    public void setMainPanel(JPanel mainPanel) {
+        this.mainPanel = mainPanel;
     }
 
     public void setSpinnerSemester(JSpinner spinnerSemester) {
@@ -118,13 +123,13 @@ public class KurseSemesterwahlController extends AbstractController {
             btnOk.setFocusPainted(false);
             return;
         }
-        btnOk.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         KurseTableData kurseTableData = kurseSemesterwahlModel.suchen();
         KurseTableModel kurseTableModel = new KurseTableModel(kurseTableData);
         String titel = "Kurse " + kurseSemesterwahlModel.getSemester().getSemesterbezeichnung() + " " + kurseSemesterwahlModel.getSemester().getSchuljahr();
         KursePanel kursePanel = new KursePanel(svmContext, kurseSemesterwahlModel, kurseTableModel, titel);
         kursePanel.addCloseListener(closeListener);
-        btnOk.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{kursePanel.$$$getRootComponent$$$(), titel}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
     }
 

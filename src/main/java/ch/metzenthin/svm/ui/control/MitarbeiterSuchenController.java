@@ -35,6 +35,7 @@ public class MitarbeiterSuchenController extends AbstractController {
     private final SvmContext svmContext;
     private MitarbeiterSuchenModel mitarbeiterSuchenModel;
     private boolean defaultButtonEnabled;
+    private JPanel mainPanel;
     private JTextField txtNachname;
     private JTextField txtVorname;
     private JLabel errLblNachname;
@@ -67,6 +68,10 @@ public class MitarbeiterSuchenController extends AbstractController {
             }
         });
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
+    }
+
+    public void setMainPanel(JPanel mainPanel) {
+        this.mainPanel = mainPanel;
     }
 
     public void setTxtNachname(JTextField txtNachname) {
@@ -241,7 +246,7 @@ public class MitarbeiterSuchenController extends AbstractController {
             btnSuchen.setFocusPainted(false);
             return;
         }
-        btnSuchen.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         MitarbeitersTableData mitarbeitersTableData = mitarbeiterSuchenModel.suchen();
         MitarbeitersTableModel mitarbeitersTableModel = new MitarbeitersTableModel(mitarbeitersTableData);
         // Auch bei einem Suchresultat Liste anzeigen, da nur von dort gelöscht werden kann
@@ -249,10 +254,10 @@ public class MitarbeiterSuchenController extends AbstractController {
             MitarbeitersPanel mitarbeitersPanel = new MitarbeitersPanel(svmContext, mitarbeitersTableModel);
             mitarbeitersPanel.addCloseListener(closeListener);
             mitarbeitersPanel.addZurueckListener(zurueckListener);
-            btnSuchen.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{mitarbeitersPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
         } else {
-            btnSuchen.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(null, "Es wurden keine Mitarbeiter gefunden, welche auf die Suchabfrage passen.", "Keine Mitarbeiter gefunden", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
             btnSuchen.setFocusPainted(false);
         }
