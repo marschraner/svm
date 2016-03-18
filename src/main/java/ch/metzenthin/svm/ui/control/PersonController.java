@@ -26,14 +26,14 @@ public abstract class PersonController extends AbstractController {
     private static final Logger LOGGER = Logger.getLogger(PersonController.class);
 
     private JComboBox<Anrede> comboBoxAnrede;
-    private JTextField txtNachname;
-    private JTextField txtVorname;
-    private JTextField txtStrasseHausnummer;
-    private JTextField txtPlz;
-    private JTextField txtOrt;
-    private JTextField txtFestnetz;
-    private JTextField txtNatel;
-    private JTextField txtEmail;
+    protected JTextField txtNachname;
+    protected JTextField txtVorname;
+    protected JTextField txtStrasseHausnummer;
+    protected JTextField txtPlz;
+    protected JTextField txtOrt;
+    protected JTextField txtFestnetz;
+    protected JTextField txtNatel;
+    protected JTextField txtEmail;
     private JTextField txtGeburtsdatum;
     private JLabel errLblAnrede;
     private JLabel errLblNachname;

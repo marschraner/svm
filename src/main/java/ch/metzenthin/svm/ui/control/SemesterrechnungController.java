@@ -27,26 +27,26 @@ public abstract class SemesterrechnungController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    protected JTextField txtRechnungsdatumVorrechnung;
-    protected JTextField txtErmaessigungVorrechnung;
-    protected JTextField txtErmaessigungsgrundVorrechnung;
-    protected JTextField txtZuschlagVorrechnung;
-    protected JTextField txtZuschlagsgrundVorrechnung;
-    protected JTextField txtAnzahlWochenVorrechnung;
-    protected JTextField txtWochenbetragVorrechnung;
+    JTextField txtRechnungsdatumVorrechnung;
+    JTextField txtErmaessigungVorrechnung;
+    JTextField txtErmaessigungsgrundVorrechnung;
+    JTextField txtZuschlagVorrechnung;
+    JTextField txtZuschlagsgrundVorrechnung;
+    JTextField txtAnzahlWochenVorrechnung;
+    JTextField txtWochenbetragVorrechnung;
     private JTextField txtDatumZahlung1Vorrechnung;
     private JTextField txtBetragZahlung1Vorrechnung;
     private JTextField txtDatumZahlung2Vorrechnung;
     private JTextField txtBetragZahlung2Vorrechnung;
     private JTextField txtDatumZahlung3Vorrechnung;
     private JTextField txtBetragZahlung3Vorrechnung;
-    protected JTextField txtRechnungsdatumNachrechnung;
-    private JTextField txtErmaessigungNachrechnung;
+    JTextField txtRechnungsdatumNachrechnung;
+    JTextField txtErmaessigungNachrechnung;
     private JTextField txtErmaessigungsgrundNachrechnung;
-    private JTextField txtZuschlagNachrechnung;
+    JTextField txtZuschlagNachrechnung;
     private JTextField txtZuschlagsgrundNachrechnung;
-    private JTextField txtAnzahlWochenNachrechnung;
-    private JTextField txtWochenbetragNachrechnung;
+    JTextField txtAnzahlWochenNachrechnung;
+    JTextField txtWochenbetragNachrechnung;
     private JTextField txtDatumZahlung1Nachrechnung;
     private JTextField txtBetragZahlung1Nachrechnung;
     private JTextField txtDatumZahlung2Nachrechnung;
@@ -85,7 +85,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     private JComboBox<SemesterrechnungCode> comboBoxSemesterrechnungCode;
     private JComboBox<Stipendium> comboBoxStipendium;
     private JCheckBox checkBoxGratiskinder;
-    protected SemesterrechnungModel semesterrechnungModel;
+    private SemesterrechnungModel semesterrechnungModel;
     private boolean defaultButtonEnabled;
     private SvmContext svmContext;
 
@@ -2159,7 +2159,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
     }
 
-    protected void setSemesterrechnungModel(SemesterrechnungModel semesterrechnungModel) {
+    void setSemesterrechnungModel(SemesterrechnungModel semesterrechnungModel) {
         this.semesterrechnungModel.removePropertyChangeListener(this);
         this.semesterrechnungModel.removeDisableFieldsListener(this);
         this.semesterrechnungModel.removeMakeErrorLabelsInvisibleListener(this);

@@ -246,7 +246,7 @@ public class MitarbeiterSuchenController extends AbstractController {
             btnSuchen.setFocusPainted(false);
             return;
         }
-        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        setWaitCursorAllComponents();
         MitarbeitersTableData mitarbeitersTableData = mitarbeiterSuchenModel.suchen();
         MitarbeitersTableModel mitarbeitersTableModel = new MitarbeitersTableModel(mitarbeitersTableData);
         // Auch bei einem Suchresultat Liste anzeigen, da nur von dort gelöscht werden kann
@@ -254,10 +254,10 @@ public class MitarbeiterSuchenController extends AbstractController {
             MitarbeitersPanel mitarbeitersPanel = new MitarbeitersPanel(svmContext, mitarbeitersTableModel);
             mitarbeitersPanel.addCloseListener(closeListener);
             mitarbeitersPanel.addZurueckListener(zurueckListener);
-            mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            resetCursorAllComponents();
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{mitarbeitersPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
         } else {
-            mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            resetCursorAllComponents();
             JOptionPane.showMessageDialog(null, "Es wurden keine Mitarbeiter gefunden, welche auf die Suchabfrage passen.", "Keine Mitarbeiter gefunden", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
             btnSuchen.setFocusPainted(false);
         }
@@ -299,6 +299,22 @@ public class MitarbeiterSuchenController extends AbstractController {
 
     public void addNextPanelListener(ActionListener nextPanelListener) {
         this.nextPanelListener = nextPanelListener;
+    }
+
+    private void setWaitCursorAllComponents () {
+        Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+        mainPanel.setCursor(waitCursor);
+        // Textfields und Spinner müssen separat gesetzt werden
+        txtNachname.setCursor(waitCursor);
+        txtVorname.setCursor(waitCursor);
+    }
+
+    private void resetCursorAllComponents () {
+        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        // Textfields und Spinner müssen separat gesetzt werden
+        Cursor textCursor = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
+        txtNachname.setCursor(textCursor);
+        txtVorname.setCursor(textCursor);
     }
 
     @Override
@@ -390,7 +406,7 @@ public class MitarbeiterSuchenController extends AbstractController {
     public void disableFields(boolean disable, Set<Field> fields) {
     }
 
-    class RadioBtnGroupLehrkraftJaNeinListener implements ActionListener {
+    private class RadioBtnGroupLehrkraftJaNeinListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("MitarbeitersSuchenController LehrkraftJaNein Event");
@@ -398,7 +414,7 @@ public class MitarbeiterSuchenController extends AbstractController {
         }
     }
 
-    class RadioBtnGroupStatusListener implements ActionListener {
+    private class RadioBtnGroupStatusListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("MitarbeitersSuchenController Status Event");

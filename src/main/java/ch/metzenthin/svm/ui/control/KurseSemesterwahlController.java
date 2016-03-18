@@ -123,13 +123,13 @@ public class KurseSemesterwahlController extends AbstractController {
             btnOk.setFocusPainted(false);
             return;
         }
-        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        setWaitCursorAllComponents();
         KurseTableData kurseTableData = kurseSemesterwahlModel.suchen();
         KurseTableModel kurseTableModel = new KurseTableModel(kurseTableData);
         String titel = "Kurse " + kurseSemesterwahlModel.getSemester().getSemesterbezeichnung() + " " + kurseSemesterwahlModel.getSemester().getSchuljahr();
         KursePanel kursePanel = new KursePanel(svmContext, kurseSemesterwahlModel, kurseTableModel, titel);
         kursePanel.addCloseListener(closeListener);
-        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        resetCursorAllComponents();
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{kursePanel.$$$getRootComponent$$$(), titel}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
     }
 
@@ -165,6 +165,20 @@ public class KurseSemesterwahlController extends AbstractController {
 
     public void addNextPanelListener(ActionListener nextPanelListener) {
         this.nextPanelListener = nextPanelListener;
+    }
+
+    private void setWaitCursorAllComponents () {
+        Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+        mainPanel.setCursor(waitCursor);
+        // Textfields und Spinner müssen separat gesetzt werden
+        spinnerSemester.setCursor(waitCursor);
+    }
+
+    private void resetCursorAllComponents () {
+        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        // Textfields und Spinner müssen separat gesetzt werden
+        Cursor textCursor = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
+        spinnerSemester.setCursor(textCursor);
     }
 
     @Override

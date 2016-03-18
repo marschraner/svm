@@ -776,7 +776,7 @@ public class SchuelerSuchenController extends PersonController {
             btnSuchen.setFocusPainted(false);
             return;
         }
-        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        setWaitCursorAllComponents();
         SchuelerSuchenTableData schuelerSuchenTableData = schuelerSuchenModel.suchen(svmContext.getSvmModel());
         SchuelerSuchenTableModel schuelerSuchenTableModel = new SchuelerSuchenTableModel(schuelerSuchenTableData);
 
@@ -793,7 +793,7 @@ public class SchuelerSuchenController extends PersonController {
             schuelerSuchenResultPanel.addNextPanelListener(nextPanelListener);
             schuelerSuchenResultPanel.addCloseListener(closeListener);
             schuelerSuchenResultPanel.addZurueckListener(zurueckListener);
-            mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            resetCursorAllComponents();
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
         } else if (schuelerSuchenTableData.size() == 1) {
             // Direkt zum Datenblatt, falls nur ein Suchresultat und nicht nach einem spezifischen Kurs gesucht wurde
@@ -801,10 +801,10 @@ public class SchuelerSuchenController extends PersonController {
             schuelerDatenblattPanel.addCloseListener(closeListener);
             schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
             schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckListener);
-            mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            resetCursorAllComponents();
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler gespeichert"));
         } else {
-            mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            resetCursorAllComponents();
             JOptionPane.showMessageDialog(null, "Es wurden keine Schüler gefunden, welche auf die Suchabfrage passen.", "Keine Schüler gefunden", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
             btnSuchen.setFocusPainted(false);
         }
@@ -849,7 +849,7 @@ public class SchuelerSuchenController extends PersonController {
         this.zurueckListener = zurueckListener;
     }
 
-    void enableDisableFields() {
+    private void enableDisableFields() {
         if (schuelerSuchenModel.getRolle() != null && schuelerSuchenModel.getRolle() != SchuelerSuchenModel.RolleSelected.SCHUELER) {
             disableGeburtsdatumSuchperiode();
             disableGeschlechtSelection();
@@ -964,6 +964,50 @@ public class SchuelerSuchenController extends PersonController {
         maerchenFields.add(Field.KUCHEN_VORSTELLUNG);
         maerchenFields.add(Field.ZUSATZATTRIBUT_MAERCHEN);
         return maerchenFields;
+    }
+
+    private void setWaitCursorAllComponents () {
+        Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+        mainPanel.setCursor(waitCursor);
+        // Textfields und Spinner müssen separat gesetzt werden
+        txtNachname.setCursor(waitCursor);
+        txtVorname.setCursor(waitCursor);
+        txtStrasseHausnummer.setCursor(waitCursor);
+        txtPlz.setCursor(waitCursor);
+        txtOrt.setCursor(waitCursor);
+        txtFestnetz.setCursor(waitCursor);
+        txtNatel.setCursor(waitCursor);
+        txtEmail.setCursor(waitCursor);
+        txtGeburtsdatumSuchperiode.setCursor(waitCursor);
+        txtStichtag.setCursor(waitCursor);
+        txtZeitBeginn.setCursor(waitCursor);
+        txtKuchenVorstellung.setCursor(waitCursor);
+        txtZusatzattributMaerchen.setCursor(waitCursor);
+        txtAreaRollen.setCursor(waitCursor);
+        spinnerSemesterKurs.setCursor(waitCursor);
+        spinnerMaerchen.setCursor(waitCursor);
+    }
+
+    private void resetCursorAllComponents() {
+        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        // Textfields und Spinner müssen separat gesetzt werden
+        Cursor textCursor = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
+        txtNachname.setCursor(textCursor);
+        txtVorname.setCursor(textCursor);
+        txtStrasseHausnummer.setCursor(textCursor);
+        txtPlz.setCursor(textCursor);
+        txtOrt.setCursor(textCursor);
+        txtFestnetz.setCursor(textCursor);
+        txtNatel.setCursor(textCursor);
+        txtEmail.setCursor(textCursor);
+        txtGeburtsdatumSuchperiode.setCursor(textCursor);
+        txtStichtag.setCursor(textCursor);
+        txtZeitBeginn.setCursor(textCursor);
+        txtKuchenVorstellung.setCursor(textCursor);
+        txtZusatzattributMaerchen.setCursor(textCursor);
+        txtAreaRollen.setCursor(textCursor);
+        spinnerSemesterKurs.setCursor(textCursor);
+        spinnerMaerchen.setCursor(textCursor);
     }
 
     @Override
@@ -1279,7 +1323,7 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
-    class RadioBtnGroupRolleListener implements ActionListener {
+    private class RadioBtnGroupRolleListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SchuelerSuchenController Rolle Event");
@@ -1287,7 +1331,7 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
-    class RadioBtnGroupAnmeldestatusListener implements ActionListener {
+    private class RadioBtnGroupAnmeldestatusListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SchuelerSuchenController Anmeldestatus Event");
@@ -1295,7 +1339,7 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
-    class RadioBtnGroupDispensationListener implements ActionListener {
+    private class RadioBtnGroupDispensationListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SchuelerSuchenController Dispensation Event");
@@ -1303,7 +1347,7 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
-    class RadioBtnGroupGeschlechtListener implements ActionListener {
+    private class RadioBtnGroupGeschlechtListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SchuelerSuchenController Geschlecht Event");

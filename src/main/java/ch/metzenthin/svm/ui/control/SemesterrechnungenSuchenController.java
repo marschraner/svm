@@ -1060,7 +1060,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             btnSuchen.setFocusPainted(false);
             return;
         }
-        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        setWaitCursorAllComponents();
         SemesterrechnungenTableData semesterrechnungenTableData = semesterrechnungenSuchenModel.suchen();
         SemesterrechnungenTableModel semesterrechnungenTableModel = new SemesterrechnungenTableModel(semesterrechnungenTableData);
         // Auch bei einem Suchresultat Liste anzeigen, da nur von dort gelöscht werden kann
@@ -1069,10 +1069,10 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             semesterrechnungenPanel.addNextPanelListener(nextPanelListener);
             semesterrechnungenPanel.addCloseListener(closeListener);
             semesterrechnungenPanel.addZurueckListener(zurueckListener);
-            mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            resetCursorAllComponents();
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{semesterrechnungenPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
         } else {
-            mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            resetCursorAllComponents();
             JOptionPane.showMessageDialog(null, "Es wurden keine Semesterrechnungen gefunden, welche auf die Suchabfrage passen.", "Keine Semesterrechnungen gefunden", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
             btnSuchen.setFocusPainted(false);
         }
@@ -1116,7 +1116,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         this.zurueckListener = zurueckListener;
     }
 
-    void enableDisableFields() {
+    private void enableDisableFields() {
         if (semesterrechnungenSuchenModel.getSemesterrechnungCodeJaNeinSelected() != null && semesterrechnungenSuchenModel.getSemesterrechnungCodeJaNeinSelected() != SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.JA) {
             disableSemesterrechnungCode();
         } else {
@@ -1209,6 +1209,56 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         rechnungsdatumNachrechnungFields.add(Field.NACH_NACHRECHNUNG);
         rechnungsdatumNachrechnungFields.add(Field.RECHNUNGSDATUM_NACHRECHNUNG);
         return rechnungsdatumNachrechnungFields;
+    }
+
+    private void setWaitCursorAllComponents () {
+        Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+        mainPanel.setCursor(waitCursor);
+        // Textfields und Spinner müssen separat gesetzt werden
+        txtNachname.setCursor(waitCursor);
+        txtVorname.setCursor(waitCursor);
+        txtZeitBeginn.setCursor(waitCursor);
+        txtDifferenzSchulgeld.setCursor(waitCursor);
+        txtRechnungsdatumVorrechnung.setCursor(waitCursor);
+        txtErmaessigungVorrechnung.setCursor(waitCursor);
+        txtZuschlagVorrechnung.setCursor(waitCursor);
+        txtAnzahlWochenVorrechnung.setCursor(waitCursor);
+        txtWochenbetragVorrechnung.setCursor(waitCursor);
+        txtRechnungsbetragVorrechnung.setCursor(waitCursor);
+        txtRestbetragVorrechnung.setCursor(waitCursor);
+        txtRechnungsdatumNachrechnung.setCursor(waitCursor);
+        txtErmaessigungNachrechnung.setCursor(waitCursor);
+        txtZuschlagNachrechnung.setCursor(waitCursor);
+        txtAnzahlWochenNachrechnung.setCursor(waitCursor);
+        txtWochenbetragNachrechnung.setCursor(waitCursor);
+        txtRechnungsbetragNachrechnung.setCursor(waitCursor);
+        txtRestbetragNachrechnung.setCursor(waitCursor);
+        spinnerSemester.setCursor(waitCursor);
+    }
+
+    private void resetCursorAllComponents () {
+        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        // Textfields und Spinner müssen separat gesetzt werden
+        Cursor textCursor = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
+        txtNachname.setCursor(textCursor);
+        txtVorname.setCursor(textCursor);
+        txtZeitBeginn.setCursor(textCursor);
+        txtDifferenzSchulgeld.setCursor(textCursor);
+        txtRechnungsdatumVorrechnung.setCursor(textCursor);
+        txtErmaessigungVorrechnung.setCursor(textCursor);
+        txtZuschlagVorrechnung.setCursor(textCursor);
+        txtAnzahlWochenVorrechnung.setCursor(textCursor);
+        txtWochenbetragVorrechnung.setCursor(textCursor);
+        txtRechnungsbetragVorrechnung.setCursor(textCursor);
+        txtRestbetragVorrechnung.setCursor(textCursor);
+        txtRechnungsdatumNachrechnung.setCursor(textCursor);
+        txtErmaessigungNachrechnung.setCursor(textCursor);
+        txtZuschlagNachrechnung.setCursor(textCursor);
+        txtAnzahlWochenNachrechnung.setCursor(textCursor);
+        txtWochenbetragNachrechnung.setCursor(textCursor);
+        txtRechnungsbetragNachrechnung.setCursor(textCursor);
+        txtRestbetragNachrechnung.setCursor(textCursor);
+        spinnerSemester.setCursor(textCursor);
     }
 
     @Override
@@ -1649,7 +1699,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupRolleListener implements ActionListener {
+    private class RadioBtnGroupRolleListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController Rolle Event");
@@ -1657,7 +1707,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupSemesterrechnungCodeJaNeinListener implements ActionListener {
+    private class RadioBtnGroupSemesterrechnungCodeJaNeinListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController SemesterrechnungCodeJaNein Event");
@@ -1665,7 +1715,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupStipendiumJaNeinListener implements ActionListener {
+    private class RadioBtnGroupStipendiumJaNeinListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController StipendiumJaNein Event");
@@ -1673,7 +1723,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupRechnungsdatumGesetztVorrechnungListener implements ActionListener {
+    private class RadioBtnGroupRechnungsdatumGesetztVorrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController RechungsdatumGesetztVorrechnung Event");
@@ -1681,7 +1731,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungRechnungsdatumVorrechnungListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungRechnungsdatumVorrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungRechnungsdatumVorrechnung Event");
@@ -1689,7 +1739,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungErmaessigungVorrechnungListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungErmaessigungVorrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungErmaessigungVorrechnung Event");
@@ -1697,7 +1747,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungZuschlagVorrechnungListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungZuschlagVorrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungZuschlagVorrechnung Event");
@@ -1705,7 +1755,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungAnzahlWochenVorrechnungListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungAnzahlWochenVorrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungAnzahlWochenVorrechnung Event");
@@ -1713,7 +1763,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungWochenbetragVorrechnungListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungWochenbetragVorrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungWochenbetragVorrechnung Event");
@@ -1721,7 +1771,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungRechnungsbetragVorrechnungListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungRechnungsbetragVorrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungRechnungsbetragVorrechnung Event");
@@ -1729,7 +1779,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungRestbetragVorrechnungListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungRestbetragVorrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungRestbetragVorrechnung Event");
@@ -1737,7 +1787,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupSechsJahresRabattJaNeinVorrechnungListener implements ActionListener {
+    private class RadioBtnGroupSechsJahresRabattJaNeinVorrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController SechsJahresRabattJaNeinVorrechnung Event");
@@ -1745,7 +1795,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupRechnungsdatumGesetztNachrechnungListener implements ActionListener {
+    private class RadioBtnGroupRechnungsdatumGesetztNachrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController RechnungsdatumGesetztNachrechnung Event");
@@ -1753,7 +1803,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungRechnungsdatumNachrechnungListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungRechnungsdatumNachrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungRechnungsdatumNachrechnung Event");
@@ -1761,7 +1811,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungErmaessigungNachrechnungListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungErmaessigungNachrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungErmaessigungNachrechnung Event");
@@ -1769,7 +1819,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungZuschlagNachrechnungListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungZuschlagNachrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungZuschlagNachrechnung Event");
@@ -1777,7 +1827,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungAnzahlWochenNachrechnungListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungAnzahlWochenNachrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungAnzahlWochenNachrechnung Event");
@@ -1785,7 +1835,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungWochenbetragNachrechnungListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungWochenbetragNachrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungWochenbetragNachrechnung Event");
@@ -1793,7 +1843,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungRechnungsbetragNachrechnungListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungRechnungsbetragNachrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungRechnungsbetragNachrechnung Event");
@@ -1801,7 +1851,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungRestbetragNachrechnungListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungRestbetragNachrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungRestbetragNachrechnung Event");
@@ -1809,7 +1859,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupSechsJahresRabattJaNeinNachrechnungListener implements ActionListener {
+    private class RadioBtnGroupSechsJahresRabattJaNeinNachrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController SechsJahresRabattJaNeinNachrechnung Event");
@@ -1817,7 +1867,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         }
     }
 
-    class RadioBtnGroupPraezisierungDifferenzSchulgeldListener implements ActionListener {
+    private class RadioBtnGroupPraezisierungDifferenzSchulgeldListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             LOGGER.trace("SemesterrechnungenSuchenController PraezisierungDifferenzSchulgeld Event");
