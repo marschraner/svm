@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import javax.persistence.TypedQuery;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -48,9 +49,6 @@ public class MonatsstatistikSchuelerSuchenCommand extends GenericDaoCommand {
             selectStatementSb.setLength(selectStatementSb.length() - 5);
         }
 
-        // Sortierung
-        selectStatementSb.append(" order by s.nachname, s.vorname, s.adresse.ort, s.adresse.strasse");
-
         LOGGER.trace("JPQL Select-Statement: " + selectStatementSb.toString());
 
         typedQuery = entityManager.createQuery(selectStatementSb.toString(), Schueler.class);
@@ -59,6 +57,10 @@ public class MonatsstatistikSchuelerSuchenCommand extends GenericDaoCommand {
         setParameterStatistikMonat();
 
         schuelerFound = typedQuery.getResultList();
+
+        // Sortierung in Java (weil SELECT DISTINCT ... ORDER BY ... s.adresse.ort, s.adresse.strasse nicht mehr erlaubt ab MySQL 5.7,
+        // vgl. http://www.programmerinterview.com/index.php/database-sql/sql-select-distinct-and-order-by/)
+        Collections.sort(schuelerFound);
     }
     
     private void createQuery() {
