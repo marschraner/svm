@@ -304,14 +304,14 @@ public class MitarbeiterSuchenController extends AbstractController {
     private void setWaitCursorAllComponents () {
         Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         mainPanel.setCursor(waitCursor);
-        // Textfields und Spinner müssen separat gesetzt werden
+        // Textfields müssen separat gesetzt werden
         txtNachname.setCursor(waitCursor);
         txtVorname.setCursor(waitCursor);
     }
 
     private void resetCursorAllComponents () {
         mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        // Textfields und Spinner müssen separat gesetzt werden
+        // Textfields müssen separat gesetzt werden
         Cursor textCursor = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
         txtNachname.setCursor(textCursor);
         txtVorname.setCursor(textCursor);

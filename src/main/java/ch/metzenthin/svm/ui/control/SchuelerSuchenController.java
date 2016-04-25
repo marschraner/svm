@@ -969,7 +969,8 @@ public class SchuelerSuchenController extends PersonController {
     private void setWaitCursorAllComponents () {
         Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         mainPanel.setCursor(waitCursor);
-        // Textfields und Spinner müssen separat gesetzt werden
+        // Textfields müssen separat gesetzt werden
+        // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
         txtNachname.setCursor(waitCursor);
         txtVorname.setCursor(waitCursor);
         txtStrasseHausnummer.setCursor(waitCursor);
@@ -984,13 +985,12 @@ public class SchuelerSuchenController extends PersonController {
         txtKuchenVorstellung.setCursor(waitCursor);
         txtZusatzattributMaerchen.setCursor(waitCursor);
         txtAreaRollen.setCursor(waitCursor);
-        spinnerSemesterKurs.setCursor(waitCursor);
-        spinnerMaerchen.setCursor(waitCursor);
     }
 
     private void resetCursorAllComponents() {
         mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        // Textfields und Spinner müssen separat gesetzt werden
+        // Textfields müssen separat gesetzt werden
+        // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
         Cursor textCursor = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
         txtNachname.setCursor(textCursor);
         txtVorname.setCursor(textCursor);
@@ -1006,8 +1006,6 @@ public class SchuelerSuchenController extends PersonController {
         txtKuchenVorstellung.setCursor(textCursor);
         txtZusatzattributMaerchen.setCursor(textCursor);
         txtAreaRollen.setCursor(textCursor);
-        spinnerSemesterKurs.setCursor(textCursor);
-        spinnerMaerchen.setCursor(textCursor);
     }
 
     @Override

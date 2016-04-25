@@ -1214,7 +1214,8 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private void setWaitCursorAllComponents () {
         Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         mainPanel.setCursor(waitCursor);
-        // Textfields und Spinner müssen separat gesetzt werden
+        // Textfields müssen separat gesetzt werden
+        // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
         txtNachname.setCursor(waitCursor);
         txtVorname.setCursor(waitCursor);
         txtZeitBeginn.setCursor(waitCursor);
@@ -1233,12 +1234,12 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         txtWochenbetragNachrechnung.setCursor(waitCursor);
         txtRechnungsbetragNachrechnung.setCursor(waitCursor);
         txtRestbetragNachrechnung.setCursor(waitCursor);
-        spinnerSemester.setCursor(waitCursor);
     }
 
     private void resetCursorAllComponents () {
         mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        // Textfields und Spinner müssen separat gesetzt werden
+        // Textfields müssen separat gesetzt werden
+        // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
         Cursor textCursor = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
         txtNachname.setCursor(textCursor);
         txtVorname.setCursor(textCursor);
@@ -1258,7 +1259,6 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         txtWochenbetragNachrechnung.setCursor(textCursor);
         txtRechnungsbetragNachrechnung.setCursor(textCursor);
         txtRestbetragNachrechnung.setCursor(textCursor);
-        spinnerSemester.setCursor(textCursor);
     }
 
     @Override
