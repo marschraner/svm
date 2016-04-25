@@ -1,12 +1,12 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.persistence.entities.Semester;
-import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
+import ch.metzenthin.svm.persistence.entities.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,12 +16,14 @@ public class SemesterrechnungenTableData {
 
     private List<Semesterrechnung> semesterrechnungen;
     private Semester semester;
+    private Semester previousSemester;
     private boolean nachGeloeschtenGesucht;
     private List<Field> columns = new ArrayList<>();
 
-    public SemesterrechnungenTableData(List<Semesterrechnung> semesterrechnungen, Semester semester, boolean nachGeloeschtenGesucht) {
+    public SemesterrechnungenTableData(List<Semesterrechnung> semesterrechnungen, Semester semester, Semester previousSemester, boolean nachGeloeschtenGesucht) {
         this.semesterrechnungen = semesterrechnungen;
         this.semester = semester;
+        this.previousSemester = previousSemester;
         this.nachGeloeschtenGesucht = nachGeloeschtenGesucht;
         initColumns();
     }
@@ -83,7 +85,7 @@ public class SemesterrechnungenTableData {
                 value = semesterrechnung.getRechnungsempfaenger().getNachname() + " " + semesterrechnung.getRechnungsempfaenger().getVorname();
                 break;
             case SCHUELER:
-                value = semesterrechnung.getRechnungsempfaenger().getSchuelerRechnungsempfaengerAsStr();
+                value = getAktiveSchuelerRechnungsempfaengerAsStr(semesterrechnung.getRechnungsempfaenger(), semesterrechnung.getRechnungsdatumVorrechnung());
                 break;
             case RECHNUNGSDATUM_VORRECHNUNG:
                 value = semesterrechnung.getRechnungsdatumVorrechnung();
@@ -173,6 +175,36 @@ public class SemesterrechnungenTableData {
                 break;
         }
         return value;
+    }
+
+    private String getAktiveSchuelerRechnungsempfaengerAsStr(Angehoeriger rechnungsempfaenger, Calendar rechnungsdatumVorrechnung) {
+        List<Schueler> schuelersRechnungsempfaenger = new ArrayList<>(rechnungsempfaenger.getSchuelerRechnungsempfaenger());
+        Collections.sort(schuelersRechnungsempfaenger);
+        StringBuilder aktiveSchuelersSb = new StringBuilder();
+        for (Schueler schueler : schuelersRechnungsempfaenger) {
+            boolean aktiverSchueler = false;
+            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+                Kurs kurs = kursanmeldung.getKurs();
+                // Anmeldung für aktuelles Semester
+                // oder für vorhergehendes Semester und nicht abgemeldet oder abgemeldet nach Rechnungsdatum Vorrechnung
+                if (kurs.getSemester().getSemesterId().equals(semester.getSemesterId())
+                        || (previousSemester != null && kurs.getSemester().getSemesterId().equals(previousSemester.getSemesterId()) && (kursanmeldung.getAbmeldedatum() == null || (rechnungsdatumVorrechnung != null && !kursanmeldung.getAbmeldedatum().before(rechnungsdatumVorrechnung))))) {
+                    aktiverSchueler = true;
+                    break;
+                }
+
+            }
+            if (aktiverSchueler) {
+                aktiveSchuelersSb.append(schueler.getNachname()).append(" ").append(schueler.getVorname()).append(", ");
+            }
+        }
+        // Letztes ", " löschen
+        if (aktiveSchuelersSb.length() > 0 && aktiveSchuelersSb.substring(aktiveSchuelersSb.length() - 2).equals(", ")) {
+            aktiveSchuelersSb.setLength(aktiveSchuelersSb.length() - 2);
+            return aktiveSchuelersSb.toString();
+        } else {
+            return "-";
+        }
     }
 
     public void setValueAt(Object value, int rowIndex, int columnIndex) {

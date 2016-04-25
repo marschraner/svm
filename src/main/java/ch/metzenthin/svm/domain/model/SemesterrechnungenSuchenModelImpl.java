@@ -7,6 +7,7 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.CreateAndFindSemesterrechnungenCommand;
 import ch.metzenthin.svm.domain.commands.DetermineSemesterInitCommand;
+import ch.metzenthin.svm.domain.commands.FindPreviousSemesterCommand;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
@@ -617,7 +618,10 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         CommandInvoker commandInvoker = getCommandInvoker();
         CreateAndFindSemesterrechnungenCommand createAndFindSemesterrechnungenCommand = new CreateAndFindSemesterrechnungenCommand(this);
         commandInvoker.executeCommandAsTransaction(createAndFindSemesterrechnungenCommand);
-        return new SemesterrechnungenTableData(createAndFindSemesterrechnungenCommand.getSemesterrechnungenFound(), semester, geloescht);
+        FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(semester);
+        getCommandInvoker().executeCommand(findPreviousSemesterCommand);
+        Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
+        return new SemesterrechnungenTableData(createAndFindSemesterrechnungenCommand.getSemesterrechnungenFound(), semester, previousSemester, geloescht);
     }
 
     @Override
