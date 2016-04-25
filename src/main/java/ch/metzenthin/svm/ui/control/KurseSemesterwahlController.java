@@ -170,15 +170,12 @@ public class KurseSemesterwahlController extends AbstractController {
     private void setWaitCursorAllComponents () {
         Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         mainPanel.setCursor(waitCursor);
-        // Textfields und Spinner müssen separat gesetzt werden
-        spinnerSemester.setCursor(waitCursor);
+        // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
     }
 
     private void resetCursorAllComponents () {
         mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        // Textfields und Spinner müssen separat gesetzt werden
-        Cursor textCursor = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
-        spinnerSemester.setCursor(textCursor);
+        // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
     }
 
     @Override
