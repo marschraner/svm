@@ -199,7 +199,7 @@ public class SemesterrechnungenTableData {
             }
         }
         // Letztes ", " löschen
-        if (aktiveSchuelersSb.length() > 0 && aktiveSchuelersSb.substring(aktiveSchuelersSb.length() - 2).equals(", ")) {
+        if (aktiveSchuelersSb.length() >= 2 && aktiveSchuelersSb.substring(aktiveSchuelersSb.length() - 2).equals(", ")) {
             aktiveSchuelersSb.setLength(aktiveSchuelersSb.length() - 2);
             return aktiveSchuelersSb.toString();
         } else {
