@@ -5,7 +5,10 @@ import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Martin Schraner
@@ -672,6 +675,37 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
                 (betragZahlung1Nachrechnung == null || betragZahlung1Nachrechnung.compareTo(BigDecimal.ZERO) == 0) &&
                 (betragZahlung2Nachrechnung == null || betragZahlung2Nachrechnung.compareTo(BigDecimal.ZERO) == 0) &&
                 (betragZahlung3Nachrechnung == null || betragZahlung3Nachrechnung.compareTo(BigDecimal.ZERO) == 0);
+    }
+
+    @Transient
+    public String getAktiveSchuelerRechnungsempfaengerAsStr(Semester previousSemester) {
+        List<Schueler> schuelersRechnungsempfaenger = new ArrayList<>(rechnungsempfaenger.getSchuelerRechnungsempfaenger());
+        Collections.sort(schuelersRechnungsempfaenger);
+        StringBuilder aktiveSchuelersSb = new StringBuilder();
+        for (Schueler schueler : schuelersRechnungsempfaenger) {
+            boolean aktiverSchueler = false;
+            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+                Kurs kurs = kursanmeldung.getKurs();
+                // Anmeldung für aktuelles Semester
+                // oder für vorhergehendes Semester und nicht abgemeldet oder abgemeldet nach Rechnungsdatum Vorrechnung
+                if (kurs.getSemester().getSemesterId().equals(semester.getSemesterId())
+                        || (previousSemester != null && kurs.getSemester().getSemesterId().equals(previousSemester.getSemesterId()) && (kursanmeldung.getAbmeldedatum() == null || (rechnungsdatumVorrechnung != null && !kursanmeldung.getAbmeldedatum().before(rechnungsdatumVorrechnung))))) {
+                    aktiverSchueler = true;
+                    break;
+                }
+
+            }
+            if (aktiverSchueler) {
+                aktiveSchuelersSb.append(schueler.getNachname()).append(" ").append(schueler.getVorname()).append(", ");
+            }
+        }
+        // Letztes ", " löschen
+        if (aktiveSchuelersSb.length() >= 2 && aktiveSchuelersSb.substring(aktiveSchuelersSb.length() - 2).equals(", ")) {
+            aktiveSchuelersSb.setLength(aktiveSchuelersSb.length() - 2);
+            return aktiveSchuelersSb.toString();
+        } else {
+            return "-";
+        }
     }
 
 }

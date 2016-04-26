@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
 import java.io.*;
@@ -18,10 +19,12 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
 
     // input
     private List<? extends Semesterrechnung> semesterrechnungList;
+    private final Semester previousSemester;
     private final File outputFile;
 
-    public CreateRechnungslisteCsvFileCommand(List<? extends Semesterrechnung> semesterrechnungList, File outputFile) {
+    public CreateRechnungslisteCsvFileCommand(List<? extends Semesterrechnung> semesterrechnungList, Semester previousSemester, File outputFile) {
         this.semesterrechnungList = semesterrechnungList;
+        this.previousSemester = previousSemester;
         this.outputFile = outputFile;
     }
 
@@ -275,7 +278,7 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
                     out.write(semesterrechnung.getBemerkungen());
                 }
                 out.write(separator);
-                String schuelerAsStr = rechnungsempfaenger.getSchuelerRechnungsempfaengerAsStr();
+                String schuelerAsStr = semesterrechnung.getAktiveSchuelerRechnungsempfaengerAsStr(previousSemester);
                 out.write(schuelerAsStr);
                 out.write('\n');
             }

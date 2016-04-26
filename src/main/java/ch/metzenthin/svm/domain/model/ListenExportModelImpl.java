@@ -22,13 +22,13 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 /**
  * @author Martin Schraner
  */
-public class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
+class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
     
     private Listentyp listentyp;
     private String titel;
     private File templateFile;
     
-    public ListenExportModelImpl(CommandInvoker commandInvoker) {
+    ListenExportModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
     }
 
@@ -345,7 +345,16 @@ public class ListenExportModelImpl extends AbstractModel implements ListenExport
                 result = createAdressenCsvFileCommandRechnungsempfaengerSemesterrechnung.getResult();
                 break;
             case RECHNUNGSLISTE:
-                CreateRechnungslisteCsvFileCommand createRechnungslisteCsvFileCommand = new CreateRechnungslisteCsvFileCommand(semesterrechnungenTableModel.getZuExportierendeSemesterrechnungen(), outputFile);
+                Semester currentSemester;
+                if (semesterrechnungenTableModel.getZuExportierendeSemesterrechnungen().isEmpty()) {
+                    currentSemester = null;
+                } else {
+                    currentSemester = semesterrechnungenTableModel.getZuExportierendeSemesterrechnungen().get(0).getSemester();
+                }
+                FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
+                getCommandInvoker().executeCommand(findPreviousSemesterCommand);
+                Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
+                CreateRechnungslisteCsvFileCommand createRechnungslisteCsvFileCommand = new CreateRechnungslisteCsvFileCommand(semesterrechnungenTableModel.getZuExportierendeSemesterrechnungen(), previousSemester, outputFile);
                 commandInvoker.executeCommand(createRechnungslisteCsvFileCommand);
                 result = createRechnungslisteCsvFileCommand.getResult();
                 break;
