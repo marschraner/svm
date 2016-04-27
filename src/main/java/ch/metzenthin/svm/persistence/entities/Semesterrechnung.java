@@ -686,10 +686,17 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
             boolean aktiverSchueler = false;
             for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
                 Kurs kurs = kursanmeldung.getKurs();
-                // Anmeldung für aktuelles Semester
-                // oder für vorhergehendes Semester und nicht abgemeldet oder abgemeldet nach Rechnungsdatum Vorrechnung
+                // 1. Anmeldung für aktuelles Semester
                 if (kurs.getSemester().getSemesterId().equals(semester.getSemesterId())
-                        || (previousSemester != null && kurs.getSemester().getSemesterId().equals(previousSemester.getSemesterId()) && (kursanmeldung.getAbmeldedatum() == null || (rechnungsdatumVorrechnung != null && !kursanmeldung.getAbmeldedatum().before(rechnungsdatumVorrechnung))))) {
+                        // oder 2. vorhergehendes Semester...
+                        || (previousSemester != null && kurs.getSemester().getSemesterId().equals(previousSemester.getSemesterId())
+                        // ...und 2.1 nicht abgemeldet
+                        && (kursanmeldung.getAbmeldedatum() == null
+                        // ...oder 2.2.1 abgemeldet und Abmeldedatum nach Rechnungsdatum Vorrechnung
+                        || (kursanmeldung.getAbmeldedatum() != null && rechnungsdatumVorrechnung != null && !kursanmeldung.getAbmeldedatum().before(rechnungsdatumVorrechnung))
+                        // ...oder 2.2.2 abgemeldet und Wochenbetrag Vorrechnung gleich null (d.h. keine Kurse mehr) und Ermässigung oder Zuschlag Vorrechnung ungleich null
+                        || (kursanmeldung.getAbmeldedatum() != null && (wochenbetragVorrechnung == null || wochenbetragVorrechnung.compareTo(BigDecimal.ZERO) == 0)
+                        && ((ermaessigungVorrechnung != null && ermaessigungVorrechnung.compareTo(BigDecimal.ZERO) != 0) || (zuschlagVorrechnung != null && zuschlagVorrechnung.compareTo(BigDecimal.ZERO) != 0)))))) {
                     aktiverSchueler = true;
                     break;
                 }
