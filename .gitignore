@@ -10,12 +10,15 @@ doc/Installation
 # log-Files
 log/
 
-# Intellij
+# Intellij (https://github.com/github/gitignore/blob/master/Global/JetBrains.gitignore)
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/findbugs-idea.xml
 .idea/dictionaries/
 .idea/fileTemplates/
+.idea/dataSources.ids
+.idea/dataSources.xml
+.idea/dataSources.local.xml
 
 # fillData
 sql/fillData.sql
