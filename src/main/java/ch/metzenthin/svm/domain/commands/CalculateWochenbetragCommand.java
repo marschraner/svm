@@ -89,10 +89,10 @@ public class CalculateWochenbetragCommand implements Command {
                 wochenbetrag = wochenbetrag.add(betragKurs);
             }
 
-            // 2.d Schüler 6-Jahres-Rabatt-berechtigt?
+            // 2.d Schüler 6-Jahres-Rabatt-berechtigt? (Hier immer Semester der Semesterrechnung als Referenz!)
             boolean schuelerHatSechsJahresRabatt = false;
             if (relevanteKurseSchueler.size() >= 2) {
-                CheckIfAnmeldungsdauerErlaubtSechsJahresRabattCommand checkIfAnmeldungsdauerErlaubtSechsJahresRabattCommand = new CheckIfAnmeldungsdauerErlaubtSechsJahresRabattCommand(schueler, relevantesSemester.getSemesterbeginn());
+                CheckIfAnmeldungsdauerErlaubtSechsJahresRabattCommand checkIfAnmeldungsdauerErlaubtSechsJahresRabattCommand = new CheckIfAnmeldungsdauerErlaubtSechsJahresRabattCommand(schueler, semesterrechnung.getSemester().getSemesterbeginn());
                 checkIfAnmeldungsdauerErlaubtSechsJahresRabattCommand.execute();
                 if (checkIfAnmeldungsdauerErlaubtSechsJahresRabattCommand.isAnmeldungsdauerErlaubtSechsJahresRabatt()) {
                     schuelerHatSechsJahresRabatt = true;

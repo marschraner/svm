@@ -53,8 +53,8 @@ public class CheckIfSemesterrechnungContainsSechsJahresRabattCommand implements 
                 continue;
             }
 
-            // Genügend lange Anmeldedauer?
-            CheckIfAnmeldungsdauerErlaubtSechsJahresRabattCommand checkIfAnmeldungsdauerErlaubtSechsJahresRabattCommand = new CheckIfAnmeldungsdauerErlaubtSechsJahresRabattCommand(schueler, relevantesSemester.getSemesterbeginn());
+            // Genügend lange Anmeldedauer? (Hier immer Semester der Semesterrechnung als Referenz!)
+            CheckIfAnmeldungsdauerErlaubtSechsJahresRabattCommand checkIfAnmeldungsdauerErlaubtSechsJahresRabattCommand = new CheckIfAnmeldungsdauerErlaubtSechsJahresRabattCommand(schueler, semesterrechnung.getSemester().getSemesterbeginn());
             checkIfAnmeldungsdauerErlaubtSechsJahresRabattCommand.execute();
             if (checkIfAnmeldungsdauerErlaubtSechsJahresRabattCommand.isAnmeldungsdauerErlaubtSechsJahresRabatt()) {
                 semesterrechnungContainsSechsJahresRabatt = true;
