@@ -43,7 +43,7 @@ public class CheckIfSemesterrechnungContainsSechsJahresRabattCommand implements 
             // 2.b relevante Kurse für einen Schüler
             int anzahlRelevanteKurseSchueler = 0;
             for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungen()) {
-                if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(relevantesSemester.getSemesterId()) && (rechnungstyp == Rechnungstyp.NACHRECHNUNG || kursanmeldung.getAbmeldedatum() != null)) {
+                if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(relevantesSemester.getSemesterId()) && (rechnungstyp == Rechnungstyp.NACHRECHNUNG || kursanmeldung.getAbmeldedatum() == null)) {
                     anzahlRelevanteKurseSchueler++;
                 }
             }
