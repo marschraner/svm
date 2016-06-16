@@ -12,8 +12,10 @@ import java.util.List;
  */
 public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
 
-    // input
+    // input / output
     private List<Kurs> kurseCurrentSemester;
+
+    // input
     private Semester currentSemester;
 
     public ImportKurseFromPreviousSemesterCommand(List<Kurs> kurseCurrentSemester, Semester currentSemester) {
@@ -24,18 +26,31 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
     @Override
     public void execute() {
 
-        // Vorhergehendes Semester
-        FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
-        findPreviousSemesterCommand.setEntityManager(entityManager);
-        findPreviousSemesterCommand.execute();
-        Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
-        if (previousSemester == null) {
+        Semester oldSemester = null;
+
+        // 1. Semester -> Kurse vom 1. Semester vor einem Jahr importieren
+        if (currentSemester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+            FindSemesterOneYearBeforeCommand findSemesterOneYearBeforeCommand = new FindSemesterOneYearBeforeCommand(currentSemester);
+            findSemesterOneYearBeforeCommand.setEntityManager(entityManager);
+            findSemesterOneYearBeforeCommand.execute();
+            oldSemester = findSemesterOneYearBeforeCommand.getSemesterOneYearBefore();
+        }
+
+        // 2. Semester (oder Kurse vom 1. Semester vor einem Jahr nicht vorhanden) -> Kurse und Schüler vom 1. Semster importieren
+        if (currentSemester.getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER || oldSemester == null) {
+            FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
+            findPreviousSemesterCommand.setEntityManager(entityManager);
+            findPreviousSemesterCommand.execute();
+            oldSemester = findPreviousSemesterCommand.getPreviousSemester();
+        }
+
+        if (oldSemester == null) {
             return;
         }
 
         KursDao kursDao = new KursDao(entityManager);
         KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
-        List<Kurs> kursePreviousSemester = kursDao.findKurseSemester(previousSemester);
+        List<Kurs> kursePreviousSemester = kursDao.findKurseSemester(oldSemester);
 
         KursePreviousSemester:
         for (Kurs kursPreviousSemester : kursePreviousSemester) {

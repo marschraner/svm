@@ -89,11 +89,16 @@ public class ImportKurseFromPreviousSemesterCommandTest {
 
         assertEquals(2, erfassteKurse.size());
 
-        // Für semester3 Kurse (von semester2) importieren
+        // Für semester3 Kurse (von semester1) importieren
         List<Kurs> kurseSemester3 = new ArrayList<>();
         ImportKurseFromPreviousSemesterCommand importKurseFromPreviousSemesterCommand = new ImportKurseFromPreviousSemesterCommand(kurseSemester3, semester3);
         commandInvoker.executeCommandAsTransaction(importKurseFromPreviousSemesterCommand);
-        assertTrue(kurseSemester3.isEmpty());
+        assertEquals(2, kurseSemester3.size());
+        assertEquals(Wochentag.DONNERSTAG, kurseSemester3.get(0).getWochentag());
+        assertEquals(Wochentag.FREITAG, kurseSemester3.get(1).getWochentag());
+        assertEquals("Roostest", kurseSemester3.get(0).getLehrkraefte().get(0).getNachname());
+        assertEquals("Saal Test", kurseSemester3.get(0).getKursort().getBezeichnung());
+        assertEquals("Kurs Test", kurseSemester3.get(0).getKurstyp().getBezeichnung());
 
         // Für semester2 Kurse (von semester1) importieren
         List<Kurs> kurseSemester2 = new ArrayList<>();
@@ -106,6 +111,12 @@ public class ImportKurseFromPreviousSemesterCommandTest {
         assertEquals("Saal Test", kurseSemester2.get(0).getKursort().getBezeichnung());
         assertEquals("Kurs Test", kurseSemester2.get(0).getKurstyp().getBezeichnung());
 
+        // Für semester1 Kurse importieren (-> leer)
+        List<Kurs> kurseSemester1 = new ArrayList<>();
+        importKurseFromPreviousSemesterCommand = new ImportKurseFromPreviousSemesterCommand(kurseSemester1, semester1);
+        commandInvoker.executeCommandAsTransaction(importKurseFromPreviousSemesterCommand);
+        assertTrue(kurseSemester1.isEmpty());
+
         // Testdaten löschen
         EntityManager entityManager = null;
         try {
@@ -113,6 +124,12 @@ public class ImportKurseFromPreviousSemesterCommandTest {
             entityManager.getTransaction().begin();
             KursDao kursDao = new KursDao(entityManager);
             for (Kurs kurs : erfassteKurse) {
+                Kurs kursToBeDeleted = kursDao.findById(kurs.getKursId());
+                if (kursToBeDeleted != null) {
+                    kursDao.remove(kursToBeDeleted);
+                }
+            }
+            for (Kurs kurs : kurseSemester3) {
                 Kurs kursToBeDeleted = kursDao.findById(kurs.getKursId());
                 if (kursToBeDeleted != null) {
                     kursDao.remove(kursToBeDeleted);

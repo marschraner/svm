@@ -212,7 +212,7 @@ public class KurseController {
         Object[] options = {"Ja", "Nein"};
         String msg;
         if (kurseSemesterwahlModel.getSemester().getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
-            msg = "Sollen die Kurse vom 2. Semester des vorherigen Schuljahrs (ohne Schüler) importiert werden?";
+            msg = "Sollen die Kurse vom 1. Semester des vorherigen Schuljahrs (ohne Schüler) importiert werden?";
         } else {
             msg = "Sollen die Kurse vom 1. Semester (inklusive Schüler) importiert werden?";
         }
@@ -220,7 +220,7 @@ public class KurseController {
         int n = JOptionPane.showOptionDialog(
                 null,
                 msg,
-                "Kurse vom vorherigen Semester importiert werden?",
+                "Kurse von früherem Semester importieren?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 svmContext.getDialogIcons().getQuestionIcon(),
