@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.utils.DateAndTimeUtils;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CalculateAnzWochenCommand;
@@ -20,6 +21,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
@@ -585,11 +587,24 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
     }
 
+    private void updateInitAnmeldedatum() {
+        Calendar anmeldedatumInit = kursanmeldungErfassenModel.getInitAnmeldedatum(kursanmeldungenTableModel);
+        if (anmeldedatumInit != null) {
+            try {
+                kursanmeldungErfassenModel.setAnmeldedatum(DateAndTimeUtils.getCalendarAsDDMMYYYY(anmeldedatumInit));
+            } catch (SvmValidationException ignore) {
+            }
+        }
+    }
+
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.SEMESTER, evt)) {
             spinnerSemester.setValue(kursanmeldungErfassenModel.getSemester());
+            if (!isBearbeiten) {
+                updateInitAnmeldedatum();
+            }
         } else if (checkIsFieldChange(Field.WOCHENTAG, evt)) {
             comboBoxWochentag.setSelectedItem(kursanmeldungErfassenModel.getWochentag());
         } else if (checkIsFieldChange(Field.ZEIT_BEGINN, evt)) {

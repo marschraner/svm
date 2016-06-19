@@ -257,7 +257,38 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
         Calendar today = new GregorianCalendar();
         return semester.getSemesterende().before(today);
     }
-    
+
+    @Override
+    public Calendar getInitAnmeldedatum(KursanmeldungenTableModel kursanmeldungenTableModel) {
+        if (semester == null) {
+            return null;
+        }
+
+        // Semesterbeginn als Initialisierungswert
+        Calendar kursanmeldungInit = (Calendar) semester.getSemesterbeginn().clone();
+
+        // Falls Anmeldedatum bereits gesetzt wurde, diese bei Semesterwechsel in jedem Fall aktualisieren
+        if (kursanmeldung.getAnmeldedatum() != null) {
+            return kursanmeldungInit;
+        }
+
+        // Prüfen, ob Schüler Kursanmeldungen im vorhergehenden Semester ohne Abmeldung hat. Wenn ja Semesterbeginn zurückgeben, sonst null.
+        FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(semester);
+        getCommandInvoker().executeCommand(findPreviousSemesterCommand);
+        Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
+        if (previousSemester == null) {
+            return null;
+        }
+        List<Kursanmeldung> kursanmeldungen = kursanmeldungenTableModel.getKursanmeldungenTableData().getKursanmeldungen();
+        for (Kursanmeldung kursanmeldung : kursanmeldungen) {
+            if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(previousSemester.getSemesterId()) && kursanmeldung.getAbmeldedatum() == null) {
+                return kursanmeldungInit;
+            }
+        }
+
+        return null;
+    }
+
     @Override
     public FindKursCommand.Result findKurs() {
         CommandInvoker commandInvoker = getCommandInvoker();

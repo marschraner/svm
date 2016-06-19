@@ -29,4 +29,10 @@ public class DateAndTimeUtilsTest {
         assertEquals(1, getNumberOfWeeksBetween(new GregorianCalendar(2015, Calendar.JULY, 1), new GregorianCalendar(2015, Calendar.JULY, 8)));
         assertEquals(2, getNumberOfWeeksBetween(new GregorianCalendar(2015, Calendar.JULY, 1), new GregorianCalendar(2015, Calendar.JULY, 9)));
     }
+
+    @Test
+    public void testGetCalendarAsDDMMYYYY() throws Exception {
+        Calendar calendar = new GregorianCalendar(2014, Calendar.JUNE, 24);
+        assertEquals("24.06.2014", getCalendarAsDDMMYYYY(calendar));
+    }
 }

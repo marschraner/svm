@@ -40,6 +40,7 @@ public interface KursanmeldungErfassenModel extends Model {
     Mitarbeiter[] getSelectableLehrkraftKursanmeldungOrigin();
     Semester getInitSemester(List<Semester> semesterList);
     boolean checkIfSemesterIsInPast();
+    Calendar getInitAnmeldedatum(KursanmeldungenTableModel kursanmeldungenTableModel);
     FindKursCommand.Result findKurs();
     boolean checkIfKursBereitsErfasst(SchuelerDatenblattModel schuelerDatenblattModel);
     boolean checkIfSchuelerIsAngemeldet(SchuelerDatenblattModel schuelerDatenblattModel);

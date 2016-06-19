@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.common.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -56,5 +57,10 @@ public class DateAndTimeUtils {
             weeks++;
         }
         return weeks;
+    }
+
+    public static String getCalendarAsDDMMYYYY(Calendar calendar) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.YYYY");
+        return sdf.format(calendar.getTime());
     }
 }
