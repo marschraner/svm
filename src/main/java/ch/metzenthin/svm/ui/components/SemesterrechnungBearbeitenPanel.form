@@ -2351,7 +2351,7 @@
                               <vspacer id="39d9f">
                                 <constraints>
                                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                  <gridbag weightx="0.0" weighty="0.0" ipady="6"/>
                                 </constraints>
                               </vspacer>
                               <component id="4014b" class="javax.swing.JTextField" binding="txtBetragZahlung3Vorrechnung">
@@ -2472,6 +2472,18 @@
                                   <text value="Restbetrag"/>
                                 </properties>
                               </component>
+                              <vspacer id="12a9b">
+                                <constraints>
+                                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="1.0"/>
+                                </constraints>
+                              </vspacer>
+                              <hspacer id="7765b">
+                                <constraints>
+                                  <grid row="2" column="7" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                  <gridbag weightx="0.0" weighty="0.0"/>
+                                </constraints>
+                              </hspacer>
                             </children>
                           </grid>
                         </children>
