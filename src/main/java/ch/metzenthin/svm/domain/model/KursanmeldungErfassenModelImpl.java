@@ -273,15 +273,20 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
         }
 
         // Prüfen, ob Schüler Kursanmeldungen im vorhergehenden Semester ohne Abmeldung hat. Wenn ja Semesterbeginn zurückgeben, sonst null.
-        FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(semester);
-        getCommandInvoker().executeCommand(findPreviousSemesterCommand);
-        Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
-        if (previousSemester == null) {
-            return null;
+        String schuljahrPreviousSemester;
+        Semesterbezeichnung semesterbezeichnungPreviousSemester;
+        if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+            schuljahrPreviousSemester = Schuljahre.getPreviousSchuljahr(semester.getSchuljahr());
+            semesterbezeichnungPreviousSemester = Semesterbezeichnung.ZWEITES_SEMESTER;
+        } else {
+            schuljahrPreviousSemester = semester.getSchuljahr();
+            semesterbezeichnungPreviousSemester = Semesterbezeichnung.ERSTES_SEMESTER;
         }
         List<Kursanmeldung> kursanmeldungen = kursanmeldungenTableModel.getKursanmeldungenTableData().getKursanmeldungen();
         for (Kursanmeldung kursanmeldung : kursanmeldungen) {
-            if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(previousSemester.getSemesterId()) && kursanmeldung.getAbmeldedatum() == null) {
+            if (kursanmeldung.getKurs().getSemester().getSchuljahr().equals(schuljahrPreviousSemester)
+                    && kursanmeldung.getKurs().getSemester().getSemesterbezeichnung() == semesterbezeichnungPreviousSemester
+                    && kursanmeldung.getAbmeldedatum() == null) {
                 return kursanmeldungInit;
             }
         }
