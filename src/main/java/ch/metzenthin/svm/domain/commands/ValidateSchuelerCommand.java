@@ -6,6 +6,7 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
+import javax.swing.*;
 import java.util.Iterator;
 import java.util.List;
 
@@ -342,37 +343,88 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             }
         }
 
+        // 6. Nach Geschwistern suchen (für 8., 9. und 11. benötigt)
+        CheckGeschwisterSchuelerRechnungempfaengerCommand checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand((isBearbeiten() ? schuelerOrigin : schueler), mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase, isRechnungsempfaengerDrittperson());
+        checkGeschwisterSchuelerRechnungempfaengerCommand.execute();
+        List<Schueler> geschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getGeschwisterList();
+
         if (!skipPrepareSummary) {
             skipPrepareSummary = true;
-            // 5. Identische Adressen?
+            // 7. Identische Adressen?
             CheckIdentischeAdressenCommand checkIdentischeAdressenCommand = new CheckIdentischeAdressenCommand(schueler, mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase, isRechnungsempfaengerDrittperson());
             checkIdentischeAdressenCommand.execute();
             String identischeAdressen = checkIdentischeAdressenCommand.getIdentischeAdressen();
             String abweichendeAdressen = checkIdentischeAdressenCommand.getAbweichendeAdressen();
 
-            // 6. Nach Geschwistern suchen
-            CheckGeschwisterSchuelerRechnungempfaengerCommand checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand((isBearbeiten() ? schuelerOrigin : schueler), mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase, isRechnungsempfaengerDrittperson());
-            checkGeschwisterSchuelerRechnungempfaengerCommand.execute();
-            List<Schueler> angemeldeteGeschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAngemeldeteGeschwisterList();
+            // 8. Geschwister
             List<Schueler> andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList();
-            result = new ValidateSchuelerSummaryResult(schueler, mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase, isRechnungsempfaengerMutter, isRechnungsempfaengerVater, angemeldeteGeschwisterList, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList, identischeAdressen, abweichendeAdressen, isMutterNeu, isVaterNeu, isRechnungsempfaengerDrittpersonNeu);
+            result = new ValidateSchuelerSummaryResult(schueler, mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase, isRechnungsempfaengerMutter, isRechnungsempfaengerVater, geschwisterList, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList, identischeAdressen, abweichendeAdressen, isMutterNeu, isVaterNeu, isRechnungsempfaengerDrittpersonNeu);
             return;   // -> Summary-Dialog
         }
 
-        // 7. Schüler speichern
+        // 9. Sollen Adress- und Festnetzänderungen auch auf Geschwister angewendet werden?
+        boolean isAdressaenderungenAufGeschwisterAnwenden = false;
+        if (isBearbeiten() && hasAdresseOrFestnetzChanged()) {
+            if (!geschwisterList.isEmpty()) {
+                Object[] options = {"Ja", "Nein"};
+                int n = JOptionPane.showOptionDialog(
+                        null,
+                        "Sollen die Adress- und/oder Festnetzänderungen auch auf Geschwister angewendet werden?",
+                        "Adress- und/oder Festnetzänderungen auch auf Geschwister anwenden?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        options,  //the titles of buttons
+                        options[0]); //default button title
+                if (n == 0) {
+                    isAdressaenderungenAufGeschwisterAnwenden = true;
+                }
+            }
+        }
+
+        // 10. Schüler speichern
         Schueler schuelerToSave = prepareSchuelerForSave();
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schuelerToSave);
         saveSchuelerCommand.setEntityManager(entityManager);
         saveSchuelerCommand.execute();
 
-        // 8. Lösche ggf verwaiste Angehörige
+        // 11. Ggf. Adress- und Festnetzänderungen für Geschwister speichern
+        if (isAdressaenderungenAufGeschwisterAnwenden) {
+            for (Schueler geschwister : geschwisterList) {
+                // Adress- und Festnetzänderungen anwenden
+                geschwister.getAdresse().copyAttributesFrom(schueler.getAdresse());
+                geschwister.setFestnetz(schueler.getFestnetz());
+                saveSchuelerCommand = new SaveSchuelerCommand(geschwister);
+                saveSchuelerCommand.setEntityManager(entityManager);
+                saveSchuelerCommand.execute();
+            }
+        }
+
+        // 12. Lösche ggf. verwaiste Angehörige
         if (isBearbeiten()) {
             entityManager.flush();
             checkIfAngehoerigeVerwaistAndDelete();
         }
 
         result = new SchuelerErfassenSaveOkResult(Result.SPEICHERUNG_ERFOLGREICH, schuelerToSave.getGeschlecht());
+    }
 
+    private boolean hasAdresseOrFestnetzChanged() {
+        if (!isBearbeiten()) {
+            return false;
+        }
+        if (!schueler.getAdresse().isIdenticalWith(schuelerOrigin.getAdresse())) {
+            return true;
+        }
+        if (schueler.getFestnetz() != null || schuelerOrigin.getFestnetz() != null) {
+            if (schueler.getFestnetz() == null && schueler.getFestnetz() != null && !schueler.getFestnetz().isEmpty()) {
+                return true;
+            }
+            if (!schueler.getFestnetz().equals(schuelerOrigin.getFestnetz())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void checkIfAngehoerigeVerwaistAndDelete() {

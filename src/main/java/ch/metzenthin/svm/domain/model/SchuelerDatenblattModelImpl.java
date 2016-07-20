@@ -116,14 +116,14 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     public String getGeschwisterAsString() {
         CheckGeschwisterSchuelerRechnungempfaengerCommand command = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler, isRechnungsempfaengerDrittperson());
         command.execute();
-        List<Schueler> angemeldeteGeschwister = command.getAngemeldeteGeschwisterList();
-        if (!angemeldeteGeschwister.isEmpty()) {
+        List<Schueler> geschwisters = command.getGeschwisterList();
+        if (!geschwisters.isEmpty()) {
             StringBuilder infoGeschwisterStb = new StringBuilder("<html>");
-            for (Schueler geschwister : angemeldeteGeschwister) {
+            for (Schueler geschwister : geschwisters) {
                 if (infoGeschwisterStb.length() > 6) {
                     infoGeschwisterStb.append("<br>");
                 }
-                infoGeschwisterStb.append(geschwister.toString());
+                infoGeschwisterStb.append(geschwister.toStringForGuiWithAbgemeldetInfo());
             }
             infoGeschwisterStb.append("</html>");
             return infoGeschwisterStb.toString();

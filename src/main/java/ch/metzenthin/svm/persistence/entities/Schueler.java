@@ -82,6 +82,11 @@ public class Schueler extends Person {
         return super.toString();
     }
 
+    public String toStringForGuiWithAbgemeldetInfo() {
+        String abgemeldetInfo = (isAbgemeldet() ? "&nbsp (abgemeldet)" : "");
+        return super.toString() + abgemeldetInfo;
+    }
+
     public Geschlecht getGeschlecht() {
         return geschlecht;
     }
@@ -244,6 +249,16 @@ public class Schueler extends Person {
         List<Maercheneinteilung> maercheneinteilungenAsList = new ArrayList<>(maercheneinteilungen);
         Collections.sort(maercheneinteilungenAsList);
         return maercheneinteilungenAsList;
+    }
+
+    @Transient
+    public boolean isAngemeldet() {
+        return getAnmeldungen().get(0).getAbmeldedatum() == null;
+    }
+
+    @Transient
+    public boolean isAbgemeldet() {
+        return !isAngemeldet();
     }
 
 }

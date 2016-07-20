@@ -163,7 +163,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
                 if (geschwisterStb.length() > 6) {
                     geschwisterStb.append("<br>");
                 }
-                geschwisterStb.append(geschwister.toString());
+                geschwisterStb.append(geschwister.toStringForGuiWithAbgemeldetInfo());
             }
             geschwisterStb.append("</html>");
             geschwisterValue.setText(geschwisterStb.toString());
