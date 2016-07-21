@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -57,8 +58,6 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     /**
      * Überschrieben, damit Observer dieses Modells nicht informiert wird. Er muss die Exception fangen und entsprechend handeln.
-     *
-     * @throws SvmValidationException
      */
     @Override
     public void validate() throws SvmValidationException {
@@ -379,10 +378,10 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     private ValidateSchuelerCommand validateSchuelerCommand;
 
     @Override
-    public SchuelerErfassenSaveResult validieren() {
+    public SchuelerErfassenSaveResult validieren(SvmContext svmContext) {
         LOGGER.trace("SchuelerErfassenModel validieren");
 
-        validateSchuelerCommand = new ValidateSchuelerCommand(this);
+        validateSchuelerCommand = new ValidateSchuelerCommand(this, svmContext);
         validateSchuelerCommand.setEntry(NEU_ERFASSTEN_SCHUELER_VALIDIEREN);
         return executeCommandWithinSession();
     }

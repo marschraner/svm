@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
@@ -134,6 +135,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     }
 
     // input
+    private final SvmContext svmContext;
     private Schueler schueler;
     private Adresse adresseSchueler;
     private Anmeldung anmeldung;
@@ -171,7 +173,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     private boolean skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank = false;
     private boolean skipPrepareSummary = false;
 
-    public ValidateSchuelerCommand(ValidateSchuelerModel validateSchuelerModel) {
+    public ValidateSchuelerCommand(ValidateSchuelerModel validateSchuelerModel, SvmContext svmContext) {
         this.schueler = validateSchuelerModel.getSchueler();
         this.adresseSchueler = validateSchuelerModel.getAdresseSchueler();
         this.anmeldung = validateSchuelerModel.getAnmeldung();
@@ -187,6 +189,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         this.mutterOrigin = (this.schuelerOrigin == null ? null : this.schuelerOrigin.getMutter());
         this.vaterOrigin = (this.schuelerOrigin == null ? null : this.schuelerOrigin.getVater());
         this.rechnungsempfaengerOrigin = (this.schuelerOrigin == null ? null : this.schuelerOrigin.getRechnungsempfaenger());
+        this.svmContext = svmContext;
     }
 
     private boolean isBearbeiten() {
@@ -369,11 +372,11 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                 Object[] options = {"Ja", "Nein"};
                 int n = JOptionPane.showOptionDialog(
                         null,
-                        "Sollen die Adress- und/oder Festnetzänderungen auch auf Geschwister angewendet werden?",
-                        "Adress- und/oder Festnetzänderungen auch auf Geschwister anwenden?",
+                        "Soll die Adress- und/oder Festnetzänderung auch für Geschwister angewendet werden?",
+                        "Adress- und/oder Festnetzänderung auch für Geschwister anwenden?",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE,
-                        null,
+                        svmContext.getDialogIcons().getQuestionIcon(),
                         options,  //the titles of buttons
                         options[0]); //default button title
                 if (n == 0) {

@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.commands.DeleteSchuelerCommand;
 
 /**
@@ -10,7 +11,7 @@ public interface SchuelerErfassenModel extends Model {
     void setMutterModel(AngehoerigerModel mutterModel);
     void setVaterModel(AngehoerigerModel vaterModel);
     void setDrittempfaengerModel(AngehoerigerModel drittempfaengerModel);
-    SchuelerErfassenSaveResult validieren();
+    SchuelerErfassenSaveResult validieren(SvmContext svmContext);
     SchuelerErfassenSaveResult speichern(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
     SchuelerErfassenSaveResult proceedUebernehmen(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
     SchuelerErfassenSaveResult proceedWeiterfahren(SchuelerErfassenSaveResult schuelerErfassenSaveResult);

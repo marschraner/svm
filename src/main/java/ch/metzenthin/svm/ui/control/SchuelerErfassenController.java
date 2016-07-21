@@ -89,7 +89,7 @@ public class SchuelerErfassenController {
         schuelerErfassenModel.setSchuelerModel(schuelerModel);
     }
 
-    AbstractController mutterController;
+    private AbstractController mutterController;
 
     public void setMutterPanel(AngehoerigerPanel mutterPanel, AngehoerigerModel mutterModel) {
         mutterController = mutterPanel.setModel(mutterModel, defaultButtonEnabled);
@@ -109,7 +109,7 @@ public class SchuelerErfassenController {
         schuelerErfassenModel.setMutterModel(mutterModel);
     }
 
-    AbstractController vaterController;
+    private AbstractController vaterController;
 
     public void setVaterPanel(AngehoerigerPanel vaterPanel, AngehoerigerModel vaterModel) {
         vaterController = vaterPanel.setModel(vaterModel, defaultButtonEnabled);
@@ -125,7 +125,7 @@ public class SchuelerErfassenController {
         schuelerErfassenModel.setVaterModel(vaterModel);
     }
 
-    AbstractController drittempfaengerController;
+    private AbstractController drittempfaengerController;
 
     public void setDrittempfaengerPanel(AngehoerigerPanel drittempfaengerPanel, AngehoerigerModel drittempfaengerModel) {
         drittempfaengerController = drittempfaengerPanel.setModel(drittempfaengerModel, defaultButtonEnabled);
@@ -236,7 +236,7 @@ public class SchuelerErfassenController {
             return;
         }
         SchuelerErfassenDialog dialog;
-        SchuelerErfassenSaveResult schuelerErfassenSaveResult = schuelerErfassenModel.validieren();
+        SchuelerErfassenSaveResult schuelerErfassenSaveResult = schuelerErfassenModel.validieren(svmContext);
         while (schuelerErfassenSaveResult != null) { // Wenn null: kein weiterer Dialog
             dialog = createDialog(schuelerErfassenSaveResult);
             if (dialog == null) {
