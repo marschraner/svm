@@ -38,7 +38,7 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
 
     private final CalendarModelAttribute dispensationsbeginnModelAttribute = new CalendarModelAttribute(
             this,
-            Field.DISPENSATIONSBEGINN, getNYearsBeforeNow(5), getNMonthsAfterNow(1),
+            Field.DISPENSATIONSBEGINN, getNYearsBeforeNow(5), getNYearsAfterNow(5),
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {
@@ -69,7 +69,7 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
 
     private final CalendarModelAttribute dispensationsendeModelAttribute = new CalendarModelAttribute(
             this,
-            Field.DISPENSATIONSENDE, getNYearsBeforeNow(5), getNMonthsAfterNow(36),
+            Field.DISPENSATIONSENDE, getNYearsBeforeNow(5), getNYearsAfterNow(5),
             new AttributeAccessor<Calendar>() {
                 @Override
                 public Calendar getValue() {

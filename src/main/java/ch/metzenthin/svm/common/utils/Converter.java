@@ -264,6 +264,10 @@ public class Converter {
         return cal;
     }
 
+    public static Calendar getNYearsAfterNow(int n) {
+        return getNYearsBeforeNow(-n);
+    }
+
     public static Calendar getNMonthsBeforeNow(int n) {
         Calendar cal = new GregorianCalendar();
         cal.add(Calendar.MONTH, -n);
