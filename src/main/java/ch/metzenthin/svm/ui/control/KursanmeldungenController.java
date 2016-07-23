@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.utils.DateAndTimeUtils;
 import ch.metzenthin.svm.domain.model.KursanmeldungenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.KursanmeldungenTableModel;
@@ -15,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Calendar;
 
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAccordingToCellContentAndHeader;
@@ -114,6 +116,26 @@ public class KursanmeldungenController {
         kursanmeldungErfassenDialog.setVisible(true);
         kursanmeldungenTableModel.fireTableDataChanged();
         btnBearbeiten.setFocusPainted(false);
+
+        // Falls sich der Schüler von sämtlichen Kursen des neusten Semesters abgemeldet hat, soll er wahrscheinlich auch vom Theater abgemeldet werden
+        Calendar spaetestesAbmeldedatumNeustesSemester = kursanmeldungenModel.getSpaetestesAbmeldedatumKurseNeustesSemester(schuelerDatenblattModel);
+        if (schuelerDatenblattModel.getSchueler().isAngemeldet() && spaetestesAbmeldedatumNeustesSemester != null) {
+            Object[] options = {"Ja", "Nein"};
+            int n = JOptionPane.showOptionDialog(
+                    null,
+                    "Soll " + schuelerDatenblattModel.getSchueler().getVorname() + " " + schuelerDatenblattModel.getSchueler().getNachname()
+                            + " per " + DateAndTimeUtils.getCalendarAsDDMMYYYY(spaetestesAbmeldedatumNeustesSemester) + " vom Kinder- und Jugendtheater abgemeldet werden?",
+                    "Schüler vom Kinder- und Jugendtheater abmelden?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    svmContext.getDialogIcons().getQuestionIcon(),
+                    options,  //the titles of buttons
+                    options[0]); //default button title
+            if (n == 0) {
+                kursanmeldungenModel.schuelerVomKinderUndJugendtheaterAbmelden(schuelerDatenblattModel, spaetestesAbmeldedatumNeustesSemester);
+                JOptionPane.showMessageDialog(null, "Der Schüler wurde per " + DateAndTimeUtils.getCalendarAsDDMMYYYY(spaetestesAbmeldedatumNeustesSemester) + " abgemeldet.", "Abmeldung erfolgreich", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+            }
+        }
     }
 
     public void setBtnLoeschen(JButton btnLoeschen) {
