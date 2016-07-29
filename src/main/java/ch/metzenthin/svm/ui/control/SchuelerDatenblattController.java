@@ -197,7 +197,8 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelVornameNachname() {
-        labelVornameNachname.setText(schuelerDatenblattModel.getSchuelerVorname() + " " + schuelerDatenblattModel.getSchuelerNachname());
+        String abgemeldet = (schuelerDatenblattModel.getSchueler().isAbgemeldet() ? "  (abgemeldet)" : "");
+        labelVornameNachname.setText(schuelerDatenblattModel.getSchuelerVorname() + " " + schuelerDatenblattModel.getSchuelerNachname() + abgemeldet);
     }
 
     public void setLabelSchueler(JLabel labelSchueler) {
