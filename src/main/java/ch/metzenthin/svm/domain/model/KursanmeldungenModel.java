@@ -14,4 +14,5 @@ public interface KursanmeldungenModel extends Model {
     void kursanmeldungLoeschen(KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int rowSelected);
     Calendar getSpaetestesAbmeldedatumKurseNeustesSemester(SchuelerDatenblattModel schuelerDatenblattModel);
     void schuelerVomKinderUndJugendtheaterAbmelden(SchuelerDatenblattModel schuelerDatenblattModel, Calendar abmeldedatum);
+    boolean isSchuelerAbgemeldet(SchuelerDatenblattModel schuelerDatenblattModel);
 }

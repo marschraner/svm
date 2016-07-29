@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class MaercheneinteilungenModelImpl extends AbstractModel implements MaercheneinteilungenModel {
+class MaercheneinteilungenModelImpl extends AbstractModel implements MaercheneinteilungenModel {
 
-    public MaercheneinteilungenModelImpl(CommandInvoker commandInvoker) {
+    MaercheneinteilungenModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
     }
 
@@ -51,6 +51,11 @@ public class MaercheneinteilungenModelImpl extends AbstractModel implements Maer
         }
         selectableMaerchens.removeAll(maerchensToBeRemoved);
         return selectableMaerchens;
+    }
+
+    @Override
+    public boolean isSchuelerAbgemeldet(SchuelerDatenblattModel schuelerDatenblattModel) {
+        return schuelerDatenblattModel.getSchueler().isAbgemeldet();
     }
 
     @Override

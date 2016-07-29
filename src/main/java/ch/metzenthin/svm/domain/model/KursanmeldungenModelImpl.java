@@ -89,6 +89,11 @@ class KursanmeldungenModelImpl extends AbstractModel implements KursanmeldungenM
     }
 
     @Override
+    public boolean isSchuelerAbgemeldet(SchuelerDatenblattModel schuelerDatenblattModel) {
+        return schuelerDatenblattModel.getSchueler().isAbgemeldet();
+    }
+
+    @Override
     void doValidate() throws SvmValidationException {}
 
     @Override

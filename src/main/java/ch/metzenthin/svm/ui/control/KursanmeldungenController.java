@@ -77,6 +77,10 @@ public class KursanmeldungenController {
 
     public void setBtnNeu(JButton btnNeu) {
         this.btnNeu = btnNeu;
+        // Neu-Button deaktivieren, falls Schüler vom Theater abgemeldet ist
+        if (kursanmeldungenModel.isSchuelerAbgemeldet(schuelerDatenblattModel)) {
+            btnNeu.setEnabled(false);
+        }
         btnNeu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

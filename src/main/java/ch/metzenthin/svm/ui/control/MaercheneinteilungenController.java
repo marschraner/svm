@@ -75,6 +75,10 @@ public class MaercheneinteilungenController {
 
     public void setBtnNeu(JButton btnNeu) {
         this.btnNeu = btnNeu;
+        // Neu-Button deaktivieren, falls Schüler vom Theater abgemeldet ist
+        if (maercheneinteilungenModel.isSchuelerAbgemeldet(schuelerDatenblattModel)) {
+            btnNeu.setEnabled(false);
+        }
         // Neu-Button deaktivieren, falls alle Märchen schon erfasst sind
         if (maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel).size() == 0) {
             btnNeu.setEnabled(false);
