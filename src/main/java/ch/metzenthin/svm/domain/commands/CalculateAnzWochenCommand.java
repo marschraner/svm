@@ -52,12 +52,12 @@ public class CalculateAnzWochenCommand implements Command {
             for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungen()) {
                 if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(semester.getSemesterId())) {
                     int anzWochenKursanmeldung = calculateAnzWochenKursanmeldung(kursanmeldung);
+                    if (!first && anzWochenKursanmeldung != anzahlWochen) {
+                        result = Result.KURSE_MIT_UNTERSCHIEDLICHER_ANZAHL_WOCHEN;
+                    }
+                    first = false;
                     if (anzWochenKursanmeldung > anzahlWochen) {
                         anzahlWochen = anzWochenKursanmeldung;
-                        if (!first) {
-                            result = Result.KURSE_MIT_UNTERSCHIEDLICHER_ANZAHL_WOCHEN;
-                        }
-                        first = false;
                     }
                 }
             }
@@ -70,7 +70,7 @@ public class CalculateAnzWochenCommand implements Command {
     }
 
 
-    protected int calculateAnzWochenKursanmeldung(Kursanmeldung kursanmeldung) {
+    int calculateAnzWochenKursanmeldung(Kursanmeldung kursanmeldung) {
 
         int anzahlWochenKursanmeldung = semester.getAnzahlSchulwochen();
 
@@ -160,7 +160,7 @@ public class CalculateAnzWochenCommand implements Command {
         return anzahlWochenKursanmeldung;
     }
 
-    public int getAnzahlWochen() {
+    int getAnzahlWochen() {
         return anzahlWochen;
     }
 
