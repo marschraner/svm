@@ -128,7 +128,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         natelModelAttribute.setNewValue(false, natel, isBulkUpdate());
     }
 
-    protected final StringModelAttribute emailModelAttribute = new StringModelAttribute(
+    final StringModelAttribute emailModelAttribute = new StringModelAttribute(
             this,
             Field.EMAIL, 1, 150,
             new AttributeAccessor<String>() {
@@ -240,7 +240,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     @Override
     public void setStrasseHausnummer(String strasseHausnummer) throws SvmValidationException {
-        strasseHausnummerModelAttribute.setNewValue(isAdresseRequired(), strasseHausnummer, isBulkUpdate());
+        strasseHausnummerModelAttribute.setNewValue(false, strasseHausnummer, isBulkUpdate());
     }
 
     private final StringModelAttribute plzModelAttribute = new StringModelAttribute(
@@ -355,7 +355,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
                 throw new SvmValidationException(2000, "Nachname und Vorname obligatorisch", Field.NACHNAME);
             }
             if (!isSetAdresse()) {
-                throw new SvmValidationException(2001, "Adresse ist obligatorisch", Field.STRASSE_HAUSNUMMER);
+                throw new SvmValidationException(2001, "Adresse ist obligatorisch", Field.PLZ);
             }
         } else {
             if (isSetAnyNameElement() && !isSetName()) {
@@ -366,7 +366,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
                     throw new SvmValidationException(2003, "Nachname und Vorname müssen angegeben werden, wenn eine Adresse vorhanden ist", Field.NACHNAME);
                 }
                 if (!isSetAdresse()) {
-                    throw new SvmValidationException(2004, "Adresse ist unvollständig", Field.STRASSE_HAUSNUMMER);
+                    throw new SvmValidationException(2004, "Adresse ist unvollständig", Field.PLZ);
                 }
             }
         }
@@ -393,8 +393,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     private boolean isSetAdresse() {
-        return checkNotEmpty(adresse.getStrasse())
-                && checkNotEmpty(adresse.getPlz())
+        return checkNotEmpty(adresse.getPlz())
                 && checkNotEmpty(adresse.getOrt())
                 ;
     }

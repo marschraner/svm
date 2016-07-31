@@ -3,6 +3,7 @@ package ch.metzenthin.svm.persistence.entities;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
@@ -21,7 +22,7 @@ public class Adresse {
     @Column(name = "last_updated")
     private Timestamp version;
 
-    @Column(name = "strasse", nullable = false)
+    @Column(name = "strasse", nullable = true)
     private String strasse;
 
     @Column(name = "hausnummer", nullable = true)
@@ -133,16 +134,19 @@ public class Adresse {
 
     public String getStrasseHausnummer() {
         String strasseHausnummer = getStrasse();
-        if (checkNotEmpty(getHausnummer())) {
+        if (checkNotEmpty(strasse) && checkNotEmpty(getHausnummer())) {
             strasseHausnummer = strasseHausnummer + " " + getHausnummer();
         }
-        return strasseHausnummer;
+        return nullAsEmptyString(strasseHausnummer);
     }
 
     public String getStrHausnummer() {
         String strHausnummer = getStrasseHausnummer();
-        strHausnummer = strHausnummer.replaceAll("strasse", "str.");
-        return strHausnummer.replaceAll("Strasse", "Str.");
+        if (checkNotEmpty(strHausnummer)) {
+            strHausnummer = strHausnummer.replaceAll("strasse", "str.");
+            strHausnummer = strHausnummer.replaceAll("Strasse", "Str.");
+        }
+        return nullAsEmptyString(strHausnummer);
     }
 
     @Transient

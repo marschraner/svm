@@ -123,9 +123,7 @@ public class SaveOrUpdateMitarbeiterCommand extends GenericDaoCommand {
     }
 
     private boolean isSetAdresse() {
-        return checkNotEmpty(adresse.getStrasse())
-                && checkNotEmpty(adresse.getHausnummer())
-                && checkNotEmpty(adresse.getPlz())
+        return checkNotEmpty(adresse.getPlz())
                 && checkNotEmpty(adresse.getOrt());
     }
 

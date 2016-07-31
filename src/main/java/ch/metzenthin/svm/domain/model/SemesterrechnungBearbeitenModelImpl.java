@@ -59,7 +59,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
 
     @Override
     public String getRechnungsempfaengerStrasseNr() {
-        return semesterrechnung.getRechnungsempfaenger().getAdresse().getStrasseHausnummer();
+        return (checkNotEmpty(semesterrechnung.getRechnungsempfaenger().getAdresse().getStrasseHausnummer()) ? semesterrechnung.getRechnungsempfaenger().getAdresse().getStrasseHausnummer() : "-");
     }
 
     @Override

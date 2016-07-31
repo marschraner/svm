@@ -121,7 +121,7 @@ public abstract class Person implements Comparable<Person>  {
             result = collator.compare(vorname, otherPerson.vorname);
             if (result == 0 && adresse != null && otherPerson.adresse != null) {
                 result = collator.compare(adresse.getOrt(), otherPerson.adresse.getOrt());
-                if (result == 0) {
+                if (result == 0 && adresse.getStrasse() != null && otherPerson.adresse.getStrasse() != null) {
                     result = collator.compare(adresse.getStrasse(), otherPerson.adresse.getStrasse());
                 }
             }
@@ -137,8 +137,10 @@ public abstract class Person implements Comparable<Person>  {
         }
         personSb.append(vorname);
         personSb.append(" ").append(nachname);
-        if (adresse != null) {
+        if (adresse != null && !adresse.getStrasseHausnummer().isEmpty()) {
             personSb.append(", ").append(adresse.getStrHausnummer());
+        }
+        if (adresse != null) {
             personSb.append(", ").append(adresse.getPlz()).append(" ").append(adresse.getOrt());
         }
         if (festnetz != null && !festnetz.isEmpty()) {
