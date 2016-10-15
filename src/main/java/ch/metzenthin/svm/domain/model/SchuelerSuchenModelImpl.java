@@ -465,7 +465,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         Map<Schueler, Maercheneinteilung> maercheneinteilungenMapTableData = determineMaercheneinteilungenMapTableData(schuelerList, maerchenTableData);
         return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData, (wochentag == Wochentag.ALLE ? null : wochentag),
                 zeitBeginn, (mitarbeiter == MITARBEITER_ALLE ? null : mitarbeiter), null, null, maercheneinteilungenMapTableData, maerchenTableData,
-                (gruppe == Gruppe.ALLE ? null : gruppe), (elternmithilfeCode == ELTERNMITHILFE_CODE_ALLE ? null : elternmithilfeCode), maerchenFuerSucheBeruecksichtigen, (rollen != null));
+                (gruppe == Gruppe.ALLE ? null : gruppe), (elternmithilfeCode == ELTERNMITHILFE_CODE_ALLE ? null : elternmithilfeCode), kursFuerSucheBeruecksichtigen, maerchenFuerSucheBeruecksichtigen, (rollen != null));
     }
 
     private Semester determineSemesterTableData(SvmModel svmModel) {

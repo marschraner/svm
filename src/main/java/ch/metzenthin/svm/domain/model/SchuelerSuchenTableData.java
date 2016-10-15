@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.utils.StringNumber;
 import ch.metzenthin.svm.persistence.entities.*;
 
 import java.sql.Time;
@@ -29,11 +30,12 @@ public class SchuelerSuchenTableData {
     private Maerchen maerchen;
     private final Gruppe gruppe;
     private final ElternmithilfeCode elternmithilfeCode;
+    private final boolean kursFuerSucheBeruecksichtigen;
     private boolean maerchenFuerSucheBeruecksichtigen;
     private boolean nachRollenGesucht;
     private List<Field> columns = new ArrayList<>();
 
-    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean maerchenFuerSucheBeruecksichtigen, boolean nachRollenGesucht) {
+    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean kursFuerSucheBeruecksichtigen, boolean maerchenFuerSucheBeruecksichtigen, boolean nachRollenGesucht) {
         this.schuelerList = schuelerList;
         this.kurse = kurse;
         this.semester = semester;
@@ -46,6 +48,7 @@ public class SchuelerSuchenTableData {
         this.maerchen = maerchen;
         this.gruppe = gruppe;
         this.elternmithilfeCode = elternmithilfeCode;
+        this.kursFuerSucheBeruecksichtigen = kursFuerSucheBeruecksichtigen;
         this.maerchenFuerSucheBeruecksichtigen = maerchenFuerSucheBeruecksichtigen;
         this.nachRollenGesucht = nachRollenGesucht;
         initColumns();
@@ -61,9 +64,13 @@ public class SchuelerSuchenTableData {
         columns.add(Field.MUTTER);
         columns.add(Field.VATER);
         columns.add(Field.RECHNUNGSEMPFAENGER);
-        columns.add(Field.KURS1);
-        columns.add(Field.ANZAHL_KURSE);
-        if (semester != null && semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+        if (maerchenFuerSucheBeruecksichtigen && !kursFuerSucheBeruecksichtigen) {
+            columns.add(Field.ROLLE1);
+        } else {
+            columns.add(Field.KURS1);
+            columns.add(Field.ANZAHL_KURSE);
+        }
+        if ((semester != null && semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) || (maerchenFuerSucheBeruecksichtigen && !kursFuerSucheBeruecksichtigen)) {
             // Märchen nur im 1. Semester anzeigen
             columns.add(Field.GRUPPE);
         }
@@ -137,6 +144,12 @@ public class SchuelerSuchenTableData {
             case ANZAHL_KURSE:
                 value = (kurseOfSchueler == null ? 0 : kurseOfSchueler.size());
                 break;
+            case ROLLE1:
+                if (maercheneinteilungen.get(schueler) != null) {
+                    // Korrekte Sortierung
+                    value = new StringNumber(maercheneinteilungen.get(schueler).getRolle1());
+                }
+                break;
             case GRUPPE:
                 if (maercheneinteilungen.get(schueler) != null) {
                     value = maercheneinteilungen.get(schueler).getGruppe().toString();
@@ -179,6 +192,8 @@ public class SchuelerSuchenTableData {
                 return Integer.class;
             case EXPORT_MAIL:
                 return Boolean.class;
+            case ROLLE1:
+                return StringNumber.class;
             default:
                 return String.class;
         }

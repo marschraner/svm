@@ -73,7 +73,7 @@ public class MonatsstatistikSchuelerModelImpl extends AbstractModel implements M
         return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData, null, null, null,
                 (anAbmeldungenDispensationen == AnAbmeldungenDispensationenSelected.ANMELDUNGEN_KURSE ? monatJahr : null),
                 (anAbmeldungenDispensationen == AnAbmeldungenDispensationenSelected.ABMELDUNGEN_KURSE ? monatJahr : null),
-                maercheneinteilungenMapTableData, maerchenTableData, null, null, false, false);
+                maercheneinteilungenMapTableData, maerchenTableData, null, null, false, false, false);
     }
 
     private Semester determineSemesterTableData(SvmModel svmModel) {
