@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.utils.StringNumber;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 
@@ -54,10 +55,12 @@ public class KurseTableData {
                 value = kurs.getKurstyp().getBezeichnung();
                 break;
             case ALTERSBEREICH:
-                value = kurs.getAltersbereich();
+                // Korrekte Sortierung
+                value = new StringNumber(kurs.getAltersbereich());
                 break;
             case STUFE:
-                value = kurs.getStufe();
+                // Korrekte Sortierung
+                value = new StringNumber(kurs.getStufe());
                 break;
             case TAG:
                 value = kurs.getWochentag();
@@ -99,6 +102,10 @@ public class KurseTableData {
                 return Wochentag.class;
             case ANZAHL_SCHUELER:
                 return Integer.class;
+            case ALTERSBEREICH:
+                return StringNumber.class;
+            case STUFE:
+                return StringNumber.class;
             default:
                 return String.class;
         }
