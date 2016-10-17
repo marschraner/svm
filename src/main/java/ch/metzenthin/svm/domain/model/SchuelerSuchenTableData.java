@@ -311,6 +311,10 @@ public class SchuelerSuchenTableData {
         return elternmithilfeCode;
     }
 
+    public boolean isKursFuerSucheBeruecksichtigen() {
+        return kursFuerSucheBeruecksichtigen;
+    }
+
     public boolean isMaerchenFuerSucheBeruecksichtigen() {
         return maerchenFuerSucheBeruecksichtigen;
     }

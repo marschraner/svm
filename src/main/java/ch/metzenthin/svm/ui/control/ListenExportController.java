@@ -143,7 +143,7 @@ public class ListenExportController extends AbstractController {
         }
     }
 
-    public void initComboBoxListentyp() {
+    private void initComboBoxListentyp() {
         if (listenExportTyp == ListenExportTyp.SCHUELER) {
             if (schuelerSuchenTableModel.getWochentag() == null || schuelerSuchenTableModel.getZeitBeginn() == null || schuelerSuchenTableModel.getLehrkraft() == null) {
                 // Keine Absenzenlisten, falls in Suche nicht nach einem spezifischen Kurs gesucht wurde
@@ -172,6 +172,20 @@ public class ListenExportController extends AbstractController {
                 } else {
                     comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ADRESSLISTE);
                 }
+            }
+            // Keine Schülerliste und keine Schüler-, Mutter-, Vater- und Rechungsempfänger-Adressetiketten, falls nach Märchen gesucht
+            if (schuelerSuchenTableModel.isMaerchenFuerSucheBeruecksichtigen() && !schuelerSuchenTableModel.isKursFuerSucheBeruecksichtigen()) {
+                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
+                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSETIKETTEN);
+                comboBoxListentyp.removeItem(Listentyp.RECHNUNGSEMPFAENGER_ADRESSETIKETTEN);
+                comboBoxListentyp.removeItem(Listentyp.MUTTER_ODER_VATER_ADRESSETIKETTEN);
+                comboBoxListentyp.removeItem(Listentyp.SCHUELERLISTE_CSV);
+            }
+            // Keine Rollen- und Elternmithilfeliste, falls nicht nach Märchen gesucht
+            if (!schuelerSuchenTableModel.isMaerchenFuerSucheBeruecksichtigen()) {
+                comboBoxListentyp.removeItem(Listentyp.ROLLENLISTE);
+                comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_LISTE);
+                comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_ADRESSETIKETTEN);
             }
         } else {
             comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
@@ -447,7 +461,7 @@ public class ListenExportController extends AbstractController {
         }
     }
 
-    void enableDisableFields() {
+    private void enableDisableFields() {
         if (listenExportModel.getListentyp() != null && listenExportModel.getListentyp().getFiletyp() == Filetyp.CSV) {
             disableTitel();
         } else {
