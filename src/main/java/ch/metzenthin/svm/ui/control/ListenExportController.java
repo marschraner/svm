@@ -173,12 +173,10 @@ public class ListenExportController extends AbstractController {
                     comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ADRESSLISTE);
                 }
             }
-            // Keine Schülerliste und keine Schüler-, Mutter-, Vater- und Rechungsempfänger-Adressetiketten, falls nach Märchen gesucht
+            // Keine Schülerliste und keine Rechungsempfänger-Adressetiketten, falls nach Märchen gesucht
             if (schuelerSuchenTableModel.isMaerchenFuerSucheBeruecksichtigen() && !schuelerSuchenTableModel.isKursFuerSucheBeruecksichtigen()) {
                 comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
-                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSETIKETTEN);
                 comboBoxListentyp.removeItem(Listentyp.RECHNUNGSEMPFAENGER_ADRESSETIKETTEN);
-                comboBoxListentyp.removeItem(Listentyp.MUTTER_ODER_VATER_ADRESSETIKETTEN);
                 comboBoxListentyp.removeItem(Listentyp.SCHUELERLISTE_CSV);
             }
             // Keine Rollen- und Elternmithilfeliste, falls nicht nach Märchen gesucht
