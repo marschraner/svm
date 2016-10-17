@@ -415,4 +415,10 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
     public void setElternmithilfeDrittperson(ElternmithilfeDrittperson elternmithilfeDrittperson) {
         this.elternmithilfeDrittperson = elternmithilfeDrittperson;
     }
+
+    @Transient
+    public String getRolle1WithoutSorterCharacters() {
+        // "x Hund 2", "x 3 Hund 2", "xx 3 Hund 2", "X Hund 2", "X 3 Hund 2" und  "XX 3 Hund 2" durch "Hund 2" ersetzen
+        return rolle1.replaceFirst("^([A-Z]{1,2}|[a-z]{1,2})\\p{Blank}+[0-9]*\\p{Blank}*", "");
+    }
 }

@@ -190,7 +190,7 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
                 maxLines = 1;
             }
             List<String> bilderRolle1Lines = null;
-            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(maercheneinteilung.getRolle1(), 18, maxLines);
+            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(maercheneinteilung.getRolle1WithoutSorterCharacters(), 18, maxLines);
             splitStringIntoMultipleLinesCommand.execute();
             List<String> rolle1Lines = splitStringIntoMultipleLinesCommand.getLines();
             if (maercheneinteilung.getBilderRolle1() != null) {
