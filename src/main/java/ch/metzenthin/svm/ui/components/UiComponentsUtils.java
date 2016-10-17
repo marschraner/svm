@@ -1,10 +1,8 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
-import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
-import ch.metzenthin.svm.ui.componentmodel.NumberTableCellRenderer;
-import ch.metzenthin.svm.ui.componentmodel.StringTableCellRenderer;
-import ch.metzenthin.svm.ui.componentmodel.WochentagTableCellRenderer;
+import ch.metzenthin.svm.common.utils.StringNumber;
+import ch.metzenthin.svm.ui.componentmodel.*;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -77,6 +75,8 @@ public class UiComponentsUtils {
                 tableCellRenderer = new CalendarTableCellRenderer();
             } else if (columnClass.equals(Wochentag.class)) {
                 tableCellRenderer = new WochentagTableCellRenderer();
+            } else if (columnClass.equals(StringNumber.class)) {
+                tableCellRenderer = new StringNumberTableCellRenderer();
             }
             table.getColumnModel().getColumn(i).setCellRenderer(tableCellRenderer);
         }
