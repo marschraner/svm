@@ -420,7 +420,10 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             return true;
         }
         if (schueler.getFestnetz() != null || schuelerOrigin.getFestnetz() != null) {
-            if (schueler.getFestnetz() == null && schueler.getFestnetz() != null && !schueler.getFestnetz().isEmpty()) {
+            if (schueler.getFestnetz() == null && schuelerOrigin.getFestnetz() != null && !schuelerOrigin.getFestnetz().isEmpty()) {
+                return true;
+            }
+            if (schuelerOrigin.getFestnetz() == null && schueler.getFestnetz() != null && !schueler.getFestnetz().isEmpty()) {
                 return true;
             }
             if (!schueler.getFestnetz().equals(schuelerOrigin.getFestnetz())) {
