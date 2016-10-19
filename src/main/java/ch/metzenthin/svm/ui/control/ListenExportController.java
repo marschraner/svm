@@ -1,10 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Filetyp;
-import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
-import ch.metzenthin.svm.common.dataTypes.Listentyp;
+import ch.metzenthin.svm.common.dataTypes.*;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -148,6 +145,17 @@ public class ListenExportController extends AbstractController {
             if (schuelerSuchenTableModel.getWochentag() == null || schuelerSuchenTableModel.getZeitBeginn() == null || schuelerSuchenTableModel.getLehrkraft() == null) {
                 // Keine Absenzenlisten, falls in Suche nicht nach einem spezifischen Kurs gesucht wurde
                 comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
+                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_GANZES_SEMESTER);
+                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_AUGUST_OKTOBER);
+                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_OKTOBER_FEBRUAR);
+            }
+            // Absenzenlisten sind vom Semester abhängig
+            if (schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
+            } else {
+                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_GANZES_SEMESTER);
+                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_AUGUST_OKTOBER);
+                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_OKTOBER_FEBRUAR);
             }
             if (schuelerSuchenTableModel.getMaerchen() == null || schuelerSuchenTableModel.getAnzZuExportierendeMaercheneinteilungen() == 0) {
                 // Keine Märchenlisten, falls kein Märchen oder keine Märcheneinteilungen
@@ -162,7 +170,11 @@ public class ListenExportController extends AbstractController {
                 comboBoxListentyp.removeItem(Listentyp.RECHNUNGSEMPFAENGER_ADRESSETIKETTEN);
                 comboBoxListentyp.removeItem(Listentyp.MUTTER_ODER_VATER_ADRESSETIKETTEN);
                 comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_ADRESSETIKETTEN);
-                comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ABSENZENLISTE);
+                if (schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+                    comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ABSENZENLISTE_GANZES_SEMESTER);
+                } else {
+                    comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ABSENZENLISTE);
+                }
             } else {
                 // Initialisierung
                 if (schuelerSuchenTableModel.getElternmithilfeCode() != null) {
@@ -188,6 +200,9 @@ public class ListenExportController extends AbstractController {
         } else {
             comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
             comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
+            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_GANZES_SEMESTER);
+            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_AUGUST_OKTOBER);
+            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_OKTOBER_FEBRUAR);
             comboBoxListentyp.removeItem(Listentyp.ROLLENLISTE);
             comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_LISTE);
             comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSETIKETTEN);
