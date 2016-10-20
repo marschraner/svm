@@ -143,19 +143,14 @@ public class ListenExportController extends AbstractController {
     private void initComboBoxListentyp() {
         if (listenExportTyp == ListenExportTyp.SCHUELER) {
             if (schuelerSuchenTableModel.getWochentag() == null || schuelerSuchenTableModel.getZeitBeginn() == null || schuelerSuchenTableModel.getLehrkraft() == null) {
-                // Keine Absenzenlisten, falls in Suche nicht nach einem spezifischen Kurs gesucht wurde
-                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
-                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_GANZES_SEMESTER);
-                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_AUGUST_OKTOBER);
-                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_OKTOBER_FEBRUAR);
+                // Keine Absenzenlisten, falls nicht nach einem spezifischen Kurs gesucht wurde
+                comboBoxListentyp.removeItem(Listentyp.ABSENZENLISTE_GANZES_SEMESTER);
+                comboBoxListentyp.removeItem(Listentyp.ABSENZENLISTE_OKTOBER_FEBRUAR);
+                comboBoxListentyp.removeItem(Listentyp.SPEZIELLE_ABSENZENLISTE);
             }
-            // Absenzenlisten sind vom Semester abhängig
-            if (schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
-                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
-            } else {
-                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_GANZES_SEMESTER);
-                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_AUGUST_OKTOBER);
-                comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_OKTOBER_FEBRUAR);
+            // Keine Absenzenliste Oktober - Februar, falls 2. Semester
+            if (schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER) {
+                comboBoxListentyp.removeItem(Listentyp.ABSENZENLISTE_OKTOBER_FEBRUAR);
             }
             if (schuelerSuchenTableModel.getMaerchen() == null || schuelerSuchenTableModel.getAnzZuExportierendeMaercheneinteilungen() == 0) {
                 // Keine Märchenlisten, falls kein Märchen oder keine Märcheneinteilungen
@@ -170,11 +165,7 @@ public class ListenExportController extends AbstractController {
                 comboBoxListentyp.removeItem(Listentyp.RECHNUNGSEMPFAENGER_ADRESSETIKETTEN);
                 comboBoxListentyp.removeItem(Listentyp.MUTTER_ODER_VATER_ADRESSETIKETTEN);
                 comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_ADRESSETIKETTEN);
-                if (schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
-                    comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ABSENZENLISTE_GANZES_SEMESTER);
-                } else {
-                    comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ABSENZENLISTE);
-                }
+                comboBoxListentyp.setSelectedItem(Listentyp.ABSENZENLISTE_GANZES_SEMESTER);
             } else {
                 // Initialisierung
                 if (schuelerSuchenTableModel.getElternmithilfeCode() != null) {
@@ -199,10 +190,9 @@ public class ListenExportController extends AbstractController {
             }
         } else {
             comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
-            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE);
-            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_GANZES_SEMESTER);
-            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_AUGUST_OKTOBER);
-            comboBoxListentyp.removeItem(Listentyp.SCHUELER_ABSENZENLISTE_OKTOBER_FEBRUAR);
+            comboBoxListentyp.removeItem(Listentyp.ABSENZENLISTE_GANZES_SEMESTER);
+            comboBoxListentyp.removeItem(Listentyp.ABSENZENLISTE_OKTOBER_FEBRUAR);
+            comboBoxListentyp.removeItem(Listentyp.SPEZIELLE_ABSENZENLISTE);
             comboBoxListentyp.removeItem(Listentyp.ROLLENLISTE);
             comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_LISTE);
             comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSETIKETTEN);
