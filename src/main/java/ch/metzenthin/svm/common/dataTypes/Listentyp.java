@@ -6,50 +6,55 @@ import ch.metzenthin.svm.common.utils.SvmProperties;
  * @author Martin Schraner
  */
 public enum Listentyp {
-    SCHUELER_ADRESSLISTE("Schüler-Adressliste", null, Filetyp.DOCX),
-    SCHUELER_ABSENZENLISTE("Absenzenliste", SvmProperties.KEY_ABSENZENLISTE_TEMPLATE, Filetyp.DOCX),
-    SCHUELER_ABSENZENLISTE_GANZES_SEMESTER("Absenzenliste ganzes Semester", SvmProperties.KEY_ABSENZENLISTE_TEMPLATE, Filetyp.DOCX),
-    SCHUELER_ABSENZENLISTE_AUGUST_OKTOBER("Absenzenliste August - Oktober", SvmProperties.KEY_ABSENZENLISTE_AUGUST_OKTOBER_TEMPLATE, Filetyp.DOCX),
-    SCHUELER_ABSENZENLISTE_OKTOBER_FEBRUAR("Absenzenliste Oktober - Februar", SvmProperties.KEY_ABSENZENLISTE_OKTOBER_FEBRUAR_TEMPLATE, Filetyp.DOCX),
-    ROLLENLISTE("Rollenliste", null, Filetyp.DOCX),
-    ELTERNMITHILFE_LISTE("Eltern-Mithilfe-Liste", null, Filetyp.DOCX),
-    SCHUELER_ADRESSETIKETTEN("Schüler-Adressetiketten", null, Filetyp.CSV),
-    RECHNUNGSEMPFAENGER_ADRESSETIKETTEN("Rechnungsempfänger-Adressetiketten", null, Filetyp.CSV),
-    MUTTER_ODER_VATER_ADRESSETIKETTEN("Mutter- oder Vater-Adressetiketten", null, Filetyp.CSV),
-    ELTERNMITHILFE_ADRESSETIKETTEN("Eltern-Mithilfe-Adressetiketten", null, Filetyp.CSV),
-    SCHUELERLISTE_CSV("Schülerliste (CSV)", null, Filetyp.CSV),
-    MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM("Mitarbeiter-Adressliste mit Geburtsdatum", null, Filetyp.DOCX),
-    MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM("Mitarbeiter-Adressliste ohne Geburtsdatum", null, Filetyp.DOCX),
-    MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN("Mitarbeiter-Adressliste mit Geb.Datum, AHV-Nr., Vertr.mögl.", null, Filetyp.DOCX),
-    VERTRETUNGSLISTE("Vertretungsliste", null, Filetyp.DOCX),
-    MITARBEITER_ADRESSETIKETTEN("Mitarbeiter-Adressetiketten", null, Filetyp.CSV),
-    MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV("Mitarbeiter-Liste Name zweispaltig (CSV)", null, Filetyp.CSV),
-    MITARBEITER_LISTE_NAME_EINSPALTIG_CSV("Mitarbeiter-Liste Name einspaltig (CSV)", null, Filetyp.CSV),
-    KURSLISTE_WORD("Kursliste (Word)", null, Filetyp.DOCX),
-    KURSLISTE_CSV("Kursliste (CSV)", null, Filetyp.CSV),
-    VORRECHNUNGEN_SERIENBRIEF("Vorrechnungen-Serienbrief", null, Filetyp.CSV),
-    NACHRECHNUNGEN_SERIENBRIEF("Nachrechnungen-Serienbrief", null, Filetyp.CSV),
-    MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF("Mahnungen Vorrechnungen-Serienbrief", null, Filetyp.CSV),
-    MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF("Mahnungen Nachrechnungen-Serienbrief", null, Filetyp.CSV),
-    SEMESTERRECHNUNGEN_ADRESSETIKETTEN("Rechnungsempfänger-Adressetiketten", null, Filetyp.CSV),
-    RECHNUNGSLISTE("Rechnungsliste", null, Filetyp.CSV);
+    SCHUELER_ADRESSLISTE("Schüler-Adressliste", "Schüler-Adressliste", Filetyp.DOCX, null),
+    ABSENZENLISTE_GANZES_SEMESTER("Absenzenliste ganzes Semester", "Absenzenliste", Filetyp.DOCX, SvmProperties.KEY_ABSENZENLISTE_GANZES_SEMESTER_TEMPLATE),
+    ABSENZENLISTE_OKTOBER_FEBRUAR("Absenzenliste Oktober - Februar", "Absenzenliste_Oktober-Februar", Filetyp.DOCX, SvmProperties.KEY_ABSENZENLISTE_OKTOBER_FEBRUAR_TEMPLATE),
+    SPEZIELLE_ABSENZENLISTE("Spezielle Absenzenliste", "Absenzenliste", Filetyp.DOCX, SvmProperties.KEY_SPEZIELLE_ABSENZENLISTE_TEMPLATE),
+    ROLLENLISTE("Rollenliste", "Rollenliste", Filetyp.DOCX, null),
+    ELTERNMITHILFE_LISTE("Eltern-Mithilfe-Liste", "Eltern-Mithilfe-Liste", Filetyp.DOCX, null),
+    SCHUELER_ADRESSETIKETTEN("Schüler-Adressetiketten", "Schüler-Adressetiketten", Filetyp.CSV, null),
+    RECHNUNGSEMPFAENGER_ADRESSETIKETTEN("Rechnungsempfänger-Adressetiketten", "Rechnungsempfänger-Adressetiketten", Filetyp.CSV, null),
+    MUTTER_ODER_VATER_ADRESSETIKETTEN("Mutter- oder Vater-Adressetiketten", "Mutter-_oder_Vater-Adressetiketten", Filetyp.CSV, null),
+    ELTERNMITHILFE_ADRESSETIKETTEN("Eltern-Mithilfe-Adressetiketten", "Eltern-Mithilfe-Adressetiketten", Filetyp.CSV, null),
+    SCHUELERLISTE_CSV("Schülerliste (CSV)", "Schülerliste", Filetyp.CSV, null),
+    MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM("Mitarbeiter-Adressliste mit Geburtsdatum", "Mitarbeiter-Adressliste", Filetyp.DOCX, null),
+    MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM("Mitarbeiter-Adressliste ohne Geburtsdatum", "Mitarbeiter-Adressliste", Filetyp.DOCX, null),
+    MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN("Mitarbeiter-Adressliste mit Geb.Datum, AHV-Nr., Vertr.mögl.", "Mitarbeiter-Adressliste", Filetyp.DOCX, null),
+    VERTRETUNGSLISTE("Vertretungsliste", "Vertretungsliste", Filetyp.DOCX, null),
+    MITARBEITER_ADRESSETIKETTEN("Mitarbeiter-Adressetiketten", "Mitarbeiter-Adressetiketten", Filetyp.CSV, null),
+    MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV("Mitarbeiter-Liste Name zweispaltig (CSV)", "Mitarbeiter-Liste", Filetyp.CSV, null),
+    MITARBEITER_LISTE_NAME_EINSPALTIG_CSV("Mitarbeiter-Liste Name einspaltig (CSV)", "Mitarbeiter-Liste", Filetyp.CSV, null),
+    KURSLISTE_WORD("Kursliste (Word)", "Kursliste", Filetyp.DOCX, null),
+    KURSLISTE_CSV("Kursliste (CSV)", "Kursliste", Filetyp.CSV, null),
+    VORRECHNUNGEN_SERIENBRIEF("Vorrechnungen-Serienbrief", "Vorrechnungen-Serienbrief", Filetyp.CSV, null),
+    NACHRECHNUNGEN_SERIENBRIEF("Nachrechnungen-Serienbrief", "Nachrechnungen-Serienbrief", Filetyp.CSV, null),
+    MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF("Mahnungen Vorrechnungen-Serienbrief", "Mahnungen_Vorrechnungen-Serienbrief", Filetyp.CSV, null),
+    MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF("Mahnungen Nachrechnungen-Serienbrief", "Mahnungen_Nachrechnungen-Serienbrief", Filetyp.CSV, null),
+    SEMESTERRECHNUNGEN_ADRESSETIKETTEN("Rechnungsempfänger-Adressetiketten", "Rechnungsempfänger-Adressetiketten", Filetyp.CSV, null),
+    RECHNUNGSLISTE("Rechnungsliste", "Rechnungsliste", Filetyp.CSV, null);
 
     private String name;
-    private String svmPropertiesKey;
+    private String filenameOhneFileExtension;
     private Filetyp filetyp;
+    private String svmPropertiesKey;
 
-    Listentyp(String name, String svmPropertiesKey, Filetyp filetyp) {
+    Listentyp(String name, String filenameOhneFileExtension, Filetyp filetyp, String svmPropertiesKey) {
         this.name = name;
-        this.svmPropertiesKey = svmPropertiesKey;
+        this.filenameOhneFileExtension = filenameOhneFileExtension;
         this.filetyp = filetyp;
+        this.svmPropertiesKey = svmPropertiesKey;
     }
 
-    public String getSvmPropertiesKey() {
-        return svmPropertiesKey;
+    public String getFilenameOhneFileExtension() {
+        return filenameOhneFileExtension;
     }
 
     public Filetyp getFiletyp() {
         return filetyp;
+    }
+
+    public String getSvmPropertiesKey() {
+        return svmPropertiesKey;
     }
 
     @Override

@@ -17,9 +17,9 @@ public class SvmProperties {
     static final String KEY_DB_URL_PORT = "db_url_port";
     public static final String KEY_TEMPLATES_DIRECTORY = "templates_directory";
     public static final String KEY_DEFAULT_OUTPUT_DIRECTORY = "default_output_directory";
-    public static final String KEY_ABSENZENLISTE_TEMPLATE = "absenzenliste_template";
-    public static final String KEY_ABSENZENLISTE_AUGUST_OKTOBER_TEMPLATE = "absenzenliste_august_oktober_template";
+    public static final String KEY_ABSENZENLISTE_GANZES_SEMESTER_TEMPLATE = "absenzenliste_template";
     public static final String KEY_ABSENZENLISTE_OKTOBER_FEBRUAR_TEMPLATE = "absenzenliste_oktober_februar_template";
+    public static final String KEY_SPEZIELLE_ABSENZENLISTE_TEMPLATE = "spezielle_absenzenliste_template";
     public static final String KEY_EMAIL_CLIENT_MULTIPLE_MAILS_SEPARATOR ="email_client_multiple_mails_separator";
     public static final String KEY_NEUSTE_ZUOBERST = "neuste_zuoberst";
 
@@ -47,9 +47,9 @@ public class SvmProperties {
             prop.setProperty(KEY_DB_URL_PORT, "3306");
             prop.setProperty(KEY_TEMPLATES_DIRECTORY, System.getProperty("user.home") + File.separator + "svm" + File.separator + "Listen-Templates");
             prop.setProperty(KEY_DEFAULT_OUTPUT_DIRECTORY, System.getProperty("user.home") + File.separator + "Desktop");
-            prop.setProperty(KEY_ABSENZENLISTE_TEMPLATE, "<Schuljahr>" + File.separator + "Semester_<Semester>" + File.separator + "Absenzenliste-Template_<Schuljahr>_<Semester>_<Wochentag>.docx");
-            prop.setProperty(KEY_ABSENZENLISTE_AUGUST_OKTOBER_TEMPLATE, "<Schuljahr>" + File.separator + "Semester_<Semester>" + File.separator + "Absenzenliste-August-Oktober-Template_<Schuljahr>_<Semester>_<Wochentag>.docx");
-            prop.setProperty(KEY_ABSENZENLISTE_OKTOBER_FEBRUAR_TEMPLATE, "<Schuljahr>" + File.separator + "Semester_<Semester>" + File.separator + "Absenzenliste-Oktober-Februar-Template_<Schuljahr>_<Semester>_<Wochentag>.docx");
+            prop.setProperty(KEY_ABSENZENLISTE_GANZES_SEMESTER_TEMPLATE, "<Schuljahr>" + File.separator + "Semester_<Semester>" + File.separator + "Absenzenliste-Template_<Schuljahr>_<Semester>_<Wochentag>.docx");
+            prop.setProperty(KEY_ABSENZENLISTE_OKTOBER_FEBRUAR_TEMPLATE, "<Schuljahr>" + File.separator + "Semester_<Semester>" + File.separator + "Absenzenliste_Oktober-Februar-Template_<Schuljahr>_<Semester>_<Wochentag>.docx");
+            prop.setProperty(KEY_SPEZIELLE_ABSENZENLISTE_TEMPLATE, "<Schuljahr>" + File.separator + "Semester_<Semester>" + File.separator + "Spezielle_Absenzenliste-Template_<Schuljahr>_<Semester>_<Wochentag>.docx");
             prop.setProperty(KEY_EMAIL_CLIENT_MULTIPLE_MAILS_SEPARATOR, ";");
             prop.setProperty(KEY_NEUSTE_ZUOBERST, "true");
             prop.store(propertiesFile, null);

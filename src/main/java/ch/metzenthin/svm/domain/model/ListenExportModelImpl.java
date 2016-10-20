@@ -85,13 +85,11 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
         switch (listentyp) {
             case SCHUELER_ADRESSLISTE:
                 break;
-            case SCHUELER_ABSENZENLISTE:
+            case ABSENZENLISTE_GANZES_SEMESTER:
                 break;
-            case SCHUELER_ABSENZENLISTE_GANZES_SEMESTER:
+            case ABSENZENLISTE_OKTOBER_FEBRUAR:
                 break;
-            case SCHUELER_ABSENZENLISTE_AUGUST_OKTOBER:
-                break;
-            case SCHUELER_ABSENZENLISTE_OKTOBER_FEBRUAR:
+            case SPEZIELLE_ABSENZENLISTE:
                 break;
             case ROLLENLISTE:
                 break;
@@ -175,10 +173,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 return null;
             }
         }
-        String outputFile = listentyp + "." + listentyp.getFiletyp().getFileExtension();
-        outputFile = outputFile.replaceAll("\\p{Blank}\\(Word\\)", "");
-        outputFile = outputFile.replaceAll("\\p{Blank}\\(CSV\\)", "");
-        outputFile = outputFile.replaceAll("\\p{Blank}ganzes Semester", "");
+        String outputFile = listentyp.getFilenameOhneFileExtension() + "." + listentyp.getFiletyp().getFileExtension();
         outputFile = outputFile.replaceAll(",\\p{Blank}", "_");
         outputFile = outputFile.replaceAll("\\p{Blank}", "_");
         outputFile = outputFile.replaceAll("ä", "ae");
@@ -197,10 +192,9 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 commandInvoker.executeCommand(createSchuelerAdresslisteCommand);
                 result = createSchuelerAdresslisteCommand.getResult();
                 break;
-            case SCHUELER_ABSENZENLISTE:
-            case SCHUELER_ABSENZENLISTE_GANZES_SEMESTER:
-            case SCHUELER_ABSENZENLISTE_AUGUST_OKTOBER:
-            case SCHUELER_ABSENZENLISTE_OKTOBER_FEBRUAR:
+            case ABSENZENLISTE_GANZES_SEMESTER:
+            case ABSENZENLISTE_OKTOBER_FEBRUAR:
+            case SPEZIELLE_ABSENZENLISTE:
                 CreateListeFromTemplateCommand createListeFromTemplateCommand = new CreateListeFromTemplateCommand(schuelerSuchenTableModel, titel, listentyp, outputFile);
                 commandInvoker.executeCommand(createListeFromTemplateCommand);
                 templateFile = createListeFromTemplateCommand.getTemplateFile();
@@ -383,10 +377,9 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                     titleInit = "Adressliste";
                 }
                 break;
-            case SCHUELER_ABSENZENLISTE:
-            case SCHUELER_ABSENZENLISTE_GANZES_SEMESTER:
-            case SCHUELER_ABSENZENLISTE_AUGUST_OKTOBER:
-            case SCHUELER_ABSENZENLISTE_OKTOBER_FEBRUAR:
+            case ABSENZENLISTE_GANZES_SEMESTER:
+            case ABSENZENLISTE_OKTOBER_FEBRUAR:
+            case SPEZIELLE_ABSENZENLISTE:
                 titleInit = getTitleSpecificKurs(schuelerSuchenTableModel);
                 break;
             case ROLLENLISTE:
