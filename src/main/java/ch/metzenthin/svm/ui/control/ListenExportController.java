@@ -142,7 +142,7 @@ public class ListenExportController extends AbstractController {
 
     private void initComboBoxListentyp() {
         if (listenExportTyp == ListenExportTyp.SCHUELER) {
-            if (schuelerSuchenTableModel.getWochentag() == null || schuelerSuchenTableModel.getZeitBeginn() == null || schuelerSuchenTableModel.getLehrkraft() == null) {
+            if (!schuelerSuchenTableModel.isKursFuerSucheBeruecksichtigen() || schuelerSuchenTableModel.getWochentag() == null || schuelerSuchenTableModel.getZeitBeginn() == null || schuelerSuchenTableModel.getLehrkraft() == null) {
                 // Keine Absenzenlisten, falls nicht nach einem spezifischen Kurs gesucht wurde
                 comboBoxListentyp.removeItem(Listentyp.ABSENZENLISTE_GANZES_SEMESTER);
                 comboBoxListentyp.removeItem(Listentyp.ABSENZENLISTE_OKTOBER_FEBRUAR);
