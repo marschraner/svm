@@ -7,9 +7,9 @@ import ch.metzenthin.svm.common.utils.SvmProperties;
  */
 public enum Listentyp {
     SCHUELER_ADRESSLISTE("Schüler-Adressliste", "Schüler-Adressliste", Filetyp.DOCX, null),
-    ABSENZENLISTE_GANZES_SEMESTER("Absenzenliste ganzes Semester", "Absenzenliste", Filetyp.DOCX, SvmProperties.KEY_ABSENZENLISTE_GANZES_SEMESTER_TEMPLATE),
-    ABSENZENLISTE_OKTOBER_FEBRUAR("Absenzenliste Oktober - Februar", "Absenzenliste_Oktober-Februar", Filetyp.DOCX, SvmProperties.KEY_ABSENZENLISTE_OKTOBER_FEBRUAR_TEMPLATE),
-    SPEZIELLE_ABSENZENLISTE("Spezielle Absenzenliste", "Absenzenliste", Filetyp.DOCX, SvmProperties.KEY_SPEZIELLE_ABSENZENLISTE_TEMPLATE),
+    ABSENZENLISTE_GANZES_SEMESTER("Absenzenliste ganzes Semester", "Absenzenliste", Filetyp.DOCX, SvmProperties.KEY_ABSENZENLISTEN_TEMPLATE_GANZES_SEMESTER),
+    ABSENZENLISTE_OKTOBER_FEBRUAR("Absenzenliste Oktober - Februar", "Absenzenliste_Oktober-Februar", Filetyp.DOCX, SvmProperties.KEY_ABSENZENLISTEN_TEMPLATE_OKTOBER_FEBRUAR),
+    SPEZIELLE_ABSENZENLISTE("Spezielle Absenzenliste", "Absenzenliste", Filetyp.DOCX, SvmProperties.KEY_SPEZIELLES_ABSENZENLISTEN_TEMPLATE),
     ROLLENLISTE("Rollenliste", "Rollenliste", Filetyp.DOCX, null),
     ELTERNMITHILFE_LISTE("Eltern-Mithilfe-Liste", "Eltern-Mithilfe-Liste", Filetyp.DOCX, null),
     SCHUELER_ADRESSETIKETTEN("Schüler-Adressetiketten", "Schüler-Adressetiketten", Filetyp.CSV, null),
