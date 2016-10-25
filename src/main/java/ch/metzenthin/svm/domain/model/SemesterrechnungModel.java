@@ -62,7 +62,7 @@ public interface SemesterrechnungModel extends Model {
     void setBetragZahlung2Vorrechnung(String betragZahlung2Vorrechnung) throws SvmValidationException;
     void setDatumZahlung3Vorrechnung(String datumZahlung3Vorrechnung) throws SvmValidationException;
     void setBetragZahlung3Vorrechnung(String betragZahlung3Vorrechnung) throws SvmValidationException;
-    void setRechnungsdatumNachrechnung(String rechnungsdatumNachrechnung) throws SvmValidationException;
+    void setRechnungsdatumNachrechnung(String rechnungsdatumNachrechnung, boolean isCopyBetraegeVorrechnungToNachrechnungEnabled) throws SvmValidationException;
     void setErmaessigungNachrechnung(String ermaessigungNachrechnung) throws SvmValidationException;
     void setErmaessigungsgrundNachrechnung(String ermaessigunsgrundNachrechnung) throws SvmValidationException;
     void setZuschlagNachrechnung(String zuschlagNachrechnung) throws SvmValidationException;

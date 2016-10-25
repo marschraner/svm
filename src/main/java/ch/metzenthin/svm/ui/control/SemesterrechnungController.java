@@ -771,7 +771,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         LOGGER.trace("SemesterrechnungController Event Rechnungsdatum");
         boolean equalFieldAndModelValue = equalsNullSafe(txtRechnungsdatumNachrechnung.getText(), semesterrechnungModel.getRechnungsdatumNachrechnung());
         try {
-            setModelRechnungsdatumNachrechnung();
+            setModelRechnungsdatumNachrechnung(true);
         } catch (SvmValidationException e) {
             return;
         }
@@ -782,10 +782,10 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
     }
 
-    private void setModelRechnungsdatumNachrechnung() throws SvmValidationException {
+    private void setModelRechnungsdatumNachrechnung(boolean isCopyBetraegeVorrechnungToNachrechnungEnabled) throws SvmValidationException {
         makeErrorLabelInvisible(Field.RECHNUNGSDATUM_NACHRECHNUNG);
         try {
-            semesterrechnungModel.setRechnungsdatumNachrechnung(txtRechnungsdatumNachrechnung.getText());
+            semesterrechnungModel.setRechnungsdatumNachrechnung(txtRechnungsdatumNachrechnung.getText(), isCopyBetraegeVorrechnungToNachrechnungEnabled);
         } catch (SvmValidationException e) {
             LOGGER.trace("SemesterrechnungController setModelRechnungsdatumNachrechnung Exception=" + e.getMessage());
             showErrMsg(e);
@@ -1622,7 +1622,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (txtRechnungsdatumNachrechnung != null && txtRechnungsdatumNachrechnung.isEnabled()) {
             LOGGER.trace("Validate field RechnungsdatumNachrechnung");
-            setModelRechnungsdatumNachrechnung();
+            setModelRechnungsdatumNachrechnung(false);
         }
         if (txtErmaessigungNachrechnung != null && txtErmaessigungNachrechnung.isEnabled()) {
             LOGGER.trace("Validate field ErmaessigungNachrechnung");

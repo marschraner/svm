@@ -433,7 +433,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
             setDatumZahlung2Vorrechnung(semesterrechnungOrigin.getDatumZahlung2Vorrechnung() == null ? null : asString(semesterrechnungOrigin.getDatumZahlung2Vorrechnung()));
             setBetragZahlung3Vorrechnung(semesterrechnungOrigin.getBetragZahlung3Vorrechnung() == null ? null : semesterrechnungOrigin.getBetragZahlung3Vorrechnung().toString());
             setDatumZahlung3Vorrechnung(semesterrechnungOrigin.getDatumZahlung3Vorrechnung() == null ? null : asString(semesterrechnungOrigin.getDatumZahlung3Vorrechnung()));
-            setRechnungsdatumNachrechnung(asString(semesterrechnungOrigin.getRechnungsdatumNachrechnung()));
+            setRechnungsdatumNachrechnung(asString(semesterrechnungOrigin.getRechnungsdatumNachrechnung()), false);
             setErmaessigungNachrechnung(semesterrechnungOrigin.getErmaessigungNachrechnung() == null ? null : semesterrechnungOrigin.getErmaessigungNachrechnung().toString());
             setErmaessigungsgrundNachrechnung(semesterrechnungOrigin.getErmaessigungsgrundNachrechnung());
             setZuschlagNachrechnung(semesterrechnungOrigin.getZuschlagNachrechnung() == null ? null : semesterrechnungOrigin.getZuschlagNachrechnung().toString());
