@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
+import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
@@ -33,6 +34,7 @@ public interface SemesterrechnungBearbeitenModel extends SemesterrechnungModel {
 
     void setSemesterrechnungOrigin(Semesterrechnung semesterrechnungOrigin);
 
+    void copyZahlungenVorrechnungToZahlungenNachrechnung() throws SvmValidationException;
     boolean isVorrechnungEnabled();
     boolean checkIfRechnungsempfaengerHasEmail();
     CallDefaultEmailClientCommand.Result callEmailClient();

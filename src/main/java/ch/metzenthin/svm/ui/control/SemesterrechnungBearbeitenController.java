@@ -3,10 +3,12 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
+import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.SemesterrechnungBearbeitenModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenModel;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 import ch.metzenthin.svm.ui.components.SemesterrechnungenPanel;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -16,10 +18,14 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
+
 /**
  * @author Martin Schraner
  */
 public class SemesterrechnungBearbeitenController extends SemesterrechnungController {
+
+    private static final Logger LOGGER = Logger.getLogger(SemesterrechnungBearbeitenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
@@ -456,7 +462,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         });
     }
 
-    public void setEmailEnabledDisabled() {
+    private void setEmailEnabledDisabled() {
         if (!semesterrechnungBearbeitenModel.checkIfRechnungsempfaengerHasEmail()) {
             this.btnEmail.setEnabled(false);
             return;
@@ -486,6 +492,24 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         btnWochenbetragVorrechnung.setFocusPainted(true);
         semesterrechnungBearbeitenModel.calculateWochenbetrag(Rechnungstyp.VORRECHNUNG);
         btnWochenbetragVorrechnung.setFocusPainted(false);
+    }
+
+    @Override
+    void onRechnungsdatumNachrechnungEvent() {
+        LOGGER.trace("SemesterrechnungBearbeitenController Event RechnungsdatumNachrechnung");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtRechnungsdatumNachrechnung.getText(), semesterrechnungBearbeitenModel.getRechnungsdatumNachrechnung());
+        try {
+            setModelRechnungsdatumNachrechnung();
+            // Beim Setzen des Rechnungsdatums der Nachrechnung die Zahlungen der Vorrechnung einmalig in die Nachrechnung kopieren
+            semesterrechnungBearbeitenModel.copyZahlungenVorrechnungToZahlungenNachrechnung();
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
     }
 
     public void setBtnWochenbetragNachrechnung(JButton btnWochenbetragNachrechnung) {

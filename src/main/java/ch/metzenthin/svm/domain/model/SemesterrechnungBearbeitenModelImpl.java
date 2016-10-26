@@ -10,7 +10,10 @@ import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
@@ -314,6 +317,32 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
     }
 
     @Override
+    public void copyZahlungenVorrechnungToZahlungenNachrechnung() throws SvmValidationException {
+        // Das Kopieren der Zahlungen geschieht einmalig, wenn das Rechnungsdatum der Nachrechnung gesetzt wird,
+        // und nur, wenn die entsprechende Zahlung in der Nachrechnung noch nicht gesetzt ist
+        if (getRechnungsdatumNachrechnung() != null) {
+            if (getBetragZahlung1Nachrechnung() == null && getBetragZahlung1Vorrechnung() != null) {
+                setBetragZahlung1Nachrechnung(getBetragZahlung1Vorrechnung().toString());
+            }
+            if (getDatumZahlung1Nachrechnung() == null && getDatumZahlung1Vorrechnung() != null) {
+                setDatumZahlung1Nachrechnung(asString(getDatumZahlung1Vorrechnung()));
+            }
+            if (getBetragZahlung2Nachrechnung() == null && getBetragZahlung2Vorrechnung() != null) {
+                setBetragZahlung2Nachrechnung(getBetragZahlung2Vorrechnung().toString());
+            }
+            if (getDatumZahlung2Nachrechnung() == null && getDatumZahlung2Vorrechnung() != null) {
+                setDatumZahlung2Nachrechnung(asString(getDatumZahlung2Vorrechnung()));
+            }
+            if (getBetragZahlung3Nachrechnung() == null && getBetragZahlung3Vorrechnung() != null) {
+                setBetragZahlung3Nachrechnung(getBetragZahlung3Vorrechnung().toString());
+            }
+            if (getDatumZahlung3Nachrechnung() == null && getDatumZahlung3Vorrechnung() != null) {
+                setDatumZahlung3Nachrechnung(asString(getDatumZahlung3Vorrechnung()));
+            }
+        }
+    }
+
+    @Override
     public boolean isVorrechnungEnabled() {
         // Nur enablen, falls
         // ... Rechnungsdatum gesetzt ist (oder Wochenbetrag, Ermässigung oder Zuschlag nicht null ist)
@@ -433,7 +462,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
             setDatumZahlung2Vorrechnung(semesterrechnungOrigin.getDatumZahlung2Vorrechnung() == null ? null : asString(semesterrechnungOrigin.getDatumZahlung2Vorrechnung()));
             setBetragZahlung3Vorrechnung(semesterrechnungOrigin.getBetragZahlung3Vorrechnung() == null ? null : semesterrechnungOrigin.getBetragZahlung3Vorrechnung().toString());
             setDatumZahlung3Vorrechnung(semesterrechnungOrigin.getDatumZahlung3Vorrechnung() == null ? null : asString(semesterrechnungOrigin.getDatumZahlung3Vorrechnung()));
-            setRechnungsdatumNachrechnung(asString(semesterrechnungOrigin.getRechnungsdatumNachrechnung()), false);
+            setRechnungsdatumNachrechnung(asString(semesterrechnungOrigin.getRechnungsdatumNachrechnung()));
             setErmaessigungNachrechnung(semesterrechnungOrigin.getErmaessigungNachrechnung() == null ? null : semesterrechnungOrigin.getErmaessigungNachrechnung().toString());
             setErmaessigungsgrundNachrechnung(semesterrechnungOrigin.getErmaessigungsgrundNachrechnung());
             setZuschlagNachrechnung(semesterrechnungOrigin.getZuschlagNachrechnung() == null ? null : semesterrechnungOrigin.getZuschlagNachrechnung().toString());

@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Schuljahre;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
-import ch.metzenthin.svm.common.utils.DateAndTimeUtils;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
@@ -434,36 +433,8 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     }
 
     @Override
-    public void setRechnungsdatumNachrechnung(String rechnungsdatumNachrechnung, boolean isCopyBetraegeVorrechnungToNachrechnungEnabled) throws SvmValidationException {
+    public void setRechnungsdatumNachrechnung(String rechnungsdatumNachrechnung) throws SvmValidationException {
         rechnungsdatumNachrechnungModelAttribute.setNewValue(false, rechnungsdatumNachrechnung, isBulkUpdate());
-        // isCopyBetraegeVorrechnungToNachrechnungEnabled darf nur beim Aufruf durch
-        // SemesterrechnungController.onRechnungsdatumNachrechungEvent() true sein
-        if (isCopyBetraegeVorrechnungToNachrechnungEnabled && rechnungsdatumNachrechnung != null && !rechnungsdatumNachrechnung.isEmpty()) {
-            copyBetraegeVorrechnungToNachrechnung();
-        }
-    }
-
-    private void copyBetraegeVorrechnungToNachrechnung() throws SvmValidationException {
-        // Das Kopieren der Werte geschieht einmalig, wenn das Rechnungsdatum der Nachrechnung gesetzt wird,
-        // und nur, wenn der entsprechende Wert der Nachrechnung noch nicht gesetzt ist
-        if (getBetragZahlung1Nachrechnung() == null && getBetragZahlung1Vorrechnung() != null) {
-            setBetragZahlung1Nachrechnung(getBetragZahlung1Vorrechnung().toString());
-        }
-        if (getDatumZahlung1Nachrechnung() == null && getDatumZahlung1Vorrechnung() != null) {
-            setDatumZahlung1Nachrechnung(DateAndTimeUtils.getCalendarAsDDMMYYYY(getDatumZahlung1Vorrechnung()));
-        }
-        if (getBetragZahlung2Nachrechnung() == null && getBetragZahlung2Vorrechnung() != null) {
-            setBetragZahlung2Nachrechnung(getBetragZahlung2Vorrechnung().toString());
-        }
-        if (getDatumZahlung2Nachrechnung() == null && getDatumZahlung2Vorrechnung() != null) {
-            setDatumZahlung2Nachrechnung(DateAndTimeUtils.getCalendarAsDDMMYYYY(getDatumZahlung2Vorrechnung()));
-        }
-        if (getBetragZahlung3Nachrechnung() == null && getBetragZahlung3Vorrechnung() != null) {
-            setBetragZahlung3Nachrechnung(getBetragZahlung3Vorrechnung().toString());
-        }
-        if (getDatumZahlung3Nachrechnung() == null && getDatumZahlung3Vorrechnung() != null) {
-            setDatumZahlung3Nachrechnung(DateAndTimeUtils.getCalendarAsDDMMYYYY(getDatumZahlung3Vorrechnung()));
-        }
     }
 
     private final PreisModelAttribute ermaessigungNachrechnungModelAttribute = new PreisModelAttribute(
