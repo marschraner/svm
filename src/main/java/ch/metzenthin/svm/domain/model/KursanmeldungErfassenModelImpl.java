@@ -143,6 +143,11 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
             invalidate();
             throw new SvmValidationException(2026, "Datum darf nicht vor " + asString(semester.getSemesterbeginn()) + " liegen", Field.ANMELDEDATUM);
         }
+        if (!isBulkUpdate() && kursanmeldung.getAnmeldedatum() != null && kursanmeldung.getAnmeldedatum().after(semester.getSemesterende())) {
+            kursanmeldung.setAnmeldedatum(null);
+            invalidate();
+            throw new SvmValidationException(2027, "Datum darf nicht nach " + asString(semester.getSemesterende()) + " liegen", Field.ANMELDEDATUM);
+        }
     }
 
     private CalendarModelAttribute abmeldedatumModelAttribute = new CalendarModelAttribute(
