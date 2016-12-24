@@ -46,7 +46,7 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         return kurseinteilungenFound;
     }
 
-    public List<Kursanmeldung> findKursanmeldungen(Schueler schueler, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat, Calendar stichdatumKursabmeldung) {
+    public List<Kursanmeldung> findKursanmeldungen(Schueler schueler, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat, boolean keineAbgemeldetenKurseAnzeigen, Calendar stichtagSchuelerSuchen) {
 
         StringBuilder selectStatementSb = new StringBuilder("select k from Kursanmeldung k");
         if (mitarbeiter != null) {
@@ -74,8 +74,8 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         if (abmeldemonat != null) {
             selectStatementSb.append(" k.abmeldedatum >= :abmeldemonatBeginn and k.abmeldedatum <= :abmeldemonatEnde and");
         }
-        if (stichdatumKursabmeldung != null) {
-            selectStatementSb.append(" (k.abmeldedatum is null or k.abmeldedatum > :stichdatumKursabmeldung) and");
+        if (keineAbgemeldetenKurseAnzeigen && stichtagSchuelerSuchen != null) {
+            selectStatementSb.append(" (k.abmeldedatum is null or k.abmeldedatum > :stichtagSchuelerSuchen) and");
         }
         // Letztes " and" löschen
         if (selectStatementSb.substring(selectStatementSb.length() - 4).equals(" and")) {
@@ -106,8 +106,8 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
             typedQuery.setParameter("abmeldemonatBeginn", getMonatBeginn(abmeldemonat));
             typedQuery.setParameter("abmeldemonatEnde", getMonatEnde(abmeldemonat));
         }
-        if (stichdatumKursabmeldung != null) {
-            typedQuery.setParameter("stichdatumKursabmeldung", stichdatumKursabmeldung);
+        if (keineAbgemeldetenKurseAnzeigen && stichtagSchuelerSuchen != null) {
+            typedQuery.setParameter("stichtagSchuelerSuchen", stichtagSchuelerSuchen);
         }
         List<Kursanmeldung> kurseinteilungenFound = typedQuery.getResultList();
         // Sortieren gemäss compareTo in Kurseinteilung

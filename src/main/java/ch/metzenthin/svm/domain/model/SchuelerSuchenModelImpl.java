@@ -466,7 +466,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData, (wochentag == Wochentag.ALLE ? null : wochentag),
                 zeitBeginn, (mitarbeiter == MITARBEITER_ALLE ? null : mitarbeiter), null, null, maercheneinteilungenMapTableData, maerchenTableData,
                 (gruppe == Gruppe.ALLE ? null : gruppe), (elternmithilfeCode == ELTERNMITHILFE_CODE_ALLE ? null : elternmithilfeCode), kursFuerSucheBeruecksichtigen,
-                maerchenFuerSucheBeruecksichtigen, (rollen != null), stichtag, isNurKursanmeldungenOhneVorzeitigeAbmeldung());
+                maerchenFuerSucheBeruecksichtigen, (rollen != null), stichtag, isKeineAbgemeldetenKurseAnzeigen());
     }
 
     private Semester determineSemesterTableData(SvmModel svmModel) {
@@ -502,7 +502,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
                 (!kursFuerSucheBeruecksichtigen ? null : zeitBeginn),
                 (!kursFuerSucheBeruecksichtigen || mitarbeiter == MITARBEITER_ALLE ? null : mitarbeiter),
                 stichtag,
-                isNurKursanmeldungenOhneVorzeitigeAbmeldung(),
+                isKeineAbgemeldetenKurseAnzeigen(),
                 null,
                 null);
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
@@ -529,10 +529,8 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         return null;
     }
 
-    private boolean isNurKursanmeldungenOhneVorzeitigeAbmeldung() {
-        // Wenn nach abgemeldeten Schülern gesucht, soll (wenn vorhanden) auch immer der/die abgemeldete(n) Kurs(e)
-        // angezeigt werden
-        return anmeldestatus != AnmeldestatusSelected.ABGEMELDET;
+    private boolean isKeineAbgemeldetenKurseAnzeigen() {
+        return anmeldestatus == AnmeldestatusSelected.ANGEMELDET;
     }
 
     private Map<Schueler,Maercheneinteilung> determineMaercheneinteilungenMapTableData(List<Schueler> schuelerList, Maerchen maerchen) {

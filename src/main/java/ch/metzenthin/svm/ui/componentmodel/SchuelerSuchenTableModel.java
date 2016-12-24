@@ -151,7 +151,7 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
         return schuelerSuchenTableData.getStichtag();
     }
 
-    public boolean isNurKursanmeldungenOhneVorzeitigeAbmeldung() {
-        return schuelerSuchenTableData.isNurKursanmeldungenOhneVorzeitigeAbmeldung();
+    public boolean isKeineAbgemeldetenKurseAnzeigen() {
+        return schuelerSuchenTableData.isKeineAbgemeldetenKurseAnzeigen();
     }
 }

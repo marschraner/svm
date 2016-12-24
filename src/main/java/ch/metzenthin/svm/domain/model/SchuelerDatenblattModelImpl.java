@@ -592,10 +592,10 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         Time zeitBeginn = schuelerSuchenTableModel.getZeitBeginn();
         Mitarbeiter mitarbeiter = schuelerSuchenTableModel.getLehrkraft();
         Calendar stichtag = schuelerSuchenTableModel.getStichtag();
-        boolean nurKursanmeldungenOhneVorzeitigeAbmeldung = schuelerSuchenTableModel.isNurKursanmeldungenOhneVorzeitigeAbmeldung();
+        boolean keineAbgemeldetenKurseAnzeigen = schuelerSuchenTableModel.isKeineAbgemeldetenKurseAnzeigen();
         Calendar anmeldemonat = schuelerSuchenTableModel.getAnmledemonat();
         Calendar abmeldemonat = schuelerSuchenTableModel.getAbmledemonat();
-        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, wochentag, zeitBeginn, mitarbeiter, stichtag, nurKursanmeldungenOhneVorzeitigeAbmeldung, anmeldemonat, abmeldemonat);
+        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, wochentag, zeitBeginn, mitarbeiter, stichtag, keineAbgemeldetenKurseAnzeigen, anmeldemonat, abmeldemonat);
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
         schuelerSuchenTableModel.getSchuelerSuchenTableData().setKurse(findKurseMapSchuelerSemesterCommand.getKurseMap());
         // Maercheneinteilungen-Map neu setzen

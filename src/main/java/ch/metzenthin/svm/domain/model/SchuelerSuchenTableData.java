@@ -34,10 +34,10 @@ public class SchuelerSuchenTableData {
     private final boolean maerchenFuerSucheBeruecksichtigen;
     private final boolean nachRollenGesucht;
     private final Calendar stichtag;
-    private final boolean nurKursanmeldungenOhneVorzeitigeAbmeldung;
+    private final boolean keineAbgemeldetenKurseAnzeigen;
     private List<Field> columns = new ArrayList<>();
 
-    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean kursFuerSucheBeruecksichtigen, boolean maerchenFuerSucheBeruecksichtigen, boolean nachRollenGesucht, Calendar stichtag, boolean nurKursanmeldungenOhneVorzeitigeAbmeldung) {
+    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean kursFuerSucheBeruecksichtigen, boolean maerchenFuerSucheBeruecksichtigen, boolean nachRollenGesucht, Calendar stichtag, boolean keineAbgemeldetenKurseAnzeigen) {
         this.schuelerList = schuelerList;
         this.kurse = kurse;
         this.semester = semester;
@@ -54,7 +54,7 @@ public class SchuelerSuchenTableData {
         this.maerchenFuerSucheBeruecksichtigen = maerchenFuerSucheBeruecksichtigen;
         this.nachRollenGesucht = nachRollenGesucht;
         this.stichtag = stichtag;
-        this.nurKursanmeldungenOhneVorzeitigeAbmeldung = nurKursanmeldungenOhneVorzeitigeAbmeldung;
+        this.keineAbgemeldetenKurseAnzeigen = keineAbgemeldetenKurseAnzeigen;
         initColumns();
     }
 
@@ -331,7 +331,7 @@ public class SchuelerSuchenTableData {
         return stichtag;
     }
 
-    public boolean isNurKursanmeldungenOhneVorzeitigeAbmeldung() {
-        return nurKursanmeldungenOhneVorzeitigeAbmeldung;
+    public boolean isKeineAbgemeldetenKurseAnzeigen() {
+        return keineAbgemeldetenKurseAnzeigen;
     }
 }
