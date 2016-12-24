@@ -146,4 +146,12 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
     public boolean isNachRollenGesucht() {
         return schuelerSuchenTableData.isNachRollenGesucht();
     }
+
+    public Calendar getStichtag() {
+        return schuelerSuchenTableData.getStichtag();
+    }
+
+    public boolean isNurKursanmeldungenOhneVorzeitigeAbmeldung() {
+        return schuelerSuchenTableData.isNurKursanmeldungenOhneVorzeitigeAbmeldung();
+    }
 }

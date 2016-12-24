@@ -31,11 +31,13 @@ public class SchuelerSuchenTableData {
     private final Gruppe gruppe;
     private final ElternmithilfeCode elternmithilfeCode;
     private final boolean kursFuerSucheBeruecksichtigen;
-    private boolean maerchenFuerSucheBeruecksichtigen;
-    private boolean nachRollenGesucht;
+    private final boolean maerchenFuerSucheBeruecksichtigen;
+    private final boolean nachRollenGesucht;
+    private final Calendar stichtag;
+    private final boolean nurKursanmeldungenOhneVorzeitigeAbmeldung;
     private List<Field> columns = new ArrayList<>();
 
-    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean kursFuerSucheBeruecksichtigen, boolean maerchenFuerSucheBeruecksichtigen, boolean nachRollenGesucht) {
+    public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean kursFuerSucheBeruecksichtigen, boolean maerchenFuerSucheBeruecksichtigen, boolean nachRollenGesucht, Calendar stichtag, boolean nurKursanmeldungenOhneVorzeitigeAbmeldung) {
         this.schuelerList = schuelerList;
         this.kurse = kurse;
         this.semester = semester;
@@ -51,6 +53,8 @@ public class SchuelerSuchenTableData {
         this.kursFuerSucheBeruecksichtigen = kursFuerSucheBeruecksichtigen;
         this.maerchenFuerSucheBeruecksichtigen = maerchenFuerSucheBeruecksichtigen;
         this.nachRollenGesucht = nachRollenGesucht;
+        this.stichtag = stichtag;
+        this.nurKursanmeldungenOhneVorzeitigeAbmeldung = nurKursanmeldungenOhneVorzeitigeAbmeldung;
         initColumns();
     }
 
@@ -321,5 +325,13 @@ public class SchuelerSuchenTableData {
 
     public boolean isNachRollenGesucht() {
         return nachRollenGesucht;
+    }
+
+    public Calendar getStichtag() {
+        return stichtag;
+    }
+
+    public boolean isNurKursanmeldungenOhneVorzeitigeAbmeldung() {
+        return nurKursanmeldungenOhneVorzeitigeAbmeldung;
     }
 }

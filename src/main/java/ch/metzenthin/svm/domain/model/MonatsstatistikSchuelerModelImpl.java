@@ -73,7 +73,7 @@ public class MonatsstatistikSchuelerModelImpl extends AbstractModel implements M
         return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData, null, null, null,
                 (anAbmeldungenDispensationen == AnAbmeldungenDispensationenSelected.ANMELDUNGEN_KURSE ? monatJahr : null),
                 (anAbmeldungenDispensationen == AnAbmeldungenDispensationenSelected.ABMELDUNGEN_KURSE ? monatJahr : null),
-                maercheneinteilungenMapTableData, maerchenTableData, null, null, false, false, false);
+                maercheneinteilungenMapTableData, maerchenTableData, null, null, false, false, false, null, false);
     }
 
     private Semester determineSemesterTableData(SvmModel svmModel) {
@@ -103,7 +103,8 @@ public class MonatsstatistikSchuelerModelImpl extends AbstractModel implements M
 
     private Map<Schueler, List<Kurs>> determineKurseMapTableData(List<Schueler> schuelerList, Semester semester) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, null, null, null,
+        FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(
+                schuelerList, semester, null, null, null, null, false,
                 (anAbmeldungenDispensationen == AnAbmeldungenDispensationenSelected.ANMELDUNGEN_KURSE ? monatJahr : null),
                 (anAbmeldungenDispensationen == AnAbmeldungenDispensationenSelected.ABMELDUNGEN_KURSE ? monatJahr : null));
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);

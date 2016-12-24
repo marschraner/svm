@@ -17,6 +17,10 @@ import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNumberOfWeeksBe
 @Table(name="Semester")
 public class Semester implements Comparable<Semester> {
 
+    // Falls eine Kursabmeldung mindestens ANZAHL_TAGE_VOR_SEMESTERENDE_FUER_STICHDATUM_VORZEITIGE_ABMELDUNG vor
+    // Semesterende liegt, gilt dies als vorzeitige Abmeldung
+    private static final int ANZAHL_TAGE_VOR_SEMESTERENDE_FUER_STICHDATUM_VORZEITIGE_ABMELDUNG = 5;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "semester_id")
@@ -208,5 +212,12 @@ public class Semester implements Comparable<Semester> {
 
     public Set<Semesterrechnung> getSemesterrechnungen() {
         return semesterrechnungen;
+    }
+
+    @Transient
+    public Calendar getStichdatumVorzeitigeAbmeldung() {
+        Calendar stichdatumVorzeitigeAbmeldung = (Calendar) semesterende.clone();
+        stichdatumVorzeitigeAbmeldung.add(Calendar.DAY_OF_YEAR, -Semester.ANZAHL_TAGE_VOR_SEMESTERENDE_FUER_STICHDATUM_VORZEITIGE_ABMELDUNG);
+        return stichdatumVorzeitigeAbmeldung;
     }
 }

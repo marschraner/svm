@@ -465,7 +465,8 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         Map<Schueler, Maercheneinteilung> maercheneinteilungenMapTableData = determineMaercheneinteilungenMapTableData(schuelerList, maerchenTableData);
         return new SchuelerSuchenTableData(schuelerList, kurseMapTableData, semesterTableData, (wochentag == Wochentag.ALLE ? null : wochentag),
                 zeitBeginn, (mitarbeiter == MITARBEITER_ALLE ? null : mitarbeiter), null, null, maercheneinteilungenMapTableData, maerchenTableData,
-                (gruppe == Gruppe.ALLE ? null : gruppe), (elternmithilfeCode == ELTERNMITHILFE_CODE_ALLE ? null : elternmithilfeCode), kursFuerSucheBeruecksichtigen, maerchenFuerSucheBeruecksichtigen, (rollen != null));
+                (gruppe == Gruppe.ALLE ? null : gruppe), (elternmithilfeCode == ELTERNMITHILFE_CODE_ALLE ? null : elternmithilfeCode), kursFuerSucheBeruecksichtigen,
+                maerchenFuerSucheBeruecksichtigen, (rollen != null), stichtag, isNurKursanmeldungenOhneVorzeitigeAbmeldung());
     }
 
     private Semester determineSemesterTableData(SvmModel svmModel) {
@@ -500,6 +501,8 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
                 (!kursFuerSucheBeruecksichtigen || wochentag == Wochentag.ALLE ? null : wochentag),
                 (!kursFuerSucheBeruecksichtigen ? null : zeitBeginn),
                 (!kursFuerSucheBeruecksichtigen || mitarbeiter == MITARBEITER_ALLE ? null : mitarbeiter),
+                stichtag,
+                isNurKursanmeldungenOhneVorzeitigeAbmeldung(),
                 null,
                 null);
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
@@ -524,6 +527,12 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
             }
         }
         return null;
+    }
+
+    private boolean isNurKursanmeldungenOhneVorzeitigeAbmeldung() {
+        // Wenn nach abgemeldeten Schülern gesucht, soll (wenn vorhanden) auch immer der/die abgemeldete(n) Kurs(e)
+        // angezeigt werden
+        return anmeldestatus != AnmeldestatusSelected.ABGEMELDET;
     }
 
     private Map<Schueler,Maercheneinteilung> determineMaercheneinteilungenMapTableData(List<Schueler> schuelerList, Maerchen maerchen) {

@@ -46,7 +46,8 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         return kurseinteilungenFound;
     }
 
-    public List<Kursanmeldung> findKursanmeldungen(Schueler schueler, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat) {
+    public List<Kursanmeldung> findKursanmeldungen(Schueler schueler, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat, Calendar stichdatumKursabmeldung) {
+
         StringBuilder selectStatementSb = new StringBuilder("select k from Kursanmeldung k");
         if (mitarbeiter != null) {
             selectStatementSb.append(" join k.kurs.lehrkraefte lk");
@@ -72,6 +73,9 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         }
         if (abmeldemonat != null) {
             selectStatementSb.append(" k.abmeldedatum >= :abmeldemonatBeginn and k.abmeldedatum <= :abmeldemonatEnde and");
+        }
+        if (stichdatumKursabmeldung != null) {
+            selectStatementSb.append(" (k.abmeldedatum is null or k.abmeldedatum > :stichdatumKursabmeldung) and");
         }
         // Letztes " and" löschen
         if (selectStatementSb.substring(selectStatementSb.length() - 4).equals(" and")) {
@@ -102,6 +106,9 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
             typedQuery.setParameter("abmeldemonatBeginn", getMonatBeginn(abmeldemonat));
             typedQuery.setParameter("abmeldemonatEnde", getMonatEnde(abmeldemonat));
         }
+        if (stichdatumKursabmeldung != null) {
+            typedQuery.setParameter("stichdatumKursabmeldung", stichdatumKursabmeldung);
+        }
         List<Kursanmeldung> kurseinteilungenFound = typedQuery.getResultList();
         // Sortieren gemäss compareTo in Kurseinteilung
         Collections.sort(kurseinteilungenFound);
@@ -122,7 +129,5 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         statistikMonatEnde.add(Calendar.DAY_OF_YEAR, -1);
         return statistikMonatEnde;
     }
-
-
 }
 

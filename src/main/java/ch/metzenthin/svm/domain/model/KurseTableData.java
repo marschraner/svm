@@ -4,10 +4,11 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.common.utils.StringNumber;
 import ch.metzenthin.svm.persistence.entities.Kurs;
+import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
+import ch.metzenthin.svm.persistence.entities.Semester;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 
@@ -18,6 +19,7 @@ public class KurseTableData {
 
     private List<Kurs> kurse;
     private List<Field> columns = new ArrayList<>();
+    private Calendar today = new GregorianCalendar();
 
     public KurseTableData(List<Kurs> kurse) {
         this.kurse = kurse;
@@ -88,7 +90,7 @@ public class KurseTableData {
                 value = kurs.getBemerkungen();
                 break;
             case ANZAHL_SCHUELER:
-                value = kurs.getKursanmeldungen().size();
+                value = getAnzahlKursanmeldungenOhneVorzeitigeAbmeldungen(kurs.getSemester(), kurs.getKursanmeldungen());
                 break;
             default:
                 break;
@@ -130,13 +132,29 @@ public class KurseTableData {
     public int getAnzahlSchueler() {
         int anzahlSchueler = 0;
         for (Kurs kurs : kurse) {
-            anzahlSchueler += kurs.getKursanmeldungen().size();
+            anzahlSchueler += getAnzahlKursanmeldungenOhneVorzeitigeAbmeldungen(kurs.getSemester(), kurs.getKursanmeldungen());
         }
         return anzahlSchueler;
     }
 
     public Kurs getKursAt(int rowIndex) {
         return kurse.get(rowIndex);
+    }
+
+    private int getAnzahlKursanmeldungenOhneVorzeitigeAbmeldungen(Semester semester, Collection<Kursanmeldung> kursanmeldungen) {
+        int anzahl = 0;
+        Calendar stichdatumKursabmeldung = semester.getStichdatumVorzeitigeAbmeldung();
+        // Kursabmeldungen später als das aktuelle Datum sollen alle angezeigt werden
+        // -> Falls der Stichtag für Schülersuche früher ist als das Stichdatum für vorzeitige Abmeldung ersteres verwenden
+        if (today.before(stichdatumKursabmeldung)) {
+            stichdatumKursabmeldung = today;
+        }
+        for (Kursanmeldung kursanmeldung : kursanmeldungen) {
+            if (kursanmeldung.getAbmeldedatum() == null || kursanmeldung.getAbmeldedatum().after(stichdatumKursabmeldung)) {
+                anzahl++;
+            }
+        }
+        return anzahl;
     }
 
 }
