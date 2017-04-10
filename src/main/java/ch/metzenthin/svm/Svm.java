@@ -1,6 +1,7 @@
 package ch.metzenthin.svm;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.CommandInvokerImpl;
 import ch.metzenthin.svm.domain.model.ModelFactory;
@@ -12,6 +13,7 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 
 import java.awt.*;
+import java.util.Properties;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 
@@ -27,27 +29,60 @@ public class Svm {
      * invoked from the event-dispatching thread.
      */
     private static void createAndShowGUI(SvmContext svmContext) {
-        // Make sure we have nice window decorations.
-        for (UIManager.LookAndFeelInfo lookAndFeelInfo : UIManager.getInstalledLookAndFeels()) {
-            String laf = lookAndFeelInfo.getName();
-            switch (laf) {
-                case "Mac" :
-                case "GTK+" :
-                case "Windows" :
-                    try {
-                        UIManager.setLookAndFeel(lookAndFeelInfo.getClassName());
-                    } catch (Exception ignore) {
-                    }
+
+        // Look and Feel
+        String lookAndFeelName = null;
+        String lookAndFeelClassName = null;
+
+        // Wert aus SVM-Properties-File verwenden (falls dort gesetzt)
+        Properties svmProperties = SvmProperties.getSvmProperties();
+        String lookAndFeelNameSvmProperty = svmProperties.getProperty(SvmProperties.KEY_JAVA_LOOK_AND_FEEL);
+        if (lookAndFeelNameSvmProperty != null && !lookAndFeelNameSvmProperty.isEmpty()) {
+            for (UIManager.LookAndFeelInfo lookAndFeelInfo : UIManager.getInstalledLookAndFeels()) {
+                if (lookAndFeelNameSvmProperty.toLowerCase().equals(lookAndFeelInfo.getName().toLowerCase())) {
+                    lookAndFeelName = lookAndFeelInfo.getName();
+                    lookAndFeelClassName = lookAndFeelInfo.getClassName();
                     break;
-                default:
-                    break;
+                }
             }
-            if ("GTK+".equals(laf)) {
-                GtkPlusLookAndFeelWorkaround.installGtkPopupBugWorkaround();
+            if (lookAndFeelName == null) {
+                LOGGER.warn("'" + lookAndFeelNameSvmProperty + "' ist kein gültiger Wert für SVM-Property  '" +
+                        SvmProperties.KEY_JAVA_LOOK_AND_FEEL + "'. Verwende Default-Wert (Mac, GTK+ oder Windows).");
             }
-            if ("Mac".equals(laf)) {
-                svmContext.getDialogIcons().createDialogIcons();
+        }
+
+        // Look and Feel in Properties-File nicht gesetzt oder ungültig -> Default-Wert verwenden
+        if (lookAndFeelName == null) {
+            for (UIManager.LookAndFeelInfo lookAndFeelInfo : UIManager.getInstalledLookAndFeels()) {
+                switch (lookAndFeelInfo.getName()) {
+                    case "Mac":
+                    case "GTK+":
+                    case "Windows":
+                        lookAndFeelName = lookAndFeelInfo.getName();
+                        lookAndFeelClassName = lookAndFeelInfo.getClassName();
+                        break;
+                    default:
+                        break;
+                }
+
             }
+        }
+
+        if (lookAndFeelName == null) {
+            LOGGER.error("Kein gültiges Look and Feel gefunden!");
+            System.exit(1);
+        }
+
+        try {
+            UIManager.setLookAndFeel(lookAndFeelClassName);
+        } catch (Exception ignore) {
+        }
+
+        if ("GTK+".equals(lookAndFeelName)) {
+            GtkPlusLookAndFeelWorkaround.installGtkPopupBugWorkaround();
+        }
+        if ("Mac".equals(lookAndFeelName)) {
+            svmContext.getDialogIcons().createDialogIcons();
         }
 
         // Create and set up the window.
