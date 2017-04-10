@@ -20,6 +20,7 @@ log/
 .idea/dataSources.ids
 .idea/dataSources.xml
 .idea/dataSources.local.xml
+.idea/kotlinc.xml
 
 # fillData
 sql/fillData.sql
