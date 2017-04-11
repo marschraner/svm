@@ -22,7 +22,7 @@ public class SvmProperties {
     public static final String KEY_SPEZIELLES_ABSENZENLISTEN_TEMPLATE = "spezielles_absenzenlisten_template";
     public static final String KEY_EMAIL_CLIENT_MULTIPLE_MAILS_SEPARATOR ="email_client_multiple_mails_separator";
     public static final String KEY_NEUSTE_ZUOBERST = "neuste_zuoberst";
-    public static final String KEY_JAVA_LOOK_AND_FEEL = "java_look_and_feel";
+    public static final String KEY_PREFERRED_LOOK_AND_FEEL = "preferred_look_and_feel";
 
     public static void createSvmPropertiesFileDefault() {
 
@@ -53,8 +53,7 @@ public class SvmProperties {
             prop.setProperty(KEY_SPEZIELLES_ABSENZENLISTEN_TEMPLATE, "<Schuljahr>" + File.separator + "Semester_<Semester>" + File.separator + "Spezielles_Absenzenlisten-Template_<Schuljahr>_<Semester>_<Wochentag>.docx");
             prop.setProperty(KEY_EMAIL_CLIENT_MULTIPLE_MAILS_SEPARATOR, ";");
             prop.setProperty(KEY_NEUSTE_ZUOBERST, "true");
-            // Kein Default-Wert für KEY_JAVA_LOOK_AND_FEEL. Default: Mac, GTK+, Windows (je nach OS).
-            // Gültige Werte: Nimbus, Metal, CDE/Motif, Mac, GTK+, Windows
+            prop.setProperty(KEY_PREFERRED_LOOK_AND_FEEL, "");   // optional
             prop.store(propertiesFile, null);
 
             propertiesFile.close();

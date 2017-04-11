@@ -30,58 +30,42 @@ public class Svm {
      */
     private static void createAndShowGUI(SvmContext svmContext) {
 
-        // Look and Feel
-        String lookAndFeelName = null;
-        String lookAndFeelClassName = null;
-
-        // Wert aus SVM-Properties-File verwenden (falls dort gesetzt)
+        // Optionaler Look and Feel-Wert aus SVM Properties abfragen
         Properties svmProperties = SvmProperties.getSvmProperties();
-        String lookAndFeelNameSvmProperty = svmProperties.getProperty(SvmProperties.KEY_JAVA_LOOK_AND_FEEL);
-        if (lookAndFeelNameSvmProperty != null && !lookAndFeelNameSvmProperty.isEmpty()) {
+        String svmPropertyLookAndFeel = svmProperties.getProperty(SvmProperties.KEY_PREFERRED_LOOK_AND_FEEL);
+
+        // Preferiertestes Look and Feel zuerst
+        String[] preferredLookAndFeels = new String[]{svmPropertyLookAndFeel, "Mac", "GTK+", "Windows", "Nimbus"};
+        String selectedLookAndFeel = "";
+
+        preferredLookAndFeelsLoop:
+        for (String preferredLookAndFeel : preferredLookAndFeels) {
+            if (preferredLookAndFeel == null || preferredLookAndFeel.isEmpty()) {
+                continue;
+            }
             for (UIManager.LookAndFeelInfo lookAndFeelInfo : UIManager.getInstalledLookAndFeels()) {
-                if (lookAndFeelNameSvmProperty.toLowerCase().equals(lookAndFeelInfo.getName().toLowerCase())) {
-                    lookAndFeelName = lookAndFeelInfo.getName();
-                    lookAndFeelClassName = lookAndFeelInfo.getClassName();
-                    break;
+                if (preferredLookAndFeel.toLowerCase().equals(lookAndFeelInfo.getName().toLowerCase())) {
+                    try {
+                        UIManager.setLookAndFeel(lookAndFeelInfo.getClassName());
+                    } catch (Exception ignore) {
+                    }
+                    selectedLookAndFeel = lookAndFeelInfo.getName();
+                    break preferredLookAndFeelsLoop;
                 }
             }
-            if (lookAndFeelName == null) {
-                LOGGER.warn("'" + lookAndFeelNameSvmProperty + "' ist kein gültiger Wert für SVM-Property  '" +
-                        SvmProperties.KEY_JAVA_LOOK_AND_FEEL + "'. Verwende Default-Wert (Mac, GTK+ oder Windows).");
-            }
         }
 
-        // Look and Feel in Properties-File nicht gesetzt oder ungültig -> Default-Wert verwenden
-        if (lookAndFeelName == null) {
-            for (UIManager.LookAndFeelInfo lookAndFeelInfo : UIManager.getInstalledLookAndFeels()) {
-                switch (lookAndFeelInfo.getName()) {
-                    case "Mac":
-                    case "GTK+":
-                    case "Windows":
-                        lookAndFeelName = lookAndFeelInfo.getName();
-                        lookAndFeelClassName = lookAndFeelInfo.getClassName();
-                        break;
-                    default:
-                        break;
-                }
-
-            }
+        if (svmPropertyLookAndFeel != null && !svmPropertyLookAndFeel.isEmpty()
+                && !svmPropertyLookAndFeel.toLowerCase().equals(selectedLookAndFeel.toLowerCase())) {
+            LOGGER.warn("'" + svmPropertyLookAndFeel + "' ist kein gültiger Wert für SVM-Property '" +
+                    SvmProperties.KEY_PREFERRED_LOOK_AND_FEEL + "'. Verwende stattdessen Default-Look and Feel '" +
+                    selectedLookAndFeel + "'.");
         }
 
-        if (lookAndFeelName == null) {
-            LOGGER.error("Kein gültiges Look and Feel gefunden!");
-            System.exit(1);
-        }
-
-        try {
-            UIManager.setLookAndFeel(lookAndFeelClassName);
-        } catch (Exception ignore) {
-        }
-
-        if ("GTK+".equals(lookAndFeelName)) {
+        if ("GTK+".equals(selectedLookAndFeel)) {
             GtkPlusLookAndFeelWorkaround.installGtkPopupBugWorkaround();
         }
-        if ("Mac".equals(lookAndFeelName)) {
+        if ("Mac".equals(selectedLookAndFeel)) {
             svmContext.getDialogIcons().createDialogIcons();
         }
 
