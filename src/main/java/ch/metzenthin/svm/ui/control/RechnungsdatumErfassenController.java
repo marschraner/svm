@@ -161,10 +161,21 @@ public class RechnungsdatumErfassenController extends AbstractController {
     private void onOk() {
         // Warnung
         Object[] optionsWarnung = {"Fortfahren", "Abbrechen"};
+        String warningMessage = "";
+        switch (rechnungstyp) {
+            case VORRECHNUNG:
+                warningMessage = "Allfällige frühere Vorrechnungsdatum-Einträge werden \n" +
+                        "mit dem neuen Rechnungsdatum überschrieben. Fortfahren?";
+                break;
+            case NACHRECHNUNG:
+                warningMessage = "Allfällige frühere Nachrechnungsdatum-Einträge werden mit dem neuen \n" +
+                        "Rechnungsdatum überschrieben und bereits getätigte Zahlungen der \n" +
+                        "Vorrechnungen in die Nachrechnungen kopiert. Fortfahren?";
+                break;
+        }
         int n = JOptionPane.showOptionDialog(
                 null,
-                "Allfällige frühere Rechnungsdatum-Einträge des gewählten Rechnungstyps \n" +
-                        "werden mit dem neuen Rechnungsdatum überschrieben. Fortfahren?",
+                warningMessage,
                 "Warnung",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
@@ -180,7 +191,17 @@ public class RechnungsdatumErfassenController extends AbstractController {
             // Schliessen soll keinen Effekt haben
             dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             dialog.setTitle("Rechnungsdatum wird gesetzt");
-            final JOptionPane optionPane = new JOptionPane("Das Rechnungsdatum wird gesetzt. Bitte warten ...", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, svmContext.getDialogIcons().getInformationIcon(), new Object[]{}, null);
+            String infoMessage = "";
+            switch (rechnungstyp) {
+                case VORRECHNUNG:
+                    infoMessage = "Das Rechnungsdatum wird gesetzt. Bitte warten ...";
+                    break;
+                case NACHRECHNUNG:
+                    infoMessage = "Das Rechnungsdatum wird gesetzt und Zahlungen werden kopiert. Bitte warten ...";
+                    break;
+            }
+
+            final JOptionPane optionPane = new JOptionPane(infoMessage, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, svmContext.getDialogIcons().getInformationIcon(), new Object[]{}, null);
             dialog.setContentPane(optionPane);
             // Public method to center the dialog after calling pack()
             dialog.pack();
