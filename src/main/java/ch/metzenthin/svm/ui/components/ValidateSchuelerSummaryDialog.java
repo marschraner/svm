@@ -29,7 +29,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
     private JLabel lblVater;
     private JLabel infoIdentischeAdressen;
     private JLabel geschwisterValue;
-    private JLabel schuelerGleicherRecĥnungsempfaengerValue;
+    private JLabel schuelerGleicherRechnungsempfaengerValue;
     private JLabel anmeldedatumValue;
     private JLabel geburtsdatumValue;
     private JLabel lblAndereSchuelerGleicherRechnungsempfaenger1;
@@ -186,9 +186,9 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
                 schuelerGleicherRechnungsempfaengerStb.append(schueler.toString());
             }
             schuelerGleicherRechnungsempfaengerStb.append("</html>");
-            schuelerGleicherRecĥnungsempfaengerValue.setText(schuelerGleicherRechnungsempfaengerStb.toString());
+            schuelerGleicherRechnungsempfaengerValue.setText(schuelerGleicherRechnungsempfaengerStb.toString());
         } else {
-            schuelerGleicherRecĥnungsempfaengerValue.setText("-");
+            schuelerGleicherRechnungsempfaengerValue.setText("-");
         }
     }
 
@@ -201,6 +201,25 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         schuelerErfassenModel.abbrechen();
         abbrechen();
         dispose();
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
     }
 
     {
@@ -263,7 +282,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         gbc.gridy = 0;
         gbc.insets = new Insets(10, 10, 10, 10);
         panel2.add(panel3, gbc);
-        panel3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Zusammefassung", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel3.getFont().getName(), Font.BOLD, panel3.getFont().getSize()), new Color(-16777216)));
+        panel3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Zusammefassung", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel3.getFont()), new Color(-16777216)));
         lblSchueler = new JLabel();
         lblSchueler.setText("Schüler:");
         gbc = new GridBagConstraints();
@@ -421,14 +440,14 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         gbc.gridy = 12;
         gbc.anchor = GridBagConstraints.WEST;
         panel3.add(lblAndereSchuelerGleicherRechnungsempfaenger2, gbc);
-        schuelerGleicherRecĥnungsempfaengerValue = new JLabel();
-        schuelerGleicherRecĥnungsempfaengerValue.setText("SchuelerGleicherRechnungsempfaengerValue");
+        schuelerGleicherRechnungsempfaengerValue = new JLabel();
+        schuelerGleicherRechnungsempfaengerValue.setText("SchuelerGleicherRechnungsempfaengerValue");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 11;
         gbc.gridheight = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        panel3.add(schuelerGleicherRecĥnungsempfaengerValue, gbc);
+        panel3.add(schuelerGleicherRechnungsempfaengerValue, gbc);
         final JLabel label2 = new JLabel();
         label2.setText("Anmeldedatum:");
         gbc = new GridBagConstraints();

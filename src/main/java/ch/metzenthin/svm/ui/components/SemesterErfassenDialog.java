@@ -118,7 +118,7 @@ public class SemesterErfassenDialog extends JDialog {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         datenPanel.add(panel1, gbc);
-        panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Semester", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel1.getFont().getName(), Font.BOLD, panel1.getFont().getSize())));
+        panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Semester", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel1.getFont())));
         final JLabel label1 = new JLabel();
         label1.setText("Schuljahr");
         gbc = new GridBagConstraints();
@@ -399,6 +399,25 @@ public class SemesterErfassenDialog extends JDialog {
         label6.setLabelFor(txtFerienende1);
         label7.setLabelFor(txtFerienbeginn2);
         label8.setLabelFor(txtFerienende2);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
     }
 
     /**

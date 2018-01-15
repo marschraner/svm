@@ -90,7 +90,8 @@ public class CodesPanel {
         gbc.insets = new Insets(10, 10, 20, 10);
         datenPanel.add(titelPanel, gbc);
         lblTitle = new JLabel();
-        lblTitle.setFont(new Font(lblTitle.getFont().getName(), lblTitle.getFont().getStyle(), 36));
+        Font lblTitleFont = this.$$$getFont$$$(null, -1, 36, lblTitle.getFont());
+        if (lblTitleFont != null) lblTitle.setFont(lblTitleFont);
         lblTitle.setText("Codes verwalten");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -117,7 +118,7 @@ public class CodesPanel {
         gbc.gridx = 0;
         gbc.gridy = 2;
         datenPanel.add(panel2, gbc);
-        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Codes", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel2.getFont().getName(), Font.BOLD, panel2.getFont().getSize())));
+        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Codes", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel2.getFont())));
         final JPanel spacer3 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -266,6 +267,25 @@ public class CodesPanel {
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel5.add(spacer12, gbc);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
     }
 
     /**

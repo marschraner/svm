@@ -2672,7 +2672,7 @@
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                   </hspacer>
-                  <component id="4f3db" class="javax.swing.JButton" binding="btnZurück">
+                  <component id="4f3db" class="javax.swing.JButton" binding="btnZurueck">
                     <constraints>
                       <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                       <gridbag weightx="0.0" weighty="0.0"/>

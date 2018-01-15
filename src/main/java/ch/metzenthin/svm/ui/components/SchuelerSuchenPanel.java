@@ -285,7 +285,8 @@ public class SchuelerSuchenPanel {
         gbc.insets = new Insets(10, 10, 20, 10);
         datenPanel.add(titelPanel, gbc);
         final JLabel label1 = new JLabel();
-        label1.setFont(new Font(label1.getFont().getName(), label1.getFont().getStyle(), 36));
+        Font label1Font = this.$$$getFont$$$(null, -1, 36, label1.getFont());
+        if (label1Font != null) label1.setFont(label1Font);
         label1.setText("Schüler suchen");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -318,7 +319,7 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 0);
         panelLeft.add(stammdatenPanel, gbc);
-        stammdatenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Stammdaten", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(stammdatenPanel.getFont().getName(), Font.BOLD, stammdatenPanel.getFont().getSize()), new Color(-16777216)));
+        stammdatenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Stammdaten", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, stammdatenPanel.getFont()), new Color(-16777216)));
         final JLabel label2 = new JLabel();
         label2.setText("Nachname");
         gbc = new GridBagConstraints();
@@ -744,7 +745,7 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 10, 10, 0);
         panelLeft.add(statusDispensationGeschlechtPanel, gbc);
-        statusDispensationGeschlechtPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Status, Dispensation", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(statusDispensationGeschlechtPanel.getFont().getName(), Font.BOLD, statusDispensationGeschlechtPanel.getFont().getSize()), new Color(-16777216)));
+        statusDispensationGeschlechtPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Status, Dispensation", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, statusDispensationGeschlechtPanel.getFont()), new Color(-16777216)));
         final JLabel label12 = new JLabel();
         label12.setText("Status");
         gbc = new GridBagConstraints();
@@ -909,7 +910,7 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 10, 10, 0);
         panelLeft.add(codesPanel, gbc);
-        codesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schüler-Code", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(codesPanel.getFont().getName(), Font.BOLD, codesPanel.getFont().getSize()), new Color(-16777216)));
+        codesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schüler-Code", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, codesPanel.getFont()), new Color(-16777216)));
         final JLabel label15 = new JLabel();
         label15.setText("Code");
         gbc = new GridBagConstraints();
@@ -973,7 +974,7 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 0, 10, 10);
         panelRight.add(kursPanel, gbc);
-        kursPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Kurs", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(kursPanel.getFont().getName(), Font.BOLD, kursPanel.getFont().getSize()), new Color(-16777216)));
+        kursPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Kurs", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, kursPanel.getFont()), new Color(-16777216)));
         final JLabel label16 = new JLabel();
         label16.setText("Wochentag");
         gbc = new GridBagConstraints();
@@ -1124,7 +1125,7 @@ public class SchuelerSuchenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 0, 10, 10);
         panelRight.add(maerchenPanel, gbc);
-        maerchenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Märchen", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(maerchenPanel.getFont().getName(), Font.BOLD, maerchenPanel.getFont().getSize())));
+        maerchenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Märchen", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, maerchenPanel.getFont())));
         final JLabel label21 = new JLabel();
         label21.setText("Märchen");
         gbc = new GridBagConstraints();
@@ -1358,6 +1359,25 @@ public class SchuelerSuchenPanel {
         buttonGroup.add(radioBtnWeiblich);
         buttonGroup.add(radioBtnMaennlich);
         buttonGroup.add(radioBtnGeschlechtAlle);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
     }
 
     /**

@@ -26,7 +26,7 @@ public class LektionsgebuehrenPanel {
     private JButton btnAbbrechen;
     private LektionsgebuehrenController lektionsgebuehrenController;
 
-    public LektionsgebuehrenPanel(SvmContext svmContext) {
+    LektionsgebuehrenPanel(SvmContext svmContext) {
         $$$setupUI$$$();
         createLektionsgebuehrenController(svmContext);
     }
@@ -47,6 +47,25 @@ public class LektionsgebuehrenPanel {
     private void createUIComponents() {
         lektionsgebuehrenTable = new JTable();
         lektionsgebuehrenTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
     }
 
     /**
@@ -75,7 +94,8 @@ public class LektionsgebuehrenPanel {
         gbc.insets = new Insets(10, 10, 20, 10);
         datenPanel.add(titelPanel, gbc);
         final JLabel label1 = new JLabel();
-        label1.setFont(new Font(label1.getFont().getName(), label1.getFont().getStyle(), 36));
+        Font label1Font = this.$$$getFont$$$(null, -1, 36, label1.getFont());
+        if (label1Font != null) label1.setFont(label1Font);
         label1.setText("Lektionsgebühren verwalten");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -95,7 +115,7 @@ public class LektionsgebuehrenPanel {
         gbc.gridx = 0;
         gbc.gridy = 2;
         datenPanel.add(panel2, gbc);
-        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Lektionsgebühren", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel2.getFont().getName(), Font.BOLD, panel2.getFont().getSize())));
+        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Lektionsgebühren", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel2.getFont())));
         final JScrollPane scrollPane1 = new JScrollPane();
         panel2.add(scrollPane1, BorderLayout.CENTER);
         lektionsgebuehrenTable.setOpaque(false);

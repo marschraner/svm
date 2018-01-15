@@ -105,7 +105,8 @@ public class SchuelerErfassenPanel {
         gbc.insets = new Insets(10, 10, 20, 10);
         panel1.add(titelPanel, gbc);
         lblTitel = new JLabel();
-        lblTitel.setFont(new Font(lblTitel.getFont().getName(), lblTitel.getFont().getStyle(), 36));
+        Font lblTitelFont = this.$$$getFont$$$(null, -1, 36, lblTitel.getFont());
+        if (lblTitelFont != null) lblTitel.setFont(lblTitelFont);
         lblTitel.setText("Neuen Schüler erfassen");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -152,7 +153,7 @@ public class SchuelerErfassenPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 10, 0);
         panel3.add(panel4, gbc);
-        panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schüler", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel4.getFont().getName(), Font.BOLD, panel4.getFont().getSize()), new Color(-16777216)));
+        panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schüler", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel4.getFont()), new Color(-16777216)));
         schuelerPanel = new SchuelerPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -194,7 +195,7 @@ public class SchuelerErfassenPanel {
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel3.add(panel5, gbc);
-        panel5.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Rechnungsempfänger Drittperson", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel5.getFont().getName(), Font.BOLD, panel5.getFont().getSize()), new Color(-16777216)));
+        panel5.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Rechnungsempfänger Drittperson", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel5.getFont()), new Color(-16777216)));
         drittempfaengerPanel = new AngehoerigerPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -228,7 +229,7 @@ public class SchuelerErfassenPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 10, 0);
         panel6.add(panel7, gbc);
-        panel7.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mutter", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel7.getFont().getName(), Font.BOLD, panel7.getFont().getSize()), new Color(-16777216)));
+        panel7.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mutter", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel7.getFont()), new Color(-16777216)));
         final JPanel spacer8 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -272,7 +273,7 @@ public class SchuelerErfassenPanel {
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel6.add(panel8, gbc);
-        panel8.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Vater", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel8.getFont().getName(), Font.BOLD, panel8.getFont().getSize()), new Color(-16777216)));
+        panel8.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Vater", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel8.getFont()), new Color(-16777216)));
         vaterPanel = new AngehoerigerPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -411,6 +412,25 @@ public class SchuelerErfassenPanel {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel11.add(spacer23, gbc);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
     }
 
     /**

@@ -226,7 +226,8 @@ public class SchuelerSuchenResultPanel {
         gbc.insets = new Insets(10, 10, 20, 10);
         datenPanel.add(titelPanel, gbc);
         final JLabel label1 = new JLabel();
-        label1.setFont(new Font(label1.getFont().getName(), label1.getFont().getStyle(), 36));
+        Font label1Font = this.$$$getFont$$$(null, -1, 36, label1.getFont());
+        if (label1Font != null) label1.setFont(label1Font);
         label1.setText("Suchresultat");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -250,7 +251,7 @@ public class SchuelerSuchenResultPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         datenPanel.add(panel4, gbc);
-        panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schüler", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel4.getFont().getName(), Font.BOLD, panel4.getFont().getSize())));
+        panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schüler", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel4.getFont())));
         schuelerSuchenResultTablePanel = new JPanel();
         schuelerSuchenResultTablePanel.setLayout(new BorderLayout(0, 0));
         gbc = new GridBagConstraints();
@@ -305,6 +306,25 @@ public class SchuelerSuchenResultPanel {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel4.add(spacer17, gbc);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
     }
 
     /**

@@ -104,7 +104,8 @@ public class MaercheneinteilungenPanel {
         gbc.insets = new Insets(10, 10, 10, 10);
         datenPanel.add(titelPanel, gbc);
         lblTitel = new JLabel();
-        lblTitel.setFont(new Font(lblTitel.getFont().getName(), lblTitel.getFont().getStyle(), 36));
+        Font lblTitelFont = this.$$$getFont$$$(null, -1, 36, lblTitel.getFont());
+        if (lblTitelFont != null) lblTitel.setFont(lblTitelFont);
         lblTitel.setText("Märcheneinteilungen");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -128,7 +129,7 @@ public class MaercheneinteilungenPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         datenPanel.add(panel2, gbc);
-        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Märcheneinteilungen", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(panel2.getFont().getName(), Font.BOLD, panel2.getFont().getSize()), new Color(-16777216)));
+        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Märcheneinteilungen", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel2.getFont()), new Color(-16777216)));
         maercheneinteilungenTablePanel = new JPanel();
         maercheneinteilungenTablePanel.setLayout(new BorderLayout(0, 0));
         gbc = new GridBagConstraints();
@@ -266,6 +267,25 @@ public class MaercheneinteilungenPanel {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel5.add(btnLoeschen, gbc);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
     }
 
     /**

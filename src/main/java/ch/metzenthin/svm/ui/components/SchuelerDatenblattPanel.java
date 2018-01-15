@@ -208,7 +208,8 @@ public class SchuelerDatenblattPanel {
         gbc.insets = new Insets(10, 10, 20, 10);
         panel1.add(titelPanel, gbc);
         lblVornameNachname = new JLabel();
-        lblVornameNachname.setFont(new Font(lblVornameNachname.getFont().getName(), lblVornameNachname.getFont().getStyle(), 36));
+        Font lblVornameNachnameFont = this.$$$getFont$$$(null, -1, 36, lblVornameNachname.getFont());
+        if (lblVornameNachnameFont != null) lblVornameNachname.setFont(lblVornameNachnameFont);
         lblVornameNachname.setText("Vorname Nachname");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -252,7 +253,7 @@ public class SchuelerDatenblattPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 10, 10, 10);
         panel2.add(stammdatenPanel, gbc);
-        stammdatenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Stammdaten", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(stammdatenPanel.getFont().getName(), Font.BOLD, stammdatenPanel.getFont().getSize()), new Color(-16777216)));
+        stammdatenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Stammdaten", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, stammdatenPanel.getFont()), new Color(-16777216)));
         lblSchueler = new JLabel();
         lblSchueler.setText("Schüler:");
         gbc = new GridBagConstraints();
@@ -467,7 +468,8 @@ public class SchuelerDatenblattPanel {
         gbc.anchor = GridBagConstraints.WEST;
         stammdatenPanel.add(lblGeburtsdatumValue, gbc);
         lblAbmeldedatum = new JLabel();
-        lblAbmeldedatum.setFont(new Font(lblAbmeldedatum.getFont().getName(), Font.BOLD, lblAbmeldedatum.getFont().getSize()));
+        Font lblAbmeldedatumFont = this.$$$getFont$$$(null, Font.BOLD, -1, lblAbmeldedatum.getFont());
+        if (lblAbmeldedatumFont != null) lblAbmeldedatum.setFont(lblAbmeldedatumFont);
         lblAbmeldedatum.setText("Abmeldedatum:");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -476,7 +478,8 @@ public class SchuelerDatenblattPanel {
         gbc.insets = new Insets(10, 0, 0, 0);
         stammdatenPanel.add(lblAbmeldedatum, gbc);
         lblAbmeldedatumValue = new JLabel();
-        lblAbmeldedatumValue.setFont(new Font(lblAbmeldedatumValue.getFont().getName(), Font.BOLD, lblAbmeldedatumValue.getFont().getSize()));
+        Font lblAbmeldedatumValueFont = this.$$$getFont$$$(null, Font.BOLD, -1, lblAbmeldedatumValue.getFont());
+        if (lblAbmeldedatumValueFont != null) lblAbmeldedatumValue.setFont(lblAbmeldedatumValueFont);
         lblAbmeldedatumValue.setText("AbmeldedatumValue");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -547,7 +550,7 @@ public class SchuelerDatenblattPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 10, 10, 0);
         leftPanel.add(dispensationenPanel, gbc);
-        dispensationenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Dispensationen", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(dispensationenPanel.getFont().getName(), Font.BOLD, dispensationenPanel.getFont().getSize()), new Color(-16777216)));
+        dispensationenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Dispensationen", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, dispensationenPanel.getFont()), new Color(-16777216)));
         final JPanel panel5 = new JPanel();
         panel5.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
@@ -585,7 +588,8 @@ public class SchuelerDatenblattPanel {
         gbc.fill = GridBagConstraints.VERTICAL;
         dispensationenPanel.add(spacer17, gbc);
         lblDispensationsdauerValue = new JLabel();
-        lblDispensationsdauerValue.setFont(new Font(lblDispensationsdauerValue.getFont().getName(), Font.BOLD, lblDispensationsdauerValue.getFont().getSize()));
+        Font lblDispensationsdauerValueFont = this.$$$getFont$$$(null, Font.BOLD, -1, lblDispensationsdauerValue.getFont());
+        if (lblDispensationsdauerValueFont != null) lblDispensationsdauerValue.setFont(lblDispensationsdauerValueFont);
         lblDispensationsdauerValue.setText("DispensationsdauerValue");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -594,7 +598,8 @@ public class SchuelerDatenblattPanel {
         gbc.anchor = GridBagConstraints.WEST;
         dispensationenPanel.add(lblDispensationsdauerValue, gbc);
         lblDispensationsdauer = new JLabel();
-        lblDispensationsdauer.setFont(new Font(lblDispensationsdauer.getFont().getName(), Font.BOLD, lblDispensationsdauer.getFont().getSize()));
+        Font lblDispensationsdauerFont = this.$$$getFont$$$(null, Font.BOLD, -1, lblDispensationsdauer.getFont());
+        if (lblDispensationsdauerFont != null) lblDispensationsdauer.setFont(lblDispensationsdauerFont);
         lblDispensationsdauer.setText("Dauer:");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -615,7 +620,8 @@ public class SchuelerDatenblattPanel {
         gbc.ipadx = 200;
         dispensationenPanel.add(spacer19, gbc);
         lblDispensationsgrund = new JLabel();
-        lblDispensationsgrund.setFont(new Font(lblDispensationsgrund.getFont().getName(), Font.BOLD, lblDispensationsgrund.getFont().getSize()));
+        Font lblDispensationsgrundFont = this.$$$getFont$$$(null, Font.BOLD, -1, lblDispensationsgrund.getFont());
+        if (lblDispensationsgrundFont != null) lblDispensationsgrund.setFont(lblDispensationsgrundFont);
         lblDispensationsgrund.setText("Grund:");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -624,7 +630,8 @@ public class SchuelerDatenblattPanel {
         gbc.insets = new Insets(10, 0, 0, 0);
         dispensationenPanel.add(lblDispensationsgrund, gbc);
         lblDispensationsgrundValue = new JLabel();
-        lblDispensationsgrundValue.setFont(new Font(lblDispensationsgrundValue.getFont().getName(), Font.BOLD, lblDispensationsgrundValue.getFont().getSize()));
+        Font lblDispensationsgrundValueFont = this.$$$getFont$$$(null, Font.BOLD, -1, lblDispensationsgrundValue.getFont());
+        if (lblDispensationsgrundValueFont != null) lblDispensationsgrundValue.setFont(lblDispensationsgrundValueFont);
         lblDispensationsgrundValue.setText("DispensationsgrundValue");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -681,7 +688,7 @@ public class SchuelerDatenblattPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 0, 10, 10);
         rightPanel.add(codesPanel, gbc);
-        codesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schüler-Codes", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(codesPanel.getFont().getName(), Font.BOLD, codesPanel.getFont().getSize()), new Color(-16777216)));
+        codesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schüler-Codes", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, codesPanel.getFont()), new Color(-16777216)));
         final JPanel panel6 = new JPanel();
         panel6.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
@@ -773,7 +780,7 @@ public class SchuelerDatenblattPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 10, 10, 10);
         panel2.add(kursePanel, gbc);
-        kursePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Aktuelle Kurse", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(kursePanel.getFont().getName(), Font.BOLD, kursePanel.getFont().getSize())));
+        kursePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Aktuelle Kurse", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, kursePanel.getFont())));
         final JPanel spacer30 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -856,12 +863,13 @@ public class SchuelerDatenblattPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 10, 10, 10);
         panel2.add(maerchenPanel, gbc);
-        maerchenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Aktuelles Märchen", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(maerchenPanel.getFont().getName(), Font.BOLD, maerchenPanel.getFont().getSize())));
+        maerchenPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Aktuelles Märchen", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, maerchenPanel.getFont())));
         final JPanel panel8 = new JPanel();
         panel8.setLayout(new GridBagLayout());
         maerchenPanel.add(panel8, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         lblRolle1 = new JLabel();
-        lblRolle1.setFont(new Font(lblRolle1.getFont().getName(), Font.BOLD, lblRolle1.getFont().getSize()));
+        Font lblRolle1Font = this.$$$getFont$$$(null, Font.BOLD, -1, lblRolle1.getFont());
+        if (lblRolle1Font != null) lblRolle1.setFont(lblRolle1Font);
         lblRolle1.setText("Rolle 1:");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -870,7 +878,8 @@ public class SchuelerDatenblattPanel {
         gbc.insets = new Insets(10, 0, 0, 0);
         panel8.add(lblRolle1, gbc);
         lblRolle1Value = new JLabel();
-        lblRolle1Value.setFont(new Font(lblRolle1Value.getFont().getName(), Font.BOLD, lblRolle1Value.getFont().getSize()));
+        Font lblRolle1ValueFont = this.$$$getFont$$$(null, Font.BOLD, -1, lblRolle1Value.getFont());
+        if (lblRolle1ValueFont != null) lblRolle1Value.setFont(lblRolle1ValueFont);
         lblRolle1Value.setText("Rolle1Value");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -1002,7 +1011,8 @@ public class SchuelerDatenblattPanel {
         panel9.setLayout(new GridBagLayout());
         maerchenPanel.add(panel9, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         lblGruppe = new JLabel();
-        lblGruppe.setFont(new Font(lblGruppe.getFont().getName(), Font.BOLD, lblGruppe.getFont().getSize()));
+        Font lblGruppeFont = this.$$$getFont$$$(null, Font.BOLD, -1, lblGruppe.getFont());
+        if (lblGruppeFont != null) lblGruppe.setFont(lblGruppeFont);
         lblGruppe.setText("Gruppe:");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -1010,7 +1020,8 @@ public class SchuelerDatenblattPanel {
         gbc.anchor = GridBagConstraints.WEST;
         panel9.add(lblGruppe, gbc);
         lblGruppeValue = new JLabel();
-        lblGruppeValue.setFont(new Font(lblGruppeValue.getFont().getName(), Font.BOLD, lblGruppeValue.getFont().getSize()));
+        Font lblGruppeValueFont = this.$$$getFont$$$(null, Font.BOLD, -1, lblGruppeValue.getFont());
+        if (lblGruppeValueFont != null) lblGruppeValue.setFont(lblGruppeValueFont);
         lblGruppeValue.setText("GruppeValue");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -1309,6 +1320,25 @@ public class SchuelerDatenblattPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 0, 10);
         rightButtonPanel.add(btnAbbrechen, gbc);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
     }
 
     /**
