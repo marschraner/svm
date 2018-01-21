@@ -30,12 +30,12 @@ public class Svm {
      */
     private static void createAndShowGUI(SvmContext svmContext) {
 
-        // Optionaler Look and Feel-Wert aus SVM Properties abfragen
+        // Optionaler Preferred Look and Feel-Wert aus SVM Properties abfragen
         Properties svmProperties = SvmProperties.getSvmProperties();
-        String svmPropertyLookAndFeel = svmProperties.getProperty(SvmProperties.KEY_PREFERRED_LOOK_AND_FEEL);
+        String svmPropertyPreferredLookAndFeel = svmProperties.getProperty(SvmProperties.KEY_PREFERRED_LOOK_AND_FEEL);
 
-        // Preferiertestes Look and Feel zuerst
-        String[] preferredLookAndFeels = new String[]{svmPropertyLookAndFeel, "Mac", "GTK+", "Windows", "Nimbus"};
+        // Nach absteigender Präferenz geordnet
+        String[] preferredLookAndFeels = new String[]{svmPropertyPreferredLookAndFeel, "Mac", "GTK+", "Windows", "Nimbus"};
         String selectedLookAndFeel = "";
 
         preferredLookAndFeelsLoop:
@@ -55,13 +55,14 @@ public class Svm {
             }
         }
 
-        if (svmPropertyLookAndFeel != null && !svmPropertyLookAndFeel.isEmpty()
-                && !svmPropertyLookAndFeel.toLowerCase().equals(selectedLookAndFeel.toLowerCase())) {
-            LOGGER.warn("'" + svmPropertyLookAndFeel + "' ist kein gültiger Wert für SVM-Property '" +
+        if (svmPropertyPreferredLookAndFeel != null && !svmPropertyPreferredLookAndFeel.isEmpty()
+                && !svmPropertyPreferredLookAndFeel.toLowerCase().equals(selectedLookAndFeel.toLowerCase())) {
+            LOGGER.warn("'" + svmPropertyPreferredLookAndFeel + "' ist kein gültiger Wert für SVM-Property '" +
                     SvmProperties.KEY_PREFERRED_LOOK_AND_FEEL + "'. Verwende stattdessen Default-Look and Feel '" +
                     selectedLookAndFeel + "'.");
         }
 
+        // Notwendige Workarounds für einige Look-And-Feels
         if ("GTK+".equals(selectedLookAndFeel)) {
             GtkPlusLookAndFeelWorkaround.installGtkPopupBugWorkaround();
         }
