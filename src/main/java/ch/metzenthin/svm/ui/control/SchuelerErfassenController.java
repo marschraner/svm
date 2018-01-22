@@ -378,12 +378,6 @@ public class SchuelerErfassenController {
 
             @Override
             public void visit(SchuelerErfassenSaveOkResult schuelerErfassenSaveOkResult) {
-                JOptionPane.showMessageDialog(
-                        null,
-                        (isBearbeiten ? schuelerErfassenSaveOkResult.getTextSchuelerBearbeiten() : schuelerErfassenSaveOkResult.getTextSchuelerErfassen()),
-                        (isBearbeiten ? schuelerErfassenSaveOkResult.getTitleSchuelerBearbeiten() : schuelerErfassenSaveOkResult.getTitleSchuelerErfassen()),
-                        JOptionPane.INFORMATION_MESSAGE,
-                        svmContext.getDialogIcons().getInformationIcon());
                 dialog[0] = null;
             }
 

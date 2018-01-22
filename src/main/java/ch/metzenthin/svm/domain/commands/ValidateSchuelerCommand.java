@@ -409,7 +409,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             checkIfAngehoerigeVerwaistAndDelete();
         }
 
-        result = new SchuelerErfassenSaveOkResult(Result.SPEICHERUNG_ERFOLGREICH, schuelerToSave.getGeschlecht());
+        result = new SchuelerErfassenSaveOkResult(Result.SPEICHERUNG_ERFOLGREICH);
     }
 
     private boolean hasAdresseOrFestnetzChanged() {
