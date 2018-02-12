@@ -35,7 +35,7 @@ public class Svm {
         String svmPropertyPreferredLookAndFeel = svmProperties.getProperty(SvmProperties.KEY_PREFERRED_LOOK_AND_FEEL);
 
         // Nach absteigender Präferenz geordnet
-        String[] preferredLookAndFeels = new String[]{svmPropertyPreferredLookAndFeel, "Mac", "GTK+", "Windows", "Nimbus"};
+        String[] preferredLookAndFeels = new String[]{svmPropertyPreferredLookAndFeel, "Mac OS X", "GTK+", "Windows", "Nimbus"};
         String selectedLookAndFeel = "";
 
         preferredLookAndFeelsLoop:
@@ -65,9 +65,6 @@ public class Svm {
         // Notwendige Workarounds für einige Look-And-Feels
         if ("GTK+".equals(selectedLookAndFeel)) {
             GtkPlusLookAndFeelWorkaround.installGtkPopupBugWorkaround();
-        }
-        if ("Mac".equals(selectedLookAndFeel)) {
-            svmContext.getDialogIcons().createDialogIcons();
         }
 
         // Create and set up the window.
