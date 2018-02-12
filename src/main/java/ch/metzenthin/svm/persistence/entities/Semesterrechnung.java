@@ -183,8 +183,10 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     public int compareTo(Semesterrechnung otherSemesterrechnung) {
         // aufsteigend nach Rechnungsempfänger-Schülern und absteigend nach Semester sortieren
         // Im Falle von Rechnungsempfängerwechseln kann ein Rechnungsempfänger keine Schüler haben
-        Person person = (this.rechnungsempfaenger.getSchuelerRechnungsempfaenger().isEmpty() ? this.rechnungsempfaenger : this.rechnungsempfaenger.getSchuelerRechnungsempfaengerAsList().get(0));
-        Person otherPerson = (otherSemesterrechnung.rechnungsempfaenger.getSchuelerRechnungsempfaenger().isEmpty() ? otherSemesterrechnung.rechnungsempfaenger : otherSemesterrechnung.rechnungsempfaenger.getSchuelerRechnungsempfaengerAsList().get(0));
+        List<Schueler> angemeldeteSchuelerRechnungsempfaenger = this.rechnungsempfaenger.getAngemeldeteSchuelerRechnungsempfaengerAsList();
+        Person person = (angemeldeteSchuelerRechnungsempfaenger.isEmpty() ? this.rechnungsempfaenger : angemeldeteSchuelerRechnungsempfaenger.get(0));
+        List<Schueler> angemeldeteSchuelerOtherRechnungsempfaenger = otherSemesterrechnung.rechnungsempfaenger.getAngemeldeteSchuelerRechnungsempfaengerAsList();
+        Person otherPerson = angemeldeteSchuelerOtherRechnungsempfaenger.isEmpty() ? otherSemesterrechnung.rechnungsempfaenger : angemeldeteSchuelerOtherRechnungsempfaenger.get(0);
         int result = person.compareTo(otherPerson);
         if (result == 0) {
             result = this.semester.compareTo(otherSemesterrechnung.semester);

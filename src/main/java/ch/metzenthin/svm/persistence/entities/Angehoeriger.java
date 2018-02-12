@@ -65,16 +65,23 @@ public class Angehoeriger extends Person {
         return schuelerRechnungsempfaenger;
     }
 
-    public List<Schueler> getSchuelerRechnungsempfaengerAsList() {
-        List<Schueler> schuelerRechnungsempfaengerAsList = new ArrayList<>(schuelerRechnungsempfaenger);
-        Collections.sort(schuelerRechnungsempfaengerAsList);
-        return schuelerRechnungsempfaengerAsList;
+    @Transient
+    public List<Schueler> getAngemeldeteSchuelerRechnungsempfaengerAsList() {
+        List<Schueler> angemeldeteSchuelerRechnungsempfaengerAsList = new ArrayList<>();
+        for (Schueler schueler : schuelerRechnungsempfaenger) {
+            if (schueler.isAngemeldet()) {
+                angemeldeteSchuelerRechnungsempfaengerAsList.add(schueler);
+            }
+        }
+        Collections.sort(angemeldeteSchuelerRechnungsempfaengerAsList);
+        return angemeldeteSchuelerRechnungsempfaengerAsList;
     }
 
     public Set<Semesterrechnung> getSemesterrechnungen() {
         return semesterrechnungen;
     }
 
+    @Transient
     public List<Semesterrechnung> getSemesterrechnungenAsList() {
         List<Semesterrechnung> semesterrechnungenAsList = new ArrayList<>(semesterrechnungen);
         Collections.sort(semesterrechnungenAsList);
