@@ -427,15 +427,11 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
         StringBuilder rollen = new StringBuilder();
         rollen.append(getRolle1WithoutSorterCharacters());
         if (rolle2 != null && !rolle2.isEmpty()) {
-            if (rollen.length() > 0) {
-                rollen.append(" / ");
-            }
+            rollen.append(" / ");
             rollen.append(rolle2);
         }
         if (rolle3 != null && !rolle3.isEmpty()) {
-            if (rollen.length() > 0) {
-                rollen.append(" / ");
-            }
+            rollen.append(" / ");
             rollen.append(rolle3);
         }
         return rollen.toString();
