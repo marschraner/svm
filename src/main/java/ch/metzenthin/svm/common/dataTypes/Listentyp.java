@@ -16,6 +16,7 @@ public enum Listentyp {
     RECHNUNGSEMPFAENGER_ADRESSETIKETTEN("Rechnungsempfänger-Adressetiketten", "Rechnungsempfänger-Adressetiketten", Filetyp.CSV, null),
     MUTTER_ODER_VATER_ADRESSETIKETTEN("Mutter- oder Vater-Adressetiketten", "Mutter-_oder_Vater-Adressetiketten", Filetyp.CSV, null),
     ELTERNMITHILFE_ADRESSETIKETTEN("Eltern-Mithilfe-Adressetiketten", "Eltern-Mithilfe-Adressetiketten", Filetyp.CSV, null),
+    PROBEPLAENE_ETIKETTEN("Probepläne-Etiketten", "Probepläne-Etiketten", Filetyp.CSV, null),
     SCHUELERLISTE_CSV("Schülerliste (CSV)", "Schülerliste", Filetyp.CSV, null),
     MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM("Mitarbeiter-Adressliste mit Geburtsdatum", "Mitarbeiter-Adressliste", Filetyp.DOCX, null),
     MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM("Mitarbeiter-Adressliste ohne Geburtsdatum", "Mitarbeiter-Adressliste", Filetyp.DOCX, null),

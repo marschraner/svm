@@ -3,7 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.common.dataTypes.EmailSchuelerListeEmpfaengerGruppe;
 import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.utils.StringNumberComparator;
+import ch.metzenthin.svm.common.utils.MaercheneinteilungenSorter;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
@@ -22,6 +22,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailSchuelerListeModel {
 
+    private final MaercheneinteilungenSorter maercheneinteilungenSorter = new MaercheneinteilungenSorter();
     private EmailSchuelerListeEmpfaengerGruppe emailSchuelerListeEmpfaengerGruppe;
     private boolean blindkopien;
     private List<String> fehlendeEmailAdressen;
@@ -124,7 +125,7 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                 Set<Schueler> keys;
                 if (schuelerSuchenTableModel.isNachRollenGesucht()) {
                     // Wenn nach Rollen gesucht wurde, gibt es keine Keys mit leeren Values
-                    maercheneinteilungen = sortMaercheneinteilungenByRollen(maercheneinteilungen);
+                    maercheneinteilungen = maercheneinteilungenSorter.sortMaercheneinteilungenByGruppeAndRolle(maercheneinteilungen);
                     keys = maercheneinteilungen.keySet();
                 } else {
                     // Sortierung nach Keys
@@ -202,23 +203,6 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
         ungueltigeEmailAdressen = callDefaultEmailClientCommand.getUngueltigeEmailAdressen();
 
         return callDefaultEmailClientCommand.getResult();
-    }
-
-    private Map<Schueler, Maercheneinteilung> sortMaercheneinteilungenByRollen(Map<Schueler, Maercheneinteilung> maercheneinteilungen) {
-        List<Map.Entry<Schueler, Maercheneinteilung>> list = new LinkedList<>(maercheneinteilungen.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<Schueler, Maercheneinteilung>>() {
-            @Override
-            public int compare(Map.Entry<Schueler, Maercheneinteilung> o1, Map.Entry<Schueler, Maercheneinteilung> o2) {
-                Comparator<String> stringNumberComparator = new StringNumberComparator();
-                return stringNumberComparator.compare(o1.getValue().getRolle1(), o2.getValue().getRolle1());
-            }
-        });
-
-        Map<Schueler, Maercheneinteilung> result = new LinkedHashMap<>();
-        for (Map.Entry<Schueler, Maercheneinteilung> entry : list) {
-            result.put(entry.getKey(), entry.getValue());
-        }
-        return result;
     }
 
     @Override

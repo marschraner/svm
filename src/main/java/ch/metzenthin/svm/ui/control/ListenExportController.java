@@ -157,6 +157,7 @@ public class ListenExportController extends AbstractController {
                 comboBoxListentyp.removeItem(Listentyp.ROLLENLISTE);
                 comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_LISTE);
                 comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_ADRESSETIKETTEN);
+                comboBoxListentyp.removeItem(Listentyp.PROBEPLAENE_ETIKETTEN);
             }
             if (schuelerSuchenTableModel.getSchuelerList().size() == 0) {
                 // Keine Adressliste und Etiketten, falls keine Schüler (bei leerer Kurstabelle)
@@ -165,6 +166,7 @@ public class ListenExportController extends AbstractController {
                 comboBoxListentyp.removeItem(Listentyp.RECHNUNGSEMPFAENGER_ADRESSETIKETTEN);
                 comboBoxListentyp.removeItem(Listentyp.MUTTER_ODER_VATER_ADRESSETIKETTEN);
                 comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_ADRESSETIKETTEN);
+                comboBoxListentyp.removeItem(Listentyp.PROBEPLAENE_ETIKETTEN);
                 comboBoxListentyp.setSelectedItem(Listentyp.ABSENZENLISTE_GANZES_SEMESTER);
             } else {
                 // Initialisierung
@@ -187,6 +189,7 @@ public class ListenExportController extends AbstractController {
                 comboBoxListentyp.removeItem(Listentyp.ROLLENLISTE);
                 comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_LISTE);
                 comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_ADRESSETIKETTEN);
+                comboBoxListentyp.removeItem(Listentyp.PROBEPLAENE_ETIKETTEN);
             }
         } else {
             comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
@@ -199,6 +202,7 @@ public class ListenExportController extends AbstractController {
             comboBoxListentyp.removeItem(Listentyp.RECHNUNGSEMPFAENGER_ADRESSETIKETTEN);
             comboBoxListentyp.removeItem(Listentyp.MUTTER_ODER_VATER_ADRESSETIKETTEN);
             comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_ADRESSETIKETTEN);
+            comboBoxListentyp.removeItem(Listentyp.PROBEPLAENE_ETIKETTEN);
             comboBoxListentyp.removeItem(Listentyp.SCHUELERLISTE_CSV);
         }
         if (listenExportTyp == ListenExportTyp.MITARBEITERS) {
@@ -386,7 +390,7 @@ public class ListenExportController extends AbstractController {
         dialog.setLocationRelativeTo(listenExportDialog);
         SwingWorker<CreateListeCommand.Result, String> worker = new SwingWorker<CreateListeCommand.Result, String>() {
             @Override
-            protected CreateListeCommand.Result doInBackground() throws Exception {
+            protected CreateListeCommand.Result doInBackground() {
                 return listenExportModel.createListenFile(outputFile, schuelerSuchenTableModel, mitarbeitersTableModel, kurseTableModel, semesterrechnungenTableModel);
             }
             @Override

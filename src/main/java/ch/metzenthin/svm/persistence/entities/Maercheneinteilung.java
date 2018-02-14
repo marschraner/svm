@@ -421,4 +421,23 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
         // "x Hund 2", "x 3 Hund 2", "xx 3 Hund 2", "X Hund 2", "X 3 Hund 2" und  "XX 3 Hund 2" durch "Hund 2" ersetzen
         return rolle1.replaceFirst("^([A-Z]{1,2}|[a-z]{1,2})\\p{Blank}+[0-9]*\\p{Blank}*", "");
     }
+
+    @Transient
+    public String getRollenAllWithoutSorterCharacters() {
+        StringBuilder rollen = new StringBuilder();
+        rollen.append(getRolle1WithoutSorterCharacters());
+        if (rolle2 != null && !rolle2.isEmpty()) {
+            if (rollen.length() > 0) {
+                rollen.append(" / ");
+            }
+            rollen.append(rolle2);
+        }
+        if (rolle3 != null && !rolle3.isEmpty()) {
+            if (rollen.length() > 0) {
+                rollen.append(" / ");
+            }
+            rollen.append(rolle3);
+        }
+        return rollen.toString();
+    }
 }

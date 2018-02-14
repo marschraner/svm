@@ -103,6 +103,8 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 break;
             case ELTERNMITHILFE_ADRESSETIKETTEN:
                 break;
+            case PROBEPLAENE_ETIKETTEN:
+                break;
             case SCHUELERLISTE_CSV:
                 break;
             case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM:
@@ -267,6 +269,11 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 commandInvoker.executeCommand(createAdressenCsvFileCommandElternmithilfe);
                 result = createAdressenCsvFileCommandElternmithilfe.getResult();
                 break;
+            case PROBEPLAENE_ETIKETTEN:
+                CreateProbeplaeneEtikettenCsvFileCommand createProbeplaeneEtikettenCsvFileCommand = new CreateProbeplaeneEtikettenCsvFileCommand(schuelerSuchenTableModel, outputFile);
+                commandInvoker.executeCommand(createProbeplaeneEtikettenCsvFileCommand);
+                result = createProbeplaeneEtikettenCsvFileCommand.getResult();
+                break;
             case SCHUELERLISTE_CSV:
                 CreateSchuelerlisteCsvFileCommand createSchuelerlisteCsvFileCommand = new CreateSchuelerlisteCsvFileCommand(schuelerSuchenTableModel, outputFile);
                 commandInvoker.executeCommand(createSchuelerlisteCsvFileCommand);
@@ -404,6 +411,8 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
             case MUTTER_ODER_VATER_ADRESSETIKETTEN:
                 break;
             case ELTERNMITHILFE_ADRESSETIKETTEN:
+                break;
+            case PROBEPLAENE_ETIKETTEN:
                 break;
             case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM:
                 titleInit = "Mitarbeitende";
