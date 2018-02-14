@@ -71,8 +71,7 @@ public class CreateProbeplaeneEtikettenCsvFileCommand extends CreateListeCommand
                 out.write(separator);
                 out.write(schueler.getNachname());
                 out.write(separator);
-                String rolle1AsStr = (maercheneinteilung.getRolle1() == null ? "" : maercheneinteilung.getRolle1WithoutSorterCharacters());
-                out.write(rolle1AsStr);
+                out.write(maercheneinteilung.getRolle1WithoutSorterCharacters());
                 out.write(separator);
                 String rolle2AsStr = (maercheneinteilung.getRolle2() == null ? "" : maercheneinteilung.getRolle2());
                 out.write(rolle2AsStr);
