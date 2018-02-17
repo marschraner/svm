@@ -45,7 +45,7 @@ public class CreateProbeplaeneEtikettenCsvFileCommand extends CreateListeCommand
             out.write(separator);
             out.write("Rolle 3");
             out.write(separator);
-            out.write("alle Rollen");
+            out.write("Alle Rollen");
             out.write(separator);
             out.write("Gruppe");
             out.write('\n');
