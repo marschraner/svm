@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.utils.SvmStringUtils;
 
 import javax.persistence.*;
 import java.util.*;
@@ -105,12 +106,32 @@ public class Mitarbeiter extends Person {
         return vertretungsmoeglichkeiten;
     }
 
+    @Transient
+    public String getVertretungsmoeglichkeitenLineBreaksReplacedBySemicolonOrPeriod() {
+        return SvmStringUtils.replaceLineBreaksBySemicolonOrPeriod(vertretungsmoeglichkeiten);
+    }
+
+    @Transient
+    public String getVertretungsmoeglichkeitenLineBreaksReplacedByCommaOrPeriod() {
+        return SvmStringUtils.replaceLineBreaksByCommaOrPeriod(vertretungsmoeglichkeiten);
+    }
+
     public void setVertretungsmoeglichkeiten(String vertretungsmoeglichkeiten) {
         this.vertretungsmoeglichkeiten = vertretungsmoeglichkeiten;
     }
 
     public String getBemerkungen() {
         return bemerkungen;
+    }
+
+    @Transient
+    public String getBemerkungenLineBreaksReplacedBySemicolonOrPeriod() {
+        return SvmStringUtils.replaceLineBreaksBySemicolonOrPeriod(bemerkungen);
+    }
+
+    @Transient
+    public String getBemerkungenLineBreaksReplacedByCommaOrPeriod() {
+        return SvmStringUtils.replaceLineBreaksByCommaOrPeriod(bemerkungen);
     }
 
     public void setBemerkungen(String bemerkungen) {

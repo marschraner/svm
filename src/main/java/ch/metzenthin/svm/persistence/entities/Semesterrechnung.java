@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
+import ch.metzenthin.svm.common.utils.SvmStringUtils;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -494,6 +495,11 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
 
     public String getBemerkungen() {
         return bemerkungen;
+    }
+
+    @Transient
+    public String getBemerkungenLineBreaksReplacedByCommaOrPeriod() {
+        return SvmStringUtils.replaceLineBreaksByCommaOrPeriod(bemerkungen);
     }
 
     public void setBemerkungen(String bemerkungen) {

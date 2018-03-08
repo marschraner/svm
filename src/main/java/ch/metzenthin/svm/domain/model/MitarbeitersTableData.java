@@ -84,10 +84,10 @@ public class MitarbeitersTableData {
                 value = mitarbeiter.getMitarbeiterCodesAsStr();
                 break;
             case VERTRETUNGSMOEGLICHKEITEN:
-                value = mitarbeiter.getVertretungsmoeglichkeiten();
+                value = mitarbeiter.getVertretungsmoeglichkeitenLineBreaksReplacedBySemicolonOrPeriod();
                 break;
             case BEMERKUNGEN:
-                value = mitarbeiter.getBemerkungen();
+                value = mitarbeiter.getBemerkungenLineBreaksReplacedBySemicolonOrPeriod();
                 break;
             case EXPORT_MAIL:
                 value = mitarbeiter.isZuExportieren();

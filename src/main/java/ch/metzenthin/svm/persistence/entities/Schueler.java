@@ -2,6 +2,7 @@ package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.utils.SvmStringUtils;
 
 import javax.persistence.*;
 import java.util.*;
@@ -97,6 +98,11 @@ public class Schueler extends Person {
 
     public String getBemerkungen() {
         return bemerkungen;
+    }
+
+    @Transient
+    public String getBemerkungenLineBreaksReplacedByHtmlBr() {
+        return SvmStringUtils.replaceLineBreaksByHtmlBr(bemerkungen);
     }
 
     public void setBemerkungen(String bemerkungen) {

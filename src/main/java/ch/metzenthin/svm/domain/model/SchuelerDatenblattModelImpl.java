@@ -216,7 +216,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     @Override
     public String getBemerkungen() {
         if (schueler.getBemerkungen() != null && !schueler.getBemerkungen().isEmpty()) {
-            return schueler.getBemerkungen();
+            return schueler.getBemerkungenLineBreaksReplacedByHtmlBr();
         } else {
             return "-";
         }

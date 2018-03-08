@@ -275,7 +275,7 @@ public class CreateRechnungslisteCsvFileCommand extends CreateListeCommand {
                 }
                 out.write(separator);
                 if (checkNotEmpty(semesterrechnung.getBemerkungen())) {
-                    out.write(semesterrechnung.getBemerkungen());
+                    out.write(semesterrechnung.getBemerkungenLineBreaksReplacedByCommaOrPeriod().replace(";", ","));
                 }
                 out.write(separator);
                 String schuelerAsStr = semesterrechnung.getAktiveSchuelerRechnungsempfaengerAsStr(previousSemester);

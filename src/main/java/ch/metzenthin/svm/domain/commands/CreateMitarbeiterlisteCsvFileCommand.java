@@ -108,11 +108,11 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
                 out.write(mitarbeiter.getMitarbeiterCodesAsStr());
                 out.write(separator);
                 if (mitarbeiter.getVertretungsmoeglichkeiten() != null) {
-                    out.write(mitarbeiter.getVertretungsmoeglichkeiten().replace(";", ","));
+                    out.write(mitarbeiter.getVertretungsmoeglichkeitenLineBreaksReplacedByCommaOrPeriod().replace(";", ","));
                 }
                 out.write(separator);
                 if (mitarbeiter.getBemerkungen() != null) {
-                    out.write(mitarbeiter.getBemerkungen().replace(";", ","));
+                    out.write(mitarbeiter.getBemerkungenLineBreaksReplacedByCommaOrPeriod().replace(";", ","));
                 }
                 out.write(separator);
                 out.write(mitarbeiter.getAktiv() ? "ja" : "nein");
