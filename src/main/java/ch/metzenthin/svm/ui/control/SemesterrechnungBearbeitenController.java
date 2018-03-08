@@ -158,6 +158,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         setLblRechnungsbetragNachrechnung();
         setLblRestbetragNachrechnung();
         setLblScrollPosition();
+        setEmailEnabledDisabled();
         constructionDone();
     }
 
