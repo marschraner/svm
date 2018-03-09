@@ -23,7 +23,7 @@ public class SvmStringUtilsTest {
         assertEquals("Erste Zeile; zweite Zeile. Dritte Zeile",
                 SvmStringUtils.replaceLineBreaksBySemicolonOrPeriod("Erste Zeile\nzweite Zeile\nDritte Zeile"));
         assertEquals("Zeile 1. Äh Zeile 2; äh Zeile 3",
-                SvmStringUtils.replaceLineBreaksBySemicolonOrPeriod("Zeile 1 \n Äh Zeile 2 \n äh Zeile 3"));
+                SvmStringUtils.replaceLineBreaksBySemicolonOrPeriod("\n\nZeile 1 \n Äh Zeile 2 \n äh Zeile 3\n"));
 
         assertNull(SvmStringUtils.replaceLineBreaksBySemicolonOrPeriod(null));
 
@@ -43,7 +43,7 @@ public class SvmStringUtilsTest {
         assertEquals("Erste Zeile, zweite Zeile. Dritte Zeile",
                 SvmStringUtils.replaceLineBreaksByCommaOrPeriod("Erste Zeile\nzweite Zeile\nDritte Zeile"));
         assertEquals("Zeile 1. Äh Zeile 2, äh Zeile 3",
-                SvmStringUtils.replaceLineBreaksByCommaOrPeriod("Zeile 1 \n Äh Zeile 2 \n äh Zeile 3"));
+                SvmStringUtils.replaceLineBreaksByCommaOrPeriod("\n\nZeile 1 \n Äh Zeile 2 \n äh Zeile 3\n"));
 
         assertNull(SvmStringUtils.replaceLineBreaksByCommaOrPeriod(null));
 

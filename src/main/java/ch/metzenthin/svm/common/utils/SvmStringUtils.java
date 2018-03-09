@@ -51,7 +51,10 @@ public class SvmStringUtils {
             matcher.appendReplacement(stringBuffer, "$1. $5");
         }
         matcher.appendTail(stringBuffer);
-        return stringBuffer.toString();
+        text = stringBuffer.toString();
+
+        // Allfällige verbleibende \n löschen
+        return text.replace("\n", "");
     }
 
     public static String replaceLineBreaksByHtmlBr(String text) {
