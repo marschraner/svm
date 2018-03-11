@@ -13,11 +13,14 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 
 /**
@@ -452,6 +455,304 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         lblScrollPosition.setText((selectedRow + 1) + " / " + semesterrechnungenTableModel.getRowCount());
     }
 
+    // Key-Listeners zum Enablen des Speichern-Buttons nach dem ersten Tastendruck
+    @Override
+    public void setTxtRechnungsdatumVorrechnung(JTextField txtRechnungsdatumVorrechnung) {
+        super.setTxtRechnungsdatumVorrechnung(txtRechnungsdatumVorrechnung);
+        txtRechnungsdatumVorrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtErmaessigungVorrechnung(JTextField txtErmaessigungVorrechnung) {
+        super.setTxtErmaessigungVorrechnung(txtErmaessigungVorrechnung);
+        txtErmaessigungVorrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtErmaessigungsgrundVorrechnung(JTextField txtErmaessigungsgrundVorrechnung) {
+        super.setTxtErmaessigungsgrundVorrechnung(txtErmaessigungsgrundVorrechnung);
+        txtErmaessigungsgrundVorrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtZuschlagVorrechnung(JTextField txtZuschlagVorrechnung) {
+        super.setTxtZuschlagVorrechnung(txtZuschlagVorrechnung);
+        txtZuschlagVorrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtZuschlagsgrundVorrechnung(JTextField txtZuschlagsgrundVorrechnung) {
+        super.setTxtZuschlagsgrundVorrechnung(txtZuschlagsgrundVorrechnung);
+        txtZuschlagsgrundVorrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtAnzahlWochenVorrechnung(JTextField txtAnzahlWochenVorrechnung) {
+        super.setTxtAnzahlWochenVorrechnung(txtAnzahlWochenVorrechnung);
+        txtAnzahlWochenVorrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+    
+    @Override
+    public void setTxtWochenbetragVorrechnung(JTextField txtWochenbetragVorrechnung) {
+        super.setTxtWochenbetragVorrechnung(txtWochenbetragVorrechnung);
+        txtWochenbetragVorrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+    
+    @Override
+    public void setTxtDatumZahlung1Vorrechnung(JTextField txtDatumZahlung1Vorrechnung) {
+        super.setTxtDatumZahlung1Vorrechnung(txtDatumZahlung1Vorrechnung);
+        txtDatumZahlung1Vorrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+    
+    @Override
+    public void setTxtBetragZahlung1Vorrechnung(JTextField txtBetragZahlung1Vorrechnung) {
+        super.setTxtBetragZahlung1Vorrechnung(txtBetragZahlung1Vorrechnung);
+        txtBetragZahlung1Vorrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtDatumZahlung2Vorrechnung(JTextField txtDatumZahlung2Vorrechnung) {
+        super.setTxtDatumZahlung2Vorrechnung(txtDatumZahlung2Vorrechnung);
+        txtDatumZahlung2Vorrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtBetragZahlung2Vorrechnung(JTextField txtBetragZahlung2Vorrechnung) {
+        super.setTxtBetragZahlung2Vorrechnung(txtBetragZahlung2Vorrechnung);
+        txtBetragZahlung2Vorrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtDatumZahlung3Vorrechnung(JTextField txtDatumZahlung3Vorrechnung) {
+        super.setTxtDatumZahlung3Vorrechnung(txtDatumZahlung3Vorrechnung);
+        txtDatumZahlung3Vorrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtBetragZahlung3Vorrechnung(JTextField txtBetragZahlung3Vorrechnung) {
+        super.setTxtBetragZahlung3Vorrechnung(txtBetragZahlung3Vorrechnung);
+        txtBetragZahlung3Vorrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtRechnungsdatumNachrechnung(JTextField txtRechnungsdatumNachrechnung) {
+        super.setTxtRechnungsdatumNachrechnung(txtRechnungsdatumNachrechnung);
+        txtRechnungsdatumNachrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtErmaessigungNachrechnung(JTextField txtErmaessigungNachrechnung) {
+        super.setTxtErmaessigungNachrechnung(txtErmaessigungNachrechnung);
+        txtErmaessigungNachrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtErmaessigungsgrundNachrechnung(JTextField txtErmaessigungsgrundNachrechnung) {
+        super.setTxtErmaessigungsgrundNachrechnung(txtErmaessigungsgrundNachrechnung);
+        txtErmaessigungsgrundNachrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtZuschlagNachrechnung(JTextField txtZuschlagNachrechnung) {
+        super.setTxtZuschlagNachrechnung(txtZuschlagNachrechnung);
+        txtZuschlagNachrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtZuschlagsgrundNachrechnung(JTextField txtZuschlagsgrundNachrechnung) {
+        super.setTxtZuschlagsgrundNachrechnung(txtZuschlagsgrundNachrechnung);
+        txtZuschlagsgrundNachrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtAnzahlWochenNachrechnung(JTextField txtAnzahlWochenNachrechnung) {
+        super.setTxtAnzahlWochenNachrechnung(txtAnzahlWochenNachrechnung);
+        txtAnzahlWochenNachrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtWochenbetragNachrechnung(JTextField txtWochenbetragNachrechnung) {
+        super.setTxtWochenbetragNachrechnung(txtWochenbetragNachrechnung);
+        txtWochenbetragNachrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtDatumZahlung1Nachrechnung(JTextField txtDatumZahlung1Nachrechnung) {
+        super.setTxtDatumZahlung1Nachrechnung(txtDatumZahlung1Nachrechnung);
+        txtDatumZahlung1Nachrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtBetragZahlung1Nachrechnung(JTextField txtBetragZahlung1Nachrechnung) {
+        super.setTxtBetragZahlung1Nachrechnung(txtBetragZahlung1Nachrechnung);
+        txtBetragZahlung1Nachrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtDatumZahlung2Nachrechnung(JTextField txtDatumZahlung2Nachrechnung) {
+        super.setTxtDatumZahlung2Nachrechnung(txtDatumZahlung2Nachrechnung);
+        txtDatumZahlung2Nachrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtBetragZahlung2Nachrechnung(JTextField txtBetragZahlung2Nachrechnung) {
+        super.setTxtBetragZahlung2Nachrechnung(txtBetragZahlung2Nachrechnung);
+        txtBetragZahlung2Nachrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtDatumZahlung3Nachrechnung(JTextField txtDatumZahlung3Nachrechnung) {
+        super.setTxtDatumZahlung3Nachrechnung(txtDatumZahlung3Nachrechnung);
+        txtDatumZahlung3Nachrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTxtBetragZahlung3Nachrechnung(JTextField txtBetragZahlung3Nachrechnung) {
+        super.setTxtBetragZahlung3Nachrechnung(txtBetragZahlung3Nachrechnung);
+        txtBetragZahlung3Nachrechnung.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
+    @Override
+    public void setTextAreaBemerkungen(JTextArea textAreaBemerkungen) {
+        super.setTextAreaBemerkungen(textAreaBemerkungen);
+        textAreaBemerkungen.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                enableSpeichernDisableNavigation();
+            }
+        });
+    }
+
     public void setBtnEmail(JButton btnEmail) {
         this.btnEmail = btnEmail;
         setEmailEnabledDisabled();
@@ -650,8 +951,44 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
     }
 
     private void onVerwerfen() {
-        semesterrechnungBearbeitenModel.makeErrorLabelsInvisible(new HashSet<>(Arrays.asList(new Field[]{Field.ALLE})));
+
         constructionDone();
+
+        // Wenn beim Editieren ein ungültiger Wert eingegeben wurde, wurde dieser nicht ins Model geschrieben,
+        // d.h. im Model befindet sich immer noch der Wert von SemesterOrigin.
+        // In einem solchen Fall wird durch initializeModelWithSemesterOrigin kein PropertyChangeEvent ausgelöst,
+        // und die Felder werden in der View nicht aktualisiert, d.h. sie zeigen immer noch die fehlerhafte Eingabe
+        // an. Die View der entsprechenden Felder muss daher manuell aktualisiert werden.
+        txtRechnungsdatumVorrechnung.setText(asString(semesterrechnungModel.getRechnungsdatumVorrechnung()));
+        txtErmaessigungVorrechnung.setText(semesterrechnungModel.getErmaessigungVorrechnung() == null ? null : semesterrechnungModel.getErmaessigungVorrechnung().toString());
+        txtErmaessigungsgrundVorrechnung.setText(semesterrechnungModel.getErmaessigungsgrundVorrechnung());
+        txtZuschlagVorrechnung.setText(semesterrechnungModel.getZuschlagVorrechnung() == null ? null : semesterrechnungModel.getZuschlagVorrechnung().toString());
+        txtZuschlagsgrundVorrechnung.setText(semesterrechnungModel.getZuschlagsgrundVorrechnung());
+        txtAnzahlWochenVorrechnung.setText(semesterrechnungModel.getAnzahlWochenVorrechnung() == null ? null : Integer.toString(semesterrechnungModel.getAnzahlWochenVorrechnung()));
+        txtWochenbetragVorrechnung.setText(semesterrechnungModel.getWochenbetragVorrechnung() == null ? null : semesterrechnungModel.getWochenbetragVorrechnung().toString());
+        txtDatumZahlung1Vorrechnung.setText(asString(semesterrechnungModel.getDatumZahlung1Vorrechnung()));
+        txtBetragZahlung1Vorrechnung.setText(semesterrechnungModel.getBetragZahlung1Vorrechnung() == null ? null : semesterrechnungModel.getBetragZahlung1Vorrechnung().toString());
+        txtDatumZahlung2Vorrechnung.setText(asString(semesterrechnungModel.getDatumZahlung2Vorrechnung()));
+        txtBetragZahlung2Vorrechnung.setText(semesterrechnungModel.getBetragZahlung2Vorrechnung() == null ? null : semesterrechnungModel.getBetragZahlung2Vorrechnung().toString());
+        txtDatumZahlung3Vorrechnung.setText(asString(semesterrechnungModel.getDatumZahlung3Vorrechnung()));
+        txtBetragZahlung3Vorrechnung.setText(semesterrechnungModel.getBetragZahlung3Vorrechnung() == null ? null : semesterrechnungModel.getBetragZahlung3Vorrechnung().toString());
+        txtRechnungsdatumNachrechnung.setText(asString(semesterrechnungModel.getRechnungsdatumNachrechnung()));
+        txtErmaessigungNachrechnung.setText(semesterrechnungModel.getErmaessigungNachrechnung() == null ? null : semesterrechnungModel.getErmaessigungNachrechnung().toString());
+        txtErmaessigungsgrundNachrechnung.setText(semesterrechnungModel.getErmaessigungsgrundNachrechnung());
+        txtZuschlagNachrechnung.setText(semesterrechnungModel.getZuschlagNachrechnung() == null ? null : semesterrechnungModel.getZuschlagNachrechnung().toString());
+        txtZuschlagsgrundNachrechnung.setText(semesterrechnungModel.getZuschlagsgrundNachrechnung());
+        txtAnzahlWochenNachrechnung.setText(semesterrechnungModel.getAnzahlWochenNachrechnung() == null ? null : Integer.toString(semesterrechnungModel.getAnzahlWochenNachrechnung()));
+        txtWochenbetragNachrechnung.setText(semesterrechnungModel.getWochenbetragNachrechnung() == null ? null : semesterrechnungModel.getWochenbetragNachrechnung().toString());
+        txtDatumZahlung1Nachrechnung.setText(asString(semesterrechnungModel.getDatumZahlung1Nachrechnung()));
+        txtBetragZahlung1Nachrechnung.setText(semesterrechnungModel.getBetragZahlung1Nachrechnung() == null ? null : semesterrechnungModel.getBetragZahlung1Nachrechnung().toString());
+        txtDatumZahlung2Nachrechnung.setText(asString(semesterrechnungModel.getDatumZahlung2Nachrechnung()));
+        txtBetragZahlung2Nachrechnung.setText(semesterrechnungModel.getBetragZahlung2Nachrechnung() == null ? null : semesterrechnungModel.getBetragZahlung2Nachrechnung().toString());
+        txtDatumZahlung3Nachrechnung.setText(asString(semesterrechnungModel.getDatumZahlung3Nachrechnung()));
+        txtBetragZahlung3Nachrechnung.setText(semesterrechnungModel.getBetragZahlung3Nachrechnung() == null ? null : semesterrechnungModel.getBetragZahlung3Nachrechnung().toString());
+        textAreaBemerkungen.setText(semesterrechnungModel.getBemerkungen());
+
+        semesterrechnungBearbeitenModel.makeErrorLabelsInvisible(new HashSet<>(Arrays.asList(new Field[]{Field.ALLE})));
+
         btnVerwerfen.setFocusPainted(false);
         enableNavigationDisableSpeichern();
     }
