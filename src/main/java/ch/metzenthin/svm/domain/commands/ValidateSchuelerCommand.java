@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
@@ -95,6 +96,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             }
         },
         SPEICHERUNG_ERFOLGREICH,
+        ABBRECHEN,
         UNERWARTETER_FEHLER;
 
         public Entry proceedUebernehmen() {
@@ -346,13 +348,52 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             }
         }
 
-        // 6. Nach Geschwistern suchen (für 8., 9. und 11. benötigt)
+        // 5. Nach Geschwistern suchen (für 8., 9. und 11. benötigt)
         CheckGeschwisterSchuelerRechnungempfaengerCommand checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand((isBearbeiten() ? schuelerOrigin : schueler), mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase, isRechnungsempfaengerDrittperson());
         checkGeschwisterSchuelerRechnungempfaengerCommand.execute();
         List<Schueler> geschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getGeschwisterList();
 
         if (!skipPrepareSummary) {
             skipPrepareSummary = true;
+
+            // 6.a Anrede Mutter ist Herr
+            if (mutter != null && mutter.getAnrede() == Anrede.HERR) {
+                Object[] options = {"Anrede übernehmen", "Anrede korrigieren"};
+                int n = JOptionPane.showOptionDialog(
+                        null,
+                        "Die Mutter hat als Anrede \"Herr\".",
+                        "Mutter mit Anrede \"Herr\"",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        svmContext.getDialogIcons().getWarningIcon(),
+                        options,  //the titles of buttons
+                        options[1]); //default button title
+                if (n == 1) {
+                    // Abbruch
+                    result = new AbbrechenResult();
+                    return;
+                }
+            }
+
+            // 6.b Anrede Vater ist Frau
+            if (vater != null && vater.getAnrede() == Anrede.FRAU) {
+                Object[] options = {"Anrede übernehmen", "Anrede korrigieren"};
+                int n = JOptionPane.showOptionDialog(
+                        null,
+                        "Der Vater hat als Anrede \"Frau\".",
+                        "Vater mit Anrede \"Frau\"",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        svmContext.getDialogIcons().getWarningIcon(),
+                        options,  //the titles of buttons
+                        options[1]); //default button title
+                if (n == 1) {
+                    // Abbruch
+                    result = new AbbrechenResult();
+                    return;
+                }
+            }
+
             // 7. Identische Adressen?
             CheckIdentischeAdressenCommand checkIdentischeAdressenCommand = new CheckIdentischeAdressenCommand(schueler, mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase, isRechnungsempfaengerDrittperson());
             checkIdentischeAdressenCommand.execute();

@@ -50,6 +50,7 @@ public class ValidateSchuelerSummaryResult extends SchuelerErfassenSaveResult {
     public Schueler getSchueler() {
         return schueler;
     }
+
     public Angehoeriger getMutter() {
         return mutter;
     }

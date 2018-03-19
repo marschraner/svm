@@ -96,10 +96,7 @@ public class SchuelerErfassenController {
         mutterController.setModelValidationMode(MODEL_VALIDATION_MODE);
         // Rechnungsempfänger-Label überschreiben
         mutterPanel.getLblRechnungsempfaenger().setText("Rechnungsempfängerin");
-        // Keine Anrede anzeigen
-        mutterPanel.getLblAnrede().setVisible(false);
-        mutterPanel.getComboBoxAnrede().setVisible(false);
-        // Anrede immer auf Frau setzen
+        // Anrede auf Frau setzen (Anrede anzeigen für Möglichkeit zur Erfassung gleichgeschlechtlicher Paare)
         try {
             mutterModel.setAnrede(Anrede.FRAU);
             // Default Rechungsempfängerin
@@ -114,10 +111,7 @@ public class SchuelerErfassenController {
     public void setVaterPanel(AngehoerigerPanel vaterPanel, AngehoerigerModel vaterModel) {
         vaterController = vaterPanel.setModel(vaterModel, defaultButtonEnabled);
         vaterController.setModelValidationMode(MODEL_VALIDATION_MODE);
-        // Keine Anrede anzeigen
-        vaterPanel.getLblAnrede().setVisible(false);
-        vaterPanel.getComboBoxAnrede().setVisible(false);
-        // Anrede immer auf Herr setzen
+        // Anrede auf Herr setzen (Anrede anzeigen für Möglichkeit zur Erfassung gleichgeschlechtlicher Paare)
         try {
             vaterModel.setAnrede(Anrede.HERR);
         } catch (SvmValidationException ignore) {
@@ -397,6 +391,13 @@ public class SchuelerErfassenController {
                 schuelerErfassenModel.abbrechen();
                 dialog[0] = null;
             }
+
+            @Override
+            public void visit(AbbrechenResult abbrechenResult) {
+                schuelerErfassenModel.abbrechen();
+                dialog[0] = null;
+            }
+
         });
         return dialog[0];
     }
