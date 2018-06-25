@@ -462,7 +462,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 return "";
             }
             Kurs kursFound = findKursCommand.getKursFound();
-            return kursFound.getLehrkraefteAsStr() + " (" + kursFound.getWochentag() +  " " + asString(kursFound.getZeitBeginn()) + "-" + asString(kursFound.getZeitEnde()) + ", " + kursFound.getKursort().getBezeichnung() + ")";
+            return kursFound.getLehrkraefteAsStr() + " (" + kursFound.getWochentag() +  " " + asString(kursFound.getZeitBeginn()) + "-" + asString(kursFound.getZeitEnde()) + ", " + kursFound.getKursort().getBezeichnung() + ", " + kursFound.getStufe() + ")";
         } else {
             return schuelerSuchenTableModel.getLehrkraft().toString();
         }
