@@ -37,6 +37,12 @@ public class SemesterrechnungenPanel {
     public SemesterrechnungenPanel(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel, boolean nachGeloeschtenGesucht) {
         $$$setupUI$$$();
         createUIComponents();
+
+        // Kursive Schrift für alle deselektieren / alle selektieren
+        Font newButtonFont = new Font(btnAlleDeselektieren.getFont().getName(), Font.ITALIC, btnAlleDeselektieren.getFont().getSize());
+        btnAlleDeselektieren.setFont(newButtonFont);
+        btnAlleSelektieren.setFont(newButtonFont);
+
         semesterrechnungenController = new SemesterrechnungenController(svmContext, svmContext.getModelFactory().createSemesterrechnungenModel(), semesterrechnungenTableModel, nachGeloeschtenGesucht);
         semesterrechnungenController.setSemesterrechnungenTable(semesterrechnungenTable);
         semesterrechnungenController.setLblTitel(lblTitel);
@@ -185,7 +191,6 @@ public class SemesterrechnungenPanel {
         btnAlleDeselektieren.setBackground(new Color(-1));
         btnAlleDeselektieren.setBorderPainted(false);
         btnAlleDeselektieren.setContentAreaFilled(false);
-        btnAlleDeselektieren.setForeground(new Color(-16776961));
         btnAlleDeselektieren.setLabel("Auswahl löschen");
         btnAlleDeselektieren.setOpaque(false);
         btnAlleDeselektieren.setText("Auswahl löschen");
@@ -206,7 +211,6 @@ public class SemesterrechnungenPanel {
         btnAlleSelektieren.setBackground(new Color(-1));
         btnAlleSelektieren.setBorderPainted(false);
         btnAlleSelektieren.setContentAreaFilled(false);
-        btnAlleSelektieren.setForeground(new Color(-16776961));
         btnAlleSelektieren.setOpaque(false);
         btnAlleSelektieren.setText("Alle auswählen");
         gbc = new GridBagConstraints();

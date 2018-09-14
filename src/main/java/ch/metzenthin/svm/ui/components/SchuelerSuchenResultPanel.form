@@ -266,7 +266,6 @@
                   <background color="-1"/>
                   <borderPainted value="false"/>
                   <contentAreaFilled value="false"/>
-                  <foreground color="-16776961"/>
                   <opaque value="false"/>
                   <text value="Auswahl löschen"/>
                 </properties>
@@ -286,7 +285,6 @@
                   <background color="-1"/>
                   <borderPainted value="false"/>
                   <contentAreaFilled value="false"/>
-                  <foreground color="-16776961"/>
                   <opaque value="false"/>
                   <text value="Alle auswählen"/>
                 </properties>

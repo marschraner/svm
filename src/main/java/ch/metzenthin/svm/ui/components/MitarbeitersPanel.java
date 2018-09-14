@@ -35,6 +35,12 @@ public class MitarbeitersPanel {
 
     public MitarbeitersPanel(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel) {
         createUIComponents();
+
+        // Kursive Schrift für alle deselektieren / alle selektieren
+        Font newButtonFont = new Font(btnAlleDeselektieren.getFont().getName(), Font.ITALIC, btnAlleDeselektieren.getFont().getSize());
+        btnAlleDeselektieren.setFont(newButtonFont);
+        btnAlleSelektieren.setFont(newButtonFont);
+
         createMitarbeitersController(svmContext, mitarbeitersTableModel);
     }
 
@@ -362,7 +368,6 @@ public class MitarbeitersPanel {
         btnAlleDeselektieren.setBackground(new Color(-1));
         btnAlleDeselektieren.setBorderPainted(false);
         btnAlleDeselektieren.setContentAreaFilled(false);
-        btnAlleDeselektieren.setForeground(new Color(-16776961));
         btnAlleDeselektieren.setOpaque(false);
         btnAlleDeselektieren.setText("Auswahl löschen");
         gbc = new GridBagConstraints();
@@ -381,7 +386,6 @@ public class MitarbeitersPanel {
         btnAlleSelektieren.setBackground(new Color(-1));
         btnAlleSelektieren.setBorderPainted(false);
         btnAlleSelektieren.setContentAreaFilled(false);
-        btnAlleSelektieren.setForeground(new Color(-16776961));
         btnAlleSelektieren.setText("Alle auswählen");
         gbc = new GridBagConstraints();
         gbc.gridx = 4;
