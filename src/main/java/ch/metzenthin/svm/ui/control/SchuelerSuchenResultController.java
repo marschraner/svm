@@ -28,6 +28,8 @@ public class SchuelerSuchenResultController {
     private final SvmContext svmContext;
     private SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final JTable schuelerSuchenResultTable;
+    private JButton btnAlleDeselektieren;
+    private JButton btnAlleSelektieren;
     private JButton btnDatenblatt;
     private JButton btnExportieren;
     private JButton btnEmail;
@@ -74,6 +76,13 @@ public class SchuelerSuchenResultController {
                     btnExportieren.setEnabled(false);
                     btnEmail.setEnabled(false);
                 }
+                if (schuelerSuchenTableModel.isAlleSelektiert()) {
+                    btnAlleSelektieren.setVisible(false);
+                    btnAlleDeselektieren.setVisible(true);
+                } else {
+                    btnAlleDeselektieren.setVisible(false);
+                    btnAlleSelektieren.setVisible(true);
+                }
             }
         });
     }
@@ -97,6 +106,48 @@ public class SchuelerSuchenResultController {
 
     public void addNextPanelListener(ActionListener nextPanelListener) {
         this.nextPanelListener = nextPanelListener;
+    }
+
+    public void setBtnAlleDeselektieren(JButton btnAlleDeselektieren) {
+        this.btnAlleDeselektieren = btnAlleDeselektieren;
+        btnAlleDeselektieren.setVisible(true);
+        // Mouse-Listener statt Action-Listener, damit nicht erst beim Loslassen des Buttons ausgelöst
+        // -> Vermeidung, dass sich Schriftfarbe beim Klicken zu schwarz ändert
+        btnAlleDeselektieren.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                if (me.getClickCount() == 1) {
+                    onAlleDeselektieren();
+                }
+            }
+        });
+    }
+
+    private void onAlleDeselektieren() {
+        schuelerSuchenTableModel.alleSchuelerDeselektieren();
+        btnAlleDeselektieren.setVisible(false);
+        btnAlleSelektieren.setVisible(true);
+        schuelerSuchenTableModel.fireTableDataChanged();
+    }
+
+    public void setBtnAlleSelektieren(JButton btnAlleSelektieren) {
+        this.btnAlleSelektieren = btnAlleSelektieren;
+        btnAlleSelektieren.setVisible(false);
+        // Mouse-Listener statt Action-Listener, damit nicht erst beim Loslassen des Buttons ausgelöst
+        // -> Vermeidung, dass sich Schriftfarbe beim Klicken zu schwarz ändert
+        btnAlleSelektieren.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                if (me.getClickCount() == 1) {
+                    onAlleSelektieren();
+                }
+            }
+        });
+    }
+
+    private void onAlleSelektieren() {
+        schuelerSuchenTableModel.alleSchuelerSelektieren();
+        btnAlleSelektieren.setVisible(false);
+        btnAlleDeselektieren.setVisible(true);
+        schuelerSuchenTableModel.fireTableDataChanged();
     }
 
     public void setBtnDatenblatt(JButton btnDatenblatt) {

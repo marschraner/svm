@@ -269,4 +269,25 @@ public class SemesterrechnungenTableData {
         }
         return zuExportierendeSemesterrechnungen;
     }
+
+    public boolean isAlleSelektiert() {
+        for (Semesterrechnung semesterrechnung : semesterrechnungen) {
+            if (!semesterrechnung.isZuExportieren()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void alleSemesterrechnungenSelektieren() {
+        for (Semesterrechnung semesterrechnung : semesterrechnungen) {
+            semesterrechnung.setZuExportieren(true);
+        }
+    }
+
+    public void alleSemesterrechnungenDeselektieren() {
+        for (Semesterrechnung semesterrechnung : semesterrechnungen) {
+            semesterrechnung.setZuExportieren(false);
+        }
+    }
 }

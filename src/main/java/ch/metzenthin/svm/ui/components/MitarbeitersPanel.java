@@ -20,6 +20,8 @@ public class MitarbeitersPanel {
     private JPanel datenPanel;
     private JPanel titelPanel;
     private JLabel lblTotal;
+    private JButton btnAlleDeselektieren;
+    private JButton btnAlleSelektieren;
     private JButton btnNeu;
     private JButton btnBearbeiten;
     private JButton btnLoeschen;
@@ -40,6 +42,8 @@ public class MitarbeitersPanel {
         mitarbeitersController = new MitarbeitersController(svmContext.getModelFactory().createLehrkraefteModel(), svmContext, mitarbeitersTableModel);
         mitarbeitersController.setMitarbeitersTable(mitarbeitersTable);
         mitarbeitersController.setLblTotal(lblTotal);
+        mitarbeitersController.setBtnAlleDeselektieren(btnAlleDeselektieren);
+        mitarbeitersController.setBtnAlleSelektieren(btnAlleSelektieren);
         mitarbeitersController.setBtnNeu(btnNeu);
         mitarbeitersController.setBtnBearbeiten(btnBearbeiten);
         mitarbeitersController.setBtnLoeschen(btnLoeschen);
@@ -308,7 +312,7 @@ public class MitarbeitersPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 5;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
@@ -317,7 +321,7 @@ public class MitarbeitersPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 4;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 5;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel5.add(spacer14, gbc);
         final JPanel spacer15 = new JPanel();
@@ -328,7 +332,7 @@ public class MitarbeitersPanel {
         panel5.add(spacer15, gbc);
         final JPanel spacer16 = new JPanel();
         gbc = new GridBagConstraints();
-        gbc.gridx = 3;
+        gbc.gridx = 6;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel5.add(spacer16, gbc);
@@ -344,16 +348,46 @@ public class MitarbeitersPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 5;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel5.add(spacer17, gbc);
         final JPanel spacer18 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 2;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 5;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel5.add(spacer18, gbc);
+        btnAlleDeselektieren = new JButton();
+        btnAlleDeselektieren.setBackground(new Color(-1));
+        btnAlleDeselektieren.setBorderPainted(false);
+        btnAlleDeselektieren.setContentAreaFilled(false);
+        btnAlleDeselektieren.setForeground(new Color(-16776961));
+        btnAlleDeselektieren.setOpaque(false);
+        btnAlleDeselektieren.setText("Auswahl löschen");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 5;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel5.add(btnAlleDeselektieren, gbc);
+        final JPanel spacer19 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel5.add(spacer19, gbc);
+        btnAlleSelektieren = new JButton();
+        btnAlleSelektieren.setBackground(new Color(-1));
+        btnAlleSelektieren.setBorderPainted(false);
+        btnAlleSelektieren.setContentAreaFilled(false);
+        btnAlleSelektieren.setForeground(new Color(-16776961));
+        btnAlleSelektieren.setText("Alle auswählen");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 4;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel5.add(btnAlleSelektieren, gbc);
     }
 
     /**

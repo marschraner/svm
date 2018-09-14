@@ -33,6 +33,8 @@ public class MitarbeitersController {
     private MitarbeitersTableModel mitarbeitersTableModel;
     private JTable mitarbeitersTable;
     private JLabel lblTotal;
+    private JButton btnAlleDeselektieren;
+    private JButton btnAlleSelektieren;
     private JButton btnNeu;
     private JButton btnBearbeiten;
     private JButton btnLoeschen;
@@ -78,6 +80,13 @@ public class MitarbeitersController {
                     btnExportieren.setEnabled(false);
                     btnEmail.setEnabled(false);
                 }
+                if (mitarbeitersTableModel.isAlleSelektiert()) {
+                    btnAlleSelektieren.setVisible(false);
+                    btnAlleDeselektieren.setVisible(true);
+                } else {
+                    btnAlleDeselektieren.setVisible(false);
+                    btnAlleSelektieren.setVisible(true);
+                }
             }
         });
     }
@@ -96,6 +105,48 @@ public class MitarbeitersController {
 
     public void setLblTotal() {
         lblTotal.setText(mitarbeitersModel.getTotal(mitarbeitersTableModel));
+    }
+
+    public void setBtnAlleDeselektieren(JButton btnAlleDeselektieren) {
+        this.btnAlleDeselektieren = btnAlleDeselektieren;
+        btnAlleDeselektieren.setVisible(true);
+        // Mouse-Listener statt Action-Listener, damit nicht erst beim Loslassen des Buttons ausgelöst
+        // -> Vermeidung, dass sich Schriftfarbe beim Klicken zu schwarz ändert
+        btnAlleDeselektieren.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                if (me.getClickCount() == 1) {
+                    onAlleDeselektieren();
+                }
+            }
+        });
+    }
+
+    private void onAlleDeselektieren() {
+        mitarbeitersTableModel.alleMitarbeiterDeselektieren();
+        btnAlleDeselektieren.setVisible(false);
+        btnAlleSelektieren.setVisible(true);
+        mitarbeitersTableModel.fireTableDataChanged();
+    }
+
+    public void setBtnAlleSelektieren(JButton btnAlleSelektieren) {
+        this.btnAlleSelektieren = btnAlleSelektieren;
+        btnAlleSelektieren.setVisible(false);
+        // Mouse-Listener statt Action-Listener, damit nicht erst beim Loslassen des Buttons ausgelöst
+        // -> Vermeidung, dass sich Schriftfarbe beim Klicken zu schwarz ändert
+        btnAlleSelektieren.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                if (me.getClickCount() == 1) {
+                    onAlleSelektieren();
+                }
+            }
+        });
+    }
+
+    private void onAlleSelektieren() {
+        mitarbeitersTableModel.alleMitarbeiterSelektieren();
+        btnAlleSelektieren.setVisible(false);
+        btnAlleDeselektieren.setVisible(true);
+        mitarbeitersTableModel.fireTableDataChanged();
     }
 
     public void setBtnNeu(JButton btnNeu) {

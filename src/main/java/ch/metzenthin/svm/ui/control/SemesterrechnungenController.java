@@ -34,6 +34,8 @@ public class SemesterrechnungenController {
     private boolean nachGeloeschtenGesucht;
     private JTable semesterrechnungenTable;
     private JLabel lblTotal;
+    private JButton btnAlleDeselektieren;
+    private JButton btnAlleSelektieren;
     private JButton btnDatenblatt;
     private JButton btnExportieren;
     private JButton btnRechnungsdatum;
@@ -107,6 +109,13 @@ public class SemesterrechnungenController {
                 } else {
                     btnExportieren.setEnabled(false);
                 }
+                if (semesterrechnungenTableModel.isAlleSelektiert()) {
+                    btnAlleSelektieren.setVisible(false);
+                    btnAlleDeselektieren.setVisible(true);
+                } else {
+                    btnAlleDeselektieren.setVisible(false);
+                    btnAlleSelektieren.setVisible(true);
+                }
             }
         });
     }
@@ -154,6 +163,48 @@ public class SemesterrechnungenController {
         semesterrechnungBearbeitenPanel.addZurueckZuSemesterrechnungSuchenListener(zurueckListener);
         String title = "Semesterrechnung " + semesterrechnungenTableModel.getSemester().getSemesterbezeichnung() + " " + semesterrechnungenTableModel.getSemester().getSchuljahr();
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{semesterrechnungBearbeitenPanel.$$$getRootComponent$$$(), title}, ActionEvent.ACTION_PERFORMED, "Semesterrechnung ausgewählt"));
+    }
+
+    public void setBtnAlleDeselektieren(JButton btnAlleDeselektieren) {
+        this.btnAlleDeselektieren = btnAlleDeselektieren;
+        btnAlleDeselektieren.setVisible(true);
+        // Mouse-Listener statt Action-Listener, damit nicht erst beim Loslassen des Buttons ausgelöst
+        // -> Vermeidung, dass sich Schriftfarbe beim Klicken zu schwarz ändert
+        btnAlleDeselektieren.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                if (me.getClickCount() == 1) {
+                    onAlleDeselektieren();
+                }
+            }
+        });
+    }
+
+    private void onAlleDeselektieren() {
+        semesterrechnungenTableModel.alleSemesterrechnungenDeselektieren();
+        btnAlleDeselektieren.setVisible(false);
+        btnAlleSelektieren.setVisible(true);
+        semesterrechnungenTableModel.fireTableDataChanged();
+    }
+
+    public void setBtnAlleSelektieren(JButton btnAlleSelektieren) {
+        this.btnAlleSelektieren = btnAlleSelektieren;
+        btnAlleSelektieren.setVisible(false);
+        // Mouse-Listener statt Action-Listener, damit nicht erst beim Loslassen des Buttons ausgelöst
+        // -> Vermeidung, dass sich Schriftfarbe beim Klicken zu schwarz ändert
+        btnAlleSelektieren.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                if (me.getClickCount() == 1) {
+                    onAlleSelektieren();
+                }
+            }
+        });
+    }
+
+    private void onAlleSelektieren() {
+        semesterrechnungenTableModel.alleSemesterrechnungenSelektieren();
+        btnAlleSelektieren.setVisible(false);
+        btnAlleDeselektieren.setVisible(true);
+        semesterrechnungenTableModel.fireTableDataChanged();
     }
 
     public void setBtnExportieren(JButton btnExportieren) {

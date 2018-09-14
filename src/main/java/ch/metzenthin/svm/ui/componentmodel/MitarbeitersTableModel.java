@@ -69,4 +69,16 @@ public class MitarbeitersTableModel extends AbstractTableModel {
         return mitarbeitersTableData.getZuExportierendeMitarbeiters();
     }
 
+    public boolean isAlleSelektiert() {
+        return mitarbeitersTableData.isAlleSelektiert();
+    }
+
+    public void alleMitarbeiterSelektieren() {
+        mitarbeitersTableData.alleMitarbeiterSelektieren();
+    }
+
+    public void alleMitarbeiterDeselektieren() {
+        mitarbeitersTableData.alleMitarbeiterDeselektieren();
+    }
+
 }

@@ -17,6 +17,8 @@ import java.awt.event.ActionListener;
 public class SchuelerSuchenResultPanel {
     private JTable schuelerSuchenResultTable;
     private JPanel panel;
+    private JButton btnAlleDeselektieren;
+    private JButton btnAlleSelektieren;
     private JButton btnDatenblatt;
     private JButton btnExportieren;
     private JButton btnAbbrechen;
@@ -34,6 +36,8 @@ public class SchuelerSuchenResultPanel {
         createUIComponents();
         schuelerSuchenResultController = new SchuelerSuchenResultController(svmContext, schuelerSuchenTableModel, schuelerSuchenResultTable);
         schuelerSuchenResultController.setLblTotal(lblTotal);
+        schuelerSuchenResultController.setBtnAlleDeselektieren(btnAlleDeselektieren);
+        schuelerSuchenResultController.setBtnAlleSelektieren(btnAlleSelektieren);
         schuelerSuchenResultController.setBtnDatenblatt(btnDatenblatt);
         schuelerSuchenResultController.setBtnExportieren(btnExportieren);
         schuelerSuchenResultController.setBtnEmail(btnEmail);
@@ -257,7 +261,7 @@ public class SchuelerSuchenResultPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 5;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
@@ -278,12 +282,12 @@ public class SchuelerSuchenResultPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 4;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 5;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel4.add(spacer14, gbc);
         final JPanel spacer15 = new JPanel();
         gbc = new GridBagConstraints();
-        gbc.gridx = 3;
+        gbc.gridx = 6;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel4.add(spacer15, gbc);
@@ -306,6 +310,37 @@ public class SchuelerSuchenResultPanel {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel4.add(spacer17, gbc);
+        btnAlleDeselektieren = new JButton();
+        btnAlleDeselektieren.setBackground(new Color(-1));
+        btnAlleDeselektieren.setBorderPainted(false);
+        btnAlleDeselektieren.setContentAreaFilled(false);
+        btnAlleDeselektieren.setForeground(new Color(-16776961));
+        btnAlleDeselektieren.setOpaque(false);
+        btnAlleDeselektieren.setText("Auswahl löschen");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 5;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel4.add(btnAlleDeselektieren, gbc);
+        final JPanel spacer18 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel4.add(spacer18, gbc);
+        btnAlleSelektieren = new JButton();
+        btnAlleSelektieren.setBackground(new Color(-1));
+        btnAlleSelektieren.setBorderPainted(false);
+        btnAlleSelektieren.setContentAreaFilled(false);
+        btnAlleSelektieren.setForeground(new Color(-16776961));
+        btnAlleSelektieren.setOpaque(false);
+        btnAlleSelektieren.setText("Alle auswählen");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 4;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel4.add(btnAlleSelektieren, gbc);
     }
 
     /**

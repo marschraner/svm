@@ -74,4 +74,16 @@ public class SemesterrechnungenTableModel extends AbstractTableModel {
         return semesterrechnungenTableData.getZuExportierendeSemesterrechnungen();
     }
 
+    public boolean isAlleSelektiert() {
+        return semesterrechnungenTableData.isAlleSelektiert();
+    }
+
+    public void alleSemesterrechnungenSelektieren() {
+        semesterrechnungenTableData.alleSemesterrechnungenSelektieren();
+    }
+
+    public void alleSemesterrechnungenDeselektieren() {
+        semesterrechnungenTableData.alleSemesterrechnungenDeselektieren();
+    }
+
 }

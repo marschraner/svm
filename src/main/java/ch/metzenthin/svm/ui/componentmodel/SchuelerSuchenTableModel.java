@@ -83,6 +83,18 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
         return schuelerSuchenTableData.getZuExportierendeSchuelerList();
     }
 
+    public boolean isAlleSelektiert() {
+        return schuelerSuchenTableData.isAlleSelektiert();
+    }
+
+    public void alleSchuelerSelektieren() {
+        schuelerSuchenTableData.alleSchuelerSelektieren();
+    }
+
+    public void alleSchuelerDeselektieren() {
+        schuelerSuchenTableData.alleSchuelerDeselektieren();
+    }
+
     public Semester getSemester() {
         return schuelerSuchenTableData.getSemester();
     }

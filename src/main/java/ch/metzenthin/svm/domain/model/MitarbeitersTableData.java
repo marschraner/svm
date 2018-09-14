@@ -146,4 +146,25 @@ public class MitarbeitersTableData {
         }
         return zuExportierendeMitarbeiters;
     }
+
+    public boolean isAlleSelektiert() {
+        for (Mitarbeiter mitarbeiter : mitarbeiters) {
+            if (!mitarbeiter.isZuExportieren()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void alleMitarbeiterSelektieren() {
+        for (Mitarbeiter mitarbeiter : mitarbeiters) {
+            mitarbeiter.setZuExportieren(true);
+        }
+    }
+
+    public void alleMitarbeiterDeselektieren() {
+        for (Mitarbeiter mitarbeiter : mitarbeiters) {
+            mitarbeiter.setZuExportieren(false);
+        }
+    }
 }

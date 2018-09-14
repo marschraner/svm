@@ -277,6 +277,27 @@ public class SchuelerSuchenTableData {
         return zuExportierendeSchuelerList;
     }
 
+    public boolean isAlleSelektiert() {
+        for (Schueler schueler : schuelerList) {
+            if (!schueler.isZuExportieren()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void alleSchuelerSelektieren() {
+        for (Schueler schueler : schuelerList) {
+            schueler.setZuExportieren(true);
+        }
+    }
+
+    public void alleSchuelerDeselektieren() {
+        for (Schueler schueler : schuelerList) {
+            schueler.setZuExportieren(false);
+        }
+    }
+
     public void setKurse(Map<Schueler, List<Kurs>> kurse) {
         this.kurse = kurse;
     }
