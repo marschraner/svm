@@ -10,6 +10,9 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.font.TextAttribute;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Martin Schraner
@@ -38,8 +41,10 @@ public class SemesterrechnungenPanel {
         $$$setupUI$$$();
         createUIComponents();
 
-        // Kursive Schrift für alle deselektieren / alle selektieren
-        Font newButtonFont = new Font(btnAlleDeselektieren.getFont().getName(), Font.ITALIC, btnAlleDeselektieren.getFont().getSize());
+        // Kursiv unterstrichen für alle deselektieren / alle selektieren
+        Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
+        fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        Font newButtonFont = new Font(btnAlleDeselektieren.getFont().getName(), Font.ITALIC, btnAlleDeselektieren.getFont().getSize()).deriveFont(fontAttributes);
         btnAlleDeselektieren.setFont(newButtonFont);
         btnAlleSelektieren.setFont(newButtonFont);
 
