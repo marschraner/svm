@@ -29,6 +29,9 @@ public class SemesterrechnungenTableData {
     }
 
     private void initColumns() {
+        if (!nachGeloeschtenGesucht) {
+            columns.add(Field.SELEKTIERT);
+        }
         columns.add(Field.RECHNUNGSEMPFAENGER);
         columns.add(Field.SCHUELER);
         columns.add(Field.RECHNUNGSDATUM_VORRECHNUNG);
@@ -50,9 +53,6 @@ public class SemesterrechnungenTableData {
         columns.add(Field.RECHNUNGSBETRAG_NACHRECHNUNG);
         columns.add(Field.RESTBETRAG_NACHRECHNUNG);
         columns.add(Field.DIFFERENZ_SCHULGELD);
-        if (!nachGeloeschtenGesucht) {
-            columns.add(Field.EXPORT_RECHNUNGSDATUM);
-        }
     }
 
     public int getColumnCount() {
@@ -63,14 +63,14 @@ public class SemesterrechnungenTableData {
         return semesterrechnungen.size();
     }
 
-    public int getAnzExport() {
-        int anzExport = 0;
+    public int getAnzSelektiert() {
+        int anzSelektiert = 0;
         for (Semesterrechnung semesterrechnung : semesterrechnungen) {
-            if (semesterrechnung.isZuExportieren()) {
-                anzExport++;
+            if (semesterrechnung.isSelektiert()) {
+                anzSelektiert++;
             }
         }
-        return anzExport;
+        return anzSelektiert;
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -81,6 +81,9 @@ public class SemesterrechnungenTableData {
                 || (semesterrechnung.getErmaessigungVorrechnung() != null && semesterrechnung.getErmaessigungVorrechnung().compareTo(BigDecimal.ZERO) != 0)
                 || (semesterrechnung.getZuschlagVorrechnung() != null && semesterrechnung.getZuschlagVorrechnung().compareTo(BigDecimal.ZERO) != 0);
         switch (columns.get(columnIndex)) {
+            case SELEKTIERT:
+                value = semesterrechnung.isSelektiert();
+                break;
             case RECHNUNGSEMPFAENGER:
                 value = semesterrechnung.getRechnungsempfaenger().getNachname() + " " + semesterrechnung.getRechnungsempfaenger().getVorname();
                 break;
@@ -168,9 +171,6 @@ public class SemesterrechnungenTableData {
             case DIFFERENZ_SCHULGELD:
                 value = semesterrechnung.getDifferenzSchulgeld();
                 break;
-            case EXPORT_RECHNUNGSDATUM:
-                value = semesterrechnung.isZuExportieren();
-                break;
             default:
                 break;
         }
@@ -179,9 +179,9 @@ public class SemesterrechnungenTableData {
 
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         switch (columns.get(columnIndex)) {
-            case EXPORT_RECHNUNGSDATUM:
+            case SELEKTIERT:
                 Semesterrechnung semesterrechnung = semesterrechnungen.get(rowIndex);
-                semesterrechnung.setZuExportieren((boolean) value);
+                semesterrechnung.setSelektiert((boolean) value);
                 semesterrechnungen.set(rowIndex, semesterrechnung);
                 break;
             default:
@@ -190,7 +190,7 @@ public class SemesterrechnungenTableData {
 
     public boolean isCellEditable(int columnIndex) {
         switch (columns.get(columnIndex)) {
-            case EXPORT_RECHNUNGSDATUM:
+            case SELEKTIERT:
                 return true;
             default:
                 return false;
@@ -199,6 +199,8 @@ public class SemesterrechnungenTableData {
 
     public Class<?> getColumnClass(int columnIndex) {
         switch (columns.get(columnIndex)) {
+            case SELEKTIERT:
+                return Boolean.class;
             case RECHNUNGSDATUM_VORRECHNUNG:
                 return Calendar.class;
             case ANZAHL_WOCHEN_VORRECHNUNG:
@@ -233,8 +235,6 @@ public class SemesterrechnungenTableData {
                 return BigDecimal.class;
             case DIFFERENZ_SCHULGELD:
                 return BigDecimal.class;
-            case EXPORT_RECHNUNGSDATUM:
-                return Boolean.class;
             default:
                 return String.class;
         }
@@ -260,19 +260,19 @@ public class SemesterrechnungenTableData {
         this.semesterrechnungen = semesterrechnungen;
     }
 
-    public List<Semesterrechnung> getZuExportierendeSemesterrechnungen() {
-        List<Semesterrechnung> zuExportierendeSemesterrechnungen = new ArrayList<>();
+    public List<Semesterrechnung> getSelektierteSemesterrechnungen() {
+        List<Semesterrechnung> selektierteSemesterrechnungen = new ArrayList<>();
         for (Semesterrechnung semesterrechnung : semesterrechnungen) {
-            if (semesterrechnung.isZuExportieren()) {
-                zuExportierendeSemesterrechnungen.add(semesterrechnung);
+            if (semesterrechnung.isSelektiert()) {
+                selektierteSemesterrechnungen.add(semesterrechnung);
             }
         }
-        return zuExportierendeSemesterrechnungen;
+        return selektierteSemesterrechnungen;
     }
 
     public boolean isAlleSelektiert() {
         for (Semesterrechnung semesterrechnung : semesterrechnungen) {
-            if (!semesterrechnung.isZuExportieren()) {
+            if (!semesterrechnung.isSelektiert()) {
                 return false;
             }
         }
@@ -281,13 +281,13 @@ public class SemesterrechnungenTableData {
 
     public void alleSemesterrechnungenSelektieren() {
         for (Semesterrechnung semesterrechnung : semesterrechnungen) {
-            semesterrechnung.setZuExportieren(true);
+            semesterrechnung.setSelektiert(true);
         }
     }
 
     public void alleSemesterrechnungenDeselektieren() {
         for (Semesterrechnung semesterrechnung : semesterrechnungen) {
-            semesterrechnung.setZuExportieren(false);
+            semesterrechnung.setSelektiert(false);
         }
     }
 }

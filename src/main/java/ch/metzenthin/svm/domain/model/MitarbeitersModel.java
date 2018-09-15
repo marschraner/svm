@@ -14,7 +14,6 @@ public interface MitarbeitersModel {
     MitarbeiterErfassenModel getMitarbeiterErfassenModel(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, int indexBearbeiten);
 
     DeleteMitarbeiterCommand.Result mitarbeiterLoeschen(MitarbeitersTableModel mitarbeitersTableModel, int selectedRow);
-    String getTotal(MitarbeitersTableModel mitarbeitersTableModel);
     CallDefaultEmailClientCommand.Result callEmailClient(MitarbeitersTableModel mitarbeitersTableModel);
     List<String> getFehlendeEmailAdressen();
     List<String> getUngueltigeEmailAdressen();

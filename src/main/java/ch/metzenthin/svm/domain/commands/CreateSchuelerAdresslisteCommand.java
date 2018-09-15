@@ -178,7 +178,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         Map<Schueler, List<Kurs>> kurse = schuelerSuchenTableModel.getKurse();
         List<List<List<String>>> datasets = new ArrayList<>();
         int i = 0;
-        for (Schueler schueler : schuelerSuchenTableModel.getZuExportierendeSchuelerList()) {
+        for (Schueler schueler : schuelerSuchenTableModel.getSelektierteSchuelerList()) {
             List<Kurs> schuelerKurse = kurse.get(schueler);
             int j = 0;
             do {

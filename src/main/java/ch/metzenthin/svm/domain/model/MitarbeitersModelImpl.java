@@ -21,7 +21,7 @@ public class MitarbeitersModelImpl extends AbstractModel implements Mitarbeiters
     private List<String> fehlendeEmailAdressen;
     private List<String> ungueltigeEmailAdressen;
 
-    public MitarbeitersModelImpl(CommandInvoker commandInvoker) {
+    MitarbeitersModelImpl(CommandInvoker commandInvoker) {
         super(commandInvoker);
     }
 
@@ -43,18 +43,13 @@ public class MitarbeitersModelImpl extends AbstractModel implements Mitarbeiters
     }
 
     @Override
-    public String getTotal(MitarbeitersTableModel mitarbeitersTableModel) {
-        return "Total: " + mitarbeitersTableModel.getRowCount() + " Mitarbeiter";
-    }
-
-    @Override
     public CallDefaultEmailClientCommand.Result callEmailClient(MitarbeitersTableModel mitarbeitersTableModel) {
 
         List<String> emailAdressen = new ArrayList<>();
         fehlendeEmailAdressen = new ArrayList<>();
 
         for (Mitarbeiter mitarbeiter : mitarbeitersTableModel.getMitarbeiters()) {
-            if (!mitarbeiter.isZuExportieren()) {
+            if (!mitarbeiter.isSelektiert()) {
                 continue;
             }
             if (checkNotEmpty(mitarbeiter.getEmail())) {

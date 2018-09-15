@@ -20,7 +20,7 @@ public class MitarbeitersTableData {
         this.mitarbeiters = mitarbeiters;
     }
 
-    private static final Field[] COLUMNS = {Field.NACHNAME, Field.VORNAME, Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT, Field.FESTNETZ, Field.NATEL, Field.EMAIL, Field.GEBURTSDATUM, Field.AHV_NUMMER, Field.LEHRKRAFT, Field.CODES, Field.VERTRETUNGSMOEGLICHKEITEN, Field.BEMERKUNGEN, Field.AKTIV, Field.EXPORT_MAIL};
+    private static final Field[] COLUMNS = {Field.SELEKTIERT, Field.NACHNAME, Field.VORNAME, Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT, Field.FESTNETZ, Field.NATEL, Field.EMAIL, Field.GEBURTSDATUM, Field.AHV_NUMMER, Field.LEHRKRAFT, Field.CODES, Field.VERTRETUNGSMOEGLICHKEITEN, Field.BEMERKUNGEN, Field.AKTIV};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -30,20 +30,23 @@ public class MitarbeitersTableData {
         return mitarbeiters.size();
     }
 
-    public int getAnzExport() {
-        int anzExport = 0;
+    public int getAnzSelektiert() {
+        int anzSelektiert = 0;
         for (Mitarbeiter mitarbeiter : mitarbeiters) {
-            if (mitarbeiter.isZuExportieren()) {
-                anzExport++;
+            if (mitarbeiter.isSelektiert()) {
+                anzSelektiert++;
             }
         }
-        return anzExport;
+        return anzSelektiert;
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
         Mitarbeiter mitarbeiter = mitarbeiters.get(rowIndex);
         Object value = null;
         switch (COLUMNS[columnIndex]) {
+            case SELEKTIERT:
+                value = mitarbeiter.isSelektiert();
+                break;
             case NACHNAME:
                 value = mitarbeiter.getNachname();
                 break;
@@ -89,9 +92,6 @@ public class MitarbeitersTableData {
             case BEMERKUNGEN:
                 value = mitarbeiter.getBemerkungenLineBreaksReplacedBySemicolonOrPeriod();
                 break;
-            case EXPORT_MAIL:
-                value = mitarbeiter.isZuExportieren();
-                break;
             default:
                 break;
         }
@@ -100,9 +100,9 @@ public class MitarbeitersTableData {
 
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         switch (COLUMNS[columnIndex]) {
-            case EXPORT_MAIL:
+            case SELEKTIERT:
                 Mitarbeiter mitarbeiter = mitarbeiters.get(rowIndex);
-                mitarbeiter.setZuExportieren((boolean) value);
+                mitarbeiter.setSelektiert((boolean) value);
                 mitarbeiters.set(rowIndex, mitarbeiter);
                 break;
             default:
@@ -111,7 +111,7 @@ public class MitarbeitersTableData {
 
     public boolean isCellEditable(int columnIndex) {
         switch (COLUMNS[columnIndex]) {
-            case EXPORT_MAIL:
+            case SELEKTIERT:
                 return true;
             default:
                 return false;
@@ -122,7 +122,7 @@ public class MitarbeitersTableData {
         switch (COLUMNS[columnIndex]) {
             case GEBURTSDATUM:
                 return Calendar.class;
-            case EXPORT_MAIL:
+            case SELEKTIERT:
                 return Boolean.class;
             default:
                 return String.class;
@@ -137,19 +137,19 @@ public class MitarbeitersTableData {
         return mitarbeiters;
     }
 
-    public List<Mitarbeiter> getZuExportierendeMitarbeiters() {
-        List<Mitarbeiter> zuExportierendeMitarbeiters = new ArrayList<>();
+    public List<Mitarbeiter> getSelektierteMitarbeiters() {
+        List<Mitarbeiter> selektierteMitarbeiters = new ArrayList<>();
         for (Mitarbeiter mitarbeiter : mitarbeiters) {
-            if (mitarbeiter.isZuExportieren()) {
-                zuExportierendeMitarbeiters.add(mitarbeiter);
+            if (mitarbeiter.isSelektiert()) {
+                selektierteMitarbeiters.add(mitarbeiter);
             }
         }
-        return zuExportierendeMitarbeiters;
+        return selektierteMitarbeiters;
     }
 
     public boolean isAlleSelektiert() {
         for (Mitarbeiter mitarbeiter : mitarbeiters) {
-            if (!mitarbeiter.isZuExportieren()) {
+            if (!mitarbeiter.isSelektiert()) {
                 return false;
             }
         }
@@ -158,13 +158,13 @@ public class MitarbeitersTableData {
 
     public void alleMitarbeiterSelektieren() {
         for (Mitarbeiter mitarbeiter : mitarbeiters) {
-            mitarbeiter.setZuExportieren(true);
+            mitarbeiter.setSelektiert(true);
         }
     }
 
     public void alleMitarbeiterDeselektieren() {
         for (Mitarbeiter mitarbeiter : mitarbeiters) {
-            mitarbeiter.setZuExportieren(false);
+            mitarbeiter.setSelektiert(false);
         }
     }
 }

@@ -158,7 +158,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
 
         // Map mit Elternmithilfe als Key, damit nach Elternmithilfe sortiert werden kann
         Map<Person, Maercheneinteilung> maercheneinteilungenElternmithilfe = new TreeMap<>();
-        for (Schueler schueler : schuelerSuchenTableModel.getZuExportierendeSchuelerList()) {
+        for (Schueler schueler : schuelerSuchenTableModel.getSelektierteSchuelerList()) {
             Maercheneinteilung maercheneinteilung = maercheneinteilungen.get(schueler);
             if (maercheneinteilung == null || maercheneinteilung.getElternmithilfe() == null) {
                 continue;

@@ -75,12 +75,12 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
         return getSchuelerSuchenTableData().getSchuelerList();
     }
 
-    public int getAnzExport() {
-        return schuelerSuchenTableData.getAnzExport();
+    public int getAnzSelektiert() {
+        return schuelerSuchenTableData.getAnzSelektiert();
     }
 
-    public List<Schueler> getZuExportierendeSchuelerList() {
-        return schuelerSuchenTableData.getZuExportierendeSchuelerList();
+    public List<Schueler> getSelektierteSchuelerList() {
+        return schuelerSuchenTableData.getSelektierteSchuelerList();
     }
 
     public boolean isAlleSelektiert() {

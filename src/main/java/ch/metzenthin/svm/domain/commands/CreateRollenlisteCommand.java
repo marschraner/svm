@@ -178,7 +178,7 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
         }
         for (Schueler schueler : keys) {
             Maercheneinteilung maercheneinteilung = maercheneinteilungen.get(schueler);
-            if (maercheneinteilung == null || !schueler.isZuExportieren()) {
+            if (maercheneinteilung == null || !schueler.isSelektiert()) {
                 continue;
             }
             List<List<String>> dataset = new ArrayList<>();

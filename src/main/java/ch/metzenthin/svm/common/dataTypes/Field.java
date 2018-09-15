@@ -4,8 +4,7 @@ package ch.metzenthin.svm.common.dataTypes;
  * @author Martin Schraner
  */
 public enum Field {
-    EXPORT_MAIL("Exp./Mail"),
-    EXPORT_RECHNUNGSDATUM("Exp./Rechn.datum"),
+    SELEKTIERT(""),
     ALLE("Alle"),
     ANREDE("Anrede"),
     NACHNAME("Nachname"),

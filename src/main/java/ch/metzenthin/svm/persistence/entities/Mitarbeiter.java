@@ -30,7 +30,7 @@ public class Mitarbeiter extends Person {
     private Boolean aktiv;
 
     @Transient
-    private boolean zuExportieren = true;
+    private boolean selektiert = true;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "Mitarbeiter_MitarbeiterCode",
@@ -146,12 +146,12 @@ public class Mitarbeiter extends Person {
         this.aktiv = aktiv;
     }
 
-    public boolean isZuExportieren() {
-        return zuExportieren;
+    public boolean isSelektiert() {
+        return selektiert;
     }
 
-    public void setZuExportieren(boolean zuExportieren) {
-        this.zuExportieren = zuExportieren;
+    public void setSelektiert(boolean selektiert) {
+        this.selektiert = selektiert;
     }
 
     public Set<MitarbeiterCode> getMitarbeiterCodes() {

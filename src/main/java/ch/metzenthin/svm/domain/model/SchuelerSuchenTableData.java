@@ -59,6 +59,7 @@ public class SchuelerSuchenTableData {
     }
 
     private void initColumns() {
+        columns.add(Field.SELEKTIERT);
         columns.add(Field.NACHNAME);
         columns.add(Field.VORNAME);
         columns.add(Field.STRASSE_HAUSNUMMER);
@@ -78,7 +79,6 @@ public class SchuelerSuchenTableData {
             // Märchen nur im 1. Semester anzeigen
             columns.add(Field.GRUPPE);
         }
-        columns.add(Field.EXPORT_MAIL);
     }
 
     public int getColumnCount() {
@@ -89,14 +89,14 @@ public class SchuelerSuchenTableData {
         return schuelerList.size();
     }
 
-    public int getAnzExport() {
-        int anzExport = 0;
+    public int getAnzSelektiert() {
+        int anzSelektiert = 0;
         for (Schueler schueler : schuelerList) {
-            if (schueler.isZuExportieren()) {
-                anzExport++;
+            if (schueler.isSelektiert()) {
+                anzSelektiert++;
             }
         }
-        return anzExport;
+        return anzSelektiert;
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -105,6 +105,9 @@ public class SchuelerSuchenTableData {
         Adresse schuelerAdresse = schueler.getAdresse();
         Object value = null;
         switch (columns.get(columnIndex)) {
+            case SELEKTIERT:
+                value = schueler.isSelektiert();
+                break;
             case NACHNAME:
                 value = schueler.getNachname();
                 break;
@@ -159,9 +162,6 @@ public class SchuelerSuchenTableData {
                     value = maercheneinteilungen.get(schueler).getGruppe().toString();
                 }
                 break;
-            case EXPORT_MAIL:
-                value = schueler.isZuExportieren();
-                break;
             default:
                 break;
         }
@@ -170,9 +170,9 @@ public class SchuelerSuchenTableData {
 
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         switch (columns.get(columnIndex)) {
-            case EXPORT_MAIL:
+            case SELEKTIERT:
                 Schueler schueler = schuelerList.get(rowIndex);
-                schueler.setZuExportieren((boolean) value);
+                schueler.setSelektiert((boolean) value);
                 schuelerList.set(rowIndex, schueler);
                 break;
             default:
@@ -181,7 +181,7 @@ public class SchuelerSuchenTableData {
 
     public boolean isCellEditable(int columnIndex) {
         switch (columns.get(columnIndex)) {
-            case EXPORT_MAIL:
+            case SELEKTIERT:
                 return true;
             default:
                 return false;
@@ -194,7 +194,7 @@ public class SchuelerSuchenTableData {
                 return Calendar.class;
             case ANZAHL_KURSE:
                 return Integer.class;
-            case EXPORT_MAIL:
+            case SELEKTIERT:
                 return Boolean.class;
             case ROLLE1:
                 return StringNumber.class;
@@ -267,19 +267,19 @@ public class SchuelerSuchenTableData {
         return schuelerList;
     }
 
-    public List<Schueler> getZuExportierendeSchuelerList() {
-        List<Schueler> zuExportierendeSchuelerList = new ArrayList<>();
+    public List<Schueler> getSelektierteSchuelerList() {
+        List<Schueler> selektierteSchuelerList = new ArrayList<>();
         for (Schueler schueler : schuelerList) {
-            if (schueler.isZuExportieren()) {
-                zuExportierendeSchuelerList.add(schueler);
+            if (schueler.isSelektiert()) {
+                selektierteSchuelerList.add(schueler);
             }
         }
-        return zuExportierendeSchuelerList;
+        return selektierteSchuelerList;
     }
 
     public boolean isAlleSelektiert() {
         for (Schueler schueler : schuelerList) {
-            if (!schueler.isZuExportieren()) {
+            if (!schueler.isSelektiert()) {
                 return false;
             }
         }
@@ -288,13 +288,13 @@ public class SchuelerSuchenTableData {
 
     public void alleSchuelerSelektieren() {
         for (Schueler schueler : schuelerList) {
-            schueler.setZuExportieren(true);
+            schueler.setSelektiert(true);
         }
     }
 
     public void alleSchuelerDeselektieren() {
         for (Schueler schueler : schuelerList) {
-            schueler.setZuExportieren(false);
+            schueler.setSelektiert(false);
         }
     }
 
@@ -317,7 +317,7 @@ public class SchuelerSuchenTableData {
     public int getAnzZuExportierendeMaercheneinteilungen() {
         int anzZuExportierendeMaercheneinteilungen = 0;
         for (Schueler schueler : maercheneinteilungen.keySet()) {
-            if (schueler.isZuExportieren() && maercheneinteilungen.get(schueler) != null) {
+            if (schueler.isSelektiert() && maercheneinteilungen.get(schueler) != null) {
                 anzZuExportierendeMaercheneinteilungen++;
             }
         }

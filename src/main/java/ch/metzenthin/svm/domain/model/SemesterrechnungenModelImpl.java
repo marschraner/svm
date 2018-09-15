@@ -27,14 +27,6 @@ public class SemesterrechnungenModelImpl extends AbstractModel implements Semest
     }
 
     @Override
-    public String getTotal(SemesterrechnungenTableModel semesterrechnungenTableModel) {
-        String semesterStr = " (" + semesterrechnungenTableModel.getSemester().getSchuljahr() + ", " + semesterrechnungenTableModel.getSemester().getSemesterbezeichnung() + ")";
-        String semesterrechnungenStr = (semesterrechnungenTableModel.getRowCount() == 1 ? " Semesterrechnung" : " Semesterrechnungen");
-        String total = "Total: " + semesterrechnungenTableModel.getRowCount() + semesterrechnungenStr;
-        return total + semesterStr;
-    }
-
-    @Override
     public void semesterrechnungPhysischLoeschen(SemesterrechnungenTableModel semesterrechnungenTableModel, int rowSelected) {
         CommandInvoker commandInvoker = getCommandInvoker();
         DeleteSemesterrechnungCommand deleteSemesterrechnungCommand = new DeleteSemesterrechnungCommand(semesterrechnungenTableModel.getSemesterrechnungen(), rowSelected);

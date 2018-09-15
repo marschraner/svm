@@ -61,12 +61,12 @@ public class MitarbeitersTableModel extends AbstractTableModel {
         return mitarbeitersTableData;
     }
 
-    public int getAnzExport() {
-        return mitarbeitersTableData.getAnzExport();
+    public int getAnzSelektiert() {
+        return mitarbeitersTableData.getAnzSelektiert();
     }
 
-    public List<Mitarbeiter> getZuExportierendeMitarbeiters() {
-        return mitarbeitersTableData.getZuExportierendeMitarbeiters();
+    public List<Mitarbeiter> getSelektierteMitarbeiters() {
+        return mitarbeitersTableData.getSelektierteMitarbeiters();
     }
 
     public boolean isAlleSelektiert() {

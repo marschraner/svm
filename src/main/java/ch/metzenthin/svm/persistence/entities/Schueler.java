@@ -24,7 +24,7 @@ public class Schueler extends Person {
     private String bemerkungen;
 
     @Transient
-    private boolean zuExportieren = true;
+    private boolean selektiert = true;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "vater_id", nullable = true)
@@ -109,12 +109,12 @@ public class Schueler extends Person {
         this.bemerkungen = bemerkungen;
     }
 
-    public boolean isZuExportieren() {
-        return zuExportieren;
+    public boolean isSelektiert() {
+        return selektiert;
     }
 
-    public void setZuExportieren(boolean zuExportieren) {
-        this.zuExportieren = zuExportieren;
+    public void setSelektiert(boolean selektiert) {
+        this.selektiert = selektiert;
     }
 
     public Angehoeriger getVater() {

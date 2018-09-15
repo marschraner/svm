@@ -73,7 +73,7 @@ public class MitarbeitersController {
         mitarbeitersTable.getModel().addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                if (mitarbeitersTableModel.getAnzExport() > 0) {
+                if (mitarbeitersTableModel.getAnzSelektiert() > 0) {
                     btnExportieren.setEnabled(true);
                     btnEmail.setEnabled(true);
                 } else {
@@ -87,6 +87,7 @@ public class MitarbeitersController {
                     btnAlleDeselektieren.setVisible(false);
                     btnAlleSelektieren.setVisible(true);
                 }
+                setLblTotal();
             }
         });
     }
@@ -103,8 +104,10 @@ public class MitarbeitersController {
         setLblTotal();
     }
 
-    public void setLblTotal() {
-        lblTotal.setText(mitarbeitersModel.getTotal(mitarbeitersTableModel));
+    private void setLblTotal() {
+        String lblTotalText = "Total: " + mitarbeitersTableModel.getRowCount() + " Mitarbeiter (" +
+                mitarbeitersTableModel.getAnzSelektiert() + " selektiert)";
+        lblTotal.setText(lblTotalText);
     }
 
     public void setBtnAlleDeselektieren(JButton btnAlleDeselektieren) {
@@ -123,6 +126,7 @@ public class MitarbeitersController {
         btnAlleDeselektieren.setVisible(false);
         btnAlleSelektieren.setVisible(true);
         mitarbeitersTableModel.fireTableDataChanged();
+        setLblTotal();
     }
 
     public void setBtnAlleSelektieren(JButton btnAlleSelektieren) {
@@ -141,6 +145,7 @@ public class MitarbeitersController {
         btnAlleSelektieren.setVisible(false);
         btnAlleDeselektieren.setVisible(true);
         mitarbeitersTableModel.fireTableDataChanged();
+        setLblTotal();
     }
 
     public void setBtnNeu(JButton btnNeu) {
@@ -269,18 +274,20 @@ public class MitarbeitersController {
 
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
-        if (mitarbeitersTableModel.getAnzExport() < mitarbeitersTableModel.getRowCount()) {
+        int anzSelektiert = mitarbeitersTableModel.getAnzSelektiert();
+        int rowCount = mitarbeitersTableModel.getRowCount();
+        if (anzSelektiert < rowCount) {
             String str1;
             String str2;
-            if (mitarbeitersTableModel.getAnzExport() > 1) {
-                str1 = "sind nur " + mitarbeitersTableModel.getAnzExport();
+            if (anzSelektiert > 1) {
+                str1 = "sind nur " + anzSelektiert;
                 str2 = "diese Einträge\nwerden";
             } else {
                 str1 = "ist nur einer";
                 str2 = "dieser Eintrag\nwird";
             }
             JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
-                    + mitarbeitersTableModel.getRowCount() + " Einträge selektiert. Nur " + str2
+                    + rowCount + " Einträge selektiert. Nur " + str2
                     + " beim Exportieren berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
         }
         ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, null, mitarbeitersTableModel, null, null, ListenExportTyp.MITARBEITERS);
@@ -304,18 +311,20 @@ public class MitarbeitersController {
 
     private void onEmail() {
         btnEmail.setFocusPainted(true);
-        if (mitarbeitersTableModel.getAnzExport() < mitarbeitersTableModel.getRowCount()) {
+        int anzSelektiert = mitarbeitersTableModel.getAnzSelektiert();
+        int rowCount = mitarbeitersTableModel.getRowCount();
+        if (anzSelektiert < rowCount) {
             String str1;
             String str2;
-            if (mitarbeitersTableModel.getAnzExport() > 1) {
-                str1 = "sind nur " + mitarbeitersTableModel.getAnzExport();
+            if (anzSelektiert > 1) {
+                str1 = "sind nur " + anzSelektiert;
                 str2 = "diese Einträge\nwerden";
             } else {
                 str1 = "ist nur einer";
                 str2 = "dieser Eintrag\nwird";
             }
             JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
-                    + mitarbeitersTableModel.getRowCount() + " Einträge selektiert. Nur " + str2
+                    + rowCount + " Einträge selektiert. Nur " + str2
                     + " für die Gruppen-E-Mail berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
         }
         CallDefaultEmailClientCommand.Result result = mitarbeitersModel.callEmailClient(mitarbeitersTableModel);

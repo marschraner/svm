@@ -131,7 +131,7 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
         // Inhalt
         List<List<List<String>>> datasets = new ArrayList<>();
         int i = 0;
-        for (Mitarbeiter mitarbeiter : mitarbeitersTableModel.getZuExportierendeMitarbeiters()) {
+        for (Mitarbeiter mitarbeiter : mitarbeitersTableModel.getSelektierteMitarbeiters()) {
             List<List<String>> dataset = new ArrayList<>();
             // 1. Zeile
             List<String> cellsRow1 = new ArrayList<>();

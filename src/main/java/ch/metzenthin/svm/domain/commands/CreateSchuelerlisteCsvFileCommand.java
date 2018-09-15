@@ -63,7 +63,7 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
             out.write('\n');
 
             // Daten
-            for (Schueler schueler : schuelerSuchenTableModel.getZuExportierendeSchuelerList()) {
+            for (Schueler schueler : schuelerSuchenTableModel.getSelektierteSchuelerList()) {
                 out.write(schueler.getNachname());
                 out.write(separator);
                 out.write(schueler.getVorname());

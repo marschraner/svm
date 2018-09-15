@@ -9,7 +9,6 @@ import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 public interface SemesterrechnungenModel extends Model {
 
     SemesterrechnungBearbeitenModel getSemesterrechnungBearbeitenModel(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel, int rowSelected);
-    String getTotal(SemesterrechnungenTableModel semesterrechnungenTableModel);
     void semesterrechnungPhysischLoeschen(SemesterrechnungenTableModel semesterrechnungenTableModel, int rowSelected);
     void semesterrechnungLogischLoeschen(SemesterrechnungenTableModel semesterrechnungenTableModel, int rowSelected);
     void semesterrechnungWiederherstellen(SemesterrechnungenTableModel semesterrechnungenTableModel, int rowSelected);

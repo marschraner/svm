@@ -149,7 +149,7 @@ public class CreateVertretungslisteCommand extends CreateListeCommand {
         // Inhalt
         List<List<List<String>>> datasets = new ArrayList<>();
         int i = 0;
-        for (Mitarbeiter mitarbeiter : mitarbeitersTableModel.getZuExportierendeMitarbeiters()) {
+        for (Mitarbeiter mitarbeiter : mitarbeitersTableModel.getSelektierteMitarbeiters()) {
             List<List<String>> dataset = new ArrayList<>();
             // Auf mehrere Zeilen aufzusplittende Felder:
             SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(mitarbeiter.getVertretungsmoeglichkeitenLineBreaksReplacedBySemicolonOrPeriod(), 32, 3);

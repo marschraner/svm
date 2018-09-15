@@ -61,27 +61,28 @@ public class SemesterrechnungenController {
 
         // Spaltenausrichtung und Farben
         Color lila = new Color(200, 0, 200);
-        semesterrechnungenTable.getColumnModel().getColumn(0).setCellRenderer(new StringTableCellRenderer());
-        semesterrechnungenTable.getColumnModel().getColumn(1).setCellRenderer(new StringTableCellRenderer());
-        semesterrechnungenTable.getColumnModel().getColumn(2).setCellRenderer(new CalendarColorTableCellRenderer(Color.BLUE));
-        semesterrechnungenTable.getColumnModel().getColumn(3).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
-        semesterrechnungenTable.getColumnModel().getColumn(4).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
-        semesterrechnungenTable.getColumnModel().getColumn(5).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
-        semesterrechnungenTable.getColumnModel().getColumn(6).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
-        semesterrechnungenTable.getColumnModel().getColumn(7).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
-        semesterrechnungenTable.getColumnModel().getColumn(8).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
-        semesterrechnungenTable.getColumnModel().getColumn(9).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
-        semesterrechnungenTable.getColumnModel().getColumn(10).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
-        semesterrechnungenTable.getColumnModel().getColumn(11).setCellRenderer(new CalendarColorTableCellRenderer(Color.RED));
-        semesterrechnungenTable.getColumnModel().getColumn(12).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
-        semesterrechnungenTable.getColumnModel().getColumn(13).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
-        semesterrechnungenTable.getColumnModel().getColumn(14).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
-        semesterrechnungenTable.getColumnModel().getColumn(15).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
-        semesterrechnungenTable.getColumnModel().getColumn(16).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
-        semesterrechnungenTable.getColumnModel().getColumn(17).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
-        semesterrechnungenTable.getColumnModel().getColumn(18).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
-        semesterrechnungenTable.getColumnModel().getColumn(19).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
-        semesterrechnungenTable.getColumnModel().getColumn(20).setCellRenderer(new NumberColorTableCellRenderer(lila));
+        int columnIndex = (nachGeloeschtenGesucht ? 0 : 1);
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new StringTableCellRenderer());
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new StringTableCellRenderer());
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new CalendarColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.BLUE));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new CalendarColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex++).setCellRenderer(new NumberColorTableCellRenderer(Color.RED));
+        semesterrechnungenTable.getColumnModel().getColumn(columnIndex).setCellRenderer(new NumberColorTableCellRenderer(lila));
 
         setJTableColumnWidthAccordingToCellContentAndHeader(semesterrechnungenTable);
 
@@ -104,17 +105,20 @@ public class SemesterrechnungenController {
         semesterrechnungenTable.getModel().addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                if (semesterrechnungenTableModel.getAnzExport() > 0) {
+                if (semesterrechnungenTableModel.getAnzSelektiert() > 0) {
                     btnExportieren.setEnabled(true);
                 } else {
                     btnExportieren.setEnabled(false);
                 }
-                if (semesterrechnungenTableModel.isAlleSelektiert()) {
-                    btnAlleSelektieren.setVisible(false);
-                    btnAlleDeselektieren.setVisible(true);
-                } else {
-                    btnAlleDeselektieren.setVisible(false);
-                    btnAlleSelektieren.setVisible(true);
+                if (!nachGeloeschtenGesucht) {
+                    if (semesterrechnungenTableModel.isAlleSelektiert()) {
+                        btnAlleSelektieren.setVisible(false);
+                        btnAlleDeselektieren.setVisible(true);
+                    } else {
+                        btnAlleDeselektieren.setVisible(false);
+                        btnAlleSelektieren.setVisible(true);
+                    }
+                    setLblTotal();
                 }
             }
         });
@@ -126,11 +130,19 @@ public class SemesterrechnungenController {
 
     public void setLblTotal(JLabel lblTotal) {
         this.lblTotal = lblTotal;
+        setLblTotal();
+    }
+
+    private void setLblTotal() {
         if (semesterrechnungenTableModel.getSemester() == null) {
             lblTotal.setText("Noch keine Semesterrechnungen erfasst.");
             return;
         }
-        lblTotal.setText(semesterrechnungenModel.getTotal(semesterrechnungenTableModel));
+        String semesterStr = " (" + semesterrechnungenTableModel.getSemester().getSchuljahr() + ", " + semesterrechnungenTableModel.getSemester().getSemesterbezeichnung() + ")";
+        String semesterrechnungenStr = (semesterrechnungenTableModel.getRowCount() == 1 ? " Semesterrechnung" : " Semesterrechnungen");
+        String selektiertStr = (nachGeloeschtenGesucht ? "" : " (" + semesterrechnungenTableModel.getAnzSelektiert() + " selektiert)");
+        String lblTotalText = "Total: " + semesterrechnungenTableModel.getRowCount() + semesterrechnungenStr + selektiertStr + semesterStr;
+        lblTotal.setText(lblTotalText);
     }
 
     public void addNextPanelListener(ActionListener nextPanelListener) {
@@ -167,7 +179,11 @@ public class SemesterrechnungenController {
 
     public void setBtnAlleDeselektieren(JButton btnAlleDeselektieren) {
         this.btnAlleDeselektieren = btnAlleDeselektieren;
-        btnAlleDeselektieren.setVisible(true);
+        if (nachGeloeschtenGesucht) {
+            btnAlleDeselektieren.setVisible(false);
+        } else {
+            btnAlleDeselektieren.setVisible(true);
+        }
         btnAlleDeselektieren.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -181,6 +197,7 @@ public class SemesterrechnungenController {
         btnAlleDeselektieren.setVisible(false);
         btnAlleSelektieren.setVisible(true);
         semesterrechnungenTableModel.fireTableDataChanged();
+        setLblTotal();
     }
 
     public void setBtnAlleSelektieren(JButton btnAlleSelektieren) {
@@ -199,6 +216,7 @@ public class SemesterrechnungenController {
         btnAlleSelektieren.setVisible(false);
         btnAlleDeselektieren.setVisible(true);
         semesterrechnungenTableModel.fireTableDataChanged();
+        setLblTotal();
     }
 
     public void setBtnExportieren(JButton btnExportieren) {
@@ -206,7 +224,7 @@ public class SemesterrechnungenController {
         if (nachGeloeschtenGesucht) {
             btnExportieren.setVisible(false);
         }
-        if (semesterrechnungenTableModel.getSemesterrechnungen().isEmpty() || semesterrechnungenTableModel.getAnzExport() == 0) {
+        if (semesterrechnungenTableModel.getSemesterrechnungen().isEmpty() || semesterrechnungenTableModel.getAnzSelektiert() == 0) {
             btnExportieren.setEnabled(false);
         }
         btnExportieren.addActionListener(new ActionListener() {
@@ -219,18 +237,20 @@ public class SemesterrechnungenController {
 
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
-        if (semesterrechnungenTableModel.getAnzExport() < semesterrechnungenTableModel.getRowCount()) {
+        int anzSelektiert = semesterrechnungenTableModel.getAnzSelektiert();
+        int rowCount = semesterrechnungenTableModel.getRowCount();
+        if (anzSelektiert < rowCount) {
             String str1;
             String str2;
-            if (semesterrechnungenTableModel.getAnzExport() > 1) {
-                str1 = "sind nur " + semesterrechnungenTableModel.getAnzExport();
+            if (anzSelektiert > 1) {
+                str1 = "sind nur " + anzSelektiert;
                 str2 = "diese Einträge\nwerden";
             } else {
                 str1 = "ist nur einer";
                 str2 = "dieser Eintrag\nwird";
             }
             JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
-                    + semesterrechnungenTableModel.getRowCount() + " Einträge selektiert. Nur " + str2
+                    + rowCount + " Einträge selektiert. Nur " + str2
                     + " beim Exportieren berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
         }
         ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, null, null, null, semesterrechnungenTableModel, ListenExportTyp.SEMESTERRECHNUNGEN);
@@ -278,7 +298,7 @@ public class SemesterrechnungenController {
                 semesterrechnungenModel.semesterrechnungLogischLoeschen(semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()));
                 semesterrechnungenTableModel.fireTableDataChanged();
                 semesterrechnungenTable.addNotify();
-                lblTotal.setText(semesterrechnungenModel.getTotal(semesterrechnungenTableModel));
+                setLblTotal();
             }
         } else {
             // Physisches Löschen
@@ -295,7 +315,7 @@ public class SemesterrechnungenController {
                 semesterrechnungenModel.semesterrechnungPhysischLoeschen(semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()));
                 semesterrechnungenTableModel.fireTableDataChanged();
                 semesterrechnungenTable.addNotify();
-                lblTotal.setText(semesterrechnungenModel.getTotal(semesterrechnungenTableModel));
+                setLblTotal();
             }
         }
         btnLoeschen.setFocusPainted(false);
@@ -326,7 +346,7 @@ public class SemesterrechnungenController {
         semesterrechnungenModel.semesterrechnungWiederherstellen(semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()));
         semesterrechnungenTableModel.fireTableDataChanged();
         semesterrechnungenTable.addNotify();
-        lblTotal.setText(semesterrechnungenModel.getTotal(semesterrechnungenTableModel));
+        setLblTotal();
         btnWiederherstellen.setFocusPainted(false);
         enableBtnWiederherstellen(false);
         semesterrechnungenTable.clearSelection();
@@ -351,18 +371,20 @@ public class SemesterrechnungenController {
     private void onRechnungsdatum() {
         btnRechnungsdatum.setFocusPainted(true);
 
-        if (semesterrechnungenTableModel.getAnzExport() < semesterrechnungenTableModel.getRowCount()) {
+        int anzSelektiert = semesterrechnungenTableModel.getAnzSelektiert();
+        int rowCount = semesterrechnungenTableModel.getRowCount();
+        if (anzSelektiert < rowCount) {
             String str1;
             String str2;
-            if (semesterrechnungenTableModel.getAnzExport() > 1) {
-                str1 = "sind nur " + semesterrechnungenTableModel.getAnzExport();
+            if (anzSelektiert > 1) {
+                str1 = "sind nur " + anzSelektiert;
                 str2 = "diese Einträge\nwerden";
             } else {
                 str1 = "ist nur einer";
                 str2 = "dieser Eintrag\nwird";
             }
             JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
-                    + semesterrechnungenTableModel.getRowCount() + " Einträge selektiert. Nur " + str2
+                    + rowCount + " Einträge selektiert. Nur " + str2
                     + " beim Setzen des Rechnungsdatums berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
         }
 
@@ -380,7 +402,7 @@ public class SemesterrechnungenController {
         Rechnungstyp rechnungstyp = (n == 1 ? Rechnungstyp.NACHRECHNUNG : Rechnungstyp.VORRECHNUNG);
 
         // Rechnungsdatum erfassen-Dialog
-        RechnungsdatumErfassenDialog rechnungsdatumErfassenDialog = new RechnungsdatumErfassenDialog(svmContext, semesterrechnungenTableModel.getZuExportierendeSemesterrechnungen(), rechnungstyp);
+        RechnungsdatumErfassenDialog rechnungsdatumErfassenDialog = new RechnungsdatumErfassenDialog(svmContext, semesterrechnungenTableModel.getSelektierteSemesterrechnungen(), rechnungstyp);
         rechnungsdatumErfassenDialog.pack();
         rechnungsdatumErfassenDialog.setVisible(true);
         semesterrechnungenTableModel.fireTableDataChanged();

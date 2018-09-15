@@ -28,6 +28,7 @@ public class SchuelerSuchenResultController {
     private final SvmContext svmContext;
     private SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final JTable schuelerSuchenResultTable;
+    private JLabel lblTotal;
     private JButton btnAlleDeselektieren;
     private JButton btnAlleSelektieren;
     private JButton btnDatenblatt;
@@ -69,7 +70,7 @@ public class SchuelerSuchenResultController {
         schuelerSuchenResultTable.getModel().addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                if (schuelerSuchenTableModel.getAnzExport() > 0) {
+                if (schuelerSuchenTableModel.getAnzSelektiert() > 0) {
                     btnExportieren.setEnabled(true);
                     btnEmail.setEnabled(true);
                 } else {
@@ -83,11 +84,17 @@ public class SchuelerSuchenResultController {
                     btnAlleDeselektieren.setVisible(false);
                     btnAlleSelektieren.setVisible(true);
                 }
+                setLblTotal();
             }
         });
     }
 
     public void setLblTotal(JLabel lblTotal) {
+        this.lblTotal = lblTotal;
+        setLblTotal();
+    }
+
+    private void setLblTotal() {
         if (schuelerSuchenTableModel.getSemester() == null) {
             lblTotal.setText("Semester nicht erfasst.");
             return;
@@ -95,7 +102,8 @@ public class SchuelerSuchenResultController {
         String semesterStr = " (" + schuelerSuchenTableModel.getSemester().getSchuljahr() + ", " + schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() + ")";
         String lektionen = (schuelerSuchenTableModel.getAnzahlLektionen() == 1 ? " Lektion" : " Lektionen");
         String maercheneinteilungen = (schuelerSuchenTableModel.getAnzahlMaercheneinteilungen() == 1 ? " Märcheneinteilung" : " Märcheneinteilungen");
-        String lblTotalText = "Total: " + schuelerSuchenTableModel.getRowCount() + " Schüler, " + schuelerSuchenTableModel.getAnzahlLektionen() + lektionen;
+        String lblTotalText = "Total: " + schuelerSuchenTableModel.getRowCount() + " Schüler (" +
+                schuelerSuchenTableModel.getAnzSelektiert() + " selektiert), " + schuelerSuchenTableModel.getAnzahlLektionen() + lektionen;
         if (schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
             // Nur im 1. Semester Märcheneinteilungen anzeigen
             lblTotalText = lblTotalText + ", " + schuelerSuchenTableModel.getAnzahlMaercheneinteilungen() + maercheneinteilungen;
@@ -124,6 +132,7 @@ public class SchuelerSuchenResultController {
         btnAlleDeselektieren.setVisible(false);
         btnAlleSelektieren.setVisible(true);
         schuelerSuchenTableModel.fireTableDataChanged();
+        setLblTotal();
     }
 
     public void setBtnAlleSelektieren(JButton btnAlleSelektieren) {
@@ -142,6 +151,7 @@ public class SchuelerSuchenResultController {
         btnAlleSelektieren.setVisible(false);
         btnAlleDeselektieren.setVisible(true);
         schuelerSuchenTableModel.fireTableDataChanged();
+        setLblTotal();
     }
 
     public void setBtnDatenblatt(JButton btnDatenblatt) {
@@ -169,7 +179,7 @@ public class SchuelerSuchenResultController {
 
     public void setBtnExportieren(JButton btnExportieren) {
         this.btnExportieren = btnExportieren;
-        if (schuelerSuchenTableModel.getAnzExport() == 0) {
+        if (schuelerSuchenTableModel.getAnzSelektiert() == 0) {
             btnExportieren.setEnabled(false);
         }
         btnExportieren.addActionListener(new ActionListener() {
@@ -182,18 +192,20 @@ public class SchuelerSuchenResultController {
 
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
-        if (schuelerSuchenTableModel.getAnzExport() < schuelerSuchenTableModel.getRowCount()) {
+        int anzSelektiert = schuelerSuchenTableModel.getAnzSelektiert();
+        int rowCount = schuelerSuchenTableModel.getRowCount();
+        if (anzSelektiert < rowCount) {
             String str1;
             String str2;
-            if (schuelerSuchenTableModel.getAnzExport() > 1) {
-                str1 = "sind nur " + schuelerSuchenTableModel.getAnzExport();
+            if (anzSelektiert > 1) {
+                str1 = "sind nur " + anzSelektiert;
                 str2 = "diese Einträge\nwerden";
             } else {
                 str1 = "ist nur einer";
                 str2 = "dieser Eintrag\nwird";
             }
             JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
-                    + schuelerSuchenTableModel.getRowCount() + " Einträge selektiert. Nur " + str2
+                    + rowCount + " Einträge selektiert. Nur " + str2
                     + " beim Exportieren berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
         }
         ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, schuelerSuchenTableModel, null, null, null, ListenExportTyp.SCHUELER);
@@ -204,7 +216,7 @@ public class SchuelerSuchenResultController {
 
     public void setBtnEmail(JButton btnEmail) {
         this.btnEmail = btnEmail;
-        if (schuelerSuchenTableModel.getAnzExport() == 0) {
+        if (schuelerSuchenTableModel.getAnzSelektiert() == 0) {
             btnEmail.setEnabled(false);
         }
         btnEmail.addActionListener(new ActionListener() {
@@ -217,18 +229,20 @@ public class SchuelerSuchenResultController {
 
     private void onEmail() {
         btnEmail.setFocusPainted(true);
-        if (schuelerSuchenTableModel.getAnzExport() < schuelerSuchenTableModel.getRowCount()) {
+        int anzSelektiert = schuelerSuchenTableModel.getAnzSelektiert();
+        int rowCount = schuelerSuchenTableModel.getRowCount();
+        if (anzSelektiert < rowCount) {
             String str1;
             String str2;
-            if (schuelerSuchenTableModel.getAnzExport() > 1) {
-                str1 = "sind nur " + schuelerSuchenTableModel.getAnzExport();
+            if (anzSelektiert > 1) {
+                str1 = "sind nur " + anzSelektiert;
                 str2 = "diese Einträge\nwerden";
             } else {
                 str1 = "ist nur einer";
                 str2 = "dieser Eintrag\nwird";
             }
             JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
-                    + schuelerSuchenTableModel.getRowCount() + " Einträge selektiert. Nur " + str2
+                    + rowCount + " Einträge selektiert. Nur " + str2
                     + " für die Gruppen-E-Mail berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
         }
         EmailSchuelerListeDialog emailSchuelerListeDialog = new EmailSchuelerListeDialog(svmContext, schuelerSuchenTableModel);

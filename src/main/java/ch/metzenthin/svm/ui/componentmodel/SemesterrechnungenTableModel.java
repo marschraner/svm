@@ -66,12 +66,12 @@ public class SemesterrechnungenTableModel extends AbstractTableModel {
         return semesterrechnungenTableData.getSemesterrechnungSelected(rowIndex);
     }
 
-    public int getAnzExport() {
-        return semesterrechnungenTableData.getAnzExport();
+    public int getAnzSelektiert() {
+        return semesterrechnungenTableData.getAnzSelektiert();
     }
 
-    public List<Semesterrechnung> getZuExportierendeSemesterrechnungen() {
-        return semesterrechnungenTableData.getZuExportierendeSemesterrechnungen();
+    public List<Semesterrechnung> getSelektierteSemesterrechnungen() {
+        return semesterrechnungenTableData.getSelektierteSemesterrechnungen();
     }
 
     public boolean isAlleSelektiert() {
