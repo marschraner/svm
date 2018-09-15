@@ -73,14 +73,21 @@ public class MitarbeitersController {
         mitarbeitersTable.getModel().addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                if (mitarbeitersTableModel.getAnzSelektiert() > 0) {
+                int anzSelektiert = mitarbeitersTableModel.getAnzSelektiert();
+                int rowCount = mitarbeitersTableModel.getRowCount();
+                if (anzSelektiert > 0) {
                     btnExportieren.setEnabled(true);
                     btnEmail.setEnabled(true);
                 } else {
                     btnExportieren.setEnabled(false);
                     btnEmail.setEnabled(false);
                 }
-                if (mitarbeitersTableModel.isAlleSelektiert()) {
+                if (rowCount <= 1 || anzSelektiert == 1) {
+                    btnEmail.setText("E-Mail");
+                } else {
+                    btnEmail.setText("Gruppen-E-Mail");
+                }
+                if (anzSelektiert == rowCount) {
                     btnAlleSelektieren.setVisible(false);
                     btnAlleDeselektieren.setVisible(true);
                 } else {
@@ -127,6 +134,11 @@ public class MitarbeitersController {
         btnAlleSelektieren.setVisible(true);
         mitarbeitersTableModel.fireTableDataChanged();
         setLblTotal();
+        if (mitarbeitersTableModel.getRowCount() <= 1) {
+            btnEmail.setText("E-Mail");
+        } else {
+            btnEmail.setText("Gruppen-E-Mail");
+        }
     }
 
     public void setBtnAlleSelektieren(JButton btnAlleSelektieren) {
@@ -146,6 +158,11 @@ public class MitarbeitersController {
         btnAlleDeselektieren.setVisible(true);
         mitarbeitersTableModel.fireTableDataChanged();
         setLblTotal();
+        if (mitarbeitersTableModel.getRowCount() <= 1) {
+            btnEmail.setText("E-Mail");
+        } else {
+            btnEmail.setText("Gruppen-E-Mail");
+        }
     }
 
     public void setBtnNeu(JButton btnNeu) {
@@ -164,6 +181,11 @@ public class MitarbeitersController {
         mitarbeiterErfassenDialog.pack();
         mitarbeiterErfassenDialog.setVisible(true);
         setLblTotal();
+        if (mitarbeitersTableModel.getRowCount() <= 1) {
+            btnEmail.setText("E-Mail");
+        } else {
+            btnEmail.setText("Gruppen-E-Mail");
+        }
         mitarbeitersTableModel.fireTableDataChanged();
         btnNeu.setFocusPainted(false);
     }
@@ -190,9 +212,15 @@ public class MitarbeitersController {
         mitarbeiterErfassenDialog.setVisible(true);
         mitarbeitersTableModel.fireTableDataChanged();
         btnBearbeiten.setFocusPainted(false);
-        if (mitarbeitersTableModel.getRowCount() > 0) {
+        int rowCount = mitarbeitersTableModel.getRowCount();
+        if (rowCount > 0) {
             btnExportieren.setEnabled(true);
             btnEmail.setEnabled(true);
+            if (rowCount <= 1) {
+                btnEmail.setText("E-Mail");
+            } else {
+                btnEmail.setText("Gruppen-E-Mail");
+            }
         } else {
             btnExportieren.setEnabled(false);
             btnEmail.setEnabled(false);
@@ -250,9 +278,13 @@ public class MitarbeitersController {
         btnLoeschen.setFocusPainted(false);
         enableBtnLoeschen(false);
         mitarbeitersTable.clearSelection();
-        if (mitarbeitersTableModel.getRowCount() > 0) {
+        int rowCount = mitarbeitersTableModel.getRowCount();
+        if (rowCount > 0) {
             btnExportieren.setEnabled(true);
             btnEmail.setEnabled(true);
+            if (rowCount <= 1) {
+                btnEmail.setText("E-Mail");
+            }
         } else {
             btnExportieren.setEnabled(false);
             btnEmail.setEnabled(false);
@@ -298,8 +330,12 @@ public class MitarbeitersController {
 
     public void setBtnEmail(JButton btnEmail) {
         this.btnEmail = btnEmail;
-        if (mitarbeitersTableModel.getRowCount() == 0) {
+        int rowCount = mitarbeitersTableModel.getRowCount();
+        if (rowCount == 0) {
             btnEmail.setEnabled(false);
+        }
+        if (rowCount <= 1) {
+            btnEmail.setText("E-Mail");
         }
         btnEmail.addActionListener(new ActionListener() {
             @Override
@@ -313,18 +349,9 @@ public class MitarbeitersController {
         btnEmail.setFocusPainted(true);
         int anzSelektiert = mitarbeitersTableModel.getAnzSelektiert();
         int rowCount = mitarbeitersTableModel.getRowCount();
-        if (anzSelektiert < rowCount) {
-            String str1;
-            String str2;
-            if (anzSelektiert > 1) {
-                str1 = "sind nur " + anzSelektiert;
-                str2 = "diese Einträge\nwerden";
-            } else {
-                str1 = "ist nur einer";
-                str2 = "dieser Eintrag\nwird";
-            }
-            JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
-                    + rowCount + " Einträge selektiert. Nur " + str2
+        if (anzSelektiert > 1 && anzSelektiert < rowCount) {
+            JOptionPane.showMessageDialog(null, "Es sind nur " + anzSelektiert + " der "
+                    + rowCount + " Einträge selektiert. Nur diese Einträge\nwerden"
                     + " für die Gruppen-E-Mail berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
         }
         CallDefaultEmailClientCommand.Result result = mitarbeitersModel.callEmailClient(mitarbeitersTableModel);
