@@ -85,7 +85,7 @@ public class SchuelerSuchenTableDataTest {
 
     @Test
     public void testGetColumnName() throws Exception {
-        assertTrue(getColumnIndex(Field.NACHNAME.toString()) == 0);
+        assertTrue(getColumnIndex(Field.NACHNAME.toString()) == 1);
     }
 
     @Test
