@@ -111,13 +111,10 @@ public class SchuelerSuchenResultController {
     public void setBtnAlleDeselektieren(JButton btnAlleDeselektieren) {
         this.btnAlleDeselektieren = btnAlleDeselektieren;
         btnAlleDeselektieren.setVisible(true);
-        // Mouse-Listener statt Action-Listener, damit nicht erst beim Loslassen des Buttons ausgelöst
-        // -> Vermeidung, dass sich Schriftfarbe beim Klicken zu schwarz ändert
-        btnAlleDeselektieren.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent me) {
-                if (me.getClickCount() == 1) {
-                    onAlleDeselektieren();
-                }
+        btnAlleDeselektieren.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onAlleDeselektieren();
             }
         });
     }
@@ -132,13 +129,10 @@ public class SchuelerSuchenResultController {
     public void setBtnAlleSelektieren(JButton btnAlleSelektieren) {
         this.btnAlleSelektieren = btnAlleSelektieren;
         btnAlleSelektieren.setVisible(false);
-        // Mouse-Listener statt Action-Listener, damit nicht erst beim Loslassen des Buttons ausgelöst
-        // -> Vermeidung, dass sich Schriftfarbe beim Klicken zu schwarz ändert
-        btnAlleSelektieren.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent me) {
-                if (me.getClickCount() == 1) {
-                    onAlleSelektieren();
-                }
+        btnAlleSelektieren.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onAlleSelektieren();
             }
         });
     }
