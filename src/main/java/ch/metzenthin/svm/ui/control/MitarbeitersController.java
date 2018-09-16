@@ -28,6 +28,8 @@ import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnW
  * @author Martin Schraner
  */
 public class MitarbeitersController {
+    private static final String EMAIL = "E-Mail";
+    private static final String GRUPPEN_EMAIL = "Gruppen-E-Mail";
     private final SvmContext svmContext;
     private final MitarbeitersModel mitarbeitersModel;
     private MitarbeitersTableModel mitarbeitersTableModel;
@@ -83,9 +85,9 @@ public class MitarbeitersController {
                     btnEmail.setEnabled(false);
                 }
                 if (rowCount <= 1 || anzSelektiert == 1) {
-                    btnEmail.setText("E-Mail");
+                    btnEmail.setText(EMAIL);
                 } else {
-                    btnEmail.setText("Gruppen-E-Mail");
+                    btnEmail.setText(GRUPPEN_EMAIL);
                 }
                 if (anzSelektiert == rowCount) {
                     btnAlleSelektieren.setVisible(false);
@@ -135,9 +137,9 @@ public class MitarbeitersController {
         mitarbeitersTableModel.fireTableDataChanged();
         setLblTotal();
         if (mitarbeitersTableModel.getRowCount() <= 1) {
-            btnEmail.setText("E-Mail");
+            btnEmail.setText(EMAIL);
         } else {
-            btnEmail.setText("Gruppen-E-Mail");
+            btnEmail.setText(GRUPPEN_EMAIL);
         }
     }
 
@@ -159,9 +161,9 @@ public class MitarbeitersController {
         mitarbeitersTableModel.fireTableDataChanged();
         setLblTotal();
         if (mitarbeitersTableModel.getRowCount() <= 1) {
-            btnEmail.setText("E-Mail");
+            btnEmail.setText(EMAIL);
         } else {
-            btnEmail.setText("Gruppen-E-Mail");
+            btnEmail.setText(GRUPPEN_EMAIL);
         }
     }
 
@@ -182,9 +184,9 @@ public class MitarbeitersController {
         mitarbeiterErfassenDialog.setVisible(true);
         setLblTotal();
         if (mitarbeitersTableModel.getRowCount() <= 1) {
-            btnEmail.setText("E-Mail");
+            btnEmail.setText(EMAIL);
         } else {
-            btnEmail.setText("Gruppen-E-Mail");
+            btnEmail.setText(GRUPPEN_EMAIL);
         }
         mitarbeitersTableModel.fireTableDataChanged();
         btnNeu.setFocusPainted(false);
@@ -217,9 +219,9 @@ public class MitarbeitersController {
             btnExportieren.setEnabled(true);
             btnEmail.setEnabled(true);
             if (rowCount <= 1) {
-                btnEmail.setText("E-Mail");
+                btnEmail.setText(EMAIL);
             } else {
-                btnEmail.setText("Gruppen-E-Mail");
+                btnEmail.setText(GRUPPEN_EMAIL);
             }
         } else {
             btnExportieren.setEnabled(false);
@@ -283,7 +285,7 @@ public class MitarbeitersController {
             btnExportieren.setEnabled(true);
             btnEmail.setEnabled(true);
             if (rowCount <= 1) {
-                btnEmail.setText("E-Mail");
+                btnEmail.setText(EMAIL);
             }
         } else {
             btnExportieren.setEnabled(false);
@@ -335,7 +337,7 @@ public class MitarbeitersController {
             btnEmail.setEnabled(false);
         }
         if (rowCount <= 1) {
-            btnEmail.setText("E-Mail");
+            btnEmail.setText(EMAIL);
         }
         btnEmail.addActionListener(new ActionListener() {
             @Override
