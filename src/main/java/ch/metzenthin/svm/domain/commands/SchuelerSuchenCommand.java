@@ -154,127 +154,169 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
     }
 
-    // Einfache or-Abfrage für Eltern / alle (where s.vorname = :vorname or s.mutter.vorname = :vorname or s.vater.vorname = :vorname)
-    // schlägt fehl, wenn mutter oder vater nicht existiert, auch wenn ein anderes or-Element, z.B. s.vorname = :vorname erfüllt wäre. Bug?
-    // Abhilfe: Subselects.
     private void createWhereSelectionsStammdatenOhneGeburtsdatumSuchperiode() {
+        if (person == null ||
+                (!checkNotEmpty(person.getVorname()) &&
+                !checkNotEmpty(person.getNachname()) &&
+                !checkNotEmpty(adresse.getStrasse()) &&
+                !checkNotEmpty(adresse.getHausnummer()) &&
+                !checkNotEmpty(adresse.getPlz()) &&
+                !checkNotEmpty(adresse.getOrt()) &&
+                !checkNotEmpty(person.getFestnetz()) &&
+                !checkNotEmpty(person.getNatel()) &&
+                !checkNotEmpty(person.getEmail()))) {
+            return;
+        }
+        if (rolle == SchuelerSuchenModel.RolleSelected.SCHUELER) {
+            createWhereSelectionsStammdatenSchuelerOhneGeburtsdatumSuchperiode();
+            selectStatementSb.append(" and");
+        } else if (rolle == SchuelerSuchenModel.RolleSelected.ELTERN) {
+            selectStatementSb.append(" ((");
+            createWhereSelectionsStammdatenMutter();
+            selectStatementSb.append(") or (");
+            createWhereSelectionsStammdatenVater();
+            selectStatementSb.append(")) and");
+        } else if (rolle == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
+            createWhereSelectionsStammdatenRechnungsempfaenger();
+            selectStatementSb.append(" and");
+        } else if (rolle == SchuelerSuchenModel.RolleSelected.ALLE) {
+            selectStatementSb.append(" ((");
+            createWhereSelectionsStammdatenSchuelerOhneGeburtsdatumSuchperiode();
+            selectStatementSb.append(") or (");
+            createWhereSelectionsStammdatenMutter();
+            selectStatementSb.append(") or (");
+            createWhereSelectionsStammdatenVater();
+            selectStatementSb.append(") or (");
+            createWhereSelectionsStammdatenRechnungsempfaenger();
+            selectStatementSb.append(")) and");
+        }
+    }
+
+    private void createWhereSelectionsStammdatenSchuelerOhneGeburtsdatumSuchperiode() {
         if (person != null && checkNotEmpty(person.getVorname())) {
-            String selectSchueler = " lower(s.vorname) like :vorname";
-            String selectEltern = "(exists (select s1 from Schueler s1 where lower(s1.mutter.vorname) like :vorname and s1.personId = s.personId) or exists (select s2 from Schueler s2 where lower(s2.vater.vorname) like :vorname and s2.personId = s.personId)";
-            if (rolle == SchuelerSuchenModel.RolleSelected.SCHUELER) {
-                selectStatementSb.append(selectSchueler).append(" and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ELTERN) {
-                selectStatementSb.append(selectEltern).append(") and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
-                selectStatementSb.append(" lower(s.rechnungsempfaenger.vorname) like :vorname and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ALLE) {
-                selectStatementSb.append(selectSchueler).append(" or ").append(selectEltern).append(" or exists (select s3 from Schueler s3 where lower(s3.rechnungsempfaenger.vorname) like :vorname and s3.personId = s.personId)) and");
-            }
+            selectStatementSb.append(" lower(s.vorname) like :vorname and");
         }
         if (person != null && checkNotEmpty(person.getNachname())) {
-            String selectSchueler = " lower(s.nachname) like :nachname";
-            String selectEltern = "(exists (select s1 from Schueler s1 where lower(s1.mutter.nachname) like :nachname and s1.personId = s.personId) or exists (select s2 from Schueler s2 where lower(s2.vater.nachname) like :nachname and s2.personId = s.personId)";
-            if (rolle == SchuelerSuchenModel.RolleSelected.SCHUELER) {
-                selectStatementSb.append(selectSchueler).append(" and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ELTERN) {
-                selectStatementSb.append(selectEltern).append(") and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
-                selectStatementSb.append(" lower(s.rechnungsempfaenger.nachname) like :nachname and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ALLE) {
-                selectStatementSb.append(selectSchueler).append(" or ").append(selectEltern).append(" or exists (select s3 from Schueler s3 where lower(s3.rechnungsempfaenger.nachname) like :nachname and s3.personId = s.personId)) and");
-            }
+            selectStatementSb.append(" lower(s.nachname) like :nachname and");
         }
         if (adresse != null && checkNotEmpty(adresse.getStrasse())) {
-            String selectSchueler = " lower(s.adresse.strasse) like :strasse";
-            String selectEltern = "(lower(s.adresse.strasse) like :strasse or exists (select s1 from Schueler s1 where lower(s1.mutter.adresse.strasse) like :strasse and s1.personId = s.personId) or exists (select s2 from Schueler s2 where lower(s2.vater.adresse.strasse) like :strasse and s2.personId = s.personId)";
-            if (rolle == SchuelerSuchenModel.RolleSelected.SCHUELER) {
-                selectStatementSb.append(selectSchueler).append(" and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ELTERN) {
-                selectStatementSb.append(selectEltern).append(") and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
-                selectStatementSb.append(" lower(s.rechnungsempfaenger.adresse.strasse) like :strasse and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ALLE) {
-                selectStatementSb.append(selectSchueler).append(" or ").append(selectEltern).append(" or exists (select s3 from Schueler s3 where lower(s3.rechnungsempfaenger.adresse.strasse) like :strasse and s3.personId = s.personId)) and");
-            }
+            selectStatementSb.append(" lower(s.adresse.strasse) like :strasse and");
         }
         if (adresse != null && checkNotEmpty(adresse.getHausnummer())) {
-            String selectSchueler = " lower(s.adresse.hausnummer) = :hausnummer";
-            String selectEltern = "(lower(s.adresse.hausnummer) = :hausnummer or exists (select s1 from Schueler s1 where lower(s1.mutter.adresse.hausnummer) = :hausnummer and s1.personId = s.personId) or exists (select s2 from Schueler s2 where lower(s2.vater.adresse.hausnummer) = :hausnummer and s2.personId = s.personId)";
-            if (rolle == SchuelerSuchenModel.RolleSelected.SCHUELER) {
-                selectStatementSb.append(selectSchueler).append(" and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ELTERN) {
-                selectStatementSb.append(selectEltern).append(") and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
-                selectStatementSb.append(" lower(s.rechnungsempfaenger.adresse.hausnummer) = :hausnummer and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ALLE) {
-                selectStatementSb.append(selectSchueler).append(" or ").append(selectEltern).append(" or exists (select s3 from Schueler s3 where lower(s3.rechnungsempfaenger.adresse.hausnummer) = :hausnummer and s3.personId = s.personId)) and");
-            }
+            selectStatementSb.append(" lower(s.adresse.hausnummer) = :hausnummer and");
         }
         if (adresse != null && checkNotEmpty(adresse.getPlz())) {
-            String selectSchueler = "  s.adresse.plz = :plz";
-            String selectEltern = "(s.adresse.plz = :plz or exists (select s1 from Schueler s1 where s1.mutter.adresse.plz = :plz and s1.personId = s.personId) or exists (select s2 from Schueler s2 where s2.vater.adresse.plz = :plz and s2.personId = s.personId)";
-            if (rolle == SchuelerSuchenModel.RolleSelected.SCHUELER) {
-                selectStatementSb.append(selectSchueler).append(" and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ELTERN) {
-                selectStatementSb.append(selectEltern).append(") and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
-                selectStatementSb.append(" s.rechnungsempfaenger.adresse.plz = :plz and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ALLE) {
-                selectStatementSb.append(selectSchueler).append(" or ").append(selectEltern).append(" or exists (select s3 from Schueler s3 where s3.rechnungsempfaenger.adresse.plz = :plz and s3.personId = s.personId)) and");
-            }
+            selectStatementSb.append(" s.adresse.plz = :plz and");
         }
         if (adresse != null && checkNotEmpty(adresse.getOrt())) {
-            String selectSchueler = " lower(s.adresse.ort) like :ort";
-            String selectEltern = "(lower(s.adresse.ort) like :ort or exists (select s1 from Schueler s1 where lower(s1.mutter.adresse.ort) like :ort and s1.personId = s.personId) or exists (select s2 from Schueler s2 where lower(s2.vater.adresse.ort) like :ort and s2.personId = s.personId)";
-            if (rolle == SchuelerSuchenModel.RolleSelected.SCHUELER) {
-                selectStatementSb.append(selectSchueler).append(" and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ELTERN) {
-                selectStatementSb.append(selectEltern).append(") and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
-                selectStatementSb.append(" lower(s.rechnungsempfaenger.adresse.ort) like :ort and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ALLE) {
-                selectStatementSb.append(selectSchueler).append(" or ").append(selectEltern).append(" or exists (select s3 from Schueler s3 where lower(s3.rechnungsempfaenger.adresse.ort) like :ort and s3.personId = s.personId)) and");
-            }
+            selectStatementSb.append(" lower(s.adresse.ort) like :ort and");
         }
         if (person != null && checkNotEmpty(person.getFestnetz())) {
-            String selectSchueler = " replace(s.festnetz, ' ', '') = :festnetz";
-            String selectEltern = "(replace(s.festnetz, ' ', '') = :festnetz or exists (select s1 from Schueler s1 where replace(s1.mutter.festnetz, ' ', '') = :festnetz and s1.personId = s.personId) or exists (select s2 from Schueler s2 where replace(s2.vater.festnetz, ' ', '') = :festnetz and s2.personId = s.personId)";
-            if (rolle == SchuelerSuchenModel.RolleSelected.SCHUELER) {
-                selectStatementSb.append(selectSchueler).append(" and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ELTERN) {
-                selectStatementSb.append(selectEltern).append(") and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
-                selectStatementSb.append(" replace(s.rechnungsempfaenger.festnetz, ' ', '') = :festnetz and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ALLE) {
-                selectStatementSb.append(selectSchueler).append(" or ").append(selectEltern).append(" or exists (select s3 from Schueler s3 where replace(s3.rechnungsempfaenger.festnetz, ' ', '') = :festnetz and s3.personId = s.personId)) and");
-            }
+            selectStatementSb.append(" replace(s.festnetz, ' ', '') = :festnetz and");
         }
         if (person != null && checkNotEmpty(person.getNatel())) {
-            String selectSchueler = " replace(s.natel, ' ', '') = :natel";
-            String selectEltern = "(replace(s.natel, ' ', '') = :natel or exists (select s1 from Schueler s1 where replace(s1.mutter.natel, ' ', '') = :natel and s1.personId = s.personId) or exists (select s2 from Schueler s2 where replace(s2.vater.natel, ' ', '') = :natel and s2.personId = s.personId)";
-            if (rolle == SchuelerSuchenModel.RolleSelected.SCHUELER) {
-                selectStatementSb.append(selectSchueler).append(" and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ELTERN) {
-                selectStatementSb.append(selectEltern).append(") and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
-                selectStatementSb.append(" replace(s.rechnungsempfaenger.natel, ' ', '') = :natel and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ALLE) {
-                selectStatementSb.append(selectSchueler).append(" or ").append(selectEltern).append(" or exists (select s3 from Schueler s3 where replace(s3.rechnungsempfaenger.natel, ' ', '') = :natel and s3.personId = s.personId)) and");
-            }
+            selectStatementSb.append(" replace(s.natel, ' ', '') = :natel and");
         }
         if (person != null && checkNotEmpty(person.getEmail())) {
-            String selectSchueler = " lower(s.email) like :email";
-            String selectEltern = "(lower(s.email) like :email or exists (select s1 from Schueler s1 where lower(s1.mutter.email) like :email and s1.personId = s.personId) or exists (select s2 from Schueler s2 where lower(s2.vater.email) like :email and s2.personId = s.personId)";
-            if (rolle == SchuelerSuchenModel.RolleSelected.SCHUELER) {
-                selectStatementSb.append(selectSchueler).append(" and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ELTERN) {
-                selectStatementSb.append(selectEltern).append(") and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
-                selectStatementSb.append(" lower(s.rechnungsempfaenger.email) like :email and");
-            } else if (rolle == SchuelerSuchenModel.RolleSelected.ALLE) {
-                selectStatementSb.append(selectSchueler).append(" or ").append(selectEltern).append(" or exists (select s3 from Schueler s3 where lower(s3.rechnungsempfaenger.email) like :email and s3.personId = s.personId)) and");
-            }
+            selectStatementSb.append(" lower(s.email) like :email and");
         }
+        selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' loeschen
+    }
+
+    private void createWhereSelectionsStammdatenMutter() {
+        // Einfache or-Abfrage für Eltern / alle (where s.vorname = :vorname or s.mutter.vorname = :vorname or s.vater.vorname = :vorname)
+        // schlägt fehl, wenn mutter oder vater nicht existiert, auch wenn ein anderes or-Element, z.B. s.vorname = :vorname erfüllt wäre. Bug?
+        // Abhilfe: Subselects.
+        if (person != null && checkNotEmpty(person.getVorname())) {
+            selectStatementSb.append(" exists (select s1 from Schueler s1 where lower(s1.mutter.vorname) like :vorname and s1.personId = s.personId) and");
+        }
+        if (person != null && checkNotEmpty(person.getNachname())) {
+            selectStatementSb.append(" exists (select s1 from Schueler s1 where lower(s1.mutter.nachname) like :nachname and s1.personId = s.personId) and");
+        }
+        if (adresse != null && checkNotEmpty(adresse.getStrasse())) {
+            selectStatementSb.append(" (lower(s.adresse.strasse) like :strasse or exists (select s1 from Schueler s1 where lower(s1.mutter.adresse.strasse) like :strasse and s1.personId = s.personId)) and");
+        }
+        if (adresse != null && checkNotEmpty(adresse.getHausnummer())) {
+            selectStatementSb.append(" (lower(s.adresse.hausnummer) = :hausnummer or exists (select s1 from Schueler s1 where lower(s1.mutter.adresse.hausnummer) = :hausnummer and s1.personId = s.personId)) and");
+        }
+        if (adresse != null && checkNotEmpty(adresse.getPlz())) {
+            selectStatementSb.append(" (lower(s.adresse.plz) like :plz or exists (select s1 from Schueler s1 where lower(s1.mutter.adresse.plz) like :plz and s1.personId = s.personId)) and");
+        }
+        if (adresse != null && checkNotEmpty(adresse.getOrt())) {
+            selectStatementSb.append(" (lower(s.adresse.ort) like :ort or exists (select s1 from Schueler s1 where lower(s1.mutter.adresse.ort) like :ort and s1.personId = s.personId)) and");
+        }
+        if (person != null && checkNotEmpty(person.getFestnetz())) {
+            selectStatementSb.append(" (replace(s.festnetz, ' ', '') = :festnetz or exists (select s1 from Schueler s1 where replace(s1.mutter.festnetz, ' ', '') = :festnetz and s1.personId = s.personId)) and");
+        }
+        if (person != null && checkNotEmpty(person.getNatel())) {
+            selectStatementSb.append(" (replace(s.natel, ' ', '') = :natel or exists (select s1 from Schueler s1 where replace(s1.mutter.natel, ' ', '') = :natel and s1.personId = s.personId)) and");
+        }
+        if (person != null && checkNotEmpty(person.getEmail())) {
+            selectStatementSb.append(" (lower(s.email) like :email or exists (select s1 from Schueler s1 where lower(s1.mutter.email) like :email and s1.personId = s.personId)) and");
+        }
+        selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' loeschen
+    }
+
+    private void createWhereSelectionsStammdatenVater() {
+        if (person != null && checkNotEmpty(person.getVorname())) {
+            selectStatementSb.append(" exists (select s1 from Schueler s1 where lower(s1.vater.vorname) like :vorname and s1.personId = s.personId) and");
+        }
+        if (person != null && checkNotEmpty(person.getNachname())) {
+            selectStatementSb.append(" exists (select s1 from Schueler s1 where lower(s1.vater.nachname) like :nachname and s1.personId = s.personId) and");
+        }
+        if (adresse != null && checkNotEmpty(adresse.getStrasse())) {
+            selectStatementSb.append(" (lower(s.adresse.strasse) like :strasse or exists (select s1 from Schueler s1 where lower(s1.vater.adresse.strasse) like :strasse and s1.personId = s.personId)) and");
+        }
+        if (adresse != null && checkNotEmpty(adresse.getHausnummer())) {
+            selectStatementSb.append(" (lower(s.adresse.hausnummer) = :hausnummer or exists (select s1 from Schueler s1 where lower(s1.vater.adresse.hausnummer) = :hausnummer and s1.personId = s.personId)) and");
+        }
+        if (adresse != null && checkNotEmpty(adresse.getPlz())) {
+            selectStatementSb.append(" (lower(s.adresse.plz) like :plz or exists (select s1 from Schueler s1 where lower(s1.vater.adresse.plz) like :plz and s1.personId = s.personId)) and");
+        }
+        if (adresse != null && checkNotEmpty(adresse.getOrt())) {
+            selectStatementSb.append(" (lower(s.adresse.ort) like :ort or exists (select s1 from Schueler s1 where lower(s1.vater.adresse.ort) like :ort and s1.personId = s.personId)) and");
+        }
+        if (person != null && checkNotEmpty(person.getFestnetz())) {
+            selectStatementSb.append(" (replace(s.festnetz, ' ', '') = :festnetz or exists (select s1 from Schueler s1 where replace(s1.vater.festnetz, ' ', '') = :festnetz and s1.personId = s.personId)) and");
+        }
+        if (person != null && checkNotEmpty(person.getNatel())) {
+            selectStatementSb.append(" (replace(s.natel, ' ', '') = :natel or exists (select s1 from Schueler s1 where replace(s1.vater.natel, ' ', '') = :natel and s1.personId = s.personId)) and");
+        }
+        if (person != null && checkNotEmpty(person.getEmail())) {
+            selectStatementSb.append(" (lower(s.email) like :email or exists (select s1 from Schueler s1 where lower(s1.vater.email) like :email and s1.personId = s.personId)) and");
+        }
+        selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' loeschen
+    }
+
+    private void createWhereSelectionsStammdatenRechnungsempfaenger() {
+        if (person != null && checkNotEmpty(person.getVorname())) {
+            selectStatementSb.append(" lower(s.rechnungsempfaenger.vorname) like :vorname and");
+        }
+        if (person != null && checkNotEmpty(person.getNachname())) {
+            selectStatementSb.append(" lower(s.rechnungsempfaenger.nachname) like :nachname and");
+        }
+        if (adresse != null && checkNotEmpty(adresse.getStrasse())) {
+            selectStatementSb.append(" lower(s.rechnungsempfaenger.adresse.strasse) like :strasse and");
+        }
+        if (adresse != null && checkNotEmpty(adresse.getHausnummer())) {
+            selectStatementSb.append(" lower(s.rechnungsempfaenger.adresse.hausnummer) = :hausnummer and");
+        }
+        if (adresse != null && checkNotEmpty(adresse.getPlz())) {
+            selectStatementSb.append(" s.rechnungsempfaenger.adresse.plz = :plz and");
+        }
+        if (adresse != null && checkNotEmpty(adresse.getOrt())) {
+            selectStatementSb.append(" lower(s.rechnungsempfaenger.adresse.ort) like :ort and");
+        }
+        if (person != null && checkNotEmpty(person.getFestnetz())) {
+            selectStatementSb.append(" replace(s.rechnungsempfaenger.festnetz, ' ', '') = :festnetz and");
+        }
+        if (person != null && checkNotEmpty(person.getNatel())) {
+            selectStatementSb.append(" replace(s.rechnungsempfaenger.natel, ' ', '') = :natel and");
+        }
+        if (person != null && checkNotEmpty(person.getEmail())) {
+            selectStatementSb.append(" lower(s.rechnungsempfaenger.email) like :email and");
+        }
+        selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' loeschen
     }
 
     private void createWhereSelectionsGeburtsdatumSuchperiode() {
@@ -474,6 +516,7 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
         if (selectStatementSb.toString().contains(":geburtsdatumSuchperiodeEndMmYyyy")) {
             Calendar geburtsdatumSuchperiodeEndeMmYyyy;
+            //noinspection MagicConstant
             if (geburtsdatumSuchperiodeEnde.get(Calendar.MONTH) == Calendar.DECEMBER) {
                 geburtsdatumSuchperiodeEndeMmYyyy = new GregorianCalendar(geburtsdatumSuchperiodeEnde.get(Calendar.YEAR) + 1, Calendar.JANUARY, 1);
             } else {
