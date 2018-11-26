@@ -78,7 +78,7 @@
               <component id="662c6" class="javax.swing.JButton" binding="btnAlleSelektieren">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <gridbag weightx="0.0" weighty="0.0" ipadx="60"/>
                 </constraints>
                 <properties>
                   <background color="-1"/>
@@ -87,17 +87,17 @@
                   <horizontalAlignment value="2"/>
                   <horizontalTextPosition value="2"/>
                   <margin top="2" left="0" bottom="2" right="14"/>
-                  <maximumSize width="131" height="18"/>
-                  <minimumSize width="131" height="18"/>
+                  <maximumSize width="145" height="18"/>
+                  <minimumSize width="145" height="18"/>
                   <opaque value="false"/>
-                  <preferredSize width="131" height="18"/>
+                  <preferredSize width="145" height="18"/>
                   <text value="Alle auswählen"/>
                 </properties>
               </component>
               <component id="acacd" class="javax.swing.JButton" binding="btnAlleDeselektieren">
                 <constraints>
                   <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <gridbag weightx="0.0" weighty="0.0" ipadx="60"/>
                 </constraints>
                 <properties>
                   <background color="-1"/>
@@ -107,10 +107,10 @@
                   <horizontalTextPosition value="2"/>
                   <label value="Auswahl löschen"/>
                   <margin top="2" left="0" bottom="2" right="14"/>
-                  <maximumSize width="143" height="18"/>
-                  <minimumSize width="143" height="18"/>
+                  <maximumSize width="145" height="18"/>
+                  <minimumSize width="145" height="18"/>
                   <opaque value="false"/>
-                  <preferredSize width="143" height="18"/>
+                  <preferredSize width="145" height="18"/>
                   <text value="Auswahl löschen"/>
                   <visible value="true"/>
                 </properties>
@@ -118,7 +118,7 @@
               <hspacer id="2ee72">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="3" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0" ipadx="150"/>
+                  <gridbag weightx="0.0" weighty="0.0" ipadx="180"/>
                 </constraints>
               </hspacer>
               <hspacer id="3ca7d">
@@ -136,7 +136,7 @@
               <hspacer id="305c3">
                 <constraints>
                   <grid row="0" column="8" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0" ipadx="150"/>
+                  <gridbag weightx="0.0" weighty="0.0" ipadx="180"/>
                 </constraints>
               </hspacer>
               <component id="d7f03" class="javax.swing.JLabel" binding="lblTotal">
