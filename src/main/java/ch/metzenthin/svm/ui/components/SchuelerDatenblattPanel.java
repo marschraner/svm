@@ -1347,4 +1347,5 @@ public class SchuelerDatenblattPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel;
     }
+
 }

@@ -2747,4 +2747,5 @@ public class SemesterrechnungBearbeitenPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

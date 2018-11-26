@@ -2444,4 +2444,5 @@ public class SemesterrechnungenSuchenPanel {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
+
 }
