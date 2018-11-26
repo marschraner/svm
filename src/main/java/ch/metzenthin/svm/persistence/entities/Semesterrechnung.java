@@ -686,10 +686,10 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     }
 
     @Transient
-    public String getAktiveSchuelerRechnungsempfaengerAsStr(Semester previousSemester) {
+    public List<Schueler> getAktiveSchuelerRechnungsempfaenger(Semester previousSemester) {
         List<Schueler> schuelersRechnungsempfaenger = new ArrayList<>(rechnungsempfaenger.getSchuelerRechnungsempfaenger());
         Collections.sort(schuelersRechnungsempfaenger);
-        StringBuilder aktiveSchuelersSb = new StringBuilder();
+        List<Schueler> aktiveSchueler = new ArrayList<>();
         for (Schueler schueler : schuelersRechnungsempfaenger) {
             boolean aktiverSchueler = false;
             for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
@@ -711,13 +711,23 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
 
             }
             if (aktiverSchueler) {
-                aktiveSchuelersSb.append(schueler.getNachname()).append(" ").append(schueler.getVorname()).append(", ");
+                aktiveSchueler.add(schueler);
             }
         }
+        return aktiveSchueler;
+    }
+
+    @Transient
+    public String getAktiveSchuelerRechnungsempfaengerAsStr(Semester previousSemester) {
+        List<Schueler> aktiveSchueler = getAktiveSchuelerRechnungsempfaenger(previousSemester);
+        StringBuilder aktiveSchuelerSb = new StringBuilder();
+        for (Schueler schueler : aktiveSchueler) {
+            aktiveSchuelerSb.append(schueler.getNachname()).append(" ").append(schueler.getVorname()).append(", ");
+        }
         // Letztes ", " löschen
-        if (aktiveSchuelersSb.length() >= 2 && aktiveSchuelersSb.substring(aktiveSchuelersSb.length() - 2).equals(", ")) {
-            aktiveSchuelersSb.setLength(aktiveSchuelersSb.length() - 2);
-            return aktiveSchuelersSb.toString();
+        if (aktiveSchuelerSb.length() >= 2 && aktiveSchuelerSb.substring(aktiveSchuelerSb.length() - 2).equals(", ")) {
+            aktiveSchuelerSb.setLength(aktiveSchuelerSb.length() - 2);
+            return aktiveSchuelerSb.toString();
         } else {
             return "-";
         }
