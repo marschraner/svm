@@ -4,7 +4,7 @@ import ch.metzenthin.svm.domain.model.SemesterrechnungenSuchenModel;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
-import ch.metzenthin.svm.persistence.entities.SemesterrechnungAktiveSchuelerComparator;
+import ch.metzenthin.svm.persistence.entities.SemesterrechnungSortByAktiveSchuelerComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,8 +58,9 @@ public class CreateAndFindSemesterrechnungenCommand extends GenericDaoCommand {
         findPreviousSemesterCommand.setEntityManager(entityManager);
         findPreviousSemesterCommand.execute();
         Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
-        Comparator<Semesterrechnung> semesterrechnungAktiveSchuelerComparator = new SemesterrechnungAktiveSchuelerComparator(previousSemester);
-        Collections.sort(semesterrechnungenFound, semesterrechnungAktiveSchuelerComparator);
+        Comparator<Semesterrechnung> semesterrechnungSortByAktiveSchuelerComparator
+                = new SemesterrechnungSortByAktiveSchuelerComparator(previousSemester);
+        Collections.sort(semesterrechnungenFound, semesterrechnungSortByAktiveSchuelerComparator);
     }
 
     public List<Semesterrechnung> getSemesterrechnungenFound() {

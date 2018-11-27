@@ -6,11 +6,11 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SemesterrechnungAktiveSchuelerComparator implements Comparator<Semesterrechnung> {
+public class SemesterrechnungSortByAktiveSchuelerComparator implements Comparator<Semesterrechnung> {
 
     private final Semester previousSemester;
 
-    public SemesterrechnungAktiveSchuelerComparator(Semester previousSemester) {
+    public SemesterrechnungSortByAktiveSchuelerComparator(Semester previousSemester) {
         this.previousSemester = previousSemester;
     }
 
