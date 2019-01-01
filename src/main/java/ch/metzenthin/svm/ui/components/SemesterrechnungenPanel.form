@@ -105,7 +105,6 @@
                   <contentAreaFilled value="false"/>
                   <horizontalAlignment value="2"/>
                   <horizontalTextPosition value="2"/>
-                  <label value="Auswahl löschen"/>
                   <margin top="2" left="0" bottom="2" right="14"/>
                   <maximumSize width="145" height="18"/>
                   <minimumSize width="145" height="18"/>
