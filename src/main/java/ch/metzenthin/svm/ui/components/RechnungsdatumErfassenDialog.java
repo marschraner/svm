@@ -207,4 +207,5 @@ public class RechnungsdatumErfassenDialog extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
 }

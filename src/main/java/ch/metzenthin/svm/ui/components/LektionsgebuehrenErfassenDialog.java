@@ -416,4 +416,5 @@ public class LektionsgebuehrenErfassenDialog extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
 }

@@ -317,4 +317,5 @@ public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
 }

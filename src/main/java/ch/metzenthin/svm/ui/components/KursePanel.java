@@ -358,4 +358,5 @@ public class KursePanel {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

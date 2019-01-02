@@ -439,4 +439,5 @@ public class SchuelerErfassenPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel;
     }
+
 }

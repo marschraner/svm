@@ -332,4 +332,5 @@ public class MonatsstatistikSchuelerPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel;
     }
+
 }

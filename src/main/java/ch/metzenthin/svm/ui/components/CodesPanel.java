@@ -294,4 +294,5 @@ public class CodesPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }
