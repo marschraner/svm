@@ -8,7 +8,7 @@
   <name>svm</name>
   <url>http://maven.apache.org</url>
 	<!-- Check dependency-updates: versions:display-dependency-updates (unter Plugins, versions) -->
-	<!-- Check dependency-conflicts: dependency:tree -Dverbose (Execute Maven Goal, Command line) -->
+	<!-- Check dependency-conflicts: dependency:tree (Execute Maven Goal, Command line) -->
 	<dependencies>
 
 		<dependency>
@@ -18,29 +18,24 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- maven-dependency-plugin:analyze-only reports this dependency as unused declared, but it is needed! -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.35</version>
+			<version>8.0.13</version>
             <scope>runtime</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>4.3.9.Final</version>
+			<version>5.4.0.Final</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.3.9.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.1-api</artifactId>
-			<version>1.0.0.Final</version>
+			<groupId>javax.persistence</groupId>
+			<artifactId>javax.persistence-api</artifactId>
+			<version>2.2</version>
 		</dependency>
 
 		<dependency>
@@ -58,20 +53,13 @@
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>3.12</version>
-		</dependency>
-
-		<!-- Dependency not really needed but required: https://bz.apache.org/bugzilla/show_bug.cgi?id=57957 -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-scratchpad</artifactId>
-			<version>3.12</version>
+			<version>4.0.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.docx4j</groupId>
 			<artifactId>docx4j</artifactId>
-			<version>3.2.0</version>
+			<version>6.1.0</version>
 		</dependency>
 
 		<dependency>
@@ -161,16 +149,41 @@
                             <!-- ignore annotations for "unused but declared" warnings -->
                             <ignoredUnusedDeclaredDependencies>
                                 <ignoredUnusedDeclaredDependency>mysql:mysql-connector-java</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.hibernate:hibernate-entitymanager</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.apache.poi:poi-scratchpad</ignoredUnusedDeclaredDependency>
-                                <!--
-                                <ignoredUnusedDeclaredDependency>org.glassfish.jaxb:jaxb-runtime</ignoredUnusedDeclaredDependency>
-                                -->
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+			<!-- deploy-Plugin: Angabe der Version (versions:display-plugin-updates) -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>3.0.0-M1</version>
+			</plugin>
+			<!-- install-Plugin: Angabe der Version (versions:display-plugin-updates) -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>3.0.0-M1</version>
+			</plugin>
+			<!-- jar-Plugin: Angabe der Version (versions:display-plugin-updates) -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.0</version>
+			</plugin>
+			<!-- site-Plugin: Angabe der Version (versions:display-plugin-updates) -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.7.1</version>
+			</plugin>
+			<!-- surefire-Plugin: Angabe der Version (versions:display-plugin-updates) -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M1</version>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -243,6 +256,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.0</version>
 				<executions>
 					<execution>
 						<id>make-assembly</id> <!-- this is used for inheritance merges -->
@@ -271,7 +285,9 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<descriptor>src/assembly/dep.xml</descriptor>
+							<descriptors>
+								<descriptor>src/assembly/dep.xml</descriptor>
+							</descriptors>
 						</configuration>
 					</execution>
 				</executions>

@@ -35,26 +35,11 @@ import static org.junit.Assert.*;
  *   Es tritt mit älteren Versionen von Hibernate auf (getestet mit 4.3.9 und 5.0.1).
  *   Mit einer neueren Version von Hibernate (5.2.9) ist das fehlerhafte Verhalten weg.
  *   - Änderungen sind schon nach clear und erneutem Lesen sichtbar
- *   - Refresh verhält sich jetzt auch wie erwartet und wie im Buch beschrieben.
+ *   - Refresh verhält sich jetzt auch wie erwartet und wie im Buch Java Persistence with Hibernate beschrieben.
  *
  * Warnung sichtbar durch: log4j.logger.org.hibernate=INFO
  * WARN DriverManagerConnectionProviderImpl:93 - HHH000402: Using Hibernate built-in connection pool (not for production use!)
- * Lösung: Verwendung eines anderen Connection Pools, z.B. c3p0:
- * - persistence.xml
- * <property name="hibernate.c3p0.min_size" value="1" />
- * <property name="hibernate.c3p0.max_size" value="2" />
- *   Durch die Angabe von c3p0 Properties wird der c3p0 connection pool gesucht und verwendet
- * - pom.xml
- * <dependency>
- *   <groupId>org.hibernate</groupId>
- *   <artifactId>hibernate-c3p0</artifactId>
- *   <version>4.3.9.Final</version> (gleiche Version wie hibernate-core)
- * </dependency>
- * <dependency>
- *   <groupId>c3p0</groupId>
- *   <artifactId>c3p0</artifactId>
- *   <version>0.9.1.2</version>
- * </dependency>
+ * Lösung: Verwendung eines anderen Connection Pools, z.B. c3p0 oder Bitronix (wie im Buch Java Persistence with Hibernate)
  *
  * @author Hans Stamm
  */
@@ -246,7 +231,7 @@ public class EntityManagerTest {
         assertEquals(beschreibungNew, schuelerCodeB.getBeschreibung());
         emB.close();
 
-// /* Folgendes stimmt nicht mit Hibernate 5.2.9.
+/* Folgendes stimmt nicht ab Hibernate 5.2.9.
         // nochmals mit einem neuen EntityManager, der aber komischerweise wieder den alten Wert liefert?!?
         emB = entityManagerFactory.createEntityManager();
         schuelerCodeB = getInitialSchuelerCode(emB);
@@ -261,7 +246,7 @@ public class EntityManagerTest {
 
         // neue Factory erzeugen
         entityManagerFactory = createEntityManagerFactory();
-// */
+*/
         // mit einem neuen EntityManager von der neuen Factory. Die Änderung ist erwartungsgemäss sichtbar.
         emB = entityManagerFactory.createEntityManager();
         schuelerCodeB = getInitialSchuelerCode(emB);
@@ -342,7 +327,7 @@ public class EntityManagerTest {
 
         emB.close();
 
-// /* Folgendes stimmt nicht mit Hibernate 5.2.9.
+/* Folgendes stimmt nicht ab Hibernate 5.2.9.
         // auch nach close und neuem EntityManager ist die Änderung nicht sichtbar
         emB = entityManagerFactory.createEntityManager();
         schuelerCodeB = getInitialSchuelerCode(emB);
@@ -379,7 +364,7 @@ public class EntityManagerTest {
 
         // neue Factory erzeugen
         entityManagerFactory = createEntityManagerFactory();
-// */
+*/
 
         // mit neuem EntityManager von neuer Factory ist die Änderung erwartungsgemäss sichtbar
         emB = entityManagerFactory.createEntityManager();
@@ -502,12 +487,12 @@ public class EntityManagerTest {
 
         // auch nach clear von emB ist die Änderung nicht sichtbar
         schuelerCodeB = getInitialSchuelerCode(emB);
-// /* Folgendes stimmt nicht mit Hibernate 5.2.9.
+/* Folgendes stimmt nicht ab Hibernate 5.2.9.
         assertEquals(detachedInitialSchuelerCode.getBeschreibung(), schuelerCodeB.getBeschreibung());
-// */
-/* Folgendes stimmt mit Hibernate 5.2.9.
-        assertEquals(beschreibungNew, schuelerCodeB.getBeschreibung());
 */
+///* Folgendes stimmt mit Hibernate 5.2.9.
+        assertEquals(beschreibungNew, schuelerCodeB.getBeschreibung());
+//*/
 
         emB.close();
 
@@ -517,7 +502,7 @@ public class EntityManagerTest {
         assertEquals(beschreibungNew, schuelerCodeB.getBeschreibung());
         emB.close();
 
-// /* Folgendes stimmt nicht mit Hibernate 5.2.9.
+/* Folgendes stimmt nicht ab Hibernate 5.2.9.
         // nochmals mit neuem EntityManager, der aber komischerweise wieder den alten Wert liefert?!?
         emB = entityManagerFactory.createEntityManager();
         schuelerCodeB = getInitialSchuelerCode(emB);
@@ -532,7 +517,7 @@ public class EntityManagerTest {
 
         // neue Factory erzeugen
         entityManagerFactory = createEntityManagerFactory();
-// */
+*/
 
         // mit neuem EntityManager von einer neuen Factory. Die Änderung ist erwartungsgemäss sichtbar.
         emB = entityManagerFactory.createEntityManager();
@@ -572,12 +557,12 @@ public class EntityManagerTest {
 
         // auch nach clear von emB ist die Änderung nicht sichtbar
         schuelerCodeB = getInitialSchuelerCode(emB);
-// /* Folgendes stimmt nicht mit Hibernate 5.2.9.
+/* Folgendes stimmt nicht ab Hibernate 5.2.9.
         assertEquals(detachedInitialSchuelerCode.getBeschreibung(), schuelerCodeB.getBeschreibung());
-// */
-/* Folgendes stimmt mit Hibernate 5.2.9.
-        assertEquals(beschreibungNew, schuelerCodeB.getBeschreibung());
 */
+///* Folgendes stimmt mit Hibernate 5.2.9.
+        assertEquals(beschreibungNew, schuelerCodeB.getBeschreibung());
+//*/
 
         emB.getTransaction().commit();
         emB.close();
@@ -657,12 +642,12 @@ public class EntityManagerTest {
         emB.refresh(schuelerCodeB);
 
         // emB sieht Änderung von emA auch nach refresh nicht
-// /* Folgendes stimmt nicht mit Hibernate 5.2.9.
+/* Folgendes stimmt nicht ab Hibernate 5.2.9.
         assertEquals(detachedInitialSchuelerCode.getBeschreibung(), schuelerCodeB.getBeschreibung());
-// */
-/* Folgendes stimmt mit Hibernate 5.2.9.
-        assertEquals(beschreibungNew, schuelerCodeB.getBeschreibung());
 */
+///* Folgendes stimmt mit Hibernate 5.2.9.
+        assertEquals(beschreibungNew, schuelerCodeB.getBeschreibung());
+//*/
 
         emA.close();
 
@@ -672,12 +657,12 @@ public class EntityManagerTest {
         // emB sieht Änderung von emA auch nach close von emA und refresh nicht
         // Dies widerspricht dem Kapitel 10.2.6. Refreshing data auf Seite 241 in Java Persistence with Hibernate Second Edition
         // Aber mit Repeatable Read lässt sich das erklären?
-// /* Folgendes stimmt nicht mit Hibernate 5.2.9.
+/* Folgendes stimmt nicht ab Hibernate 5.2.9.
         assertEquals(detachedInitialSchuelerCode.getBeschreibung(), schuelerCodeB.getBeschreibung());
-// */
-/* Folgendes stimmt mit Hibernate 5.2.9.
-        assertEquals(beschreibungNew, schuelerCodeB.getBeschreibung());
 */
+///* Folgendes stimmt mit Hibernate 5.2.9.
+        assertEquals(beschreibungNew, schuelerCodeB.getBeschreibung());
+//*/
 
         emB.getTransaction().commit();
         emB.close();

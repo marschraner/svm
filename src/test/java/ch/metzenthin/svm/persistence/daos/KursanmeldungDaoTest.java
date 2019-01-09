@@ -92,6 +92,7 @@ public class KursanmeldungDaoTest {
             vater.setAdresse(adresse);
             schueler.setVater(vater);
             schueler.setRechnungsempfaenger(vater);
+            entityManager.persist(schueler);
 
             // Kurseinteilung
             Kursanmeldung kursanmeldung = new Kursanmeldung(schueler, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 30), new GregorianCalendar(2016, Calendar.FEBRUARY, 2), "Testbemerkung");
@@ -143,6 +144,7 @@ public class KursanmeldungDaoTest {
             vater.setAdresse(adresse);
             schueler.setVater(vater);
             schueler.setRechnungsempfaenger(vater);
+            entityManager.persist(schueler);
 
             // Kurseinteilung
             Kursanmeldung kursanmeldung = new Kursanmeldung(schueler, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 30), new GregorianCalendar(2016, Calendar.FEBRUARY, 2), null);
@@ -196,6 +198,7 @@ public class KursanmeldungDaoTest {
             vater.setAdresse(adresse);
             schueler.setVater(vater);
             schueler.setRechnungsempfaenger(vater);
+            entityManager.persist(schueler);
 
             // Kurseinteilung
             Kursanmeldung kursanmeldung = new Kursanmeldung(schueler, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 30), null, null);
