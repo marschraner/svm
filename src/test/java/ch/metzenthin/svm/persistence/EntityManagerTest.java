@@ -26,6 +26,12 @@ import static org.junit.Assert.*;
  *     Everything between begin() and commit() occurs in one transaction
  *     commit(): performs dirty checking of the persistence context and synchronizes with the database
  *     EntityManager.flush(): forces dirty checking synchronization manually. Any time during a transaction.
+ * Identifier strategy (siehe Kapitel 4.2.5):
+ *     SVM: AUTO_INCREMENT (siehe DDLs) d.h. nach Insert wird der Identifier generiert bzw. hochgezählt.
+ *         Nach EntityManager.persist(...) macht Hibernate einen Insert und der Identifier ist danach vorhanden
+ *     Bevorzugt gemäss Buch (siehe Kapitel 11.3.2) wäre: pre-insert.
+ *         Dann führt Hibernate den Insert so spät wie möglich aus.
+ *         Bei EntityManager.persist(...) wird nur der Identifier generiert (ohne Insert)
  *
  * Fehlerhaftes Verhalten von EntityManager:
  * - Ausgangslage: Erzeugen von zwei EM-Instanzen. Mit der ersten Instanz: modifizieren einer Entität, Commit. Danach
