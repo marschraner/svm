@@ -28,12 +28,11 @@ public class SaveOrUpdateKurstypCommandTest {
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
         entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        commandInvoker.openSession();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSession();
+        commandInvoker.close();
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
         }

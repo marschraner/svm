@@ -77,7 +77,6 @@ public class Svm {
             splashScreenInit();
             createSvmPropertiesFileDefault();
             final CommandInvoker commandInvoker = createCommandInvoker();
-            commandInvoker.openSession();
             final ModelFactory modelFactory = createModelFactory(commandInvoker);
             final SvmModel svmModel = modelFactory.createSvmModel();
             final SvmContext svmContext = new SvmContext(modelFactory, commandInvoker, svmModel);

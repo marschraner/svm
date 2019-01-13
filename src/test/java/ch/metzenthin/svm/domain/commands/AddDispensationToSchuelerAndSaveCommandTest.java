@@ -35,7 +35,6 @@ public class AddDispensationToSchuelerAndSaveCommandTest {
         Properties svmProperties = SvmProperties.getSvmProperties();
         neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
         entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        commandInvoker.openSession();
     }
 
     @After
@@ -43,7 +42,7 @@ public class AddDispensationToSchuelerAndSaveCommandTest {
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
         }
-        commandInvoker.closeSession();
+        commandInvoker.close();
     }
 
     @Test

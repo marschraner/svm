@@ -9,14 +9,12 @@ public interface CommandInvoker {
 
     GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand);
 
-    GenericDaoCommand executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand genericDaoCommand);
-
     GenericDaoCommand executeCommandAsTransaction(GenericDaoCommand genericDaoCommand);
 
-    void openSession();
+    GenericDaoCommand executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand genericDaoCommand);
 
     void closeSession();
 
-    void clear();
+    void close();
 
 }

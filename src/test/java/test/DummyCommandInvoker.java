@@ -12,8 +12,9 @@ public class DummyCommandInvoker implements CommandInvoker {
     public Command executeCommand(Command c) {
         return null;
     }
+
     @Override
-    public GenericDaoCommand executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand genericDaoCommand) {
+    public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) {
         return null;
     }
 
@@ -23,23 +24,13 @@ public class DummyCommandInvoker implements CommandInvoker {
     }
 
     @Override
-    public void openSession() {
-
-    }
-
-    @Override
-    public void closeSession() {
-
-    }
-
-    @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) {
+    public GenericDaoCommand executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand genericDaoCommand) {
         return null;
     }
 
+    @Override
+    public void closeSession() {}
+
+    @Override
+    public void close() {}
 }

@@ -14,8 +14,12 @@ public class CommandInvokerImpl implements CommandInvoker {
 
     private static final Logger LOGGER = Logger.getLogger(CommandInvokerImpl.class);
 
-    private EntityManagerFactory entityManagerFactory = null;
+    private EntityManagerFactory entityManagerFactory = createEntityManagerFactory();
     private EntityManager entityManager = null;
+
+    private static EntityManagerFactory createEntityManagerFactory() {
+        return Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
+    }
 
     @Override
     public Command executeCommand(Command command) {
@@ -24,18 +28,37 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     @Override
+    public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) {
+        openSession();
+        execute(entityManager, genericDaoCommand);
+        return genericDaoCommand;
+    }
+
+    private void openSession() {
+        LOGGER.trace("openSession aufgerufen");
+        if (entityManager == null || !entityManager.isOpen()) {
+            entityManager = entityManagerFactory.createEntityManager();
+            LOGGER.trace("Session opened");
+        }
+    }
+
+    private void execute(EntityManager entityManager, GenericDaoCommand genericDaoCommand) {
+        LOGGER.trace("executeCommand aufgerufen");
+        genericDaoCommand.setEntityManager(entityManager);
+        genericDaoCommand.execute();
+        LOGGER.trace("executeCommand durchgeführt");
+    }
+
+    @Override
     public GenericDaoCommand executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand genericDaoCommand) {
         LOGGER.trace("executeCommandAsTransactionWithOpenAndClose aufgerufen");
-        EntityManagerFactory entityManagerFactory = null;
         EntityManager entityManager = null;
         EntityTransaction tx = null;
         try {
-            entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
             entityManager = entityManagerFactory.createEntityManager();
             tx = entityManager.getTransaction();
             tx.begin();
-            genericDaoCommand.setEntityManager(entityManager);
-            genericDaoCommand.execute();
+            execute(entityManager, genericDaoCommand);
             tx.commit();
             LOGGER.trace("executeCommandAsTransactionWithOpenAndClose durchgeführt");
         } catch (RuntimeException e) {
@@ -47,7 +70,6 @@ public class CommandInvokerImpl implements CommandInvoker {
         } finally {
             if (entityManager != null) {
                 entityManager.close();
-                entityManagerFactory.close();
             }
         }
         return genericDaoCommand;
@@ -57,9 +79,9 @@ public class CommandInvokerImpl implements CommandInvoker {
     public GenericDaoCommand executeCommandAsTransaction(GenericDaoCommand genericDaoCommand) {
         LOGGER.trace("executeCommandAsTransaction aufgerufen");
         try {
+            openSession();
             entityManager.getTransaction().begin();
-            genericDaoCommand.setEntityManager(entityManager);
-            genericDaoCommand.execute();
+            execute(entityManager, genericDaoCommand);
             entityManager.getTransaction().commit();
             LOGGER.trace("executeCommandAsTransaction durchgeführt");
         }
@@ -79,41 +101,22 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     @Override
-    public void openSession() {
-        LOGGER.trace("openSession aufgerufen");
-        if (entityManager == null || !entityManager.isOpen()) {
-            entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-            entityManager = entityManagerFactory.createEntityManager();
-        }
-    }
-
-    @Override
     public void closeSession() {
         LOGGER.trace("closeSession aufgerufen");
         if (entityManager != null && entityManager.isOpen()) {
             entityManager.close();
             entityManager = null;
-            entityManagerFactory.close();
-            entityManagerFactory = null;
+            LOGGER.trace("Session closed");
         }
     }
 
     @Override
-    public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) {
-        LOGGER.trace("executeCommand aufgerufen");
-        genericDaoCommand.setEntityManager(entityManager);
-        genericDaoCommand.execute();
-        LOGGER.trace("executeCommand durchgeführt");
-        return genericDaoCommand;
-    }
-
-    @Override
-    public void clear() {
-        LOGGER.trace("clear aufgerufen");
-        //closeSession();
-        //openSession();
-        entityManager.clear();
-//        entityManagerFactory.getCache().evictAll();
+    public void close() {
+        LOGGER.trace("close aufgerufen");
+        closeSession();
+        entityManagerFactory.close();
+        entityManagerFactory = null;
+        LOGGER.trace("CommandInvoker closed");
     }
 
 }

@@ -35,12 +35,11 @@ public class RemoveDispensationFromSchuelerCommandTest {
         Properties svmProperties = SvmProperties.getSvmProperties();
         neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
         entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        commandInvoker.openSession();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSession();
+        commandInvoker.close();
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
         }
