@@ -237,7 +237,7 @@ public class EntityManagerTest {
         assertEquals(beschreibungNew, schuelerCodeB.getBeschreibung());
         emB.close();
 
-/* Folgendes stimmt nicht ab Hibernate 5.2.9.
+/* Folgendes Fehlverhalten tritt ab Hibernate 5.2.9. nicht mehr auf (daher auskommentiert):
         // nochmals mit einem neuen EntityManager, der aber komischerweise wieder den alten Wert liefert?!?
         emB = entityManagerFactory.createEntityManager();
         schuelerCodeB = getInitialSchuelerCode(emB);
@@ -333,7 +333,7 @@ public class EntityManagerTest {
 
         emB.close();
 
-/* Folgendes stimmt nicht ab Hibernate 5.2.9.
+/* Folgendes Fehlverhalten tritt ab Hibernate 5.2.9. nicht mehr auf (daher auskommentiert):
         // auch nach close und neuem EntityManager ist die Änderung nicht sichtbar
         emB = entityManagerFactory.createEntityManager();
         schuelerCodeB = getInitialSchuelerCode(emB);
@@ -493,12 +493,11 @@ public class EntityManagerTest {
 
         // auch nach clear von emB ist die Änderung nicht sichtbar
         schuelerCodeB = getInitialSchuelerCode(emB);
-/* Folgendes stimmt nicht ab Hibernate 5.2.9.
+/* Folgendes Fehlverhalten tritt ab Hibernate 5.2.9. nicht mehr auf (daher auskommentiert):
         assertEquals(detachedInitialSchuelerCode.getBeschreibung(), schuelerCodeB.getBeschreibung());
 */
-///* Folgendes stimmt mit Hibernate 5.2.9.
+        // Ab Hibernate 5.2.9. korrektes Verhalten
         assertEquals(beschreibungNew, schuelerCodeB.getBeschreibung());
-//*/
 
         emB.close();
 
@@ -508,7 +507,7 @@ public class EntityManagerTest {
         assertEquals(beschreibungNew, schuelerCodeB.getBeschreibung());
         emB.close();
 
-/* Folgendes stimmt nicht ab Hibernate 5.2.9.
+/* Folgendes Fehlverhalten tritt ab Hibernate 5.2.9. nicht mehr auf (daher auskommentiert):
         // nochmals mit neuem EntityManager, der aber komischerweise wieder den alten Wert liefert?!?
         emB = entityManagerFactory.createEntityManager();
         schuelerCodeB = getInitialSchuelerCode(emB);
