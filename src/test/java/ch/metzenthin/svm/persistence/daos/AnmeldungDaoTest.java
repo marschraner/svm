@@ -2,16 +2,18 @@ package ch.metzenthin.svm.persistence.daos;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
-import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
+import ch.metzenthin.svm.persistence.entities.Adresse;
+import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
+import ch.metzenthin.svm.persistence.entities.Schueler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -23,7 +25,7 @@ import static org.junit.Assert.*;
  */
 public class AnmeldungDaoTest {
 
-    private EntityManagerFactory entityManagerFactory;
+    private DB db;
     private EntityManager entityManager;
     private AnmeldungDao anmeldungDao;
     private SchuelerDao schuelerDao;
@@ -31,20 +33,15 @@ public class AnmeldungDaoTest {
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        entityManager = entityManagerFactory.createEntityManager();
+        db = DBFactory.getInstance();
+        entityManager = db.getCurrentEntityManager();
         anmeldungDao = new AnmeldungDao(entityManager);
         schuelerDao = new SchuelerDao(entityManager);
     }
 
     @After
     public void tearDown() throws Exception {
-        if (entityManager != null) {
-            entityManager.close();
-        }
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test

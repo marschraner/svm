@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.LektionsgebuehrenDao;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import org.junit.After;
@@ -21,25 +23,28 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllLektionsgebuehrenCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
     private Set<Lektionsgebuehren> lektionsgebuehrenTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
     public void testExecute_getList() {
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLektionsgebuehrenCommand);
+        commandInvoker.executeCommand(findAllLektionsgebuehrenCommand);
 
         List<Lektionsgebuehren> lektionsgebuehrenListFound = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllList();
         assertTrue(lektionsgebuehrenListFound.size() >= 2);
@@ -60,7 +65,7 @@ public class FindAllLektionsgebuehrenCommandTest {
     @Test
     public void testExecute_getMap() {
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLektionsgebuehrenCommand);
+        commandInvoker.executeCommand(findAllLektionsgebuehrenCommand);
 
         Map<Integer, BigDecimal[]> lektionsgebuehrenMapFound = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllMap();
         assertTrue(lektionsgebuehrenMapFound.size() >= 2);
@@ -88,8 +93,7 @@ public class FindAllLektionsgebuehrenCommandTest {
     }
 
     private void createTestdata() {
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
@@ -101,12 +105,11 @@ public class FindAllLektionsgebuehrenCommandTest {
         lektionsgebuehrenTestdata.add(lektionsgebuehrenaved);
 
         entityManager.getTransaction().commit();
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 
     private void deleteTestdata() {
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
@@ -117,6 +120,6 @@ public class FindAllLektionsgebuehrenCommandTest {
         }
 
         entityManager.getTransaction().commit();
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 }

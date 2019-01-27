@@ -1,6 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SemesterDao;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import org.junit.After;
@@ -21,16 +23,19 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateSemesterCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
@@ -81,7 +86,7 @@ public class SaveOrUpdateSemesterCommandTest {
         assertTrue(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 27), new GregorianCalendar(1913, Calendar.JULY, 17), new GregorianCalendar(1912, Calendar.APRIL, 25), new GregorianCalendar(1912, Calendar.MAY, 7), null, null));
 
         // Testdaten löschen
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
         SemesterDao semesterDao = new SemesterDao(entityManager);
         for (Semester semester : semestersSaved) {
@@ -95,7 +100,7 @@ public class SaveOrUpdateSemesterCommandTest {
 
     private boolean checkIfSemesterAvailable(String schuljahr, Semesterbezeichnung semesterbezeichnung, Calendar semesterbeginn, Calendar semesterende, Calendar ferienbeginn1, Calendar ferienende1, Calendar ferienbeginn2, Calendar ferienende2) {
         FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSemestersCommand);
+        commandInvoker.executeCommand(findAllSemestersCommand);
         List<Semester> semestersAll = findAllSemestersCommand.getSemestersAll();
         for (Semester semester : semestersAll) {
             if (semester.getSchuljahr().equals(schuljahr) && semester.getSemesterbezeichnung().equals(semesterbezeichnung)

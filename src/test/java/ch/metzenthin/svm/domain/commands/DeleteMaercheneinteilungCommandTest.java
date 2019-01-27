@@ -4,6 +4,8 @@ import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.ElternmithilfeCodeDao;
 import ch.metzenthin.svm.persistence.daos.MaerchenDao;
 import ch.metzenthin.svm.persistence.daos.MaercheneinteilungDao;
@@ -27,16 +29,19 @@ import static org.junit.Assert.*;
  */
 public class DeleteMaercheneinteilungCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
@@ -112,7 +117,7 @@ public class DeleteMaercheneinteilungCommandTest {
         assertTrue(erfassteMaercheneinteilungen.isEmpty());
 
         // Testdaten löschen
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
         MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao(entityManager);
         for (Maercheneinteilung maercheneinteilung : erfassteMaercheneinteilungen) {

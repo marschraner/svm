@@ -4,18 +4,16 @@ import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.common.utils.SvmProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -29,7 +27,7 @@ import static org.junit.Assert.*;
  */
 public class MaercheneinteilungDaoTest {
 
-    private EntityManagerFactory entityManagerFactory;
+    private DB db;
     private EntityManager entityManager;
     private MaercheneinteilungDao maercheneinteilungDao;
     private boolean neusteZuoberst;
@@ -40,19 +38,14 @@ public class MaercheneinteilungDaoTest {
         createSvmPropertiesFileDefault();
         Properties svmProperties = SvmProperties.getSvmProperties();
         neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        entityManager = entityManagerFactory.createEntityManager();
+        db = DBFactory.getInstance();
+        entityManager = db.getCurrentEntityManager();
         maercheneinteilungDao = new MaercheneinteilungDao(entityManager);
     }
 
     @After
     public void tearDown() throws Exception {
-        if (entityManager != null) {
-            entityManager.close();
-        }
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test

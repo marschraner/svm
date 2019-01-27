@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.KurstypDao;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import org.junit.After;
@@ -19,25 +21,28 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllKurstypenCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
     private Set<Kurstyp> kurstypenTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
     public void testExecute() {
         FindAllKurstypenCommand findAllKurstypenCommand = new FindAllKurstypenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllKurstypenCommand);
+        commandInvoker.executeCommand(findAllKurstypenCommand);
 
         List<Kurstyp> kurstypenFound = findAllKurstypenCommand.getKurstypenAll();
         assertTrue(kurstypenFound.size() >= 2);
@@ -56,8 +61,7 @@ public class FindAllKurstypenCommandTest {
     }
 
     private void createTestdata() {
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         KurstypDao kurstypDao = new KurstypDao(entityManager);
@@ -69,12 +73,11 @@ public class FindAllKurstypenCommandTest {
         kurstypenTestdata.add(kurstypenaved);
 
         entityManager.getTransaction().commit();
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 
     private void deleteTestdata() {
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         KurstypDao kurstypDao = new KurstypDao(entityManager);
@@ -85,6 +88,6 @@ public class FindAllKurstypenCommandTest {
         }
 
         entityManager.getTransaction().commit();
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 }

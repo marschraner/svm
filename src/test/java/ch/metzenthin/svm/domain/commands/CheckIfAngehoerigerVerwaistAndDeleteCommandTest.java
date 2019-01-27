@@ -2,6 +2,8 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -26,16 +28,19 @@ import static org.junit.Assert.*;
  */
 public class CheckIfAngehoerigerVerwaistAndDeleteCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
@@ -121,7 +126,7 @@ public class CheckIfAngehoerigerVerwaistAndDeleteCommandTest {
         assertEquals(DeleteSchuelerCommand.Result.LOESCHEN_ERFOLGREICH, deleteSchuelerCommand.getResult());
 
         // Prüfen, ob Schüler und Vater gelöscht
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         SchuelerDao schuelerDao = new SchuelerDao(entityManager);
         assertNull(schuelerDao.findById(schuelerId));
         AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);

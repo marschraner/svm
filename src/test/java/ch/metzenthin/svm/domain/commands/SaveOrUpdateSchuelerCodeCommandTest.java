@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SchuelerCodeDao;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import org.junit.After;
@@ -18,16 +20,19 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateSchuelerCodeCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
@@ -68,7 +73,7 @@ public class SaveOrUpdateSchuelerCodeCommandTest {
         assertTrue(checkIfCodeAvailable("tj", "JugendprojektModifTest"));
 
         // Testdaten löschen
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
         SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
         for (SchuelerCode schuelerCode : codesSaved) {
@@ -82,7 +87,7 @@ public class SaveOrUpdateSchuelerCodeCommandTest {
 
     private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) {
         FindAllSchuelerCodesCommand findAllSchuelerCodesCommand = new FindAllSchuelerCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSchuelerCodesCommand);
+        commandInvoker.executeCommand(findAllSchuelerCodesCommand);
         List<SchuelerCode> codesAll = findAllSchuelerCodesCommand.getSchuelerCodesAll();
         for (SchuelerCode schuelerCode : codesAll) {
             if (schuelerCode.getKuerzel().equals(kuerzel) && schuelerCode.getBeschreibung().equals(beschreibung)) {

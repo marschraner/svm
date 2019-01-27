@@ -2,6 +2,8 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
@@ -24,19 +26,22 @@ import static org.junit.Assert.assertNull;
  */
 public class CheckSchuelerBereitsInDatenbankCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
     private Schueler schuelerTestdata;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
@@ -51,7 +56,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.MAY, 1), null));
 
         CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schueler);
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkSchuelerBereitsInDatenbankCommand);
+        commandInvoker.executeCommand(checkSchuelerBereitsInDatenbankCommand);
 
         assertNull(checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(null));
     }
@@ -67,7 +72,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.MAY, 1), null));
 
         CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schueler);
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkSchuelerBereitsInDatenbankCommand);
+        commandInvoker.executeCommand(checkSchuelerBereitsInDatenbankCommand);
 
         Schueler schuelerFound = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(null);
         assertNotNull(schuelerFound);
@@ -77,15 +82,14 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
     @Test
     public void testExecute_IN_DATENBANK_EIGENE() {
         CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schuelerTestdata);
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkSchuelerBereitsInDatenbankCommand);
+        commandInvoker.executeCommand(checkSchuelerBereitsInDatenbankCommand);
 
         Schueler schuelerFound = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(schuelerTestdata);
         assertNull(schuelerFound);
     }
 
     private void createTestdata() {
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         SchuelerDao schuelerDao = new SchuelerDao(entityManager);
@@ -100,12 +104,11 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         schuelerTestdata = schuelerDao.save(schueler);
 
         entityManager.getTransaction().commit();
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 
     private void deleteTestdata() {
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         SchuelerDao schuelerDao = new SchuelerDao(entityManager);
@@ -114,6 +117,6 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         schuelerDao.remove(schuelerToBeRemoved);
 
         entityManager.getTransaction().commit();
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 }

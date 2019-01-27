@@ -1,6 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
@@ -20,7 +22,8 @@ import static org.junit.Assert.assertNotNull;
  */
 public class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
     private Angehoeriger angehoerigerTestdata0;
     private Angehoeriger angehoerigerTestdata1;
     private Angehoeriger angehoerigerTestdata2;
@@ -28,13 +31,15 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
@@ -44,7 +49,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         angehoeriger.setAdresse(adresse);
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkAngehoerigerBereitsInDatenbankCommand);
+        commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
 
         assertEquals("Angehöriger in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.NICHT_IN_DATENBANK, checkAngehoerigerBereitsInDatenbankCommand.getResult());
     }
@@ -56,7 +61,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         angehoeriger.setAdresse(adresse);
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkAngehoerigerBereitsInDatenbankCommand);
+        commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
 
         assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.EIN_EINTRAG_PASST, checkAngehoerigerBereitsInDatenbankCommand.getResult());
         Angehoeriger angehoerigerFound = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
@@ -69,7 +74,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         Angehoeriger angehoeriger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null, null);  // ohne Adresse
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkAngehoerigerBereitsInDatenbankCommand);
+        commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
         assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.MEHRERE_EINTRAEGE_PASSEN, checkAngehoerigerBereitsInDatenbankCommand.getResult());
         List<Angehoeriger> angehoerigerFoundList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
         assertNotNull(angehoerigerFoundList);
@@ -86,7 +91,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         angehoeriger.setAdresse(adresse1);
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkAngehoerigerBereitsInDatenbankCommand);
+        commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
 
         assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE, checkAngehoerigerBereitsInDatenbankCommand.getResult());
         Angehoeriger angehoerigerFound = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
@@ -101,7 +106,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         angehoeriger.setAdresse(adresse1);
 
         CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(checkAngehoerigerBereitsInDatenbankCommand);
+        commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
 
         assertEquals("Angehöriger nicht in Datenbank", CheckAngehoerigerBereitsInDatenbankCommand.Result.MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE, checkAngehoerigerBereitsInDatenbankCommand.getResult());
         List<Angehoeriger> angehoerigerFoundList = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
@@ -113,8 +118,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
     }
 
     private void createTestdata() {
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
@@ -134,12 +138,11 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         angehoerigerTestdata2 = angehoerigerDao.save(angehoeriger2);
 
         entityManager.getTransaction().commit();
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 
     private void deleteTestdata() {
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
@@ -154,6 +157,6 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         angehoerigerDao.remove(angehoerigerToBeRemoved2);
 
         entityManager.getTransaction().commit();
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 }

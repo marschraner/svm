@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.KursortDao;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import org.junit.After;
@@ -18,16 +20,19 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateKursortCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
@@ -68,7 +73,7 @@ public class SaveOrUpdateKursortCommandTest {
         assertTrue(checkIfKursortAvailable("Saal Test3"));
 
         // Testdaten löschen
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
         KursortDao kursortDao = new KursortDao(entityManager);
         for (Kursort kursort : kursorteSaved) {
@@ -82,7 +87,7 @@ public class SaveOrUpdateKursortCommandTest {
 
     private boolean checkIfKursortAvailable(String bezeichnung) {
         FindAllKursorteCommand findAllKursorteCommand = new FindAllKursorteCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllKursorteCommand);
+        commandInvoker.executeCommand(findAllKursorteCommand);
         List<Kursort> kursorteAll = findAllKursorteCommand.getKursorteAll();
         for (Kursort kursort : kursorteAll) {
             if (kursort.getBezeichnung().equals(bezeichnung)) {

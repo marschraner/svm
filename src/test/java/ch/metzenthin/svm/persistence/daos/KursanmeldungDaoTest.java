@@ -4,16 +4,15 @@ import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -27,7 +26,7 @@ import static org.junit.Assert.*;
  */
 public class KursanmeldungDaoTest {
 
-    private EntityManagerFactory entityManagerFactory;
+    private DB db;
     private EntityManager entityManager;
     private KursanmeldungDao kursanmeldungDao;
     private KursDao kursDao;
@@ -39,8 +38,8 @@ public class KursanmeldungDaoTest {
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        entityManager = entityManagerFactory.createEntityManager();
+        db = DBFactory.getInstance();
+        entityManager = db.getCurrentEntityManager();
         kursanmeldungDao = new KursanmeldungDao(entityManager);
         kursDao = new KursDao(entityManager);
         semesterDao = new SemesterDao(entityManager);
@@ -51,12 +50,7 @@ public class KursanmeldungDaoTest {
 
     @After
     public void tearDown() throws Exception {
-        if (entityManager != null) {
-            entityManager.close();
-        }
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test

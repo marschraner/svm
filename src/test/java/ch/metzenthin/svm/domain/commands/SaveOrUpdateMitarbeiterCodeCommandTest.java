@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.MitarbeiterCodeDao;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import org.junit.After;
@@ -18,16 +20,19 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateMitarbeiterCodeCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
@@ -68,7 +73,7 @@ public class SaveOrUpdateMitarbeiterCodeCommandTest {
         assertTrue(checkIfCodeAvailable("th", "HelferModifTest"));
 
         // Testdaten löschen
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
         MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
         for (MitarbeiterCode mitarbeiterCode : codesSaved) {
@@ -82,7 +87,7 @@ public class SaveOrUpdateMitarbeiterCodeCommandTest {
 
     private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) {
         FindAllMitarbeiterCodesCommand findAllMitarbeiterCodesCommand = new FindAllMitarbeiterCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllMitarbeiterCodesCommand);
+        commandInvoker.executeCommand(findAllMitarbeiterCodesCommand);
         List<MitarbeiterCode> codesAll = findAllMitarbeiterCodesCommand.getMitarbeiterCodesAll();
         for (MitarbeiterCode mitarbeiterCode : codesAll) {
             if (mitarbeiterCode.getKuerzel().equals(kuerzel) && mitarbeiterCode.getBeschreibung().equals(beschreibung)) {

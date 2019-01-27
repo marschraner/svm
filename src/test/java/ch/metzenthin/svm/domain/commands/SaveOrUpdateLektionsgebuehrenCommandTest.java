@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.LektionsgebuehrenDao;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import org.junit.After;
@@ -19,16 +21,19 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateLektionsgebuehrenCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
@@ -70,7 +75,7 @@ public class SaveOrUpdateLektionsgebuehrenCommandTest {
         assertTrue(checkIfLektionsgebuehrenAvailable(57, new BigDecimal("23.00")));
 
         // Testdaten löschen
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
         LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
         for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenSaved) {
@@ -84,7 +89,7 @@ public class SaveOrUpdateLektionsgebuehrenCommandTest {
 
     private boolean checkIfLektionsgebuehrenAvailable(Integer lektionslaenge, BigDecimal betrag1Kind) {
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLektionsgebuehrenCommand);
+        commandInvoker.executeCommand(findAllLektionsgebuehrenCommand);
         List<Lektionsgebuehren> lektionsgebuehrenAll = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllList();
         for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenAll) {
             if (lektionsgebuehren.getLektionslaenge().equals(lektionslaenge) && lektionsgebuehren.getBetrag1Kind().equals(betrag1Kind)) {

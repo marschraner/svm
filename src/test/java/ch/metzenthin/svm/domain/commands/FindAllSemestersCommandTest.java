@@ -1,6 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SemesterDao;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import org.junit.After;
@@ -18,25 +20,28 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllSemestersCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
     private Set<Semester> semesterTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
     public void testExecute() {
         FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
-            commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSemestersCommand);
+        commandInvoker.executeCommand(findAllSemestersCommand);
 
         List<Semester> semesterFound = findAllSemestersCommand.getSemestersAll();
         assertTrue(semesterFound.size() >= 2);
@@ -55,8 +60,7 @@ public class FindAllSemestersCommandTest {
     }
 
     private void createTestdata() {
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         SemesterDao semesterDao = new SemesterDao(entityManager);
@@ -70,12 +74,11 @@ public class FindAllSemestersCommandTest {
         semesterTestdata.add(semesterSaved);
 
         entityManager.getTransaction().commit();
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 
     private void deleteTestdata() {
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         SemesterDao semesterDao = new SemesterDao(entityManager);
@@ -86,6 +89,6 @@ public class FindAllSemestersCommandTest {
         }
 
         entityManager.getTransaction().commit();
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 }

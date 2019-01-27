@@ -1,6 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
@@ -20,16 +22,19 @@ import static org.junit.Assert.assertEquals;
  */
 public class SaveAngehoerigeCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
@@ -48,7 +53,7 @@ public class SaveAngehoerigeCommandTest {
         angehoerige.add(angehoeriger1);
 
         SaveAngehoerigeCommand saveAngehoerigeCommand = new SaveAngehoerigeCommand(angehoerige);
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(saveAngehoerigeCommand);
+        commandInvoker.executeCommandAsTransaction(saveAngehoerigeCommand);
         List<Angehoeriger> savedAngehoerige = saveAngehoerigeCommand.getSavedAngehoerige();
 
         Angehoeriger savedAngehoeriger0 = savedAngehoerige.get(0);
@@ -63,8 +68,7 @@ public class SaveAngehoerigeCommandTest {
         assertEquals("Adresse_id not equal", savedAngehoeriger0.getAdresse().getAdresseId(), savedAngehoeriger1.getAdresse().getAdresseId());
 
         // Delete
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);

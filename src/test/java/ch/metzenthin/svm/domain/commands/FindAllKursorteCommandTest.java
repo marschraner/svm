@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.KursortDao;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import org.junit.After;
@@ -19,25 +21,28 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllKursorteCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
     private Set<Kursort> kursorteTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
     public void testExecute() {
         FindAllKursorteCommand findAllKursorteCommand = new FindAllKursorteCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllKursorteCommand);
+        commandInvoker.executeCommand(findAllKursorteCommand);
 
         List<Kursort> kursorteFound = findAllKursorteCommand.getKursorteAll();
         assertTrue(kursorteFound.size() >= 2);
@@ -56,8 +61,7 @@ public class FindAllKursorteCommandTest {
     }
 
     private void createTestdata() {
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         KursortDao kursortDao = new KursortDao(entityManager);
@@ -69,12 +73,11 @@ public class FindAllKursorteCommandTest {
         kursorteTestdata.add(kursorteaved);
 
         entityManager.getTransaction().commit();
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 
     private void deleteTestdata() {
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         KursortDao kursortDao = new KursortDao(entityManager);
@@ -85,6 +88,6 @@ public class FindAllKursorteCommandTest {
         }
 
         entityManager.getTransaction().commit();
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 }

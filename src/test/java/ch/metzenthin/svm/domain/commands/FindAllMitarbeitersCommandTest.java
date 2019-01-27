@@ -1,6 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.MitarbeiterDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
@@ -19,25 +21,28 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllMitarbeitersCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
     private Set<Mitarbeiter> lehrkraefteTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
     public void testExecute() {
         FindAllMitarbeitersCommand findAllMitarbeitersCommand = new FindAllMitarbeitersCommand();
-            commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllMitarbeitersCommand);
+            commandInvoker.executeCommand(findAllMitarbeitersCommand);
 
         List<Mitarbeiter> lehrkraefteFound = findAllMitarbeitersCommand.getMitarbeitersAll();
         assertTrue(lehrkraefteFound.size() >= 2);
@@ -56,8 +61,7 @@ public class FindAllMitarbeitersCommandTest {
     }
 
     private void createTestdata() {
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
@@ -75,12 +79,11 @@ public class FindAllMitarbeitersCommandTest {
         lehrkraefteTestdata.add(mitarbeiterSaved);
 
         entityManager.getTransaction().commit();
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 
     private void deleteTestdata() {
-        commandInvoker.openSession();
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
         MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
@@ -91,6 +94,6 @@ public class FindAllMitarbeitersCommandTest {
         }
 
         entityManager.getTransaction().commit();
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 }

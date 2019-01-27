@@ -1,6 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.MitarbeiterCodeDao;
 import ch.metzenthin.svm.persistence.daos.MitarbeiterDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -24,16 +26,19 @@ import static org.junit.Assert.assertEquals;
  */
 public class AddMitarbeiterCodeToMitarbeiterAndSaveCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
@@ -77,7 +82,7 @@ public class AddMitarbeiterCodeToMitarbeiterAndSaveCommandTest {
         assertEquals("vt", mitarbeiterSaved.getMitarbeiterCodesAsList().get(1).getKuerzel());
 
         // Testdaten löschen
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
         MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
         Mitarbeiter mitarbeiterToBeDeleted = mitarbeiterDao.findById(mitarbeiterSaved.getPersonId());

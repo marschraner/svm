@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.MaerchenDao;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 import org.junit.After;
@@ -18,16 +20,19 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateMaerchenCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
@@ -78,7 +83,7 @@ public class SaveOrUpdateMaerchenCommandTest {
         assertTrue(checkIfMaerchenAvailable("1912/1913", "Rumpelstilzchen", 9));
 
         // Testdaten löschen
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
         MaerchenDao maerchenDao = new MaerchenDao(entityManager);
         for (Maerchen maerchen : maerchensSaved) {
@@ -92,7 +97,7 @@ public class SaveOrUpdateMaerchenCommandTest {
 
     private boolean checkIfMaerchenAvailable(String schuljahr, String bezeichnung, int anzahlVorstellungen) {
         FindAllMaerchensCommand findAllMaerchensCommand = new FindAllMaerchensCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllMaerchensCommand);
+        commandInvoker.executeCommand(findAllMaerchensCommand);
         List<Maerchen> maerchensAll = findAllMaerchensCommand.getMaerchensAll();
         for (Maerchen maerchen : maerchensAll) {
             if (maerchen.getSchuljahr().equals(schuljahr) && maerchen.getBezeichnung().equals(bezeichnung) && maerchen.getAnzahlVorstellungen().equals(anzahlVorstellungen)) {

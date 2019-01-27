@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.KurstypDao;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import org.junit.After;
@@ -18,16 +20,19 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateKurstypCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSessionAndEntityManagerFactory();
+        db.closeSession();
     }
 
     @Test
@@ -68,7 +73,7 @@ public class SaveOrUpdateKurstypCommandTest {
         assertTrue(checkIfKurstypAvailable("Kurs Test3"));
 
         // Testdaten löschen
-        EntityManager entityManager = commandInvoker.getEntityManager();
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
         KurstypDao kurstypDao = new KurstypDao(entityManager);
         for (Kurstyp kurstyp : kurstypenSaved) {
@@ -82,7 +87,7 @@ public class SaveOrUpdateKurstypCommandTest {
 
     private boolean checkIfKurstypAvailable(String bezeichnung) {
         FindAllKurstypenCommand findAllKurstypenCommand = new FindAllKurstypenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllKurstypenCommand);
+        commandInvoker.executeCommand(findAllKurstypenCommand);
         List<Kurstyp> kurstypenAll = findAllKurstypenCommand.getKurstypenAll();
         for (Kurstyp kurstyp : kurstypenAll) {
             if (kurstyp.getBezeichnung().equals(bezeichnung)) {
