@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.MaerchenDao;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 import org.junit.After;
@@ -8,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,20 +19,15 @@ import static org.junit.Assert.*;
 public class SaveOrUpdateMaerchenCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.close();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -86,25 +78,16 @@ public class SaveOrUpdateMaerchenCommandTest {
         assertTrue(checkIfMaerchenAvailable("1912/1913", "Rumpelstilzchen", 9));
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            MaerchenDao maerchenDao = new MaerchenDao(entityManager);
-            for (Maerchen maerchen : maerchensSaved) {
-                Maerchen maerchenToBeDeleted = maerchenDao.findById(maerchen.getMaerchenId());
-                if (maerchenToBeDeleted != null) {
-                    maerchenDao.remove(maerchenToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
+        MaerchenDao maerchenDao = new MaerchenDao(entityManager);
+        for (Maerchen maerchen : maerchensSaved) {
+            Maerchen maerchenToBeDeleted = maerchenDao.findById(maerchen.getMaerchenId());
+            if (maerchenToBeDeleted != null) {
+                maerchenDao.remove(maerchenToBeDeleted);
             }
         }
-
-
+        entityManager.getTransaction().commit();
     }
 
     private boolean checkIfMaerchenAvailable(String schuljahr, String bezeichnung, int anzahlVorstellungen) {

@@ -4,6 +4,8 @@ import ch.metzenthin.svm.domain.commands.Command;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.GenericDaoCommand;
 
+import javax.persistence.EntityManager;
+
 /**
  * @author Hans Stamm
  */
@@ -29,8 +31,16 @@ public class DummyCommandInvoker implements CommandInvoker {
     }
 
     @Override
+    public void openSession() {}
+
+    @Override
     public void closeSession() {}
 
     @Override
-    public void close() {}
+    public void closeSessionAndEntityManagerFactory() {}
+
+    @Override
+    public EntityManager getEntityManager() {
+        return null;
+    }
 }

@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
@@ -10,16 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Hans Stamm
@@ -27,19 +21,15 @@ import static org.junit.Assert.assertTrue;
 public class SaveAngehoerigeCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
     }
 
     @After
     public void tearDown() throws Exception {
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -70,28 +60,21 @@ public class SaveAngehoerigeCommandTest {
         assertEquals("Strasse not found", "Hohenklingenstrasse", savedAngehoeriger1.getAdresse().getStrasse());
 
         // Do both Angehoeriger have the same adresseId?
-        assertTrue("Adresse_id not equal", Objects.equals(savedAngehoeriger0.getAdresse().getAdresseId(), savedAngehoeriger1.getAdresse().getAdresseId()));
+        assertEquals("Adresse_id not equal", savedAngehoeriger0.getAdresse().getAdresseId(), savedAngehoeriger1.getAdresse().getAdresseId());
 
         // Delete
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        commandInvoker.openSession();
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
 
-            AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
+        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
 
-            Angehoeriger angehoerigerToBeRemoved0 = angehoerigerDao.findById(savedAngehoeriger0.getPersonId());
-            angehoerigerDao.remove(angehoerigerToBeRemoved0);
+        Angehoeriger angehoerigerToBeRemoved0 = angehoerigerDao.findById(savedAngehoeriger0.getPersonId());
+        angehoerigerDao.remove(angehoerigerToBeRemoved0);
 
-            Angehoeriger angehoerigerToBeRemoved1 = angehoerigerDao.findById(savedAngehoeriger1.getPersonId());
-            angehoerigerDao.remove(angehoerigerToBeRemoved1);
+        Angehoeriger angehoerigerToBeRemoved1 = angehoerigerDao.findById(savedAngehoeriger1.getPersonId());
+        angehoerigerDao.remove(angehoerigerToBeRemoved1);
 
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        entityManager.getTransaction().commit();
     }
 }

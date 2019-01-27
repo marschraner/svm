@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
@@ -10,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -27,20 +24,15 @@ import static org.junit.Assert.assertTrue;
 public class DeleteSchuelerCodeCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.close();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -104,19 +96,11 @@ public class DeleteSchuelerCodeCommandTest {
         assertTrue(codesSaved.isEmpty());
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-            Schueler schuelerToBeDeleted = schuelerDao.findById(savedSchueler.getPersonId());
-            schuelerDao.remove(schuelerToBeDeleted);
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
-
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
+        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
+        Schueler schuelerToBeDeleted = schuelerDao.findById(savedSchueler.getPersonId());
+        schuelerDao.remove(schuelerToBeDeleted);
+        entityManager.getTransaction().commit();
     }
 }

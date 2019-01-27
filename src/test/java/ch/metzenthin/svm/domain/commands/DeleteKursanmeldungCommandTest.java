@@ -1,7 +1,9 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.*;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.persistence.daos.*;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
@@ -9,8 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,7 +19,8 @@ import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Martin Schraner
@@ -27,20 +28,15 @@ import static org.junit.Assert.*;
 public class DeleteKursanmeldungCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.close();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -115,13 +111,13 @@ public class DeleteKursanmeldungCommandTest {
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursCommand);
 
         assertFalse(checkIfKursanmeldungAvailable(schueler1, kurs1, new GregorianCalendar(2015, Calendar.AUGUST, 27), null, "Testbemerkung1"));
-        assertFalse(checkIfKursanmeldungAvailable(schueler2, kurs2, new GregorianCalendar(2015, Calendar.AUGUST, 30), null, "Testbemerkung2"));
+        assertFalse(checkIfKursanmeldungAvailable(schueler2, kurs2, new GregorianCalendar(2015, Calendar.AUGUST, 30), new GregorianCalendar(2018, Calendar.AUGUST, 1), "Testbemerkung2"));
 
         // 2 Kursanmeldungen erfassen
         Kursanmeldung kursanmeldung1 = new Kursanmeldung(schueler1, kurs1, new GregorianCalendar(2015, Calendar.AUGUST, 27), null, "Testbemerkung1");
         SaveOrUpdateKursanmeldungCommand saveOrUpdateKursanmeldungCommand = new SaveOrUpdateKursanmeldungCommand(kursanmeldung1, null, erfassteKursanmeldungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursanmeldungCommand);
-        Kursanmeldung kursanmeldung2 = new Kursanmeldung(schueler2, kurs2, new GregorianCalendar(2015, Calendar.AUGUST, 30), null, "Testbemerkung2");
+        Kursanmeldung kursanmeldung2 = new Kursanmeldung(schueler2, kurs2, new GregorianCalendar(2015, Calendar.AUGUST, 30), new GregorianCalendar(2018, Calendar.AUGUST, 1), "Testbemerkung2");
         saveOrUpdateKursanmeldungCommand = new SaveOrUpdateKursanmeldungCommand(kursanmeldung2, null, erfassteKursanmeldungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursanmeldungCommand);
 
@@ -137,75 +133,68 @@ public class DeleteKursanmeldungCommandTest {
         assertTrue(erfassteKursanmeldungen.isEmpty());
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
-            for (Kursanmeldung kursanmeldung : erfassteKursanmeldungen) {
-                Kursanmeldung kursanmeldungToBeDeleted = kursanmeldungDao.findById(new KursanmeldungId(kursanmeldung.getSchueler().getPersonId(), kursanmeldung.getKurs().getKursId()));
-                if (kursanmeldungToBeDeleted != null) {
-                    kursanmeldungDao.remove(kursanmeldungToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            KursDao kursDao = new KursDao(entityManager);
-            for (Kurs kurs : erfassteKurse) {
-                Kurs kursToBeDeleted = kursDao.findById(kurs.getKursId());
-                if (kursToBeDeleted != null) {
-                    kursDao.remove(kursToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            SemesterDao semesterDao = new SemesterDao(entityManager);
-            for (Semester semester : erfassteSemester) {
-                Semester semesterToBeDeleted = semesterDao.findById(semester.getSemesterId());
-                if (semesterToBeDeleted != null) {
-                    semesterDao.remove(semesterToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
-            for (Mitarbeiter mitarbeiter : erfassteLehrkraefte) {
-                Mitarbeiter mitarbeiterToBeDeleted = mitarbeiterDao.findById(mitarbeiter.getPersonId());
-                if (mitarbeiterToBeDeleted != null) {
-                    mitarbeiterDao.remove(mitarbeiterToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            KursortDao kursortDao = new KursortDao(entityManager);
-            for (Kursort kursort : erfassteKursorte) {
-                Kursort kursortToBeDeleted = kursortDao.findById(kursort.getKursortId());
-                if (kursortToBeDeleted != null) {
-                    kursortDao.remove(kursortToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            KurstypDao kurstypDao = new KurstypDao(entityManager);
-            for (Kurstyp kurstyp : erfassteKurstypen) {
-                Kurstyp kurstypToBeDeleted = kurstypDao.findById(kurstyp.getKurstypId());
-                if (kurstypToBeDeleted != null) {
-                    kurstypDao.remove(kurstypToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-            Schueler schuelerToBeRemoved1 = schuelerDao.findById(schueler1.getPersonId());
-            Schueler schuelerToBeRemoved2 = schuelerDao.findById(schueler2.getPersonId());
-            schuelerDao.remove(schuelerToBeRemoved1);
-            schuelerDao.remove(schuelerToBeRemoved2);
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
+        KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
+        for (Kursanmeldung kursanmeldung : erfassteKursanmeldungen) {
+            Kursanmeldung kursanmeldungToBeDeleted = kursanmeldungDao.findById(new KursanmeldungId(kursanmeldung.getSchueler().getPersonId(), kursanmeldung.getKurs().getKursId()));
+            if (kursanmeldungToBeDeleted != null) {
+                kursanmeldungDao.remove(kursanmeldungToBeDeleted);
             }
         }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        KursDao kursDao = new KursDao(entityManager);
+        for (Kurs kurs : erfassteKurse) {
+            Kurs kursToBeDeleted = kursDao.findById(kurs.getKursId());
+            if (kursToBeDeleted != null) {
+                kursDao.remove(kursToBeDeleted);
+            }
+        }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        SemesterDao semesterDao = new SemesterDao(entityManager);
+        for (Semester semester : erfassteSemester) {
+            Semester semesterToBeDeleted = semesterDao.findById(semester.getSemesterId());
+            if (semesterToBeDeleted != null) {
+                semesterDao.remove(semesterToBeDeleted);
+            }
+        }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
+        for (Mitarbeiter mitarbeiter : erfassteLehrkraefte) {
+            Mitarbeiter mitarbeiterToBeDeleted = mitarbeiterDao.findById(mitarbeiter.getPersonId());
+            if (mitarbeiterToBeDeleted != null) {
+                mitarbeiterDao.remove(mitarbeiterToBeDeleted);
+            }
+        }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        KursortDao kursortDao = new KursortDao(entityManager);
+        for (Kursort kursort : erfassteKursorte) {
+            Kursort kursortToBeDeleted = kursortDao.findById(kursort.getKursortId());
+            if (kursortToBeDeleted != null) {
+                kursortDao.remove(kursortToBeDeleted);
+            }
+        }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        KurstypDao kurstypDao = new KurstypDao(entityManager);
+        for (Kurstyp kurstyp : erfassteKurstypen) {
+            Kurstyp kurstypToBeDeleted = kurstypDao.findById(kurstyp.getKurstypId());
+            if (kurstypToBeDeleted != null) {
+                kurstypDao.remove(kurstypToBeDeleted);
+            }
+        }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
+        Schueler schuelerToBeRemoved1 = schuelerDao.findById(schueler1.getPersonId());
+        Schueler schuelerToBeRemoved2 = schuelerDao.findById(schueler2.getPersonId());
+        schuelerDao.remove(schuelerToBeRemoved1);
+        schuelerDao.remove(schuelerToBeRemoved2);
+        entityManager.getTransaction().commit();
     }
 
     private boolean checkIfKursanmeldungAvailable(Schueler schueler, Kurs kurs, Calendar anmeldedatum, Calendar abmeldedatum, String bemerkungen) {

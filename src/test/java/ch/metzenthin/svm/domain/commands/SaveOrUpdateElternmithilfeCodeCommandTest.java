@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.ElternmithilfeCodeDao;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import org.junit.After;
@@ -8,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,20 +19,15 @@ import static org.junit.Assert.*;
 public class SaveOrUpdateElternmithilfeCodeCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.close();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -76,25 +68,16 @@ public class SaveOrUpdateElternmithilfeCodeCommandTest {
         assertTrue(checkIfCodeAvailable("tf", "FrisierenModifTest"));
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
-            for (ElternmithilfeCode elternmithilfeCode : codesSaved) {
-                ElternmithilfeCode elternmithilfeCodeToBeDeleted = elternmithilfeCodeDao.findById(elternmithilfeCode.getCodeId());
-                if (elternmithilfeCodeToBeDeleted != null) {
-                    elternmithilfeCodeDao.remove(elternmithilfeCodeToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
+        ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
+        for (ElternmithilfeCode elternmithilfeCode : codesSaved) {
+            ElternmithilfeCode elternmithilfeCodeToBeDeleted = elternmithilfeCodeDao.findById(elternmithilfeCode.getCodeId());
+            if (elternmithilfeCodeToBeDeleted != null) {
+                elternmithilfeCodeDao.remove(elternmithilfeCodeToBeDeleted);
             }
         }
-
-
+        entityManager.getTransaction().commit();
     }
 
     private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) {

@@ -1,13 +1,10 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,20 +19,15 @@ import static org.junit.Assert.assertEquals;
 public class DeleteLektionsgebuehrenCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.close();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -61,6 +53,5 @@ public class DeleteLektionsgebuehrenCommandTest {
         deleteLektionsgebuehrenCommand = new DeleteLektionsgebuehrenCommand(lektionsgebuehrenSaved, 0);
         commandInvoker.executeCommandAsTransaction(deleteLektionsgebuehrenCommand);
         assertTrue(lektionsgebuehrenSaved.isEmpty());
-
     }
 }

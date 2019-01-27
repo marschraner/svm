@@ -24,7 +24,7 @@ public class CalculateAnzWochenCommandTest {
     private CalculateAnzWochenCommand calculateAnzWochenCommandZweitesSemester = new CalculateAnzWochenCommand(null, zweitesSemester);
 
     @Test
-    public void testCalculateAnzWochenKursanmeldung_MittwochKurs() throws Exception {
+    public void testCalculateAnzWochenKursanmeldung_MittwochKurs() {
 
         Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.MITTWOCH, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), "Dies ist ein Test.");
 
@@ -254,7 +254,7 @@ public class CalculateAnzWochenCommandTest {
     }
 
     @Test
-    public void testCalculateAnzWochenKursanmeldung_MontagKurs() throws Exception {
+    public void testCalculateAnzWochenKursanmeldung_MontagKurs() {
 
         Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.MONTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), "Dies ist ein Test.");
 
@@ -317,7 +317,7 @@ public class CalculateAnzWochenCommandTest {
     }
 
     @Test
-    public void testCalculateAnzWochenKursanmeldung_SamstagKurs() throws Exception {
+    public void testCalculateAnzWochenKursanmeldung_SamstagKurs() {
 
         Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.SAMSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), "Dies ist ein Test.");
 

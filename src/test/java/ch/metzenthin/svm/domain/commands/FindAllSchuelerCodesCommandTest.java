@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.SchuelerCodeDao;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import org.junit.After;
@@ -8,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,22 +20,18 @@ import static org.junit.Assert.assertTrue;
 public class FindAllSchuelerCodesCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
     private Set<SchuelerCode> codesTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -63,47 +56,35 @@ public class FindAllSchuelerCodesCommandTest {
     }
 
     private void createTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        commandInvoker.openSession();
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
 
-            SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
+        SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
 
-            SchuelerCode schuelerCodeSaved = schuelerCodeDao.save(new SchuelerCode("z", "ZirkusTest", true));
-            codesTestdata.add(schuelerCodeSaved);
+        SchuelerCode schuelerCodeSaved = schuelerCodeDao.save(new SchuelerCode("z", "ZirkusTest", true));
+        codesTestdata.add(schuelerCodeSaved);
 
-            schuelerCodeSaved = schuelerCodeDao.save(new SchuelerCode("j", "JugendprojektTest", true));
-            codesTestdata.add(schuelerCodeSaved);
+        schuelerCodeSaved = schuelerCodeDao.save(new SchuelerCode("j", "JugendprojektTest", true));
+        codesTestdata.add(schuelerCodeSaved);
 
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        entityManager.getTransaction().commit();
+        commandInvoker.closeSession();
     }
 
     private void deleteTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        commandInvoker.openSession();
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
 
-            SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
+        SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
 
-            for (SchuelerCode schuelerCode : codesTestdata) {
-                SchuelerCode schuelerCodeToBeRemoved = schuelerCodeDao.findById(schuelerCode.getCodeId());
-                schuelerCodeDao.remove(schuelerCodeToBeRemoved);
-            }
-
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
+        for (SchuelerCode schuelerCode : codesTestdata) {
+            SchuelerCode schuelerCodeToBeRemoved = schuelerCodeDao.findById(schuelerCode.getCodeId());
+            schuelerCodeDao.remove(schuelerCodeToBeRemoved);
         }
+
+        entityManager.getTransaction().commit();
+        commandInvoker.closeSession();
     }
 }

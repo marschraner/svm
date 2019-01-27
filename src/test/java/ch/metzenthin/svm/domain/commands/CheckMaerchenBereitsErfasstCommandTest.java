@@ -25,7 +25,7 @@ public class CheckMaerchenBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_BereitsErfasst() throws Exception {
+    public void testExecute_BereitsErfasst() {
         Maerchen maerchen = new Maerchen("1911/1912", "Hans im Glück", 9);
         CheckMaerchenBereitsErfasstCommand checkMaerchenBereitsErfasstCommand = new CheckMaerchenBereitsErfasstCommand(maerchen, null, bereitsErfassteMaerchens);
         commandInvoker.executeCommand(checkMaerchenBereitsErfasstCommand);
@@ -33,7 +33,7 @@ public class CheckMaerchenBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_MaerchenNochNichtErfasst() throws Exception {
+    public void testExecute_MaerchenNochNichtErfasst() {
         Maerchen maerchen = new Maerchen("1913/1914", "Schneewittchen", 7);
         CheckMaerchenBereitsErfasstCommand checkMaerchenBereitsErfasstCommand = new CheckMaerchenBereitsErfasstCommand(maerchen, null, bereitsErfassteMaerchens);
         commandInvoker.executeCommand(checkMaerchenBereitsErfasstCommand);
@@ -41,7 +41,7 @@ public class CheckMaerchenBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_MaerchenOrigin() throws Exception {
+    public void testExecute_MaerchenOrigin() {
         Maerchen maerchen = new Maerchen("1911/1912", "Schneewittchen", 7);
         CheckMaerchenBereitsErfasstCommand checkMaerchenBereitsErfasstCommand = new CheckMaerchenBereitsErfasstCommand(maerchen, bereitsErfassteMaerchens.get(0), bereitsErfassteMaerchens);
         commandInvoker.executeCommand(checkMaerchenBereitsErfasstCommand);

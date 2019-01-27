@@ -6,8 +6,7 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Martin Schraner
@@ -50,7 +49,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
         commandInvoker.executeCommand(checkDrittpersonIdentischMitElternteilCommand);
         assertTrue(checkDrittpersonIdentischMitElternteilCommand.isIdentical());
         String errorMessage = checkDrittpersonIdentischMitElternteilCommand.getErrorMessage();
-        assertTrue(errorMessage.equals(CheckDrittpersonIdentischMitElternteilCommand.ERROR_IDENTISCH_MIT_MUTTER));
+        assertEquals(errorMessage, CheckDrittpersonIdentischMitElternteilCommand.ERROR_IDENTISCH_MIT_MUTTER);
     }
 
     @Test
@@ -74,7 +73,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
         commandInvoker.executeCommand(checkDrittpersonIdentischMitElternteilCommand);
         assertTrue(checkDrittpersonIdentischMitElternteilCommand.isIdentical());
         String errorMessage = checkDrittpersonIdentischMitElternteilCommand.getErrorMessage();
-        assertTrue(errorMessage.equals(CheckDrittpersonIdentischMitElternteilCommand.ERROR_IDENTISCH_MIT_VATER));
+        assertEquals(errorMessage, CheckDrittpersonIdentischMitElternteilCommand.ERROR_IDENTISCH_MIT_VATER);
     }
 
     @Test

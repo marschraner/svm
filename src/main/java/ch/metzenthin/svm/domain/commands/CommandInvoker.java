@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
+import javax.persistence.EntityManager;
+
 /**
  * @author Hans Stamm
  */
@@ -13,8 +15,11 @@ public interface CommandInvoker {
 
     GenericDaoCommand executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand genericDaoCommand);
 
+    void openSession();
+
     void closeSession();
 
-    void close();
+    void closeSessionAndEntityManagerFactory();
 
+    EntityManager getEntityManager();
 }

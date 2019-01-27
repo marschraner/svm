@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.MitarbeiterCodeDao;
 import ch.metzenthin.svm.persistence.daos.MitarbeiterDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -12,8 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -28,20 +25,15 @@ import static org.junit.Assert.assertEquals;
 public class RemoveMitarbeiterCodeFromMitarbeiterCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.close();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -93,25 +85,17 @@ public class RemoveMitarbeiterCodeFromMitarbeiterCommandTest {
         assertEquals(0, mitarbeiterUpdated.getMitarbeiterCodes().size());
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
-            Mitarbeiter mitarbeiterToBeDeleted = mitarbeiterDao.findById(mitarbeiterUpdated.getPersonId());
-            MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
-            for (MitarbeiterCode mitarbeiterCode : erfassteMitarbeiterCodes) {
-                MitarbeiterCode mitarbeiterCodeToBeDeleted = mitarbeiterCodeDao.findById(mitarbeiterCode.getCodeId());
-                mitarbeiterCodeDao.removeFromMitarbeiterAndUpdate(mitarbeiterCodeToBeDeleted, mitarbeiterToBeDeleted);
-                mitarbeiterCodeDao.remove(mitarbeiterCodeToBeDeleted);
-            }
-            mitarbeiterDao.remove(mitarbeiterToBeDeleted);
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
+        MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
+        Mitarbeiter mitarbeiterToBeDeleted = mitarbeiterDao.findById(mitarbeiterUpdated.getPersonId());
+        MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
+        for (MitarbeiterCode mitarbeiterCode : erfassteMitarbeiterCodes) {
+            MitarbeiterCode mitarbeiterCodeToBeDeleted = mitarbeiterCodeDao.findById(mitarbeiterCode.getCodeId());
+            mitarbeiterCodeDao.removeFromMitarbeiterAndUpdate(mitarbeiterCodeToBeDeleted, mitarbeiterToBeDeleted);
+            mitarbeiterCodeDao.remove(mitarbeiterCodeToBeDeleted);
         }
-
+        mitarbeiterDao.remove(mitarbeiterToBeDeleted);
+        entityManager.getTransaction().commit();
     }
 }

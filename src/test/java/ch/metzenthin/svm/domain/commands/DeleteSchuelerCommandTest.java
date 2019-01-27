@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -11,8 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -28,20 +25,15 @@ import static org.junit.Assert.assertNull;
 public class DeleteSchuelerCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.close();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -103,18 +95,10 @@ public class DeleteSchuelerCommandTest {
         commandInvoker.executeCommandAsTransaction(deleteSchuelerCodeCommand);
 
         // Prüfen, ob Schüler und Vater gelöscht
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-            assertNull(schuelerDao.findById(schuelerId));
-            AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
-            assertNull(angehoerigerDao.findById(vaterId));
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
-
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
+        assertNull(schuelerDao.findById(schuelerId));
+        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
+        assertNull(angehoerigerDao.findById(vaterId));
     }
 }

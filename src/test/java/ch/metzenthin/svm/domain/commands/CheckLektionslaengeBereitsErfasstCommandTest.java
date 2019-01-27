@@ -27,7 +27,7 @@ public class CheckLektionslaengeBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_BezeichnungBereitsInVerwendung() throws Exception {
+    public void testExecute_BezeichnungBereitsInVerwendung() {
         Lektionsgebuehren lektionsgebuehren = new Lektionsgebuehren(67, new BigDecimal("25.50"), new BigDecimal("24.00"), new BigDecimal("22.00"), new BigDecimal("21.00"), new BigDecimal("19.00"), new BigDecimal("17.00"));
         CheckLektionslaengeBereitsErfasstCommand checkLektionslaengeBereitsErfasstCommand = new CheckLektionslaengeBereitsErfasstCommand(lektionsgebuehren, null, bereitsErfassteLektionsgebuehren);
         commandInvoker.executeCommand(checkLektionslaengeBereitsErfasstCommand);
@@ -35,7 +35,7 @@ public class CheckLektionslaengeBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_BezeichnungNochNichtInVerwendung() throws Exception {
+    public void testExecute_BezeichnungNochNichtInVerwendung() {
         Lektionsgebuehren lektionsgebuehren = new Lektionsgebuehren(68, new BigDecimal("25.50"), new BigDecimal("24.00"), new BigDecimal("22.00"), new BigDecimal("21.00"), new BigDecimal("19.00"), new BigDecimal("17.00"));
         CheckLektionslaengeBereitsErfasstCommand checkLektionslaengeBereitsErfasstCommand = new CheckLektionslaengeBereitsErfasstCommand(lektionsgebuehren, null, bereitsErfassteLektionsgebuehren);
         commandInvoker.executeCommand(checkLektionslaengeBereitsErfasstCommand);
@@ -43,7 +43,7 @@ public class CheckLektionslaengeBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_LektionsgebuehrenOrigin() throws Exception {
+    public void testExecute_LektionsgebuehrenOrigin() {
         Lektionsgebuehren lektionsgebuehren = new Lektionsgebuehren(67, new BigDecimal("24.50"), new BigDecimal("23.00"), new BigDecimal("21.00"), new BigDecimal("20.00"), new BigDecimal("19.00"), new BigDecimal("17.00"));
         CheckLektionslaengeBereitsErfasstCommand checkLektionslaengeBereitsErfasstCommand = new CheckLektionslaengeBereitsErfasstCommand(lektionsgebuehren, bereitsErfassteLektionsgebuehren.get(1), bereitsErfassteLektionsgebuehren);
         commandInvoker.executeCommand(checkLektionslaengeBereitsErfasstCommand);

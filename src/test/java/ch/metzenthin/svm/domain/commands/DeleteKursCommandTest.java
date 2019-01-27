@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.*;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
@@ -11,8 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,20 +27,15 @@ import static org.junit.Assert.assertTrue;
 public class DeleteKursCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.close();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -87,14 +79,14 @@ public class DeleteKursCommandTest {
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMitarbeiterCommand);
 
         assertFalse(checkIfKursAvailable(semester1, kurstyp1, "2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), kursort1, lehrkraft1, null));
-        assertFalse(checkIfKursAvailable(semester2, kurstyp2, "2-3 J", "Vorkindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), kursort2, lehrkraft2, lehrkraft1));
+        assertFalse(checkIfKursAvailable(semester2, kurstyp2, "3-4 J", "1. Kindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), kursort2, lehrkraft2, lehrkraft1));
 
         // 2 Kurse erfassen
         Kurs kurs1 = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
         SaveOrUpdateKursCommand saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs1, semester1, kurstyp1, kursort1, lehrkraft1, null, null, erfassteKurse);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursCommand);
 
-        Kurs kurs2 = new Kurs("2-3 J", "Vorkindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
+        Kurs kurs2 = new Kurs("3-4 J", "1. Kindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), null);
         saveOrUpdateKursCommand = new SaveOrUpdateKursCommand(kurs2, semester2, kurstyp2, kursort2, lehrkraft2, lehrkraft1, null, erfassteKurse);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursCommand);
 
@@ -110,60 +102,52 @@ public class DeleteKursCommandTest {
         assertTrue(erfassteKurse.isEmpty());
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            KursDao kursDao = new KursDao(entityManager);
-            for (Kurs kurs : erfassteKurse) {
-                Kurs kursToBeDeleted = kursDao.findById(kurs.getKursId());
-                if (kursToBeDeleted != null) {
-                    kursDao.remove(kursToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            SemesterDao semesterDao = new SemesterDao(entityManager);
-            for (Semester semester : erfassteSemester) {
-                Semester semesterToBeDeleted = semesterDao.findById(semester.getSemesterId());
-                if (semesterToBeDeleted != null) {
-                    semesterDao.remove(semesterToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
-            for (Mitarbeiter mitarbeiter : erfassteLehrkraefte) {
-                Mitarbeiter mitarbeiterToBeDeleted = mitarbeiterDao.findById(mitarbeiter.getPersonId());
-                if (mitarbeiterToBeDeleted != null) {
-                    mitarbeiterDao.remove(mitarbeiterToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            KursortDao kursortDao = new KursortDao(entityManager);
-            for (Kursort kursort : erfassteKursorte) {
-                Kursort kursortToBeDeleted = kursortDao.findById(kursort.getKursortId());
-                if (kursortToBeDeleted != null) {
-                    kursortDao.remove(kursortToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            KurstypDao kurstypDao = new KurstypDao(entityManager);
-            for (Kurstyp kurstyp : erfassteKurstypen) {
-                Kurstyp kurstypToBeDeleted = kurstypDao.findById(kurstyp.getKurstypId());
-                if (kurstypToBeDeleted != null) {
-                    kurstypDao.remove(kurstypToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
+        KursDao kursDao = new KursDao(entityManager);
+        for (Kurs kurs : erfassteKurse) {
+            Kurs kursToBeDeleted = kursDao.findById(kurs.getKursId());
+            if (kursToBeDeleted != null) {
+                kursDao.remove(kursToBeDeleted);
             }
         }
-
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        SemesterDao semesterDao = new SemesterDao(entityManager);
+        for (Semester semester : erfassteSemester) {
+            Semester semesterToBeDeleted = semesterDao.findById(semester.getSemesterId());
+            if (semesterToBeDeleted != null) {
+                semesterDao.remove(semesterToBeDeleted);
+            }
+        }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
+        for (Mitarbeiter mitarbeiter : erfassteLehrkraefte) {
+            Mitarbeiter mitarbeiterToBeDeleted = mitarbeiterDao.findById(mitarbeiter.getPersonId());
+            if (mitarbeiterToBeDeleted != null) {
+                mitarbeiterDao.remove(mitarbeiterToBeDeleted);
+            }
+        }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        KursortDao kursortDao = new KursortDao(entityManager);
+        for (Kursort kursort : erfassteKursorte) {
+            Kursort kursortToBeDeleted = kursortDao.findById(kursort.getKursortId());
+            if (kursortToBeDeleted != null) {
+                kursortDao.remove(kursortToBeDeleted);
+            }
+        }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        KurstypDao kurstypDao = new KurstypDao(entityManager);
+        for (Kurstyp kurstyp : erfassteKurstypen) {
+            Kurstyp kurstypToBeDeleted = kurstypDao.findById(kurstyp.getKurstypId());
+            if (kurstypToBeDeleted != null) {
+                kurstypDao.remove(kurstypToBeDeleted);
+            }
+        }
+        entityManager.getTransaction().commit();
     }
 
     private boolean checkIfKursAvailable(Semester semester, Kurstyp kurstyp, String altersbereich, String stufe, Wochentag wochentag, Time zeitBeginn, Time zeitEnde, Kursort kursort, Mitarbeiter mitarbeiter1, Mitarbeiter mitarbeiter2) {

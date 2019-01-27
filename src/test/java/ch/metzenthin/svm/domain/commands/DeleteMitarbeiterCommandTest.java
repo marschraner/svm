@@ -1,15 +1,12 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -25,20 +22,15 @@ import static org.junit.Assert.assertEquals;
 public class DeleteMitarbeiterCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.close();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -71,6 +63,5 @@ public class DeleteMitarbeiterCommandTest {
         commandInvoker.executeCommandAsTransaction(deleteMitarbeiterCommand);
         assertEquals(DeleteMitarbeiterCommand.Result.LOESCHEN_ERFOLGREICH, deleteMitarbeiterCommand.getResult());
         assertTrue(lehrkraefteSaved.isEmpty());
-
     }
 }

@@ -27,7 +27,7 @@ public class FindSemesterForSchuljahrSemesterbezeichnungCommandTest {
     }
 
     @Test
-    public void testExecute_SemesterFound() throws Exception {
+    public void testExecute_SemesterFound() {
         FindSemesterForSchuljahrSemesterbezeichnungCommand findSemesterForSchuljahrSemesterbezeichnungCommand = new FindSemesterForSchuljahrSemesterbezeichnungCommand("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, erfassteSemesters);
         commandInvoker.executeCommand(findSemesterForSchuljahrSemesterbezeichnungCommand);
         assertEquals(erfassteSemesters.get(0), findSemesterForSchuljahrSemesterbezeichnungCommand.getSemesterFound());
@@ -37,7 +37,7 @@ public class FindSemesterForSchuljahrSemesterbezeichnungCommandTest {
     }
 
     @Test
-    public void testExecute_NoSemesterFound() throws Exception {
+    public void testExecute_NoSemesterFound() {
         FindSemesterForSchuljahrSemesterbezeichnungCommand findSemesterForSchuljahrSemesterbezeichnungCommand = new FindSemesterForSchuljahrSemesterbezeichnungCommand("2012/2013", Semesterbezeichnung.ERSTES_SEMESTER, erfassteSemesters);
         commandInvoker.executeCommand(findSemesterForSchuljahrSemesterbezeichnungCommand);
         assertNull(findSemesterForSchuljahrSemesterbezeichnungCommand.getSemesterFound());

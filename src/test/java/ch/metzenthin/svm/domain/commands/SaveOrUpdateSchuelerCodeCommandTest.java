@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.SchuelerCodeDao;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import org.junit.After;
@@ -8,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,20 +19,15 @@ import static org.junit.Assert.*;
 public class SaveOrUpdateSchuelerCodeCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.close();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -76,25 +68,16 @@ public class SaveOrUpdateSchuelerCodeCommandTest {
         assertTrue(checkIfCodeAvailable("tj", "JugendprojektModifTest"));
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
-            for (SchuelerCode schuelerCode : codesSaved) {
-                SchuelerCode schuelerCodeToBeDeleted = schuelerCodeDao.findById(schuelerCode.getCodeId());
-                if (schuelerCodeToBeDeleted != null) {
-                    schuelerCodeDao.remove(schuelerCodeToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
+        SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
+        for (SchuelerCode schuelerCode : codesSaved) {
+            SchuelerCode schuelerCodeToBeDeleted = schuelerCodeDao.findById(schuelerCode.getCodeId());
+            if (schuelerCodeToBeDeleted != null) {
+                schuelerCodeDao.remove(schuelerCodeToBeDeleted);
             }
         }
-
-
+        entityManager.getTransaction().commit();
     }
 
     private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) {

@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.KurstypDao;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import org.junit.After;
@@ -8,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,22 +20,18 @@ import static org.junit.Assert.assertTrue;
 public class FindAllKurstypenCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
     private Set<Kurstyp> kurstypenTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -63,47 +56,35 @@ public class FindAllKurstypenCommandTest {
     }
 
     private void createTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        commandInvoker.openSession();
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
 
-            KurstypDao kurstypDao = new KurstypDao(entityManager);
+        KurstypDao kurstypDao = new KurstypDao(entityManager);
 
-            Kurstyp kurstypenaved = kurstypDao.save(new Kurstyp("Kurs Test1", true));
-            kurstypenTestdata.add(kurstypenaved);
+        Kurstyp kurstypenaved = kurstypDao.save(new Kurstyp("Kurs Test1", true));
+        kurstypenTestdata.add(kurstypenaved);
 
-            kurstypenaved = kurstypDao.save(new Kurstyp("Kurs Test2", true));
-            kurstypenTestdata.add(kurstypenaved);
+        kurstypenaved = kurstypDao.save(new Kurstyp("Kurs Test2", true));
+        kurstypenTestdata.add(kurstypenaved);
 
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        entityManager.getTransaction().commit();
+        commandInvoker.closeSession();
     }
 
     private void deleteTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        commandInvoker.openSession();
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
 
-            KurstypDao kurstypDao = new KurstypDao(entityManager);
+        KurstypDao kurstypDao = new KurstypDao(entityManager);
 
-            for (Kurstyp kurstyp : kurstypenTestdata) {
-                Kurstyp kurstypToBeRemoved = kurstypDao.findById(kurstyp.getKurstypId());
-                kurstypDao.remove(kurstypToBeRemoved);
-            }
-
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
+        for (Kurstyp kurstyp : kurstypenTestdata) {
+            Kurstyp kurstypToBeRemoved = kurstypDao.findById(kurstyp.getKurstypId());
+            kurstypDao.remove(kurstypToBeRemoved);
         }
+
+        entityManager.getTransaction().commit();
+        commandInvoker.closeSession();
     }
 }

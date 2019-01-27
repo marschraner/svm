@@ -34,14 +34,6 @@ public class CommandInvokerImpl implements CommandInvoker {
         return genericDaoCommand;
     }
 
-    private void openSession() {
-        LOGGER.trace("openSession aufgerufen");
-        if (entityManager == null || !entityManager.isOpen()) {
-            entityManager = entityManagerFactory.createEntityManager();
-            LOGGER.trace("Session opened");
-        }
-    }
-
     private void execute(EntityManager entityManager, GenericDaoCommand genericDaoCommand) {
         LOGGER.trace("executeCommand aufgerufen");
         genericDaoCommand.setEntityManager(entityManager);
@@ -101,6 +93,15 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     @Override
+    public void openSession() {
+        LOGGER.trace("openSession aufgerufen");
+        if (entityManager == null || !entityManager.isOpen()) {
+            entityManager = entityManagerFactory.createEntityManager();
+            LOGGER.trace("Session opened");
+        }
+    }
+
+    @Override
     public void closeSession() {
         LOGGER.trace("closeSession aufgerufen");
         if (entityManager != null && entityManager.isOpen()) {
@@ -111,12 +112,19 @@ public class CommandInvokerImpl implements CommandInvoker {
     }
 
     @Override
-    public void close() {
-        LOGGER.trace("close aufgerufen");
+    public void closeSessionAndEntityManagerFactory() {
+        LOGGER.trace("closeSessionAndEntityManagerFactory aufgerufen");
         closeSession();
-        entityManagerFactory.close();
-        entityManagerFactory = null;
-        LOGGER.trace("CommandInvoker closed");
+        if (entityManagerFactory != null) {
+            entityManagerFactory.close();
+            entityManagerFactory = null;
+        }
+        LOGGER.trace("Session and entity manager factory closed");
+    }
+
+    @Override
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 
 }

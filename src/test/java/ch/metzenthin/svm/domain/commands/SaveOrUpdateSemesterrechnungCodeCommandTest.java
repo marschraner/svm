@@ -32,7 +32,7 @@ public class SaveOrUpdateSemesterrechnungCodeCommandTest {
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.close();
+        commandInvoker.closeSessionAndEntityManagerFactory();
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
         }

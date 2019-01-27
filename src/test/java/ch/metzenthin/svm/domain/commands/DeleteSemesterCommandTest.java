@@ -1,14 +1,11 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -24,20 +21,15 @@ import static org.junit.Assert.assertEquals;
 public class DeleteSemesterCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.close();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -65,6 +57,5 @@ public class DeleteSemesterCommandTest {
         commandInvoker.executeCommandAsTransaction(deleteSemesterCommand);
         assertEquals(DeleteSemesterCommand.Result.LOESCHEN_ERFOLGREICH, deleteSemesterCommand.getResult());
         assertTrue(semestersSaved.isEmpty());
-
     }
 }

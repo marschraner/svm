@@ -44,7 +44,7 @@ public class CheckKursBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_KursBereitsErfasst() throws Exception {
+    public void testExecute_KursBereitsErfasst() {
         Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), "Dies ist ein Test.");
         kurs.setSemester(semester1);
         kurs.setKurstyp(kurstyp2);
@@ -56,7 +56,7 @@ public class CheckKursBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_KursNochNichtErfasstAndereLehrkraft() throws Exception {
+    public void testExecute_KursNochNichtErfasstAndereLehrkraft() {
         Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), "Dies ist ein Test.");
         kurs.setSemester(semester1);
         kurs.setKurstyp(kurstyp2);
@@ -68,7 +68,7 @@ public class CheckKursBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_KursNochNichtErfasstAndereZeit() throws Exception {
+    public void testExecute_KursNochNichtErfasstAndereZeit() {
         Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:30:00"), Time.valueOf("10:50:00"), "Dies ist ein Test.");
         kurs.setSemester(semester1);
         kurs.setKurstyp(kurstyp2);
@@ -80,7 +80,7 @@ public class CheckKursBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_KursNochNichtErfasstAndererWochentag() throws Exception {
+    public void testExecute_KursNochNichtErfasstAndererWochentag() {
         Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.FREITAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), "Dies ist ein Test.");
         kurs.setSemester(semester1);
         kurs.setKurstyp(kurstyp2);
@@ -92,7 +92,7 @@ public class CheckKursBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_KursNochNichtErfasstAnderesSemester() throws Exception {
+    public void testExecute_KursNochNichtErfasstAnderesSemester() {
         Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), "Dies ist ein Test.");
         kurs.setSemester(semester2);
         kurs.setKurstyp(kurstyp2);
@@ -104,7 +104,7 @@ public class CheckKursBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_KursOrigin() throws Exception {
+    public void testExecute_KursOrigin() {
         Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), "Dies ist ein Test.");
         kurs.setSemester(semester1);
         kurs.setKurstyp(kurstyp2);

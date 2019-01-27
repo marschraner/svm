@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
@@ -10,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
@@ -24,7 +21,6 @@ import static org.junit.Assert.assertNotNull;
 public class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
     private Angehoeriger angehoerigerTestdata0;
     private Angehoeriger angehoerigerTestdata1;
     private Angehoeriger angehoerigerTestdata2;
@@ -32,16 +28,13 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -120,59 +113,47 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
     }
 
     private void createTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        commandInvoker.openSession();
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
 
-            AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
+        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
 
-            Angehoeriger angehoeriger0 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null);
-            Adresse adresse0 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
-            angehoeriger0.setAdresse(adresse0);
-            angehoerigerTestdata0 = angehoerigerDao.save(angehoeriger0);
+        Angehoeriger angehoeriger0 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null);
+        Adresse adresse0 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
+        angehoeriger0.setAdresse(adresse0);
+        angehoerigerTestdata0 = angehoerigerDao.save(angehoeriger0);
 
-            Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null);
-            Adresse adresse1 = new Adresse("Freudenbergstrasse", "5", "8002", "Zürich");
-            angehoeriger1.setAdresse(adresse1);
-            angehoerigerTestdata1 = angehoerigerDao.save(angehoeriger1);
+        Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null);
+        Adresse adresse1 = new Adresse("Freudenbergstrasse", "5", "8002", "Zürich");
+        angehoeriger1.setAdresse(adresse1);
+        angehoerigerTestdata1 = angehoerigerDao.save(angehoeriger1);
 
-            Angehoeriger angehoeriger2 = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", "056 426 69 15", null, null);
-            angehoeriger2.setAdresse(adresse0);
-            angehoerigerTestdata2 = angehoerigerDao.save(angehoeriger2);
+        Angehoeriger angehoeriger2 = new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", "056 426 69 15", null, null);
+        angehoeriger2.setAdresse(adresse0);
+        angehoerigerTestdata2 = angehoerigerDao.save(angehoeriger2);
 
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        entityManager.getTransaction().commit();
+        commandInvoker.closeSession();
     }
 
     private void deleteTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        commandInvoker.openSession();
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
 
-            AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
+        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
 
-            Angehoeriger angehoerigerToBeRemoved0 = angehoerigerDao.findById(angehoerigerTestdata0.getPersonId());
-            angehoerigerDao.remove(angehoerigerToBeRemoved0);
+        Angehoeriger angehoerigerToBeRemoved0 = angehoerigerDao.findById(angehoerigerTestdata0.getPersonId());
+        angehoerigerDao.remove(angehoerigerToBeRemoved0);
 
-            Angehoeriger angehoerigerToBeRemoved1 = angehoerigerDao.findById(angehoerigerTestdata1.getPersonId());
-            angehoerigerDao.remove(angehoerigerToBeRemoved1);
+        Angehoeriger angehoerigerToBeRemoved1 = angehoerigerDao.findById(angehoerigerTestdata1.getPersonId());
+        angehoerigerDao.remove(angehoerigerToBeRemoved1);
 
-            Angehoeriger angehoerigerToBeRemoved2 = angehoerigerDao.findById(angehoerigerTestdata2.getPersonId());
-            angehoerigerDao.remove(angehoerigerToBeRemoved2);
+        Angehoeriger angehoerigerToBeRemoved2 = angehoerigerDao.findById(angehoerigerTestdata2.getPersonId());
+        angehoerigerDao.remove(angehoerigerToBeRemoved2);
 
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        entityManager.getTransaction().commit();
+        commandInvoker.closeSession();
     }
 }

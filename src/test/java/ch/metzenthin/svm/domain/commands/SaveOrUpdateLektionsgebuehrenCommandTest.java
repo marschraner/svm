@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.daos.LektionsgebuehrenDao;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import org.junit.After;
@@ -8,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,20 +20,15 @@ import static org.junit.Assert.*;
 public class SaveOrUpdateLektionsgebuehrenCommandTest {
 
     private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.close();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        commandInvoker.closeSessionAndEntityManagerFactory();
     }
 
     @Test
@@ -78,23 +70,16 @@ public class SaveOrUpdateLektionsgebuehrenCommandTest {
         assertTrue(checkIfLektionsgebuehrenAvailable(57, new BigDecimal("23.00")));
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
-            for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenSaved) {
-                Lektionsgebuehren lektionsgebuehrenToBeDeleted = lektionsgebuehrenDao.findById(lektionsgebuehren.getLektionslaenge());
-                if (lektionsgebuehrenToBeDeleted != null) {
-                    lektionsgebuehrenDao.remove(lektionsgebuehrenToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
+        EntityManager entityManager = commandInvoker.getEntityManager();
+        entityManager.getTransaction().begin();
+        LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
+        for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenSaved) {
+            Lektionsgebuehren lektionsgebuehrenToBeDeleted = lektionsgebuehrenDao.findById(lektionsgebuehren.getLektionslaenge());
+            if (lektionsgebuehrenToBeDeleted != null) {
+                lektionsgebuehrenDao.remove(lektionsgebuehrenToBeDeleted);
             }
         }
+        entityManager.getTransaction().commit();
     }
 
     private boolean checkIfLektionsgebuehrenAvailable(Integer lektionslaenge, BigDecimal betrag1Kind) {
