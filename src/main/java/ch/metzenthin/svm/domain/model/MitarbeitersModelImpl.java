@@ -21,10 +21,6 @@ public class MitarbeitersModelImpl extends AbstractModel implements Mitarbeiters
     private List<String> fehlendeEmailAdressen;
     private List<String> ungueltigeEmailAdressen;
 
-    MitarbeitersModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public MitarbeiterErfassenModel getMitarbeiterErfassenModel(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, int indexMitarbeiterToBeModified) {
         MitarbeiterErfassenModel mitarbeiterErfassenModel = svmContext.getModelFactory().createMitarbeiterErfassenModel();

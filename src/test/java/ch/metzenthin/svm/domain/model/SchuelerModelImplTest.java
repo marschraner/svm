@@ -3,10 +3,8 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import org.junit.Before;
 import org.junit.Test;
-import test.DummyCommandInvoker;
 import test.TestCompletedListener;
 import test.TestPropertyChangeListener;
 
@@ -17,13 +15,11 @@ import static org.junit.Assert.*;
  */
 public class SchuelerModelImplTest {
 
-    private static final CommandInvoker DUMMY_COMMAND_INVOKER = new DummyCommandInvoker();
-
     private SchuelerModel schuelerModel;
 
     @Before
     public void setUp() {
-        schuelerModel = new SchuelerModelImpl(DUMMY_COMMAND_INVOKER);
+        schuelerModel = new SchuelerModelImpl();
     }
 
     @Test

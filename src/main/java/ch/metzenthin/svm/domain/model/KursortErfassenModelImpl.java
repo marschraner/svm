@@ -16,10 +16,6 @@ public class KursortErfassenModelImpl extends AbstractModel implements KursortEr
     private Kursort kursort = new Kursort();
     private Kursort kursortOrigin;
 
-    public KursortErfassenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public Kursort getKursort() {
         return kursort;

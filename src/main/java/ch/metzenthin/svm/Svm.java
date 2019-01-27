@@ -2,8 +2,6 @@ package ch.metzenthin.svm;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.utils.SvmProperties;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.CommandInvokerImpl;
 import ch.metzenthin.svm.domain.model.ModelFactory;
 import ch.metzenthin.svm.domain.model.ModelFactoryImpl;
 import ch.metzenthin.svm.domain.model.SvmModel;
@@ -76,10 +74,9 @@ public class Svm {
             LOGGER.info("Svm wird gestartet ...");
             splashScreenInit();
             createSvmPropertiesFileDefault();
-            final CommandInvoker commandInvoker = createCommandInvoker();
-            final ModelFactory modelFactory = createModelFactory(commandInvoker);
+            final ModelFactory modelFactory = createModelFactory();
             final SvmModel svmModel = modelFactory.createSvmModel();
-            final SvmContext svmContext = new SvmContext(modelFactory, commandInvoker, svmModel);
+            final SvmContext svmContext = new SvmContext(modelFactory, svmModel);
             // Fängt alle unbehandelten Exceptions und beendet die Applikation.
             Thread.setDefaultUncaughtExceptionHandler(new SwingExceptionHandler());
             // Schedule a job for the event-dispatching thread:
@@ -100,12 +97,8 @@ public class Svm {
         }
     }
 
-    private static ModelFactoryImpl createModelFactory(CommandInvoker commandInvoker) {
-        return new ModelFactoryImpl(commandInvoker);
-    }
-
-    private static CommandInvoker createCommandInvoker() {
-        return new CommandInvokerImpl();
+    private static ModelFactoryImpl createModelFactory() {
+        return new ModelFactoryImpl();
     }
 
     private static void splashScreenInit() {

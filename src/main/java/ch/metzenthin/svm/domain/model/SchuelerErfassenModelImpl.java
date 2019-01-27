@@ -33,10 +33,6 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     private boolean isVaterModelCompleted;
     private boolean isDrittempfaengerModelCompleted;
 
-    SchuelerErfassenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public void initializeCompleted() {
         schuelerModel.initializeCompleted();

@@ -14,10 +14,6 @@ import java.util.List;
  */
 public class MaerchensModelImpl extends AbstractModel implements MaerchensModel {
 
-    public MaerchensModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public MaerchenErfassenModel getMaerchenErfassenModel(SvmContext svmContext, int indexMaerchenToBeModified) {
         MaerchenErfassenModel maerchenErfassenModel = svmContext.getModelFactory().createMaerchenErfassenModel();

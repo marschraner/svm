@@ -21,10 +21,6 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
     private Semester semester = new Semester();
     private Semester semesterOrigin;
 
-    public SemesterErfassenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public Semester getSemester() {
         return semester;

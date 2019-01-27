@@ -14,10 +14,6 @@ import java.util.List;
  */
 public class KursorteModelImpl extends AbstractModel implements KursorteModel {
 
-    KursorteModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public DeleteKursortCommand.Result eintragLoeschen(SvmContext svmContext, KursorteTableModel kursorteTableModel, int indexKursortToBeRemoved) {
         List<Kursort> kursorte = svmContext.getSvmModel().getKursorteAll();

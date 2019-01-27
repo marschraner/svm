@@ -585,7 +585,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     @Override
     public void refreshSchuelerSuchenTableData(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel) {
         // Kurse-Map neu setzen
-        CommandInvoker commandInvoker = svmContext.getCommandInvoker();
+        CommandInvoker commandInvoker = new CommandInvokerImpl();
         List<Schueler> schuelerList = schuelerSuchenTableModel.getSchuelerList();
         Semester semester = schuelerSuchenTableModel.getSemester();
         Wochentag wochentag = schuelerSuchenTableModel.getWochentag();

@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.MitarbeiterSuchenCommand;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 
@@ -20,10 +19,6 @@ final class MitarbeiterSuchenModelImpl extends AbstractModel implements Mitarbei
     private MitarbeiterCode mitarbeiterCode;
     private LehrkraftJaNeinSelected lehrkraftJaNeinSelected;
     private StatusSelected statusSelected;
-    
-    MitarbeiterSuchenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
     
     private final StringModelAttribute nachnameModelAttribute = new StringModelAttribute(
             this,

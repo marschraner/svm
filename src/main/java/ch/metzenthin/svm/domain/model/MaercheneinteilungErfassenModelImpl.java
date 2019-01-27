@@ -31,9 +31,6 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
     private Maercheneinteilung maercheneinteilungOrigin;
     private ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode();
     private ElternmithilfeDrittperson elternmithilfeDrittperson = new ElternmithilfeDrittperson();
-    public MaercheneinteilungErfassenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
 
     @Override
     Person getPerson() {

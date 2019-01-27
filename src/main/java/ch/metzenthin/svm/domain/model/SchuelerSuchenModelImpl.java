@@ -45,10 +45,6 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private boolean maerchenFuerSucheBeruecksichtigen;
     private SchuelerCode schuelerCode;
 
-    SchuelerSuchenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     static {
         MITARBEITER_ALLE.setVorname("");
         MITARBEITER_ALLE.setNachname("");

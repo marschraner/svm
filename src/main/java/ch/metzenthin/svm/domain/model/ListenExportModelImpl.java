@@ -27,10 +27,6 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
     private Listentyp listentyp;
     private String titel;
     private File templateFile;
-    
-    ListenExportModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
 
     @Override
     public Listentyp getListentyp() {

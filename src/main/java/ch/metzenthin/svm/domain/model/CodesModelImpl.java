@@ -15,10 +15,6 @@ import java.util.List;
  */
 public class CodesModelImpl extends AbstractModel implements CodesModel {
 
-    CodesModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public DeleteSchuelerCodeCommand.Result eintragLoeschenSchuelerCodesVerwalten(SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved) {
         List<SchuelerCode> schuelerCodes = svmContext.getSvmModel().getSchuelerCodesAll();

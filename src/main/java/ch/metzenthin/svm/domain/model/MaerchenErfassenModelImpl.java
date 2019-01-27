@@ -20,10 +20,6 @@ public class MaerchenErfassenModelImpl extends AbstractModel implements Maerchen
     private Maerchen maerchen = new Maerchen();
     private Maerchen maerchenOrigin;
 
-    public MaerchenErfassenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public Maerchen getMaerchen() {
         return maerchen;

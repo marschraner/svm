@@ -16,10 +16,6 @@ import java.util.List;
  */
 class MaercheneinteilungenModelImpl extends AbstractModel implements MaercheneinteilungenModel {
 
-    MaercheneinteilungenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public MaercheneinteilungErfassenModel getMaercheneinteilungErfassenModel(SvmContext svmContext, MaercheneinteilungenTableModel maercheneinteilungenTableModel, int rowSelected) {
         MaercheneinteilungErfassenModel maercheneinteilungErfassenModel = svmContext.getModelFactory().createMaercheneinteilungErfassenModel();

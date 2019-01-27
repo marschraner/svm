@@ -24,10 +24,6 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     private ElternmithilfeCode elternmithilfeCodeOrigin;
     private SemesterrechnungCode semesterrechnungCodeOrigin;
 
-    public CodeErfassenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public void setSchuelerCodeOrigin(SchuelerCode schuelerCodeOrigin) {
         this.schuelerCodeOrigin = schuelerCodeOrigin;

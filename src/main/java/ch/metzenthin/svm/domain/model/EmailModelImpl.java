@@ -19,10 +19,6 @@ public class EmailModelImpl extends AbstractModel implements EmailModel {
 
     private EmailEmpfaenger emailEmpfaenger;
 
-    public EmailModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public EmailEmpfaenger getEmailEmpfaenger() {
         return emailEmpfaenger;

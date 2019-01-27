@@ -14,10 +14,6 @@ import java.util.List;
  */
 public class SemesterrechnungenModelImpl extends AbstractModel implements SemesterrechnungenModel {
 
-    SemesterrechnungenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public SemesterrechnungBearbeitenModel getSemesterrechnungBearbeitenModel(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel, int rowSelected) {
         SemesterrechnungBearbeitenModel semesterrechnungBearbeitenModel = svmContext.getModelFactory().createSemesterrechnungBearbeitenModel();

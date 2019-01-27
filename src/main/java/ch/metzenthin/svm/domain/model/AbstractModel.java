@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.commands.CommandInvokerImpl;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -17,11 +18,7 @@ import java.util.Set;
  */
 abstract class AbstractModel implements Model, ModelAttributeListener {
 
-    private final CommandInvoker commandInvoker;
-
-    AbstractModel(CommandInvoker commandInvoker) {
-        this.commandInvoker = commandInvoker;
-    }
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
 
     CommandInvoker getCommandInvoker() {
         return commandInvoker;

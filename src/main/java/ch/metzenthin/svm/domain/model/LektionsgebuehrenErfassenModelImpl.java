@@ -18,10 +18,6 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
     private Lektionsgebuehren lektionsgebuehren = new Lektionsgebuehren();
     private Lektionsgebuehren lektionsgebuehrenOrigin;
 
-    public LektionsgebuehrenErfassenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public Lektionsgebuehren getLektionsgebuehren() {
         return lektionsgebuehren;

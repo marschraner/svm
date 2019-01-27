@@ -2,9 +2,9 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.commands.AddDispensationToSchuelerAndSaveCommand;
 import ch.metzenthin.svm.domain.commands.CheckDispensationUeberlapptAndereDispensationenCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.AddDispensationToSchuelerAndSaveCommand;
 import ch.metzenthin.svm.persistence.entities.Dispensation;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
@@ -21,10 +21,6 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
 
     private Dispensation dispensation = new Dispensation();
     private Dispensation dispensationOrigin;
-
-    public DispensationErfassenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
 
     @Override
     public Dispensation getDispensation() {

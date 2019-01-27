@@ -26,8 +26,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
     private Semesterrechnung semesterrechnungOrigin;
     private Semester previousSemester;
 
-    SemesterrechnungBearbeitenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
+    SemesterrechnungBearbeitenModelImpl() {
         semesterrechnung.setDeleted(false);
     }
 

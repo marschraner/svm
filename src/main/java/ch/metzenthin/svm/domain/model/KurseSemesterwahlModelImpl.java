@@ -17,10 +17,6 @@ public class KurseSemesterwahlModelImpl extends AbstractModel implements KurseSe
 
     private Semester semester;
 
-    public KurseSemesterwahlModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public Semester getSemester() {
         return semester;

@@ -1,211 +1,203 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-
 /**
  * @author Hans Stamm
  */
 public class ModelFactoryImpl implements ModelFactory {
-
-    private final CommandInvoker commandInvoker;
-
-    public ModelFactoryImpl(CommandInvoker commandInvoker) {
-        this.commandInvoker = commandInvoker;
-    }
-
+    
     @Override
     public SvmModel createSvmModel() {
-        return new SvmModelImpl(commandInvoker);
+        return new SvmModelImpl();
     }
 
     @Override
     public SchuelerModel createSchuelerModel() {
-        return new SchuelerModelImpl(commandInvoker);
+        return new SchuelerModelImpl();
     }
 
     @Override
     public AngehoerigerModel createAngehoerigerModel() {
-        return new AngehoerigerModelImpl(commandInvoker);
+        return new AngehoerigerModelImpl();
     }
 
     @Override
     public SchuelerErfassenModel createSchuelerErfassenModel() {
-        return new SchuelerErfassenModelImpl(commandInvoker);
+        return new SchuelerErfassenModelImpl();
     }
 
     @Override
     public SchuelerSuchenModel createSchuelerSuchenModel() {
-        return new SchuelerSuchenModelImpl(commandInvoker);
+        return new SchuelerSuchenModelImpl();
     }
 
     @Override
     public MonatsstatistikSchuelerModel createMonatsstatistikSchuelerModel() {
-        return new MonatsstatistikSchuelerModelImpl(commandInvoker);
+        return new MonatsstatistikSchuelerModelImpl();
     }
 
     @Override
     public MonatsstatistikKurseModel createMonatsstatistikKurseModel() {
-        return new MonatsstatistikKurseModelImpl(commandInvoker);
+        return new MonatsstatistikKurseModelImpl();
     }
 
     @Override
     public DispensationenModel createDispensationenModel() {
-        return new DispensationenModelImpl(commandInvoker);
+        return new DispensationenModelImpl();
     }
 
     @Override
     public DispensationErfassenModel createDispensationErfassenModel() {
-        return new DispensationErfassenModelImpl(commandInvoker);
+        return new DispensationErfassenModelImpl();
     }
 
     @Override
     public CodesModel createCodesModel() {
-        return new CodesModelImpl(commandInvoker);
+        return new CodesModelImpl();
     }
 
     @Override
     public CodeErfassenModel createCodeErfassenModel() {
-        return new CodeErfassenModelImpl(commandInvoker);
+        return new CodeErfassenModelImpl();
     }
 
     @Override
     public CodeSpecificHinzufuegenModel createCodeSchuelerHinzufuegenModel() {
-        return new CodeSpecificHinzufuegenModelImpl(commandInvoker);
+        return new CodeSpecificHinzufuegenModelImpl();
     }
 
     @Override
     public MitarbeitersModel createLehrkraefteModel() {
-        return new MitarbeitersModelImpl(commandInvoker);
+        return new MitarbeitersModelImpl();
     }
 
     @Override
     public MitarbeiterErfassenModel createMitarbeiterErfassenModel() {
-        return new MitarbeiterErfassenModelImpl(commandInvoker);
+        return new MitarbeiterErfassenModelImpl();
     }
 
     @Override
     public KursorteModel createKursorteModel() {
-        return new KursorteModelImpl(commandInvoker);
+        return new KursorteModelImpl();
     }
 
     @Override
     public KursortErfassenModel createKursortErfassenModel() {
-        return new KursortErfassenModelImpl(commandInvoker);
+        return new KursortErfassenModelImpl();
     }
 
     @Override
     public KurstypenModel createKurstypenModel() {
-        return new KurstypenModelImpl(commandInvoker);
+        return new KurstypenModelImpl();
     }
 
     @Override
     public KurstypErfassenModel createKurstypErfassenModel() {
-        return new KurstypErfassenModelImpl(commandInvoker);
+        return new KurstypErfassenModelImpl();
     }
 
     @Override
     public SemestersModel createSemestersModel() {
-        return new SemestersModelImpl(commandInvoker);
+        return new SemestersModelImpl();
     }
 
     @Override
     public SemesterErfassenModel createSemesterErfassenModel() {
-        return new SemesterErfassenModelImpl(commandInvoker);
+        return new SemesterErfassenModelImpl();
     }
 
     @Override
     public KurseSemesterwahlModel createKurseSemesterwahlModel() {
-        return new KurseSemesterwahlModelImpl(commandInvoker);
+        return new KurseSemesterwahlModelImpl();
     }
 
     @Override
     public KurseModel createKurseModel() {
-        return new KurseModelImpl(commandInvoker);
+        return new KurseModelImpl();
     }
 
     @Override
     public KursErfassenModel createKursErfassenModel() {
-        return new KursErfassenModelImpl(commandInvoker);
+        return new KursErfassenModelImpl();
     }
 
     @Override
     public KursanmeldungenModel createKursanmeldungenModel() {
-        return new KursanmeldungenModelImpl(commandInvoker);
+        return new KursanmeldungenModelImpl();
     }
 
     @Override
     public KursanmeldungErfassenModel createKursanmeldungErfassenModel() {
-        return new KursanmeldungErfassenModelImpl(commandInvoker);
+        return new KursanmeldungErfassenModelImpl();
     }
 
     @Override
     public ListenExportModel createListenExportModel() {
-        return new ListenExportModelImpl(commandInvoker);
+        return new ListenExportModelImpl();
     }
 
     @Override
     public MaerchensModel createMaerchensModel() {
-        return new MaerchensModelImpl(commandInvoker);
+        return new MaerchensModelImpl();
     }
 
     @Override
     public MaerchenErfassenModel createMaerchenErfassenModel() {
-        return new MaerchenErfassenModelImpl(commandInvoker);
+        return new MaerchenErfassenModelImpl();
     }
 
     @Override
     public MaercheneinteilungenModel createMaercheneinteilungenModel() {
-        return new MaercheneinteilungenModelImpl(commandInvoker);
+        return new MaercheneinteilungenModelImpl();
     }
 
     @Override
     public MaercheneinteilungErfassenModel createMaercheneinteilungErfassenModel() {
-        return new MaercheneinteilungErfassenModelImpl(commandInvoker);
+        return new MaercheneinteilungErfassenModelImpl();
     }
 
     @Override
     public EmailModel createEmailModel() {
-        return new EmailModelImpl(commandInvoker);
+        return new EmailModelImpl();
     }
 
     @Override
     public LektionsgebuehrenModel createLektionsgebuehrenModel() {
-        return new LektionsgebuehrenModelImpl(commandInvoker);
+        return new LektionsgebuehrenModelImpl();
     }
 
     @Override
     public LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel() {
-        return new LektionsgebuehrenErfassenModelImpl(commandInvoker);
+        return new LektionsgebuehrenErfassenModelImpl();
     }
 
     @Override
     public SemesterrechnungenSuchenModel createSemesterrechnungenSuchenModel() {
-        return new SemesterrechnungenSuchenModelImpl(commandInvoker);
+        return new SemesterrechnungenSuchenModelImpl();
     }
 
     @Override
     public SemesterrechnungenModel createSemesterrechnungenModel() {
-        return new SemesterrechnungenModelImpl(commandInvoker);
+        return new SemesterrechnungenModelImpl();
     }
 
     @Override
     public SemesterrechnungBearbeitenModel createSemesterrechnungBearbeitenModel() {
-        return new SemesterrechnungBearbeitenModelImpl(commandInvoker);
+        return new SemesterrechnungBearbeitenModelImpl();
     }
 
     @Override
     public RechnungsdatumErfassenModel createRechnungsdatumErfassenModel() {
-        return new RechnungsdatumErfassenModelImpl(commandInvoker);
+        return new RechnungsdatumErfassenModelImpl();
     }
 
     @Override
     public MitarbeiterSuchenModel createMitarbeitersSuchenModel() {
-        return new MitarbeiterSuchenModelImpl(commandInvoker);
+        return new MitarbeiterSuchenModelImpl();
     }
 
     @Override
     public EmailSchuelerListeModel createEmailSchuelerListeModel() {
-        return new EmailSchuelerListeModelImpl(commandInvoker);
+        return new EmailSchuelerListeModelImpl();
     }
 
 }
