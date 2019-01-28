@@ -12,6 +12,8 @@ import java.util.List;
  */
 public class SaveOrUpdateKursCommand extends GenericDaoCommand {
 
+    private final KursDao kursDao = new KursDao();
+
     // input
     private Kurs kurs;
     private final Semester semester;
@@ -36,7 +38,6 @@ public class SaveOrUpdateKursCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        KursDao kursDao = new KursDao(entityManager);
         if (kursOrigin != null) {
             // Update von kursOrigin mit Werten von kurs
             int kurslaengeOrigin = kursOrigin.getKurslaenge();

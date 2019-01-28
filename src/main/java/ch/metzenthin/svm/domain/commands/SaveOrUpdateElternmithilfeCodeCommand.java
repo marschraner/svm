@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class SaveOrUpdateElternmithilfeCodeCommand extends GenericDaoCommand {
 
+    private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
+
     // input
     private ElternmithilfeCode elternmithilfeCode;
     private ElternmithilfeCode elternmithilfeCodeOrigin;
@@ -25,7 +27,6 @@ public class SaveOrUpdateElternmithilfeCodeCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
         if (elternmithilfeCodeOrigin != null) {
             // Update von elternmithilfeCodeOrigin mit Werten von elternmithilfeCode
             elternmithilfeCodeOrigin.copyAttributesFrom(elternmithilfeCode);

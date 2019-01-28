@@ -2,7 +2,6 @@ package ch.metzenthin.svm.persistence.daos;
 
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -10,10 +9,6 @@ import java.util.List;
  * @author Martin Schraner
  */
 public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
-
-    public AngehoerigerDao(EntityManager entityManager) {
-        super(entityManager);
-    }
 
     /**
      * In der DB nach Angehörigen suchen. Sämtliche Attribute sind optional.
@@ -67,7 +62,7 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
             selectStatementSb.append(", a.adresse.ort, a.adresse.strasse");
         }
 
-        TypedQuery<Angehoeriger> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Angehoeriger.class);
+        TypedQuery<Angehoeriger> typedQuery = db.getCurrentEntityManager().createQuery(selectStatementSb.toString(), Angehoeriger.class);
 
         if (angehoeriger != null) {
             if (angehoeriger.getVorname() != null) {

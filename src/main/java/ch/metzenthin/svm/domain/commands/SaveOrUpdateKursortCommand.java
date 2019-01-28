@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class SaveOrUpdateKursortCommand extends GenericDaoCommand {
 
+    private final KursortDao kursortDao = new KursortDao();
+
     // input
     private Kursort kursort;
     private Kursort kursortOrigin;
@@ -25,7 +27,6 @@ public class SaveOrUpdateKursortCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        KursortDao kursortDao = new KursortDao(entityManager);
         if (kursortOrigin != null) {
             // Update von kursortOrigin mit Werten von kursort
             kursortOrigin.copyAttributesFrom(kursort);

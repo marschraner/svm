@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class SaveOrUpdateMitarbeiterCodeCommand extends GenericDaoCommand {
 
+    private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
+
     // input
     private MitarbeiterCode mitarbeiterCode;
     private MitarbeiterCode mitarbeiterCodeOrigin;
@@ -25,7 +27,6 @@ public class SaveOrUpdateMitarbeiterCodeCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
         if (mitarbeiterCodeOrigin != null) {
             // Update von mitarbeiterCodeOrigin mit Werten von mitarbeiterCode
             mitarbeiterCodeOrigin.copyAttributesFrom(mitarbeiterCode);

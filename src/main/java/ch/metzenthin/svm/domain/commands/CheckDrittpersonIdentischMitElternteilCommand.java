@@ -7,20 +7,20 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
  */
 public class CheckDrittpersonIdentischMitElternteilCommand implements Command {
 
-    private Angehoeriger mutter;
-    private Angehoeriger vater;
-    private Angehoeriger rechnungsempfaengerDrittperson;
+    static final String ERROR_IDENTISCH_MIT_MUTTER = "Rechnungsempfänger Drittperson ist identisch mit Mutter. Setze Mutter als Rechnungsempfängerin.";
+    static final String ERROR_WAHRSCHEINLICH_IDENTISCH_MIT_MUTTER = "Rechnungsempfänger Drittperson und Mutter scheinen identisch zu sein. Setze Mutter als Rechnungsempfängerin und/oder korrigiere Mutter.";
+    static final String ERROR_IDENTISCH_MIT_VATER = "Rechnungsempfänger Drittperson ist identisch mit Vater. Setze Vater als Rechnungsempfänger.";
+    static final String ERROR_WAHRSCHEINLICH_IDENTISCH_MIT_VATER = "Rechnungsempfänger Drittperson und Vater scheinen identisch zu sein. Setze Vater als Rechnungsempfänger und/oder korrigiere Vater.";
 
-    public static final String ERROR_IDENTISCH_MIT_MUTTER = "Rechnungsempfänger Drittperson ist identisch mit Mutter. Setze Mutter als Rechnungsempfängerin.";
-    public static final String ERROR_WAHRSCHEINLICH_IDENTISCH_MIT_MUTTER = "Rechnungsempfänger Drittperson und Mutter scheinen identisch zu sein. Setze Mutter als Rechnungsempfängerin und/oder korrigiere Mutter.";
-    public static final String ERROR_IDENTISCH_MIT_VATER = "Rechnungsempfänger Drittperson ist identisch mit Vater. Setze Vater als Rechnungsempfänger.";
-    public static final String ERROR_WAHRSCHEINLICH_IDENTISCH_MIT_VATER = "Rechnungsempfänger Drittperson und Vater scheinen identisch zu sein. Setze Vater als Rechnungsempfänger und/oder korrigiere Vater.";
+    private final Angehoeriger mutter;
+    private final Angehoeriger vater;
+    private final Angehoeriger rechnungsempfaengerDrittperson;
 
     // output
     private boolean identical;
     private String errorMessage;
 
-    public CheckDrittpersonIdentischMitElternteilCommand(Angehoeriger mutter, Angehoeriger vater, Angehoeriger rechnungsempfaengerDrittperson) {
+    CheckDrittpersonIdentischMitElternteilCommand(Angehoeriger mutter, Angehoeriger vater, Angehoeriger rechnungsempfaengerDrittperson) {
         this.mutter = mutter;
         this.vater = vater;
         this.rechnungsempfaengerDrittperson = rechnungsempfaengerDrittperson;
@@ -61,11 +61,11 @@ public class CheckDrittpersonIdentischMitElternteilCommand implements Command {
 
     }
 
-    public boolean isIdentical() {
+    boolean isIdentical() {
         return identical;
     }
 
-    public String getErrorMessage() {
+    String getErrorMessage() {
         return errorMessage;
     }
 }

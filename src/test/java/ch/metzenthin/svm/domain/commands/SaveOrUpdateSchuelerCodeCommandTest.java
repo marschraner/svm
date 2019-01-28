@@ -20,6 +20,8 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateSchuelerCodeCommandTest {
 
+    private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -75,7 +77,6 @@ public class SaveOrUpdateSchuelerCodeCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
         for (SchuelerCode schuelerCode : codesSaved) {
             SchuelerCode schuelerCodeToBeDeleted = schuelerCodeDao.findById(schuelerCode.getCodeId());
             if (schuelerCodeToBeDeleted != null) {

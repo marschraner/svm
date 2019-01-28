@@ -21,9 +21,11 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllKursorteCommandTest {
 
+    private final KursortDao kursortDao = new KursortDao();
+    private final Set<Kursort> kursorteTestdata = new HashSet<>();
+
     private DB db;
     private CommandInvoker commandInvoker;
-    private Set<Kursort> kursorteTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
@@ -64,8 +66,6 @@ public class FindAllKursorteCommandTest {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
-        KursortDao kursortDao = new KursortDao(entityManager);
-
         Kursort kursorteaved = kursortDao.save(new Kursort("Saal Test1", true));
         kursorteTestdata.add(kursorteaved);
 
@@ -79,8 +79,6 @@ public class FindAllKursorteCommandTest {
     private void deleteTestdata() {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-
-        KursortDao kursortDao = new KursortDao(entityManager);
 
         for (Kursort kursort : kursorteTestdata) {
             Kursort kursortToBeRemoved = kursortDao.findById(kursort.getKursortId());

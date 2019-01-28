@@ -11,7 +11,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -25,6 +24,9 @@ import static org.junit.Assert.assertNull;
  * @author Martin Schraner
  */
 public class DeleteSchuelerCommandTest {
+
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+    private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
 
     private DB db;
     private CommandInvoker commandInvoker;
@@ -100,10 +102,7 @@ public class DeleteSchuelerCommandTest {
         commandInvoker.executeCommandAsTransaction(deleteSchuelerCodeCommand);
 
         // Prüfen, ob Schüler und Vater gelöscht
-        EntityManager entityManager = db.getCurrentEntityManager();
-        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
         assertNull(schuelerDao.findById(schuelerId));
-        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
         assertNull(angehoerigerDao.findById(vaterId));
     }
 }

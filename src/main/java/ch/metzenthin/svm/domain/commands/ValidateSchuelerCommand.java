@@ -467,9 +467,7 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
             if (schuelerOrigin.getFestnetz() == null && schueler.getFestnetz() != null && !schueler.getFestnetz().isEmpty()) {
                 return true;
             }
-            if (!schueler.getFestnetz().equals(schuelerOrigin.getFestnetz())) {
-                return true;
-            }
+            return schueler.getFestnetz() != null && !schueler.getFestnetz().equals(schuelerOrigin.getFestnetz());
         }
         return false;
     }

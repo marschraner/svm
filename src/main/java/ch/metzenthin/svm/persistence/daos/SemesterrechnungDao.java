@@ -14,14 +14,11 @@ import java.util.List;
  */
 public class SemesterrechnungDao extends GenericDao<Semesterrechnung, SemesterrechnungId> {
 
-    public SemesterrechnungDao(EntityManager entityManager) {
-        super(entityManager);
-    }
-
     @Override
     public Semesterrechnung save(Semesterrechnung semesterrechnung) {
         semesterrechnung.getSemester().getSemesterrechnungen().add(semesterrechnung);
         semesterrechnung.getRechnungsempfaenger().getSemesterrechnungen().add(semesterrechnung);
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.persist(semesterrechnung);
         entityManager.flush();
         entityManager.refresh(semesterrechnung);
@@ -32,11 +29,12 @@ public class SemesterrechnungDao extends GenericDao<Semesterrechnung, Semesterre
     public void remove(Semesterrechnung semesterrechnung) {
         semesterrechnung.getSemester().getSemesterrechnungen().remove(semesterrechnung);
         semesterrechnung.getRechnungsempfaenger().getSemesterrechnungen().remove(semesterrechnung);
-        entityManager.remove(semesterrechnung);
+        db.getCurrentEntityManager().remove(semesterrechnung);
     }
 
     public List<Semesterrechnung> findSemesterrechnungenSemester(Semester semester) {
-        TypedQuery<Semesterrechnung> typedQuery = entityManager.createQuery("select semre from Semesterrechnung semre where semre.semester.semesterId = :semesterId", Semesterrechnung.class);
+        TypedQuery<Semesterrechnung> typedQuery = db.getCurrentEntityManager().createQuery(
+                "select semre from Semesterrechnung semre where semre.semester.semesterId = :semesterId", Semesterrechnung.class);
         typedQuery.setParameter("semesterId", semester.getSemesterId());
         List<Semesterrechnung> semesterrechnungenFound = typedQuery.getResultList();
         // Sortieren gemäss compareTo in Semesterrechnungen

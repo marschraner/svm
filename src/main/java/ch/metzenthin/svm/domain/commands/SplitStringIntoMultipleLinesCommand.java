@@ -16,7 +16,7 @@ public class SplitStringIntoMultipleLinesCommand implements Command {
     // Output
     private List<String> lines = new ArrayList<>();
 
-    public SplitStringIntoMultipleLinesCommand(String string, int maxLength, int maxLines) {
+    SplitStringIntoMultipleLinesCommand(String string, int maxLength, int maxLines) {
         this.string = string;
         this.maxLength = maxLength;
         this.maxLines = maxLines;
@@ -69,7 +69,7 @@ public class SplitStringIntoMultipleLinesCommand implements Command {
 
     }
 
-    public List<String> getLines() {
+    List<String> getLines() {
         return lines;
     }
 }

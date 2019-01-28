@@ -12,6 +12,9 @@ import java.util.List;
  */
 public class SaveOrUpdateMaercheneinteilungCommand extends GenericDaoCommand {
 
+    private final  MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
+    private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
+
     // input
     private Maercheneinteilung maercheneinteilung;
     private final ElternmithilfeCode elternmithilfeCode;
@@ -32,8 +35,6 @@ public class SaveOrUpdateMaercheneinteilungCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao(entityManager);
-        ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
         // Reload zur Verhinderung von Lazy Loading-Problem
         ElternmithilfeCode elternmithilfeCodeReloaded = null;
         if (elternmithilfeCode != null) {

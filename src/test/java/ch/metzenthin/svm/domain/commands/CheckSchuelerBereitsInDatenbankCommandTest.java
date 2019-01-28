@@ -26,6 +26,8 @@ import static org.junit.Assert.assertNull;
  */
 public class CheckSchuelerBereitsInDatenbankCommandTest {
 
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
     private Schueler schuelerTestdata;
@@ -92,8 +94,6 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
-        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-
         Schueler schueler = new Schueler("Carla", "Bruggisser", new GregorianCalendar(2000, Calendar.JANUARY, 20), "056 426 69 15", null, null, Geschlecht.W, null);
         Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null);
         Adresse adresse = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
@@ -110,8 +110,6 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
     private void deleteTestdata() {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-
-        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
 
         Schueler schuelerToBeRemoved = schuelerDao.findById(schuelerTestdata.getPersonId());
         schuelerDao.remove(schuelerToBeRemoved);

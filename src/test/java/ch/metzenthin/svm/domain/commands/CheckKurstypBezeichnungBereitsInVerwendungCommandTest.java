@@ -15,8 +15,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class CheckKurstypBezeichnungBereitsInVerwendungCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private List<Kurstyp> bereitsErfassteKurstypen = new ArrayList<>();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final List<Kurstyp> bereitsErfassteKurstypen = new ArrayList<>();
 
     @Before
     public void setUp() {

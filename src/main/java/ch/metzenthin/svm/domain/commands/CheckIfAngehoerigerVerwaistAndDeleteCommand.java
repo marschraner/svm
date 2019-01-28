@@ -10,6 +10,8 @@ import javax.persistence.TypedQuery;
  */
 public class CheckIfAngehoerigerVerwaistAndDeleteCommand extends GenericDaoCommand {
 
+    private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
+
     // input
     private Angehoeriger angehoeriger;
 
@@ -44,7 +46,6 @@ public class CheckIfAngehoerigerVerwaistAndDeleteCommand extends GenericDaoComma
         }
 
         // Angehöriger in diesem Fall verwaist -> löschen
-        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
         angehoerigerDao.remove(angehoeriger);
         entityManager.flush();
         angehoeriger = null;

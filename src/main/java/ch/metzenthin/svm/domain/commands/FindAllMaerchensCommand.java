@@ -10,13 +10,13 @@ import java.util.List;
  */
 public class FindAllMaerchensCommand extends GenericDaoCommand {
 
+    private final MaerchenDao maerchenDao = new MaerchenDao();
+
     // output
     private List<Maerchen> maerchensAll;
 
     @Override
     public void execute() {
-
-        MaerchenDao maerchenDao = new MaerchenDao(entityManager);
         maerchensAll = maerchenDao.findAll();
     }
 

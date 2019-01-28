@@ -10,9 +10,11 @@ import java.util.List;
  */
 public class RestoreSemesterrechnungCommand extends GenericDaoCommand {
 
+    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
+
     // input
     private List<Semesterrechnung> semesterrechnungen;
-    int indexSemesterrechnungToBeRestored;
+    private int indexSemesterrechnungToBeRestored;
 
     public RestoreSemesterrechnungCommand(List<Semesterrechnung> semesterrechnungen, int indexSemesterrechnungToBeRestored) {
         this.semesterrechnungen = semesterrechnungen;
@@ -21,7 +23,6 @@ public class RestoreSemesterrechnungCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
         Semesterrechnung semesterrechnungToBeDeletedLogically = semesterrechnungen.get(indexSemesterrechnungToBeRestored);
         semesterrechnungToBeDeletedLogically.setDeleted(false);
         semesterrechnungDao.save(semesterrechnungToBeDeletedLogically);

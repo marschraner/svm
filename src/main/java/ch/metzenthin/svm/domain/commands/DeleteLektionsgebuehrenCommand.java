@@ -10,9 +10,11 @@ import java.util.List;
  */
 public class DeleteLektionsgebuehrenCommand extends GenericDaoCommand {
 
+    private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
+
     // input
     private List<Lektionsgebuehren> lektionsgebuehren;
-    int indexLektionsgebuehrenToBeDeleted;
+    private int indexLektionsgebuehrenToBeDeleted;
 
     public DeleteLektionsgebuehrenCommand(List<Lektionsgebuehren> lektionsgebuehren, int indexLektionsgebuehrenToBeDeleted) {
         this.lektionsgebuehren = lektionsgebuehren;
@@ -21,7 +23,6 @@ public class DeleteLektionsgebuehrenCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
         Lektionsgebuehren lektionsgebuehrenToBeDeleted = lektionsgebuehren.get(indexLektionsgebuehrenToBeDeleted);
         lektionsgebuehrenDao.remove(lektionsgebuehrenToBeDeleted);
         lektionsgebuehren.remove(indexLektionsgebuehrenToBeDeleted);

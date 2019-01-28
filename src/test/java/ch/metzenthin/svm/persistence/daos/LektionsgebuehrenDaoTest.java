@@ -20,16 +20,14 @@ import static org.junit.Assert.*;
  */
 public class LektionsgebuehrenDaoTest {
 
+    private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
+
     private DB db;
-    private EntityManager entityManager;
-    private LektionsgebuehrenDao lektionsgebuehrenDao;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
-        entityManager = db.getCurrentEntityManager();
-        lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
     }
 
     @After
@@ -39,6 +37,7 @@ public class LektionsgebuehrenDaoTest {
 
     @Test
     public void testFindById() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -61,6 +60,7 @@ public class LektionsgebuehrenDaoTest {
 
     @Test
     public void save() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -89,8 +89,8 @@ public class LektionsgebuehrenDaoTest {
 
     @Test
     public void testRemove() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -130,6 +130,7 @@ public class LektionsgebuehrenDaoTest {
 
     @Test
     public void testFindAll() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();

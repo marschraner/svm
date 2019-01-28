@@ -24,6 +24,8 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateMitarbeiterCommandTest {
 
+    private final MitarbeiterDao mitarbeiterDao = new MitarbeiterDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -85,7 +87,6 @@ public class SaveOrUpdateMitarbeiterCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
         for (Mitarbeiter mitarbeiter : mitarbeitersSaved) {
             Mitarbeiter mitarbeiterToBeDeleted = mitarbeiterDao.findById(mitarbeiter.getPersonId());
             if (mitarbeiterToBeDeleted != null) {

@@ -15,9 +15,11 @@ public class DeleteMitarbeiterCommand extends GenericDaoCommand {
         LOESCHEN_ERFOLGREICH
     }
 
+    private final MitarbeiterDao mitarbeiterDao = new MitarbeiterDao();
+
     // input
     private List<Mitarbeiter> mitarbeiters;
-    int indexMitarbeiterToBeDeleted;
+    private int indexMitarbeiterToBeDeleted;
 
     // output
     private Result result;
@@ -29,13 +31,12 @@ public class DeleteMitarbeiterCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        MitarbeiterDao MitarbeiterDao = new MitarbeiterDao(entityManager);
         Mitarbeiter mitarbeiterToBeDeleted = mitarbeiters.get(indexMitarbeiterToBeDeleted);
         if (mitarbeiterToBeDeleted.getKurse().size() > 0) {
             result = Result.MITARBEITER_VON_KURS_REFERENZIERT;
             return;
         }
-        MitarbeiterDao.remove(mitarbeiterToBeDeleted);
+        mitarbeiterDao.remove(mitarbeiterToBeDeleted);
         mitarbeiters.remove(indexMitarbeiterToBeDeleted);
         result = Result.LOESCHEN_ERFOLGREICH;
     }

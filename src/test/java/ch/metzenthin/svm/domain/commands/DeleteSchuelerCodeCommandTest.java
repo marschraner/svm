@@ -25,6 +25,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class DeleteSchuelerCodeCommandTest {
 
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -103,7 +105,6 @@ public class DeleteSchuelerCodeCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
         Schueler schuelerToBeDeleted = schuelerDao.findById(savedSchueler.getPersonId());
         schuelerDao.remove(schuelerToBeDeleted);
         entityManager.getTransaction().commit();

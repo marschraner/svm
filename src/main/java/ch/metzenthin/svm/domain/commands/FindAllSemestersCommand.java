@@ -10,13 +10,13 @@ import java.util.List;
  */
 public class FindAllSemestersCommand extends GenericDaoCommand {
 
+    private final SemesterDao semesterDao = new SemesterDao();
+
     // output
     private List<Semester> semestersAll;
 
     @Override
     public void execute() {
-
-        SemesterDao semesterDao = new SemesterDao(entityManager);
         semestersAll = semesterDao.findAll();
     }
 

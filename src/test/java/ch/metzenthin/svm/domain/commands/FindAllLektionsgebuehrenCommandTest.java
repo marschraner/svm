@@ -23,9 +23,11 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllLektionsgebuehrenCommandTest {
 
+    private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
+    private final Set<Lektionsgebuehren> lektionsgebuehrenTestdata = new HashSet<>();
+
     private DB db;
     private CommandInvoker commandInvoker;
-    private Set<Lektionsgebuehren> lektionsgebuehrenTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
@@ -96,8 +98,6 @@ public class FindAllLektionsgebuehrenCommandTest {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
-        LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
-
         Lektionsgebuehren lektionsgebuehrenaved = lektionsgebuehrenDao.save(new Lektionsgebuehren(57, new BigDecimal("22.50"), new BigDecimal("21.00"), new BigDecimal("19.00"), new BigDecimal("18.00"), new BigDecimal("17.00"), new BigDecimal("16.00")));
         lektionsgebuehrenTestdata.add(lektionsgebuehrenaved);
 
@@ -111,8 +111,6 @@ public class FindAllLektionsgebuehrenCommandTest {
     private void deleteTestdata() {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-
-        LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
 
         for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenTestdata) {
             Lektionsgebuehren lektionsgebuehrenToBeRemoved = lektionsgebuehrenDao.findById(lektionsgebuehren.getLektionslaenge());

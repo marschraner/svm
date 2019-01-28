@@ -10,6 +10,9 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
  */
 public class AddDispensationToSchuelerAndSaveCommand extends GenericDaoCommand {
 
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+    private final DispensationDao dispensationDao = new DispensationDao();
+
     // input
     private Dispensation dispensation;
     private Dispensation dispensationOrigin;
@@ -29,10 +32,8 @@ public class AddDispensationToSchuelerAndSaveCommand extends GenericDaoCommand {
         if (dispensationOrigin != null) {
             // Update von dispensationOrigin mit Werten von dispensation
             dispensationOrigin.copyAttributesFrom(dispensation);
-            SchuelerDao schuelerDao = new SchuelerDao(entityManager);
             schuelerUpdated = schuelerDao.save(schueler);
         } else {
-            DispensationDao dispensationDao = new DispensationDao(entityManager);
             schuelerUpdated = dispensationDao.addToSchuelerAndSave(dispensation, schueler);
         }
 

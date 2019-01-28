@@ -16,8 +16,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class CheckLektionslaengeBereitsErfasstCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private List<Lektionsgebuehren> bereitsErfassteLektionsgebuehren = new ArrayList<>();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final List<Lektionsgebuehren> bereitsErfassteLektionsgebuehren = new ArrayList<>();
 
     @Before
     public void setUp() {

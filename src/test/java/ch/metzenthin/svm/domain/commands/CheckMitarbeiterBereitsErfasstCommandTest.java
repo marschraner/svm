@@ -19,8 +19,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class CheckMitarbeiterBereitsErfasstCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private List<Mitarbeiter> bereitsErfassteLehrkraefte = new ArrayList<>();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final List<Mitarbeiter> bereitsErfassteLehrkraefte = new ArrayList<>();
 
     @Before
     public void setUp() {

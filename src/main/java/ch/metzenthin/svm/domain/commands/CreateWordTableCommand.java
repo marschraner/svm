@@ -40,7 +40,7 @@ public class CreateWordTableCommand implements Command {
     private int numberOfDatasetsFirstPage;
     private int numberOfDatasetsNormalPage;
 
-    public CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLenghts, String title1, String title2, File outputFile, int topMargin, int bottomMargin, int leftMargin, int rightMargin, int numberOfDatasetsFirstPage, int numberOfDatasetsNormalPage) {
+    CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLenghts, String title1, String title2, File outputFile, int topMargin, int bottomMargin, int leftMargin, int rightMargin, int numberOfDatasetsFirstPage, int numberOfDatasetsNormalPage) {
         this.headerRows = headerRows;
         this.datasets = datasets;
         this.columnWidths = columnWidths;
@@ -58,7 +58,7 @@ public class CreateWordTableCommand implements Command {
         this.numberOfDatasetsNormalPage = numberOfDatasetsNormalPage;
     }
 
-    public CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLenghts, String title1, String title2, File outputFile) {
+    CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLenghts, String title1, String title2, File outputFile) {
         this(headerRows, datasets, columnWidths, boldCells, mergedCells, maxLenghts, title1, title2, outputFile, 850, 1, 580, 1, 0, 0);
     }
 

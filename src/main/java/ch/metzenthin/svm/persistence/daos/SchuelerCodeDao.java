@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence.daos;
 
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -12,12 +12,9 @@ import java.util.List;
  */
 public class SchuelerCodeDao extends GenericDao<SchuelerCode, Integer> {
 
-    public SchuelerCodeDao(EntityManager entityManager) {
-        super(entityManager);
-    }
-
     public Schueler addToSchuelerAndSave(SchuelerCode schuelerCode, Schueler schueler) {
         schueler.addCode(schuelerCode);
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.persist(schueler);
         entityManager.flush();
         entityManager.refresh(schuelerCode);
@@ -27,6 +24,7 @@ public class SchuelerCodeDao extends GenericDao<SchuelerCode, Integer> {
 
     public Schueler removeFromSchuelerAndUpdate(SchuelerCode schuelerCode, Schueler schueler) {
         schueler.deleteCode(schuelerCode);
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.persist(schueler);
         entityManager.flush();
         entityManager.refresh(schuelerCode);
@@ -35,7 +33,8 @@ public class SchuelerCodeDao extends GenericDao<SchuelerCode, Integer> {
     }
 
     public List<SchuelerCode> findAll() {
-        TypedQuery<SchuelerCode> typedQuery = entityManager.createQuery("select c from SchuelerCode c order by c.kuerzel", SchuelerCode.class);
+        TypedQuery<SchuelerCode> typedQuery = db.getCurrentEntityManager().createQuery(
+                "select c from SchuelerCode c order by c.kuerzel", SchuelerCode.class);
         return typedQuery.getResultList();
     }
 

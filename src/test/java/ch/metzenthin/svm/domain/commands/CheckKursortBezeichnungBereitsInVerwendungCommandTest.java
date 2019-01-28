@@ -15,8 +15,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class CheckKursortBezeichnungBereitsInVerwendungCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private List<Kursort> bereitsErfassteKursorte = new ArrayList<>();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final List<Kursort> bereitsErfassteKursorte = new ArrayList<>();
 
     @Before
     public void setUp() {

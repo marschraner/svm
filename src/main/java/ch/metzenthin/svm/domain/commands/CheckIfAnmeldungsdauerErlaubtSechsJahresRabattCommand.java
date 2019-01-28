@@ -20,7 +20,7 @@ public class CheckIfAnmeldungsdauerErlaubtSechsJahresRabattCommand implements Co
     // output
     private boolean anmeldungsdauerErlaubtSechsJahresRabatt;
 
-    public CheckIfAnmeldungsdauerErlaubtSechsJahresRabattCommand(Schueler schueler, Calendar semesterBeginn) {
+    CheckIfAnmeldungsdauerErlaubtSechsJahresRabattCommand(Schueler schueler, Calendar semesterBeginn) {
         this.schueler = schueler;
         this.semesterBeginn = semesterBeginn;
     }
@@ -48,7 +48,7 @@ public class CheckIfAnmeldungsdauerErlaubtSechsJahresRabattCommand implements Co
         anmeldungsdauerErlaubtSechsJahresRabatt = (anmeldungsdauer >= Lektionsgebuehren.MIN_ANZAHL_TAGE_SECHS_JAHRES_RABATT);
     }
 
-    public boolean isAnmeldungsdauerErlaubtSechsJahresRabatt() {
+    boolean isAnmeldungsdauerErlaubtSechsJahresRabatt() {
         return anmeldungsdauerErlaubtSechsJahresRabatt;
     }
 }

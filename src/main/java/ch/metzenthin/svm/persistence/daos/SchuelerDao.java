@@ -13,13 +13,14 @@ import java.util.List;
  */
 public class SchuelerDao extends GenericDao<Schueler, Integer> {
 
-    public SchuelerDao(EntityManager entityManager) {
-        super(entityManager);
-    }
+    private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
+    private final MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
+    private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
 
     @Override
     public Schueler save(Schueler schueler) {
         super.save(schueler);
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.refresh(schueler.getAdresse());
         if (schueler.getMutter() != null) {
             entityManager.refresh(schueler.getMutter());
@@ -59,20 +60,19 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
         rechnungsempfaenger.getSchuelerRechnungsempfaenger().remove(schueler);
 
         // Lösche zugewiesene Codes
+        EntityManager entityManager = db.getCurrentEntityManager();
         for (SchuelerCode schuelerCode : new HashSet<>(schueler.getSchuelerCodes())) {
             schueler.deleteCode(schuelerCode);
             entityManager.refresh(schuelerCode);
         }
 
         // Lösche zugewiesene Kursanmeldungen
-        KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
         List<Kursanmeldung> kurseinteilungenSchueler = kursanmeldungDao.findKursanmeldungenSchueler(schueler);
         for (Kursanmeldung kursanmeldung : new ArrayList<>(kurseinteilungenSchueler)) {
             kursanmeldungDao.remove(kursanmeldung);
         }
 
         // Lösche zugewiesene Maercheneinteilungen
-        MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao(entityManager);
         List<Maercheneinteilung> maercheneinteilungenSchueler = maercheneinteilungDao.findMaercheneinteilungenSchueler(schueler);
         for (Maercheneinteilung maercheneinteilung : new ArrayList<>(maercheneinteilungenSchueler)) {
             maercheneinteilungDao.remove(maercheneinteilung);
@@ -83,7 +83,6 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
 
         // Lösche Vater, Mutter und Rechnungsempfänger aus DB, falls diese nicht mehr referenziert werden
         // Achtung: dies muss NACH dem Löschen des Schülers erfolgen!
-        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
         if (vater != null && entityManager.contains(vater) && vater.getKinderVater().size() == 0 && vater.getSchuelerRechnungsempfaenger().size() == 0 && (!isAngehoerigerInSemesterrechnung(vater))) {
             angehoerigerDao.remove(vater);
         }
@@ -97,9 +96,11 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isAngehoerigerInSemesterrechnung(Angehoeriger angehoeriger) {
         // Kommt Angehoeriger als Rechnungsempfänger in irgend einer (früheren) Semesterrechnung vor?
-        TypedQuery<Long> typedQuery = entityManager.createQuery("select count(s) from Semesterrechnung s where s.rechnungsempfaenger.personId = :angehoerigerPersonId", Long.class);
+        TypedQuery<Long> typedQuery = db.getCurrentEntityManager().createQuery(
+                "select count(s) from Semesterrechnung s where s.rechnungsempfaenger.personId = :angehoerigerPersonId", Long.class);
         typedQuery.setParameter("angehoerigerPersonId", angehoeriger.getPersonId());
         return typedQuery.getSingleResult() > 0;
     }
@@ -153,7 +154,8 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
         // Sortierung
         selectStatementSb.append(" order by s.nachname, s.vorname, s.adresse.ort, s.adresse.strasse");
 
-        TypedQuery<Schueler> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Schueler.class);
+        TypedQuery<Schueler> typedQuery = db.getCurrentEntityManager().createQuery(
+                selectStatementSb.toString(), Schueler.class);
 
         if (schueler != null) {
             if (schueler.getVorname() != null) {

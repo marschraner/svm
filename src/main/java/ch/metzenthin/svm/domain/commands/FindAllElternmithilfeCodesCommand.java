@@ -10,13 +10,13 @@ import java.util.List;
  */
 public class FindAllElternmithilfeCodesCommand extends GenericDaoCommand {
 
+    private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
+
     // output
     private List<ElternmithilfeCode> elternmithilfeCodesAll;
 
     @Override
     public void execute() {
-
-        ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
         elternmithilfeCodesAll = elternmithilfeCodeDao.findAll();
     }
 

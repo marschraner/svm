@@ -21,6 +21,8 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateLektionsgebuehrenCommandTest {
 
+    private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -77,7 +79,6 @@ public class SaveOrUpdateLektionsgebuehrenCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
         for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenSaved) {
             Lektionsgebuehren lektionsgebuehrenToBeDeleted = lektionsgebuehrenDao.findById(lektionsgebuehren.getLektionslaenge());
             if (lektionsgebuehrenToBeDeleted != null) {

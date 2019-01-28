@@ -10,13 +10,13 @@ import java.util.List;
  */
 public class FindAllSchuelerCodesCommand extends GenericDaoCommand {
 
+    private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
+
     // output
     private List<SchuelerCode> schuelerCodesAll;
 
     @Override
     public void execute() {
-
-        SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
         schuelerCodesAll = schuelerCodeDao.findAll();
     }
 

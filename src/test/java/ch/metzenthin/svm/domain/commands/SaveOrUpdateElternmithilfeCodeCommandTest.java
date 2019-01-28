@@ -20,6 +20,8 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateElternmithilfeCodeCommandTest {
 
+    private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -75,7 +77,6 @@ public class SaveOrUpdateElternmithilfeCodeCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
         for (ElternmithilfeCode elternmithilfeCode : codesSaved) {
             ElternmithilfeCode elternmithilfeCodeToBeDeleted = elternmithilfeCodeDao.findById(elternmithilfeCode.getCodeId());
             if (elternmithilfeCodeToBeDeleted != null) {

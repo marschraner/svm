@@ -10,13 +10,13 @@ import java.util.List;
  */
 public class FindAllMitarbeitersCommand extends GenericDaoCommand {
 
+    private final MitarbeiterDao mitarbeiterDao = new MitarbeiterDao();
+
     // output
     private List<Mitarbeiter> mitarbeitersAll;
 
     @Override
     public void execute() {
-
-        MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
         mitarbeitersAll = mitarbeiterDao.findAll();
     }
 

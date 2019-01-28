@@ -19,16 +19,14 @@ import static org.junit.Assert.*;
  */
 public class KursortDaoTest {
 
+    private final KursortDao kursortDao = new KursortDao();
+
     private DB db;
-    private EntityManager entityManager;
-    private KursortDao kursortDao;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
-        entityManager = db.getCurrentEntityManager();
-        kursortDao = new KursortDao(entityManager);
     }
 
     @After
@@ -38,6 +36,7 @@ public class KursortDaoTest {
 
     @Test
     public void testFindById() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -60,6 +59,7 @@ public class KursortDaoTest {
 
     @Test
     public void save() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -86,8 +86,8 @@ public class KursortDaoTest {
 
     @Test
     public void testRemove() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -129,6 +129,7 @@ public class KursortDaoTest {
 
     @Test
     public void testFindAll() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -165,6 +166,5 @@ public class KursortDaoTest {
             }
         }
     }
-
 
 }

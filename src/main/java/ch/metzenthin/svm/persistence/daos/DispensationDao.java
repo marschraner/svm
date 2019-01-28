@@ -10,10 +10,6 @@ import javax.persistence.EntityManager;
  */
 public class DispensationDao extends GenericDao<Dispensation, Integer> {
 
-    public DispensationDao(EntityManager entityManager) {
-        super(entityManager);
-    }
-
     @Override
     public Dispensation save(Dispensation dispensation) {
         throw new NullPointerException("Operation not supported");
@@ -26,6 +22,7 @@ public class DispensationDao extends GenericDao<Dispensation, Integer> {
 
     public Schueler addToSchuelerAndSave(Dispensation dispensation, Schueler schueler) {
         schueler.addDispensation(dispensation);
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.persist(schueler);
         entityManager.flush();
         entityManager.refresh(dispensation);
@@ -35,6 +32,7 @@ public class DispensationDao extends GenericDao<Dispensation, Integer> {
 
     public Schueler removeFromSchuelerAndUpdate(Dispensation dispensation, Schueler schueler) {
         schueler.deleteDispensation(dispensation);
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.persist(schueler);
         entityManager.flush();
         entityManager.refresh(schueler);

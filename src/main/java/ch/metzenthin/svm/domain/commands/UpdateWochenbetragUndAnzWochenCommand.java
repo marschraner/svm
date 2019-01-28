@@ -14,6 +14,8 @@ import java.util.Map;
  */
 public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
 
+    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
+
     // input
     private Angehoeriger rechnungsempfaenger;
     private Semester currentSemester;
@@ -28,8 +30,6 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-
-        SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
 
         result = CalculateAnzWochenCommand.Result.ALLE_KURSE_GLEICHE_ANZAHL_WOCHEN;
 

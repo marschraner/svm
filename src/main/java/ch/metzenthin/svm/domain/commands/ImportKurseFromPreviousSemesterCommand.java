@@ -12,6 +12,9 @@ import java.util.List;
  */
 public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
 
+    private final KursDao kursDao = new KursDao();
+    private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
+
     // input / output
     private List<Kurs> kurseCurrentSemester;
 
@@ -48,8 +51,6 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
             return;
         }
 
-        KursDao kursDao = new KursDao(entityManager);
-        KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
         List<Kurs> kursePreviousSemester = kursDao.findKurseSemester(oldSemester);
 
         KursePreviousSemester:

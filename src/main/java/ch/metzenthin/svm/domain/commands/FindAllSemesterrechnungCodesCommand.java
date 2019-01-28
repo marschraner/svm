@@ -10,13 +10,13 @@ import java.util.List;
  */
 public class FindAllSemesterrechnungCodesCommand extends GenericDaoCommand {
 
+    private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();
+
     // output
     private List<SemesterrechnungCode> semesterrechnungCodesAll;
 
     @Override
     public void execute() {
-
-        SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao(entityManager);
         semesterrechnungCodesAll = semesterrechnungCodeDao.findAll();
     }
 

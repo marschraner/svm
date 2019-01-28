@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class SaveOrUpdateSemesterrechnungCodeCommand extends GenericDaoCommand {
 
+    private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();
+
     // input
     private SemesterrechnungCode semesterrechnungCode;
     private SemesterrechnungCode semesterrechnungCodeOrigin;
@@ -25,7 +27,6 @@ public class SaveOrUpdateSemesterrechnungCodeCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao(entityManager);
         if (semesterrechnungCodeOrigin != null) {
             // Update von semesterrechnungCodeOrigin mit Werten von semesterrechnungCode
             semesterrechnungCodeOrigin.copyAttributesFrom(semesterrechnungCode);

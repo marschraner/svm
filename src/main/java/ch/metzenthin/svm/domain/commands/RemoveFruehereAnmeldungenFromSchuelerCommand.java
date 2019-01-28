@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class RemoveFruehereAnmeldungenFromSchuelerCommand extends GenericDaoCommand {
 
+    private final AnmeldungDao anmeldungDao = new AnmeldungDao();
+
     // input
     private Schueler schueler;
 
@@ -26,7 +28,6 @@ public class RemoveFruehereAnmeldungenFromSchuelerCommand extends GenericDaoComm
         for (int i = 1; i < schueler.getAnmeldungen().size(); i++) {
             fruehereAnmeldungen.add(schueler.getAnmeldungen().get(i));
         }
-        AnmeldungDao anmeldungDao = new AnmeldungDao(entityManager);
         // Loeschen
         Iterator<Anmeldung> it = fruehereAnmeldungen.iterator();
         while (it.hasNext()) {

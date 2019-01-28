@@ -21,9 +21,11 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllMitarbeiterCodesCommandTest {
 
+    private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
+    private final Set<MitarbeiterCode> codesTestdata = new HashSet<>();
+
     private DB db;
     private CommandInvoker commandInvoker;
-    private Set<MitarbeiterCode> codesTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
@@ -64,8 +66,6 @@ public class FindAllMitarbeiterCodesCommandTest {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
-        MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
-
         MitarbeiterCode mitarbeiterCodeSaved = mitarbeiterCodeDao.save(new MitarbeiterCode("v", "VertretungTest", true));
         codesTestdata.add(mitarbeiterCodeSaved);
 
@@ -79,8 +79,6 @@ public class FindAllMitarbeiterCodesCommandTest {
     private void deleteTestdata() {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-
-        MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
 
         for (MitarbeiterCode mitarbeiterCode : codesTestdata) {
             MitarbeiterCode mitarbeiterCodeToBeRemoved = mitarbeiterCodeDao.findById(mitarbeiterCode.getCodeId());

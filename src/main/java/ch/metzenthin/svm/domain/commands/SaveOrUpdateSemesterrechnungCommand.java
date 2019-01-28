@@ -16,6 +16,10 @@ import java.util.List;
  */
 public class SaveOrUpdateSemesterrechnungCommand extends GenericDaoCommand {
 
+    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
+    private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();
+    private final SemesterDao semesterDao = new SemesterDao();
+
     // input
     private Semesterrechnung semesterrechnung;
     private final SemesterrechnungCode semesterrechnungCode;
@@ -32,9 +36,6 @@ public class SaveOrUpdateSemesterrechnungCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
-        SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao(entityManager);
-        SemesterDao semesterDao = new SemesterDao(entityManager);
         // Reload zur Verhinderung von Lazy Loading-Problem
         SemesterrechnungCode semesterrechnungCodeReloaded = null;
         if (semesterrechnungCode != null) {

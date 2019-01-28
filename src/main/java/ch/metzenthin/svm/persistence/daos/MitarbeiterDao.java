@@ -13,15 +13,11 @@ import java.util.List;
  */
 public class MitarbeiterDao extends GenericDao<Mitarbeiter, Integer> {
 
-    public MitarbeiterDao(EntityManager entityManager) {
-        super(entityManager);
-    }
-
     @Override
     public Mitarbeiter save(Mitarbeiter mitarbeiter) {
         super.save(mitarbeiter);
         if (mitarbeiter.getAdresse() != null) {
-            entityManager.refresh(mitarbeiter.getAdresse());
+            db.getCurrentEntityManager().refresh(mitarbeiter.getAdresse());
         }
         return mitarbeiter;
     }
@@ -29,6 +25,7 @@ public class MitarbeiterDao extends GenericDao<Mitarbeiter, Integer> {
     @Override
     public void remove(Mitarbeiter mitarbeiter) {
         // Lösche zugewiesene Codes
+        EntityManager entityManager = db.getCurrentEntityManager();
         for (MitarbeiterCode mitarbeiterCode : new HashSet<>(mitarbeiter.getMitarbeiterCodes())) {
             mitarbeiter.deleteCode(mitarbeiterCode);
             entityManager.refresh(mitarbeiterCode);
@@ -39,7 +36,8 @@ public class MitarbeiterDao extends GenericDao<Mitarbeiter, Integer> {
     }
 
     public List<Mitarbeiter> findAll() {
-        TypedQuery<Mitarbeiter> typedQuery = entityManager.createQuery("select m from Mitarbeiter m order by m.nachname, m.vorname, m.geburtsdatum", Mitarbeiter.class);
+        TypedQuery<Mitarbeiter> typedQuery = db.getCurrentEntityManager().createQuery(
+                "select m from Mitarbeiter m order by m.nachname, m.vorname, m.geburtsdatum", Mitarbeiter.class);
         return typedQuery.getResultList();
     }
 

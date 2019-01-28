@@ -15,8 +15,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class CheckMaerchenBereitsErfasstCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private List<Maerchen> bereitsErfassteMaerchens = new ArrayList<>();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final List<Maerchen> bereitsErfassteMaerchens = new ArrayList<>();
 
     @Before
     public void setUp() {

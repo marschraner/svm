@@ -60,7 +60,7 @@ public class FindRechnungsempfaengerOhneSemesterrechnungenCommand extends Generi
         rechnungsempfaengersFound = typedQuery.getResultList();
     }
 
-    public List<Angehoeriger> getRechnungsempfaengersFound() {
+    List<Angehoeriger> getRechnungsempfaengersFound() {
         return rechnungsempfaengersFound;
     }
 }

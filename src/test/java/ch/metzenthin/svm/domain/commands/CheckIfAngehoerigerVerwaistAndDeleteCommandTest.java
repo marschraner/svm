@@ -14,7 +14,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -27,6 +26,9 @@ import static org.junit.Assert.*;
  * @author Martin Schraner
  */
 public class CheckIfAngehoerigerVerwaistAndDeleteCommandTest {
+
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+    private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
 
     private DB db;
     private CommandInvoker commandInvoker;
@@ -126,10 +128,7 @@ public class CheckIfAngehoerigerVerwaistAndDeleteCommandTest {
         assertEquals(DeleteSchuelerCommand.Result.LOESCHEN_ERFOLGREICH, deleteSchuelerCommand.getResult());
 
         // Prüfen, ob Schüler und Vater gelöscht
-        EntityManager entityManager = db.getCurrentEntityManager();
-        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
         assertNull(schuelerDao.findById(schuelerId));
-        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
         assertNull(angehoerigerDao.findById(vaterId));
         assertNull(angehoerigerDao.findById(mutterId));
         assertNull(angehoerigerDao.findById(rechnungsempfaengerId));

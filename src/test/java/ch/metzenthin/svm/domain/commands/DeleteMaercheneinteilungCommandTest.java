@@ -29,6 +29,11 @@ import static org.junit.Assert.*;
  */
 public class DeleteMaercheneinteilungCommandTest {
 
+    private final MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
+    private final MaerchenDao maerchenDao = new MaerchenDao();
+    private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -119,7 +124,6 @@ public class DeleteMaercheneinteilungCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao(entityManager);
         for (Maercheneinteilung maercheneinteilung : erfassteMaercheneinteilungen) {
             Maercheneinteilung maercheneinteilungToBeDeleted = maercheneinteilungDao.findById(new MaercheneinteilungId(maercheneinteilung.getSchueler().getPersonId(), maercheneinteilung.getMaerchen().getMaerchenId()));
             if (maercheneinteilungToBeDeleted != null) {
@@ -128,7 +132,6 @@ public class DeleteMaercheneinteilungCommandTest {
         }
         entityManager.getTransaction().commit();
         entityManager.getTransaction().begin();
-        MaerchenDao maerchenDao = new MaerchenDao(entityManager);
         for (Maerchen maerchen : erfassteMaerchen) {
             Maerchen maerchenToBeDeleted = maerchenDao.findById(maerchen.getMaerchenId());
             if (maerchenToBeDeleted != null) {
@@ -137,7 +140,6 @@ public class DeleteMaercheneinteilungCommandTest {
         }
         entityManager.getTransaction().commit();
         entityManager.getTransaction().begin();
-        ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
         for (ElternmithilfeCode elternmithilfeCode : erfassteElternmithilfeCodes) {
             ElternmithilfeCode elternmithilfeCodeToBeDeleted = elternmithilfeCodeDao.findById(elternmithilfeCode.getCodeId());
             if (elternmithilfeCodeToBeDeleted != null) {
@@ -146,7 +148,6 @@ public class DeleteMaercheneinteilungCommandTest {
         }
         entityManager.getTransaction().commit();
         entityManager.getTransaction().begin();
-        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
         Schueler schuelerToBeRemoved1 = schuelerDao.findById(schueler1.getPersonId());
         Schueler schuelerToBeRemoved2 = schuelerDao.findById(schueler2.getPersonId());
         schuelerDao.remove(schuelerToBeRemoved1);

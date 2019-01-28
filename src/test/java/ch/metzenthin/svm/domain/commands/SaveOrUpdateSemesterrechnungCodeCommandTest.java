@@ -20,6 +20,8 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateSemesterrechnungCodeCommandTest {
 
+    private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -75,7 +77,6 @@ public class SaveOrUpdateSemesterrechnungCodeCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao(entityManager);
         for (SemesterrechnungCode semesterrechnungCode : codesSaved) {
             SemesterrechnungCode semesterrechnungCodeToBeDeleted = semesterrechnungCodeDao.findById(semesterrechnungCode.getCodeId());
             if (semesterrechnungCodeToBeDeleted != null) {

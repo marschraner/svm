@@ -32,6 +32,11 @@ import static org.junit.Assert.assertTrue;
  */
 public class DeleteSemesterrechnungCommandTest {
 
+    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
+    private final SemesterDao semesterDao = new SemesterDao();
+    private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -236,7 +241,6 @@ public class DeleteSemesterrechnungCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
         for (Semesterrechnung semesterrechnung : erfassteSemesterrechnungen) {
             Semesterrechnung semesterrechnungToBeDeleted = semesterrechnungDao.findById(new SemesterrechnungId(semesterrechnung.getSemester().getSemesterId(), semesterrechnung.getRechnungsempfaenger().getPersonId()));
             if (semesterrechnungToBeDeleted != null) {
@@ -245,7 +249,6 @@ public class DeleteSemesterrechnungCommandTest {
         }
         entityManager.getTransaction().commit();
         entityManager.getTransaction().begin();
-        SemesterDao semesterDao = new SemesterDao(entityManager);
         for (Semester semester : erfassteSemester) {
             Semester semesterToBeDeleted = semesterDao.findById(semester.getSemesterId());
             if (semesterToBeDeleted != null) {
@@ -254,7 +257,6 @@ public class DeleteSemesterrechnungCommandTest {
         }
         entityManager.getTransaction().commit();
         entityManager.getTransaction().begin();
-        SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao(entityManager);
         for (SemesterrechnungCode semesterrechnungCode : erfassteSemesterrechnungCodes) {
             SemesterrechnungCode semesterrechnungCodeToBeDeleted = semesterrechnungCodeDao.findById(semesterrechnungCode.getCodeId());
             if (semesterrechnungCodeToBeDeleted != null) {
@@ -263,7 +265,6 @@ public class DeleteSemesterrechnungCommandTest {
         }
         entityManager.getTransaction().commit();
         entityManager.getTransaction().begin();
-        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
         Schueler schuelerToBeRemoved1 = schuelerDao.findById(schueler1.getPersonId());
         Schueler schuelerToBeRemoved2 = schuelerDao.findById(schueler2.getPersonId());
         schuelerDao.remove(schuelerToBeRemoved1);

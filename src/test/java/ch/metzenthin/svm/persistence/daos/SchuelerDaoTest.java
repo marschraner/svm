@@ -22,19 +22,22 @@ import static org.junit.Assert.*;
  */
 public class SchuelerDaoTest {
 
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+    private final AdresseDao adresseDao = new AdresseDao();
+    private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
+    private final AnmeldungDao anmeldungDao = new AnmeldungDao();
+    private final DispensationDao dispensationDao = new DispensationDao();
+    private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
+
     private DB db;
-    private EntityManager entityManager;
-    private SchuelerDao schuelerDao;
     private boolean neusteZuoberst;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
         Properties svmProperties = SvmProperties.getSvmProperties();
         neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
-        db = DBFactory.getInstance();
-        entityManager = db.getCurrentEntityManager();
-        schuelerDao = new SchuelerDao(entityManager);
     }
 
     @After
@@ -44,8 +47,8 @@ public class SchuelerDaoTest {
 
     @Test
     public void testFindById() {
-           EntityTransaction tx = null;
-
+        EntityManager entityManager = db.getCurrentEntityManager();
+        EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -79,8 +82,8 @@ public class SchuelerDaoTest {
 
     @Test
     public void testSave() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -191,15 +194,9 @@ public class SchuelerDaoTest {
 
     @Test
     public void testRemove() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
-
-            AdresseDao adresseDao = new AdresseDao(entityManager);
-            AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
-            AnmeldungDao anmeldungDao = new AnmeldungDao(entityManager);
-            DispensationDao dispensationDao = new DispensationDao(entityManager);
-            SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
 
             // Create 2 Schueler with the same parents, but different Rechnungsempfaenger
             tx = entityManager.getTransaction();
@@ -324,9 +321,8 @@ public class SchuelerDaoTest {
 
     @Test
     public void testFindSchueler() {
-
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();

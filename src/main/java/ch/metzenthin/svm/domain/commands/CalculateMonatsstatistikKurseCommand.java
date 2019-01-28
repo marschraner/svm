@@ -19,8 +19,8 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
     private int anzahlAbmeldungen;
     private int anzahllLektionen;
 
-    Calendar statistikMonatBeginn;
-    Calendar statistikMonatEnde;
+    private Calendar statistikMonatBeginn;
+    private Calendar statistikMonatEnde;
     private List<Semester> semestersAll;
     private Set<Integer> schuelerIdsAll = new HashSet<>();
     private Map<Integer, Integer> schuelerIdsAnzahlAnmeldungen = new HashMap<>();
@@ -124,6 +124,7 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
         if (monatJahr.get(Calendar.MONTH) == Calendar.DECEMBER) {
             statistikMonatEnde = new GregorianCalendar(monatJahr.get(Calendar.YEAR) + 1, Calendar.JANUARY, 1);
         } else {
+            //noinspection MagicConstant
             statistikMonatEnde = new GregorianCalendar(monatJahr.get(Calendar.YEAR), monatJahr.get(Calendar.MONTH) + 1, 1);
         }
         statistikMonatEnde.add(Calendar.DAY_OF_YEAR, -1);

@@ -20,6 +20,8 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateMaerchenCommandTest {
 
+    private final MaerchenDao maerchenDao = new MaerchenDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -85,7 +87,6 @@ public class SaveOrUpdateMaerchenCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        MaerchenDao maerchenDao = new MaerchenDao(entityManager);
         for (Maerchen maerchen : maerchensSaved) {
             Maerchen maerchenToBeDeleted = maerchenDao.findById(maerchen.getMaerchenId());
             if (maerchenToBeDeleted != null) {

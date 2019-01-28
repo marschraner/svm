@@ -17,8 +17,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class CheckSemesterUeberlapptAndereSemesterCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private List<Semester> bereitsErfassteSemester = new ArrayList<>();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final List<Semester> bereitsErfassteSemester = new ArrayList<>();
 
     @Before
     public void setUp() {

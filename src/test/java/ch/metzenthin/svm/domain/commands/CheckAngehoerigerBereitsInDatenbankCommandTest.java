@@ -22,6 +22,8 @@ import static org.junit.Assert.assertNotNull;
  */
 public class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
+    private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
     private Angehoeriger angehoerigerTestdata0;
@@ -121,8 +123,6 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
-        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
-
         Angehoeriger angehoeriger0 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null);
         Adresse adresse0 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         angehoeriger0.setAdresse(adresse0);
@@ -144,8 +144,6 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
     private void deleteTestdata() {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-
-        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
 
         Angehoeriger angehoerigerToBeRemoved0 = angehoerigerDao.findById(angehoerigerTestdata0.getPersonId());
         angehoerigerDao.remove(angehoerigerToBeRemoved0);

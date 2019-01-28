@@ -27,21 +27,18 @@ import static org.junit.Assert.*;
  */
 public class DispensationDaoTest {
 
+    private final DispensationDao dispensationDao = new DispensationDao();
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+
     private DB db;
-    private EntityManager entityManager;
-    private DispensationDao dispensationDao;
-    private SchuelerDao schuelerDao;
     private boolean neusteZuoberst;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
         Properties svmProperties = SvmProperties.getSvmProperties();
         neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
-        db = DBFactory.getInstance();
-        entityManager = db.getCurrentEntityManager();
-        dispensationDao = new DispensationDao(entityManager);
-        schuelerDao = new SchuelerDao(entityManager);
     }
 
     @After
@@ -51,6 +48,7 @@ public class DispensationDaoTest {
 
     @Test
     public void testFindById() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -87,6 +85,7 @@ public class DispensationDaoTest {
 
     @Test
     public void testAddToSchuelerAndSave() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -145,6 +144,7 @@ public class DispensationDaoTest {
 
     @Test
     public void testRemoveFromSchuelerAndUpdate() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();

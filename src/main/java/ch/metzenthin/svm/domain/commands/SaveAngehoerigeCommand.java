@@ -11,17 +11,17 @@ import java.util.List;
  */
 public class SaveAngehoerigeCommand extends GenericDaoCommand {
 
+    private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
+
     private List<Angehoeriger> angehoerige;
     private List<Angehoeriger> savedAngehoerige = new ArrayList<>();
 
-    public SaveAngehoerigeCommand(List<Angehoeriger> angehoerige) {
+    SaveAngehoerigeCommand(List<Angehoeriger> angehoerige) {
         this.angehoerige = angehoerige;
     }
 
     @Override
     public void execute() {
-        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
-
         // Müssen alle in derselben Session bzw. vom selben Entity Manager ausgeführt werden!!!
         for (Angehoeriger angehoeriger : angehoerige) {
             Angehoeriger savedAngehoeriger = angehoerigerDao.save(angehoeriger);
@@ -29,7 +29,7 @@ public class SaveAngehoerigeCommand extends GenericDaoCommand {
         }
     }
 
-    public List<Angehoeriger> getSavedAngehoerige() {
+    List<Angehoeriger> getSavedAngehoerige() {
         return savedAngehoerige;
     }
 

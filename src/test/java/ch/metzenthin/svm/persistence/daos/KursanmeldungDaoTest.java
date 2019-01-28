@@ -26,26 +26,19 @@ import static org.junit.Assert.*;
  */
 public class KursanmeldungDaoTest {
 
+    private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
+    private final KursDao kursDao = new KursDao();
+    private final SemesterDao semesterDao = new SemesterDao();
+    private final KurstypDao kurstypDao = new KurstypDao();
+    private final KursortDao kursortDao = new KursortDao();
+    private final MitarbeiterDao mitarbeiterDao = new MitarbeiterDao();
+
     private DB db;
-    private EntityManager entityManager;
-    private KursanmeldungDao kursanmeldungDao;
-    private KursDao kursDao;
-    private SemesterDao semesterDao;
-    private KurstypDao kurstypDao;
-    private KursortDao kursortDao;
-    private MitarbeiterDao mitarbeiterDao;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
-        entityManager = db.getCurrentEntityManager();
-        kursanmeldungDao = new KursanmeldungDao(entityManager);
-        kursDao = new KursDao(entityManager);
-        semesterDao = new SemesterDao(entityManager);
-        kurstypDao = new KurstypDao(entityManager);
-        kursortDao = new KursortDao(entityManager);
-        mitarbeiterDao = new MitarbeiterDao(entityManager);
     }
 
     @After
@@ -55,6 +48,7 @@ public class KursanmeldungDaoTest {
 
     @Test
     public void testFindById() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -107,6 +101,7 @@ public class KursanmeldungDaoTest {
 
     @Test
     public void testSave() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -160,8 +155,8 @@ public class KursanmeldungDaoTest {
 
     @Test
     public void testRemove() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -222,8 +217,8 @@ public class KursanmeldungDaoTest {
 
     @Test
     public void testFindKurseinteilungenSchueler() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();

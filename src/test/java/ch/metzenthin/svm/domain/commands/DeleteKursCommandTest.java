@@ -28,6 +28,12 @@ import static org.junit.Assert.assertTrue;
  */
 public class DeleteKursCommandTest {
 
+    private final KursDao kursDao = new KursDao();
+    private final SemesterDao semesterDao = new SemesterDao();
+    private final MitarbeiterDao mitarbeiterDao = new MitarbeiterDao();
+    private final KursortDao kursortDao = new KursortDao();
+    private final KurstypDao kurstypDao = new KurstypDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -109,7 +115,6 @@ public class DeleteKursCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        KursDao kursDao = new KursDao(entityManager);
         for (Kurs kurs : erfassteKurse) {
             Kurs kursToBeDeleted = kursDao.findById(kurs.getKursId());
             if (kursToBeDeleted != null) {
@@ -118,7 +123,6 @@ public class DeleteKursCommandTest {
         }
         entityManager.getTransaction().commit();
         entityManager.getTransaction().begin();
-        SemesterDao semesterDao = new SemesterDao(entityManager);
         for (Semester semester : erfassteSemester) {
             Semester semesterToBeDeleted = semesterDao.findById(semester.getSemesterId());
             if (semesterToBeDeleted != null) {
@@ -127,7 +131,6 @@ public class DeleteKursCommandTest {
         }
         entityManager.getTransaction().commit();
         entityManager.getTransaction().begin();
-        MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
         for (Mitarbeiter mitarbeiter : erfassteLehrkraefte) {
             Mitarbeiter mitarbeiterToBeDeleted = mitarbeiterDao.findById(mitarbeiter.getPersonId());
             if (mitarbeiterToBeDeleted != null) {
@@ -136,7 +139,6 @@ public class DeleteKursCommandTest {
         }
         entityManager.getTransaction().commit();
         entityManager.getTransaction().begin();
-        KursortDao kursortDao = new KursortDao(entityManager);
         for (Kursort kursort : erfassteKursorte) {
             Kursort kursortToBeDeleted = kursortDao.findById(kursort.getKursortId());
             if (kursortToBeDeleted != null) {
@@ -145,7 +147,6 @@ public class DeleteKursCommandTest {
         }
         entityManager.getTransaction().commit();
         entityManager.getTransaction().begin();
-        KurstypDao kurstypDao = new KurstypDao(entityManager);
         for (Kurstyp kurstyp : erfassteKurstypen) {
             Kurstyp kurstypToBeDeleted = kurstypDao.findById(kurstyp.getKurstypId());
             if (kurstypToBeDeleted != null) {

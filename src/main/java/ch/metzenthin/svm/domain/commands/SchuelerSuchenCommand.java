@@ -516,10 +516,10 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
         }
         if (selectStatementSb.toString().contains(":geburtsdatumSuchperiodeEndMmYyyy")) {
             Calendar geburtsdatumSuchperiodeEndeMmYyyy;
-            //noinspection MagicConstant
             if (geburtsdatumSuchperiodeEnde.get(Calendar.MONTH) == Calendar.DECEMBER) {
                 geburtsdatumSuchperiodeEndeMmYyyy = new GregorianCalendar(geburtsdatumSuchperiodeEnde.get(Calendar.YEAR) + 1, Calendar.JANUARY, 1);
             } else {
+                //noinspection MagicConstant
                 geburtsdatumSuchperiodeEndeMmYyyy = new GregorianCalendar(geburtsdatumSuchperiodeEnde.get(Calendar.YEAR), geburtsdatumSuchperiodeEnde.get(Calendar.MONTH) + 1, 1);
             }
             typedQuery.setParameter("geburtsdatumSuchperiodeEndMmYyyy", geburtsdatumSuchperiodeEndeMmYyyy);

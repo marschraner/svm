@@ -21,9 +21,11 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllKurstypenCommandTest {
 
+    private final KurstypDao kurstypDao = new KurstypDao();
+    private final Set<Kurstyp> kurstypenTestdata = new HashSet<>();
+
     private DB db;
     private CommandInvoker commandInvoker;
-    private Set<Kurstyp> kurstypenTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
@@ -64,8 +66,6 @@ public class FindAllKurstypenCommandTest {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
-        KurstypDao kurstypDao = new KurstypDao(entityManager);
-
         Kurstyp kurstypenaved = kurstypDao.save(new Kurstyp("Kurs Test1", true));
         kurstypenTestdata.add(kurstypenaved);
 
@@ -79,8 +79,6 @@ public class FindAllKurstypenCommandTest {
     private void deleteTestdata() {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-
-        KurstypDao kurstypDao = new KurstypDao(entityManager);
 
         for (Kurstyp kurstyp : kurstypenTestdata) {
             Kurstyp kurstypToBeRemoved = kurstypDao.findById(kurstyp.getKurstypId());

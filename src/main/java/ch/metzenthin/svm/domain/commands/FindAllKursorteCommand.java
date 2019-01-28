@@ -10,13 +10,13 @@ import java.util.List;
  */
 public class FindAllKursorteCommand extends GenericDaoCommand {
 
+    private final KursortDao kursortDao = new KursortDao();
+
     // output
     private List<Kursort> kursorteAll;
 
     @Override
     public void execute() {
-
-        KursortDao kursortDao = new KursortDao(entityManager);
         kursorteAll = kursortDao.findAll();
     }
 

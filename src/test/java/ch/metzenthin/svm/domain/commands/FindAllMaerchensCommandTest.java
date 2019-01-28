@@ -21,9 +21,11 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllMaerchensCommandTest {
 
+    private final MaerchenDao maerchenDao = new MaerchenDao();
+    private final Set<Maerchen> maerchenTestdata = new HashSet<>();
+
     private DB db;
     private CommandInvoker commandInvoker;
-    private Set<Maerchen> maerchenTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
@@ -64,8 +66,6 @@ public class FindAllMaerchensCommandTest {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
-        MaerchenDao maerchenDao = new MaerchenDao(entityManager);
-
         Maerchen maerchen1 = new Maerchen("1911/1912", "Gestiefelter Kater", 7);
         Maerchen maerchenSaved = maerchenDao.save(maerchen1);
         maerchenTestdata.add(maerchenSaved);
@@ -81,8 +81,6 @@ public class FindAllMaerchensCommandTest {
     private void deleteTestdata() {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-
-        MaerchenDao maerchenDao = new MaerchenDao(entityManager);
 
         for (Maerchen maerchen : maerchenTestdata) {
             Maerchen maerchenToBeRemoved = maerchenDao.findById(maerchen.getMaerchenId());

@@ -17,8 +17,8 @@ import static org.junit.Assert.*;
  */
 public class FindSemesterForSchuljahrSemesterbezeichnungCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private List<Semester> erfassteSemesters = new ArrayList<>();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final List<Semester> erfassteSemesters = new ArrayList<>();
 
     @Before
     public void setUp() {

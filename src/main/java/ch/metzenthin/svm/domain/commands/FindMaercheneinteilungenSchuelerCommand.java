@@ -11,23 +11,24 @@ import java.util.List;
  */
 public class FindMaercheneinteilungenSchuelerCommand extends GenericDaoCommand {
 
+    private final MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
+
     // input
     private Schueler schueler;
 
     // output
     private List<Maercheneinteilung> maercheneinteilungenFound;
 
-    public FindMaercheneinteilungenSchuelerCommand(Schueler schueler) {
+    FindMaercheneinteilungenSchuelerCommand(Schueler schueler) {
         this.schueler = schueler;
     }
 
     @Override
     public void execute() {
-        MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao(entityManager);
         maercheneinteilungenFound = maercheneinteilungDao.findMaercheneinteilungenSchueler(schueler);
     }
 
-    public List<Maercheneinteilung> getMaercheneinteilungenFound() {
+    List<Maercheneinteilung> getMaercheneinteilungenFound() {
         return maercheneinteilungenFound;
     }
 }

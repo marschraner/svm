@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class SaveOrUpdateLektionsgebuehrenCommand extends GenericDaoCommand {
 
+    private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
+
     // input
     private Lektionsgebuehren lektionsgebuehren;
     private Lektionsgebuehren lektionsgebuehrenOrigin;
@@ -25,7 +27,6 @@ public class SaveOrUpdateLektionsgebuehrenCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
         if (lektionsgebuehrenOrigin != null) {
             // Update von lektionsgebuehrenOrigin mit Werten von lektionsgebuehren
             lektionsgebuehrenOrigin.copyAttributesFrom(lektionsgebuehren);

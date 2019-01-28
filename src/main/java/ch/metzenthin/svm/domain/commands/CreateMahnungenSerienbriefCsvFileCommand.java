@@ -28,7 +28,7 @@ public class CreateMahnungenSerienbriefCsvFileCommand extends CreateListeCommand
     @Override
     public void execute() {
 
-        Character separator = ';';
+        char separator = ';';
 
         NachnameGratiskindFormatter nachnameGratiskindFormatter = new NachnameGratiskindFormatter();
 

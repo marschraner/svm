@@ -18,8 +18,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class CheckSemesterBereitsErfasstCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private List<Semester> bereitsErfassteSemesters = new ArrayList<>();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final List<Semester> bereitsErfassteSemesters = new ArrayList<>();
 
     @Before
     public void setUp() {

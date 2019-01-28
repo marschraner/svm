@@ -10,10 +10,6 @@ import javax.persistence.EntityManager;
  */
 public class AnmeldungDao extends GenericDao<Anmeldung, Integer> {
 
-    public AnmeldungDao(EntityManager entityManager) {
-        super(entityManager);
-    }
-
     @Override
     public Anmeldung save(Anmeldung anmeldung) {
         throw new NullPointerException("Operation not supported");
@@ -24,8 +20,9 @@ public class AnmeldungDao extends GenericDao<Anmeldung, Integer> {
         throw new NullPointerException("Operation not supported");
     }
 
-    public Schueler addToSchuelerAndSave(Anmeldung anmeldung, Schueler schueler) {
+    Schueler addToSchuelerAndSave(Anmeldung anmeldung, Schueler schueler) {
         schueler.addAnmeldung(anmeldung);
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.persist(schueler);
         entityManager.flush();
         entityManager.refresh(anmeldung);
@@ -35,6 +32,7 @@ public class AnmeldungDao extends GenericDao<Anmeldung, Integer> {
 
     public Schueler removeFromSchuelerAndUpdate(Anmeldung anmeldung, Schueler schueler) {
         schueler.deleteAnmeldung(anmeldung);
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.persist(schueler);
         entityManager.flush();
         entityManager.refresh(schueler);

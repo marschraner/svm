@@ -21,16 +21,15 @@ import static org.junit.Assert.*;
  */
 public class AngehoerigerDaoTest {
 
+    private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
+    private final AdresseDao adresseDao = new AdresseDao();
+
     private DB db;
-    private EntityManager entityManager;
-    private AngehoerigerDao angehoerigerDao;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
-        entityManager = db.getCurrentEntityManager();
-        angehoerigerDao = new AngehoerigerDao(entityManager);
     }
 
     @After
@@ -40,8 +39,8 @@ public class AngehoerigerDaoTest {
 
     @Test
     public void testFindById() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -59,8 +58,8 @@ public class AngehoerigerDaoTest {
 
     @Test
     public void testSave() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -97,11 +96,9 @@ public class AngehoerigerDaoTest {
 
     @Test
     public void testRemove() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
-
-            AdresseDao adresseDao = new AdresseDao(entityManager);
 
             // 2 Angehörige mit derselben Adresse erzeugen
             tx = entityManager.getTransaction();
@@ -150,8 +147,8 @@ public class AngehoerigerDaoTest {
 
     @Test
     public void testFindAngehoerige() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();

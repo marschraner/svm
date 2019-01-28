@@ -22,6 +22,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class SaveAngehoerigeCommandTest {
 
+    private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -70,8 +72,6 @@ public class SaveAngehoerigeCommandTest {
         // Delete
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-
-        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
 
         Angehoeriger angehoerigerToBeRemoved0 = angehoerigerDao.findById(savedAngehoeriger0.getPersonId());
         angehoerigerDao.remove(angehoerigerToBeRemoved0);

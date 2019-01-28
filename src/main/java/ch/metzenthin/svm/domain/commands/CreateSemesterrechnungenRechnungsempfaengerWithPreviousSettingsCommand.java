@@ -16,6 +16,9 @@ import java.util.Map;
  */
 public class CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand extends GenericDaoCommand {
 
+    private final SemesterDao semesterDao = new SemesterDao();
+    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
+
     // input
     private List<Angehoeriger> rechnungsempfaengers;
     private Semester currentSemester;
@@ -44,8 +47,6 @@ public class CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsComm
         findAllLektionsgebuehrenCommand.execute();
         Map<Integer, BigDecimal[]> lektionsgebuehrenMap = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllMap();
 
-        SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
-        SemesterDao semesterDao = new SemesterDao(entityManager);
         // Reload zur Verhinderung von Lazy Loading-Problem
         Semester currentSemesterReloaded = semesterDao.findById(currentSemester.getSemesterId());
 

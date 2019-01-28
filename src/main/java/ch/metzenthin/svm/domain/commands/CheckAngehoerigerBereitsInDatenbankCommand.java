@@ -31,6 +31,8 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
                                                 // - Abbrechen (-> Eingabe-GUI)
     }
 
+    private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
+
     // input
     private Angehoeriger angehoeriger;
     private final Angehoeriger angehoerigerToBeExcluded;
@@ -40,19 +42,17 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
     private List<Angehoeriger> angehoerigerFoundList;
     private Angehoeriger angehoerigerFound;
 
-    public CheckAngehoerigerBereitsInDatenbankCommand(Angehoeriger angehoeriger) {
+    CheckAngehoerigerBereitsInDatenbankCommand(Angehoeriger angehoeriger) {
         this(angehoeriger, null);
     }
 
-    public CheckAngehoerigerBereitsInDatenbankCommand(Angehoeriger angehoeriger, Angehoeriger angehoerigerToBeExcluded) {
+    CheckAngehoerigerBereitsInDatenbankCommand(Angehoeriger angehoeriger, Angehoeriger angehoerigerToBeExcluded) {
         this.angehoeriger = angehoeriger;
         this.angehoerigerToBeExcluded = angehoerigerToBeExcluded;
     }
 
     @Override
     public void execute() {
-
-        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
 
         // Abbruch, falls Vor- und/oder Nachname nicht gesetzt
         if (angehoeriger.getVorname() == null || angehoeriger.getVorname().trim().isEmpty() || angehoeriger.getNachname() == null || angehoeriger.getNachname().trim().isEmpty()) {
@@ -107,7 +107,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
         }
     }
 
-    public Angehoeriger getAngehoerigerFound() {
+    Angehoeriger getAngehoerigerFound() {
         return angehoerigerFound;
     }
 
@@ -115,7 +115,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoComman
         return result;
     }
 
-    public List<Angehoeriger> getAngehoerigerFoundList() {
+    List<Angehoeriger> getAngehoerigerFoundList() {
         return angehoerigerFoundList;
     }
 }

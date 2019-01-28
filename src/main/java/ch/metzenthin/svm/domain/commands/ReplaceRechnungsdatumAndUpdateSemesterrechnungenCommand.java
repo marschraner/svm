@@ -12,6 +12,8 @@ import java.util.List;
  */
 public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand extends GenericDaoCommand {
 
+    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
+
     // input
     private List<Semesterrechnung> semesterrechnungen;
     private Rechnungstyp rechnungstyp;
@@ -25,8 +27,6 @@ public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand extends Gen
 
     @Override
     public void execute() {
-        
-        SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
 
         for (Semesterrechnung semesterrechnung : semesterrechnungen) {
 

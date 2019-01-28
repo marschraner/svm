@@ -24,6 +24,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class AddDispensationToSchuelerAndSaveCommandTest {
 
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
     private boolean neusteZuoberst;
@@ -95,7 +97,6 @@ public class AddDispensationToSchuelerAndSaveCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
         Schueler schuelerToBeDeleted = schuelerDao.findById(schuelerSaved.getPersonId());
         schuelerDao.remove(schuelerToBeDeleted);
         entityManager.getTransaction().commit();

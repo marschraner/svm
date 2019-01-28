@@ -26,6 +26,9 @@ import static org.junit.Assert.assertEquals;
  */
 public class RemoveMitarbeiterCodeFromMitarbeiterCommandTest {
 
+    private final MitarbeiterDao mitarbeiterDao = new MitarbeiterDao();
+    private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -92,9 +95,7 @@ public class RemoveMitarbeiterCodeFromMitarbeiterCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
         Mitarbeiter mitarbeiterToBeDeleted = mitarbeiterDao.findById(mitarbeiterUpdated.getPersonId());
-        MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
         for (MitarbeiterCode mitarbeiterCode : erfassteMitarbeiterCodes) {
             MitarbeiterCode mitarbeiterCodeToBeDeleted = mitarbeiterCodeDao.findById(mitarbeiterCode.getCodeId());
             mitarbeiterCodeDao.removeFromMitarbeiterAndUpdate(mitarbeiterCodeToBeDeleted, mitarbeiterToBeDeleted);

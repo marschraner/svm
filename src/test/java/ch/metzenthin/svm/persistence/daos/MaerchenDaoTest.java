@@ -19,16 +19,14 @@ import static org.junit.Assert.*;
  */
 public class MaerchenDaoTest {
 
+    private final MaerchenDao maerchenDao = new MaerchenDao();
+
     private DB db;
-    private EntityManager entityManager;
-    private MaerchenDao maerchenDao;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
-        entityManager = db.getCurrentEntityManager();
-        maerchenDao = new MaerchenDao(entityManager);
     }
 
     @After
@@ -38,6 +36,7 @@ public class MaerchenDaoTest {
 
     @Test
     public void testFindById() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -62,6 +61,7 @@ public class MaerchenDaoTest {
 
     @Test
     public void save() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -90,8 +90,8 @@ public class MaerchenDaoTest {
 
     @Test
     public void testRemove() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -133,6 +133,7 @@ public class MaerchenDaoTest {
 
     @Test
     public void testFindAll() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();

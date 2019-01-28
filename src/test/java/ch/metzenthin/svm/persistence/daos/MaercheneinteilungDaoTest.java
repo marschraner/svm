@@ -27,20 +27,17 @@ import static org.junit.Assert.*;
  */
 public class MaercheneinteilungDaoTest {
 
-    private DB db;
-    private EntityManager entityManager;
-    private MaercheneinteilungDao maercheneinteilungDao;
-    private boolean neusteZuoberst;
+    private MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
 
+    private DB db;
+    private boolean neusteZuoberst;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
         Properties svmProperties = SvmProperties.getSvmProperties();
         neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
-        db = DBFactory.getInstance();
-        entityManager = db.getCurrentEntityManager();
-        maercheneinteilungDao = new MaercheneinteilungDao(entityManager);
     }
 
     @After
@@ -50,6 +47,7 @@ public class MaercheneinteilungDaoTest {
 
     @Test
     public void testFindById() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -106,6 +104,7 @@ public class MaercheneinteilungDaoTest {
 
     @Test
     public void testSave() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -150,8 +149,8 @@ public class MaercheneinteilungDaoTest {
 
     @Test
     public void testRemove() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -201,8 +200,8 @@ public class MaercheneinteilungDaoTest {
 
     @Test
     public void testFindMaercheneinteilungenSchueler() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();

@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
 
     // 1.
     @Test

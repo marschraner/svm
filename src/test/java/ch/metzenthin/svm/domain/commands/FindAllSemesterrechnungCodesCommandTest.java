@@ -21,9 +21,11 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllSemesterrechnungCodesCommandTest {
 
+    private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();
+    private final Set<SemesterrechnungCode> codesTestdata = new HashSet<>();
+
     private DB db;
     private CommandInvoker commandInvoker;
-    private Set<SemesterrechnungCode> codesTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
@@ -64,8 +66,6 @@ public class FindAllSemesterrechnungCodesCommandTest {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
-        SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao(entityManager);
-
         SemesterrechnungCode semesterrechnungCodeSaved = semesterrechnungCodeDao.save(new SemesterrechnungCode("2t", "Handrechnung Test", true));
         codesTestdata.add(semesterrechnungCodeSaved);
 
@@ -79,8 +79,6 @@ public class FindAllSemesterrechnungCodesCommandTest {
     private void deleteTestdata() {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-
-        SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao(entityManager);
 
         for (SemesterrechnungCode semesterrechnungCode : codesTestdata) {
             SemesterrechnungCode semesterrechnungCodeToBeRemoved = semesterrechnungCodeDao.findById(semesterrechnungCode.getCodeId());

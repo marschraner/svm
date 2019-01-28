@@ -26,17 +26,14 @@ import static org.junit.Assert.*;
  */
 public class SemesterrechnungDaoTest {
 
+    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
+
     private DB db;
-    private EntityManager entityManager;
-    private SemesterrechnungDao semesterrechnungDao;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
-        entityManager = db.getCurrentEntityManager();
-        semesterrechnungDao = new SemesterrechnungDao(entityManager);
-
     }
 
     @After
@@ -46,6 +43,7 @@ public class SemesterrechnungDaoTest {
 
     @Test
     public void testFindById() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -132,6 +130,7 @@ public class SemesterrechnungDaoTest {
 
     @Test
     public void testSave() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -202,8 +201,8 @@ public class SemesterrechnungDaoTest {
 
     @Test
     public void testRemove() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -281,8 +280,8 @@ public class SemesterrechnungDaoTest {
 
     @Test
     public void testFindSemesterrechnungenRechnungsempfaenger() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();

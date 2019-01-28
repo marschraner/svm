@@ -19,6 +19,8 @@ public class FindKurseCommand extends GenericDaoCommand {
         KEINE_KURSE_GEFUNDEN
     }
 
+    private final KursDao kursDao = new KursDao();
+
     // input
     private Semester semester;    // nullable
     private Wochentag wochentag;  // nullable
@@ -38,7 +40,6 @@ public class FindKurseCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        KursDao kursDao = new KursDao(entityManager);
         kurseFound = kursDao.findKurse(semester, wochentag, zeitBeginn, mitarbeiter);
         if (kurseFound.size() == 0) {
             result = Result.KEINE_KURSE_GEFUNDEN;

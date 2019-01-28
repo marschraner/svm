@@ -15,9 +15,11 @@ public class DeleteMitarbeiterCodeCommand extends GenericDaoCommand {
         LOESCHEN_ERFOLGREICH
     }
 
+    private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
+
     // input
     private List<MitarbeiterCode> mitarbeiterCodes;
-    int indexCodeToBeDeleted;
+    private int indexCodeToBeDeleted;
 
     // output
     private Result result;
@@ -29,7 +31,6 @@ public class DeleteMitarbeiterCodeCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
         MitarbeiterCode mitarbeiterCodeToBeDeleted = mitarbeiterCodes.get(indexCodeToBeDeleted);
         if (mitarbeiterCodeToBeDeleted.getMitarbeiters().size() > 0) {
             result = Result.CODE_VON_MITARBEITER_REFERENZIERT;

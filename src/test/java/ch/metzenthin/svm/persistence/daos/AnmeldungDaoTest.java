@@ -25,18 +25,15 @@ import static org.junit.Assert.*;
  */
 public class AnmeldungDaoTest {
 
+    private final AnmeldungDao anmeldungDao = new AnmeldungDao();
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+
     private DB db;
-    private EntityManager entityManager;
-    private AnmeldungDao anmeldungDao;
-    private SchuelerDao schuelerDao;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
-        entityManager = db.getCurrentEntityManager();
-        anmeldungDao = new AnmeldungDao(entityManager);
-        schuelerDao = new SchuelerDao(entityManager);
     }
 
     @After
@@ -46,6 +43,7 @@ public class AnmeldungDaoTest {
 
     @Test
     public void testFindById() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -86,6 +84,7 @@ public class AnmeldungDaoTest {
 
     @Test
     public void testAddToSchuelerAndSave() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -138,6 +137,7 @@ public class AnmeldungDaoTest {
 
     @Test
     public void testRemoveFromSchuelerAndUpdate() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();

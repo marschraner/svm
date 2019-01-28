@@ -11,23 +11,24 @@ import java.util.List;
  */
 public class FindKursanmeldungenSchuelerCommand extends GenericDaoCommand {
 
+    private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
+
     // input
     private Schueler schueler;
 
     // output
     private List<Kursanmeldung> kursanmeldungenFound;
 
-    public FindKursanmeldungenSchuelerCommand(Schueler schueler) {
+    FindKursanmeldungenSchuelerCommand(Schueler schueler) {
         this.schueler = schueler;
     }
 
     @Override
     public void execute() {
-        KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
         kursanmeldungenFound = kursanmeldungDao.findKursanmeldungenSchueler(schueler);
     }
 
-    public List<Kursanmeldung> getKursanmeldungenFound() {
+    List<Kursanmeldung> getKursanmeldungenFound() {
         return kursanmeldungenFound;
     }
 }

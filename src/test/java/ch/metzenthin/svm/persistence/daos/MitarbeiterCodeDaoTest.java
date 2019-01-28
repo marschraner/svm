@@ -24,18 +24,15 @@ import static org.junit.Assert.*;
  */
 public class MitarbeiterCodeDaoTest {
 
+    private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
+    private final MitarbeiterDao mitarbeiterDao = new MitarbeiterDao();
+
     private DB db;
-    private EntityManager entityManager;
-    private MitarbeiterCodeDao mitarbeiterCodeDao;
-    private MitarbeiterDao mitarbeiterDao;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
-        entityManager = db.getCurrentEntityManager();
-        mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
-        mitarbeiterDao = new MitarbeiterDao(entityManager);
     }
 
     @After
@@ -45,6 +42,7 @@ public class MitarbeiterCodeDaoTest {
 
     @Test
     public void testFindById() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -67,6 +65,7 @@ public class MitarbeiterCodeDaoTest {
 
     @Test
     public void save() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -93,8 +92,8 @@ public class MitarbeiterCodeDaoTest {
 
     @Test
     public void testRemove() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -136,6 +135,7 @@ public class MitarbeiterCodeDaoTest {
 
     @Test
     public void testAddToMitarbeiterAndSave() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -179,6 +179,7 @@ public class MitarbeiterCodeDaoTest {
 
     @Test
     public void testRemoveFromMitarbeiterAndUpdate() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -248,6 +249,7 @@ public class MitarbeiterCodeDaoTest {
 
     @Test
     public void testFindAll() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();

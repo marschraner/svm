@@ -15,8 +15,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class CheckCodeKuerzelBereitsInVerwendungCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private List<SchuelerCode> bereitsErfassteSchuelerCodes = new ArrayList<>();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final List<SchuelerCode> bereitsErfassteSchuelerCodes = new ArrayList<>();
 
     @Before
     public void setUp() {

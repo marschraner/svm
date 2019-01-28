@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class SaveOrUpdateKursanmeldungCommand extends GenericDaoCommand {
 
+    private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
+
     // input
     private Kursanmeldung kursanmeldung;
     private Kursanmeldung kursanmeldungOrigin;
@@ -30,7 +32,6 @@ public class SaveOrUpdateKursanmeldungCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
         if (kursanmeldungOrigin != null) {
             // Update von kurseinteilungOrigin mit Werten von kurseinteilung
             kursanmeldungOrigin.copyAttributesFrom(kursanmeldung);

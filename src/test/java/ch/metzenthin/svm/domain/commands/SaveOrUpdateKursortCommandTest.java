@@ -20,6 +20,8 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateKursortCommandTest {
 
+    private final KursortDao kursortDao = new KursortDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -75,7 +77,6 @@ public class SaveOrUpdateKursortCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        KursortDao kursortDao = new KursortDao(entityManager);
         for (Kursort kursort : kursorteSaved) {
             Kursort kursortToBeDeleted = kursortDao.findById(kursort.getKursortId());
             if (kursortToBeDeleted != null) {

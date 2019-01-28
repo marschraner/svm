@@ -20,9 +20,11 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllSemestersCommandTest {
 
+    private final SemesterDao semesterDao = new SemesterDao();
+    private final Set<Semester> semesterTestdata = new HashSet<>();
+
     private DB db;
     private CommandInvoker commandInvoker;
-    private Set<Semester> semesterTestdata = new HashSet<>();
 
     @Before
     public void setUp() throws Exception {
@@ -63,8 +65,6 @@ public class FindAllSemestersCommandTest {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
-        SemesterDao semesterDao = new SemesterDao(entityManager);
-
         Semester semester1 = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), new GregorianCalendar(2011, Calendar.OCTOBER, 5), new GregorianCalendar(2011, Calendar.OCTOBER, 17), new GregorianCalendar(2011, Calendar.DECEMBER, 21), new GregorianCalendar(2012, Calendar.JANUARY, 2));
         Semester semesterSaved = semesterDao.save(semester1);
         semesterTestdata.add(semesterSaved);
@@ -80,8 +80,6 @@ public class FindAllSemestersCommandTest {
     private void deleteTestdata() {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-
-        SemesterDao semesterDao = new SemesterDao(entityManager);
 
         for (Semester semester : semesterTestdata) {
             Semester semesterToBeRemoved = semesterDao.findById(semester.getSemesterId());

@@ -23,7 +23,7 @@ public class SetWordPageMarginsCommand extends GenericDaoCommand {
     private final int left;
     private final int right;
 
-    public SetWordPageMarginsCommand(WordprocessingMLPackage wordMLPackage, ObjectFactory objectFactory, int top, int bottom, int left, int right) {
+    SetWordPageMarginsCommand(WordprocessingMLPackage wordMLPackage, ObjectFactory objectFactory, int top, int bottom, int left, int right) {
         this.wordMLPackage = wordMLPackage;
         this.objectFactory = objectFactory;
         this.top = top;

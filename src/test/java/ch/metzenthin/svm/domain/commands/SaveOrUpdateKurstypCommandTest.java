@@ -20,6 +20,8 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateKurstypCommandTest {
 
+    private final KurstypDao kurstypDao = new KurstypDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -75,7 +77,6 @@ public class SaveOrUpdateKurstypCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        KurstypDao kurstypDao = new KurstypDao(entityManager);
         for (Kurstyp kurstyp : kurstypenSaved) {
             Kurstyp kurstypToBeDeleted = kurstypDao.findById(kurstyp.getKurstypId());
             if (kurstypToBeDeleted != null) {

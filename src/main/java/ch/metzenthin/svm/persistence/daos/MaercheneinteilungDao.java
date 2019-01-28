@@ -14,14 +14,11 @@ import java.util.List;
  */
 public class MaercheneinteilungDao extends GenericDao<Maercheneinteilung, MaercheneinteilungId> {
 
-    public MaercheneinteilungDao(EntityManager entityManager) {
-        super(entityManager);
-    }
-
     @Override
     public Maercheneinteilung save(Maercheneinteilung maercheneinteilung) {
         maercheneinteilung.getSchueler().getMaercheneinteilungen().add(maercheneinteilung);
         maercheneinteilung.getMaerchen().getMaercheneinteilungen().add(maercheneinteilung);
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.persist(maercheneinteilung);
         entityManager.flush();
         entityManager.refresh(maercheneinteilung);
@@ -32,11 +29,12 @@ public class MaercheneinteilungDao extends GenericDao<Maercheneinteilung, Maerch
     public void remove(Maercheneinteilung maercheneinteilung) {
         maercheneinteilung.getSchueler().getMaercheneinteilungen().remove(maercheneinteilung);
         maercheneinteilung.getMaerchen().getMaercheneinteilungen().remove(maercheneinteilung);
-        entityManager.remove(maercheneinteilung);
+        db.getCurrentEntityManager().remove(maercheneinteilung);
     }
 
     public List<Maercheneinteilung> findMaercheneinteilungenSchueler(Schueler schueler) {
-        TypedQuery<Maercheneinteilung> typedQuery = entityManager.createQuery("select m from Maercheneinteilung m where m.schueler.personId = :personId", Maercheneinteilung.class);
+        TypedQuery<Maercheneinteilung> typedQuery = db.getCurrentEntityManager().createQuery(
+                "select m from Maercheneinteilung m where m.schueler.personId = :personId", Maercheneinteilung.class);
         typedQuery.setParameter("personId", schueler.getPersonId());
         List<Maercheneinteilung> maercheneinteilungenFound = typedQuery.getResultList();
         // Sortieren gemäss compareTo in Maercheneinteilungen

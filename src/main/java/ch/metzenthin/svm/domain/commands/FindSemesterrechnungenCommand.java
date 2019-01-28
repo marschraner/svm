@@ -698,7 +698,7 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
     }
 
 
-    public List<Semesterrechnung> getSemesterrechnungenFound() {
+    List<Semesterrechnung> getSemesterrechnungenFound() {
         return semesterrechnungenFound;
     }
 }

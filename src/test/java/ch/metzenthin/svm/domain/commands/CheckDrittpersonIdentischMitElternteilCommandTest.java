@@ -13,7 +13,8 @@ import static org.junit.Assert.*;
  */
 public class CheckDrittpersonIdentischMitElternteilCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+
     private Angehoeriger mutter1;
     private Angehoeriger mutter2;
     private Angehoeriger vater1;

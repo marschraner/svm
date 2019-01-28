@@ -12,17 +12,17 @@ import java.util.List;
  */
 public class DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand extends GenericDaoCommand {
 
+    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
+
     // input
     private List<Semesterrechnung> semesterrechnungen;
 
-    public DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand(List<Semesterrechnung> semesterrechnungen) {
+    DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand(List<Semesterrechnung> semesterrechnungen) {
         this.semesterrechnungen = semesterrechnungen;
     }
 
     @Override
     public void execute() {
-
-        SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
         Iterator<Semesterrechnung> it = semesterrechnungen.iterator();
         while (it.hasNext()) {
             Semesterrechnung semesterrechnungToBeChecked = it.next();
@@ -41,6 +41,5 @@ public class DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand ext
                 checkIfAngehoerigerVerwaistAndDeleteCommand.execute();
             }
         }
-
     }
 }

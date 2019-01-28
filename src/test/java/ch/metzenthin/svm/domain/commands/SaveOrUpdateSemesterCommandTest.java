@@ -23,6 +23,8 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateSemesterCommandTest {
 
+    private final SemesterDao semesterDao = new SemesterDao();
+
     private DB db;
     private CommandInvoker commandInvoker;
 
@@ -88,7 +90,6 @@ public class SaveOrUpdateSemesterCommandTest {
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
-        SemesterDao semesterDao = new SemesterDao(entityManager);
         for (Semester semester : semestersSaved) {
             Semester semesterToBeDeleted = semesterDao.findById(semester.getSemesterId());
             if (semesterToBeDeleted != null) {

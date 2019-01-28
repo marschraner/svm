@@ -18,16 +18,14 @@ import static org.junit.Assert.*;
  */
 public class AdresseDaoTest {
 
+    private final AdresseDao adresseDao = new AdresseDao();
+
     private DB db;
-    private EntityManager entityManager;
-    private AdresseDao adresseDao;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
-        entityManager = db.getCurrentEntityManager();
-        adresseDao = new AdresseDao(entityManager);
     }
 
     @After
@@ -37,6 +35,7 @@ public class AdresseDaoTest {
 
     @Test
     public void testFindById() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -55,6 +54,7 @@ public class AdresseDaoTest {
 
     @Test
     public void testSave() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -73,8 +73,8 @@ public class AdresseDaoTest {
 
     @Test
     public void testRemove() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();

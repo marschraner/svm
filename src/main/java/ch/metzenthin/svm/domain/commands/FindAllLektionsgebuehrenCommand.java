@@ -13,14 +13,14 @@ import java.util.Map;
  */
 public class FindAllLektionsgebuehrenCommand extends GenericDaoCommand {
 
+    private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
+
     // output
     private List<Lektionsgebuehren> lektionsgebuehrenAllList;
     private Map<Integer, BigDecimal[]> lektionsgebuehrenAllMap = new HashMap<>();
 
     @Override
     public void execute() {
-
-        LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
         lektionsgebuehrenAllList = lektionsgebuehrenDao.findAll();
         for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenAllList) {
             BigDecimal[] lektionsgebuehrenArray = new BigDecimal[]{lektionsgebuehren.getBetrag1Kind(), lektionsgebuehren.getBetrag2Kinder(),
