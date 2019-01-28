@@ -1,7 +1,10 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Semester;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.*;
@@ -10,6 +13,8 @@ import java.util.*;
  * @author Martin Schraner
  */
 public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
+
+    private final DB db = DBFactory.getInstance();
 
     // input
     private Calendar monatJahr;
@@ -32,21 +37,23 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         determineStatistikMonatBeginn();
         determineStatistikMonatEnde();
         determineSemestersAll();
-        calculateAnzahlLektionen();
-        calculateAnzahlAnmeldungenSchueler();
-        calculateAnzahlAbmeldungenSchueler();
+        calculateAnzahlLektionen(entityManager);
+        calculateAnzahlAnmeldungenSchueler(entityManager);
+        calculateAnzahlAbmeldungenSchueler(entityManager);
         Semester previousSemesterBeforeSemesterbeginn = checkIfMonatContainsSemesterbeginnAndGetPreviousSemester();
         if (previousSemesterBeforeSemesterbeginn != null && !schuelerIdsAnzahlAnmeldungen.isEmpty()) {
             // Implizite Abmeldungen nur berücksichtigen, falls bereits Schüler fürs nächste Semester erfasst wurden
-            calculateAnzahlImpliziteAbmeldungenVorhergehendesSemesterSchueler(previousSemesterBeforeSemesterbeginn);
+            calculateAnzahlImpliziteAbmeldungenVorhergehendesSemesterSchueler(
+                    previousSemesterBeforeSemesterbeginn, entityManager);
         }
         calculateAnzahlAnmeldungenAbmeldungenTotal();
     }
 
-    private void calculateAnzahlLektionen() {
+    private void calculateAnzahlLektionen(EntityManager entityManager) {
         Semester relevantesSemester = getRelevantesSemester(semestersAll);
         if (relevantesSemester == null) {
             anzahllLektionen = 0;
@@ -60,7 +67,7 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
         anzahllLektionen = (int) (long) query.getSingleResult();
     }
 
-    private void calculateAnzahlAnmeldungenSchueler() {
+    private void calculateAnzahlAnmeldungenSchueler(EntityManager entityManager) {
         TypedQuery<Object[]> typedQuery = entityManager.createQuery("select k.schueler.personId, count(k) from Kursanmeldung k where" +
                 " (k.anmeldedatum >= :statistikMonatBeginn and k.anmeldedatum <= :statistikMonatEnde) group by k.schueler.personId", Object[].class);
         typedQuery.setParameter("statistikMonatBeginn", statistikMonatBeginn);
@@ -72,7 +79,7 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
         }
     }
 
-    private void calculateAnzahlAbmeldungenSchueler() {
+    private void calculateAnzahlAbmeldungenSchueler(EntityManager entityManager) {
         TypedQuery<Object[]> typedQuery = entityManager.createQuery("select k.schueler.personId, count(k) from Kursanmeldung k where" +
                 " (k.abmeldedatum >= :statistikMonatBeginn and k.abmeldedatum <= :statistikMonatEnde) group by k.schueler.personId", Object[].class);
         typedQuery.setParameter("statistikMonatBeginn", statistikMonatBeginn);
@@ -84,7 +91,7 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
         }
     }
 
-    private void calculateAnzahlImpliziteAbmeldungenVorhergehendesSemesterSchueler(Semester previousSemesterBeforeSemesterbeginn) {
+    private void calculateAnzahlImpliziteAbmeldungenVorhergehendesSemesterSchueler(Semester previousSemesterBeforeSemesterbeginn, EntityManager entityManager) {
         TypedQuery<Object[]> typedQuery = entityManager.createQuery("select k.schueler.personId, count(k) from Kursanmeldung k where" +
                 " k.kurs.semester.semesterId = :semesterIdPreviousSemester and k.abmeldedatum is null group by k.schueler.personId", Object[].class);
         typedQuery.setParameter("semesterIdPreviousSemester", previousSemesterBeforeSemesterbeginn.getSemesterId());
@@ -147,7 +154,6 @@ public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
 
     private void determineSemestersAll() {
         FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
-        findAllSemestersCommand.setEntityManager(entityManager);
         findAllSemestersCommand.execute();
         semestersAll = findAllSemestersCommand.getSemestersAll();
     }

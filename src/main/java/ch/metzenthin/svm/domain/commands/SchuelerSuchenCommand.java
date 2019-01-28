@@ -3,6 +3,8 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.apache.log4j.Logger;
 
@@ -23,6 +25,8 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
     public static final int MAX_RESULTS = 5000;
 
     private static final Logger LOGGER = Logger.getLogger(SchuelerSuchenCommand.class);
+
+    private final DB db = DBFactory.getInstance();
 
     // input
     private PersonSuchen person;
@@ -113,7 +117,8 @@ public class SchuelerSuchenCommand extends GenericDaoCommand {
 
         LOGGER.trace("JPQL Select-Statement: " + selectStatementSb.toString());
 
-        typedQuery = entityManager.createQuery(selectStatementSb.toString(), Schueler.class);
+        typedQuery = db.getCurrentEntityManager().createQuery(
+                selectStatementSb.toString(), Schueler.class);
 
         // Maximale Anzahl zurückzuliefernde Werte
         typedQuery.setMaxResults(MAX_RESULTS);

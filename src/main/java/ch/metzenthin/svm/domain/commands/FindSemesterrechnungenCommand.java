@@ -4,6 +4,8 @@ import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenSuchenModel;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
@@ -26,6 +28,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 public class FindSemesterrechnungenCommand extends GenericDaoCommand {
 
     private static final Logger LOGGER = Logger.getLogger(FindSemesterrechnungenCommand.class);
+
+    private final DB db = DBFactory.getInstance();
 
     // input
     private Semester semester;
@@ -155,7 +159,8 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
 
         LOGGER.trace("JPQL Select-Statement: " + selectStatementSb.toString());
 
-        typedQuery = entityManager.createQuery(selectStatementSb.toString(), Semesterrechnung.class);
+        typedQuery = db.getCurrentEntityManager().createQuery(
+                selectStatementSb.toString(), Semesterrechnung.class);
 
         // Suchparameter setzen
         setSelectionParameters();
@@ -609,7 +614,6 @@ public class FindSemesterrechnungenCommand extends GenericDaoCommand {
     private void filterSechsJahresRabatt() {
         if (sechsJahresRabattJaNeinVorrechnungSelected != SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.ALLE) {
             FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(semester);
-            findPreviousSemesterCommand.setEntityManager(entityManager);
             findPreviousSemesterCommand.execute();
             Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
             Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();

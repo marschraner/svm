@@ -26,16 +26,10 @@ public class CommandInvokerImpl implements CommandInvoker {
 
     @Override
     public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) {
-        EntityManager entityManager = db.getCurrentEntityManager();
-        execute(entityManager, genericDaoCommand);
-        return genericDaoCommand;
-    }
-
-    private static void execute(EntityManager entityManager, GenericDaoCommand genericDaoCommand) {
         LOGGER.trace("executeCommand aufgerufen");
-        genericDaoCommand.setEntityManager(entityManager);
         genericDaoCommand.execute();
         LOGGER.trace("executeCommand durchgeführt");
+        return genericDaoCommand;
     }
 
     @Override
@@ -44,7 +38,7 @@ public class CommandInvokerImpl implements CommandInvoker {
         EntityManager entityManager = db.getCurrentEntityManager();
         try {
             entityManager.getTransaction().begin();
-            execute(entityManager, genericDaoCommand);
+            genericDaoCommand.execute();
             entityManager.getTransaction().commit();
             LOGGER.trace("executeCommandAsTransaction durchgeführt");
         } catch (Throwable e) {

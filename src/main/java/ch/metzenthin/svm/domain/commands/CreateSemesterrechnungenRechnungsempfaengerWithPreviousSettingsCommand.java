@@ -37,13 +37,11 @@ public class CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsComm
 
         // 1. Vorhergehendes Semester
         FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
-        findPreviousSemesterCommand.setEntityManager(entityManager);
         findPreviousSemesterCommand.execute();
         Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
 
         // 2. Lektionsgebühren
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        findAllLektionsgebuehrenCommand.setEntityManager(entityManager);
         findAllLektionsgebuehrenCommand.execute();
         Map<Integer, BigDecimal[]> lektionsgebuehrenMap = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllMap();
 

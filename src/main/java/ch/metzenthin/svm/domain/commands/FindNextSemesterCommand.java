@@ -34,7 +34,6 @@ public class FindNextSemesterCommand extends GenericDaoCommand {
             semesterbezeichnungPreviousSemester = Semesterbezeichnung.ERSTES_SEMESTER;
         }
         FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
-        findAllSemestersCommand.setEntityManager(entityManager);
         findAllSemestersCommand.execute();
         List<Semester> semestersAll = findAllSemestersCommand.getSemestersAll();
         FindSemesterForSchuljahrSemesterbezeichnungCommand findSemesterForSchuljahrSemesterbezeichnungCommand = new FindSemesterForSchuljahrSemesterbezeichnungCommand(schuljahrNextSemester, semesterbezeichnungPreviousSemester, semestersAll);

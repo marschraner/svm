@@ -1,6 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.domain.model.MitarbeiterSuchenModel;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import org.apache.log4j.Logger;
@@ -16,6 +18,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 public class MitarbeiterSuchenCommand extends GenericDaoCommand {
 
     private static final Logger LOGGER = Logger.getLogger(MitarbeiterSuchenCommand.class);
+
+    private final DB db = DBFactory.getInstance();
 
     // input
     private String nachname;
@@ -64,7 +68,8 @@ public class MitarbeiterSuchenCommand extends GenericDaoCommand {
 
         LOGGER.trace("JPQL Select-Statement: " + selectStatementSb.toString());
 
-        typedQuery = entityManager.createQuery(selectStatementSb.toString(), Mitarbeiter.class);
+        typedQuery = db.getCurrentEntityManager().createQuery(
+                selectStatementSb.toString(), Mitarbeiter.class);
 
         // Suchparameter setzen
         setSelectionParameters();

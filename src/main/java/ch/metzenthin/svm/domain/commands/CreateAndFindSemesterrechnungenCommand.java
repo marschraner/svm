@@ -31,31 +31,26 @@ public class CreateAndFindSemesterrechnungenCommand extends GenericDaoCommand {
 
         // 1. Suche noch nicht erfasste Semesterrechnungen, d.h. Rechnungsempfänger ohne Semesterrechnung mit aktuellen Kursen (-> Nachrechnung) oder Kursen vom Vorsemester ohne Abmeldung (-> Vorrechnung)
         FindRechnungsempfaengerOhneSemesterrechnungenCommand findRechnungsempfaengerOhneSemesterrechnungenCommand = new FindRechnungsempfaengerOhneSemesterrechnungenCommand(semesterrechnungenSuchenModel.getSemester());
-        findRechnungsempfaengerOhneSemesterrechnungenCommand.setEntityManager(entityManager);
         findRechnungsempfaengerOhneSemesterrechnungenCommand.execute();
         List<Angehoeriger> rechnungsempfaengersOhneSemesterrechungen = findRechnungsempfaengerOhneSemesterrechnungenCommand.getRechnungsempfaengersFound();
 
         // 2. Erzeuge und speichere fehlende Semesterrechnungen
         CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand createSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand =
                 new CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand(rechnungsempfaengersOhneSemesterrechungen, semesterrechnungenSuchenModel.getSemester());
-        createSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand.setEntityManager(entityManager);
         createSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand.execute();
 
         // 3. Suche Semesterrechnungen
         FindSemesterrechnungenCommand findSemesterrechnungenCommand = new FindSemesterrechnungenCommand(semesterrechnungenSuchenModel);
-        findSemesterrechnungenCommand.setEntityManager(entityManager);
         findSemesterrechnungenCommand.execute();
         semesterrechnungenFound = findSemesterrechnungenCommand.getSemesterrechnungenFound();
 
         // 4. Lösche Semesterrechnungen mit verwaisten Rechnungsempfängern (Rechnungsempfänger ohne Schüler)
         DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand deleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand = new DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand(semesterrechnungenFound);
-        deleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand.setEntityManager(entityManager);
         deleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand.execute();
 
         // 5. Sortierung nach aktiven Schülern (analog zur Schueler-Spalte in SemesterrechnungenTableData)
         Semester currentSemester = semesterrechnungenSuchenModel.getSemester();
         FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
-        findPreviousSemesterCommand.setEntityManager(entityManager);
         findPreviousSemesterCommand.execute();
         Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
         Comparator<Semesterrechnung> semesterrechnungSortByAktiveSchuelerComparator

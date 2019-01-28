@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungDao;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
@@ -12,6 +14,7 @@ import java.util.List;
  */
 public class DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand extends GenericDaoCommand {
 
+    private final DB db = DBFactory.getInstance();
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
@@ -33,11 +36,10 @@ public class DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand ext
                     && semesterrechnungToBeChecked.getRechnungsdatumNachrechnung() == null) {
                 it.remove();
                 semesterrechnungDao.remove(semesterrechnungToBeChecked);
-                entityManager.flush();
+                db.getCurrentEntityManager().flush();
 
                 // Möglicherweise ist Rechnungsempfänger verwaist und kann gelöscht werden
                 CheckIfAngehoerigerVerwaistAndDeleteCommand checkIfAngehoerigerVerwaistAndDeleteCommand = new CheckIfAngehoerigerVerwaistAndDeleteCommand(rechnungsempfaenger);
-                checkIfAngehoerigerVerwaistAndDeleteCommand.setEntityManager(entityManager);
                 checkIfAngehoerigerVerwaistAndDeleteCommand.execute();
             }
         }

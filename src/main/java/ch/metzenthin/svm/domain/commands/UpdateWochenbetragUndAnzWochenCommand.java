@@ -35,7 +35,6 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
 
         // 1. Nachfolgendes Semester
         FindNextSemesterCommand findNextSemesterCommand = new FindNextSemesterCommand(currentSemester);
-        findNextSemesterCommand.setEntityManager(entityManager);
         findNextSemesterCommand.execute();
         Semester nextSemester = findNextSemesterCommand.getNextSemester();
 
@@ -53,7 +52,6 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
 
         // 3. Lektionsgebühren
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        findAllLektionsgebuehrenCommand.setEntityManager(entityManager);
         findAllLektionsgebuehrenCommand.execute();
         Map<Integer, BigDecimal[]> lektionsgebuehrenMap = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllMap();
 

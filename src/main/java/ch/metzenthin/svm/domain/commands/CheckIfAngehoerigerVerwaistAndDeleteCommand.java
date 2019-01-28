@@ -1,8 +1,11 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 /**
@@ -10,6 +13,7 @@ import javax.persistence.TypedQuery;
  */
 public class CheckIfAngehoerigerVerwaistAndDeleteCommand extends GenericDaoCommand {
 
+    private final DB db = DBFactory.getInstance();
     private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
 
     // input
@@ -32,6 +36,7 @@ public class CheckIfAngehoerigerVerwaistAndDeleteCommand extends GenericDaoComma
         }
 
         // Kommt Angehoeriger als Mutter, Vater oder Rechnungsempfänger vor?
+        EntityManager entityManager = db.getCurrentEntityManager();
         TypedQuery<Long> typedQuery = entityManager.createQuery("select count(s) from Schueler s where s.mutter.personId = :angehoerigerPersonId or s.vater.personId = :angehoerigerPersonId or s.rechnungsempfaenger.personId = :angehoerigerPersonId", Long.class);
         typedQuery.setParameter("angehoerigerPersonId", angehoeriger.getPersonId());
         if (typedQuery.getSingleResult() > 0) {

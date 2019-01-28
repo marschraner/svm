@@ -3,6 +3,8 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.domain.model.*;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
@@ -136,6 +138,8 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         }
     }
 
+    private final DB db = DBFactory.getInstance();
+
     // input
     private final SvmContext svmContext;
     private Schueler schueler;
@@ -241,7 +245,6 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         if (!skipCheckSchuelerBereitsInDatenbank) {
             skipCheckSchuelerBereitsInDatenbank = true;
             CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand = new CheckSchuelerBereitsInDatenbankCommand(schueler);
-            checkSchuelerBereitsInDatenbankCommand.setEntityManager(entityManager);
             checkSchuelerBereitsInDatenbankCommand.execute();
             Schueler schuelerFoundInDatabase = checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(schuelerOrigin);
             if (schuelerFoundInDatabase != null) {
@@ -265,7 +268,6 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         if ((schueler.getMutter() != null) && (!isBearbeiten() || !schueler.getMutter().isIdenticalWith(schuelerOrigin.getMutter())) && !skipCheckMutterBereitsInDatenbank) {
             skipCheckMutterBereitsInDatenbank = true;
             CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getMutter(), (isBearbeiten()) ? schuelerOrigin.getMutter() : null);
-            checkAngehoerigerBereitsInDatenbankCommand.setEntityManager(entityManager);
             checkAngehoerigerBereitsInDatenbankCommand.execute();
             switch (checkAngehoerigerBereitsInDatenbankCommand.getResult()) {
                 case EINTRAG_WIRD_MUTIERT:
@@ -294,7 +296,6 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         if ((schueler.getVater() != null) && (!isBearbeiten() || !schueler.getVater().isIdenticalWith(schuelerOrigin.getVater())) && !skipCheckVaterBereitsInDatenbank) {
             skipCheckVaterBereitsInDatenbank = true;
             CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getVater(), (isBearbeiten()) ? schuelerOrigin.getVater() : null);
-            checkAngehoerigerBereitsInDatenbankCommand.setEntityManager(entityManager);
             checkAngehoerigerBereitsInDatenbankCommand.execute();
             switch (checkAngehoerigerBereitsInDatenbankCommand.getResult()) {
                 case EINTRAG_WIRD_MUTIERT:
@@ -323,7 +324,6 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         if (isRechnungsempfaengerDrittperson() && (!isBearbeiten() || !schueler.getRechnungsempfaenger().isIdenticalWith(schuelerOrigin.getRechnungsempfaenger())) && !skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank) {
             skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank = true;
             CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getRechnungsempfaenger(), (isBearbeiten()) ? schuelerOrigin.getRechnungsempfaenger() : null);
-            checkAngehoerigerBereitsInDatenbankCommand.setEntityManager(entityManager);
             checkAngehoerigerBereitsInDatenbankCommand.execute();
             switch (checkAngehoerigerBereitsInDatenbankCommand.getResult()) {
                 case EINTRAG_WIRD_MUTIERT:
@@ -429,7 +429,6 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
         // 10. Schüler speichern
         Schueler schuelerToSave = prepareSchuelerForSave();
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schuelerToSave);
-        saveSchuelerCommand.setEntityManager(entityManager);
         saveSchuelerCommand.execute();
 
         // 11. Ggf. Adress- und Festnetzänderungen für Geschwister speichern
@@ -439,14 +438,13 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
                 geschwister.getAdresse().copyAttributesFrom(schueler.getAdresse());
                 geschwister.setFestnetz(schueler.getFestnetz());
                 saveSchuelerCommand = new SaveSchuelerCommand(geschwister);
-                saveSchuelerCommand.setEntityManager(entityManager);
                 saveSchuelerCommand.execute();
             }
         }
 
         // 12. Lösche ggf. verwaiste Angehörige
         if (isBearbeiten()) {
-            entityManager.flush();
+            db.getCurrentEntityManager().flush();
             checkIfAngehoerigeVerwaistAndDelete();
         }
 
@@ -475,17 +473,14 @@ public class ValidateSchuelerCommand extends GenericDaoCommand {
     private void checkIfAngehoerigeVerwaistAndDelete() {
         if (rechnungsempfaengerOrigin != null && (mutterOrigin == null || !mutterOrigin.isIdenticalWith(rechnungsempfaengerOrigin)) && (vaterOrigin == null || !vaterOrigin.isIdenticalWith(rechnungsempfaengerOrigin))) {
             CheckIfAngehoerigerVerwaistAndDeleteCommand checkIfAngehoerigerVerwaistAndDeleteCommand = new CheckIfAngehoerigerVerwaistAndDeleteCommand(rechnungsempfaengerOrigin);
-            checkIfAngehoerigerVerwaistAndDeleteCommand.setEntityManager(entityManager);
             checkIfAngehoerigerVerwaistAndDeleteCommand.execute();
         }
         if (mutterOrigin != null) {
             CheckIfAngehoerigerVerwaistAndDeleteCommand checkIfAngehoerigerVerwaistAndDeleteCommand = new CheckIfAngehoerigerVerwaistAndDeleteCommand(mutterOrigin);
-            checkIfAngehoerigerVerwaistAndDeleteCommand.setEntityManager(entityManager);
             checkIfAngehoerigerVerwaistAndDeleteCommand.execute();
         }
         if (vaterOrigin != null) {
             CheckIfAngehoerigerVerwaistAndDeleteCommand checkIfAngehoerigerVerwaistAndDeleteCommand = new CheckIfAngehoerigerVerwaistAndDeleteCommand(vaterOrigin);
-            checkIfAngehoerigerVerwaistAndDeleteCommand.setEntityManager(entityManager);
             checkIfAngehoerigerVerwaistAndDeleteCommand.execute();
         }
     }
