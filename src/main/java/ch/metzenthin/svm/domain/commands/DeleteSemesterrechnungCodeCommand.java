@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteSemesterrechnungCodeCommand extends GenericDaoCommand {
+public class DeleteSemesterrechnungCodeCommand implements Command {
 
     public enum Result {
         CODE_VON_SEMESTERRECHNUNGEN_REFERENZIERT,

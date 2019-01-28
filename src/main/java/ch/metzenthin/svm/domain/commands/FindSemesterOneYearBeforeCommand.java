@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-class FindSemesterOneYearBeforeCommand extends GenericDaoCommand {
+class FindSemesterOneYearBeforeCommand implements Command {
 
     // input
     private Semester currentSemester;

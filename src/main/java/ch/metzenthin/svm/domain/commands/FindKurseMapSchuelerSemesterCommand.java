@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * @author Martin Schraner
  */
-public class FindKurseMapSchuelerSemesterCommand extends GenericDaoCommand {
+public class FindKurseMapSchuelerSemesterCommand implements Command {
 
     private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
 

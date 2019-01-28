@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class CheckAngehoerigerBereitsInDatenbankCommand extends GenericDaoCommand {
+public class CheckAngehoerigerBereitsInDatenbankCommand implements Command {
 
     enum Result {
         VORNAME_NACHNAME_FEHLEN,

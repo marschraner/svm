@@ -25,7 +25,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 /**
  * @author Martin Schraner
  */
-public class FindSemesterrechnungenCommand extends GenericDaoCommand {
+public class FindSemesterrechnungenCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(FindSemesterrechnungenCommand.class);
 

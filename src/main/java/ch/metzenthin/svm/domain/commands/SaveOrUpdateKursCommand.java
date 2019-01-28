@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateKursCommand extends GenericDaoCommand {
+public class SaveOrUpdateKursCommand implements Command {
 
     private final KursDao kursDao = new KursDao();
 

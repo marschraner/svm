@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteKursCommand extends GenericDaoCommand {
+public class DeleteKursCommand implements Command {
 
     private final KursDao kursDao = new KursDao();
     private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();

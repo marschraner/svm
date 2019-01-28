@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateMaerchenCommand extends GenericDaoCommand {
+public class SaveOrUpdateMaerchenCommand implements Command {
 
     private final MaerchenDao maerchenDao = new MaerchenDao();
 

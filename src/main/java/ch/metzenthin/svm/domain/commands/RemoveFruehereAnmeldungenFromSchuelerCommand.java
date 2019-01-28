@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class RemoveFruehereAnmeldungenFromSchuelerCommand extends GenericDaoCommand {
+public class RemoveFruehereAnmeldungenFromSchuelerCommand implements Command {
 
     private final AnmeldungDao anmeldungDao = new AnmeldungDao();
 

@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 /**
  * @author Martin Schraner
  */
-public class CheckIfAngehoerigerVerwaistAndDeleteCommand extends GenericDaoCommand {
+public class CheckIfAngehoerigerVerwaistAndDeleteCommand implements Command {
 
     private final DB db = DBFactory.getInstance();
     private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();

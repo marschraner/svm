@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindAllMitarbeitersCommand extends GenericDaoCommand {
+public class FindAllMitarbeitersCommand implements Command {
 
     private final MitarbeiterDao mitarbeiterDao = new MitarbeiterDao();
 

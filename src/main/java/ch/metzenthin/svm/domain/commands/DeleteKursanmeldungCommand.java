@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteKursanmeldungCommand extends GenericDaoCommand {
+public class DeleteKursanmeldungCommand implements Command {
 
     private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
 

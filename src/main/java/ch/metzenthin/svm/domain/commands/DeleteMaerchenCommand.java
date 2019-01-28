@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteMaerchenCommand extends GenericDaoCommand {
+public class DeleteMaerchenCommand implements Command {
 
     public enum Result {
         MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT,

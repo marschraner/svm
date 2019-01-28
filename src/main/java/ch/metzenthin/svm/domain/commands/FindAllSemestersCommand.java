@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindAllSemestersCommand extends GenericDaoCommand {
+public class FindAllSemestersCommand implements Command {
 
     private final SemesterDao semesterDao = new SemesterDao();
 

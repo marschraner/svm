@@ -6,7 +6,7 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 /**
  * @author Martin Schraner
  */
-public class DeleteSchuelerCommand extends GenericDaoCommand {
+public class DeleteSchuelerCommand implements Command {
 
     public enum Result {
         SCHUELER_IN_KURSE_EINGESCHRIEBEN,

@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * @author Hans Stamm
  */
-public class ValidateSchuelerCommand extends GenericDaoCommand {
+public class ValidateSchuelerCommand implements Command {
 
     public enum Result {
         SCHUELER_BEREITS_IN_DATENBANK,

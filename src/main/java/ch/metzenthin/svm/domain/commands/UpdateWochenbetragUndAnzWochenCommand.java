@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * @author Martin Schraner
  */
-public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
+public class UpdateWochenbetragUndAnzWochenCommand implements Command {
 
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 

@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * @author Martin Schraner
  */
-public class UpdateAnzWochenSemesterrechnungenCommand extends GenericDaoCommand {
+public class UpdateAnzWochenSemesterrechnungenCommand implements Command {
 
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 

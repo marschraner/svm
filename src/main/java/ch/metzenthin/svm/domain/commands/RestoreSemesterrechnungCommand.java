@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class RestoreSemesterrechnungCommand extends GenericDaoCommand {
+public class RestoreSemesterrechnungCommand implements Command {
 
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 

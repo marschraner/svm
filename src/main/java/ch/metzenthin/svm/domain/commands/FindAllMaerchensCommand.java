@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindAllMaerchensCommand extends GenericDaoCommand {
+public class FindAllMaerchensCommand implements Command {
 
     private final MaerchenDao maerchenDao = new MaerchenDao();
 

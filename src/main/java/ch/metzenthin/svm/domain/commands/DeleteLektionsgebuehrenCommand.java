@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteLektionsgebuehrenCommand extends GenericDaoCommand {
+public class DeleteLektionsgebuehrenCommand implements Command {
 
     private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
 

@@ -11,7 +11,7 @@ import java.sql.Time;
 /**
  * @author Martin Schraner
  */
-public class FindKursCommand extends GenericDaoCommand {
+public class FindKursCommand implements Command {
 
     public enum Result {
         KURS_GEFUNDEN,

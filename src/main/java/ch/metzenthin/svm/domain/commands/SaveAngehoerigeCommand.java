@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveAngehoerigeCommand extends GenericDaoCommand {
+public class SaveAngehoerigeCommand implements Command {
 
     private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
 

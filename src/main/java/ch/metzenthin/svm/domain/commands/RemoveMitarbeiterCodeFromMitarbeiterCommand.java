@@ -7,7 +7,7 @@ import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 /**
  * @author Martin Schraner
  */
-public class RemoveMitarbeiterCodeFromMitarbeiterCommand extends GenericDaoCommand {
+public class RemoveMitarbeiterCodeFromMitarbeiterCommand implements Command {
 
     private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
 

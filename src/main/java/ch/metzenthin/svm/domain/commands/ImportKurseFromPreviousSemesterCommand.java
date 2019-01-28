@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
+public class ImportKurseFromPreviousSemesterCommand implements Command {
 
     private final KursDao kursDao = new KursDao();
     private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();

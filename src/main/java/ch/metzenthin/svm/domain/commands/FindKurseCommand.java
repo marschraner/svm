@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindKurseCommand extends GenericDaoCommand {
+public class FindKurseCommand implements Command {
 
     public enum Result {
         KURSE_GEFUNDEN,

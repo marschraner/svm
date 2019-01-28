@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteElternmithilfeCodeCommand extends GenericDaoCommand {
+public class DeleteElternmithilfeCodeCommand implements Command {
 
     public enum Result {
         CODE_VON_MAERCHENEINTEILUNGEN_REFERENZIERT,

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteSemesterrechnungLogicallyCommand extends GenericDaoCommand {
+public class DeleteSemesterrechnungLogicallyCommand implements Command {
 
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 

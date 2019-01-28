@@ -20,7 +20,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 /**
  * @author Martin Schraner
  */
-public class SchuelerSuchenCommand extends GenericDaoCommand {
+public class SchuelerSuchenCommand implements Command {
 
     public static final int MAX_RESULTS = 5000;
 

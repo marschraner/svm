@@ -16,7 +16,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateMitarbeiterCommand extends GenericDaoCommand {
+public class SaveOrUpdateMitarbeiterCommand implements Command {
 
     private final MitarbeiterDao mitarbeiterDao = new MitarbeiterDao();
     private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();

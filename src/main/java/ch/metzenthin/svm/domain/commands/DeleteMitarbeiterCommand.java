@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteMitarbeiterCommand extends GenericDaoCommand {
+public class DeleteMitarbeiterCommand implements Command {
 
     public enum Result {
         MITARBEITER_VON_KURS_REFERENZIERT,

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindMaercheneinteilungenSchuelerCommand extends GenericDaoCommand {
+public class FindMaercheneinteilungenSchuelerCommand implements Command {
 
     private final MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
 

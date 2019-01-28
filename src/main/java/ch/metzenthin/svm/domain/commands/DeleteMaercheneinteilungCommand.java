@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteMaercheneinteilungCommand extends GenericDaoCommand {
+public class DeleteMaercheneinteilungCommand implements Command {
 
     private final MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
 

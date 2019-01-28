@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateSemesterrechnungCommand extends GenericDaoCommand {
+public class SaveOrUpdateSemesterrechnungCommand implements Command {
 
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
     private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();

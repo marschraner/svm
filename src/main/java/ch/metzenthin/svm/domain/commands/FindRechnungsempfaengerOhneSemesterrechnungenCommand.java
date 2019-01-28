@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindRechnungsempfaengerOhneSemesterrechnungenCommand extends GenericDaoCommand {
+public class FindRechnungsempfaengerOhneSemesterrechnungenCommand implements Command {
 
     private final DB db = DBFactory.getInstance();
 

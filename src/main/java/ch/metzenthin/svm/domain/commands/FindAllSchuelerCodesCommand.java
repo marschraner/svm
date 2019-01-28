@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindAllSchuelerCodesCommand extends GenericDaoCommand {
+public class FindAllSchuelerCodesCommand implements Command {
 
     private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
 

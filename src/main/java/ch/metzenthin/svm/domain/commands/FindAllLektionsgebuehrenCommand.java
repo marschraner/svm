@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * @author Martin Schraner
  */
-public class FindAllLektionsgebuehrenCommand extends GenericDaoCommand {
+public class FindAllLektionsgebuehrenCommand implements Command {
 
     private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
 

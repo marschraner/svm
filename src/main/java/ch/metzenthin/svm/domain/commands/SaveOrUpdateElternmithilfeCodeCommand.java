@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateElternmithilfeCodeCommand extends GenericDaoCommand {
+public class SaveOrUpdateElternmithilfeCodeCommand implements Command {
 
     private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
 

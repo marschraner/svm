@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindSemesterrechnungenSemesterCommand extends GenericDaoCommand {
+public class FindSemesterrechnungenSemesterCommand implements Command {
 
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 

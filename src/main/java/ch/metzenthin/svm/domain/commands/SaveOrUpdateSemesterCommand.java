@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateSemesterCommand extends GenericDaoCommand {
+public class SaveOrUpdateSemesterCommand implements Command {
 
     private final SemesterDao semesterDao = new SemesterDao();
 

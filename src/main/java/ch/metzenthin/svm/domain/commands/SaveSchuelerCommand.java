@@ -6,7 +6,7 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 /**
  * @author Hans Stamm
  */
-public class SaveSchuelerCommand extends GenericDaoCommand {
+public class SaveSchuelerCommand implements Command {
 
     private final SchuelerDao schuelerDao = new SchuelerDao();
 

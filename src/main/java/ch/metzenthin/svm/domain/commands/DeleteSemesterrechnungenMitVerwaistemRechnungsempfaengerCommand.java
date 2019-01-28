@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand extends GenericDaoCommand {
+public class DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand implements Command {
 
     private final DB db = DBFactory.getInstance();
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();

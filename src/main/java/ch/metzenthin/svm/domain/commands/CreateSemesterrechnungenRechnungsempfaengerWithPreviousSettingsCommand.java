@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @author Martin Schraner
  */
-public class CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand extends GenericDaoCommand {
+public class CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand implements Command {
 
     private final SemesterDao semesterDao = new SemesterDao();
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();

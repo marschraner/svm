@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindAllKursorteCommand extends GenericDaoCommand {
+public class FindAllKursorteCommand implements Command {
 
     private final KursortDao kursortDao = new KursortDao();
 

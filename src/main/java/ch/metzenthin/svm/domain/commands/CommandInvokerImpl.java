@@ -20,39 +20,33 @@ public class CommandInvokerImpl implements CommandInvoker {
 
     @Override
     public Command executeCommand(Command command) {
+        LOGGER.trace("executeCommand aufgerufen");
         command.execute();
+        LOGGER.trace("executeCommand durchgeführt");
         return command;
     }
 
     @Override
-    public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) {
-        LOGGER.trace("executeCommand aufgerufen");
-        genericDaoCommand.execute();
-        LOGGER.trace("executeCommand durchgeführt");
-        return genericDaoCommand;
-    }
-
-    @Override
-    public GenericDaoCommand executeCommandAsTransaction(GenericDaoCommand genericDaoCommand) {
+    public Command executeCommandAsTransaction(Command command) {
         LOGGER.trace("executeCommandAsTransaction aufgerufen");
         EntityManager entityManager = db.getCurrentEntityManager();
         try {
             entityManager.getTransaction().begin();
-            genericDaoCommand.execute();
+            command.execute();
             entityManager.getTransaction().commit();
             LOGGER.trace("executeCommandAsTransaction durchgeführt");
         } catch (Throwable e) {
-            LOGGER.error("Fehler in executeCommandAsTransaction(GenericDaoCommand)", e);
+            LOGGER.error("Fehler in executeCommandAsTransaction(Command)", e);
             if ((entityManager != null) && entityManager.isOpen() && entityManager.getTransaction().isActive()) {
-                LOGGER.trace("Rollback wird durchgeführt executeCommandAsTransaction(GenericDaoCommand)", e);
+                LOGGER.trace("Rollback wird durchgeführt executeCommandAsTransaction(Command)", e);
                 entityManager.getTransaction().rollback();
-                LOGGER.trace("Rollback ist durchgeführt executeCommandAsTransaction(GenericDaoCommand)", e);
+                LOGGER.trace("Rollback ist durchgeführt executeCommandAsTransaction(Command)", e);
             }
             if (e instanceof StaleObjectStateException || e instanceof OptimisticLockException) {
                 throw new SvmRuntimeException("Speichern / löschen fehlgeschlagen, da das Objekt inzwischen auf der Datenbank verändert wurde.", e);
             }
             throw e;
         }
-        return genericDaoCommand;
+        return command;
     }
 }

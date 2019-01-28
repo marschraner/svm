@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class CheckSchuelerBereitsInDatenbankCommand extends GenericDaoCommand {
+public class CheckSchuelerBereitsInDatenbankCommand implements Command {
 
     private final SchuelerDao schuelerDao = new SchuelerDao();
 

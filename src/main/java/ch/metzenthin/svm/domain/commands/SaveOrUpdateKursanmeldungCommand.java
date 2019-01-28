@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateKursanmeldungCommand extends GenericDaoCommand {
+public class SaveOrUpdateKursanmeldungCommand implements Command {
 
     private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
 

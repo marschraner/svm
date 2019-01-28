@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteSemesterCommand extends GenericDaoCommand {
+public class DeleteSemesterCommand implements Command {
 
     public enum Result {
         SEMESTER_VON_KURS_REFERENZIERT,

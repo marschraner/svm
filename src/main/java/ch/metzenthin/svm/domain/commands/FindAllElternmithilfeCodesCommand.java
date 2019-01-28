@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindAllElternmithilfeCodesCommand extends GenericDaoCommand {
+public class FindAllElternmithilfeCodesCommand implements Command {
 
     private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
 

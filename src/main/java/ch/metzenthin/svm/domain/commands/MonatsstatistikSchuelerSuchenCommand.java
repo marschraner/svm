@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class MonatsstatistikSchuelerSuchenCommand extends GenericDaoCommand {
+public class MonatsstatistikSchuelerSuchenCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(MonatsstatistikSchuelerSuchenCommand.class);
 

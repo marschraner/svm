@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindKursanmeldungenSchuelerCommand extends GenericDaoCommand {
+public class FindKursanmeldungenSchuelerCommand implements Command {
 
     private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
 

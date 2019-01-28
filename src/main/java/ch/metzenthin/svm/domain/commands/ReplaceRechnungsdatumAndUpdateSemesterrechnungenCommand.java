@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand extends GenericDaoCommand {
+public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand implements Command {
 
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 

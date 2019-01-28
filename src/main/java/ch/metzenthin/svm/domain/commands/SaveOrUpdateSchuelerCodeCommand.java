@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateSchuelerCodeCommand extends GenericDaoCommand {
+public class SaveOrUpdateSchuelerCodeCommand implements Command {
 
     private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
 

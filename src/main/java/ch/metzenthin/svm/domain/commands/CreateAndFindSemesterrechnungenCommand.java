@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class CreateAndFindSemesterrechnungenCommand extends GenericDaoCommand {
+public class CreateAndFindSemesterrechnungenCommand implements Command {
 
     // input
     private SemesterrechnungenSuchenModel semesterrechnungenSuchenModel;

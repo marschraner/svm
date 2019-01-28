@@ -15,7 +15,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 /**
  * @author Martin Schraner
  */
-public class MitarbeiterSuchenCommand extends GenericDaoCommand {
+public class MitarbeiterSuchenCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(MitarbeiterSuchenCommand.class);
 

@@ -13,7 +13,7 @@ import java.math.BigInteger;
 /**
  * @author Martin Schraner
  */
-public class SetWordPageMarginsCommand extends GenericDaoCommand {
+public class SetWordPageMarginsCommand implements Command {
 
     // input
     private final WordprocessingMLPackage wordMLPackage;

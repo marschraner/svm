@@ -6,7 +6,7 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 /**
  * @author Martin Schraner
  */
-public class RemoveDispensationFromSchuelerCommand extends GenericDaoCommand {
+public class RemoveDispensationFromSchuelerCommand implements Command {
 
     private final DispensationDao dispensationDao = new DispensationDao();
 

@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * @author Martin Schraner
  */
-public class CalculateMonatsstatistikKurseCommand extends GenericDaoCommand {
+public class CalculateMonatsstatistikKurseCommand implements Command {
 
     private final DB db = DBFactory.getInstance();
 

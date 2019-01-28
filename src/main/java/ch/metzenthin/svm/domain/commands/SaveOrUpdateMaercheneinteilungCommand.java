@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateMaercheneinteilungCommand extends GenericDaoCommand {
+public class SaveOrUpdateMaercheneinteilungCommand implements Command {
 
     private final  MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
     private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();

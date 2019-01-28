@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindNextSemesterCommand extends GenericDaoCommand {
+public class FindNextSemesterCommand implements Command {
 
     // input
     private Semester currentSemester;
