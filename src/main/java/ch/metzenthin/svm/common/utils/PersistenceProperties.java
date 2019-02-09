@@ -11,14 +11,20 @@ public class PersistenceProperties {
         Properties svmProperties = SvmProperties.getSvmProperties();
         String dbUrlHostname = svmProperties.getProperty(SvmProperties.KEY_DB_URL_HOSTNAME);
         String dbUrlPort = svmProperties.getProperty(SvmProperties.KEY_DB_URL_PORT);
-        if (dbUrlHostname == null || dbUrlHostname.isEmpty()) {
+        String dbUrlOptions = svmProperties.getProperty(SvmProperties.KEY_DB_URL_OPTIONS);
+        if (dbUrlHostname == null || dbUrlHostname.trim().isEmpty()) {
             dbUrlHostname = "localhost";
         }
-        if (dbUrlPort == null || dbUrlPort.isEmpty()) {
+        if (dbUrlPort == null || dbUrlPort.trim().isEmpty()) {
             dbUrlPort = "3306";
         }
+        if (dbUrlOptions == null || dbUrlOptions.trim().isEmpty()) {
+            dbUrlOptions = "";
+        } else {
+            dbUrlOptions = "?" + dbUrlOptions.trim();
+        }
         Properties persistenceProperties = new Properties();
-        persistenceProperties.put("javax.persistence.jdbc.url", "jdbc:mysql://" + dbUrlHostname.trim() + ":" + dbUrlPort.trim() + "/svm");
+        persistenceProperties.put("javax.persistence.jdbc.url", "jdbc:mysql://" + dbUrlHostname.trim() + ":" + dbUrlPort.trim() + "/svm" + dbUrlOptions);
         return persistenceProperties;
     }
 
