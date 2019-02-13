@@ -16,7 +16,10 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateMitarbeiterCommand extends GenericDaoCommand {
+public class SaveOrUpdateMitarbeiterCommand implements Command {
+
+    private final MitarbeiterDao mitarbeiterDao = new MitarbeiterDao();
+    private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
 
     // input
     private Mitarbeiter mitarbeiter;
@@ -41,7 +44,6 @@ public class SaveOrUpdateMitarbeiterCommand extends GenericDaoCommand {
         if (isSetAdresse()) {
             mitarbeiter.setAdresse(adresse);
         }
-        MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
         if (mitarbeiterOrigin != null) {
             // Update von codeOrigin mit Werten von code
             mitarbeiterOrigin.copyAttributesFrom(mitarbeiter);
@@ -73,7 +75,6 @@ public class SaveOrUpdateMitarbeiterCommand extends GenericDaoCommand {
         if (mitarbeiterCodes == null) {
             return;
         }
-        MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
         for (MitarbeiterCode mitarbeiterCode : mitarbeiterCodes) {
             mitarbeiterSaved = mitarbeiterCodeDao.addToMitarbeiterAndSave(mitarbeiterCode, mitarbeiterSaved);
         }
@@ -83,7 +84,6 @@ public class SaveOrUpdateMitarbeiterCommand extends GenericDaoCommand {
         if (mitarbeiterCodes == null) {
             return;
         }
-        MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
         Set<MitarbeiterCode> mitarbeiterCodesOrigin = mitarbeiterOrigin.getMitarbeiterCodes();
         for (MitarbeiterCode mitarbeiterCode : mitarbeiterCodes) {
             boolean found = false;
@@ -103,7 +103,6 @@ public class SaveOrUpdateMitarbeiterCommand extends GenericDaoCommand {
         if (mitarbeiterCodes == null) {
             return;
         }
-        MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
         Set<MitarbeiterCode> mitarbeiterCodesOrigin = mitarbeiterOrigin.getMitarbeiterCodes();
         Iterator<MitarbeiterCode> it = mitarbeiterCodesOrigin.iterator();
         while (it.hasNext()) {

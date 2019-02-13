@@ -2,7 +2,8 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -10,9 +11,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -27,22 +25,22 @@ import static org.junit.Assert.assertNull;
  */
 public class DeleteSchuelerCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+    private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
+
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        commandInvoker.openSession();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSession();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
@@ -104,18 +102,7 @@ public class DeleteSchuelerCommandTest {
         commandInvoker.executeCommandAsTransaction(deleteSchuelerCodeCommand);
 
         // Prüfen, ob Schüler und Vater gelöscht
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-            assertNull(schuelerDao.findById(schuelerId));
-            AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
-            assertNull(angehoerigerDao.findById(vaterId));
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
-
+        assertNull(schuelerDao.findById(schuelerId));
+        assertNull(angehoerigerDao.findById(vaterId));
     }
 }

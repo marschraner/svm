@@ -2,7 +2,8 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SchuelerCodeDao;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -11,9 +12,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
 import static org.junit.Assert.assertEquals;
@@ -23,22 +25,22 @@ import static org.junit.Assert.assertEquals;
  */
 public class RemoveSchuelerCodeFromSchuelerCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+    private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
+
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        commandInvoker.openSession();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSession();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
@@ -99,25 +101,15 @@ public class RemoveSchuelerCodeFromSchuelerCommandTest {
         assertEquals(0, schuelerUpdated.getSchuelerCodes().size());
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-            Schueler schuelerToBeDeleted = schuelerDao.findById(schuelerUpdated.getPersonId());
-            SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
-            for (SchuelerCode schuelerCode : erfassteSchuelerCodes) {
-                SchuelerCode schuelerCodeToBeDeleted = schuelerCodeDao.findById(schuelerCode.getCodeId());
-                schuelerCodeDao.removeFromSchuelerAndUpdate(schuelerCodeToBeDeleted, schuelerToBeDeleted);
-                schuelerCodeDao.remove(schuelerCodeToBeDeleted);
-            }
-            schuelerDao.remove(schuelerToBeDeleted);
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
+        Schueler schuelerToBeDeleted = schuelerDao.findById(schuelerUpdated.getPersonId());
+        for (SchuelerCode schuelerCode : erfassteSchuelerCodes) {
+            SchuelerCode schuelerCodeToBeDeleted = schuelerCodeDao.findById(schuelerCode.getCodeId());
+            schuelerCodeDao.removeFromSchuelerAndUpdate(schuelerCodeToBeDeleted, schuelerToBeDeleted);
+            schuelerCodeDao.remove(schuelerCodeToBeDeleted);
         }
-
+        schuelerDao.remove(schuelerToBeDeleted);
+        entityManager.getTransaction().commit();
     }
 }

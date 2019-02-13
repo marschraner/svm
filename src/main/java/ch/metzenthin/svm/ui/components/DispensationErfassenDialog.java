@@ -302,4 +302,5 @@ public class DispensationErfassenDialog extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
 }

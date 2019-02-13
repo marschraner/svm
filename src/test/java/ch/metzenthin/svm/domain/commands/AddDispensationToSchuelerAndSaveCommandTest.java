@@ -2,8 +2,9 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.common.utils.SvmProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
@@ -11,39 +12,36 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Properties;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Martin Schraner
  */
 public class AddDispensationToSchuelerAndSaveCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+
+    private DB db;
+    private CommandInvoker commandInvoker;
     private boolean neusteZuoberst;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
         Properties svmProperties = SvmProperties.getSvmProperties();
         neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        commandInvoker.openSession();
     }
 
     @After
     public void tearDown() throws Exception {
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
-        commandInvoker.closeSession();
+        db.closeSession();
     }
 
     @Test
@@ -97,19 +95,10 @@ public class AddDispensationToSchuelerAndSaveCommandTest {
 
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-            Schueler schuelerToBeDeleted = schuelerDao.findById(schuelerSaved.getPersonId());
-            schuelerDao.remove(schuelerToBeDeleted);
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
-
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
+        Schueler schuelerToBeDeleted = schuelerDao.findById(schuelerSaved.getPersonId());
+        schuelerDao.remove(schuelerToBeDeleted);
+        entityManager.getTransaction().commit();
     }
 }

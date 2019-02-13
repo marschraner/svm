@@ -1,11 +1,13 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.SvmRuntimeException;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.StaleObjectStateException;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 
 /**
  * @author Hans Stamm
@@ -14,106 +16,37 @@ public class CommandInvokerImpl implements CommandInvoker {
 
     private static final Logger LOGGER = Logger.getLogger(CommandInvokerImpl.class);
 
-    private EntityManagerFactory entityManagerFactory = null;
-    private EntityManager entityManager = null;
+    private final DB db = DBFactory.getInstance();
 
     @Override
     public Command executeCommand(Command command) {
+        LOGGER.trace("executeCommand aufgerufen");
         command.execute();
+        LOGGER.trace("executeCommand durchgeführt");
         return command;
     }
 
     @Override
-    public GenericDaoCommand executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand genericDaoCommand) {
-        LOGGER.trace("executeCommandAsTransactionWithOpenAndClose aufgerufen");
-        EntityManagerFactory entityManagerFactory = null;
-        EntityManager entityManager = null;
-        EntityTransaction tx = null;
-        try {
-            entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-            entityManager = entityManagerFactory.createEntityManager();
-            tx = entityManager.getTransaction();
-            tx.begin();
-            genericDaoCommand.setEntityManager(entityManager);
-            genericDaoCommand.execute();
-            tx.commit();
-            LOGGER.trace("executeCommandAsTransactionWithOpenAndClose durchgeführt");
-        } catch (RuntimeException e) {
-            LOGGER.error("Fehler in executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand)", e);
-            if (tx != null && tx.isActive()) {
-                tx.rollback();
-            }
-            throw e;
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-                entityManagerFactory.close();
-            }
-        }
-        return genericDaoCommand;
-    }
-
-    @Override
-    public GenericDaoCommand executeCommandAsTransaction(GenericDaoCommand genericDaoCommand) {
+    public Command executeCommandAsTransaction(Command command) {
         LOGGER.trace("executeCommandAsTransaction aufgerufen");
+        EntityManager entityManager = db.getCurrentEntityManager();
         try {
             entityManager.getTransaction().begin();
-            genericDaoCommand.setEntityManager(entityManager);
-            genericDaoCommand.execute();
+            command.execute();
             entityManager.getTransaction().commit();
             LOGGER.trace("executeCommandAsTransaction durchgeführt");
-        }
-        catch (Throwable e) {
-            LOGGER.error("Fehler in executeCommandAsTransaction(GenericDaoCommand)", e);
+        } catch (Throwable e) {
+            LOGGER.error("Fehler in executeCommandAsTransaction(Command)", e);
             if ((entityManager != null) && entityManager.isOpen() && entityManager.getTransaction().isActive()) {
-                LOGGER.trace("Rollback wird durchgeführt executeCommandAsTransaction(GenericDaoCommand)", e);
+                LOGGER.trace("Rollback wird durchgeführt executeCommandAsTransaction(Command)", e);
                 entityManager.getTransaction().rollback();
-                LOGGER.trace("Rollback ist durchgeführt executeCommandAsTransaction(GenericDaoCommand)", e);
+                LOGGER.trace("Rollback ist durchgeführt executeCommandAsTransaction(Command)", e);
             }
             if (e instanceof StaleObjectStateException || e instanceof OptimisticLockException) {
                 throw new SvmRuntimeException("Speichern / löschen fehlgeschlagen, da das Objekt inzwischen auf der Datenbank verändert wurde.", e);
             }
             throw e;
         }
-        return genericDaoCommand;
+        return command;
     }
-
-    @Override
-    public void openSession() {
-        LOGGER.trace("openSession aufgerufen");
-        if (entityManager == null || !entityManager.isOpen()) {
-            entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-            entityManager = entityManagerFactory.createEntityManager();
-        }
-    }
-
-    @Override
-    public void closeSession() {
-        LOGGER.trace("closeSession aufgerufen");
-        if (entityManager != null && entityManager.isOpen()) {
-            entityManager.close();
-            entityManager = null;
-            entityManagerFactory.close();
-            entityManagerFactory = null;
-        }
-    }
-
-    @Override
-    public GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand) {
-        LOGGER.trace("executeCommand aufgerufen");
-        genericDaoCommand.setEntityManager(entityManager);
-        genericDaoCommand.execute();
-        LOGGER.trace("executeCommand durchgeführt");
-        return genericDaoCommand;
-    }
-
-    @Override
-    public void clear() {
-        LOGGER.trace("clear aufgerufen");
-        //closeSession();
-        //openSession();
-        entityManager.clear();
-//        entityManagerFactory.getCache().evictAll();
-    }
-
 }

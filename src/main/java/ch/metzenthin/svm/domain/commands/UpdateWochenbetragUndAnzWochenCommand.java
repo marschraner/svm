@@ -12,7 +12,9 @@ import java.util.Map;
 /**
  * @author Martin Schraner
  */
-public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
+public class UpdateWochenbetragUndAnzWochenCommand implements Command {
+
+    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
     private Angehoeriger rechnungsempfaenger;
@@ -29,13 +31,10 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
     @Override
     public void execute() {
 
-        SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
-
         result = CalculateAnzWochenCommand.Result.ALLE_KURSE_GLEICHE_ANZAHL_WOCHEN;
 
         // 1. Nachfolgendes Semester
         FindNextSemesterCommand findNextSemesterCommand = new FindNextSemesterCommand(currentSemester);
-        findNextSemesterCommand.setEntityManager(entityManager);
         findNextSemesterCommand.execute();
         Semester nextSemester = findNextSemesterCommand.getNextSemester();
 
@@ -53,7 +52,6 @@ public class UpdateWochenbetragUndAnzWochenCommand extends GenericDaoCommand {
 
         // 3. Lektionsgebühren
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        findAllLektionsgebuehrenCommand.setEntityManager(entityManager);
         findAllLektionsgebuehrenCommand.execute();
         Map<Integer, BigDecimal[]> lektionsgebuehrenMap = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllMap();
 

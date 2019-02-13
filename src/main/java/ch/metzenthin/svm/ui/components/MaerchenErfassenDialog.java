@@ -265,4 +265,5 @@ public class MaerchenErfassenDialog extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
 }

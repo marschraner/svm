@@ -4,7 +4,8 @@ import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
 import ch.metzenthin.svm.persistence.daos.SemesterDao;
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungCodeDao;
@@ -15,8 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,22 +32,24 @@ import static org.junit.Assert.assertTrue;
  */
 public class DeleteSemesterrechnungCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
+    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
+    private final SemesterDao semesterDao = new SemesterDao();
+    private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        commandInvoker.openSession();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSession();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
@@ -156,7 +157,7 @@ public class DeleteSemesterrechnungCommandTest {
                 new BigDecimal("156.00"),
                 "Zahlt in Raten",
                 semesterrechnungCode2,
-                false));
+                true));
 
         // 2 Semesterrechnungen erfassen
         Semesterrechnung semesterrechnung1 = new Semesterrechnung(semester1, rechnungsempfaenger1,
@@ -222,7 +223,7 @@ public class DeleteSemesterrechnungCommandTest {
                 new GregorianCalendar(1912, Calendar.APRIL, 20),
                 new BigDecimal("156.00"),
                 "Zahlt in Raten",
-                false);
+                true);
         saveOrUpdateSemesterrechnungCommand = new SaveOrUpdateSemesterrechnungCommand(semesterrechnung2, semesterrechnungCode2, null, erfassteSemesterrechnungen);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterrechnungCommand);
 
@@ -238,48 +239,37 @@ public class DeleteSemesterrechnungCommandTest {
         assertTrue(erfassteSemesterrechnungen.isEmpty());
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
-            for (Semesterrechnung semesterrechnung : erfassteSemesterrechnungen) {
-                Semesterrechnung semesterrechnungToBeDeleted = semesterrechnungDao.findById(new SemesterrechnungId(semesterrechnung.getSemester().getSemesterId(), semesterrechnung.getRechnungsempfaenger().getPersonId()));
-                if (semesterrechnungToBeDeleted != null) {
-                    semesterrechnungDao.remove(semesterrechnungToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            SemesterDao semesterDao = new SemesterDao(entityManager);
-            for (Semester semester : erfassteSemester) {
-                Semester semesterToBeDeleted = semesterDao.findById(semester.getSemesterId());
-                if (semesterToBeDeleted != null) {
-                    semesterDao.remove(semesterToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao(entityManager);
-            for (SemesterrechnungCode semesterrechnungCode : erfassteSemesterrechnungCodes) {
-                SemesterrechnungCode semesterrechnungCodeToBeDeleted = semesterrechnungCodeDao.findById(semesterrechnungCode.getCodeId());
-                if (semesterrechnungCodeToBeDeleted != null) {
-                    semesterrechnungCodeDao.remove(semesterrechnungCodeToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-            Schueler schuelerToBeRemoved1 = schuelerDao.findById(schueler1.getPersonId());
-            Schueler schuelerToBeRemoved2 = schuelerDao.findById(schueler2.getPersonId());
-            schuelerDao.remove(schuelerToBeRemoved1);
-            schuelerDao.remove(schuelerToBeRemoved2);
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
+        for (Semesterrechnung semesterrechnung : erfassteSemesterrechnungen) {
+            Semesterrechnung semesterrechnungToBeDeleted = semesterrechnungDao.findById(new SemesterrechnungId(semesterrechnung.getSemester().getSemesterId(), semesterrechnung.getRechnungsempfaenger().getPersonId()));
+            if (semesterrechnungToBeDeleted != null) {
+                semesterrechnungDao.remove(semesterrechnungToBeDeleted);
             }
         }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        for (Semester semester : erfassteSemester) {
+            Semester semesterToBeDeleted = semesterDao.findById(semester.getSemesterId());
+            if (semesterToBeDeleted != null) {
+                semesterDao.remove(semesterToBeDeleted);
+            }
+        }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        for (SemesterrechnungCode semesterrechnungCode : erfassteSemesterrechnungCodes) {
+            SemesterrechnungCode semesterrechnungCodeToBeDeleted = semesterrechnungCodeDao.findById(semesterrechnungCode.getCodeId());
+            if (semesterrechnungCodeToBeDeleted != null) {
+                semesterrechnungCodeDao.remove(semesterrechnungCodeToBeDeleted);
+            }
+        }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        Schueler schuelerToBeRemoved1 = schuelerDao.findById(schueler1.getPersonId());
+        Schueler schuelerToBeRemoved2 = schuelerDao.findById(schueler2.getPersonId());
+        schuelerDao.remove(schuelerToBeRemoved1);
+        schuelerDao.remove(schuelerToBeRemoved2);
+        entityManager.getTransaction().commit();
     }
 
     private boolean checkIfSemesterrechnungAvailable(Semester semester, Angehoeriger rechnungsempfaenger, Stipendium stipendium, Boolean gratiskinder,

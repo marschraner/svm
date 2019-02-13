@@ -12,10 +12,6 @@ import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
  */
 public class DispensationenModelImpl extends AbstractModel implements DispensationenModel {
 
-    DispensationenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public void eintragLoeschen(DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexDispensationToBeDeleted) {
         CommandInvoker commandInvoker = getCommandInvoker();

@@ -1,12 +1,10 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerModel;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import org.junit.Before;
 import org.junit.Test;
-import test.DummyCommandInvoker;
 import test.TestCompletedListener;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -17,8 +15,6 @@ import static org.junit.Assert.*;
  */
 public class SchuelerErfassenModelImplTest {
 
-    private static final CommandInvoker DUMMY_COMMAND_INVOKER = new DummyCommandInvoker();
-
     private SchuelerErfassenModel schuelerErfassenModel;
     private ValidateSchuelerModel validateSchuelerModel;
     private SchuelerModel schuelerModel;
@@ -26,15 +22,15 @@ public class SchuelerErfassenModelImplTest {
 
     @Before
     public void setUp() throws Exception {
-        schuelerErfassenModel = new SchuelerErfassenModelImpl(DUMMY_COMMAND_INVOKER);
+        schuelerErfassenModel = new SchuelerErfassenModelImpl();
         validateSchuelerModel = (ValidateSchuelerModel) schuelerErfassenModel;
-        schuelerModel = new SchuelerModelImpl(DUMMY_COMMAND_INVOKER);
+        schuelerModel = new SchuelerModelImpl();
         schuelerErfassenModel.setSchuelerModel(schuelerModel);
-        mutterModel = new AngehoerigerModelImpl(DUMMY_COMMAND_INVOKER);
+        mutterModel = new AngehoerigerModelImpl();
         schuelerErfassenModel.setMutterModel(mutterModel);
-        AngehoerigerModel vaterModel = new AngehoerigerModelImpl(DUMMY_COMMAND_INVOKER);
+        AngehoerigerModel vaterModel = new AngehoerigerModelImpl();
         schuelerErfassenModel.setVaterModel(vaterModel);
-        AngehoerigerModel drittempfaengerModel = new AngehoerigerModelImpl(DUMMY_COMMAND_INVOKER);
+        AngehoerigerModel drittempfaengerModel = new AngehoerigerModelImpl();
         schuelerErfassenModel.setDrittempfaengerModel(drittempfaengerModel);
     }
 
@@ -110,7 +106,7 @@ public class SchuelerErfassenModelImplTest {
     }
 
     @Test
-    public void testGetMutter_Null() throws Exception {
+    public void testGetMutter_Null() {
         assertNull(validateSchuelerModel.getMutter());
     }
 

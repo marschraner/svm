@@ -103,6 +103,7 @@ public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Comman
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean checkIfSchuelerAlreadyInList(Schueler schueler, List<Schueler> schuelerList) {
         for (Schueler s : schuelerList) {
             if (s.isIdenticalWith(schueler)) {
@@ -116,7 +117,7 @@ public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Comman
         return geschwisterList;
     }
 
-    public List<Schueler> getAngemeldeteGeschwisterList() {
+    List<Schueler> getAngemeldeteGeschwisterList() {
         return angemeldeteGeschwisterList;
     }
 

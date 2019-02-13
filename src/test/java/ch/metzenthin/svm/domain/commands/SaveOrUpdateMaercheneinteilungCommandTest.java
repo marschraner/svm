@@ -4,7 +4,8 @@ import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.ElternmithilfeCodeDao;
 import ch.metzenthin.svm.persistence.daos.MaerchenDao;
 import ch.metzenthin.svm.persistence.daos.MaercheneinteilungDao;
@@ -15,8 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -31,22 +30,24 @@ import static org.junit.Assert.assertTrue;
  */
 public class SaveOrUpdateMaercheneinteilungCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
+    private final MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
+    private final MaerchenDao maerchenDao = new MaerchenDao();
+    private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        commandInvoker.openSession();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSession();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
@@ -126,48 +127,37 @@ public class SaveOrUpdateMaercheneinteilungCommandTest {
         assertTrue(checkIfMaercheneinteilungAvailable(schueler2, maerchen2, Gruppe.A, Elternmithilfe.VATER, elternmithilfeCode1, "Pilz 2", "2, 7", null));
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao(entityManager);
-            for (Maercheneinteilung maercheneinteilung : erfassteMaercheneinteilungen) {
-                Maercheneinteilung maercheneinteilungToBeDeleted = maercheneinteilungDao.findById(new MaercheneinteilungId(maercheneinteilung.getSchueler().getPersonId(), maercheneinteilung.getMaerchen().getMaerchenId()));
-                if (maercheneinteilungToBeDeleted != null) {
-                    maercheneinteilungDao.remove(maercheneinteilungToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            MaerchenDao maerchenDao = new MaerchenDao(entityManager);
-            for (Maerchen maerchen : erfassteMaerchen) {
-                Maerchen maerchenToBeDeleted = maerchenDao.findById(maerchen.getMaerchenId());
-                if (maerchenToBeDeleted != null) {
-                    maerchenDao.remove(maerchenToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
-            for (ElternmithilfeCode elternmithilfeCode : erfassteElternmithilfeCodes) {
-                ElternmithilfeCode elternmithilfeCodeToBeDeleted = elternmithilfeCodeDao.findById(elternmithilfeCode.getCodeId());
-                if (elternmithilfeCodeToBeDeleted != null) {
-                    elternmithilfeCodeDao.remove(elternmithilfeCodeToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-            Schueler schuelerToBeRemoved1 = schuelerDao.findById(schueler1.getPersonId());
-            Schueler schuelerToBeRemoved2 = schuelerDao.findById(schueler2.getPersonId());
-            schuelerDao.remove(schuelerToBeRemoved1);
-            schuelerDao.remove(schuelerToBeRemoved2);
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
+        for (Maercheneinteilung maercheneinteilung : erfassteMaercheneinteilungen) {
+            Maercheneinteilung maercheneinteilungToBeDeleted = maercheneinteilungDao.findById(new MaercheneinteilungId(maercheneinteilung.getSchueler().getPersonId(), maercheneinteilung.getMaerchen().getMaerchenId()));
+            if (maercheneinteilungToBeDeleted != null) {
+                maercheneinteilungDao.remove(maercheneinteilungToBeDeleted);
             }
         }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        for (Maerchen maerchen : erfassteMaerchen) {
+            Maerchen maerchenToBeDeleted = maerchenDao.findById(maerchen.getMaerchenId());
+            if (maerchenToBeDeleted != null) {
+                maerchenDao.remove(maerchenToBeDeleted);
+            }
+        }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        for (ElternmithilfeCode elternmithilfeCode : erfassteElternmithilfeCodes) {
+            ElternmithilfeCode elternmithilfeCodeToBeDeleted = elternmithilfeCodeDao.findById(elternmithilfeCode.getCodeId());
+            if (elternmithilfeCodeToBeDeleted != null) {
+                elternmithilfeCodeDao.remove(elternmithilfeCodeToBeDeleted);
+            }
+        }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        Schueler schuelerToBeRemoved1 = schuelerDao.findById(schueler1.getPersonId());
+        Schueler schuelerToBeRemoved2 = schuelerDao.findById(schueler2.getPersonId());
+        schuelerDao.remove(schuelerToBeRemoved1);
+        schuelerDao.remove(schuelerToBeRemoved2);
+        entityManager.getTransaction().commit();
     }
 
     private boolean checkIfMaercheneinteilungAvailable(Schueler schueler, Maerchen maerchen, Gruppe gruppe, Elternmithilfe elternmithilfe, ElternmithilfeCode elternmithilfeCode, String rolle1, String bilderRolle1, ElternmithilfeDrittperson elternmithilfeDrittperson) {

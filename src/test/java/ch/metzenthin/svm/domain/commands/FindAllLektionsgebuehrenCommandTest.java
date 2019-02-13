@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.LektionsgebuehrenDao;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import org.junit.After;
@@ -8,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
@@ -24,29 +23,30 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllLektionsgebuehrenCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
-    private Set<Lektionsgebuehren> lektionsgebuehrenTestdata = new HashSet<>();
+    private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
+    private final Set<Lektionsgebuehren> lektionsgebuehrenTestdata = new HashSet<>();
+
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
     public void testExecute_getList() {
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLektionsgebuehrenCommand);
+        commandInvoker.executeCommand(findAllLektionsgebuehrenCommand);
 
         List<Lektionsgebuehren> lektionsgebuehrenListFound = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllList();
         assertTrue(lektionsgebuehrenListFound.size() >= 2);
@@ -67,7 +67,7 @@ public class FindAllLektionsgebuehrenCommandTest {
     @Test
     public void testExecute_getMap() {
         FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand = new FindAllLektionsgebuehrenCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllLektionsgebuehrenCommand);
+        commandInvoker.executeCommand(findAllLektionsgebuehrenCommand);
 
         Map<Integer, BigDecimal[]> lektionsgebuehrenMapFound = findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllMap();
         assertTrue(lektionsgebuehrenMapFound.size() >= 2);
@@ -95,47 +95,29 @@ public class FindAllLektionsgebuehrenCommandTest {
     }
 
     private void createTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
 
-            LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
+        Lektionsgebuehren lektionsgebuehrenaved = lektionsgebuehrenDao.save(new Lektionsgebuehren(57, new BigDecimal("22.50"), new BigDecimal("21.00"), new BigDecimal("19.00"), new BigDecimal("18.00"), new BigDecimal("17.00"), new BigDecimal("16.00")));
+        lektionsgebuehrenTestdata.add(lektionsgebuehrenaved);
 
-            Lektionsgebuehren lektionsgebuehrenaved = lektionsgebuehrenDao.save(new Lektionsgebuehren(57, new BigDecimal("22.50"), new BigDecimal("21.00"), new BigDecimal("19.00"), new BigDecimal("18.00"), new BigDecimal("17.00"), new BigDecimal("16.00")));
-            lektionsgebuehrenTestdata.add(lektionsgebuehrenaved);
+        lektionsgebuehrenaved = lektionsgebuehrenDao.save(new Lektionsgebuehren(67, new BigDecimal("24.50"), new BigDecimal("23.00"), new BigDecimal("21.00"), new BigDecimal("20.00"), new BigDecimal("19.00"), new BigDecimal("18.00")));
+        lektionsgebuehrenTestdata.add(lektionsgebuehrenaved);
 
-            lektionsgebuehrenaved = lektionsgebuehrenDao.save(new Lektionsgebuehren(67, new BigDecimal("24.50"), new BigDecimal("23.00"), new BigDecimal("21.00"), new BigDecimal("20.00"), new BigDecimal("19.00"), new BigDecimal("18.00")));
-            lektionsgebuehrenTestdata.add(lektionsgebuehrenaved);
-
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        entityManager.getTransaction().commit();
+        db.closeSession();
     }
 
     private void deleteTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
 
-            LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
-
-            for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenTestdata) {
-                Lektionsgebuehren lektionsgebuehrenToBeRemoved = lektionsgebuehrenDao.findById(lektionsgebuehren.getLektionslaenge());
-                lektionsgebuehrenDao.remove(lektionsgebuehrenToBeRemoved);
-            }
-
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
+        for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenTestdata) {
+            Lektionsgebuehren lektionsgebuehrenToBeRemoved = lektionsgebuehrenDao.findById(lektionsgebuehren.getLektionslaenge());
+            lektionsgebuehrenDao.remove(lektionsgebuehrenToBeRemoved);
         }
+
+        entityManager.getTransaction().commit();
+        db.closeSession();
     }
 }

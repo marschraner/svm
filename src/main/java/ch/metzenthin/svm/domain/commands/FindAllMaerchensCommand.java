@@ -8,15 +8,15 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindAllMaerchensCommand extends GenericDaoCommand {
+public class FindAllMaerchensCommand implements Command {
+
+    private final MaerchenDao maerchenDao = new MaerchenDao();
 
     // output
     private List<Maerchen> maerchensAll;
 
     @Override
     public void execute() {
-
-        MaerchenDao maerchenDao = new MaerchenDao(entityManager);
         maerchensAll = maerchenDao.findAll();
     }
 

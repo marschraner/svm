@@ -5,15 +5,12 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.utils.EmailValidator;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Person;
 
 import java.util.Calendar;
 
-import static ch.metzenthin.svm.common.utils.Converter.getNYearsBeforeNow;
-import static ch.metzenthin.svm.common.utils.Converter.strasseHausnummerGetHausnummer;
-import static ch.metzenthin.svm.common.utils.Converter.strasseHausnummerGetStrasse;
+import static ch.metzenthin.svm.common.utils.Converter.*;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
@@ -25,8 +22,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private EmailValidator emailValidator = new EmailValidator();
 
-    PersonModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
+    PersonModelImpl() {
         adresse = new Adresse();
     }
 

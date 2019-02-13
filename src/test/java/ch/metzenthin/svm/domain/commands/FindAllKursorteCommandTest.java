@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.KursortDao;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import org.junit.After;
@@ -8,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,29 +21,30 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllKursorteCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
-    private Set<Kursort> kursorteTestdata = new HashSet<>();
+    private final KursortDao kursortDao = new KursortDao();
+    private final Set<Kursort> kursorteTestdata = new HashSet<>();
+
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
     public void testExecute() {
         FindAllKursorteCommand findAllKursorteCommand = new FindAllKursorteCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllKursorteCommand);
+        commandInvoker.executeCommand(findAllKursorteCommand);
 
         List<Kursort> kursorteFound = findAllKursorteCommand.getKursorteAll();
         assertTrue(kursorteFound.size() >= 2);
@@ -63,47 +63,29 @@ public class FindAllKursorteCommandTest {
     }
 
     private void createTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
 
-            KursortDao kursortDao = new KursortDao(entityManager);
+        Kursort kursorteaved = kursortDao.save(new Kursort("Saal Test1", true));
+        kursorteTestdata.add(kursorteaved);
 
-            Kursort kursorteaved = kursortDao.save(new Kursort("Saal Test1", true));
-            kursorteTestdata.add(kursorteaved);
+        kursorteaved = kursortDao.save(new Kursort("Saal Test2", true));
+        kursorteTestdata.add(kursorteaved);
 
-            kursorteaved = kursortDao.save(new Kursort("Saal Test2", true));
-            kursorteTestdata.add(kursorteaved);
-
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        entityManager.getTransaction().commit();
+        db.closeSession();
     }
 
     private void deleteTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
 
-            KursortDao kursortDao = new KursortDao(entityManager);
-
-            for (Kursort kursort : kursorteTestdata) {
-                Kursort kursortToBeRemoved = kursortDao.findById(kursort.getKursortId());
-                kursortDao.remove(kursortToBeRemoved);
-            }
-
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
+        for (Kursort kursort : kursorteTestdata) {
+            Kursort kursortToBeRemoved = kursortDao.findById(kursort.getKursortId());
+            kursortDao.remove(kursortToBeRemoved);
         }
+
+        entityManager.getTransaction().commit();
+        db.closeSession();
     }
 }

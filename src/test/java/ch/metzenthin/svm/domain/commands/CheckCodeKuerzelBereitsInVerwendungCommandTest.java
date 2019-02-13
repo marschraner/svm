@@ -15,8 +15,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class CheckCodeKuerzelBereitsInVerwendungCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private List<SchuelerCode> bereitsErfassteSchuelerCodes = new ArrayList<>();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final List<SchuelerCode> bereitsErfassteSchuelerCodes = new ArrayList<>();
 
     @Before
     public void setUp() {
@@ -26,21 +26,21 @@ public class CheckCodeKuerzelBereitsInVerwendungCommandTest {
     }
 
     @Test
-    public void testExecute_KuerzelBereitsInVerwendung() throws Exception {
+    public void testExecute_KuerzelBereitsInVerwendung() {
         CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand("z", null, bereitsErfassteSchuelerCodes);
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
         assertTrue(checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung());
     }
 
     @Test
-    public void testExecute_KuerzelNochNichtInVerwendung() throws Exception {
+    public void testExecute_KuerzelNochNichtInVerwendung() {
         CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand("Z", null, bereitsErfassteSchuelerCodes);
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
         assertFalse(checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung());
     }
 
     @Test
-    public void testExecute_CodeOrigin() throws Exception {
+    public void testExecute_CodeOrigin() {
         CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand("z", bereitsErfassteSchuelerCodes.get(0), bereitsErfassteSchuelerCodes);
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
         assertFalse(checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung());

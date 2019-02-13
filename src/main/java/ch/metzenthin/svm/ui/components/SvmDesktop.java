@@ -1,6 +1,8 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import com.apple.eawt.Application;
 import org.apache.log4j.Logger;
 import ch.metzenthin.svm.common.dataTypes.Codetyp;
@@ -18,6 +20,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
 
     private static final Logger LOGGER = Logger.getLogger(SvmDesktop.class);
 
+    private final DB db = DBFactory.getInstance();
     private final SvmContext svmContext;
     private JComponent activeComponent;
 
@@ -214,9 +217,8 @@ public class SvmDesktop extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         startWaitCursor();
         if ((activeComponent != null) && !"beenden".equals(e.getActionCommand())) {
-            svmContext.getCommandInvoker().clear();
+            db.closeSession();
             activeComponent.setVisible(false);
-
         }
 
         if ("schuelerSuchen".equals(e.getActionCommand())) {
@@ -443,11 +445,11 @@ public class SvmDesktop extends JFrame implements ActionListener {
         LOGGER.trace("Next panel " + eventSourceArray[1] + " aufgerufen");
         if (eventSourceArray.length > 2) {
             Object thirdElement = eventSourceArray[2];
-            if ((thirdElement != null) && (thirdElement instanceof Boolean)) {
-                boolean clearSession = (Boolean) thirdElement;
-                if (clearSession) {
-                    LOGGER.trace("Next panel mit clear aufgerufen");
-                    svmContext.getCommandInvoker().clear();
+            if ((thirdElement instanceof Boolean)) {
+                boolean closeSession = (Boolean) thirdElement;
+                if (closeSession) {
+                    LOGGER.trace("Next panel mit close session aufgerufen");
+                    db.closeSession();
                 }
             }
         }
@@ -460,7 +462,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
 
     private void onFrameAbbrechen() {
         startWaitCursor();
-        svmContext.getCommandInvoker().clear();
+        db.closeSession();
         if (activeComponent != null) {
             activeComponent.setVisible(false);
             getContentPane().remove(activeComponent);
@@ -485,13 +487,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
                     options[0]);
         }
         if (n == 0) {
-            svmContext.getCommandInvoker().closeSession();
+            db.closeSession();
             LOGGER.info("Svm wird beendet.");
             System.exit(0);
         }
     }
 
-    public void startWaitCursor() {
+    private void startWaitCursor() {
         RootPaneContainer root = (RootPaneContainer) getRootPane()
                 .getTopLevelAncestor();
         root.getGlassPane().setCursor(
@@ -499,7 +501,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
         root.getGlassPane().setVisible(true);
     }
 
-    public void stopWaitCursor() {
+    private void stopWaitCursor() {
         RootPaneContainer root = (RootPaneContainer) getRootPane()
                 .getTopLevelAncestor();
         root.getGlassPane().setCursor(

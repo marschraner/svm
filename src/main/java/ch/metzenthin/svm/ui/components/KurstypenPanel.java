@@ -277,4 +277,5 @@ public class KurstypenPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

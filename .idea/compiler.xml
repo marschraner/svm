@@ -14,9 +14,8 @@
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_STRING" value="-Xlint:unchecked" />
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="svm" options="" />
+      <module name="svm" options="-Xlint:deprecation -Xlint:unchecked" />
     </option>
   </component>
 </project>

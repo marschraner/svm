@@ -106,7 +106,7 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{21, 22, 23, 24, 25, 27});
         maxLengthsRow1.add(new int[]{22, 23, 24, 25, 26, 28});
-        maxLengthsRow1.add(new int[]{13, 13, 14, 15, 16, 18});
+        maxLengthsRow1.add(new int[]{13, 13, 13, 14, 16, 18});
         maxLengthsRow1.add(new int[]{0});
         maxLengthsRow1.add(new int[]{29, 30, 31, 32, 33, 35});
         maxLengths.add(maxLengthsRow1);
@@ -115,7 +115,7 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{22, 23, 24, 25, 26, 28});
         maxLengthsRow2.add(new int[]{23, 24, 25, 26, 27, 29});
-        maxLengthsRow2.add(new int[]{13, 13, 14, 15, 16, 18});
+        maxLengthsRow2.add(new int[]{13, 13, 13, 14, 16, 18});
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{29, 30, 31, 32, 33, 35});
         maxLengths.add(maxLengthsRow2);

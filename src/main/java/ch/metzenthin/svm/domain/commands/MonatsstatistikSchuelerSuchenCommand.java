@@ -1,6 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.domain.model.MonatsstatistikSchuelerModel;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import org.apache.log4j.Logger;
 
@@ -13,9 +15,11 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class MonatsstatistikSchuelerSuchenCommand extends GenericDaoCommand {
+public class MonatsstatistikSchuelerSuchenCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(MonatsstatistikSchuelerSuchenCommand.class);
+
+    private final DB db = DBFactory.getInstance();
 
     // input
     private MonatsstatistikSchuelerModel.AnAbmeldungenDispensationenSelected anAbmeldungenDispensationen;
@@ -51,7 +55,8 @@ public class MonatsstatistikSchuelerSuchenCommand extends GenericDaoCommand {
 
         LOGGER.trace("JPQL Select-Statement: " + selectStatementSb.toString());
 
-        typedQuery = entityManager.createQuery(selectStatementSb.toString(), Schueler.class);
+        typedQuery = db.getCurrentEntityManager().createQuery(
+                selectStatementSb.toString(), Schueler.class);
 
         // Suchparameter setzen
         setParameterStatistikMonat();
@@ -93,6 +98,7 @@ public class MonatsstatistikSchuelerSuchenCommand extends GenericDaoCommand {
             if (monatJahr.get(Calendar.MONTH) == Calendar.DECEMBER) {
                 statistikMonatEnde = new GregorianCalendar(monatJahr.get(Calendar.YEAR) + 1, Calendar.JANUARY, 1);
             } else {
+                //noinspection MagicConstant
                 statistikMonatEnde = new GregorianCalendar(monatJahr.get(Calendar.YEAR), monatJahr.get(Calendar.MONTH) + 1, 1);
             }
             statistikMonatEnde.add(Calendar.DAY_OF_YEAR, -1);

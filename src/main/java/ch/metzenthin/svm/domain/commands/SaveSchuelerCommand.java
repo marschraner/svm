@@ -6,7 +6,9 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 /**
  * @author Hans Stamm
  */
-public class SaveSchuelerCommand extends GenericDaoCommand {
+public class SaveSchuelerCommand implements Command {
+
+    private final SchuelerDao schuelerDao = new SchuelerDao();
 
     private Schueler schueler;
     private Schueler savedSchueler;
@@ -15,13 +17,12 @@ public class SaveSchuelerCommand extends GenericDaoCommand {
         this.schueler = schueler;
     }
 
-    public Schueler getSavedSchueler() {
+    Schueler getSavedSchueler() {
         return savedSchueler;
     }
 
     @Override
     public void execute() {
-        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
         savedSchueler = schuelerDao.save(schueler);
     }
 

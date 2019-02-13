@@ -10,7 +10,10 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
+public class ImportKurseFromPreviousSemesterCommand implements Command {
+
+    private final KursDao kursDao = new KursDao();
+    private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
 
     // input / output
     private List<Kurs> kurseCurrentSemester;
@@ -31,7 +34,6 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
         // 1. Semester -> Kurse vom 1. Semester vor einem Jahr importieren
         if (currentSemester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
             FindSemesterOneYearBeforeCommand findSemesterOneYearBeforeCommand = new FindSemesterOneYearBeforeCommand(currentSemester);
-            findSemesterOneYearBeforeCommand.setEntityManager(entityManager);
             findSemesterOneYearBeforeCommand.execute();
             oldSemester = findSemesterOneYearBeforeCommand.getSemesterOneYearBefore();
         }
@@ -39,7 +41,6 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
         // 2. Semester (oder Kurse vom 1. Semester vor einem Jahr nicht vorhanden) -> Kurse und Schüler vom 1. Semster importieren
         if (currentSemester.getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER || oldSemester == null) {
             FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
-            findPreviousSemesterCommand.setEntityManager(entityManager);
             findPreviousSemesterCommand.execute();
             oldSemester = findPreviousSemesterCommand.getPreviousSemester();
         }
@@ -48,8 +49,6 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
             return;
         }
 
-        KursDao kursDao = new KursDao(entityManager);
-        KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
         List<Kurs> kursePreviousSemester = kursDao.findKurseSemester(oldSemester);
 
         KursePreviousSemester:
@@ -89,7 +88,6 @@ public class ImportKurseFromPreviousSemesterCommand extends GenericDaoCommand {
 
                         // Semesterrechnungen updaten
                         UpdateWochenbetragUndAnzWochenCommand updateWochenbetragUndAnzWochenCommand = new UpdateWochenbetragUndAnzWochenCommand(kursanmeldungPreviousSemester.getSchueler().getRechnungsempfaenger(), currentSemester);
-                        updateWochenbetragUndAnzWochenCommand.setEntityManager(entityManager);
                         updateWochenbetragUndAnzWochenCommand.execute();
                     }
                 }

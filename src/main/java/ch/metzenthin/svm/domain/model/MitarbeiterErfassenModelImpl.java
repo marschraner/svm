@@ -26,10 +26,6 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
     private Mitarbeiter mitarbeiterOrigin;
     private Set<MitarbeiterCode> mitarbeiterCodes = new HashSet<>();
 
-    public MitarbeiterErfassenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     Person getPerson() {
         return mitarbeiter;

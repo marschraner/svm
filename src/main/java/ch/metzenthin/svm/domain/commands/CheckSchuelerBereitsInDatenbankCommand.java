@@ -9,23 +9,22 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class CheckSchuelerBereitsInDatenbankCommand extends GenericDaoCommand {
+public class CheckSchuelerBereitsInDatenbankCommand implements Command {
+
+    private final SchuelerDao schuelerDao = new SchuelerDao();
 
     // input
     private Schueler schueler;
 
     // output
-   private List<Schueler> schuelerListFound;
+    private List<Schueler> schuelerListFound;
 
-    public CheckSchuelerBereitsInDatenbankCommand(Schueler schueler) {
+    CheckSchuelerBereitsInDatenbankCommand(Schueler schueler) {
         this.schueler = schueler;
     }
 
     @Override
     public void execute() {
-
-        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
-
         // Suche nach Vorname, Nachname, Geburtsdatum, Strasse, Hausnummer, PLZ, Ort
         Schueler schuelerToBeFound = new Schueler(schueler.getVorname(), schueler.getNachname(), schueler.getGeburtsdatum(), null, null, null, null, null);
         Adresse adresseToBeFound = new Adresse(schueler.getAdresse().getStrasse(), schueler.getAdresse().getHausnummer(), schueler.getAdresse().getPlz(), schueler.getAdresse().getOrt());
@@ -33,7 +32,7 @@ public class CheckSchuelerBereitsInDatenbankCommand extends GenericDaoCommand {
         schuelerListFound = schuelerDao.findSchueler(schuelerToBeFound);
     }
 
-    public Schueler getSchuelerFound(Schueler schuelerToBeExcluded) {
+    Schueler getSchuelerFound(Schueler schuelerToBeExcluded) {
         if (schuelerListFound.isEmpty()) {
             return null;
         }

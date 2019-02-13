@@ -1,7 +1,8 @@
 package ch.metzenthin.svm.persistence.daos;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
@@ -10,9 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -25,32 +24,25 @@ import static org.junit.Assert.*;
  */
 public class MitarbeiterCodeDaoTest {
 
-    private EntityManagerFactory entityManagerFactory;
-    private EntityManager entityManager;
-    private MitarbeiterCodeDao mitarbeiterCodeDao;
-    private MitarbeiterDao mitarbeiterDao;
+    private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
+    private final MitarbeiterDao mitarbeiterDao = new MitarbeiterDao();
+
+    private DB db;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        entityManager = entityManagerFactory.createEntityManager();
-        mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
-        mitarbeiterDao = new MitarbeiterDao(entityManager);
+        db = DBFactory.getInstance();
     }
 
     @After
     public void tearDown() throws Exception {
-        if (entityManager != null) {
-            entityManager.close();
-        }
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
     public void testFindById() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -73,6 +65,7 @@ public class MitarbeiterCodeDaoTest {
 
     @Test
     public void save() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -99,8 +92,8 @@ public class MitarbeiterCodeDaoTest {
 
     @Test
     public void testRemove() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -142,6 +135,7 @@ public class MitarbeiterCodeDaoTest {
 
     @Test
     public void testAddToMitarbeiterAndSave() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -185,6 +179,7 @@ public class MitarbeiterCodeDaoTest {
 
     @Test
     public void testRemoveFromMitarbeiterAndUpdate() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -254,6 +249,7 @@ public class MitarbeiterCodeDaoTest {
 
     @Test
     public void testFindAll() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();

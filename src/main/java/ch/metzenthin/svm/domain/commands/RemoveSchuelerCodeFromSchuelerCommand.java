@@ -7,7 +7,9 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 /**
  * @author Martin Schraner
  */
-public class RemoveSchuelerCodeFromSchuelerCommand extends GenericDaoCommand {
+public class RemoveSchuelerCodeFromSchuelerCommand implements Command {
+
+    private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
 
     // input
     private SchuelerCode schuelerCodeToBeDeleted;
@@ -23,7 +25,6 @@ public class RemoveSchuelerCodeFromSchuelerCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
         schuelerUpdated = schuelerCodeDao.removeFromSchuelerAndUpdate(schuelerCodeToBeDeleted, schueler);
     }
 

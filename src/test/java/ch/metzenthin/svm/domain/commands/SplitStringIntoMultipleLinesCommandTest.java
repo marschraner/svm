@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 public class SplitStringIntoMultipleLinesCommandTest {
 
     @Test
-    public void testExecuteLeerschlag() throws Exception {
+    public void testExecuteLeerschlag() {
         String string = "Dies ist eine Zeile, die zu lange ist.";
         SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(string, 15, 3);
         splitStringIntoMultipleLinesCommand.execute();
@@ -24,7 +24,7 @@ public class SplitStringIntoMultipleLinesCommandTest {
     }
 
     @Test
-    public void testExecuteLeerschlagMaxLines() throws Exception {
+    public void testExecuteLeerschlagMaxLines() {
         String string = "Dies ist eine Zeile, die zu lange ist.";
         SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(string, 15, 2);
         splitStringIntoMultipleLinesCommand.execute();
@@ -35,7 +35,7 @@ public class SplitStringIntoMultipleLinesCommandTest {
     }
 
     @Test
-    public void testExecuteBindestrich() throws Exception {
+    public void testExecuteBindestrich() {
         String string = "Rhythmik-Darstellendes Spiel";
         SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(string, 20, 2);
         splitStringIntoMultipleLinesCommand.execute();
@@ -46,7 +46,7 @@ public class SplitStringIntoMultipleLinesCommandTest {
     }
 
     @Test
-    public void testExecuteSchraegstrich() throws Exception {
+    public void testExecuteSchraegstrich() {
         String string = "Mittwoch Morgen/Abend";
         SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(string, 18, 2);
         splitStringIntoMultipleLinesCommand.execute();

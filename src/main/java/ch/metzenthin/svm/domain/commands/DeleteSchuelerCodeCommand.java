@@ -8,16 +8,18 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteSchuelerCodeCommand extends GenericDaoCommand {
+public class DeleteSchuelerCodeCommand implements Command {
 
     public enum Result {
         CODE_VON_SCHUELER_REFERENZIERT,
         LOESCHEN_ERFOLGREICH
     }
 
+    private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
+
     // input
     private List<SchuelerCode> schuelerCodes;
-    int indexCodeToBeDeleted;
+    private int indexCodeToBeDeleted;
 
     // output
     private Result result;
@@ -29,7 +31,6 @@ public class DeleteSchuelerCodeCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
         SchuelerCode schuelerCodeToBeDeleted = schuelerCodes.get(indexCodeToBeDeleted);
         if (schuelerCodeToBeDeleted.getSchueler().size() > 0) {
             result = Result.CODE_VON_SCHUELER_REFERENZIERT;

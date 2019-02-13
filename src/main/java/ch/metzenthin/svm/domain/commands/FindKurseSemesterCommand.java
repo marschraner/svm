@@ -9,7 +9,9 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindKurseSemesterCommand extends GenericDaoCommand {
+public class FindKurseSemesterCommand implements Command {
+
+    private final KursDao kursDao = new KursDao();
 
     // input
     private Semester semester;
@@ -23,7 +25,6 @@ public class FindKurseSemesterCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        KursDao kursDao = new KursDao(entityManager);
         kurseFound = kursDao.findKurseSemester(semester);
     }
 

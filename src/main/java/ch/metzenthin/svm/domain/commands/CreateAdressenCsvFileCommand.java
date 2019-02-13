@@ -24,7 +24,7 @@ public class CreateAdressenCsvFileCommand extends CreateListeCommand {
     @Override
     public void execute() {
 
-        Character separator = ';';
+        char separator = ';';
 
         NachnameGratiskindFormatter nachnameGratiskindFormatter = new NachnameGratiskindFormatter();
 

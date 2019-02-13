@@ -8,15 +8,15 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindAllElternmithilfeCodesCommand extends GenericDaoCommand {
+public class FindAllElternmithilfeCodesCommand implements Command {
+
+    private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
 
     // output
     private List<ElternmithilfeCode> elternmithilfeCodesAll;
 
     @Override
     public void execute() {
-
-        ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
         elternmithilfeCodesAll = elternmithilfeCodeDao.findAll();
     }
 

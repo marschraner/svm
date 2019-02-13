@@ -14,10 +14,6 @@ import java.util.List;
  */
 public class SemestersModelImpl extends AbstractModel implements SemestersModel {
 
-    public SemestersModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public SemesterErfassenModel getSemesterErfassenModel(SvmContext svmContext, int indexSemesterToBeModified) {
         SemesterErfassenModel semesterErfassenModel = svmContext.getModelFactory().createSemesterErfassenModel();

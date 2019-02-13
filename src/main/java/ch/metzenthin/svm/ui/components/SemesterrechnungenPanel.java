@@ -195,7 +195,6 @@ public class SemesterrechnungenPanel {
         btnAlleDeselektieren.setContentAreaFilled(false);
         btnAlleDeselektieren.setHorizontalAlignment(2);
         btnAlleDeselektieren.setHorizontalTextPosition(2);
-        btnAlleDeselektieren.setLabel("Auswahl löschen");
         btnAlleDeselektieren.setMargin(new Insets(2, 0, 2, 14));
         btnAlleDeselektieren.setMaximumSize(new Dimension(145, 18));
         btnAlleDeselektieren.setMinimumSize(new Dimension(145, 18));
@@ -450,4 +449,5 @@ public class SemesterrechnungenPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

@@ -28,10 +28,6 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
     private List<String> fehlendeEmailAdressen;
     private List<String> ungueltigeEmailAdressen;
 
-    public EmailSchuelerListeModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public EmailSchuelerListeEmpfaengerGruppe getEmailSchuelerListeEmpfaengerGruppe() {
         return emailSchuelerListeEmpfaengerGruppe;

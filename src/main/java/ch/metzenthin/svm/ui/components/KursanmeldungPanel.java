@@ -294,4 +294,5 @@ public class KursanmeldungPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

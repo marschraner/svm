@@ -8,15 +8,15 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindAllKursorteCommand extends GenericDaoCommand {
+public class FindAllKursorteCommand implements Command {
+
+    private final KursortDao kursortDao = new KursortDao();
 
     // output
     private List<Kursort> kursorteAll;
 
     @Override
     public void execute() {
-
-        KursortDao kursortDao = new KursortDao(entityManager);
         kursorteAll = kursortDao.findAll();
     }
 

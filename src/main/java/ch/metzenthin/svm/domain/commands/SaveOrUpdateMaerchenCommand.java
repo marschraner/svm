@@ -9,7 +9,9 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateMaerchenCommand extends GenericDaoCommand {
+public class SaveOrUpdateMaerchenCommand implements Command {
+
+    private final MaerchenDao maerchenDao = new MaerchenDao();
 
     // input
     private Maerchen maerchen;
@@ -25,7 +27,6 @@ public class SaveOrUpdateMaerchenCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        MaerchenDao maerchenDao = new MaerchenDao(entityManager);
         if (maerchenOrigin != null) {
             // Update von maerchenOrigin mit Werten von maerchen
             maerchenOrigin.copyAttributesFrom(maerchen);

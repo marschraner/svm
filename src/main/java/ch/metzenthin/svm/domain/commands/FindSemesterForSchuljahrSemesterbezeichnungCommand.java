@@ -18,7 +18,7 @@ public class FindSemesterForSchuljahrSemesterbezeichnungCommand implements Comma
     // output
     private Semester semesterFound;
 
-    public FindSemesterForSchuljahrSemesterbezeichnungCommand(String schuljahr, Semesterbezeichnung semesterbezeichnung, List<Semester> erfassteSemesters) {
+    FindSemesterForSchuljahrSemesterbezeichnungCommand(String schuljahr, Semesterbezeichnung semesterbezeichnung, List<Semester> erfassteSemesters) {
         this.schuljahr = schuljahr;
         this.semesterbezeichnung = semesterbezeichnung;
         this.erfassteSemesters = erfassteSemesters;
@@ -35,7 +35,7 @@ public class FindSemesterForSchuljahrSemesterbezeichnungCommand implements Comma
         semesterFound = null;
     }
 
-    public Semester getSemesterFound() {
+    Semester getSemesterFound() {
         return semesterFound;
     }
 

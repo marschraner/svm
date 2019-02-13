@@ -1,7 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SemesterDao;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import org.junit.After;
@@ -9,8 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -24,22 +23,21 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateSemesterCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
+    private final SemesterDao semesterDao = new SemesterDao();
+
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        commandInvoker.openSession();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSession();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
@@ -90,37 +88,27 @@ public class SaveOrUpdateSemesterCommandTest {
         assertTrue(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 27), new GregorianCalendar(1913, Calendar.JULY, 17), new GregorianCalendar(1912, Calendar.APRIL, 25), new GregorianCalendar(1912, Calendar.MAY, 7), null, null));
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            SemesterDao semesterDao = new SemesterDao(entityManager);
-            for (Semester semester : semestersSaved) {
-                Semester semesterToBeDeleted = semesterDao.findById(semester.getSemesterId());
-                if (semesterToBeDeleted != null) {
-                    semesterDao.remove(semesterToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
+        for (Semester semester : semestersSaved) {
+            Semester semesterToBeDeleted = semesterDao.findById(semester.getSemesterId());
+            if (semesterToBeDeleted != null) {
+                semesterDao.remove(semesterToBeDeleted);
             }
         }
-
-
+        entityManager.getTransaction().commit();
     }
 
     private boolean checkIfSemesterAvailable(String schuljahr, Semesterbezeichnung semesterbezeichnung, Calendar semesterbeginn, Calendar semesterende, Calendar ferienbeginn1, Calendar ferienende1, Calendar ferienbeginn2, Calendar ferienende2) {
         FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSemestersCommand);
+        commandInvoker.executeCommand(findAllSemestersCommand);
         List<Semester> semestersAll = findAllSemestersCommand.getSemestersAll();
         for (Semester semester : semestersAll) {
             if (semester.getSchuljahr().equals(schuljahr) && semester.getSemesterbezeichnung().equals(semesterbezeichnung)
                     && semester.getSemesterbeginn().equals(semesterbeginn) && semester.getSemesterende().equals(semesterende)
                     && semester.getFerienbeginn1().equals(ferienbeginn1) && semester.getFerienende1().equals(ferienende1)
-                    && ((semester.getFerienbeginn2() == null && ferienbeginn2 == null) || (semester.getFerienbeginn2().equals(ferienbeginn2)))
-                    && ((semester.getFerienende2() == null && ferienende2 == null) || (semester.getFerienende2().equals(ferienende2)))) {
+                    && ((semester.getFerienbeginn2() == null && ferienbeginn2 == null) || (semester.getFerienbeginn2() != null && semester.getFerienbeginn2().equals(ferienbeginn2)))
+                    && ((semester.getFerienende2() == null && ferienende2 == null) || (semester.getFerienende2() != null && semester.getFerienende2().equals(ferienende2)))) {
                 return true;
             }
         }

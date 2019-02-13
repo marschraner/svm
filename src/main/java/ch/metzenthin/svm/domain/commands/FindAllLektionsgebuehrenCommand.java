@@ -11,7 +11,9 @@ import java.util.Map;
 /**
  * @author Martin Schraner
  */
-public class FindAllLektionsgebuehrenCommand extends GenericDaoCommand {
+public class FindAllLektionsgebuehrenCommand implements Command {
+
+    private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
 
     // output
     private List<Lektionsgebuehren> lektionsgebuehrenAllList;
@@ -19,8 +21,6 @@ public class FindAllLektionsgebuehrenCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-
-        LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
         lektionsgebuehrenAllList = lektionsgebuehrenDao.findAll();
         for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenAllList) {
             BigDecimal[] lektionsgebuehrenArray = new BigDecimal[]{lektionsgebuehren.getBetrag1Kind(), lektionsgebuehren.getBetrag2Kinder(),

@@ -14,10 +14,6 @@ import java.util.List;
  */
 public class KurstypenModelImpl extends AbstractModel implements KurstypenModel {
 
-    KurstypenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public DeleteKurstypCommand.Result eintragLoeschen(SvmContext svmContext, KurstypenTableModel kurstypenTableModel, int indexKurstypToBeRemoved) {
         List<Kurstyp> kurstypen = svmContext.getSvmModel().getKurstypenAll();

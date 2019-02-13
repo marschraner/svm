@@ -1,14 +1,20 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 /**
  * @author Martin Schraner
  */
-public class CheckIfAngehoerigerVerwaistAndDeleteCommand extends GenericDaoCommand {
+public class CheckIfAngehoerigerVerwaistAndDeleteCommand implements Command {
+
+    private final DB db = DBFactory.getInstance();
+    private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
 
     // input
     private Angehoeriger angehoeriger;
@@ -30,6 +36,7 @@ public class CheckIfAngehoerigerVerwaistAndDeleteCommand extends GenericDaoComma
         }
 
         // Kommt Angehoeriger als Mutter, Vater oder Rechnungsempfänger vor?
+        EntityManager entityManager = db.getCurrentEntityManager();
         TypedQuery<Long> typedQuery = entityManager.createQuery("select count(s) from Schueler s where s.mutter.personId = :angehoerigerPersonId or s.vater.personId = :angehoerigerPersonId or s.rechnungsempfaenger.personId = :angehoerigerPersonId", Long.class);
         typedQuery.setParameter("angehoerigerPersonId", angehoeriger.getPersonId());
         if (typedQuery.getSingleResult() > 0) {
@@ -44,7 +51,6 @@ public class CheckIfAngehoerigerVerwaistAndDeleteCommand extends GenericDaoComma
         }
 
         // Angehöriger in diesem Fall verwaist -> löschen
-        AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
         angehoerigerDao.remove(angehoeriger);
         entityManager.flush();
         angehoeriger = null;

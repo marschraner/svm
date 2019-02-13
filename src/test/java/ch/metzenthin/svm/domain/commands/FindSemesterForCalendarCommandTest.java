@@ -18,8 +18,8 @@ import static org.junit.Assert.assertNull;
  */
 public class FindSemesterForCalendarCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private List<Semester> erfassteSemester = new ArrayList<>();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final List<Semester> erfassteSemester = new ArrayList<>();
 
     @Before
     public void setUp() {

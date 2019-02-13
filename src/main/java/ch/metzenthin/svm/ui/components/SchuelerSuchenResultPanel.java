@@ -400,4 +400,5 @@ public class SchuelerSuchenResultPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel;
     }
+
 }

@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.ElternmithilfeCodeDao;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import org.junit.After;
@@ -8,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,29 +21,30 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllElternmithilfeCodesCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
-    private Set<ElternmithilfeCode> codesTestdata = new HashSet<>();
+    private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
+    private final Set<ElternmithilfeCode> codesTestdata = new HashSet<>();
+
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
     public void testExecute() {
         FindAllElternmithilfeCodesCommand findAllElternmithilfeCodesCommand = new FindAllElternmithilfeCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllElternmithilfeCodesCommand);
+        commandInvoker.executeCommand(findAllElternmithilfeCodesCommand);
 
         List<ElternmithilfeCode> codesFound = findAllElternmithilfeCodesCommand.getElternmithilfeCodesAll();
         assertTrue(codesFound.size() >= 2);
@@ -63,47 +63,29 @@ public class FindAllElternmithilfeCodesCommandTest {
     }
 
     private void createTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
 
-            ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
+        ElternmithilfeCode elternmithilfeCodeSaved = elternmithilfeCodeDao.save(new ElternmithilfeCode("k", "KuchenTest", true));
+        codesTestdata.add(elternmithilfeCodeSaved);
 
-            ElternmithilfeCode elternmithilfeCodeSaved = elternmithilfeCodeDao.save(new ElternmithilfeCode("k", "KuchenTest", true));
-            codesTestdata.add(elternmithilfeCodeSaved);
+        elternmithilfeCodeSaved = elternmithilfeCodeDao.save(new ElternmithilfeCode("f", "FrisierenTest", true));
+        codesTestdata.add(elternmithilfeCodeSaved);
 
-            elternmithilfeCodeSaved = elternmithilfeCodeDao.save(new ElternmithilfeCode("f", "FrisierenTest", true));
-            codesTestdata.add(elternmithilfeCodeSaved);
-
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        entityManager.getTransaction().commit();
+        db.closeSession();
     }
 
     private void deleteTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
 
-            ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao(entityManager);
-
-            for (ElternmithilfeCode elternmithilfeCode : codesTestdata) {
-                ElternmithilfeCode elternmithilfeCodeToBeRemoved = elternmithilfeCodeDao.findById(elternmithilfeCode.getCodeId());
-                elternmithilfeCodeDao.remove(elternmithilfeCodeToBeRemoved);
-            }
-
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
+        for (ElternmithilfeCode elternmithilfeCode : codesTestdata) {
+            ElternmithilfeCode elternmithilfeCodeToBeRemoved = elternmithilfeCodeDao.findById(elternmithilfeCode.getCodeId());
+            elternmithilfeCodeDao.remove(elternmithilfeCodeToBeRemoved);
         }
+
+        entityManager.getTransaction().commit();
+        db.closeSession();
     }
 }

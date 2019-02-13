@@ -61,10 +61,6 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         MITARBEITER_ALLE.setNachname("");
     }
 
-    SemesterrechnungenSuchenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public Semester getSemester() {
         return semester;

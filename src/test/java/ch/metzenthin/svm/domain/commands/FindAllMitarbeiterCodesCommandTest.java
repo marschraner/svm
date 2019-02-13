@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.MitarbeiterCodeDao;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import org.junit.After;
@@ -8,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,29 +21,30 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllMitarbeiterCodesCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
-    private Set<MitarbeiterCode> codesTestdata = new HashSet<>();
+    private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
+    private final Set<MitarbeiterCode> codesTestdata = new HashSet<>();
+
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
     public void testExecute() {
         FindAllMitarbeiterCodesCommand findAllMitarbeiterCodesCommand = new FindAllMitarbeiterCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllMitarbeiterCodesCommand);
+        commandInvoker.executeCommand(findAllMitarbeiterCodesCommand);
 
         List<MitarbeiterCode> codesFound = findAllMitarbeiterCodesCommand.getMitarbeiterCodesAll();
         assertTrue(codesFound.size() >= 2);
@@ -63,47 +63,29 @@ public class FindAllMitarbeiterCodesCommandTest {
     }
 
     private void createTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
 
-            MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
+        MitarbeiterCode mitarbeiterCodeSaved = mitarbeiterCodeDao.save(new MitarbeiterCode("v", "VertretungTest", true));
+        codesTestdata.add(mitarbeiterCodeSaved);
 
-            MitarbeiterCode mitarbeiterCodeSaved = mitarbeiterCodeDao.save(new MitarbeiterCode("v", "VertretungTest", true));
-            codesTestdata.add(mitarbeiterCodeSaved);
+        mitarbeiterCodeSaved = mitarbeiterCodeDao.save(new MitarbeiterCode("h", "HelferTest", true));
+        codesTestdata.add(mitarbeiterCodeSaved);
 
-            mitarbeiterCodeSaved = mitarbeiterCodeDao.save(new MitarbeiterCode("h", "HelferTest", true));
-            codesTestdata.add(mitarbeiterCodeSaved);
-
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        entityManager.getTransaction().commit();
+        db.closeSession();
     }
 
     private void deleteTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
 
-            MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
-
-            for (MitarbeiterCode mitarbeiterCode : codesTestdata) {
-                MitarbeiterCode mitarbeiterCodeToBeRemoved = mitarbeiterCodeDao.findById(mitarbeiterCode.getCodeId());
-                mitarbeiterCodeDao.remove(mitarbeiterCodeToBeRemoved);
-            }
-
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
+        for (MitarbeiterCode mitarbeiterCode : codesTestdata) {
+            MitarbeiterCode mitarbeiterCodeToBeRemoved = mitarbeiterCodeDao.findById(mitarbeiterCode.getCodeId());
+            mitarbeiterCodeDao.remove(mitarbeiterCodeToBeRemoved);
         }
+
+        entityManager.getTransaction().commit();
+        db.closeSession();
     }
 }

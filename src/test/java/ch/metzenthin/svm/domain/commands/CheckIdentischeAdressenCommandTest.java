@@ -18,7 +18,8 @@ import static org.junit.Assert.*;
  */
 public class CheckIdentischeAdressenCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+
     private Schueler schueler1;
     private Schueler schueler2;
     private Schueler schueler3;

@@ -518,4 +518,5 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
 }

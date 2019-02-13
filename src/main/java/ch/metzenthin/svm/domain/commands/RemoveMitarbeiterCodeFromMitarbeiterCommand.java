@@ -7,7 +7,9 @@ import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 /**
  * @author Martin Schraner
  */
-public class RemoveMitarbeiterCodeFromMitarbeiterCommand extends GenericDaoCommand {
+public class RemoveMitarbeiterCodeFromMitarbeiterCommand implements Command {
+
+    private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
 
     // input
     private MitarbeiterCode mitarbeiterCodeToBeDeleted;
@@ -16,18 +18,17 @@ public class RemoveMitarbeiterCodeFromMitarbeiterCommand extends GenericDaoComma
     // output
     private Mitarbeiter mitarbeiterUpdated;
 
-    public RemoveMitarbeiterCodeFromMitarbeiterCommand(MitarbeiterCode mitarbeiterCodeToBeDeleleted, Mitarbeiter mitarbeiter) {
+    RemoveMitarbeiterCodeFromMitarbeiterCommand(MitarbeiterCode mitarbeiterCodeToBeDeleleted, Mitarbeiter mitarbeiter) {
         this.mitarbeiterCodeToBeDeleted = mitarbeiterCodeToBeDeleleted;
         this.mitarbeiter = mitarbeiter;
     }
 
     @Override
     public void execute() {
-        MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
         mitarbeiterUpdated = mitarbeiterCodeDao.removeFromMitarbeiterAndUpdate(mitarbeiterCodeToBeDeleted, mitarbeiter);
     }
 
-    public Mitarbeiter getMitarbeiterUpdated() {
+    Mitarbeiter getMitarbeiterUpdated() {
         return mitarbeiterUpdated;
     }
 }

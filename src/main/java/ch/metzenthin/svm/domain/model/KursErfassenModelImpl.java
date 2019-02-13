@@ -30,10 +30,6 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     private Mitarbeiter mitarbeiter1 = new Mitarbeiter();
     private Mitarbeiter mitarbeiter2 = new Mitarbeiter();
 
-    public KursErfassenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public Kurs getKurs() {
         return kurs;

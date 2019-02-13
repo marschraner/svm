@@ -349,4 +349,5 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends Sch
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
 }

@@ -9,7 +9,9 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindSemesterrechnungenSemesterCommand extends GenericDaoCommand {
+public class FindSemesterrechnungenSemesterCommand implements Command {
+
+    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
     private Semester semester;
@@ -17,17 +19,16 @@ public class FindSemesterrechnungenSemesterCommand extends GenericDaoCommand {
     // output
     private List<Semesterrechnung> semesterrechnungenFound;
 
-    public FindSemesterrechnungenSemesterCommand(Semester semester) {
+    FindSemesterrechnungenSemesterCommand(Semester semester) {
         this.semester = semester;
     }
 
     @Override
     public void execute() {
-        SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
         semesterrechnungenFound = semesterrechnungDao.findSemesterrechnungenSemester(semester);
     }
 
-    public List<Semesterrechnung> getSemesterrechnungenFound() {
+    List<Semesterrechnung> getSemesterrechnungenFound() {
         return semesterrechnungenFound;
     }
 }

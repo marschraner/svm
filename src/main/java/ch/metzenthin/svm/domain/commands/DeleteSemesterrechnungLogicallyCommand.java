@@ -8,11 +8,13 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteSemesterrechnungLogicallyCommand extends GenericDaoCommand {
+public class DeleteSemesterrechnungLogicallyCommand implements Command {
+
+    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
     private List<Semesterrechnung> semesterrechnungen;
-    int indexSemesterrechnungToBeDeletedLogically;
+    private int indexSemesterrechnungToBeDeletedLogically;
 
     public DeleteSemesterrechnungLogicallyCommand(List<Semesterrechnung> semesterrechnungen, int indexSemesterrechnungToBeDeletedLogically) {
         this.semesterrechnungen = semesterrechnungen;
@@ -21,7 +23,6 @@ public class DeleteSemesterrechnungLogicallyCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
         Semesterrechnung semesterrechnungToBeDeletedLogically = semesterrechnungen.get(indexSemesterrechnungToBeDeletedLogically);
         semesterrechnungToBeDeletedLogically.setDeleted(true);
         semesterrechnungDao.save(semesterrechnungToBeDeletedLogically);

@@ -6,7 +6,10 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
 
 import static ch.metzenthin.svm.common.utils.Converter.getNMonthsAfterNow;
 
@@ -17,10 +20,6 @@ public class MonatsstatistikSchuelerModelImpl extends AbstractModel implements M
 
     private Calendar monatJahr;
     private AnAbmeldungenDispensationenSelected anAbmeldungenDispensationen;
-
-    public MonatsstatistikSchuelerModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
 
     private final CalendarModelAttribute monatJahrModelAttribute = new CalendarModelAttribute(
             this,

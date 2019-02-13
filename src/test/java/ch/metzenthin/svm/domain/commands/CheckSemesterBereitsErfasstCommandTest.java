@@ -18,8 +18,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class CheckSemesterBereitsErfasstCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private List<Semester> bereitsErfassteSemesters = new ArrayList<>();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final List<Semester> bereitsErfassteSemesters = new ArrayList<>();
 
     @Before
     public void setUp() {
@@ -28,7 +28,7 @@ public class CheckSemesterBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_BereitsErfasst() throws Exception {
+    public void testExecute_BereitsErfasst() {
         Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 28), new GregorianCalendar(2012, Calendar.FEBRUARY, 12), new GregorianCalendar(2011, Calendar.OCTOBER, 5), new GregorianCalendar(2011, Calendar.OCTOBER, 17), new GregorianCalendar(2011, Calendar.DECEMBER, 21), new GregorianCalendar(2012, Calendar.JANUARY, 2));
         CheckSemesterBereitsErfasstCommand checkSemesterBereitsErfasstCommand = new CheckSemesterBereitsErfasstCommand(semester, null, bereitsErfassteSemesters);
         commandInvoker.executeCommand(checkSemesterBereitsErfasstCommand);
@@ -36,7 +36,7 @@ public class CheckSemesterBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_SemesterNochNichtErfasst() throws Exception {
+    public void testExecute_SemesterNochNichtErfasst() {
         Semester semester = new Semester("2012/2013", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2013, Calendar.AUGUST, 20), new GregorianCalendar(2013, Calendar.FEBRUARY, 10), new GregorianCalendar(2012, Calendar.OCTOBER, 5), new GregorianCalendar(2012, Calendar.OCTOBER, 17), new GregorianCalendar(2012, Calendar.DECEMBER, 21), new GregorianCalendar(2013, Calendar.JANUARY, 2));
         CheckSemesterBereitsErfasstCommand checkSemesterBereitsErfasstCommand = new CheckSemesterBereitsErfasstCommand(semester, null, bereitsErfassteSemesters);
         commandInvoker.executeCommand(checkSemesterBereitsErfasstCommand);
@@ -44,7 +44,7 @@ public class CheckSemesterBereitsErfasstCommandTest {
     }
 
     @Test
-    public void testExecute_SemesterOrigin() throws Exception {
+    public void testExecute_SemesterOrigin() {
         Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), new GregorianCalendar(2011, Calendar.OCTOBER, 5), new GregorianCalendar(2011, Calendar.OCTOBER, 17), new GregorianCalendar(2011, Calendar.DECEMBER, 21), new GregorianCalendar(2012, Calendar.JANUARY, 2));
         CheckSemesterBereitsErfasstCommand checkSemesterBereitsErfasstCommand = new CheckSemesterBereitsErfasstCommand(semester, bereitsErfassteSemesters.get(0), bereitsErfassteSemesters);
         commandInvoker.executeCommand(checkSemesterBereitsErfasstCommand);

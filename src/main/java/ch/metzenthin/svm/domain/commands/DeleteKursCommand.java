@@ -13,11 +13,14 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteKursCommand extends GenericDaoCommand {
+public class DeleteKursCommand implements Command {
+
+    private final KursDao kursDao = new KursDao();
+    private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
 
     // input
     private List<Kurs> kurse;
-    int indexKursToBeDeleted;
+    private int indexKursToBeDeleted;
 
     public DeleteKursCommand(List<Kurs> kurse, int indexKursToBeDeleted) {
         this.kurse = kurse;
@@ -26,8 +29,6 @@ public class DeleteKursCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        KursDao kursDao = new KursDao(entityManager);
-        KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
         Kurs kursToBeDeleted = kurse.get(indexKursToBeDeleted);
         Semester semester = kursToBeDeleted.getSemester();
 
@@ -41,7 +42,6 @@ public class DeleteKursCommand extends GenericDaoCommand {
 
             // Semesterrechnung aktualisieren
             UpdateWochenbetragUndAnzWochenCommand updateWochenbetragUndAnzWochenCommand = new UpdateWochenbetragUndAnzWochenCommand(rechnungsempfaenger, semester);
-            updateWochenbetragUndAnzWochenCommand.setEntityManager(entityManager);
             updateWochenbetragUndAnzWochenCommand.execute();
         }
 

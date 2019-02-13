@@ -5,7 +5,6 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.persistence.entities.Schueler;
@@ -25,8 +24,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     private Schueler schuelerOrigin;
     private final Anmeldung anmeldung;
 
-    SchuelerModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
+    SchuelerModelImpl() {
         schueler = new Schueler();
         schueler.setAnrede(Anrede.KEINE); // Schueler haben keine Anrede, ist aber obligatorisch in DB
         anmeldung = new Anmeldung();

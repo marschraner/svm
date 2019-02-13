@@ -1,10 +1,8 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import org.junit.Before;
 import org.junit.Test;
-import test.DummyCommandInvoker;
 import test.TestCompletedListener;
 
 import static org.junit.Assert.*;
@@ -14,13 +12,11 @@ import static org.junit.Assert.*;
  */
 public class AngehoerigerModelImplTest {
 
-    private static final CommandInvoker DUMMY_COMMAND_INVOKER = new DummyCommandInvoker();
-
     private AngehoerigerModel angehoerigerModel;
 
     @Before
     public void setUp() {
-        angehoerigerModel = new AngehoerigerModelImpl(DUMMY_COMMAND_INVOKER);
+        angehoerigerModel = new AngehoerigerModelImpl();
     }
 
     @Test

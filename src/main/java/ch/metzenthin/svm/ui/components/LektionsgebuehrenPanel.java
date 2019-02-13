@@ -255,4 +255,5 @@ public class LektionsgebuehrenPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

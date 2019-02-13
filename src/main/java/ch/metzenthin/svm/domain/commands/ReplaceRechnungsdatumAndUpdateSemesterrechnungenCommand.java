@@ -10,7 +10,9 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand extends GenericDaoCommand {
+public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand implements Command {
+
+    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
     private List<Semesterrechnung> semesterrechnungen;
@@ -25,8 +27,6 @@ public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand extends Gen
 
     @Override
     public void execute() {
-        
-        SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
 
         for (Semesterrechnung semesterrechnung : semesterrechnungen) {
 

@@ -1,15 +1,14 @@
 package ch.metzenthin.svm.persistence.daos;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
@@ -20,30 +19,24 @@ import static org.junit.Assert.*;
  */
 public class MaerchenDaoTest {
 
-    private EntityManagerFactory entityManagerFactory;
-    private EntityManager entityManager;
-    private MaerchenDao maerchenDao;
+    private final MaerchenDao maerchenDao = new MaerchenDao();
+
+    private DB db;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        entityManager = entityManagerFactory.createEntityManager();
-        maerchenDao = new MaerchenDao(entityManager);
+        db = DBFactory.getInstance();
     }
 
     @After
     public void tearDown() throws Exception {
-        if (entityManager != null) {
-            entityManager.close();
-        }
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
     public void testFindById() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -68,6 +61,7 @@ public class MaerchenDaoTest {
 
     @Test
     public void save() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -96,8 +90,8 @@ public class MaerchenDaoTest {
 
     @Test
     public void testRemove() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -139,6 +133,7 @@ public class MaerchenDaoTest {
 
     @Test
     public void testFindAll() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();

@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.MaerchenDao;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 import org.junit.After;
@@ -8,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,29 +21,30 @@ import static org.junit.Assert.assertTrue;
  */
 public class FindAllMaerchensCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
-    private Set<Maerchen> maerchenTestdata = new HashSet<>();
+    private final MaerchenDao maerchenDao = new MaerchenDao();
+    private final Set<Maerchen> maerchenTestdata = new HashSet<>();
+
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
         createTestdata();
     }
 
     @After
     public void tearDown() throws Exception {
         deleteTestdata();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
     public void testExecute() {
         FindAllMaerchensCommand findAllMaerchensCommand = new FindAllMaerchensCommand();
-            commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllMaerchensCommand);
+            commandInvoker.executeCommand(findAllMaerchensCommand);
 
         List<Maerchen> maerchenFound = findAllMaerchensCommand.getMaerchensAll();
         assertTrue(maerchenFound.size() >= 2);
@@ -63,49 +63,31 @@ public class FindAllMaerchensCommandTest {
     }
 
     private void createTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
 
-            MaerchenDao maerchenDao = new MaerchenDao(entityManager);
+        Maerchen maerchen1 = new Maerchen("1911/1912", "Gestiefelter Kater", 7);
+        Maerchen maerchenSaved = maerchenDao.save(maerchen1);
+        maerchenTestdata.add(maerchenSaved);
 
-            Maerchen maerchen1 = new Maerchen("1911/1912", "Gestiefelter Kater", 7);
-            Maerchen maerchenSaved = maerchenDao.save(maerchen1);
-            maerchenTestdata.add(maerchenSaved);
+        Maerchen maerchen2 = new Maerchen("1912/2013", "Schneewittchen", 8);
+        maerchenSaved = maerchenDao.save(maerchen2);
+        maerchenTestdata.add(maerchenSaved);
 
-            Maerchen maerchen2 = new Maerchen("1912/2013", "Schneewittchen", 8);
-            maerchenSaved = maerchenDao.save(maerchen2);
-            maerchenTestdata.add(maerchenSaved);
-
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        entityManager.getTransaction().commit();
+        db.closeSession();
     }
 
     private void deleteTestdata() {
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
 
-            MaerchenDao maerchenDao = new MaerchenDao(entityManager);
-
-            for (Maerchen maerchen : maerchenTestdata) {
-                Maerchen maerchenToBeRemoved = maerchenDao.findById(maerchen.getMaerchenId());
-                maerchenDao.remove(maerchenToBeRemoved);
-            }
-
-            entityManager.getTransaction().commit();
-
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
+        for (Maerchen maerchen : maerchenTestdata) {
+            Maerchen maerchenToBeRemoved = maerchenDao.findById(maerchen.getMaerchenId());
+            maerchenDao.remove(maerchenToBeRemoved);
         }
+
+        entityManager.getTransaction().commit();
+        db.closeSession();
     }
 }

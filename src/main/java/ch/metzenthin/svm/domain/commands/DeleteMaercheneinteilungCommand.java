@@ -8,11 +8,13 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteMaercheneinteilungCommand extends GenericDaoCommand {
+public class DeleteMaercheneinteilungCommand implements Command {
+
+    private final MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
 
     // input
     private List<Maercheneinteilung> maercheneinteilungen;
-    int indexMaercheneinteilungToBeDeleted;
+    private int indexMaercheneinteilungToBeDeleted;
 
     public DeleteMaercheneinteilungCommand(List<Maercheneinteilung> maercheneinteilungen, int indexMaercheneinteilungToBeDeleted) {
         this.maercheneinteilungen = maercheneinteilungen;
@@ -21,7 +23,6 @@ public class DeleteMaercheneinteilungCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao(entityManager);
         Maercheneinteilung maercheneinteilungToBeDeleted = maercheneinteilungen.get(indexMaercheneinteilungToBeDeleted);
         maercheneinteilungDao.remove(maercheneinteilungToBeDeleted);
         maercheneinteilungen.remove(indexMaercheneinteilungToBeDeleted);

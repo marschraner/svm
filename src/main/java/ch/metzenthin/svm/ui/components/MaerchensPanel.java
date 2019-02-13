@@ -263,4 +263,5 @@ public class MaerchensPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

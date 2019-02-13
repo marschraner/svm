@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindNextSemesterCommand extends GenericDaoCommand {
+public class FindNextSemesterCommand implements Command {
 
     // input
     private Semester currentSemester;
@@ -34,7 +34,6 @@ public class FindNextSemesterCommand extends GenericDaoCommand {
             semesterbezeichnungPreviousSemester = Semesterbezeichnung.ERSTES_SEMESTER;
         }
         FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
-        findAllSemestersCommand.setEntityManager(entityManager);
         findAllSemestersCommand.execute();
         List<Semester> semestersAll = findAllSemestersCommand.getSemestersAll();
         FindSemesterForSchuljahrSemesterbezeichnungCommand findSemesterForSchuljahrSemesterbezeichnungCommand = new FindSemesterForSchuljahrSemesterbezeichnungCommand(schuljahrNextSemester, semesterbezeichnungPreviousSemester, semestersAll);

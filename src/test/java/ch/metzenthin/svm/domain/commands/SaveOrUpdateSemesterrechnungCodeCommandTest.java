@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungCodeDao;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 import org.junit.After;
@@ -8,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,22 +20,21 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateSemesterrechnungCodeCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
+    private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();
+
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        commandInvoker.openSession();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSession();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
@@ -77,30 +75,21 @@ public class SaveOrUpdateSemesterrechnungCodeCommandTest {
         assertTrue(checkIfCodeAvailable("2t", "HandrechnungModif Test"));
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao(entityManager);
-            for (SemesterrechnungCode semesterrechnungCode : codesSaved) {
-                SemesterrechnungCode semesterrechnungCodeToBeDeleted = semesterrechnungCodeDao.findById(semesterrechnungCode.getCodeId());
-                if (semesterrechnungCodeToBeDeleted != null) {
-                    semesterrechnungCodeDao.remove(semesterrechnungCodeToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
+        for (SemesterrechnungCode semesterrechnungCode : codesSaved) {
+            SemesterrechnungCode semesterrechnungCodeToBeDeleted = semesterrechnungCodeDao.findById(semesterrechnungCode.getCodeId());
+            if (semesterrechnungCodeToBeDeleted != null) {
+                semesterrechnungCodeDao.remove(semesterrechnungCodeToBeDeleted);
             }
         }
-
-
+        entityManager.getTransaction().commit();
+        db.closeSession();
     }
 
     private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) {
         FindAllSemesterrechnungCodesCommand findAllSemesterrechnungCodesCommand = new FindAllSemesterrechnungCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSemesterrechnungCodesCommand);
+        commandInvoker.executeCommand(findAllSemesterrechnungCodesCommand);
         List<SemesterrechnungCode> codesAll = findAllSemesterrechnungCodesCommand.getSemesterrechnungCodesAll();
         for (SemesterrechnungCode semesterrechnungCode : codesAll) {
             if (semesterrechnungCode.getKuerzel().equals(kuerzel) && semesterrechnungCode.getBeschreibung().equals(beschreibung)) {

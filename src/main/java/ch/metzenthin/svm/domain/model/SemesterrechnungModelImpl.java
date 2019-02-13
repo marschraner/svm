@@ -4,7 +4,6 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Schuljahre;
 import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 
@@ -19,10 +18,6 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     protected Semesterrechnung semesterrechnung = new Semesterrechnung();
     protected SemesterrechnungCode semesterrechnungCode = new SemesterrechnungCode();
-
-    SemesterrechnungModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
 
     static {
         SEMESTERRECHNUNG_CODE_ALLE.setKuerzel("");

@@ -6,9 +6,7 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 /**
  * @author Martin Schraner
  */
-public class DeleteSchuelerCommand extends GenericDaoCommand {
-
-    private Schueler schueler;
+public class DeleteSchuelerCommand implements Command {
 
     public enum Result {
         SCHUELER_IN_KURSE_EINGESCHRIEBEN,
@@ -16,6 +14,11 @@ public class DeleteSchuelerCommand extends GenericDaoCommand {
         RECHNUNGSEMPFAENGER_HAT_SEMESTERRECHNUNGEN,
         LOESCHEN_ERFOLGREICH
     }
+
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+
+    // input
+    private Schueler schueler;
 
     // output
     private Result result;
@@ -26,7 +29,6 @@ public class DeleteSchuelerCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        SchuelerDao schuelerDao = new SchuelerDao(entityManager);
         if (schueler.getKursanmeldungen().size() > 0) {
             result = Result.SCHUELER_IN_KURSE_EINGESCHRIEBEN;
             return;

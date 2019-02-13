@@ -276,4 +276,5 @@ public class SemestersPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

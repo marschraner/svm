@@ -30,10 +30,6 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
     private Kursanmeldung kursanmeldung = new Kursanmeldung();
     private Kursanmeldung kursanmeldungOrigin;
 
-    public KursanmeldungErfassenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public void setKursanmeldungOrigin(Kursanmeldung kursanmeldungOrigin) {
         this.kursanmeldungOrigin = kursanmeldungOrigin;

@@ -8,15 +8,15 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindAllMitarbeitersCommand extends GenericDaoCommand {
+public class FindAllMitarbeitersCommand implements Command {
+
+    private final MitarbeiterDao mitarbeiterDao = new MitarbeiterDao();
 
     // output
     private List<Mitarbeiter> mitarbeitersAll;
 
     @Override
     public void execute() {
-
-        MitarbeiterDao mitarbeiterDao = new MitarbeiterDao(entityManager);
         mitarbeitersAll = mitarbeiterDao.findAll();
     }
 

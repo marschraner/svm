@@ -220,4 +220,5 @@ public class KurseSemesterwahlPanel {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
+
 }

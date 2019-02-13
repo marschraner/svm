@@ -8,16 +8,18 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteSemesterrechnungCodeCommand extends GenericDaoCommand {
+public class DeleteSemesterrechnungCodeCommand implements Command {
 
     public enum Result {
         CODE_VON_SEMESTERRECHNUNGEN_REFERENZIERT,
         LOESCHEN_ERFOLGREICH
     }
 
+    private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();
+
     // input
     private List<SemesterrechnungCode> semesterrechnungCodes;
-    int indexCodeToBeDeleted;
+    private int indexCodeToBeDeleted;
 
     // output
     private Result result;
@@ -29,7 +31,6 @@ public class DeleteSemesterrechnungCodeCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao(entityManager);
         SemesterrechnungCode semesterrechnungCodeToBeDeleted = semesterrechnungCodes.get(indexCodeToBeDeleted);
         if (semesterrechnungCodeToBeDeleted.getSemesterrechnungen().size() > 0) {
             result = Result.CODE_VON_SEMESTERRECHNUNGEN_REFERENZIERT;

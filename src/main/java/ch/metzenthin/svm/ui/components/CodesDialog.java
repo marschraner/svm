@@ -188,4 +188,5 @@ public class CodesDialog extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
 }

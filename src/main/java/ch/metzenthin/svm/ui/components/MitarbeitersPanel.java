@@ -452,4 +452,5 @@ public class MitarbeitersPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

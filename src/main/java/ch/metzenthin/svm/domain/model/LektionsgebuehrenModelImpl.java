@@ -16,10 +16,6 @@ import java.util.List;
  */
 public class LektionsgebuehrenModelImpl extends AbstractModel implements LektionsgebuehrenModel {
 
-    LektionsgebuehrenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public boolean checkIfLektionslaengeInVerwendung(LektionsgebuehrenTableModel lektionsgebuehrenTableModel, int indexLektionsgebuehrenToBeRemoved) {
         Lektionsgebuehren lektionsgebuehrenToBeRemoved = lektionsgebuehrenTableModel.getLektionsgebuehrenList().get(indexLektionsgebuehrenToBeRemoved);

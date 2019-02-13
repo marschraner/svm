@@ -7,7 +7,9 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 /**
  * @author Martin Schraner
  */
-public class AddSchuelerCodeToSchuelerAndSaveCommand extends GenericDaoCommand {
+public class AddSchuelerCodeToSchuelerAndSaveCommand implements Command {
+
+    private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
 
     // input
     private SchuelerCode schuelerCode;
@@ -23,7 +25,6 @@ public class AddSchuelerCodeToSchuelerAndSaveCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
         // SchuelerCode nachladen wegen Lazy-Loading
         SchuelerCode schuelerCodeToBeAdded = schuelerCodeDao.findById(schuelerCode.getCodeId());
         schuelerUpdated = schuelerCodeDao.addToSchuelerAndSave(schuelerCodeToBeAdded, schueler);

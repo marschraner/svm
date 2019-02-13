@@ -294,4 +294,5 @@ public class MaercheneinteilungenPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

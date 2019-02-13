@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteSemesterCommand extends GenericDaoCommand {
+public class DeleteSemesterCommand implements Command {
 
     public enum Result {
         SEMESTER_VON_KURS_REFERENZIERT,
@@ -16,9 +16,11 @@ public class DeleteSemesterCommand extends GenericDaoCommand {
         LOESCHEN_ERFOLGREICH
     }
 
+    private final SemesterDao semesterDao = new SemesterDao();
+
     // input
     private List<Semester> Semesters;
-    int indexSemesterToBeDeleted;
+    private int indexSemesterToBeDeleted;
 
     // output
     private Result result;
@@ -30,7 +32,6 @@ public class DeleteSemesterCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        SemesterDao SemesterDao = new SemesterDao(entityManager);
         Semester SemesterToBeDeleted = Semesters.get(indexSemesterToBeDeleted);
         if (SemesterToBeDeleted.getKurse().size() > 0) {
             result = Result.SEMESTER_VON_KURS_REFERENZIERT;
@@ -40,7 +41,7 @@ public class DeleteSemesterCommand extends GenericDaoCommand {
             result = Result.SEMESTER_VON_SEMESTERRECHNUNG_REFERENZIERT;
             return;
         }
-        SemesterDao.remove(SemesterToBeDeleted);
+        semesterDao.remove(SemesterToBeDeleted);
         Semesters.remove(indexSemesterToBeDeleted);
         result = Result.LOESCHEN_ERFOLGREICH;
     }

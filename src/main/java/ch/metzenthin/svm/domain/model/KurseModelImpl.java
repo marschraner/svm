@@ -9,16 +9,14 @@ import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * @author Martin Schraner
  */
 public class KurseModelImpl extends AbstractModel implements KurseModel {
-
-    public KurseModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
 
     @Override
     public KursErfassenModel getKursErfassenModel(SvmContext svmContext, KurseTableModel kurseTableModel, int rowSelected) {

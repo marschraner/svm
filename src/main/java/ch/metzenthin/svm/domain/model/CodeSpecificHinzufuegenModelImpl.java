@@ -5,7 +5,10 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.AddSchuelerCodeToSchuelerAndSaveCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
+import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 
 /**
@@ -14,10 +17,6 @@ import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 public class CodeSpecificHinzufuegenModelImpl extends AbstractModel implements CodeSpecificHinzufuegenModel {
 
     private Code code;
-
-    CodeSpecificHinzufuegenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
 
     @Override
     public Code getCode() {

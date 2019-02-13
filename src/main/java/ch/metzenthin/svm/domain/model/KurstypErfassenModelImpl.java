@@ -16,10 +16,6 @@ public class KurstypErfassenModelImpl extends AbstractModel implements KurstypEr
     private Kurstyp kurstyp = new Kurstyp();
     private Kurstyp kurstypOrigin;
 
-    public KurstypErfassenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public Kurstyp getKurstyp() {
         return kurstyp;

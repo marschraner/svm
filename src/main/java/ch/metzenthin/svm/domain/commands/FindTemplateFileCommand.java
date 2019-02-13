@@ -29,7 +29,7 @@ public class FindTemplateFileCommand implements Command {
     private File templateFile;
     private Result result;
 
-    public FindTemplateFileCommand(Listentyp listentyp, Semester semester, Wochentag wochentag) {
+    FindTemplateFileCommand(Listentyp listentyp, Semester semester, Wochentag wochentag) {
         this.listentyp = listentyp;
         this.semester = semester;
         this.wochentag = wochentag;
@@ -77,7 +77,7 @@ public class FindTemplateFileCommand implements Command {
         result = Result.TEMPLATE_FILE_EXISTIERT;
     }
 
-    public File getTemplateFile() {
+    File getTemplateFile() {
         return templateFile;
     }
 

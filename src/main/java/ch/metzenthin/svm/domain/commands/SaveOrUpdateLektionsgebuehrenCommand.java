@@ -9,7 +9,9 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateLektionsgebuehrenCommand extends GenericDaoCommand {
+public class SaveOrUpdateLektionsgebuehrenCommand implements Command {
+
+    private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
 
     // input
     private Lektionsgebuehren lektionsgebuehren;
@@ -25,7 +27,6 @@ public class SaveOrUpdateLektionsgebuehrenCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao(entityManager);
         if (lektionsgebuehrenOrigin != null) {
             // Update von lektionsgebuehrenOrigin mit Werten von lektionsgebuehren
             lektionsgebuehrenOrigin.copyAttributesFrom(lektionsgebuehren);

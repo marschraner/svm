@@ -5,18 +5,7 @@ package ch.metzenthin.svm.domain.commands;
  */
 public interface CommandInvoker {
 
-    Command executeCommand(Command c);
+    Command executeCommand(Command command);
 
-    GenericDaoCommand executeCommand(GenericDaoCommand genericDaoCommand);
-
-    GenericDaoCommand executeCommandAsTransactionWithOpenAndClose(GenericDaoCommand genericDaoCommand);
-
-    GenericDaoCommand executeCommandAsTransaction(GenericDaoCommand genericDaoCommand);
-
-    void openSession();
-
-    void closeSession();
-
-    void clear();
-
+    Command executeCommandAsTransaction(Command command);
 }

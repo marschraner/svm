@@ -307,4 +307,5 @@ public class DispensationenPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

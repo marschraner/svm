@@ -9,7 +9,9 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateSemesterCommand extends GenericDaoCommand {
+public class SaveOrUpdateSemesterCommand implements Command {
+
+    private final SemesterDao semesterDao = new SemesterDao();
 
     // input
     private Semester semester;
@@ -25,7 +27,6 @@ public class SaveOrUpdateSemesterCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        SemesterDao semesterDao = new SemesterDao(entityManager);
         if (semesterOrigin != null) {
             // Update von semesterOrigin mit Werten von semester
             semesterOrigin.copyAttributesFrom(semester);

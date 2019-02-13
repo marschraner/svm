@@ -231,4 +231,5 @@ public class KurstypErfassenDialog extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
 }

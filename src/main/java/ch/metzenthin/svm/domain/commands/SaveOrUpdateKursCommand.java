@@ -10,7 +10,9 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateKursCommand extends GenericDaoCommand {
+public class SaveOrUpdateKursCommand implements Command {
+
+    private final KursDao kursDao = new KursDao();
 
     // input
     private Kurs kurs;
@@ -36,7 +38,6 @@ public class SaveOrUpdateKursCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        KursDao kursDao = new KursDao(entityManager);
         if (kursOrigin != null) {
             // Update von kursOrigin mit Werten von kurs
             int kurslaengeOrigin = kursOrigin.getKurslaenge();
@@ -59,7 +60,6 @@ public class SaveOrUpdateKursCommand extends GenericDaoCommand {
                 for (Kursanmeldung kursanmeldung : kursOrigin.getKursanmeldungen()) {
                     Angehoeriger rechnungsempfaenger = kursanmeldung.getSchueler().getRechnungsempfaenger();
                     UpdateWochenbetragUndAnzWochenCommand updateWochenbetragUndAnzWochenCommand = new UpdateWochenbetragUndAnzWochenCommand(rechnungsempfaenger, semester);
-                    updateWochenbetragUndAnzWochenCommand.setEntityManager(entityManager);
                     updateWochenbetragUndAnzWochenCommand.execute();
                 }
             }

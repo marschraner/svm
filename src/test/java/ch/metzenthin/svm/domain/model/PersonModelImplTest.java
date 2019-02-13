@@ -1,9 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import org.junit.Test;
-import test.DummyCommandInvoker;
 
 import static org.junit.Assert.*;
 
@@ -11,8 +9,6 @@ import static org.junit.Assert.*;
  * @author Hans Stamm
  */
 public class PersonModelImplTest {
-
-    private static final CommandInvoker DUMMY_COMMAND_INVOKER = new DummyCommandInvoker();
 
     //------------------------------------------------------------------------------------------------------------------
     // Schüler
@@ -413,11 +409,11 @@ public class PersonModelImplTest {
     //------------------------------------------------------------------------------------------------------------------
 
     private SchuelerModel createSchuelerModel() {
-        return new SchuelerModelImpl(DUMMY_COMMAND_INVOKER);
+        return new SchuelerModelImpl();
     }
 
     private AngehoerigerModel createAngehoerigerModel() {
-        return new AngehoerigerModelImpl(DUMMY_COMMAND_INVOKER);
+        return new AngehoerigerModelImpl();
     }
 
     private AngehoerigerModel createAngehoerigerModelRechnungsempfaenger() {

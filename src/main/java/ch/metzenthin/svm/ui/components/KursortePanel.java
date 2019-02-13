@@ -277,4 +277,5 @@ public class KursortePanel {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

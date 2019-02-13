@@ -1,5 +1,8 @@
 package ch.metzenthin.svm.persistence.daos;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
+
 import javax.persistence.EntityManager;
 import java.lang.reflect.ParameterizedType;
 
@@ -8,35 +11,20 @@ import java.lang.reflect.ParameterizedType;
  */
 public abstract class GenericDao<T, ID> {
 
-    private Class<T> persistentClass;
-    protected EntityManager entityManager;
+    private final Class<T> persistentClass;
+    protected final DB db = DBFactory.getInstance();
 
     @SuppressWarnings("unchecked")
-    public GenericDao(EntityManager entityManager) {
-        persistentClass = (Class<T>) ( (ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        this.entityManager = entityManager;
-    }
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
-    public EntityManager getEntityManager() {
-        if (entityManager == null) {
-            throw new NullPointerException("EntityManager not set");
-        }
-        return entityManager;
-    }
-
-    public Class<T> getPersistentClass() {
-        return persistentClass;
+    public GenericDao() {
+        persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     public T findById(ID id) {
-        return entityManager.find(persistentClass, id);
+        return db.getCurrentEntityManager().find(persistentClass, id);
     }
 
     public T save(T entity) {
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.persist(entity);
         entityManager.flush();
         entityManager.refresh(entity);
@@ -44,6 +32,6 @@ public abstract class GenericDao<T, ID> {
     }
 
     public void remove(T entity) {
-        entityManager.remove(entity);
+        db.getCurrentEntityManager().remove(entity);
     }
 }

@@ -10,7 +10,9 @@ import java.util.*;
 /**
  * @author Martin Schraner
  */
-public class FindKurseMapSchuelerSemesterCommand extends GenericDaoCommand {
+public class FindKurseMapSchuelerSemesterCommand implements Command {
+
+    private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
 
     // input
     private List<Schueler> schuelerList;
@@ -43,7 +45,6 @@ public class FindKurseMapSchuelerSemesterCommand extends GenericDaoCommand {
         if (semester == null) {
             return;
         }
-        KursanmeldungDao kursanmeldungDao = new KursanmeldungDao(entityManager);
         for (Schueler schueler : schuelerList) {
             List<Kursanmeldung> kursanmeldungenFound = kursanmeldungDao.findKursanmeldungen(schueler, semester, wochentag, zeitBeginn, mitarbeiter, anmeldemonat, abmeldemonat, keineAbgemeldetenKurseAnzeigen, stichtagSchuelerSuchen);
             List<Kurs> kurse = new ArrayList<>();

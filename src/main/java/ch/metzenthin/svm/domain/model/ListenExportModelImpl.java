@@ -27,10 +27,6 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
     private Listentyp listentyp;
     private String titel;
     private File templateFile;
-    
-    ListenExportModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
 
     @Override
     public Listentyp getListentyp() {
@@ -378,7 +374,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
         String titleInit = "";
         switch (listentyp) {
             case SCHUELER_ADRESSLISTE:
-                if (schuelerSuchenTableModel.getLehrkraft() != null) {
+                if (schuelerSuchenTableModel.isKursFuerSucheBeruecksichtigen() && schuelerSuchenTableModel.getLehrkraft() != null) {
                     titleInit = getTitleSpecificKurs(schuelerSuchenTableModel);
                 } else {
                     titleInit = "Adressliste";
@@ -472,6 +468,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
         return schuelerSuchenTableModel.getMaerchen().getBezeichnung();
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean checkIfRechnungsdatumVorrechnungUeberallGesetzt(SemesterrechnungenTableModel semesterrechnungenTableModel) {
         for (Semesterrechnung semesterrechnung : semesterrechnungenTableModel.getSelektierteSemesterrechnungen()) {
             if (semesterrechnung.getRechnungsdatumVorrechnung() == null) {
@@ -481,6 +478,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
         return true;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean checkIfRechnungsdatumNachrechnungUeberallGesetzt(SemesterrechnungenTableModel semesterrechnungenTableModel) {
         for (Semesterrechnung semesterrechnung : semesterrechnungenTableModel.getSelektierteSemesterrechnungen()) {
             if (semesterrechnung.getRechnungsdatumNachrechnung() == null) {

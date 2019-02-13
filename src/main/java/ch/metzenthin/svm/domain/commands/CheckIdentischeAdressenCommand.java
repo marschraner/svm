@@ -20,15 +20,15 @@ public class CheckIdentischeAdressenCommand implements Command {
     private String identischeAdressen = "";
     private String abweichendeAdressen = "";
 
-    public CheckIdentischeAdressenCommand(Schueler schueler) {
+    CheckIdentischeAdressenCommand(Schueler schueler) {
         this(schueler, null, null, null, false);
     }
 
-    public CheckIdentischeAdressenCommand(Schueler schueler, boolean isRechnungsempfaengerDrittperson) {
+    CheckIdentischeAdressenCommand(Schueler schueler, boolean isRechnungsempfaengerDrittperson) {
         this(schueler, null, null, null, isRechnungsempfaengerDrittperson);
     }
 
-    public CheckIdentischeAdressenCommand(Schueler schueler, Angehoeriger mutterFoundInDatabase, Angehoeriger vaterFoundInDatabase, Angehoeriger rechnungsempfaengerFoundInDatabase, boolean isRechnungsempfaengerDrittperson) {
+    CheckIdentischeAdressenCommand(Schueler schueler, Angehoeriger mutterFoundInDatabase, Angehoeriger vaterFoundInDatabase, Angehoeriger rechnungsempfaengerFoundInDatabase, boolean isRechnungsempfaengerDrittperson) {
         this.schueler = schueler;
         this.isRechnungsempfaengerDrittperson = isRechnungsempfaengerDrittperson;
         mutter = (mutterFoundInDatabase != null) ? mutterFoundInDatabase : schueler.getMutter();
@@ -212,11 +212,11 @@ public class CheckIdentischeAdressenCommand implements Command {
 
     }
 
-    public String getIdentischeAdressen() {
+    String getIdentischeAdressen() {
         return identischeAdressen;
     }
 
-    public String getAbweichendeAdressen() {
+    String getAbweichendeAdressen() {
         return abweichendeAdressen;
     }
 }

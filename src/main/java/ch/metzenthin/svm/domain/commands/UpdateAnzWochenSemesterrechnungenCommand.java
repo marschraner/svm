@@ -8,7 +8,9 @@ import java.util.Collection;
 /**
  * @author Martin Schraner
  */
-public class UpdateAnzWochenSemesterrechnungenCommand extends GenericDaoCommand {
+public class UpdateAnzWochenSemesterrechnungenCommand implements Command {
+
+    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
     private Collection<Semesterrechnung> semesterrechnungen;
@@ -22,8 +24,6 @@ public class UpdateAnzWochenSemesterrechnungenCommand extends GenericDaoCommand 
 
     @Override
     public void execute() {
-
-        SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao(entityManager);
 
         for (Semesterrechnung semesterrechnung : semesterrechnungen) {
 

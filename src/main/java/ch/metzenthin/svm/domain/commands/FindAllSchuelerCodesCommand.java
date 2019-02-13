@@ -8,15 +8,15 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindAllSchuelerCodesCommand extends GenericDaoCommand {
+public class FindAllSchuelerCodesCommand implements Command {
+
+    private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
 
     // output
     private List<SchuelerCode> schuelerCodesAll;
 
     @Override
     public void execute() {
-
-        SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
         schuelerCodesAll = schuelerCodeDao.findAll();
     }
 

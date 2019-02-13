@@ -9,7 +9,9 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateSchuelerCodeCommand extends GenericDaoCommand {
+public class SaveOrUpdateSchuelerCodeCommand implements Command {
+
+    private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
 
     // input
     private SchuelerCode schuelerCode;
@@ -25,7 +27,6 @@ public class SaveOrUpdateSchuelerCodeCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
         if (schuelerCodeOrigin != null) {
             // Update von schuelerCodeOrigin mit Werten von schuelerCode
             schuelerCodeOrigin.copyAttributesFrom(schuelerCode);

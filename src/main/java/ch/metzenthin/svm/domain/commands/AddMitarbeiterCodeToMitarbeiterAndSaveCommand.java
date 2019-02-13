@@ -7,7 +7,9 @@ import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 /**
  * @author Martin Schraner
  */
-public class AddMitarbeiterCodeToMitarbeiterAndSaveCommand extends GenericDaoCommand {
+public class AddMitarbeiterCodeToMitarbeiterAndSaveCommand implements Command {
+
+    private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
 
     // input
     private MitarbeiterCode mitarbeiterCode;
@@ -16,20 +18,19 @@ public class AddMitarbeiterCodeToMitarbeiterAndSaveCommand extends GenericDaoCom
     // output
     private Mitarbeiter mitarbeiterUpdated;
 
-    public AddMitarbeiterCodeToMitarbeiterAndSaveCommand(MitarbeiterCode mitarbeiterCode, Mitarbeiter mitarbeiter) {
+    AddMitarbeiterCodeToMitarbeiterAndSaveCommand(MitarbeiterCode mitarbeiterCode, Mitarbeiter mitarbeiter) {
         this.mitarbeiterCode = mitarbeiterCode;
         this.mitarbeiter = mitarbeiter;
     }
 
     @Override
     public void execute() {
-        MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao(entityManager);
         // MitarbeiterCode nachladen wegen Lazy-Loading
         MitarbeiterCode mitarbeiterCodeToBeAdded = mitarbeiterCodeDao.findById(mitarbeiterCode.getCodeId());
         mitarbeiterUpdated = mitarbeiterCodeDao.addToMitarbeiterAndSave(mitarbeiterCodeToBeAdded, mitarbeiter);
     }
 
-    public Mitarbeiter getMitarbeiterUpdated() {
+    Mitarbeiter getMitarbeiterUpdated() {
         return mitarbeiterUpdated;
     }
 }

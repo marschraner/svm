@@ -30,7 +30,7 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
     @Override
     public void execute() {
 
-        Character separator = ';';
+        char separator = ';';
 
         NachnameGratiskindFormatter nachnameGratiskindFormatter = new NachnameGratiskindFormatter();
 

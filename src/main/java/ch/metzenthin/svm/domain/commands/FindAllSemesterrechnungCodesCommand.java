@@ -8,15 +8,15 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindAllSemesterrechnungCodesCommand extends GenericDaoCommand {
+public class FindAllSemesterrechnungCodesCommand implements Command {
+
+    private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();
 
     // output
     private List<SemesterrechnungCode> semesterrechnungCodesAll;
 
     @Override
     public void execute() {
-
-        SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao(entityManager);
         semesterrechnungCodesAll = semesterrechnungCodeDao.findAll();
     }
 

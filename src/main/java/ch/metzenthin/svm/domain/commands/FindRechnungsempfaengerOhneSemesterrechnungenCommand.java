@@ -1,8 +1,11 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Semester;
 
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +13,9 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindRechnungsempfaengerOhneSemesterrechnungenCommand extends GenericDaoCommand {
+public class FindRechnungsempfaengerOhneSemesterrechnungenCommand implements Command {
+
+    private final DB db = DBFactory.getInstance();
 
     // input
     private Semester currentSemester;
@@ -31,11 +36,11 @@ public class FindRechnungsempfaengerOhneSemesterrechnungenCommand extends Generi
 
         // 1. Vorhergehendes Semester
         FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
-        findPreviousSemesterCommand.setEntityManager(entityManager);
         findPreviousSemesterCommand.execute();
         Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
 
         TypedQuery<Angehoeriger> typedQuery;
+        EntityManager entityManager = db.getCurrentEntityManager();
         if (previousSemester != null) {
             // Suche nach aktuellen Kursen und Kursen des Vorsemesters ohne Abmeldung
             typedQuery = entityManager.createQuery("select distinct rech from Angehoeriger rech" +
@@ -60,7 +65,7 @@ public class FindRechnungsempfaengerOhneSemesterrechnungenCommand extends Generi
         rechnungsempfaengersFound = typedQuery.getResultList();
     }
 
-    public List<Angehoeriger> getRechnungsempfaengersFound() {
+    List<Angehoeriger> getRechnungsempfaengersFound() {
         return rechnungsempfaengersFound;
     }
 }

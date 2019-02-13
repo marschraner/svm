@@ -16,14 +16,11 @@ import java.util.List;
  */
 public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId> {
 
-    public KursanmeldungDao(EntityManager entityManager) {
-        super(entityManager);
-    }
-
     @Override
     public Kursanmeldung save(Kursanmeldung kursanmeldung) {
         kursanmeldung.getSchueler().getKursanmeldungen().add(kursanmeldung);
         kursanmeldung.getKurs().getKursanmeldungen().add(kursanmeldung);
+        EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.persist(kursanmeldung);
         entityManager.flush();
         entityManager.refresh(kursanmeldung);
@@ -34,11 +31,12 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
     public void remove(Kursanmeldung kursanmeldung) {
         kursanmeldung.getSchueler().getKursanmeldungen().remove(kursanmeldung);
         kursanmeldung.getKurs().getKursanmeldungen().remove(kursanmeldung);
-        entityManager.remove(kursanmeldung);
+        db.getCurrentEntityManager().remove(kursanmeldung);
     }
 
     public List<Kursanmeldung> findKursanmeldungenSchueler(Schueler schueler) {
-        TypedQuery<Kursanmeldung> typedQuery = entityManager.createQuery("select k from Kursanmeldung k where k.schueler.personId = :personId", Kursanmeldung.class);
+        TypedQuery<Kursanmeldung> typedQuery = db.getCurrentEntityManager().createQuery(
+                "select k from Kursanmeldung k where k.schueler.personId = :personId", Kursanmeldung.class);
         typedQuery.setParameter("personId", schueler.getPersonId());
         List<Kursanmeldung> kurseinteilungenFound = typedQuery.getResultList();
         // Sortieren gemäss compareTo in Kursanmeldungen
@@ -82,7 +80,8 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
             selectStatementSb.setLength(selectStatementSb.length() - 4);
         }
         // Query
-        TypedQuery<Kursanmeldung> typedQuery = entityManager.createQuery(selectStatementSb.toString(), Kursanmeldung.class);
+        TypedQuery<Kursanmeldung> typedQuery = db.getCurrentEntityManager().createQuery(
+                selectStatementSb.toString(), Kursanmeldung.class);
         if (schueler != null) {
             typedQuery.setParameter("schuelerPersonId", schueler.getPersonId());
         }
@@ -124,6 +123,7 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         if (monatJahr.get(Calendar.MONTH) == Calendar.DECEMBER) {
             statistikMonatEnde = new GregorianCalendar(monatJahr.get(Calendar.YEAR) + 1, Calendar.JANUARY, 1);
         } else {
+            //noinspection MagicConstant
             statistikMonatEnde = new GregorianCalendar(monatJahr.get(Calendar.YEAR), monatJahr.get(Calendar.MONTH) + 1, 1);
         }
         statistikMonatEnde.add(Calendar.DAY_OF_YEAR, -1);

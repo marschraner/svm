@@ -8,16 +8,18 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteKurstypCommand extends GenericDaoCommand {
+public class DeleteKurstypCommand implements Command {
 
     public enum Result {
         KURSTYP_VON_KURS_REFERENZIERT,
         LOESCHEN_ERFOLGREICH
     }
 
+    private final KurstypDao kurstypDao = new KurstypDao();
+
     // input
     private List<Kurstyp> kurstypen;
-    int indexKurstypToBeDeleted;
+    private int indexKurstypToBeDeleted;
 
     // output
     private Result result;
@@ -29,7 +31,6 @@ public class DeleteKurstypCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        KurstypDao kurstypDao = new KurstypDao(entityManager);
         Kurstyp kurstypToBeDeleted = kurstypen.get(indexKurstypToBeDeleted);
         if (kurstypToBeDeleted.getKurse().size() > 0) {
             result = Result.KURSTYP_VON_KURS_REFERENZIERT;

@@ -20,10 +20,6 @@ public class RechnungsdatumErfassenModelImpl extends AbstractModel implements Re
 
     private Calendar rechnungsdatum;
 
-    public RechnungsdatumErfassenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     private final CalendarModelAttribute rechnungsdatumModelAttribute = new CalendarModelAttribute(
             this,
             Field.RECHNUNGSDATUM, getNYearsBeforeNow(10), getNMonthsAfterNow(2),

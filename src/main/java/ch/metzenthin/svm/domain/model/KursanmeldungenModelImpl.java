@@ -17,10 +17,6 @@ import java.util.*;
  */
 class KursanmeldungenModelImpl extends AbstractModel implements KursanmeldungenModel {
 
-    KursanmeldungenModelImpl(CommandInvoker commandInvoker) {
-        super(commandInvoker);
-    }
-
     @Override
     public KursanmeldungErfassenModel getKursanmeldungErfassenModel(SvmContext svmContext, KursanmeldungenTableModel kursanmeldungenTableModel, int rowSelected) {
         KursanmeldungErfassenModel kursanmeldungErfassenModel = svmContext.getModelFactory().createKursanmeldungErfassenModel();

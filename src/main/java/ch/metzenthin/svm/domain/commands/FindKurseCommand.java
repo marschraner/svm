@@ -12,12 +12,14 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class FindKurseCommand extends GenericDaoCommand {
+public class FindKurseCommand implements Command {
 
     public enum Result {
         KURSE_GEFUNDEN,
         KEINE_KURSE_GEFUNDEN
     }
+
+    private final KursDao kursDao = new KursDao();
 
     // input
     private Semester semester;    // nullable
@@ -38,7 +40,6 @@ public class FindKurseCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        KursDao kursDao = new KursDao(entityManager);
         kurseFound = kursDao.findKurse(semester, wochentag, zeitBeginn, mitarbeiter);
         if (kurseFound.size() == 0) {
             result = Result.KEINE_KURSE_GEFUNDEN;

@@ -15,8 +15,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class CheckKursortBezeichnungBereitsInVerwendungCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private List<Kursort> bereitsErfassteKursorte = new ArrayList<>();
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
+    private final List<Kursort> bereitsErfassteKursorte = new ArrayList<>();
 
     @Before
     public void setUp() {
@@ -26,7 +26,7 @@ public class CheckKursortBezeichnungBereitsInVerwendungCommandTest {
     }
 
     @Test
-    public void testExecute_BezeichnungBereitsInVerwendung() throws Exception {
+    public void testExecute_BezeichnungBereitsInVerwendung() {
         Kursort kursort = new Kursort("Saal Test2", true);
         CheckKursortBezeichnungBereitsInVerwendungCommand checkKursortBezeichnungBereitsInVerwendungCommand = new CheckKursortBezeichnungBereitsInVerwendungCommand(kursort, null, bereitsErfassteKursorte);
         commandInvoker.executeCommand(checkKursortBezeichnungBereitsInVerwendungCommand);
@@ -34,7 +34,7 @@ public class CheckKursortBezeichnungBereitsInVerwendungCommandTest {
     }
 
     @Test
-    public void testExecute_BezeichnungNochNichtInVerwendung() throws Exception {
+    public void testExecute_BezeichnungNochNichtInVerwendung() {
         Kursort kursort = new Kursort("Saal Test4", true);
         CheckKursortBezeichnungBereitsInVerwendungCommand checkKursortBezeichnungBereitsInVerwendungCommand = new CheckKursortBezeichnungBereitsInVerwendungCommand(kursort, null, bereitsErfassteKursorte);
         commandInvoker.executeCommand(checkKursortBezeichnungBereitsInVerwendungCommand);
@@ -42,7 +42,7 @@ public class CheckKursortBezeichnungBereitsInVerwendungCommandTest {
     }
 
     @Test
-    public void testExecute_KursortOrigin() throws Exception {
+    public void testExecute_KursortOrigin() {
         Kursort kursort = new Kursort("Saal Test1", true);
         CheckKursortBezeichnungBereitsInVerwendungCommand checkKursortBezeichnungBereitsInVerwendungCommand = new CheckKursortBezeichnungBereitsInVerwendungCommand(kursort, bereitsErfassteKursorte.get(0), bereitsErfassteKursorte);
         commandInvoker.executeCommand(checkKursortBezeichnungBereitsInVerwendungCommand);

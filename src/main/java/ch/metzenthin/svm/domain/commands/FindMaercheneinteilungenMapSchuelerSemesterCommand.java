@@ -17,7 +17,6 @@ public class FindMaercheneinteilungenMapSchuelerSemesterCommand implements Comma
     private List<Schueler> schuelerList;
     private Maerchen maerchen;
 
-
     // output
     private Map<Schueler, Maercheneinteilung> maercheneinteilungenMap = new HashMap<>();
 

@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SchuelerCodeDao;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import org.junit.After;
@@ -8,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,22 +20,21 @@ import static org.junit.Assert.*;
  */
 public class SaveOrUpdateSchuelerCodeCommandTest {
 
-    private CommandInvoker commandInvoker = new CommandInvokerImpl();
-    private EntityManagerFactory entityManagerFactory;
+    private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
+
+    private DB db;
+    private CommandInvoker commandInvoker;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        commandInvoker.openSession();
+        db = DBFactory.getInstance();
+        commandInvoker = new CommandInvokerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
-        commandInvoker.closeSession();
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
@@ -77,30 +75,20 @@ public class SaveOrUpdateSchuelerCodeCommandTest {
         assertTrue(checkIfCodeAvailable("tj", "JugendprojektModifTest"));
 
         // Testdaten löschen
-        EntityManager entityManager = null;
-        try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin();
-            SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
-            for (SchuelerCode schuelerCode : codesSaved) {
-                SchuelerCode schuelerCodeToBeDeleted = schuelerCodeDao.findById(schuelerCode.getCodeId());
-                if (schuelerCodeToBeDeleted != null) {
-                    schuelerCodeDao.remove(schuelerCodeToBeDeleted);
-                }
-            }
-            entityManager.getTransaction().commit();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
+        EntityManager entityManager = db.getCurrentEntityManager();
+        entityManager.getTransaction().begin();
+        for (SchuelerCode schuelerCode : codesSaved) {
+            SchuelerCode schuelerCodeToBeDeleted = schuelerCodeDao.findById(schuelerCode.getCodeId());
+            if (schuelerCodeToBeDeleted != null) {
+                schuelerCodeDao.remove(schuelerCodeToBeDeleted);
             }
         }
-
-
+        entityManager.getTransaction().commit();
     }
 
     private boolean checkIfCodeAvailable(String kuerzel, String beschreibung) {
         FindAllSchuelerCodesCommand findAllSchuelerCodesCommand = new FindAllSchuelerCodesCommand();
-        commandInvoker.executeCommandAsTransactionWithOpenAndClose(findAllSchuelerCodesCommand);
+        commandInvoker.executeCommand(findAllSchuelerCodesCommand);
         List<SchuelerCode> codesAll = findAllSchuelerCodesCommand.getSchuelerCodesAll();
         for (SchuelerCode schuelerCode : codesAll) {
             if (schuelerCode.getKuerzel().equals(kuerzel) && schuelerCode.getBeschreibung().equals(beschreibung)) {

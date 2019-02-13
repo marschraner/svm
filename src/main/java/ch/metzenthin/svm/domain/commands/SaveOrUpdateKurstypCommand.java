@@ -9,7 +9,9 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateKurstypCommand extends GenericDaoCommand {
+public class SaveOrUpdateKurstypCommand implements Command {
+
+    private final KurstypDao kurstypDao = new KurstypDao();
 
     // input
     private Kurstyp kurstyp;
@@ -25,7 +27,6 @@ public class SaveOrUpdateKurstypCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        KurstypDao kurstypDao = new KurstypDao(entityManager);
         if (kurstypOrigin != null) {
             // Update von kurstypOrigin mit Werten von kurstyp
             kurstypOrigin.copyAttributesFrom(kurstyp);

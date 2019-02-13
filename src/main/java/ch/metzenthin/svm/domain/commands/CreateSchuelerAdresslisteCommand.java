@@ -116,7 +116,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         maxLengthsRow1.add(new int[]{21, 22, 23, 24, 25, 27});
         maxLengthsRow1.add(new int[]{22, 23, 24, 25, 26, 28});
         maxLengthsRow1.add(new int[]{0});
-        maxLengthsRow1.add(new int[]{13, 13, 14, 15, 16, 18});
+        maxLengthsRow1.add(new int[]{13, 13, 13, 14, 16, 18});
         maxLengthsRow1.add(new int[]{17, 18, 19, 20, 21, 23});
         maxLengthsRow1.add(new int[]{0});
         maxLengths.add(maxLengthsRow1);
@@ -125,8 +125,8 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{22, 23, 24, 25, 26, 28});
         maxLengthsRow2.add(new int[]{23, 24, 25, 26, 27, 29});
-        maxLengthsRow2.add(new int[]{13, 13, 14, 15, 16, 18});
-        maxLengthsRow2.add(new int[]{13, 13, 14, 15, 16, 18});
+        maxLengthsRow2.add(new int[]{13, 13, 13, 14, 16, 18});
+        maxLengthsRow2.add(new int[]{13, 13, 13, 14, 16, 18});
         maxLengthsRow2.add(new int[]{0});
         maxLengthsRow2.add(new int[]{0});
         maxLengths.add(maxLengthsRow2);
@@ -136,7 +136,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         maxLengthsRow3.add(new int[]{0});
         maxLengthsRow3.add(new int[]{38, 39, 40, 41, 43, 45});
         maxLengthsRow3.add(new int[]{0});
-        maxLengthsRow3.add(new int[]{13, 13, 14, 15, 16, 18});
+        maxLengthsRow3.add(new int[]{13, 13, 13, 14, 16, 18});
         maxLengthsRow3.add(new int[]{0});
         maxLengthsRow3.add(new int[]{0});
         maxLengths.add(maxLengthsRow3);

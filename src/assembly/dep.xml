@@ -4,13 +4,13 @@
     <id>bin</id>
     <formats>
         <format>tar.gz</format>
-        <format>tar.bz2</format>
+        <!--format>tar.bz2</format-->
         <format>zip</format>
     </formats>
     <fileSets>
         <!--fileSet>
             <directory>${project.basedir}</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>${file.separator}</outputDirectory>
             <includes>
                 <include>README*</include>
                 <include>LICENSE*</include>
@@ -19,14 +19,14 @@
         </fileSet-->
         <fileSet>
             <directory>${project.build.directory}</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>${file.separator}</outputDirectory>
             <includes>
                 <include>*with-dependencies.jar</include>
             </includes>
         </fileSet>
         <fileSet>
             <directory>${project.basedir}/sql</directory>
-            <outputDirectory>/sql</outputDirectory>
+            <outputDirectory>${file.separator}sql</outputDirectory>
             <includes>
                 <include>create*.sql</include>
                 <include>fillData*.sql</include>
@@ -34,7 +34,7 @@
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/bin</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>${file.separator}</outputDirectory>
             <includes>
                 <include>*</include>
             </includes>

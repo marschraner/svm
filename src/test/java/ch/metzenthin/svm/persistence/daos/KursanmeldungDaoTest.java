@@ -4,16 +4,15 @@ import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -27,40 +26,29 @@ import static org.junit.Assert.*;
  */
 public class KursanmeldungDaoTest {
 
-    private EntityManagerFactory entityManagerFactory;
-    private EntityManager entityManager;
-    private KursanmeldungDao kursanmeldungDao;
-    private KursDao kursDao;
-    private SemesterDao semesterDao;
-    private KurstypDao kurstypDao;
-    private KursortDao kursortDao;
-    private MitarbeiterDao mitarbeiterDao;
+    private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
+    private final KursDao kursDao = new KursDao();
+    private final SemesterDao semesterDao = new SemesterDao();
+    private final KurstypDao kurstypDao = new KurstypDao();
+    private final KursortDao kursortDao = new KursortDao();
+    private final MitarbeiterDao mitarbeiterDao = new MitarbeiterDao();
+
+    private DB db;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        entityManager = entityManagerFactory.createEntityManager();
-        kursanmeldungDao = new KursanmeldungDao(entityManager);
-        kursDao = new KursDao(entityManager);
-        semesterDao = new SemesterDao(entityManager);
-        kurstypDao = new KurstypDao(entityManager);
-        kursortDao = new KursortDao(entityManager);
-        mitarbeiterDao = new MitarbeiterDao(entityManager);
+        db = DBFactory.getInstance();
     }
 
     @After
     public void tearDown() throws Exception {
-        if (entityManager != null) {
-            entityManager.close();
-        }
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
     public void testFindById() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -92,6 +80,7 @@ public class KursanmeldungDaoTest {
             vater.setAdresse(adresse);
             schueler.setVater(vater);
             schueler.setRechnungsempfaenger(vater);
+            entityManager.persist(schueler);
 
             // Kurseinteilung
             Kursanmeldung kursanmeldung = new Kursanmeldung(schueler, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 30), new GregorianCalendar(2016, Calendar.FEBRUARY, 2), "Testbemerkung");
@@ -112,6 +101,7 @@ public class KursanmeldungDaoTest {
 
     @Test
     public void testSave() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
@@ -143,6 +133,7 @@ public class KursanmeldungDaoTest {
             vater.setAdresse(adresse);
             schueler.setVater(vater);
             schueler.setRechnungsempfaenger(vater);
+            entityManager.persist(schueler);
 
             // Kurseinteilung
             Kursanmeldung kursanmeldung = new Kursanmeldung(schueler, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 30), new GregorianCalendar(2016, Calendar.FEBRUARY, 2), null);
@@ -164,8 +155,8 @@ public class KursanmeldungDaoTest {
 
     @Test
     public void testRemove() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -196,6 +187,7 @@ public class KursanmeldungDaoTest {
             vater.setAdresse(adresse);
             schueler.setVater(vater);
             schueler.setRechnungsempfaenger(vater);
+            entityManager.persist(schueler);
 
             // Kurseinteilung
             Kursanmeldung kursanmeldung = new Kursanmeldung(schueler, kurs, new GregorianCalendar(2015, Calendar.AUGUST, 30), null, null);
@@ -225,8 +217,8 @@ public class KursanmeldungDaoTest {
 
     @Test
     public void testFindKurseinteilungenSchueler() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();

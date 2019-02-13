@@ -232,4 +232,5 @@ public class MonatsstatistikKursePanel {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

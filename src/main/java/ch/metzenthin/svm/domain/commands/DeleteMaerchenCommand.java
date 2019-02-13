@@ -8,35 +8,36 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class DeleteMaerchenCommand extends GenericDaoCommand {
+public class DeleteMaerchenCommand implements Command {
 
     public enum Result {
         MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT,
         LOESCHEN_ERFOLGREICH
     }
 
+    private final MaerchenDao maerchenDao = new MaerchenDao();
+
     // input
-    private List<Maerchen> Maerchens;
-    int indexMaerchenToBeDeleted;
+    private List<Maerchen> maerchens;
+    private int indexMaerchenToBeDeleted;
 
     // output
     private Result result;
 
     public DeleteMaerchenCommand(List<Maerchen> Maerchens, int indexMaerchenToBeDeleted) {
-        this.Maerchens = Maerchens;
+        this.maerchens = Maerchens;
         this.indexMaerchenToBeDeleted = indexMaerchenToBeDeleted;
     }
 
     @Override
     public void execute() {
-        MaerchenDao MaerchenDao = new MaerchenDao(entityManager);
-        Maerchen MaerchenToBeDeleted = Maerchens.get(indexMaerchenToBeDeleted);
+        Maerchen MaerchenToBeDeleted = maerchens.get(indexMaerchenToBeDeleted);
         if (MaerchenToBeDeleted.getMaercheneinteilungen().size() > 0) {
             result = Result.MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT;
             return;
         }
-        MaerchenDao.remove(MaerchenToBeDeleted);
-        Maerchens.remove(indexMaerchenToBeDeleted);
+        maerchenDao.remove(MaerchenToBeDeleted);
+        maerchens.remove(indexMaerchenToBeDeleted);
         result = Result.LOESCHEN_ERFOLGREICH;
     }
 

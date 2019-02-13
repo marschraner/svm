@@ -11,12 +11,14 @@ import java.sql.Time;
 /**
  * @author Martin Schraner
  */
-public class FindKursCommand extends GenericDaoCommand {
+public class FindKursCommand implements Command {
 
     public enum Result {
         KURS_GEFUNDEN,
         KURS_EXISTIERT_NICHT
     }
+
+    private final KursDao kursDao = new KursDao();
 
     // input
     private Semester semester;
@@ -37,10 +39,8 @@ public class FindKursCommand extends GenericDaoCommand {
 
     @Override
     public void execute() {
-        KursDao kursDao = new KursDao(entityManager);
         kursFound = kursDao.findKurs(semester, wochentag, zeitBeginn, mitarbeiter);
         if (kursFound == null) {
-            kursFound = null;
             result = Result.KURS_EXISTIERT_NICHT;
         } else {
             result = Result.KURS_GEFUNDEN;

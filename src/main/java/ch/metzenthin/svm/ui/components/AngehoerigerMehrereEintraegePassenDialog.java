@@ -190,4 +190,5 @@ public class AngehoerigerMehrereEintraegePassenDialog extends SchuelerErfassenDi
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
 }

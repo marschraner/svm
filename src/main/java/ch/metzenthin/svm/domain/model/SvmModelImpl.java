@@ -11,11 +11,7 @@ import java.util.List;
  */
 public class SvmModelImpl implements SvmModel {
 
-    private CommandInvoker commandInvoker;
-
-    public SvmModelImpl(CommandInvoker commandInvoker) {
-        this.commandInvoker = commandInvoker;
-    }
+    private final CommandInvoker commandInvoker = new CommandInvokerImpl();
 
     @Override
     public List<SchuelerCode> getSchuelerCodesAll() {

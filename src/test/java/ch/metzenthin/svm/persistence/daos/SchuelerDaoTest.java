@@ -2,17 +2,16 @@ package ch.metzenthin.svm.persistence.daos;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.common.utils.SvmProperties;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
@@ -23,35 +22,33 @@ import static org.junit.Assert.*;
  */
 public class SchuelerDaoTest {
 
-    private EntityManagerFactory entityManagerFactory;
-    private EntityManager entityManager;
-    private SchuelerDao schuelerDao;
+    private final SchuelerDao schuelerDao = new SchuelerDao();
+    private final AdresseDao adresseDao = new AdresseDao();
+    private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
+    private final AnmeldungDao anmeldungDao = new AnmeldungDao();
+    private final DispensationDao dispensationDao = new DispensationDao();
+    private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
+
+    private DB db;
     private boolean neusteZuoberst;
 
     @Before
     public void setUp() throws Exception {
         createSvmPropertiesFileDefault();
+        db = DBFactory.getInstance();
         Properties svmProperties = SvmProperties.getSvmProperties();
         neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
-        entityManagerFactory = Persistence.createEntityManagerFactory("svm", PersistenceProperties.getPersistenceProperties());
-        entityManager = entityManagerFactory.createEntityManager();
-        schuelerDao = new SchuelerDao(entityManager);
     }
 
     @After
     public void tearDown() throws Exception {
-        if (entityManager != null) {
-            entityManager.close();
-        }
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
+        db.closeSession();
     }
 
     @Test
     public void testFindById() {
-           EntityTransaction tx = null;
-
+        EntityManager entityManager = db.getCurrentEntityManager();
+        EntityTransaction tx = null;
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -85,8 +82,8 @@ public class SchuelerDaoTest {
 
     @Test
     public void testSave() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();
@@ -197,15 +194,9 @@ public class SchuelerDaoTest {
 
     @Test
     public void testRemove() {
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
-
-            AdresseDao adresseDao = new AdresseDao(entityManager);
-            AngehoerigerDao angehoerigerDao = new AngehoerigerDao(entityManager);
-            AnmeldungDao anmeldungDao = new AnmeldungDao(entityManager);
-            DispensationDao dispensationDao = new DispensationDao(entityManager);
-            SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao(entityManager);
 
             // Create 2 Schueler with the same parents, but different Rechnungsempfaenger
             tx = entityManager.getTransaction();
@@ -330,9 +321,8 @@ public class SchuelerDaoTest {
 
     @Test
     public void testFindSchueler() {
-
+        EntityManager entityManager = db.getCurrentEntityManager();
         EntityTransaction tx = null;
-
         try {
             tx = entityManager.getTransaction();
             tx.begin();

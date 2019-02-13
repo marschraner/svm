@@ -26,7 +26,7 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
     @Override
     public void execute() {
 
-        Character separator = ';';
+        char separator = ';';
 
         try {
             Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "8859_1"));
