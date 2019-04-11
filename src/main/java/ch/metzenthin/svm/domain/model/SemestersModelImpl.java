@@ -24,7 +24,7 @@ public class SemestersModelImpl extends AbstractModel implements SemestersModel 
 
     @Override
     public DeleteSemesterCommand.Result semesterLoeschen(SvmContext svmContext, SemestersTableModel semestersTableModel, int indexSemesterToBeRemoved) {
-        List<Semester> semesters = svmContext.getSvmModel().getSemestersAll();
+        List<Semester> semesters = semestersTableModel.getSemestersTableData().getSemesters();
         CommandInvoker commandInvoker = getCommandInvoker();
         DeleteSemesterCommand deleteSemesterCommand = new DeleteSemesterCommand(semesters, indexSemesterToBeRemoved);
         commandInvoker.executeCommandAsTransaction(deleteSemesterCommand);

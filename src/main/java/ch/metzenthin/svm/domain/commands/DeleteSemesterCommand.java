@@ -12,37 +12,32 @@ public class DeleteSemesterCommand implements Command {
 
     public enum Result {
         SEMESTER_VON_KURS_REFERENZIERT,
-        SEMESTER_VON_SEMESTERRECHNUNG_REFERENZIERT,
         LOESCHEN_ERFOLGREICH
     }
 
     private final SemesterDao semesterDao = new SemesterDao();
 
     // input
-    private List<Semester> Semesters;
+    private List<Semester> semesters;
     private int indexSemesterToBeDeleted;
 
     // output
     private Result result;
 
-    public DeleteSemesterCommand(List<Semester> Semesters, int indexSemesterToBeDeleted) {
-        this.Semesters = Semesters;
+    public DeleteSemesterCommand(List<Semester> semesters, int indexSemesterToBeDeleted) {
+        this.semesters = semesters;
         this.indexSemesterToBeDeleted = indexSemesterToBeDeleted;
     }
 
     @Override
     public void execute() {
-        Semester SemesterToBeDeleted = Semesters.get(indexSemesterToBeDeleted);
-        if (SemesterToBeDeleted.getKurse().size() > 0) {
+        Semester semesterToBeDeleted = semesters.get(indexSemesterToBeDeleted);
+        if (semesterToBeDeleted.getKurse().size() > 0) {
             result = Result.SEMESTER_VON_KURS_REFERENZIERT;
             return;
         }
-        if (SemesterToBeDeleted.getSemesterrechnungen().size() > 0) {
-            result = Result.SEMESTER_VON_SEMESTERRECHNUNG_REFERENZIERT;
-            return;
-        }
-        semesterDao.remove(SemesterToBeDeleted);
-        Semesters.remove(indexSemesterToBeDeleted);
+        semesterDao.remove(semesterToBeDeleted);
+        semesters.remove(indexSemesterToBeDeleted);
         result = Result.LOESCHEN_ERFOLGREICH;
     }
 

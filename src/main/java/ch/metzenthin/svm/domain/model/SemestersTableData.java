@@ -6,8 +6,6 @@ import ch.metzenthin.svm.persistence.entities.Semester;
 import java.util.Calendar;
 import java.util.List;
 
-import static ch.metzenthin.svm.common.utils.Converter.asString;
-
 /**
  * @author Martin Schraner
  */
@@ -94,6 +92,10 @@ public class SemestersTableData {
 
     public String getColumnName(int column) {
         return COLUMNS[column].toString();
+    }
+
+    public List<Semester> getSemesters() {
+        return semesters;
     }
 
     public void setSemesters(List<Semester> semesters) {

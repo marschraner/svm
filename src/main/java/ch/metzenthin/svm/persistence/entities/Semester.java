@@ -60,7 +60,7 @@ public class Semester implements Comparable<Semester> {
     @OneToMany(mappedBy = "semester")
     private Set<Kurs> kurse = new HashSet<>();
 
-    @OneToMany(mappedBy = "semester")
+    @OneToMany(mappedBy = "semester", cascade = CascadeType.REMOVE)
     private Set<Semesterrechnung> semesterrechnungen = new HashSet<>();
 
     public Semester() {
