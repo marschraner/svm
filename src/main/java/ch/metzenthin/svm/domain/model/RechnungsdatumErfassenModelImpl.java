@@ -6,9 +6,10 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
+import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 
 import java.util.Calendar;
-import java.util.List;
+import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.getNMonthsAfterNow;
 import static ch.metzenthin.svm.common.utils.Converter.getNYearsBeforeNow;
@@ -47,10 +48,15 @@ public class RechnungsdatumErfassenModelImpl extends AbstractModel implements Re
     }
 
     @Override
-    public void replaceRechnungsdatumAndUpdateSemesterrechnung(List<Semesterrechnung> semesterrechnungen, Rechnungstyp rechnungstyp) {
+    public void replaceRechnungsdatumAndUpdateSemesterrechnung(SemesterrechnungenTableModel semesterrechnungenTableModel, Rechnungstyp rechnungstyp) {
+
         CommandInvoker commandInvoker = getCommandInvoker();
-        ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand replaceRechnungsdatumAndUpdateSemesterrechnungenCommand = new ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand(semesterrechnungen, rechnungstyp, rechnungsdatum);
+        ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand replaceRechnungsdatumAndUpdateSemesterrechnungenCommand = new ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand(semesterrechnungenTableModel.getSelektierteSemesterrechnungen(), rechnungstyp, rechnungsdatum);
         commandInvoker.executeCommandAsTransaction(replaceRechnungsdatumAndUpdateSemesterrechnungenCommand);
+
+        // Semesterrechnungen Table-Model mit aktuellen Werten updaten
+        Set<Semesterrechnung> updatedSemesterrechnungen = replaceRechnungsdatumAndUpdateSemesterrechnungenCommand.getUpdatedSemesterrechnungen();
+        semesterrechnungenTableModel.updateSemesterrechnungen(updatedSemesterrechnungen);
     }
 
     @Override

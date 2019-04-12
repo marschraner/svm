@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.utils.SvmListUtils;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
@@ -8,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Martin Schraner
@@ -20,7 +22,7 @@ public class SemesterrechnungenTableData {
     private boolean nachGeloeschtenGesucht;
     private List<Field> columns = new ArrayList<>();
 
-    public SemesterrechnungenTableData(List<Semesterrechnung> semesterrechnungen, Semester semester, Semester previousSemester, boolean nachGeloeschtenGesucht) {
+    SemesterrechnungenTableData(List<Semesterrechnung> semesterrechnungen, Semester semester, Semester previousSemester, boolean nachGeloeschtenGesucht) {
         this.semesterrechnungen = semesterrechnungen;
         this.semester = semester;
         this.previousSemester = previousSemester;
@@ -289,5 +291,9 @@ public class SemesterrechnungenTableData {
         for (Semesterrechnung semesterrechnung : semesterrechnungen) {
             semesterrechnung.setSelektiert(false);
         }
+    }
+
+    public void updateSemesterrechnungen(Set<Semesterrechnung> subsetOfUpdatedSemesterrechnungen) {
+        SvmListUtils.updateList(semesterrechnungen, subsetOfUpdatedSemesterrechnungen);
     }
 }

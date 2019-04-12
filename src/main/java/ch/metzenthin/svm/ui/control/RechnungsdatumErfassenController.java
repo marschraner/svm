@@ -7,14 +7,13 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.RechnungsdatumErfassenModel;
-import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
+import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -30,7 +29,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private List<Semesterrechnung> semesterrechnungen;
+    private SemesterrechnungenTableModel semesterrechnungenTableModel;
     private RechnungsdatumErfassenModel rechnungsdatumErfassenModel;
     private Rechnungstyp rechnungstyp;
     private boolean defaultButtonEnabled;
@@ -40,10 +39,10 @@ public class RechnungsdatumErfassenController extends AbstractController {
     private JLabel errLblRechnungsdatum;
     private JButton btnOk;
 
-    public RechnungsdatumErfassenController(SvmContext svmContext, List<Semesterrechnung> semesterrechnungen, RechnungsdatumErfassenModel rechnungsdatumErfassenModel, Rechnungstyp rechnungstyp, boolean defaultButtonEnabled) {
+    public RechnungsdatumErfassenController(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel, RechnungsdatumErfassenModel rechnungsdatumErfassenModel, Rechnungstyp rechnungstyp, boolean defaultButtonEnabled) {
         super(rechnungsdatumErfassenModel);
         this.svmContext = svmContext;
-        this.semesterrechnungen = semesterrechnungen;
+        this.semesterrechnungenTableModel = semesterrechnungenTableModel;
         this.rechnungsdatumErfassenModel = rechnungsdatumErfassenModel;
         this.rechnungstyp = rechnungstyp;
         this.defaultButtonEnabled = defaultButtonEnabled;
@@ -208,8 +207,8 @@ public class RechnungsdatumErfassenController extends AbstractController {
             dialog.setLocationRelativeTo(null);
             SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
                 @Override
-                protected Void doInBackground() throws Exception {
-                    rechnungsdatumErfassenModel.replaceRechnungsdatumAndUpdateSemesterrechnung(semesterrechnungen, rechnungstyp);
+                protected Void doInBackground() {
+                    rechnungsdatumErfassenModel.replaceRechnungsdatumAndUpdateSemesterrechnung(semesterrechnungenTableModel, rechnungstyp);
                     return null;
                 }
                 @Override

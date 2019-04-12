@@ -6,6 +6,7 @@ import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
+import java.util.Set;
 
 
 public class SemesterrechnungenTableModel extends AbstractTableModel {
@@ -84,6 +85,10 @@ public class SemesterrechnungenTableModel extends AbstractTableModel {
 
     public void alleSemesterrechnungenDeselektieren() {
         semesterrechnungenTableData.alleSemesterrechnungenDeselektieren();
+    }
+
+    public void updateSemesterrechnungen(Set<Semesterrechnung> subsetOfUpdatedSemesterrechnungen) {
+        semesterrechnungenTableData.updateSemesterrechnungen(subsetOfUpdatedSemesterrechnungen);
     }
 
 }

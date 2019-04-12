@@ -6,10 +6,7 @@ import ch.metzenthin.svm.common.utils.SvmStringUtils;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Martin Schraner
@@ -733,4 +730,21 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!this.getClass().isInstance(obj)) {
+            return false;
+        }
+        Semesterrechnung that = (Semesterrechnung) obj;
+        return semester.getSemesterId().equals(that.semester.getSemesterId()) &&
+                rechnungsempfaenger.getPersonId().equals(that.rechnungsempfaenger.getPersonId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(semester.getSemesterId(), rechnungsempfaenger.getPersonId());
+    }
 }

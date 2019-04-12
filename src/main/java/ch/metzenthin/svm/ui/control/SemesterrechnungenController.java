@@ -402,7 +402,7 @@ public class SemesterrechnungenController {
         Rechnungstyp rechnungstyp = (n == 1 ? Rechnungstyp.NACHRECHNUNG : Rechnungstyp.VORRECHNUNG);
 
         // Rechnungsdatum erfassen-Dialog
-        RechnungsdatumErfassenDialog rechnungsdatumErfassenDialog = new RechnungsdatumErfassenDialog(svmContext, semesterrechnungenTableModel.getSelektierteSemesterrechnungen(), rechnungstyp);
+        RechnungsdatumErfassenDialog rechnungsdatumErfassenDialog = new RechnungsdatumErfassenDialog(svmContext, semesterrechnungenTableModel, rechnungstyp);
         rechnungsdatumErfassenDialog.pack();
         rechnungsdatumErfassenDialog.setVisible(true);
         semesterrechnungenTableModel.fireTableDataChanged();

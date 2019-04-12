@@ -1,16 +1,22 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungDao;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Martin Schraner
  */
 public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand implements Command {
+
+    private final DB db = DBFactory.getInstance();
 
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
@@ -18,6 +24,9 @@ public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand implements 
     private List<Semesterrechnung> semesterrechnungen;
     private Rechnungstyp rechnungstyp;
     private Calendar rechnungsdatum;
+
+    // output
+    private Set<Semesterrechnung> updatedSemesterrechnungen = new HashSet<>();
 
     public ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand(List<Semesterrechnung> semesterrechnungen, Rechnungstyp rechnungstyp, Calendar rechnungsdatum) {
         this.semesterrechnungen = semesterrechnungen;
@@ -70,9 +79,18 @@ public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand implements 
                     }
                     break;
             }
-            semesterrechnungDao.save(semesterrechnung);
 
+            // Ohne merge() tritt ab der zweiten Iteration beim Aufruf von semesterrechnungDao.save()
+            // folgende Exception auf (Stand 13.04.2019; Grund unklar, evtl. Hibernate-Bug?):
+            // javax.persistence.PersistenceException: org.hibernate.PersistentObjectException: detached entity passed to persist: ch.metzenthin.svm.persistence.entities.Angehoeriger
+            semesterrechnung = db.getCurrentEntityManager().merge(semesterrechnung);
+
+            Semesterrechnung updatedSemesterrechnung = semesterrechnungDao.save(semesterrechnung);
+            updatedSemesterrechnungen.add(updatedSemesterrechnung);
         }
     }
-    
+
+    public Set<Semesterrechnung> getUpdatedSemesterrechnungen() {
+        return updatedSemesterrechnungen;
+    }
 }
