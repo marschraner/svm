@@ -65,7 +65,8 @@ public class Svm {
         }
 
         // Create and set up the window.
-        ((SwingExceptionHandler) Thread.getDefaultUncaughtExceptionHandler()).setSvmDesktop(new SvmDesktop(svmContext));
+        SvmDesktop svmDesktop = new SvmDesktop(svmContext);
+       ((SwingExceptionHandler) Thread.getDefaultUncaughtExceptionHandler()).setSvmDesktop(svmDesktop);
         LOGGER.info("Svm wurde gestartet.");
     }
 

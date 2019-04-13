@@ -38,6 +38,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
     private JTextField txtRechnungsdatum;
     private JLabel errLblRechnungsdatum;
     private JButton btnOk;
+    private Exception swingWorkerException;
 
     public RechnungsdatumErfassenController(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel, RechnungsdatumErfassenModel rechnungsdatumErfassenModel, Rechnungstyp rechnungstyp, boolean defaultButtonEnabled) {
         super(rechnungsdatumErfassenModel);
@@ -205,15 +206,27 @@ public class RechnungsdatumErfassenController extends AbstractController {
             // Public method to center the dialog after calling pack()
             dialog.pack();
             dialog.setLocationRelativeTo(null);
+            swingWorkerException = null;
             SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
                 @Override
                 protected Void doInBackground() {
-                    rechnungsdatumErfassenModel.replaceRechnungsdatumAndUpdateSemesterrechnung(semesterrechnungenTableModel, rechnungstyp);
+                    try {
+                        rechnungsdatumErfassenModel.replaceRechnungsdatumAndUpdateSemesterrechnung(semesterrechnungenTableModel, rechnungstyp);
+                    } catch (Exception e) {
+                        swingWorkerException = e;
+                    }
                     return null;
                 }
                 @Override
                 protected void done() {
+                    // Dialog in jedem Fall schliessen
                     dialog.dispose();
+                    // Exception eines Swing-Workers muss in done()-Methode geworfen werden, da sonst der
+                    // SwingExceptionHandler nicht aufgerufen und kein Fehlerdialog angezeigt wird!
+                    // (vgl. https://stackoverflow.com/questions/6523623/graceful-exception-handling-in-swing-worker)
+                    if (swingWorkerException != null) {
+                        throw new RuntimeException(swingWorkerException);
+                    }
                 }
             };
             worker.execute();

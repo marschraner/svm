@@ -37,6 +37,7 @@ public class KurseController {
     private JButton btnImportieren;
     private JButton btnExportieren;
     private ActionListener closeListener;
+    private Exception swingWorkerException;
 
     public KurseController(KurseModel kurseModel, SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel) {
         this.kurseModel = kurseModel;
@@ -240,15 +241,27 @@ public class KurseController {
             // Public method to center the dialog after calling pack()
             dialog.pack();
             dialog.setLocationRelativeTo(null);
+            swingWorkerException = null;
             SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
                 @Override
-                protected Void doInBackground() throws Exception {
-                    kurseModel.importKurseFromPreviousSemester(svmContext.getSvmModel(), kurseSemesterwahlModel, kurseTableModel);
+                protected Void doInBackground() {
+                    try {
+                        kurseModel.importKurseFromPreviousSemester(svmContext.getSvmModel(), kurseSemesterwahlModel, kurseTableModel);
+                    } catch (Exception e) {
+                        swingWorkerException = e;
+                    }
                     return null;
                 }
                 @Override
                 protected void done() {
+                    // Dialog in jedem Fall schliessen
                     dialog.dispose();
+                    // Exception eines Swing-Workers muss in done()-Methode geworfen werden, da sonst der
+                    // SwingExceptionHandler nicht aufgerufen und kein Fehlerdialog angezeigt wird!
+                    // (vgl. https://stackoverflow.com/questions/6523623/graceful-exception-handling-in-swing-worker)
+                    if (swingWorkerException != null) {
+                        throw new RuntimeException(swingWorkerException);
+                    }
                     kurseTableModel.fireTableDataChanged();
                     lblTotal.setText(kurseModel.getTotal(kurseTableModel));
                     if (kurseTableModel.getRowCount() > 0) {

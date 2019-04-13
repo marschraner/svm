@@ -50,6 +50,7 @@ public class ListenExportController extends AbstractController {
     private JLabel errLblTitel;
     private JButton btnOk;
     private JButton btnAbbrechen;
+    private Exception swingWorkerException;
 
     public ListenExportController(ListenExportModel listenExportModel, SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, MitarbeitersTableModel mitarbeitersTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel, ListenExportTyp listenExportTyp, boolean defaultButtonEnabled) {
         super(listenExportModel);
@@ -388,14 +389,27 @@ public class ListenExportController extends AbstractController {
         // Public method to center the dialog after calling pack()
         dialog.pack();
         dialog.setLocationRelativeTo(listenExportDialog);
+        swingWorkerException = null;
         SwingWorker<CreateListeCommand.Result, String> worker = new SwingWorker<CreateListeCommand.Result, String>() {
             @Override
             protected CreateListeCommand.Result doInBackground() {
-                return listenExportModel.createListenFile(outputFile, schuelerSuchenTableModel, mitarbeitersTableModel, kurseTableModel, semesterrechnungenTableModel);
+                try {
+                    return listenExportModel.createListenFile(outputFile, schuelerSuchenTableModel, mitarbeitersTableModel, kurseTableModel, semesterrechnungenTableModel);
+                } catch (Exception e) {
+                    swingWorkerException = e;
+                    return null;
+                }
             }
             @Override
             protected void done() {
+                // Dialog in jedem Fall schliessen
                 dialog.dispose();
+                // Exception eines Swing-Workers muss in done()-Methode geworfen werden, da sonst der
+                // SwingExceptionHandler nicht aufgerufen und kein Fehlerdialog angezeigt wird!
+                // (vgl. https://stackoverflow.com/questions/6523623/graceful-exception-handling-in-swing-worker)
+                if (swingWorkerException != null) {
+                    throw new RuntimeException(swingWorkerException);
+                }
                 CreateListeCommand.Result result = null;
                 try {
                     result = get();
