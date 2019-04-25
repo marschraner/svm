@@ -29,26 +29,39 @@ public class CreateAndFindSemesterrechnungenCommand implements Command {
     @Override
     public void execute() {
 
-        // 1. Suche noch nicht erfasste Semesterrechnungen, d.h. Rechnungsempfänger ohne Semesterrechnung mit aktuellen Kursen (-> Nachrechnung) oder Kursen vom Vorsemester ohne Abmeldung (-> Vorrechnung)
+        // 1. Ist gewähltes Semester später als nächstes Semester?
+        //    -> Keine Semesterrechnungen erstellen und leere Liste zurückgeben
+        FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
+        findAllSemestersCommand.execute();
+        List<Semester> semestersAll = findAllSemestersCommand.getSemestersAll();
+        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(semestersAll);
+        findSemesterForCalendarCommand.execute();
+        Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
+        if (nextSemester != null && semesterrechnungenSuchenModel.getSemester().isAfter(nextSemester)) {
+            semesterrechnungenFound = new ArrayList<>();
+            return;
+        }
+
+        // 2. Suche noch nicht erfasste Semesterrechnungen, d.h. Rechnungsempfänger ohne Semesterrechnung mit aktuellen Kursen (-> Nachrechnung) oder Kursen vom Vorsemester ohne Abmeldung (-> Vorrechnung)
         FindRechnungsempfaengerOhneSemesterrechnungenCommand findRechnungsempfaengerOhneSemesterrechnungenCommand = new FindRechnungsempfaengerOhneSemesterrechnungenCommand(semesterrechnungenSuchenModel.getSemester());
         findRechnungsempfaengerOhneSemesterrechnungenCommand.execute();
         List<Angehoeriger> rechnungsempfaengersOhneSemesterrechungen = findRechnungsempfaengerOhneSemesterrechnungenCommand.getRechnungsempfaengersFound();
 
-        // 2. Erzeuge und speichere fehlende Semesterrechnungen
+        // 3. Erzeuge und speichere fehlende Semesterrechnungen
         CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand createSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand =
                 new CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand(rechnungsempfaengersOhneSemesterrechungen, semesterrechnungenSuchenModel.getSemester());
         createSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand.execute();
 
-        // 3. Suche Semesterrechnungen
+        // 4. Suche Semesterrechnungen
         FindSemesterrechnungenCommand findSemesterrechnungenCommand = new FindSemesterrechnungenCommand(semesterrechnungenSuchenModel);
         findSemesterrechnungenCommand.execute();
         semesterrechnungenFound = findSemesterrechnungenCommand.getSemesterrechnungenFound();
 
-        // 4. Lösche Semesterrechnungen mit verwaisten Rechnungsempfängern (Rechnungsempfänger ohne Schüler)
+        // 5. Lösche Semesterrechnungen mit verwaisten Rechnungsempfängern (Rechnungsempfänger ohne Schüler)
         DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand deleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand = new DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand(semesterrechnungenFound);
         deleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand.execute();
 
-        // 5. Sortierung nach aktiven Schülern (analog zur Schueler-Spalte in SemesterrechnungenTableData)
+        // 6. Sortierung nach aktiven Schülern (analog zur Schueler-Spalte in SemesterrechnungenTableData)
         Semester currentSemester = semesterrechnungenSuchenModel.getSemester();
         FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
         findPreviousSemesterCommand.execute();

@@ -117,6 +117,12 @@ public class Semester implements Comparable<Semester> {
         return result;
     }
 
+    @Transient
+    public boolean isAfter(Semester otherSemester) {
+        // compareTo sortiert absteigend!
+        return compareTo(otherSemester) < 0;
+    }
+
     public Integer getSemesterId() {
         return semesterId;
     }
