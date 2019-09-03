@@ -1,8 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
-import ch.metzenthin.svm.persistence.DB;
-import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungDao;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
@@ -15,8 +13,6 @@ import java.util.Set;
  * @author Martin Schraner
  */
 public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand implements Command {
-
-    private final DB db = DBFactory.getInstance();
 
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
@@ -79,11 +75,6 @@ public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand implements 
                     }
                     break;
             }
-
-            // Ohne merge() tritt ab der zweiten Iteration beim Aufruf von semesterrechnungDao.save()
-            // folgende Exception auf (Stand 13.04.2019; Grund unklar, evtl. Hibernate-Bug?):
-            // javax.persistence.PersistenceException: org.hibernate.PersistentObjectException: detached entity passed to persist: ch.metzenthin.svm.persistence.entities.Angehoeriger
-            semesterrechnung = db.getCurrentEntityManager().merge(semesterrechnung);
 
             Semesterrechnung updatedSemesterrechnung = semesterrechnungDao.save(semesterrechnung);
             updatedSemesterrechnungen.add(updatedSemesterrechnung);

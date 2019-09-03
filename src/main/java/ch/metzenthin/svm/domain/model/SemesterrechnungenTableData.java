@@ -2,9 +2,12 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.utils.SvmListUtils;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
+import ch.metzenthin.svm.persistence.entities.SemesterrechnungId;
 
+import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -180,23 +183,15 @@ public class SemesterrechnungenTableData {
     }
 
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        switch (columns.get(columnIndex)) {
-            case SELEKTIERT:
-                Semesterrechnung semesterrechnung = semesterrechnungen.get(rowIndex);
-                semesterrechnung.setSelektiert((boolean) value);
-                semesterrechnungen.set(rowIndex, semesterrechnung);
-                break;
-            default:
+        if (columns.get(columnIndex) == Field.SELEKTIERT) {
+            Semesterrechnung semesterrechnung = semesterrechnungen.get(rowIndex);
+            semesterrechnung.setSelektiert((boolean) value);
+            semesterrechnungen.set(rowIndex, semesterrechnung);
         }
     }
 
     public boolean isCellEditable(int columnIndex) {
-        switch (columns.get(columnIndex)) {
-            case SELEKTIERT:
-                return true;
-            default:
-                return false;
-        }
+        return columns.get(columnIndex) == Field.SELEKTIERT;
     }
 
     public Class<?> getColumnClass(int columnIndex) {
@@ -295,5 +290,30 @@ public class SemesterrechnungenTableData {
 
     public void updateSemesterrechnungen(Set<Semesterrechnung> subsetOfUpdatedSemesterrechnungen) {
         SvmListUtils.updateList(semesterrechnungen, subsetOfUpdatedSemesterrechnungen);
+    }
+
+    public void loadSelektierteSemesterrechnungenNotContainedInPersistenceContext() {
+        EntityManager entityManager = DBFactory.getInstance().getCurrentEntityManager();
+        for (int i = 0; i < semesterrechnungen.size(); i++) {
+            if (semesterrechnungen.get(i).isSelektiert()
+                    && !entityManager.contains(semesterrechnungen.get(i))) {
+                semesterrechnungen.set(i, entityManager.find(Semesterrechnung.class, new SemesterrechnungId(
+                        semesterrechnungen.get(i).getSemester().getSemesterId(),
+                        semesterrechnungen.get(i).getRechnungsempfaenger().getPersonId())));
+            }
+        }
+    }
+
+    public void reloadSemesterrechnungenNotContainedInPersistenceContext() {
+        EntityManager entityManager = DBFactory.getInstance().getCurrentEntityManager();
+        for (int i = 0; i < semesterrechnungen.size(); i++) {
+            if (!entityManager.contains(semesterrechnungen.get(i))) {
+                semesterrechnungen.set(i, entityManager.find(Semesterrechnung.class, new SemesterrechnungId(
+                        semesterrechnungen.get(i).getSemester().getSemesterId(),
+                        semesterrechnungen.get(i).getRechnungsempfaenger().getPersonId())));
+                // Notwendig, andernfalls werden die Daten nicht von der DB geladen und sind veraltet
+                entityManager.refresh(semesterrechnungen.get(i));
+            }
+        }
     }
 }

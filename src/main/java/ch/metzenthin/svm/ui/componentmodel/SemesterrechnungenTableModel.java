@@ -91,4 +91,12 @@ public class SemesterrechnungenTableModel extends AbstractTableModel {
         semesterrechnungenTableData.updateSemesterrechnungen(subsetOfUpdatedSemesterrechnungen);
     }
 
+    public void loadSelektierteSemesterrechnungenNotContainedInPersistenceContext() {
+        semesterrechnungenTableData.loadSelektierteSemesterrechnungenNotContainedInPersistenceContext();
+    }
+
+    public void reloadSemesterrechnungenNotContainedInPersistenceContext() {
+        semesterrechnungenTableData.reloadSemesterrechnungenNotContainedInPersistenceContext();
+    }
+
 }

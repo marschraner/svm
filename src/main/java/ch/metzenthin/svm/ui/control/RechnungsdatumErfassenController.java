@@ -7,6 +7,8 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.RechnungsdatumErfassenModel;
+import ch.metzenthin.svm.persistence.DB;
+import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 import org.apache.log4j.Logger;
 
@@ -211,10 +213,17 @@ public class RechnungsdatumErfassenController extends AbstractController {
                 @Override
                 protected Void doInBackground() {
                     try {
+                        // Der Swing-Worker erzeugt einen eigenen Entity-Manager. Die selektierten Semesterrechnungen,
+                        // welche nachfolgend vom Swing-Worker verarbeitet werden, befinden sich noch nicht
+                        // im Persistenzkontext des Entity-Managers und müssen daher zuerst geladen werden.
+                        semesterrechnungenTableModel.loadSelektierteSemesterrechnungenNotContainedInPersistenceContext();
                         rechnungsdatumErfassenModel.replaceRechnungsdatumAndUpdateSemesterrechnung(semesterrechnungenTableModel, rechnungstyp);
                     } catch (Exception e) {
                         swingWorkerException = e;
                     }
+                    // DB-Session bzw. Entity-Manager des Swing-Workers wieder schliessen
+                    DB db = DBFactory.getInstance();
+                    db.closeSession();
                     return null;
                 }
                 @Override
@@ -227,6 +236,11 @@ public class RechnungsdatumErfassenController extends AbstractController {
                     if (swingWorkerException != null) {
                         throw new RuntimeException(swingWorkerException);
                     }
+                    // Die durch den Swing-Worker veränderten Semesterrechnungen befinden sich nach dem Schliessen der
+                    // DB-Session des Swing-Workers nicht mehr in dessen Persistenzkontext, welcher mitgelöscht wird.
+                    // Sie müssen in den Persistenzkontext des ab nun wieder verantwortlichen Main-Threads geladen
+                    // werden.
+                    semesterrechnungenTableModel.reloadSemesterrechnungenNotContainedInPersistenceContext();
                 }
             };
             worker.execute();
