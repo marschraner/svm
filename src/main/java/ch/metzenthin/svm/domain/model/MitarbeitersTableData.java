@@ -20,7 +20,7 @@ public class MitarbeitersTableData {
         this.mitarbeiters = mitarbeiters;
     }
 
-    private static final Field[] COLUMNS = {Field.SELEKTIERT, Field.NACHNAME, Field.VORNAME, Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT, Field.FESTNETZ, Field.NATEL, Field.EMAIL, Field.GEBURTSDATUM, Field.AHV_NUMMER, Field.LEHRKRAFT, Field.CODES, Field.VERTRETUNGSMOEGLICHKEITEN, Field.BEMERKUNGEN, Field.AKTIV};
+    private static final Field[] COLUMNS = {Field.SELEKTIERT, Field.NACHNAME, Field.VORNAME, Field.STRASSE_HAUSNUMMER, Field.PLZ, Field.ORT, Field.FESTNETZ, Field.NATEL, Field.EMAIL, Field.GEBURTSDATUM, Field.AHV_NUMMER, Field.IBAN_NUMMER, Field.LEHRKRAFT, Field.CODES, Field.VERTRETUNGSMOEGLICHKEITEN, Field.BEMERKUNGEN, Field.AKTIV};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -76,6 +76,9 @@ public class MitarbeitersTableData {
                 break;
             case AHV_NUMMER:
                 value = (!checkNotEmpty(mitarbeiter.getAhvNummer()) ? "" : mitarbeiter.getAhvNummer());
+                break;
+            case IBAN_NUMMER:
+                value = (!checkNotEmpty(mitarbeiter.getIbanNummer()) ? "" : mitarbeiter.getIbanNummer());
                 break;
             case LEHRKRAFT:
                 value = (mitarbeiter.getLehrkraft() ? "ja" : "nein");

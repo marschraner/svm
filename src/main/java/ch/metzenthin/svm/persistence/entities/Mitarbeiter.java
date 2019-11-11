@@ -69,6 +69,7 @@ public class Mitarbeiter extends Person {
     public void copyAttributesFrom(Mitarbeiter mitarbeiterFrom) {
         super.copyAttributesFrom(mitarbeiterFrom);
         ahvNummer = mitarbeiterFrom.getAhvNummer();
+        ibanNummer = mitarbeiterFrom.getIbanNummer();
         lehrkraft = mitarbeiterFrom.getLehrkraft();
         vertretungsmoeglichkeiten = mitarbeiterFrom.getVertretungsmoeglichkeiten();
         bemerkungen = mitarbeiterFrom.getBemerkungen();

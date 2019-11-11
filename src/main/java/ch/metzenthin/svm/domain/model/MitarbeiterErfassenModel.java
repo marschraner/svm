@@ -13,6 +13,7 @@ import java.util.Set;
  */
 public interface MitarbeiterErfassenModel extends PersonModel {
     String getAhvNummer();
+    String getIbanNummer();
     Boolean isLehrkraft();
     String getVertretungsmoeglichkeiten();
     String getBemerkungen();
@@ -21,6 +22,7 @@ public interface MitarbeiterErfassenModel extends PersonModel {
 
     void setMitarbeiterOrigin(Mitarbeiter mitarbeiterOrigin);
     void setAhvNummer(String ahvNummer) throws SvmValidationException;
+    void setIbanNummer(String ibanNummer) throws SvmValidationException;
     void setLehrkraft(Boolean isSelected);
     void setVertretungsmoeglichkeiten(String vertretungsmoeglichkeiten) throws SvmValidationException;
     void setBemerkungen(String bemerkungen) throws SvmValidationException;

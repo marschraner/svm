@@ -37,9 +37,11 @@ public class MitarbeiterErfassenController extends PersonController {
     private final SvmContext svmContext;
     private JDialog mitarbeiterErfassenDialog;
     private JTextField txtAhvNummer;
+    private JTextField txtIbanNummer;
     private JTextArea textAreaVertretungsmoeglichkeiten;
     private JTextArea textAreaBemerkungen;
     private JLabel errLblAhvNummer;
+    private JLabel errLblIbanNummer;
     private JLabel errLblVertretungsmoeglichkeiten;
     private JLabel errLblBemerkungen;
     private JCheckBox checkBoxLehrkraft;
@@ -140,6 +142,59 @@ public class MitarbeiterErfassenController extends PersonController {
             throw e;
         } catch (SvmValidationException e) {
             LOGGER.trace("MitarbeiterErfassenController setModelAhvNummer Exception=" + e.getMessage());
+            showErrMsg(e);
+            throw e;
+        }
+    }
+
+    public void setTxtIbanNummer(JTextField txtIbanNummer) {
+        this.txtIbanNummer = txtIbanNummer;
+        if (!defaultButtonEnabled) {
+            this.txtIbanNummer.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    onIbanNummerEvent(true);
+                }
+            });
+        }
+        this.txtIbanNummer.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                onIbanNummerEvent(false);
+            }
+        });
+    }
+
+    private void onIbanNummerEvent(boolean showRequiredErrMsg) {
+        LOGGER.trace("MitarbeiterErfassenController Event IbanNummer");
+        boolean equalFieldAndModelValue = equalsNullSafe(txtIbanNummer.getText(), mitarbeiterErfassenModel.getIbanNummer());
+        try {
+            setModelIbanNummer(showRequiredErrMsg);
+        } catch (SvmValidationException e) {
+            return;
+        }
+        if (equalFieldAndModelValue && isModelValidationMode()) {
+            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
+            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            validate();
+        }
+    }
+
+    private void setModelIbanNummer(boolean showRequiredErrMsg) throws SvmValidationException {
+        makeErrorLabelInvisible(Field.IBAN_NUMMER);
+        try {
+            mitarbeiterErfassenModel.setIbanNummer(txtIbanNummer.getText());
+        } catch (SvmRequiredException e) {
+            LOGGER.trace("MitarbeiterErfassenController setModelIbanNummer RequiredException=" + e.getMessage());
+            if (isModelValidationMode() || !showRequiredErrMsg) {
+                txtIbanNummer.setToolTipText(e.getMessage());
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            } else {
+                showErrMsg(e);
+            }
+            throw e;
+        } catch (SvmValidationException e) {
+            LOGGER.trace("MitarbeiterErfassenController setModelIbanNummer Exception=" + e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -272,12 +327,16 @@ public class MitarbeiterErfassenController extends PersonController {
         setLblCodes();
     }
 
-    public void setLblCodes() {
+    private void setLblCodes() {
         lblCodes.setText(mitarbeiterErfassenModel.getCodesAsStr());
     }
 
     public void setErrLblAhvNummer(JLabel errLblAhvNummer) {
         this.errLblAhvNummer = errLblAhvNummer;
+    }
+
+    public void setErrLblIbanNummer(JLabel errLblIbanNummer) {
+        this.errLblIbanNummer = errLblIbanNummer;
     }
 
     public void setErrLblVertretungsmoeglichkeiten(JLabel errLblVertretungsmoeglichkeiten) {
@@ -368,6 +427,9 @@ public class MitarbeiterErfassenController extends PersonController {
         if (checkIsFieldChange(Field.AHV_NUMMER, evt)) {
             txtAhvNummer.setText(mitarbeiterErfassenModel.getAhvNummer());
         }
+        else if (checkIsFieldChange(Field.IBAN_NUMMER, evt)) {
+            txtIbanNummer.setText(mitarbeiterErfassenModel.getIbanNummer());
+        }
         else if (checkIsFieldChange(Field.LEHRKRAFT, evt)) {
             checkBoxLehrkraft.setSelected(mitarbeiterErfassenModel.isLehrkraft());
         }
@@ -393,6 +455,10 @@ public class MitarbeiterErfassenController extends PersonController {
             LOGGER.trace("Validate field AhvNummer");
             setModelAhvNummer(true);
         }
+        if (txtIbanNummer.isEnabled()) {
+            LOGGER.trace("Validate field IbanNummer");
+            setModelIbanNummer(true);
+        }
         if (textAreaVertretungsmoeglichkeiten != null && textAreaVertretungsmoeglichkeiten.isEnabled()) {
             LOGGER.trace("Validate field Vertretungsmoeglichkeiten");
             setModelVertretungsmoeglichkeiten();
@@ -410,6 +476,10 @@ public class MitarbeiterErfassenController extends PersonController {
             errLblAhvNummer.setVisible(true);
             errLblAhvNummer.setText(e.getMessage());
         }
+        if (e.getAffectedFields().contains(Field.IBAN_NUMMER)) {
+            errLblIbanNummer.setVisible(true);
+            errLblIbanNummer.setText(e.getMessage());
+        }
         if (e.getAffectedFields().contains(Field.VERTRETUNGSMOEGLICHKEITEN)) {
             errLblVertretungsmoeglichkeiten.setVisible(true);
             errLblVertretungsmoeglichkeiten.setText(e.getMessage());
@@ -426,6 +496,9 @@ public class MitarbeiterErfassenController extends PersonController {
         if (e.getAffectedFields().contains(Field.AHV_NUMMER)) {
             txtAhvNummer.setToolTipText(e.getMessage());
         }
+        if (e.getAffectedFields().contains(Field.IBAN_NUMMER)) {
+            txtIbanNummer.setToolTipText(e.getMessage());
+        }
         if (e.getAffectedFields().contains(Field.VERTRETUNGSMOEGLICHKEITEN)) {
             textAreaVertretungsmoeglichkeiten.setToolTipText(e.getMessage());
         }
@@ -440,6 +513,10 @@ public class MitarbeiterErfassenController extends PersonController {
         if (fields.contains(Field.ALLE) || fields.contains(Field.AHV_NUMMER)) {
             errLblAhvNummer.setVisible(false);
             txtAhvNummer.setToolTipText(null);
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.IBAN_NUMMER)) {
+            errLblIbanNummer.setVisible(false);
+            txtIbanNummer.setToolTipText(null);
         }
         if (fields.contains(Field.ALLE) || fields.contains(Field.VERTRETUNGSMOEGLICHKEITEN)) {
             errLblVertretungsmoeglichkeiten.setVisible(false);

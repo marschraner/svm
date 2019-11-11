@@ -112,6 +112,32 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
         ahvNummerModelAttribute.setNewValue(false, ahvNummer, isBulkUpdate());
     }
 
+    private final StringModelAttribute ibanNummerModelAttribute = new StringModelAttribute(
+            this,
+            Field.IBAN_NUMMER, 8, 50,
+            new AttributeAccessor<String>() {
+                @Override
+                public String getValue() {
+                    return mitarbeiter.getIbanNummer();
+                }
+
+                @Override
+                public void setValue(String value) {
+                    mitarbeiter.setIbanNummer(value);
+                }
+            }
+    );
+
+    @Override
+    public String getIbanNummer() {
+        return ibanNummerModelAttribute.getValue();
+    }
+
+    @Override
+    public void setIbanNummer(String ibanNummer) throws SvmValidationException {
+        ibanNummerModelAttribute.setNewValue(false, ibanNummer, isBulkUpdate());
+    }
+
     @Override
     public void setLehrkraft(Boolean isSelected) {
         Boolean oldValue = mitarbeiter.getLehrkraft();
@@ -243,6 +269,7 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
                 setEmail(mitarbeiterOrigin.getEmail());
                 setGeburtsdatum(asString(mitarbeiterOrigin.getGeburtsdatum()));
                 setAhvNummer(mitarbeiterOrigin.getAhvNummer());
+                setIbanNummer(mitarbeiterOrigin.getIbanNummer());
                 setLehrkraft(!mitarbeiterOrigin.getLehrkraft()); // damit PropertyChange ausgelöst wird!
                 setLehrkraft(mitarbeiterOrigin.getLehrkraft());
                 setVertretungsmoeglichkeiten(mitarbeiterOrigin.getVertretungsmoeglichkeiten());

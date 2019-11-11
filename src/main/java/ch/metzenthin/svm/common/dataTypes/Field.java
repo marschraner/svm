@@ -60,6 +60,7 @@ public enum Field {
     KUERZEL("Kürzel"),
     BESCHREIBUNG("Beschreibung"),
     AHV_NUMMER("AHV-Nr."),
+    IBAN_NUMMER("IBAN-Nr."),
     VERTRETUNGSMOEGLICHKEITEN("Vertretungsmöglichkeiten"),
     AKTIV("aktiv"),
     BEZEICHNUNG("Bezeichnung"),
