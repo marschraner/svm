@@ -106,11 +106,11 @@ public class DeleteKursanmeldungCommandTest {
         saveOrUpdateKursortCommand = new SaveOrUpdateKursortCommand(kursort2, null, erfassteKursorte);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
 
-        Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roostest1", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
+        Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roostest1", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "CH31 8123 9000 0012 4568 9", true, "Mi, Fr, Sa", null, true);
         Adresse adresselk1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
         SaveOrUpdateMitarbeiterCommand saveOrUpdateMitarbeiterCommand = new SaveOrUpdateMitarbeiterCommand(mitarbeiter1, adresselk1, null, null, erfassteLehrkraefte);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMitarbeiterCommand);
-        Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roostest2", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
+        Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roostest2", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "CH31 8123 9000 0012 4568 9", true, "Mi, Fr, Sa", null, true);
         Adresse adresselk2 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
         saveOrUpdateMitarbeiterCommand = new SaveOrUpdateMitarbeiterCommand(mitarbeiter2, adresselk2, null, null, erfassteLehrkraefte);
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMitarbeiterCommand);

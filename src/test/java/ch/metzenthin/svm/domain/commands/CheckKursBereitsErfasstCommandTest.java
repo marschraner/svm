@@ -29,8 +29,8 @@ public class CheckKursBereitsErfasstCommandTest {
     private final Kurstyp kurstyp2 = new Kurstyp("Testkurs1", true);
     private final Kursort kursort1 = new Kursort("Testsaal1", true);
     private final Kursort kursort2 = new Kursort("Testsaal2", true);
-    private final Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos1", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
-    private final Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos2", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
+    private final Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos1", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "CH31 8123 9000 0012 4568 9", true, "Mi, Fr, Sa", null, true);
+    private final Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos2", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "CH31 8123 9000 0012 4568 9", true, "Mi, Fr, Sa", null, true);
 
     @Before
     public void setUp() {

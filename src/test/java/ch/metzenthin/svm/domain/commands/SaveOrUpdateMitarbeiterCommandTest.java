@@ -51,7 +51,7 @@ public class SaveOrUpdateMitarbeiterCommandTest {
         List<Mitarbeiter> mitarbeitersSaved = new ArrayList<>();
 
         // Mitarbeiter hinzufügen
-        Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "RoosTest", new GregorianCalendar(1994, Calendar.MARCH, 18), "043 111 11 11", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
+        Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "RoosTest", new GregorianCalendar(1994, Calendar.MARCH, 18), "043 111 11 11", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "CH31 8123 9000 0012 4568 9", true, "Mi, Fr, Sa", null, true);
         Adresse adresse1 = new Adresse("Rebwiesenstrasse", "77", "8702", "Zollikon");
         mitarbeiter1.setAdresse(adresse1);
         SaveOrUpdateMitarbeiterCommand saveOrUpdateMitarbeiterCommand = new SaveOrUpdateMitarbeiterCommand(mitarbeiter1, adresse1, null, null, mitarbeitersSaved);
@@ -61,7 +61,7 @@ public class SaveOrUpdateMitarbeiterCommandTest {
         assertFalse(checkIfMitarbeiterAvailable("DelleyTest", "Nathalie", "ndelley@sunrise.ch", "Im Schilf"));
 
         // Weitere Mitarbeiter hinzufügen
-        Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "Nathalie", "DelleyTest", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", true, "Mi, Fr, Sa", null, true);
+        Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "Nathalie", "DelleyTest", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", "CH31 8123 9000 0022 4568 9", true, "Mi, Fr, Sa", null, true);
         Adresse adresse2 = new Adresse("Im Schilf", "7", "8044", "Zürich");
         mitarbeiter2.setAdresse(adresse2);
         saveOrUpdateMitarbeiterCommand = new SaveOrUpdateMitarbeiterCommand(mitarbeiter2, adresse2, null, null, mitarbeitersSaved);
@@ -74,7 +74,7 @@ public class SaveOrUpdateMitarbeiterCommandTest {
         assertTrue(checkIfMitarbeiterAvailable("DelleyTest", "Nathalie", "ndelley@sunrise.ch", "Im Schilf"));
 
         // Mitarbeiter bearbeiten (neue Email, neue Strasse)
-        Mitarbeiter mitarbeiter1Modif = new Mitarbeiter(Anrede.FRAU, "Noémie", "RoosTest", new GregorianCalendar(1994, Calendar.MARCH, 18), "043 111 11 11", "076 384 45 35", "nroos@gmail.com", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
+        Mitarbeiter mitarbeiter1Modif = new Mitarbeiter(Anrede.FRAU, "Noémie", "RoosTest", new GregorianCalendar(1994, Calendar.MARCH, 18), "043 111 11 11", "076 384 45 35", "nroos@gmail.com", "756.3943.8722.22", "CH31 8123 9000 0012 4568 9", true, "Mi, Fr, Sa", null, true);
         Adresse adresse1Modif = new Adresse("Rebwiesenweg", "3", "8702", "Zollikon");
         mitarbeiter1.setAdresse(adresse1Modif);
         saveOrUpdateMitarbeiterCommand = new SaveOrUpdateMitarbeiterCommand(mitarbeiter1Modif, adresse1Modif, null, mitarbeiter1, mitarbeitersSaved);

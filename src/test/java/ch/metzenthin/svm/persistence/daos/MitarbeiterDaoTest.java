@@ -46,7 +46,7 @@ public class MitarbeiterDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
+            Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "CH31 8123 9000 0012 4568 9", true, "Mi, Fr, Sa", null, true);
             Adresse adresse = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
             mitarbeiter.setAdresse(adresse);
 
@@ -70,7 +70,7 @@ public class MitarbeiterDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
+            Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "CH31 8123 9000 0012 4568 9", true, "Mi, Fr, Sa", null, true);
             Adresse adresse = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
             mitarbeiter.setAdresse(adresse);
 
@@ -99,13 +99,13 @@ public class MitarbeiterDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "CH31 8123 9000 0012 4568 9", true, "Mi, Fr, Sa", null, true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
             mitarbeiter1.setAdresse(adresse1);
             Mitarbeiter mitarbeiter1Saved = mitarbeiterDao.save(mitarbeiter1);
             int lehrkraft1Id = mitarbeiter1Saved.getPersonId();
 
-            Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "Nathalie", "Delley", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", true, "Mi, Fr, Sa", null, true);
+            Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "Nathalie", "Delley", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", "CH31 2345 9000 0012 4568 9", true, "Mi, Fr, Sa", null, true);
             Adresse adresse2 = new Adresse("Im Schilf", "7", "8044", "Zürich");
             mitarbeiter2.setAdresse(adresse2);
             Mitarbeiter mitarbeiter2Saved = mitarbeiterDao.save(mitarbeiter2);
@@ -146,12 +146,12 @@ public class MitarbeiterDaoTest {
             tx = entityManager.getTransaction();
             tx.begin();
 
-            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "NoémieTest", "RoosTest", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
+            Mitarbeiter mitarbeiter1 = new Mitarbeiter(Anrede.FRAU, "NoémieTest", "RoosTest", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "CH31 8123 9000 0012 4568 9", true, "Mi, Fr, Sa", null, true);
             Adresse adresse1 = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
             mitarbeiter1.setAdresse(adresse1);
             mitarbeiterDao.save(mitarbeiter1);
 
-            Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "NathalieTest", "DelleyTest", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", true, "Mi, Fr, Sa", null, true);
+            Mitarbeiter mitarbeiter2 = new Mitarbeiter(Anrede.FRAU, "NathalieTest", "DelleyTest", new GregorianCalendar(1971, Calendar.DECEMBER, 16), "044 261 27 20", "076 338 05 36", "ndelley@sunrise.ch", "756.8274.3263.17", "CH31 8123 9000 0012 4261 9", true, "Mi, Fr, Sa", null, true);
             Adresse adresse2 = new Adresse("Im Schilf", "7", "8044", "Zürich");
             mitarbeiter2.setAdresse(adresse2);
             mitarbeiterDao.save(mitarbeiter2);

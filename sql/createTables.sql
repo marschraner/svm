@@ -153,6 +153,7 @@ DESCRIBE Schueler;
 CREATE TABLE IF NOT EXISTS Mitarbeiter (
     person_id                  INT           NOT NULL,
     ahvnummer                  VARCHAR(16),
+    ibannummer                 VARCHAR(50),
     lehrkraft                  BOOLEAN       NOT NULL,
     vertretungsmoeglichkeiten  TEXT,
     bemerkungen                TEXT,

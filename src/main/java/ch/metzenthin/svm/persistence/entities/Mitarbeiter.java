@@ -14,16 +14,19 @@ import java.util.*;
 @DiscriminatorValue("Mitarbeiter")
 public class Mitarbeiter extends Person {
 
-    @Column(name = "ahvnummer", nullable = true)
+    @Column(name = "ahvnummer")
     private String ahvNummer;
+
+    @Column(name = "ibannummer")
+    private String ibanNummer;
     
     @Column(name = "lehrkraft", nullable = false)
     private boolean lehrkraft;
 
-    @Column(name = "vertretungsmoeglichkeiten", columnDefinition = "text", nullable = true)
+    @Column(name = "vertretungsmoeglichkeiten", columnDefinition = "text")
     private String vertretungsmoeglichkeiten;
 
-    @Column(name = "bemerkungen", columnDefinition = "text", nullable = true)
+    @Column(name = "bemerkungen", columnDefinition = "text")
     private String bemerkungen;
 
     @Column(name = "aktiv", nullable = false)
@@ -44,7 +47,9 @@ public class Mitarbeiter extends Person {
     public Mitarbeiter() {
     }
 
-    public Mitarbeiter(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String festnetz, String natel, String email, String ahvNummer, boolean lehrkraft, String vertretungsmoeglichkeiten, String bemerkungen, Boolean aktiv) {
+    public Mitarbeiter(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String festnetz,
+                       String natel, String email, String ahvNummer, String ibanNummer, boolean lehrkraft,
+                       String vertretungsmoeglichkeiten, String bemerkungen, Boolean aktiv) {
         super(anrede, vorname, nachname, geburtsdatum, festnetz, natel, email);
         this.ahvNummer = ahvNummer;
         this.lehrkraft = lehrkraft;
@@ -92,6 +97,14 @@ public class Mitarbeiter extends Person {
 
     public void setAhvNummer(String ahvNummer) {
         this.ahvNummer = ahvNummer;
+    }
+
+    public String getIbanNummer() {
+        return ibanNummer;
+    }
+
+    public void setIbanNummer(String ibanNummer) {
+        this.ibanNummer = ibanNummer;
     }
 
     public boolean getLehrkraft() {

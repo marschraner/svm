@@ -59,7 +59,7 @@ public class AddMitarbeiterCodeToMitarbeiterAndSaveCommandTest {
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMitarbeiterCodeCommand);
 
         // Mitarbeiter erfassen und Codes hinzufügen
-        Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", true, "Mi, Fr, Sa", null, true);
+        Mitarbeiter mitarbeiter = new Mitarbeiter(Anrede.FRAU, "Noémie", "Roos", new GregorianCalendar(1994, Calendar.MARCH, 18), "044 391 45 35", "076 384 45 35", "nroos@gmx.ch", "756.3943.8722.22", "CH31 8123 9000 0012 4568 9", true, "Mi, Fr, Sa", null, true);
         Adresse adresse = new Adresse("Rebwiesenstrasse", "54", "8702", "Zollikon");
         mitarbeiter.setAdresse(adresse);
 
