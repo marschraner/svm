@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.utils.IbanNummerValidator;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CheckMitarbeiterBereitsErfasstCommand;
@@ -21,6 +22,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  * @author Martin Schraner
  */
 public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements MitarbeiterErfassenModel {
+
+    private final IbanNummerValidator ibanNummerValidator = new IbanNummerValidator();
 
     private Mitarbeiter mitarbeiter = new Mitarbeiter();
     private Mitarbeiter mitarbeiterOrigin;
@@ -114,7 +117,7 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
 
     private final StringModelAttribute ibanNummerModelAttribute = new StringModelAttribute(
             this,
-            Field.IBAN_NUMMER, 8, 50,
+            Field.IBAN_NUMMER, 15, 40,
             new AttributeAccessor<String>() {
                 @Override
                 public String getValue() {
@@ -125,7 +128,8 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
                 public void setValue(String value) {
                     mitarbeiter.setIbanNummer(value);
                 }
-            }
+            },
+            new IbanNummerFormatter()
     );
 
     @Override
@@ -135,6 +139,11 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
 
     @Override
     public void setIbanNummer(String ibanNummer) throws SvmValidationException {
+        if (!isBulkUpdate() && checkNotEmpty(ibanNummer) && !ibanNummerValidator.isValid(ibanNummer)) {
+            invalidate();
+            String errMsg = "Keine gültige IBAN-Nummer";
+            throw new SvmValidationException(11111, errMsg, Field.IBAN_NUMMER);
+        }
         ibanNummerModelAttribute.setNewValue(false, ibanNummer, isBulkUpdate());
     }
 
