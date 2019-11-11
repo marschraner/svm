@@ -109,7 +109,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 break;
             case VERTRETUNGSLISTE:
                 break;
-            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN:
+            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN:
                 break;
             case MITARBEITER_ADRESSETIKETTEN:
                 break;
@@ -290,7 +290,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 commandInvoker.executeCommand(createVertretungslisteCommand);
                 result = createVertretungslisteCommand.getResult();
                 break;
-            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN:
+            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN:
                 CreateMitarbeiterAdresslisteAlleAttributeCommand createMitarbeiterAdresslisteAlleAttributeCommand = new CreateMitarbeiterAdresslisteAlleAttributeCommand(mitarbeitersTableModel, titel, outputFile);
                 commandInvoker.executeCommand(createMitarbeiterAdresslisteAlleAttributeCommand);
                 result = createMitarbeiterAdresslisteAlleAttributeCommand.getResult();
@@ -419,7 +419,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
             case VERTRETUNGSLISTE:
                 titleInit = "Vertretungsliste";
                 break;
-            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN:
+            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN:
                 titleInit = "Mitarbeitende";
                 break;
             case MITARBEITER_ADRESSETIKETTEN:

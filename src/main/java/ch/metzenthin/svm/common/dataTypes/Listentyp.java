@@ -20,7 +20,7 @@ public enum Listentyp {
     SCHUELERLISTE_CSV("Schülerliste (CSV)", "Schülerliste", Filetyp.CSV, null),
     MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM("Mitarbeiter-Adressliste mit Geburtsdatum", "Mitarbeiter-Adressliste", Filetyp.DOCX, null),
     MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM("Mitarbeiter-Adressliste ohne Geburtsdatum", "Mitarbeiter-Adressliste", Filetyp.DOCX, null),
-    MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_VERTRETUNGSMOEGLICHKEITEN("Mitarbeiter-Adressliste mit Geb.Datum, AHV-Nr., Vertr.mögl.", "Mitarbeiter-Adressliste", Filetyp.DOCX, null),
+    MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN("Mitarbeiter-Adressliste mit Geb.Datum, AHV-Nr., IBAN-Nr., Vertr.mögl.", "Mitarbeiter-Adressliste", Filetyp.DOCX, null),
     VERTRETUNGSLISTE("Vertretungsliste", "Vertretungsliste", Filetyp.DOCX, null),
     MITARBEITER_ADRESSETIKETTEN("Mitarbeiter-Adressetiketten", "Mitarbeiter-Adressetiketten", Filetyp.CSV, null),
     MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV("Mitarbeiter-Liste Name zweispaltig (CSV)", "Mitarbeiter-Liste", Filetyp.CSV, null),

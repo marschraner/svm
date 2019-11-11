@@ -36,7 +36,7 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
         //          Bei > 11200 hinten schmalerer Rand!
         //          Bei > 11500 Spaltenbreite durch Inhalt beieinflusst!!!
         List<Integer> columnWidths = new ArrayList<>();
-        columnWidths.add(0);  // enspricht einer Breite von max 550 (wenn 3-stellig)
+        columnWidths.add(0);  // entspricht einer Breite von max 550 (wenn 3-stellig)
         columnWidths.add(2300);
         columnWidths.add(2500);
         columnWidths.add(1400);
@@ -94,7 +94,7 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
         mergedRow3.add(0);
         mergedRow3.add(2);
         mergedRow3.add(0);
-        mergedRow3.add(0);
+        mergedRow3.add(2);
         mergedRow3.add(0);
         mergedCells.add(mergedRow3);
 
@@ -126,7 +126,7 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
         maxLengthsRow3.add(new int[]{38, 39, 40, 41, 43, 45});
         maxLengthsRow3.add(new int[]{0});
         maxLengthsRow3.add(new int[]{0});
-        maxLengthsRow3.add(new int[]{29, 30, 31, 32, 33, 35});
+        maxLengthsRow3.add(new int[]{0});
         maxLengths.add(maxLengthsRow3);
 
         // Header
@@ -155,7 +155,7 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
         headerCellsRow3.add("");
         headerCellsRow3.add("E-Mail");
         headerCellsRow3.add("");
-        headerCellsRow3.add("");
+        headerCellsRow3.add("IBAN-Nummer");
         headerCellsRow3.add("");
         header.add(headerCellsRow3);
 
@@ -165,7 +165,23 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
         for (Mitarbeiter mitarbeiter : mitarbeitersTableModel.getSelektierteMitarbeiters()) {
             List<List<String>> dataset = new ArrayList<>();
             // Auf mehrere Zeilen aufzusplittende Felder:
-            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand = new SplitStringIntoMultipleLinesCommand(mitarbeiter.getVertretungsmoeglichkeitenLineBreaksReplacedBySemicolonOrPeriod(), 29, 3);
+            String vertretungsmoeglichkeiten = mitarbeiter.getVertretungsmoeglichkeitenLineBreaksReplacedBySemicolonOrPeriod();
+            int maxLengthPerLine;
+            if (vertretungsmoeglichkeiten == null || vertretungsmoeglichkeiten.length() <= 58) {
+                maxLengthPerLine = 29;
+            } else if (vertretungsmoeglichkeiten.length() <= 70) {
+                maxLengthPerLine = 35;
+            } else if (vertretungsmoeglichkeiten.length() <= 80) {
+                maxLengthPerLine = 40;
+            } else if (vertretungsmoeglichkeiten.length() <= 90) {
+                maxLengthPerLine = 45;
+            } else if (vertretungsmoeglichkeiten.length() <= 100) {
+                maxLengthPerLine = 50;
+            } else {
+                maxLengthPerLine = 60;
+            }
+            SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand
+                    = new SplitStringIntoMultipleLinesCommand(vertretungsmoeglichkeiten, maxLengthPerLine, 2);
             splitStringIntoMultipleLinesCommand.execute();
             List<String> vertretungsmoeglichkeitenLines = splitStringIntoMultipleLinesCommand.getLines();
             // 1. Zeile
@@ -202,12 +218,8 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
             cellsRow3.add("");
             cellsRow3.add(nullAsEmptyString(mitarbeiter.getEmailToBeDisplayedInWord()));
             cellsRow3.add("");
+            cellsRow3.add(nullAsEmptyString(mitarbeiter.getIbanNummer()));
             cellsRow3.add("");
-            if (vertretungsmoeglichkeitenLines.size() > 2) {
-                cellsRow3.add(vertretungsmoeglichkeitenLines.get(2));
-            } else {
-                cellsRow3.add("");
-            }
             dataset.add(cellsRow3);
 
             // Einzelner Datensatz der Liste von Datensätzen hinzufügen
