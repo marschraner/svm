@@ -52,6 +52,7 @@ public class Mitarbeiter extends Person {
                        String vertretungsmoeglichkeiten, String bemerkungen, Boolean aktiv) {
         super(anrede, vorname, nachname, geburtsdatum, festnetz, natel, email);
         this.ahvNummer = ahvNummer;
+        this.ibanNummer = ibanNummer;
         this.lehrkraft = lehrkraft;
         this.vertretungsmoeglichkeiten = vertretungsmoeglichkeiten;
         this.bemerkungen = bemerkungen;
