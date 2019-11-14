@@ -54,6 +54,8 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
             out.write(separator);
             out.write("AHV-Nummer");
             out.write(separator);
+            out.write("IBAN-Nummer");
+            out.write(separator);
             out.write("Lehrkraft");
             out.write(separator);
             out.write("Codes");
@@ -101,6 +103,10 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
                 out.write(separator);
                 if (mitarbeiter.getAhvNummer() != null) {
                     out.write(mitarbeiter.getAhvNummer());
+                }
+                out.write(separator);
+                if (mitarbeiter.getIbanNummer() != null) {
+                    out.write(mitarbeiter.getIbanNummer());
                 }
                 out.write(separator);
                 out.write(mitarbeiter.getLehrkraft() ? "ja" : "nein");
