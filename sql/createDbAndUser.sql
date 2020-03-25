@@ -7,10 +7,11 @@
 -- Enter password: 
 -- mysql> source createDbAndUser.sql
 
-DROP DATABASE IF EXISTS svm;
 
 -- Neue Datenbank erzeugen
 -- ***********************
+DROP DATABASE IF EXISTS svm;
+
 CREATE DATABASE IF NOT EXISTS svm
     DEFAULT CHARACTER SET utf8
     DEFAULT COLLATE utf8_general_ci;
@@ -18,9 +19,8 @@ CREATE DATABASE IF NOT EXISTS svm
 
 -- Neuen User erzeugen und Rechte für DB zuweisen
 -- **********************************************
+DROP USER IF EXISTS svm;
 
--- DROP USER svm; Macht Probleme, wenn der User nicht existiert.
-GRANT ALL ON svm.* TO 'svm'@'localhost' IDENTIFIED BY 'svm';
-GRANT ALL ON svm.* TO 'svm'@'%' IDENTIFIED BY 'svm';
-GRANT FILE ON *.* to 'svm'@'localhost';
+CREATE USER 'svm'@'%' IDENTIFIED BY 'svm';
+GRANT ALL PRIVILEGES ON svm.* TO 'svm'@'%';
 
