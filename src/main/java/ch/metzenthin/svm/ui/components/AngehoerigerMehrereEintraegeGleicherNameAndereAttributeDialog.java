@@ -110,7 +110,7 @@ public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog exten
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         panel1.add(panel2, gbc);
-        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Teilweise übereinstimmende Datenbankeinträge", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel2.getFont())));
+        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Teilweise übereinstimmende Datenbankeinträge", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel2.getFont()), null));
         lblBeschreibung = new JLabel();
         lblBeschreibung.setText("Beschreibung");
         gbc = new GridBagConstraints();

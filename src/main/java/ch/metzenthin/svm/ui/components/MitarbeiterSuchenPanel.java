@@ -146,7 +146,7 @@ public class MitarbeiterSuchenPanel {
         gbc.weighty = 1.0;
         gbc.insets = new Insets(10, 10, 10, 10);
         datenPanel.add(panel1, gbc);
-        panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Suchkriterien", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel1.getFont())));
+        panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Suchkriterien", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel1.getFont()), null));
         final JLabel label2 = new JLabel();
         label2.setText("Nachname");
         gbc = new GridBagConstraints();
@@ -436,4 +436,5 @@ public class MitarbeiterSuchenPanel {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
+
 }

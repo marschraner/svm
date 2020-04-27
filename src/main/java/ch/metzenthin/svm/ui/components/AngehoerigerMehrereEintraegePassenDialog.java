@@ -5,6 +5,7 @@ import ch.metzenthin.svm.domain.model.AngehoerigerMehrereEintraegePassenResult;
 import ch.metzenthin.svm.domain.model.SchuelerErfassenModel;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -109,7 +110,7 @@ public class AngehoerigerMehrereEintraegePassenDialog extends SchuelerErfassenDi
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         panel1.add(panel2, gbc);
-        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mehrere passende Datenbankeinträge"));
+        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mehrere passende Datenbankeinträge", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         lblBeschreibung1 = new JLabel();
         lblBeschreibung1.setText("Beschreibung1");
         gbc = new GridBagConstraints();
