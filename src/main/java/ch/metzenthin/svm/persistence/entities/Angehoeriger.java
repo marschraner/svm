@@ -13,23 +13,27 @@ import java.util.*;
 @DiscriminatorValue("Angehoeriger")
 public class Angehoeriger extends Person {
 
+    @Column(name = "wuenscht_emails")
+    private Boolean wuenschtEmails;
+
     @OneToMany(mappedBy = "vater")
-    private Set<Schueler> kinderVater = new HashSet<>();
+    private final Set<Schueler> kinderVater = new HashSet<>();
 
     @OneToMany(mappedBy = "mutter")
-    private Set<Schueler> kinderMutter = new HashSet<>();
+    private final Set<Schueler> kinderMutter = new HashSet<>();
 
     @OneToMany(mappedBy = "rechnungsempfaenger")
-    private Set<Schueler> schuelerRechnungsempfaenger = new HashSet<>();
+    private final Set<Schueler> schuelerRechnungsempfaenger = new HashSet<>();
 
     @OneToMany(mappedBy = "rechnungsempfaenger")
-    private Set<Semesterrechnung> semesterrechnungen = new HashSet<>();
+    private final Set<Semesterrechnung> semesterrechnungen = new HashSet<>();
 
     public Angehoeriger() {
     }
 
-    public Angehoeriger(Anrede anrede, String vorname, String nachname, String festnetz, String natel, String email) {
+    public Angehoeriger(Anrede anrede, String vorname, String nachname, String festnetz, String natel, String email, Boolean wuenschtEmails) {
         super(anrede, vorname, nachname, null, festnetz, natel, email);
+        this.wuenschtEmails = wuenschtEmails;
     }
 
     public boolean isIdenticalWith(Angehoeriger otherAngehoeriger) {
@@ -51,6 +55,14 @@ public class Angehoeriger extends Person {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public Boolean getWuenschtEmails() {
+        return wuenschtEmails;
+    }
+
+    public void setWuenschtEmails(Boolean wuenschtEmails) {
+        this.wuenschtEmails = wuenschtEmails;
     }
 
     public Set<Schueler> getKinderVater() {
@@ -86,21 +98,5 @@ public class Angehoeriger extends Person {
         List<Semesterrechnung> semesterrechnungenAsList = new ArrayList<>(semesterrechnungen);
         Collections.sort(semesterrechnungenAsList);
         return semesterrechnungenAsList;
-    }
-
-    @Transient
-    public String getSchuelerRechnungsempfaengerAsStr() {
-        List<Schueler> schuelerRechnungsempfaengerList = new ArrayList<>(schuelerRechnungsempfaenger);
-        // Bei Semesterrechnungen, bei denen der Rechnungsempfänger durch ein Ändern des Rechnungsempfängers des Kinds
-        // seine Schüler verloren hat
-        if (schuelerRechnungsempfaengerList.isEmpty()) {
-            return "-";
-        }
-        Collections.sort(schuelerRechnungsempfaengerList);
-        String schuelerStr = schuelerRechnungsempfaengerList.get(0).getNachname() + " " + schuelerRechnungsempfaengerList.get(0).getVorname();
-        for (int i = 1; i < schuelerRechnungsempfaengerList.size(); i++) {
-            schuelerStr = schuelerStr + ", " + schuelerRechnungsempfaengerList.get(i).getNachname() + " " + schuelerRechnungsempfaengerList.get(i).getVorname();
-        }
-        return schuelerStr;
     }
 }

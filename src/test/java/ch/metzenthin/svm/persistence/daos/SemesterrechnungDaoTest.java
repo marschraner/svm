@@ -56,7 +56,7 @@ public class SemesterrechnungDaoTest {
             Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
             schueler.setAdresse(adresse);
             schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
-            Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
             rechnungsempfaenger.setAdresse(adresse);
             schueler.setRechnungsempfaenger(rechnungsempfaenger);
             entityManager.persist(schueler);
@@ -143,7 +143,7 @@ public class SemesterrechnungDaoTest {
             Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
             schueler.setAdresse(adresse);
             schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
-            Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
             rechnungsempfaenger.setAdresse(adresse);
             schueler.setRechnungsempfaenger(rechnungsempfaenger);
             entityManager.persist(schueler);
@@ -214,7 +214,7 @@ public class SemesterrechnungDaoTest {
             Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
             schueler.setAdresse(adresse);
             schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
-            Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
             rechnungsempfaenger.setAdresse(adresse);
             schueler.setRechnungsempfaenger(rechnungsempfaenger);
             entityManager.persist(schueler);
@@ -298,7 +298,7 @@ public class SemesterrechnungDaoTest {
             Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
             schueler1.setAdresse(adresse);
             schueler1.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
-            Angehoeriger rechnungsempfaenger1 = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger rechnungsempfaenger1 = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
             rechnungsempfaenger1.setAdresse(adresse);
             schueler1.setRechnungsempfaenger(rechnungsempfaenger1);
             entityManager.persist(schueler1);
@@ -307,7 +307,7 @@ public class SemesterrechnungDaoTest {
             Adresse adresse2 = new Adresse("Hohenklingenstrasse", "22", "8049", "Zürich");
             schueler2.setAdresse(adresse2);
             schueler2.addAnmeldung(new Anmeldung(new GregorianCalendar(2013, Calendar.JANUARY, 1), null));
-            Angehoeriger rechnungsempfaenger2 = new Angehoeriger(Anrede.FRAU, "Adriana", "Hasler", "044 422 69 33", null, null);
+            Angehoeriger rechnungsempfaenger2 = new Angehoeriger(Anrede.FRAU, "Adriana", "Hasler", "044 422 69 33", null, null, true);
             rechnungsempfaenger2.setAdresse(adresse2);
             schueler2.setRechnungsempfaenger(rechnungsempfaenger2);
             entityManager.persist(schueler2);

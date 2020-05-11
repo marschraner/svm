@@ -44,13 +44,13 @@ public class SaveAngehoerigeCommandTest {
 
         List<Angehoeriger> angehoerige = new ArrayList<>();
 
-        Angehoeriger angehoeriger0 = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+        Angehoeriger angehoeriger0 = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
         angehoeriger0.setAdresse(adresse);
         angehoerige.add(angehoeriger0);
 
         // Second Angehoeriger with the same address
-        Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", "044 491 69 33", null, null);
+        Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", "044 491 69 33", null, null, true);
         angehoeriger1.setAdresse(adresse);
         angehoerige.add(angehoeriger1);
 

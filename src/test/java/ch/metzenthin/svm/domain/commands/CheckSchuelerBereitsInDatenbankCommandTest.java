@@ -50,7 +50,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
     public void testExecute_NICHT_IN_DATENBANK() {
 
         Schueler schueler = new Schueler("Yolanda", "Bruggisser", new GregorianCalendar(2000, Calendar.JANUARY, 20), "056 426 69 15", null, null, Geschlecht.W, null);
-        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null);
+        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null, false);
         Adresse adresse = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         rechnungsempfaenger.setAdresse(adresse);
         schueler.setAdresse(adresse);
@@ -66,7 +66,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
     @Test
     public void testExecute_IN_DATENBANK() {
         Schueler schueler = new Schueler("Carla", "Bruggisser", new GregorianCalendar(2000, Calendar.JANUARY, 20), "056 426 77 15", null, null, Geschlecht.W, null);
-        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 77 15", null, null);
+        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 77 15", null, null, false);
         Adresse adresse = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");  // andere Telefonnummer
         rechnungsempfaenger.setAdresse(adresse);
         schueler.setAdresse(adresse);
@@ -95,7 +95,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         entityManager.getTransaction().begin();
 
         Schueler schueler = new Schueler("Carla", "Bruggisser", new GregorianCalendar(2000, Calendar.JANUARY, 20), "056 426 69 15", null, null, Geschlecht.W, null);
-        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null);
+        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null, false);
         Adresse adresse = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         rechnungsempfaenger.setAdresse(adresse);
         schueler.setAdresse(adresse);

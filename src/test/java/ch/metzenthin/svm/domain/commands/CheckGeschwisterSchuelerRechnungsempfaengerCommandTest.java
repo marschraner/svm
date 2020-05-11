@@ -26,11 +26,11 @@ public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
     @Test
     public void testExecute() {
 
-        Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.FRAU, "Eva", "Juchli", null, null, null);
-        Angehoeriger angehoeriger2 = new Angehoeriger(Anrede.HERR, "Kurt", "Juchli", null, null, null);
-        Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", null, null, null);
-        Angehoeriger angehoeriger4 = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null, null);
-        Angehoeriger angehoeriger5 = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
+        Angehoeriger angehoeriger1 = new Angehoeriger(Anrede.FRAU, "Eva", "Juchli", null, null, null, true);
+        Angehoeriger angehoeriger2 = new Angehoeriger(Anrede.HERR, "Kurt", "Juchli", null, null, null, true);
+        Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", null, null, null, true);
+        Angehoeriger angehoeriger4 = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", null, null, null, false);
+        Angehoeriger angehoeriger5 = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, false);
 
         Adresse adresse1 = new Adresse("Forchstrasse", "232", "8032", "Zürich");
         Adresse adresse2 = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");

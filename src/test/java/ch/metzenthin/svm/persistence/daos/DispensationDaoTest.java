@@ -60,7 +60,7 @@ public class DispensationDaoTest {
             schueler.setAdresse(adresse);
 
             // Set Vater
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
             vater.setAdresse(adresse);
             schueler.setVater(vater);
 
@@ -97,7 +97,7 @@ public class DispensationDaoTest {
             schueler.setAdresse(adresse);
 
             // Set Vater
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
             vater.setAdresse(adresse);
             schueler.setVater(vater);
 
@@ -156,7 +156,7 @@ public class DispensationDaoTest {
             schueler.setAdresse(adresse);
 
             // Set Vater
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
             vater.setAdresse(adresse);
             schueler.setVater(vater);
 

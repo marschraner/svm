@@ -147,7 +147,7 @@ public class SchuelerCodeDaoTest {
             Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, null, Geschlecht.W, "Schwester von Valentin");
             Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
             schueler.setAdresse(adresse);
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, false);
             vater.setAdresse(adresse);
             schueler.setVater(vater);
             schueler.setRechnungsempfaenger(vater);
@@ -195,7 +195,7 @@ public class SchuelerCodeDaoTest {
             Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), null, null, null, Geschlecht.W, "Schwester von Valentin");
             Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
             schueler.setAdresse(adresse);
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", null, null, null, false);
             vater.setAdresse(adresse);
             schueler.setVater(vater);
             schueler.setRechnungsempfaenger(vater);

@@ -108,6 +108,7 @@ DESCRIBE Person;
 
 CREATE TABLE IF NOT EXISTS Angehoeriger (
     person_id                  INT           NOT NULL,
+    wuenscht_emails            BOOLEAN,
     last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id),
     FOREIGN KEY (person_id)    REFERENCES Person (person_id));

@@ -60,7 +60,7 @@ public class SchuelerDaoTest {
             schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
 
             // Vater
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
             vater.setAdresse(adresse);
             schueler.setVater(vater);
 
@@ -94,12 +94,12 @@ public class SchuelerDaoTest {
             schueler.setAdresse(adresse);
 
             // Vater
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
             vater.setAdresse(adresse);
             schueler.setVater(vater);
 
             // Mutter
-            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", "044 491 69 33", null, null, true);
             mutter.setAdresse(adresse);
             schueler.setMutter(mutter);
 
@@ -209,16 +209,16 @@ public class SchuelerDaoTest {
             Anmeldung anmeldungSchueler1 = new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null);
             schueler1.addAnmeldung(anmeldungSchueler1);
 
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
             vater.setAdresse(adresse);
             schueler1.setVater(vater);
 
-            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", "044 491 69 33", null, null, true);
             mutter.setAdresse(adresse);
             schueler1.setMutter(mutter);
 
             Adresse adresseRechnungsempfaenger = new Adresse("Hintere Bergstrassse", "15", "8942", "Oberrieden");
-            Angehoeriger rechnungsempfaenger1 = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", "044 720 85 51", null, null);
+            Angehoeriger rechnungsempfaenger1 = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", "044 720 85 51", null, null, true);
             rechnungsempfaenger1.setAdresse(adresseRechnungsempfaenger);
             schueler1.setRechnungsempfaenger(rechnungsempfaenger1);
 
@@ -334,7 +334,7 @@ public class SchuelerDaoTest {
             schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2014, Calendar.JANUARY, 1), new GregorianCalendar(2014, Calendar.JANUARY, 15)));
             schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
 
-            Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", "044 720 85 51", null, null);
+            Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", "044 720 85 51", null, null, true);
             Adresse adresseRechnungsempfaenger = new Adresse("Hintere Bergstrassse", "15", "8942", "Oberrieden");
             rechnungsempfaenger.setAdresse(adresseRechnungsempfaenger);
             schueler.setRechnungsempfaenger(rechnungsempfaenger);
@@ -357,7 +357,7 @@ public class SchuelerDaoTest {
             schueler2.addAnmeldung(anmeldung2);
             schueler2.setRechnungsempfaenger(rechnungsempfaenger);
 
-            Angehoeriger rechnungsempfaenger2 = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", "044 720 85 51", null, null);
+            Angehoeriger rechnungsempfaenger2 = new Angehoeriger(Anrede.FRAU, "Käthi", "Schraner", "044 720 85 51", null, null, true);
             Adresse adresseRechnungsempfaenger2 = new Adresse("Hintere Bergstrassse", "15", "8942", "Oberrieden");
             rechnungsempfaenger2.setAdresse(adresseRechnungsempfaenger2);
             schueler2.setRechnungsempfaenger(rechnungsempfaenger2);

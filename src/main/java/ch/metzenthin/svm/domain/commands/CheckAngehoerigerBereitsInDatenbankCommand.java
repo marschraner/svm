@@ -75,7 +75,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommand implements Command {
         }
 
         // Suche nur mit Vorname und Nachname
-        Angehoeriger angehoerigerNurVornameNachname = new Angehoeriger(null, angehoeriger.getVorname(), angehoeriger.getNachname(), null, null, null);
+        Angehoeriger angehoerigerNurVornameNachname = new Angehoeriger(null, angehoeriger.getVorname(), angehoeriger.getNachname(), null, null, null, null);
 
         angehoerigerFoundList = new ArrayList<>(angehoerigerDao.findAngehoerige(angehoerigerNurVornameNachname));
         removeAngehoerigerToBeExcluded(angehoerigerFoundList);

@@ -58,7 +58,7 @@ public class MaercheneinteilungDaoTest {
             Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
             schueler.setAdresse(adresse);
             schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
             vater.setAdresse(adresse);
             schueler.setVater(vater);
             schueler.setRechnungsempfaenger(vater);
@@ -115,7 +115,7 @@ public class MaercheneinteilungDaoTest {
             Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
             schueler.setAdresse(adresse);
             schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
             vater.setAdresse(adresse);
             schueler.setVater(vater);
             schueler.setRechnungsempfaenger(vater);
@@ -160,7 +160,7 @@ public class MaercheneinteilungDaoTest {
             Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
             schueler.setAdresse(adresse);
             schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
             vater.setAdresse(adresse);
             schueler.setVater(vater);
             schueler.setRechnungsempfaenger(vater);
@@ -211,7 +211,7 @@ public class MaercheneinteilungDaoTest {
             Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
             schueler1.setAdresse(adresse);
             schueler1.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
-            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+            Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
             vater.setAdresse(adresse);
             schueler1.setVater(vater);
             schueler1.setRechnungsempfaenger(vater);
@@ -221,7 +221,7 @@ public class MaercheneinteilungDaoTest {
             Adresse adresse2 = new Adresse("Hohenklingenstrasse", "22", "8049", "Zürich");
             schueler2.setAdresse(adresse2);
             schueler2.addAnmeldung(new Anmeldung(new GregorianCalendar(2013, Calendar.JANUARY, 1), null));
-            Angehoeriger mutter2 = new Angehoeriger(Anrede.FRAU, "Adriana", "Hasler", "044 422 69 33", null, null);
+            Angehoeriger mutter2 = new Angehoeriger(Anrede.FRAU, "Adriana", "Hasler", "044 422 69 33", null, null, true);
             mutter2.setAdresse(adresse2);
             schueler2.setMutter(mutter2);
             schueler2.setRechnungsempfaenger(mutter2);
@@ -231,7 +231,7 @@ public class MaercheneinteilungDaoTest {
             Adresse adresse3 = new Adresse("Hohenklingenstrasse", "22", "8049", "Zürich");
             schueler3.setAdresse(adresse3);
             schueler3.addAnmeldung(new Anmeldung(new GregorianCalendar(2013, Calendar.JANUARY, 1), null));
-            Angehoeriger mutter3 = new Angehoeriger(Anrede.FRAU, "Adriana", "Hasler", "044 422 69 33", null, null);
+            Angehoeriger mutter3 = new Angehoeriger(Anrede.FRAU, "Adriana", "Hasler", "044 422 69 33", null, null, true);
             mutter3.setAdresse(adresse3);
             schueler3.setMutter(mutter3);
             schueler3.setRechnungsempfaenger(mutter3);

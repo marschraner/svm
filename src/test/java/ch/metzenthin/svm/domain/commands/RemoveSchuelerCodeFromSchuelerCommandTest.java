@@ -63,7 +63,7 @@ public class RemoveSchuelerCodeFromSchuelerCommandTest {
         schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.MAY, 1), null));
 
         // Set Vater
-        Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+        Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
         vater.setAdresse(adresse);
         schueler.setVater(vater);
 

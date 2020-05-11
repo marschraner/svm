@@ -51,16 +51,16 @@ public class CheckIfAngehoerigerVerwaistAndDeleteCommandTest {
         List<Angehoeriger> angehoerigere = new ArrayList<>();
 
         // Angehoerige ohne Schueler erfassen
-        Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+        Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
         vater.setAdresse(adresse);
         angehoerigere.add(vater);
 
-        Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", "044 491 69 33", null, null);
+        Angehoeriger mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", "044 491 69 33", null, null, true);
         mutter.setAdresse(adresse);
         angehoerigere.add(mutter);
 
-        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.FRAU, "Katharina", "Schraner", null, null, null);
+        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.FRAU, "Katharina", "Schraner", null, null, null, false);
         rechnungsempfaenger.setAdresse(adresse);
         angehoerigere.add(rechnungsempfaenger);
 
@@ -84,22 +84,22 @@ public class CheckIfAngehoerigerVerwaistAndDeleteCommandTest {
 
         // Angehöriger einem Schüler zuweisen
         adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
-        vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+        vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
         vater.setAdresse(adresse);
 
         Schueler schueler = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
         schueler.setAdresse(adresse);
         schueler.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.MAY, 1), null));
 
-        vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+        vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
         vater.setAdresse(adresse);
         schueler.setVater(vater);
 
-        mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", "044 491 69 33", null, null);
+        mutter = new Angehoeriger(Anrede.FRAU, "Regula", "Rösle", "044 491 69 33", null, null, true);
         mutter.setAdresse(adresse);
         schueler.setMutter(mutter);
 
-        rechnungsempfaenger = new Angehoeriger(Anrede.FRAU, "Katharina", "Schraner", null, null, null);
+        rechnungsempfaenger = new Angehoeriger(Anrede.FRAU, "Katharina", "Schraner", null, null, null, false);
         rechnungsempfaenger.setAdresse(adresse);
         schueler.setRechnungsempfaenger(rechnungsempfaenger);
 

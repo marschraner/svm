@@ -25,7 +25,7 @@ public class CheckElternmithilfeBereitsBeiGeschwisterErfasstCommandTest {
         Adresse adresse = new Adresse("Hohenklingenstrasse", "15", "8049", "Zürich");
         geschwister1.setAdresse(adresse);
         geschwister1.addAnmeldung(new Anmeldung(new GregorianCalendar(2015, Calendar.JANUARY, 1), null));
-        Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null);
+        Angehoeriger vater = new Angehoeriger(Anrede.HERR, "Eugen", "Rösle", "044 491 69 33", null, null, false);
         vater.setAdresse(adresse);
         geschwister1.setVater(vater);
         geschwister1.setRechnungsempfaenger(vater);

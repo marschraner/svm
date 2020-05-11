@@ -22,20 +22,20 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
 
     @Before
     public void setUp() {
-        mutter1 = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", "056 426 69 15", null, null);
+        mutter1 = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", "056 426 69 15", null, null, true);
         Adresse adresseMutter1 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         mutter1.setAdresse(adresseMutter1);
-        mutter2 = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", null, null, null);
+        mutter2 = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", null, null, null, true);
 
-        vater1 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null);
+        vater1 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null, false);
         Adresse adresseVater1 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         vater1.setAdresse(adresseVater1);
-        vater2 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null, null);
+        vater2 = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null, null, false);
     }
 
     @Test
     public void testExecute_NICHT_IDENTISCH() {
-        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Urs", "Meister", null, null, null);
+        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Urs", "Meister", null, null, null, false);
         CheckDrittpersonIdentischMitElternteilCommand checkDrittpersonIdentischMitElternteilCommand = new CheckDrittpersonIdentischMitElternteilCommand(mutter1, vater1, rechnungsempfaenger);
         commandInvoker.executeCommand(checkDrittpersonIdentischMitElternteilCommand);
         assertFalse(checkDrittpersonIdentischMitElternteilCommand.isIdentical());
@@ -43,7 +43,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
 
     @Test
     public void testExecute_IDENTISCH_MIT_MUTTER() {
-        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", "056 426 69 15", null, null);
+        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", "056 426 69 15", null, null, true);
         Adresse adresseRechnungsempfaenger = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         rechnungsempfaenger.setAdresse(adresseRechnungsempfaenger);
         CheckDrittpersonIdentischMitElternteilCommand checkDrittpersonIdentischMitElternteilCommand = new CheckDrittpersonIdentischMitElternteilCommand(mutter1, vater1, rechnungsempfaenger);
@@ -55,7 +55,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
 
     @Test
     public void testExecute_SCHEINT_IDENTISCH_MIT_MUTTER_ZU_SEIN() {
-        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", "056 426 69 15", null, null);
+        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", "056 426 69 15", null, null, true);
         Adresse adresseRechnungsempfaenger = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         rechnungsempfaenger.setAdresse(adresseRechnungsempfaenger);
         CheckDrittpersonIdentischMitElternteilCommand checkDrittpersonIdentischMitElternteilCommand = new CheckDrittpersonIdentischMitElternteilCommand(mutter2, vater2, rechnungsempfaenger);
@@ -67,7 +67,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
 
     @Test
     public void testExecute_IDENTISCH_MIT_VATER() {
-        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null);
+        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null, false);
         Adresse adresseRechnungsempfaenger = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         rechnungsempfaenger.setAdresse(adresseRechnungsempfaenger);
         CheckDrittpersonIdentischMitElternteilCommand checkDrittpersonIdentischMitElternteilCommand = new CheckDrittpersonIdentischMitElternteilCommand(mutter1, vater1, rechnungsempfaenger);
@@ -79,7 +79,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
 
     @Test
     public void testExecute_SCHEINT_IDENTISCH_MIT_VATER_ZU_SEIN() {
-        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null);
+        Angehoeriger rechnungsempfaenger = new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null, false);
         Adresse adresseRechnungsempfaenger = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
         rechnungsempfaenger.setAdresse(adresseRechnungsempfaenger);
         CheckDrittpersonIdentischMitElternteilCommand checkDrittpersonIdentischMitElternteilCommand = new CheckDrittpersonIdentischMitElternteilCommand(mutter2, vater2, rechnungsempfaenger);
