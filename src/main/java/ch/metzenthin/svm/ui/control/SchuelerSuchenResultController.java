@@ -26,7 +26,7 @@ import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnW
  */
 public class SchuelerSuchenResultController {
     private final SvmContext svmContext;
-    private SchuelerSuchenTableModel schuelerSuchenTableModel;
+    private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final JTable schuelerSuchenResultTable;
     private JLabel lblTotal;
     private JButton btnAlleDeselektieren;
@@ -190,6 +190,7 @@ public class SchuelerSuchenResultController {
         });
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
         int anzSelektiert = schuelerSuchenTableModel.getAnzSelektiert();
@@ -227,6 +228,7 @@ public class SchuelerSuchenResultController {
         });
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void onEmail() {
         btnEmail.setFocusPainted(true);
         int anzSelektiert = schuelerSuchenTableModel.getAnzSelektiert();

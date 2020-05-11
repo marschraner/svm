@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.SemesterrechnungenPanel">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="1863" height="428"/>
+      <xy x="20" y="20" width="2355" height="428"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -234,7 +234,7 @@
                   <hspacer id="4d508">
                     <constraints>
                       <grid row="1" column="6" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="1.0" weighty="0.0"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                   </hspacer>
                   <component id="2177a" class="javax.swing.JButton" binding="btnWiederherstellen">
@@ -247,6 +247,24 @@
                       <minimumSize width="152" height="29"/>
                       <preferredSize width="152" height="29"/>
                       <text value="Wiederherstellen"/>
+                    </properties>
+                  </component>
+                  <hspacer id="b344b">
+                    <constraints>
+                      <grid row="1" column="8" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="1.0" weighty="0.0"/>
+                    </constraints>
+                  </hspacer>
+                  <component id="b8995" class="javax.swing.JButton" binding="btnEmail">
+                    <constraints>
+                      <grid row="1" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <gridbag weightx="0.0" weighty="0.0"/>
+                    </constraints>
+                    <properties>
+                      <maximumSize width="142" height="29"/>
+                      <minimumSize width="142" height="29"/>
+                      <preferredSize width="142" height="29"/>
+                      <text value="&amp;Gruppen-E-Mail"/>
                     </properties>
                   </component>
                 </children>

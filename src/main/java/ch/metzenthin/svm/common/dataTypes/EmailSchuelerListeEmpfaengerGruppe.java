@@ -9,7 +9,7 @@ public enum EmailSchuelerListeEmpfaengerGruppe {
     ELTERNMITHILFE("Eltern-Mithilfe"),
     ROLLENLISTE("Rollenliste");
 
-    private String name;
+    private final String name;
 
     EmailSchuelerListeEmpfaengerGruppe(String name) {
         this.name = name;

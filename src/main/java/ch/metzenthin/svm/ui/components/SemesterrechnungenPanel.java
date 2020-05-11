@@ -35,6 +35,7 @@ public class SemesterrechnungenPanel {
     private JButton btnWiederherstellen;
     private JLabel lblTotal;
     private JLabel lblTitel;
+    private JButton btnEmail;
     private final SemesterrechnungenController semesterrechnungenController;
 
     public SemesterrechnungenPanel(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel, boolean nachGeloeschtenGesucht) {
@@ -57,6 +58,7 @@ public class SemesterrechnungenPanel {
         semesterrechnungenController.setBtnDetailsBearbeiten(btnDetailsBearbeiten);
         semesterrechnungenController.setBtnExportieren(btnExportieren);
         semesterrechnungenController.setBtnRechnungsdatum(btnRechnungsdatum);
+        semesterrechnungenController.setBtnEmail(btnEmail);
         semesterrechnungenController.setBtnLoeschen(btnLoeschen);
         semesterrechnungenController.setBtnWiederherstellen(btnWiederherstellen);
         semesterrechnungenController.setBtnZurueck(btnZurueck);
@@ -326,7 +328,6 @@ public class SemesterrechnungenPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 6;
         gbc.gridy = 1;
-        gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel3.add(spacer14, gbc);
         btnWiederherstellen = new JButton();
@@ -340,15 +341,34 @@ public class SemesterrechnungenPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 10, 0, 0);
         panel3.add(btnWiederherstellen, gbc);
+        final JPanel spacer15 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 8;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel3.add(spacer15, gbc);
+        btnEmail = new JButton();
+        btnEmail.setMaximumSize(new Dimension(142, 29));
+        btnEmail.setMinimumSize(new Dimension(142, 29));
+        btnEmail.setPreferredSize(new Dimension(142, 29));
+        btnEmail.setText("Gruppen-E-Mail");
+        btnEmail.setMnemonic('G');
+        btnEmail.setDisplayedMnemonicIndex(0);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 7;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel3.add(btnEmail, gbc);
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridBagLayout());
         btnPanel.add(panel4, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final JPanel spacer15 = new JPanel();
+        final JPanel spacer16 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel4.add(spacer15, gbc);
+        panel4.add(spacer16, gbc);
         btnAbbrechen = new JButton();
         btnAbbrechen.setMaximumSize(new Dimension(114, 29));
         btnAbbrechen.setMinimumSize(new Dimension(114, 29));
@@ -362,18 +382,18 @@ public class SemesterrechnungenPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 0, 10);
         panel4.add(btnAbbrechen, gbc);
-        final JPanel spacer16 = new JPanel();
+        final JPanel spacer17 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel4.add(spacer16, gbc);
-        final JPanel spacer17 = new JPanel();
+        panel4.add(spacer17, gbc);
+        final JPanel spacer18 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel4.add(spacer17, gbc);
+        panel4.add(spacer18, gbc);
         btnZurueck = new JButton();
         btnZurueck.setMaximumSize(new Dimension(114, 29));
         btnZurueck.setMinimumSize(new Dimension(114, 29));
@@ -386,13 +406,13 @@ public class SemesterrechnungenPanel {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel4.add(btnZurueck, gbc);
-        final JPanel spacer18 = new JPanel();
+        final JPanel spacer19 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel4.add(spacer18, gbc);
+        panel4.add(spacer19, gbc);
         final JPanel panel5 = new JPanel();
         panel5.setLayout(new GridBagLayout());
         btnPanel.add(panel5, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -409,19 +429,19 @@ public class SemesterrechnungenPanel {
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel5.add(btnDetailsBearbeiten, gbc);
-        final JPanel spacer19 = new JPanel();
+        final JPanel spacer20 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel5.add(spacer19, gbc);
-        final JPanel spacer20 = new JPanel();
+        panel5.add(spacer20, gbc);
+        final JPanel spacer21 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
-        panel5.add(spacer20, gbc);
+        panel5.add(spacer21, gbc);
     }
 
     /**

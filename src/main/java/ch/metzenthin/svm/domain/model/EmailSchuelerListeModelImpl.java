@@ -25,8 +25,8 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
     private final MaercheneinteilungenSorter maercheneinteilungenSorter = new MaercheneinteilungenSorter();
     private EmailSchuelerListeEmpfaengerGruppe emailSchuelerListeEmpfaengerGruppe;
     private boolean blindkopien;
-    private List<String> fehlendeEmailAdressen;
-    private List<String> ungueltigeEmailAdressen;
+    private Set<String> fehlendeEmailAdressen;
+    private Set<String> ungueltigeEmailAdressen;
 
     @Override
     public EmailSchuelerListeEmpfaengerGruppe getEmailSchuelerListeEmpfaengerGruppe() {
@@ -63,14 +63,15 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
             }
             selectableSchuelerListeEmpfaengerGruppe.add(gruppe);
         }
-        return selectableSchuelerListeEmpfaengerGruppe.toArray(new EmailSchuelerListeEmpfaengerGruppe[selectableSchuelerListeEmpfaengerGruppe.size()]);
+        return selectableSchuelerListeEmpfaengerGruppe.toArray(new EmailSchuelerListeEmpfaengerGruppe[0]);
     }
 
     @Override
+    @SuppressWarnings("DuplicatedCode")
     public CallDefaultEmailClientCommand.Result callEmailClient(SchuelerSuchenTableModel schuelerSuchenTableModel) {
 
-        List<String> emailAdressen = new ArrayList<>();
-        fehlendeEmailAdressen = new ArrayList<>();
+        Set<String> emailAdressen = new LinkedHashSet<>();
+        fehlendeEmailAdressen = new LinkedHashSet<>();
 
         switch (emailSchuelerListeEmpfaengerGruppe) {
 
@@ -202,12 +203,12 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
     }
 
     @Override
-    public List<String> getFehlendeEmailAdressen() {
+    public Set<String> getFehlendeEmailAdressen() {
         return fehlendeEmailAdressen;
     }
 
     @Override
-    public List<String> getUngueltigeEmailAdressen() {
+    public Set<String> getUngueltigeEmailAdressen() {
         return ungueltigeEmailAdressen;
     }
 

@@ -8,8 +8,9 @@ import ch.metzenthin.svm.domain.commands.DeleteMitarbeiterCommand;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
@@ -18,8 +19,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 public class MitarbeitersModelImpl extends AbstractModel implements MitarbeitersModel {
 
-    private List<String> fehlendeEmailAdressen;
-    private List<String> ungueltigeEmailAdressen;
+    private Set<String> fehlendeEmailAdressen;
+    private Set<String> ungueltigeEmailAdressen;
 
     @Override
     public MitarbeiterErfassenModel getMitarbeiterErfassenModel(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, int indexMitarbeiterToBeModified) {
@@ -41,8 +42,8 @@ public class MitarbeitersModelImpl extends AbstractModel implements Mitarbeiters
     @Override
     public CallDefaultEmailClientCommand.Result callEmailClient(MitarbeitersTableModel mitarbeitersTableModel) {
 
-        List<String> emailAdressen = new ArrayList<>();
-        fehlendeEmailAdressen = new ArrayList<>();
+        Set<String> emailAdressen = new LinkedHashSet<>();
+        fehlendeEmailAdressen = new LinkedHashSet<>();
 
         for (Mitarbeiter mitarbeiter : mitarbeitersTableModel.getMitarbeiters()) {
             if (!mitarbeiter.isSelektiert()) {
@@ -64,12 +65,12 @@ public class MitarbeitersModelImpl extends AbstractModel implements Mitarbeiters
     }
 
     @Override
-    public List<String> getFehlendeEmailAdressen() {
+    public Set<String> getFehlendeEmailAdressen() {
         return fehlendeEmailAdressen;
     }
 
     @Override
-    public List<String> getUngueltigeEmailAdressen() {
+    public Set<String> getUngueltigeEmailAdressen() {
         return ungueltigeEmailAdressen;
     }
 

@@ -4,7 +4,7 @@ import ch.metzenthin.svm.common.dataTypes.EmailSchuelerListeEmpfaengerGruppe;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Martin Schraner
@@ -19,6 +19,6 @@ public interface EmailSchuelerListeModel extends Model {
 
     EmailSchuelerListeEmpfaengerGruppe[] getSelectableEmailSchuelerListeEmpfaengerGruppen(SchuelerSuchenTableModel schuelerSuchenTableModel);
     CallDefaultEmailClientCommand.Result callEmailClient(SchuelerSuchenTableModel schuelerSuchenTableModel);
-    List<String> getFehlendeEmailAdressen();
-    List<String> getUngueltigeEmailAdressen();
+    Set<String> getFehlendeEmailAdressen();
+    Set<String> getUngueltigeEmailAdressen();
 }

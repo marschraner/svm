@@ -6,9 +6,7 @@ import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * @author Martin Schraner
@@ -17,7 +15,7 @@ public class CallDefaultEmailClientCommand implements Command {
 
     private static final Logger LOGGER = Logger.getLogger(CallDefaultEmailClientCommand.class);
 
-    private EmailValidator emailValidator = new EmailValidator();
+    private final EmailValidator emailValidator = new EmailValidator();
 
     public enum Result {
         FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT,
@@ -25,14 +23,14 @@ public class CallDefaultEmailClientCommand implements Command {
     }
 
     // input
-    private List<String> emailAdressen;
-    private boolean blindkopien;
+    private final Collection<String> emailAdressen;
+    private final boolean blindkopien;
 
     // output
-    private List<String> ungueltigeEmailAdressen;
+    private Set<String> ungueltigeEmailAdressen;
     private Result result;
 
-    public CallDefaultEmailClientCommand(List<String> emailAdressen, boolean blindkopien) {
+    public CallDefaultEmailClientCommand(Collection<String> emailAdressen, boolean blindkopien) {
         this.emailAdressen = emailAdressen;
         this.blindkopien = blindkopien;
     }
@@ -46,8 +44,8 @@ public class CallDefaultEmailClientCommand implements Command {
     @Override
     public void execute() {
 
-        List<String> gueltigeEmailAdressen = new ArrayList<>();
-        ungueltigeEmailAdressen = new ArrayList<>();
+        Set<String> gueltigeEmailAdressen = new LinkedHashSet<>();
+        ungueltigeEmailAdressen = new LinkedHashSet<>();
 
         // Validierung
         for (String emailAdresse : emailAdressen) {
@@ -55,9 +53,7 @@ public class CallDefaultEmailClientCommand implements Command {
             String[] emailAdressenSplitted = emailAdresse.split("[,;]\\p{Blank}*");
             for (String emailAdresseSplitted : emailAdressenSplitted) {
                 if (emailValidator.isValid(emailAdresseSplitted.trim())) {
-                    if (!gueltigeEmailAdressen.contains(emailAdresseSplitted.trim())) {
-                        gueltigeEmailAdressen.add(emailAdresseSplitted.trim());
-                    }
+                    gueltigeEmailAdressen.add(emailAdresseSplitted.trim());
                 } else {
                     ungueltigeEmailAdressen.add(emailAdresseSplitted.trim());
                 }
@@ -109,7 +105,7 @@ public class CallDefaultEmailClientCommand implements Command {
         return result;
     }
 
-    public List<String> getUngueltigeEmailAdressen() {
+    public Set<String> getUngueltigeEmailAdressen() {
         return ungueltigeEmailAdressen;
     }
 }

@@ -62,9 +62,9 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <maximumSize width="141" height="29"/>
-                  <minimumSize width="141" height="29"/>
-                  <preferredSize width="141" height="29"/>
+                  <maximumSize width="142" height="29"/>
+                  <minimumSize width="142" height="29"/>
+                  <preferredSize width="142" height="29"/>
                   <text value="&amp;Gruppen-E-Mail"/>
                 </properties>
               </component>

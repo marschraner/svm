@@ -6,6 +6,7 @@ import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
 import ch.metzenthin.svm.domain.model.SemesterrechnungBearbeitenModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenModel;
 import ch.metzenthin.svm.ui.componentmodel.*;
+import ch.metzenthin.svm.ui.components.EmailSemesterrechnungenDialog;
 import ch.metzenthin.svm.ui.components.ListenExportDialog;
 import ch.metzenthin.svm.ui.components.RechnungsdatumErfassenDialog;
 import ch.metzenthin.svm.ui.components.SemesterrechnungBearbeitenPanel;
@@ -29,9 +30,9 @@ import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnW
  */
 public class SemesterrechnungenController {
     private final SvmContext svmContext;
-    private SemesterrechnungenModel semesterrechnungenModel;
+    private final SemesterrechnungenModel semesterrechnungenModel;
     private final SemesterrechnungenTableModel semesterrechnungenTableModel;
-    private boolean nachGeloeschtenGesucht;
+    private final boolean nachGeloeschtenGesucht;
     private JTable semesterrechnungenTable;
     private JLabel lblTotal;
     private JButton btnAlleDeselektieren;
@@ -39,6 +40,7 @@ public class SemesterrechnungenController {
     private JButton btnDatenblatt;
     private JButton btnExportieren;
     private JButton btnRechnungsdatum;
+    private JButton btnEmail;
     private JButton btnLoeschen;
     private JButton btnWiederherstellen;
     private JButton btnAbbrechen;
@@ -54,6 +56,7 @@ public class SemesterrechnungenController {
         this.nachGeloeschtenGesucht = nachGeloeschtenGesucht;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public void setSemesterrechnungenTable(JTable semesterrechnungenTable) {
         this.semesterrechnungenTable = semesterrechnungenTable;
         semesterrechnungenTable.setModel(semesterrechnungenTableModel);
@@ -107,8 +110,12 @@ public class SemesterrechnungenController {
             public void tableChanged(TableModelEvent e) {
                 if (semesterrechnungenTableModel.getAnzSelektiert() > 0) {
                     btnExportieren.setEnabled(true);
+                    btnRechnungsdatum.setEnabled(true);
+                    btnEmail.setEnabled(true);
                 } else {
                     btnExportieren.setEnabled(false);
+                    btnRechnungsdatum.setEnabled(false);
+                    btnEmail.setEnabled(false);
                 }
                 if (!nachGeloeschtenGesucht) {
                     if (semesterrechnungenTableModel.isAlleSelektiert()) {
@@ -179,11 +186,7 @@ public class SemesterrechnungenController {
 
     public void setBtnAlleDeselektieren(JButton btnAlleDeselektieren) {
         this.btnAlleDeselektieren = btnAlleDeselektieren;
-        if (nachGeloeschtenGesucht) {
-            btnAlleDeselektieren.setVisible(false);
-        } else {
-            btnAlleDeselektieren.setVisible(true);
-        }
+        btnAlleDeselektieren.setVisible(!nachGeloeschtenGesucht);
         btnAlleDeselektieren.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -235,6 +238,7 @@ public class SemesterrechnungenController {
         });
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
         int anzSelektiert = semesterrechnungenTableModel.getAnzSelektiert();
@@ -257,6 +261,44 @@ public class SemesterrechnungenController {
         listenExportDialog.pack();
         listenExportDialog.setVisible(true);
         btnExportieren.setFocusPainted(false);
+    }
+
+    public void setBtnEmail(JButton btnEmail) {
+        this.btnEmail = btnEmail;
+        if (semesterrechnungenTableModel.getAnzSelektiert() == 0) {
+            btnEmail.setEnabled(false);
+        }
+        btnEmail.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onEmail();
+            }
+        });
+    }
+
+    @SuppressWarnings("DuplicatedCode")
+    private void onEmail() {
+        btnEmail.setFocusPainted(true);
+        int anzSelektiert = semesterrechnungenTableModel.getAnzSelektiert();
+        int rowCount = semesterrechnungenTableModel.getRowCount();
+        if (anzSelektiert < rowCount) {
+            String str1;
+            String str2;
+            if (anzSelektiert > 1) {
+                str1 = "sind nur " + anzSelektiert;
+                str2 = "diese Einträge\nwerden";
+            } else {
+                str1 = "ist nur einer";
+                str2 = "dieser Eintrag\nwird";
+            }
+            JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
+                    + rowCount + " Einträge selektiert. Nur " + str2
+                    + " für die Gruppen-E-Mail berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+        }
+        EmailSemesterrechnungenDialog emailSemesterrechnungenDialog = new EmailSemesterrechnungenDialog(svmContext, semesterrechnungenTableModel);
+        emailSemesterrechnungenDialog.pack();
+        emailSemesterrechnungenDialog.setVisible(true);
+        btnEmail.setFocusPainted(false);
     }
 
     public void setBtnLoeschen(JButton btnLoeschen) {

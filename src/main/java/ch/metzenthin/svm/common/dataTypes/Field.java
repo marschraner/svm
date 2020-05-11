@@ -118,6 +118,7 @@ public enum Field {
     KUCHEN_VORSTELLUNG9("9. Vorstellung mit Kuchen"),
     EMAIL_EMPFAENGER("E-Mail-Empfänger"),
     EMAIL_SCHUELER_LISTE_EMPFAENGER_GRUPPE("E-Mail-Empfänger"),
+    MUTTER_ODER_VATER("Mutter oder Vater"),
     BLINDKOPIEN("Blindkopien"),
     MAERCHEN_FUER_SUCHE_BERUECKSICHTIGEN("Märchen für Suche berücksichtigen"),
     ZUSATZATTRIBUT_MAERCHEN("Zusatzattribut"),

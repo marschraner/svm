@@ -200,4 +200,9 @@ public class ModelFactoryImpl implements ModelFactory {
         return new EmailSchuelerListeModelImpl();
     }
 
+    @Override
+    public EmailSemesterrechnungenModel createEmailSemesterrechnungenModel() {
+        return new EmailSemesterrechnungenModelImpl();
+    }
+
 }

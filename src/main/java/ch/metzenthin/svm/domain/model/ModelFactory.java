@@ -43,4 +43,5 @@ public interface ModelFactory {
     RechnungsdatumErfassenModel createRechnungsdatumErfassenModel();
     MitarbeiterSuchenModel createMitarbeitersSuchenModel();
     EmailSchuelerListeModel createEmailSchuelerListeModel();
+    EmailSemesterrechnungenModel createEmailSemesterrechnungenModel();
 }

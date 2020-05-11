@@ -5,7 +5,7 @@ import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.domain.commands.DeleteMitarbeiterCommand;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Martin Schraner
@@ -15,6 +15,6 @@ public interface MitarbeitersModel {
 
     DeleteMitarbeiterCommand.Result mitarbeiterLoeschen(MitarbeitersTableModel mitarbeitersTableModel, int selectedRow);
     CallDefaultEmailClientCommand.Result callEmailClient(MitarbeitersTableModel mitarbeitersTableModel);
-    List<String> getFehlendeEmailAdressen();
-    List<String> getUngueltigeEmailAdressen();
+    Set<String> getFehlendeEmailAdressen();
+    Set<String> getUngueltigeEmailAdressen();
 }

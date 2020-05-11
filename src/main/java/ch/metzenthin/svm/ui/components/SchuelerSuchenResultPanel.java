@@ -140,9 +140,9 @@ public class SchuelerSuchenResultPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(spacer4, gbc);
         btnEmail = new JButton();
-        btnEmail.setMaximumSize(new Dimension(141, 29));
-        btnEmail.setMinimumSize(new Dimension(141, 29));
-        btnEmail.setPreferredSize(new Dimension(141, 29));
+        btnEmail.setMaximumSize(new Dimension(142, 29));
+        btnEmail.setMinimumSize(new Dimension(142, 29));
+        btnEmail.setPreferredSize(new Dimension(142, 29));
         btnEmail.setText("Gruppen-E-Mail");
         btnEmail.setMnemonic('G');
         btnEmail.setDisplayedMnemonicIndex(0);

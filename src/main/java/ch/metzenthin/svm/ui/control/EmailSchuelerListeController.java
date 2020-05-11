@@ -3,10 +3,8 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.EmailSchuelerListeEmpfaengerGruppe;
 import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.EmailSchuelerListeModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import org.apache.log4j.Logger;
@@ -28,9 +26,9 @@ public class EmailSchuelerListeController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private EmailSchuelerListeModel emailSchuelerListeModel;
-    private SvmContext svmContext;
-    private SchuelerSuchenTableModel schuelerSuchenTableModel;
+    private final EmailSchuelerListeModel emailSchuelerListeModel;
+    private final SvmContext svmContext;
+    private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private JDialog emailDialog;
     private JCheckBox checkBoxBlindkopien;
     private JComboBox<EmailSchuelerListeEmpfaengerGruppe> comboBoxEmailSchuelerListeEmpfaengerGruppe;
@@ -45,12 +43,6 @@ public class EmailSchuelerListeController extends AbstractController {
         this.emailSchuelerListeModel.addPropertyChangeListener(this);
         this.emailSchuelerListeModel.addDisableFieldsListener(this);
         this.emailSchuelerListeModel.addMakeErrorLabelsInvisibleListener(this);
-        this.emailSchuelerListeModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onEmailSchuelerListeModelCompleted(completed);
-            }
-        });
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -97,11 +89,7 @@ public class EmailSchuelerListeController extends AbstractController {
     private void onEmailSchuelerListeEmpfaengerGruppeSelected() {
         LOGGER.trace("EmailSchuelerListeController Event SchuelerListeEmpfaengerGruppe selected=" + comboBoxEmailSchuelerListeEmpfaengerGruppe.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxEmailSchuelerListeEmpfaengerGruppe.getSelectedItem(), emailSchuelerListeModel.getEmailSchuelerListeEmpfaengerGruppe());
-        try {
-            setModelEmailSchuelerListeEmpfaengerGruppe();
-        } catch (SvmValidationException e) {
-            return;
-        }
+        setModelEmailSchuelerListeEmpfaengerGruppe();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
@@ -109,15 +97,12 @@ public class EmailSchuelerListeController extends AbstractController {
         }
     }
 
-    private void setModelEmailSchuelerListeEmpfaengerGruppe() throws SvmRequiredException {
+    private void setModelEmailSchuelerListeEmpfaengerGruppe() {
         emailSchuelerListeModel.setEmailSchuelerListeEmpfaengerGruppe((EmailSchuelerListeEmpfaengerGruppe) comboBoxEmailSchuelerListeEmpfaengerGruppe.getSelectedItem());
     }
 
     public void setCheckBoxBlindkopien(JCheckBox checkBoxBlindkopien) {
         this.checkBoxBlindkopien = checkBoxBlindkopien;
-        if (svmContext.getSvmModel().getSemestersAll().isEmpty()) {
-            checkBoxBlindkopien.setEnabled(false);
-        }
         this.checkBoxBlindkopien.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -154,6 +139,7 @@ public class EmailSchuelerListeController extends AbstractController {
         });
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void onOk() {
         if (!isModelValidationMode() && !validateOnSpeichern()) {
             btnOk.setFocusPainted(false);
@@ -195,17 +181,6 @@ public class EmailSchuelerListeController extends AbstractController {
 
     private void onAbbrechen() {
         emailDialog.dispose();
-    }
-
-    private void onEmailSchuelerListeModelCompleted(boolean completed) {
-        LOGGER.trace("EmailSchuelerListeModel completed=" + completed);
-        if (completed) {
-            btnOk.setToolTipText(null);
-            btnOk.setEnabled(true);
-        } else {
-            btnOk.setToolTipText("Bitte Eingabedaten vervollständigen");
-            btnOk.setEnabled(false);
-        }
     }
 
     @Override
