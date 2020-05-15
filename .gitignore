@@ -22,6 +22,7 @@ log/
 .idea/dataSources.local.xml
 .idea/kotlinc.xml
 .idea/shelf
+.idea/google-java-format.xml
 
 # fillData
 sql/fillData.sql
