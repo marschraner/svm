@@ -357,11 +357,12 @@ public class ValidateSchuelerCommand implements Command {
             }
         }
 
-        // 5. Nach Geschwistern suchen (für 8., 9. und 11. benötigt)
+        // 5. Nach Geschwistern suchen (für 9., 10. und 12. benötigt)
         CheckGeschwisterSchuelerRechnungempfaengerCommand checkGeschwisterSchuelerRechnungempfaengerCommand = new CheckGeschwisterSchuelerRechnungempfaengerCommand((isBearbeiten() ? schuelerOrigin : schueler), mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase, isRechnungsempfaengerDrittperson());
         checkGeschwisterSchuelerRechnungempfaengerCommand.execute();
         List<Schueler> geschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getGeschwisterList();
 
+        // 6. Warnung, falls Anrede für Mutter Herr oder Anrede für Vater Frau
         if (!skipPrepareSummary) {
             skipPrepareSummary = true;
 
@@ -403,19 +404,41 @@ public class ValidateSchuelerCommand implements Command {
                 }
             }
 
-            // 7. Identische Adressen?
+            // 7. Warnung, falls keine E-Mail erfasst
+            if ((mutter != null && vater != null
+                    && !checkNotEmpty(mutter.getEmail()) && !checkNotEmpty(vater.getEmail()))
+                    || (mutter != null && vater == null && !checkNotEmpty(mutter.getEmail()))
+                    || (vater != null && mutter == null && !checkNotEmpty(vater.getEmail()))) {
+                Object[] options = {"Eltern ohne E-Mail erfassen", "Eingabe korrigieren"};
+                int n = JOptionPane.showOptionDialog(
+                        null,
+                        "Weder für die Mutter noch den Vater wurde eine E-Mail erfasst.",
+                        "Warnung: Keine E-Mail für Eltern erfasst",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        svmContext.getDialogIcons().getWarningIcon(),
+                        options,  //the titles of buttons
+                        options[1]); //default button title
+                if (n == 1) {
+                    // Abbruch
+                    result = new AbbrechenResult();
+                    return;
+                }
+            }
+
+            // 8. Identische Adressen?
             CheckIdentischeAdressenCommand checkIdentischeAdressenCommand = new CheckIdentischeAdressenCommand(schueler, mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase, isRechnungsempfaengerDrittperson());
             checkIdentischeAdressenCommand.execute();
             String identischeAdressen = checkIdentischeAdressenCommand.getIdentischeAdressen();
             String abweichendeAdressen = checkIdentischeAdressenCommand.getAbweichendeAdressen();
 
-            // 8. Geschwister
+            // 9. Geschwister
             List<Schueler> andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList = checkGeschwisterSchuelerRechnungempfaengerCommand.getAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList();
             result = new ValidateSchuelerSummaryResult(schueler, mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase, isRechnungsempfaengerMutter, isRechnungsempfaengerVater, geschwisterList, andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList, identischeAdressen, abweichendeAdressen, isMutterNeu, isVaterNeu, isRechnungsempfaengerDrittpersonNeu);
             return;   // -> Summary-Dialog
         }
 
-        // 9. Sollen Adress- und Festnetzänderungen auch auf Geschwister angewendet werden?
+        // 10. Sollen Adress- und Festnetzänderungen auch auf Geschwister angewendet werden?
         boolean isAdressaenderungenAufGeschwisterAnwenden = false;
         if (isBearbeiten() && hasAdresseOrFestnetzChanged()) {
             if (!geschwisterList.isEmpty()) {
@@ -435,12 +458,12 @@ public class ValidateSchuelerCommand implements Command {
             }
         }
 
-        // 10. Schüler speichern
+        // 11. Schüler speichern
         Schueler schuelerToSave = prepareSchuelerForSave();
         SaveSchuelerCommand saveSchuelerCommand = new SaveSchuelerCommand(schuelerToSave);
         saveSchuelerCommand.execute();
 
-        // 11. Ggf. Adress- und Festnetzänderungen für Geschwister speichern
+        // 12. Ggf. Adress- und Festnetzänderungen für Geschwister speichern
         if (isAdressaenderungenAufGeschwisterAnwenden) {
             for (Schueler geschwister : geschwisterList) {
                 // Adress- und Festnetzänderungen anwenden
@@ -451,7 +474,7 @@ public class ValidateSchuelerCommand implements Command {
             }
         }
 
-        // 12. Lösche ggf. verwaiste Angehörige
+        // 13. Lösche ggf. verwaiste Angehörige
         if (isBearbeiten()) {
             db.getCurrentEntityManager().flush();
             checkIfAngehoerigeVerwaistAndDelete();
