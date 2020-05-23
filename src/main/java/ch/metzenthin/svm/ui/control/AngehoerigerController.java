@@ -11,6 +11,8 @@ import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
+
 /**
  * @author Hans Stamm
  */
@@ -139,8 +141,11 @@ public class AngehoerigerController extends PersonController {
         }
         if (e.getAffectedFields().contains(Field.WUENSCHT_EMAILS)
                 && checkBoxWuenschtEmails.isVisible()) {
-            errLblWuenschtEmails.setVisible(true);
-            errLblWuenschtEmails.setText(e.getMessage());
+            // Error 3001 nur anzeigen, falls Nachname nicht leer (d.h. Person wurde erfasst)
+            if (e.getErrorId() != 3001 || checkNotEmpty(angehoerigerModel.getNachname())) {
+                errLblWuenschtEmails.setVisible(true);
+                errLblWuenschtEmails.setText(e.getMessage());
+            }
         }
         if (e.getAffectedFields().contains(Field.RECHNUNGSEMPFAENGER)) {
             errLblRechnungsempfaenger.setVisible(true);

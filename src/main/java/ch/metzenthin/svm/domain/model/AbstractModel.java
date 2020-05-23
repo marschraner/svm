@@ -169,6 +169,7 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
         }
     }
 
+    @Override
     public void initializeCompleted() {
         if (isModelValidationMode()) {
             fireCompleted(isCompleted());

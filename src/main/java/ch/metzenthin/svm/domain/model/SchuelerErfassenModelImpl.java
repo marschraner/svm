@@ -12,6 +12,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 import static ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand.Entry.NEU_ERFASSTEN_SCHUELER_VALIDIEREN;
 
 /**
@@ -64,13 +65,29 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     public void doValidate() throws SvmValidationException {
         if (isSubModelsCompleted()) {
             if (!isSetRechnungsempfaenger()) {
-                throw new SvmValidationException(3000, "Rechnungsempfänger ist nicht gesetzt", Field.RECHNUNGSEMPFAENGER);
+                throw new SvmValidationException(3000, "Rechnungsempfänger ist nicht gesetzt",
+                        Field.RECHNUNGSEMPFAENGER);
+            }
+            if (isSetEmails() && !isSetWuenschtEmails()) {
+                throw new SvmValidationException(3001,
+                        "Für mindestens eine Elternperson muss \"Wünscht E-Mails\" selektiert sein",
+                        Field.WUENSCHT_EMAILS);
             }
         }
     }
 
     private boolean isSetRechnungsempfaenger() {
-        return mutterModel.isRechnungsempfaenger() || vaterModel.isRechnungsempfaenger() || drittempfaengerModel.isRechnungsempfaenger();
+        return mutterModel.isRechnungsempfaenger() || vaterModel.isRechnungsempfaenger()
+                || drittempfaengerModel.isRechnungsempfaenger();
+    }
+
+    private boolean isSetEmails() {
+        return checkNotEmpty(mutterModel.getEmail()) || checkNotEmpty(vaterModel.getEmail());
+    }
+
+    private boolean isSetWuenschtEmails() {
+        return (mutterModel.getWuenschtEmails() != null && mutterModel.getWuenschtEmails())
+                || (vaterModel.getWuenschtEmails() != null && vaterModel.getWuenschtEmails());
     }
 
     @Override
@@ -201,8 +218,21 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
                 invalidateAdresse(mutterModel);
                 mutterModel.enableFields(getAdresseFields());
             }
+        } else {
+            makeWuenschtEmailsErrorLabelsInvisibleIfRequired(evt);
         }
         fireCompletedChange();
+    }
+
+    private void makeWuenschtEmailsErrorLabelsInvisibleIfRequired(PropertyChangeEvent evt) {
+        if (isWuenschtEmailsPropertyChange(evt)) {
+            Boolean newValue = (Boolean) evt.getNewValue();
+            if (isBooleanNewValuePropertyChecked(newValue)) {
+                Set<Field> fields = new HashSet<>();
+                fields.add(Field.WUENSCHT_EMAILS);
+                makeErrorLabelsInvisible(fields);
+            }
+        }
     }
 
     @SuppressWarnings("DuplicatedCode")
@@ -230,6 +260,8 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
                 invalidateAdresse(vaterModel);
                 vaterModel.enableFields(getAdresseFields());
             }
+        } else {
+            makeWuenschtEmailsErrorLabelsInvisibleIfRequired(evt);
         }
         fireCompletedChange();
     }
@@ -268,6 +300,10 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     private boolean isGleicheAdresseWieSchuelerPropertyChange(PropertyChangeEvent evt) {
         return checkIsFieldChange(Field.GLEICHE_ADRESSE_WIE_SCHUELER, evt);
+    }
+
+    private boolean isWuenschtEmailsPropertyChange(PropertyChangeEvent evt) {
+        return checkIsFieldChange(Field.WUENSCHT_EMAILS, evt);
     }
 
     private boolean isBooleanNewValuePropertyChecked(Boolean newValue) {

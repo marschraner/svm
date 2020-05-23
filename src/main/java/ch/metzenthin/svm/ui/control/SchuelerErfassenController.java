@@ -2,6 +2,7 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.DeleteSchuelerCommand;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
@@ -13,15 +14,14 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 /**
  * Controller, der die Models von Schüler erfassen überwacht.
  *
- * Nicht abgeleitet von AbstractController, da dieser Controller keine eigenen Eingabe-Felder hat.
- *
  * @author Hans Stamm
  */
-public class SchuelerErfassenController {
+public class SchuelerErfassenController extends AbstractController {
 
     private static final Logger LOGGER = Logger.getLogger(SchuelerErfassenController.class);
 
@@ -43,8 +43,11 @@ public class SchuelerErfassenController {
     private final boolean modelValidationMode;
 
     public SchuelerErfassenController(SvmContext svmContext, SchuelerErfassenModel schuelerErfassenModel, boolean isBearbeiten, boolean defaultButtonEnabled) {
+        super(schuelerErfassenModel);
         this.svmContext = svmContext;
         this.schuelerErfassenModel = schuelerErfassenModel;
+        this.schuelerErfassenModel.addDisableFieldsListener(this);
+        this.schuelerErfassenModel.addMakeErrorLabelsInvisibleListener(this);
         this.isBearbeiten = isBearbeiten;
         this.defaultButtonEnabled = defaultButtonEnabled;
         this.schuelerErfassenModel.addCompletedListener(new CompletedListener() {
@@ -63,15 +66,8 @@ public class SchuelerErfassenController {
     private void onSchuelerErfassenModelCompleted(boolean completed) {
         LOGGER.trace("SchuelerErfassenController completed=" + completed);
         if (completed) {
-            try {
-                schuelerErfassenModel.validate();
-                btnSpeichern.setToolTipText(null);
-                btnSpeichern.setEnabled(true);
-            } catch (SvmValidationException e) {
-                LOGGER.trace("SchuelerErfassenController Exception=" + e.getMessage());
-                btnSpeichern.setToolTipText(e.getMessage());
-                btnSpeichern.setEnabled(false);
-            }
+            btnSpeichern.setToolTipText(null);
+            btnSpeichern.setEnabled(true);
         } else {
             btnSpeichern.setToolTipText("Bitte Eingabedaten vervollständigen");
             btnSpeichern.setEnabled(false);
@@ -144,7 +140,9 @@ public class SchuelerErfassenController {
 
     public void setBtnSpeichern(JButton btnSpeichern) {
         this.btnSpeichern = btnSpeichern;
-        btnSpeichern.setEnabled(false);
+        if (isModelValidationMode()) {
+            btnSpeichern.setEnabled(false);
+        }
         btnSpeichern.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -263,17 +261,56 @@ public class SchuelerErfassenController {
         btnSpeichern.setFocusPainted(false);
     }
 
-    private boolean validateOnSpeichern() {
+    @Override
+    public boolean validateOnSpeichern() {
         try {
             schuelerController.validateWithThrowException();
             mutterController.validateWithThrowException();
             vaterController.validateWithThrowException();
             drittempfaengerController.validateWithThrowException();
+            validateWithThrowException();
         } catch (SvmValidationException e) {
             LOGGER.trace("SchuelerErfassenPanel validateOnSpeichern Exception: " + e.getMessageLong());
             return false;
         }
         return true;
+    }
+
+    @Override
+    void validateFields() throws SvmValidationException {
+        // Hat keine eigenen Eingabe-Felder
+    }
+
+    @Override
+    void showErrMsg(SvmValidationException e) {
+        schuelerController.showErrMsg(e);
+        mutterController.showErrMsg(e);
+        vaterController.showErrMsg(e);
+        drittempfaengerController.showErrMsg(e);
+    }
+
+    @Override
+    void showErrMsgAsToolTip(SvmValidationException e) {
+        schuelerController.showErrMsgAsToolTip(e);
+        mutterController.showErrMsgAsToolTip(e);
+        vaterController.showErrMsgAsToolTip(e);
+        drittempfaengerController.showErrMsgAsToolTip(e);
+    }
+
+    @Override
+    public void disableFields(boolean disable, Set<Field> fields) {
+        schuelerController.disableFields(disable, fields);
+        mutterController.disableFields(disable, fields);
+        vaterController.disableFields(disable, fields);
+        drittempfaengerController.disableFields(disable, fields);
+    }
+
+    @Override
+    public void makeErrorLabelsInvisible(Set<Field> fields) {
+        schuelerController.makeErrorLabelsInvisible(fields);
+        mutterController.makeErrorLabelsInvisible(fields);
+        vaterController.makeErrorLabelsInvisible(fields);
+        drittempfaengerController.makeErrorLabelsInvisible(fields);
     }
 
     private void onSchuelerLoeschen() {
@@ -408,5 +445,4 @@ public class SchuelerErfassenController {
         });
         return dialog[0];
     }
-
 }

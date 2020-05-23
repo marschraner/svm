@@ -6,6 +6,9 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Person;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
@@ -72,6 +75,11 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
         Boolean oldValue = angehoeriger.getWuenschtEmails();
         angehoeriger.setWuenschtEmails(isSelected);
         firePropertyChange(Field.WUENSCHT_EMAILS, oldValue, isSelected);
+        if (isSelected == null || !isSelected) {
+            Set<Field> fields = new HashSet<>();
+            fields.add(Field.EMAIL);
+            makeErrorLabelsInvisible(fields);
+        }
     }
 
     @Override
