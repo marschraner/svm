@@ -20,7 +20,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 public class EmailSemesterrechnungenModelImpl extends AbstractModel implements EmailSemesterrechnungenModel {
 
     private boolean rechnungsempfaengerSelected;
-    private boolean mutterOderVaterSelected;
+    private boolean mutterUndOderVaterSelected;
     private boolean blindkopien;
     private Set<String> fehlendeEmailAdressen;
     private Set<String> ungueltigeEmailAdressen;
@@ -31,8 +31,8 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
     }
 
     @Override
-    public boolean isMutterOderVaterSelected() {
-        return mutterOderVaterSelected;
+    public boolean isMutterUndOderVaterSelected() {
+        return mutterUndOderVaterSelected;
     }
 
     @Override
@@ -48,10 +48,10 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
     }
 
     @Override
-    public void setMutterOderVaterSelected(boolean isSelected) {
-        boolean oldValue = mutterOderVaterSelected;
-        mutterOderVaterSelected = isSelected;
-        firePropertyChange(Field.MUTTER_ODER_VATER, oldValue, mutterOderVaterSelected);
+    public void setMutterUndOderVaterSelected(boolean isSelected) {
+        boolean oldValue = mutterUndOderVaterSelected;
+        mutterUndOderVaterSelected = isSelected;
+        firePropertyChange(Field.MUTTER_ODER_VATER, oldValue, mutterUndOderVaterSelected);
     }
 
     @Override
@@ -76,25 +76,43 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
                 emailAdressenSemesterrechnung.add(rechnungsempfaenger.getEmail());
             }
 
-            // Mutter oder Vater (ODER Rechnungsempfänger ohne Email -> Mutter oder Vater)
-            if (mutterOderVaterSelected || (rechnungsempfaengerSelected && emailAdressenSemesterrechnung.isEmpty())) {
+            // Mutter und/oder Vater (ODER Rechnungsempfänger ohne Email -> Mutter und/oder Vater)
+            if (mutterUndOderVaterSelected || (rechnungsempfaengerSelected && emailAdressenSemesterrechnung.isEmpty())) {
                 Set<Schueler> schuelerRechnungempfaenger = rechnungsempfaenger.getSchuelerRechnungsempfaenger();
+
+                // Mutter und/oder Vater mit wuenschtEmails selektiert
                 for (Schueler schueler : schuelerRechnungempfaenger) {
-                    if (schueler.getMutter() != null && checkNotEmpty(schueler.getMutter().getEmail())) {
+                    if (schueler.getMutter() != null
+                            && checkNotEmpty(schueler.getMutter().getEmail())
+                            && schueler.getMutter().getWuenschtEmails() != null
+                            && schueler.getMutter().getWuenschtEmails()) {
                         emailAdressenSemesterrechnung.add(schueler.getMutter().getEmail());
-                    } else if (schueler.getVater() != null && checkNotEmpty(schueler.getVater().getEmail())) {
+                    }
+                    if (schueler.getVater() != null
+                            && checkNotEmpty(schueler.getVater().getEmail())
+                            && schueler.getVater().getWuenschtEmails() != null
+                            && schueler.getVater().getWuenschtEmails()) {
                         emailAdressenSemesterrechnung.add(schueler.getVater().getEmail());
+                    }
+                }
+
+                // Falls keine gefunden wuenschtEmails ignorieren (sollte nicht auftreten)
+                if (emailAdressenSemesterrechnung.isEmpty()) {
+                    for (Schueler schueler : schuelerRechnungempfaenger) {
+                        if (schueler.getMutter() != null
+                                && checkNotEmpty(schueler.getMutter().getEmail())) {
+                            emailAdressenSemesterrechnung.add(schueler.getMutter().getEmail());
+                        } else if (schueler.getVater() != null
+                                && checkNotEmpty(schueler.getVater().getEmail())) {
+                            emailAdressenSemesterrechnung.add(schueler.getVater().getEmail());
+                        }
                     }
                 }
             }
 
-            // Mutter und Vater ohne Email -> Rechnungsempfänger
-            if (mutterOderVaterSelected && emailAdressenSemesterrechnung.isEmpty()) {
-                emailAdressenSemesterrechnung.add(rechnungsempfaenger.getEmail());
-            }
-
             // Mutter, Vater und Rechnungsempfänger ohne Email -> Schüler
-            if ((rechnungsempfaengerSelected || mutterOderVaterSelected) && emailAdressenSemesterrechnung.isEmpty()) {
+            if ((rechnungsempfaengerSelected || mutterUndOderVaterSelected)
+                    && emailAdressenSemesterrechnung.isEmpty()) {
                 Set<Schueler> schuelerRechnungempfaenger = rechnungsempfaenger.getSchuelerRechnungsempfaenger();
                 for (Schueler schueler : schuelerRechnungempfaenger) {
                     if (checkNotEmpty(schueler.getEmail())) {

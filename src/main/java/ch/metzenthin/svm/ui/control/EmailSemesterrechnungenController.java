@@ -27,7 +27,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
     private final SvmContext svmContext;
     private final SemesterrechnungenTableModel semesterrechnungenTableModel;
     private JDialog emailDialog;
-    private JCheckBox checkBoxMutterOderVater;
+    private JCheckBox checkBoxMutterUndOderVater;
     private JCheckBox checkBoxRechnungsempfaenger;
     private JCheckBox checkBoxBlindkopien;
     private JButton btnOk;
@@ -46,7 +46,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
 
     public void constructionDone() {
         // Initialisierung
-        emailSemesterrechnungenModel.setMutterOderVaterSelected(true);
+        emailSemesterrechnungenModel.setMutterUndOderVaterSelected(true);
         emailSemesterrechnungenModel.setRechnungsempfaengerSelected(false);
         emailSemesterrechnungenModel.setBlindkopien(true);
         emailSemesterrechnungenModel.initializeCompleted();
@@ -72,23 +72,23 @@ public class EmailSemesterrechnungenController extends AbstractController {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    public void setCheckBoxMutterOderVater(JCheckBox checkBoxMutterOderVater) {
-        this.checkBoxMutterOderVater = checkBoxMutterOderVater;
-        this.checkBoxMutterOderVater.addItemListener(new ItemListener() {
+    public void setCheckBoxMutterUndOderVater(JCheckBox checkBoxMutterUndOderVater) {
+        this.checkBoxMutterUndOderVater = checkBoxMutterUndOderVater;
+        this.checkBoxMutterUndOderVater.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                onMutterOderVaterEvent();
+                onMutterUndOderVaterEvent();
             }
         });
     }
 
-    private void onMutterOderVaterEvent() {
-        LOGGER.trace("EmailSemesterrechnungenController Event MutterOderVater. Selected=" + checkBoxMutterOderVater.isSelected());
-        setModelMutterOderVater();
+    private void onMutterUndOderVaterEvent() {
+        LOGGER.trace("EmailSemesterrechnungenController Event MutterUndOderVater. Selected=" + checkBoxMutterUndOderVater.isSelected());
+        setModelMutterUndOderVater();
     }
 
-    private void setModelMutterOderVater() {
-        emailSemesterrechnungenModel.setMutterOderVaterSelected(checkBoxMutterOderVater.isSelected());
+    private void setModelMutterUndOderVater() {
+        emailSemesterrechnungenModel.setMutterUndOderVaterSelected(checkBoxMutterUndOderVater.isSelected());
     }
 
     public void setCheckBoxRechnungsempfaenger(JCheckBox checkBoxRechnungsempfaenger) {
@@ -156,7 +156,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
                 fehlend.append("\n");
             }
             fehlend.setLength(fehlend.length() - 1);
-            JOptionPane.showMessageDialog(emailDialog, "Für folgende(n) Semesterrechnung ist keine E-Mail-Adresse erfasst:\n" + fehlend, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+            JOptionPane.showMessageDialog(emailDialog, "Für folgende Semesterrechnung(en) ist keine E-Mail-Adresse erfasst:\n" + fehlend, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
         }
         if (!emailSemesterrechnungenModel.getUngueltigeEmailAdressen().isEmpty()) {
             StringBuilder ungueltig = new StringBuilder();
@@ -189,7 +189,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
         if (checkIsFieldChange(Field.RECHNUNGSEMPFAENGER, evt)) {
             checkBoxRechnungsempfaenger.setSelected(emailSemesterrechnungenModel.isRechnungsempfaengerSelected());
         } else if (checkIsFieldChange(Field.MUTTER_ODER_VATER, evt)) {
-            checkBoxMutterOderVater.setSelected(emailSemesterrechnungenModel.isMutterOderVaterSelected());
+            checkBoxMutterUndOderVater.setSelected(emailSemesterrechnungenModel.isMutterUndOderVaterSelected());
         } else if (checkIsFieldChange(Field.BLINDKOPIEN, evt)) {
             checkBoxBlindkopien.setSelected(emailSemesterrechnungenModel.isBlindkopien());
         }
@@ -197,7 +197,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
     }
 
     private void enableOrDisableOkButton() {
-        btnOk.setEnabled(checkBoxRechnungsempfaenger.isSelected() || checkBoxMutterOderVater.isSelected());
+        btnOk.setEnabled(checkBoxRechnungsempfaenger.isSelected() || checkBoxMutterUndOderVater.isSelected());
     }
 
     @Override

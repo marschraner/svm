@@ -19,7 +19,7 @@ public class EmailSemesterrechnungenDialog extends JDialog {
     private JButton btnAbbrechen;
     private JPanel datenPanel;
     private JPanel buttonPanel;
-    private JCheckBox checkboxMutterOderVater;
+    private JCheckBox checkboxMutterUndOderVater;
     private JCheckBox checkBoxRechnungsempfaenger;
     private JCheckBox checkBoxBlindkopien;
 
@@ -39,7 +39,7 @@ public class EmailSemesterrechnungenDialog extends JDialog {
         EmailSemesterrechnungenController emailSemesterrechnungenController = new EmailSemesterrechnungenController(emailSemesterrechnungenModel, svmContext, semesterrechnungenTableModel);
         emailSemesterrechnungenController.setEmailSemesterrechnungenDialog(this);
         emailSemesterrechnungenController.setContentPane(contentPane);
-        emailSemesterrechnungenController.setCheckBoxMutterOderVater(checkboxMutterOderVater);
+        emailSemesterrechnungenController.setCheckBoxMutterUndOderVater(checkboxMutterUndOderVater);
         emailSemesterrechnungenController.setCheckBoxRechnungsempfaenger(checkBoxRechnungsempfaenger);
         emailSemesterrechnungenController.setCheckBoxBlindkopien(checkBoxBlindkopien);
         emailSemesterrechnungenController.setBtnOk(btnOk);
@@ -133,21 +133,21 @@ public class EmailSemesterrechnungenDialog extends JDialog {
         gbc.ipadx = 300;
         panel1.add(spacer6, gbc);
         checkBoxRechnungsempfaenger = new JCheckBox();
-        checkBoxRechnungsempfaenger.setText("Rechnungsempfänger (oder Mutter oder Vater)");
+        checkBoxRechnungsempfaenger.setText("Rechnungsempfänger (oder Mutter und/oder Vater)");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 2;
         gbc.gridwidth = 7;
         gbc.anchor = GridBagConstraints.WEST;
         panel1.add(checkBoxRechnungsempfaenger, gbc);
-        checkboxMutterOderVater = new JCheckBox();
-        checkboxMutterOderVater.setText("Mutter oder Vater");
+        checkboxMutterUndOderVater = new JCheckBox();
+        checkboxMutterUndOderVater.setText("Mutter und/oder Vater");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.gridwidth = 7;
         gbc.anchor = GridBagConstraints.WEST;
-        panel1.add(checkboxMutterOderVater, gbc);
+        panel1.add(checkboxMutterUndOderVater, gbc);
         final JPanel spacer7 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 9;

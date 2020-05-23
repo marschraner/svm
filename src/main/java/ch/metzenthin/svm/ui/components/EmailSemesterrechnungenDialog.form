@@ -91,16 +91,16 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="Rechnungsempfänger (oder Mutter oder Vater)"/>
+                  <text value="Rechnungsempfänger (oder Mutter und/oder Vater)"/>
                 </properties>
               </component>
-              <component id="25ab6" class="javax.swing.JCheckBox" binding="checkboxMutterOderVater">
+              <component id="25ab6" class="javax.swing.JCheckBox" binding="checkboxMutterUndOderVater">
                 <constraints>
                   <grid row="1" column="2" row-span="1" col-span="7" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="Mutter oder Vater"/>
+                  <text value="Mutter und/oder Vater"/>
                 </properties>
               </component>
               <hspacer id="95390">

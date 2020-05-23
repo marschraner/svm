@@ -11,11 +11,11 @@ import java.util.Set;
 public interface EmailSemesterrechnungenModel extends Model {
 
     boolean isRechnungsempfaengerSelected();
-    boolean isMutterOderVaterSelected();
+    boolean isMutterUndOderVaterSelected();
     boolean isBlindkopien();
 
     void setRechnungsempfaengerSelected(boolean selected);
-    void setMutterOderVaterSelected(boolean selected);
+    void setMutterUndOderVaterSelected(boolean selected);
     void setBlindkopien(boolean selected);
 
     CallDefaultEmailClientCommand.Result callEmailClient(SemesterrechnungenTableModel semesterrechnungenTableModel);
