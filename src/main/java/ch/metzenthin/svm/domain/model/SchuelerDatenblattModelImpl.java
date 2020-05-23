@@ -21,9 +21,9 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
-    private Schueler schueler;
-    private Maercheneinteilung aktuelleMaercheneinteilung;
-    private boolean neusteZuoberst;
+    private final Schueler schueler;
+    private final Maercheneinteilung aktuelleMaercheneinteilung;
+    private final boolean neusteZuoberst;
 
     public SchuelerDatenblattModelImpl(Schueler schueler) {
         this.schueler = schueler;
@@ -56,7 +56,14 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     public String getMutterAsString() {
         Angehoeriger mutter = schueler.getMutter();
         if (mutter != null) {
-            return mutter.toString();
+            if (checkNotEmpty(mutter.getEmail())) {
+                // Falls Mutter keine E-Mails wünscht (d.h. Abweichung von Default-Einstellung) dies
+                // speziell vermerken
+                return mutter.toStringIncludingWuenschtKeineEmailsIfWuenschtEmailsFalse();
+            } else {
+                // Mutter ohne E-Mail
+                return mutter.toString();
+            }
         }
         return "-";
     }
@@ -65,7 +72,20 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     public String getVaterAsString() {
         Angehoeriger vater = schueler.getVater();
         if (vater != null) {
-            return vater.toString();
+            if (checkNotEmpty(vater.getEmail())) {
+                // Falls Vater E-Mails wünscht (d.h. Abweichung von Default-Einstellung) dies
+                // speziell vermerken
+                // Ausnahme: Keine Mutter oder Mutter ohne E-Mail
+                // In diesem Fall vermerken, falls der Vater KEINE E-Mails wünscht
+                if (schueler.getMutter() == null || !checkNotEmpty(schueler.getMutter().getEmail())) {
+                    return vater.toStringIncludingWuenschtKeineEmailsIfWuenschtEmailsFalse();
+                } else {
+                    return vater.toStringIncludingWuenschtEmailsIfWuenschtEmailsTrue();
+                }
+            } else {
+                // Vater ohne E-Mail
+                return vater.toString();
+            }
         }
         return "-";
     }
@@ -105,9 +125,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     private boolean isRechnungsempfaenger(Angehoeriger angehoeriger) {
         Angehoeriger rechnungsempfaenger = schueler.getRechnungsempfaenger();
         if (rechnungsempfaenger != null) {
-            if (rechnungsempfaenger == angehoeriger) {
-                return true;
-            }
+            return rechnungsempfaenger == angehoeriger;
         }
         return false;
     }
@@ -321,6 +339,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
                 if (!isKursToBeDisplayed(kurs, previousSemester, currentSemester, nextSemester)) {
                     continue;
                 }
+                //noinspection PointlessNullCheck
                 gleichesSemester = previousSchuljahr != null && previousSemesterbezeichnung != null
                         && kurs.getSemester().getSchuljahr().equals(previousSchuljahr)
                         && kurs.getSemester().getSemesterbezeichnung() == previousSemesterbezeichnung;
@@ -364,6 +383,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
                     continue;
                 }
                 boolean gleichesSemester = false;
+                //noinspection PointlessNullCheck
                 if (previousSchuljahr != null && previousSemesterbezeichnung != null
                         && kurs.getSemester().getSchuljahr().equals(previousSchuljahr)
                         && kurs.getSemester().getSemesterbezeichnung() == previousSemesterbezeichnung) {
@@ -386,6 +406,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         return "";
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isKursToBeDisplayed(Kurs kurs, Semester previousSemester, Semester currentSemester, Semester nextSemester) {
         return (currentSemester != null && kurs.getSemester().getSemesterId().equals(currentSemester.getSemesterId()))
                 // bereits erfasstes nächstes Semester

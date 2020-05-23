@@ -21,12 +21,14 @@ public class AngehoerigerPanel {
     private JTextField txtFestnetz;
     private JTextField txtNatel;
     private JTextField txtEmail;
-    private JCheckBox checkBoxRechnungsempfaenger;
     private JCheckBox checkBoxGleicheAdresseWieSchueler;
+    private JCheckBox checkBoxWuenschtEmails;
+    private JCheckBox checkBoxRechnungsempfaenger;
     private JLabel lblAnrede;
     private JPanel mainPanel;
-    private JLabel lblRechnungsempfaenger;
     private JLabel lblGleicheAdresseWieSchueler;
+    private JLabel lblWuenschtEmails;
+    private JLabel lblRechnungsempfaenger;
     private JLabel errLblAnrede;
     private JLabel errLblNachname;
     private JLabel errLblVorname;
@@ -36,8 +38,9 @@ public class AngehoerigerPanel {
     private JLabel errLblFestnetz;
     private JLabel errLblNatel;
     private JLabel errLblEmail;
-    private JLabel errLblRechnungsempfaenger;
     private JLabel errLblGleicheAdresseWieSchueler;
+    private JLabel errLblWuenschtEmails;
+    private JLabel errLblRechnungsempfaenger;
 
     AngehoerigerPanel() {
         $$$setupUI$$$();
@@ -60,6 +63,7 @@ public class AngehoerigerPanel {
         angehoerigerController.setTxtNatel(txtNatel);
         angehoerigerController.setTxtEmail(txtEmail);
         angehoerigerController.setCheckBoxGleicheAdresseWieSchueler(checkBoxGleicheAdresseWieSchueler);
+        angehoerigerController.setCheckBoxWuenschtEmails(checkBoxWuenschtEmails);
         angehoerigerController.setCheckBoxRechnungsempfaenger(checkBoxRechnungsempfaenger);
         angehoerigerController.setErrLblAnrede(errLblAnrede);
         angehoerigerController.setErrLblNachname(errLblNachname);
@@ -70,8 +74,9 @@ public class AngehoerigerPanel {
         angehoerigerController.setErrLblFestnetz(errLblFestnetz);
         angehoerigerController.setErrLblNatel(errLblNatel);
         angehoerigerController.setErrLblEmail(errLblEmail);
-        angehoerigerController.setErrLblRechnungsempfaenger(errLblRechnungsempfaenger);
         angehoerigerController.setErrLblGleicheAdresseWieSchueler(errLblGleicheAdresseWieSchueler);
+        angehoerigerController.setErrLblWuenschtEmails(errLblWuenschtEmails);
+        angehoerigerController.setErrLblRechnungsempfaenger(errLblRechnungsempfaenger);
         return angehoerigerController;
     }
 
@@ -98,18 +103,12 @@ public class AngehoerigerPanel {
         errLblRechnungsempfaenger.setForeground(Color.RED);
         errLblGleicheAdresseWieSchueler.setVisible(false);
         errLblGleicheAdresseWieSchueler.setForeground(Color.RED);
+        errLblWuenschtEmails.setVisible(false);
+        errLblWuenschtEmails.setForeground(Color.RED);
     }
 
     private void createUIComponents() {
         comboBoxAnrede = new JComboBox<>();
-    }
-
-    public JLabel getLblAnrede() {
-        return lblAnrede;
-    }
-
-    public JComboBox<Anrede> getComboBoxAnrede() {
-        return comboBoxAnrede;
     }
 
     public JLabel getLblGleicheAdresseWieSchueler() {
@@ -118,6 +117,14 @@ public class AngehoerigerPanel {
 
     public JCheckBox getCheckBoxGleicheAdresseWieSchueler() {
         return checkBoxGleicheAdresseWieSchueler;
+    }
+
+    public JLabel getLblWuenschtEmails() {
+        return lblWuenschtEmails;
+    }
+
+    public JCheckBox getCheckBoxWuenschtEmails() {
+        return checkBoxWuenschtEmails;
     }
 
     public JLabel getLblRechnungsempfaenger() {
@@ -160,7 +167,7 @@ public class AngehoerigerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
-        gbc.gridwidth = 5;
+        gbc.gridwidth = 10;
         gbc.weightx = 1.0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -176,7 +183,7 @@ public class AngehoerigerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 5;
-        gbc.gridwidth = 5;
+        gbc.gridwidth = 10;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         mainPanel.add(txtVorname, gbc);
@@ -217,7 +224,7 @@ public class AngehoerigerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 7;
-        gbc.gridwidth = 5;
+        gbc.gridwidth = 10;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         mainPanel.add(panel1, gbc);
         txtStrasseHausnummer = new JTextField();
@@ -238,7 +245,7 @@ public class AngehoerigerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 11;
-        gbc.gridwidth = 5;
+        gbc.gridwidth = 10;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         mainPanel.add(txtFestnetz, gbc);
@@ -253,7 +260,7 @@ public class AngehoerigerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
-        gbc.gridwidth = 5;
+        gbc.gridwidth = 10;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 10, 0);
@@ -269,7 +276,7 @@ public class AngehoerigerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 13;
-        gbc.gridwidth = 5;
+        gbc.gridwidth = 10;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         mainPanel.add(txtNatel, gbc);
@@ -290,7 +297,7 @@ public class AngehoerigerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 15;
-        gbc.gridwidth = 5;
+        gbc.gridwidth = 10;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         mainPanel.add(txtEmail, gbc);
@@ -305,7 +312,7 @@ public class AngehoerigerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 9;
-        gbc.gridwidth = 5;
+        gbc.gridwidth = 10;
         gbc.weightx = 0.1;
         gbc.fill = GridBagConstraints.BOTH;
         mainPanel.add(panel2, gbc);
@@ -331,46 +338,29 @@ public class AngehoerigerPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel2.add(txtOrt, gbc);
-        lblRechnungsempfaenger = new JLabel();
-        lblRechnungsempfaenger.setText("Rechnungsempfänger");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 17;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 0, 0, 0);
-        mainPanel.add(lblRechnungsempfaenger, gbc);
-        checkBoxRechnungsempfaenger = new JCheckBox();
-        checkBoxRechnungsempfaenger.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 17;
-        gbc.gridwidth = 3;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(10, 0, 0, 0);
-        mainPanel.add(checkBoxRechnungsempfaenger, gbc);
         lblGleicheAdresseWieSchueler = new JLabel();
         lblGleicheAdresseWieSchueler.setText("Gleiche Adresse wie Schüler");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 18;
+        gbc.gridy = 17;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.insets = new Insets(10, 0, 0, 0);
         mainPanel.add(lblGleicheAdresseWieSchueler, gbc);
         checkBoxGleicheAdresseWieSchueler = new JCheckBox();
         checkBoxGleicheAdresseWieSchueler.setText("");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 18;
-        gbc.gridwidth = 4;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.gridy = 17;
+        gbc.gridwidth = 8;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(10, 0, 0, 0);
         mainPanel.add(checkBoxGleicheAdresseWieSchueler, gbc);
         errLblAnrede = new JLabel();
         errLblAnrede.setText("errLblAnr");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.gridwidth = 5;
+        gbc.gridwidth = 10;
         gbc.anchor = GridBagConstraints.WEST;
         mainPanel.add(errLblAnrede, gbc);
         errLblNachname = new JLabel();
@@ -378,7 +368,7 @@ public class AngehoerigerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 2;
-        gbc.gridwidth = 5;
+        gbc.gridwidth = 10;
         gbc.anchor = GridBagConstraints.WEST;
         mainPanel.add(errLblNachname, gbc);
         errLblVorname = new JLabel();
@@ -386,7 +376,7 @@ public class AngehoerigerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 4;
-        gbc.gridwidth = 5;
+        gbc.gridwidth = 10;
         gbc.anchor = GridBagConstraints.WEST;
         mainPanel.add(errLblVorname, gbc);
         errLblStrasseHausnummer = new JLabel();
@@ -394,7 +384,7 @@ public class AngehoerigerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 6;
-        gbc.gridwidth = 5;
+        gbc.gridwidth = 10;
         gbc.anchor = GridBagConstraints.WEST;
         mainPanel.add(errLblStrasseHausnummer, gbc);
         errLblPlz = new JLabel();
@@ -409,7 +399,7 @@ public class AngehoerigerPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 8;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 8;
         gbc.anchor = GridBagConstraints.WEST;
         mainPanel.add(errLblOrt, gbc);
         errLblFestnetz = new JLabel();
@@ -433,23 +423,6 @@ public class AngehoerigerPanel {
         gbc.gridy = 14;
         gbc.anchor = GridBagConstraints.WEST;
         mainPanel.add(errLblEmail, gbc);
-        errLblRechnungsempfaenger = new JLabel();
-        errLblRechnungsempfaenger.setText("errLblRechn");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 17;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(10, 0, 0, 0);
-        mainPanel.add(errLblRechnungsempfaenger, gbc);
-        errLblGleicheAdresseWieSchueler = new JLabel();
-        errLblGleicheAdresseWieSchueler.setText("errLblGlAdrWieSchue");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 5;
-        gbc.gridy = 18;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.insets = new Insets(0, 0, 10, 0);
-        mainPanel.add(errLblGleicheAdresseWieSchueler, gbc);
         final JPanel spacer8 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -469,6 +442,62 @@ public class AngehoerigerPanel {
         gbc.gridy = 16;
         gbc.fill = GridBagConstraints.VERTICAL;
         mainPanel.add(spacer10, gbc);
+        lblWuenschtEmails = new JLabel();
+        lblWuenschtEmails.setText("Wünscht E-Mails");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 18;
+        gbc.anchor = GridBagConstraints.WEST;
+        mainPanel.add(lblWuenschtEmails, gbc);
+        checkBoxWuenschtEmails = new JCheckBox();
+        checkBoxWuenschtEmails.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 18;
+        gbc.anchor = GridBagConstraints.WEST;
+        mainPanel.add(checkBoxWuenschtEmails, gbc);
+        errLblWuenschtEmails = new JLabel();
+        errLblWuenschtEmails.setText("errLblWuenschtEmails");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 18;
+        gbc.gridwidth = 9;
+        gbc.anchor = GridBagConstraints.WEST;
+        mainPanel.add(errLblWuenschtEmails, gbc);
+        lblRechnungsempfaenger = new JLabel();
+        lblRechnungsempfaenger.setText("Rechnungsempfänger");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 19;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0, 0, 10, 0);
+        mainPanel.add(lblRechnungsempfaenger, gbc);
+        checkBoxRechnungsempfaenger = new JCheckBox();
+        checkBoxRechnungsempfaenger.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 19;
+        gbc.gridwidth = 3;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 0, 10, 0);
+        mainPanel.add(checkBoxRechnungsempfaenger, gbc);
+        errLblRechnungsempfaenger = new JLabel();
+        errLblRechnungsempfaenger.setText("errLblRechn");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 4;
+        gbc.gridy = 19;
+        gbc.gridwidth = 7;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 0, 10, 0);
+        mainPanel.add(errLblRechnungsempfaenger, gbc);
+        errLblGleicheAdresseWieSchueler = new JLabel();
+        errLblGleicheAdresseWieSchueler.setText("errLblGlAdrWieSchue");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 9;
+        gbc.gridy = 17;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(10, 0, 0, 0);
+        mainPanel.add(errLblGleicheAdresseWieSchueler, gbc);
         label1.setLabelFor(txtNachname);
         label2.setLabelFor(txtVorname);
         label4.setLabelFor(txtPlz);
@@ -484,4 +513,5 @@ public class AngehoerigerPanel {
     public JComponent $$$getRootComponent$$$() {
         return panel;
     }
+
 }

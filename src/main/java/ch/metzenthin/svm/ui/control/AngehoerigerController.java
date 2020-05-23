@@ -20,9 +20,11 @@ public class AngehoerigerController extends PersonController {
 
     private JCheckBox checkBoxGleicheAdresseWieSchueler;
     private JCheckBox checkBoxRechnungsempfaenger;
+    private JCheckBox checkBoxWuenschtEmails;
     private JLabel errLblGleicheAdresseWieSchueler;
     private JLabel errLblRechnungsempfaenger;
-    private AngehoerigerModel angehoerigerModel;
+    private JLabel errLblWuenschtEmails;
+    private final AngehoerigerModel angehoerigerModel;
 
     public AngehoerigerController(AngehoerigerModel angehoerigerModel, boolean defaultButtonEnabled) {
         super(angehoerigerModel, defaultButtonEnabled);
@@ -38,6 +40,16 @@ public class AngehoerigerController extends PersonController {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 onGleicheAdresseWieSchuelerEvent();
+            }
+        });
+    }
+
+    public void setCheckBoxWuenschtEmails(JCheckBox checkBoxWuenschtEmails) {
+        this.checkBoxWuenschtEmails = checkBoxWuenschtEmails;
+        this.checkBoxWuenschtEmails.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                onWuenschtEmailsEvent();
             }
         });
     }
@@ -61,6 +73,15 @@ public class AngehoerigerController extends PersonController {
         angehoerigerModel.setIsGleicheAdresseWieSchueler(checkBoxGleicheAdresseWieSchueler.isSelected());
     }
 
+    private void onWuenschtEmailsEvent() {
+        LOGGER.trace("AngehoerigerController Event WuenschtEmails. Selected=" + checkBoxWuenschtEmails.isSelected());
+        setModelWuenschtEmails();
+    }
+
+    private void setModelWuenschtEmails() {
+        angehoerigerModel.setWuenschtEmails(checkBoxWuenschtEmails.isSelected());
+    }
+
     private void onRechnungsempfaengerEvent() {
         LOGGER.trace("AngehoerigerController Event Rechnungsempfaenger. Selected=" + checkBoxRechnungsempfaenger.isSelected());
         setModelRechnungsempfaenger();
@@ -74,6 +95,10 @@ public class AngehoerigerController extends PersonController {
         this.errLblGleicheAdresseWieSchueler = errLblGleicheAdresseWieSchueler;
     }
 
+    public void setErrLblWuenschtEmails(JLabel errLblWuenschtEmails) {
+        this.errLblWuenschtEmails = errLblWuenschtEmails;
+    }
+
     public void setErrLblRechnungsempfaenger(JLabel errLblRechnungsempfaenger) {
         this.errLblRechnungsempfaenger = errLblRechnungsempfaenger;
     }
@@ -83,6 +108,10 @@ public class AngehoerigerController extends PersonController {
         LOGGER.trace("AngehoerigerController PropertyChangeEvent '" + evt.getPropertyName() + "', oldValue='" + evt.getOldValue() + "', newValue='" + evt.getNewValue() + "'");
         if (checkIsFieldChange(Field.GLEICHE_ADRESSE_WIE_SCHUELER, evt)) {
             checkBoxGleicheAdresseWieSchueler.setSelected(angehoerigerModel.isGleicheAdresseWieSchueler());
+        }
+        else if (checkIsFieldChange(Field.WUENSCHT_EMAILS, evt) && checkBoxWuenschtEmails.isVisible()) {
+            checkBoxWuenschtEmails.setSelected(angehoerigerModel.getWuenschtEmails() != null
+                    && angehoerigerModel.getWuenschtEmails());
         }
         else if (checkIsFieldChange(Field.RECHNUNGSEMPFAENGER, evt)) {
             checkBoxRechnungsempfaenger.setSelected(angehoerigerModel.isRechnungsempfaenger());
@@ -95,6 +124,10 @@ public class AngehoerigerController extends PersonController {
         super.validateFields();
         LOGGER.trace("Validate field Rechnungsempfaenger");
         setModelRechnungsempfaenger();
+        if (checkBoxWuenschtEmails.isVisible()) {
+            LOGGER.trace("Validate field WuenschtEmails");
+            setModelWuenschtEmails();
+        }
     }
 
     @Override
@@ -103,6 +136,11 @@ public class AngehoerigerController extends PersonController {
         if (e.getAffectedFields().contains(Field.GLEICHE_ADRESSE_WIE_SCHUELER)) {
             errLblGleicheAdresseWieSchueler.setVisible(true);
             errLblGleicheAdresseWieSchueler.setText(e.getMessage());
+        }
+        if (e.getAffectedFields().contains(Field.WUENSCHT_EMAILS)
+                && checkBoxWuenschtEmails.isVisible()) {
+            errLblWuenschtEmails.setVisible(true);
+            errLblWuenschtEmails.setText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.RECHNUNGSEMPFAENGER)) {
             errLblRechnungsempfaenger.setVisible(true);
@@ -116,6 +154,10 @@ public class AngehoerigerController extends PersonController {
         if (e.getAffectedFields().contains(Field.GLEICHE_ADRESSE_WIE_SCHUELER)) {
             checkBoxGleicheAdresseWieSchueler.setToolTipText(e.getMessage());
         }
+        if (e.getAffectedFields().contains(Field.WUENSCHT_EMAILS)
+                && checkBoxWuenschtEmails.isVisible()) {
+            checkBoxWuenschtEmails.setToolTipText(e.getMessage());
+        }
         if (e.getAffectedFields().contains(Field.RECHNUNGSEMPFAENGER)) {
             checkBoxRechnungsempfaenger.setToolTipText(e.getMessage());
         }
@@ -128,6 +170,11 @@ public class AngehoerigerController extends PersonController {
             errLblGleicheAdresseWieSchueler.setVisible(false);
             checkBoxGleicheAdresseWieSchueler.setToolTipText(null);
         }
+        if (fields.contains(Field.WUENSCHT_EMAILS)
+                && checkBoxWuenschtEmails.isVisible()) {
+            errLblWuenschtEmails.setVisible(false);
+            checkBoxWuenschtEmails.setToolTipText(null);
+        }
         if (fields.contains(Field.RECHNUNGSEMPFAENGER)) {
             errLblRechnungsempfaenger.setVisible(false);
             checkBoxRechnungsempfaenger.setToolTipText(null);
@@ -137,11 +184,14 @@ public class AngehoerigerController extends PersonController {
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
         super.disableFields(disable, fields);
-        if (fields.contains(Field.ALLE) || fields.contains(Field.RECHNUNGSEMPFAENGER)) {
-            checkBoxRechnungsempfaenger.setEnabled(!disable);
-        }
         if (fields.contains(Field.ALLE) || fields.contains(Field.GLEICHE_ADRESSE_WIE_SCHUELER)) {
             checkBoxGleicheAdresseWieSchueler.setEnabled(!disable);
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.WUENSCHT_EMAILS)) {
+            checkBoxWuenschtEmails.setEnabled(!disable);
+        }
+        if (fields.contains(Field.ALLE) || fields.contains(Field.RECHNUNGSEMPFAENGER)) {
+            checkBoxRechnungsempfaenger.setEnabled(!disable);
         }
     }
 

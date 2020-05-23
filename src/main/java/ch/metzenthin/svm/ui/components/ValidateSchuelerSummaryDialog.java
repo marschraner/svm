@@ -98,13 +98,21 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
     private void setMutter() {
         String neuMutter = ((validateSchuelerSummaryResult.getMutter() != null && validateSchuelerSummaryResult.isMutterNeu()) ? " (neu)" : "");
         lblMutter.setText("Mutter" + neuMutter + ":");
-        mutterValue.setText(validateSchuelerSummaryResult.getMutter() == null ? "-" : validateSchuelerSummaryResult.getMutter().toString());
+        // Falls Mutter keine E-Mails wünscht (d.h. Abweichung von Default-Einstellung) dies
+        // speziell vermerken
+        mutterValue.setText(validateSchuelerSummaryResult.getMutter() == null ? "-"
+                : validateSchuelerSummaryResult.getMutter()
+                .toStringIncludingWuenschtKeineEmailsIfWuenschtEmailsFalse());
     }
 
     private void setVater() {
         String neuVater = ((validateSchuelerSummaryResult.getVater() != null && validateSchuelerSummaryResult.isVaterNeu()) ? " (neu)" : "");
         lblVater.setText("Vater" + neuVater + ":");
-        vaterValue.setText(validateSchuelerSummaryResult.getVater() == null ? "-" : validateSchuelerSummaryResult.getVater().toString());
+        // Falls Vater E-Mails wünscht (d.h. Abweichung von Default-Einstellung) dies
+        // speziell vermerken
+        vaterValue.setText(validateSchuelerSummaryResult.getVater() == null ? "-"
+                : validateSchuelerSummaryResult.getVater()
+                .toStringIncludingWuenschtEmailsIfWuenschtEmailsTrue());
     }
 
     private void setRechnungsempfaenger() {

@@ -37,10 +37,10 @@ public class SchuelerErfassenController {
     private final SvmContext svmContext;
     private final SchuelerErfassenModel schuelerErfassenModel;
     private final boolean isBearbeiten;
-    private boolean defaultButtonEnabled;
+    private final boolean defaultButtonEnabled;
     private ActionListener zurueckZuDatenblattListener;
     private ActionListener nextPanelListener;
-    private boolean modelValidationMode;
+    private final boolean modelValidationMode;
 
     public SchuelerErfassenController(SvmContext svmContext, SchuelerErfassenModel schuelerErfassenModel, boolean isBearbeiten, boolean defaultButtonEnabled) {
         this.svmContext = svmContext;
@@ -103,6 +103,8 @@ public class SchuelerErfassenController {
             mutterModel.setIsRechnungsempfaenger(true);
         } catch (SvmValidationException ignore) {
         }
+        // wünscht Emails auf true setzen
+        mutterModel.setWuenschtEmails(true);
         schuelerErfassenModel.setMutterModel(mutterModel);
     }
 
@@ -116,6 +118,8 @@ public class SchuelerErfassenController {
             vaterModel.setAnrede(Anrede.HERR);
         } catch (SvmValidationException ignore) {
         }
+        // wünscht Emails auf false setzen
+        vaterModel.setWuenschtEmails(false);
         schuelerErfassenModel.setVaterModel(vaterModel);
     }
 
@@ -130,6 +134,9 @@ public class SchuelerErfassenController {
         // Keine Rechnungsempfänger-Checkbox anzeigen
         drittempfaengerPanel.getLblRechnungsempfaenger().setVisible(false);
         drittempfaengerPanel.getCheckBoxRechnungsempfaenger().setVisible(false);
+        // Keine wünscht Emails-Checkbox anzeigen (wird nicht ausgewertet)
+        drittempfaengerPanel.getLblWuenschtEmails().setVisible(false);
+        drittempfaengerPanel.getCheckBoxWuenschtEmails().setVisible(false);
         // Default deaktiviert
         drittempfaengerModel.disableFields();
         schuelerErfassenModel.setDrittempfaengerModel(drittempfaengerModel);

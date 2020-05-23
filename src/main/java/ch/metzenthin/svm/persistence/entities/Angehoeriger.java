@@ -50,6 +50,23 @@ public class Angehoeriger extends Person {
 
     public void copyFieldValuesFrom(Angehoeriger angehoerigerFrom) {
         super.copyAttributesFrom(angehoerigerFrom);
+        wuenschtEmails = angehoerigerFrom.getWuenschtEmails();
+    }
+
+    public String toStringIncludingWuenschtEmailsIfWuenschtEmailsTrue() {
+        String angehoerigerAsString = toString();
+        if (wuenschtEmails != null && wuenschtEmails) {
+            angehoerigerAsString = angehoerigerAsString + "  (wünscht E-Mails)";
+        }
+        return angehoerigerAsString;
+    }
+
+    public String toStringIncludingWuenschtKeineEmailsIfWuenschtEmailsFalse() {
+        String angehoerigerAsString = toString();
+        if (wuenschtEmails != null && !wuenschtEmails) {
+            angehoerigerAsString = angehoerigerAsString + "  (wünscht keine E-Mails)";
+        }
+        return angehoerigerAsString;
     }
 
     @Override

@@ -14,6 +14,8 @@ import javax.swing.*;
 import java.util.Iterator;
 import java.util.List;
 
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
+
 /**
  * @author Hans Stamm
  */
@@ -126,7 +128,7 @@ public class ValidateSchuelerCommand implements Command {
         VATER("Vater"),
         RECHNUNGSEMPFAENGER_DRITTPERSON("Rechnungsempfänger Drittperson");
 
-        private String name;
+        private final String name;
 
         AngehoerigenArt(String name) {
             this.name = name;
@@ -142,17 +144,17 @@ public class ValidateSchuelerCommand implements Command {
 
     // input
     private final SvmContext svmContext;
-    private Schueler schueler;
-    private Adresse adresseSchueler;
-    private Anmeldung anmeldung;
+    private final Schueler schueler;
+    private final Adresse adresseSchueler;
+    private final Anmeldung anmeldung;
     private Angehoeriger mutter;
-    private Adresse adresseMutter;
-    private boolean isRechnungsempfaengerMutter;
+    private final Adresse adresseMutter;
+    private final boolean isRechnungsempfaengerMutter;
     private Angehoeriger vater;
-    private Adresse adresseVater;
-    private boolean isRechnungsempfaengerVater;
+    private final Adresse adresseVater;
+    private final boolean isRechnungsempfaengerVater;
     private Angehoeriger rechnungsempfaengerDrittperson;
-    private Adresse adresseRechnungsempfaengerDrittperson;
+    private final Adresse adresseRechnungsempfaengerDrittperson;
     private Entry entry;
 
     // Original Schüler von Datenbank (Schüler bearbeiten). Wenn null, isBearbeiten() returns true
@@ -221,6 +223,9 @@ public class ValidateSchuelerCommand implements Command {
                 if (isRechnungsempfaengerMutter) {
                     schueler.setRechnungsempfaenger(mutter);
                 }
+                if (!checkNotEmpty(mutter.getEmail())) {
+                    mutter.setWuenschtEmails(null);
+                }
             } else {
                 schueler.setMutter(null); // Falls der Schüler bereits in einem vorangehenden, abgebrochenen Command verwendet wurde
             }
@@ -232,12 +237,16 @@ public class ValidateSchuelerCommand implements Command {
                 if (isRechnungsempfaengerVater) {
                     schueler.setRechnungsempfaenger(vater);
                 }
+                if (!checkNotEmpty(vater.getEmail())) {
+                    vater.setWuenschtEmails(null);
+                }
             } else {
                 schueler.setVater(null); // Falls der Schüler bereits in einem vorangehenden, abgebrochenen Command verwendet wurde
             }
             if (isRechnungsempfaengerDrittperson()) {
                 schueler.setRechnungsempfaenger(rechnungsempfaengerDrittperson);
                 rechnungsempfaengerDrittperson.setAdresse(adresseRechnungsempfaengerDrittperson);
+                rechnungsempfaengerDrittperson.setWuenschtEmails(null);
             }
         }
 
@@ -652,6 +661,7 @@ public class ValidateSchuelerCommand implements Command {
     /**
      * Aktionen, die am Beginn durchgeführt werden sollen, abhängig vom Wert von entry.
      */
+    @SuppressWarnings("DuplicateBranchesInSwitch")
     private void determineHowToProceed() {
         if (entry == null) {
            throw new RuntimeException("Eintrittspunkt nicht gesetzt!");

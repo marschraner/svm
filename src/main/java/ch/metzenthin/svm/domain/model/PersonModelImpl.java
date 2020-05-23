@@ -20,7 +20,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
 
     private final Adresse adresse;
 
-    private EmailValidator emailValidator = new EmailValidator();
+    private final EmailValidator emailValidator = new EmailValidator();
 
     PersonModelImpl() {
         adresse = new Adresse();
@@ -177,7 +177,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         return getNYearsBeforeNow(2);
     }
 
-    private CalendarModelAttribute geburtsdatumModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute geburtsdatumModelAttribute = new CalendarModelAttribute(
             this,
             Field.GEBURTSDATUM, getEarliestValidDateGeburtstag(), getLatestValidDateGeburtstag(),
             new AttributeAccessor<Calendar>() {
@@ -382,7 +382,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
                 ;
     }
 
-    private boolean isSetName() {
+    protected boolean isSetName() {
         return checkNotEmpty(getPerson().getNachname())
                 && checkNotEmpty(getPerson().getVorname())
                 ;

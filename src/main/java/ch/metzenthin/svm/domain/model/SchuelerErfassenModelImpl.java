@@ -176,6 +176,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void onMutterModelPropertyChange(PropertyChangeEvent evt) {
         if (isRechnungsempfaengerPropertyChange(evt)) {
             Boolean newValue = (Boolean) evt.getNewValue();
@@ -204,6 +205,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         fireCompletedChange();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void onVaterModelPropertyChange(PropertyChangeEvent evt) {
         if (isRechnungsempfaengerPropertyChange(evt)) {
             Boolean newValue = (Boolean) evt.getNewValue();

@@ -7,6 +7,7 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Person;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 /**
  * @author Hans Stamm
@@ -26,16 +27,6 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     }
 
     @Override
-    public boolean isCompleted() {
-        return super.isCompleted();
-    }
-
-    @Override
-    public void doValidate() throws SvmValidationException {
-        super.doValidate();
-    }
-
-    @Override
     Person getPerson() {
         return angehoeriger;
     }
@@ -48,6 +39,11 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     @Override
     public boolean isGleicheAdresseWieSchueler() {
         return isGleicheAdresseWieSchueler;
+    }
+
+    @Override
+    public Boolean getWuenschtEmails() {
+        return angehoeriger.getWuenschtEmails();
     }
 
     @Override
@@ -72,6 +68,13 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     }
 
     @Override
+    public void setWuenschtEmails(Boolean isSelected) {
+        Boolean oldValue = angehoeriger.getWuenschtEmails();
+        angehoeriger.setWuenschtEmails(isSelected);
+        firePropertyChange(Field.WUENSCHT_EMAILS, oldValue, isSelected);
+    }
+
+    @Override
     public void setIsRechnungsempfaenger(boolean isSelected) {
         boolean oldValue = isRechnungsempfaenger;
         isRechnungsempfaenger = isSelected;
@@ -79,10 +82,31 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     }
 
     @Override
-    public void setAngehoeriger(Angehoeriger angehoeriger, boolean isGleicheAdresseWieSchueler, boolean isRechnungsempfaenger) {
+    public void setAngehoeriger(Angehoeriger angehoeriger, boolean isGleicheAdresseWieSchueler,
+            boolean isRechnungsempfaenger) {
         angehoerigerOrigin = angehoeriger;
         isGleicheAdresseWieSchuelerOrigin = isGleicheAdresseWieSchueler;
         isRechnungsempfaengerOrigin = isRechnungsempfaenger;
+    }
+
+    @Override
+    public boolean isCompleted() {
+        if (isSetName() && angehoeriger.getWuenschtEmails() != null
+            && angehoeriger.getWuenschtEmails() && !checkNotEmpty(angehoeriger.getEmail())) {
+            return false;
+        }
+        return super.isCompleted();
+    }
+
+    @Override
+    public void doValidate() throws SvmValidationException {
+        if (isSetName() && angehoeriger.getWuenschtEmails() != null
+            && angehoeriger.getWuenschtEmails() && !checkNotEmpty(angehoeriger.getEmail())) {
+            throw new SvmValidationException(2010,
+                    "Wenn \"Wünscht E-Mails\" selektiert ist, darf die E-Mail nicht leer sein",
+                    Field.EMAIL);
+        }
+        super.doValidate();
     }
 
     @Override
@@ -106,6 +130,7 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
                 setIsRechnungsempfaenger(isRechnungsempfaengerOrigin);
                 isGleicheAdresseWieSchueler = !isGleicheAdresseWieSchuelerOrigin; // damit PropertyChange ausgelöst wird!
                 setIsGleicheAdresseWieSchueler(isGleicheAdresseWieSchuelerOrigin);
+                setWuenschtEmails(angehoerigerOrigin.getWuenschtEmails());
             } catch (SvmValidationException ignore) {
             }
             setBulkUpdate(false);
@@ -120,6 +145,7 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
         try {
             setIsRechnungsempfaenger(false);
             setIsGleicheAdresseWieSchueler(false);
+            setWuenschtEmails(null);
             setAnrede(Anrede.FRAU);
             setNachname("");
             setVorname("");
