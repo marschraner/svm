@@ -75,59 +75,66 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
 
         switch (emailSchuelerListeEmpfaengerGruppe) {
 
-            case MUTTER_ODER_VATER:
-                // Wenn vorhanden Email der Mutter, sonst des Vaters, sonst des Rechnungsempfängers
+            case MUTTER_UND_ODER_VATER:
+                // Wenn vorhanden Email(s) von Mutter und/oder Vater, sonst des Schülers
                 for (Schueler schueler : schuelerSuchenTableModel.getSelektierteSchuelerList()) {
-                    String email = null;
-                    if (schueler.getMutter() != null && checkNotEmpty(schueler.getMutter().getEmail())) {
-                        email = schueler.getMutter().getEmail();
-                    } else if (schueler.getVater() != null && checkNotEmpty(schueler.getVater().getEmail())) {
-                        email = schueler.getVater().getEmail();
-                    } else if (checkNotEmpty(schueler.getRechnungsempfaenger().getEmail())) {
-                        email = schueler.getRechnungsempfaenger().getEmail();
+                    // Mutter und/oder Vater
+                    Set<String> emailAdressenForSchueler = new LinkedHashSet<>();
+                    addEmailOfMutterUndOderVater(schueler, emailAdressenForSchueler);
+
+                    // Schüler
+                    if (emailAdressenForSchueler.isEmpty() && checkNotEmpty(schueler.getEmail())) {
+                        emailAdressenForSchueler.add(schueler.getEmail());
+                    }
+
+                    if (!emailAdressenForSchueler.isEmpty()) {
+                        emailAdressen.addAll(emailAdressenForSchueler);
                     } else {
                         fehlendeEmailAdressen.add(schueler.getNachname() + " " + schueler.getVorname());
-                    }
-                    if (email != null) {
-                        emailAdressen.add(email);
                     }
                 }
                 break;
 
             case SCHUELER:
-                // Wenn vorhanden Email des Schülers, sonst der Mutter, sonst des Vaters, sonst des Rechnungsempfängers
+                // Wenn vorhanden Email des Schülers, sonst Mutter und/oder Vater
                 for (Schueler schueler : schuelerSuchenTableModel.getSelektierteSchuelerList()) {
-                    String email = null;
+                    // Schüler
+                    Set<String> emailAdressenForSchueler = new LinkedHashSet<>();
                     if (checkNotEmpty(schueler.getEmail())) {
-                        email = schueler.getEmail();
-                    } else if (schueler.getMutter() != null && checkNotEmpty(schueler.getMutter().getEmail())) {
-                        email = schueler.getMutter().getEmail();
-                    } else if (schueler.getVater() != null && checkNotEmpty(schueler.getVater().getEmail())) {
-                        email = schueler.getVater().getEmail();
-                    } else if (checkNotEmpty(schueler.getRechnungsempfaenger().getEmail())) {
-                        email = schueler.getRechnungsempfaenger().getEmail();
+                        emailAdressenForSchueler.add(schueler.getEmail());
+                    }
+
+                    // Mutter und/oder Vater
+                    if (emailAdressenForSchueler.isEmpty()) {
+                        addEmailOfMutterUndOderVater(schueler, emailAdressenForSchueler);
+                    }
+
+                    if (!emailAdressenForSchueler.isEmpty()) {
+                        emailAdressen.addAll(emailAdressenForSchueler);
                     } else {
                         fehlendeEmailAdressen.add(schueler.getNachname() + " " + schueler.getVorname());
-                    }
-                    if (email != null) {
-                        emailAdressen.add(email);
                     }
                 }
                 break;
 
             case ROLLENLISTE:
-                // Wenn vorhanden Email des Schülers, sonst der Elternmithilfe (falls nicht Drittperson), sonst der Mutter, sonst des Vaters, sonst Elternmithilfe Drittperson
-                Map<Schueler, Maercheneinteilung> maercheneinteilungen = schuelerSuchenTableModel.getMaercheneinteilungen();
+                // Wenn vorhanden Email des Schülers, sonst der Elternmithilfe (falls nicht Dritt-
+                // person), sonst der Mutter, sonst des Vaters, sonst Elternmithilfe Drittperson
+                Map<Schueler, Maercheneinteilung> maercheneinteilungen
+                        = schuelerSuchenTableModel.getMaercheneinteilungen();
+
                 // Wenn nach Rollen gesucht wurde, muss nach Rollen sortiert werden, sonst nach Schülern
                 Set<Schueler> keys;
                 if (schuelerSuchenTableModel.isNachRollenGesucht()) {
                     // Wenn nach Rollen gesucht wurde, gibt es keine Keys mit leeren Values
-                    maercheneinteilungen = maercheneinteilungenSorter.sortMaercheneinteilungenByGruppeAndRolle(maercheneinteilungen);
+                    maercheneinteilungen = maercheneinteilungenSorter
+                            .sortMaercheneinteilungenByGruppeAndRolle(maercheneinteilungen);
                     keys = maercheneinteilungen.keySet();
                 } else {
                     // Sortierung nach Keys
                     keys = new TreeSet<>(maercheneinteilungen.keySet());
                 }
+
                 for (Schueler schueler : keys) {
                     Maercheneinteilung maercheneinteilung = maercheneinteilungen.get(schueler);
                     if (maercheneinteilung == null || !schueler.isSelektiert()) {
@@ -135,8 +142,10 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                     }
                     String email = null;
                     Angehoeriger elternmithilfe = null;
-                    if (maercheneinteilung.getElternmithilfe() != null && maercheneinteilung.getElternmithilfe() != Elternmithilfe.DRITTPERSON) {
-                        elternmithilfe = (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER ? schueler.getMutter() : schueler.getVater());
+                    if (maercheneinteilung.getElternmithilfe() != null
+                            && maercheneinteilung.getElternmithilfe() != Elternmithilfe.DRITTPERSON) {
+                        elternmithilfe = (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER
+                                ? schueler.getMutter() : schueler.getVater());
                     }
                     if (checkNotEmpty(schueler.getEmail())) {
                         email = schueler.getEmail();
@@ -146,7 +155,8 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                         email = schueler.getMutter().getEmail();
                     } else if (schueler.getVater() != null && checkNotEmpty(schueler.getVater().getEmail())) {
                         email = schueler.getVater().getEmail();
-                    } else if (maercheneinteilung.getElternmithilfeDrittperson() != null && checkNotEmpty(maercheneinteilung.getElternmithilfeDrittperson().getEmail())) {
+                    } else if (maercheneinteilung.getElternmithilfeDrittperson() != null
+                            && checkNotEmpty(maercheneinteilung.getElternmithilfeDrittperson().getEmail())) {
                         email = maercheneinteilung.getElternmithilfeDrittperson().getEmail();
                     } else {
                         fehlendeEmailAdressen.add(schueler.getNachname() + " " + schueler.getVorname());
@@ -159,7 +169,8 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                 break;
 
             case ELTERNMITHILFE:
-                Map<Schueler, Maercheneinteilung> maercheneinteilungenElternmithilfe = schuelerSuchenTableModel.getMaercheneinteilungen();
+                Map<Schueler, Maercheneinteilung> maercheneinteilungenElternmithilfe
+                        = schuelerSuchenTableModel.getMaercheneinteilungen();
                 List<Person> elternmithilfen = new ArrayList<>();
                 for (Schueler schueler : schuelerSuchenTableModel.getMaercheneinteilungen().keySet()) {
                     Maercheneinteilung maercheneinteilung = maercheneinteilungenElternmithilfe.get(schueler);
@@ -179,6 +190,7 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                         elternmithilfen.add(elternmithilfe);
                     }
                 }
+
                 Collections.sort(elternmithilfen);
                 for (Person elternmithilfe : elternmithilfen) {
                     String email = null;
@@ -195,11 +207,41 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
         }
 
         CommandInvoker commandInvoker = getCommandInvoker();
-        CallDefaultEmailClientCommand callDefaultEmailClientCommand = new CallDefaultEmailClientCommand(emailAdressen, blindkopien);
+        CallDefaultEmailClientCommand callDefaultEmailClientCommand
+                = new CallDefaultEmailClientCommand(emailAdressen, blindkopien);
         commandInvoker.executeCommand(callDefaultEmailClientCommand);
         ungueltigeEmailAdressen = callDefaultEmailClientCommand.getUngueltigeEmailAdressen();
 
         return callDefaultEmailClientCommand.getResult();
+    }
+
+    private void addEmailOfMutterUndOderVater(
+            Schueler schueler, Set<String> emailAdressenForSchueler) {
+
+        // Mutter und/oder Vater mit wuenschtEmails selektiert
+        if (schueler.getMutter() != null
+                && checkNotEmpty(schueler.getMutter().getEmail())
+                && schueler.getMutter().getWuenschtEmails() != null
+                && schueler.getMutter().getWuenschtEmails()) {
+            emailAdressenForSchueler.add(schueler.getMutter().getEmail());
+        }
+        if (schueler.getVater() != null
+                && checkNotEmpty(schueler.getVater().getEmail())
+                && schueler.getVater().getWuenschtEmails() != null
+                && schueler.getVater().getWuenschtEmails()) {
+            emailAdressenForSchueler.add(schueler.getVater().getEmail());
+        }
+
+        // Falls keine gefunden wuenschtEmails ignorieren (sollte nicht auftreten)
+        if (emailAdressenForSchueler.isEmpty()) {
+            if (schueler.getMutter() != null
+                    && checkNotEmpty(schueler.getMutter().getEmail())) {
+                emailAdressenForSchueler.add(schueler.getMutter().getEmail());
+            } else if (schueler.getVater() != null
+                    && checkNotEmpty(schueler.getVater().getEmail())) {
+                emailAdressenForSchueler.add(schueler.getVater().getEmail());
+            }
+        }
     }
 
     @Override

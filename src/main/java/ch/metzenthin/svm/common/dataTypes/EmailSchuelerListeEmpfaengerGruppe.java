@@ -4,8 +4,8 @@ package ch.metzenthin.svm.common.dataTypes;
  * @author Martin Schraner
  */
 public enum EmailSchuelerListeEmpfaengerGruppe {
-    MUTTER_ODER_VATER("Mutter oder Vater"),
-    SCHUELER("Schüler (oder Mutter oder Vater)"),
+    MUTTER_UND_ODER_VATER("Mutter und/oder Vater"),
+    SCHUELER("Schüler (oder Mutter und/oder Vater)"),
     ELTERNMITHILFE("Eltern-Mithilfe"),
     ROLLENLISTE("Rollenliste");
 
