@@ -4,12 +4,13 @@ package ch.metzenthin.svm.common.dataTypes;
  * @author Martin Schraner
  */
 public enum EmailEmpfaenger {
-    SCHUELER("Schüler"),
     MUTTER("Mutter"),
+    MUTTER_UND_VATER("Mutter und Vater"),
     VATER("Vater"),
-    RECHNUNGSEMPFAENGER("Rechnungsempfänger");
+    RECHNUNGSEMPFAENGER("Rechnungsempfänger"),
+    SCHUELER("Schüler");
 
-    private String name;
+    private final String name;
 
     EmailEmpfaenger(String name) {
         this.name = name;

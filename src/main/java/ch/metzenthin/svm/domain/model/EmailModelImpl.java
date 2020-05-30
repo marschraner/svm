@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.dataTypes.EmailEmpfaenger;
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
@@ -9,6 +10,7 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
@@ -35,33 +37,48 @@ public class EmailModelImpl extends AbstractModel implements EmailModel {
     public EmailEmpfaenger[] getSelectableEmailEmpfaengers(SchuelerDatenblattModel schuelerDatenblattModel) {
         List<EmailEmpfaenger> selectableEmailEmpfaengerList = new ArrayList<>();
         Schueler schueler = schuelerDatenblattModel.getSchueler();
-        if (checkNotEmpty(schueler.getEmail())) {
-            selectableEmailEmpfaengerList.add(EmailEmpfaenger.SCHUELER);
-        }
         if (schueler.getMutter() != null && checkNotEmpty(schueler.getMutter().getEmail())) {
             selectableEmailEmpfaengerList.add(EmailEmpfaenger.MUTTER);
+        }
+        if (schueler.getMutter() != null && checkNotEmpty(schueler.getMutter().getEmail())
+            && schueler.getVater() != null && checkNotEmpty(schueler.getVater().getEmail())) {
+            selectableEmailEmpfaengerList.add(EmailEmpfaenger.MUTTER_UND_VATER);
         }
         if (schueler.getVater() != null && checkNotEmpty(schueler.getVater().getEmail())) {
             selectableEmailEmpfaengerList.add(EmailEmpfaenger.VATER);
         }
-        if (!(schueler.getVater() != null && schueler.getVater().isIdenticalWith(schueler.getRechnungsempfaenger())) &&
-                !(schueler.getMutter() != null && schueler.getMutter().isIdenticalWith(schueler.getRechnungsempfaenger())) &&
-                checkNotEmpty(schueler.getRechnungsempfaenger().getEmail())) {
+        if (!(schueler.getVater() != null && schueler.getVater().isIdenticalWith(schueler.getRechnungsempfaenger()))
+            && !(schueler.getMutter() != null && schueler.getMutter().isIdenticalWith(schueler.getRechnungsempfaenger()))
+            && checkNotEmpty(schueler.getRechnungsempfaenger().getEmail())) {
             selectableEmailEmpfaengerList.add(EmailEmpfaenger.RECHNUNGSEMPFAENGER);
         }
-        return selectableEmailEmpfaengerList.toArray(new EmailEmpfaenger[selectableEmailEmpfaengerList.size()]);
+        if (checkNotEmpty(schueler.getEmail())) {
+            selectableEmailEmpfaengerList.add(EmailEmpfaenger.SCHUELER);
+        }
+        return selectableEmailEmpfaengerList.toArray(new EmailEmpfaenger[0]);
     }
 
     @Override
     public CallDefaultEmailClientCommand.Result callEmailClient(SchuelerDatenblattModel schuelerDatenblattModel) {
+
         Schueler schueler = schuelerDatenblattModel.getSchueler();
         String emailAdresse = "";
+
+        // Separator für mehrere E-Mails
+        Properties svmProperties = SvmProperties.getSvmProperties();
+        String emailClientMultipleMailsSeparator = svmProperties.getProperty(
+            SvmProperties.KEY_EMAIL_CLIENT_MULTIPLE_MAILS_SEPARATOR);
+        if (emailClientMultipleMailsSeparator.isEmpty()) {
+            emailClientMultipleMailsSeparator = ";";
+        }
+
         switch (emailEmpfaenger) {
-            case SCHUELER:
-                emailAdresse = schueler.getEmail();
-                break;
             case MUTTER:
                 emailAdresse = schueler.getMutter().getEmail();
+                break;
+            case MUTTER_UND_VATER:
+                emailAdresse = schueler.getMutter().getEmail() + emailClientMultipleMailsSeparator +
+                    schueler.getVater().getEmail();
                 break;
             case VATER:
                 emailAdresse = schueler.getVater().getEmail();
@@ -69,7 +86,11 @@ public class EmailModelImpl extends AbstractModel implements EmailModel {
             case RECHNUNGSEMPFAENGER:
                 emailAdresse = schueler.getRechnungsempfaenger().getEmail();
                 break;
+            case SCHUELER:
+                emailAdresse = schueler.getEmail();
+                break;
         }
+
         CommandInvoker commandInvoker = getCommandInvoker();
         CallDefaultEmailClientCommand callDefaultEmailClientCommand = new CallDefaultEmailClientCommand(emailAdresse, false);
         commandInvoker.executeCommand(callDefaultEmailClientCommand);
