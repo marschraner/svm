@@ -415,6 +415,18 @@ public class SchuelerErfassenController extends AbstractController {
             }
 
             @Override
+            public void visit(GeschwisterOhneWuenschtEmailsResult schuelerBereitsInDatenbankResult) {
+                JOptionPane.showMessageDialog(
+                    null,
+                    schuelerBereitsInDatenbankResult.getErrorMessage(),
+                    "Wünscht E-Mails nicht selektiert",
+                    JOptionPane.ERROR_MESSAGE,
+                    svmContext.getDialogIcons().getErrorIcon());
+                schuelerErfassenModel.abbrechen();
+                dialog[0] = null;
+            }
+
+            @Override
             public void visit(SchuelerErfassenSaveOkResult schuelerErfassenSaveOkResult) {
                 dialog[0] = null;
             }

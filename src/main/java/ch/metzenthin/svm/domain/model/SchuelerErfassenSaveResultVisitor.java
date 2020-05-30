@@ -10,6 +10,7 @@ public interface SchuelerErfassenSaveResultVisitor {
     void visit(AngehoerigerEinEintragGleicherNameAndereAttributeResult angehoerigerEinEintragGleicherNameAndereAttributeResult);
     void visit(AngehoerigerEinEintragPasstResult angehoerigerEinEintragPasstResult);
     void visit(SchuelerBereitsInDatenbankResult schuelerBereitsInDatenbankResult);
+    void visit(GeschwisterOhneWuenschtEmailsResult schuelerBereitsInDatenbankResult);
     void visit(SchuelerErfassenSaveOkResult schuelerErfassenSaveOkResult);
     void visit(SchuelerErfassenUnerwarteterFehlerResult schuelerErfassenUnerwarteterFehlerResult);
     void visit(DrittpersonIdentischMitElternteilResult drittpersonIdentischMitElternteilResult);

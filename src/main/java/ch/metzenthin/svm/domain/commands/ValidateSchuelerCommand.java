@@ -93,6 +93,7 @@ public class ValidateSchuelerCommand implements Command {
                 return Entry.MIT_BISHERIGEM_RECHNUNGSEMPFAENGER_DRITTPERSON_WEITERFAHREN;
             }
         },
+        GESCHWISTER_OHNE_WUENSCHT_EMAILS,
         CHECK_GESCHWISTER_SCHUELER_RECHNUGSEMFPAENGER_COMMAND_FINISHED {
             @Override
             public Entry proceedWeiterfahren() {
@@ -362,11 +363,29 @@ public class ValidateSchuelerCommand implements Command {
         checkGeschwisterSchuelerRechnungempfaengerCommand.execute();
         List<Schueler> geschwisterList = checkGeschwisterSchuelerRechnungempfaengerCommand.getGeschwisterList();
 
-        // 6. Warnung, falls Anrede für Mutter Herr oder Anrede für Vater Frau
+        // 6. Ist für Eltern des Geschwisters wünscht Emails noch gesetzt mit aktuellen Änderungen?
+        //    (nur relevant, falls Geschwister nur einen Elternteil gemeinsam haben)
+        for (Schueler geschwister : geschwisterList) {
+            boolean gemeinsameMutterOderBeideOhneMutter
+                = hasGeschwisterGemeinsameMutterOderBeideOhneMutter(geschwister);
+            boolean gemeinsamenVaterOderBeideOhneVater
+                = hasGeschwisterGemeinsamenVaterOderBeideOhneVater(geschwister);
+            if (doElternOfGeschwisterHaveEmailAfterCurrentModifications(geschwister,
+                gemeinsameMutterOderBeideOhneMutter, gemeinsamenVaterOderBeideOhneVater)
+                && !isForElternOfGeschwisterWuenschtEmailsSetAfterCurrentModifications(geschwister,
+                gemeinsameMutterOderBeideOhneMutter, gemeinsamenVaterOderBeideOhneVater)) {
+                result = new GeschwisterOhneWuenschtEmailsResult(
+                    geschwister, gemeinsameMutterOderBeideOhneMutter);
+                return;
+            }
+        }
+
+        // 7. Warnung, falls Anrede für Mutter Herr oder Anrede für Vater Frau
+        //    oder kein E-Mail für Eltern erfasst
         if (!skipPrepareSummary) {
             skipPrepareSummary = true;
 
-            // 6.a Anrede Mutter ist Herr
+            // 7.a Anrede Mutter ist Herr
             if (mutter != null && mutter.getAnrede() == Anrede.HERR) {
                 Object[] options = {"Anrede übernehmen", "Anrede korrigieren"};
                 int n = JOptionPane.showOptionDialog(
@@ -385,7 +404,7 @@ public class ValidateSchuelerCommand implements Command {
                 }
             }
 
-            // 6.b Anrede Vater ist Frau
+            // 7.b Anrede Vater ist Frau
             if (vater != null && vater.getAnrede() == Anrede.FRAU) {
                 Object[] options = {"Anrede übernehmen", "Anrede korrigieren"};
                 int n = JOptionPane.showOptionDialog(
@@ -404,7 +423,7 @@ public class ValidateSchuelerCommand implements Command {
                 }
             }
 
-            // 7. Warnung, falls keine E-Mail erfasst
+            // 7.c Keine E-Mail erfasst
             if ((mutter != null && vater != null
                     && !checkNotEmpty(mutter.getEmail()) && !checkNotEmpty(vater.getEmail()))
                     || (mutter != null && vater == null && !checkNotEmpty(mutter.getEmail()))
@@ -531,6 +550,54 @@ public class ValidateSchuelerCommand implements Command {
 
     private static boolean isRechnungsempfaenger(Schueler schueler, Angehoeriger angehoeriger) {
         return schueler.getRechnungsempfaenger() == angehoeriger;
+    }
+
+    private boolean hasGeschwisterGemeinsameMutterOderBeideOhneMutter(Schueler geschwister) {
+        return mutterFoundInDatabase != null
+            || (mutter != null && mutterOrigin != null && geschwister.getMutter() != null
+            && geschwister.getMutter().getPersonId().equals(mutterOrigin.getPersonId()))
+            || (mutter == null && geschwister.getMutter() == null);
+    }
+
+    private boolean hasGeschwisterGemeinsamenVaterOderBeideOhneVater(Schueler geschwister) {
+        return vaterFoundInDatabase != null
+            || (vater != null && vaterOrigin != null && geschwister.getVater() != null
+            && geschwister.getVater().getPersonId().equals(vaterOrigin.getPersonId()))
+            || (vater == null && geschwister.getVater() == null);
+    }
+
+    private boolean doElternOfGeschwisterHaveEmailAfterCurrentModifications(
+        Schueler geschwister, boolean gemeinsameMutterOderBeideOhneMutter,
+        boolean gemeinsamenVaterOderBeideOhneVater) {
+
+        Angehoeriger mutterGeschwisterNeu
+            = (gemeinsameMutterOderBeideOhneMutter ? mutter : geschwister.getMutter());
+        Angehoeriger vaterGeschwisterNeu
+            = (gemeinsamenVaterOderBeideOhneVater ? vater : geschwister.getVater());
+
+        if (mutterGeschwisterNeu != null && mutterGeschwisterNeu.getEmail() != null) {
+            return true;
+        }
+
+        return vaterGeschwisterNeu != null && vaterGeschwisterNeu.getEmail() != null;
+    }
+
+    private boolean isForElternOfGeschwisterWuenschtEmailsSetAfterCurrentModifications(
+        Schueler geschwister, boolean gemeinsameMutterOderBeideOhneMutter,
+        boolean gemeinsamenVaterOderBeideOhneVater) {
+
+        Angehoeriger mutterGeschwisterNeu
+            = (gemeinsameMutterOderBeideOhneMutter ? mutter : geschwister.getMutter());
+        Angehoeriger vaterGeschwisterNeu
+            = (gemeinsamenVaterOderBeideOhneVater ? vater : geschwister.getVater());
+
+        if (mutterGeschwisterNeu != null && mutterGeschwisterNeu.getWuenschtEmails() != null
+            && mutterGeschwisterNeu.getWuenschtEmails()) {
+            return true;
+        }
+
+        return vaterGeschwisterNeu != null && vaterGeschwisterNeu.getWuenschtEmails() != null
+            && vaterGeschwisterNeu.getWuenschtEmails();
     }
 
     /**
