@@ -445,6 +445,43 @@ public class ValidateSchuelerCommand implements Command {
                 }
             }
 
+            // 7.d Keine E-Mail für Geschwister mit aktuellen Änderungen
+            //     (nur relevant, falls Geschwister nur einen Elternteil gemeinsam haben)
+            for (Schueler geschwister : geschwisterList) {
+                boolean gemeinsameMutterOderBeideOhneMutter
+                    = hasGeschwisterGemeinsameMutterOderBeideOhneMutter(geschwister);
+                boolean gemeinsamenVaterOderBeideOhneVater
+                    = hasGeschwisterGemeinsamenVaterOderBeideOhneVater(geschwister);
+                if (!doElternOfGeschwisterHaveEmailAfterCurrentModifications(
+                    geschwister, gemeinsameMutterOderBeideOhneMutter,
+                    gemeinsamenVaterOderBeideOhneVater)) {
+                    String mutterOderVater = (gemeinsameMutterOderBeideOhneMutter)
+                        ? "die Mutter" : "den Vater";
+                    String message = "Bitte E-Mail für " + mutterOderVater + " erfassen!\n\n" +
+                        "Wird keine E-Mail erfasst, hat dies zur Folge, dass für das " +
+                        "Geschwister " + geschwister.getVorname() + " " +
+                        geschwister.getNachname() + "\nfür keinen Elternteil eine E-Mail " +
+                        "erfasst ist.";
+                    String emailErfassen = (gemeinsameMutterOderBeideOhneMutter)
+                        ? "Email für Mutter erfassen" : "Email für Vater erfassen";
+                    Object[] options = {"Warnung ignorieren", emailErfassen};
+                    int n = JOptionPane.showOptionDialog(
+                        null,
+                        message,
+                        "Warnung",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        svmContext.getDialogIcons().getWarningIcon(),
+                        options,  //the titles of buttons
+                        options[1]); //default button title
+                    if (n == 1) {
+                        // Abbruch
+                        result = new AbbrechenResult();
+                        return;
+                    }
+                }
+            }
+
             // 8. Identische Adressen?
             CheckIdentischeAdressenCommand checkIdentischeAdressenCommand = new CheckIdentischeAdressenCommand(schueler, mutterFoundInDatabase, vaterFoundInDatabase, rechnungsempfaengerDrittpersonFoundInDatabase, isRechnungsempfaengerDrittperson());
             checkIdentischeAdressenCommand.execute();
