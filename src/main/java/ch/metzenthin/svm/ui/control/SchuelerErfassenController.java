@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.DeleteSchuelerCommand;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
@@ -164,6 +165,11 @@ public class SchuelerErfassenController extends AbstractController {
         // Keine wünscht Emails-Checkbox anzeigen (wird nicht ausgewertet)
         drittempfaengerPanel.getLblWuenschtEmails().setVisible(false);
         drittempfaengerPanel.getCheckBoxWuenschtEmails().setVisible(false);
+        // Anrede: Default Frau
+        try {
+            drittempfaengerModel.setAnrede(Anrede.FRAU);
+        } catch (SvmRequiredException ignore) {
+        }
         // Default deaktiviert
         drittempfaengerModel.disableFields();
         schuelerErfassenModel.setDrittempfaengerModel(drittempfaengerModel);
