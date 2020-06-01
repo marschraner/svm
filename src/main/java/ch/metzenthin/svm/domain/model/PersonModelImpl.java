@@ -366,6 +366,15 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
                 }
             }
         }
+        if (checkNotEmpty(getPerson().getFestnetz()) && !isSetName()) {
+            throw new SvmValidationException(2005, "Nachname und Vorname müssen angegeben werden, wenn ein Festnetz erfasst ist", Field.NACHNAME);
+        }
+        if (checkNotEmpty(getPerson().getNatel()) && !isSetName()) {
+            throw new SvmValidationException(2006, "Nachname und Vorname müssen angegeben werden, wenn ein Natel erfasst ist", Field.NACHNAME);
+        }
+        if (checkNotEmpty(getPerson().getEmail()) && !isSetName()) {
+            throw new SvmValidationException(2007, "Nachname und Vorname müssen angegeben werden, wenn eine E-Mail erfasst ist", Field.NACHNAME);
+        }
     }
 
     private boolean isSetAnyAdresseElement() {
