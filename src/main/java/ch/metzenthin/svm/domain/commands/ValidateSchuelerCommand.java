@@ -206,6 +206,7 @@ public class ValidateSchuelerCommand implements Command {
     }
 
     @Override
+    @SuppressWarnings("DuplicatedCode")
     public void execute() {
 
         determineHowToProceed();
@@ -226,6 +227,8 @@ public class ValidateSchuelerCommand implements Command {
                 }
                 if (!checkNotEmpty(mutter.getEmail())) {
                     mutter.setWuenschtEmails(null);
+                } else if (mutter.getWuenschtEmails() == null) {
+                    mutter.setWuenschtEmails(false);
                 }
             } else {
                 schueler.setMutter(null); // Falls der Schüler bereits in einem vorangehenden, abgebrochenen Command verwendet wurde
@@ -240,6 +243,8 @@ public class ValidateSchuelerCommand implements Command {
                 }
                 if (!checkNotEmpty(vater.getEmail())) {
                     vater.setWuenschtEmails(null);
+                } else if (vater.getWuenschtEmails() == null) {
+                    vater.setWuenschtEmails(false);
                 }
             } else {
                 schueler.setVater(null); // Falls der Schüler bereits in einem vorangehenden, abgebrochenen Command verwendet wurde

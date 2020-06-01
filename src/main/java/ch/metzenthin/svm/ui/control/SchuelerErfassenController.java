@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -85,7 +86,7 @@ public class SchuelerErfassenController extends AbstractController {
         schuelerErfassenModel.setSchuelerModel(schuelerModel);
     }
 
-    private AbstractController mutterController;
+    private AngehoerigerController mutterController;
 
     public void setMutterPanel(AngehoerigerPanel mutterPanel, AngehoerigerModel mutterModel) {
         mutterController = mutterPanel.setModel(mutterModel, defaultButtonEnabled);
@@ -99,12 +100,33 @@ public class SchuelerErfassenController extends AbstractController {
             mutterModel.setIsRechnungsempfaenger(true);
         } catch (SvmValidationException ignore) {
         }
-        // wünscht Emails auf true setzen
-        mutterModel.setWuenschtEmails(true);
+        // Gleiche Adresse wie Schüler
+        if (isBearbeiten) {
+            // bearbeiten: false (falls Mutter vorhanden, wird danach dieser Wert genommen)
+            mutterModel.setIsGleicheAdresseWieSchueler(false);
+        } else {
+            // neu: true
+            mutterModel.setIsGleicheAdresseWieSchueler(true);
+            mutterModel.disableFields(getAdresseFields());
+        }
+        // Wünscht Emails
+        // bearbeiten: false (falls Mutter vorhanden, wird danach dieser Wert genommen)
+        // neu: true
+        mutterModel.setWuenschtEmails(!isBearbeiten);
         schuelerErfassenModel.setMutterModel(mutterModel);
     }
 
-    private AbstractController vaterController;
+    @SuppressWarnings("DuplicatedCode")
+    private static Set<Field> getAdresseFields() {
+        Set<Field> adresseFields = new HashSet<>();
+        adresseFields.add(Field.STRASSE_HAUSNUMMER);
+        adresseFields.add(Field.PLZ);
+        adresseFields.add(Field.ORT);
+        adresseFields.add(Field.FESTNETZ);
+        return adresseFields;
+    }
+
+    private AngehoerigerController vaterController;
 
     public void setVaterPanel(AngehoerigerPanel vaterPanel, AngehoerigerModel vaterModel) {
         vaterController = vaterPanel.setModel(vaterModel, defaultButtonEnabled);
@@ -114,7 +136,16 @@ public class SchuelerErfassenController extends AbstractController {
             vaterModel.setAnrede(Anrede.HERR);
         } catch (SvmValidationException ignore) {
         }
-        // wünscht Emails auf false setzen
+        // Gleiche Adresse wie Schüler
+        if (isBearbeiten) {
+            // bearbeiten: false (falls Vater vorhanden, wird danach dieser Wert genommen)
+            vaterModel.setIsGleicheAdresseWieSchueler(false);
+        } else {
+            // neu: true
+            vaterModel.setIsGleicheAdresseWieSchueler(true);
+            vaterModel.disableFields(getAdresseFields());
+        }
+        // Wünscht Emails: false
         vaterModel.setWuenschtEmails(false);
         schuelerErfassenModel.setVaterModel(vaterModel);
     }
@@ -263,9 +294,23 @@ public class SchuelerErfassenController extends AbstractController {
 
     @Override
     public boolean validateOnSpeichern() {
+        // Defaultmässig sind beim Erfassen eines neuen Schülers für Mutter und Vater
+        // "gleiche Adresse wie Schüler" selektiert, für Mutter zudem "wünscht E-Mails".
+        // Falls die Mutter / der Vater nicht erfasst werden (kein Nachname), sollen diese Felder
+        // auf false gesetzt werden. Andernfalls hätte die nicht erfasste Mutter / der nicht
+        // erfasste Vater eine Adresse / ein Festnetz bzw. "wünscht E-Mails" selektiert, ohne
+        // dass eine E-Mail gesetzt ist, was nicht zulässig ist.
         try {
             schuelerController.validateWithThrowException();
+            if (schuelerErfassenModel.isEmptyNachnameMutter()) {
+                mutterController.setModelGleicheAdresseWieSchueler(false);
+                mutterController.setModelWuenschtEmails(false);
+            }
             mutterController.validateWithThrowException();
+            if (schuelerErfassenModel.isEmptyNachnameVater()) {
+                vaterController.setModelGleicheAdresseWieSchueler(false);
+                vaterController.setModelWuenschtEmails(false);
+            }
             vaterController.validateWithThrowException();
             drittempfaengerController.validateWithThrowException();
             validateWithThrowException();

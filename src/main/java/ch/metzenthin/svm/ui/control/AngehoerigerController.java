@@ -75,6 +75,10 @@ public class AngehoerigerController extends PersonController {
         angehoerigerModel.setIsGleicheAdresseWieSchueler(checkBoxGleicheAdresseWieSchueler.isSelected());
     }
 
+    public void setModelGleicheAdresseWieSchueler(boolean isGleicheAdresseWieSchueler) {
+        angehoerigerModel.setIsGleicheAdresseWieSchueler(isGleicheAdresseWieSchueler);
+    }
+
     private void onWuenschtEmailsEvent() {
         LOGGER.trace("AngehoerigerController Event WuenschtEmails. Selected=" + checkBoxWuenschtEmails.isSelected());
         setModelWuenschtEmails();
@@ -82,6 +86,10 @@ public class AngehoerigerController extends PersonController {
 
     private void setModelWuenschtEmails() {
         angehoerigerModel.setWuenschtEmails(checkBoxWuenschtEmails.isSelected());
+    }
+
+    public void setModelWuenschtEmails(Boolean isWuenschtEmails) {
+        angehoerigerModel.setWuenschtEmails(isWuenschtEmails);
     }
 
     private void onRechnungsempfaengerEvent() {

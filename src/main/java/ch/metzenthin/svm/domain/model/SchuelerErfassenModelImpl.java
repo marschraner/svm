@@ -158,6 +158,18 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         });
     }
 
+    @Override
+    public boolean isEmptyNachnameMutter() {
+        return mutterModel.getAngehoeriger() == null
+            || !checkNotEmpty(mutterModel.getAngehoeriger().getNachname());
+    }
+
+    @Override
+    public boolean isEmptyNachnameVater() {
+        return vaterModel.getAngehoeriger() == null
+            || !checkNotEmpty(vaterModel.getAngehoeriger().getNachname());
+    }
+
     private void onSchuelerModelPropertyChange(PropertyChangeEvent evt) {
         if (isStrasseHausnummerPropertyChange(evt)) {
             if (mutterModel.isGleicheAdresseWieSchueler()) {
@@ -324,7 +336,8 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         angehoerigerModel.initAdresse(null);
     }
 
-    private Set<Field> getAdresseFields() {
+    @SuppressWarnings("DuplicatedCode")
+    private static Set<Field> getAdresseFields() {
         Set<Field> adresseFields = new HashSet<>();
         adresseFields.add(Field.STRASSE_HAUSNUMMER);
         adresseFields.add(Field.PLZ);

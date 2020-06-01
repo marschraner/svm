@@ -108,11 +108,11 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
 
     @Override
     public void doValidate() throws SvmValidationException {
-        if (isSetName() && angehoeriger.getWuenschtEmails() != null
-            && angehoeriger.getWuenschtEmails() && !checkNotEmpty(angehoeriger.getEmail())) {
+        if (angehoeriger.getWuenschtEmails() != null && angehoeriger.getWuenschtEmails()
+            && !checkNotEmpty(angehoeriger.getEmail())) {
             throw new SvmValidationException(2010,
-                    "Wenn \"Wünscht E-Mails\" selektiert ist, darf die E-Mail nicht leer sein",
-                    Field.EMAIL);
+                "Wenn \"Wünscht E-Mails\" selektiert ist, darf die E-Mail nicht leer sein",
+                Field.EMAIL);
         }
         super.doValidate();
     }
@@ -138,6 +138,9 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
                 setIsRechnungsempfaenger(isRechnungsempfaengerOrigin);
                 isGleicheAdresseWieSchueler = !isGleicheAdresseWieSchuelerOrigin; // damit PropertyChange ausgelöst wird!
                 setIsGleicheAdresseWieSchueler(isGleicheAdresseWieSchuelerOrigin);
+                if (angehoerigerOrigin.getWuenschtEmails() != null) {
+                    setWuenschtEmails(!angehoerigerOrigin.getWuenschtEmails()); // damit PropertyChange ausgelöst wird!
+                }
                 setWuenschtEmails(angehoerigerOrigin.getWuenschtEmails());
             } catch (SvmValidationException ignore) {
             }
