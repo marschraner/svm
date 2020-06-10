@@ -223,7 +223,7 @@ public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
         gbc.fill = GridBagConstraints.VERTICAL;
         panel2.add(spacer6, gbc);
         lblKinder = new JLabel();
-        lblKinder.setText("Angemeldete Kinder:");
+        lblKinder.setText("Erfasste Kinder:");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 5;

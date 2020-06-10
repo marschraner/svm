@@ -237,7 +237,7 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends Sch
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel3.add(spacer6, gbc);
         lblKinder = new JLabel();
-        lblKinder.setText("Angemeldete Kinder:");
+        lblKinder.setText("Erfasste Kinder:");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 5;

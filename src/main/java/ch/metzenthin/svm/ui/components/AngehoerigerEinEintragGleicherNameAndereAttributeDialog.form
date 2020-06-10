@@ -102,7 +102,7 @@
                   <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="Angemeldete Kinder:"/>
+                  <text value="Erfasste Kinder:"/>
                 </properties>
               </component>
               <component id="c2329" class="javax.swing.JLabel" binding="lblKinderValue">
