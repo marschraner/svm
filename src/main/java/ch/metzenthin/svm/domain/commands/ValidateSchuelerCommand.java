@@ -595,14 +595,14 @@ public class ValidateSchuelerCommand implements Command {
     }
 
     private boolean hasGeschwisterGemeinsameMutterOderBeideOhneMutter(Schueler geschwister) {
-        return mutterFoundInDatabase != null
+        return (mutter == null && mutterFoundInDatabase != null)
             || (mutter != null && mutterOrigin != null && geschwister.getMutter() != null
             && geschwister.getMutter().getPersonId().equals(mutterOrigin.getPersonId()))
             || (mutter == null && geschwister.getMutter() == null);
     }
 
     private boolean hasGeschwisterGemeinsamenVaterOderBeideOhneVater(Schueler geschwister) {
-        return vaterFoundInDatabase != null
+        return (vater == null && vaterFoundInDatabase != null)
             || (vater != null && vaterOrigin != null && geschwister.getVater() != null
             && geschwister.getVater().getPersonId().equals(vaterOrigin.getPersonId()))
             || (vater == null && geschwister.getVater() == null);
@@ -612,10 +612,8 @@ public class ValidateSchuelerCommand implements Command {
         Schueler geschwister, boolean gemeinsameMutterOderBeideOhneMutter,
         boolean gemeinsamenVaterOderBeideOhneVater) {
 
-        Angehoeriger mutterGeschwisterNeu
-            = (gemeinsameMutterOderBeideOhneMutter ? mutter : geschwister.getMutter());
-        Angehoeriger vaterGeschwisterNeu
-            = (gemeinsamenVaterOderBeideOhneVater ? vater : geschwister.getVater());
+        Angehoeriger mutterGeschwisterNeu = getMutterGeschwisterNeu(geschwister, gemeinsameMutterOderBeideOhneMutter);
+        Angehoeriger vaterGeschwisterNeu = getVaterGeschwisterNeu(geschwister, gemeinsamenVaterOderBeideOhneVater);
 
         if (mutterGeschwisterNeu != null && mutterGeschwisterNeu.getEmail() != null) {
             return true;
@@ -624,14 +622,28 @@ public class ValidateSchuelerCommand implements Command {
         return vaterGeschwisterNeu != null && vaterGeschwisterNeu.getEmail() != null;
     }
 
+    private Angehoeriger getMutterGeschwisterNeu(Schueler geschwister, boolean gemeinsameMutterOderBeideOhneMutter) {
+        if (gemeinsameMutterOderBeideOhneMutter) {
+            return (mutter == null && mutterFoundInDatabase != null) ? mutterFoundInDatabase : mutter;
+        } else {
+            return geschwister.getMutter();
+        }
+    }
+
+    private Angehoeriger getVaterGeschwisterNeu(Schueler geschwister, boolean gemeinsamenVaterOderBeideOhneVater) {
+        if (gemeinsamenVaterOderBeideOhneVater) {
+            return (vater == null && vaterFoundInDatabase != null) ? vaterFoundInDatabase : vater;
+        } else {
+            return geschwister.getVater();
+        }
+    }
+
     private boolean isForElternOfGeschwisterWuenschtEmailsSetAfterCurrentModifications(
         Schueler geschwister, boolean gemeinsameMutterOderBeideOhneMutter,
         boolean gemeinsamenVaterOderBeideOhneVater) {
 
-        Angehoeriger mutterGeschwisterNeu
-            = (gemeinsameMutterOderBeideOhneMutter ? mutter : geschwister.getMutter());
-        Angehoeriger vaterGeschwisterNeu
-            = (gemeinsamenVaterOderBeideOhneVater ? vater : geschwister.getVater());
+        Angehoeriger mutterGeschwisterNeu = getMutterGeschwisterNeu(geschwister, gemeinsameMutterOderBeideOhneMutter);
+        Angehoeriger vaterGeschwisterNeu = getVaterGeschwisterNeu(geschwister, gemeinsamenVaterOderBeideOhneVater);
 
         if (mutterGeschwisterNeu != null && mutterGeschwisterNeu.getWuenschtEmails() != null
             && mutterGeschwisterNeu.getWuenschtEmails()) {
