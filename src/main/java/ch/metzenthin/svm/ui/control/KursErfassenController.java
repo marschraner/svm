@@ -32,11 +32,11 @@ public class KursErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private KursErfassenModel kursErfassenModel;
+    private final KursErfassenModel kursErfassenModel;
     private final SvmContext svmContext;
     private final KurseSemesterwahlModel kurseSemesterwahlModel;
     private final KurseTableModel kurseTableModel;
-    private boolean defaultButtonEnabled;
+    private final boolean defaultButtonEnabled;
     private JDialog kursErfassenDialog;
     private JComboBox<Kurstyp> comboBoxKurstyp;
     private JComboBox<Wochentag> comboBoxWochentag;
@@ -513,11 +513,7 @@ public class KursErfassenController extends AbstractController {
     private void onLehrkraft2Selected() {
         LOGGER.trace("KursErfassenController Event Lehrkraft2 selected=" + comboBoxLehrkraft2.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft2.getSelectedItem(), kursErfassenModel.getMitarbeiter2());
-        try {
-            setModelLehrkraft2();
-        } catch (SvmValidationException e) {
-            return;
-        }
+        setModelLehrkraft2();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
@@ -525,7 +521,7 @@ public class KursErfassenController extends AbstractController {
         }
     }
 
-    private void setModelLehrkraft2() throws SvmValidationException {
+    private void setModelLehrkraft2() {
         makeErrorLabelInvisible(Field.LEHRKRAFT2);
         kursErfassenModel.setMitarbeiter2((Mitarbeiter) comboBoxLehrkraft2.getSelectedItem());
     }
@@ -641,8 +637,9 @@ public class KursErfassenController extends AbstractController {
             btnSpeichern.setFocusPainted(false);
             return;
         }
-        if (kursErfassenModel.checkKursBereitsErfasst(kurseTableModel)) {
-            JOptionPane.showMessageDialog(kursErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+        if (kursErfassenModel.checkKursBereitsErfasst(kurseTableModel, kurseSemesterwahlModel)) {
+            JOptionPane.showMessageDialog(kursErfassenDialog, "Für das aktuelle Semester existiert bereits ein Kurs mit demselben Wochentag, \n" +
+                "demsleben Kursbeginn und derselben Lehrkraft.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
             btnSpeichern.setFocusPainted(false);
             return;
         }

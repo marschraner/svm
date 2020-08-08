@@ -21,9 +21,9 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.isTimePeriodValid;
  */
 public class KursErfassenModelImpl extends AbstractModel implements KursErfassenModel {
 
-    private static Mitarbeiter mitarbeiterKeine = new Mitarbeiter();
+    private static final Mitarbeiter MITARBEITER_KEINE = new Mitarbeiter();
 
-    private Kurs kurs = new Kurs();
+    private final Kurs kurs = new Kurs();
     private Kurs kursOrigin;
     private Kurstyp kurstyp = new Kurstyp();
     private Kursort kursort = new Kursort();
@@ -218,7 +218,7 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
                 kurstypenList.add(kursOrigin.getKurstyp());
             }
         }
-        return kurstypenList.toArray(new Kurstyp[kurstypenList.size()]);
+        return kurstypenList.toArray(new Kurstyp[0]);
     }
 
     @Override
@@ -237,14 +237,14 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
                 kursorteList.add(kursOrigin.getKursort());
             }
         }
-        return kursorteList.toArray(new Kursort[kursorteList.size()]);
+        return kursorteList.toArray(new Kursort[0]);
     }
 
     @Override
     public Mitarbeiter[] getSelectableLehrkraefte1(SvmModel svmModel) {
         List<Mitarbeiter> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
         addInaktiveLehrkraefteOrigin(lehrkraefteList);
-        return lehrkraefteList.toArray(new Mitarbeiter[lehrkraefteList.size()]);
+        return lehrkraefteList.toArray(new Mitarbeiter[0]);
     }
 
     private void addInaktiveLehrkraefteOrigin(List<Mitarbeiter> lehrkraefteList) {
@@ -285,11 +285,11 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     public Mitarbeiter[] getSelectableLehrkraefte2(SvmModel svmModel) {
         List<Mitarbeiter> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
         // Lehrkraft2 kann auch leer sein
-        if (lehrkraefteList.size() == 0 || !lehrkraefteList.get(0).isIdenticalWith(mitarbeiterKeine)) {
-            lehrkraefteList.add(0, mitarbeiterKeine);
+        if (lehrkraefteList.size() == 0 || !lehrkraefteList.get(0).isIdenticalWith(MITARBEITER_KEINE)) {
+            lehrkraefteList.add(0, MITARBEITER_KEINE);
         }
         addInaktiveLehrkraefteOrigin(lehrkraefteList);
-        return lehrkraefteList.toArray(new Mitarbeiter[lehrkraefteList.size()]);
+        return lehrkraefteList.toArray(new Mitarbeiter[0]);
     }
 
     @Override
@@ -299,7 +299,7 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
 
     @Override
     public void setMitarbeiter2(Mitarbeiter mitarbeiter2) {
-        if (mitarbeiter2 == mitarbeiterKeine) {
+        if (mitarbeiter2 == MITARBEITER_KEINE) {
             mitarbeiter2 = null;
         }
         Mitarbeiter oldValue = this.mitarbeiter2;
@@ -334,9 +334,11 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     }
 
     @Override
-    public boolean checkKursBereitsErfasst(KurseTableModel kurseTableModel) {
+    public boolean checkKursBereitsErfasst(KurseTableModel kurseTableModel, KurseSemesterwahlModel kurseSemesterwahlModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        CheckKursBereitsErfasstCommand checkKursBereitsErfasstCommand = new CheckKursBereitsErfasstCommand(kurs, kursOrigin, kurseTableModel.getKurse());
+        CheckKursBereitsErfasstCommand checkKursBereitsErfasstCommand
+            = new CheckKursBereitsErfasstCommand(
+                kurs, kurseSemesterwahlModel.getSemester(), mitarbeiter1, mitarbeiter2, kursOrigin, kurseTableModel.getKurse());
         commandInvoker.executeCommand(checkKursBereitsErfasstCommand);
         return checkKursBereitsErfasstCommand.isBereitsErfasst();
     }
@@ -377,8 +379,8 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
                     setMitarbeiter2(kursOrigin.getLehrkraefte().get(1));
                 }
                 setBemerkungen(kursOrigin.getBemerkungen());
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+            } catch (SvmValidationException e) {
+                e.printStackTrace();
             }
             setBulkUpdate(false);
         } else {

@@ -23,6 +23,7 @@ public class Kurs implements Comparable<Kurs> {
     @Column(name = "kurs_id")
     private Integer kursId;
 
+    @SuppressWarnings("unused")
     @Version
     @Column(name = "last_updated")
     private Timestamp version;
@@ -60,16 +61,16 @@ public class Kurs implements Comparable<Kurs> {
     @JoinTable(name = "Kurs_Lehrkraft",
             joinColumns = {@JoinColumn(name = "kurs_id")},
             inverseJoinColumns = {@JoinColumn(name = "person_id")})
-    private List<Mitarbeiter> lehrkraefte = new ArrayList<>();
+    private final List<Mitarbeiter> lehrkraefte = new ArrayList<>();
 
-    @Column(name = "bemerkungen", nullable = true)
+    @Column(name = "bemerkungen")
     private String bemerkungen;
 
     @OneToMany(mappedBy = "kurs")
-    private Set<Kursanmeldung> kursanmeldungen = new HashSet<>();
+    private final Set<Kursanmeldung> kursanmeldungen = new HashSet<>();
 
     @Transient
-    private boolean neusteZuoberst;
+    private final boolean neusteZuoberst;
 
     public Kurs() {
         Properties svmProperties = SvmProperties.getSvmProperties();
@@ -88,7 +89,8 @@ public class Kurs implements Comparable<Kurs> {
 
     @Override
     public String toString() {
-        StringBuilder kursAsStr = new StringBuilder(kurstyp + " " + stufe + ", " + wochentag + " " + asString(zeitBeginn) + "-" + asString(zeitEnde) + " (" + lehrkraefte.get(0));
+        String lehrkraft1 = (lehrkraefte.isEmpty() ? "-" : lehrkraefte.get(0).toString());
+        StringBuilder kursAsStr = new StringBuilder(kurstyp + " " + stufe + ", " + wochentag + " " + asString(zeitBeginn) + "-" + asString(zeitEnde) + " (" + lehrkraft1);
         for (int i = 1; i < lehrkraefte.size(); i++) {
             kursAsStr.append(" / ").append(lehrkraefte.get(i));
         }
@@ -176,6 +178,7 @@ public class Kurs implements Comparable<Kurs> {
         return kursId;
     }
 
+    @SuppressWarnings("unused")
     public void setKursId(Integer kursId) {
         this.kursId = kursId;
     }
