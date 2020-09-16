@@ -7,7 +7,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
-          <factory-entry name="svm" value="ca4f85a3-44ed-452e-b12e-f9c141832a6b" />
+          <factory-entry name="svm" value="82500794-52bb-49d8-9ef7-93ad0eb40aa6" />
         </datasource-mapping>
         <naming-strategy-map />
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
