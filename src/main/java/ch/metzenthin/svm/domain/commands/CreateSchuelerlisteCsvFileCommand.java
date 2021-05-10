@@ -18,7 +18,7 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
 
     // input
-    private SchuelerSuchenTableModel schuelerSuchenTableModel;
+    private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final File outputFile;
 
     public CreateSchuelerlisteCsvFileCommand(SchuelerSuchenTableModel schuelersuchenTableModel, File outputFile) {
@@ -47,9 +47,15 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
             out.write(separator);
             out.write("Geburtsdatum");
             out.write(separator);
+            out.write("E-Mail Schüler");
+            out.write(separator);
             out.write("Mutter");
             out.write(separator);
+            out.write("E-Mail Mutter");
+            out.write(separator);
             out.write("Vater");
+            out.write(separator);
+            out.write("E-Mail Vater");
             out.write(separator);
             out.write("Rechnungsempfänger");
             out.write(separator);
@@ -74,12 +80,26 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
                 out.write(separator);
                 out.write(asString(schueler.getGeburtsdatum()));
                 out.write(separator);
+                if (schueler.getEmail() != null) {
+                    out.write(schueler.getEmail());
+                }
+                out.write(separator);
                 if (schueler.getMutter() != null) {
                     out.write(nachnameGratiskindFormatter.format(schueler.getMutter().getNachname()) + " " + schueler.getMutter().getVorname());
                 }
                 out.write(separator);
+                if (schueler.getMutter() != null && schueler.getMutter().getWuenschtEmails() != null
+                        && schueler.getMutter().getWuenschtEmails() && schueler.getMutter().getEmail() != null) {
+                    out.write(schueler.getMutter().getEmail());
+                }
+                out.write(separator);
                 if (schueler.getVater() != null) {
                     out.write(nachnameGratiskindFormatter.format(schueler.getVater().getNachname()) + " " + schueler.getVater().getVorname());
+                }
+                out.write(separator);
+                if (schueler.getVater() != null && schueler.getVater().getWuenschtEmails() != null
+                        && schueler.getVater().getWuenschtEmails() && schueler.getVater().getEmail() != null) {
+                    out.write(schueler.getVater().getEmail());
                 }
                 out.write(separator);
                 String rechnungsempfaenger;
