@@ -321,12 +321,14 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 result = createKurslisteCsvFileCommand.getResult();
                 break;
             case VORRECHNUNGEN_SERIENBRIEF:
-                CreateRechnungenSerienbriefCsvFileCommand createVorrechnungenSerienbriefCsvFileCommand = new CreateRechnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSelektierteSemesterrechnungen(), Rechnungstyp.VORRECHNUNG, outputFile);
+                Semester previousSemester1 = findPreviousSemester(semesterrechnungenTableModel);
+                CreateRechnungenSerienbriefCsvFileCommand createVorrechnungenSerienbriefCsvFileCommand = new CreateRechnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSelektierteSemesterrechnungen(), previousSemester1, Rechnungstyp.VORRECHNUNG, outputFile);
                 commandInvoker.executeCommand(createVorrechnungenSerienbriefCsvFileCommand);
                 result = createVorrechnungenSerienbriefCsvFileCommand.getResult();
                 break;
             case NACHRECHNUNGEN_SERIENBRIEF:
-                CreateRechnungenSerienbriefCsvFileCommand createNachrechnungenSerienbriefCsvFileCommand = new CreateRechnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSelektierteSemesterrechnungen(), Rechnungstyp.NACHRECHNUNG, outputFile);
+                Semester previousSemester2 = findPreviousSemester(semesterrechnungenTableModel);
+                CreateRechnungenSerienbriefCsvFileCommand createNachrechnungenSerienbriefCsvFileCommand = new CreateRechnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSelektierteSemesterrechnungen(), previousSemester2, Rechnungstyp.NACHRECHNUNG, outputFile);
                 commandInvoker.executeCommand(createNachrechnungenSerienbriefCsvFileCommand);
                 result = createNachrechnungenSerienbriefCsvFileCommand.getResult();
                 break;
@@ -352,21 +354,25 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 result = createAdressenCsvFileCommandRechnungsempfaengerSemesterrechnung.getResult();
                 break;
             case RECHNUNGSLISTE:
-                Semester currentSemester;
-                if (semesterrechnungenTableModel.getSelektierteSemesterrechnungen().isEmpty()) {
-                    currentSemester = null;
-                } else {
-                    currentSemester = semesterrechnungenTableModel.getSelektierteSemesterrechnungen().get(0).getSemester();
-                }
-                FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
-                getCommandInvoker().executeCommand(findPreviousSemesterCommand);
-                Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
-                CreateRechnungslisteCsvFileCommand createRechnungslisteCsvFileCommand = new CreateRechnungslisteCsvFileCommand(semesterrechnungenTableModel.getSelektierteSemesterrechnungen(), previousSemester, outputFile);
+                Semester previousSemester3 = findPreviousSemester(semesterrechnungenTableModel);
+                CreateRechnungslisteCsvFileCommand createRechnungslisteCsvFileCommand = new CreateRechnungslisteCsvFileCommand(semesterrechnungenTableModel.getSelektierteSemesterrechnungen(), previousSemester3, outputFile);
                 commandInvoker.executeCommand(createRechnungslisteCsvFileCommand);
                 result = createRechnungslisteCsvFileCommand.getResult();
                 break;
         }
         return result;
+    }
+
+    private Semester findPreviousSemester(SemesterrechnungenTableModel semesterrechnungenTableModel) {
+        Semester currentSemester;
+        if (semesterrechnungenTableModel.getSelektierteSemesterrechnungen().isEmpty()) {
+            currentSemester = null;
+        } else {
+            currentSemester = semesterrechnungenTableModel.getSelektierteSemesterrechnungen().get(0).getSemester();
+        }
+        FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
+        getCommandInvoker().executeCommand(findPreviousSemesterCommand);
+        return findPreviousSemesterCommand.getPreviousSemester();
     }
 
     @Override

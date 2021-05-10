@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
 import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
 import java.io.*;
@@ -17,12 +18,14 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeCommand {
 
     // input
-    private List<? extends Semesterrechnung> semesterrechnungList;
-    private Rechnungstyp rechnungstyp;
+    private final List<? extends Semesterrechnung> semesterrechnungList;
+    private final Semester previousSemester;
+    private final Rechnungstyp rechnungstyp;
     private final File outputFile;
 
-    public CreateRechnungenSerienbriefCsvFileCommand(List<? extends Semesterrechnung> semesterrechnungList, Rechnungstyp rechnungstyp, File outputFile) {
+    public CreateRechnungenSerienbriefCsvFileCommand(List<? extends Semesterrechnung> semesterrechnungList, Semester previousSemester, Rechnungstyp rechnungstyp, File outputFile) {
         this.semesterrechnungList = semesterrechnungList;
+        this.previousSemester = previousSemester;
         this.rechnungstyp = rechnungstyp;
         this.outputFile = outputFile;
     }
@@ -67,6 +70,8 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
             out.write("Stipendium");
             out.write(separator);
             out.write("Rechnungsbetrag");
+            out.write(separator);
+            out.write("Schüler");
             out.write('\n');
 
             // Daten
@@ -169,6 +174,8 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                         out.write(rechnungsbetragNachrechnung.toString());
                     }
                 }
+                out.write(separator);
+                out.write(semesterrechnung.getAktiveSchuelerRechnungsempfaengerAsStr(previousSemester));
                 out.write('\n');
             }
 
