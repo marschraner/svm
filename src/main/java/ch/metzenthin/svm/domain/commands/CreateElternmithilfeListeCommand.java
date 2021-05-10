@@ -241,7 +241,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
 
         // Tabelle erzeugen
         Semester semester = schuelerSuchenTableModel.getSemester();
-        String maerchenspielSchuljahr = "Märchenspiel " + semester.getSchuljahr();
+        String maerchenspielSchuljahr = (semester == null) ?  "" : "Märchenspiel " + semester.getSchuljahr();
         String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                      " + maerchenspielSchuljahr;
         CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile, 850, 1, 1000, 1, 0, 0);
         createWordTableCommand.execute();

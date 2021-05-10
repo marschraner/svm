@@ -177,7 +177,7 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
         String schuljahrSemester = "";
         if (kurse.size() > 0) {
             Semester semester = kurse.get(0).getSemester();
-            schuljahrSemester = "Schuljahr " + semester.getSchuljahr() + ", " + semester.getSemesterbezeichnung();
+            schuljahrSemester = (semester == null) ?  "" : "Schuljahr " + semester.getSchuljahr() + ", " + semester.getSemesterbezeichnung();
         }
         String titel1 = "Kinder- und Jugendtheater Metzenthin AG                              " + schuljahrSemester;
         CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile);

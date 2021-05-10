@@ -149,7 +149,7 @@ public class ListenExportController extends AbstractController {
                 comboBoxListentyp.removeItem(Listentyp.SPEZIELLE_ABSENZENLISTE);
             }
             // Keine Absenzenliste Oktober - Februar, falls 2. Semester
-            if (schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER) {
+            if (schuelerSuchenTableModel.getSemester() == null || schuelerSuchenTableModel.getSemester().getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER) {
                 comboBoxListentyp.removeItem(Listentyp.ABSENZENLISTE_OKTOBER_FEBRUAR);
             }
             if (schuelerSuchenTableModel.getMaerchen() == null || schuelerSuchenTableModel.getAnzZuExportierendeMaercheneinteilungen() == 0) {

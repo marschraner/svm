@@ -270,7 +270,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
 
         // Tabelle erzeugen
         Semester semester = schuelerSuchenTableModel.getSemester();
-        String schuljahrSemester = "Schuljahr " + semester.getSchuljahr() + ", " + semester.getSemesterbezeichnung();
+        String schuljahrSemester = (semester == null) ?  "" : "Schuljahr " + semester.getSchuljahr() + ", " + semester.getSemesterbezeichnung();
         String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                 " + schuljahrSemester;
         CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile);
         createWordTableCommand.execute();

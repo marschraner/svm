@@ -312,7 +312,7 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
 
         // Tabelle erzeugen
         Semester semester = schuelerSuchenTableModel.getSemester();
-        String maerchenspielSchuljahr = "Märchenspiel " + semester.getSchuljahr();
+        String maerchenspielSchuljahr = (semester == null) ?  "" : "Märchenspiel " + semester.getSchuljahr();
         String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                             " + maerchenspielSchuljahr;
         CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile);
         createWordTableCommand.execute();
