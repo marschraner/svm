@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -37,7 +38,10 @@ public class CheckElternmithilfeBereitsBeiGeschwisterErfasstCommandTest {
         maercheneinteilung1.getSchueler().getMaercheneinteilungen().add(maercheneinteilung1);
         CheckElternmithilfeBereitsBeiGeschwisterErfasstCommand checkElternmithilfeBereitsBeiGeschwisterErfasstCommand = new CheckElternmithilfeBereitsBeiGeschwisterErfasstCommand(geschwister1, maerchen);
         checkElternmithilfeBereitsBeiGeschwisterErfasstCommand.execute();
-        assertNull(checkElternmithilfeBereitsBeiGeschwisterErfasstCommand.getGeschwisterMitBereitsErfassterElternmithilfe());
+        List<Maercheneinteilung> maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe
+                = checkElternmithilfeBereitsBeiGeschwisterErfasstCommand
+                .getMaercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe();
+        assertTrue(maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe.isEmpty());
 
         // 2. Geschwister
         Schueler geschwister2 = new Schueler("Valentin Dan", "Rösle", new GregorianCalendar(2014, Calendar.SEPTEMBER, 25), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");
@@ -47,8 +51,11 @@ public class CheckElternmithilfeBereitsBeiGeschwisterErfasstCommandTest {
         geschwister2.setRechnungsempfaenger(vater);
         checkElternmithilfeBereitsBeiGeschwisterErfasstCommand = new CheckElternmithilfeBereitsBeiGeschwisterErfasstCommand(geschwister2, maerchen);
         checkElternmithilfeBereitsBeiGeschwisterErfasstCommand.execute();
-        Schueler bereitsErfasstesGeschwister = checkElternmithilfeBereitsBeiGeschwisterErfasstCommand.getGeschwisterMitBereitsErfassterElternmithilfe();
-        assertNotNull(bereitsErfasstesGeschwister);
-        assertEquals("Jana", bereitsErfasstesGeschwister.getVorname());
+        maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe
+                = checkElternmithilfeBereitsBeiGeschwisterErfasstCommand
+                .getMaercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe();
+        assertEquals(1, maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe.size());
+        assertEquals("Jana",
+                maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe.get(0).getSchueler().getVorname());
     }
 }

@@ -509,11 +509,12 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
     }
 
     @Override
-    public Schueler findGeschwisterElternmithilfeBereitsErfasst(SchuelerDatenblattModel schuelerDatenblattModel) {
+    public List<Maercheneinteilung> findMaercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe(SchuelerDatenblattModel schuelerDatenblattModel) {
         Schueler schueler = schuelerDatenblattModel.getSchueler();
         CheckElternmithilfeBereitsBeiGeschwisterErfasstCommand checkElternmithilfeBereitsBeiGeschwisterErfasstCommand = new CheckElternmithilfeBereitsBeiGeschwisterErfasstCommand(schueler, getMaerchen());
         checkElternmithilfeBereitsBeiGeschwisterErfasstCommand.execute();
-        return checkElternmithilfeBereitsBeiGeschwisterErfasstCommand.getGeschwisterMitBereitsErfassterElternmithilfe();
+        return checkElternmithilfeBereitsBeiGeschwisterErfasstCommand
+                .getMaercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe();
     }
 
     @Override

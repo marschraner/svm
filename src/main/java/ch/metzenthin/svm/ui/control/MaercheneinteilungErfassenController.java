@@ -12,7 +12,7 @@ import ch.metzenthin.svm.domain.model.MaercheneinteilungenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
-import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.ui.componentmodel.MaercheneinteilungenTableModel;
 import org.apache.log4j.Logger;
 
@@ -21,6 +21,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,13 +39,13 @@ public class MaercheneinteilungErfassenController extends PersonController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private MaercheneinteilungErfassenModel maercheneinteilungErfassenModel;
+    private final MaercheneinteilungErfassenModel maercheneinteilungErfassenModel;
     private final SvmContext svmContext;
     private final MaercheneinteilungenTableModel maercheneinteilungenTableModel;
-    private MaercheneinteilungenModel maercheneinteilungenModel;
-    private SchuelerDatenblattModel schuelerDatenblattModel;
-    private boolean isBearbeiten;
-    private boolean defaultButtonEnabled;
+    private final MaercheneinteilungenModel maercheneinteilungenModel;
+    private final SchuelerDatenblattModel schuelerDatenblattModel;
+    private final boolean isBearbeiten;
+    private final boolean defaultButtonEnabled;
     private JDialog maercheneinteilungErfassenDialog;
     private JSpinner spinnerMaerchen;
     private JComboBox<Gruppe> comboBoxGruppe;
@@ -81,6 +82,9 @@ public class MaercheneinteilungErfassenController extends PersonController {
     private JLabel errLblBemerkungen;
     private JButton btnSpeichern;
 
+    List<Maercheneinteilung> maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe
+            = new ArrayList<>();
+
     public MaercheneinteilungErfassenController(SvmContext svmContext, MaercheneinteilungErfassenModel maercheneinteilungErfassenModel, MaercheneinteilungenTableModel maercheneinteilungenTableModel, MaercheneinteilungenModel maercheneinteilungenModel, SchuelerDatenblattModel schuelerDatenblattModel, boolean isBearbeiten, boolean defaultButtonEnabled) {
         super(maercheneinteilungErfassenModel, defaultButtonEnabled);
         this.svmContext = svmContext;
@@ -104,13 +108,77 @@ public class MaercheneinteilungErfassenController extends PersonController {
 
     public void constructionDone() {
         maercheneinteilungErfassenModel.initializeCompleted();
-        Schueler geschwister = maercheneinteilungErfassenModel.findGeschwisterElternmithilfeBereitsErfasst(schuelerDatenblattModel);
-        if (geschwister != null) {
-            disableElternmithilfeFields(true);
-            writeElternhilfeBereitsErfasstBemerkung(geschwister);
+        maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe
+                = maercheneinteilungErfassenModel
+                .findMaercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe(
+                        schuelerDatenblattModel);
+        enableOrDisableElternmithilfeFields();
+        if (!maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe.isEmpty()) {
+            writeElternhilfeBereitsErfasstBemerkung();
+        }
+    }
+
+    private void enableOrDisableElternmithilfeFields() {
+        if (!maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe.isEmpty()) {
+            boolean elternmithilfeFieldsHaveToBeEnabled = doElternmithilfeFieldsHaveToBeEnabled();
+            disableElternmithilfeFields(!elternmithilfeFieldsHaveToBeEnabled);
         } else {
             disableElternmithilfeFields(false);
         }
+    }
+
+    private boolean doElternmithilfeFieldsHaveToBeEnabled() {
+
+        // Schüler hat kein Geschwister mit bereits erfassten Elternmithilfe
+        // -> Elternmithilfe muss erfassbar sein
+        if (maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe.isEmpty()) {
+            return true;
+        }
+
+        // Bereits erfasste Elternmithilfe für den Schüler
+        // -> bereits erfasste Elternmithilfe muss editierbar sein
+        if (maercheneinteilungErfassenModel.getElternmithilfe() != null
+                || maercheneinteilungErfassenModel.getElternmithilfeCode() != null
+                || (maercheneinteilungErfassenModel.isKuchenVorstellung1() != null
+                && maercheneinteilungErfassenModel.isKuchenVorstellung1())
+                || (maercheneinteilungErfassenModel.isKuchenVorstellung2() != null
+                && maercheneinteilungErfassenModel.isKuchenVorstellung2())
+                || (maercheneinteilungErfassenModel.isKuchenVorstellung3() != null
+                && maercheneinteilungErfassenModel.isKuchenVorstellung3())
+                || (maercheneinteilungErfassenModel.isKuchenVorstellung4() != null
+                && maercheneinteilungErfassenModel.isKuchenVorstellung4())
+                || (maercheneinteilungErfassenModel.isKuchenVorstellung5() != null
+                && maercheneinteilungErfassenModel.isKuchenVorstellung5())
+                || (maercheneinteilungErfassenModel.isKuchenVorstellung6() != null
+                && maercheneinteilungErfassenModel.isKuchenVorstellung6())
+                || (maercheneinteilungErfassenModel.isKuchenVorstellung7() != null
+                && maercheneinteilungErfassenModel.isKuchenVorstellung7())
+                || (maercheneinteilungErfassenModel.isKuchenVorstellung8() != null
+                && maercheneinteilungErfassenModel.isKuchenVorstellung8()))
+        {
+            return true;
+        }
+
+        // Schüler hat Geschwister mit bereits erfassten Elternmithilfe, aber Geschwister ist nicht
+        // in gleicher Gruppe wie Schüler (und es gibt nicht ein drittes Geschwister mit ebenfalls
+        // erfasster Elternmithilfe in gleicher Gruppe)
+        // -> weitere Elternmithilfe muss erfassbar sein
+        Gruppe gruppeSchueler = maercheneinteilungErfassenModel.getGruppe();
+        if (gruppeSchueler != null) {
+            boolean geschwisterInVerschiedenerGruppeFound = false;
+            boolean geschwisterInGleicherGruppeFound = false;
+            for (Maercheneinteilung maercheneinteilungGeschwister
+                    : maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe) {
+                if (gruppeSchueler != maercheneinteilungGeschwister.getGruppe()) {
+                    geschwisterInVerschiedenerGruppeFound = true;
+                } else {
+                    geschwisterInGleicherGruppeFound = true;
+                }
+            }
+            return geschwisterInVerschiedenerGruppeFound && !geschwisterInGleicherGruppeFound;
+        }
+
+        return false;
     }
 
     public void setMaercheneinteilungErfassenDialog(JDialog maercheneinteilungErfassenDialog) {
@@ -144,7 +212,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         if (isBearbeiten) {
             selectableMaerchens = maercheneinteilungErfassenModel.getSelectableMaerchenMaercheneinteilungOrigin();
         } else {
-            selectableMaerchens = selectableMaerchenList.toArray(new Maerchen[selectableMaerchenList.size()]);
+            selectableMaerchens = selectableMaerchenList.toArray(new Maerchen[0]);
         }
         SpinnerModel spinnerModelMaerchen = new SpinnerListModel(selectableMaerchens);
         spinnerMaerchen.setModel(spinnerModelMaerchen);
@@ -860,6 +928,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public void setTxtBemerkungen(JTextField txtBemerkungen) {
         this.txtBemerkungen = txtBemerkungen;
         if (!defaultButtonEnabled) {
@@ -1029,67 +1098,77 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void makeUnusableCheckboxesInvisible() {
-        if (maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() < 2) {
-            checkBoxKuchenVorstellung2.setVisible(false);
-        } else {
-            checkBoxKuchenVorstellung2.setVisible(true);
-        }
-        if (maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() < 3) {
-            checkBoxKuchenVorstellung3.setVisible(false);
-        } else {
-            checkBoxKuchenVorstellung3.setVisible(true);
-        }
-        if (maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() < 4) {
-            checkBoxKuchenVorstellung4.setVisible(false);
-        } else {
-            checkBoxKuchenVorstellung4.setVisible(true);
-        }
-        if (maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() < 5) {
-            checkBoxKuchenVorstellung5.setVisible(false);
-        } else {
-            checkBoxKuchenVorstellung5.setVisible(true);
-        }
-        if (maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() < 6) {
-            checkBoxKuchenVorstellung6.setVisible(false);
-        } else {
-            checkBoxKuchenVorstellung6.setVisible(true);
-        }
-        if (maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() < 7) {
-            checkBoxKuchenVorstellung7.setVisible(false);
-        } else {
-            checkBoxKuchenVorstellung7.setVisible(true);
-        }
-        if (maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() < 8) {
-            checkBoxKuchenVorstellung8.setVisible(false);
-        } else {
-            checkBoxKuchenVorstellung8.setVisible(true);
-        }
-        if (maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() < 9) {
-            checkBoxKuchenVorstellung9.setVisible(false);
-        } else {
-            checkBoxKuchenVorstellung9.setVisible(true);
-        }
+        checkBoxKuchenVorstellung2.setVisible(
+                maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() >= 2);
+        checkBoxKuchenVorstellung3.setVisible(
+                maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() >= 3);
+        checkBoxKuchenVorstellung4.setVisible(
+                maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() >= 4);
+        checkBoxKuchenVorstellung5.setVisible(
+                maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() >= 5);
+        checkBoxKuchenVorstellung6.setVisible(
+                maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() >= 6);
+        checkBoxKuchenVorstellung7.setVisible(
+                maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() >= 7);
+        checkBoxKuchenVorstellung8.setVisible(
+                maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() >= 8);
+        checkBoxKuchenVorstellung9.setVisible(
+                maercheneinteilungErfassenModel.getMaerchen().getAnzahlVorstellungen() >= 9);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void disableElternmithilfeFields(boolean disable) {
         boolean enabled = !disable;
-        comboBoxElternmithilfe.setEnabled(enabled);
-        comboBoxElternmithilfeCode.setEnabled(enabled);
-        checkBoxKuchenVorstellung1.setEnabled(enabled);
-        checkBoxKuchenVorstellung2.setEnabled(enabled);
-        checkBoxKuchenVorstellung3.setEnabled(enabled);
-        checkBoxKuchenVorstellung4.setEnabled(enabled);
-        checkBoxKuchenVorstellung5.setEnabled(enabled);
-        checkBoxKuchenVorstellung6.setEnabled(enabled);
-        checkBoxKuchenVorstellung7.setEnabled(enabled);
-        checkBoxKuchenVorstellung8.setEnabled(enabled);
-        checkBoxKuchenVorstellung9.setEnabled(enabled);
+        if (comboBoxElternmithilfe != null) {
+            comboBoxElternmithilfe.setEnabled(enabled);
+        }
+        if (comboBoxElternmithilfeCode != null) {
+            comboBoxElternmithilfeCode.setEnabled(enabled);
+        }
+        if (checkBoxKuchenVorstellung1 != null) {
+            checkBoxKuchenVorstellung1.setEnabled(enabled);
+        }
+        if (checkBoxKuchenVorstellung2 != null) {
+            checkBoxKuchenVorstellung2.setEnabled(enabled);
+        }
+        if (checkBoxKuchenVorstellung3 != null) {
+            checkBoxKuchenVorstellung3.setEnabled(enabled);
+        }
+        if (checkBoxKuchenVorstellung4 != null) {
+            checkBoxKuchenVorstellung4.setEnabled(enabled);
+        }
+        if (checkBoxKuchenVorstellung5 != null) {
+            checkBoxKuchenVorstellung5.setEnabled(enabled);
+        }
+        if (checkBoxKuchenVorstellung6 != null) {
+            checkBoxKuchenVorstellung6.setEnabled(enabled);
+        }
+        if (checkBoxKuchenVorstellung7 != null) {
+            checkBoxKuchenVorstellung7.setEnabled(enabled);
+        }
+        if (checkBoxKuchenVorstellung8 != null) {
+            checkBoxKuchenVorstellung8.setEnabled(enabled);
+        }
+        if (checkBoxKuchenVorstellung9 != null) {
+            checkBoxKuchenVorstellung9.setEnabled(enabled);
+        }
     }
 
-    private void writeElternhilfeBereitsErfasstBemerkung(Schueler geschwister) {
-        if (!checkNotEmpty(maercheneinteilungErfassenModel.getBemerkungen())) {
+    private void writeElternhilfeBereitsErfasstBemerkung() {
+        if (!checkNotEmpty(maercheneinteilungErfassenModel.getBemerkungen())
+                && !maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe.isEmpty()) {
+            StringBuilder geschwisterStringBuilder = new StringBuilder();
+            for (Maercheneinteilung maercheneinteilungGeschwister
+                    : maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe) {
+                geschwisterStringBuilder.append(maercheneinteilungGeschwister.getSchueler().getVorname())
+                        .append(" ")
+                        .append(maercheneinteilungGeschwister.getSchueler().getNachname())
+                        .append(", ");
+            }
+            // Letztes ", " weglassen
+            String geschwister = geschwisterStringBuilder.substring(0, geschwisterStringBuilder.length() - 2);
             try {
-                maercheneinteilungErfassenModel.setBemerkungen("Eltern-Mithilfe bei " + geschwister.getVorname() + " " + geschwister.getNachname() + " erfasst.");
+                maercheneinteilungErfassenModel.setBemerkungen("Eltern-Mithilfe bei " + geschwister + " erfasst.");
             } catch (SvmValidationException ignore) {
             }
         }
@@ -1132,15 +1211,17 @@ public class MaercheneinteilungErfassenController extends PersonController {
         if (checkIsFieldChange(Field.MAERCHEN, evt)) {
             spinnerMaerchen.setValue(maercheneinteilungErfassenModel.getMaerchen());
             makeUnusableCheckboxesInvisible();
-            Schueler geschwister = maercheneinteilungErfassenModel.findGeschwisterElternmithilfeBereitsErfasst(schuelerDatenblattModel);
-            if (geschwister != null) {
-                disableElternmithilfeFields(true);
-                writeElternhilfeBereitsErfasstBemerkung(geschwister);
-            } else {
-                disableElternmithilfeFields(false);
+            maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe
+                    = maercheneinteilungErfassenModel
+                    .findMaercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe(
+                            schuelerDatenblattModel);
+            enableOrDisableElternmithilfeFields();
+            if (!maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe.isEmpty()) {
+                writeElternhilfeBereitsErfasstBemerkung();
             }
         } else if (checkIsFieldChange(Field.GRUPPE, evt)) {
             comboBoxGruppe.setSelectedItem(maercheneinteilungErfassenModel.getGruppe());
+            enableOrDisableElternmithilfeFields();
         } else if (checkIsFieldChange(Field.ROLLE1, evt)) {
             txtRolle1.setText(maercheneinteilungErfassenModel.getRolle1());
         } else if (checkIsFieldChange(Field.BILDER_ROLLE1, evt)) {
@@ -1155,26 +1236,37 @@ public class MaercheneinteilungErfassenController extends PersonController {
             txtBilderRolle3.setText(maercheneinteilungErfassenModel.getBilderRolle3());
         } else if (checkIsFieldChange(Field.ELTERNMITHILFE, evt)) {
             comboBoxElternmithilfe.setSelectedItem(maercheneinteilungErfassenModel.getElternmithilfe());
+            enableOrDisableElternmithilfeFields();
         } else if (checkIsFieldChange(Field.ELTERNMITHILFE_CODE, evt)) {
             comboBoxElternmithilfeCode.setSelectedItem(maercheneinteilungErfassenModel.getElternmithilfeCode());
+            enableOrDisableElternmithilfeFields();
         } else if (checkIsFieldChange(Field.KUCHEN_VORSTELLUNG1, evt)) {
             checkBoxKuchenVorstellung1.setSelected(maercheneinteilungErfassenModel.isKuchenVorstellung1());
+            enableOrDisableElternmithilfeFields();
         } else if (checkIsFieldChange(Field.KUCHEN_VORSTELLUNG2, evt)) {
             checkBoxKuchenVorstellung2.setSelected(maercheneinteilungErfassenModel.isKuchenVorstellung2());
+            enableOrDisableElternmithilfeFields();
         } else if (checkIsFieldChange(Field.KUCHEN_VORSTELLUNG3, evt)) {
             checkBoxKuchenVorstellung3.setSelected(maercheneinteilungErfassenModel.isKuchenVorstellung3());
+            enableOrDisableElternmithilfeFields();
         } else if (checkIsFieldChange(Field.KUCHEN_VORSTELLUNG4, evt)) {
             checkBoxKuchenVorstellung4.setSelected(maercheneinteilungErfassenModel.isKuchenVorstellung4());
+            enableOrDisableElternmithilfeFields();
         } else if (checkIsFieldChange(Field.KUCHEN_VORSTELLUNG5, evt)) {
             checkBoxKuchenVorstellung5.setSelected(maercheneinteilungErfassenModel.isKuchenVorstellung5());
+            enableOrDisableElternmithilfeFields();
         } else if (checkIsFieldChange(Field.KUCHEN_VORSTELLUNG6, evt)) {
             checkBoxKuchenVorstellung6.setSelected(maercheneinteilungErfassenModel.isKuchenVorstellung6());
+            enableOrDisableElternmithilfeFields();
         } else if (checkIsFieldChange(Field.KUCHEN_VORSTELLUNG7, evt)) {
             checkBoxKuchenVorstellung7.setSelected(maercheneinteilungErfassenModel.isKuchenVorstellung7());
+            enableOrDisableElternmithilfeFields();
         } else if (checkIsFieldChange(Field.KUCHEN_VORSTELLUNG8, evt)) {
             checkBoxKuchenVorstellung8.setSelected(maercheneinteilungErfassenModel.isKuchenVorstellung8());
+            enableOrDisableElternmithilfeFields();
         } else if (checkIsFieldChange(Field.KUCHEN_VORSTELLUNG9, evt)) {
             checkBoxKuchenVorstellung9.setSelected(maercheneinteilungErfassenModel.isKuchenVorstellung9());
+            enableOrDisableElternmithilfeFields();
         } else if (checkIsFieldChange(Field.ZUSATZATTRIBUT_MAERCHEN, evt)) {
             txtZusatzattribut.setText(maercheneinteilungErfassenModel.getZusatzattribut());
         } else if (checkIsFieldChange(Field.BEMERKUNGEN, evt)) {

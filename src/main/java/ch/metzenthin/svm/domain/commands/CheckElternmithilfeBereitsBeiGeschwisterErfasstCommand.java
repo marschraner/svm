@@ -4,7 +4,9 @@ import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,11 +15,11 @@ import java.util.Set;
 public class CheckElternmithilfeBereitsBeiGeschwisterErfasstCommand implements Command {
 
     // Input
-    private Schueler schueler;
-    private Maerchen maerchen;
+    private final Schueler schueler;
+    private final Maerchen maerchen;
 
     // Output
-    private Schueler geschwisterMitBereitsErfassterElternmithilfe = null;
+    private final List<Maercheneinteilung> maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe = new ArrayList<>();
 
     public CheckElternmithilfeBereitsBeiGeschwisterErfasstCommand(Schueler schueler, Maerchen maerchen) {
         this.schueler = schueler;
@@ -49,14 +51,14 @@ public class CheckElternmithilfeBereitsBeiGeschwisterErfasstCommand implements C
         for (Schueler geschwister : angemeldeteGeschwister) {
             for (Maercheneinteilung maercheneinteilung : geschwister.getMaercheneinteilungen()) {
                 if (maercheneinteilung.getMaerchen().isIdenticalWith(maerchen) && maercheneinteilung.getElternmithilfe() != null) {
-                    geschwisterMitBereitsErfassterElternmithilfe = geschwister;
+                    maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe.add(maercheneinteilung);
                 }
             }
         }
     }
 
-    public Schueler getGeschwisterMitBereitsErfassterElternmithilfe() {
-        return geschwisterMitBereitsErfassterElternmithilfe;
+    public List<Maercheneinteilung> getMaercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe() {
+        return maercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe;
     }
 
 }

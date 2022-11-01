@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
+import ch.metzenthin.svm.domain.comparators.MaercheneinteilungSortByElternmithilfeComparator;
 import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
 import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
@@ -9,10 +10,7 @@ import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
 
@@ -154,12 +152,12 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         header.add(headerCellsRow3);
 
         // Inhalt
-        Map<Schueler, Maercheneinteilung> maercheneinteilungen = schuelerSuchenTableModel.getMaercheneinteilungen();
+        Map<Schueler, Maercheneinteilung> mapOfSchuelerAndMaercheneinteilung = schuelerSuchenTableModel.getMaercheneinteilungen();
 
-        // Map mit Elternmithilfe als Key, damit nach Elternmithilfe sortiert werden kann
-        Map<Person, Maercheneinteilung> maercheneinteilungenElternmithilfe = new TreeMap<>();
+        // Liste von Märcheneinteilungen mit Elternmithilfe
+        List<Maercheneinteilung> maercheneinteilungenMitElternmithilfe = new ArrayList<>();
         for (Schueler schueler : schuelerSuchenTableModel.getSelektierteSchuelerList()) {
-            Maercheneinteilung maercheneinteilung = maercheneinteilungen.get(schueler);
+            Maercheneinteilung maercheneinteilung = mapOfSchuelerAndMaercheneinteilung.get(schueler);
             if (maercheneinteilung == null || maercheneinteilung.getElternmithilfe() == null) {
                 continue;
             }
@@ -173,14 +171,27 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
             }
             // Falls Elternteil nach Erfassen der Eltern-Mithilfe gelöscht wurde, kann Elternmithilfe null sein.
             if (elternmithilfe != null) {
-                maercheneinteilungenElternmithilfe.put(elternmithilfe, maercheneinteilung);
+                maercheneinteilungenMitElternmithilfe.add(maercheneinteilung);
             }
         }
 
+        // Sortierung der Märcheneinteilungen mit Elternmithilfe nach Nach- und Vorname der
+        // Elternmithilfe
+        Collections.sort(maercheneinteilungenMitElternmithilfe,
+                new MaercheneinteilungSortByElternmithilfeComparator());
+
         List<List<List<String>>> datasets = new ArrayList<>();
-        for (Person elternmithilfe : maercheneinteilungenElternmithilfe.keySet()) {
+        for (Maercheneinteilung maercheneinteilung : maercheneinteilungenMitElternmithilfe) {
+            Person elternmithilfe;
+            if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER) {
+                elternmithilfe = maercheneinteilung.getSchueler().getMutter();
+            } else if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.VATER) {
+                elternmithilfe = maercheneinteilung.getSchueler().getVater();
+            } else {
+                elternmithilfe = maercheneinteilung.getElternmithilfeDrittperson();
+            }
+
             List<List<String>> dataset = new ArrayList<>();
-            Maercheneinteilung maercheneinteilung = maercheneinteilungenElternmithilfe.get(elternmithilfe);
             // Auf mehrere Zeilen aufzusplittende Felder:
             List<String> elternmithilfeCodeLines = null;
             if (maercheneinteilung.getElternmithilfeCode() != null) {

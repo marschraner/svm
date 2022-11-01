@@ -70,6 +70,6 @@ public interface MaercheneinteilungErfassenModel extends PersonModel {
     ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel);
     boolean checkIfElternmithilfeHasEmail(SchuelerDatenblattModel schuelerDatenblattModel);
     boolean checkIfElternmithilfeHasTelefon(SchuelerDatenblattModel schuelerDatenblattModel);
-    Schueler findGeschwisterElternmithilfeBereitsErfasst(SchuelerDatenblattModel schuelerDatenblattModel);
+    List<Maercheneinteilung> findMaercheneinteilungenVonGeschwisternMitBereitsErfassterElternmithilfe(SchuelerDatenblattModel schuelerDatenblattModel);
     void speichern(MaercheneinteilungenTableModel maercheneinteilungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel);
 }
