@@ -16,22 +16,22 @@ import static org.junit.Assert.*;
 public class ConverterTest {
 
     @Test
-    public void testToIntegerOrNull_Number() throws Exception {
-        assertEquals("Resultat ist nicht 44", new Integer(44), toIntegerOrNull("44"));
+    public void testToIntegerOrNull_Number() {
+        assertEquals("Resultat ist nicht 44", Integer.valueOf(44), toIntegerOrNull("44"));
     }
 
     @Test
-    public void testToIntegerOrNull_Null() throws Exception {
+    public void testToIntegerOrNull_Null() {
         assertNull("Resultat ist nicht null", toIntegerOrNull("xx"));
     }
 
     @Test
-    public void testToInteger_Number() throws Exception {
-        assertEquals("Resultat ist nicht 44", new Integer(44), toInteger("44"));
+    public void testToInteger_Number() {
+        assertEquals("Resultat ist nicht 44", Integer.valueOf(44), toInteger("44"));
     }
 
     @Test
-    public void testToInteger_Exception() throws Exception {
+    public void testToInteger_Exception() {
         try {
             toInteger("xx");
             fail("NumberFormatException erwartet");
@@ -191,6 +191,7 @@ public class ConverterTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     public void testEmptyStringAsNull_Null() {
         assertNull(emptyStringAsNull(null));
     }
@@ -201,6 +202,7 @@ public class ConverterTest {
     }
 
     @Test
+    @SuppressWarnings({"ObviousNullCheck"})
     public void testNullAsEmptyString_NotEmpty() {
         assertEquals("abc", nullAsEmptyString("abc"));
     }
@@ -212,6 +214,7 @@ public class ConverterTest {
     }
 
     @Test
+    @SuppressWarnings({"ConstantValue", "ObviousNullCheck"})
     public void testNullAsEmptyString_Empty() {
         assertTrue(nullAsEmptyString("").isEmpty());
     }

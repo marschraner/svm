@@ -1,5 +1,7 @@
 package ch.metzenthin.svm;
 
+import org.apache.log4j.Logger;
+
 import javax.swing.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -41,8 +43,9 @@ public class GtkPlusLookAndFeelWorkaround {
      * style objects of Swing so popup menu borders have a minimum thickness of
      * 1 and menu separators have a minimum vertical thickness of 1.
      */
-    public static void installGtkPopupBugWorkaround()
-    {
+    private static final Logger LOGGER = Logger.getLogger(GtkPlusLookAndFeelWorkaround.class);
+
+    public static void installGtkPopupBugWorkaround() {
         // Get current look-and-feel implementation class
         LookAndFeel laf = UIManager.getLookAndFeel();
         Class<?> lafClass = laf.getClass();
@@ -53,14 +56,12 @@ public class GtkPlusLookAndFeelWorkaround {
 
         // We do reflection from here on. Failure is silently ignored. The
         // workaround is simply not installed when something goes wrong here
-        try
-        {
+        try {
             // Access the GTK style factory
             Field field = lafClass.getDeclaredField("styleFactory");
-            boolean accessible = field.isAccessible();
             field.setAccessible(true);
             Object styleFactory = field.get(laf);
-            field.setAccessible(accessible);
+            field.setAccessible(false);
 
             // Fix the horizontal and vertical thickness of popup menu style
             Object style = getGtkStyle(styleFactory, new JPopupMenu(),
@@ -72,49 +73,41 @@ public class GtkPlusLookAndFeelWorkaround {
             style = getGtkStyle(styleFactory, new JSeparator(),
                     "POPUP_MENU_SEPARATOR");
             fixGtkThickness(style, "yThickness");
-        }
-        catch (Exception ignore)
-        {
+        } catch (Exception exception) {
             // Silently ignored. Workaround can't be applied.
+            LOGGER.warn("Um den GTK+-Look-And-Feel-Workaround zu verwenden, muss SVM mit " +
+                    "\"java --add-opens java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED -jar <SVM.jar>\" " +
+                    "gestartet werden!");
         }
     }
     /**
      * Called internally by installGtkPopupBugWorkaround to fix the thickness
      * of a GTK style field by setting it to a minimum value of 1.
      *
-     * @param style
-     *            The GTK style object.
-     * @param fieldName
-     *            The field name.
-     * @throws Exception
-     *             When reflection fails.
+     * @param style     The GTK style object.
+     * @param fieldName The field name.
+     * @throws Exception When reflection fails.
      */
     private static void fixGtkThickness(Object style, String fieldName)
-            throws Exception
-    {
+            throws Exception {
         Field field = style.getClass().getDeclaredField(fieldName);
-        boolean accessible = field.isAccessible();
         field.setAccessible(true);
         field.setInt(style, Math.max(1, field.getInt(style)));
-        field.setAccessible(accessible);
+        field.setAccessible(false);
     }
+
     /**
      * Called internally by installGtkPopupBugWorkaround. Returns a specific
      * GTK style object.
      *
-     * @param styleFactory
-     *            The GTK style factory.
-     * @param component
-     *            The target component of the style.
-     * @param regionName
-     *            The name of the target region of the style.
+     * @param styleFactory The GTK style factory.
+     * @param component    The target component of the style.
+     * @param regionName   The name of the target region of the style.
      * @return The GTK style.
-     * @throws Exception
-     *             When reflection fails.
+     * @throws Exception When reflection fails.
      */
     private static Object getGtkStyle(Object styleFactory,
-                                      JComponent component, String regionName) throws Exception
-    {
+                                      JComponent component, String regionName) throws Exception {
         // Create the region object
         Class<?> regionClass = Class.forName("javax.swing.plaf.synth.Region");
         Field field = regionClass.getField(regionName);
@@ -123,10 +116,10 @@ public class GtkPlusLookAndFeelWorkaround {
         // Get and return the style
         Class<?> styleFactoryClass = styleFactory.getClass();
         Method method = styleFactoryClass.getMethod("getStyle",
-                new Class<?>[] { JComponent.class, regionClass });
-        boolean accessible = method.isAccessible();
+                JComponent.class, regionClass);
         method.setAccessible(true);
-        Object style = method.invoke(styleFactory, component, region);
-        method.setAccessible(accessible);
+        @SuppressWarnings("JavaReflectionInvocation") Object style = method.invoke(styleFactory, component, region);
+        method.setAccessible(false);
         return style;
-    }}
+    }
+}

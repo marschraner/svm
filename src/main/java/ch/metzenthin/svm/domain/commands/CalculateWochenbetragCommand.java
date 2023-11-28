@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
 import ch.metzenthin.svm.persistence.entities.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -119,7 +120,7 @@ public class CalculateWochenbetragCommand implements Command {
         }
 
         // 3. Runden auf 2 Nachkommastellen
-        wochenbetrag = wochenbetrag.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        wochenbetrag = wochenbetrag.setScale(2, RoundingMode.HALF_EVEN);
         result = Result.WOCHENBETRAG_ERFOLGREICH_BERECHNET;
     }
 

@@ -5,6 +5,7 @@ import ch.metzenthin.svm.common.utils.SvmStringUtils;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -534,9 +535,9 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         }
         if (stipendium != null && stipendium != Stipendium.KEINES) {
             BigDecimal ermaessigungStipendiumVorrechnung = getSchulgeldVorrechnung();
-            ermaessigungStipendiumVorrechnung = ermaessigungStipendiumVorrechnung.multiply(new BigDecimal(1- stipendium.getFaktor()));
-            ermaessigungStipendiumVorrechnung = ermaessigungStipendiumVorrechnung.setScale(1, BigDecimal.ROUND_HALF_EVEN);  // Runden auf 10 Rappen
-            return ermaessigungStipendiumVorrechnung.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+            ermaessigungStipendiumVorrechnung = ermaessigungStipendiumVorrechnung.multiply(BigDecimal.valueOf(1 - stipendium.getFaktor()));
+            ermaessigungStipendiumVorrechnung = ermaessigungStipendiumVorrechnung.setScale(1, RoundingMode.HALF_EVEN);  // Runden auf 10 Rappen
+            return ermaessigungStipendiumVorrechnung.setScale(2, RoundingMode.HALF_EVEN);
         } else {
             return new BigDecimal("0.00");
         }
@@ -601,9 +602,9 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         }
         if (stipendium != null && stipendium != Stipendium.KEINES) {
             BigDecimal ermaessigungStipendiumNachrechnung = getSchulgeldNachrechnung();
-            ermaessigungStipendiumNachrechnung = ermaessigungStipendiumNachrechnung.multiply(new BigDecimal(1- stipendium.getFaktor()));
-            ermaessigungStipendiumNachrechnung = ermaessigungStipendiumNachrechnung.setScale(1, BigDecimal.ROUND_HALF_EVEN);  // Runden auf 10 Rappen
-            return ermaessigungStipendiumNachrechnung.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+            ermaessigungStipendiumNachrechnung = ermaessigungStipendiumNachrechnung.multiply(BigDecimal.valueOf(1 - stipendium.getFaktor()));
+            ermaessigungStipendiumNachrechnung = ermaessigungStipendiumNachrechnung.setScale(1, RoundingMode.HALF_EVEN);  // Runden auf 10 Rappen
+            return ermaessigungStipendiumNachrechnung.setScale(2, RoundingMode.HALF_EVEN);
         } else {
             return new BigDecimal("0.00");
         }

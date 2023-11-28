@@ -61,8 +61,8 @@ public class SaveOrUpdateLektionsgebuehrenCommandTest {
         commandInvoker.executeCommandAsTransaction(saveOrUpdateLektionsgebuehrenCommand);
         assertEquals(2, lektionsgebuehrenSaved.size());
         // Nach Lektionslänge geordnet?
-        assertEquals(new Integer(57), lektionsgebuehrenSaved.get(0).getLektionslaenge());
-        assertEquals(new Integer(67), lektionsgebuehrenSaved.get(1).getLektionslaenge());
+        assertEquals(Integer.valueOf(57), lektionsgebuehrenSaved.get(0).getLektionslaenge());
+        assertEquals(Integer.valueOf(67), lektionsgebuehrenSaved.get(1).getLektionslaenge());
         assertTrue(checkIfLektionsgebuehrenAvailable(57, new BigDecimal("22.50")));
         assertTrue(checkIfLektionsgebuehrenAvailable(67, new BigDecimal("24.50")));
 

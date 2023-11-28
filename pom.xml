@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.metzenthin.svm</groupId>
   <artifactId>svm</artifactId>
   <packaging>jar</packaging>
-  <version>1.0</version>
+  <version>2.0</version>
   <name>svm</name>
-  <url>http://maven.apache.org</url>
+  <url>https://maven.apache.org</url>
 	<!-- Check dependency-updates: versions:display-dependency-updates (unter Plugins, versions) -->
 	<!-- Check dependency-conflicts: dependency:tree (Execute Maven Goal, Command line) -->
 	<dependencies>
@@ -14,15 +14,15 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
 
 		<!-- maven-dependency-plugin:analyze-only reports this dependency as unused declared, but it is needed! -->
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.47</version>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<version>8.2.0</version>
             <scope>runtime</scope>
 		</dependency>
 
@@ -75,21 +75,23 @@
 	</properties>
 
 	<build>
-		<!-- Check Plugin-Versionen: versions:display-plugin-updates (unter Plugins, versions) -->
 		<plugins>
-			<!-- Version-Check (Dependencies, Plugins, ...) -->
+			<!-- version-Plugin: The Versions Maven Plugin is used when you want to manage the -->
+			<!-- versions of artifacts in a project's POM. -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
-				<version>2.7</version>
+				<version>2.16.2</version>
 				<configuration>
 					<generateBackupPoms>false</generateBackupPoms>
 				</configuration>
 			</plugin>
-			<!-- clean-Plugin: bei jedem Build ausführen -->
+			<!-- clean-Plugin: The Maven Clean Plugin is a plugin that removes files generated -->
+			<!-- at build-time in a project's directory.  -->
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.3.2</version>
 				<executions>
 					<execution>
 						<id>auto-clean</id>
@@ -105,7 +107,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.6.1</version>
                 <executions>
                     <execution>
                         <id>analyze</id>
@@ -127,49 +129,58 @@
 
                             <!-- ignore annotations for "unused but declared" warnings -->
                             <ignoredUnusedDeclaredDependencies>
-                                <ignoredUnusedDeclaredDependency>mysql:mysql-connector-java</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>com.mysql:mysql-connector-j</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-			<!-- deploy-Plugin: Angabe der Version (versions:display-plugin-updates) -->
+			<!-- deploy-Plugin: Uploads the project artifacts to the internal remote repository.  -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
-				<version>3.0.0-M1</version>
+				<version>3.1.1</version>
 			</plugin>
-			<!-- install-Plugin: Angabe der Version (versions:display-plugin-updates) -->
+			<!-- install-Plugin: Copies the project artifacts to the user's local repository.  -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
-				<version>3.0.0-M1</version>
+				<version>3.1.1</version>
 			</plugin>
-			<!-- jar-Plugin: Angabe der Version (versions:display-plugin-updates) -->
+			<!-- jar-Plugin: Builds a Java Archive (JAR) file from the compiled project classes and resources. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.3.0</version>
 			</plugin>
-			<!-- site-Plugin: Angabe der Version (versions:display-plugin-updates) -->
+			<!-- site-Plugin: The Maven Site Plugin is a plugin that generates a site for the current project. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>3.7.1</version>
+				<version>4.0.0-M12</version>
 			</plugin>
-			<!-- surefire-Plugin: Angabe der Version (versions:display-plugin-updates) -->
+			<!-- surefire-Plugin: The Surefire Plugin is used during the test phase of the build -->
+			<!-- lifecycle to execute the unit tests of an application. It generates reports in -->
+			<!-- two different file formats, plain text files (*.txt) and XML files (*.xml). -->
+			<!-- By default, these files are generated in ${basedir}/target/surefire-reports/TEST-*.xml. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M1</version>
+				<version>3.2.2</version>
+				<configuration>
+					<argLine>
+						--add-opens java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED
+					</argLine>
+				</configuration>
 			</plugin>
+			<!-- compiler-Plugin: The Compiler Plugin is used to compile the sources of your project. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
+				<version>3.11.0</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>17</source>
+					<target>17</target>
 					<encoding>UTF-8</encoding>
 					<compilerArgs>
 						<arg>-Xlint:deprecation</arg>
@@ -177,27 +188,29 @@
 					</compilerArgs>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>3.0.5</version>
-				<configuration>
-					<findbugsXmlOutput>true</findbugsXmlOutput>
-					<xmlOutput>true</xmlOutput>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>findbugs</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.codehaus.mojo</groupId>-->
+<!--				<artifactId>findbugs-maven-plugin</artifactId>-->
+<!--				<version>3.0.5</version>-->
+<!--				<configuration>-->
+<!--					<findbugsXmlOutput>true</findbugsXmlOutput>-->
+<!--					<xmlOutput>true</xmlOutput>-->
+<!--				</configuration>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<phase>package</phase>-->
+<!--						<goals>-->
+<!--							<goal>findbugs</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
+			<!-- jococo-Plugin: The JaCoCo Maven Plugin provides the JaCoCo runtime agent to -->
+			<!-- your tests and allows basic report creation. -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.4.201502262128</version>
+				<version>0.8.11</version>
 				<executions>
 					<execution>
 						<id>default-prepare-agent</id>
@@ -210,9 +223,16 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- resources-Plugin: The Resources Plugin handles the copying of project resources -->
+			<!-- to the output directory. There are two different kinds of resources: main -->
+			<!-- resources and test resources. The difference is that the main resources are the -->
+			<!-- resources associated with the main source code while the test resources are -->
+			<!-- associated with the test source code. Thus, this allows the separation of -->
+			<!-- resources for the main source code and its unit tests. -->
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.7</version>
+				<version>3.3.1</version>
 				<executions>
 					<execution>
 						<id>copy-resources</id>
@@ -233,9 +253,12 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- assembly-Plugin: A Maven plugin to create archives of your project's sources, -->
+			<!-- classes, dependencies etc. from flexible assembly descriptors. -->
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.6.0</version>
 				<executions>
 					<execution>
 						<id>make-assembly</id> <!-- this is used for inheritance merges -->

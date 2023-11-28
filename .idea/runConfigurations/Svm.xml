@@ -2,7 +2,7 @@
   <configuration default="false" name="Svm" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="ch.metzenthin.svm.Svm" />
     <module name="svm" />
-    <option name="VM_PARAMETERS" value="-splash:target/classes/images/buehne.gif" />
+    <option name="VM_PARAMETERS" value="-splash:target/classes/images/buehne.gif --add-opens java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

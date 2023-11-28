@@ -35,7 +35,7 @@
 
         <properties>
             <!-- Database connection settings -->
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
             <!-- URL wird in Applikation überschrieben (siehe PersistenceProperties.java) -->
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/svm" />
             <property name="javax.persistence.jdbc.user" value="svm" />
