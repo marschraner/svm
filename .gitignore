@@ -21,6 +21,7 @@ log/
 .idea/dataSources.xml
 .idea/dataSources.local.xml
 .idea/kotlinc.xml
+.idea/modules.xml
 .idea/shelf
 .idea/google-java-format.xml
 .idea/runConfigurations.xml

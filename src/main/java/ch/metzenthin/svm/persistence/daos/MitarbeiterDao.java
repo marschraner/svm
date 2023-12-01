@@ -2,9 +2,9 @@ package ch.metzenthin.svm.persistence.daos;
 
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.util.HashSet;
 import java.util.List;
 

@@ -6,8 +6,8 @@ import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungId;
+import jakarta.persistence.EntityManager;
 
-import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;

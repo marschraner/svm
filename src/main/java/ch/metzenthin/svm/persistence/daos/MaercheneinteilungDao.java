@@ -3,9 +3,9 @@ package ch.metzenthin.svm.persistence.daos;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.persistence.entities.MaercheneinteilungId;
 import ch.metzenthin.svm.persistence.entities.Schueler;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.util.Collections;
 import java.util.List;
 

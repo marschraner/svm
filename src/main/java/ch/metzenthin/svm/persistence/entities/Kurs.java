@@ -3,8 +3,8 @@ package ch.metzenthin.svm.persistence.entities;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.common.utils.StringNumberComparator;
 import ch.metzenthin.svm.common.utils.SvmProperties;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;

@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.text.Collator;
 import java.util.Calendar;
@@ -24,6 +24,7 @@ public abstract class Person implements Comparable<Person>  {
     @Column(name = "person_id")
     private Integer personId;
 
+    @SuppressWarnings("unused")
     @Version
     @Column(name = "last_updated")
     private Timestamp version;
@@ -39,20 +40,20 @@ public abstract class Person implements Comparable<Person>  {
     private String nachname;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "geburtsdatum", nullable = true)
+    @Column(name = "geburtsdatum")
     private Calendar geburtsdatum;
 
-    @Column(name = "festnetz", nullable = true)
+    @Column(name = "festnetz")
     private String festnetz;
 
-    @Column(name = "natel", nullable = true)
+    @Column(name = "natel")
     private String natel;
 
-    @Column(name = "email", nullable = true)
+    @Column(name = "email")
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "adresse_id", nullable = true)
+    @JoinColumn(name = "adresse_id")
     private Adresse adresse;
 
     public Person() {
@@ -238,7 +239,7 @@ public abstract class Person implements Comparable<Person>  {
         int maxLength = 38;
 
         // emailAdresse enthält möglicherweise mehrere, durch Komma getrennte Email-Adressen
-        String[] emailAdressenSplitted = email.split("[,;]\\p{Blank}*");
+        String[] emailAdressenSplitted = email.split("[,;][ \\t]*");
 
         // Erste Email wird immer angezeigt
         StringBuilder emailToBeDisplayed = new StringBuilder(emailAdressenSplitted[0]);

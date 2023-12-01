@@ -2,8 +2,7 @@ package ch.metzenthin.svm.persistence.daos;
 
 import ch.metzenthin.svm.persistence.entities.Dispensation;
 import ch.metzenthin.svm.persistence.entities.Schueler;
-
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 /**
  * @author Martin Schraner

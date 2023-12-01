@@ -3,11 +3,11 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
+import jakarta.persistence.EntityManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -7,12 +7,12 @@ import ch.metzenthin.svm.common.dataTypes.Stipendium;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.GregorianCalendar;

@@ -9,12 +9,11 @@ import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Dispensation;
 import ch.metzenthin.svm.persistence.entities.Schueler;
+import jakarta.persistence.EntityTransaction;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
+import jakarta.persistence.EntityManager;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Properties;

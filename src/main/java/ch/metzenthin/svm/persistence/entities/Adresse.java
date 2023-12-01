@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.sql.Timestamp;
 
 import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
@@ -18,14 +19,15 @@ public class Adresse {
     @Column(name = "adresse_id")
     private Integer adresseId;
 
+    @SuppressWarnings("unused")
     @Version
     @Column(name = "last_updated")
     private Timestamp version;
 
-    @Column(name = "strasse", nullable = true)
+    @Column(name = "strasse")
     private String strasse;
 
-    @Column(name = "hausnummer", nullable = true)
+    @Column(name = "hausnummer")
     private String hausnummer;
 
     @Column(name = "plz", nullable = false)
@@ -96,6 +98,7 @@ public class Adresse {
         return adresseId;
     }
 
+    @SuppressWarnings("unused")
     public void setAdresseId(Integer adresseId) {
         this.adresseId = adresseId;
     }

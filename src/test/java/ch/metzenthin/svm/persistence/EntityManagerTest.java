@@ -2,11 +2,13 @@ package ch.metzenthin.svm.persistence;
 
 import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;

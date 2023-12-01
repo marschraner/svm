@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 /**
  * @author Martin Schraner

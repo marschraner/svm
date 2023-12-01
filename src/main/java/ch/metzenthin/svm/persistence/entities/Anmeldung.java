@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -17,6 +18,7 @@ public class Anmeldung implements Comparable<Anmeldung> {
     @Column(name = "anmeldung_id")
     private Integer anmeldungId;
 
+    @SuppressWarnings("unused")
     @Version
     @Column(name = "last_updated")
     private Timestamp version;
@@ -26,7 +28,7 @@ public class Anmeldung implements Comparable<Anmeldung> {
     private Calendar anmeldedatum;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "abmeldedatum", nullable = true)
+    @Column(name = "abmeldedatum")
     private Calendar abmeldedatum;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

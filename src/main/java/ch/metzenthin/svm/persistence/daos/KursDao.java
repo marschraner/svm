@@ -2,9 +2,9 @@ package ch.metzenthin.svm.persistence.daos;
 
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.persistence.entities.*;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;

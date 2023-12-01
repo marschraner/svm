@@ -35,11 +35,11 @@
 
         <properties>
             <!-- Database connection settings -->
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver" />
             <!-- URL wird in Applikation überschrieben (siehe PersistenceProperties.java) -->
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/svm" />
-            <property name="javax.persistence.jdbc.user" value="svm" />
-            <property name="javax.persistence.jdbc.password" value="svm" />
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost/svm" />
+            <property name="hibernate.connection.username" value="svm" />
+            <property name="hibernate.connection.password" value="svm" />
 
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="hibernate.show_sql" value="false" />

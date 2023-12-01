@@ -8,11 +8,11 @@ import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.*;
 import ch.metzenthin.svm.persistence.entities.*;
+import jakarta.persistence.EntityManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;

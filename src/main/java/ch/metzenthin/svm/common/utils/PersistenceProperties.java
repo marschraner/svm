@@ -24,7 +24,7 @@ public class PersistenceProperties {
             dbUrlOptions = "?" + dbUrlOptions.trim();
         }
         Properties persistenceProperties = new Properties();
-        persistenceProperties.put("javax.persistence.jdbc.url", "jdbc:mysql://" + dbUrlHostname.trim() + ":" + dbUrlPort.trim() + "/svm" + dbUrlOptions);
+        persistenceProperties.put("hibernate.connection.url", "jdbc:mysql://" + dbUrlHostname.trim() + ":" + dbUrlPort.trim() + "/svm" + dbUrlOptions);
         return persistenceProperties;
     }
 

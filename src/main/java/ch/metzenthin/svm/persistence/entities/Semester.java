@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashSet;

@@ -1,11 +1,10 @@
 package ch.metzenthin.svm.persistence;
 
 import ch.metzenthin.svm.common.utils.PersistenceProperties;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import org.apache.log4j.Logger;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  * Singelton zur Verwaltung der EntityManagerFactory (global) und des EntityManager (Thread-basiert).

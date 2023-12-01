@@ -2,8 +2,8 @@ package ch.metzenthin.svm.persistence.daos;
 
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
+import jakarta.persistence.EntityManager;
 
-import javax.persistence.EntityManager;
 import java.lang.reflect.ParameterizedType;
 
 /**

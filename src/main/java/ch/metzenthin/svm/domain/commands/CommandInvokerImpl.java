@@ -3,11 +3,10 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.OptimisticLockException;
 import org.apache.log4j.Logger;
 import org.hibernate.StaleObjectStateException;
-
-import javax.persistence.EntityManager;
-import javax.persistence.OptimisticLockException;
 
 /**
  * @author Hans Stamm

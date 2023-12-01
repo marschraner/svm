@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.sql.Timestamp;
 import java.text.Collator;
 import java.util.HashSet;

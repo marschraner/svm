@@ -4,9 +4,9 @@ import ch.metzenthin.svm.domain.model.MonatsstatistikSchuelerModel;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Schueler;
+import jakarta.persistence.TypedQuery;
 import org.apache.log4j.Logger;
 
-import javax.persistence.TypedQuery;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;

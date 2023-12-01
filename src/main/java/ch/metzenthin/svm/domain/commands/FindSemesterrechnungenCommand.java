@@ -10,9 +10,9 @@ import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
+import jakarta.persistence.TypedQuery;
 import org.apache.log4j.Logger;
 
-import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.ArrayList;

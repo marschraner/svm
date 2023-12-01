@@ -11,11 +11,11 @@ import ch.metzenthin.svm.persistence.daos.SemesterDao;
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungCodeDao;
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungDao;
 import ch.metzenthin.svm.persistence.entities.*;
+import jakarta.persistence.EntityManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;

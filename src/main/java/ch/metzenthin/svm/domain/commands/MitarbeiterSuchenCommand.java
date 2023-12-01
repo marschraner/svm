@@ -5,9 +5,9 @@ import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
+import jakarta.persistence.TypedQuery;
 import org.apache.log4j.Logger;
 
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
