@@ -35,15 +35,12 @@
 
         <properties>
             <!-- Database connection settings -->
-            <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver" />
             <!-- URL wird in Applikation überschrieben (siehe PersistenceProperties.java) -->
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost/svm" />
+            <property name="hibernate.connection.url" value="jdbc:mariadb://localhost/svm" />
             <property name="hibernate.connection.username" value="svm" />
             <property name="hibernate.connection.password" value="svm" />
 
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="hibernate.show_sql" value="false" />
-            <!--property name="hibernate.hbm2ddl.auto" value="create" /-->
             <property name="hibernate.hbm2ddl.auto" value="validate" />
         </properties>
 
