@@ -11,7 +11,8 @@ import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 import jakarta.persistence.TypedQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.Time;
@@ -27,7 +28,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 public class FindSemesterrechnungenCommand implements Command {
 
-    private static final Logger LOGGER = Logger.getLogger(FindSemesterrechnungenCommand.class);
+    private static final Logger LOGGER = LogManager.getLogger(FindSemesterrechnungenCommand.class);
 
     private final DB db = DBFactory.getInstance();
 

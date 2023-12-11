@@ -5,7 +5,8 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.DisableFieldsListener;
 import ch.metzenthin.svm.domain.model.MakeErrorLabelsInvisibleListener;
 import ch.metzenthin.svm.domain.model.Model;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -17,7 +18,7 @@ import java.util.Set;
  */
 public abstract class AbstractController implements PropertyChangeListener, DisableFieldsListener, MakeErrorLabelsInvisibleListener {
 
-    private static final Logger LOGGER = Logger.getLogger(AbstractController.class);
+    private static final Logger LOGGER = LogManager.getLogger(AbstractController.class);
 
     private Model model;
     private boolean bulkUpdate = false;

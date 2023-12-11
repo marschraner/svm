@@ -7,7 +7,8 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.MaerchenErfassenModel;
 import ch.metzenthin.svm.ui.componentmodel.MaerchensTableModel;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -23,7 +24,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
  */
 public class MaerchenErfassenController extends AbstractController {
 
-    private static final Logger LOGGER = Logger.getLogger(MaerchenErfassenController.class);
+    private static final Logger LOGGER = LogManager.getLogger(MaerchenErfassenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;

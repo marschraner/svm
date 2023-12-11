@@ -10,7 +10,8 @@ import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -25,7 +26,7 @@ import java.util.Set;
  */
 public class SchuelerErfassenController extends AbstractController {
 
-    private static final Logger LOGGER = Logger.getLogger(SchuelerErfassenController.class);
+    private static final Logger LOGGER = LogManager.getLogger(SchuelerErfassenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;

@@ -6,7 +6,8 @@ import ch.metzenthin.svm.domain.model.ModelFactory;
 import ch.metzenthin.svm.domain.model.ModelFactoryImpl;
 import ch.metzenthin.svm.domain.model.SvmModel;
 import ch.metzenthin.svm.ui.components.SvmDesktop;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +20,7 @@ import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFi
  */
 public class Svm {
 
-    private static final Logger LOGGER = Logger.getLogger(Svm.class);
+    private static final Logger LOGGER = LogManager.getLogger(Svm.class);
 
     /**
      * Create the GUI and show it. For thread safety, this method should be

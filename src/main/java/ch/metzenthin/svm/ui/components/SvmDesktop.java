@@ -1,11 +1,13 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import com.apple.eawt.Application;
-import org.apache.log4j.Logger;
-import ch.metzenthin.svm.common.dataTypes.Codetyp;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -18,7 +20,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Logger LOGGER = Logger.getLogger(SvmDesktop.class);
+    private static final Logger LOGGER = LogManager.getLogger(SvmDesktop.class);
 
     private final DB db = DBFactory.getInstance();
     private final SvmContext svmContext;

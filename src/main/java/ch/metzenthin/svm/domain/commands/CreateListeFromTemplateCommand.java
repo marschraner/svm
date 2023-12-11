@@ -3,7 +3,8 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.dataTypes.Listentyp;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.*;
@@ -20,7 +21,7 @@ import static ch.metzenthin.svm.common.utils.Converter.calendarToDdMmYy;
  */
 public class CreateListeFromTemplateCommand extends CreateListeCommand {
 
-    private static final Logger LOGGER = Logger.getLogger(CreateListeFromTemplateCommand.class);
+    private static final Logger LOGGER = LogManager.getLogger(CreateListeFromTemplateCommand.class);
 
     // input
     private final Listentyp listentyp;

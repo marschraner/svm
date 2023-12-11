@@ -2,7 +2,8 @@ package ch.metzenthin.svm;
 
 import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.ui.components.SvmDesktop;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
 
-    private static final Logger LOGGER = Logger.getLogger(SwingExceptionHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(SwingExceptionHandler.class);
     private SvmDesktop svmDesktop;
 
     public void uncaughtException(final Thread t, final Throwable e) {

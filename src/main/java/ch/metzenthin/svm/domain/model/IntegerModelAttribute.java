@@ -3,7 +3,8 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
@@ -14,7 +15,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
  */
 public class IntegerModelAttribute {
 
-    private static final Logger LOGGER = Logger.getLogger(IntegerModelAttribute.class);
+    private static final Logger LOGGER = LogManager.getLogger(IntegerModelAttribute.class);
 
     private final ModelAttributeListener modelAttributeListener;
     private final AttributeAccessor<Integer> attributeAccessor;

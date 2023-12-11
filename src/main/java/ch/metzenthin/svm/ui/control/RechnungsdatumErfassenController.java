@@ -10,7 +10,8 @@ import ch.metzenthin.svm.domain.model.RechnungsdatumErfassenModel;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -26,7 +27,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
  */
 public class RechnungsdatumErfassenController extends AbstractController {
 
-    private static final Logger LOGGER = Logger.getLogger(RechnungsdatumErfassenController.class);
+    private static final Logger LOGGER = LogManager.getLogger(RechnungsdatumErfassenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;

@@ -9,7 +9,8 @@ import ch.metzenthin.svm.domain.model.KurseTableData;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.components.KursePanel;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -27,7 +28,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
  */
 public class KurseSemesterwahlController extends AbstractController {
 
-    private static final Logger LOGGER = Logger.getLogger(KurseSemesterwahlController.class);
+    private static final Logger LOGGER = LogManager.getLogger(KurseSemesterwahlController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;

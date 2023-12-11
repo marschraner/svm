@@ -5,7 +5,8 @@ import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import jakarta.persistence.TypedQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public class MonatsstatistikSchuelerSuchenCommand implements Command {
 
-    private static final Logger LOGGER = Logger.getLogger(MonatsstatistikSchuelerSuchenCommand.class);
+    private static final Logger LOGGER = LogManager.getLogger(MonatsstatistikSchuelerSuchenCommand.class);
 
     private final DB db = DBFactory.getInstance();
 

@@ -6,7 +6,8 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.domain.model.EmailSemesterrechnungenModel;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -18,7 +19,7 @@ import java.util.Set;
  */
 public class EmailSemesterrechnungenController extends AbstractController {
 
-    private static final Logger LOGGER = Logger.getLogger(EmailSemesterrechnungenController.class);
+    private static final Logger LOGGER = LogManager.getLogger(EmailSemesterrechnungenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;

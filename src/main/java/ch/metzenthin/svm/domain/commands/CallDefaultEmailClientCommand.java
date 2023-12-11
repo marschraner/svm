@@ -2,7 +2,8 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.utils.EmailValidator;
 import ch.metzenthin.svm.common.utils.SvmProperties;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.net.URI;
@@ -13,7 +14,7 @@ import java.util.*;
  */
 public class CallDefaultEmailClientCommand implements Command {
 
-    private static final Logger LOGGER = Logger.getLogger(CallDefaultEmailClientCommand.class);
+    private static final Logger LOGGER = LogManager.getLogger(CallDefaultEmailClientCommand.class);
 
     private final EmailValidator emailValidator = new EmailValidator();
 

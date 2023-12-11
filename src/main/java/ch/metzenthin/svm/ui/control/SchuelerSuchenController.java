@@ -14,7 +14,8 @@ import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -34,7 +35,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
  */
 public class SchuelerSuchenController extends PersonController {
 
-    private static final Logger LOGGER = Logger.getLogger(SchuelerSuchenController.class);
+    private static final Logger LOGGER = LogManager.getLogger(SchuelerSuchenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;

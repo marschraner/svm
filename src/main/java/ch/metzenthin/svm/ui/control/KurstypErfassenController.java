@@ -7,7 +7,8 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.KurstypErfassenModel;
 import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -21,7 +22,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
  */
 public class KurstypErfassenController extends AbstractController {
 
-    private static final Logger LOGGER = Logger.getLogger(KurstypErfassenController.class);
+    private static final Logger LOGGER = LogManager.getLogger(KurstypErfassenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;

@@ -3,7 +3,8 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Time;
 import java.text.ParseException;
@@ -19,7 +20,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
  */
 public class TimeModelAttribute {
 
-    private static final Logger LOGGER = Logger.getLogger(TimeModelAttribute.class);
+    private static final Logger LOGGER = LogManager.getLogger(TimeModelAttribute.class);
 
     private final ModelAttributeListener modelAttributeListener;
     private final AttributeAccessor<Time> attributeAccessor;

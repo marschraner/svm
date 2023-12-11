@@ -1,6 +1,7 @@
 package ch.metzenthin.svm;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.lang.reflect.Field;
@@ -43,7 +44,7 @@ public class GtkPlusLookAndFeelWorkaround {
      * style objects of Swing so popup menu borders have a minimum thickness of
      * 1 and menu separators have a minimum vertical thickness of 1.
      */
-    private static final Logger LOGGER = Logger.getLogger(GtkPlusLookAndFeelWorkaround.class);
+    private static final Logger LOGGER = LogManager.getLogger(GtkPlusLookAndFeelWorkaround.class);
 
     public static void installGtkPopupBugWorkaround() {
         // Get current look-and-feel implementation class

@@ -7,7 +7,8 @@ import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.*;
 import jakarta.persistence.TypedQuery;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Time;
 import java.util.Calendar;
@@ -24,7 +25,7 @@ public class SchuelerSuchenCommand implements Command {
 
     public static final int MAX_RESULTS = 5000;
 
-    private static final Logger LOGGER = Logger.getLogger(SchuelerSuchenCommand.class);
+    private static final Logger LOGGER = LogManager.getLogger(SchuelerSuchenCommand.class);
 
     private final DB db = DBFactory.getInstance();
 

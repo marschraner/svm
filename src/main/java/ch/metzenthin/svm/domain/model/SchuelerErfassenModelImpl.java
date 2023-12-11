@@ -6,7 +6,8 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -22,7 +23,7 @@ import static ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand.Entry.NE
  */
 public class SchuelerErfassenModelImpl extends AbstractModel implements SchuelerErfassenModel, ValidateSchuelerModel {
 
-    private static final Logger LOGGER = Logger.getLogger(SchuelerErfassenModelImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(SchuelerErfassenModelImpl.class);
 
     private SchuelerModel schuelerModel;
     private AngehoerigerModel mutterModel;

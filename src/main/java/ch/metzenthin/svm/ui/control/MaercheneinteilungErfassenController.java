@@ -14,7 +14,8 @@ import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.ui.componentmodel.MaercheneinteilungenTableModel;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -34,7 +35,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
  */
 public class MaercheneinteilungErfassenController extends PersonController {
 
-    private static final Logger LOGGER = Logger.getLogger(MaercheneinteilungErfassenController.class);
+    private static final Logger LOGGER = LogManager.getLogger(MaercheneinteilungErfassenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;

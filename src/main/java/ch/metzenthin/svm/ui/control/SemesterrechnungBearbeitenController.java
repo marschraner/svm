@@ -8,7 +8,8 @@ import ch.metzenthin.svm.domain.model.SemesterrechnungBearbeitenModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenModel;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 import ch.metzenthin.svm.ui.components.SemesterrechnungenPanel;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -28,7 +29,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
  */
 public class SemesterrechnungBearbeitenController extends SemesterrechnungController {
 
-    private static final Logger LOGGER = Logger.getLogger(SemesterrechnungBearbeitenController.class);
+    private static final Logger LOGGER = LogManager.getLogger(SemesterrechnungBearbeitenController.class);
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
@@ -521,7 +522,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
             }
         });
     }
-    
+
     @Override
     public void setTxtWochenbetragVorrechnung(JTextField txtWochenbetragVorrechnung) {
         super.setTxtWochenbetragVorrechnung(txtWochenbetragVorrechnung);
@@ -532,7 +533,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
             }
         });
     }
-    
+
     @Override
     public void setTxtDatumZahlung1Vorrechnung(JTextField txtDatumZahlung1Vorrechnung) {
         super.setTxtDatumZahlung1Vorrechnung(txtDatumZahlung1Vorrechnung);
@@ -543,7 +544,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
             }
         });
     }
-    
+
     @Override
     public void setTxtBetragZahlung1Vorrechnung(JTextField txtBetragZahlung1Vorrechnung) {
         super.setTxtBetragZahlung1Vorrechnung(txtBetragZahlung1Vorrechnung);
