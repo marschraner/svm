@@ -15,8 +15,8 @@ public enum Wochentag {
     SAMSTAG("Samstag", Calendar.SATURDAY),
     SONNTAG("Sonntag", Calendar.SUNDAY);
 
-    private String name;
-    private int dayOfWeekCalendar;
+    private final String name;
+    private final int dayOfWeekCalendar;
 
     Wochentag(String name, int dayOfWeekCalendar) {
         this.name = name;

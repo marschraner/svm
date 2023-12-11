@@ -9,7 +9,7 @@ public enum Elternmithilfe {
     VATER("Vater"),
     DRITTPERSON("Drittperson");
 
-    private String name;
+    private final String name;
 
     Elternmithilfe(String name) {
         this.name = name;

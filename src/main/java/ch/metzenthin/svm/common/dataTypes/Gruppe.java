@@ -8,7 +8,7 @@ public enum Gruppe {
     A("A"),
     B("B");
 
-    private String name;
+    private final String name;
 
     Gruppe(String name) {
         this.name = name;

@@ -34,10 +34,10 @@ public enum Listentyp {
     SEMESTERRECHNUNGEN_ADRESSETIKETTEN("Rechnungsempfänger-Adressetiketten", "Rechnungsempfänger-Adressetiketten", Filetyp.CSV, null),
     RECHNUNGSLISTE("Rechnungsliste", "Rechnungsliste", Filetyp.CSV, null);
 
-    private String name;
-    private String filenameOhneFileExtension;
-    private Filetyp filetyp;
-    private String svmPropertiesKey;
+    private final String name;
+    private final String filenameOhneFileExtension;
+    private final Filetyp filetyp;
+    private final String svmPropertiesKey;
 
     Listentyp(String name, String filenameOhneFileExtension, Filetyp filetyp, String svmPropertiesKey) {
         this.name = name;

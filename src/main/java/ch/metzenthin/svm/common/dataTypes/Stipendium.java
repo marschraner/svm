@@ -16,8 +16,8 @@ public enum Stipendium {
     STIPENDIUM_80("80 %", 0.2),
     STIPENDIUM_90("90 %", 0.1);
 
-    private String name;
-    private double faktor;
+    private final String name;
+    private final double faktor;
 
     Stipendium(String name, double faktor) {
         this.name = name;

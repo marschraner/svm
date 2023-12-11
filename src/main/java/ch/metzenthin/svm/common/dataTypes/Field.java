@@ -207,7 +207,7 @@ public enum Field {
     STATUS("Status"),
     GELOESCHT("Gelöscht");
 
-    private String name;
+    private final String name;
 
     Field(String name) {
         this.name = name;

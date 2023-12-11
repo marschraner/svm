@@ -22,7 +22,6 @@ public class SimpleValidator {
     public static boolean checkNumber(String s) {
         if (checkNotEmpty(s)) {
             try {
-                //noinspection ResultOfMethodCallIgnored
                 Integer.valueOf(s);
                 return true;
             } catch (NumberFormatException ignore) {
@@ -59,10 +58,7 @@ public class SimpleValidator {
         if (hour2 < hour1) {
             return false;
         }
-        if (hour1 == hour2 && min2 <= min1) {
-            return false;
-        }
-        return true;
+        return hour1 != hour2 || min2 > min1;
     }
 
 }

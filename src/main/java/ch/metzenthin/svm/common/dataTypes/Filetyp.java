@@ -7,8 +7,8 @@ public enum Filetyp {
     DOCX("Microsoft Word", "docx"),
     CSV("CSV", "csv");
 
-    private String bezeichnung;
-    private String fileExtension;
+    private final String bezeichnung;
+    private final String fileExtension;
 
     Filetyp(String bezeichnung, String fileExtension) {
         this.bezeichnung = bezeichnung;

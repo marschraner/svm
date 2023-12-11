@@ -13,7 +13,7 @@ public class SvmContext {
 
     private final ModelFactory modelFactory;
     private final SvmModel svmModel;
-    private DialogIcons dialogIcons = new DialogIcons();
+    private final DialogIcons dialogIcons = new DialogIcons();
     private JRootPane rootPaneJFrame;
 
     public SvmContext(ModelFactory modelFactory, SvmModel svmModel) {

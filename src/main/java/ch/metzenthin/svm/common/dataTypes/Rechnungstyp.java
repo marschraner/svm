@@ -7,7 +7,7 @@ public enum Rechnungstyp {
     VORRECHNUNG("Vorrechnung"),
     NACHRECHNUNG("Nachrechnung");
 
-    private String name;
+    private final String name;
 
     Rechnungstyp(String name) {
         this.name = name;

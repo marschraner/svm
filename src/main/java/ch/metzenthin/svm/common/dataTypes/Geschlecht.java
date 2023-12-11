@@ -7,7 +7,7 @@ public enum Geschlecht {
     W("weiblich"),
     M("männlich");
 
-    private String name;
+    private final String name;
 
     Geschlecht(String name) {
         this.name = name;

@@ -8,7 +8,7 @@ public enum Anrede {
     HERR("Herr"),
     KEINE("Keine");
 
-    private String name;
+    private final String name;
 
     Anrede(String name) {
         this.name = name;

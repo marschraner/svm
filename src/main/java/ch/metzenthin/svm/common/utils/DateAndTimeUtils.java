@@ -23,10 +23,7 @@ public class DateAndTimeUtils {
         if (startTime1.before(endTime2) && endTime1.after(startTime2)) {
             return true;
         }
-        if (startTime1.equals(endTime2) || endTime1.equals(startTime2)) {
-            return true;
-        }
-        return false;
+        return startTime1.equals(endTime2) || endTime1.equals(startTime2);
     }
 
     public static int getNumberOfDaysOfPeriod(Calendar a, Calendar b) {
@@ -60,7 +57,7 @@ public class DateAndTimeUtils {
     }
 
     public static String getCalendarAsDDMMYYYY(Calendar calendar) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.YYYY");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         return sdf.format(calendar.getTime());
     }
 }

@@ -7,22 +7,12 @@ import java.util.Comparator;
  *
  * @author Martin Schraner
  */
-public class StringNumber implements Comparable<StringNumber> {
-
-    private final String stringNumber;
-
-    public StringNumber(String stringNumber) {
-        this.stringNumber = stringNumber;
-    }
-
-    public String getStringNumber() {
-        return stringNumber;
-    }
+public record StringNumber(String stringNumber) implements Comparable<StringNumber> {
 
     @Override
     public int compareTo(StringNumber otherStringNumber) {
         Comparator<String> stringNumberComparator = new StringNumberComparator();
-        return stringNumberComparator.compare(stringNumber, otherStringNumber.getStringNumber());
+        return stringNumberComparator.compare(stringNumber, otherStringNumber.stringNumber());
     }
 
     @Override

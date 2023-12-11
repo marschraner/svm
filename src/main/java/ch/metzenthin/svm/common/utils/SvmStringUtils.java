@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
  */
 public class SvmStringUtils {
 
-    private static final Pattern PERIOD_LINE_BREAK_PATTERN = Pattern.compile("([.,:;!?])([\\p{Blank}]*)(\\n+)([\\p{Blank}]*)(\\S)");
-    private static final Pattern NO_PERIOD_LINE_BREAK_LOWER_CASE_PATTERN = Pattern.compile("([^.,:;!?\\s])([\\p{Blank}]*)(\\n+)([\\p{Blank}]*)([a-zäöüéè])");
-    private static final Pattern NO_PERIOD_LINE_BREAK_UPPER_CASE_PATTERN = Pattern.compile("([^.,:;!?\\s])([\\p{Blank}]*)(\\n+)([\\p{Blank}]*)([0-9A-ZÄÖÜÉÈ\\p{Punct}])");
+    private static final Pattern PERIOD_LINE_BREAK_PATTERN = Pattern.compile("([.,:;!?])([ \\t]*)(\\n+)([ \\t]*)(\\S)");
+    private static final Pattern NO_PERIOD_LINE_BREAK_LOWER_CASE_PATTERN = Pattern.compile("([^.,:;!?\\s])([ \\t]*)(\\n+)([ \\t]*)([a-zäöüéè])");
+    private static final Pattern NO_PERIOD_LINE_BREAK_UPPER_CASE_PATTERN = Pattern.compile("([^.,:;!?\\s])([ \\t]*)(\\n+)([ \\t]*)([0-9A-ZÄÖÜÉÈ\\p{Punct}])");
 
     public static String replaceLineBreaksBySemicolonOrPeriod(String text) {
         return replaceLineBreaksByCharsOrPeriod(text, ";");
@@ -28,30 +28,30 @@ public class SvmStringUtils {
 
         // Word1[.,:;!?]\nWord2 -> Word1[.,:;!?]Word2
         Matcher matcher = PERIOD_LINE_BREAK_PATTERN.matcher(text);
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
         while (matcher.find()) {
-            matcher.appendReplacement(stringBuffer, "$1 $5");
+            matcher.appendReplacement(stringBuilder, "$1 $5");
         }
-        matcher.appendTail(stringBuffer);
-        text = stringBuffer.toString();
+        matcher.appendTail(stringBuilder);
+        text = stringBuilder.toString();
 
         // Word1\nword2 -> Word1replacementForLowerCase word2
         matcher = NO_PERIOD_LINE_BREAK_LOWER_CASE_PATTERN.matcher(text);
-        stringBuffer = new StringBuffer();
+        stringBuilder = new StringBuilder();
         while (matcher.find()) {
-            matcher.appendReplacement(stringBuffer, "$1" + replacementForLowerCase + " $5");
+            matcher.appendReplacement(stringBuilder, "$1" + replacementForLowerCase + " $5");
         }
-        matcher.appendTail(stringBuffer);
-        text = stringBuffer.toString();
+        matcher.appendTail(stringBuilder);
+        text = stringBuilder.toString();
 
         // Word1\nWord2 -> Word1. Word2
         matcher = NO_PERIOD_LINE_BREAK_UPPER_CASE_PATTERN.matcher(text);
-        stringBuffer = new StringBuffer();
+        stringBuilder = new StringBuilder();
         while (matcher.find()) {
-            matcher.appendReplacement(stringBuffer, "$1. $5");
+            matcher.appendReplacement(stringBuilder, "$1. $5");
         }
-        matcher.appendTail(stringBuffer);
-        text = stringBuffer.toString();
+        matcher.appendTail(stringBuilder);
+        text = stringBuilder.toString();
 
         // Allfällige verbleibende \n löschen
         return text.replace("\n", "");

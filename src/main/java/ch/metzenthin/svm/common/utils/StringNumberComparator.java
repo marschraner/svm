@@ -48,7 +48,6 @@ public class StringNumberComparator implements Comparator<String>, Serializable 
 
      private boolean isInt(String s) {
         try {
-            //noinspection ResultOfMethodCallIgnored
             Integer.parseInt(s);
             return true;
         } catch(NumberFormatException f) {
