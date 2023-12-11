@@ -10,7 +10,9 @@ public class MaercheneinteilungId implements Serializable {
     private Integer schueler;
     private Integer maerchen;
 
-    public MaercheneinteilungId() {}
+    @SuppressWarnings("unused")  // used by JPA
+    public MaercheneinteilungId() {
+    }
 
     public MaercheneinteilungId(Integer schueler, Integer maerchen) {
         this.schueler = schueler;

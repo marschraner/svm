@@ -10,7 +10,7 @@ import java.util.*;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Mitarbeiter")
+@Table(name = "Mitarbeiter")
 @DiscriminatorValue("Mitarbeiter")
 public class Mitarbeiter extends Person {
 
@@ -19,7 +19,7 @@ public class Mitarbeiter extends Person {
 
     @Column(name = "ibannummer")
     private String ibanNummer;
-    
+
     @Column(name = "lehrkraft", nullable = false)
     private boolean lehrkraft;
 
@@ -39,10 +39,10 @@ public class Mitarbeiter extends Person {
     @JoinTable(name = "Mitarbeiter_MitarbeiterCode",
             joinColumns = {@JoinColumn(name = "person_id")},
             inverseJoinColumns = {@JoinColumn(name = "code_id")})
-    private Set<MitarbeiterCode> mitarbeiterCodes = new HashSet<>();
+    private final Set<MitarbeiterCode> mitarbeiterCodes = new HashSet<>();
 
     @ManyToMany(mappedBy = "lehrkraefte")
-    private Set<Kurs> kurse = new HashSet<>();
+    private final Set<Kurs> kurse = new HashSet<>();
 
     public Mitarbeiter() {
     }
@@ -87,7 +87,7 @@ public class Mitarbeiter extends Person {
 
     public String toStringShort() {
         if (getVorname() != null && getNachname() != null) {
-            return getVorname().substring(0, 1) + ". " + getNachname();
+            return getVorname().charAt(0) + ". " + getNachname();
         } else {
             return "";
         }

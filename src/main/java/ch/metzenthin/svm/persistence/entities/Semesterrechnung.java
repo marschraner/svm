@@ -13,7 +13,7 @@ import java.util.*;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Semesterrechnung")
+@Table(name = "Semesterrechnung")
 @IdClass(SemesterrechnungId.class)
 public class Semesterrechnung implements Comparable<Semesterrechnung> {
 
@@ -27,31 +27,32 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     @JoinColumn(name = "person_id")
     private Angehoeriger rechnungsempfaenger;
 
+    @SuppressWarnings("unused")
     @Version
     @Column(name = "last_updated")
     private Timestamp version;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "stipendium", nullable = true)
+    @Column(name = "stipendium")
     private Stipendium stipendium;
 
     @Column(name = "gratiskinder", nullable = false)
     private Boolean gratiskinder;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "rechnungsdatum_vorrechnung", nullable = true)
+    @Column(name = "rechnungsdatum_vorrechnung")
     private Calendar rechnungsdatumVorrechnung;
 
     @Column(name = "ermaessigung_vorrechnung", nullable = false)
     private BigDecimal ermaessigungVorrechnung;
 
-    @Column(name = "ermaessigungsgrund_vorrechnung", nullable = true)
+    @Column(name = "ermaessigungsgrund_vorrechnung")
     private String ermaessigungsgrundVorrechnung;
 
     @Column(name = "zuschlag_vorrechnung", nullable = false)
     private BigDecimal zuschlagVorrechnung;
 
-    @Column(name = "zuschlagsgrund_vorrechnung", nullable = true)
+    @Column(name = "zuschlagsgrund_vorrechnung")
     private String zuschlagsgrundVorrechnung;
 
     @Column(name = "anzahl_wochen_vorrechnung", nullable = false)
@@ -61,40 +62,40 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     private BigDecimal wochenbetragVorrechnung;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "datum_zahlung_1_vorrechnung", nullable = true)
+    @Column(name = "datum_zahlung_1_vorrechnung")
     private Calendar datumZahlung1Vorrechnung;
 
-    @Column(name = "betrag_zahlung_1_vorrechnung", nullable = true)
+    @Column(name = "betrag_zahlung_1_vorrechnung")
     private BigDecimal betragZahlung1Vorrechnung;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "datum_zahlung_2_vorrechnung", nullable = true)
+    @Column(name = "datum_zahlung_2_vorrechnung")
     private Calendar datumZahlung2Vorrechnung;
 
-    @Column(name = "betrag_zahlung_2_vorrechnung", nullable = true)
+    @Column(name = "betrag_zahlung_2_vorrechnung")
     private BigDecimal betragZahlung2Vorrechnung;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "datum_zahlung_3_vorrechnung", nullable = true)
+    @Column(name = "datum_zahlung_3_vorrechnung")
     private Calendar datumZahlung3Vorrechnung;
 
-    @Column(name = "betrag_zahlung_3_vorrechnung", nullable = true)
+    @Column(name = "betrag_zahlung_3_vorrechnung")
     private BigDecimal betragZahlung3Vorrechnung;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "rechnungsdatum_nachrechnung", nullable = true)
+    @Column(name = "rechnungsdatum_nachrechnung")
     private Calendar rechnungsdatumNachrechnung;
 
     @Column(name = "ermaessigung_nachrechnung", nullable = false)
     private BigDecimal ermaessigungNachrechnung;
 
-    @Column(name = "ermaessigungsgrund_nachrechnung", nullable = true)
+    @Column(name = "ermaessigungsgrund_nachrechnung")
     private String ermaessigungsgrundNachrechnung;
 
     @Column(name = "zuschlag_nachrechnung", nullable = false)
     private BigDecimal zuschlagNachrechnung;
 
-    @Column(name = "zuschlagsgrund_nachrechnung", nullable = true)
+    @Column(name = "zuschlagsgrund_nachrechnung")
     private String zuschlagsgrundNachrechnung;
 
     @Column(name = "anzahl_wochen_nachrechnung", nullable = false)
@@ -104,35 +105,35 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     private BigDecimal wochenbetragNachrechnung;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "datum_zahlung_1_nachrechnung", nullable = true)
+    @Column(name = "datum_zahlung_1_nachrechnung")
     private Calendar datumZahlung1Nachrechnung;
 
-    @Column(name = "betrag_zahlung_1_nachrechnung", nullable = true)
+    @Column(name = "betrag_zahlung_1_nachrechnung")
     private BigDecimal betragZahlung1Nachrechnung;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "datum_zahlung_2_nachrechnung", nullable = true)
+    @Column(name = "datum_zahlung_2_nachrechnung")
     private Calendar datumZahlung2Nachrechnung;
 
-    @Column(name = "betrag_zahlung_2_nachrechnung", nullable = true)
+    @Column(name = "betrag_zahlung_2_nachrechnung")
     private BigDecimal betragZahlung2Nachrechnung;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "datum_zahlung_3_nachrechnung", nullable = true)
+    @Column(name = "datum_zahlung_3_nachrechnung")
     private Calendar datumZahlung3Nachrechnung;
 
-    @Column(name = "betrag_zahlung_3_nachrechnung", nullable = true)
+    @Column(name = "betrag_zahlung_3_nachrechnung")
     private BigDecimal betragZahlung3Nachrechnung;
 
     @Transient
     private boolean selektiert = true;
 
     @ManyToOne
-    @JoinColumn(name = "code_id", nullable = true)
+    @JoinColumn(name = "code_id")
     private SemesterrechnungCode semesterrechnungCode;
 
     @Lob
-    @Column(name = "bemerkungen", columnDefinition = "text", nullable = true)
+    @Column(name = "bemerkungen", columnDefinition = "text")
     private String bemerkungen;
 
     @Column(name = "deleted", nullable = false)
@@ -543,6 +544,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Transient
     public BigDecimal getRechnungsbetragVorrechnung() {
         if (anzahlWochenVorrechnung == null || wochenbetragVorrechnung == null) {
@@ -567,6 +569,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         return rechnungsbetragVorrechnung;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Transient
     public BigDecimal getRestbetragVorrechnung() {
         BigDecimal restbetragVorrechnung = null;
@@ -610,6 +613,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Transient
     public BigDecimal getRechnungsbetragNachrechnung() {
         if (anzahlWochenNachrechnung == null || wochenbetragNachrechnung == null) {
@@ -634,6 +638,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         return rechnungsbetragNachrechnung;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Transient
     public BigDecimal getRestbetragNachrechnung() {
         BigDecimal restbetragNachrechnung = null;
@@ -667,6 +672,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         }
     }
 
+    @SuppressWarnings({"BooleanMethodIsAlwaysInverted", "DuplicatedCode"})
     @Transient
     public boolean isNullrechnung() {
         return (ermaessigungVorrechnung == null || ermaessigungVorrechnung.compareTo(BigDecimal.ZERO) == 0) &&

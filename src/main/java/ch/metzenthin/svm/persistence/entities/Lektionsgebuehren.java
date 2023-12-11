@@ -9,7 +9,7 @@ import java.sql.Timestamp;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Lektionsgebuehren")
+@Table(name = "Lektionsgebuehren")
 public class Lektionsgebuehren implements Comparable<Lektionsgebuehren> {
 
     public static final int MAX_KINDER = 6;
@@ -19,6 +19,7 @@ public class Lektionsgebuehren implements Comparable<Lektionsgebuehren> {
     @Column(name = "lektionslaenge")
     private Integer lektionslaenge;
 
+    @SuppressWarnings("unused")
     @Version
     @Column(name = "last_updated")
     private Timestamp version;

@@ -10,7 +10,9 @@ public class KursanmeldungId implements Serializable {
     private Integer schueler;
     private Integer kurs;
 
-    public KursanmeldungId() {}
+    @SuppressWarnings("unused")  // used by JPA
+    public KursanmeldungId() {
+    }
 
     public KursanmeldungId(Integer schueler, Integer kurs) {
         this.schueler = schueler;

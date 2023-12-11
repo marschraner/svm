@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Kursort")
+@Table(name = "Kursort")
 public class Kursort implements Comparable<Kursort> {
 
     @Id
@@ -20,6 +20,7 @@ public class Kursort implements Comparable<Kursort> {
     @Column(name = "kursort_id")
     private Integer kursortId;
 
+    @SuppressWarnings("unused")
     @Version
     @Column(name = "last_updated")
     private Timestamp version;
@@ -31,7 +32,7 @@ public class Kursort implements Comparable<Kursort> {
     private Boolean selektierbar;
 
     @OneToMany(mappedBy = "kursort")
-    private Set<Kurs> kurse = new HashSet<>();
+    private final Set<Kurs> kurse = new HashSet<>();
 
     public Kursort() {
     }
@@ -71,6 +72,7 @@ public class Kursort implements Comparable<Kursort> {
         return kursortId;
     }
 
+    @SuppressWarnings("unused")
     public void setKursortId(Integer kursortId) {
         this.kursortId = kursortId;
     }

@@ -10,7 +10,7 @@ import java.util.Locale;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Code")
+@Table(name = "Code")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "discriminator")
 public abstract class Code implements Comparable<Code> {
@@ -20,6 +20,7 @@ public abstract class Code implements Comparable<Code> {
     @Column(name = "code_id")
     private Integer codeId;
 
+    @SuppressWarnings("unused")
     @Version
     @Column(name = "last_updated")
     private Timestamp version;
@@ -74,6 +75,7 @@ public abstract class Code implements Comparable<Code> {
         return codeId;
     }
 
+    @SuppressWarnings("unused")
     public void setCodeId(Integer codeId) {
         this.codeId = codeId;
     }

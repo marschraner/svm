@@ -47,6 +47,7 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         return kurseFound;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public List<Kurs> findKurse(Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter) {
         StringBuilder selectStatementSb = new StringBuilder("select k from Kurs k");
         if (mitarbeiter != null) {

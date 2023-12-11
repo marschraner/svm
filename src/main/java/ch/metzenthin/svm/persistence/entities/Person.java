@@ -14,10 +14,10 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Person")
+@Table(name = "Person")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "discriminator")
-public abstract class Person implements Comparable<Person>  {
+public abstract class Person implements Comparable<Person> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -98,7 +98,7 @@ public abstract class Person implements Comparable<Person>  {
                 && geburtsdatum == null
                 && (festnetz == null || festnetz.trim().isEmpty())
                 && (natel == null || natel.trim().isEmpty())
-                && (email ==  null || email.trim().isEmpty())
+                && (email == null || email.trim().isEmpty())
                 && (adresse == null || adresse.isEmpty());
     }
 

@@ -5,12 +5,13 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 
 /**
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Anmeldung")
+@Table(name = "Anmeldung")
 public class Anmeldung implements Comparable<Anmeldung> {
 
     @Id
@@ -57,11 +58,11 @@ public class Anmeldung implements Comparable<Anmeldung> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Anmeldung)) return false;
+        if (!(o instanceof Anmeldung anmeldung)) return false;
 
-        Anmeldung anmeldung = (Anmeldung) o;
-
-        return anmeldedatum.equals(anmeldung.anmeldedatum) && !(abmeldedatum != null ? !abmeldedatum.equals(anmeldung.abmeldedatum) : anmeldung.abmeldedatum != null) && schueler.equals(anmeldung.schueler);
+        return anmeldedatum.equals(anmeldung.anmeldedatum)
+                && Objects.equals(abmeldedatum, anmeldung.abmeldedatum)
+                && schueler.equals(anmeldung.schueler);
     }
 
     @Override
@@ -101,6 +102,7 @@ public class Anmeldung implements Comparable<Anmeldung> {
         return anmeldungId;
     }
 
+    @SuppressWarnings("unused")
     public void setAnmeldungId(Integer anmeldungId) {
         this.anmeldungId = anmeldungId;
     }

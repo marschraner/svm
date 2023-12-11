@@ -10,7 +10,7 @@ import java.util.Set;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Maerchen")
+@Table(name = "Maerchen")
 public class Maerchen implements Comparable<Maerchen> {
 
     @Id
@@ -18,6 +18,7 @@ public class Maerchen implements Comparable<Maerchen> {
     @Column(name = "maerchen_id")
     private Integer maerchenId;
 
+    @SuppressWarnings("unused")
     @Version
     @Column(name = "last_updated")
     private Timestamp version;
@@ -32,7 +33,7 @@ public class Maerchen implements Comparable<Maerchen> {
     private Integer anzahlVorstellungen;
 
     @OneToMany(mappedBy = "maerchen")
-    private Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
+    private final Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
 
     public Maerchen() {
     }
@@ -71,6 +72,7 @@ public class Maerchen implements Comparable<Maerchen> {
         return maerchenId;
     }
 
+    @SuppressWarnings("unused")
     public void setMaerchenId(Integer maerchenId) {
         this.maerchenId = maerchenId;
     }

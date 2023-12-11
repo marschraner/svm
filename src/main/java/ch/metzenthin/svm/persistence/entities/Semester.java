@@ -14,7 +14,7 @@ import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNumberOfWeeksBe
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Semester")
+@Table(name = "Semester")
 public class Semester implements Comparable<Semester> {
 
     @Id
@@ -22,6 +22,7 @@ public class Semester implements Comparable<Semester> {
     @Column(name = "semester_id")
     private Integer semesterId;
 
+    @SuppressWarnings("unused")
     @Version
     @Column(name = "last_updated")
     private Timestamp version;
@@ -58,10 +59,10 @@ public class Semester implements Comparable<Semester> {
     private Calendar ferienende2;
 
     @OneToMany(mappedBy = "semester")
-    private Set<Kurs> kurse = new HashSet<>();
+    private final Set<Kurs> kurse = new HashSet<>();
 
     @OneToMany(mappedBy = "semester", cascade = CascadeType.REMOVE)
-    private Set<Semesterrechnung> semesterrechnungen = new HashSet<>();
+    private final Set<Semesterrechnung> semesterrechnungen = new HashSet<>();
 
     public Semester() {
     }
@@ -127,6 +128,7 @@ public class Semester implements Comparable<Semester> {
         return semesterId;
     }
 
+    @SuppressWarnings("unused")
     public void setSemesterId(Integer semesterId) {
         this.semesterId = semesterId;
     }

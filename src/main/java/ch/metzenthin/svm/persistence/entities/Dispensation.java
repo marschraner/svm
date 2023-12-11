@@ -5,13 +5,14 @@ import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Dispensation")
+@Table(name = "Dispensation")
 public class Dispensation implements Comparable<Dispensation> {
 
     @Id
@@ -19,6 +20,7 @@ public class Dispensation implements Comparable<Dispensation> {
     @Column(name = "dispensation_id")
     private Integer dispensationId;
 
+    @SuppressWarnings("unused")
     @Version
     @Column(name = "last_updated")
     private Timestamp version;
@@ -28,11 +30,11 @@ public class Dispensation implements Comparable<Dispensation> {
     private Calendar dispensationsbeginn;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "dispensationsende", nullable = true)
+    @Column(name = "dispensationsende")
     private Calendar dispensationsende;
 
     @Lob
-    @Column(name = "voraussichtliche_dauer", columnDefinition = "text", nullable = true)
+    @Column(name = "voraussichtliche_dauer", columnDefinition = "text")
     private String voraussichtlicheDauer;
 
     @Lob
@@ -44,7 +46,7 @@ public class Dispensation implements Comparable<Dispensation> {
     private Schueler schueler;
 
     @Transient
-    private boolean neusteZuoberst;
+    private final boolean neusteZuoberst;
 
     public Dispensation() {
         Properties svmProperties = SvmProperties.getSvmProperties();
@@ -98,9 +100,9 @@ public class Dispensation implements Comparable<Dispensation> {
         Dispensation that = (Dispensation) o;
 
         if (!dispensationsbeginn.equals(that.dispensationsbeginn)) return false;
-        if (dispensationsende != null ? !dispensationsende.equals(that.dispensationsende) : that.dispensationsende != null)
+        if (!Objects.equals(dispensationsende, that.dispensationsende))
             return false;
-        if (voraussichtlicheDauer != null ? !voraussichtlicheDauer.equals(that.voraussichtlicheDauer) : that.voraussichtlicheDauer != null)
+        if (!Objects.equals(voraussichtlicheDauer, that.voraussichtlicheDauer))
             return false;
         return grund.equals(that.grund);
 
@@ -149,6 +151,7 @@ public class Dispensation implements Comparable<Dispensation> {
         return dispensationId;
     }
 
+    @SuppressWarnings("unused")
     public void setDispensationId(Integer dispensationId) {
         this.dispensationId = dispensationId;
     }

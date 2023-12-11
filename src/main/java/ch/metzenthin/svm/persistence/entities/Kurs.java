@@ -15,7 +15,7 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Kurs")
+@Table(name = "Kurs")
 public class Kurs implements Comparable<Kurs> {
 
     @Id

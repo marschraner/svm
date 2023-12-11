@@ -11,7 +11,7 @@ import java.util.*;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Schueler")
+@Table(name = "Schueler")
 @DiscriminatorValue("Schueler")
 public class Schueler extends Person {
 
@@ -20,18 +20,18 @@ public class Schueler extends Person {
     private Geschlecht geschlecht;
 
     @Lob
-    @Column(name = "bemerkungen", columnDefinition = "text", nullable = true)
+    @Column(name = "bemerkungen", columnDefinition = "text")
     private String bemerkungen;
 
     @Transient
     private boolean selektiert = true;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "vater_id", nullable = true)
+    @JoinColumn(name = "vater_id")
     private Angehoeriger vater;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "mutter_id", nullable = true)
+    @JoinColumn(name = "mutter_id")
     private Angehoeriger mutter;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
@@ -40,23 +40,23 @@ public class Schueler extends Person {
 
     @OneToMany(mappedBy = "schueler", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("anmeldedatum DESC , abmeldedatum DESC")
-    private List<Anmeldung> anmeldungen = new ArrayList<>();
+    private final List<Anmeldung> anmeldungen = new ArrayList<>();
 
     @OneToMany(mappedBy = "schueler", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("dispensationsbeginn DESC, dispensationsende DESC")
-    private List<Dispensation> dispensationen = new ArrayList<>();
+    private final List<Dispensation> dispensationen = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "Schueler_SchuelerCode",
             joinColumns = {@JoinColumn(name = "person_id")},
             inverseJoinColumns = {@JoinColumn(name = "code_id")})
-    private Set<SchuelerCode> schuelerCodes = new HashSet<>();
+    private final Set<SchuelerCode> schuelerCodes = new HashSet<>();
 
     @OneToMany(mappedBy = "schueler")
-    private Set<Kursanmeldung> kursanmeldungen = new HashSet<>();
+    private final Set<Kursanmeldung> kursanmeldungen = new HashSet<>();
 
     @OneToMany(mappedBy = "schueler")
-    private Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
+    private final Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
 
     public Schueler() {
     }

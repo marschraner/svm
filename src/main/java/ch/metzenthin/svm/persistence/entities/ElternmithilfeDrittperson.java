@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="ElternmithilfeDrittperson")
+@Table(name = "ElternmithilfeDrittperson")
 @DiscriminatorValue("ElternmithilfeDrittperson")
 public class ElternmithilfeDrittperson extends Person {
 
@@ -23,5 +23,5 @@ public class ElternmithilfeDrittperson extends Person {
     public boolean isIdenticalWith(ElternmithilfeDrittperson otherElternmithilfeDrittperson) {
         return (super.isIdenticalWith(otherElternmithilfeDrittperson));
     }
-    
+
 }

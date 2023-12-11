@@ -72,7 +72,7 @@ public class DBImpl implements DB {
     }
 
     // Speicherung der Daten pro Thread
-    private class ThreadLocalData {
+    private static class ThreadLocalData {
 
         private EntityManager entityManager;
 

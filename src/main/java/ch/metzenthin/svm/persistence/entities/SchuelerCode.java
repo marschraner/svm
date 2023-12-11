@@ -12,12 +12,12 @@ import java.util.Set;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="SchuelerCode")
+@Table(name = "SchuelerCode")
 @DiscriminatorValue("Schueler")
 public class SchuelerCode extends Code {
 
     @ManyToMany(mappedBy = "schuelerCodes")
-    private Set<Schueler> schueler = new HashSet<>();
+    private final Set<Schueler> schueler = new HashSet<>();
 
     public SchuelerCode() {
     }

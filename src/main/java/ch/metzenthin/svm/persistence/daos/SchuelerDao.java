@@ -112,6 +112,7 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
      * @param schueler (not null)
      * @return schuelerFound
      */
+    @SuppressWarnings("DuplicatedCode")
     public List<Schueler> findSchueler(Schueler schueler) {
 
         StringBuilder selectStatementSb = new StringBuilder("select s from Schueler s where");

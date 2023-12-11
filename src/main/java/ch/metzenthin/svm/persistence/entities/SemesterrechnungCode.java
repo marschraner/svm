@@ -12,12 +12,12 @@ import java.util.Set;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="SemesterrechnungCode")
+@Table(name = "SemesterrechnungCode")
 @DiscriminatorValue("Semesterrechnung")
 public class SemesterrechnungCode extends Code {
 
     @OneToMany(mappedBy = "semesterrechnungCode")
-    private Set<Semesterrechnung> semesterrechnungen = new HashSet<>();
+    private final Set<Semesterrechnung> semesterrechnungen = new HashSet<>();
 
     public SemesterrechnungCode() {
     }

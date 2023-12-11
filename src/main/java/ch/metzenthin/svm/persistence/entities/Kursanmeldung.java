@@ -12,7 +12,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Kursanmeldung")
+@Table(name = "Kursanmeldung")
 @IdClass(KursanmeldungId.class)
 public class Kursanmeldung implements Comparable<Kursanmeldung> {
 
@@ -26,6 +26,7 @@ public class Kursanmeldung implements Comparable<Kursanmeldung> {
     @JoinColumn(name = "kurs_id")
     private Kurs kurs;
 
+    @SuppressWarnings("unused")
     @Version
     @Column(name = "last_updated")
     private Timestamp version;
@@ -35,10 +36,10 @@ public class Kursanmeldung implements Comparable<Kursanmeldung> {
     private Calendar anmeldedatum;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "abmeldedatum", nullable = true)
+    @Column(name = "abmeldedatum")
     private Calendar abmeldedatum;
 
-    @Column(name = "bemerkungen", nullable = true)
+    @Column(name = "bemerkungen")
     private String bemerkungen;
 
     public Kursanmeldung() {

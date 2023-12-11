@@ -10,7 +10,9 @@ public class SemesterrechnungId implements Serializable {
     private Integer semester;
     private Integer rechnungsempfaenger;
 
-    public SemesterrechnungId() {}
+    @SuppressWarnings("unused")  // used by JPA
+    public SemesterrechnungId() {
+    }
 
     public SemesterrechnungId(Integer semester, Integer rechnungsempfaenger) {
         this.semester = semester;

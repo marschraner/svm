@@ -11,7 +11,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Adresse")
+@Table(name = "Adresse")
 public class Adresse {
 
     @Id

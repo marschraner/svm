@@ -12,12 +12,12 @@ import java.util.Set;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="ElternmithilfeCode")
+@Table(name = "ElternmithilfeCode")
 @DiscriminatorValue("Elternmithilfe")
 public class ElternmithilfeCode extends Code {
 
     @OneToMany(mappedBy = "elternmithilfeCode")
-    private Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
+    private final Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
 
     public ElternmithilfeCode() {
     }

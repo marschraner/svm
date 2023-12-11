@@ -12,7 +12,7 @@ import java.util.Properties;
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Maercheneinteilung")
+@Table(name = "Maercheneinteilung")
 @IdClass(MaercheneinteilungId.class)
 public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
 
@@ -26,6 +26,7 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
     @JoinColumn(name = "maerchen_id")
     private Maerchen maerchen;
 
+    @SuppressWarnings("unused")
     @Version
     @Column(name = "last_updated")
     private Timestamp version;
@@ -37,27 +38,27 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
     @Column(name = "rolle_1", nullable = false)
     private String rolle1;
 
-    @Column(name = "bilder_rolle_1", nullable = true)
+    @Column(name = "bilder_rolle_1")
     private String bilderRolle1;
 
-    @Column(name = "rolle_2", nullable = true)
+    @Column(name = "rolle_2")
     private String rolle2;
 
-    @Column(name = "bilder_rolle_2", nullable = true)
+    @Column(name = "bilder_rolle_2")
     private String bilderRolle2;
 
-    @Column(name = "rolle_3", nullable = true)
+    @Column(name = "rolle_3")
     private String rolle3;
 
-    @Column(name = "bilder_rolle_3", nullable = true)
+    @Column(name = "bilder_rolle_3")
     private String bilderRolle3;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "elternmithilfe", nullable = true)
+    @JoinColumn(name = "elternmithilfe")
     private Elternmithilfe elternmithilfe;
 
     @ManyToOne
-    @JoinColumn(name = "code_id", nullable = true)
+    @JoinColumn(name = "code_id")
     private ElternmithilfeCode elternmithilfeCode;
 
     @Column(name = "kuchen_vorstellung_1", nullable = false)
@@ -87,18 +88,18 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
     @Column(name = "kuchen_vorstellung_9", nullable = false)
     private Boolean kuchenVorstellung9;
 
-    @Column(name = "zusatzattribut", nullable = true)
+    @Column(name = "zusatzattribut")
     private String zusatzattribut;
 
-    @Column(name = "bemerkungen", nullable = true)
+    @Column(name = "bemerkungen")
     private String bemerkungen;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "drittperson_id", nullable = true)
+    @JoinColumn(name = "drittperson_id")
     private ElternmithilfeDrittperson elternmithilfeDrittperson;
 
     @Transient
-    private boolean neusteZuoberst;
+    private final boolean neusteZuoberst;
 
     public Maercheneinteilung() {
         Properties svmProperties = SvmProperties.getSvmProperties();
@@ -357,7 +358,7 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
     }
 
     public String getKuchenVorstellungenAsString() {
-        StringBuilder vorstellungenKuchenSb = new StringBuilder("");
+        StringBuilder vorstellungenKuchenSb = new StringBuilder();
         if (kuchenVorstellung1) {
             vorstellungenKuchenSb.append("1, ");
         }
@@ -419,7 +420,7 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
     @Transient
     public String getRolle1WithoutSorterCharacters() {
         // "x Hund 2", "x 3 Hund 2", "xx 3 Hund 2", "X Hund 2", "X 3 Hund 2" und  "XX 3 Hund 2" durch "Hund 2" ersetzen
-        return rolle1.replaceFirst("^([A-Z]{1,2}|[a-z]{1,2})\\p{Blank}+[0-9]*\\p{Blank}*", "");
+        return rolle1.replaceFirst("^([A-Z]{1,2}|[a-z]{1,2})[ \\t]+[0-9]*[ \\t]*", "");
     }
 
     @Transient

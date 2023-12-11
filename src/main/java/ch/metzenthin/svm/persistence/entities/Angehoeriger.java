@@ -2,13 +2,14 @@ package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import jakarta.persistence.*;
+
 import java.util.*;
 
 /**
  * @author Martin Schraner
  */
 @Entity
-@Table(name="Angehoeriger")
+@Table(name = "Angehoeriger")
 @DiscriminatorValue("Angehoeriger")
 public class Angehoeriger extends Person {
 
