@@ -132,12 +132,12 @@ public class KursanmeldungenController {
                     "Schüler vom Kinder- und Jugendtheater abmelden?",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
-                    svmContext.getDialogIcons().getQuestionIcon(),
+                    null,
                     options,  //the titles of buttons
                     options[0]); //default button title
             if (n == 0) {
                 kursanmeldungenModel.schuelerVomKinderUndJugendtheaterAbmelden(schuelerDatenblattModel, spaetestesAbmeldedatumNeustesSemester);
-                JOptionPane.showMessageDialog(null, "Der Schüler wurde per " + DateAndTimeUtils.getCalendarAsDDMMYYYY(spaetestesAbmeldedatumNeustesSemester) + " abgemeldet.", "Abmeldung erfolgreich", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+                JOptionPane.showMessageDialog(null, "Der Schüler wurde per " + DateAndTimeUtils.getCalendarAsDDMMYYYY(spaetestesAbmeldedatumNeustesSemester) + " abgemeldet.", "Abmeldung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -166,7 +166,7 @@ public class KursanmeldungenController {
                 "Eintrag löschen?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                svmContext.getDialogIcons().getQuestionIcon(),
+                null,
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {

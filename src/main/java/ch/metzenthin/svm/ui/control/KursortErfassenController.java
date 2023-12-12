@@ -4,8 +4,8 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.KursortErfassenModel;
 import ch.metzenthin.svm.domain.model.CompletedListener;
+import ch.metzenthin.svm.domain.model.KursortErfassenModel;
 import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -80,7 +80,7 @@ public class KursortErfassenController extends AbstractController {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
-    
+
     public void setTxtBezeichnung(JTextField txtBezeichnung) {
         this.txtBezeichnung = txtBezeichnung;
         if (!defaultButtonEnabled) {
@@ -180,7 +180,7 @@ public class KursortErfassenController extends AbstractController {
             return;
         }
         if (kursortErfassenModel.checkKursortBezeichnungBereitsInVerwendung(svmContext.getSvmModel())) {
-            JOptionPane.showMessageDialog(kursortErfassenDialog, "Bezeichnung bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+            JOptionPane.showMessageDialog(kursortErfassenDialog, "Bezeichnung bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
             kursortErfassenModel.speichern(svmContext.getSvmModel(), kursorteTableModel);
@@ -254,7 +254,8 @@ public class KursortErfassenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 
 }

@@ -1074,7 +1074,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{semesterrechnungenPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
         } else {
             resetCursorAllComponents();
-            JOptionPane.showMessageDialog(null, "Es wurden keine Semesterrechnungen gefunden, welche auf die Suchabfrage passen.", "Keine Semesterrechnungen gefunden", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+            JOptionPane.showMessageDialog(null, "Es wurden keine Semesterrechnungen gefunden, welche auf die Suchabfrage passen.", "Keine Semesterrechnungen gefunden", JOptionPane.INFORMATION_MESSAGE);
             btnSuchen.setFocusPainted(false);
         }
     }
@@ -1212,7 +1212,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         return rechnungsdatumNachrechnungFields;
     }
 
-    private void setWaitCursorAllComponents () {
+    private void setWaitCursorAllComponents() {
         Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         mainPanel.setCursor(waitCursor);
         // Textfields müssen separat gesetzt werden
@@ -1237,7 +1237,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         txtRestbetragNachrechnung.setCursor(waitCursor);
     }
 
-    private void resetCursorAllComponents () {
+    private void resetCursorAllComponents() {
         mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         // Textfields müssen separat gesetzt werden
         // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
@@ -1268,239 +1268,161 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.SEMESTER, evt)) {
             spinnerSemester.setValue(semesterrechnungenSuchenModel.getSemester());
-        }
-        else if (checkIsFieldChange(Field.NACHNAME, evt)) {
+        } else if (checkIsFieldChange(Field.NACHNAME, evt)) {
             txtNachname.setText(semesterrechnungenSuchenModel.getNachname());
-        }
-        else if (checkIsFieldChange(Field.VORNAME, evt)) {
+        } else if (checkIsFieldChange(Field.VORNAME, evt)) {
             txtVorname.setText(semesterrechnungenSuchenModel.getVorname());
-        }
-        else if (checkIsFieldChange(Field.WOCHENTAG, evt)) {
+        } else if (checkIsFieldChange(Field.WOCHENTAG, evt)) {
             comboBoxWochentag.setSelectedItem(semesterrechnungenSuchenModel.getWochentag());
-        }
-        else if (checkIsFieldChange(Field.ZEIT_BEGINN, evt)) {
+        } else if (checkIsFieldChange(Field.ZEIT_BEGINN, evt)) {
             txtZeitBeginn.setText(asString(semesterrechnungenSuchenModel.getZeitBeginn()));
-        }
-        else if (checkIsFieldChange(Field.LEHRKRAFT, evt)) {
+        } else if (checkIsFieldChange(Field.LEHRKRAFT, evt)) {
             comboBoxLehrkraft.setSelectedItem(semesterrechnungenSuchenModel.getMitarbeiter());
-        }
-        else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RolleSelected.SCHUELER) {
+        } else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RolleSelected.SCHUELER) {
             radioBtnSchueler.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RolleSelected.ELTERN) {
+        } else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RolleSelected.ELTERN) {
             radioBtnEltern.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
+        } else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
             radioBtnRechnungsempfaenger.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RolleSelected.ALLE) {
+        } else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RolleSelected.ALLE) {
             radioBtnRolleAlle.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.SEMESTERRECHNUNG_CODE_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.JA) {
+        } else if (checkIsFieldChange(Field.SEMESTERRECHNUNG_CODE_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.JA) {
             radioBtnSemesterrechnungCodeJa.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.SEMESTERRECHNUNG_CODE_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.NEIN) {
+        } else if (checkIsFieldChange(Field.SEMESTERRECHNUNG_CODE_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.NEIN) {
             radioBtnSemesterrechnungCodeNein.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.SEMESTERRECHNUNG_CODE_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.ALLE) {
+        } else if (checkIsFieldChange(Field.SEMESTERRECHNUNG_CODE_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SemesterrechnungCodeJaNeinSelected.ALLE) {
             radioBtnSemesterrechnungCodeAlle.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.STIPENDIUM_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.JA) {
+        } else if (checkIsFieldChange(Field.STIPENDIUM_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.JA) {
             radioBtnStipendiumJa.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.STIPENDIUM_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.NEIN) {
+        } else if (checkIsFieldChange(Field.STIPENDIUM_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.NEIN) {
             radioBtnStipendiumNein.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.STIPENDIUM_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.ALLE) {
+        } else if (checkIsFieldChange(Field.STIPENDIUM_JA_NEIN, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.StipendiumJaNeinSelected.ALLE) {
             radioBtnStipendiumAlle.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumVorrechnungSelected.AM) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumVorrechnungSelected.AM) {
             radioBtnAmVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumVorrechnungSelected.VOR) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumVorrechnungSelected.VOR) {
             radioBtnVorVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumVorrechnungSelected.NACH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumVorrechnungSelected.NACH) {
             radioBtnNachVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ERMAESSIGUNG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungErmaessigungVorrechnungSelected.GLEICH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ERMAESSIGUNG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungErmaessigungVorrechnungSelected.GLEICH) {
             radioBtnGleichErmaessigungVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ERMAESSIGUNG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungErmaessigungVorrechnungSelected.KLEINER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ERMAESSIGUNG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungErmaessigungVorrechnungSelected.KLEINER) {
             radioBtnKleinerErmaessigungVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ERMAESSIGUNG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungErmaessigungVorrechnungSelected.GROESSER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ERMAESSIGUNG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungErmaessigungVorrechnungSelected.GROESSER) {
             radioBtnGroesserErmaessigungVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ZUSCHLAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungZuschlagVorrechnungSelected.GLEICH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ZUSCHLAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungZuschlagVorrechnungSelected.GLEICH) {
             radioBtnGleichZuschlagVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ZUSCHLAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungZuschlagVorrechnungSelected.KLEINER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ZUSCHLAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungZuschlagVorrechnungSelected.KLEINER) {
             radioBtnKleinerZuschlagVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ZUSCHLAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungZuschlagVorrechnungSelected.GROESSER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ZUSCHLAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungZuschlagVorrechnungSelected.GROESSER) {
             radioBtnGroesserZuschlagVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected.GLEICH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected.GLEICH) {
             radioBtnGleichAnzahlWochenVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected.KLEINER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected.KLEINER) {
             radioBtnKleinerAnzahlWochenVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected.GROESSER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenVorrechnungSelected.GROESSER) {
             radioBtnGroesserAnzahlWochenVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragVorrechnungSelected.GLEICH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragVorrechnungSelected.GLEICH) {
             radioBtnGleichWochenbetragVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragVorrechnungSelected.KLEINER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragVorrechnungSelected.KLEINER) {
             radioBtnKleinerWochenbetragVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragVorrechnungSelected.GROESSER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragVorrechnungSelected.GROESSER) {
             radioBtnGroesserWochenbetragVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected.GLEICH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected.GLEICH) {
             radioBtnGleichRechnungsbetragVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected.KLEINER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected.KLEINER) {
             radioBtnKleinerRechnungsbetragVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected.GROESSER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragVorrechnungSelected.GROESSER) {
             radioBtnGroesserRechnungsbetragVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.RECHNUNGSBETRAG_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.RECHNUNGSBETRAG_VORRECHNUNG, evt)) {
             txtRechnungsbetragVorrechnung.setText(semesterrechnungenSuchenModel.getRechnungsbetragVorrechnung() == null ? null : semesterrechnungenSuchenModel.getRechnungsbetragVorrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.GESETZT) {
+        } else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.GESETZT) {
             radioBtnRechnungsdatumGesetztVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.NICHT_GESETZT) {
+        } else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.NICHT_GESETZT) {
             radioBtnRechnungsdatumNichtGesetztVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.ALLE) {
+        } else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.ALLE) {
             radioBtnRechnungsdatumGesetztAlleVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RESTBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRestbetragVorrechnungSelected.GLEICH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RESTBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRestbetragVorrechnungSelected.GLEICH) {
             radioBtnGleichRestbetragVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RESTBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRestbetragVorrechnungSelected.KLEINER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RESTBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRestbetragVorrechnungSelected.KLEINER) {
             radioBtnKleinerRestbetragVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RESTBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRestbetragVorrechnungSelected.GROESSER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RESTBETRAG_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRestbetragVorrechnungSelected.GROESSER) {
             radioBtnGroesserRestbetragVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.RESTBETRAG_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.RESTBETRAG_VORRECHNUNG, evt)) {
             txtRestbetragVorrechnung.setText(semesterrechnungenSuchenModel.getRestbetragVorrechnung() == null ? null : semesterrechnungenSuchenModel.getRestbetragVorrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.JA) {
+        } else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.JA) {
             radioBtnSechsJahresRabattJaVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.NEIN) {
+        } else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.NEIN) {
             radioBtnSechsJahresRabattNeinVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.ALLE) {
+        } else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_VORRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.ALLE) {
             radioBtnSechsJahresRabattAlleVorrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumNachrechnungSelected.AM) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumNachrechnungSelected.AM) {
             radioBtnAmNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumNachrechnungSelected.VOR) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumNachrechnungSelected.VOR) {
             radioBtnVorNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumNachrechnungSelected.NACH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSDATUM_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsdatumNachrechnungSelected.NACH) {
             radioBtnNachNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ERMAESSIGUNG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungErmaessigungNachrechnungSelected.GLEICH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ERMAESSIGUNG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungErmaessigungNachrechnungSelected.GLEICH) {
             radioBtnGleichErmaessigungNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ERMAESSIGUNG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungErmaessigungNachrechnungSelected.KLEINER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ERMAESSIGUNG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungErmaessigungNachrechnungSelected.KLEINER) {
             radioBtnKleinerErmaessigungNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ERMAESSIGUNG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungErmaessigungNachrechnungSelected.GROESSER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ERMAESSIGUNG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungErmaessigungNachrechnungSelected.GROESSER) {
             radioBtnGroesserErmaessigungNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ZUSCHLAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungZuschlagNachrechnungSelected.GLEICH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ZUSCHLAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungZuschlagNachrechnungSelected.GLEICH) {
             radioBtnGleichZuschlagNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ZUSCHLAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungZuschlagNachrechnungSelected.KLEINER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ZUSCHLAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungZuschlagNachrechnungSelected.KLEINER) {
             radioBtnKleinerZuschlagNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ZUSCHLAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungZuschlagNachrechnungSelected.GROESSER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ZUSCHLAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungZuschlagNachrechnungSelected.GROESSER) {
             radioBtnGroesserZuschlagNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenNachrechnungSelected.GLEICH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenNachrechnungSelected.GLEICH) {
             radioBtnGleichAnzahlWochenNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenNachrechnungSelected.KLEINER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenNachrechnungSelected.KLEINER) {
             radioBtnKleinerAnzahlWochenNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenNachrechnungSelected.GROESSER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_ANZAHL_WOCHEN_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungAnzahlWochenNachrechnungSelected.GROESSER) {
             radioBtnGroesserAnzahlWochenNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragNachrechnungSelected.GLEICH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragNachrechnungSelected.GLEICH) {
             radioBtnGleichWochenbetragNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragNachrechnungSelected.KLEINER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragNachrechnungSelected.KLEINER) {
             radioBtnKleinerWochenbetragNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragNachrechnungSelected.GROESSER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_WOCHENBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungWochenbetragNachrechnungSelected.GROESSER) {
             radioBtnGroesserWochenbetragNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected.GLEICH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected.GLEICH) {
             radioBtnGleichRechnungsbetragNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected.KLEINER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected.KLEINER) {
             radioBtnKleinerRechnungsbetragNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected.GROESSER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RECHNUNGSBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRechnungsbetragNachrechnungSelected.GROESSER) {
             radioBtnGroesserRechnungsbetragNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.RECHNUNGSBETRAG_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.RECHNUNGSBETRAG_NACHRECHNUNG, evt)) {
             txtRechnungsbetragNachrechnung.setText(semesterrechnungenSuchenModel.getRechnungsbetragNachrechnung() == null ? null : semesterrechnungenSuchenModel.getRechnungsbetragNachrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.GESETZT) {
+        } else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.GESETZT) {
             radioBtnRechnungsdatumGesetztNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.NICHT_GESETZT) {
+        } else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.NICHT_GESETZT) {
             radioBtnRechnungsdatumNichtGesetztNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.ALLE) {
+        } else if (checkIsFieldChange(Field.RECHNUNGSDATUM_GESETZT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.ALLE) {
             radioBtnRechnungsdatumGesetztAlleNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RESTBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRestbetragNachrechnungSelected.GLEICH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RESTBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRestbetragNachrechnungSelected.GLEICH) {
             radioBtnGleichRestbetragNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RESTBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRestbetragNachrechnungSelected.KLEINER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RESTBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRestbetragNachrechnungSelected.KLEINER) {
             radioBtnKleinerRestbetragNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_RESTBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRestbetragNachrechnungSelected.GROESSER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_RESTBETRAG_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungRestbetragNachrechnungSelected.GROESSER) {
             radioBtnGroesserRestbetragNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.RESTBETRAG_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.RESTBETRAG_NACHRECHNUNG, evt)) {
             txtRestbetragNachrechnung.setText(semesterrechnungenSuchenModel.getRestbetragNachrechnung() == null ? null : semesterrechnungenSuchenModel.getRestbetragNachrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.JA) {
+        } else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.JA) {
             radioBtnSechsJahresRabattJaNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.NEIN) {
+        } else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.NEIN) {
             radioBtnSechsJahresRabattNeinNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.ALLE) {
+        } else if (checkIsFieldChange(Field.SECHS_JAHRES_RABATT_NACHRECHNUNG, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.ALLE) {
             radioBtnSechsJahresRabattAlleNachrechnung.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_DIFFERENZ_SCHULGELD, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.GLEICH) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_DIFFERENZ_SCHULGELD, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.GLEICH) {
             radioBtnGleichDifferenzSchulgeld.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_DIFFERENZ_SCHULGELD, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.KLEINER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_DIFFERENZ_SCHULGELD, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.KLEINER) {
             radioBtnKleinerDifferenzSchulgeld.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.PRAEZISIERUNG_DIFFERENZ_SCHULGELD, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.GROESSER) {
+        } else if (checkIsFieldChange(Field.PRAEZISIERUNG_DIFFERENZ_SCHULGELD, evt) && evt.getNewValue() == SemesterrechnungenSuchenModel.PraezisierungDifferenzSchulgeldSelected.GROESSER) {
             radioBtnGroesserDifferenzSchulgeld.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.DIFFERENZ_SCHULGELD, evt)) {
+        } else if (checkIsFieldChange(Field.DIFFERENZ_SCHULGELD, evt)) {
             txtDifferenzSchulgeld.setText(semesterrechnungenSuchenModel.getDifferenzSchulgeld() == null ? null : semesterrechnungenSuchenModel.getDifferenzSchulgeld().toString());
-        }
-        else if (checkIsFieldChange(Field.GELOESCHT, evt)) {
+        } else if (checkIsFieldChange(Field.GELOESCHT, evt)) {
             checkBoxGeloescht.setSelected(semesterrechnungenSuchenModel.isGeloescht());
         }
     }

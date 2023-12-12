@@ -484,7 +484,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
                     "Applikation beenden",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
-                    svmContext.getDialogIcons().getQuestionIcon(),
+                    null,
                     options,  //the titles of buttons
                     options[0]);
         }

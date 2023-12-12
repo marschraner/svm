@@ -773,7 +773,7 @@ public class SchuelerSuchenController extends PersonController {
                 errMsg = "Es wurden keine Kurse gefunden, welche auf die Suchabfrage passen.";
                 title = "Keine Kurse gefunden";
             }
-            JOptionPane.showMessageDialog(null, errMsg, title, JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+            JOptionPane.showMessageDialog(null, errMsg, title, JOptionPane.INFORMATION_MESSAGE);
             btnSuchen.setFocusPainted(false);
             return;
         }
@@ -784,7 +784,7 @@ public class SchuelerSuchenController extends PersonController {
         int maxResults = SchuelerSuchenCommand.MAX_RESULTS;
         if (schuelerSuchenTableData.size() == maxResults) {
             JOptionPane.showMessageDialog(null, maxResults + " oder mehr Schüler gefunden. Es werden nur die ersten " + maxResults + " Suchresultate angezeigt.\n" +
-                    "Bitte Suchabfrage einschränken!", "Suchabfrage einschränken", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+                    "Bitte Suchabfrage einschränken!", "Suchabfrage einschränken", JOptionPane.WARNING_MESSAGE);
         }
 
         if (schuelerSuchenTableData.size() > 1
@@ -806,7 +806,7 @@ public class SchuelerSuchenController extends PersonController {
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"}, ActionEvent.ACTION_PERFORMED, "Schüler gespeichert"));
         } else {
             resetCursorAllComponents();
-            JOptionPane.showMessageDialog(null, "Es wurden keine Schüler gefunden, welche auf die Suchabfrage passen.", "Keine Schüler gefunden", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+            JOptionPane.showMessageDialog(null, "Es wurden keine Schüler gefunden, welche auf die Suchabfrage passen.", "Keine Schüler gefunden", JOptionPane.INFORMATION_MESSAGE);
             btnSuchen.setFocusPainted(false);
         }
     }
@@ -967,7 +967,7 @@ public class SchuelerSuchenController extends PersonController {
         return maerchenFields;
     }
 
-    private void setWaitCursorAllComponents () {
+    private void setWaitCursorAllComponents() {
         Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         mainPanel.setCursor(waitCursor);
         // Textfields müssen separat gesetzt werden
@@ -1015,86 +1015,59 @@ public class SchuelerSuchenController extends PersonController {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.GEBURTSDATUM_SUCHPERIODE, evt)) {
             txtGeburtsdatumSuchperiode.setText(schuelerSuchenModel.getGeburtsdatumSuchperiode());
-        }
-        else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.SCHUELER) {
+        } else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.SCHUELER) {
             radioBtnSchueler.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.ELTERN) {
+        } else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.ELTERN) {
             radioBtnEltern.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
+        } else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.RECHNUNGSEMPFAENGER) {
             radioBtnRechnungsempfaenger.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.ALLE) {
+        } else if (checkIsFieldChange(Field.ROLLE, evt) && evt.getNewValue() == SchuelerSuchenModel.RolleSelected.ALLE) {
             radioBtnRolleAlle.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET) {
+        } else if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ANGEMELDET) {
             radioBtnAngemeldet.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ABGEMELDET) {
+        } else if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ABGEMELDET) {
             radioBtnAbgemeldet.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ALLE) {
+        } else if (checkIsFieldChange(Field.ANMELDESTATUS, evt) && evt.getNewValue() == SchuelerSuchenModel.AnmeldestatusSelected.ALLE) {
             radioBtnAnmeldestatusAlle.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.DISPENSIERT) {
+        } else if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.DISPENSIERT) {
             radioBtnDispensiert.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.NICHT_DISPENSIERT) {
+        } else if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.NICHT_DISPENSIERT) {
             radioBtnNichtDispensiert.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.ALLE) {
+        } else if (checkIsFieldChange(Field.DISPENSATION, evt) && evt.getNewValue() == SchuelerSuchenModel.DispensationSelected.ALLE) {
             radioBtnDispensationAlle.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.WEIBLICH) {
+        } else if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.WEIBLICH) {
             radioBtnWeiblich.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.MAENNLICH) {
+        } else if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.MAENNLICH) {
             radioBtnMaennlich.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.ALLE) {
+        } else if (checkIsFieldChange(Field.GESCHLECHT, evt) && evt.getNewValue() == SchuelerSuchenModel.GeschlechtSelected.ALLE) {
             radioBtnGeschlechtAlle.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.STICHTAG, evt)) {
+        } else if (checkIsFieldChange(Field.STICHTAG, evt)) {
             txtStichtag.setText(asString(schuelerSuchenModel.getStichtag()));
-        }
-        else if (checkIsFieldChange(Field.SCHUELER_CODE, evt)) {
+        } else if (checkIsFieldChange(Field.SCHUELER_CODE, evt)) {
             comboBoxSchuelerCode.setSelectedItem(schuelerSuchenModel.getSchuelerCode());
-        }
-        else if (checkIsFieldChange(Field.SEMESTER_KURS, evt)) {
+        } else if (checkIsFieldChange(Field.SEMESTER_KURS, evt)) {
             spinnerSemesterKurs.setValue(schuelerSuchenModel.getSemesterKurs());
-        }
-        else if (checkIsFieldChange(Field.WOCHENTAG, evt)) {
+        } else if (checkIsFieldChange(Field.WOCHENTAG, evt)) {
             comboBoxWochentag.setSelectedItem(schuelerSuchenModel.getWochentag());
-        }
-        else if (checkIsFieldChange(Field.ZEIT_BEGINN, evt)) {
+        } else if (checkIsFieldChange(Field.ZEIT_BEGINN, evt)) {
             txtZeitBeginn.setText(asString(schuelerSuchenModel.getZeitBeginn()));
-        }
-        else if (checkIsFieldChange(Field.LEHRKRAFT, evt)) {
+        } else if (checkIsFieldChange(Field.LEHRKRAFT, evt)) {
             comboBoxLehrkraft.setSelectedItem(schuelerSuchenModel.getMitarbeiter());
-        }
-        else if (checkIsFieldChange(Field.KURS_FUER_SUCHE_BERUECKSICHTIGEN, evt)) {
+        } else if (checkIsFieldChange(Field.KURS_FUER_SUCHE_BERUECKSICHTIGEN, evt)) {
             checkBoxKursFuerSucheBeruecksichtigen.setSelected(schuelerSuchenModel.isKursFuerSucheBeruecksichtigen());
-        }
-        else if (checkIsFieldChange(Field.MAERCHEN, evt)) {
+        } else if (checkIsFieldChange(Field.MAERCHEN, evt)) {
             spinnerMaerchen.setValue(schuelerSuchenModel.getMaerchen());
-        }
-        else if (checkIsFieldChange(Field.GRUPPE, evt)) {
+        } else if (checkIsFieldChange(Field.GRUPPE, evt)) {
             comboBoxGruppe.setSelectedItem(schuelerSuchenModel.getGruppe());
-        }
-        else if (checkIsFieldChange(Field.ROLLEN, evt)) {
+        } else if (checkIsFieldChange(Field.ROLLEN, evt)) {
             txtAreaRollen.setText(schuelerSuchenModel.getRollen());
-        }
-        else if (checkIsFieldChange(Field.ELTERNMITHILFE_CODE, evt)) {
+        } else if (checkIsFieldChange(Field.ELTERNMITHILFE_CODE, evt)) {
             comboBoxElternmithilfeCode.setSelectedItem(schuelerSuchenModel.getElternmithilfeCode());
-        }
-        else if (checkIsFieldChange(Field.KUCHEN_VORSTELLUNG, evt)) {
+        } else if (checkIsFieldChange(Field.KUCHEN_VORSTELLUNG, evt)) {
             txtKuchenVorstellung.setText(schuelerSuchenModel.getKuchenVorstellung().toString());
-        }
-        else if (checkIsFieldChange(Field.ZUSATZATTRIBUT_MAERCHEN, evt)) {
+        } else if (checkIsFieldChange(Field.ZUSATZATTRIBUT_MAERCHEN, evt)) {
             txtZusatzattributMaerchen.setText(schuelerSuchenModel.getZusatzattributMaerchen());
-        }
-        else if (checkIsFieldChange(Field.MAERCHEN_FUER_SUCHE_BERUECKSICHTIGEN, evt)) {
+        } else if (checkIsFieldChange(Field.MAERCHEN_FUER_SUCHE_BERUECKSICHTIGEN, evt)) {
             checkBoxMaerchenFuerSucheBeruecksichtigen.setSelected(schuelerSuchenModel.isMaerchenFuerSucheBeruecksichtigen());
         }
     }

@@ -137,7 +137,7 @@ public class EmailController extends AbstractController {
         }
         CallDefaultEmailClientCommand.Result result = emailModel.callEmailClient(schuelerDatenblattModel);
         if (result == CallDefaultEmailClientCommand.Result.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT) {
-            JOptionPane.showMessageDialog(emailDialog, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+            JOptionPane.showMessageDialog(emailDialog, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE);
         }
         emailDialog.dispose();
     }
@@ -175,18 +175,23 @@ public class EmailController extends AbstractController {
     }
 
     @Override
-    void validateFields() throws SvmValidationException {}
+    void validateFields() throws SvmValidationException {
+    }
 
     @Override
-    void showErrMsg(SvmValidationException e) {}
+    void showErrMsg(SvmValidationException e) {
+    }
 
     @Override
-    void showErrMsgAsToolTip(SvmValidationException e) {}
+    void showErrMsgAsToolTip(SvmValidationException e) {
+    }
 
     @Override
-    public void makeErrorLabelsInvisible(Set<Field> fields) {}
+    public void makeErrorLabelsInvisible(Set<Field> fields) {
+    }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 }

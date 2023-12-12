@@ -390,7 +390,7 @@ public class MitarbeiterErfassenController extends PersonController {
             return;
         }
         if (mitarbeiterErfassenModel.checkMitarbeiterBereitsErfasst(svmContext.getSvmModel())) {
-            JOptionPane.showMessageDialog(mitarbeiterErfassenDialog, "Der Mitarbeiter ist bereits in der Datenbank gespeichert und kann nicht ein weiteres Mal erfasst werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+            JOptionPane.showMessageDialog(mitarbeiterErfassenDialog, "Der Mitarbeiter ist bereits in der Datenbank gespeichert und kann nicht ein weiteres Mal erfasst werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
             mitarbeiterErfassenModel.speichern(svmContext.getSvmModel(), mitarbeitersTableModel);
@@ -427,20 +427,15 @@ public class MitarbeiterErfassenController extends PersonController {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.AHV_NUMMER, evt)) {
             txtAhvNummer.setText(mitarbeiterErfassenModel.getAhvNummer());
-        }
-        else if (checkIsFieldChange(Field.IBAN_NUMMER, evt)) {
+        } else if (checkIsFieldChange(Field.IBAN_NUMMER, evt)) {
             txtIbanNummer.setText(mitarbeiterErfassenModel.getIbanNummer());
-        }
-        else if (checkIsFieldChange(Field.LEHRKRAFT, evt)) {
+        } else if (checkIsFieldChange(Field.LEHRKRAFT, evt)) {
             checkBoxLehrkraft.setSelected(mitarbeiterErfassenModel.isLehrkraft());
-        }
-        else if (checkIsFieldChange(Field.VERTRETUNGSMOEGLICHKEITEN, evt)) {
+        } else if (checkIsFieldChange(Field.VERTRETUNGSMOEGLICHKEITEN, evt)) {
             textAreaVertretungsmoeglichkeiten.setText(mitarbeiterErfassenModel.getVertretungsmoeglichkeiten());
-        }
-        else if (checkIsFieldChange(Field.AKTIV, evt)) {
+        } else if (checkIsFieldChange(Field.AKTIV, evt)) {
             checkBoxAktiv.setSelected(mitarbeiterErfassenModel.isAktiv());
-        }
-        else if (checkIsFieldChange(Field.BEMERKUNGEN, evt)) {
+        } else if (checkIsFieldChange(Field.BEMERKUNGEN, evt)) {
             textAreaBemerkungen.setText(mitarbeiterErfassenModel.getBemerkungen());
         }
     }

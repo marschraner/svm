@@ -155,8 +155,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
                 || (maercheneinteilungErfassenModel.isKuchenVorstellung7() != null
                 && maercheneinteilungErfassenModel.isKuchenVorstellung7())
                 || (maercheneinteilungErfassenModel.isKuchenVorstellung8() != null
-                && maercheneinteilungErfassenModel.isKuchenVorstellung8()))
-        {
+                && maercheneinteilungErfassenModel.isKuchenVorstellung8())) {
             return true;
         }
 
@@ -201,7 +200,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
-    
+
     public void setSpinnerMaerchen(JSpinner spinnerMaerchen) {
         this.spinnerMaerchen = spinnerMaerchen;
         // Darf nicht bearbeitet werden, da Teil der ID!
@@ -1058,16 +1057,16 @@ public class MaercheneinteilungErfassenController extends PersonController {
                     "Märchen in Vergangenheit",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
-                    svmContext.getDialogIcons().getWarningIcon(),
+                    null,
                     options,  //the titles of buttons
                     options[1]); //default button title
         }
         if (n == 0) {
             if (!maercheneinteilungErfassenModel.checkIfElternmithilfeHasTelefon(schuelerDatenblattModel)) {
-                JOptionPane.showMessageDialog(maercheneinteilungErfassenDialog, "Für die Elternmithilfe sind weder Festnetz noch Natel erfasst. Bitte Schüler-Stammdaten ergänzen.", "Elternmithilfe ohne Telefon", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+                JOptionPane.showMessageDialog(maercheneinteilungErfassenDialog, "Für die Elternmithilfe sind weder Festnetz noch Natel erfasst. Bitte Schüler-Stammdaten ergänzen.", "Elternmithilfe ohne Telefon", JOptionPane.WARNING_MESSAGE);
             }
             if (!maercheneinteilungErfassenModel.checkIfElternmithilfeHasEmail(schuelerDatenblattModel)) {
-                JOptionPane.showMessageDialog(maercheneinteilungErfassenDialog, "Für die Elternmithilfe ist keine E-Mail erfasst. Bitte Schüler-Stammdaten ergänzen.", "Elternmithilfe ohne E-Mail", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+                JOptionPane.showMessageDialog(maercheneinteilungErfassenDialog, "Für die Elternmithilfe ist keine E-Mail erfasst. Bitte Schüler-Stammdaten ergänzen.", "Elternmithilfe ohne E-Mail", JOptionPane.WARNING_MESSAGE);
             }
             maercheneinteilungErfassenModel.speichern(maercheneinteilungenTableModel, schuelerDatenblattModel);
         }

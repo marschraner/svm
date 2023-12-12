@@ -103,7 +103,7 @@ public class KursErfassenController extends AbstractController {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
-    
+
     public void setComboBoxKurstyp(JComboBox<Kurstyp> comboBoxKurstyp) {
         this.comboBoxKurstyp = comboBoxKurstyp;
         Kurstyp[] selectableKurstypen = kursErfassenModel.getSelectableKurstypen(svmContext.getSvmModel());
@@ -640,13 +640,13 @@ public class KursErfassenController extends AbstractController {
         }
         if (kursErfassenModel.checkKursBereitsErfasst(kurseTableModel, kurseSemesterwahlModel)) {
             JOptionPane.showMessageDialog(kursErfassenDialog, "Für das aktuelle Semester existiert bereits ein Kurs mit demselben Wochentag, \n" +
-                "demsleben Kursbeginn und derselben Lehrkraft.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                    "demsleben Kursbeginn und derselben Lehrkraft.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
             return;
         }
         if (!kursErfassenModel.checkIfLektionsgebuehrenErfasst(svmContext.getSvmModel())) {
             JOptionPane.showMessageDialog(kursErfassenDialog, "Der Kurs kann nicht gespeichert werden, weil für die \n" +
-                    "Kurslänge noch keine Lektionsgebühren erfasst sind.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                    "Kurslänge noch keine Lektionsgebühren erfasst sind.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
             return;
         }
@@ -871,6 +871,7 @@ public class KursErfassenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 }

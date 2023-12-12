@@ -254,7 +254,7 @@ public class SchuelerErfassenController extends AbstractController {
                 "Eingabemaske schliessen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                svmContext.getDialogIcons().getQuestionIcon(),
+                null,
                 options,  //the titles of buttons
                 options[0]); //default button title
         if (n == 0) {
@@ -373,22 +373,22 @@ public class SchuelerErfassenController extends AbstractController {
                 "Schüler löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
-                svmContext.getDialogIcons().getWarningIcon(),     //do not use a custom Icon
+                null,     //do not use a custom Icon
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
             DeleteSchuelerCommand.Result result = schuelerErfassenModel.schuelerLoeschen();
             switch (result) {
                 case SCHUELER_IN_KURSE_EINGESCHRIEBEN:
-                    JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einen Kurs eingeschrieben und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                    JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einen Kurs eingeschrieben und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnSchuelerLoeschen.setFocusPainted(false);
                     break;
                 case SCHUELER_IN_MAERCHEN_EINGETEILT:
-                    JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einem Märchen eingeteilt und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                    JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einem Märchen eingeteilt und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnSchuelerLoeschen.setFocusPainted(false);
                     break;
                 case RECHNUNGSEMPFAENGER_HAT_SEMESTERRECHNUNGEN:
-                    JOptionPane.showMessageDialog(null, "Der Rechnungsempfänger des Schülers hat mindestens eine Semesterrechnung. Der Schüler kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                    JOptionPane.showMessageDialog(null, "Der Rechnungsempfänger des Schülers hat mindestens eine Semesterrechnung. Der Schüler kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnSchuelerLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
@@ -396,8 +396,7 @@ public class SchuelerErfassenController extends AbstractController {
                             null,
                             "Der Schüler wurde erfolgreich aus der Datenbank gelöscht.",
                             "Löschen erfolgreich",
-                            JOptionPane.INFORMATION_MESSAGE,
-                            svmContext.getDialogIcons().getInformationIcon());
+                            JOptionPane.INFORMATION_MESSAGE);
                     closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Löschen"));
                     break;
             }
@@ -415,7 +414,7 @@ public class SchuelerErfassenController extends AbstractController {
                 "Frühere Schüler-Anmeldungen löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
-                svmContext.getDialogIcons().getWarningIcon(),
+                null,
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
@@ -460,8 +459,7 @@ public class SchuelerErfassenController extends AbstractController {
                         null,
                         schuelerBereitsInDatenbankResult.getErrorMessage(),
                         "Fehler",
-                        JOptionPane.ERROR_MESSAGE,
-                        svmContext.getDialogIcons().getErrorIcon());
+                        JOptionPane.ERROR_MESSAGE);
                 schuelerErfassenModel.abbrechen();
                 dialog[0] = null;
             }
@@ -469,11 +467,10 @@ public class SchuelerErfassenController extends AbstractController {
             @Override
             public void visit(GeschwisterOhneWuenschtEmailsResult schuelerBereitsInDatenbankResult) {
                 JOptionPane.showMessageDialog(
-                    null,
-                    schuelerBereitsInDatenbankResult.getErrorMessage(),
-                    "Wünscht E-Mails nicht selektiert",
-                    JOptionPane.ERROR_MESSAGE,
-                    svmContext.getDialogIcons().getErrorIcon());
+                        null,
+                        schuelerBereitsInDatenbankResult.getErrorMessage(),
+                        "Wünscht E-Mails nicht selektiert",
+                        JOptionPane.ERROR_MESSAGE);
                 schuelerErfassenModel.abbrechen();
                 dialog[0] = null;
             }
@@ -494,8 +491,7 @@ public class SchuelerErfassenController extends AbstractController {
                         null,
                         drittpersonIdentischMitElternteilResult.getErrorMessage(),
                         "Fehler",
-                        JOptionPane.ERROR_MESSAGE,
-                        svmContext.getDialogIcons().getErrorIcon());
+                        JOptionPane.ERROR_MESSAGE);
                 schuelerErfassenModel.abbrechen();
                 dialog[0] = null;
             }

@@ -253,14 +253,14 @@ public class MitarbeitersController {
                 "Eintrag löschen?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
-                svmContext.getDialogIcons().getWarningIcon(),
+                null,
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteMitarbeiterCommand.Result result  = mitarbeitersModel.mitarbeiterLoeschen(mitarbeitersTableModel, mitarbeitersTable.convertRowIndexToModel(mitarbeitersTable.getSelectedRow()));
+            DeleteMitarbeiterCommand.Result result = mitarbeitersModel.mitarbeiterLoeschen(mitarbeitersTableModel, mitarbeitersTable.convertRowIndexToModel(mitarbeitersTable.getSelectedRow()));
             switch (result) {
                 case MITARBEITER_VON_KURS_REFERENZIERT:
-                    JOptionPane.showMessageDialog(null, "Der Mitarbeiter wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                    JOptionPane.showMessageDialog(null, "Der Mitarbeiter wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:
@@ -270,8 +270,7 @@ public class MitarbeitersController {
                             null,
                             "Der Mitarbeiter wurde erfolgreich aus der Datenbank gelöscht.",
                             "Löschen erfolgreich",
-                            JOptionPane.INFORMATION_MESSAGE,
-                            svmContext.getDialogIcons().getInformationIcon());
+                            JOptionPane.INFORMATION_MESSAGE);
                     break;
             }
         }
@@ -322,7 +321,7 @@ public class MitarbeitersController {
             }
             JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
                     + rowCount + " Einträge selektiert. Nur " + str2
-                    + " beim Exportieren berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+                    + " beim Exportieren berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE);
         }
         ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, null, mitarbeitersTableModel, null, null, ListenExportTyp.MITARBEITERS);
         listenExportDialog.pack();
@@ -354,11 +353,11 @@ public class MitarbeitersController {
         if (anzSelektiert > 1 && anzSelektiert < rowCount) {
             JOptionPane.showMessageDialog(null, "Es sind nur " + anzSelektiert + " der "
                     + rowCount + " Einträge selektiert. Nur diese Einträge\nwerden"
-                    + " für die Gruppen-E-Mail berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+                    + " für die Gruppen-E-Mail berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE);
         }
         CallDefaultEmailClientCommand.Result result = mitarbeitersModel.callEmailClient(mitarbeitersTableModel);
         if (result == CallDefaultEmailClientCommand.Result.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT) {
-            JOptionPane.showMessageDialog(null, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+            JOptionPane.showMessageDialog(null, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE);
         }
         if (!mitarbeitersModel.getFehlendeEmailAdressen().isEmpty()) {
             StringBuilder fehlend = new StringBuilder();
@@ -367,7 +366,7 @@ public class MitarbeitersController {
                 fehlend.append("\n");
             }
             fehlend.setLength(fehlend.length() - 1);
-            JOptionPane.showMessageDialog(null, "Für folgende Mitarbeiter ist keine E-Mail-Adresse erfasst:\n" + fehlend, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+            JOptionPane.showMessageDialog(null, "Für folgende Mitarbeiter ist keine E-Mail-Adresse erfasst:\n" + fehlend, "Warnung", JOptionPane.WARNING_MESSAGE);
         }
         if (!mitarbeitersModel.getUngueltigeEmailAdressen().isEmpty()) {
             StringBuilder ungueltig = new StringBuilder();
@@ -376,7 +375,7 @@ public class MitarbeitersController {
                 ungueltig.append("\n");
             }
             ungueltig.setLength(ungueltig.length() - 1);
-            JOptionPane.showMessageDialog(null, "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig und wurde(n) ignoriert:\n" + ungueltig, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+            JOptionPane.showMessageDialog(null, "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig und wurde(n) ignoriert:\n" + ungueltig, "Warnung", JOptionPane.WARNING_MESSAGE);
         }
         btnEmail.setFocusPainted(false);
     }

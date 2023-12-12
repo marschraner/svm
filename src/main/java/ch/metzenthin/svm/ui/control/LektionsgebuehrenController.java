@@ -121,7 +121,7 @@ public class LektionsgebuehrenController {
         btnLoeschen.setFocusPainted(true);
         if (lektionsgebuehrenModel.checkIfLektionslaengeInVerwendung(lektionsgebuehrenTableModel, lektionsgebuehrenTable.getSelectedRow())) {
             JOptionPane.showMessageDialog(null, "Die Lektionsgebühren können nicht gelöscht werden,\n" +
-                    "weil Kurse mit dieser Lektionslänge existieren.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                    "weil Kurse mit dieser Lektionslänge existieren.", "Fehler", JOptionPane.ERROR_MESSAGE);
         } else {
             lektionsgebuehrenModel.eintragLoeschen(svmContext, lektionsgebuehrenTableModel, lektionsgebuehrenTable.getSelectedRow());
             lektionsgebuehrenTableModel.fireTableDataChanged();

@@ -80,7 +80,7 @@ public class KurstypErfassenController extends AbstractController {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
-    
+
     public void setTxtBezeichnung(JTextField txtBezeichnung) {
         this.txtBezeichnung = txtBezeichnung;
         if (!defaultButtonEnabled) {
@@ -180,7 +180,7 @@ public class KurstypErfassenController extends AbstractController {
             return;
         }
         if (kurstypErfassenModel.checkKurstypBezeichnungBereitsInVerwendung(svmContext.getSvmModel())) {
-            JOptionPane.showMessageDialog(kurstypErfassenDialog, "Bezeichnung bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+            JOptionPane.showMessageDialog(kurstypErfassenDialog, "Bezeichnung bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
             kurstypErfassenModel.speichern(svmContext.getSvmModel(), kurstypenTableModel);
@@ -254,6 +254,7 @@ public class KurstypErfassenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 }

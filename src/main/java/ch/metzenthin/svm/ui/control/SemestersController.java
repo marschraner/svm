@@ -133,7 +133,7 @@ public class SemestersController {
                 "Semester löschen?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                svmContext.getDialogIcons().getQuestionIcon(),
+                null,
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
@@ -152,15 +152,15 @@ public class SemestersController {
                         "Semester von Semesterrechnungen referenziert",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE,
-                        svmContext.getDialogIcons().getQuestionIcon(),
+                        null,
                         options,  //the titles of buttons
                         options[1]); //default button title
             }
             if (n1 == 0) {
-                DeleteSemesterCommand.Result result  = semestersModel.semesterLoeschen(svmContext, semestersTableModel, semestersTable.getSelectedRow());
+                DeleteSemesterCommand.Result result = semestersModel.semesterLoeschen(svmContext, semestersTableModel, semestersTable.getSelectedRow());
                 switch (result) {
                     case SEMESTER_VON_KURS_REFERENZIERT:
-                        JOptionPane.showMessageDialog(null, "Das Semester wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                        JOptionPane.showMessageDialog(null, "Das Semester wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                         btnLoeschen.setFocusPainted(false);
                         break;
                     case LOESCHEN_ERFOLGREICH:

@@ -236,7 +236,7 @@ public class ListenExportController extends AbstractController {
             comboBoxListentyp.removeItem(Listentyp.RECHNUNGSLISTE);
         }
     }
-    
+
     public void setTxtTitel(JTextField txtTitel) {
         this.txtTitel = txtTitel;
         if (listenExportTyp == ListenExportTyp.SEMESTERRECHNUNGEN) {
@@ -340,7 +340,7 @@ public class ListenExportController extends AbstractController {
                     listenErstellenWarning[1],
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
-                    svmContext.getDialogIcons().getWarningIcon(),
+                    null,
                     options,  //the titles of buttons
                     options[1]); //default button title
             if (n != 0) {
@@ -367,7 +367,7 @@ public class ListenExportController extends AbstractController {
                     "Datei existiert bereits",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
-                    svmContext.getDialogIcons().getQuestionIcon(),
+                    null,
                     options,  //the titles of buttons
                     options[1]); //default button title
             if (n != 0) {
@@ -384,7 +384,7 @@ public class ListenExportController extends AbstractController {
         // Schliessen soll keinen Effekt haben
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.setTitle("Datei wird erstellt");
-        final JOptionPane optionPane = new JOptionPane("Die Datei wird erstellt. Bitte warten ...", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, svmContext.getDialogIcons().getInformationIcon(), new Object[]{}, null);
+        final JOptionPane optionPane = new JOptionPane("Die Datei wird erstellt. Bitte warten ...", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
         dialog.setContentPane(optionPane);
         // Public method to center the dialog after calling pack()
         dialog.pack();
@@ -394,6 +394,7 @@ public class ListenExportController extends AbstractController {
             protected CreateListeCommand.Result doInBackground() {
                 return listenExportModel.createListenFile(outputFile, schuelerSuchenTableModel, mitarbeitersTableModel, kurseTableModel, semesterrechnungenTableModel);
             }
+
             @Override
             protected void done() {
                 dialog.dispose();
@@ -402,24 +403,24 @@ public class ListenExportController extends AbstractController {
                     result = get();
                 } catch (InterruptedException | ExecutionException e) {
                     LOGGER.warn("Die Liste konnte nicht erstellt werden:" + e.getMessage());
-                    JOptionPane.showMessageDialog(listenExportDialog, "Die Liste konnte nicht erstellt werden.", "Liste nicht erfolgreich erstellt", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                    JOptionPane.showMessageDialog(listenExportDialog, "Die Liste konnte nicht erstellt werden.", "Liste nicht erfolgreich erstellt", JOptionPane.ERROR_MESSAGE);
                 }
                 if (result != null) {
                     switch (result) {
                         case TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR:
                             JOptionPane.showMessageDialog(listenExportDialog, "Template-Datei '" + listenExportModel.getTemplateFile() + "' nicht gefunden." +
-                                    "\nBitte Template-Datei erstellen.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                                    "\nBitte Template-Datei erstellen.", "Fehler", JOptionPane.ERROR_MESSAGE);
                             break;
                         case FEHLER_BEIM_LESEN_DES_PROPERTY_FILE:
                             JOptionPane.showMessageDialog(listenExportDialog, "Fehler beim Lesen der Svm-Property-Datei '" + SvmProperties.SVM_PROPERTIES_FILE_NAME
-                                    + "'. \nDie Datei existiert nicht oder der Eintrag für die Template-Datei fehlt. Bitte Datei überprüfen.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                                    + "'. \nDie Datei existiert nicht oder der Eintrag für die Template-Datei fehlt. Bitte Datei überprüfen.", "Fehler", JOptionPane.ERROR_MESSAGE);
                             break;
                         case LISTE_ERFOLGREICH_ERSTELLT:
-                            JOptionPane.showMessageDialog(listenExportDialog, "Die Liste wurde erfolgreich erstellt.", "Liste erfolgreich erstellt", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+                            JOptionPane.showMessageDialog(listenExportDialog, "Die Liste wurde erfolgreich erstellt.", "Liste erfolgreich erstellt", JOptionPane.INFORMATION_MESSAGE);
                             break;
                     }
                 } else {
-                    JOptionPane.showMessageDialog(listenExportDialog, "Die Liste konnte nicht erstellt werden.", "Es konnte kein Resultat ermittelt werden.", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                    JOptionPane.showMessageDialog(listenExportDialog, "Die Liste konnte nicht erstellt werden.", "Es konnte kein Resultat ermittelt werden.", JOptionPane.ERROR_MESSAGE);
                 }
                 listenExportDialog.dispose();
             }

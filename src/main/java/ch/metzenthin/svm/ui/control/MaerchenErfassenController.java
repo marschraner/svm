@@ -29,11 +29,11 @@ public class MaerchenErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private MaerchensTableModel maerchensTableModel;
-    private MaerchenErfassenModel maerchenErfassenModel;
+    private final MaerchensTableModel maerchensTableModel;
+    private final MaerchenErfassenModel maerchenErfassenModel;
     private final SvmContext svmContext;
-    private boolean isBearbeiten;
-    private boolean defaultButtonEnabled;
+    private final boolean isBearbeiten;
+    private final boolean defaultButtonEnabled;
     private JDialog maerchenErfassenDialog;
     private JSpinner spinnerSchuljahre;
     private JTextField txtBezeichnung;
@@ -265,7 +265,7 @@ public class MaerchenErfassenController extends AbstractController {
             return;
         }
         if (maerchenErfassenModel.checkMaerchenBereitsErfasst(svmContext.getSvmModel())) {
-            JOptionPane.showMessageDialog(maerchenErfassenDialog, "Märchen für Schuljahr " + maerchenErfassenModel.getMaerchen().getSchuljahr() + " bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+            JOptionPane.showMessageDialog(maerchenErfassenDialog, "Märchen für Schuljahr " + maerchenErfassenModel.getMaerchen().getSchuljahr() + " bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
             if (maerchenErfassenModel.checkIfMaerchenIsInPast()) {
@@ -276,7 +276,7 @@ public class MaerchenErfassenController extends AbstractController {
                         "Schuljahr in Vergangenheit",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE,
-                        svmContext.getDialogIcons().getWarningIcon(),
+                        null,
                         options,  //the titles of buttons
                         options[1]); //default button title
                 if (n == 1) {
@@ -371,6 +371,7 @@ public class MaerchenErfassenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 }

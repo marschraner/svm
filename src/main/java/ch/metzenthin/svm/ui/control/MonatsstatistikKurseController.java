@@ -166,7 +166,7 @@ public class MonatsstatistikKurseController extends AbstractController {
         String statistik = "Anmeldungen: " + result[0] +
                 "\nAbmeldungen: " + result[1] +
                 "\nBesuchte Lektionen: " + result[2];
-        JOptionPane.showMessageDialog(null, statistik, "Statistik per Ende Monat", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+        JOptionPane.showMessageDialog(null, statistik, "Statistik per Ende Monat", JOptionPane.INFORMATION_MESSAGE);
         btnSuchen.setFocusPainted(false);
     }
 
@@ -225,6 +225,7 @@ public class MonatsstatistikKurseController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 }

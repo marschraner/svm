@@ -259,7 +259,7 @@ public class MitarbeiterSuchenController extends AbstractController {
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{mitarbeitersPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
         } else {
             resetCursorAllComponents();
-            JOptionPane.showMessageDialog(null, "Es wurden keine Mitarbeiter gefunden, welche auf die Suchabfrage passen.", "Keine Mitarbeiter gefunden", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+            JOptionPane.showMessageDialog(null, "Es wurden keine Mitarbeiter gefunden, welche auf die Suchabfrage passen.", "Keine Mitarbeiter gefunden", JOptionPane.INFORMATION_MESSAGE);
             btnSuchen.setFocusPainted(false);
         }
     }
@@ -302,7 +302,7 @@ public class MitarbeiterSuchenController extends AbstractController {
         this.nextPanelListener = nextPanelListener;
     }
 
-    private void setWaitCursorAllComponents () {
+    private void setWaitCursorAllComponents() {
         Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         mainPanel.setCursor(waitCursor);
         // Textfields müssen separat gesetzt werden
@@ -310,7 +310,7 @@ public class MitarbeiterSuchenController extends AbstractController {
         txtVorname.setCursor(waitCursor);
     }
 
-    private void resetCursorAllComponents () {
+    private void resetCursorAllComponents() {
         mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         // Textfields müssen separat gesetzt werden
         Cursor textCursor = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
@@ -322,29 +322,21 @@ public class MitarbeiterSuchenController extends AbstractController {
     void doPropertyChange(PropertyChangeEvent evt) {
         if (checkIsFieldChange(Field.NACHNAME, evt)) {
             txtNachname.setText(mitarbeiterSuchenModel.getNachname());
-        }
-        else if (checkIsFieldChange(Field.VORNAME, evt)) {
+        } else if (checkIsFieldChange(Field.VORNAME, evt)) {
             txtVorname.setText(mitarbeiterSuchenModel.getVorname());
-        }
-        else if (checkIsFieldChange(Field.MITARBEITER_CODE, evt)) {
+        } else if (checkIsFieldChange(Field.MITARBEITER_CODE, evt)) {
             comboBoxMitarbeiterCode.setSelectedItem(mitarbeiterSuchenModel.getMitarbeiterCode());
-        }
-        else if (checkIsFieldChange(Field.LEHRKRAFT_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.LehrkraftJaNeinSelected.JA) {
+        } else if (checkIsFieldChange(Field.LEHRKRAFT_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.LehrkraftJaNeinSelected.JA) {
             radioBtnLehrkraftJa.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.LEHRKRAFT_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.LehrkraftJaNeinSelected.NEIN) {
+        } else if (checkIsFieldChange(Field.LEHRKRAFT_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.LehrkraftJaNeinSelected.NEIN) {
             radioBtnLehrkraftNein.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.LEHRKRAFT_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.LehrkraftJaNeinSelected.ALLE) {
+        } else if (checkIsFieldChange(Field.LEHRKRAFT_JA_NEIN, evt) && evt.getNewValue() == MitarbeiterSuchenModel.LehrkraftJaNeinSelected.ALLE) {
             radioBtnLehrkraftAlle.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.STATUS, evt) && evt.getNewValue() == MitarbeiterSuchenModel.StatusSelected.AKTIV) {
+        } else if (checkIsFieldChange(Field.STATUS, evt) && evt.getNewValue() == MitarbeiterSuchenModel.StatusSelected.AKTIV) {
             radioBtnStatusAktiv.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.STATUS, evt) && evt.getNewValue() == MitarbeiterSuchenModel.StatusSelected.NICHT_AKTIV) {
+        } else if (checkIsFieldChange(Field.STATUS, evt) && evt.getNewValue() == MitarbeiterSuchenModel.StatusSelected.NICHT_AKTIV) {
             radioBtnStatusNichtAktiv.setSelected(true);
-        }
-        else if (checkIsFieldChange(Field.STATUS, evt) && evt.getNewValue() == MitarbeiterSuchenModel.StatusSelected.ALLE) {
+        } else if (checkIsFieldChange(Field.STATUS, evt) && evt.getNewValue() == MitarbeiterSuchenModel.StatusSelected.ALLE) {
             radioBtnStatusAlle.setSelected(true);
         }
     }

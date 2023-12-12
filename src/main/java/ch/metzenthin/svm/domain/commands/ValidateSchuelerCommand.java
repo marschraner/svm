@@ -36,6 +36,7 @@ public class ValidateSchuelerCommand implements Command {
             public Entry proceedUebernehmen() {
                 return Entry.MUTTER_AUS_DATENBANK_UEBERNEHMEN;
             }
+
             @Override
             public Entry proceedWeiterfahren() {
                 return Entry.MIT_BISHERIGER_MUTTER_WEITERFAHREN;
@@ -59,6 +60,7 @@ public class ValidateSchuelerCommand implements Command {
             public Entry proceedUebernehmen() {
                 return Entry.VATER_AUS_DATENBANK_UEBERNEHMEN;
             }
+
             @Override
             public Entry proceedWeiterfahren() {
                 return Entry.MIT_BISHERIGEM_VATER_WEITERFAHREN;
@@ -82,6 +84,7 @@ public class ValidateSchuelerCommand implements Command {
             public Entry proceedUebernehmen() {
                 return Entry.RECHNUNGSEMPFAENGER_DRITTPERSON_AUS_DATENBANK_UEBERNEHMEN;
             }
+
             @Override
             public Entry proceedWeiterfahren() {
                 return Entry.MIT_BISHERIGEM_RECHNUNGSEMPFAENGER_DRITTPERSON_WEITERFAHREN;
@@ -107,6 +110,7 @@ public class ValidateSchuelerCommand implements Command {
         public Entry proceedUebernehmen() {
             return null;
         }
+
         public Entry proceedWeiterfahren() {
             return null;
         }
@@ -193,7 +197,7 @@ public class ValidateSchuelerCommand implements Command {
         this.adresseVater = validateSchuelerModel.getAdresseVater();
         this.isRechnungsempfaengerVater = validateSchuelerModel.isRechnungsempfaengerVater();
         this.rechnungsempfaengerDrittperson = validateSchuelerModel.getRechnungsempfaengerDrittperson();
-        this.adresseRechnungsempfaengerDrittperson= validateSchuelerModel.getAdresseRechnungsempfaengerDrittperson();
+        this.adresseRechnungsempfaengerDrittperson = validateSchuelerModel.getAdresseRechnungsempfaengerDrittperson();
         this.schuelerOrigin = validateSchuelerModel.getSchuelerOrigin();
         this.mutterOrigin = (this.schuelerOrigin == null ? null : this.schuelerOrigin.getMutter());
         this.vaterOrigin = (this.schuelerOrigin == null ? null : this.schuelerOrigin.getVater());
@@ -372,15 +376,15 @@ public class ValidateSchuelerCommand implements Command {
         //    (nur relevant, falls Geschwister nur einen Elternteil gemeinsam haben)
         for (Schueler geschwister : geschwisterList) {
             boolean gemeinsameMutterOderBeideOhneMutter
-                = hasGeschwisterGemeinsameMutterOderBeideOhneMutter(geschwister);
+                    = hasGeschwisterGemeinsameMutterOderBeideOhneMutter(geschwister);
             boolean gemeinsamenVaterOderBeideOhneVater
-                = hasGeschwisterGemeinsamenVaterOderBeideOhneVater(geschwister);
+                    = hasGeschwisterGemeinsamenVaterOderBeideOhneVater(geschwister);
             if (doElternOfGeschwisterHaveEmailAfterCurrentModifications(geschwister,
-                gemeinsameMutterOderBeideOhneMutter, gemeinsamenVaterOderBeideOhneVater)
-                && !isForElternOfGeschwisterWuenschtEmailsSetAfterCurrentModifications(geschwister,
-                gemeinsameMutterOderBeideOhneMutter, gemeinsamenVaterOderBeideOhneVater)) {
+                    gemeinsameMutterOderBeideOhneMutter, gemeinsamenVaterOderBeideOhneVater)
+                    && !isForElternOfGeschwisterWuenschtEmailsSetAfterCurrentModifications(geschwister,
+                    gemeinsameMutterOderBeideOhneMutter, gemeinsamenVaterOderBeideOhneVater)) {
                 result = new GeschwisterOhneWuenschtEmailsResult(
-                    geschwister, gemeinsameMutterOderBeideOhneMutter);
+                        geschwister, gemeinsameMutterOderBeideOhneMutter);
                 return;
             }
         }
@@ -399,7 +403,7 @@ public class ValidateSchuelerCommand implements Command {
                         "Mutter mit Anrede \"Herr\"",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE,
-                        svmContext.getDialogIcons().getWarningIcon(),
+                        null,
                         options,  //the titles of buttons
                         options[1]); //default button title
                 if (n == 1) {
@@ -418,7 +422,7 @@ public class ValidateSchuelerCommand implements Command {
                         "Vater mit Anrede \"Frau\"",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE,
-                        svmContext.getDialogIcons().getWarningIcon(),
+                        null,
                         options,  //the titles of buttons
                         options[1]); //default button title
                 if (n == 1) {
@@ -440,7 +444,7 @@ public class ValidateSchuelerCommand implements Command {
                         "Warnung: Keine E-Mail für Eltern erfasst",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE,
-                        svmContext.getDialogIcons().getWarningIcon(),
+                        null,
                         options,  //the titles of buttons
                         options[1]); //default button title
                 if (n == 1) {
@@ -454,31 +458,31 @@ public class ValidateSchuelerCommand implements Command {
             //     (nur relevant, falls Geschwister nur einen Elternteil gemeinsam haben)
             for (Schueler geschwister : geschwisterList) {
                 boolean gemeinsameMutterOderBeideOhneMutter
-                    = hasGeschwisterGemeinsameMutterOderBeideOhneMutter(geschwister);
+                        = hasGeschwisterGemeinsameMutterOderBeideOhneMutter(geschwister);
                 boolean gemeinsamenVaterOderBeideOhneVater
-                    = hasGeschwisterGemeinsamenVaterOderBeideOhneVater(geschwister);
+                        = hasGeschwisterGemeinsamenVaterOderBeideOhneVater(geschwister);
                 if (!doElternOfGeschwisterHaveEmailAfterCurrentModifications(
-                    geschwister, gemeinsameMutterOderBeideOhneMutter,
-                    gemeinsamenVaterOderBeideOhneVater)) {
+                        geschwister, gemeinsameMutterOderBeideOhneMutter,
+                        gemeinsamenVaterOderBeideOhneVater)) {
                     String mutterOderVater = (gemeinsameMutterOderBeideOhneMutter)
-                        ? "die Mutter" : "den Vater";
+                            ? "die Mutter" : "den Vater";
                     String message = "Bitte E-Mail für " + mutterOderVater + " erfassen!\n\n" +
-                        "Wird keine E-Mail erfasst, hat dies zur Folge, dass für das " +
-                        "Geschwister " + geschwister.getVorname() + " " +
-                        geschwister.getNachname() + "\nfür keinen Elternteil eine E-Mail " +
-                        "erfasst ist.";
+                            "Wird keine E-Mail erfasst, hat dies zur Folge, dass für das " +
+                            "Geschwister " + geschwister.getVorname() + " " +
+                            geschwister.getNachname() + "\nfür keinen Elternteil eine E-Mail " +
+                            "erfasst ist.";
                     String emailErfassen = (gemeinsameMutterOderBeideOhneMutter)
-                        ? "Email für Mutter erfassen" : "Email für Vater erfassen";
+                            ? "Email für Mutter erfassen" : "Email für Vater erfassen";
                     Object[] options = {"Warnung ignorieren", emailErfassen};
                     int n = JOptionPane.showOptionDialog(
-                        null,
-                        message,
-                        "Warnung",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.WARNING_MESSAGE,
-                        svmContext.getDialogIcons().getWarningIcon(),
-                        options,  //the titles of buttons
-                        options[1]); //default button title
+                            null,
+                            message,
+                            "Warnung",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE,
+                            null,
+                            options,  //the titles of buttons
+                            options[1]); //default button title
                     if (n == 1) {
                         // Abbruch
                         result = new AbbrechenResult();
@@ -510,7 +514,7 @@ public class ValidateSchuelerCommand implements Command {
                         "Adress- und/oder Festnetzänderung auch für Geschwister anwenden?",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE,
-                        svmContext.getDialogIcons().getQuestionIcon(),
+                        null,
                         options,  //the titles of buttons
                         options[0]); //default button title
                 if (n == 0) {
@@ -596,21 +600,21 @@ public class ValidateSchuelerCommand implements Command {
 
     private boolean hasGeschwisterGemeinsameMutterOderBeideOhneMutter(Schueler geschwister) {
         return (mutter == null && mutterFoundInDatabase != null)
-            || (mutter != null && mutterOrigin != null && geschwister.getMutter() != null
-            && geschwister.getMutter().getPersonId().equals(mutterOrigin.getPersonId()))
-            || (mutter == null && geschwister.getMutter() == null);
+                || (mutter != null && mutterOrigin != null && geschwister.getMutter() != null
+                && geschwister.getMutter().getPersonId().equals(mutterOrigin.getPersonId()))
+                || (mutter == null && geschwister.getMutter() == null);
     }
 
     private boolean hasGeschwisterGemeinsamenVaterOderBeideOhneVater(Schueler geschwister) {
         return (vater == null && vaterFoundInDatabase != null)
-            || (vater != null && vaterOrigin != null && geschwister.getVater() != null
-            && geschwister.getVater().getPersonId().equals(vaterOrigin.getPersonId()))
-            || (vater == null && geschwister.getVater() == null);
+                || (vater != null && vaterOrigin != null && geschwister.getVater() != null
+                && geschwister.getVater().getPersonId().equals(vaterOrigin.getPersonId()))
+                || (vater == null && geschwister.getVater() == null);
     }
 
     private boolean doElternOfGeschwisterHaveEmailAfterCurrentModifications(
-        Schueler geschwister, boolean gemeinsameMutterOderBeideOhneMutter,
-        boolean gemeinsamenVaterOderBeideOhneVater) {
+            Schueler geschwister, boolean gemeinsameMutterOderBeideOhneMutter,
+            boolean gemeinsamenVaterOderBeideOhneVater) {
 
         Angehoeriger mutterGeschwisterNeu = getMutterGeschwisterNeu(geschwister, gemeinsameMutterOderBeideOhneMutter);
         Angehoeriger vaterGeschwisterNeu = getVaterGeschwisterNeu(geschwister, gemeinsamenVaterOderBeideOhneVater);
@@ -639,26 +643,26 @@ public class ValidateSchuelerCommand implements Command {
     }
 
     private boolean isForElternOfGeschwisterWuenschtEmailsSetAfterCurrentModifications(
-        Schueler geschwister, boolean gemeinsameMutterOderBeideOhneMutter,
-        boolean gemeinsamenVaterOderBeideOhneVater) {
+            Schueler geschwister, boolean gemeinsameMutterOderBeideOhneMutter,
+            boolean gemeinsamenVaterOderBeideOhneVater) {
 
         Angehoeriger mutterGeschwisterNeu = getMutterGeschwisterNeu(geschwister, gemeinsameMutterOderBeideOhneMutter);
         Angehoeriger vaterGeschwisterNeu = getVaterGeschwisterNeu(geschwister, gemeinsamenVaterOderBeideOhneVater);
 
         if (mutterGeschwisterNeu != null && mutterGeschwisterNeu.getWuenschtEmails() != null
-            && mutterGeschwisterNeu.getWuenschtEmails()) {
+                && mutterGeschwisterNeu.getWuenschtEmails()) {
             return true;
         }
 
         return vaterGeschwisterNeu != null && vaterGeschwisterNeu.getWuenschtEmails() != null
-            && vaterGeschwisterNeu.getWuenschtEmails();
+                && vaterGeschwisterNeu.getWuenschtEmails();
     }
 
     /**
      * Wenn "Neu Erfassen" werden die Benutzereingaben (schueler) bzw. Mutter, Vater oder Rechnungsempfänger
      * von der Datenbank übernommen, es muss sonst nichts getan werden.
      * Wenn "Bearbeiten" werden die Benutzereingaben (schueler) in den "original" Schüler (schuelerOrigin) übernommen.
-     *
+     * <p>
      * Angehörige werden immer mutiert, das heisst, die Änderungen gelten für alle abhängigen Objekte, die am Angehörigen hängen!
      * Wird z.B. eine Mutter fälschlicherweise an einen Schüler gehängt, muss dieser gelöscht und neu erfasst werden!
      *
@@ -808,7 +812,7 @@ public class ValidateSchuelerCommand implements Command {
     @SuppressWarnings("DuplicateBranchesInSwitch")
     private void determineHowToProceed() {
         if (entry == null) {
-           throw new RuntimeException("Eintrittspunkt nicht gesetzt!");
+            throw new RuntimeException("Eintrittspunkt nicht gesetzt!");
         }
 
         switch (entry) {

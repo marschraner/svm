@@ -335,7 +335,7 @@ public class DispensationErfassenController extends AbstractController {
             return;
         }
         if (dispensationErfassenModel.checkDispensationUeberlapptAndereDispensationen(schuelerDatenblattModel)) {
-            JOptionPane.showMessageDialog(dispensationErfassenDialog, "Dispensationen dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+            JOptionPane.showMessageDialog(dispensationErfassenDialog, "Dispensationen dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
             dispensationErfassenModel.speichern(dispensationenTableModel, schuelerDatenblattModel);
@@ -372,14 +372,11 @@ public class DispensationErfassenController extends AbstractController {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.DISPENSATIONSBEGINN, evt)) {
             txtDispensationsbeginn.setText(asString(dispensationErfassenModel.getDispensationsbeginn()));
-        }
-        else if (checkIsFieldChange(Field.DISPENSATIONSENDE, evt)) {
+        } else if (checkIsFieldChange(Field.DISPENSATIONSENDE, evt)) {
             txtDispensationsende.setText(asString(dispensationErfassenModel.getDispensationsende()));
-        }
-        else if (checkIsFieldChange(Field.VORAUSSICHTLICHE_DAUER, evt)) {
+        } else if (checkIsFieldChange(Field.VORAUSSICHTLICHE_DAUER, evt)) {
             txtVoraussichtlicheDauer.setText(dispensationErfassenModel.getVoraussichtlicheDauer());
-        }
-        else if (checkIsFieldChange(Field.GRUND, evt)) {
+        } else if (checkIsFieldChange(Field.GRUND, evt)) {
             txtGrund.setText(dispensationErfassenModel.getGrund());
         }
     }
@@ -461,6 +458,7 @@ public class DispensationErfassenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 }

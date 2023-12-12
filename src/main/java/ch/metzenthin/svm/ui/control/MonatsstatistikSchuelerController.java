@@ -203,7 +203,7 @@ public class MonatsstatistikSchuelerController extends AbstractController {
             schuelerSuchenResultPanel.addZurueckListener(zurueckListener);
             nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerSuchenResultPanel.$$$getRootComponent$$$(), "Suchresultat"}, ActionEvent.ACTION_PERFORMED, "Suchresultat verfügbar"));
         } else {
-            JOptionPane.showMessageDialog(null, "Es wurden keine Schüler gefunden, welche auf die Suchabfrage passen.", "Keine Schüler gefunden", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+            JOptionPane.showMessageDialog(null, "Es wurden keine Schüler gefunden, welche auf die Suchabfrage passen.", "Keine Schüler gefunden", JOptionPane.INFORMATION_MESSAGE);
             btnSuchen.setFocusPainted(false);
         }
     }
@@ -281,7 +281,8 @@ public class MonatsstatistikSchuelerController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
     class RadioBtnGroupAnAbmeldungenDispensationenListener implements ActionListener {
         @Override

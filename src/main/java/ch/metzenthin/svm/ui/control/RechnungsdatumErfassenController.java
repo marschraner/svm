@@ -85,7 +85,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
-    
+
     public void setTxtRechnungsdatum(JTextField txtRechnungsdatum) {
         this.txtRechnungsdatum = txtRechnungsdatum;
         if (!defaultButtonEnabled) {
@@ -182,7 +182,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
                 "Warnung",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
-                svmContext.getDialogIcons().getWarningIcon(),
+                null,
                 optionsWarnung,  //the titles of buttons
                 optionsWarnung[1]); //default button title
         if (n == 0) {
@@ -204,7 +204,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
                     break;
             }
 
-            final JOptionPane optionPane = new JOptionPane(infoMessage, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, svmContext.getDialogIcons().getInformationIcon(), new Object[]{}, null);
+            final JOptionPane optionPane = new JOptionPane(infoMessage, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
             dialog.setContentPane(optionPane);
             // Public method to center the dialog after calling pack()
             dialog.pack();
@@ -227,6 +227,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
                     db.closeSession();
                     return null;
                 }
+
                 @Override
                 protected void done() {
                     // Dialog in jedem Fall schliessen
@@ -315,7 +316,8 @@ public class RechnungsdatumErfassenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 
 }

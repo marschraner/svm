@@ -514,7 +514,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             return;
         }
         if (lektionsgebuehrenErfassenModel.checkLektionslaengeBereitsErfasst(svmContext.getSvmModel())) {
-            JOptionPane.showMessageDialog(lektionsgebuehrenErfassenDialog, "Lektionslänge bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+            JOptionPane.showMessageDialog(lektionsgebuehrenErfassenDialog, "Lektionslänge bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
             lektionsgebuehrenErfassenModel.speichern(svmContext.getSvmModel(), lektionsgebuehrenTableModel);
@@ -688,6 +688,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 }

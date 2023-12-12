@@ -148,7 +148,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
         }
         CallDefaultEmailClientCommand.Result result = emailSemesterrechnungenModel.callEmailClient(semesterrechnungenTableModel);
         if (result == CallDefaultEmailClientCommand.Result.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT) {
-            JOptionPane.showMessageDialog(emailDialog, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+            JOptionPane.showMessageDialog(emailDialog, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE);
         }
         if (!emailSemesterrechnungenModel.getFehlendeEmailAdressen().isEmpty()) {
             StringBuilder fehlend = new StringBuilder();
@@ -157,7 +157,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
                 fehlend.append("\n");
             }
             fehlend.setLength(fehlend.length() - 1);
-            JOptionPane.showMessageDialog(emailDialog, "Für folgende Semesterrechnung(en) ist keine E-Mail-Adresse erfasst:\n" + fehlend, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+            JOptionPane.showMessageDialog(emailDialog, "Für folgende Semesterrechnung(en) ist keine E-Mail-Adresse erfasst:\n" + fehlend, "Warnung", JOptionPane.WARNING_MESSAGE);
         }
         if (!emailSemesterrechnungenModel.getUngueltigeEmailAdressen().isEmpty()) {
             StringBuilder ungueltig = new StringBuilder();
@@ -166,7 +166,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
                 ungueltig.append("\n");
             }
             ungueltig.setLength(ungueltig.length() - 1);
-            JOptionPane.showMessageDialog(emailDialog, "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig und wurde(n) ignoriert:\n" + ungueltig, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+            JOptionPane.showMessageDialog(emailDialog, "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig und wurde(n) ignoriert:\n" + ungueltig, "Warnung", JOptionPane.WARNING_MESSAGE);
         }
         emailDialog.dispose();
     }
@@ -202,7 +202,8 @@ public class EmailSemesterrechnungenController extends AbstractController {
     }
 
     @Override
-    void validateFields() throws SvmValidationException {}
+    void validateFields() throws SvmValidationException {
+    }
 
     @Override
     void showErrMsg(SvmValidationException e) {
@@ -217,6 +218,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 }

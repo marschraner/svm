@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.common;
 
-import ch.metzenthin.svm.common.utils.DialogIcons;
 import ch.metzenthin.svm.domain.model.ModelFactory;
 import ch.metzenthin.svm.domain.model.SvmModel;
 
@@ -13,7 +12,6 @@ public class SvmContext {
 
     private final ModelFactory modelFactory;
     private final SvmModel svmModel;
-    private final DialogIcons dialogIcons = new DialogIcons();
     private JRootPane rootPaneJFrame;
 
     public SvmContext(ModelFactory modelFactory, SvmModel svmModel) {
@@ -27,10 +25,6 @@ public class SvmContext {
 
     public SvmModel getSvmModel() {
         return svmModel;
-    }
-
-    public DialogIcons getDialogIcons() {
-        return dialogIcons;
     }
 
     public JRootPane getRootPaneJFrame() {

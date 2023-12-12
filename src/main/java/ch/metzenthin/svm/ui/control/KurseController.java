@@ -97,7 +97,7 @@ public class KurseController {
                     "Schuljahr / Semester in Vergangenheit",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
-                    svmContext.getDialogIcons().getWarningIcon(),
+                    null,
                     options,  //the titles of buttons
                     options[1]); //default button title
             if (n == 1) {
@@ -169,7 +169,7 @@ public class KurseController {
                     "Warnung",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
-                    svmContext.getDialogIcons().getWarningIcon(),
+                    null,
                     options,  //the titles of buttons
                     options[1]); //default button title
         } else {
@@ -179,7 +179,7 @@ public class KurseController {
                     "Kurs löschen?",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
-                    svmContext.getDialogIcons().getQuestionIcon(),
+                    null,
                     options,  //the titles of buttons
                     options[1]); //default button title
         }
@@ -224,7 +224,7 @@ public class KurseController {
                 "Kurse von früherem Semester importieren?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                svmContext.getDialogIcons().getQuestionIcon(),
+                null,
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
@@ -236,7 +236,7 @@ public class KurseController {
             // Schliessen soll keinen Effekt haben
             dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             dialog.setTitle("Kurse werden importiert");
-            final JOptionPane optionPane = new JOptionPane("Die Kurse werden importiert. Bitte warten ...", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, svmContext.getDialogIcons().getInformationIcon(), new Object[]{}, null);
+            final JOptionPane optionPane = new JOptionPane("Die Kurse werden importiert. Bitte warten ...", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
             dialog.setContentPane(optionPane);
             // Public method to center the dialog after calling pack()
             dialog.pack();
@@ -252,6 +252,7 @@ public class KurseController {
                     }
                     return null;
                 }
+
                 @Override
                 protected void done() {
                     // Dialog in jedem Fall schliessen

@@ -148,7 +148,7 @@ public class EmailSchuelerListeController extends AbstractController {
         }
         CallDefaultEmailClientCommand.Result result = emailSchuelerListeModel.callEmailClient(schuelerSuchenTableModel);
         if (result == CallDefaultEmailClientCommand.Result.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT) {
-            JOptionPane.showMessageDialog(emailDialog, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+            JOptionPane.showMessageDialog(emailDialog, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE);
         }
         if (!emailSchuelerListeModel.getFehlendeEmailAdressen().isEmpty()) {
             StringBuilder fehlend = new StringBuilder();
@@ -157,7 +157,7 @@ public class EmailSchuelerListeController extends AbstractController {
                 fehlend.append("\n");
             }
             fehlend.setLength(fehlend.length() - 1);
-            JOptionPane.showMessageDialog(emailDialog, "Für folgende(n) Schüler (resp. dessen/deren Eltern) ist keine E-Mail-Adresse erfasst:\n" + fehlend, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+            JOptionPane.showMessageDialog(emailDialog, "Für folgende(n) Schüler (resp. dessen/deren Eltern) ist keine E-Mail-Adresse erfasst:\n" + fehlend, "Warnung", JOptionPane.WARNING_MESSAGE);
         }
         if (!emailSchuelerListeModel.getUngueltigeEmailAdressen().isEmpty()) {
             StringBuilder ungueltig = new StringBuilder();
@@ -166,7 +166,7 @@ public class EmailSchuelerListeController extends AbstractController {
                 ungueltig.append("\n");
             }
             ungueltig.setLength(ungueltig.length() - 1);
-            JOptionPane.showMessageDialog(emailDialog, "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig und wurde(n) ignoriert:\n" + ungueltig, "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+            JOptionPane.showMessageDialog(emailDialog, "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig und wurde(n) ignoriert:\n" + ungueltig, "Warnung", JOptionPane.WARNING_MESSAGE);
         }
         emailDialog.dispose();
     }
@@ -195,18 +195,23 @@ public class EmailSchuelerListeController extends AbstractController {
     }
 
     @Override
-    void validateFields() throws SvmValidationException {}
+    void validateFields() throws SvmValidationException {
+    }
 
     @Override
-    void showErrMsg(SvmValidationException e) {}
+    void showErrMsg(SvmValidationException e) {
+    }
 
     @Override
-    void showErrMsgAsToolTip(SvmValidationException e) {}
+    void showErrMsgAsToolTip(SvmValidationException e) {
+    }
 
     @Override
-    public void makeErrorLabelsInvisible(Set<Field> fields) {}
+    public void makeErrorLabelsInvisible(Set<Field> fields) {
+    }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 }

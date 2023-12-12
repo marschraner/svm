@@ -5,9 +5,7 @@ import ch.metzenthin.svm.domain.commands.DeleteKurstypCommand;
 import ch.metzenthin.svm.domain.model.KurstypenModel;
 import ch.metzenthin.svm.domain.model.KurstypenTableData;
 import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
-import ch.metzenthin.svm.ui.componentmodel.StringTableCellRenderer;
 import ch.metzenthin.svm.ui.components.KurstypErfassenDialog;
-import ch.metzenthin.svm.ui.components.UiComponentsUtils;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -131,14 +129,14 @@ public class KurstypenController {
                 "Kurstyp löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                svmContext.getDialogIcons().getQuestionIcon(),
+                null,
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteKurstypCommand.Result result  = kurstypenModel.eintragLoeschen(svmContext, kurstypenTableModel, kurstypenTable.getSelectedRow());
+            DeleteKurstypCommand.Result result = kurstypenModel.eintragLoeschen(svmContext, kurstypenTableModel, kurstypenTable.getSelectedRow());
             switch (result) {
                 case KURSTYP_VON_KURS_REFERENZIERT:
-                    JOptionPane.showMessageDialog(null, "Der Kurstyp wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                    JOptionPane.showMessageDialog(null, "Der Kurstyp wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnLoeschen.setFocusPainted(false);
                     break;
                 case LOESCHEN_ERFOLGREICH:

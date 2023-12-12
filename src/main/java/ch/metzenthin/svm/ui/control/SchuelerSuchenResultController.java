@@ -207,7 +207,7 @@ public class SchuelerSuchenResultController {
             }
             JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
                     + rowCount + " Einträge selektiert. Nur " + str2
-                    + " beim Exportieren berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+                    + " beim Exportieren berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE);
         }
         ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, schuelerSuchenTableModel, null, null, null, ListenExportTyp.SCHUELER);
         listenExportDialog.pack();
@@ -245,7 +245,7 @@ public class SchuelerSuchenResultController {
             }
             JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
                     + rowCount + " Einträge selektiert. Nur " + str2
-                    + " für die Gruppen-E-Mail berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+                    + " für die Gruppen-E-Mail berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE);
         }
         EmailSchuelerListeDialog emailSchuelerListeDialog = new EmailSchuelerListeDialog(svmContext, schuelerSuchenTableModel);
         emailSchuelerListeDialog.pack();

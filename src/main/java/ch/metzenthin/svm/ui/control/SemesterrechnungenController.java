@@ -255,7 +255,7 @@ public class SemesterrechnungenController {
             }
             JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
                     + rowCount + " Einträge selektiert. Nur " + str2
-                    + " beim Exportieren berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+                    + " beim Exportieren berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE);
         }
         ListenExportDialog listenExportDialog = new ListenExportDialog(svmContext, null, null, null, semesterrechnungenTableModel, ListenExportTyp.SEMESTERRECHNUNGEN);
         listenExportDialog.pack();
@@ -293,7 +293,7 @@ public class SemesterrechnungenController {
             }
             JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
                     + rowCount + " Einträge selektiert. Nur " + str2
-                    + " für die Gruppen-E-Mail berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+                    + " für die Gruppen-E-Mail berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE);
         }
         EmailSemesterrechnungenDialog emailSemesterrechnungenDialog = new EmailSemesterrechnungenDialog(svmContext, semesterrechnungenTableModel);
         emailSemesterrechnungenDialog.pack();
@@ -329,11 +329,11 @@ public class SemesterrechnungenController {
             int n = JOptionPane.showOptionDialog(
                     null,
                     "Soll die Semesterrechnung gelöscht werden?\n" +
-                    "(Die Rechnung kann später wenn nötig wiederhergestellt werden.)",
+                            "(Die Rechnung kann später wenn nötig wiederhergestellt werden.)",
                     "Eintrag löschen?",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
-                    svmContext.getDialogIcons().getQuestionIcon(),
+                    null,
                     options,  //the titles of buttons
                     options[1]); //default button title
             if (n == 0) {
@@ -350,7 +350,7 @@ public class SemesterrechnungenController {
                     "Eintrag löschen?",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
-                    svmContext.getDialogIcons().getWarningIcon(),
+                    null,
                     options,  //the titles of buttons
                     options[1]); //default button title
             if (n == 0) {
@@ -427,7 +427,7 @@ public class SemesterrechnungenController {
             }
             JOptionPane.showMessageDialog(null, "Es " + str1 + " der "
                     + rowCount + " Einträge selektiert. Nur " + str2
-                    + " beim Setzen des Rechnungsdatums berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE, svmContext.getDialogIcons().getInformationIcon());
+                    + " beim Setzen des Rechnungsdatums berücksichtigt.", "Nicht alle Einträge selektiert", JOptionPane.INFORMATION_MESSAGE);
         }
 
         // Wahl des Rechnungstyps
@@ -438,7 +438,7 @@ public class SemesterrechnungenController {
                 "Wahl des Rechnungstyps",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                svmContext.getDialogIcons().getQuestionIcon(),
+                null,
                 optionsRechnungstyp,  //the titles of buttons
                 optionsRechnungstyp[0]); //default button title
         Rechnungstyp rechnungstyp = (n == 1 ? Rechnungstyp.NACHRECHNUNG : Rechnungstyp.VORRECHNUNG);

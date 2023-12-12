@@ -242,7 +242,7 @@ public class CodeErfassenController extends AbstractController {
             return;
         }
         if (codeErfassenModel.checkCodeKuerzelBereitsInVerwendung(svmContext.getSvmModel(), codetyp)) {
-            JOptionPane.showMessageDialog(codeErfassenDialog, "Kürzel bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+            JOptionPane.showMessageDialog(codeErfassenDialog, "Kürzel bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE);
             btnSpeichern.setFocusPainted(false);
         } else {
             codeErfassenModel.speichern(svmContext.getSvmModel(), codesTableModel, codetyp);
@@ -279,8 +279,7 @@ public class CodeErfassenController extends AbstractController {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.KUERZEL, evt)) {
             txtKuerzel.setText(codeErfassenModel.getKuerzel());
-        }
-        else if (checkIsFieldChange(Field.BESCHREIBUNG, evt)) {
+        } else if (checkIsFieldChange(Field.BESCHREIBUNG, evt)) {
             txtBeschreibung.setText(codeErfassenModel.getBeschreibung());
         } else if (checkIsFieldChange(Field.SELEKTIERBAR, evt)) {
             checkBoxSelektierbar.setSelected(codeErfassenModel.isSelektierbar());
@@ -334,6 +333,7 @@ public class CodeErfassenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 }

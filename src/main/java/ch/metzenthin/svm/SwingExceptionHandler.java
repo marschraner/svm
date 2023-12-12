@@ -54,20 +54,18 @@ public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
         JScrollPane scrollPane = new JScrollPane(textArea);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        scrollPane.setPreferredSize( new Dimension( 1000, 500 ) );
+        scrollPane.setPreferredSize(new Dimension(1000, 500));
         String leaveMessage = (svmDesktop == null) ? "Die Applikation wird beendet." : "Die Applikation wird neu initialisiert.";
         if ((e instanceof SvmRuntimeException) || ((e.getCause() != null) && (e.getCause() instanceof SvmRuntimeException))) {
             JOptionPane.showMessageDialog(findActiveOrVisibleFrame(),
                     (e instanceof SvmRuntimeException) ? e.getMessage() : e.getCause().getMessage() + " " + leaveMessage,
                     "Fehler",
-                    JOptionPane.ERROR_MESSAGE,
-                    (svmDesktop == null ? null : svmDesktop.getSvmContext().getDialogIcons().getErrorIcon()));
+                    JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(findActiveOrVisibleFrame(),
                     scrollPane,
                     "Ein unerwarteter Fehler ist aufgetreten. " + leaveMessage,
-                    JOptionPane.ERROR_MESSAGE,
-                    (svmDesktop == null ? null : svmDesktop.getSvmContext().getDialogIcons().getErrorIcon()));
+                    JOptionPane.ERROR_MESSAGE);
         }
         if (svmDesktop != null) {
             LOGGER.info("Svm wird neu initialisiert.");

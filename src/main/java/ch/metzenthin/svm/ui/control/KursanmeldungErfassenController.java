@@ -104,7 +104,7 @@ public class KursanmeldungErfassenController extends AbstractController {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
-    
+
     public void setSpinnerSemester(JSpinner spinnerSemester) {
         this.spinnerSemester = spinnerSemester;
         // Darf nicht bearbeitet werden, da Teil von Kurs und dieser Teil der ID!
@@ -488,7 +488,7 @@ public class KursanmeldungErfassenController extends AbstractController {
     public void setErrLblLehrkraft(JLabel errLblLehrkraft) {
         this.errLblLehrkraft = errLblLehrkraft;
     }
-    
+
     public void setErrLblAnmeldedatum(JLabel errLblAnmeldedatum) {
         this.errLblAnmeldedatum = errLblAnmeldedatum;
     }
@@ -528,27 +528,27 @@ public class KursanmeldungErfassenController extends AbstractController {
                     "Semester in Vergangenheit",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE,
-                    svmContext.getDialogIcons().getWarningIcon(),
+                    null,
                     options,  //the titles of buttons
                     options[1]); //default button title
         }
         if (n == 0) {
             // Existiert der Kurs?
             if (!isBearbeiten && kursanmeldungErfassenModel.findKurs() == FindKursCommand.Result.KURS_EXISTIERT_NICHT) {
-                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs existiert nicht.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs existiert nicht.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 btnOk.setFocusPainted(false);
                 return;
             }
             // Kurs bereits erfasst
             if (!isBearbeiten && kursanmeldungErfassenModel.checkIfKursBereitsErfasst(schuelerDatenblattModel)) {
-                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 btnOk.setFocusPainted(false);
                 return;
             }
             // Schüler angemeldet?
             if (!kursanmeldungErfassenModel.checkIfSchuelerIsAngemeldet(schuelerDatenblattModel)) {
                 JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Die Kursanmeldung kann nicht erfasst werden, weil der Schüler für das\n" +
-                        "Semester nicht mehr beim Kindertheater angemeldet ist.", "Fehler", JOptionPane.ERROR_MESSAGE, svmContext.getDialogIcons().getErrorIcon());
+                        "Semester nicht mehr beim Kindertheater angemeldet ist.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 btnOk.setFocusPainted(false);
                 return;
             }
@@ -558,7 +558,7 @@ public class KursanmeldungErfassenController extends AbstractController {
             // Warnung, falls Kurse unterschiedliche Anzahl Wochen haben
             if (speichernResult == CalculateAnzWochenCommand.Result.KURSE_MIT_UNTERSCHIEDLICHER_ANZAHL_WOCHEN) {
                 JOptionPane.showMessageDialog(null, "Die Kurse des Rechnungsempfängers haben nicht alle die gleiche Anzahl Wochen.\n" +
-                        "Die Semesterrechnung muss manuell nachbearbeitet werden.", "Warnung", JOptionPane.WARNING_MESSAGE, svmContext.getDialogIcons().getWarningIcon());
+                        "Die Semesterrechnung muss manuell nachbearbeitet werden.", "Warnung", JOptionPane.WARNING_MESSAGE);
             }
         }
         kursanmeldungErfassenDialog.dispose();
@@ -732,6 +732,7 @@ public class KursanmeldungErfassenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 }
