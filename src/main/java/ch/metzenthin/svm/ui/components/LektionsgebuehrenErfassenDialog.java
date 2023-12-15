@@ -73,6 +73,7 @@ public class LektionsgebuehrenErfassenDialog extends JDialog {
         lektionsgebuehrenErfassenController.constructionDone();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void initializeErrLbls() {
         errLblLektionslaenge.setVisible(false);
         errLblLektionslaenge.setForeground(Color.RED);

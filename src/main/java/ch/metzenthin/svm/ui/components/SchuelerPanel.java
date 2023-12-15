@@ -9,9 +9,10 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * @author hans
+ * @author Hans Stamm
  */
 public class SchuelerPanel {
+
     private JPanel panel;
     private JPanel mainPanel;
     private JTextField txtNachname;
@@ -51,6 +52,7 @@ public class SchuelerPanel {
         return createSchuelerController(schuelerModel, defaultButtonEnabled);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private SchuelerController createSchuelerController(SchuelerModel schuelerModel, boolean defaultButtonEnabled) {
         SchuelerController schuelerController = new SchuelerController(schuelerModel, defaultButtonEnabled);
         schuelerController.setTxtNachname(txtNachname);
@@ -82,6 +84,7 @@ public class SchuelerPanel {
         return schuelerController;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void initializeErrLbls() {
         errLblNachname.setVisible(false);
         errLblNachname.setForeground(Color.RED);
@@ -125,10 +128,6 @@ public class SchuelerPanel {
 
     public JTextField getTxtAbmeldedatum() {
         return txtAbmeldedatum;
-    }
-
-    public JLabel getErrLblAbmeldedatum() {
-        return errLblAbmeldedatum;
     }
 
     /**

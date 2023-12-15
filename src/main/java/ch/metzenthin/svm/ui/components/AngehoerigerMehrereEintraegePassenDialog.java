@@ -7,9 +7,12 @@ import ch.metzenthin.svm.domain.model.SchuelerErfassenModel;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class AngehoerigerMehrereEintraegePassenDialog extends SchuelerErfassenDialog {
+
     private final AngehoerigerMehrereEintraegePassenResult angehoerigerMehrereEintraegePassenResult;
     private final SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
@@ -33,11 +36,7 @@ public class AngehoerigerMehrereEintraegePassenDialog extends SchuelerErfassenDi
         setAngehoerigeFound();
         setBeschreibung2();
 
-        buttonOk.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOk();
-            }
-        });
+        buttonOk.addActionListener(e -> onOk());
 
         // call onOk() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -48,11 +47,7 @@ public class AngehoerigerMehrereEintraegePassenDialog extends SchuelerErfassenDi
         });
 
         // call onOk() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOk();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onOk(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void setAngehoerigeFound() {

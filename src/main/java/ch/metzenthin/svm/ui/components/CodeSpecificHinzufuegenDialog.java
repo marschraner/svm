@@ -2,9 +2,9 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Codetyp;
-import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
 import ch.metzenthin.svm.domain.model.CodeSpecificHinzufuegenModel;
 import ch.metzenthin.svm.domain.model.CodesModel;
+import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;

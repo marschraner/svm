@@ -11,12 +11,15 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
 public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends SchuelerErfassenDialog {
+    
     private final AngehoerigerEinEintragGleicherNameAndereAttributeResult angehoerigerEinEintragGleicherNameAndereAttributeResult;
     private final SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
@@ -47,23 +50,11 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends Sch
         lblBeschreibung.setText("In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben für " + angehoerigerEinEintragGleicherNameAndereAttributeResult.getAngehoerigenArt());
         setLabels(angehoerigerEinEintragGleicherNameAndereAttributeResult.getAngehoerigerFoundInDatabase());
 
-        buttonDbUebernehmen.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onDbUebernehmen();
-            }
-        });
+        buttonDbUebernehmen.addActionListener(e -> onDbUebernehmen());
 
-        buttonNeuErfasstenEintragVerwenden.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onNeuErfasstenEintragVerwenden();
-            }
-        });
+        buttonNeuErfasstenEintragVerwenden.addActionListener(e -> onNeuErfasstenEintragVerwenden());
 
-        buttonAbbrechen.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        buttonAbbrechen.addActionListener(e -> onAbbrechen());
 
         // call onAbbrechen() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -74,13 +65,10 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends Sch
         });
 
         // call onAbbrechen() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void setLabels(Angehoeriger angehoeriger) {
         lblBeschreibung.setText("In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben für " + angehoerigerEinEintragGleicherNameAndereAttributeResult.getAngehoerigenArt() + " teilsweise übereinstimmt:");
         lblAngehoerigerValue.setText(angehoeriger.toString());

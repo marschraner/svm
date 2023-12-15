@@ -2,8 +2,8 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
-import ch.metzenthin.svm.domain.model.KurseModel;
 import ch.metzenthin.svm.domain.model.KursErfassenModel;
+import ch.metzenthin.svm.domain.model.KurseModel;
 import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;

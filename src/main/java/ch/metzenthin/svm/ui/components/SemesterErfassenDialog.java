@@ -76,6 +76,7 @@ public class SemesterErfassenDialog extends JDialog {
         semesterErfassenController.constructionDone();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void initializeErrLbls() {
         errLblSemesterbeginn.setVisible(false);
         errLblSemesterbeginn.setForeground(Color.RED);

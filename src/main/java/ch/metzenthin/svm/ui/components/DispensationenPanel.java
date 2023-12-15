@@ -20,6 +20,7 @@ import java.util.Locale;
  * @author Martin Schraner
  */
 public class DispensationenPanel {
+
     private JPanel panel1;
     private JTable dispensationenTable;
     private JLabel lblTitel;

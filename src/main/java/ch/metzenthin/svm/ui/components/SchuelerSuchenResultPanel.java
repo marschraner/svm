@@ -21,6 +21,7 @@ import java.util.Map;
  * @author Hans Stamm
  */
 public class SchuelerSuchenResultPanel {
+
     private JTable schuelerSuchenResultTable;
     private JPanel panel;
     private JButton btnAlleDeselektieren;
@@ -71,6 +72,7 @@ public class SchuelerSuchenResultPanel {
         schuelerSuchenResultController.addZurueckListener(zurueckListener);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void createUIComponents() {
         // JTable mit optimiertem Scroll-Verhalten
         // http://stackoverflow.com/questions/6104916/how-to-make-jtable-both-autoresize-and-horizontall-scrollable

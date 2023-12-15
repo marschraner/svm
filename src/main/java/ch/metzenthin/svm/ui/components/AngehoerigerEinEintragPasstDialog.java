@@ -11,10 +11,15 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
+
     private final AngehoerigerEinEintragPasstResult angehoerigerEinEintragPasstResult;
     private final SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
@@ -41,17 +46,9 @@ public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
         setTitle(angehoerigerEinEintragPasstResult.getAngehoerigenArt() + " bereits in Datenbank");
         setLabels(angehoerigerEinEintragPasstResult.getAngehoerigerFound());
 
-        buttonUebernehmen.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onUebernehmen();
-            }
-        });
+        buttonUebernehmen.addActionListener(e -> onUebernehmen());
 
-        buttonKorrigieren.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onZurueck();
-            }
-        });
+        buttonKorrigieren.addActionListener(e -> onZurueck());
 
         // call onZurueck() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -62,13 +59,10 @@ public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
         });
 
         // call onZurueck() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onZurueck();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onZurueck(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void setLabels(Angehoeriger angehoeriger) {
         lblBeschreibung.setText("In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben von " + angehoerigerEinEintragPasstResult.getAngehoerigenArt() + " passt:");
         lblAngehoerigerValue.setText(angehoeriger.toString());

@@ -2,8 +2,8 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.domain.model.MitarbeitersModel;
 import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
+import ch.metzenthin.svm.domain.model.MitarbeitersModel;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 import ch.metzenthin.svm.ui.control.MitarbeiterErfassenController;
 
@@ -68,6 +68,7 @@ public class MitarbeiterErfassenDialog extends JDialog {
         initializeErrLbls();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void createLehrkraftErfassenController(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, MitarbeitersModel mitarbeitersModel, int indexBearbeiten, boolean isBearbeiten) {
         MitarbeiterErfassenModel mitarbeiterErfassenModel = (isBearbeiten ? mitarbeitersModel.getMitarbeiterErfassenModel(svmContext, mitarbeitersTableModel, indexBearbeiten) : svmContext.getModelFactory().createMitarbeiterErfassenModel());
         MitarbeiterErfassenController mitarbeiterErfassenController = new MitarbeiterErfassenController(svmContext, mitarbeitersTableModel, mitarbeiterErfassenModel, isBearbeiten, DEFAULT_BUTTON_ENABLED);
@@ -110,6 +111,7 @@ public class MitarbeiterErfassenDialog extends JDialog {
         mitarbeiterErfassenController.constructionDone();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void initializeErrLbls() {
         errLblAnrede.setVisible(false);
         errLblAnrede.setForeground(Color.RED);

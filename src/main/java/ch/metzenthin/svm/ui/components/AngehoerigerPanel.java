@@ -11,6 +11,7 @@ import java.awt.*;
  * @author Hans Stamm
  */
 public class AngehoerigerPanel {
+
     private JPanel panel;
     private JComboBox<Anrede> comboBoxAnrede;
     private JTextField txtNachname;
@@ -51,6 +52,7 @@ public class AngehoerigerPanel {
         return createAngehoerigerController(angehoerigerModel, defaultButtonEnabled);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private AngehoerigerController createAngehoerigerController(AngehoerigerModel angehoerigerModel, boolean defaultButtonEnabled) {
         AngehoerigerController angehoerigerController = new AngehoerigerController(angehoerigerModel, defaultButtonEnabled);
         angehoerigerController.setComboBoxAnrede(comboBoxAnrede);
@@ -80,6 +82,7 @@ public class AngehoerigerPanel {
         return angehoerigerController;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void initializeErrLbls() {
         errLblAnrede.setVisible(false);
         errLblAnrede.setForeground(Color.RED);

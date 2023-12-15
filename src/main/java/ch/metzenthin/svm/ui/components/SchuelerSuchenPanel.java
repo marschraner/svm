@@ -94,7 +94,7 @@ public class SchuelerSuchenPanel {
     private JLabel errLblZusatzattributMaerchen;
     private JCheckBox checkBoxKursFuerSucheBeruecksichtigen;
     private JCheckBox checkBoxMaerchenFuerSucheBeruecksichtigen;
-    private SchuelerSuchenModel schuelerSuchenModel;
+    private final SchuelerSuchenModel schuelerSuchenModel;
     private ActionListener nextPanelListener;
 
     public SchuelerSuchenPanel(SvmContext svmContext) {
@@ -106,6 +106,7 @@ public class SchuelerSuchenPanel {
         createSchuelerSuchenController();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void initializeErrLbls() {
         errLblNachname.setVisible(false);
         errLblNachname.setForeground(Color.RED);
@@ -137,6 +138,7 @@ public class SchuelerSuchenPanel {
         errLblZusatzattributMaerchen.setForeground(Color.RED);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void createSchuelerSuchenController() {
         schuelerSuchenController = new SchuelerSuchenController(svmContext, schuelerSuchenModel, DEFAULT_BUTTON_ENABLED);
         schuelerSuchenController.setMainPanel(mainPanel);
@@ -183,12 +185,7 @@ public class SchuelerSuchenPanel {
         schuelerSuchenController.setErrLblZusatzattributMaerchen(errLblZusatzattributMaerchen);
         schuelerSuchenController.setBtnSuchen(btnSuchen);
         schuelerSuchenController.setBtnAbbrechen(btnAbbrechen);
-        schuelerSuchenController.addZurueckListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZurueck();
-            }
-        });
+        schuelerSuchenController.addZurueckListener(e -> onZurueck());
     }
 
     private void createUIComponents() {

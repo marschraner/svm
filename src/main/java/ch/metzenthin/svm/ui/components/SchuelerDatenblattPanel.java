@@ -18,6 +18,7 @@ import java.util.Locale;
  * @author Hans Stamm
  */
 public class SchuelerDatenblattPanel {
+
     private JPanel panel;
     private JLabel lblSchuelerValue;
     private JLabel lblMutterValue;

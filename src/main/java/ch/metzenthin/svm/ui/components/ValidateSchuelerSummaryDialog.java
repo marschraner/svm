@@ -11,12 +11,15 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Locale;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 
 public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
+
     private final ValidateSchuelerSummaryResult validateSchuelerSummaryResult;
     private final SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
@@ -65,17 +68,9 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
             setInfoIdentischeAdressen();
         }
 
-        buttonSpeichern.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onSpeichern();
-            }
-        });
+        buttonSpeichern.addActionListener(e -> onSpeichern());
 
-        buttonAbbrechen.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        buttonAbbrechen.addActionListener(e -> onAbbrechen());
 
         // call onAbbrechen() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -86,11 +81,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         });
 
         // call onAbbrechen() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void setSchueler() {

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serial;
 import java.net.URL;
 
 /*
@@ -18,6 +19,7 @@ import java.net.URL;
  */
 public class SvmDesktop extends JFrame implements ActionListener {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = LogManager.getLogger(SvmDesktop.class);
@@ -228,185 +230,85 @@ public class SvmDesktop extends JFrame implements ActionListener {
 
         } else if ("schuelerErfassen".equals(e.getActionCommand())) {
             SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext);
-            schuelerErfassenPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
-            schuelerErfassenPanel.addNextPanelListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onNextPanelAvailable(e.getSource());
-                }
-            });
+            schuelerErfassenPanel.addCloseListener(e1 -> onFrameAbbrechen());
+            schuelerErfassenPanel.addNextPanelListener(e1 -> onNextPanelAvailable(e1.getSource()));
             setAndShowActivePanel(schuelerErfassenPanel.$$$getRootComponent$$$(), "Neuen Schüler erfassen");
 
         } else if ("schuelerCodesVerwalten".equals(e.getActionCommand())) {
             CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.SCHUELER);
-            codesPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
+            codesPanel.addCloseListener(e2 -> onFrameAbbrechen());
             setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Schüler-Codes verwalten");
 
         } else if ("monatsstatistikSchueler".equals(e.getActionCommand())) {
             MonatsstatistikSchuelerPanel anAbmeldestatistikPanel = new MonatsstatistikSchuelerPanel(svmContext);
-            anAbmeldestatistikPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
-            anAbmeldestatistikPanel.addNextPanelListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onNextPanelAvailable(e.getSource());
-                }
-            });
+            anAbmeldestatistikPanel.addCloseListener(e3 -> onFrameAbbrechen());
+            anAbmeldestatistikPanel.addNextPanelListener(e3 -> onNextPanelAvailable(e3.getSource()));
             setAndShowActivePanel(anAbmeldestatistikPanel.$$$getRootComponent$$$(), "Monatsstatistik Schüler");
 
         } else if ("mitarbeiterSuchen".equals(e.getActionCommand())) {
             MitarbeiterSuchenPanel mitarbeiterSuchenPanel = new MitarbeiterSuchenPanel(svmContext);
-            mitarbeiterSuchenPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
-            mitarbeiterSuchenPanel.addNextPanelListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onNextPanelAvailable(e.getSource());
-                }
-            });
+            mitarbeiterSuchenPanel.addCloseListener(e4 -> onFrameAbbrechen());
+            mitarbeiterSuchenPanel.addNextPanelListener(e4 -> onNextPanelAvailable(e4.getSource()));
             setAndShowActivePanel(mitarbeiterSuchenPanel.$$$getRootComponent$$$(), "Mitarbeiter suchen");
 
         } else if ("mitarbeiterCodesVerwalten".equals(e.getActionCommand())) {
             CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.MITARBEITER);
-            codesPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
+            codesPanel.addCloseListener(e5 -> onFrameAbbrechen());
             setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Mitarbeiter-Codes verwalten");
 
         } else if ("kurseVerwalten".equals(e.getActionCommand())) {
             KurseSemesterwahlPanel kurseSemesterwahlPanel = new KurseSemesterwahlPanel(svmContext);
-            kurseSemesterwahlPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
-            kurseSemesterwahlPanel.addNextPanelListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onNextPanelAvailable(e.getSource());
-                }
-            });
+            kurseSemesterwahlPanel.addCloseListener(e6 -> onFrameAbbrechen());
+            kurseSemesterwahlPanel.addNextPanelListener(e6 -> onNextPanelAvailable(e6.getSource()));
             setAndShowActivePanel(kurseSemesterwahlPanel.$$$getRootComponent$$$(), "Kurse verwalten: Schuljahr / Semester wählen");
 
         } else if ("kurstypenVerwalten".equals(e.getActionCommand())) {
             KurstypenPanel kurstypenPanel = new KurstypenPanel(svmContext);
-            kurstypenPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
+            kurstypenPanel.addCloseListener(e7 -> onFrameAbbrechen());
             setAndShowActivePanel(kurstypenPanel.$$$getRootComponent$$$(), "Kurstypen verwalten");
 
         } else if ("kursorteVerwalten".equals(e.getActionCommand())) {
             KursortePanel kursortePanel = new KursortePanel(svmContext);
-            kursortePanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
+            kursortePanel.addCloseListener(e8 -> onFrameAbbrechen());
             setAndShowActivePanel(kursortePanel.$$$getRootComponent$$$(), "Kursorte verwalten");
 
         } else if ("monatsstatistikKurse".equals(e.getActionCommand())) {
             MonatsstatistikKursePanel monatsstatistikKursePanel = new MonatsstatistikKursePanel(svmContext);
-            monatsstatistikKursePanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
+            monatsstatistikKursePanel.addCloseListener(e9 -> onFrameAbbrechen());
             setAndShowActivePanel(monatsstatistikKursePanel.$$$getRootComponent$$$(), "Monatsstatistik Kurse");
 
         } else if ("semesterVerwalten".equals(e.getActionCommand())) {
             SemestersPanel semestersPanel = new SemestersPanel(svmContext);
-            semestersPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
+            semestersPanel.addCloseListener(e10 -> onFrameAbbrechen());
             setAndShowActivePanel(semestersPanel.$$$getRootComponent$$$(), "Semester verwalten");
 
-        }  else if ("elternmithilfeCodesVerwalten".equals(e.getActionCommand())) {
+        } else if ("elternmithilfeCodesVerwalten".equals(e.getActionCommand())) {
             CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.ELTERNMITHILFE);
-            codesPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
+            codesPanel.addCloseListener(e11 -> onFrameAbbrechen());
             setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Eltern-Mithilfe-Codes verwalten");
 
         } else if ("maerchenVerwalten".equals(e.getActionCommand())) {
             MaerchensPanel maerchensPanel = new MaerchensPanel(svmContext);
-            maerchensPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
+            maerchensPanel.addCloseListener(e12 -> onFrameAbbrechen());
             setAndShowActivePanel(maerchensPanel.$$$getRootComponent$$$(), "Märchen verwalten");
 
         } else if ("semesterrechnungenSuchen".equals(e.getActionCommand())) {
             SemesterrechnungenSuchenPanel semesterrechnungenSuchenPanel = new SemesterrechnungenSuchenPanel(svmContext);
-            semesterrechnungenSuchenPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
-            semesterrechnungenSuchenPanel.addNextPanelListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onNextPanelAvailable(e.getSource());
-                }
-            });
+            semesterrechnungenSuchenPanel.addCloseListener(e13 -> onFrameAbbrechen());
+            semesterrechnungenSuchenPanel.addNextPanelListener(e13 -> onNextPanelAvailable(e13.getSource()));
             setAndShowActivePanel(semesterrechnungenSuchenPanel.$$$getRootComponent$$$(), "Semesterrechnungen suchen");
 
         } else if ("semesterrechnungCodesVerwalten".equals(e.getActionCommand())) {
             CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.SEMESTERRECHNUNG);
-            codesPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
+            codesPanel.addCloseListener(e14 -> onFrameAbbrechen());
             setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Semesterrechnung-Codes verwalten");
 
         } else if ("lektionsgebuehrenVerwalten".equals(e.getActionCommand())) {
             LektionsgebuehrenPanel lektionsgebuehrenPanel = new LektionsgebuehrenPanel(svmContext);
-            lektionsgebuehrenPanel.addCloseListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFrameAbbrechen();
-                }
-            });
+            lektionsgebuehrenPanel.addCloseListener(e15 -> onFrameAbbrechen());
             setAndShowActivePanel(lektionsgebuehrenPanel.$$$getRootComponent$$$(), "Lektionsgebühren verwalten");
 
-        }  else { // beenden
+        } else { // beenden
             quit();
         }
         stopWaitCursor();
@@ -418,18 +320,8 @@ public class SvmDesktop extends JFrame implements ActionListener {
 
     private SchuelerSuchenPanel createSchuelerSuchenPanel() {
         SchuelerSuchenPanel schuelerSuchenPanel = new SchuelerSuchenPanel(svmContext);
-        schuelerSuchenPanel.addCloseListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onFrameAbbrechen();
-            }
-        });
-        schuelerSuchenPanel.addNextPanelListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNextPanelAvailable(e.getSource());
-            }
-        });
+        schuelerSuchenPanel.addCloseListener(e -> onFrameAbbrechen());
+        schuelerSuchenPanel.addNextPanelListener(e -> onNextPanelAvailable(e.getSource()));
         return schuelerSuchenPanel;
     }
 

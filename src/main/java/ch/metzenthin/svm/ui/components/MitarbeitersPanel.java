@@ -21,6 +21,7 @@ import java.util.Map;
  * @author Martin Schraner
  */
 public class MitarbeitersPanel {
+
     private JPanel panel1;
     private JPanel buttonPanel;
     private JPanel datenPanel;
@@ -75,6 +76,7 @@ public class MitarbeitersPanel {
         mitarbeitersController.addCloseListener(closeListener);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void createUIComponents() {
         // JTable mit optimiertem Scroll-Verhalten
         // http://stackoverflow.com/questions/6104916/how-to-make-jtable-both-autoresize-and-horizontall-scrollable

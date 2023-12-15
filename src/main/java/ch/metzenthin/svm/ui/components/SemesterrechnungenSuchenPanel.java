@@ -157,7 +157,7 @@ public class SemesterrechnungenSuchenPanel {
     private JButton btnAbbrechen;
     private final SvmContext svmContext;
     private SemesterrechnungenSuchenController semesterrechnungenSuchenController;
-    private SemesterrechnungenSuchenModel semesterrechnungenSuchenModel;
+    private final SemesterrechnungenSuchenModel semesterrechnungenSuchenModel;
     private ActionListener nextPanelListener;
 
     SemesterrechnungenSuchenPanel(SvmContext svmContext) {
@@ -278,12 +278,7 @@ public class SemesterrechnungenSuchenPanel {
         semesterrechnungenSuchenController.setErrLblDifferenzSchulgeld(errLblDifferenzSchulgeld);
         semesterrechnungenSuchenController.setBtnSuchen(btnSuchen);
         semesterrechnungenSuchenController.setBtnAbbrechen(btnAbbrechen);
-        semesterrechnungenSuchenController.addZurueckListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZurueck();
-            }
-        });
+        semesterrechnungenSuchenController.addZurueckListener(e -> onZurueck());
     }
 
     private void createUIComponents() {

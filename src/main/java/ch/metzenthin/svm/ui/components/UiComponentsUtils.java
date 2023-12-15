@@ -16,17 +16,15 @@ import java.util.Calendar;
 public class UiComponentsUtils {
 
     /**
-     * Source: https://kahdev.wordpress.com/2011/10/30/java-specifying-the-column-widths-of-a-jtable-as-percentages/
-     *
+     * Source: <a href="https://kahdev.wordpress.com/2011/10/30/java-specifying-the-column-widths-of-a-jtable-as-percentages/">...</a>
+     * <p>
      * Set the width of the columns as percentages.
      *
-     * @param table
-     *            the {@link JTable} whose columns will be set
-     * @param percentages
-     *            the widths of the columns as percentages; note: this method
-     *            does NOT verify that all percentages add up to 100% and for
-     *            the columns to appear properly, it is recommended that the
-     *            widths for ALL columns be specified
+     * @param table       the {@link JTable} whose columns will be set
+     * @param percentages the widths of the columns as percentages; note: this method
+     *                    does NOT verify that all percentages add up to 100% and for
+     *                    the columns to appear properly, it is recommended that the
+     *                    widths for ALL columns be specified
      */
     public static void setJTableColumnWidthAsPercentages(JTable table, double... percentages) {
         final double factor = 10000;
@@ -66,7 +64,7 @@ public class UiComponentsUtils {
     public static void setColumnCellRenderers(JTable table, AbstractTableModel tableModel) {
         for (int i = 0; i < tableModel.getColumnCount(); i++) {
             TableCellRenderer tableCellRenderer = null;
-            Class columnClass = tableModel.getColumnClass(i);
+            Class<?> columnClass = tableModel.getColumnClass(i);
             if (columnClass.equals(String.class)) {
                 tableCellRenderer = new StringTableCellRenderer();
             } else if (columnClass.equals(Integer.class) || columnClass.equals(Double.class) || columnClass.equals(BigDecimal.class)) {

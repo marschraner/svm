@@ -21,6 +21,7 @@ import java.util.Locale;
  * @author Martin Schraner
  */
 public class CodesPanel {
+
     private JPanel panel1;
     private JPanel datenPanel;
     private JPanel buttonPanel;

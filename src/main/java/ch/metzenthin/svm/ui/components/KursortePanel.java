@@ -17,6 +17,7 @@ import java.util.Locale;
  * @author Martin Schraner
  */
 public class KursortePanel {
+
     private JPanel panel1;
     private JPanel datenPanel;
     private JPanel titelPanel;

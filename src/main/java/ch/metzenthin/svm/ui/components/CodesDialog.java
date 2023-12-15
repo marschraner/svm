@@ -14,6 +14,7 @@ import java.awt.*;
 import java.util.Locale;
 
 public class CodesDialog extends JDialog {
+
     private JPanel contentPane;
     private JPanel datenPanel;
     private JPanel buttonPanel;

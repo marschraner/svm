@@ -69,12 +69,7 @@ public class MitarbeiterSuchenPanel {
         mitarbeiterSuchenController.setErrLblVorname(errLblVorname);
         mitarbeiterSuchenController.setBtnSuchen(btnSuchen);
         mitarbeiterSuchenController.setBtnAbbrechen(btnAbbrechen);
-        mitarbeiterSuchenController.addZurueckListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZurueck();
-            }
-        });
+        mitarbeiterSuchenController.addZurueckListener(e -> onZurueck());
     }
 
     private void onZurueck() {

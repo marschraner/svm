@@ -18,6 +18,7 @@ import java.util.Locale;
  * @author Martin Schraner
  */
 public class LektionsgebuehrenPanel {
+
     private JPanel panel1;
     private JPanel datenPanel;
     private JPanel titelPanel;

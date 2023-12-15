@@ -37,7 +37,7 @@ public class MonatsstatistikSchuelerPanel {
     private JPanel datenPanel;
     private JPanel buttonPanel;
     private MonatsstatistikSchuelerController monatsstatistikSchuelerController;
-    private MonatsstatistikSchuelerModel monatsstatistikSchuelerModel;
+    private final MonatsstatistikSchuelerModel monatsstatistikSchuelerModel;
     private ActionListener nextPanelListener;
 
     MonatsstatistikSchuelerPanel(SvmContext svmContext) {
@@ -62,12 +62,7 @@ public class MonatsstatistikSchuelerPanel {
         monatsstatistikSchuelerController.setBtnSuchen(btnSuchen);
         monatsstatistikSchuelerController.setBtnAbbrechen(btnAbbrechen);
         monatsstatistikSchuelerController.setErrLblMonatJahr(errLblMonatJahr);
-        monatsstatistikSchuelerController.addZurueckListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZurueck();
-            }
-        });
+        monatsstatistikSchuelerController.addZurueckListener(e -> onZurueck());
     }
 
     private void onZurueck() {

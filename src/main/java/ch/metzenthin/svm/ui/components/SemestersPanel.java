@@ -17,6 +17,7 @@ import java.util.Locale;
  * @author Martin Schraner
  */
 public class SemestersPanel {
+
     private JPanel panel1;
     private JPanel datenPanel;
     private JPanel titelPanel;
@@ -48,6 +49,7 @@ public class SemestersPanel {
         semestersController.addCloseListener(closeListener);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void createUIComponents() {
         // JTable mit optimiertem Scroll-Verhalten
         // http://stackoverflow.com/questions/6104916/how-to-make-jtable-both-autoresize-and-horizontall-scrollable

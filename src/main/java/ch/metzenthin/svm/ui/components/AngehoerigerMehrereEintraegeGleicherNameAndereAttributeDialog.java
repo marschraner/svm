@@ -8,10 +8,13 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Locale;
 
 public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog extends SchuelerErfassenDialog {
+
     private final AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult;
     private final SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
@@ -35,17 +38,9 @@ public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog exten
         lblBeschreibung.setText("In der Datenbank wurden mehrere Einträge gefunden, der mit den erfassten Angaben für " + angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult.getAngehoerigenArt() + " teilweise übereinstimmen:");
         setAngehoerigeFound();
 
-        buttonNeuErfasstenEintragVerwenden.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onNeuErfasstenEintragVerwenden();
-            }
-        });
+        buttonNeuErfasstenEintragVerwenden.addActionListener(e -> onNeuErfasstenEintragVerwenden());
 
-        buttonKorrigieren.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onKorrigieren();
-            }
-        });
+        buttonKorrigieren.addActionListener(e -> onKorrigieren());
 
         // call onKorrigieren() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -56,11 +51,7 @@ public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog exten
         });
 
         // call onKorrigieren() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onKorrigieren();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onKorrigieren(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void setAngehoerigeFound() {

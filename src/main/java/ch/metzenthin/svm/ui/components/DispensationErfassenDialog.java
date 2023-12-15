@@ -44,6 +44,7 @@ public class DispensationErfassenDialog extends JDialog {
         createDispensationErfassenController(svmContext, dispensationenTableModel, dispensationenModel, schuelerDatenblattModel, indexBearbeiten, isBearbeiten);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void initializeErrLbls() {
         errLblDispensationsbeginn.setVisible(false);
         errLblDispensationsbeginn.setForeground(Color.RED);
