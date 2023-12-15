@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class ColorTableCellRenderer extends DefaultTableCellRenderer {
 
-    private Color schriftfarbe;
+    private final Color schriftfarbe;
 
     public ColorTableCellRenderer(Color schriftfarbe) {
         super();

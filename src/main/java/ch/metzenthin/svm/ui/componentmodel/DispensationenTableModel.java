@@ -3,12 +3,15 @@ package ch.metzenthin.svm.ui.componentmodel;
 import ch.metzenthin.svm.domain.model.DispensationenTableData;
 
 import javax.swing.table.AbstractTableModel;
+import java.io.Serial;
 
 
 public class DispensationenTableModel extends AbstractTableModel {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private DispensationenTableData dispensationenTableData;
+
+    private final DispensationenTableData dispensationenTableData;
 
     public DispensationenTableModel(DispensationenTableData dispensationenTableData) {
         super();

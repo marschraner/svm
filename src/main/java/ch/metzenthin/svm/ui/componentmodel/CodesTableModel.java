@@ -4,12 +4,15 @@ import ch.metzenthin.svm.domain.model.CodesTableData;
 import ch.metzenthin.svm.persistence.entities.Code;
 
 import javax.swing.table.AbstractTableModel;
+import java.io.Serial;
 
 
 public class CodesTableModel extends AbstractTableModel {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private CodesTableData codesTableData;
+
+    private final CodesTableData codesTableData;
 
     public CodesTableModel(CodesTableData codesTableData) {
         super();

@@ -5,14 +5,17 @@ import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
 import javax.swing.table.AbstractTableModel;
+import java.io.Serial;
 import java.util.List;
 import java.util.Set;
 
 
 public class SemesterrechnungenTableModel extends AbstractTableModel {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private SemesterrechnungenTableData semesterrechnungenTableData;
+
+    private final SemesterrechnungenTableData semesterrechnungenTableData;
 
     public SemesterrechnungenTableModel(SemesterrechnungenTableData semesterrechnungenTableData) {
         super();

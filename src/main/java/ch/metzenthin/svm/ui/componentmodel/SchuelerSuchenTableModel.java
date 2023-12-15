@@ -7,6 +7,7 @@ import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
 import ch.metzenthin.svm.persistence.entities.*;
 
 import javax.swing.table.AbstractTableModel;
+import java.io.Serial;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.List;
@@ -15,8 +16,10 @@ import java.util.Map;
 
 public class SchuelerSuchenTableModel extends AbstractTableModel {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private SchuelerSuchenTableData schuelerSuchenTableData;
+
+    private final SchuelerSuchenTableData schuelerSuchenTableData;
 
     public SchuelerSuchenTableModel(SchuelerSuchenTableData schuelerSuchenTableData) {
         super();

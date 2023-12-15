@@ -4,12 +4,15 @@ import ch.metzenthin.svm.domain.model.MaercheneinteilungenTableData;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 
 import javax.swing.table.AbstractTableModel;
+import java.io.Serial;
 
 
 public class MaercheneinteilungenTableModel extends AbstractTableModel {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private MaercheneinteilungenTableData maercheneinteilungenTableData;
+
+    private final MaercheneinteilungenTableData maercheneinteilungenTableData;
 
     public MaercheneinteilungenTableModel(MaercheneinteilungenTableData maercheneinteilungenTableData) {
         super();

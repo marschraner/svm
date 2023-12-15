@@ -3,12 +3,15 @@ package ch.metzenthin.svm.ui.componentmodel;
 import ch.metzenthin.svm.domain.model.KurstypenTableData;
 
 import javax.swing.table.AbstractTableModel;
+import java.io.Serial;
 
 
 public class KurstypenTableModel extends AbstractTableModel {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private KurstypenTableData kurstypenTableData;
+
+    private final KurstypenTableData kurstypenTableData;
 
     public KurstypenTableModel(KurstypenTableData kurstypenTableData) {
         super();

@@ -4,13 +4,16 @@ import ch.metzenthin.svm.domain.model.MitarbeitersTableData;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 
 import javax.swing.table.AbstractTableModel;
+import java.io.Serial;
 import java.util.List;
 
 
 public class MitarbeitersTableModel extends AbstractTableModel {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private MitarbeitersTableData mitarbeitersTableData;
+
+    private final MitarbeitersTableData mitarbeitersTableData;
 
     public MitarbeitersTableModel(MitarbeitersTableData mitarbeitersTableData) {
         super();
@@ -67,10 +70,6 @@ public class MitarbeitersTableModel extends AbstractTableModel {
 
     public List<Mitarbeiter> getSelektierteMitarbeiters() {
         return mitarbeitersTableData.getSelektierteMitarbeiters();
-    }
-
-    public boolean isAlleSelektiert() {
-        return mitarbeitersTableData.isAlleSelektiert();
     }
 
     public void alleMitarbeiterSelektieren() {

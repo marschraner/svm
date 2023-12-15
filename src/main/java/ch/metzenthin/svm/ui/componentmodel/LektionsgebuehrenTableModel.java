@@ -4,13 +4,16 @@ import ch.metzenthin.svm.domain.model.LektionsgebuehrenTableData;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 
 import javax.swing.table.AbstractTableModel;
+import java.io.Serial;
 import java.util.List;
 
 
 public class LektionsgebuehrenTableModel extends AbstractTableModel {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private LektionsgebuehrenTableData lektionsgebuehrenTableData;
+
+    private final LektionsgebuehrenTableData lektionsgebuehrenTableData;
 
     public LektionsgebuehrenTableModel(LektionsgebuehrenTableData lektionsgebuehrenTableData) {
         super();

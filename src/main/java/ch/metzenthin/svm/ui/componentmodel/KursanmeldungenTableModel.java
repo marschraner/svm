@@ -4,12 +4,15 @@ import ch.metzenthin.svm.domain.model.KursanmeldungenTableData;
 import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 
 import javax.swing.table.AbstractTableModel;
+import java.io.Serial;
 
 
 public class KursanmeldungenTableModel extends AbstractTableModel {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private KursanmeldungenTableData kursanmeldungenTableData;
+
+    private final KursanmeldungenTableData kursanmeldungenTableData;
 
     public KursanmeldungenTableModel(KursanmeldungenTableData kursanmeldungenTableData) {
         super();

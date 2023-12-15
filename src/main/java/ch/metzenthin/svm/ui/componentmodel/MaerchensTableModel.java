@@ -3,12 +3,15 @@ package ch.metzenthin.svm.ui.componentmodel;
 import ch.metzenthin.svm.domain.model.MaerchensTableData;
 
 import javax.swing.table.AbstractTableModel;
+import java.io.Serial;
 
 
 public class MaerchensTableModel extends AbstractTableModel {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private MaerchensTableData maerchensTableData;
+
+    private final MaerchensTableData maerchensTableData;
 
     public MaerchensTableModel(MaerchensTableData maerchensTableData) {
         super();

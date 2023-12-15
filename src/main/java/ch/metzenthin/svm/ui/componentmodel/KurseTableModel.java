@@ -4,13 +4,16 @@ import ch.metzenthin.svm.domain.model.KurseTableData;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 
 import javax.swing.table.AbstractTableModel;
+import java.io.Serial;
 import java.util.List;
 
 
 public class KurseTableModel extends AbstractTableModel {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private KurseTableData kurseTableData;
+
+    private final KurseTableData kurseTableData;
 
     public KurseTableModel(KurseTableData kurseTableData) {
         super();
@@ -52,13 +55,5 @@ public class KurseTableModel extends AbstractTableModel {
 
     public int getAnzahlSchueler() {
         return kurseTableData.getAnzahlSchueler();
-    }
-
-    public KurseTableData getKurseTableData() {
-        return kurseTableData;
-    }
-
-    public Kurs getKursAt(int rowIndex) {
-        return kurseTableData.getKursAt(rowIndex);
     }
 }
