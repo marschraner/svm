@@ -42,7 +42,7 @@ public class Svm {
                 continue;
             }
             for (UIManager.LookAndFeelInfo lookAndFeelInfo : UIManager.getInstalledLookAndFeels()) {
-                if (preferredLookAndFeel.toLowerCase().equals(lookAndFeelInfo.getName().toLowerCase())) {
+                if (preferredLookAndFeel.equalsIgnoreCase(lookAndFeelInfo.getName())) {
                     try {
                         UIManager.setLookAndFeel(lookAndFeelInfo.getClassName());
                     } catch (Exception ignore) {
@@ -54,7 +54,7 @@ public class Svm {
         }
 
         if (svmPropertyPreferredLookAndFeel != null && !svmPropertyPreferredLookAndFeel.isEmpty()
-                && !svmPropertyPreferredLookAndFeel.toLowerCase().equals(selectedLookAndFeel.toLowerCase())) {
+                && !svmPropertyPreferredLookAndFeel.equalsIgnoreCase(selectedLookAndFeel)) {
             LOGGER.warn("'" + svmPropertyPreferredLookAndFeel + "' ist kein gültiger Wert für SVM-Property '" +
                     SvmProperties.KEY_PREFERRED_LOOK_AND_FEEL + "'. Verwende stattdessen Default-Look and Feel '" +
                     selectedLookAndFeel + "'.");
@@ -83,11 +83,7 @@ public class Svm {
             Thread.setDefaultUncaughtExceptionHandler(new SwingExceptionHandler());
             // Schedule a job for the event-dispatching thread:
             // creating and showing this application's GUI.
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    createAndShowGUI(svmContext);
-                }
-            });
+            SwingUtilities.invokeLater(() -> createAndShowGUI(svmContext));
             // splashScreenClose(splash); -> No need to close it here. This way the splash screen disappears when GUI appears.
         } catch (Exception e) {
             LOGGER.error("Fehler bei der Initialisierung der Applikation", e);

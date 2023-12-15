@@ -24,11 +24,7 @@ public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
             showMessage(t, e);
         } else {
             try {
-                SwingUtilities.invokeAndWait(new Runnable() {
-                    public void run() {
-                        showMessage(t, e);
-                    }
-                });
+                SwingUtilities.invokeAndWait(() -> showMessage(t, e));
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
             } catch (InvocationTargetException ite) {
