@@ -4,7 +4,6 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.KursortErfassenModel;
 import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
 import org.apache.logging.log4j.LogManager;
@@ -27,10 +26,10 @@ public class KursortErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private KursorteTableModel kursorteTableModel;
-    private KursortErfassenModel kursortErfassenModel;
-    private boolean isBearbeiten;
-    private boolean defaultButtonEnabled;
+    private final KursorteTableModel kursorteTableModel;
+    private final KursortErfassenModel kursortErfassenModel;
+    private final boolean isBearbeiten;
+    private final boolean defaultButtonEnabled;
     private final SvmContext svmContext;
     private JDialog kursortErfassenDialog;
     private JTextField txtBezeichnung;
@@ -48,12 +47,7 @@ public class KursortErfassenController extends AbstractController {
         this.kursortErfassenModel.addPropertyChangeListener(this);
         this.kursortErfassenModel.addDisableFieldsListener(this);
         this.kursortErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.kursortErfassenModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onKursortErfassenModelCompleted(completed);
-            }
-        });
+        this.kursortErfassenModel.addCompletedListener(this::onKursortErfassenModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -74,22 +68,13 @@ public class KursortErfassenController extends AbstractController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setTxtBezeichnung(JTextField txtBezeichnung) {
         this.txtBezeichnung = txtBezeichnung;
         if (!defaultButtonEnabled) {
-            this.txtBezeichnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBezeichnungEvent(true);
-                }
-            });
+            this.txtBezeichnung.addActionListener(e -> onBezeichnungEvent(true));
         }
         this.txtBezeichnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -122,7 +107,7 @@ public class KursortErfassenController extends AbstractController {
             LOGGER.trace("KursortErfassenController setModelBezeichnung RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBezeichnung.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -140,12 +125,7 @@ public class KursortErfassenController extends AbstractController {
         if (!isBearbeiten) {
             kursortErfassenModel.setSelektierbar(true);
         }
-        this.checkBoxSelektierbar.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onSelektierbarEvent();
-            }
-        });
+        this.checkBoxSelektierbar.addItemListener(e -> onSelektierbarEvent());
     }
 
     private void setModelSelektierbar() {
@@ -166,12 +146,7 @@ public class KursortErfassenController extends AbstractController {
         if (isModelValidationMode()) {
             btnSpeichern.setEnabled(false);
         }
-        this.btnSpeichern.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSpeichern();
-            }
-        });
+        this.btnSpeichern.addActionListener(e -> onSpeichern());
     }
 
     private void onSpeichern() {
@@ -189,12 +164,7 @@ public class KursortErfassenController extends AbstractController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

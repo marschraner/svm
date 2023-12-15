@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
@@ -10,7 +9,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 
@@ -25,7 +26,6 @@ public class EmailSemesterrechnungenController extends AbstractController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private final EmailSemesterrechnungenModel emailSemesterrechnungenModel;
-    private final SvmContext svmContext;
     private final SemesterrechnungenTableModel semesterrechnungenTableModel;
     private JDialog emailDialog;
     private JCheckBox checkBoxMutterUndOderVater;
@@ -34,10 +34,9 @@ public class EmailSemesterrechnungenController extends AbstractController {
     private JButton btnOk;
 
     public EmailSemesterrechnungenController(EmailSemesterrechnungenModel emailSemesterrechnungenModel,
-                                             SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel) {
+                                             SemesterrechnungenTableModel semesterrechnungenTableModel) {
         super(emailSemesterrechnungenModel);
         this.emailSemesterrechnungenModel = emailSemesterrechnungenModel;
-        this.svmContext = svmContext;
         this.semesterrechnungenTableModel = semesterrechnungenTableModel;
         this.emailSemesterrechnungenModel.addPropertyChangeListener(this);
         this.emailSemesterrechnungenModel.addDisableFieldsListener(this);
@@ -66,21 +65,12 @@ public class EmailSemesterrechnungenController extends AbstractController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setCheckBoxMutterUndOderVater(JCheckBox checkBoxMutterUndOderVater) {
         this.checkBoxMutterUndOderVater = checkBoxMutterUndOderVater;
-        this.checkBoxMutterUndOderVater.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onMutterUndOderVaterEvent();
-            }
-        });
+        this.checkBoxMutterUndOderVater.addItemListener(e -> onMutterUndOderVaterEvent());
     }
 
     private void onMutterUndOderVaterEvent() {
@@ -94,12 +84,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
 
     public void setCheckBoxRechnungsempfaenger(JCheckBox checkBoxRechnungsempfaenger) {
         this.checkBoxRechnungsempfaenger = checkBoxRechnungsempfaenger;
-        this.checkBoxRechnungsempfaenger.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onRechnungsempfaengerEvent();
-            }
-        });
+        this.checkBoxRechnungsempfaenger.addItemListener(e -> onRechnungsempfaengerEvent());
     }
 
     private void onRechnungsempfaengerEvent() {
@@ -113,12 +98,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
 
     public void setCheckBoxBlindkopien(JCheckBox checkBoxBlindkopien) {
         this.checkBoxBlindkopien = checkBoxBlindkopien;
-        this.checkBoxBlindkopien.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onBlindkopienEvent();
-            }
-        });
+        this.checkBoxBlindkopien.addItemListener(e -> onBlindkopienEvent());
     }
 
     private void onBlindkopienEvent() {
@@ -132,12 +112,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
 
     public void setBtnOk(JButton btnOk) {
         this.btnOk = btnOk;
-        this.btnOk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onOk();
-            }
-        });
+        this.btnOk.addActionListener(e -> onOk());
     }
 
     @SuppressWarnings("DuplicatedCode")
@@ -172,12 +147,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

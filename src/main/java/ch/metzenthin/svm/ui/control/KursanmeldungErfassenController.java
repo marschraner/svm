@@ -8,7 +8,6 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CalculateAnzWochenCommand;
 import ch.metzenthin.svm.domain.commands.FindKursCommand;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.KursanmeldungErfassenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
@@ -18,8 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Calendar;
@@ -40,11 +37,11 @@ public class KursanmeldungErfassenController extends AbstractController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private final SvmContext svmContext;
-    private KursanmeldungenTableModel kursanmeldungenTableModel;
-    private KursanmeldungErfassenModel kursanmeldungErfassenModel;
-    private SchuelerDatenblattModel schuelerDatenblattModel;
-    private boolean isBearbeiten;
-    private boolean defaultButtonEnabled;
+    private final KursanmeldungenTableModel kursanmeldungenTableModel;
+    private final KursanmeldungErfassenModel kursanmeldungErfassenModel;
+    private final SchuelerDatenblattModel schuelerDatenblattModel;
+    private final boolean isBearbeiten;
+    private final boolean defaultButtonEnabled;
     private JDialog kursanmeldungErfassenDialog;
     private JSpinner spinnerSemester;
     private JComboBox<Wochentag> comboBoxWochentag;
@@ -72,12 +69,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         this.kursanmeldungErfassenModel.addPropertyChangeListener(this);
         this.kursanmeldungErfassenModel.addDisableFieldsListener(this);
         this.kursanmeldungErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.kursanmeldungErfassenModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onKursanmeldungErfassenModelCompleted(completed);
-            }
-        });
+        this.kursanmeldungErfassenModel.addCompletedListener(this::onKursanmeldungErfassenModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -98,11 +90,7 @@ public class KursanmeldungErfassenController extends AbstractController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setSpinnerSemester(JSpinner spinnerSemester) {
@@ -119,16 +107,11 @@ public class KursanmeldungErfassenController extends AbstractController {
         if (isBearbeiten) {
             semesters = kursanmeldungErfassenModel.getSelectableSemesterKursanmeldungOrigin();
         } else {
-            semesters = semesterList.toArray(new Semester[semesterList.size()]);
+            semesters = semesterList.toArray(new Semester[0]);
         }
         SpinnerModel spinnerModelSemester = new SpinnerListModel(semesters);
         spinnerSemester.setModel(spinnerModelSemester);
-        spinnerSemester.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                onSemesterSelected();
-            }
-        });
+        spinnerSemester.addChangeListener(e -> onSemesterSelected());
         if (!isBearbeiten) {
             // Model initialisieren
             kursanmeldungErfassenModel.setSemester(kursanmeldungErfassenModel.getInitSemester(semesterList));
@@ -160,12 +143,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         comboBoxWochentag.setModel(new DefaultComboBoxModel<>(Wochentag.values()));
         comboBoxWochentag.removeItem(Wochentag.ALLE);
         comboBoxWochentag.removeItem(Wochentag.SONNTAG);
-        comboBoxWochentag.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onWochentagSelected();
-            }
-        });
+        comboBoxWochentag.addActionListener(e -> onWochentagSelected());
         if (!isBearbeiten) {
             // Leeren ComboBox-Wert anzeigen
             comboBoxWochentag.setSelectedItem(null);
@@ -187,6 +165,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void setModelWochentag() throws SvmValidationException {
         makeErrorLabelInvisible(Field.WOCHENTAG);
         try {
@@ -195,7 +174,7 @@ public class KursanmeldungErfassenController extends AbstractController {
             LOGGER.trace("KursErfassenController setModelWochentag RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxWochentag.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -210,12 +189,7 @@ public class KursanmeldungErfassenController extends AbstractController {
             this.txtZeitBeginn.setEnabled(false);
         }
         if (!defaultButtonEnabled) {
-            this.txtZeitBeginn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onZeitBeginnEvent(true);
-                }
-            });
+            this.txtZeitBeginn.addActionListener(e -> onZeitBeginnEvent(true));
         }
         this.txtZeitBeginn.addFocusListener(new FocusAdapter() {
             @Override
@@ -248,7 +222,7 @@ public class KursanmeldungErfassenController extends AbstractController {
             LOGGER.trace("KursSchuelerHinzufuegenController setModelZeitBeginn RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtZeitBeginn.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -271,15 +245,10 @@ public class KursanmeldungErfassenController extends AbstractController {
         if (isBearbeiten) {
             selectableLehrkraefte = kursanmeldungErfassenModel.getSelectableLehrkraftKursanmeldungOrigin();
         } else {
-            selectableLehrkraefte = lehrkraefteList.toArray(new Mitarbeiter[lehrkraefteList.size()]);
+            selectableLehrkraefte = lehrkraefteList.toArray(new Mitarbeiter[0]);
         }
         comboBoxLehrkraft.setModel(new DefaultComboBoxModel<>(selectableLehrkraefte));
-        comboBoxLehrkraft.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLehrkraftSelected();
-            }
-        });
+        comboBoxLehrkraft.addActionListener(e -> onLehrkraftSelected());
         if (!isBearbeiten) {
             // Leeren ComboBox-Wert anzeigen
             comboBoxLehrkraft.setSelectedItem(null);
@@ -309,7 +278,7 @@ public class KursanmeldungErfassenController extends AbstractController {
             LOGGER.trace("KursSchuelerHinzufuegenController setModelLehrkraft RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxLehrkraft.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -320,12 +289,7 @@ public class KursanmeldungErfassenController extends AbstractController {
     public void setTxtAnmeldedatum(JTextField txtAnmeldedatum) {
         this.txtAnmeldedatum = txtAnmeldedatum;
         if (!defaultButtonEnabled) {
-            this.txtAnmeldedatum.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onAnmeldedatumEvent(true);
-                }
-            });
+            this.txtAnmeldedatum.addActionListener(e -> onAnmeldedatumEvent(true));
         }
         this.txtAnmeldedatum.addFocusListener(new FocusAdapter() {
             @Override
@@ -358,7 +322,7 @@ public class KursanmeldungErfassenController extends AbstractController {
             LOGGER.trace("KurseinteilungErfassenController setModelAnmeldedatum RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtAnmeldedatum.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -373,12 +337,7 @@ public class KursanmeldungErfassenController extends AbstractController {
     public void setTxtAbmeldedatum(JTextField txtAbmeldedatum) {
         this.txtAbmeldedatum = txtAbmeldedatum;
         if (!defaultButtonEnabled) {
-            this.txtAbmeldedatum.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onAbmeldedatumEvent(true);
-                }
-            });
+            this.txtAbmeldedatum.addActionListener(e -> onAbmeldedatumEvent(true));
         }
         this.txtAbmeldedatum.addFocusListener(new FocusAdapter() {
             @Override
@@ -411,7 +370,7 @@ public class KursanmeldungErfassenController extends AbstractController {
             LOGGER.trace("KurseinteilungErfassenController setModelAbmeldedatum RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtAbmeldedatum.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -427,12 +386,7 @@ public class KursanmeldungErfassenController extends AbstractController {
     public void setTxtBemerkungen(JTextField txtBemerkungen) {
         this.txtBemerkungen = txtBemerkungen;
         if (!defaultButtonEnabled) {
-            this.txtBemerkungen.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBemerkungenEvent(true);
-                }
-            });
+            this.txtBemerkungen.addActionListener(e -> onBemerkungenEvent(true));
         }
         this.txtBemerkungen.addFocusListener(new FocusAdapter() {
             @Override
@@ -465,7 +419,7 @@ public class KursanmeldungErfassenController extends AbstractController {
             LOGGER.trace("KurseinteilungErfassenController setModelBemerkungen RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBemerkungen.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -506,12 +460,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         if (isModelValidationMode()) {
             btnOk.setEnabled(false);
         }
-        this.btnOk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onHinzufuegen();
-            }
-        });
+        this.btnOk.addActionListener(e -> onHinzufuegen());
     }
 
     private void onHinzufuegen() {
@@ -565,12 +514,7 @@ public class KursanmeldungErfassenController extends AbstractController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {
@@ -653,6 +597,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     void showErrMsg(SvmValidationException e) {
         if (e.getAffectedFields().contains(Field.WOCHENTAG)) {
@@ -681,6 +626,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     void showErrMsgAsToolTip(SvmValidationException e) {
         if (e.getAffectedFields().contains(Field.WOCHENTAG)) {
@@ -703,6 +649,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         if (fields.contains(Field.ALLE) || fields.contains(Field.WOCHENTAG)) {

@@ -10,8 +10,6 @@ import ch.metzenthin.svm.ui.components.KursErfassenDialog;
 import ch.metzenthin.svm.ui.components.ListenExportDialog;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -25,9 +23,9 @@ import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnW
  */
 public class KurseController {
     private final SvmContext svmContext;
-    private KurseSemesterwahlModel kurseSemesterwahlModel;
+    private final KurseSemesterwahlModel kurseSemesterwahlModel;
     private final KurseModel kurseModel;
-    private KurseTableModel kurseTableModel;
+    private final KurseTableModel kurseTableModel;
     private JTable kurseTable;
     private JLabel lblTotal;
     private JButton btnNeu;
@@ -46,19 +44,17 @@ public class KurseController {
         this.svmContext = svmContext;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public void setKurseTable(JTable kurseTable) {
         this.kurseTable = kurseTable;
         kurseTable.setModel(kurseTableModel);
         setColumnCellRenderers(kurseTable, kurseTableModel);
         setJTableColumnWidthAccordingToCellContentAndHeader(kurseTable);
-        kurseTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-                onListSelection();
+        kurseTable.getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()) {
+                return;
             }
+            onListSelection();
         });
         kurseTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -80,12 +76,7 @@ public class KurseController {
             btnNeu.setEnabled(false);
             return;
         }
-        btnNeu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNeuKurse();
-            }
-        });
+        btnNeu.addActionListener(e -> onNeuKurse());
     }
 
     private void onNeuKurse() {
@@ -116,12 +107,7 @@ public class KurseController {
     public void setBtnBearbeiten(JButton btnBearbeiten) {
         this.btnBearbeiten = btnBearbeiten;
         enableBtnBearbeiten(false);
-        btnBearbeiten.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBearbeiten();
-            }
-        });
+        btnBearbeiten.addActionListener(e -> onBearbeiten());
     }
 
     private void enableBtnBearbeiten(boolean enabled) {
@@ -135,22 +121,13 @@ public class KurseController {
         kursErfassenDialog.setVisible(true);
         kurseTableModel.fireTableDataChanged();
         btnBearbeiten.setFocusPainted(false);
-        if (kurseTableModel.getRowCount() > 0) {
-            btnExportieren.setEnabled(true);
-        } else {
-            btnExportieren.setEnabled(false);
-        }
+        btnExportieren.setEnabled(kurseTableModel.getRowCount() > 0);
     }
 
     public void setBtnLoeschen(JButton btnLoeschen) {
         this.btnLoeschen = btnLoeschen;
         enableBtnLoeschen(false);
-        btnLoeschen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLoeschenKurse();
-            }
-        });
+        btnLoeschen.addActionListener(e -> onLoeschenKurse());
     }
 
     private void enableBtnLoeschen(boolean enabled) {
@@ -192,21 +169,12 @@ public class KurseController {
         btnLoeschen.setFocusPainted(false);
         enableBtnLoeschen(false);
         kurseTable.clearSelection();
-        if (kurseTableModel.getRowCount() > 0) {
-            btnExportieren.setEnabled(true);
-        } else {
-            btnExportieren.setEnabled(false);
-        }
+        btnExportieren.setEnabled(kurseTableModel.getRowCount() > 0);
     }
 
     public void setBtnImportieren(JButton btnImportieren) {
         this.btnImportieren = btnImportieren;
-        btnImportieren.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onImportieren();
-            }
-        });
+        btnImportieren.addActionListener(e -> onImportieren());
     }
 
     private void onImportieren() {
@@ -242,7 +210,7 @@ public class KurseController {
             dialog.pack();
             dialog.setLocationRelativeTo(null);
             swingWorkerException = null;
-            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            SwingWorker<Void, Void> worker = new SwingWorker<>() {
                 @Override
                 protected Void doInBackground() {
                     try {
@@ -281,12 +249,7 @@ public class KurseController {
         if (kurseTableModel.getRowCount() == 0) {
             btnExportieren.setEnabled(false);
         }
-        btnExportieren.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onExportieren();
-            }
-        });
+        btnExportieren.addActionListener(e -> onExportieren());
     }
 
     private void onExportieren() {
@@ -305,12 +268,7 @@ public class KurseController {
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

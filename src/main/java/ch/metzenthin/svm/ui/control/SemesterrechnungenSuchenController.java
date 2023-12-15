@@ -4,7 +4,6 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenSuchenModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenTableData;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
@@ -15,10 +14,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
 import java.util.Set;
@@ -129,8 +129,8 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private ActionListener closeListener;
     private ActionListener nextPanelListener;
     private final SvmContext svmContext;
-    private SemesterrechnungenSuchenModel semesterrechnungenSuchenModel;
-    private boolean defaultButtonEnabled;
+    private final SemesterrechnungenSuchenModel semesterrechnungenSuchenModel;
+    private final boolean defaultButtonEnabled;
     private ActionListener zurueckListener;
 
     public SemesterrechnungenSuchenController(SvmContext svmContext, SemesterrechnungenSuchenModel semesterrechnungenSuchenModel, boolean defaultButtonEnabled) {
@@ -141,12 +141,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         this.semesterrechnungenSuchenModel.addPropertyChangeListener(this);
         this.semesterrechnungenSuchenModel.addDisableFieldsListener(this);
         this.semesterrechnungenSuchenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.semesterrechnungenSuchenModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onSemesterrechnungenSuchenModelCompleted(completed);
-            }
-        });
+        this.semesterrechnungenSuchenModel.addCompletedListener(this::onSemesterrechnungenSuchenModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -163,15 +158,10 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             spinnerSemester.setModel(spinnerModel);
             return;
         }
-        Semester[] semesters = semesterList.toArray(new Semester[semesterList.size()]);
+        Semester[] semesters = semesterList.toArray(new Semester[0]);
         SpinnerModel spinnerModelSemester = new SpinnerListModel(semesters);
         spinnerSemester.setModel(spinnerModelSemester);
-        spinnerSemester.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                onSemesterSelected();
-            }
-        });
+        spinnerSemester.addChangeListener(e -> onSemesterSelected());
         // Model initialisieren
         semesterrechnungenSuchenModel.setSemester(semesterrechnungenSuchenModel.getSemesterInit(svmContext.getSvmModel()));
     }
@@ -195,12 +185,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     public void setTxtNachname(JTextField txtNachname) {
         this.txtNachname = txtNachname;
         if (!defaultButtonEnabled) {
-            this.txtNachname.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onNachnameEvent();
-                }
-            });
+            this.txtNachname.addActionListener(e -> onNachnameEvent());
         }
         this.txtNachname.addFocusListener(new FocusAdapter() {
             @Override
@@ -239,12 +224,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     public void setTxtVorname(JTextField txtVorname) {
         this.txtVorname = txtVorname;
         if (!defaultButtonEnabled) {
-            this.txtVorname.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onVornameEvent();
-                }
-            });
+            this.txtVorname.addActionListener(e -> onVornameEvent());
         }
         this.txtVorname.addFocusListener(new FocusAdapter() {
             @Override
@@ -284,12 +264,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         this.comboBoxWochentag = comboBoxWochentag;
         comboBoxWochentag.setModel(new DefaultComboBoxModel<>(Wochentag.values()));
         comboBoxWochentag.removeItem(Wochentag.SONNTAG);
-        comboBoxWochentag.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onWochentagSelected();
-            }
-        });
+        comboBoxWochentag.addActionListener(e -> onWochentagSelected());
         // Wochentag in Model initialisieren mit erstem ComboBox-Wert
         semesterrechnungenSuchenModel.setWochentag(Wochentag.values()[0]);
     }
@@ -313,12 +288,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     public void setTxtZeitBeginn(JTextField txtZeitBeginn) {
         this.txtZeitBeginn = txtZeitBeginn;
         if (!defaultButtonEnabled) {
-            this.txtZeitBeginn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onZeitBeginnEvent();
-                }
-            });
+            this.txtZeitBeginn.addActionListener(e -> onZeitBeginnEvent());
         }
         this.txtZeitBeginn.addFocusListener(new FocusAdapter() {
             @Override
@@ -360,12 +330,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         comboBoxLehrkraft.setModel(new DefaultComboBoxModel<>(selectableLehrkraefte));
         // Model initialisieren mit erstem ComboBox-Wert
         semesterrechnungenSuchenModel.setMitarbeiter(selectableLehrkraefte[0]);
-        comboBoxLehrkraft.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLehrkraftSelected();
-            }
-        });
+        comboBoxLehrkraft.addActionListener(e -> onLehrkraftSelected());
     }
 
     private void onLehrkraftSelected() {
@@ -392,12 +357,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     public void setTxtRechnungsbetragVorrechnung(JTextField txtRechnungsbetragVorrechnung) {
         this.txtRechnungsbetragVorrechnung = txtRechnungsbetragVorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtRechnungsbetragVorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onRechnungsbetragVorrechnungEvent();
-                }
-            });
+            this.txtRechnungsbetragVorrechnung.addActionListener(e -> onRechnungsbetragVorrechnungEvent());
         }
         this.txtRechnungsbetragVorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -436,12 +396,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     public void setTxtRestbetragVorrechnung(JTextField txtRestbetragVorrechnung) {
         this.txtRestbetragVorrechnung = txtRestbetragVorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtRestbetragVorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onRestbetragVorrechnungEvent();
-                }
-            });
+            this.txtRestbetragVorrechnung.addActionListener(e -> onRestbetragVorrechnungEvent());
         }
         this.txtRestbetragVorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -480,12 +435,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     public void setTxtRechnungsbetragNachrechnung(JTextField txtRechnungsbetragNachrechnung) {
         this.txtRechnungsbetragNachrechnung = txtRechnungsbetragNachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtRechnungsbetragNachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onRechnungsbetragNachrechnungEvent();
-                }
-            });
+            this.txtRechnungsbetragNachrechnung.addActionListener(e -> onRechnungsbetragNachrechnungEvent());
         }
         this.txtRechnungsbetragNachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -524,12 +474,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     public void setTxtRestbetragNachrechnung(JTextField txtRestbetragNachrechnung) {
         this.txtRestbetragNachrechnung = txtRestbetragNachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtRestbetragNachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onRestbetragNachrechnungEvent();
-                }
-            });
+            this.txtRestbetragNachrechnung.addActionListener(e -> onRestbetragNachrechnungEvent());
         }
         this.txtRestbetragNachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -568,12 +513,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     public void setTxtDifferenzSchulgeld(JTextField txtDifferenzSchulgeld) {
         this.txtDifferenzSchulgeld = txtDifferenzSchulgeld;
         if (!defaultButtonEnabled) {
-            this.txtDifferenzSchulgeld.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onDifferenzSchulgeldEvent();
-                }
-            });
+            this.txtDifferenzSchulgeld.addActionListener(e -> onDifferenzSchulgeldEvent());
         }
         this.txtDifferenzSchulgeld.addFocusListener(new FocusAdapter() {
             @Override
@@ -614,12 +554,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         if (svmContext.getSvmModel().getSemestersAll().isEmpty()) {
             checkBoxGeloescht.setEnabled(false);
         }
-        this.checkBoxGeloescht.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onGeloeschtEvent();
-            }
-        });
+        this.checkBoxGeloescht.addItemListener(e -> onGeloeschtEvent());
         // Initialisierung
         semesterrechnungenSuchenModel.setGeloescht(false);
     }
@@ -732,7 +667,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         this.radioBtnRechnungsdatumGesetztVorrechnung.addActionListener(radioBtnGroupRechnungsdatumGesetztVorrechnungListener);
         this.radioBtnRechnungsdatumNichtGesetztVorrechnung.addActionListener(radioBtnGroupRechnungsdatumGesetztVorrechnungListener);
         this.radioBtnRechnungsdatumGesetztAlleVorrechnung.addActionListener(radioBtnGroupRechnungsdatumGesetztVorrechnungListener);
-        // Initialisieren mit alle
+        // Initialisieren mit "alle"
         semesterrechnungenSuchenModel.setRechnungsdatumGesetztVorrechnungSelected(SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.ALLE);
     }
 
@@ -868,7 +803,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         this.radioBtnSechsJahresRabattJaVorrechnung.addActionListener(radioBtnGroupSechsJahresRabattJaNeinVorrechnungListener);
         this.radioBtnSechsJahresRabattNeinVorrechnung.addActionListener(radioBtnGroupSechsJahresRabattJaNeinVorrechnungListener);
         this.radioBtnSechsJahresRabattAlleVorrechnung.addActionListener(radioBtnGroupSechsJahresRabattJaNeinVorrechnungListener);
-        // Initialisieren mit alle
+        // Initialisieren mit "alle"
         semesterrechnungenSuchenModel.setSechsJahresRabattJaNeinVorrechnungSelected(SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.ALLE);
     }
 
@@ -885,7 +820,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         this.radioBtnRechnungsdatumGesetztNachrechnung.addActionListener(radioBtnGroupRechnungsdatumGesetztNachrechnungListener);
         this.radioBtnRechnungsdatumNichtGesetztNachrechnung.addActionListener(radioBtnGroupRechnungsdatumGesetztNachrechnungListener);
         this.radioBtnRechnungsdatumGesetztAlleNachrechnung.addActionListener(radioBtnGroupRechnungsdatumGesetztNachrechnungListener);
-        // Initialisieren mit alle
+        // Initialisieren mit "alle"
         semesterrechnungenSuchenModel.setRechnungsdatumGesetztNachrechnungSelected(SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.ALLE);
     }
 
@@ -1021,7 +956,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         this.radioBtnSechsJahresRabattJaNachrechnung.addActionListener(radioBtnGroupSechsJahresRabattJaNeinNachrechnungListener);
         this.radioBtnSechsJahresRabattNeinNachrechnung.addActionListener(radioBtnGroupSechsJahresRabattJaNeinNachrechnungListener);
         this.radioBtnSechsJahresRabattAlleNachrechnung.addActionListener(radioBtnGroupSechsJahresRabattJaNeinNachrechnungListener);
-        // Initialisieren mit alle
+        // Initialisieren mit "alle"
         semesterrechnungenSuchenModel.setSechsJahresRabattJaNeinNachrechnungSelected(SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.ALLE);
     }
 
@@ -1047,12 +982,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         if (isModelValidationMode()) {
             btnSuchen.setEnabled(false);
         }
-        this.btnSuchen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSuchen();
-            }
-        });
+        this.btnSuchen.addActionListener(e -> onSuchen());
     }
 
     private void onSuchen() {
@@ -1081,12 +1011,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        this.btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        this.btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

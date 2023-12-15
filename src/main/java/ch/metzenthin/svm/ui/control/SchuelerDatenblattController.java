@@ -83,7 +83,7 @@ public class SchuelerDatenblattController {
     private ActionListener nextPanelListener;
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
-    private boolean isFromSchuelerSuchenResult;
+    private final boolean isFromSchuelerSuchenResult;
 
     public SchuelerDatenblattController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isFromSchuelerSuchenResult) {
         this.svmContext = svmContext;
@@ -270,11 +270,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelSchuelerGleicherRechnungsempfaenger1() {
-        if (schuelerDatenblattModel.getSchuelerGleicherRechnungsempfaengerAsString().isEmpty()) {
-            labelSchuelerGleicherRechnungsempfaenger1.setVisible(false);
-        } else {
-            labelSchuelerGleicherRechnungsempfaenger1.setVisible(true);
-        }
+        labelSchuelerGleicherRechnungsempfaenger1.setVisible(!schuelerDatenblattModel.getSchuelerGleicherRechnungsempfaengerAsString().isEmpty());
         labelSchuelerGleicherRechnungsempfaenger1.setText(schuelerDatenblattModel.getLabelSchuelerGleicherRechnungsempfaenger1());
     }
 
@@ -284,11 +280,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelSchuelerGleicherRechnungsempfaenger2() {
-        if (schuelerDatenblattModel.getSchuelerGleicherRechnungsempfaengerAsString().isEmpty()) {
-            labelSchuelerGleicherRechnungsempfaenger2.setVisible(false);
-        } else {
-            labelSchuelerGleicherRechnungsempfaenger2.setVisible(true);
-        }
+        labelSchuelerGleicherRechnungsempfaenger2.setVisible(!schuelerDatenblattModel.getSchuelerGleicherRechnungsempfaengerAsString().isEmpty());
         labelSchuelerGleicherRechnungsempfaenger2.setText(schuelerDatenblattModel.getLabelSchuelerGleicherRechnungsempfaenger2());
     }
 
@@ -298,11 +290,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelSchuelerGleicherRechnungsemfpaengerValue() {
-        if (schuelerDatenblattModel.getSchuelerGleicherRechnungsempfaengerAsString().isEmpty()) {
-            labelSchuelerGleicherRechnungsempfaengerValue.setVisible(false);
-        } else {
-            labelSchuelerGleicherRechnungsempfaengerValue.setVisible(true);
-        }
+        labelSchuelerGleicherRechnungsempfaengerValue.setVisible(!schuelerDatenblattModel.getSchuelerGleicherRechnungsempfaengerAsString().isEmpty());
         labelSchuelerGleicherRechnungsempfaengerValue.setText(schuelerDatenblattModel.getSchuelerGleicherRechnungsempfaengerAsString());
     }
 
@@ -330,11 +318,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelAbmeldedatum() {
-        if (schuelerDatenblattModel.getAbmeldedatumAsString().isEmpty()) {
-            labelAbmeldedatum.setVisible(false);
-        } else {
-            labelAbmeldedatum.setVisible(true);
-        }
+        labelAbmeldedatum.setVisible(!schuelerDatenblattModel.getAbmeldedatumAsString().isEmpty());
     }
 
     public void setLabelAbmeldedatumValue(JLabel labelAbmeldedatumValue) {
@@ -343,11 +327,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelAbmeldedatumValue() {
-        if (schuelerDatenblattModel.getAbmeldedatumAsString().isEmpty()) {
-            labelAbmeldedatumValue.setVisible(false);
-        } else {
-            labelAbmeldedatumValue.setVisible(true);
-        }
+        labelAbmeldedatumValue.setVisible(!schuelerDatenblattModel.getAbmeldedatumAsString().isEmpty());
         labelAbmeldedatumValue.setText(schuelerDatenblattModel.getAbmeldedatumAsString());
     }
 
@@ -357,11 +337,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelFruehereAnmeldungen() {
-        if (schuelerDatenblattModel.getFruehereAnmeldungenAsString().isEmpty()) {
-            labelFruehereAnmeldungen.setVisible(false);
-        } else {
-            labelFruehereAnmeldungen.setVisible(true);
-        }
+        labelFruehereAnmeldungen.setVisible(!schuelerDatenblattModel.getFruehereAnmeldungenAsString().isEmpty());
     }
 
     public void setLabelFruehereAnmeldungenValue(JLabel labelFruehereAnmeldungenValue) {
@@ -370,11 +346,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelFruehereAnmeldungenValue() {
-        if (schuelerDatenblattModel.getFruehereAnmeldungenAsString().isEmpty()) {
-            labelFruehereAnmeldungenValue.setVisible(false);
-        } else {
-            labelFruehereAnmeldungenValue.setVisible(true);
-        }
+        labelFruehereAnmeldungenValue.setVisible(!schuelerDatenblattModel.getFruehereAnmeldungenAsString().isEmpty());
         labelFruehereAnmeldungenValue.setText(schuelerDatenblattModel.getFruehereAnmeldungenAsString());
     }
 
@@ -393,11 +365,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelNichtDispensiert() {
-        if (!schuelerDatenblattModel.getDispensationsdauerAsString().isEmpty()) {
-            labelNichtDispensiert.setVisible(false);
-        } else {
-            labelNichtDispensiert.setVisible(true);
-        }
+        labelNichtDispensiert.setVisible(schuelerDatenblattModel.getDispensationsdauerAsString().isEmpty());
     }
 
     public void setLabelDispensationsdauer(JLabel labelDispensationsdauer) {
@@ -406,11 +374,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelDispensationsdauer() {
-        if (schuelerDatenblattModel.getDispensationsdauerAsString().isEmpty()) {
-            labelDispensationsdauer.setVisible(false);
-        } else {
-            labelDispensationsdauer.setVisible(true);
-        }
+        labelDispensationsdauer.setVisible(!schuelerDatenblattModel.getDispensationsdauerAsString().isEmpty());
     }
 
     public void setLabelDispensationsdauerValue(JLabel labelDispensationsdauerValue) {
@@ -433,11 +397,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelDispensationsgrund() {
-        if (schuelerDatenblattModel.getDispensationsgrund().isEmpty()) {
-            labelDispensationsgrund.setVisible(false);
-        } else {
-            labelDispensationsgrund.setVisible(true);
-        }
+        labelDispensationsgrund.setVisible(!schuelerDatenblattModel.getDispensationsgrund().isEmpty());
     }
 
     public void setLabelDispensationsgrundValue(JLabel labelDispensationsgrundValue) {
@@ -505,11 +465,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelGruppe() {
-        if (schuelerDatenblattModel.getMaerchen().equals("-")) {
-            labelGruppe.setVisible(false);
-        } else {
-            labelGruppe.setVisible(true);
-        }
+        labelGruppe.setVisible(!schuelerDatenblattModel.getMaerchen().equals("-"));
     }
 
     public void setLabelGruppeValue(JLabel labelGruppeValue) {
@@ -532,11 +488,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelRolle1() {
-        if (schuelerDatenblattModel.getMaerchen().equals("-")) {
-            labelRolle1.setVisible(false);
-        } else {
-            labelRolle1.setVisible(true);
-        }
+        labelRolle1.setVisible(!schuelerDatenblattModel.getMaerchen().equals("-"));
     }
 
     public void setLabelRolle1Value(JLabel labelRolle1Value) {
@@ -559,11 +511,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelBilderRolle1() {
-        if (schuelerDatenblattModel.getMaerchen().equals("-")) {
-            labelBilderRolle1.setVisible(false);
-        } else {
-            labelBilderRolle1.setVisible(true);
-        }
+        labelBilderRolle1.setVisible(!schuelerDatenblattModel.getMaerchen().equals("-"));
     }
 
     public void setLabelBilderRolle1Value(JLabel labelBilderRolle1Value) {
@@ -586,11 +534,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelRolle2() {
-        if (schuelerDatenblattModel.getMaerchen().equals("-")) {
-            labelRolle2.setVisible(false);
-        } else {
-            labelRolle2.setVisible(true);
-        }
+        labelRolle2.setVisible(!schuelerDatenblattModel.getMaerchen().equals("-"));
     }
 
     public void setLabelRolle2Value(JLabel labelRolle2Value) {
@@ -613,11 +557,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelBilderRolle2() {
-        if (schuelerDatenblattModel.getMaerchen().equals("-")) {
-            labelBilderRolle2.setVisible(false);
-        } else {
-            labelBilderRolle2.setVisible(true);
-        }
+        labelBilderRolle2.setVisible(!schuelerDatenblattModel.getMaerchen().equals("-"));
     }
 
     public void setLabelBilderRolle2Value(JLabel labelBilderRolle2Value) {
@@ -640,11 +580,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelRolle3() {
-        if (schuelerDatenblattModel.getMaerchen().equals("-")) {
-            labelRolle3.setVisible(false);
-        } else {
-            labelRolle3.setVisible(true);
-        }
+        labelRolle3.setVisible(!schuelerDatenblattModel.getMaerchen().equals("-"));
     }
 
     public void setLabelRolle3Value(JLabel labelRolle3Value) {
@@ -667,11 +603,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelBilderRolle3() {
-        if (schuelerDatenblattModel.getMaerchen().equals("-")) {
-            labelBilderRolle3.setVisible(false);
-        } else {
-            labelBilderRolle3.setVisible(true);
-        }
+        labelBilderRolle3.setVisible(!schuelerDatenblattModel.getMaerchen().equals("-"));
     }
 
     public void setLabelBilderRolle3Value(JLabel labelBilderRolle3Value) {
@@ -694,11 +626,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelElternmithilfe() {
-        if (schuelerDatenblattModel.getMaerchen().equals("-")) {
-            labelElternmithilfe.setVisible(false);
-        } else {
-            labelElternmithilfe.setVisible(true);
-        }
+        labelElternmithilfe.setVisible(!schuelerDatenblattModel.getMaerchen().equals("-"));
     }
 
     public void setLabelElternmithilfeValue(JLabel labelElternmithilfeValue) {
@@ -721,11 +649,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelElternmithilfeCode() {
-        if (schuelerDatenblattModel.getMaerchen().equals("-")) {
-            labelElternmithilfeCode.setVisible(false);
-        } else {
-            labelElternmithilfeCode.setVisible(true);
-        }
+        labelElternmithilfeCode.setVisible(!schuelerDatenblattModel.getMaerchen().equals("-"));
     }
 
     public void setLabelElternmithilfeCodeValue(JLabel labelElternmithilfeCodeValue) {
@@ -748,11 +672,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelZusatzattribut() {
-        if (schuelerDatenblattModel.getMaerchen().equals("-")) {
-            labelZusatzattribut.setVisible(false);
-        } else {
-            labelZusatzattribut.setVisible(true);
-        }
+        labelZusatzattribut.setVisible(!schuelerDatenblattModel.getMaerchen().equals("-"));
     }
 
     public void setLabelZusatzattributValue(JLabel labelZusatzattributValue) {
@@ -775,11 +695,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelVorstellungenKuchen() {
-        if (schuelerDatenblattModel.getMaerchen().equals("-")) {
-            labelVorstellungenKuchen.setVisible(false);
-        } else {
-            labelVorstellungenKuchen.setVisible(true);
-        }
+        labelVorstellungenKuchen.setVisible(!schuelerDatenblattModel.getMaerchen().equals("-"));
     }
 
     public void setLabelVorstellungenKuchenValue(JLabel labelVorstellungenKuchenValue) {
@@ -802,11 +718,7 @@ public class SchuelerDatenblattController {
     }
 
     private void setLabelBemerkungenMaerchen() {
-        if (schuelerDatenblattModel.getMaerchen().equals("-")) {
-            labelBemerkungenMaerchen.setVisible(false);
-        } else {
-            labelBemerkungenMaerchen.setVisible(true);
-        }
+        labelBemerkungenMaerchen.setVisible(!schuelerDatenblattModel.getMaerchen().equals("-"));
     }
 
     public void setLabelBemerkungenMaerchenValue(JLabel labelBemerkungenMaerchenValue) {
@@ -829,12 +741,7 @@ public class SchuelerDatenblattController {
             btnZurueck.setVisible(false);
             return;
         }
-        btnZurueck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZurueck();
-            }
-        });
+        btnZurueck.addActionListener(e -> onZurueck());
     }
 
     private void onZurueck() {
@@ -856,12 +763,7 @@ public class SchuelerDatenblattController {
             btnAbbrechen.setVisible(false);
             return;
         }
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {
@@ -874,12 +776,7 @@ public class SchuelerDatenblattController {
             return;
         }
         this.btnErster = btnErster;
-        btnErster.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onErster();
-            }
-        });
+        btnErster.addActionListener(e -> onErster());
         enableBtnErster();
     }
 
@@ -893,12 +790,7 @@ public class SchuelerDatenblattController {
             return;
         }
         this.btnLetzter = btnLetzter;
-        btnLetzter.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLetzter();
-            }
-        });
+        btnLetzter.addActionListener(e -> onLetzter());
         enableBtnLetzter();
     }
 
@@ -912,12 +804,7 @@ public class SchuelerDatenblattController {
             return;
         }
         this.btnNachfolgender = btnNachfolgender;
-        btnNachfolgender.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNachfolgender();
-            }
-        });
+        btnNachfolgender.addActionListener(e -> onNachfolgender());
         enableBtnNachfolgender();
     }
 
@@ -931,12 +818,7 @@ public class SchuelerDatenblattController {
             return;
         }
         this.btnVorheriger = btnVorheriger;
-        btnVorheriger.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onVorheriger();
-            }
-        });
+        btnVorheriger.addActionListener(e -> onVorheriger());
         enableBtnVorheriger();
     }
 
@@ -947,36 +829,21 @@ public class SchuelerDatenblattController {
     public void setBtnStammdatenBearbeiten(JButton btnStammdatenBearbeiten) {
         this.btnStammdatenBearbeiten = btnStammdatenBearbeiten;
         btnStammdatenBearbeiten.setFocusPainted(false);
-        btnStammdatenBearbeiten.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onStammdatenBearbeiten();
-            }
-        });
+        btnStammdatenBearbeiten.addActionListener(e -> onStammdatenBearbeiten());
     }
 
     private void onStammdatenBearbeiten() {
         btnStammdatenBearbeiten.setFocusPainted(true);
         SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext, schuelerDatenblattModel);
         schuelerErfassenPanel.addCloseListener(closeListener);
-        schuelerErfassenPanel.addZurueckZuDatenblattListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSaveSuccessful();
-            }
-        });
+        schuelerErfassenPanel.addZurueckZuDatenblattListener(e -> onSaveSuccessful());
         nextPanelListener.actionPerformed(new ActionEvent(new Object[]{schuelerErfassenPanel.$$$getRootComponent$$$(), "Stammdaten bearbeiten"}, ActionEvent.ACTION_PERFORMED, "Schueler bearbeiten"));
     }
 
     public void setBtnEmail(JButton btnEmail) {
         this.btnEmail = btnEmail;
         setEmailEnabledDisabled();
-        btnEmail.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onEmail();
-            }
-        });
+        btnEmail.addActionListener(e -> onEmail());
     }
 
     public void setEmailEnabledDisabled() {
@@ -1005,12 +872,7 @@ public class SchuelerDatenblattController {
     }
 
     public void setBtnDispensationenBearbeiten(JButton btnDispensationenBearbeiten) {
-        btnDispensationenBearbeiten.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onDispensationenBearbeiten();
-            }
-        });
+        btnDispensationenBearbeiten.addActionListener(e -> onDispensationenBearbeiten());
     }
 
     private void onDispensationenBearbeiten() {
@@ -1023,12 +885,7 @@ public class SchuelerDatenblattController {
     }
 
     public void setBtnCodesBearbeiten(JButton btnCodesBearbeiten) {
-        btnCodesBearbeiten.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onCodesBearbeiten();
-            }
-        });
+        btnCodesBearbeiten.addActionListener(e -> onCodesBearbeiten());
     }
 
     private void onCodesBearbeiten() {
@@ -1041,12 +898,7 @@ public class SchuelerDatenblattController {
     }
 
     public void setBtnKurseBearbeiten(JButton btnKurseBearbeiten) {
-        btnKurseBearbeiten.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onKurseBearbeiten();
-            }
-        });
+        btnKurseBearbeiten.addActionListener(e -> onKurseBearbeiten());
     }
 
     private void onKurseBearbeiten() {
@@ -1060,12 +912,7 @@ public class SchuelerDatenblattController {
     }
 
     public void setBtnMaerchenBearbeiten(JButton btnMaerchenBearbeiten) {
-        btnMaerchenBearbeiten.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onMaerchenBearbeiten();
-            }
-        });
+        btnMaerchenBearbeiten.addActionListener(e -> onMaerchenBearbeiten());
     }
 
     private void onMaerchenBearbeiten() {

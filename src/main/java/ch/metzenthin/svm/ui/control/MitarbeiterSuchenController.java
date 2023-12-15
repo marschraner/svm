@@ -3,7 +3,6 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.MitarbeiterSuchenModel;
 import ch.metzenthin.svm.domain.model.MitarbeitersTableData;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
@@ -34,8 +33,8 @@ public class MitarbeiterSuchenController extends AbstractController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private final SvmContext svmContext;
-    private MitarbeiterSuchenModel mitarbeiterSuchenModel;
-    private boolean defaultButtonEnabled;
+    private final MitarbeiterSuchenModel mitarbeiterSuchenModel;
+    private final boolean defaultButtonEnabled;
     private JPanel mainPanel;
     private JTextField txtNachname;
     private JTextField txtVorname;
@@ -62,12 +61,7 @@ public class MitarbeiterSuchenController extends AbstractController {
         this.mitarbeiterSuchenModel.addPropertyChangeListener(this);
         this.mitarbeiterSuchenModel.addDisableFieldsListener(this);
         this.mitarbeiterSuchenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.mitarbeiterSuchenModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onMitarbeitersSuchenModelCompleted(completed);
-            }
-        });
+        this.mitarbeiterSuchenModel.addCompletedListener(this::onMitarbeitersSuchenModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -78,12 +72,7 @@ public class MitarbeiterSuchenController extends AbstractController {
     public void setTxtNachname(JTextField txtNachname) {
         this.txtNachname = txtNachname;
         if (!defaultButtonEnabled) {
-            this.txtNachname.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onNachnameEvent();
-                }
-            });
+            this.txtNachname.addActionListener(e -> onNachnameEvent());
         }
         this.txtNachname.addFocusListener(new FocusAdapter() {
             @Override
@@ -122,12 +111,7 @@ public class MitarbeiterSuchenController extends AbstractController {
     public void setTxtVorname(JTextField txtVorname) {
         this.txtVorname = txtVorname;
         if (!defaultButtonEnabled) {
-            this.txtVorname.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onVornameEvent();
-                }
-            });
+            this.txtVorname.addActionListener(e -> onVornameEvent());
         }
         this.txtVorname.addFocusListener(new FocusAdapter() {
             @Override
@@ -169,12 +153,7 @@ public class MitarbeiterSuchenController extends AbstractController {
         comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableMitarbeiterCodes));
         // Model initialisieren mit erstem ComboBox-Wert
         mitarbeiterSuchenModel.setMitarbeiterCode(selectableMitarbeiterCodes[0]);
-        this.comboBoxMitarbeiterCode.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onMitarbeiterCodeSelected();
-            }
-        });
+        this.comboBoxMitarbeiterCode.addActionListener(e -> onMitarbeiterCodeSelected());
     }
 
     private void onMitarbeiterCodeSelected() {
@@ -233,12 +212,7 @@ public class MitarbeiterSuchenController extends AbstractController {
         if (isModelValidationMode()) {
             btnSuchen.setEnabled(false);
         }
-        this.btnSuchen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSuchen();
-            }
-        });
+        this.btnSuchen.addActionListener(e -> onSuchen());
     }
 
     private void onSuchen() {
@@ -266,12 +240,7 @@ public class MitarbeiterSuchenController extends AbstractController {
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        this.btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        this.btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

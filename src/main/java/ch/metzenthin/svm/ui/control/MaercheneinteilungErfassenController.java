@@ -6,7 +6,6 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.MaercheneinteilungErfassenModel;
 import ch.metzenthin.svm.domain.model.MaercheneinteilungenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
@@ -18,8 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
@@ -98,12 +95,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         this.maercheneinteilungErfassenModel.addPropertyChangeListener(this);
         this.maercheneinteilungErfassenModel.addDisableFieldsListener(this);
         this.maercheneinteilungErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.maercheneinteilungErfassenModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onMaercheneinteilungErfassenModelCompleted(completed);
-            }
-        });
+        this.maercheneinteilungErfassenModel.addCompletedListener(this::onMaercheneinteilungErfassenModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -194,11 +186,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setSpinnerMaerchen(JSpinner spinnerMaerchen) {
@@ -216,12 +204,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         }
         SpinnerModel spinnerModelMaerchen = new SpinnerListModel(selectableMaerchens);
         spinnerMaerchen.setModel(spinnerModelMaerchen);
-        spinnerMaerchen.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                onMaerchenSelected();
-            }
-        });
+        spinnerMaerchen.addChangeListener(e -> onMaerchenSelected());
         if (!isBearbeiten) {
             Maerchen maerchenInit = maercheneinteilungErfassenModel.getMaerchenInit(selectableMaerchenList);
             maercheneinteilungErfassenModel.setMaerchen(maerchenInit);
@@ -251,12 +234,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         comboBoxGruppe.removeItem(Gruppe.ALLE);
         // Leeren ComboBox-Wert anzeigen
         comboBoxGruppe.setSelectedItem(null);
-        comboBoxGruppe.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onGruppeSelected();
-            }
-        });
+        comboBoxGruppe.addActionListener(e -> onGruppeSelected());
     }
 
     private void onGruppeSelected() {
@@ -282,7 +260,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             LOGGER.trace("MaercheneinteilungErfassenController setModelGruppe RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxGruppe.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -293,12 +271,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     public void setTxtRolle1(JTextField txtRolle1) {
         this.txtRolle1 = txtRolle1;
         if (!defaultButtonEnabled) {
-            this.txtRolle1.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onRolle1Event(true);
-                }
-            });
+            this.txtRolle1.addActionListener(e -> onRolle1Event(true));
         }
         this.txtRolle1.addFocusListener(new FocusAdapter() {
             @Override
@@ -331,7 +304,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             LOGGER.trace("MaercheneinteilungErfassenController setModelRolle1 RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtRolle1.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -346,12 +319,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     public void setTxtBilderRolle1(JTextField txtBilderRolle1) {
         this.txtBilderRolle1 = txtBilderRolle1;
         if (!defaultButtonEnabled) {
-            this.txtBilderRolle1.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBilderRolle1Event(true);
-                }
-            });
+            this.txtBilderRolle1.addActionListener(e -> onBilderRolle1Event(true));
         }
         this.txtBilderRolle1.addFocusListener(new FocusAdapter() {
             @Override
@@ -384,7 +352,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle1 RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBilderRolle1.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -399,12 +367,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     public void setTxtRolle2(JTextField txtRolle2) {
         this.txtRolle2 = txtRolle2;
         if (!defaultButtonEnabled) {
-            this.txtRolle2.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onRolle2Event(true);
-                }
-            });
+            this.txtRolle2.addActionListener(e -> onRolle2Event(true));
         }
         this.txtRolle2.addFocusListener(new FocusAdapter() {
             @Override
@@ -437,7 +400,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             LOGGER.trace("MaercheneinteilungErfassenController setModelRolle2 RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtRolle2.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -452,12 +415,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     public void setTxtBilderRolle2(JTextField txtBilderRolle2) {
         this.txtBilderRolle2 = txtBilderRolle2;
         if (!defaultButtonEnabled) {
-            this.txtBilderRolle2.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBilderRolle2Event(true);
-                }
-            });
+            this.txtBilderRolle2.addActionListener(e -> onBilderRolle2Event(true));
         }
         this.txtBilderRolle2.addFocusListener(new FocusAdapter() {
             @Override
@@ -490,7 +448,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle2 RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBilderRolle2.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -505,12 +463,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     public void setTxtRolle3(JTextField txtRolle3) {
         this.txtRolle3 = txtRolle3;
         if (!defaultButtonEnabled) {
-            this.txtRolle3.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onRolle3Event(true);
-                }
-            });
+            this.txtRolle3.addActionListener(e -> onRolle3Event(true));
         }
         this.txtRolle3.addFocusListener(new FocusAdapter() {
             @Override
@@ -543,7 +496,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             LOGGER.trace("MaercheneinteilungErfassenController setModelRolle3 RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtRolle3.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -558,12 +511,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     public void setTxtBilderRolle3(JTextField txtBilderRolle3) {
         this.txtBilderRolle3 = txtBilderRolle3;
         if (!defaultButtonEnabled) {
-            this.txtBilderRolle3.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBilderRolle3Event(true);
-                }
-            });
+            this.txtBilderRolle3.addActionListener(e -> onBilderRolle3Event(true));
         }
         this.txtBilderRolle3.addFocusListener(new FocusAdapter() {
             @Override
@@ -596,7 +544,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle3 RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBilderRolle3.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -614,12 +562,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         comboBoxElternmithilfe.setModel(new DefaultComboBoxModel<>(selectableElternmithilfen));
         // Elternmithilfe in Model initialisieren mit erstem ComboBox-Wert
         maercheneinteilungErfassenModel.setElternmithilfe(Elternmithilfe.KEINER);
-        comboBoxElternmithilfe.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onElternmithilfeSelected();
-            }
-        });
+        comboBoxElternmithilfe.addActionListener(e -> onElternmithilfeSelected());
     }
 
     private void onElternmithilfeSelected() {
@@ -644,12 +587,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         comboBoxElternmithilfeCode.setModel(new DefaultComboBoxModel<>(selectableElternmithilfeCodes));
         // Model initialisieren mit erstem ComboBox-Wert
         maercheneinteilungErfassenModel.setElternmithilfeCode(selectableElternmithilfeCodes[0]);
-        comboBoxElternmithilfeCode.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onElternmithilfeCodeSelected();
-            }
-        });
+        comboBoxElternmithilfeCode.addActionListener(e -> onElternmithilfeCodeSelected());
     }
 
     private void onElternmithilfeCodeSelected() {
@@ -674,12 +612,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             // false als Default-Wert
             maercheneinteilungErfassenModel.setKuchenVorstellung1(false);
         }
-        this.checkBoxKuchenVorstellung1.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onKuchenVorstellung1Event();
-            }
-        });
+        this.checkBoxKuchenVorstellung1.addItemListener(e -> onKuchenVorstellung1Event());
     }
 
     private void setModelKuchenVorstellung1() {
@@ -697,12 +630,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             // false als Default-Wert
             maercheneinteilungErfassenModel.setKuchenVorstellung2(false);
         }
-        this.checkBoxKuchenVorstellung2.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onKuchenVorstellung2Event();
-            }
-        });
+        this.checkBoxKuchenVorstellung2.addItemListener(e -> onKuchenVorstellung2Event());
     }
 
     private void setModelKuchenVorstellung2() {
@@ -720,12 +648,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             // false als Default-Wert
             maercheneinteilungErfassenModel.setKuchenVorstellung3(false);
         }
-        this.checkBoxKuchenVorstellung3.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onKuchenVorstellung3Event();
-            }
-        });
+        this.checkBoxKuchenVorstellung3.addItemListener(e -> onKuchenVorstellung3Event());
     }
 
     private void setModelKuchenVorstellung3() {
@@ -743,12 +666,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             // false als Default-Wert
             maercheneinteilungErfassenModel.setKuchenVorstellung4(false);
         }
-        this.checkBoxKuchenVorstellung4.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onKuchenVorstellung4Event();
-            }
-        });
+        this.checkBoxKuchenVorstellung4.addItemListener(e -> onKuchenVorstellung4Event());
     }
 
     private void setModelKuchenVorstellung4() {
@@ -766,12 +684,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             // false als Default-Wert
             maercheneinteilungErfassenModel.setKuchenVorstellung5(false);
         }
-        this.checkBoxKuchenVorstellung5.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onKuchenVorstellung5Event();
-            }
-        });
+        this.checkBoxKuchenVorstellung5.addItemListener(e -> onKuchenVorstellung5Event());
     }
 
     private void setModelKuchenVorstellung5() {
@@ -789,12 +702,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             // false als Default-Wert
             maercheneinteilungErfassenModel.setKuchenVorstellung6(false);
         }
-        this.checkBoxKuchenVorstellung6.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onKuchenVorstellung6Event();
-            }
-        });
+        this.checkBoxKuchenVorstellung6.addItemListener(e -> onKuchenVorstellung6Event());
     }
 
     private void setModelKuchenVorstellung6() {
@@ -812,12 +720,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             // false als Default-Wert
             maercheneinteilungErfassenModel.setKuchenVorstellung7(false);
         }
-        this.checkBoxKuchenVorstellung7.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onKuchenVorstellung7Event();
-            }
-        });
+        this.checkBoxKuchenVorstellung7.addItemListener(e -> onKuchenVorstellung7Event());
     }
 
     private void setModelKuchenVorstellung7() {
@@ -835,12 +738,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             // false als Default-Wert
             maercheneinteilungErfassenModel.setKuchenVorstellung8(false);
         }
-        this.checkBoxKuchenVorstellung8.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onKuchenVorstellung8Event();
-            }
-        });
+        this.checkBoxKuchenVorstellung8.addItemListener(e -> onKuchenVorstellung8Event());
     }
 
     private void setModelKuchenVorstellung8() {
@@ -858,12 +756,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             // false als Default-Wert
             maercheneinteilungErfassenModel.setKuchenVorstellung9(false);
         }
-        this.checkBoxKuchenVorstellung9.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onKuchenVorstellung9Event();
-            }
-        });
+        this.checkBoxKuchenVorstellung9.addItemListener(e -> onKuchenVorstellung9Event());
     }
 
     private void setModelKuchenVorstellung9() {
@@ -878,12 +771,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     public void setTxtZusatzattribut(JTextField txtZusatzattribut) {
         this.txtZusatzattribut = txtZusatzattribut;
         if (!defaultButtonEnabled) {
-            this.txtZusatzattribut.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onZusatzattributEvent(true);
-                }
-            });
+            this.txtZusatzattribut.addActionListener(e -> onZusatzattributEvent(true));
         }
         this.txtZusatzattribut.addFocusListener(new FocusAdapter() {
             @Override
@@ -916,7 +804,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             LOGGER.trace("MaercheneinteilungErfassenController setModelZusatzattribut RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtZusatzattribut.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -932,12 +820,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     public void setTxtBemerkungen(JTextField txtBemerkungen) {
         this.txtBemerkungen = txtBemerkungen;
         if (!defaultButtonEnabled) {
-            this.txtBemerkungen.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBemerkungenEvent(true);
-                }
-            });
+            this.txtBemerkungen.addActionListener(e -> onBemerkungenEvent(true));
         }
         this.txtBemerkungen.addFocusListener(new FocusAdapter() {
             @Override
@@ -970,7 +853,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             LOGGER.trace("MaercheneinteilungErfassenController setModelBemerkungen RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBemerkungen.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -1035,12 +918,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         if (isModelValidationMode()) {
             btnSpeichern.setEnabled(false);
         }
-        this.btnSpeichern.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSpeichern();
-            }
-        });
+        this.btnSpeichern.addActionListener(e -> onSpeichern());
     }
 
     private void onSpeichern() {
@@ -1074,12 +952,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

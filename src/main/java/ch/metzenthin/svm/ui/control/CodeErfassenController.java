@@ -6,7 +6,6 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CodeErfassenModel;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,11 +27,11 @@ public class CodeErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private CodesTableModel codesTableModel;
-    private CodeErfassenModel codeErfassenModel;
-    private Codetyp codetyp;
-    private boolean isBearbeiten;
-    private boolean defaultButtonEnabled;
+    private final CodesTableModel codesTableModel;
+    private final CodeErfassenModel codeErfassenModel;
+    private final Codetyp codetyp;
+    private final boolean isBearbeiten;
+    private final boolean defaultButtonEnabled;
     private final SvmContext svmContext;
     private JDialog codeErfassenDialog;
     private JTextField txtKuerzel;
@@ -53,12 +52,7 @@ public class CodeErfassenController extends AbstractController {
         this.codeErfassenModel.addPropertyChangeListener(this);
         this.codeErfassenModel.addDisableFieldsListener(this);
         this.codeErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.codeErfassenModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onCodeErfassenModelCompleted(completed);
-            }
-        });
+        this.codeErfassenModel.addCompletedListener(this::onCodeErfassenModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -79,22 +73,13 @@ public class CodeErfassenController extends AbstractController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setTxtKuerzel(JTextField txtKuerzel) {
         this.txtKuerzel = txtKuerzel;
         if (!defaultButtonEnabled) {
-            this.txtKuerzel.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onKuerzelEvent(true);
-                }
-            });
+            this.txtKuerzel.addActionListener(e -> onKuerzelEvent(true));
         }
         this.txtKuerzel.addFocusListener(new FocusAdapter() {
             @Override
@@ -127,7 +112,7 @@ public class CodeErfassenController extends AbstractController {
             LOGGER.trace("CodeErfassenController setModelKuerzel RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtKuerzel.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -142,12 +127,7 @@ public class CodeErfassenController extends AbstractController {
     public void setTxtBeschreibung(JTextField txtBeschreibung) {
         this.txtBeschreibung = txtBeschreibung;
         if (!defaultButtonEnabled) {
-            this.txtBeschreibung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBeschreibungEvent(true);
-                }
-            });
+            this.txtBeschreibung.addActionListener(e -> onBeschreibungEvent(true));
         }
         this.txtBeschreibung.addFocusListener(new FocusAdapter() {
             @Override
@@ -180,7 +160,7 @@ public class CodeErfassenController extends AbstractController {
             LOGGER.trace("CodeErfassenController setModelBeschreibung RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBeschreibung.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -198,12 +178,7 @@ public class CodeErfassenController extends AbstractController {
         if (!isBearbeiten) {
             codeErfassenModel.setSelektierbar(true);
         }
-        this.checkBoxSelektierbar.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onSelektierbarEvent();
-            }
-        });
+        this.checkBoxSelektierbar.addItemListener(e -> onSelektierbarEvent());
     }
 
     private void setModelSelektierbar() {
@@ -228,12 +203,7 @@ public class CodeErfassenController extends AbstractController {
         if (isModelValidationMode()) {
             btnSpeichern.setEnabled(false);
         }
-        this.btnSpeichern.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSpeichern();
-            }
-        });
+        this.btnSpeichern.addActionListener(e -> onSpeichern());
     }
 
     private void onSpeichern() {
@@ -251,12 +221,7 @@ public class CodeErfassenController extends AbstractController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

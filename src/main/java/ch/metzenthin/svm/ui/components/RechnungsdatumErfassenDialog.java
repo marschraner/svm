@@ -39,7 +39,7 @@ public class RechnungsdatumErfassenDialog extends JDialog {
 
     private void createRechnungsdatumErfassenController(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel, Rechnungstyp rechnungstyp) {
         RechnungsdatumErfassenModel rechnungsdatumErfassenModel = svmContext.getModelFactory().createRechnungsdatumErfassenModel();
-        RechnungsdatumErfassenController rechnungsdatumErfassenController = new RechnungsdatumErfassenController(svmContext, semesterrechnungenTableModel, rechnungsdatumErfassenModel, rechnungstyp, DEFAULT_BUTTON_ENABLED);
+        RechnungsdatumErfassenController rechnungsdatumErfassenController = new RechnungsdatumErfassenController(semesterrechnungenTableModel, rechnungsdatumErfassenModel, rechnungstyp, DEFAULT_BUTTON_ENABLED);
         rechnungsdatumErfassenController.setRechnungsdatumErfassenDialog(this);
         rechnungsdatumErfassenController.setContentPane(contentPane);
         rechnungsdatumErfassenController.setTxtRechnungsdatum(txtRechnungsdatum);

@@ -5,7 +5,6 @@ import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
@@ -31,9 +30,9 @@ public class MitarbeiterErfassenController extends PersonController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private MitarbeitersTableModel mitarbeitersTableModel;
-    private MitarbeiterErfassenModel mitarbeiterErfassenModel;
-    private boolean defaultButtonEnabled;
+    private final MitarbeitersTableModel mitarbeitersTableModel;
+    private final MitarbeiterErfassenModel mitarbeiterErfassenModel;
+    private final boolean defaultButtonEnabled;
     private final boolean isBearbeiten;
     private final SvmContext svmContext;
     private JDialog mitarbeiterErfassenDialog;
@@ -60,12 +59,7 @@ public class MitarbeiterErfassenController extends PersonController {
         this.mitarbeiterErfassenModel.addPropertyChangeListener(this);
         this.mitarbeiterErfassenModel.addDisableFieldsListener(this);
         this.mitarbeiterErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.mitarbeiterErfassenModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onMitarbeiterErfassenModelCompleted(completed);
-            }
-        });
+        this.mitarbeiterErfassenModel.addCompletedListener(this::onMitarbeiterErfassenModelCompleted);
         this.isBearbeiten = isBearbeiten;
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
@@ -88,22 +82,13 @@ public class MitarbeiterErfassenController extends PersonController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setTxtAhvNummer(JTextField txtAhvNummer) {
         this.txtAhvNummer = txtAhvNummer;
         if (!defaultButtonEnabled) {
-            this.txtAhvNummer.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onAhvNummerEvent(true);
-                }
-            });
+            this.txtAhvNummer.addActionListener(e -> onAhvNummerEvent(true));
         }
         this.txtAhvNummer.addFocusListener(new FocusAdapter() {
             @Override
@@ -136,7 +121,7 @@ public class MitarbeiterErfassenController extends PersonController {
             LOGGER.trace("MitarbeiterErfassenController setModelAhvNummer RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtAhvNummer.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -151,12 +136,7 @@ public class MitarbeiterErfassenController extends PersonController {
     public void setTxtIbanNummer(JTextField txtIbanNummer) {
         this.txtIbanNummer = txtIbanNummer;
         if (!defaultButtonEnabled) {
-            this.txtIbanNummer.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onIbanNummerEvent(true);
-                }
-            });
+            this.txtIbanNummer.addActionListener(e -> onIbanNummerEvent(true));
         }
         this.txtIbanNummer.addFocusListener(new FocusAdapter() {
             @Override
@@ -189,7 +169,7 @@ public class MitarbeiterErfassenController extends PersonController {
             LOGGER.trace("MitarbeiterErfassenController setModelIbanNummer RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtIbanNummer.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -207,12 +187,7 @@ public class MitarbeiterErfassenController extends PersonController {
         if (!isBearbeiten) {
             mitarbeiterErfassenModel.setLehrkraft(false);
         }
-        this.checkBoxLehrkraft.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onLehrkraftEvent();
-            }
-        });
+        this.checkBoxLehrkraft.addItemListener(e -> onLehrkraftEvent());
     }
 
     private void setModelLehrkraft() {
@@ -306,12 +281,7 @@ public class MitarbeiterErfassenController extends PersonController {
         if (!isBearbeiten) {
             mitarbeiterErfassenModel.setAktiv(true);
         }
-        this.checkBoxAktiv.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onAktivEvent();
-            }
-        });
+        this.checkBoxAktiv.addItemListener(e -> onAktivEvent());
     }
 
     private void setModelAktiv() {
@@ -353,12 +323,7 @@ public class MitarbeiterErfassenController extends PersonController {
         if (isModelValidationMode()) {
             btnCodesBearbeiten.setEnabled(false);
         }
-        btnCodesBearbeiten.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onCodesBearbeiten();
-            }
-        });
+        btnCodesBearbeiten.addActionListener(e -> onCodesBearbeiten());
     }
 
     private void onCodesBearbeiten() {
@@ -376,12 +341,7 @@ public class MitarbeiterErfassenController extends PersonController {
         if (isModelValidationMode()) {
             btnSpeichern.setEnabled(false);
         }
-        this.btnSpeichern.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSpeichern();
-            }
-        });
+        this.btnSpeichern.addActionListener(e -> onSpeichern());
     }
 
     private void onSpeichern() {
@@ -399,12 +359,7 @@ public class MitarbeiterErfassenController extends PersonController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

@@ -17,8 +17,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -38,8 +38,8 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
     private ActionListener nextPanelListener;
     private final SvmContext svmContext;
     private SemesterrechnungBearbeitenModel semesterrechnungBearbeitenModel;
-    private SemesterrechnungenModel semesterrechnungenModel;
-    private SemesterrechnungenTableModel semesterrechnungenTableModel;
+    private final SemesterrechnungenModel semesterrechnungenModel;
+    private final SemesterrechnungenTableModel semesterrechnungenTableModel;
     private final JTable semesterrechnungenTable;
     private ActionListener zurueckZuSemesterrechnungSuchenListener;
     private int selectedRow;
@@ -97,11 +97,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
     public void constructionDone() {
         semesterrechnungBearbeitenModel.initializeCompleted();
         enableNavigationDisableSpeichern();
-        if (!semesterrechnungBearbeitenModel.isVorrechnungEnabled()) {
-            disableVorrechnung(true);
-        } else {
-            disableVorrechnung(false);
-        }
+        disableVorrechnung(!semesterrechnungBearbeitenModel.isVorrechnungEnabled());
     }
 
     private void disableVorrechnung(boolean disable) {
@@ -126,10 +122,10 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         semesterrechnungBearbeitenModel.removePropertyChangeListener(this);
         semesterrechnungBearbeitenModel.removeDisableFieldsListener(this);
         semesterrechnungBearbeitenModel.removeMakeErrorLabelsInvisibleListener(this);
-        // ACHTUNG: Vor Zuweisung des neuen Model invalidate auf altem Model aufrufen, damit Txt-Einträge alle auf null gesetzt werden.
+        // ACHTUNG: Vor Zuweisung des neuen Models invalidate auf altem Model aufrufen, damit Txt-Einträge alle auf null gesetzt werden.
         //          Sonst bleiben Txt-Werte, die null sein sollten, aber vor dem Blättern einen Wert hatten, mit dem alten Wert behaftet!
         semesterrechnungBearbeitenModel.invalidateAll();
-        semesterrechnungBearbeitenModel.makeErrorLabelsInvisible(new HashSet<>(Arrays.asList(new Field[]{Field.ALLE})));
+        semesterrechnungBearbeitenModel.makeErrorLabelsInvisible(new HashSet<>(List.of(Field.ALLE)));
         semesterrechnungBearbeitenModel = semesterrechnungenModel.getSemesterrechnungBearbeitenModel(svmContext, semesterrechnungenTableModel, convertRowIndexToModel());
         // ACHTUNG: Eltern-Model muss auch geändert werden!!! (-> gleiches Vorgehen wie in Konstruktor!)
         super.setSemesterrechnungModel(semesterrechnungBearbeitenModel);
@@ -314,11 +310,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
     }
 
     private void setLblMalRabattFaktorVorrechnung() {
-        if (semesterrechnungBearbeitenModel.getRabattFaktor().isEmpty()) {
-            lblMalRabattFaktorVorrechnung.setVisible(false);
-        } else {
-            lblMalRabattFaktorVorrechnung.setVisible(true);
-        }
+        lblMalRabattFaktorVorrechnung.setVisible(!semesterrechnungBearbeitenModel.getRabattFaktor().isEmpty());
     }
 
     public void setLblRabattFaktorVorrechnung(JLabel lblRabattFaktorVorrechnung) {
@@ -408,11 +400,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
     }
 
     private void setLblMalRabattFaktorNachrechnung() {
-        if (semesterrechnungBearbeitenModel.getRabattFaktor().isEmpty()) {
-            lblMalRabattFaktorNachrechnung.setVisible(false);
-        } else {
-            lblMalRabattFaktorNachrechnung.setVisible(true);
-        }
+        lblMalRabattFaktorNachrechnung.setVisible(!semesterrechnungBearbeitenModel.getRabattFaktor().isEmpty());
     }
 
     public void setLblRabattFaktorNachrechnung(JLabel lblRabattFaktorNachrechnung) {
@@ -757,12 +745,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
     public void setBtnEmail(JButton btnEmail) {
         this.btnEmail = btnEmail;
         setEmailEnabledDisabled();
-        btnEmail.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onEmail();
-            }
-        });
+        btnEmail.addActionListener(e -> onEmail());
     }
 
     private void setEmailEnabledDisabled() {
@@ -783,12 +766,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         this.btnWochenbetragVorrechnung = btnWochenbetragVorrechnung;
         // Nicht sichtbar, da verwirrend und nicht benötigt. Ggf später ganz löschen.
         btnWochenbetragVorrechnung.setVisible(false);
-        btnWochenbetragVorrechnung.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onWochenbetragVorrechnung();
-            }
-        });
+        btnWochenbetragVorrechnung.addActionListener(e -> onWochenbetragVorrechnung());
     }
 
     private void onWochenbetragVorrechnung() {
@@ -819,12 +797,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         this.btnWochenbetragNachrechnung = btnWochenbetragNachrechnung;
         // Nicht sichtbar, da verwirrend und nicht benötigt. Ggf später ganz löschen.
         btnWochenbetragNachrechnung.setVisible(false);
-        btnWochenbetragNachrechnung.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onWochenbetragNachrechnung();
-            }
-        });
+        btnWochenbetragNachrechnung.addActionListener(e -> onWochenbetragNachrechnung());
     }
 
     private void onWochenbetragNachrechnung() {
@@ -835,12 +808,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
 
     public void setBtnZurueck(JButton btnZurueck) {
         this.btnZurueck = btnZurueck;
-        btnZurueck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZurueck();
-            }
-        });
+        btnZurueck.addActionListener(e -> onZurueck());
     }
 
     private void onZurueck() {
@@ -857,12 +825,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
 
     public void setBtnErster(JButton btnErster) {
         this.btnErster = btnErster;
-        btnErster.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onErster();
-            }
-        });
+        btnErster.addActionListener(e -> onErster());
         enableBtnErster();
     }
 
@@ -872,12 +835,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
 
     public void setBtnLetzter(JButton btnLetzter) {
         this.btnLetzter = btnLetzter;
-        btnLetzter.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLetzter();
-            }
-        });
+        btnLetzter.addActionListener(e -> onLetzter());
         enableBtnLetzter();
     }
 
@@ -887,12 +845,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
 
     public void setBtnNachfolgender(JButton btnNachfolgender) {
         this.btnNachfolgender = btnNachfolgender;
-        btnNachfolgender.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNachfolgender();
-            }
-        });
+        btnNachfolgender.addActionListener(e -> onNachfolgender());
         enableBtnNachfolgender();
     }
 
@@ -902,12 +855,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
 
     public void setBtnVorheriger(JButton btnVorheriger) {
         this.btnVorheriger = btnVorheriger;
-        btnVorheriger.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onVorheriger();
-            }
-        });
+        btnVorheriger.addActionListener(e -> onVorheriger());
         enableBtnVorheriger();
     }
 
@@ -920,12 +868,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         if (isModelValidationMode()) {
             btnSpeichern.setEnabled(false);
         }
-        this.btnSpeichern.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSpeichern();
-            }
-        });
+        this.btnSpeichern.addActionListener(e -> onSpeichern());
     }
 
     private void onSpeichern() {
@@ -943,12 +886,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         if (isModelValidationMode()) {
             btnVerwerfen.setEnabled(false);
         }
-        this.btnVerwerfen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onVerwerfen();
-            }
-        });
+        this.btnVerwerfen.addActionListener(e -> onVerwerfen());
     }
 
     private void onVerwerfen() {
@@ -988,7 +926,7 @@ public class SemesterrechnungBearbeitenController extends SemesterrechnungContro
         txtBetragZahlung3Nachrechnung.setText(semesterrechnungModel.getBetragZahlung3Nachrechnung() == null ? null : semesterrechnungModel.getBetragZahlung3Nachrechnung().toString());
         textAreaBemerkungen.setText(semesterrechnungModel.getBemerkungen());
 
-        semesterrechnungBearbeitenModel.makeErrorLabelsInvisible(new HashSet<>(Arrays.asList(new Field[]{Field.ALLE})));
+        semesterrechnungBearbeitenModel.makeErrorLabelsInvisible(new HashSet<>(List.of(Field.ALLE)));
 
         btnVerwerfen.setFocusPainted(false);
         enableNavigationDisableSpeichern();

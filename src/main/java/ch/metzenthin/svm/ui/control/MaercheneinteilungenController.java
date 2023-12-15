@@ -9,8 +9,6 @@ import ch.metzenthin.svm.ui.components.MaercheneinteilungErfassenDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -30,7 +28,7 @@ public class MaercheneinteilungenController {
     private final int selectedRow;
     private final boolean isFromSchuelerSuchenResult;
     private final MaercheneinteilungenModel maercheneinteilungenModel;
-    private MaercheneinteilungenTableModel maercheneinteilungenTableModel;
+    private final MaercheneinteilungenTableModel maercheneinteilungenTableModel;
     private JTable maercheneinteilungenTable;
     private JButton btnNeu;
     private JButton btnBearbeiten;
@@ -50,19 +48,17 @@ public class MaercheneinteilungenController {
         this.isFromSchuelerSuchenResult = isFromSchuelerSuchenResult;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public void setMaercheneinteilungenTable(JTable maercheneinteilungenTable) {
         this.maercheneinteilungenTable = maercheneinteilungenTable;
         maercheneinteilungenTable.setModel(maercheneinteilungenTableModel);
         setColumnCellRenderers(maercheneinteilungenTable, maercheneinteilungenTableModel);
         setJTableColumnWidthAccordingToCellContentAndHeader(maercheneinteilungenTable);
-        maercheneinteilungenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-                onListSelection();
+        maercheneinteilungenTable.getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()) {
+                return;
             }
+            onListSelection();
         });
         maercheneinteilungenTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -83,12 +79,7 @@ public class MaercheneinteilungenController {
         if (maercheneinteilungenModel.getSelectableMaerchens(svmContext.getSvmModel(), schuelerDatenblattModel).size() == 0) {
             btnNeu.setEnabled(false);
         }
-        btnNeu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNeu();
-            }
-        });
+        btnNeu.addActionListener(e -> onNeu());
     }
 
     private void onNeu() {
@@ -106,12 +97,7 @@ public class MaercheneinteilungenController {
     public void setBtnBearbeiten(JButton btnBearbeiten) {
         this.btnBearbeiten = btnBearbeiten;
         enableBtnBearbeiten(false);
-        btnBearbeiten.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBearbeiten();
-            }
-        });
+        btnBearbeiten.addActionListener(e -> onBearbeiten());
     }
 
     private void enableBtnBearbeiten(boolean enabled) {
@@ -130,12 +116,7 @@ public class MaercheneinteilungenController {
     public void setBtnLoeschen(JButton btnLoeschen) {
         this.btnLoeschen = btnLoeschen;
         enableBtnLoeschen(false);
-        btnLoeschen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLoeschen();
-            }
-        });
+        btnLoeschen.addActionListener(e -> onLoeschen());
     }
 
     private void enableBtnLoeschen(boolean enabled) {
@@ -175,14 +156,10 @@ public class MaercheneinteilungenController {
     }
 
     public void setBtnZurueck(JButton btnZurueck) {
-        btnZurueck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZurueck();
-            }
-        });
+        btnZurueck.addActionListener(e -> onZurueck());
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void onZurueck() {
         SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, isFromSchuelerSuchenResult);
         schuelerDatenblattPanel.addCloseListener(closeListener);

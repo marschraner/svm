@@ -1,10 +1,8 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.DispensationErfassenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
@@ -29,11 +27,10 @@ public class DispensationErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private DispensationErfassenModel dispensationErfassenModel;
-    private boolean defaultButtonEnabled;
-    private SvmContext svmContext;
-    private DispensationenTableModel dispensationenTableModel;
-    private SchuelerDatenblattModel schuelerDatenblattModel;
+    private final DispensationErfassenModel dispensationErfassenModel;
+    private final boolean defaultButtonEnabled;
+    private final DispensationenTableModel dispensationenTableModel;
+    private final SchuelerDatenblattModel schuelerDatenblattModel;
     private JDialog dispensationErfassenDialog;
     private JTextField txtDispensationsbeginn;
     private JTextField txtDispensationsende;
@@ -45,9 +42,8 @@ public class DispensationErfassenController extends AbstractController {
     private JLabel errLblVoraussichtlicheDauer;
     private JButton btnSpeichern;
 
-    public DispensationErfassenController(SvmContext svmContext, DispensationenTableModel dispensationenTableModel, DispensationErfassenModel dispensationErfassenModel, SchuelerDatenblattModel schuelerDatenblattModel, boolean defaultButtonEnabled) {
+    public DispensationErfassenController(DispensationenTableModel dispensationenTableModel, DispensationErfassenModel dispensationErfassenModel, SchuelerDatenblattModel schuelerDatenblattModel, boolean defaultButtonEnabled) {
         super(dispensationErfassenModel);
-        this.svmContext = svmContext;
         this.dispensationenTableModel = dispensationenTableModel;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.dispensationErfassenModel = dispensationErfassenModel;
@@ -55,12 +51,7 @@ public class DispensationErfassenController extends AbstractController {
         this.dispensationErfassenModel.addPropertyChangeListener(this);
         this.dispensationErfassenModel.addDisableFieldsListener(this);
         this.dispensationErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.dispensationErfassenModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onDispensationErfassenModelCompleted(completed);
-            }
-        });
+        this.dispensationErfassenModel.addCompletedListener(this::onDispensationErfassenModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -81,22 +72,13 @@ public class DispensationErfassenController extends AbstractController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setTxtDispensationsbeginn(JTextField txtDispensationsbeginn) {
         this.txtDispensationsbeginn = txtDispensationsbeginn;
         if (!defaultButtonEnabled) {
-            this.txtDispensationsbeginn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onDispensationsbeginnEvent(true);
-                }
-            });
+            this.txtDispensationsbeginn.addActionListener(e -> onDispensationsbeginnEvent(true));
         }
         this.txtDispensationsbeginn.addFocusListener(new FocusAdapter() {
             @Override
@@ -129,7 +111,7 @@ public class DispensationErfassenController extends AbstractController {
             LOGGER.trace("DispensationErfassenController setModelDispensationsbeginn RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtDispensationsbeginn.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -144,12 +126,7 @@ public class DispensationErfassenController extends AbstractController {
     public void setTxtDispensationsende(JTextField txtDispensationsende) {
         this.txtDispensationsende = txtDispensationsende;
         if (!defaultButtonEnabled) {
-            this.txtDispensationsende.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onDispensationsendeEvent(true);
-                }
-            });
+            this.txtDispensationsende.addActionListener(e -> onDispensationsendeEvent(true));
         }
         this.txtDispensationsende.addFocusListener(new FocusAdapter() {
             @Override
@@ -182,7 +159,7 @@ public class DispensationErfassenController extends AbstractController {
             LOGGER.trace("DispensationErfassenController setModelDispensationsende RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtDispensationsende.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -197,12 +174,7 @@ public class DispensationErfassenController extends AbstractController {
     public void setTxtVoraussichtlicheDauer(JTextField txtVoraussichtlicheDauer) {
         this.txtVoraussichtlicheDauer = txtVoraussichtlicheDauer;
         if (!defaultButtonEnabled) {
-            this.txtVoraussichtlicheDauer.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onVoraussichtlicheDauerEvent(true);
-                }
-            });
+            this.txtVoraussichtlicheDauer.addActionListener(e -> onVoraussichtlicheDauerEvent(true));
         }
         this.txtVoraussichtlicheDauer.addFocusListener(new FocusAdapter() {
             @Override
@@ -235,7 +207,7 @@ public class DispensationErfassenController extends AbstractController {
             LOGGER.trace("DispensationErfassenController setModelVoraussichtlicheDauer RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtVoraussichtlicheDauer.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -250,12 +222,7 @@ public class DispensationErfassenController extends AbstractController {
     public void setTxtGrund(JTextField txtGrund) {
         this.txtGrund = txtGrund;
         if (!defaultButtonEnabled) {
-            this.txtGrund.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onGrundEvent(true);
-                }
-            });
+            this.txtGrund.addActionListener(e -> onGrundEvent(true));
         }
         this.txtGrund.addFocusListener(new FocusAdapter() {
             @Override
@@ -288,7 +255,7 @@ public class DispensationErfassenController extends AbstractController {
             LOGGER.trace("DispensationErfassenController setModelGrund RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtGrund.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -321,12 +288,7 @@ public class DispensationErfassenController extends AbstractController {
         if (isModelValidationMode()) {
             btnSpeichern.setEnabled(false);
         }
-        this.btnSpeichern.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSpeichern();
-            }
-        });
+        this.btnSpeichern.addActionListener(e -> onSpeichern());
     }
 
     private void onSpeichern() {
@@ -344,12 +306,7 @@ public class DispensationErfassenController extends AbstractController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

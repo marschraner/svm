@@ -12,10 +12,6 @@ import ch.metzenthin.svm.ui.components.RechnungsdatumErfassenDialog;
 import ch.metzenthin.svm.ui.components.SemesterrechnungBearbeitenPanel;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -89,14 +85,11 @@ public class SemesterrechnungenController {
 
         setJTableColumnWidthAccordingToCellContentAndHeader(semesterrechnungenTable);
 
-        semesterrechnungenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-                onListSelection();
+        semesterrechnungenTable.getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()) {
+                return;
             }
+            onListSelection();
         });
         semesterrechnungenTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -105,28 +98,25 @@ public class SemesterrechnungenController {
                 }
             }
         });
-        semesterrechnungenTable.getModel().addTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                if (semesterrechnungenTableModel.getAnzSelektiert() > 0) {
-                    btnExportieren.setEnabled(true);
-                    btnRechnungsdatum.setEnabled(true);
-                    btnEmail.setEnabled(true);
+        semesterrechnungenTable.getModel().addTableModelListener(e -> {
+            if (semesterrechnungenTableModel.getAnzSelektiert() > 0) {
+                btnExportieren.setEnabled(true);
+                btnRechnungsdatum.setEnabled(true);
+                btnEmail.setEnabled(true);
+            } else {
+                btnExportieren.setEnabled(false);
+                btnRechnungsdatum.setEnabled(false);
+                btnEmail.setEnabled(false);
+            }
+            if (!nachGeloeschtenGesucht) {
+                if (semesterrechnungenTableModel.isAlleSelektiert()) {
+                    btnAlleSelektieren.setVisible(false);
+                    btnAlleDeselektieren.setVisible(true);
                 } else {
-                    btnExportieren.setEnabled(false);
-                    btnRechnungsdatum.setEnabled(false);
-                    btnEmail.setEnabled(false);
+                    btnAlleDeselektieren.setVisible(false);
+                    btnAlleSelektieren.setVisible(true);
                 }
-                if (!nachGeloeschtenGesucht) {
-                    if (semesterrechnungenTableModel.isAlleSelektiert()) {
-                        btnAlleSelektieren.setVisible(false);
-                        btnAlleDeselektieren.setVisible(true);
-                    } else {
-                        btnAlleDeselektieren.setVisible(false);
-                        btnAlleSelektieren.setVisible(true);
-                    }
-                    setLblTotal();
-                }
+                setLblTotal();
             }
         });
     }
@@ -162,12 +152,7 @@ public class SemesterrechnungenController {
             btnDatenblatt.setVisible(false);
         }
         enableBtnDetailsBearbeiten(false);
-        btnDatenblatt.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onDetailsBearbeiten();
-            }
-        });
+        btnDatenblatt.addActionListener(e -> onDetailsBearbeiten());
     }
 
     private void enableBtnDetailsBearbeiten(boolean enabled) {
@@ -187,12 +172,7 @@ public class SemesterrechnungenController {
     public void setBtnAlleDeselektieren(JButton btnAlleDeselektieren) {
         this.btnAlleDeselektieren = btnAlleDeselektieren;
         btnAlleDeselektieren.setVisible(!nachGeloeschtenGesucht);
-        btnAlleDeselektieren.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAlleDeselektieren();
-            }
-        });
+        btnAlleDeselektieren.addActionListener(e -> onAlleDeselektieren());
     }
 
     private void onAlleDeselektieren() {
@@ -206,12 +186,7 @@ public class SemesterrechnungenController {
     public void setBtnAlleSelektieren(JButton btnAlleSelektieren) {
         this.btnAlleSelektieren = btnAlleSelektieren;
         btnAlleSelektieren.setVisible(false);
-        btnAlleSelektieren.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAlleSelektieren();
-            }
-        });
+        btnAlleSelektieren.addActionListener(e -> onAlleSelektieren());
     }
 
     private void onAlleSelektieren() {
@@ -230,12 +205,7 @@ public class SemesterrechnungenController {
         if (semesterrechnungenTableModel.getSemesterrechnungen().isEmpty() || semesterrechnungenTableModel.getAnzSelektiert() == 0) {
             btnExportieren.setEnabled(false);
         }
-        btnExportieren.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onExportieren();
-            }
-        });
+        btnExportieren.addActionListener(e -> onExportieren());
     }
 
     @SuppressWarnings("DuplicatedCode")
@@ -268,12 +238,7 @@ public class SemesterrechnungenController {
         if (semesterrechnungenTableModel.getAnzSelektiert() == 0) {
             btnEmail.setEnabled(false);
         }
-        btnEmail.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onEmail();
-            }
-        });
+        btnEmail.addActionListener(e -> onEmail());
     }
 
     @SuppressWarnings("DuplicatedCode")
@@ -307,12 +272,7 @@ public class SemesterrechnungenController {
             btnLoeschen.setVisible(false);
         }
         enableBtnLoeschen(false);
-        btnLoeschen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLoeschen();
-            }
-        });
+        btnLoeschen.addActionListener(e -> onLoeschen());
     }
 
     private void enableBtnLoeschen(boolean enabled) {
@@ -324,7 +284,7 @@ public class SemesterrechnungenController {
         Object[] options = {"Ja", "Nein"};
         if (semesterrechnungenModel.hasSemesterrechnungKurse(semesterrechnungenTableModel, semesterrechnungenTable.convertRowIndexToModel(semesterrechnungenTable.getSelectedRow()))) {
             // Logisches Löschen für Semesterrechnungen mit Kursen im aktuellen Semester bzw. nicht abgemeldeten Kursen
-            // des vorhergenden Semesters, da bei physischem Löschen bei der nächsten Suche automatisch wieder eine neue
+            // des vorhergehenden Semesters, da bei physischem Löschen bei der nächsten Suche automatisch wieder eine neue
             // Semesterrechnung erzeugt würde
             int n = JOptionPane.showOptionDialog(
                     null,
@@ -371,12 +331,7 @@ public class SemesterrechnungenController {
             btnWiederherstellen.setVisible(false);
         }
         enableBtnWiederherstellen(false);
-        btnWiederherstellen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onWiederherstellen();
-            }
-        });
+        btnWiederherstellen.addActionListener(e -> onWiederherstellen());
     }
 
     private void enableBtnWiederherstellen(boolean enabled) {
@@ -402,12 +357,7 @@ public class SemesterrechnungenController {
         if (semesterrechnungenTableModel.getSemesterrechnungen().isEmpty()) {
             btnRechnungsdatum.setEnabled(false);
         }
-        btnRechnungsdatum.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onRechnungsdatum();
-            }
-        });
+        btnRechnungsdatum.addActionListener(e -> onRechnungsdatum());
     }
 
     private void onRechnungsdatum() {
@@ -460,12 +410,7 @@ public class SemesterrechnungenController {
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {
@@ -478,12 +423,7 @@ public class SemesterrechnungenController {
 
     public void setBtnZurueck(JButton btnZurueck) {
         this.btnZurueck = btnZurueck;
-        btnZurueck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZurueck();
-            }
-        });
+        btnZurueck.addActionListener(e -> onZurueck());
     }
 
     private void onZurueck() {

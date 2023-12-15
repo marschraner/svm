@@ -10,8 +10,6 @@ import ch.metzenthin.svm.ui.components.KursanmeldungErfassenDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -32,7 +30,7 @@ public class KursanmeldungenController {
     private final int selectedRow;
     private final boolean isFromSchuelerSuchenResult;
     private final KursanmeldungenModel kursanmeldungenModel;
-    private KursanmeldungenTableModel kursanmeldungenTableModel;
+    private final KursanmeldungenTableModel kursanmeldungenTableModel;
     private JTable kursanmeldungenTable;
     private JButton btnNeu;
     private JButton btnBearbeiten;
@@ -52,19 +50,17 @@ public class KursanmeldungenController {
         this.isFromSchuelerSuchenResult = isFromSchuelerSuchenResult;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public void setKursanmeldungenTable(JTable kursanmeldungenTable) {
         this.kursanmeldungenTable = kursanmeldungenTable;
         kursanmeldungenTable.setModel(kursanmeldungenTableModel);
         setColumnCellRenderers(kursanmeldungenTable, kursanmeldungenTableModel);
         setJTableColumnWidthAccordingToCellContentAndHeader(kursanmeldungenTable);
-        kursanmeldungenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-                onListSelection();
+        kursanmeldungenTable.getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()) {
+                return;
             }
+            onListSelection();
         });
         kursanmeldungenTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -81,12 +77,7 @@ public class KursanmeldungenController {
         if (kursanmeldungenModel.isSchuelerAbgemeldet(schuelerDatenblattModel)) {
             btnNeu.setEnabled(false);
         }
-        btnNeu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNeu();
-            }
-        });
+        btnNeu.addActionListener(e -> onNeu());
     }
 
     private void onNeu() {
@@ -101,12 +92,7 @@ public class KursanmeldungenController {
     public void setBtnBearbeiten(JButton btnBearbeiten) {
         this.btnBearbeiten = btnBearbeiten;
         enableBtnBearbeiten(false);
-        btnBearbeiten.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBearbeiten();
-            }
-        });
+        btnBearbeiten.addActionListener(e -> onBearbeiten());
     }
 
     private void enableBtnBearbeiten(boolean enabled) {
@@ -145,12 +131,7 @@ public class KursanmeldungenController {
     public void setBtnLoeschen(JButton btnLoeschen) {
         this.btnLoeschen = btnLoeschen;
         enableBtnLoeschen(false);
-        btnLoeschen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLoeschen();
-            }
-        });
+        btnLoeschen.addActionListener(e -> onLoeschen());
     }
 
     private void enableBtnLoeschen(boolean enabled) {
@@ -186,14 +167,10 @@ public class KursanmeldungenController {
     }
 
     public void setBtnZurueck(JButton btnZurueck) {
-        btnZurueck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZurueck();
-            }
-        });
+        btnZurueck.addActionListener(e -> onZurueck());
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void onZurueck() {
         SchuelerDatenblattPanel schuelerDatenblattPanel = new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, isFromSchuelerSuchenResult);
         schuelerDatenblattPanel.addCloseListener(closeListener);

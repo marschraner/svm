@@ -9,8 +9,6 @@ import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
 import ch.metzenthin.svm.ui.components.SemesterErfassenDialog;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -22,6 +20,7 @@ import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRen
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("DuplicatedCode")
 public class SemestersController {
     private final SvmContext svmContext;
     private final SemestersModel semestersModel;
@@ -41,14 +40,11 @@ public class SemestersController {
     public void setSemestersTable(JTable semestersTable) {
         this.semestersTable = semestersTable;
         initializeSemestersTable();
-        semestersTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-                onListSelection();
+        semestersTable.getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()) {
+                return;
             }
+            onListSelection();
         });
         semestersTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -68,12 +64,7 @@ public class SemestersController {
 
     public void setBtnNeu(JButton btnNeu) {
         this.btnNeu = btnNeu;
-        btnNeu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNeu();
-            }
-        });
+        btnNeu.addActionListener(e -> onNeu());
     }
 
     private void onNeu() {
@@ -88,12 +79,7 @@ public class SemestersController {
     public void setBtnBearbeiten(JButton btnBearbeiten) {
         this.btnBearbeiten = btnBearbeiten;
         enableBtnBearbeiten(false);
-        btnBearbeiten.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBearbeiten();
-            }
-        });
+        btnBearbeiten.addActionListener(e -> onBearbeiten());
     }
 
     private void enableBtnBearbeiten(boolean enabled) {
@@ -112,12 +98,7 @@ public class SemestersController {
     public void setBtnLoeschen(JButton btnLoeschen) {
         this.btnLoeschen = btnLoeschen;
         enableBtnLoeschen(false);
-        btnLoeschen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLoeschen();
-            }
-        });
+        btnLoeschen.addActionListener(e -> onLoeschen());
     }
 
     private void enableBtnLoeschen(boolean enabled) {
@@ -139,14 +120,14 @@ public class SemestersController {
         if (n == 0) {
             List<Semester> semesters = semestersTableModel.getSemestersTableData().getSemesters();
             Semester semesterToBeDeleted = semesters.get(semestersTable.getSelectedRow());
-            int numberOfReferencedSemesterrechungen = semesterToBeDeleted.getSemesterrechnungen().size();
+            int numberOfReferencedSemesterrechnungen = semesterToBeDeleted.getSemesterrechnungen().size();
             int n1 = 0;
-            if (semesterToBeDeleted.getKurse().isEmpty() && numberOfReferencedSemesterrechungen > 0) {
+            if (semesterToBeDeleted.getKurse().isEmpty() && numberOfReferencedSemesterrechnungen > 0) {
                 n1 = JOptionPane.showOptionDialog(
                         null,
                         "ACHTUNG!\n" +
                                 "Das zu löschende Semester wird von " +
-                                numberOfReferencedSemesterrechungen + " Semesterrechnungen referenziert. " +
+                                numberOfReferencedSemesterrechnungen + " Semesterrechnungen referenziert. " +
                                 "Diese werden beim Löschen des Semesters mitgelöscht!\n" +
                                 "Soll das Semester trotzdem gelöscht werden?",
                         "Semester von Semesterrechnungen referenziert",
@@ -159,14 +140,14 @@ public class SemestersController {
             if (n1 == 0) {
                 DeleteSemesterCommand.Result result = semestersModel.semesterLoeschen(svmContext, semestersTableModel, semestersTable.getSelectedRow());
                 switch (result) {
-                    case SEMESTER_VON_KURS_REFERENZIERT:
+                    case SEMESTER_VON_KURS_REFERENZIERT -> {
                         JOptionPane.showMessageDialog(null, "Das Semester wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                         btnLoeschen.setFocusPainted(false);
-                        break;
-                    case LOESCHEN_ERFOLGREICH:
+                    }
+                    case LOESCHEN_ERFOLGREICH -> {
                         semestersTableModel.fireTableDataChanged();
                         semestersTable.addNotify();
-                        break;
+                    }
                 }
             }
         }
@@ -183,12 +164,7 @@ public class SemestersController {
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

@@ -5,15 +5,12 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SemesterErfassenModel;
 import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
@@ -31,11 +28,11 @@ public class SemesterErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private SemestersTableModel semestersTableModel;
-    private SemesterErfassenModel semesterErfassenModel;
+    private final SemestersTableModel semestersTableModel;
+    private final SemesterErfassenModel semesterErfassenModel;
     private final SvmContext svmContext;
-    private boolean isBearbeiten;
-    private boolean defaultButtonEnabled;
+    private final boolean isBearbeiten;
+    private final boolean defaultButtonEnabled;
     private JDialog semesterErfassenDialog;
     private JSpinner spinnerSchuljahre;
     private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
@@ -63,12 +60,7 @@ public class SemesterErfassenController extends AbstractController {
         this.semesterErfassenModel.addPropertyChangeListener(this);
         this.semesterErfassenModel.addDisableFieldsListener(this);
         this.semesterErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.semesterErfassenModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onSemesterErfassenModelCompleted(completed);
-            }
-        });
+        this.semesterErfassenModel.addCompletedListener(this::onSemesterErfassenModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -89,21 +81,12 @@ public class SemesterErfassenController extends AbstractController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setSpinnerSchuljahre(JSpinner spinnerSchuljahre) {
         this.spinnerSchuljahre = spinnerSchuljahre;
-        spinnerSchuljahre.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                onSchuljahrSelected();
-            }
-        });
+        spinnerSchuljahre.addChangeListener(e -> onSchuljahrSelected());
         if (!isBearbeiten) {
             initSchuljahr();
         }
@@ -117,6 +100,7 @@ public class SemesterErfassenController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void onSchuljahrSelected() {
         LOGGER.trace("PersonController Event Schuljahre selected =" + spinnerSchuljahre.getValue());
         boolean equalFieldAndModelValue = equalsNullSafe(spinnerSchuljahre.getValue(), semesterErfassenModel.getSchuljahr());
@@ -146,12 +130,7 @@ public class SemesterErfassenController extends AbstractController {
     public void setComboBoxSemesterbezeichnung(JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung) {
         this.comboBoxSemesterbezeichnung = comboBoxSemesterbezeichnung;
         comboBoxSemesterbezeichnung.setModel(new DefaultComboBoxModel<>(Semesterbezeichnung.values()));
-        comboBoxSemesterbezeichnung.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSemesterbezeichnungSelected();
-            }
-        });
+        comboBoxSemesterbezeichnung.addActionListener(e -> onSemesterbezeichnungSelected());
         if (!isBearbeiten) {
             initSemesterbezeichnung();
         }
@@ -166,7 +145,7 @@ public class SemesterErfassenController extends AbstractController {
     }
 
     private void onSemesterbezeichnungSelected() {
-        LOGGER.trace("SemesterErfasssenController Event Semesterbezeichnung selected=" + comboBoxSemesterbezeichnung.getSelectedItem());
+        LOGGER.trace("SemesterErfassenController Event Semesterbezeichnung selected=" + comboBoxSemesterbezeichnung.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxSemesterbezeichnung.getSelectedItem(), semesterErfassenModel.getSemesterbezeichnung());
         try {
             setModelSemesterbezeichnung();
@@ -194,12 +173,7 @@ public class SemesterErfassenController extends AbstractController {
     public void setTxtSemesterbeginn(JTextField txtSemesterbeginn) {
         this.txtSemesterbeginn = txtSemesterbeginn;
         if (!defaultButtonEnabled) {
-            this.txtSemesterbeginn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onSemesterbeginnEvent(true);
-                }
-            });
+            this.txtSemesterbeginn.addActionListener(e -> onSemesterbeginnEvent(true));
         }
         this.txtSemesterbeginn.addFocusListener(new FocusAdapter() {
             @Override
@@ -232,7 +206,7 @@ public class SemesterErfassenController extends AbstractController {
             LOGGER.trace("SemesterErfassenController setModelSemesterbeginn RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtSemesterbeginn.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -247,12 +221,7 @@ public class SemesterErfassenController extends AbstractController {
     public void setTxtSemesterende(JTextField txtSemesterende) {
         this.txtSemesterende = txtSemesterende;
         if (!defaultButtonEnabled) {
-            this.txtSemesterende.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onSemesterendeEvent(true);
-                }
-            });
+            this.txtSemesterende.addActionListener(e -> onSemesterendeEvent(true));
         }
         this.txtSemesterende.addFocusListener(new FocusAdapter() {
             @Override
@@ -285,7 +254,7 @@ public class SemesterErfassenController extends AbstractController {
             LOGGER.trace("SemesterErfassenController setModelSemesterende RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtSemesterende.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -300,12 +269,7 @@ public class SemesterErfassenController extends AbstractController {
     public void setTxtFerienbeginn1(JTextField txtFerienbeginn1) {
         this.txtFerienbeginn1 = txtFerienbeginn1;
         if (!defaultButtonEnabled) {
-            this.txtFerienbeginn1.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFerienbeginn1Event(true);
-                }
-            });
+            this.txtFerienbeginn1.addActionListener(e -> onFerienbeginn1Event(true));
         }
         this.txtFerienbeginn1.addFocusListener(new FocusAdapter() {
             @Override
@@ -338,7 +302,7 @@ public class SemesterErfassenController extends AbstractController {
             LOGGER.trace("SemesterErfassenController setModelFerienbeginn1 RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtFerienbeginn1.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -353,12 +317,7 @@ public class SemesterErfassenController extends AbstractController {
     public void setTxtFerienende1(JTextField txtFerienende1) {
         this.txtFerienende1 = txtFerienende1;
         if (!defaultButtonEnabled) {
-            this.txtFerienende1.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFerienende1Event(true);
-                }
-            });
+            this.txtFerienende1.addActionListener(e -> onFerienende1Event(true));
         }
         this.txtFerienende1.addFocusListener(new FocusAdapter() {
             @Override
@@ -391,7 +350,7 @@ public class SemesterErfassenController extends AbstractController {
             LOGGER.trace("SemesterErfassenController setModelFerienende1 RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtFerienende1.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -406,12 +365,7 @@ public class SemesterErfassenController extends AbstractController {
     public void setTxtFerienbeginn2(JTextField txtFerienbeginn2) {
         this.txtFerienbeginn2 = txtFerienbeginn2;
         if (!defaultButtonEnabled) {
-            this.txtFerienbeginn2.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFerienbeginn2Event(true);
-                }
-            });
+            this.txtFerienbeginn2.addActionListener(e -> onFerienbeginn2Event(true));
         }
         this.txtFerienbeginn2.addFocusListener(new FocusAdapter() {
             @Override
@@ -444,7 +398,7 @@ public class SemesterErfassenController extends AbstractController {
             LOGGER.trace("SemesterErfassenController setModelFerienbeginn2 RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtFerienbeginn2.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -459,12 +413,7 @@ public class SemesterErfassenController extends AbstractController {
     public void setTxtFerienende2(JTextField txtFerienende2) {
         this.txtFerienende2 = txtFerienende2;
         if (!defaultButtonEnabled) {
-            this.txtFerienende2.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFerienende2Event(true);
-                }
-            });
+            this.txtFerienende2.addActionListener(e -> onFerienende2Event(true));
         }
         this.txtFerienende2.addFocusListener(new FocusAdapter() {
             @Override
@@ -497,7 +446,7 @@ public class SemesterErfassenController extends AbstractController {
             LOGGER.trace("SemesterErfassenController setModelFerienende2 RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtFerienende2.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -538,12 +487,7 @@ public class SemesterErfassenController extends AbstractController {
         if (isModelValidationMode()) {
             btnSpeichern.setEnabled(false);
         }
-        this.btnSpeichern.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSpeichern();
-            }
-        });
+        this.btnSpeichern.addActionListener(e -> onSpeichern());
     }
 
     private void onSpeichern() {
@@ -585,12 +529,7 @@ public class SemesterErfassenController extends AbstractController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

@@ -1,10 +1,8 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.MonatsstatistikKurseModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,41 +32,29 @@ public class MonatsstatistikKurseController extends AbstractController {
 
     private static final String MONAT_JAHR_DATE_FORMAT_STRING = "MM.yyyy";
 
-    private MonatsstatistikKurseModel monatsstatistikKurseModel;
-    private SvmContext svmContext;
-    private boolean defaultButtonEnabled;
+    private final MonatsstatistikKurseModel monatsstatistikKurseModel;
+    private final boolean defaultButtonEnabled;
     private ActionListener closeListener;
     private JTextField txtMonatJahr;
     private JLabel errLblMonatJahr;
     private JButton btnSuchen;
     private JButton btnAbbrechen;
 
-    public MonatsstatistikKurseController(MonatsstatistikKurseModel monatsstatistikKurseModel, SvmContext svmContext, boolean defaultButtonEnabled) {
+    public MonatsstatistikKurseController(MonatsstatistikKurseModel monatsstatistikKurseModel, boolean defaultButtonEnabled) {
         super(monatsstatistikKurseModel);
         this.monatsstatistikKurseModel = monatsstatistikKurseModel;
-        this.svmContext = svmContext;
         this.defaultButtonEnabled = defaultButtonEnabled;
         this.monatsstatistikKurseModel.addPropertyChangeListener(this);
         this.monatsstatistikKurseModel.addDisableFieldsListener(this);
         this.monatsstatistikKurseModel.addMakeErrorLabelsInvisibleListener(this);
-        this.monatsstatistikKurseModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onMonatsstatistikModelCompleted(completed);
-            }
-        });
+        this.monatsstatistikKurseModel.addCompletedListener(this::onMonatsstatistikModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
     public void setTxtMonatJahr(JTextField txtMonatJahr) {
         this.txtMonatJahr = txtMonatJahr;
         if (!defaultButtonEnabled) {
-            this.txtMonatJahr.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onMonatJahrEvent();
-                }
-            });
+            this.txtMonatJahr.addActionListener(e -> onMonatJahrEvent());
         }
         this.txtMonatJahr.addFocusListener(new FocusAdapter() {
             @Override
@@ -93,28 +79,19 @@ public class MonatsstatistikKurseController extends AbstractController {
         if (isModelValidationMode()) {
             btnSuchen.setEnabled(false);
         }
-        this.btnSuchen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSuchen();
-            }
-        });
+        this.btnSuchen.addActionListener(e -> onSuchen());
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        this.btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        this.btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     public void setErrLblMonatJahr(JLabel errLblMonatJahr) {
         this.errLblMonatJahr = errLblMonatJahr;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void onMonatJahrEvent() {
         LOGGER.trace("MonatsstatistikController Event Monat/Jahr");
         boolean equalFieldAndModelValue = equalsNullSafe(txtMonatJahr.getText(), monatsstatistikKurseModel.getMonatJahr(), MONAT_JAHR_DATE_FORMAT_STRING);
@@ -130,6 +107,7 @@ public class MonatsstatistikKurseController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void setModelMonatJahr() throws SvmValidationException {
         makeErrorLabelInvisible(Field.MONAT_JAHR);
         try {
@@ -138,7 +116,7 @@ public class MonatsstatistikKurseController extends AbstractController {
             LOGGER.trace("MonatsstatistikController setModelMonatJahr RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
                 txtMonatJahr.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }

@@ -7,7 +7,6 @@ import ch.metzenthin.svm.common.dataTypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.SchuelerSuchenCommand;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -18,10 +17,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -80,8 +80,8 @@ public class SchuelerSuchenController extends PersonController {
     private ActionListener closeListener;
     private ActionListener nextPanelListener;
     private final SvmContext svmContext;
-    private SchuelerSuchenModel schuelerSuchenModel;
-    private boolean defaultButtonEnabled;
+    private final SchuelerSuchenModel schuelerSuchenModel;
+    private final boolean defaultButtonEnabled;
     private ActionListener zurueckListener;
 
     public SchuelerSuchenController(SvmContext svmContext, SchuelerSuchenModel schuelerSuchenModel, boolean defaultButtonEnabled) {
@@ -92,12 +92,7 @@ public class SchuelerSuchenController extends PersonController {
         this.schuelerSuchenModel.addPropertyChangeListener(this);
         this.schuelerSuchenModel.addDisableFieldsListener(this);
         this.schuelerSuchenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.schuelerSuchenModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onSchuelerSuchenModelCompleted(completed);
-            }
-        });
+        this.schuelerSuchenModel.addCompletedListener(this::onSchuelerSuchenModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -108,12 +103,7 @@ public class SchuelerSuchenController extends PersonController {
     public void setTxtGeburtsdatumSuchperiode(JTextField txtGeburtsdatumSuchperiode) {
         this.txtGeburtsdatumSuchperiode = txtGeburtsdatumSuchperiode;
         if (!defaultButtonEnabled) {
-            this.txtGeburtsdatumSuchperiode.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onGeburtsdatumSuchperiodeEvent();
-                }
-            });
+            this.txtGeburtsdatumSuchperiode.addActionListener(e -> onGeburtsdatumSuchperiodeEvent());
         }
         this.txtGeburtsdatumSuchperiode.addFocusListener(new FocusAdapter() {
             @Override
@@ -146,7 +136,7 @@ public class SchuelerSuchenController extends PersonController {
             LOGGER.trace("SchuelerSuchenController setModelGeburtsdatum RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
                 txtGeburtsdatumSuchperiode.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -161,12 +151,7 @@ public class SchuelerSuchenController extends PersonController {
     public void setTxtStichtag(JTextField txtStichtag) {
         this.txtStichtag = txtStichtag;
         if (!defaultButtonEnabled) {
-            this.txtStichtag.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onStichtagEvent();
-                }
-            });
+            this.txtStichtag.addActionListener(e -> onStichtagEvent());
         }
         this.txtStichtag.addFocusListener(new FocusAdapter() {
             @Override
@@ -204,7 +189,7 @@ public class SchuelerSuchenController extends PersonController {
             LOGGER.trace("SchuelerSuchenController setModelStichtag RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
                 txtStichtag.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -222,12 +207,7 @@ public class SchuelerSuchenController extends PersonController {
         comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableSchuelerCodes));
         // Model initialisieren mit erstem ComboBox-Wert
         schuelerSuchenModel.setSchuelerCode(selectableSchuelerCodes[0]);
-        this.comboBoxSchuelerCode.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSchuelerCodeSelected();
-            }
-        });
+        this.comboBoxSchuelerCode.addActionListener(e -> onSchuelerCodeSelected());
     }
 
     private void onSchuelerCodeSelected() {
@@ -248,15 +228,10 @@ public class SchuelerSuchenController extends PersonController {
             spinnerSemesterKurs.setModel(spinnerModel);
             return;
         }
-        Semester[] semesters = semesterList.toArray(new Semester[semesterList.size()]);
+        Semester[] semesters = semesterList.toArray(new Semester[0]);
         SpinnerModel spinnerModelSemester = new SpinnerListModel(semesters);
         spinnerSemesterKurs.setModel(spinnerModelSemester);
-        spinnerSemesterKurs.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                onSemesterKursSelected();
-            }
-        });
+        spinnerSemesterKurs.addChangeListener(e -> onSemesterKursSelected());
         // Model initialisieren
         schuelerSuchenModel.setSemesterKurs(schuelerSuchenModel.getSemesterInit(svmContext.getSvmModel()));
     }
@@ -281,12 +256,7 @@ public class SchuelerSuchenController extends PersonController {
         this.comboBoxWochentag = comboBoxWochentag;
         comboBoxWochentag.setModel(new DefaultComboBoxModel<>(Wochentag.values()));
         comboBoxWochentag.removeItem(Wochentag.SONNTAG);
-        comboBoxWochentag.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onWochentagSelected();
-            }
-        });
+        comboBoxWochentag.addActionListener(e -> onWochentagSelected());
         // Wochentag in Model initialisieren mit erstem ComboBox-Wert
         schuelerSuchenModel.setWochentag(Wochentag.values()[0]);
     }
@@ -310,12 +280,7 @@ public class SchuelerSuchenController extends PersonController {
     public void setTxtZeitBeginn(JTextField txtZeitBeginn) {
         this.txtZeitBeginn = txtZeitBeginn;
         if (!defaultButtonEnabled) {
-            this.txtZeitBeginn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onZeitBeginnEvent();
-                }
-            });
+            this.txtZeitBeginn.addActionListener(e -> onZeitBeginnEvent());
         }
         this.txtZeitBeginn.addFocusListener(new FocusAdapter() {
             @Override
@@ -357,12 +322,7 @@ public class SchuelerSuchenController extends PersonController {
         comboBoxLehrkraft.setModel(new DefaultComboBoxModel<>(selectableLehrkraefte));
         // Model initialisieren mit erstem ComboBox-Wert
         schuelerSuchenModel.setMitarbeiter(selectableLehrkraefte[0]);
-        comboBoxLehrkraft.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLehrkraftSelected();
-            }
-        });
+        comboBoxLehrkraft.addActionListener(e -> onLehrkraftSelected());
     }
 
     private void onLehrkraftSelected() {
@@ -390,12 +350,7 @@ public class SchuelerSuchenController extends PersonController {
         if (svmContext.getSvmModel().getSemestersAll().isEmpty()) {
             checkBoxKursFuerSucheBeruecksichtigen.setEnabled(false);
         }
-        this.checkBoxKursFuerSucheBeruecksichtigen.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onKursFuerSucheBeruecksichtigenEvent();
-            }
-        });
+        this.checkBoxKursFuerSucheBeruecksichtigen.addItemListener(e -> onKursFuerSucheBeruecksichtigenEvent());
         // Initialisierung
         schuelerSuchenModel.setKursFuerSucheBeruecksichtigen(false);
     }
@@ -418,15 +373,10 @@ public class SchuelerSuchenController extends PersonController {
             spinnerMaerchen.setModel(spinnerModel);
             return;
         }
-        Maerchen[] maerchens = maerchenList.toArray(new Maerchen[maerchenList.size()]);
+        Maerchen[] maerchens = maerchenList.toArray(new Maerchen[0]);
         SpinnerModel spinnerModelMaerchen = new SpinnerListModel(maerchens);
         spinnerMaerchen.setModel(spinnerModelMaerchen);
-        spinnerMaerchen.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                onMaerchenSelected();
-            }
-        });
+        spinnerMaerchen.addChangeListener(e -> onMaerchenSelected());
         Maerchen maerchenInit = schuelerSuchenModel.getMaerchenInit(svmContext.getSvmModel());
         schuelerSuchenModel.setMaerchen(maerchenInit);
     }
@@ -450,12 +400,7 @@ public class SchuelerSuchenController extends PersonController {
     public void setComboBoxGruppe(JComboBox<Gruppe> comboBoxGruppe) {
         this.comboBoxGruppe = comboBoxGruppe;
         comboBoxGruppe.setModel(new DefaultComboBoxModel<>(Gruppe.values()));
-        comboBoxGruppe.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onGruppeSelected();
-            }
-        });
+        comboBoxGruppe.addActionListener(e -> onGruppeSelected());
         // Gruppe in Model initialisieren mit erstem ComboBox-Wert
         schuelerSuchenModel.setGruppe(Gruppe.values()[0]);
     }
@@ -520,12 +465,7 @@ public class SchuelerSuchenController extends PersonController {
         comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableElternmithilfeCodes));
         // Model initialisieren mit erstem ComboBox-Wert
         schuelerSuchenModel.setElternmithilfeCode(selectableElternmithilfeCodes[0]);
-        this.comboBoxElternmithilfeCode.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onElternmithilfeCodeSelected();
-            }
-        });
+        this.comboBoxElternmithilfeCode.addActionListener(e -> onElternmithilfeCodeSelected());
     }
 
     private void onElternmithilfeCodeSelected() {
@@ -540,12 +480,7 @@ public class SchuelerSuchenController extends PersonController {
     public void setTxtKuchenVorstellung(JTextField txtKuchenVorstellung) {
         this.txtKuchenVorstellung = txtKuchenVorstellung;
         if (!defaultButtonEnabled) {
-            this.txtKuchenVorstellung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onKuchenVorstellungEvent();
-                }
-            });
+            this.txtKuchenVorstellung.addActionListener(e -> onKuchenVorstellungEvent());
         }
         this.txtKuchenVorstellung.addFocusListener(new FocusAdapter() {
             @Override
@@ -584,12 +519,7 @@ public class SchuelerSuchenController extends PersonController {
     public void setTxtZusatzattributMaerchen(JTextField txtZusatzattributMaerchen) {
         this.txtZusatzattributMaerchen = txtZusatzattributMaerchen;
         if (!defaultButtonEnabled) {
-            this.txtZusatzattributMaerchen.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onZusatzattributMaerchenEvent();
-                }
-            });
+            this.txtZusatzattributMaerchen.addActionListener(e -> onZusatzattributMaerchenEvent());
         }
         this.txtZusatzattributMaerchen.addFocusListener(new FocusAdapter() {
             @Override
@@ -630,12 +560,7 @@ public class SchuelerSuchenController extends PersonController {
         if (svmContext.getSvmModel().getMaerchensAll().isEmpty()) {
             checkBoxMaerchenFuerSucheBeruecksichtigen.setEnabled(false);
         }
-        this.checkBoxMaerchenFuerSucheBeruecksichtigen.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onMaerchenFuerSucheBeruecksichtigenEvent();
-            }
-        });
+        this.checkBoxMaerchenFuerSucheBeruecksichtigen.addItemListener(e -> onMaerchenFuerSucheBeruecksichtigenEvent());
         // Initialisierung
         schuelerSuchenModel.setMaerchenFuerSucheBeruecksichtigen(false);
     }
@@ -723,7 +648,7 @@ public class SchuelerSuchenController extends PersonController {
         this.radioBtnDispensiert.addActionListener(radioBtnGroupDispensationListener);
         this.radioBtnNichtDispensiert.addActionListener(radioBtnGroupDispensationListener);
         this.radioBtnDispensationAlle.addActionListener(radioBtnGroupDispensationListener);
-        // Initialisieren mit alle
+        // Initialisieren mit "alle"
         schuelerSuchenModel.setDispensation(SchuelerSuchenModel.DispensationSelected.ALLE);
     }
 
@@ -740,7 +665,7 @@ public class SchuelerSuchenController extends PersonController {
         this.radioBtnWeiblich.addActionListener(radioBtnGroupGeschlechtListener);
         this.radioBtnMaennlich.addActionListener(radioBtnGroupGeschlechtListener);
         this.radioBtnGeschlechtAlle.addActionListener(radioBtnGroupGeschlechtListener);
-        // Initialisieren mit alle
+        // Initialisieren mit "alle"
         schuelerSuchenModel.setGeschlecht(SchuelerSuchenModel.GeschlechtSelected.ALLE);
     }
 
@@ -749,12 +674,7 @@ public class SchuelerSuchenController extends PersonController {
         if (isModelValidationMode()) {
             btnSuchen.setEnabled(false);
         }
-        this.btnSuchen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSuchen();
-            }
-        });
+        this.btnSuchen.addActionListener(e -> onSuchen());
     }
 
     private void onSuchen() {
@@ -813,12 +733,7 @@ public class SchuelerSuchenController extends PersonController {
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        this.btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        this.btnAbbrechen.addActionListener(e -> onAbbrechen());
         btnAbbrechen.setVisible(false); // Ist Startseite. Such-Kritierien abbrechen über Menü.
     }
 
@@ -967,6 +882,7 @@ public class SchuelerSuchenController extends PersonController {
         return maerchenFields;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void setWaitCursorAllComponents() {
         Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         mainPanel.setCursor(waitCursor);
@@ -988,6 +904,7 @@ public class SchuelerSuchenController extends PersonController {
         txtAreaRollen.setCursor(waitCursor);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void resetCursorAllComponents() {
         mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         // Textfields müssen separat gesetzt werden

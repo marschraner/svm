@@ -39,7 +39,7 @@ public class EmailSchuelerListeDialog extends JDialog {
 
     private void createEmailController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel) {
         EmailSchuelerListeModel emailSchuelerListeModel = svmContext.getModelFactory().createEmailSchuelerListeModel();
-        EmailSchuelerListeController emailSchuelerListeController = new EmailSchuelerListeController(emailSchuelerListeModel, svmContext, schuelerSuchenTableModel);
+        EmailSchuelerListeController emailSchuelerListeController = new EmailSchuelerListeController(emailSchuelerListeModel, schuelerSuchenTableModel);
         emailSchuelerListeController.setEmailSchuelerListeDialog(this);
         emailSchuelerListeController.setContentPane(contentPane);
         emailSchuelerListeController.setComboBoxEmailSchuelerListeEmpfaengerGruppe(comboBoxEmailSchuelerListeEmpfaengerGruppe);

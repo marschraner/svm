@@ -1,12 +1,10 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.*;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CreateListeCommand;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.ListenExportModel;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
@@ -36,14 +34,13 @@ public class ListenExportController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private ListenExportModel listenExportModel;
-    private SvmContext svmContext;
+    private final ListenExportModel listenExportModel;
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final MitarbeitersTableModel mitarbeitersTableModel;
     private final KurseTableModel kurseTableModel;
-    private SemesterrechnungenTableModel semesterrechnungenTableModel;
+    private final SemesterrechnungenTableModel semesterrechnungenTableModel;
     private final ListenExportTyp listenExportTyp;
-    private boolean defaultButtonEnabled;
+    private final boolean defaultButtonEnabled;
     private JDialog listenExportDialog;
     private JComboBox<Listentyp> comboBoxListentyp;
     private JTextField txtTitel;
@@ -52,10 +49,9 @@ public class ListenExportController extends AbstractController {
     private JButton btnOk;
     private JButton btnAbbrechen;
 
-    public ListenExportController(ListenExportModel listenExportModel, SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, MitarbeitersTableModel mitarbeitersTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel, ListenExportTyp listenExportTyp, boolean defaultButtonEnabled) {
+    public ListenExportController(ListenExportModel listenExportModel, SchuelerSuchenTableModel schuelerSuchenTableModel, MitarbeitersTableModel mitarbeitersTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel, ListenExportTyp listenExportTyp, boolean defaultButtonEnabled) {
         super(listenExportModel);
         this.listenExportModel = listenExportModel;
-        this.svmContext = svmContext;
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.mitarbeitersTableModel = mitarbeitersTableModel;
         this.kurseTableModel = kurseTableModel;
@@ -65,12 +61,7 @@ public class ListenExportController extends AbstractController {
         this.listenExportModel.addPropertyChangeListener(this);
         this.listenExportModel.addDisableFieldsListener(this);
         this.listenExportModel.addMakeErrorLabelsInvisibleListener(this);
-        this.listenExportModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onListenExportModelCompleted(completed);
-            }
-        });
+        this.listenExportModel.addCompletedListener(this::onListenExportModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -91,22 +82,13 @@ public class ListenExportController extends AbstractController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setComboBoxListentyp(JComboBox<Listentyp> comboBoxListentyp) {
         this.comboBoxListentyp = comboBoxListentyp;
         comboBoxListentyp.setModel(new DefaultComboBoxModel<>(Listentyp.values()));
-        comboBoxListentyp.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onListentypSelected();
-            }
-        });
+        comboBoxListentyp.addActionListener(e -> onListentypSelected());
         initComboBoxListentyp();
     }
 
@@ -133,7 +115,7 @@ public class ListenExportController extends AbstractController {
             LOGGER.trace("KursErfassenController setModelListentyp RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxListentyp.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -243,12 +225,7 @@ public class ListenExportController extends AbstractController {
             this.txtTitel.setEnabled(false);
         }
         if (!defaultButtonEnabled) {
-            this.txtTitel.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onTitelEvent(true);
-                }
-            });
+            this.txtTitel.addActionListener(e -> onTitelEvent(true));
         }
         this.txtTitel.addFocusListener(new FocusAdapter() {
             @Override
@@ -291,7 +268,7 @@ public class ListenExportController extends AbstractController {
             LOGGER.trace("ListenExportController setModelTitel RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtTitel.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -316,12 +293,7 @@ public class ListenExportController extends AbstractController {
         if (isModelValidationMode()) {
             btnOk.setEnabled(false);
         }
-        this.btnOk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onOk();
-            }
-        });
+        this.btnOk.addActionListener(e -> onOk());
     }
 
     private void onOk() {
@@ -376,7 +348,7 @@ public class ListenExportController extends AbstractController {
                 return;
             }
         }
-        // Ouput-File erzeugen
+        // Output-File erzeugen
         final JDialog dialog = new JDialog(listenExportDialog);
         dialog.setModal(true);
         // Kein Maximierung-Button
@@ -389,7 +361,7 @@ public class ListenExportController extends AbstractController {
         // Public method to center the dialog after calling pack()
         dialog.pack();
         dialog.setLocationRelativeTo(listenExportDialog);
-        SwingWorker<CreateListeCommand.Result, String> worker = new SwingWorker<CreateListeCommand.Result, String>() {
+        SwingWorker<CreateListeCommand.Result, String> worker = new SwingWorker<>() {
             @Override
             protected CreateListeCommand.Result doInBackground() {
                 return listenExportModel.createListenFile(outputFile, schuelerSuchenTableModel, mitarbeitersTableModel, kurseTableModel, semesterrechnungenTableModel);
@@ -407,17 +379,14 @@ public class ListenExportController extends AbstractController {
                 }
                 if (result != null) {
                     switch (result) {
-                        case TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR:
-                            JOptionPane.showMessageDialog(listenExportDialog, "Template-Datei '" + listenExportModel.getTemplateFile() + "' nicht gefunden." +
-                                    "\nBitte Template-Datei erstellen.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                            break;
-                        case FEHLER_BEIM_LESEN_DES_PROPERTY_FILE:
-                            JOptionPane.showMessageDialog(listenExportDialog, "Fehler beim Lesen der Svm-Property-Datei '" + SvmProperties.SVM_PROPERTIES_FILE_NAME
-                                    + "'. \nDie Datei existiert nicht oder der Eintrag für die Template-Datei fehlt. Bitte Datei überprüfen.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                            break;
-                        case LISTE_ERFOLGREICH_ERSTELLT:
-                            JOptionPane.showMessageDialog(listenExportDialog, "Die Liste wurde erfolgreich erstellt.", "Liste erfolgreich erstellt", JOptionPane.INFORMATION_MESSAGE);
-                            break;
+                        case TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR ->
+                                JOptionPane.showMessageDialog(listenExportDialog, "Template-Datei '" + listenExportModel.getTemplateFile() + "' nicht gefunden." +
+                                        "\nBitte Template-Datei erstellen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                        case FEHLER_BEIM_LESEN_DES_PROPERTY_FILE ->
+                                JOptionPane.showMessageDialog(listenExportDialog, "Fehler beim Lesen der Svm-Property-Datei '" + SvmProperties.SVM_PROPERTIES_FILE_NAME
+                                        + "'. \nDie Datei existiert nicht oder der Eintrag für die Template-Datei fehlt. Bitte Datei überprüfen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                        case LISTE_ERFOLGREICH_ERSTELLT ->
+                                JOptionPane.showMessageDialog(listenExportDialog, "Die Liste wurde erfolgreich erstellt.", "Liste erfolgreich erstellt", JOptionPane.INFORMATION_MESSAGE);
                     }
                 } else {
                     JOptionPane.showMessageDialog(listenExportDialog, "Die Liste konnte nicht erstellt werden.", "Es konnte kein Resultat ermittelt werden.", JOptionPane.ERROR_MESSAGE);
@@ -447,12 +416,7 @@ public class ListenExportController extends AbstractController {
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

@@ -1,11 +1,9 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.RechnungsdatumErfassenModel;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
@@ -32,20 +30,18 @@ public class RechnungsdatumErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private SemesterrechnungenTableModel semesterrechnungenTableModel;
-    private RechnungsdatumErfassenModel rechnungsdatumErfassenModel;
-    private Rechnungstyp rechnungstyp;
-    private boolean defaultButtonEnabled;
-    private final SvmContext svmContext;
+    private final SemesterrechnungenTableModel semesterrechnungenTableModel;
+    private final RechnungsdatumErfassenModel rechnungsdatumErfassenModel;
+    private final Rechnungstyp rechnungstyp;
+    private final boolean defaultButtonEnabled;
     private JDialog rechnungsdatumErfassenDialog;
     private JTextField txtRechnungsdatum;
     private JLabel errLblRechnungsdatum;
     private JButton btnOk;
     private Exception swingWorkerException;
 
-    public RechnungsdatumErfassenController(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel, RechnungsdatumErfassenModel rechnungsdatumErfassenModel, Rechnungstyp rechnungstyp, boolean defaultButtonEnabled) {
+    public RechnungsdatumErfassenController(SemesterrechnungenTableModel semesterrechnungenTableModel, RechnungsdatumErfassenModel rechnungsdatumErfassenModel, Rechnungstyp rechnungstyp, boolean defaultButtonEnabled) {
         super(rechnungsdatumErfassenModel);
-        this.svmContext = svmContext;
         this.semesterrechnungenTableModel = semesterrechnungenTableModel;
         this.rechnungsdatumErfassenModel = rechnungsdatumErfassenModel;
         this.rechnungstyp = rechnungstyp;
@@ -53,12 +49,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
         this.rechnungsdatumErfassenModel.addPropertyChangeListener(this);
         this.rechnungsdatumErfassenModel.addDisableFieldsListener(this);
         this.rechnungsdatumErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.rechnungsdatumErfassenModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onRechnungsdatumErfassenModelCompleted(completed);
-            }
-        });
+        this.rechnungsdatumErfassenModel.addCompletedListener(this::onRechnungsdatumErfassenModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -79,22 +70,13 @@ public class RechnungsdatumErfassenController extends AbstractController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setTxtRechnungsdatum(JTextField txtRechnungsdatum) {
         this.txtRechnungsdatum = txtRechnungsdatum;
         if (!defaultButtonEnabled) {
-            this.txtRechnungsdatum.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onRechnungsdatumEvent(true);
-                }
-            });
+            this.txtRechnungsdatum.addActionListener(e -> onRechnungsdatumEvent(true));
         }
         this.txtRechnungsdatum.addFocusListener(new FocusAdapter() {
             @Override
@@ -132,7 +114,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
             LOGGER.trace("RechnungsdatumErfassenController setModelRechnungsdatum RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtRechnungsdatum.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -153,29 +135,20 @@ public class RechnungsdatumErfassenController extends AbstractController {
         if (isModelValidationMode()) {
             btnOk.setEnabled(false);
         }
-        this.btnOk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onOk();
-            }
-        });
+        this.btnOk.addActionListener(e -> onOk());
     }
 
+    @SuppressWarnings("TextBlockMigration")
     private void onOk() {
         // Warnung
         Object[] optionsWarnung = {"Fortfahren", "Abbrechen"};
-        String warningMessage = "";
-        switch (rechnungstyp) {
-            case VORRECHNUNG:
-                warningMessage = "Allfällige frühere Vorrechnungsdatum-Einträge werden \n" +
-                        "mit dem neuen Rechnungsdatum überschrieben. Fortfahren?";
-                break;
-            case NACHRECHNUNG:
-                warningMessage = "Allfällige frühere Nachrechnungsdatum-Einträge werden mit dem neuen \n" +
-                        "Rechnungsdatum überschrieben und bereits getätigte Zahlungen der \n" +
-                        "Vorrechnungen in die Nachrechnungen kopiert. Fortfahren?";
-                break;
-        }
+        String warningMessage = switch (rechnungstyp) {
+            case VORRECHNUNG -> "Allfällige frühere Vorrechnungsdatum-Einträge werden \n" +
+                    "mit dem neuen Rechnungsdatum überschrieben. Fortfahren?";
+            case NACHRECHNUNG -> "Allfällige frühere Nachrechnungsdatum-Einträge werden mit dem neuen \n" +
+                    "Rechnungsdatum überschrieben und bereits getätigte Zahlungen der \n" +
+                    "Vorrechnungen in die Nachrechnungen kopiert. Fortfahren?";
+        };
         int n = JOptionPane.showOptionDialog(
                 null,
                 warningMessage,
@@ -194,15 +167,10 @@ public class RechnungsdatumErfassenController extends AbstractController {
             // Schliessen soll keinen Effekt haben
             dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             dialog.setTitle("Rechnungsdatum wird gesetzt");
-            String infoMessage = "";
-            switch (rechnungstyp) {
-                case VORRECHNUNG:
-                    infoMessage = "Das Rechnungsdatum wird gesetzt. Bitte warten ...";
-                    break;
-                case NACHRECHNUNG:
-                    infoMessage = "Das Rechnungsdatum wird gesetzt und Zahlungen werden kopiert. Bitte warten ...";
-                    break;
-            }
+            String infoMessage = switch (rechnungstyp) {
+                case VORRECHNUNG -> "Das Rechnungsdatum wird gesetzt. Bitte warten ...";
+                case NACHRECHNUNG -> "Das Rechnungsdatum wird gesetzt und Zahlungen werden kopiert. Bitte warten ...";
+            };
 
             final JOptionPane optionPane = new JOptionPane(infoMessage, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
             dialog.setContentPane(optionPane);
@@ -210,7 +178,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
             dialog.pack();
             dialog.setLocationRelativeTo(null);
             swingWorkerException = null;
-            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            SwingWorker<Void, Void> worker = new SwingWorker<>() {
                 @Override
                 protected Void doInBackground() {
                     try {
@@ -253,12 +221,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

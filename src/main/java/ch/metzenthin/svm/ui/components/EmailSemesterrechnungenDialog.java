@@ -39,7 +39,7 @@ public class EmailSemesterrechnungenDialog extends JDialog {
 
     private void createEmailSemesterrechnungenController(SvmContext svmContext, SemesterrechnungenTableModel semesterrechnungenTableModel) {
         EmailSemesterrechnungenModel emailSemesterrechnungenModel = svmContext.getModelFactory().createEmailSemesterrechnungenModel();
-        EmailSemesterrechnungenController emailSemesterrechnungenController = new EmailSemesterrechnungenController(emailSemesterrechnungenModel, svmContext, semesterrechnungenTableModel);
+        EmailSemesterrechnungenController emailSemesterrechnungenController = new EmailSemesterrechnungenController(emailSemesterrechnungenModel, semesterrechnungenTableModel);
         emailSemesterrechnungenController.setEmailSemesterrechnungenDialog(this);
         emailSemesterrechnungenController.setContentPane(contentPane);
         emailSemesterrechnungenController.setCheckBoxMutterUndOderVater(checkboxMutterUndOderVater);

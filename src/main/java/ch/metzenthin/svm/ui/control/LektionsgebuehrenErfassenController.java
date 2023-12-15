@@ -4,7 +4,6 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenErfassenModel;
 import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
 import org.apache.logging.log4j.LogManager;
@@ -27,10 +26,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private LektionsgebuehrenTableModel lektionsgebuehrenTableModel;
-    private LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel;
-    private boolean isBearbeiten;
-    private boolean defaultButtonEnabled;
+    private final LektionsgebuehrenTableModel lektionsgebuehrenTableModel;
+    private final LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel;
+    private final boolean isBearbeiten;
+    private final boolean defaultButtonEnabled;
     private final SvmContext svmContext;
     private JDialog lektionsgebuehrenErfassenDialog;
     private JTextField txtLektionslaenge;
@@ -59,12 +58,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         this.lektionsgebuehrenErfassenModel.addPropertyChangeListener(this);
         this.lektionsgebuehrenErfassenModel.addDisableFieldsListener(this);
         this.lektionsgebuehrenErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.lektionsgebuehrenErfassenModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onLektionsgebuehrenErfassenModelCompleted(completed);
-            }
-        });
+        this.lektionsgebuehrenErfassenModel.addCompletedListener(this::onLektionsgebuehrenErfassenModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -85,11 +79,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setTxtLektionslaenge(JTextField txtLektionslaenge) {
@@ -99,12 +89,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             this.txtLektionslaenge.setEnabled(false);
         }
         if (!defaultButtonEnabled) {
-            this.txtLektionslaenge.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onLektionslaengeEvent(true);
-                }
-            });
+            this.txtLektionslaenge.addActionListener(e -> onLektionslaengeEvent(true));
         }
         this.txtLektionslaenge.addFocusListener(new FocusAdapter() {
             @Override
@@ -137,7 +122,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             LOGGER.trace("LektionsgebuehrenErfassenController setModelLektionslaenge RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtLektionslaenge.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -152,12 +137,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     public void setTxtBetrag1Kind(JTextField txtBetrag1Kind) {
         this.txtBetrag1Kind = txtBetrag1Kind;
         if (!defaultButtonEnabled) {
-            this.txtBetrag1Kind.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBetrag1KindEvent(true);
-                }
-            });
+            this.txtBetrag1Kind.addActionListener(e -> onBetrag1KindEvent(true));
         }
         this.txtBetrag1Kind.addFocusListener(new FocusAdapter() {
             @Override
@@ -190,7 +170,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag1Kind RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBetrag1Kind.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -205,12 +185,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     public void setTxtBetrag2Kinder(JTextField txtBetrag2Kinder) {
         this.txtBetrag2Kinder = txtBetrag2Kinder;
         if (!defaultButtonEnabled) {
-            this.txtBetrag2Kinder.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBetrag2KinderEvent(true);
-                }
-            });
+            this.txtBetrag2Kinder.addActionListener(e -> onBetrag2KinderEvent(true));
         }
         this.txtBetrag2Kinder.addFocusListener(new FocusAdapter() {
             @Override
@@ -243,7 +218,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag2Kinder RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBetrag2Kinder.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -258,12 +233,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     public void setTxtBetrag3Kinder(JTextField txtBetrag3Kinder) {
         this.txtBetrag3Kinder = txtBetrag3Kinder;
         if (!defaultButtonEnabled) {
-            this.txtBetrag3Kinder.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBetrag3KinderEvent(true);
-                }
-            });
+            this.txtBetrag3Kinder.addActionListener(e -> onBetrag3KinderEvent(true));
         }
         this.txtBetrag3Kinder.addFocusListener(new FocusAdapter() {
             @Override
@@ -296,7 +266,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag3Kinder RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBetrag3Kinder.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -311,12 +281,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     public void setTxtBetrag4Kinder(JTextField txtBetrag4Kinder) {
         this.txtBetrag4Kinder = txtBetrag4Kinder;
         if (!defaultButtonEnabled) {
-            this.txtBetrag4Kinder.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBetrag4KinderEvent(true);
-                }
-            });
+            this.txtBetrag4Kinder.addActionListener(e -> onBetrag4KinderEvent(true));
         }
         this.txtBetrag4Kinder.addFocusListener(new FocusAdapter() {
             @Override
@@ -349,7 +314,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag4Kinder RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBetrag4Kinder.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -364,12 +329,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     public void setTxtBetrag5Kinder(JTextField txtBetrag5Kinder) {
         this.txtBetrag5Kinder = txtBetrag5Kinder;
         if (!defaultButtonEnabled) {
-            this.txtBetrag5Kinder.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBetrag5KinderEvent(true);
-                }
-            });
+            this.txtBetrag5Kinder.addActionListener(e -> onBetrag5KinderEvent(true));
         }
         this.txtBetrag5Kinder.addFocusListener(new FocusAdapter() {
             @Override
@@ -402,7 +362,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag5Kinder RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBetrag5Kinder.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -417,12 +377,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     public void setTxtBetrag6Kinder(JTextField txtBetrag6Kinder) {
         this.txtBetrag6Kinder = txtBetrag6Kinder;
         if (!defaultButtonEnabled) {
-            this.txtBetrag6Kinder.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBetrag6KinderEvent(true);
-                }
-            });
+            this.txtBetrag6Kinder.addActionListener(e -> onBetrag6KinderEvent(true));
         }
         this.txtBetrag6Kinder.addFocusListener(new FocusAdapter() {
             @Override
@@ -455,7 +410,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag6Kinder RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBetrag6Kinder.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -500,12 +455,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         if (isModelValidationMode()) {
             btnSpeichern.setEnabled(false);
         }
-        this.btnSpeichern.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSpeichern();
-            }
-        });
+        this.btnSpeichern.addActionListener(e -> onSpeichern());
     }
 
     private void onSpeichern() {
@@ -523,12 +473,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

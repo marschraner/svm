@@ -8,8 +8,6 @@ import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
 import ch.metzenthin.svm.ui.components.KursortErfassenDialog;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -37,6 +35,7 @@ public class KursorteController {
         this.svmContext = svmContext;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public void setKursorteTable(JTable kursorteTable) {
         this.kursorteTable = kursorteTable;
         KursorteTableData kursorteTableData = new KursorteTableData(svmContext.getSvmModel().getKursorteAll());
@@ -44,14 +43,11 @@ public class KursorteController {
         kursorteTable.setModel(kursorteTableModel);
         setColumnCellRenderers(kursorteTable, kursorteTableModel);
         setJTableColumnWidthAsPercentages(kursorteTable, 0.75, 0.25);
-        kursorteTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-                onListSelection();
+        kursorteTable.getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()) {
+                return;
             }
+            onListSelection();
         });
         kursorteTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -64,12 +60,7 @@ public class KursorteController {
 
     public void setBtnNeu(JButton btnNeu) {
         this.btnNeu = btnNeu;
-        btnNeu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNeu();
-            }
-        });
+        btnNeu.addActionListener(e -> onNeu());
     }
 
     private void onNeu() {
@@ -84,12 +75,7 @@ public class KursorteController {
     public void setBtnBearbeiten(JButton btnBearbeiten) {
         this.btnBearbeiten = btnBearbeiten;
         enableBtnBearbeiten(false);
-        btnBearbeiten.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBearbeiten();
-            }
-        });
+        btnBearbeiten.addActionListener(e -> onBearbeiten());
     }
 
     private void enableBtnBearbeiten(boolean enabled) {
@@ -108,12 +94,7 @@ public class KursorteController {
     public void setBtnLoeschen(JButton btnLoeschen) {
         this.btnLoeschen = btnLoeschen;
         enableBtnLoeschen(false);
-        btnLoeschen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLoeschen();
-            }
-        });
+        btnLoeschen.addActionListener(e -> onLoeschen());
     }
 
     private void enableBtnLoeschen(boolean enabled) {
@@ -135,14 +116,14 @@ public class KursorteController {
         if (n == 0) {
             DeleteKursortCommand.Result result = kursorteModel.eintragLoeschen(svmContext, kursorteTableModel, kursorteTable.getSelectedRow());
             switch (result) {
-                case KURSORT_VON_KURS_REFERENZIERT:
+                case KURSORT_VON_KURS_REFERENZIERT -> {
                     JOptionPane.showMessageDialog(null, "Der Kursort wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnLoeschen.setFocusPainted(false);
-                    break;
-                case LOESCHEN_ERFOLGREICH:
+                }
+                case LOESCHEN_ERFOLGREICH -> {
                     kursorteTableModel.fireTableDataChanged();
                     kursorteTable.addNotify();
-                    break;
+                }
             }
         }
         btnLoeschen.setFocusPainted(false);
@@ -158,12 +139,7 @@ public class KursorteController {
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

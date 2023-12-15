@@ -3,7 +3,6 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
 import ch.metzenthin.svm.domain.model.KurseTableData;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -13,8 +12,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,7 +33,7 @@ public class KurseSemesterwahlController extends AbstractController {
     private JPanel mainPanel;
     private ActionListener closeListener;
     private ActionListener nextPanelListener;
-    private KurseSemesterwahlModel kurseSemesterwahlModel;
+    private final KurseSemesterwahlModel kurseSemesterwahlModel;
     private final SvmContext svmContext;
     private JSpinner spinnerSemester;
     private JButton btnOk;
@@ -49,12 +46,7 @@ public class KurseSemesterwahlController extends AbstractController {
         this.kurseSemesterwahlModel.addPropertyChangeListener(this);
         this.kurseSemesterwahlModel.addDisableFieldsListener(this);
         this.kurseSemesterwahlModel.addMakeErrorLabelsInvisibleListener(this);
-        this.kurseSemesterwahlModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onKurseSuchenModelCompleted(completed);
-            }
-        });
+        this.kurseSemesterwahlModel.addCompletedListener(this::onKurseSuchenModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -76,15 +68,10 @@ public class KurseSemesterwahlController extends AbstractController {
             spinnerSemester.setEnabled(false);
             return;
         }
-        Semester[] semesters = semesterList.toArray(new Semester[semesterList.size()]);
+        Semester[] semesters = semesterList.toArray(new Semester[0]);
         SpinnerModel spinnerModelSemester = new SpinnerListModel(semesters);
         spinnerSemester.setModel(spinnerModelSemester);
-        spinnerSemester.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                onSemesterSelected();
-            }
-        });
+        spinnerSemester.addChangeListener(e -> onSemesterSelected());
         // Model initialisieren
         kurseSemesterwahlModel.setSemester(kurseSemesterwahlModel.getInitSemester(svmContext.getSvmModel()));
     }
@@ -104,18 +91,13 @@ public class KurseSemesterwahlController extends AbstractController {
         makeErrorLabelInvisible(Field.SEMESTER_KURS);
         kurseSemesterwahlModel.setSemester((Semester) spinnerSemester.getValue());
     }
-    
+
     public void setBtnOk(JButton btnOk) {
         this.btnOk = btnOk;
         if (svmContext.getSvmModel().getSemestersAll().isEmpty() || isModelValidationMode()) {
             btnOk.setEnabled(false);
         }
-        this.btnOk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSuchen();
-            }
-        });
+        this.btnOk.addActionListener(e -> onSuchen());
     }
 
     private void onSuchen() {
@@ -136,12 +118,7 @@ public class KurseSemesterwahlController extends AbstractController {
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        this.btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        this.btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {
@@ -168,13 +145,13 @@ public class KurseSemesterwahlController extends AbstractController {
         this.nextPanelListener = nextPanelListener;
     }
 
-    private void setWaitCursorAllComponents () {
+    private void setWaitCursorAllComponents() {
         Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         mainPanel.setCursor(waitCursor);
         // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
     }
 
-    private void resetCursorAllComponents () {
+    private void resetCursorAllComponents() {
         mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
     }
@@ -188,18 +165,23 @@ public class KurseSemesterwahlController extends AbstractController {
     }
 
     @Override
-    void validateFields() throws SvmValidationException {}
+    void validateFields() throws SvmValidationException {
+    }
 
     @Override
-    void showErrMsg(SvmValidationException e) {}
+    void showErrMsg(SvmValidationException e) {
+    }
 
     @Override
-    void showErrMsgAsToolTip(SvmValidationException e) {}
+    void showErrMsgAsToolTip(SvmValidationException e) {
+    }
 
     @Override
-    public void makeErrorLabelsInvisible(Set<Field> fields) {}
+    public void makeErrorLabelsInvisible(Set<Field> fields) {
+    }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 }

@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.EmailSchuelerListeEmpfaengerGruppe;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -11,7 +10,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 
@@ -28,7 +29,6 @@ public class EmailSchuelerListeController extends AbstractController {
     private static final boolean MODEL_VALIDATION_MODE = false;
 
     private final EmailSchuelerListeModel emailSchuelerListeModel;
-    private final SvmContext svmContext;
     private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private JDialog emailDialog;
     private JCheckBox checkBoxBlindkopien;
@@ -36,10 +36,9 @@ public class EmailSchuelerListeController extends AbstractController {
     private JButton btnOk;
     private EmailSchuelerListeEmpfaengerGruppe[] selectableEmailSchuelerListeEmpfaengerGruppen;
 
-    public EmailSchuelerListeController(EmailSchuelerListeModel emailSchuelerListeModel, SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel) {
+    public EmailSchuelerListeController(EmailSchuelerListeModel emailSchuelerListeModel, SchuelerSuchenTableModel schuelerSuchenTableModel) {
         super(emailSchuelerListeModel);
         this.emailSchuelerListeModel = emailSchuelerListeModel;
-        this.svmContext = svmContext;
         this.schuelerSuchenTableModel = schuelerSuchenTableModel;
         this.emailSchuelerListeModel.addPropertyChangeListener(this);
         this.emailSchuelerListeModel.addDisableFieldsListener(this);
@@ -64,11 +63,7 @@ public class EmailSchuelerListeController extends AbstractController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setComboBoxEmailSchuelerListeEmpfaengerGruppe(JComboBox<EmailSchuelerListeEmpfaengerGruppe> comboBoxEmailSchuelerListeEmpfaengerGruppe) {
@@ -79,12 +74,7 @@ public class EmailSchuelerListeController extends AbstractController {
         if (selectableEmailSchuelerListeEmpfaengerGruppen.length > 0) {
             emailSchuelerListeModel.setEmailSchuelerListeEmpfaengerGruppe(selectableEmailSchuelerListeEmpfaengerGruppen[0]);
         }
-        comboBoxEmailSchuelerListeEmpfaengerGruppe.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onEmailSchuelerListeEmpfaengerGruppeSelected();
-            }
-        });
+        comboBoxEmailSchuelerListeEmpfaengerGruppe.addActionListener(e -> onEmailSchuelerListeEmpfaengerGruppeSelected());
     }
 
     private void onEmailSchuelerListeEmpfaengerGruppeSelected() {
@@ -104,12 +94,7 @@ public class EmailSchuelerListeController extends AbstractController {
 
     public void setCheckBoxBlindkopien(JCheckBox checkBoxBlindkopien) {
         this.checkBoxBlindkopien = checkBoxBlindkopien;
-        this.checkBoxBlindkopien.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onBlindkopienEvent();
-            }
-        });
+        this.checkBoxBlindkopien.addItemListener(e -> onBlindkopienEvent());
         // Initialisierung
         emailSchuelerListeModel.setBlindkopien(true);
     }
@@ -132,12 +117,7 @@ public class EmailSchuelerListeController extends AbstractController {
         if (isModelValidationMode()) {
             btnOk.setEnabled(false);
         }
-        this.btnOk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onOk();
-            }
-        });
+        this.btnOk.addActionListener(e -> onOk());
     }
 
     @SuppressWarnings("DuplicatedCode")
@@ -172,12 +152,7 @@ public class EmailSchuelerListeController extends AbstractController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

@@ -9,8 +9,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
@@ -47,8 +45,8 @@ public abstract class PersonController extends AbstractController {
     private JLabel errLblEmail;
     private JLabel errLblGeburtsdatum;
 
-    private PersonModel personModel;
-    private boolean defaultButtonEnabled;
+    private final PersonModel personModel;
+    private final boolean defaultButtonEnabled;
 
     public PersonController(PersonModel personModel, boolean defaultButtonEnabled) {
         super(personModel);
@@ -59,12 +57,7 @@ public abstract class PersonController extends AbstractController {
     public void setComboBoxAnrede(JComboBox<Anrede> comboBoxAnrede) {
         this.comboBoxAnrede = comboBoxAnrede;
         comboBoxAnrede.setModel(new DefaultComboBoxModel<>(Anrede.values()));
-        comboBoxAnrede.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAnredeSelected();
-            }
-        });
+        comboBoxAnrede.addActionListener(e -> onAnredeSelected());
         // Anrede: KEINE nicht anzeigen:
         comboBoxAnrede.removeItem(Anrede.KEINE);
         // Leeren ComboBox-Wert anzeigen
@@ -74,12 +67,7 @@ public abstract class PersonController extends AbstractController {
     public void setTxtNachname(JTextField txtNachname) {
         this.txtNachname = txtNachname;
         if (!defaultButtonEnabled) {
-            this.txtNachname.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onNachnameEvent(true);
-                }
-            });
+            this.txtNachname.addActionListener(e -> onNachnameEvent(true));
         }
         this.txtNachname.addFocusListener(new FocusAdapter() {
             @Override
@@ -92,12 +80,7 @@ public abstract class PersonController extends AbstractController {
     public void setTxtVorname(JTextField txtVorname) {
         this.txtVorname = txtVorname;
         if (!defaultButtonEnabled) {
-            this.txtVorname.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onVornameEvent(true);
-                }
-            });
+            this.txtVorname.addActionListener(e -> onVornameEvent(true));
         }
         this.txtVorname.addFocusListener(new FocusAdapter() {
             @Override
@@ -110,12 +93,7 @@ public abstract class PersonController extends AbstractController {
     public void setTxtStrasseHausnummer(JTextField txtStrasseHausnummer) {
         this.txtStrasseHausnummer = txtStrasseHausnummer;
         if (!defaultButtonEnabled) {
-            this.txtStrasseHausnummer.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onStrasseHausnummerEvent(true);
-                }
-            });
+            this.txtStrasseHausnummer.addActionListener(e -> onStrasseHausnummerEvent(true));
         }
         this.txtStrasseHausnummer.addFocusListener(new FocusAdapter() {
             @Override
@@ -128,12 +106,7 @@ public abstract class PersonController extends AbstractController {
     public void setTxtPlz(JTextField txtPlz) {
         this.txtPlz = txtPlz;
         if (!defaultButtonEnabled) {
-            this.txtPlz.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onPlzEvent(true);
-                }
-            });
+            this.txtPlz.addActionListener(e -> onPlzEvent(true));
         }
         this.txtPlz.addFocusListener(new FocusAdapter() {
             @Override
@@ -146,12 +119,7 @@ public abstract class PersonController extends AbstractController {
     public void setTxtOrt(JTextField txtOrt) {
         this.txtOrt = txtOrt;
         if (!defaultButtonEnabled) {
-            this.txtOrt.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onOrtEvent(true);
-                }
-            });
+            this.txtOrt.addActionListener(e -> onOrtEvent(true));
         }
         this.txtOrt.addFocusListener(new FocusAdapter() {
             @Override
@@ -164,12 +132,7 @@ public abstract class PersonController extends AbstractController {
     public void setTxtFestnetz(JTextField txtFestnetz) {
         this.txtFestnetz = txtFestnetz;
         if (!defaultButtonEnabled) {
-            this.txtFestnetz.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onFestnetzEvent(true);
-                }
-            });
+            this.txtFestnetz.addActionListener(e -> onFestnetzEvent(true));
         }
         this.txtFestnetz.addFocusListener(new FocusAdapter() {
             @Override
@@ -182,12 +145,7 @@ public abstract class PersonController extends AbstractController {
     public void setTxtNatel(JTextField txtNatel) {
         this.txtNatel = txtNatel;
         if (!defaultButtonEnabled) {
-            this.txtNatel.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onNatelEvent(true);
-                }
-            });
+            this.txtNatel.addActionListener(e -> onNatelEvent(true));
         }
         this.txtNatel.addFocusListener(new FocusAdapter() {
             @Override
@@ -200,12 +158,7 @@ public abstract class PersonController extends AbstractController {
     public void setTxtEmail(JTextField txtEmail) {
         this.txtEmail = txtEmail;
         if (!defaultButtonEnabled) {
-            this.txtEmail.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onEmailEvent(true);
-                }
-            });
+            this.txtEmail.addActionListener(e -> onEmailEvent(true));
         }
         this.txtEmail.addFocusListener(new FocusAdapter() {
             @Override
@@ -218,12 +171,7 @@ public abstract class PersonController extends AbstractController {
     public void setTxtGeburtsdatum(JTextField txtGeburtsdatum) {
         this.txtGeburtsdatum = txtGeburtsdatum;
         if (!defaultButtonEnabled) {
-            this.txtGeburtsdatum.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onGeburtsdatumEvent(true);
-                }
-            });
+            this.txtGeburtsdatum.addActionListener(e -> onGeburtsdatumEvent(true));
         }
         this.txtGeburtsdatum.addFocusListener(new FocusAdapter() {
             @Override
@@ -256,7 +204,7 @@ public abstract class PersonController extends AbstractController {
             LOGGER.trace("PersonController setModelAnrede RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxAnrede.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -287,7 +235,7 @@ public abstract class PersonController extends AbstractController {
             LOGGER.trace("PersonController setModelNachname RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtNachname.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -322,7 +270,7 @@ public abstract class PersonController extends AbstractController {
             LOGGER.trace("PersonController setModelVorname RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtVorname.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -357,7 +305,7 @@ public abstract class PersonController extends AbstractController {
             LOGGER.trace("PersonController setModelStrasseHausnummer RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtStrasseHausnummer.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -392,7 +340,7 @@ public abstract class PersonController extends AbstractController {
             LOGGER.trace("PersonController setModelPlz RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtPlz.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -427,7 +375,7 @@ public abstract class PersonController extends AbstractController {
             LOGGER.trace("PersonController setModelOrt RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtOrt.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -462,7 +410,7 @@ public abstract class PersonController extends AbstractController {
             LOGGER.trace("PersonController setModelFestnetz RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtFestnetz.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -497,7 +445,7 @@ public abstract class PersonController extends AbstractController {
             LOGGER.trace("PersonController setModelNatel RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtNatel.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -532,7 +480,7 @@ public abstract class PersonController extends AbstractController {
             LOGGER.trace("PersonController setModelEmail RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtEmail.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -567,7 +515,7 @@ public abstract class PersonController extends AbstractController {
             LOGGER.trace("PersonController setModelGeburtsdatum RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtGeburtsdatum.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -819,7 +767,7 @@ public abstract class PersonController extends AbstractController {
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
-        if (comboBoxAnrede != null && (fields.contains(Field.ALLE) || fields.contains(Field.ANREDE)) && comboBoxAnrede != null) {
+        if (comboBoxAnrede != null && (fields.contains(Field.ALLE) || fields.contains(Field.ANREDE))) {
             comboBoxAnrede.setEnabled(!disable);
         }
         if ((fields.contains(Field.ALLE) || fields.contains(Field.NACHNAME)) && txtNachname != null) {

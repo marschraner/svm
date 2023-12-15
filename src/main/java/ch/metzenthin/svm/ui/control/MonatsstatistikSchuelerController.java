@@ -4,7 +4,6 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.MonatsstatistikSchuelerModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
@@ -38,8 +37,8 @@ public class MonatsstatistikSchuelerController extends AbstractController {
     private static final String MONAT_JAHR_DATE_FORMAT_STRING = "MM.yyyy";
 
     private final SvmContext svmContext;
-    private MonatsstatistikSchuelerModel monatsstatistikSchuelerModel;
-    private boolean defaultButtonEnabled;
+    private final MonatsstatistikSchuelerModel monatsstatistikSchuelerModel;
+    private final boolean defaultButtonEnabled;
     private ActionListener closeListener;
     private ActionListener nextPanelListener;
     private JTextField txtMonatJahr;
@@ -61,24 +60,14 @@ public class MonatsstatistikSchuelerController extends AbstractController {
         this.monatsstatistikSchuelerModel.addPropertyChangeListener(this);
         this.monatsstatistikSchuelerModel.addDisableFieldsListener(this);
         this.monatsstatistikSchuelerModel.addMakeErrorLabelsInvisibleListener(this);
-        this.monatsstatistikSchuelerModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onMonatsstatistikModelCompleted(completed);
-            }
-        });
+        this.monatsstatistikSchuelerModel.addCompletedListener(this::onMonatsstatistikModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
     public void setTxtMonatJahr(JTextField txtMonatJahr) {
         this.txtMonatJahr = txtMonatJahr;
         if (!defaultButtonEnabled) {
-            this.txtMonatJahr.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onMonatJahrEvent();
-                }
-            });
+            this.txtMonatJahr.addActionListener(e -> onMonatJahrEvent());
         }
         this.txtMonatJahr.addFocusListener(new FocusAdapter() {
             @Override
@@ -126,28 +115,19 @@ public class MonatsstatistikSchuelerController extends AbstractController {
         if (isModelValidationMode()) {
             btnSuchen.setEnabled(false);
         }
-        this.btnSuchen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSuchen();
-            }
-        });
+        this.btnSuchen.addActionListener(e -> onSuchen());
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        this.btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        this.btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     public void setErrLblMonatJahr(JLabel errLblMonatJahr) {
         this.errLblMonatJahr = errLblMonatJahr;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void onMonatJahrEvent() {
         LOGGER.trace("MonatsstatistikController Event Monat/Jahr");
         boolean equalFieldAndModelValue = equalsNullSafe(txtMonatJahr.getText(), monatsstatistikSchuelerModel.getMonatJahr(), MONAT_JAHR_DATE_FORMAT_STRING);
@@ -163,6 +143,7 @@ public class MonatsstatistikSchuelerController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void setModelMonatJahr() throws SvmValidationException {
         makeErrorLabelInvisible(Field.MONAT_JAHR);
         try {
@@ -171,7 +152,7 @@ public class MonatsstatistikSchuelerController extends AbstractController {
             LOGGER.trace("MonatsstatistikController setModelMonatJahr RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
                 txtMonatJahr.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }

@@ -9,10 +9,6 @@ import ch.metzenthin.svm.ui.components.ListenExportDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -51,14 +47,11 @@ public class SchuelerSuchenResultController {
         schuelerSuchenResultTable.setModel(schuelerSuchenTableModel);
         setColumnCellRenderers(schuelerSuchenResultTable, schuelerSuchenTableModel);
         setJTableColumnWidthAccordingToCellContentAndHeader(schuelerSuchenResultTable);
-        schuelerSuchenResultTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-                onListSelection();
+        schuelerSuchenResultTable.getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()) {
+                return;
             }
+            onListSelection();
         });
         schuelerSuchenResultTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -67,25 +60,22 @@ public class SchuelerSuchenResultController {
                 }
             }
         });
-        schuelerSuchenResultTable.getModel().addTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                if (schuelerSuchenTableModel.getAnzSelektiert() > 0) {
-                    btnExportieren.setEnabled(true);
-                    btnEmail.setEnabled(true);
-                } else {
-                    btnExportieren.setEnabled(false);
-                    btnEmail.setEnabled(false);
-                }
-                if (schuelerSuchenTableModel.isAlleSelektiert()) {
-                    btnAlleSelektieren.setVisible(false);
-                    btnAlleDeselektieren.setVisible(true);
-                } else {
-                    btnAlleDeselektieren.setVisible(false);
-                    btnAlleSelektieren.setVisible(true);
-                }
-                setLblTotal();
+        schuelerSuchenResultTable.getModel().addTableModelListener(e -> {
+            if (schuelerSuchenTableModel.getAnzSelektiert() > 0) {
+                btnExportieren.setEnabled(true);
+                btnEmail.setEnabled(true);
+            } else {
+                btnExportieren.setEnabled(false);
+                btnEmail.setEnabled(false);
             }
+            if (schuelerSuchenTableModel.isAlleSelektiert()) {
+                btnAlleSelektieren.setVisible(false);
+                btnAlleDeselektieren.setVisible(true);
+            } else {
+                btnAlleDeselektieren.setVisible(false);
+                btnAlleSelektieren.setVisible(true);
+            }
+            setLblTotal();
         });
     }
 
@@ -119,12 +109,7 @@ public class SchuelerSuchenResultController {
     public void setBtnAlleDeselektieren(JButton btnAlleDeselektieren) {
         this.btnAlleDeselektieren = btnAlleDeselektieren;
         btnAlleDeselektieren.setVisible(true);
-        btnAlleDeselektieren.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAlleDeselektieren();
-            }
-        });
+        btnAlleDeselektieren.addActionListener(e -> onAlleDeselektieren());
     }
 
     private void onAlleDeselektieren() {
@@ -138,12 +123,7 @@ public class SchuelerSuchenResultController {
     public void setBtnAlleSelektieren(JButton btnAlleSelektieren) {
         this.btnAlleSelektieren = btnAlleSelektieren;
         btnAlleSelektieren.setVisible(false);
-        btnAlleSelektieren.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAlleSelektieren();
-            }
-        });
+        btnAlleSelektieren.addActionListener(e -> onAlleSelektieren());
     }
 
     private void onAlleSelektieren() {
@@ -157,12 +137,7 @@ public class SchuelerSuchenResultController {
     public void setBtnDatenblatt(JButton btnDatenblatt) {
         this.btnDatenblatt = btnDatenblatt;
         enableBtnDatenblatt(false);
-        btnDatenblatt.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onDatenblatt();
-            }
-        });
+        btnDatenblatt.addActionListener(e -> onDatenblatt());
     }
 
     private void enableBtnDatenblatt(boolean enabled) {
@@ -182,12 +157,7 @@ public class SchuelerSuchenResultController {
         if (schuelerSuchenTableModel.getAnzSelektiert() == 0) {
             btnExportieren.setEnabled(false);
         }
-        btnExportieren.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onExportieren();
-            }
-        });
+        btnExportieren.addActionListener(e -> onExportieren());
     }
 
     @SuppressWarnings("DuplicatedCode")
@@ -220,12 +190,7 @@ public class SchuelerSuchenResultController {
         if (schuelerSuchenTableModel.getAnzSelektiert() == 0) {
             btnEmail.setEnabled(false);
         }
-        btnEmail.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onEmail();
-            }
-        });
+        btnEmail.addActionListener(e -> onEmail());
     }
 
     @SuppressWarnings("DuplicatedCode")
@@ -260,12 +225,7 @@ public class SchuelerSuchenResultController {
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {
@@ -278,12 +238,7 @@ public class SchuelerSuchenResultController {
 
     public void setBtnZurueck(JButton btnZurueck) {
         this.btnZurueck = btnZurueck;
-        btnZurueck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZurueck();
-            }
-        });
+        btnZurueck.addActionListener(e -> onZurueck());
     }
 
     private void onZurueck() {

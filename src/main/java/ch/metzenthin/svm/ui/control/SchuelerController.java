@@ -10,8 +10,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
@@ -35,8 +33,8 @@ public class SchuelerController extends PersonController {
     private JLabel errLblAbmeldedatum;
     private JLabel errLblBemerkungen;
     private JLabel errLblGeschlecht;
-    private SchuelerModel schuelerModel;
-    private boolean defaultButtonEnabled;
+    private final SchuelerModel schuelerModel;
+    private final boolean defaultButtonEnabled;
 
     public SchuelerController(SchuelerModel schuelerModel, boolean defaultButtonEnabled) {
         super(schuelerModel, defaultButtonEnabled);
@@ -48,12 +46,7 @@ public class SchuelerController extends PersonController {
     public void setComboBoxGeschlecht(JComboBox<Geschlecht> comboBoxGeschlecht) {
         this.comboBoxGeschlecht = comboBoxGeschlecht;
         comboBoxGeschlecht.setModel(new DefaultComboBoxModel<>(Geschlecht.values()));
-        comboBoxGeschlecht.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onGeschlechtSelected();
-            }
-        });
+        comboBoxGeschlecht.addActionListener(e -> onGeschlechtSelected());
         // Leeren ComboBox-Wert anzeigen
         comboBoxGeschlecht.setSelectedItem(null);
     }
@@ -61,12 +54,7 @@ public class SchuelerController extends PersonController {
     public void setTxtAnmeldedatum(JTextField txtAnmeldedatum) {
         this.txtAnmeldedatum = txtAnmeldedatum;
         if (!defaultButtonEnabled) {
-            this.txtAnmeldedatum.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onAnmeldedatumEvent(true);
-                }
-            });
+            this.txtAnmeldedatum.addActionListener(e -> onAnmeldedatumEvent(true));
         }
         this.txtAnmeldedatum.addFocusListener(new FocusAdapter() {
             @Override
@@ -79,12 +67,7 @@ public class SchuelerController extends PersonController {
     public void setTxtAbmeldedatum(JTextField txtAbmeldedatum) {
         this.txtAbmeldedatum = txtAbmeldedatum;
         if (!defaultButtonEnabled) {
-            this.txtAbmeldedatum.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onAbmeldedatumEvent();
-                }
-            });
+            this.txtAbmeldedatum.addActionListener(e -> onAbmeldedatumEvent());
         }
         this.txtAbmeldedatum.addFocusListener(new FocusAdapter() {
             @Override
@@ -130,7 +113,7 @@ public class SchuelerController extends PersonController {
             LOGGER.trace("SchuelerController setModelGeschlecht RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxGeschlecht.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -161,7 +144,7 @@ public class SchuelerController extends PersonController {
             LOGGER.trace("SchuelerController setModelAnmeldedatum RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtAnmeldedatum.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -269,6 +252,7 @@ public class SchuelerController extends PersonController {
         setModelBemerkungen();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     void showErrMsg(SvmValidationException e) {
         super.showErrMsg(e);
@@ -290,6 +274,7 @@ public class SchuelerController extends PersonController {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     void showErrMsgAsToolTip(SvmValidationException e) {
         super.showErrMsgAsToolTip(e);
@@ -307,6 +292,7 @@ public class SchuelerController extends PersonController {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         super.makeErrorLabelsInvisible(fields);

@@ -53,12 +53,7 @@ public class SchuelerErfassenController extends AbstractController {
         this.schuelerErfassenModel.addMakeErrorLabelsInvisibleListener(this);
         this.isBearbeiten = isBearbeiten;
         this.defaultButtonEnabled = defaultButtonEnabled;
-        this.schuelerErfassenModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onSchuelerErfassenModelCompleted(completed);
-            }
-        });
+        this.schuelerErfassenModel.addCompletedListener(this::onSchuelerErfassenModelCompleted);
         this.modelValidationMode = MODEL_VALIDATION_MODE;
     }
 
@@ -111,7 +106,7 @@ public class SchuelerErfassenController extends AbstractController {
             mutterModel.setIsGleicheAdresseWieSchueler(true);
             mutterModel.disableFields(getAdresseFields());
         }
-        // Wünscht Emails
+        // Wünscht E-Mails
         // bearbeiten: false (falls Mutter vorhanden, wird danach dieser Wert genommen)
         // neu: true
         mutterModel.setWuenschtEmails(!isBearbeiten);
@@ -147,7 +142,7 @@ public class SchuelerErfassenController extends AbstractController {
             vaterModel.setIsGleicheAdresseWieSchueler(true);
             vaterModel.disableFields(getAdresseFields());
         }
-        // Wünscht Emails: false
+        // Wünscht E-Mails: false
         vaterModel.setWuenschtEmails(false);
         schuelerErfassenModel.setVaterModel(vaterModel);
     }
@@ -181,22 +176,12 @@ public class SchuelerErfassenController extends AbstractController {
         if (isModelValidationMode()) {
             btnSpeichern.setEnabled(false);
         }
-        btnSpeichern.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSpeichern();
-            }
-        });
+        btnSpeichern.addActionListener(e -> onSpeichern());
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     public void setBtnSchuelerLoeschen(JButton btnSchuelerLoeschen) {
@@ -204,12 +189,7 @@ public class SchuelerErfassenController extends AbstractController {
         if (!isBearbeiten) {
             btnSchuelerLoeschen.setVisible(false);
         }
-        btnSchuelerLoeschen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSchuelerLoeschen();
-            }
-        });
+        btnSchuelerLoeschen.addActionListener(e -> onSchuelerLoeschen());
     }
 
     public void setBtnFruehereAnmeldungenLoeschen(JButton btnFruehereAnmeldungenLoeschen) {
@@ -219,12 +199,7 @@ public class SchuelerErfassenController extends AbstractController {
         } else if (!schuelerErfassenModel.hasFruehereAnmeldungen()) {
             btnFruehereAnmeldungenLoeschen.setEnabled(false);
         }
-        btnFruehereAnmeldungenLoeschen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onFruehereAnmeldungenLoeschen();
-            }
-        });
+        btnFruehereAnmeldungenLoeschen.addActionListener(e -> onFruehereAnmeldungenLoeschen());
     }
 
     public void addCloseListener(ActionListener closeListener) {
@@ -379,26 +354,26 @@ public class SchuelerErfassenController extends AbstractController {
         if (n == 0) {
             DeleteSchuelerCommand.Result result = schuelerErfassenModel.schuelerLoeschen();
             switch (result) {
-                case SCHUELER_IN_KURSE_EINGESCHRIEBEN:
+                case SCHUELER_IN_KURSE_EINGESCHRIEBEN -> {
                     JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einen Kurs eingeschrieben und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnSchuelerLoeschen.setFocusPainted(false);
-                    break;
-                case SCHUELER_IN_MAERCHEN_EINGETEILT:
+                }
+                case SCHUELER_IN_MAERCHEN_EINGETEILT -> {
                     JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einem Märchen eingeteilt und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnSchuelerLoeschen.setFocusPainted(false);
-                    break;
-                case RECHNUNGSEMPFAENGER_HAT_SEMESTERRECHNUNGEN:
+                }
+                case RECHNUNGSEMPFAENGER_HAT_SEMESTERRECHNUNGEN -> {
                     JOptionPane.showMessageDialog(null, "Der Rechnungsempfänger des Schülers hat mindestens eine Semesterrechnung. Der Schüler kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnSchuelerLoeschen.setFocusPainted(false);
-                    break;
-                case LOESCHEN_ERFOLGREICH:
+                }
+                case LOESCHEN_ERFOLGREICH -> {
                     JOptionPane.showMessageDialog(
                             null,
                             "Der Schüler wurde erfolgreich aus der Datenbank gelöscht.",
                             "Löschen erfolgreich",
                             JOptionPane.INFORMATION_MESSAGE);
                     closeListener.actionPerformed(new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Löschen"));
-                    break;
+                }
             }
         } else {
             btnSchuelerLoeschen.setFocusPainted(false);

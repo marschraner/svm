@@ -11,10 +11,6 @@ import ch.metzenthin.svm.ui.components.ListenExportDialog;
 import ch.metzenthin.svm.ui.components.MitarbeiterErfassenDialog;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -32,7 +28,7 @@ public class MitarbeitersController {
     private static final String GRUPPEN_EMAIL = "Gruppen-E-Mail";
     private final SvmContext svmContext;
     private final MitarbeitersModel mitarbeitersModel;
-    private MitarbeitersTableModel mitarbeitersTableModel;
+    private final MitarbeitersTableModel mitarbeitersTableModel;
     private JTable mitarbeitersTable;
     private JLabel lblTotal;
     private JButton btnAlleDeselektieren;
@@ -53,17 +49,15 @@ public class MitarbeitersController {
         this.mitarbeitersTableModel = mitarbeitersTableModel;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public void setMitarbeitersTable(final JTable mitarbeitersTable) {
         this.mitarbeitersTable = mitarbeitersTable;
         initializeMitarbeitersTable();
-        mitarbeitersTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-                onListSelection();
+        mitarbeitersTable.getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()) {
+                return;
             }
+            onListSelection();
         });
         mitarbeitersTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -72,32 +66,29 @@ public class MitarbeitersController {
                 }
             }
         });
-        mitarbeitersTable.getModel().addTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                int anzSelektiert = mitarbeitersTableModel.getAnzSelektiert();
-                int rowCount = mitarbeitersTableModel.getRowCount();
-                if (anzSelektiert > 0) {
-                    btnExportieren.setEnabled(true);
-                    btnEmail.setEnabled(true);
-                } else {
-                    btnExportieren.setEnabled(false);
-                    btnEmail.setEnabled(false);
-                }
-                if (rowCount <= 1 || anzSelektiert == 1) {
-                    btnEmail.setText(EMAIL);
-                } else {
-                    btnEmail.setText(GRUPPEN_EMAIL);
-                }
-                if (anzSelektiert == rowCount) {
-                    btnAlleSelektieren.setVisible(false);
-                    btnAlleDeselektieren.setVisible(true);
-                } else {
-                    btnAlleDeselektieren.setVisible(false);
-                    btnAlleSelektieren.setVisible(true);
-                }
-                setLblTotal();
+        mitarbeitersTable.getModel().addTableModelListener(e -> {
+            int anzSelektiert = mitarbeitersTableModel.getAnzSelektiert();
+            int rowCount = mitarbeitersTableModel.getRowCount();
+            if (anzSelektiert > 0) {
+                btnExportieren.setEnabled(true);
+                btnEmail.setEnabled(true);
+            } else {
+                btnExportieren.setEnabled(false);
+                btnEmail.setEnabled(false);
             }
+            if (rowCount <= 1 || anzSelektiert == 1) {
+                btnEmail.setText(EMAIL);
+            } else {
+                btnEmail.setText(GRUPPEN_EMAIL);
+            }
+            if (anzSelektiert == rowCount) {
+                btnAlleSelektieren.setVisible(false);
+                btnAlleDeselektieren.setVisible(true);
+            } else {
+                btnAlleDeselektieren.setVisible(false);
+                btnAlleSelektieren.setVisible(true);
+            }
+            setLblTotal();
         });
     }
 
@@ -122,12 +113,7 @@ public class MitarbeitersController {
     public void setBtnAlleDeselektieren(JButton btnAlleDeselektieren) {
         this.btnAlleDeselektieren = btnAlleDeselektieren;
         btnAlleDeselektieren.setVisible(true);
-        btnAlleDeselektieren.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAlleDeselektieren();
-            }
-        });
+        btnAlleDeselektieren.addActionListener(e -> onAlleDeselektieren());
     }
 
     private void onAlleDeselektieren() {
@@ -146,12 +132,7 @@ public class MitarbeitersController {
     public void setBtnAlleSelektieren(JButton btnAlleSelektieren) {
         this.btnAlleSelektieren = btnAlleSelektieren;
         btnAlleSelektieren.setVisible(false);
-        btnAlleSelektieren.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAlleSelektieren();
-            }
-        });
+        btnAlleSelektieren.addActionListener(e -> onAlleSelektieren());
     }
 
     private void onAlleSelektieren() {
@@ -169,12 +150,7 @@ public class MitarbeitersController {
 
     public void setBtnNeu(JButton btnNeu) {
         this.btnNeu = btnNeu;
-        btnNeu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNeu();
-            }
-        });
+        btnNeu.addActionListener(e -> onNeu());
     }
 
     private void onNeu() {
@@ -195,12 +171,7 @@ public class MitarbeitersController {
     public void setBtnBearbeiten(JButton btnBearbeiten) {
         this.btnBearbeiten = btnBearbeiten;
         enableBtnBearbeiten(false);
-        btnBearbeiten.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBearbeiten();
-            }
-        });
+        btnBearbeiten.addActionListener(e -> onBearbeiten());
     }
 
     private void enableBtnBearbeiten(boolean enabled) {
@@ -218,7 +189,7 @@ public class MitarbeitersController {
         if (rowCount > 0) {
             btnExportieren.setEnabled(true);
             btnEmail.setEnabled(true);
-            if (rowCount <= 1) {
+            if (rowCount == 1) {
                 btnEmail.setText(EMAIL);
             } else {
                 btnEmail.setText(GRUPPEN_EMAIL);
@@ -232,12 +203,7 @@ public class MitarbeitersController {
     public void setBtnLoeschen(JButton btnLoeschen) {
         this.btnLoeschen = btnLoeschen;
         enableBtnLoeschen(false);
-        btnLoeschen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLoeschen();
-            }
-        });
+        btnLoeschen.addActionListener(e -> onLoeschen());
     }
 
     private void enableBtnLoeschen(boolean enabled) {
@@ -259,11 +225,11 @@ public class MitarbeitersController {
         if (n == 0) {
             DeleteMitarbeiterCommand.Result result = mitarbeitersModel.mitarbeiterLoeschen(mitarbeitersTableModel, mitarbeitersTable.convertRowIndexToModel(mitarbeitersTable.getSelectedRow()));
             switch (result) {
-                case MITARBEITER_VON_KURS_REFERENZIERT:
+                case MITARBEITER_VON_KURS_REFERENZIERT -> {
                     JOptionPane.showMessageDialog(null, "Der Mitarbeiter wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnLoeschen.setFocusPainted(false);
-                    break;
-                case LOESCHEN_ERFOLGREICH:
+                }
+                case LOESCHEN_ERFOLGREICH -> {
                     mitarbeitersTableModel.fireTableDataChanged();
                     mitarbeitersTable.addNotify();
                     JOptionPane.showMessageDialog(
@@ -271,7 +237,7 @@ public class MitarbeitersController {
                             "Der Mitarbeiter wurde erfolgreich aus der Datenbank gelöscht.",
                             "Löschen erfolgreich",
                             JOptionPane.INFORMATION_MESSAGE);
-                    break;
+                }
             }
         }
         setLblTotal();
@@ -283,7 +249,7 @@ public class MitarbeitersController {
         if (rowCount > 0) {
             btnExportieren.setEnabled(true);
             btnEmail.setEnabled(true);
-            if (rowCount <= 1) {
+            if (rowCount == 1) {
                 btnEmail.setText(EMAIL);
             }
         } else {
@@ -297,14 +263,10 @@ public class MitarbeitersController {
         if (mitarbeitersTableModel.getRowCount() == 0) {
             btnExportieren.setEnabled(false);
         }
-        btnExportieren.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onExportieren();
-            }
-        });
+        btnExportieren.addActionListener(e -> onExportieren());
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
         int anzSelektiert = mitarbeitersTableModel.getAnzSelektiert();
@@ -338,12 +300,7 @@ public class MitarbeitersController {
         if (rowCount <= 1) {
             btnEmail.setText(EMAIL);
         }
-        btnEmail.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onEmail();
-            }
-        });
+        btnEmail.addActionListener(e -> onEmail());
     }
 
     private void onEmail() {
@@ -389,12 +346,7 @@ public class MitarbeitersController {
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {
@@ -407,12 +359,7 @@ public class MitarbeitersController {
 
     public void setBtnZurueck(JButton btnZurueck) {
         this.btnZurueck = btnZurueck;
-        btnZurueck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onZurueck();
-            }
-        });
+        btnZurueck.addActionListener(e -> onZurueck());
     }
 
     private void onZurueck() {

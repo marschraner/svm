@@ -46,7 +46,7 @@ public class ListenExportDialog extends JDialog {
     }
 
     private void createListenExportController(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel, MitarbeitersTableModel mitarbeitersTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel, ListenExportTyp listenExportTyp) {
-        ListenExportController listenExportController = new ListenExportController(svmContext.getModelFactory().createListenExportModel(), svmContext, schuelerSuchenTableModel, mitarbeitersTableModel, kurseTableModel, semesterrechnungenTableModel, listenExportTyp, DEFAULT_BUTTON_ENABLED);
+        ListenExportController listenExportController = new ListenExportController(svmContext.getModelFactory().createListenExportModel(), schuelerSuchenTableModel, mitarbeitersTableModel, kurseTableModel, semesterrechnungenTableModel, listenExportTyp, DEFAULT_BUTTON_ENABLED);
         listenExportController.setListenExportDialog(this);
         listenExportController.setContentPane(contentPane);
         listenExportController.setComboBoxListentyp(comboBoxListentyp);

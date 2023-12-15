@@ -11,7 +11,8 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 
@@ -87,8 +88,8 @@ public abstract class SemesterrechnungController extends AbstractController {
     private JComboBox<Stipendium> comboBoxStipendium;
     private JCheckBox checkBoxGratiskinder;
     SemesterrechnungModel semesterrechnungModel;
-    private boolean defaultButtonEnabled;
-    private SvmContext svmContext;
+    private final boolean defaultButtonEnabled;
+    private final SvmContext svmContext;
 
     public SemesterrechnungController(SvmContext svmContext, SemesterrechnungModel semesterrechnungModel, boolean defaultButtonEnabled) {
         super(semesterrechnungModel);
@@ -107,12 +108,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableSemesterrechnungCodes));
         // Model initialisieren mit erstem ComboBox-Wert
         semesterrechnungModel.setSemesterrechnungCode(selectableSemesterrechnungCodes[0]);
-        this.comboBoxSemesterrechnungCode.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSemesterrechnungCodeSelected();
-            }
-        });
+        this.comboBoxSemesterrechnungCode.addActionListener(e -> onSemesterrechnungCodeSelected());
     }
 
     private void onSemesterrechnungCodeSelected() {
@@ -128,12 +124,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         this.comboBoxStipendium = comboBoxStipendium;
         Stipendium[] selectableStipendien = semesterrechnungModel.getSelectableStipendien();
         comboBoxStipendium.setModel(new DefaultComboBoxModel<>(selectableStipendien));
-        comboBoxStipendium.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onStipendiumSelected();
-            }
-        });
+        comboBoxStipendium.addActionListener(e -> onStipendiumSelected());
         // Model initialisieren mit erstem ComboBox-Wert
         semesterrechnungModel.setStipendium(selectableStipendien[0]);
     }
@@ -159,12 +150,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         if (svmContext.getSvmModel().getSemestersAll().isEmpty()) {
             checkBoxGratiskinder.setEnabled(false);
         }
-        this.checkBoxGratiskinder.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onGratiskinderEvent();
-            }
-        });
+        this.checkBoxGratiskinder.addItemListener(e -> onGratiskinderEvent());
         // Initialisierung
         semesterrechnungModel.setGratiskinder(false);
     }
@@ -181,12 +167,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtRechnungsdatumVorrechnung(JTextField txtRechnungsdatumVorrechnung) {
         this.txtRechnungsdatumVorrechnung = txtRechnungsdatumVorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtRechnungsdatumVorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onRechnungsdatumVorrechnungEvent();
-                }
-            });
+            this.txtRechnungsdatumVorrechnung.addActionListener(e -> onRechnungsdatumVorrechnungEvent());
         }
         this.txtRechnungsdatumVorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -225,12 +206,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtErmaessigungVorrechnung(JTextField txtErmaessigungVorrechnung) {
         this.txtErmaessigungVorrechnung = txtErmaessigungVorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtErmaessigungVorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onErmaessigungVorrechnungEvent();
-                }
-            });
+            this.txtErmaessigungVorrechnung.addActionListener(e -> onErmaessigungVorrechnungEvent());
         }
         this.txtErmaessigungVorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -269,12 +245,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtErmaessigungsgrundVorrechnung(JTextField txtErmaessigungsgrundVorrechnung) {
         this.txtErmaessigungsgrundVorrechnung = txtErmaessigungsgrundVorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtErmaessigungsgrundVorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onErmaessigungsgrundVorrechnungEvent();
-                }
-            });
+            this.txtErmaessigungsgrundVorrechnung.addActionListener(e -> onErmaessigungsgrundVorrechnungEvent());
         }
         this.txtErmaessigungsgrundVorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -313,12 +284,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtZuschlagVorrechnung(JTextField txtZuschlagVorrechnung) {
         this.txtZuschlagVorrechnung = txtZuschlagVorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtZuschlagVorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onZuschlagVorrechnungEvent();
-                }
-            });
+            this.txtZuschlagVorrechnung.addActionListener(e -> onZuschlagVorrechnungEvent());
         }
         this.txtZuschlagVorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -357,12 +323,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtZuschlagsgrundVorrechnung(JTextField txtZuschlagsgrundVorrechnung) {
         this.txtZuschlagsgrundVorrechnung = txtZuschlagsgrundVorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtZuschlagsgrundVorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onZuschlagsgrundVorrechnungEvent();
-                }
-            });
+            this.txtZuschlagsgrundVorrechnung.addActionListener(e -> onZuschlagsgrundVorrechnungEvent());
         }
         this.txtZuschlagsgrundVorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -401,12 +362,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtAnzahlWochenVorrechnung(JTextField txtAnzahlWochenVorrechnung) {
         this.txtAnzahlWochenVorrechnung = txtAnzahlWochenVorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtAnzahlWochenVorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onAnzahlWochenVorrechnungEvent();
-                }
-            });
+            this.txtAnzahlWochenVorrechnung.addActionListener(e -> onAnzahlWochenVorrechnungEvent());
         }
         this.txtAnzahlWochenVorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -445,12 +401,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtWochenbetragVorrechnung(JTextField txtWochenbetragVorrechnung) {
         this.txtWochenbetragVorrechnung = txtWochenbetragVorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtWochenbetragVorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onWochenbetragVorrechnungEvent();
-                }
-            });
+            this.txtWochenbetragVorrechnung.addActionListener(e -> onWochenbetragVorrechnungEvent());
         }
         this.txtWochenbetragVorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -489,12 +440,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtDatumZahlung1Vorrechnung(JTextField txtDatumZahlung1Vorrechnung) {
         this.txtDatumZahlung1Vorrechnung = txtDatumZahlung1Vorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtDatumZahlung1Vorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onDatumZahlung1VorrechnungEvent();
-                }
-            });
+            this.txtDatumZahlung1Vorrechnung.addActionListener(e -> onDatumZahlung1VorrechnungEvent());
         }
         this.txtDatumZahlung1Vorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -533,12 +479,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtBetragZahlung1Vorrechnung(JTextField txtBetragZahlung1Vorrechnung) {
         this.txtBetragZahlung1Vorrechnung = txtBetragZahlung1Vorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtBetragZahlung1Vorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBetragZahlung1VorrechnungEvent();
-                }
-            });
+            this.txtBetragZahlung1Vorrechnung.addActionListener(e -> onBetragZahlung1VorrechnungEvent());
         }
         this.txtBetragZahlung1Vorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -577,12 +518,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtDatumZahlung2Vorrechnung(JTextField txtDatumZahlung2Vorrechnung) {
         this.txtDatumZahlung2Vorrechnung = txtDatumZahlung2Vorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtDatumZahlung2Vorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onDatumZahlung2VorrechnungEvent();
-                }
-            });
+            this.txtDatumZahlung2Vorrechnung.addActionListener(e -> onDatumZahlung2VorrechnungEvent());
         }
         this.txtDatumZahlung2Vorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -621,12 +557,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtBetragZahlung2Vorrechnung(JTextField txtBetragZahlung2Vorrechnung) {
         this.txtBetragZahlung2Vorrechnung = txtBetragZahlung2Vorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtBetragZahlung2Vorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBetragZahlung2VorrechnungEvent();
-                }
-            });
+            this.txtBetragZahlung2Vorrechnung.addActionListener(e -> onBetragZahlung2VorrechnungEvent());
         }
         this.txtBetragZahlung2Vorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -665,12 +596,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtDatumZahlung3Vorrechnung(JTextField txtDatumZahlung3Vorrechnung) {
         this.txtDatumZahlung3Vorrechnung = txtDatumZahlung3Vorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtDatumZahlung3Vorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onDatumZahlung3VorrechnungEvent();
-                }
-            });
+            this.txtDatumZahlung3Vorrechnung.addActionListener(e -> onDatumZahlung3VorrechnungEvent());
         }
         this.txtDatumZahlung3Vorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -709,12 +635,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtBetragZahlung3Vorrechnung(JTextField txtBetragZahlung3Vorrechnung) {
         this.txtBetragZahlung3Vorrechnung = txtBetragZahlung3Vorrechnung;
         if (!defaultButtonEnabled) {
-            this.txtBetragZahlung3Vorrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBetragZahlung3VorrechnungEvent();
-                }
-            });
+            this.txtBetragZahlung3Vorrechnung.addActionListener(e -> onBetragZahlung3VorrechnungEvent());
         }
         this.txtBetragZahlung3Vorrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -753,12 +674,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtRechnungsdatumNachrechnung(JTextField txtRechnungsdatumNachrechnung) {
         this.txtRechnungsdatumNachrechnung = txtRechnungsdatumNachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtRechnungsdatumNachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onRechnungsdatumNachrechnungEvent();
-                }
-            });
+            this.txtRechnungsdatumNachrechnung.addActionListener(e -> onRechnungsdatumNachrechnungEvent());
         }
         this.txtRechnungsdatumNachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -797,12 +713,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtErmaessigungNachrechnung(JTextField txtErmaessigungNachrechnung) {
         this.txtErmaessigungNachrechnung = txtErmaessigungNachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtErmaessigungNachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onErmaessigungNachrechnungEvent();
-                }
-            });
+            this.txtErmaessigungNachrechnung.addActionListener(e -> onErmaessigungNachrechnungEvent());
         }
         this.txtErmaessigungNachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -841,12 +752,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtErmaessigungsgrundNachrechnung(JTextField txtErmaessigungsgrundNachrechnung) {
         this.txtErmaessigungsgrundNachrechnung = txtErmaessigungsgrundNachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtErmaessigungsgrundNachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onErmaessigungsgrundNachrechnungEvent();
-                }
-            });
+            this.txtErmaessigungsgrundNachrechnung.addActionListener(e -> onErmaessigungsgrundNachrechnungEvent());
         }
         this.txtErmaessigungsgrundNachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -885,12 +791,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtZuschlagNachrechnung(JTextField txtZuschlagNachrechnung) {
         this.txtZuschlagNachrechnung = txtZuschlagNachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtZuschlagNachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onZuschlagNachrechnungEvent();
-                }
-            });
+            this.txtZuschlagNachrechnung.addActionListener(e -> onZuschlagNachrechnungEvent());
         }
         this.txtZuschlagNachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -929,12 +830,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtZuschlagsgrundNachrechnung(JTextField txtZuschlagsgrundNachrechnung) {
         this.txtZuschlagsgrundNachrechnung = txtZuschlagsgrundNachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtZuschlagsgrundNachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onZuschlagsgrundNachrechnungEvent();
-                }
-            });
+            this.txtZuschlagsgrundNachrechnung.addActionListener(e -> onZuschlagsgrundNachrechnungEvent());
         }
         this.txtZuschlagsgrundNachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -973,12 +869,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtAnzahlWochenNachrechnung(JTextField txtAnzahlWochenNachrechnung) {
         this.txtAnzahlWochenNachrechnung = txtAnzahlWochenNachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtAnzahlWochenNachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onAnzahlWochenNachrechnungEvent();
-                }
-            });
+            this.txtAnzahlWochenNachrechnung.addActionListener(e -> onAnzahlWochenNachrechnungEvent());
         }
         this.txtAnzahlWochenNachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -1017,12 +908,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtWochenbetragNachrechnung(JTextField txtWochenbetragNachrechnung) {
         this.txtWochenbetragNachrechnung = txtWochenbetragNachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtWochenbetragNachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onWochenbetragNachrechnungEvent();
-                }
-            });
+            this.txtWochenbetragNachrechnung.addActionListener(e -> onWochenbetragNachrechnungEvent());
         }
         this.txtWochenbetragNachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -1061,12 +947,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtDatumZahlung1Nachrechnung(JTextField txtDatumZahlung1Nachrechnung) {
         this.txtDatumZahlung1Nachrechnung = txtDatumZahlung1Nachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtDatumZahlung1Nachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onDatumZahlung1NachrechnungEvent();
-                }
-            });
+            this.txtDatumZahlung1Nachrechnung.addActionListener(e -> onDatumZahlung1NachrechnungEvent());
         }
         this.txtDatumZahlung1Nachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -1105,12 +986,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtBetragZahlung1Nachrechnung(JTextField txtBetragZahlung1Nachrechnung) {
         this.txtBetragZahlung1Nachrechnung = txtBetragZahlung1Nachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtBetragZahlung1Nachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBetragZahlung1NachrechnungEvent();
-                }
-            });
+            this.txtBetragZahlung1Nachrechnung.addActionListener(e -> onBetragZahlung1NachrechnungEvent());
         }
         this.txtBetragZahlung1Nachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -1149,12 +1025,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtDatumZahlung2Nachrechnung(JTextField txtDatumZahlung2Nachrechnung) {
         this.txtDatumZahlung2Nachrechnung = txtDatumZahlung2Nachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtDatumZahlung2Nachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onDatumZahlung2NachrechnungEvent();
-                }
-            });
+            this.txtDatumZahlung2Nachrechnung.addActionListener(e -> onDatumZahlung2NachrechnungEvent());
         }
         this.txtDatumZahlung2Nachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -1193,12 +1064,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtBetragZahlung2Nachrechnung(JTextField txtBetragZahlung2Nachrechnung) {
         this.txtBetragZahlung2Nachrechnung = txtBetragZahlung2Nachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtBetragZahlung2Nachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBetragZahlung2NachrechnungEvent();
-                }
-            });
+            this.txtBetragZahlung2Nachrechnung.addActionListener(e -> onBetragZahlung2NachrechnungEvent());
         }
         this.txtBetragZahlung2Nachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -1237,12 +1103,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtDatumZahlung3Nachrechnung(JTextField txtDatumZahlung3Nachrechnung) {
         this.txtDatumZahlung3Nachrechnung = txtDatumZahlung3Nachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtDatumZahlung3Nachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onDatumZahlung3NachrechnungEvent();
-                }
-            });
+            this.txtDatumZahlung3Nachrechnung.addActionListener(e -> onDatumZahlung3NachrechnungEvent());
         }
         this.txtDatumZahlung3Nachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -1281,12 +1142,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     public void setTxtBetragZahlung3Nachrechnung(JTextField txtBetragZahlung3Nachrechnung) {
         this.txtBetragZahlung3Nachrechnung = txtBetragZahlung3Nachrechnung;
         if (!defaultButtonEnabled) {
-            this.txtBetragZahlung3Nachrechnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBetragZahlung3NachrechnungEvent();
-                }
-            });
+            this.txtBetragZahlung3Nachrechnung.addActionListener(e -> onBetragZahlung3NachrechnungEvent());
         }
         this.txtBetragZahlung3Nachrechnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -1477,92 +1333,63 @@ public abstract class SemesterrechnungController extends AbstractController {
         super.doPropertyChange(evt);
         if (checkIsFieldChange(Field.SEMESTERRECHNUNG_CODE, evt)) {
             comboBoxSemesterrechnungCode.setSelectedItem(semesterrechnungModel.getSemesterrechnungCode());
-        }
-        else if (checkIsFieldChange(Field.STIPENDIUM, evt)) {
+        } else if (checkIsFieldChange(Field.STIPENDIUM, evt)) {
             comboBoxStipendium.setSelectedItem(semesterrechnungModel.getStipendium());
-        }
-        else if (checkIsFieldChange(Field.GRATISKINDER, evt)) {
+        } else if (checkIsFieldChange(Field.GRATISKINDER, evt)) {
             checkBoxGratiskinder.setSelected(semesterrechnungModel.isGratiskinder());
-        }
-        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.RECHNUNGSDATUM_VORRECHNUNG, evt)) {
             txtRechnungsdatumVorrechnung.setText(asString(semesterrechnungModel.getRechnungsdatumVorrechnung()));
-        }
-        else if (checkIsFieldChange(Field.ERMAESSIGUNG_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.ERMAESSIGUNG_VORRECHNUNG, evt)) {
             txtErmaessigungVorrechnung.setText(semesterrechnungModel.getErmaessigungVorrechnung() == null ? null : semesterrechnungModel.getErmaessigungVorrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.ERMAESSIGUNGSGRUND_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.ERMAESSIGUNGSGRUND_VORRECHNUNG, evt)) {
             txtErmaessigungsgrundVorrechnung.setText(semesterrechnungModel.getErmaessigungsgrundVorrechnung());
-        }
-        else if (checkIsFieldChange(Field.ZUSCHLAG_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.ZUSCHLAG_VORRECHNUNG, evt)) {
             txtZuschlagVorrechnung.setText(semesterrechnungModel.getZuschlagVorrechnung() == null ? null : semesterrechnungModel.getZuschlagVorrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.ZUSCHLAGSGRUND_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.ZUSCHLAGSGRUND_VORRECHNUNG, evt)) {
             txtZuschlagsgrundVorrechnung.setText(semesterrechnungModel.getZuschlagsgrundVorrechnung());
-        }
-        else if (checkIsFieldChange(Field.ANZAHL_WOCHEN_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.ANZAHL_WOCHEN_VORRECHNUNG, evt)) {
             txtAnzahlWochenVorrechnung.setText(semesterrechnungModel.getAnzahlWochenVorrechnung() == null ? null : Integer.toString(semesterrechnungModel.getAnzahlWochenVorrechnung()));
-        }
-        else if (checkIsFieldChange(Field.WOCHENBETRAG_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.WOCHENBETRAG_VORRECHNUNG, evt)) {
             txtWochenbetragVorrechnung.setText(semesterrechnungModel.getWochenbetragVorrechnung() == null ? null : semesterrechnungModel.getWochenbetragVorrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.DATUM_ZAHLUNG_1_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.DATUM_ZAHLUNG_1_VORRECHNUNG, evt)) {
             txtDatumZahlung1Vorrechnung.setText(asString(semesterrechnungModel.getDatumZahlung1Vorrechnung()));
-        }
-        else if (checkIsFieldChange(Field.BETRAG_ZAHLUNG_1_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.BETRAG_ZAHLUNG_1_VORRECHNUNG, evt)) {
             txtBetragZahlung1Vorrechnung.setText(semesterrechnungModel.getBetragZahlung1Vorrechnung() == null ? null : semesterrechnungModel.getBetragZahlung1Vorrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.DATUM_ZAHLUNG_2_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.DATUM_ZAHLUNG_2_VORRECHNUNG, evt)) {
             txtDatumZahlung2Vorrechnung.setText(asString(semesterrechnungModel.getDatumZahlung2Vorrechnung()));
-        }
-        else if (checkIsFieldChange(Field.BETRAG_ZAHLUNG_2_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.BETRAG_ZAHLUNG_2_VORRECHNUNG, evt)) {
             txtBetragZahlung2Vorrechnung.setText(semesterrechnungModel.getBetragZahlung2Vorrechnung() == null ? null : semesterrechnungModel.getBetragZahlung2Vorrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.DATUM_ZAHLUNG_3_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.DATUM_ZAHLUNG_3_VORRECHNUNG, evt)) {
             txtDatumZahlung3Vorrechnung.setText(asString(semesterrechnungModel.getDatumZahlung3Vorrechnung()));
-        }
-        else if (checkIsFieldChange(Field.BETRAG_ZAHLUNG_3_VORRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.BETRAG_ZAHLUNG_3_VORRECHNUNG, evt)) {
             txtBetragZahlung3Vorrechnung.setText(semesterrechnungModel.getBetragZahlung3Vorrechnung() == null ? null : semesterrechnungModel.getBetragZahlung3Vorrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.RECHNUNGSDATUM_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.RECHNUNGSDATUM_NACHRECHNUNG, evt)) {
             txtRechnungsdatumNachrechnung.setText(asString(semesterrechnungModel.getRechnungsdatumNachrechnung()));
-        }
-        else if (checkIsFieldChange(Field.ERMAESSIGUNG_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.ERMAESSIGUNG_NACHRECHNUNG, evt)) {
             txtErmaessigungNachrechnung.setText(semesterrechnungModel.getErmaessigungNachrechnung() == null ? null : semesterrechnungModel.getErmaessigungNachrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.ERMAESSIGUNGSGRUND_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.ERMAESSIGUNGSGRUND_NACHRECHNUNG, evt)) {
             txtErmaessigungsgrundNachrechnung.setText(semesterrechnungModel.getErmaessigungsgrundNachrechnung());
-        }
-        else if (checkIsFieldChange(Field.ZUSCHLAG_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.ZUSCHLAG_NACHRECHNUNG, evt)) {
             txtZuschlagNachrechnung.setText(semesterrechnungModel.getZuschlagNachrechnung() == null ? null : semesterrechnungModel.getZuschlagNachrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.ZUSCHLAGSGRUND_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.ZUSCHLAGSGRUND_NACHRECHNUNG, evt)) {
             txtZuschlagsgrundNachrechnung.setText(semesterrechnungModel.getZuschlagsgrundNachrechnung());
-        }
-        else if (checkIsFieldChange(Field.ANZAHL_WOCHEN_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.ANZAHL_WOCHEN_NACHRECHNUNG, evt)) {
             txtAnzahlWochenNachrechnung.setText(semesterrechnungModel.getAnzahlWochenNachrechnung() == null ? null : Integer.toString(semesterrechnungModel.getAnzahlWochenNachrechnung()));
-        }
-        else if (checkIsFieldChange(Field.WOCHENBETRAG_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.WOCHENBETRAG_NACHRECHNUNG, evt)) {
             txtWochenbetragNachrechnung.setText(semesterrechnungModel.getWochenbetragNachrechnung() == null ? null : semesterrechnungModel.getWochenbetragNachrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.DATUM_ZAHLUNG_1_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.DATUM_ZAHLUNG_1_NACHRECHNUNG, evt)) {
             txtDatumZahlung1Nachrechnung.setText(asString(semesterrechnungModel.getDatumZahlung1Nachrechnung()));
-        }
-        else if (checkIsFieldChange(Field.BETRAG_ZAHLUNG_1_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.BETRAG_ZAHLUNG_1_NACHRECHNUNG, evt)) {
             txtBetragZahlung1Nachrechnung.setText(semesterrechnungModel.getBetragZahlung1Nachrechnung() == null ? null : semesterrechnungModel.getBetragZahlung1Nachrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.DATUM_ZAHLUNG_2_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.DATUM_ZAHLUNG_2_NACHRECHNUNG, evt)) {
             txtDatumZahlung2Nachrechnung.setText(asString(semesterrechnungModel.getDatumZahlung2Nachrechnung()));
-        }
-        else if (checkIsFieldChange(Field.BETRAG_ZAHLUNG_2_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.BETRAG_ZAHLUNG_2_NACHRECHNUNG, evt)) {
             txtBetragZahlung2Nachrechnung.setText(semesterrechnungModel.getBetragZahlung2Nachrechnung() == null ? null : semesterrechnungModel.getBetragZahlung2Nachrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.DATUM_ZAHLUNG_3_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.DATUM_ZAHLUNG_3_NACHRECHNUNG, evt)) {
             txtDatumZahlung3Nachrechnung.setText(asString(semesterrechnungModel.getDatumZahlung3Nachrechnung()));
-        }
-        else if (checkIsFieldChange(Field.BETRAG_ZAHLUNG_3_NACHRECHNUNG, evt)) {
+        } else if (checkIsFieldChange(Field.BETRAG_ZAHLUNG_3_NACHRECHNUNG, evt)) {
             txtBetragZahlung3Nachrechnung.setText(semesterrechnungModel.getBetragZahlung3Nachrechnung() == null ? null : semesterrechnungModel.getBetragZahlung3Nachrechnung().toString());
-        }
-        else if (checkIsFieldChange(Field.BEMERKUNGEN, evt)) {
+        } else if (checkIsFieldChange(Field.BEMERKUNGEN, evt)) {
             textAreaBemerkungen.setText(semesterrechnungModel.getBemerkungen());
         }
     }

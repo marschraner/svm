@@ -7,8 +7,6 @@ import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
 import ch.metzenthin.svm.ui.components.LektionsgebuehrenErfassenDialog;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -35,20 +33,18 @@ public class LektionsgebuehrenController {
         this.svmContext = svmContext;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public void setLektionsgebuehrenTable(JTable lektionsgebuehrenTable) {
         this.lektionsgebuehrenTable = lektionsgebuehrenTable;
         LektionsgebuehrenTableData lektionsgebuehrenTableData = new LektionsgebuehrenTableData(svmContext.getSvmModel().getLektionsgebuehrenAllList());
         lektionsgebuehrenTableModel = new LektionsgebuehrenTableModel(lektionsgebuehrenTableData);
         lektionsgebuehrenTable.setModel(lektionsgebuehrenTableModel);
         setColumnCellRenderers(lektionsgebuehrenTable, lektionsgebuehrenTableModel);
-        lektionsgebuehrenTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-                onListSelection();
+        lektionsgebuehrenTable.getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()) {
+                return;
             }
+            onListSelection();
         });
         lektionsgebuehrenTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -61,12 +57,7 @@ public class LektionsgebuehrenController {
 
     public void setBtnNeu(JButton btnNeu) {
         this.btnNeu = btnNeu;
-        btnNeu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNeu();
-            }
-        });
+        btnNeu.addActionListener(e -> onNeu());
     }
 
     private void onNeu() {
@@ -81,12 +72,7 @@ public class LektionsgebuehrenController {
     public void setBtnBearbeiten(JButton btnBearbeiten) {
         this.btnBearbeiten = btnBearbeiten;
         enableBtnBearbeiten(false);
-        btnBearbeiten.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBearbeiten();
-            }
-        });
+        btnBearbeiten.addActionListener(e -> onBearbeiten());
     }
 
     private void enableBtnBearbeiten(boolean enabled) {
@@ -105,12 +91,7 @@ public class LektionsgebuehrenController {
     public void setBtnLoeschen(JButton btnLoeschen) {
         this.btnLoeschen = btnLoeschen;
         enableBtnLoeschen(false);
-        btnLoeschen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLoeschen();
-            }
-        });
+        btnLoeschen.addActionListener(e -> onLoeschen());
     }
 
     private void enableBtnLoeschen(boolean enabled) {
@@ -140,12 +121,7 @@ public class LektionsgebuehrenController {
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

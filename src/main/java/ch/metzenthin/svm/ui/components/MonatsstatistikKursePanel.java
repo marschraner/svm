@@ -44,7 +44,7 @@ public class MonatsstatistikKursePanel {
     }
 
     private void createMonatsstatistikKurseController(SvmContext svmContext) {
-        monatsstatistikKurseController = new MonatsstatistikKurseController(svmContext.getModelFactory().createMonatsstatistikKurseModel(), svmContext, DEFAULT_BUTTON_ENABLED);
+        monatsstatistikKurseController = new MonatsstatistikKurseController(svmContext.getModelFactory().createMonatsstatistikKurseModel(), DEFAULT_BUTTON_ENABLED);
         monatsstatistikKurseController.setTxtMonatJahr(txtMonatJahr);
         monatsstatistikKurseController.setBtnSuchen(btnSuchen);
         monatsstatistikKurseController.setBtnAbbrechen(btnAbbrechen);

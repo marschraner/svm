@@ -1,19 +1,19 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.EmailEmpfaenger;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.EmailModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 
@@ -29,28 +29,21 @@ public class EmailController extends AbstractController {
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private EmailModel emailModel;
-    private SvmContext svmContext;
-    private SchuelerDatenblattModel schuelerDatenblattModel;
+    private final EmailModel emailModel;
+    private final SchuelerDatenblattModel schuelerDatenblattModel;
     private JDialog emailDialog;
     private JComboBox<EmailEmpfaenger> comboBoxEmailEmpfaenger;
     private JButton btnOk;
     private EmailEmpfaenger[] selectableEmailEmpfaengers;
 
-    public EmailController(EmailModel emailModel, SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel) {
+    public EmailController(EmailModel emailModel, SchuelerDatenblattModel schuelerDatenblattModel) {
         super(emailModel);
         this.emailModel = emailModel;
-        this.svmContext = svmContext;
         this.schuelerDatenblattModel = schuelerDatenblattModel;
         this.emailModel.addPropertyChangeListener(this);
         this.emailModel.addDisableFieldsListener(this);
         this.emailModel.addMakeErrorLabelsInvisibleListener(this);
-        this.emailModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onEmailModelCompleted(completed);
-            }
-        });
+        this.emailModel.addCompletedListener(this::onEmailModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -71,11 +64,7 @@ public class EmailController extends AbstractController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setComboBoxEmailEmpfaenger(JComboBox<EmailEmpfaenger> comboBoxEmailEmpfaenger) {
@@ -86,12 +75,7 @@ public class EmailController extends AbstractController {
         if (selectableEmailEmpfaengers.length > 0) {
             emailModel.setEmailEmpfaenger(selectableEmailEmpfaengers[0]);
         }
-        comboBoxEmailEmpfaenger.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onEmailEmpfaengerSelected();
-            }
-        });
+        comboBoxEmailEmpfaenger.addActionListener(e -> onEmailEmpfaengerSelected());
     }
 
     private void onEmailEmpfaengerSelected() {
@@ -122,14 +106,10 @@ public class EmailController extends AbstractController {
         if (isModelValidationMode()) {
             btnOk.setEnabled(false);
         }
-        this.btnOk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onOk();
-            }
-        });
+        this.btnOk.addActionListener(e -> onOk());
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void onOk() {
         if (!isModelValidationMode() && !validateOnSpeichern()) {
             btnOk.setFocusPainted(false);
@@ -143,12 +123,7 @@ public class EmailController extends AbstractController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

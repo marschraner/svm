@@ -8,8 +8,6 @@ import ch.metzenthin.svm.ui.componentmodel.MaerchensTableModel;
 import ch.metzenthin.svm.ui.components.MaerchenErfassenDialog;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -37,17 +35,15 @@ public class MaerchensController {
         this.svmContext = svmContext;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public void setMaerchensTable(JTable maerchensTable) {
         this.maerchensTable = maerchensTable;
         initializeMaerchensTable();
-        maerchensTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-                onListSelection();
+        maerchensTable.getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()) {
+                return;
             }
+            onListSelection();
         });
         maerchensTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -68,12 +64,7 @@ public class MaerchensController {
 
     public void setBtnNeu(JButton btnNeu) {
         this.btnNeu = btnNeu;
-        btnNeu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onNeu();
-            }
-        });
+        btnNeu.addActionListener(e -> onNeu());
     }
 
     private void onNeu() {
@@ -88,12 +79,7 @@ public class MaerchensController {
     public void setBtnBearbeiten(JButton btnBearbeiten) {
         this.btnBearbeiten = btnBearbeiten;
         enableBtnBearbeiten(false);
-        btnBearbeiten.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBearbeiten();
-            }
-        });
+        btnBearbeiten.addActionListener(e -> onBearbeiten());
     }
 
     private void enableBtnBearbeiten(boolean enabled) {
@@ -112,12 +98,7 @@ public class MaerchensController {
     public void setBtnLoeschen(JButton btnLoeschen) {
         this.btnLoeschen = btnLoeschen;
         enableBtnLoeschen(false);
-        btnLoeschen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onLoeschen();
-            }
-        });
+        btnLoeschen.addActionListener(e -> onLoeschen());
     }
 
     private void enableBtnLoeschen(boolean enabled) {
@@ -139,14 +120,14 @@ public class MaerchensController {
         if (n == 0) {
             DeleteMaerchenCommand.Result result = maerchensModel.maerchenLoeschen(svmContext, maerchensTableModel, maerchensTable.getSelectedRow());
             switch (result) {
-                case MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT:
+                case MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT -> {
                     JOptionPane.showMessageDialog(null, "Das Maerchen wird durch mindestens eine Märcheneinteilung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                     btnLoeschen.setFocusPainted(false);
-                    break;
-                case LOESCHEN_ERFOLGREICH:
+                }
+                case LOESCHEN_ERFOLGREICH -> {
                     maerchensTableModel.fireTableDataChanged();
                     maerchensTable.addNotify();
-                    break;
+                }
             }
         }
         btnLoeschen.setFocusPainted(false);
@@ -162,12 +143,7 @@ public class MaerchensController {
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
         this.btnAbbrechen = btnAbbrechen;
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

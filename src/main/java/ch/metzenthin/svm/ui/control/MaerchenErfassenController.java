@@ -4,15 +4,12 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CompletedListener;
 import ch.metzenthin.svm.domain.model.MaerchenErfassenModel;
 import ch.metzenthin.svm.ui.componentmodel.MaerchensTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
@@ -52,12 +49,7 @@ public class MaerchenErfassenController extends AbstractController {
         this.maerchenErfassenModel.addPropertyChangeListener(this);
         this.maerchenErfassenModel.addDisableFieldsListener(this);
         this.maerchenErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.maerchenErfassenModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onMaerchenErfassenModelCompleted(completed);
-            }
-        });
+        this.maerchenErfassenModel.addCompletedListener(this::onMaerchenErfassenModelCompleted);
         this.setModelValidationMode(MODEL_VALIDATION_MODE);
     }
 
@@ -78,21 +70,12 @@ public class MaerchenErfassenController extends AbstractController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setSpinnerSchuljahre(JSpinner spinnerSchuljahre) {
         this.spinnerSchuljahre = spinnerSchuljahre;
-        spinnerSchuljahre.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                onSchuljahrSelected();
-            }
-        });
+        spinnerSchuljahre.addChangeListener(e -> onSchuljahrSelected());
         if (!isBearbeiten) {
             initSchuljahr();
         }
@@ -106,6 +89,7 @@ public class MaerchenErfassenController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void onSchuljahrSelected() {
         LOGGER.trace("PersonController Event Schuljahre selected =" + spinnerSchuljahre.getValue());
         boolean equalFieldAndModelValue = equalsNullSafe(spinnerSchuljahre.getValue(), maerchenErfassenModel.getSchuljahr());
@@ -135,12 +119,7 @@ public class MaerchenErfassenController extends AbstractController {
     public void setTxtBezeichnung(JTextField txtBezeichnung) {
         this.txtBezeichnung = txtBezeichnung;
         if (!defaultButtonEnabled) {
-            this.txtBezeichnung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onBezeichnungEvent(true);
-                }
-            });
+            this.txtBezeichnung.addActionListener(e -> onBezeichnungEvent(true));
         }
         this.txtBezeichnung.addFocusListener(new FocusAdapter() {
             @Override
@@ -173,7 +152,7 @@ public class MaerchenErfassenController extends AbstractController {
             LOGGER.trace("MaerchenErfassenController setModelBezeichnung RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBezeichnung.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -188,12 +167,7 @@ public class MaerchenErfassenController extends AbstractController {
     public void setTxtAnzahlVorstellungen(JTextField txtAnzahlVorstellungen) {
         this.txtAnzahlVorstellungen = txtAnzahlVorstellungen;
         if (!defaultButtonEnabled) {
-            this.txtAnzahlVorstellungen.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onAnzahlVorstellungenEvent(true);
-                }
-            });
+            this.txtAnzahlVorstellungen.addActionListener(e -> onAnzahlVorstellungenEvent(true));
         }
         this.txtAnzahlVorstellungen.addFocusListener(new FocusAdapter() {
             @Override
@@ -226,7 +200,7 @@ public class MaerchenErfassenController extends AbstractController {
             LOGGER.trace("MaerchenErfassenController setModelAnzahlVorstellungen RequiredException=" + e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtAnzahlVorstellungen.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -251,12 +225,7 @@ public class MaerchenErfassenController extends AbstractController {
         if (isModelValidationMode()) {
             btnSpeichern.setEnabled(false);
         }
-        this.btnSpeichern.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSpeichern();
-            }
-        });
+        this.btnSpeichern.addActionListener(e -> onSpeichern());
     }
 
     private void onSpeichern() {
@@ -289,12 +258,7 @@ public class MaerchenErfassenController extends AbstractController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {

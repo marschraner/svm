@@ -5,17 +5,19 @@ import ch.metzenthin.svm.common.dataTypes.Codetyp;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.model.CodeSpecificHinzufuegenModel;
 import ch.metzenthin.svm.domain.model.CodesModel;
 import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
-import ch.metzenthin.svm.domain.model.CodeSpecificHinzufuegenModel;
 import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 
@@ -33,11 +35,11 @@ public class CodeSpecificHinzufuegenController extends AbstractController {
 
     private final SvmContext svmContext;
     private final SchuelerDatenblattModel schuelerDatenblattModel;
-    private CodeSpecificHinzufuegenModel codeSpecificHinzufuegenModel;
-    private MitarbeiterErfassenModel mitarbeiterErfassenModel;
-    private Codetyp codetyp;
-    private CodesTableModel codesTableModel;
-    private CodesModel codesModel;
+    private final CodeSpecificHinzufuegenModel codeSpecificHinzufuegenModel;
+    private final MitarbeiterErfassenModel mitarbeiterErfassenModel;
+    private final Codetyp codetyp;
+    private final CodesTableModel codesTableModel;
+    private final CodesModel codesModel;
     private JDialog codeSpecificHinzufuegenDialog;
     private JComboBox<Code> comboBoxCode;
     private JLabel errLblCode;
@@ -69,35 +71,24 @@ public class CodeSpecificHinzufuegenController extends AbstractController {
 
     public void setContentPane(JPanel contentPane) {
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setComboBoxCode(JComboBox<Code> comboBoxCode) {
         this.comboBoxCode = comboBoxCode;
         Code[] selectableCodes = new Code[]{};
         switch (codetyp) {
-            case SCHUELER:
-                selectableCodes = codesModel.getSelectableSchuelerCodes(svmContext.getSvmModel(), schuelerDatenblattModel);
-                break;
-            case MITARBEITER:
-                selectableCodes = codesModel.getSelectableMitarbeiterCodes(svmContext.getSvmModel(), mitarbeiterErfassenModel);
-                break;
-            default:
-                break;
+            case SCHUELER ->
+                    selectableCodes = codesModel.getSelectableSchuelerCodes(svmContext.getSvmModel(), schuelerDatenblattModel);
+            case MITARBEITER ->
+                    selectableCodes = codesModel.getSelectableMitarbeiterCodes(svmContext.getSvmModel(), mitarbeiterErfassenModel);
+            default -> {
+            }
         }
         comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableCodes));
         // Leeren ComboBox-Wert anzeigen
         comboBoxCode.setSelectedItem(null);
-        this.comboBoxCode.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onCodeSelected();
-            }
-        });
+        this.comboBoxCode.addActionListener(e -> onCodeSelected());
     }
 
     private void onCodeSelected() {
@@ -122,7 +113,7 @@ public class CodeSpecificHinzufuegenController extends AbstractController {
             LOGGER.trace("xCodeXHinzufuegenController setModelCode RequiredException=" + e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxCode.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
             } else {
                 showErrMsg(e);
             }
@@ -136,18 +127,11 @@ public class CodeSpecificHinzufuegenController extends AbstractController {
 
     public void setBtnOk(JButton btnOk) {
         this.btnOk = btnOk;
-        btnOk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switch (codetyp) {
-                    case SCHUELER:
-                        onSchuelerCodeHinzufuegen();
-                        break;
-                    case MITARBEITER:
-                        onMitarbeiterCodeHinzufuegen();
-                        break;
-                    default:
-                        break;
+        btnOk.addActionListener(e -> {
+            switch (codetyp) {
+                case SCHUELER -> onSchuelerCodeHinzufuegen();
+                case MITARBEITER -> onMitarbeiterCodeHinzufuegen();
+                default -> {
                 }
             }
         });
@@ -172,12 +156,7 @@ public class CodeSpecificHinzufuegenController extends AbstractController {
     }
 
     public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAbbrechen();
-            }
-        });
+        btnAbbrechen.addActionListener(e -> onAbbrechen());
     }
 
     private void onAbbrechen() {
@@ -223,7 +202,7 @@ public class CodeSpecificHinzufuegenController extends AbstractController {
     }
 
     @Override
-    public void disableFields(boolean disable, Set<Field> fields) {}
-
+    public void disableFields(boolean disable, Set<Field> fields) {
+    }
 
 }

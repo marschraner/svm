@@ -7,8 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 
@@ -39,32 +37,17 @@ public class AngehoerigerController extends PersonController {
 
     public void setCheckBoxGleicheAdresseWieSchueler(JCheckBox checkBoxAdresseSchuelerUebernehmen) {
         this.checkBoxGleicheAdresseWieSchueler = checkBoxAdresseSchuelerUebernehmen;
-        this.checkBoxGleicheAdresseWieSchueler.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onGleicheAdresseWieSchuelerEvent();
-            }
-        });
+        this.checkBoxGleicheAdresseWieSchueler.addItemListener(e -> onGleicheAdresseWieSchuelerEvent());
     }
 
     public void setCheckBoxWuenschtEmails(JCheckBox checkBoxWuenschtEmails) {
         this.checkBoxWuenschtEmails = checkBoxWuenschtEmails;
-        this.checkBoxWuenschtEmails.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onWuenschtEmailsEvent();
-            }
-        });
+        this.checkBoxWuenschtEmails.addItemListener(e -> onWuenschtEmailsEvent());
     }
 
     public void setCheckBoxRechnungsempfaenger(JCheckBox checkBoxRechnungsempfaenger) {
         this.checkBoxRechnungsempfaenger = checkBoxRechnungsempfaenger;
-        this.checkBoxRechnungsempfaenger.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                onRechnungsempfaengerEvent();
-            }
-        });
+        this.checkBoxRechnungsempfaenger.addItemListener(e -> onRechnungsempfaengerEvent());
     }
 
     public void onGleicheAdresseWieSchuelerEvent() {
@@ -119,12 +102,10 @@ public class AngehoerigerController extends PersonController {
         LOGGER.trace("AngehoerigerController PropertyChangeEvent '" + evt.getPropertyName() + "', oldValue='" + evt.getOldValue() + "', newValue='" + evt.getNewValue() + "'");
         if (checkIsFieldChange(Field.GLEICHE_ADRESSE_WIE_SCHUELER, evt)) {
             checkBoxGleicheAdresseWieSchueler.setSelected(angehoerigerModel.isGleicheAdresseWieSchueler());
-        }
-        else if (checkIsFieldChange(Field.WUENSCHT_EMAILS, evt) && checkBoxWuenschtEmails.isVisible()) {
+        } else if (checkIsFieldChange(Field.WUENSCHT_EMAILS, evt) && checkBoxWuenschtEmails.isVisible()) {
             checkBoxWuenschtEmails.setSelected(angehoerigerModel.getWuenschtEmails() != null
                     && angehoerigerModel.getWuenschtEmails());
-        }
-        else if (checkIsFieldChange(Field.RECHNUNGSEMPFAENGER, evt)) {
+        } else if (checkIsFieldChange(Field.RECHNUNGSEMPFAENGER, evt)) {
             checkBoxRechnungsempfaenger.setSelected(angehoerigerModel.isRechnungsempfaenger());
         }
         super.doPropertyChange(evt);
