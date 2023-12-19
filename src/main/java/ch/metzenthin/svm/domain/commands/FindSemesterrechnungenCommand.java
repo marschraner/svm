@@ -268,9 +268,9 @@ public class FindSemesterrechnungenCommand implements Command {
                 break;
         }
         if (gratiskinder == null || !gratiskinder) {
-            selectStatementSb.append(" semre.gratiskinder = 0 and");
+            selectStatementSb.append(" semre.gratiskinder = false and");
         } else {
-            selectStatementSb.append(" semre.gratiskinder = 1 and");
+            selectStatementSb.append(" semre.gratiskinder = true and");
         }
         switch (rechnungsdatumGesetztVorrechnungSelected) {
             case GESETZT:
