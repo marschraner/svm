@@ -21,7 +21,7 @@ public class MonatsstatistikKurseModelImpl extends AbstractModel implements Mona
     private final CalendarModelAttribute monatJahrModelAttribute = new CalendarModelAttribute(
             this,
             Field.MONAT_JAHR, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), getNMonthsAfterNow(12),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return monatJahr;

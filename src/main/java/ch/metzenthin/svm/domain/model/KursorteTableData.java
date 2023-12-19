@@ -10,13 +10,13 @@ import java.util.List;
  */
 public class KursorteTableData {
 
+    private static final Field[] COLUMNS = {Field.BEZEICHNUNG, Field.SELEKTIERBAR};
+
     private List<Kursort> kursorte;
 
     public KursorteTableData(List<Kursort> kursorte) {
         this.kursorte = kursorte;
     }
-
-    private static final Field[] COLUMNS = {Field.BEZEICHNUNG, Field.SELEKTIERBAR};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -30,23 +30,16 @@ public class KursorteTableData {
         Kursort kursort = kursorte.get(rowIndex);
         Object value = null;
         switch (COLUMNS[columnIndex]) {
-            case BEZEICHNUNG:
-                value = kursort.getBezeichnung();
-                break;
-            case SELEKTIERBAR:
-                value = (kursort.getSelektierbar() ? "ja" : "nein");
-                break;
-            default:
-                break;
+            case BEZEICHNUNG -> value = kursort.getBezeichnung();
+            case SELEKTIERBAR -> value = (kursort.getSelektierbar() ? "ja" : "nein");
+            default -> {
+            }
         }
         return value;
     }
 
-    public Class<?> getColumnClass(int columnIndex) {
-        switch (COLUMNS[columnIndex]) {
-            default:
-                return String.class;
-        }
+    public Class<?> getColumnClass() {
+        return String.class;
     }
 
     public String getColumnName(int column) {

@@ -13,5 +13,6 @@ public interface EmailModel extends Model {
     void setEmailEmpfaenger(EmailEmpfaenger emailEmpfaenger);
 
     EmailEmpfaenger[] getSelectableEmailEmpfaengers(SchuelerDatenblattModel schuelerDatenblattModel);
+
     CallDefaultEmailClientCommand.Result callEmailClient(SchuelerDatenblattModel schuelerDatenblattModel);
 }

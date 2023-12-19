@@ -12,5 +12,6 @@ public interface KurseSemesterwahlModel extends Model {
     void setSemester(Semester semesterg);
 
     Semester getInitSemester(SvmModel svmModel);
+
     KurseTableData suchen();
 }

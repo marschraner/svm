@@ -74,9 +74,8 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
         fehlendeEmailAdressen = new LinkedHashSet<>();
 
         switch (emailSchuelerListeEmpfaengerGruppe) {
-
-            case MUTTER_UND_ODER_VATER:
-                // Wenn vorhanden Email(s) von Mutter und/oder Vater, sonst des Schülers
+            case MUTTER_UND_ODER_VATER -> {
+                // Wenn vorhanden E-Mail(s) von Mutter und/oder Vater, sonst des Schülers
                 for (Schueler schueler : schuelerSuchenTableModel.getSelektierteSchuelerList()) {
                     // Mutter und/oder Vater
                     Set<String> emailAdressenForSchueler = new LinkedHashSet<>();
@@ -93,10 +92,9 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                         fehlendeEmailAdressen.add(schueler.getNachname() + " " + schueler.getVorname());
                     }
                 }
-                break;
-
-            case SCHUELER:
-                // Wenn vorhanden Email des Schülers, sonst Mutter und/oder Vater
+            }
+            case SCHUELER -> {
+                // Wenn vorhanden E-Mail des Schülers, sonst Mutter und/oder Vater
                 for (Schueler schueler : schuelerSuchenTableModel.getSelektierteSchuelerList()) {
                     // Schüler
                     Set<String> emailAdressenForSchueler = new LinkedHashSet<>();
@@ -115,10 +113,9 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                         fehlendeEmailAdressen.add(schueler.getNachname() + " " + schueler.getVorname());
                     }
                 }
-                break;
-
-            case ROLLENLISTE:
-                // Wenn vorhanden Email des Schülers, sonst der Elternmithilfe (falls nicht Dritt-
+            }
+            case ROLLENLISTE -> {
+                // Wenn vorhanden E-Mail des Schülers, sonst der Elternmithilfe (falls nicht Dritt-
                 // person), sonst der Mutter, sonst des Vaters, sonst Elternmithilfe Drittperson
                 Map<Schueler, Maercheneinteilung> maercheneinteilungen
                         = schuelerSuchenTableModel.getMaercheneinteilungen();
@@ -165,10 +162,8 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                         emailAdressen.add(email);
                     }
                 }
-
-                break;
-
-            case ELTERNMITHILFE:
+            }
+            case ELTERNMITHILFE -> {
                 Map<Schueler, Maercheneinteilung> maercheneinteilungenElternmithilfe
                         = schuelerSuchenTableModel.getMaercheneinteilungen();
                 List<Person> elternmithilfen = new ArrayList<>();
@@ -190,7 +185,6 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                         elternmithilfen.add(elternmithilfe);
                     }
                 }
-
                 Collections.sort(elternmithilfen);
                 for (Person elternmithilfe : elternmithilfen) {
                     String email = null;
@@ -203,7 +197,7 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                         emailAdressen.add(email);
                     }
                 }
-                break;
+            }
         }
 
         CommandInvoker commandInvoker = getCommandInvoker();
@@ -215,6 +209,7 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
         return callDefaultEmailClientCommand.getResult();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void addEmailOfMutterUndOderVater(
             Schueler schueler, Set<String> emailAdressenForSchueler) {
 
@@ -255,7 +250,8 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
     }
 
     @Override
-    public void initializeCompleted() {}
+    public void initializeCompleted() {
+    }
 
     @Override
     public boolean isCompleted() {
@@ -263,5 +259,6 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 }

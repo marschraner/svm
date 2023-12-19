@@ -7,6 +7,8 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -18,7 +20,9 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
  */
 public class SemesterErfassenModelImpl extends AbstractModel implements SemesterErfassenModel {
 
-    private Semester semester = new Semester();
+    private static final Logger LOGGER = LogManager.getLogger(SemesterErfassenModelImpl.class);
+
+    private final Semester semester = new Semester();
     private Semester semesterOrigin;
 
     @Override
@@ -34,7 +38,7 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
     private final StringModelAttribute schuljahrModelAttribute = new StringModelAttribute(
             this,
             Field.SCHULJAHR, 9, 9,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return semester.getSchuljahr();
@@ -69,10 +73,10 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         firePropertyChange(Field.SEMESTERBEZEICHNUNG, oldValue, semester.getSemesterbezeichnung());
     }
 
-    private CalendarModelAttribute semesterbeginnModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute semesterbeginnModelAttribute = new CalendarModelAttribute(
             this,
             Field.SEMESTERBEGINN, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX + 1, Calendar.DECEMBER, 31),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return semester.getSemesterbeginn();
@@ -105,10 +109,10 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         }
     }
 
-    private CalendarModelAttribute semesterendeModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute semesterendeModelAttribute = new CalendarModelAttribute(
             this,
             Field.SEMESTERENDE, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX + 1, Calendar.DECEMBER, 31),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return semester.getSemesterende();
@@ -141,10 +145,10 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         }
     }
 
-    private CalendarModelAttribute ferienbeginn1ModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute ferienbeginn1ModelAttribute = new CalendarModelAttribute(
             this,
             Field.FERIENBEGINN1, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX + 1, Calendar.DECEMBER, 31),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return semester.getFerienbeginn1();
@@ -177,10 +181,10 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         }
     }
 
-    private CalendarModelAttribute ferienende1ModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute ferienende1ModelAttribute = new CalendarModelAttribute(
             this,
             Field.FERIENENDE1, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX + 1, Calendar.DECEMBER, 31),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return semester.getFerienende1();
@@ -213,10 +217,10 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         }
     }
 
-    private CalendarModelAttribute ferienbeginn2ModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute ferienbeginn2ModelAttribute = new CalendarModelAttribute(
             this,
             Field.FERIENBEGINN2, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX + 1, Calendar.DECEMBER, 31),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return semester.getFerienbeginn2();
@@ -249,10 +253,10 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         }
     }
 
-    private CalendarModelAttribute ferienende2ModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute ferienende2ModelAttribute = new CalendarModelAttribute(
             this,
             Field.FERIENENDE2, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX + 1, Calendar.DECEMBER, 31),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return semester.getFerienende2();
@@ -343,8 +347,8 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
                 setFerienende1(asString(semesterOrigin.getFerienende1()));
                 setFerienbeginn2(asString(semesterOrigin.getFerienbeginn2()));
                 setFerienende2(asString(semesterOrigin.getFerienende2()));
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else {

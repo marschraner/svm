@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import org.apache.logging.log4j.LogManager;
@@ -68,7 +68,8 @@ public class CalendarModelAttribute {
                 modelAttributeListener.invalidate();
                 throw new SvmValidationException(1200, e.getMessage(), field);
             }
-            if (!isBulkUpdate && dateFormatString.contains("y")) {
+            if (!isBulkUpdate && dateFormatString.contains("y")
+                    && newValueAsCalendar != null) {
                 checkEarliestValidDate(newValueAsCalendar, dateFormatString);
                 checkLatestValidDate(newValueAsCalendar, dateFormatString);
             }
@@ -87,6 +88,7 @@ public class CalendarModelAttribute {
     /**
      * Achtung: Neuer Wert wird nicht geprüft!
      */
+    @SuppressWarnings("SameParameterValue")
     void initValue(String newValue) {
         initValue(newValue, Converter.DD_MM_YYYY_DATE_FORMAT_STRING);
     }

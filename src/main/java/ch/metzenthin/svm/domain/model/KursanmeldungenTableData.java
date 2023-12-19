@@ -13,14 +13,26 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
  */
 public class KursanmeldungenTableData {
 
+    private static final Field[] COLUMNS = {
+            Field.SCHULJAHR,
+            Field.SEMESTER,
+            Field.KURSTYP_BEZEICHNUNG,
+            Field.ALTERSBEREICH,
+            Field.STUFE,
+            Field.TAG,
+            Field.ZEIT_BEGINN,
+            Field.ZEIT_ENDE,
+            Field.ORT,
+            Field.LEITUNG,
+            Field.ANMELDEDATUM,
+            Field.ABMELDEDATUM,
+            Field.BEMERKUNGEN};
+
     private List<Kursanmeldung> kursanmeldungen;
 
     public KursanmeldungenTableData(List<Kursanmeldung> kursanmeldungen) {
         this.kursanmeldungen = kursanmeldungen;
     }
-
-    private static final Field[] COLUMNS = {Field.SCHULJAHR, Field.SEMESTER, Field.KURSTYP_BEZEICHNUNG, Field.ALTERSBEREICH, Field.STUFE,
-            Field.TAG, Field.ZEIT_BEGINN, Field.ZEIT_ENDE, Field.ORT, Field.LEITUNG, Field.ANMELDEDATUM, Field.ABMELDEDATUM, Field.BEMERKUNGEN};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -34,34 +46,16 @@ public class KursanmeldungenTableData {
         Kursanmeldung kursanmeldung = kursanmeldungen.get(rowIndex);
         Object value = null;
         switch (COLUMNS[columnIndex]) {
-            case SCHULJAHR:
-                value = kursanmeldung.getKurs().getSemester().getSchuljahr();
-                break;
-            case SEMESTER:
-                value = kursanmeldung.getKurs().getSemester().getSemesterbezeichnung();
-                break;
-            case KURSTYP_BEZEICHNUNG:
-                value = kursanmeldung.getKurs().getKurstyp().getBezeichnung();
-                break;
-            case ALTERSBEREICH:
-                value = kursanmeldung.getKurs().getAltersbereich();
-                break;
-            case STUFE:
-                value = kursanmeldung.getKurs().getStufe();
-                break;
-            case TAG:
-                value = kursanmeldung.getKurs().getWochentag().toString();
-                break;
-            case ZEIT_BEGINN:
-                value = asString(kursanmeldung.getKurs().getZeitBeginn());
-                break;
-            case ZEIT_ENDE:
-                value = asString(kursanmeldung.getKurs().getZeitEnde());
-                break;
-            case ORT:
-                value = kursanmeldung.getKurs().getKursort().getBezeichnung();
-                break;
-            case LEITUNG:
+            case SCHULJAHR -> value = kursanmeldung.getKurs().getSemester().getSchuljahr();
+            case SEMESTER -> value = kursanmeldung.getKurs().getSemester().getSemesterbezeichnung();
+            case KURSTYP_BEZEICHNUNG -> value = kursanmeldung.getKurs().getKurstyp().getBezeichnung();
+            case ALTERSBEREICH -> value = kursanmeldung.getKurs().getAltersbereich();
+            case STUFE -> value = kursanmeldung.getKurs().getStufe();
+            case TAG -> value = kursanmeldung.getKurs().getWochentag().toString();
+            case ZEIT_BEGINN -> value = asString(kursanmeldung.getKurs().getZeitBeginn());
+            case ZEIT_ENDE -> value = asString(kursanmeldung.getKurs().getZeitEnde());
+            case ORT -> value = kursanmeldung.getKurs().getKursort().getBezeichnung();
+            case LEITUNG -> {
                 StringBuilder leitung = new StringBuilder();
                 for (Mitarbeiter mitarbeiter : kursanmeldung.getKurs().getLehrkraefte()) {
                     if (leitung.length() > 0) {
@@ -70,27 +64,20 @@ public class KursanmeldungenTableData {
                     leitung.append(mitarbeiter.getVorname()).append(" ").append(mitarbeiter.getNachname());
                 }
                 value = leitung.toString();
-                break;
-            case ANMELDEDATUM:
-                value = (kursanmeldung.getAnmeldedatum() == null ? "" : asString(kursanmeldung.getAnmeldedatum()));
-                break;
-            case ABMELDEDATUM:
-                value = (kursanmeldung.getAbmeldedatum() == null ? "" : asString(kursanmeldung.getAbmeldedatum()));
-                break;
-            case BEMERKUNGEN:
-                value = kursanmeldung.getBemerkungen();
-                break;
-            default:
-                break;
+            }
+            case ANMELDEDATUM ->
+                    value = (kursanmeldung.getAnmeldedatum() == null ? "" : asString(kursanmeldung.getAnmeldedatum()));
+            case ABMELDEDATUM ->
+                    value = (kursanmeldung.getAbmeldedatum() == null ? "" : asString(kursanmeldung.getAbmeldedatum()));
+            case BEMERKUNGEN -> value = kursanmeldung.getBemerkungen();
+            default -> {
+            }
         }
         return value;
     }
 
-    public Class<?> getColumnClass(int columnIndex) {
-        switch (COLUMNS[columnIndex]) {
-            default:
-                return String.class;
-        }
+    public Class<?> getColumnClass() {
+        return String.class;
     }
 
     public String getColumnName(int column) {

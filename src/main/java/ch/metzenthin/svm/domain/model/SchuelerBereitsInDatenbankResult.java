@@ -10,7 +10,7 @@ import static ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand.Result.S
  */
 public class SchuelerBereitsInDatenbankResult extends SchuelerErfassenSaveResult {
 
-    private Schueler schueler;
+    private final Schueler schueler;
 
     public SchuelerBereitsInDatenbankResult(Schueler schueler) {
         super(SCHUELER_BEREITS_IN_DATENBANK);

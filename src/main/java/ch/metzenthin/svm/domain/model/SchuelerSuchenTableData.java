@@ -8,17 +8,14 @@ import ch.metzenthin.svm.common.utils.StringNumber;
 import ch.metzenthin.svm.persistence.entities.*;
 
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Hans Stamm
  */
 public class SchuelerSuchenTableData {
 
-    private List<Schueler> schuelerList;
+    private final List<Schueler> schuelerList;
     private Map<Schueler, List<Kurs>> kurse;
     private final Semester semester;
     private final Wochentag wochentag;
@@ -27,7 +24,7 @@ public class SchuelerSuchenTableData {
     private final Calendar anmeldemonat;
     private final Calendar abmeldemonat;
     private Map<Schueler, Maercheneinteilung> maercheneinteilungen;
-    private Maerchen maerchen;
+    private final Maerchen maerchen;
     private final Gruppe gruppe;
     private final ElternmithilfeCode elternmithilfeCode;
     private final boolean kursFuerSucheBeruecksichtigen;
@@ -35,7 +32,7 @@ public class SchuelerSuchenTableData {
     private final boolean nachRollenGesucht;
     private final Calendar stichtag;
     private final boolean keineAbgemeldetenKurseAnzeigen;
-    private List<Field> columns = new ArrayList<>();
+    private final List<Field> columns = new ArrayList<>();
 
     public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean kursFuerSucheBeruecksichtigen, boolean maerchenFuerSucheBeruecksichtigen, boolean nachRollenGesucht, Calendar stichtag, boolean keineAbgemeldetenKurseAnzeigen) {
         this.schuelerList = schuelerList;
@@ -105,34 +102,16 @@ public class SchuelerSuchenTableData {
         Adresse schuelerAdresse = schueler.getAdresse();
         Object value = null;
         switch (columns.get(columnIndex)) {
-            case SELEKTIERT:
-                value = schueler.isSelektiert();
-                break;
-            case NACHNAME:
-                value = schueler.getNachname();
-                break;
-            case VORNAME:
-                value = schueler.getVorname();
-                break;
-            case STRASSE_HAUSNUMMER:
-                value = schuelerAdresse.getStrHausnummer();
-               break;
-            case PLZ:
-                value = schuelerAdresse.getPlz();
-                break;
-            case ORT:
-                value = schuelerAdresse.getOrt();
-                break;
-            case GEBURTSDATUM_SHORT:
-                value = schueler.getGeburtsdatum();
-                break;
-            case MUTTER:
-                value = getString(schueler.getMutter());
-                break;
-            case VATER:
-                value = getString(schueler.getVater());
-                break;
-            case RECHNUNGSEMPFAENGER:
+            case SELEKTIERT -> value = schueler.isSelektiert();
+            case NACHNAME -> value = schueler.getNachname();
+            case VORNAME -> value = schueler.getVorname();
+            case STRASSE_HAUSNUMMER -> value = schuelerAdresse.getStrHausnummer();
+            case PLZ -> value = schuelerAdresse.getPlz();
+            case ORT -> value = schuelerAdresse.getOrt();
+            case GEBURTSDATUM_SHORT -> value = schueler.getGeburtsdatum();
+            case MUTTER -> value = getString(schueler.getMutter());
+            case VATER -> value = getString(schueler.getVater());
+            case RECHNUNGSEMPFAENGER -> {
                 String rechnungsempfaenger;
                 if (schueler.getMutter() != null && schueler.getMutter().isIdenticalWith(schueler.getRechnungsempfaenger())) {
                     rechnungsempfaenger = "Mutter";
@@ -142,65 +121,50 @@ public class SchuelerSuchenTableData {
                     rechnungsempfaenger = getString(schueler.getRechnungsempfaenger());
                 }
                 value = rechnungsempfaenger;
-                break;
-            case KURS1:
+            }
+            case KURS1 -> {
                 if (kurseOfSchueler != null && !kurseOfSchueler.isEmpty()) {
                     value = kurseOfSchueler.get(0).toStringShort();
                 }
-                break;
-            case ANZAHL_KURSE:
-                value = (kurseOfSchueler == null ? 0 : kurseOfSchueler.size());
-                break;
-            case ROLLE1:
+            }
+            case ANZAHL_KURSE -> value = (kurseOfSchueler == null ? 0 : kurseOfSchueler.size());
+            case ROLLE1 -> {
                 if (maercheneinteilungen.get(schueler) != null) {
                     // Korrekte Sortierung
                     value = new StringNumber(maercheneinteilungen.get(schueler).getRolle1());
                 }
-                break;
-            case GRUPPE:
+            }
+            case GRUPPE -> {
                 if (maercheneinteilungen.get(schueler) != null) {
                     value = maercheneinteilungen.get(schueler).getGruppe().toString();
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
         return value;
     }
 
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        switch (columns.get(columnIndex)) {
-            case SELEKTIERT:
-                Schueler schueler = schuelerList.get(rowIndex);
-                schueler.setSelektiert((boolean) value);
-                schuelerList.set(rowIndex, schueler);
-                break;
-            default:
+        if (Objects.requireNonNull(columns.get(columnIndex)) == Field.SELEKTIERT) {
+            Schueler schueler = schuelerList.get(rowIndex);
+            schueler.setSelektiert((boolean) value);
+            schuelerList.set(rowIndex, schueler);
         }
     }
 
     public boolean isCellEditable(int columnIndex) {
-        switch (columns.get(columnIndex)) {
-            case SELEKTIERT:
-                return true;
-            default:
-                return false;
-        }
+        return Objects.requireNonNull(columns.get(columnIndex)) == Field.SELEKTIERT;
     }
 
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columns.get(columnIndex)) {
-            case GEBURTSDATUM_SHORT:
-                return Calendar.class;
-            case ANZAHL_KURSE:
-                return Integer.class;
-            case SELEKTIERT:
-                return Boolean.class;
-            case ROLLE1:
-                return StringNumber.class;
-            default:
-                return String.class;
-        }
+        return switch (columns.get(columnIndex)) {
+            case GEBURTSDATUM_SHORT -> Calendar.class;
+            case ANZAHL_KURSE -> Integer.class;
+            case SELEKTIERT -> Boolean.class;
+            case ROLLE1 -> StringNumber.class;
+            default -> String.class;
+        };
     }
 
     private String getString(Angehoeriger angehoeriger) {

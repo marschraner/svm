@@ -9,6 +9,8 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.KursanmeldungenTableModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Time;
 import java.util.Calendar;
@@ -22,12 +24,14 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
  */
 public class KursanmeldungErfassenModelImpl extends AbstractModel implements KursanmeldungErfassenModel {
 
+    private static final Logger LOGGER = LogManager.getLogger(KursanmeldungErfassenModelImpl.class);
+
     private Semester semester;
     private Wochentag wochentag;
     private Time zeitBeginn;
     private Mitarbeiter mitarbeiter;
     private Kurs kurs;
-    private Kursanmeldung kursanmeldung = new Kursanmeldung();
+    private final Kursanmeldung kursanmeldung = new Kursanmeldung();
     private Kursanmeldung kursanmeldungOrigin;
 
     @Override
@@ -66,7 +70,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
     private final TimeModelAttribute zeitBeginnModelAttribute = new TimeModelAttribute(
             this,
             Field.ZEIT_BEGINN,
-            new AttributeAccessor<Time>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Time getValue() {
                     return zeitBeginn;
@@ -105,10 +109,10 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
         }
     }
 
-    private CalendarModelAttribute anmeldedatumModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute anmeldedatumModelAttribute = new CalendarModelAttribute(
             this,
             Field.ANMELDEDATUM, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX + 1, Calendar.DECEMBER, 31),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return kursanmeldung.getAnmeldedatum();
@@ -146,10 +150,10 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
         }
     }
 
-    private CalendarModelAttribute abmeldedatumModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute abmeldedatumModelAttribute = new CalendarModelAttribute(
             this,
             Field.ABMELDEDATUM, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX + 1, Calendar.DECEMBER, 31),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return kursanmeldung.getAbmeldedatum();
@@ -188,7 +192,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
     private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(
             this,
             Field.BEMERKUNGEN, 2, 100,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return kursanmeldung.getBemerkungen();
@@ -259,6 +263,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
         return semester.getSemesterende().before(today);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public Calendar getInitAnmeldedatum(KursanmeldungenTableModel kursanmeldungenTableModel) {
         if (semester == null) {
@@ -306,7 +311,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
         }
         return result;
     }
-    
+
     @Override
     public boolean checkIfKursBereitsErfasst(SchuelerDatenblattModel schuelerDatenblattModel) {
         Schueler schueler = schuelerDatenblattModel.getSchueler();
@@ -351,8 +356,8 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
                 setAnmeldedatum(asString(kursanmeldungOrigin.getAnmeldedatum()));
                 setAbmeldedatum(asString(kursanmeldungOrigin.getAbmeldedatum()));
                 setBemerkungen(kursanmeldungOrigin.getBemerkungen());
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else {
@@ -366,5 +371,6 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 }

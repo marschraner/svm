@@ -10,13 +10,17 @@ import java.util.List;
  */
 public class MaerchensTableData {
 
+    private static final Field[] COLUMNS = {
+            Field.SCHULJAHR,
+            Field.BEZEICHNUNG,
+            Field.ANZAHL_VORSTELLUNGEN,
+            Field.ANZAHL_KINDER};
+
     private List<Maerchen> maerchens;
 
     public MaerchensTableData(List<Maerchen> maerchens) {
         this.maerchens = maerchens;
     }
-
-    private static final Field[] COLUMNS = {Field.SCHULJAHR, Field.BEZEICHNUNG, Field.ANZAHL_VORSTELLUNGEN, Field.ANZAHL_KINDER};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -30,33 +34,21 @@ public class MaerchensTableData {
         Maerchen maerchen = maerchens.get(rowIndex);
         Object value = null;
         switch (COLUMNS[columnIndex]) {
-            case SCHULJAHR:
-                value = maerchen.getSchuljahr();
-                break;
-            case BEZEICHNUNG:
-                value = maerchen.getBezeichnung();
-                break;
-            case ANZAHL_VORSTELLUNGEN:
-                value = maerchen.getAnzahlVorstellungen();
-                break;
-            case ANZAHL_KINDER:
-                value = maerchen.getMaercheneinteilungen().size();
-                break;
-            default:
-                break;
+            case SCHULJAHR -> value = maerchen.getSchuljahr();
+            case BEZEICHNUNG -> value = maerchen.getBezeichnung();
+            case ANZAHL_VORSTELLUNGEN -> value = maerchen.getAnzahlVorstellungen();
+            case ANZAHL_KINDER -> value = maerchen.getMaercheneinteilungen().size();
+            default -> {
+            }
         }
         return value;
     }
 
     public Class<?> getColumnClass(int columnIndex) {
-        switch (COLUMNS[columnIndex]) {
-            case ANZAHL_VORSTELLUNGEN:
-                return Integer.class;
-            case ANZAHL_KINDER:
-                return Integer.class;
-            default:
-                return String.class;
-        }
+        return switch (COLUMNS[columnIndex]) {
+            case ANZAHL_VORSTELLUNGEN, ANZAHL_KINDER -> Integer.class;
+            default -> String.class;
+        };
     }
 
     public String getColumnName(int column) {

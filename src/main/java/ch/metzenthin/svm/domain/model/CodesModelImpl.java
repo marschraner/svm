@@ -80,22 +80,22 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
     public CodeErfassenModel getCodeErfassenModel(SvmContext svmContext, int indexCodeToBeModified, Codetyp codetyp) {
         CodeErfassenModel codeErfassenModel = svmContext.getModelFactory().createCodeErfassenModel();
         switch (codetyp) {
-            case SCHUELER:
+            case SCHUELER -> {
                 List<SchuelerCode> schuelerCodes = svmContext.getSvmModel().getSchuelerCodesAll();
                 codeErfassenModel.setSchuelerCodeOrigin(schuelerCodes.get(indexCodeToBeModified));
-                break;
-            case MITARBEITER:
+            }
+            case MITARBEITER -> {
                 List<MitarbeiterCode> mitarbeiterCodes = svmContext.getSvmModel().getMitarbeiterCodesAll();
                 codeErfassenModel.setMitarbeiterCodeOrigin(mitarbeiterCodes.get(indexCodeToBeModified));
-                break;
-            case ELTERNMITHILFE:
+            }
+            case ELTERNMITHILFE -> {
                 List<ElternmithilfeCode> elternmithilfeCodes = svmContext.getSvmModel().getElternmithilfeCodesAll();
                 codeErfassenModel.setElternmithilfeCodeOrigin(elternmithilfeCodes.get(indexCodeToBeModified));
-                break;
-            case SEMESTERRECHNUNG:
+            }
+            case SEMESTERRECHNUNG -> {
                 List<SemesterrechnungCode> semesterrechnungCodes = svmContext.getSvmModel().getSemesterrechnungCodesAll();
                 codeErfassenModel.setSemesterrechnungCodeOrigin(semesterrechnungCodes.get(indexCodeToBeModified));
-                break;
+            }
         }
         return codeErfassenModel;
     }
@@ -113,7 +113,7 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
             }
         }
         selectableSchuelerCodes.removeAll(codesToBeRemoved);
-        return selectableSchuelerCodes.toArray(new SchuelerCode[selectableSchuelerCodes.size()]);
+        return selectableSchuelerCodes.toArray(new SchuelerCode[0]);
     }
 
     @Override
@@ -129,7 +129,7 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
             }
         }
         selectableMitarbeiterCodes.removeAll(codesToBeRemoved);
-        return selectableMitarbeiterCodes.toArray(new MitarbeiterCode[selectableMitarbeiterCodes.size()]);
+        return selectableMitarbeiterCodes.toArray(new MitarbeiterCode[0]);
     }
 
     @Override

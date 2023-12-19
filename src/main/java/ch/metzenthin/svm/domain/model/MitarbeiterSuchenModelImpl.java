@@ -19,11 +19,11 @@ final class MitarbeiterSuchenModelImpl extends AbstractModel implements Mitarbei
     private MitarbeiterCode mitarbeiterCode;
     private LehrkraftJaNeinSelected lehrkraftJaNeinSelected;
     private StatusSelected statusSelected;
-    
+
     private final StringModelAttribute nachnameModelAttribute = new StringModelAttribute(
             this,
             Field.NACHNAME, 1, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return nachname;
@@ -49,7 +49,7 @@ final class MitarbeiterSuchenModelImpl extends AbstractModel implements Mitarbei
     private final StringModelAttribute vornameModelAttribute = new StringModelAttribute(
             this,
             Field.VORNAME, 1, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return vorname;
@@ -113,7 +113,7 @@ final class MitarbeiterSuchenModelImpl extends AbstractModel implements Mitarbei
         List<MitarbeiterCode> codesList = svmModel.getSelektierbareMitarbeiterCodesAll();
         // MitarbeiterCode alle auch erlaubt
         codesList.add(0, MITARBEITER_CODE_ALLE);
-        return codesList.toArray(new MitarbeiterCode[codesList.size()]);
+        return codesList.toArray(new MitarbeiterCode[0]);
     }
 
     @Override

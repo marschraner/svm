@@ -12,13 +12,17 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
  */
 public class DispensationenTableData {
 
+    private static final Field[] COLUMNS = {
+            Field.DISPENSATIONSBEGINN,
+            Field.DISPENSATIONSENDE,
+            Field.VORAUSSICHTLICHE_DAUER,
+            Field.GRUND};
+
     private List<Dispensation> dispensationen;
 
     public DispensationenTableData(List<Dispensation> dispensationen) {
         this.dispensationen = dispensationen;
     }
-
-    private static final Field[] COLUMNS = {Field.DISPENSATIONSBEGINN, Field.DISPENSATIONSENDE, Field.VORAUSSICHTLICHE_DAUER, Field.GRUND};
 
     public int getColumnCount() {
         return COLUMNS.length;
@@ -32,29 +36,18 @@ public class DispensationenTableData {
         Dispensation dispensation = dispensationen.get(rowIndex);
         Object value = null;
         switch (COLUMNS[columnIndex]) {
-            case DISPENSATIONSBEGINN:
-                value = asString(dispensation.getDispensationsbeginn());
-                break;
-            case DISPENSATIONSENDE:
-                value = asString(dispensation.getDispensationsende());
-                break;
-            case VORAUSSICHTLICHE_DAUER:
-                value = dispensation.getVoraussichtlicheDauer();
-                break;
-            case GRUND:
-                value = dispensation.getGrund();
-                break;
-            default:
-                break;
+            case DISPENSATIONSBEGINN -> value = asString(dispensation.getDispensationsbeginn());
+            case DISPENSATIONSENDE -> value = asString(dispensation.getDispensationsende());
+            case VORAUSSICHTLICHE_DAUER -> value = dispensation.getVoraussichtlicheDauer();
+            case GRUND -> value = dispensation.getGrund();
+            default -> {
+            }
         }
         return value;
     }
 
-    public Class<?> getColumnClass(int columnIndex) {
-        switch (COLUMNS[columnIndex]) {
-            default:
-                return String.class;
-        }
+    public Class<?> getColumnClass() {
+        return String.class;
     }
 
     public String getColumnName(int column) {

@@ -88,7 +88,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private final CalendarModelAttribute geburtsdatumSuchperiodeBeginnAttribute = new CalendarModelAttribute(
             this,
             Field.GEBURTSDATUM_SUCHPERIODE, new GregorianCalendar(1980, Calendar.JANUARY, 1), new GregorianCalendar(),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return geburtsdatumSuchperiodeBeginn;
@@ -113,7 +113,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private final CalendarModelAttribute geburtsdatumSuchperiodeEndeAttribute = new CalendarModelAttribute(
             this,
             Field.GEBURTSDATUM_SUCHPERIODE, new GregorianCalendar(1980, Calendar.JANUARY, 1), new GregorianCalendar(),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return geburtsdatumSuchperiodeEnde;
@@ -190,7 +190,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private final CalendarModelAttribute stichtagModelAttribute = new CalendarModelAttribute(
             this,
             Field.STICHTAG, new GregorianCalendar(2000, Calendar.JANUARY, 1), getNMonthsAfterNow(12),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return stichtag;
@@ -240,7 +240,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private final TimeModelAttribute zeitBeginnModelAttribute = new TimeModelAttribute(
             this,
             Field.ZEIT_BEGINN,
-            new AttributeAccessor<Time>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Time getValue() {
                     return zeitBeginn;
@@ -326,7 +326,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private final StringModelAttribute rollenModelAttribute = new StringModelAttribute(
             this,
             Field.ROLLEN, 1, 1000,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return rollen;
@@ -361,10 +361,10 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         firePropertyChange(Field.ELTERNMITHILFE_CODE, oldValue, this.elternmithilfeCode);
     }
 
-    private IntegerModelAttribute kuchenVorstellungModelAttribute = new IntegerModelAttribute(
+    private final IntegerModelAttribute kuchenVorstellungModelAttribute = new IntegerModelAttribute(
             this,
             Field.KUCHEN_VORSTELLUNG, 1, 9,
-            new AttributeAccessor<Integer>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Integer getValue() {
                     return kuchenVorstellung;
@@ -399,7 +399,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
     private final StringModelAttribute zusatzattributMaerchenModelAttribute = new StringModelAttribute(
             this,
             Field.ZUSATZATTRIBUT_MAERCHEN, 1, 30,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return zusatzattributMaerchen;
@@ -433,7 +433,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         maerchenFuerSucheBeruecksichtigen = isSelected;
         firePropertyChange(Field.MAERCHEN_FUER_SUCHE_BERUECKSICHTIGEN, oldValue, maerchenFuerSucheBeruecksichtigen);
     }
-   
+
     @Override
     public boolean searchForSpecificKurs() {
         return (wochentag != null && wochentag != Wochentag.ALLE) && zeitBeginn != null && (mitarbeiter != null && !mitarbeiter.equals(MITARBEITER_ALLE));
@@ -485,7 +485,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
             Semester currentSemester = findSemesterForCalendarCommand.getCurrentSemester();
             Semester nextSemester = findSemesterForCalendarCommand.getNextSemester();
             // Wenn in Ferien zwischen 2 Semestern Folgesemester nehmen
-            return  (currentSemester == null ? nextSemester : currentSemester);
+            return (currentSemester == null ? nextSemester : currentSemester);
         }
     }
 
@@ -505,6 +505,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         return findKurseMapSchuelerSemesterCommand.getKurseMap();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private Maerchen determineMaerchenTableData(SvmModel svmModel, Semester semesterTableData) {
         if (semesterTableData == null) {
             return null;
@@ -529,7 +530,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         return anmeldestatus == AnmeldestatusSelected.ANGEMELDET;
     }
 
-    private Map<Schueler,Maercheneinteilung> determineMaercheneinteilungenMapTableData(List<Schueler> schuelerList, Maerchen maerchen) {
+    private Map<Schueler, Maercheneinteilung> determineMaercheneinteilungenMapTableData(List<Schueler> schuelerList, Maerchen maerchen) {
         FindMaercheneinteilungenMapSchuelerSemesterCommand findMaercheneinteilungenMapSchuelerSemesterCommand = new FindMaercheneinteilungenMapSchuelerSemesterCommand(schuelerList, maerchen);
         findMaercheneinteilungenMapSchuelerSemesterCommand.execute();
         return findMaercheneinteilungenMapSchuelerSemesterCommand.getMaercheneinteilungenMap();
@@ -545,7 +546,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         List<Mitarbeiter> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
         // Lehrkraft alle auch erlaubt
         lehrkraefteList.add(0, MITARBEITER_ALLE);
-        return lehrkraefteList.toArray(new Mitarbeiter[lehrkraefteList.size()]);
+        return lehrkraefteList.toArray(new Mitarbeiter[0]);
     }
 
     @Override
@@ -553,7 +554,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         List<SchuelerCode> codesList = svmModel.getSelektierbareSchuelerCodesAll();
         // SchuelerCode alle auch erlaubt
         codesList.add(0, SCHUELER_CODE_ALLE);
-        return codesList.toArray(new SchuelerCode[codesList.size()]);
+        return codesList.toArray(new SchuelerCode[0]);
     }
 
     @Override
@@ -563,7 +564,7 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
         if (codesList.isEmpty() || !codesList.get(0).isIdenticalWith(ELTERNMITHILFE_CODE_ALLE)) {
             codesList.add(0, ELTERNMITHILFE_CODE_ALLE);
         }
-        return codesList.toArray(new ElternmithilfeCode[codesList.size()]);
+        return codesList.toArray(new ElternmithilfeCode[0]);
     }
 
     @Override

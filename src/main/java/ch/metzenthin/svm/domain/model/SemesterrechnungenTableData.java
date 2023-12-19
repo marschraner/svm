@@ -20,10 +20,10 @@ import java.util.Set;
 public class SemesterrechnungenTableData {
 
     private List<Semesterrechnung> semesterrechnungen;
-    private Semester semester;
-    private Semester previousSemester;
-    private boolean nachGeloeschtenGesucht;
-    private List<Field> columns = new ArrayList<>();
+    private final Semester semester;
+    private final Semester previousSemester;
+    private final boolean nachGeloeschtenGesucht;
+    private final List<Field> columns = new ArrayList<>();
 
     SemesterrechnungenTableData(List<Semesterrechnung> semesterrechnungen, Semester semester, Semester previousSemester, boolean nachGeloeschtenGesucht) {
         this.semesterrechnungen = semesterrechnungen;
@@ -78,6 +78,7 @@ public class SemesterrechnungenTableData {
         return anzSelektiert;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public Object getValueAt(int rowIndex, int columnIndex) {
         Semesterrechnung semesterrechnung = semesterrechnungen.get(rowIndex);
         Object value = null;
@@ -86,98 +87,77 @@ public class SemesterrechnungenTableData {
                 || (semesterrechnung.getErmaessigungVorrechnung() != null && semesterrechnung.getErmaessigungVorrechnung().compareTo(BigDecimal.ZERO) != 0)
                 || (semesterrechnung.getZuschlagVorrechnung() != null && semesterrechnung.getZuschlagVorrechnung().compareTo(BigDecimal.ZERO) != 0);
         switch (columns.get(columnIndex)) {
-            case SELEKTIERT:
-                value = semesterrechnung.isSelektiert();
-                break;
-            case RECHNUNGSEMPFAENGER:
-                value = semesterrechnung.getRechnungsempfaenger().getNachname() + " " + semesterrechnung.getRechnungsempfaenger().getVorname();
-                break;
-            case SCHUELER:
-                value = semesterrechnung.getAktiveSchuelerRechnungsempfaengerAsStr(previousSemester);
-                break;
-            case RECHNUNGSDATUM_VORRECHNUNG:
-                value = semesterrechnung.getRechnungsdatumVorrechnung();
-                break;
-            case ANZAHL_WOCHEN_VORRECHNUNG:
+            case SELEKTIERT -> value = semesterrechnung.isSelektiert();
+            case RECHNUNGSEMPFAENGER ->
+                    value = semesterrechnung.getRechnungsempfaenger().getNachname() + " " + semesterrechnung.getRechnungsempfaenger().getVorname();
+            case SCHUELER -> value = semesterrechnung.getAktiveSchuelerRechnungsempfaengerAsStr(previousSemester);
+            case RECHNUNGSDATUM_VORRECHNUNG -> value = semesterrechnung.getRechnungsdatumVorrechnung();
+            case ANZAHL_WOCHEN_VORRECHNUNG -> {
                 if (showVorrechnung) {
                     value = semesterrechnung.getAnzahlWochenVorrechnung();
                 }
-                break;
-            case WOCHENBETRAG_VORRECHNUNG:
+            }
+            case WOCHENBETRAG_VORRECHNUNG -> {
                 if (showVorrechnung) {
                     value = semesterrechnung.getWochenbetragVorrechnung();
                 }
-                break;
-            case SCHULGELD_VORRECHNUNG:
+            }
+            case SCHULGELD_VORRECHNUNG -> {
                 if (showVorrechnung) {
                     value = semesterrechnung.getSchulgeldVorrechnung();
                 }
-                break;
-            case ERMAESSIGUNG_VORRECHNUNG:
+            }
+            case ERMAESSIGUNG_VORRECHNUNG -> {
                 if (showVorrechnung && semesterrechnung.getErmaessigungVorrechnung() != null && semesterrechnung.getErmaessigungVorrechnung().compareTo(BigDecimal.ZERO) != 0) {
                     value = semesterrechnung.getErmaessigungVorrechnung();
                 }
-                break;
-            case ZUSCHLAG_VORRECHNUNG:
+            }
+            case ZUSCHLAG_VORRECHNUNG -> {
                 if (showVorrechnung && semesterrechnung.getZuschlagVorrechnung() != null && semesterrechnung.getZuschlagVorrechnung().compareTo(BigDecimal.ZERO) != 0) {
                     value = semesterrechnung.getZuschlagVorrechnung();
                 }
-                break;
-            case ERMAESSIGUNG_STIPENDIUM_VORRECHNUNG:
+            }
+            case ERMAESSIGUNG_STIPENDIUM_VORRECHNUNG -> {
                 BigDecimal ermaessigungStipendiumVorrechnung = semesterrechnung.getErmaessigungStipendiumVorrechnung();
                 if (showVorrechnung && ermaessigungStipendiumVorrechnung != null && ermaessigungStipendiumVorrechnung.compareTo(BigDecimal.ZERO) != 0) {
                     value = ermaessigungStipendiumVorrechnung.toString();
                 }
-                break;
-            case RECHNUNGSBETRAG_VORRECHNUNG:
+            }
+            case RECHNUNGSBETRAG_VORRECHNUNG -> {
                 if (showVorrechnung) {
                     value = semesterrechnung.getRechnungsbetragVorrechnung();
                 }
-                break;
-            case RESTBETRAG_VORRECHNUNG:
+            }
+            case RESTBETRAG_VORRECHNUNG -> {
                 if (showVorrechnung) {
                     value = semesterrechnung.getRestbetragVorrechnung();
                 }
-                break;
-            case RECHNUNGSDATUM_NACHRECHNUNG:
-                value = semesterrechnung.getRechnungsdatumNachrechnung();
-                break;
-            case ANZAHL_WOCHEN_NACHRECHNUNG:
-                value = semesterrechnung.getAnzahlWochenNachrechnung();
-                break;
-            case WOCHENBETRAG_NACHRECHNUNG:
-                value = semesterrechnung.getWochenbetragNachrechnung();
-                break;
-            case SCHULGELD_NACHRECHNUNG:
-                value = semesterrechnung.getSchulgeldNachrechnung();
-                break;
-            case ERMAESSIGUNG_NACHRECHNUNG:
+            }
+            case RECHNUNGSDATUM_NACHRECHNUNG -> value = semesterrechnung.getRechnungsdatumNachrechnung();
+            case ANZAHL_WOCHEN_NACHRECHNUNG -> value = semesterrechnung.getAnzahlWochenNachrechnung();
+            case WOCHENBETRAG_NACHRECHNUNG -> value = semesterrechnung.getWochenbetragNachrechnung();
+            case SCHULGELD_NACHRECHNUNG -> value = semesterrechnung.getSchulgeldNachrechnung();
+            case ERMAESSIGUNG_NACHRECHNUNG -> {
                 if (semesterrechnung.getErmaessigungNachrechnung() != null && semesterrechnung.getErmaessigungNachrechnung().compareTo(BigDecimal.ZERO) != 0) {
                     value = semesterrechnung.getErmaessigungNachrechnung();
                 }
-                break;
-            case ZUSCHLAG_NACHRECHNUNG:
+            }
+            case ZUSCHLAG_NACHRECHNUNG -> {
                 if (semesterrechnung.getZuschlagNachrechnung() != null && semesterrechnung.getZuschlagNachrechnung().compareTo(BigDecimal.ZERO) != 0) {
                     value = semesterrechnung.getZuschlagNachrechnung();
                 }
-                break;
-            case ERMAESSIGUNG_STIPENDIUM_NACHRECHNUNG:
+            }
+            case ERMAESSIGUNG_STIPENDIUM_NACHRECHNUNG -> {
                 BigDecimal ermaessigungStipendiumNachrechnung = semesterrechnung.getErmaessigungStipendiumNachrechnung();
                 if (ermaessigungStipendiumNachrechnung != null && ermaessigungStipendiumNachrechnung.compareTo(BigDecimal.ZERO) != 0) {
                     value = ermaessigungStipendiumNachrechnung.toString();
                 }
-                break;
-            case RECHNUNGSBETRAG_NACHRECHNUNG:
-                value = semesterrechnung.getRechnungsbetragNachrechnung();
-                break;
-            case RESTBETRAG_NACHRECHNUNG:
-                value = semesterrechnung.getRestbetragNachrechnung();
-                break;
-            case DIFFERENZ_SCHULGELD:
-                value = semesterrechnung.getDifferenzSchulgeld();
-                break;
-            default:
-                break;
+            }
+            case RECHNUNGSBETRAG_NACHRECHNUNG -> value = semesterrechnung.getRechnungsbetragNachrechnung();
+            case RESTBETRAG_NACHRECHNUNG -> value = semesterrechnung.getRestbetragNachrechnung();
+            case DIFFERENZ_SCHULGELD -> value = semesterrechnung.getDifferenzSchulgeld();
+            default -> {
+            }
         }
         return value;
     }
@@ -194,47 +174,29 @@ public class SemesterrechnungenTableData {
         return columns.get(columnIndex) == Field.SELEKTIERT;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columns.get(columnIndex)) {
-            case SELEKTIERT:
-                return Boolean.class;
-            case RECHNUNGSDATUM_VORRECHNUNG:
-                return Calendar.class;
-            case ANZAHL_WOCHEN_VORRECHNUNG:
-                return Integer.class;
-            case WOCHENBETRAG_VORRECHNUNG:
-                return BigDecimal.class;
-            case ERMAESSIGUNG_VORRECHNUNG:
-                return BigDecimal.class;
-            case ZUSCHLAG_VORRECHNUNG:
-                return BigDecimal.class;
-            case ERMAESSIGUNG_STIPENDIUM_VORRECHNUNG:
-                return BigDecimal.class;
-            case RECHNUNGSBETRAG_VORRECHNUNG:
-                return BigDecimal.class;
-            case RESTBETRAG_VORRECHNUNG:
-                return BigDecimal.class;
-            case RECHNUNGSDATUM_NACHRECHNUNG:
-                return Calendar.class;
-            case ANZAHL_WOCHEN_NACHRECHNUNG:
-                return Integer.class;
-            case WOCHENBETRAG_NACHRECHNUNG:
-                return BigDecimal.class;
-            case ERMAESSIGUNG_NACHRECHNUNG:
-                return BigDecimal.class;
-            case ZUSCHLAG_NACHRECHNUNG:
-                return BigDecimal.class;
-            case ERMAESSIGUNG_STIPENDIUM_NACHRECHNUNG:
-                return BigDecimal.class;
-            case RECHNUNGSBETRAG_NACHRECHNUNG:
-                return BigDecimal.class;
-            case RESTBETRAG_NACHRECHNUNG:
-                return BigDecimal.class;
-            case DIFFERENZ_SCHULGELD:
-                return BigDecimal.class;
-            default:
-                return String.class;
-        }
+        return switch (columns.get(columnIndex)) {
+            case SELEKTIERT -> Boolean.class;
+            case RECHNUNGSDATUM_VORRECHNUNG,
+                    RECHNUNGSDATUM_NACHRECHNUNG -> Calendar.class;
+            case ANZAHL_WOCHEN_VORRECHNUNG,
+                    ANZAHL_WOCHEN_NACHRECHNUNG -> Integer.class;
+            case WOCHENBETRAG_VORRECHNUNG,
+                    ERMAESSIGUNG_VORRECHNUNG,
+                    ZUSCHLAG_VORRECHNUNG,
+                    ERMAESSIGUNG_STIPENDIUM_VORRECHNUNG,
+                    RECHNUNGSBETRAG_VORRECHNUNG,
+                    RESTBETRAG_VORRECHNUNG,
+                    WOCHENBETRAG_NACHRECHNUNG,
+                    ERMAESSIGUNG_NACHRECHNUNG,
+                    ZUSCHLAG_NACHRECHNUNG,
+                    ERMAESSIGUNG_STIPENDIUM_NACHRECHNUNG,
+                    RECHNUNGSBETRAG_NACHRECHNUNG,
+                    RESTBETRAG_NACHRECHNUNG,
+                    DIFFERENZ_SCHULGELD -> BigDecimal.class;
+            default -> String.class;
+        };
     }
 
     public String getColumnName(int columnIndex) {

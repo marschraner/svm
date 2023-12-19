@@ -15,15 +15,22 @@ import java.io.File;
  * @author Martin Schraner
  */
 public interface ListenExportModel extends Model {
+
     Listentyp getListentyp();
+
     String getTitel();
+
     File getTemplateFile();
 
     void setListentyp(Listentyp listentyp) throws SvmRequiredException;
+
     void setTitel(String titel) throws SvmValidationException;
 
     String[] getListenErstellenWarning(SemesterrechnungenTableModel semesterrechnungenTableModel);
+
     File getSaveFileInit();
+
     CreateListeCommand.Result createListenFile(File outputFile, SchuelerSuchenTableModel schuelerSuchenTableModel, MitarbeitersTableModel mitarbeitersTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel);
+
     String getTitleInit(SchuelerSuchenTableModel schuelerSuchenTableModel);
 }

@@ -25,7 +25,7 @@ public class MitarbeitersModelImpl extends AbstractModel implements Mitarbeiters
     @Override
     public MitarbeiterErfassenModel getMitarbeiterErfassenModel(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, int indexMitarbeiterToBeModified) {
         MitarbeiterErfassenModel mitarbeiterErfassenModel = svmContext.getModelFactory().createMitarbeiterErfassenModel();
-        List<Mitarbeiter> mitarbeiters = mitarbeitersTableModel.getMitarbeitersTableData().getMitarbeiters();
+        List<Mitarbeiter> mitarbeiters = mitarbeitersTableModel.getMitarbeitersTableData().mitarbeiters();
         mitarbeiterErfassenModel.setMitarbeiterOrigin(mitarbeiters.get(indexMitarbeiterToBeModified));
         return mitarbeiterErfassenModel;
     }
@@ -75,7 +75,8 @@ public class MitarbeitersModelImpl extends AbstractModel implements Mitarbeiters
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 
     @Override
     public boolean isCompleted() {

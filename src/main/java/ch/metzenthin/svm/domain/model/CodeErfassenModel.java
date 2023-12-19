@@ -12,19 +12,28 @@ import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
  * @author Martin Schraner
  */
 public interface CodeErfassenModel extends Model {
+
     void setSchuelerCodeOrigin(SchuelerCode schuelerCodeOrigin);
+
     void setMitarbeiterCodeOrigin(MitarbeiterCode mitarbeiterCodeOrigin);
+
     void setElternmithilfeCodeOrigin(ElternmithilfeCode elternmithilfeCodeOrigin);
+
     void setSemesterrechnungCodeOrigin(SemesterrechnungCode semesterrechnungCodeOrigin);
 
     String getKuerzel();
+
     String getBeschreibung();
+
     Boolean isSelektierbar();
 
     void setKuerzel(String kuerzel) throws SvmValidationException;
+
     void setBeschreibung(String beschreibung) throws SvmValidationException;
+
     void setSelektierbar(Boolean isSelected);
 
     boolean checkCodeKuerzelBereitsInVerwendung(SvmModel svmModel, Codetyp codetyp);
+
     void speichern(SvmModel svmModel, CodesTableModel codesTableModel, Codetyp codetyp);
 }

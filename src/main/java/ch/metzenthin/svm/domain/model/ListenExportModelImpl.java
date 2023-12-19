@@ -23,7 +23,7 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
  * @author Martin Schraner
  */
 class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
-    
+
     private Listentyp listentyp;
     private String titel;
     private File templateFile;
@@ -47,7 +47,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
     private final StringModelAttribute titelModelAttribute = new StringModelAttribute(
             this,
             Field.TITEL, 2, 110,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return titel;
@@ -79,47 +79,28 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
     public String[] getListenErstellenWarning(SemesterrechnungenTableModel semesterrechnungenTableModel) {
         String[] listenErstellenWarning = null;
         switch (listentyp) {
-            case SCHUELER_ADRESSLISTE:
-                break;
-            case ABSENZENLISTE_GANZES_SEMESTER:
-                break;
-            case ABSENZENLISTE_OKTOBER_FEBRUAR:
-                break;
-            case SPEZIELLE_ABSENZENLISTE:
-                break;
-            case ROLLENLISTE:
-                break;
-            case ELTERNMITHILFE_LISTE:
-                break;
-            case SCHUELER_ADRESSETIKETTEN:
-                break;
-            case RECHNUNGSEMPFAENGER_ADRESSETIKETTEN:
-                break;
-            case MUTTER_ODER_VATER_ADRESSETIKETTEN:
-                break;
-            case ELTERNMITHILFE_ADRESSETIKETTEN:
-                break;
-            case PROBEPLAENE_ETIKETTEN:
-                break;
-            case SCHUELERLISTE_CSV:
-                break;
-            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM:
-                break;
-            case MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM:
-                break;
-            case VERTRETUNGSLISTE:
-                break;
-            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN:
-                break;
-            case MITARBEITER_ADRESSETIKETTEN:
-                break;
-            case MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV:
-                break;
-            case MITARBEITER_LISTE_NAME_EINSPALTIG_CSV:
-                break;
-            case KURSLISTE_WORD:
-                break;
-            case KURSLISTE_CSV:
+            case SCHUELER_ADRESSLISTE,
+                    ABSENZENLISTE_GANZES_SEMESTER,
+                    ABSENZENLISTE_OKTOBER_FEBRUAR,
+                    SPEZIELLE_ABSENZENLISTE,
+                    ROLLENLISTE,
+                    ELTERNMITHILFE_LISTE,
+                    SCHUELER_ADRESSETIKETTEN,
+                    RECHNUNGSEMPFAENGER_ADRESSETIKETTEN,
+                    MUTTER_ODER_VATER_ADRESSETIKETTEN,
+                    ELTERNMITHILFE_ADRESSETIKETTEN,
+                    PROBEPLAENE_ETIKETTEN, SCHUELERLISTE_CSV,
+                    MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM,
+                    MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM,
+                    VERTRETUNGSLISTE,
+                    MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN,
+                    MITARBEITER_ADRESSETIKETTEN,
+                    MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV,
+                    MITARBEITER_LISTE_NAME_EINSPALTIG_CSV,
+                    KURSLISTE_WORD,
+                    KURSLISTE_CSV,
+                    SEMESTERRECHNUNGEN_ADRESSETIKETTEN,
+                    RECHNUNGSLISTE:
                 break;
             case VORRECHNUNGEN_SERIENBRIEF:
                 if (!checkIfRechnungsdatumVorrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
@@ -153,10 +134,6 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                     listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
                 }
                 break;
-            case SEMESTERRECHNUNGEN_ADRESSETIKETTEN:
-                break;
-            case RECHNUNGSLISTE:
-                break;
         }
         return listenErstellenWarning;
     }
@@ -172,8 +149,8 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
             }
         }
         String outputFile = listentyp.getFilenameOhneFileExtension() + "." + listentyp.getFiletyp().getFileExtension();
-        outputFile = outputFile.replaceAll(",\\p{Blank}", "_");
-        outputFile = outputFile.replaceAll("\\p{Blank}", "_");
+        outputFile = outputFile.replaceAll(",[ \\t]", "_");
+        outputFile = outputFile.replaceAll("[ \\t]", "_");
         outputFile = outputFile.replaceAll("ä", "ae");
         outputFile = outputFile.replaceAll("ö", "oe");
         outputFile = outputFile.replaceAll("ü", "ue");
@@ -185,35 +162,33 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
         CommandInvoker commandInvoker = getCommandInvoker();
         CreateListeCommand.Result result = null;
         switch (listentyp) {
-            case SCHUELER_ADRESSLISTE:
+            case SCHUELER_ADRESSLISTE -> {
                 CreateSchuelerAdresslisteCommand createSchuelerAdresslisteCommand = new CreateSchuelerAdresslisteCommand(schuelerSuchenTableModel, titel, outputFile);
                 commandInvoker.executeCommand(createSchuelerAdresslisteCommand);
                 result = createSchuelerAdresslisteCommand.getResult();
-                break;
-            case ABSENZENLISTE_GANZES_SEMESTER:
-            case ABSENZENLISTE_OKTOBER_FEBRUAR:
-            case SPEZIELLE_ABSENZENLISTE:
+            }
+            case ABSENZENLISTE_GANZES_SEMESTER, ABSENZENLISTE_OKTOBER_FEBRUAR, SPEZIELLE_ABSENZENLISTE -> {
                 CreateListeFromTemplateCommand createListeFromTemplateCommand = new CreateListeFromTemplateCommand(schuelerSuchenTableModel, titel, listentyp, outputFile);
                 commandInvoker.executeCommand(createListeFromTemplateCommand);
                 templateFile = createListeFromTemplateCommand.getTemplateFile();
                 result = createListeFromTemplateCommand.getResult();
-                break;
-            case ROLLENLISTE:
+            }
+            case ROLLENLISTE -> {
                 CreateRollenlisteCommand createRollenlisteCommand = new CreateRollenlisteCommand(schuelerSuchenTableModel, titel, outputFile);
                 commandInvoker.executeCommand(createRollenlisteCommand);
                 result = createRollenlisteCommand.getResult();
-                break;
-            case ELTERNMITHILFE_LISTE:
+            }
+            case ELTERNMITHILFE_LISTE -> {
                 CreateElternmithilfeListeCommand createElternmithilfeListeCommand = new CreateElternmithilfeListeCommand(schuelerSuchenTableModel, titel, outputFile);
                 commandInvoker.executeCommand(createElternmithilfeListeCommand);
                 result = createElternmithilfeListeCommand.getResult();
-                break;
-            case SCHUELER_ADRESSETIKETTEN:
+            }
+            case SCHUELER_ADRESSETIKETTEN -> {
                 CreateAdressenCsvFileCommand createAdressenCsvFileCommandSchueler = new CreateAdressenCsvFileCommand(schuelerSuchenTableModel.getSelektierteSchuelerList(), outputFile);
                 commandInvoker.executeCommand(createAdressenCsvFileCommandSchueler);
                 result = createAdressenCsvFileCommandSchueler.getResult();
-                break;
-            case RECHNUNGSEMPFAENGER_ADRESSETIKETTEN:
+            }
+            case RECHNUNGSEMPFAENGER_ADRESSETIKETTEN -> {
                 Set<Person> rechnungsempfaengerSet = new HashSet<>();
                 for (Schueler schueler : schuelerSuchenTableModel.getSelektierteSchuelerList()) {
                     rechnungsempfaengerSet.add(schueler.getRechnungsempfaenger());
@@ -223,8 +198,8 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 CreateAdressenCsvFileCommand createAdressenCsvFileCommandRechnungsempfaenger = new CreateAdressenCsvFileCommand(rechnungsempfaengerList, outputFile);
                 commandInvoker.executeCommand(createAdressenCsvFileCommandRechnungsempfaenger);
                 result = createAdressenCsvFileCommandRechnungsempfaenger.getResult();
-                break;
-            case MUTTER_ODER_VATER_ADRESSETIKETTEN:
+            }
+            case MUTTER_ODER_VATER_ADRESSETIKETTEN -> {
                 Set<Person> mutterOderVaterSet = new HashSet<>();
                 for (Schueler schueler : schuelerSuchenTableModel.getSelektierteSchuelerList()) {
                     if (schueler.getMutter() != null && schueler.getMutter().getAdresse() != null) {
@@ -240,8 +215,8 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 CreateAdressenCsvFileCommand createAdressenCsvFileCommandMutterOderVater = new CreateAdressenCsvFileCommand(mutterOderVaterList, outputFile);
                 commandInvoker.executeCommand(createAdressenCsvFileCommandMutterOderVater);
                 result = createAdressenCsvFileCommandMutterOderVater.getResult();
-                break;
-            case ELTERNMITHILFE_ADRESSETIKETTEN:
+            }
+            case ELTERNMITHILFE_ADRESSETIKETTEN -> {
                 Set<Person> elternmithilfeSet = new HashSet<>();
                 Map<Schueler, Maercheneinteilung> maercheneinteilungen = schuelerSuchenTableModel.getMaercheneinteilungen();
                 for (Schueler schueler : maercheneinteilungen.keySet()) {
@@ -264,85 +239,81 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 CreateAdressenCsvFileCommand createAdressenCsvFileCommandElternmithilfe = new CreateAdressenCsvFileCommand(elternmithilfeList, outputFile);
                 commandInvoker.executeCommand(createAdressenCsvFileCommandElternmithilfe);
                 result = createAdressenCsvFileCommandElternmithilfe.getResult();
-                break;
-            case PROBEPLAENE_ETIKETTEN:
+            }
+            case PROBEPLAENE_ETIKETTEN -> {
                 CreateProbeplaeneEtikettenCsvFileCommand createProbeplaeneEtikettenCsvFileCommand = new CreateProbeplaeneEtikettenCsvFileCommand(schuelerSuchenTableModel, outputFile);
                 commandInvoker.executeCommand(createProbeplaeneEtikettenCsvFileCommand);
                 result = createProbeplaeneEtikettenCsvFileCommand.getResult();
-                break;
-            case SCHUELERLISTE_CSV:
+            }
+            case SCHUELERLISTE_CSV -> {
                 CreateSchuelerlisteCsvFileCommand createSchuelerlisteCsvFileCommand = new CreateSchuelerlisteCsvFileCommand(schuelerSuchenTableModel, outputFile);
                 commandInvoker.executeCommand(createSchuelerlisteCsvFileCommand);
                 result = createSchuelerlisteCsvFileCommand.getResult();
-                break;
-            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM:
+            }
+            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM,
+                    MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM -> {
                 CreateMitarbeiterAdresslisteCommand createMitarbeiterAdresslisteMitGeburtsdatumCommand = new CreateMitarbeiterAdresslisteCommand(mitarbeitersTableModel, titel, outputFile, listentyp);
                 commandInvoker.executeCommand(createMitarbeiterAdresslisteMitGeburtsdatumCommand);
                 result = createMitarbeiterAdresslisteMitGeburtsdatumCommand.getResult();
-                break;
-            case MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM:
-                CreateMitarbeiterAdresslisteCommand createMitarbeiterAdresslisteCommand = new CreateMitarbeiterAdresslisteCommand(mitarbeitersTableModel, titel, outputFile, listentyp);
-                commandInvoker.executeCommand(createMitarbeiterAdresslisteCommand);
-                result = createMitarbeiterAdresslisteCommand.getResult();
-                break;
-            case VERTRETUNGSLISTE:
+            }
+            case VERTRETUNGSLISTE -> {
                 CreateVertretungslisteCommand createVertretungslisteCommand = new CreateVertretungslisteCommand(mitarbeitersTableModel, titel, outputFile);
                 commandInvoker.executeCommand(createVertretungslisteCommand);
                 result = createVertretungslisteCommand.getResult();
-                break;
-            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN:
+            }
+            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN -> {
                 CreateMitarbeiterAdresslisteAlleAttributeCommand createMitarbeiterAdresslisteAlleAttributeCommand = new CreateMitarbeiterAdresslisteAlleAttributeCommand(mitarbeitersTableModel, titel, outputFile);
                 commandInvoker.executeCommand(createMitarbeiterAdresslisteAlleAttributeCommand);
                 result = createMitarbeiterAdresslisteAlleAttributeCommand.getResult();
-                break;
-            case MITARBEITER_ADRESSETIKETTEN:
+            }
+            case MITARBEITER_ADRESSETIKETTEN -> {
                 CreateAdressenCsvFileCommand createAdressenCsvFileCommandMitarbeiter = new CreateAdressenCsvFileCommand(mitarbeitersTableModel.getSelektierteMitarbeiters(), outputFile);
                 commandInvoker.executeCommand(createAdressenCsvFileCommandMitarbeiter);
                 result = createAdressenCsvFileCommandMitarbeiter.getResult();
-                break;
-            case MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV:
+            }
+            case MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV -> {
                 CreateMitarbeiterlisteCsvFileCommand createMitarbeiterlisteNameZweispaltigCsvFileCommand = new CreateMitarbeiterlisteCsvFileCommand(mitarbeitersTableModel.getSelektierteMitarbeiters(), outputFile, false);
                 commandInvoker.executeCommand(createMitarbeiterlisteNameZweispaltigCsvFileCommand);
                 result = createMitarbeiterlisteNameZweispaltigCsvFileCommand.getResult();
-                break;
-            case MITARBEITER_LISTE_NAME_EINSPALTIG_CSV:
+            }
+            case MITARBEITER_LISTE_NAME_EINSPALTIG_CSV -> {
                 CreateMitarbeiterlisteCsvFileCommand createMitarbeiterlisteNameEinspaltigCsvFileCommand = new CreateMitarbeiterlisteCsvFileCommand(mitarbeitersTableModel.getSelektierteMitarbeiters(), outputFile, true);
                 commandInvoker.executeCommand(createMitarbeiterlisteNameEinspaltigCsvFileCommand);
                 result = createMitarbeiterlisteNameEinspaltigCsvFileCommand.getResult();
-                break;
-            case KURSLISTE_WORD:
+            }
+            case KURSLISTE_WORD -> {
                 CreateKurslisteWordFileCommand createKurslisteWordFileCommand = new CreateKurslisteWordFileCommand(kurseTableModel, titel, outputFile);
                 commandInvoker.executeCommand(createKurslisteWordFileCommand);
                 result = createKurslisteWordFileCommand.getResult();
-                break;
-            case KURSLISTE_CSV:
+            }
+            case KURSLISTE_CSV -> {
                 CreateKurslisteCsvFileCommand createKurslisteCsvFileCommand = new CreateKurslisteCsvFileCommand(kurseTableModel.getKurse(), outputFile);
                 commandInvoker.executeCommand(createKurslisteCsvFileCommand);
                 result = createKurslisteCsvFileCommand.getResult();
-                break;
-            case VORRECHNUNGEN_SERIENBRIEF:
+            }
+            case VORRECHNUNGEN_SERIENBRIEF -> {
                 Semester previousSemester1 = findPreviousSemester(semesterrechnungenTableModel);
                 CreateRechnungenSerienbriefCsvFileCommand createVorrechnungenSerienbriefCsvFileCommand = new CreateRechnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSelektierteSemesterrechnungen(), previousSemester1, Rechnungstyp.VORRECHNUNG, outputFile);
                 commandInvoker.executeCommand(createVorrechnungenSerienbriefCsvFileCommand);
                 result = createVorrechnungenSerienbriefCsvFileCommand.getResult();
-                break;
-            case NACHRECHNUNGEN_SERIENBRIEF:
+            }
+            case NACHRECHNUNGEN_SERIENBRIEF -> {
                 Semester previousSemester2 = findPreviousSemester(semesterrechnungenTableModel);
                 CreateRechnungenSerienbriefCsvFileCommand createNachrechnungenSerienbriefCsvFileCommand = new CreateRechnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSelektierteSemesterrechnungen(), previousSemester2, Rechnungstyp.NACHRECHNUNG, outputFile);
                 commandInvoker.executeCommand(createNachrechnungenSerienbriefCsvFileCommand);
                 result = createNachrechnungenSerienbriefCsvFileCommand.getResult();
-                break;
-            case MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF:
+            }
+            case MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF -> {
                 CreateMahnungenSerienbriefCsvFileCommand createMahnungenVorrechnungenSerienbriefCsvFileCommand = new CreateMahnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSelektierteSemesterrechnungen(), Rechnungstyp.VORRECHNUNG, outputFile);
                 commandInvoker.executeCommand(createMahnungenVorrechnungenSerienbriefCsvFileCommand);
                 result = createMahnungenVorrechnungenSerienbriefCsvFileCommand.getResult();
-                break;
-            case MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF:
+            }
+            case MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF -> {
                 CreateMahnungenSerienbriefCsvFileCommand createMahnungenNachrechnungenSerienbriefCsvFileCommand = new CreateMahnungenSerienbriefCsvFileCommand(semesterrechnungenTableModel.getSelektierteSemesterrechnungen(), Rechnungstyp.NACHRECHNUNG, outputFile);
                 commandInvoker.executeCommand(createMahnungenNachrechnungenSerienbriefCsvFileCommand);
                 result = createMahnungenNachrechnungenSerienbriefCsvFileCommand.getResult();
-                break;
-            case SEMESTERRECHNUNGEN_ADRESSETIKETTEN:
+            }
+            case SEMESTERRECHNUNGEN_ADRESSETIKETTEN -> {
                 Set<Person> rechnungsempfaengerSemesterrechnungSet = new HashSet<>();
                 for (Semesterrechnung semesterrechnung : semesterrechnungenTableModel.getSelektierteSemesterrechnungen()) {
                     rechnungsempfaengerSemesterrechnungSet.add(semesterrechnung.getRechnungsempfaenger());
@@ -352,13 +323,13 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 CreateAdressenCsvFileCommand createAdressenCsvFileCommandRechnungsempfaengerSemesterrechnung = new CreateAdressenCsvFileCommand(rechnungsempfaengerSemesterrechnungList, outputFile);
                 commandInvoker.executeCommand(createAdressenCsvFileCommandRechnungsempfaengerSemesterrechnung);
                 result = createAdressenCsvFileCommandRechnungsempfaengerSemesterrechnung.getResult();
-                break;
-            case RECHNUNGSLISTE:
+            }
+            case RECHNUNGSLISTE -> {
                 Semester previousSemester3 = findPreviousSemester(semesterrechnungenTableModel);
                 CreateRechnungslisteCsvFileCommand createRechnungslisteCsvFileCommand = new CreateRechnungslisteCsvFileCommand(semesterrechnungenTableModel.getSelektierteSemesterrechnungen(), previousSemester3, outputFile);
                 commandInvoker.executeCommand(createRechnungslisteCsvFileCommand);
                 result = createRechnungslisteCsvFileCommand.getResult();
-                break;
+            }
         }
         return result;
     }
@@ -406,50 +377,31 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                     titleInit = titleInit + " Gruppe " + schuelerSuchenTableModel.getGruppe().toString();
                 }
                 break;
-            case SCHUELER_ADRESSETIKETTEN:
+            case SCHUELER_ADRESSETIKETTEN,
+                    RECHNUNGSEMPFAENGER_ADRESSETIKETTEN,
+                    MUTTER_ODER_VATER_ADRESSETIKETTEN,
+                    ELTERNMITHILFE_ADRESSETIKETTEN,
+                    PROBEPLAENE_ETIKETTEN,
+                    KURSLISTE_CSV,
+                    MITARBEITER_ADRESSETIKETTEN,
+                    MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV,
+                    MITARBEITER_LISTE_NAME_EINSPALTIG_CSV,
+                    VORRECHNUNGEN_SERIENBRIEF, NACHRECHNUNGEN_SERIENBRIEF,
+                    MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF,
+                    MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF,
+                    SEMESTERRECHNUNGEN_ADRESSETIKETTEN,
+                    RECHNUNGSLISTE:
                 break;
-            case RECHNUNGSEMPFAENGER_ADRESSETIKETTEN:
-                break;
-            case MUTTER_ODER_VATER_ADRESSETIKETTEN:
-                break;
-            case ELTERNMITHILFE_ADRESSETIKETTEN:
-                break;
-            case PROBEPLAENE_ETIKETTEN:
-                break;
-            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM:
-                titleInit = "Mitarbeitende";
-                break;
-            case MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM:
+            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM,
+                    MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM,
+                    MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN:
                 titleInit = "Mitarbeitende";
                 break;
             case VERTRETUNGSLISTE:
                 titleInit = "Vertretungsliste";
                 break;
-            case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN:
-                titleInit = "Mitarbeitende";
-                break;
-            case MITARBEITER_ADRESSETIKETTEN:
-                break;
-            case MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV:
-                break;
-            case MITARBEITER_LISTE_NAME_EINSPALTIG_CSV:
-                break;
             case KURSLISTE_WORD:
                 titleInit = "Kurse";
-                break;
-            case KURSLISTE_CSV:
-                break;
-            case VORRECHNUNGEN_SERIENBRIEF:
-                break;
-            case NACHRECHNUNGEN_SERIENBRIEF:
-                break;
-            case MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF:
-                break;
-            case MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF:
-                break;
-            case SEMESTERRECHNUNGEN_ADRESSETIKETTEN:
-                break;
-            case RECHNUNGSLISTE:
                 break;
         }
         return titleInit;
@@ -464,7 +416,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 return "";
             }
             Kurs kursFound = findKursCommand.getKursFound();
-            return kursFound.getLehrkraefteAsStr() + " (" + kursFound.getWochentag() +  " " + asString(kursFound.getZeitBeginn()) + "-" + asString(kursFound.getZeitEnde()) + ", " + kursFound.getKursort().getBezeichnung() + ", " + kursFound.getStufe() + ")";
+            return kursFound.getLehrkraefteAsStr() + " (" + kursFound.getWochentag() + " " + asString(kursFound.getZeitBeginn()) + "-" + asString(kursFound.getZeitEnde()) + ", " + kursFound.getKursort().getBezeichnung() + ", " + kursFound.getStufe() + ")";
         } else {
             return schuelerSuchenTableModel.getLehrkraft().toString();
         }
@@ -501,5 +453,6 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 }

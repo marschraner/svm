@@ -12,32 +12,56 @@ import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 public interface SemesterrechnungBearbeitenModel extends SemesterrechnungModel {
 
     String getRechnungsempfaengerAnrede();
+
     String getRechnungsempfaengerNachname();
+
     String getRechnungsempfaengerStrasseNr();
+
     String getRechnungsempfaengerNatel();
+
     String getRechnungsempfaengerFestnetz();
+
     String getRechnungsempfaengerPlz();
+
     String getRechnungsempfaengerVorname();
+
     String getRechnungsempfaengerOrt();
+
     String getRechnungsempfaengerEmail();
+
     String getRechnungsempfaengerSchuelersVorrechnung();
+
     String getRechnungsempfaengerKurseVorrechnung();
+
     String getSechsJahresRabattVorrechnung();
+
     String getRabattFaktor();
+
     String getRechnungsbetragVorrechnung();
+
     String getRestbetragVorrechnung();
+
     String getRechnungsempfaengerSchuelersNachrechnung();
+
     String getRechnungsempfaengerKurseNachrechnung();
+
     String getSechsJahresRabattNachrechnung();
+
     String getRechnungsbetragNachrechnung();
+
     String getRestbetragNachrechnung();
 
     void setSemesterrechnungOrigin(Semesterrechnung semesterrechnungOrigin);
 
     void copyZahlungenVorrechnungToZahlungenNachrechnung() throws SvmValidationException;
+
     boolean isVorrechnungEnabled();
+
     boolean checkIfRechnungsempfaengerHasEmail();
+
     CallDefaultEmailClientCommand.Result callEmailClient();
+
     void calculateWochenbetrag(Rechnungstyp rechnungstyp);
+
     void speichern(SemesterrechnungenTableModel semesterrechnungenTableModel);
 }

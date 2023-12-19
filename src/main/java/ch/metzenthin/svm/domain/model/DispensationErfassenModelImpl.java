@@ -8,6 +8,8 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.persistence.entities.Dispensation;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
 
@@ -19,7 +21,9 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 public class DispensationErfassenModelImpl extends AbstractModel implements DispensationErfassenModel {
 
-    private Dispensation dispensation = new Dispensation();
+    private static final Logger LOGGER = LogManager.getLogger(DispensationErfassenModelImpl.class);
+
+    private final Dispensation dispensation = new Dispensation();
     private Dispensation dispensationOrigin;
 
     @Override
@@ -35,7 +39,7 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
     private final CalendarModelAttribute dispensationsbeginnModelAttribute = new CalendarModelAttribute(
             this,
             Field.DISPENSATIONSBEGINN, getNYearsBeforeNow(5), getNYearsAfterNow(5),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return dispensation.getDispensationsbeginn();
@@ -66,7 +70,7 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
     private final CalendarModelAttribute dispensationsendeModelAttribute = new CalendarModelAttribute(
             this,
             Field.DISPENSATIONSENDE, getNYearsBeforeNow(5), getNYearsAfterNow(5),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return dispensation.getDispensationsende();
@@ -97,7 +101,7 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
     private final StringModelAttribute voraussichtlicheDauerModelAttribute = new StringModelAttribute(
             this,
             Field.VORAUSSICHTLICHE_DAUER, 5, 20,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return dispensation.getVoraussichtlicheDauer();
@@ -123,7 +127,7 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
     private final StringModelAttribute grundModelAttribute = new StringModelAttribute(
             this,
             Field.GRUND, 5, 30,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return dispensation.getGrund();
@@ -175,8 +179,8 @@ public class DispensationErfassenModelImpl extends AbstractModel implements Disp
                 setDispensationsende(asString(dispensationOrigin.getDispensationsende()));
                 setVoraussichtlicheDauer(dispensationOrigin.getVoraussichtlicheDauer());
                 setGrund(dispensationOrigin.getGrund());
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else {

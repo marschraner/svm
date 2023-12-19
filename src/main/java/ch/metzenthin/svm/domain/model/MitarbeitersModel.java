@@ -11,10 +11,14 @@ import java.util.Set;
  * @author Martin Schraner
  */
 public interface MitarbeitersModel {
+
     MitarbeiterErfassenModel getMitarbeiterErfassenModel(SvmContext svmContext, MitarbeitersTableModel mitarbeitersTableModel, int indexBearbeiten);
 
     DeleteMitarbeiterCommand.Result mitarbeiterLoeschen(MitarbeitersTableModel mitarbeitersTableModel, int selectedRow);
+
     CallDefaultEmailClientCommand.Result callEmailClient(MitarbeitersTableModel mitarbeitersTableModel);
+
     Set<String> getFehlendeEmailAdressen();
+
     Set<String> getUngueltigeEmailAdressen();
 }

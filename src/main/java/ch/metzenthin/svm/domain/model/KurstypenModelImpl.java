@@ -41,6 +41,4 @@ public class KurstypenModelImpl extends AbstractModel implements KurstypenModel 
     public boolean isCompleted() {
         return true;
     }
-
-    
 }

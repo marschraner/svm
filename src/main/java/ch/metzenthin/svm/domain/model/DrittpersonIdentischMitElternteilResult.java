@@ -7,7 +7,7 @@ import static ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand.Result.D
  */
 public class DrittpersonIdentischMitElternteilResult extends SchuelerErfassenSaveResult {
 
-    private String errorMessage;
+    private final String errorMessage;
 
     public DrittpersonIdentischMitElternteilResult(String errorMessage) {
         super(DRITTPERSON_IDENTISCH_MIT_ELTERNTEIL);

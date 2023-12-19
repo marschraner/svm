@@ -55,7 +55,8 @@ class MaercheneinteilungenModelImpl extends AbstractModel implements Maerchenein
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 
     @Override
     public boolean isCompleted() {

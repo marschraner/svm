@@ -9,16 +9,19 @@ import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Martin Schraner
  */
 public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassenModel {
 
+    private static final Logger LOGGER = LogManager.getLogger(CodeErfassenModelImpl.class);
+
     private String kuerzel;
     private String beschreibung;
     private Boolean selektierbar;
-
     private SchuelerCode schuelerCodeOrigin;
     private MitarbeiterCode mitarbeiterCodeOrigin;
     private ElternmithilfeCode elternmithilfeCodeOrigin;
@@ -47,7 +50,7 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     private final StringModelAttribute kuerzelModelAttribute = new StringModelAttribute(
             this,
             Field.KUERZEL, 1, 3,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return kuerzel;
@@ -73,7 +76,7 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     private final StringModelAttribute beschreibungModelAttribute = new StringModelAttribute(
             this,
             Field.BESCHREIBUNG, 2, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return beschreibung;
@@ -111,21 +114,16 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     @Override
     public boolean checkCodeKuerzelBereitsInVerwendung(SvmModel svmModel, Codetyp codetyp) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = null;
-        switch (codetyp) {
-            case SCHUELER:
-                checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, schuelerCodeOrigin, svmModel.getSchuelerCodesAll());
-                break;
-            case MITARBEITER:
-                checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, mitarbeiterCodeOrigin, svmModel.getMitarbeiterCodesAll());
-                break;
-            case ELTERNMITHILFE:
-                checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, elternmithilfeCodeOrigin, svmModel.getElternmithilfeCodesAll());
-                break;
-            case SEMESTERRECHNUNG:
-                checkCodeKuerzelBereitsInVerwendungCommand = new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, semesterrechnungCodeOrigin, svmModel.getSemesterrechnungCodesAll());
-                break;
-        }
+        CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand = switch (codetyp) {
+            case SCHUELER ->
+                    new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, schuelerCodeOrigin, svmModel.getSchuelerCodesAll());
+            case MITARBEITER ->
+                    new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, mitarbeiterCodeOrigin, svmModel.getMitarbeiterCodesAll());
+            case ELTERNMITHILFE ->
+                    new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, elternmithilfeCodeOrigin, svmModel.getElternmithilfeCodesAll());
+            case SEMESTERRECHNUNG ->
+                    new CheckCodeKuerzelBereitsInVerwendungCommand(kuerzel, semesterrechnungCodeOrigin, svmModel.getSemesterrechnungCodesAll());
+        };
         commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
         return checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung();
     }
@@ -134,37 +132,38 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     public void speichern(SvmModel svmModel, CodesTableModel codesTableModel, Codetyp codetyp) {
         CommandInvoker commandInvoker = getCommandInvoker();
         switch (codetyp) {
-            case SCHUELER:
+            case SCHUELER -> {
                 SchuelerCode schuelerCode = new SchuelerCode(kuerzel, beschreibung, selektierbar);
                 SaveOrUpdateSchuelerCodeCommand saveOrUpdateSchuelerCodeCommand = new SaveOrUpdateSchuelerCodeCommand(schuelerCode, schuelerCodeOrigin, svmModel.getSchuelerCodesAll());
                 commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
                 // TableData mit von der Datenbank upgedateten SchülerCodes updaten
                 codesTableModel.getCodesTableData().setCodes(svmModel.getSchuelerCodesAll());
-                break;
-            case MITARBEITER:
+            }
+            case MITARBEITER -> {
                 MitarbeiterCode mitarbeiterCode = new MitarbeiterCode(kuerzel, beschreibung, selektierbar);
                 SaveOrUpdateMitarbeiterCodeCommand saveOrUpdateMitarbeiterCodeCommand = new SaveOrUpdateMitarbeiterCodeCommand(mitarbeiterCode, mitarbeiterCodeOrigin, svmModel.getMitarbeiterCodesAll());
                 commandInvoker.executeCommandAsTransaction(saveOrUpdateMitarbeiterCodeCommand);
                 // TableData mit von der Datenbank upgedateten MitarbeiterCodes updaten
                 codesTableModel.getCodesTableData().setCodes(svmModel.getMitarbeiterCodesAll());
-                break;
-            case ELTERNMITHILFE:
+            }
+            case ELTERNMITHILFE -> {
                 ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode(kuerzel, beschreibung, selektierbar);
                 SaveOrUpdateElternmithilfeCodeCommand saveOrUpdateElternmithilfeCodeCommand = new SaveOrUpdateElternmithilfeCodeCommand(elternmithilfeCode, elternmithilfeCodeOrigin, svmModel.getElternmithilfeCodesAll());
                 commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);
                 // TableData mit von der Datenbank upgedateten ElternmithilfeCodes updaten
                 codesTableModel.getCodesTableData().setCodes(svmModel.getElternmithilfeCodesAll());
-                break;
-            case SEMESTERRECHNUNG:
+            }
+            case SEMESTERRECHNUNG -> {
                 SemesterrechnungCode semesterrechnungCode = new SemesterrechnungCode(kuerzel, beschreibung, selektierbar);
                 SaveOrUpdateSemesterrechnungCodeCommand saveOrUpdateSemesterrechnungCodeCommand = new SaveOrUpdateSemesterrechnungCodeCommand(semesterrechnungCode, semesterrechnungCodeOrigin, svmModel.getSemesterrechnungCodesAll());
                 commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterrechnungCodeCommand);
                 // TableData mit von der Datenbank upgedateten SemesterrrechnungCodes updaten
                 codesTableModel.getCodesTableData().setCodes(svmModel.getSemesterrechnungCodesAll());
-                break;
+            }
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void initializeCompleted() {
         if (schuelerCodeOrigin != null) {
@@ -174,8 +173,8 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
                 setBeschreibung(schuelerCodeOrigin.getBeschreibung());
                 setSelektierbar(!schuelerCodeOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
                 setSelektierbar(schuelerCodeOrigin.getSelektierbar());
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else if (mitarbeiterCodeOrigin != null) {
@@ -185,8 +184,8 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
                 setBeschreibung(mitarbeiterCodeOrigin.getBeschreibung());
                 setSelektierbar(!mitarbeiterCodeOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
                 setSelektierbar(mitarbeiterCodeOrigin.getSelektierbar());
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else if (elternmithilfeCodeOrigin != null) {
@@ -196,8 +195,8 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
                 setBeschreibung(elternmithilfeCodeOrigin.getBeschreibung());
                 setSelektierbar(!elternmithilfeCodeOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
                 setSelektierbar(elternmithilfeCodeOrigin.getSelektierbar());
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else if (semesterrechnungCodeOrigin != null) {
@@ -207,8 +206,8 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
                 setBeschreibung(semesterrechnungCodeOrigin.getBeschreibung());
                 setSelektierbar(!semesterrechnungCodeOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
                 setSelektierbar(semesterrechnungCodeOrigin.getSelektierbar());
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else {
@@ -222,5 +221,6 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 }

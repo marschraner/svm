@@ -7,13 +7,17 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateKursortCommand;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Martin Schraner
  */
 public class KursortErfassenModelImpl extends AbstractModel implements KursortErfassenModel {
 
-    private Kursort kursort = new Kursort();
+    private static final Logger LOGGER = LogManager.getLogger(KursortErfassenModelImpl.class);
+
+    private final Kursort kursort = new Kursort();
     private Kursort kursortOrigin;
 
     @Override
@@ -29,7 +33,7 @@ public class KursortErfassenModelImpl extends AbstractModel implements KursortEr
     private final StringModelAttribute bezeichnungModelAttribute = new StringModelAttribute(
             this,
             Field.BEZEICHNUNG, 2, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return kursort.getBezeichnung();
@@ -81,6 +85,7 @@ public class KursortErfassenModelImpl extends AbstractModel implements KursortEr
         kursorteTableModel.getKursorteTableData().setKursorte(svmModel.getKursorteAll());
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void initializeCompleted() {
         if (kursortOrigin != null) {
@@ -89,8 +94,8 @@ public class KursortErfassenModelImpl extends AbstractModel implements KursortEr
                 setBezeichnung(kursortOrigin.getBezeichnung());
                 setSelektierbar(!kursortOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
                 setSelektierbar(kursortOrigin.getSelektierbar());
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else {
@@ -104,5 +109,6 @@ public class KursortErfassenModelImpl extends AbstractModel implements KursortEr
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 }

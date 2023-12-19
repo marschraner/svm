@@ -11,6 +11,8 @@ import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
@@ -23,11 +25,12 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements MitarbeiterErfassenModel {
 
-    private final IbanNummerValidator ibanNummerValidator = new IbanNummerValidator();
+    private static final Logger LOGGER = LogManager.getLogger(MaerchenErfassenModelImpl.class);
+    private static final IbanNummerValidator IBAN_NUMMER_VALIDATOR = new IbanNummerValidator();
 
-    private Mitarbeiter mitarbeiter = new Mitarbeiter();
+    private final Mitarbeiter mitarbeiter = new Mitarbeiter();
     private Mitarbeiter mitarbeiterOrigin;
-    private Set<MitarbeiterCode> mitarbeiterCodes = new HashSet<>();
+    private final Set<MitarbeiterCode> mitarbeiterCodes = new HashSet<>();
 
     @Override
     Person getPerson() {
@@ -48,7 +51,7 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
     public List<MitarbeiterCode> getMitarbeiterCodesAsList() {
         List<MitarbeiterCode> mitarbeiterCodesAsList = new ArrayList<>(mitarbeiterCodes);
         Collections.sort(mitarbeiterCodesAsList);
-        return  mitarbeiterCodesAsList;
+        return mitarbeiterCodesAsList;
     }
 
     @Override
@@ -80,11 +83,6 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
     }
 
     @Override
-    protected Calendar getEarliestValidDateGeburtstag() {
-        return getNYearsBeforeNow(80);
-    }
-
-    @Override
     protected Calendar getLatestValidDateGeburtstag() {
         return getNYearsBeforeNow(10);
     }
@@ -92,7 +90,7 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
     private final StringModelAttribute ahvNummerModelAttribute = new StringModelAttribute(
             this,
             Field.AHV_NUMMER, 16, 16,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return mitarbeiter.getAhvNummer();
@@ -118,7 +116,7 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
     private final StringModelAttribute ibanNummerModelAttribute = new StringModelAttribute(
             this,
             Field.IBAN_NUMMER, 15, 40,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return mitarbeiter.getIbanNummer();
@@ -139,7 +137,7 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
 
     @Override
     public void setIbanNummer(String ibanNummer) throws SvmValidationException {
-        if (!isBulkUpdate() && checkNotEmpty(ibanNummer) && !ibanNummerValidator.isValid(ibanNummer)) {
+        if (!isBulkUpdate() && checkNotEmpty(ibanNummer) && !IBAN_NUMMER_VALIDATOR.isValid(ibanNummer)) {
             invalidate();
             String errMsg = "Keine gültige IBAN-Nummer";
             throw new SvmValidationException(11111, errMsg, Field.IBAN_NUMMER);
@@ -162,7 +160,7 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
     private final StringModelAttribute vertretungsmoeglichkeitenModelAttribute = new StringModelAttribute(
             this,
             Field.VERTRETUNGSMOEGLICHKEITEN, 0, 1000,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return mitarbeiter.getVertretungsmoeglichkeiten();
@@ -188,7 +186,7 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
     private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(
             this,
             Field.BEMERKUNGEN, 0, 1000,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return mitarbeiter.getBemerkungen();
@@ -257,9 +255,9 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
         CommandInvoker commandInvoker = getCommandInvoker();
         SaveOrUpdateMitarbeiterCommand saveOrUpdateMitarbeiterCommand = new SaveOrUpdateMitarbeiterCommand(mitarbeiter, getAdresse(), mitarbeiterCodes, mitarbeiterOrigin, mitarbeitersTableModel.getMitarbeiters());
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMitarbeiterCommand);
-        saveOrUpdateMitarbeiterCommand.getMitarbeiterSaved();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void initializeCompleted() {
         if (mitarbeiterOrigin != null) {
@@ -285,11 +283,9 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
                 setBemerkungen(mitarbeiterOrigin.getBemerkungen());
                 setAktiv(!mitarbeiterOrigin.getAktiv()); // damit PropertyChange ausgelöst wird!
                 setAktiv(mitarbeiterOrigin.getAktiv());
-                for (MitarbeiterCode mitarbeiterCode : mitarbeiterOrigin.getMitarbeiterCodes()) {
-                    mitarbeiterCodes.add(mitarbeiterCode);
-                }
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+                mitarbeiterCodes.addAll(mitarbeiterOrigin.getMitarbeiterCodes());
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else {

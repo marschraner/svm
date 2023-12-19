@@ -12,6 +12,8 @@ import ch.metzenthin.svm.domain.commands.DetermineMaerchenInitCommand;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateMaercheneinteilungCommand;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.MaercheneinteilungenTableModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,12 +27,13 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl implements MaercheneinteilungErfassenModel {
 
-    private static ElternmithilfeCode ELTERNMITHILFE_CODE_KEINER = new ElternmithilfeCode();
+    private static final Logger LOGGER = LogManager.getLogger(MaercheneinteilungErfassenModelImpl.class);
+    private static final ElternmithilfeCode ELTERNMITHILFE_CODE_KEINER = new ElternmithilfeCode();
 
-    private Maercheneinteilung maercheneinteilung = new Maercheneinteilung();
+    private final Maercheneinteilung maercheneinteilung = new Maercheneinteilung();
     private Maercheneinteilung maercheneinteilungOrigin;
     private ElternmithilfeCode elternmithilfeCode = new ElternmithilfeCode();
-    private ElternmithilfeDrittperson elternmithilfeDrittperson = new ElternmithilfeDrittperson();
+    private final ElternmithilfeDrittperson elternmithilfeDrittperson = new ElternmithilfeDrittperson();
 
     @Override
     Person getPerson() {
@@ -73,7 +76,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
     private final StringModelAttribute rolle1ModelAttribute = new StringModelAttribute(
             this,
             Field.ROLLE1, 1, 60,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return maercheneinteilung.getRolle1();
@@ -99,7 +102,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
     private final StringModelAttribute bilderRolle1ModelAttribute = new StringModelAttribute(
             this,
             Field.BILDER_ROLLE1, 1, 60,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return maercheneinteilung.getBilderRolle1();
@@ -125,7 +128,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
     private final StringModelAttribute rolle2ModelAttribute = new StringModelAttribute(
             this,
             Field.ROLLE2, 1, 60,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return maercheneinteilung.getRolle2();
@@ -151,7 +154,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
     private final StringModelAttribute bilderRolle2ModelAttribute = new StringModelAttribute(
             this,
             Field.BILDER_ROLLE2, 1, 60,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return maercheneinteilung.getBilderRolle2();
@@ -177,7 +180,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
     private final StringModelAttribute rolle3ModelAttribute = new StringModelAttribute(
             this,
             Field.ROLLE3, 1, 60,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return maercheneinteilung.getRolle3();
@@ -203,7 +206,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
     private final StringModelAttribute bilderRolle3ModelAttribute = new StringModelAttribute(
             this,
             Field.BILDER_ROLLE3, 1, 60,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return maercheneinteilung.getBilderRolle3();
@@ -237,7 +240,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
     public boolean checkIfMaerchenIsInPast() {
         Calendar today = new GregorianCalendar();
         int schuljahr1;
-        if (today.get(Calendar.MONTH) <= Calendar.JANUARY) {
+        if (today.get(Calendar.MONTH) == Calendar.JANUARY) {
             schuljahr1 = today.get(Calendar.YEAR) - 1;
         } else {
             schuljahr1 = today.get(Calendar.YEAR);
@@ -258,7 +261,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
             selectableElternmithilfenList.add(Elternmithilfe.VATER);
         }
         selectableElternmithilfenList.add(Elternmithilfe.DRITTPERSON);
-        return selectableElternmithilfenList.toArray(new Elternmithilfe[selectableElternmithilfenList.size()]);
+        return selectableElternmithilfenList.toArray(new Elternmithilfe[0]);
     }
 
     @Override
@@ -293,10 +296,10 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
                 }
             }
             if (!found) {
-               elternmithilfeCodeList.add(maercheneinteilungOrigin.getElternmithilfeCode());
+                elternmithilfeCodeList.add(maercheneinteilungOrigin.getElternmithilfeCode());
             }
         }
-        return elternmithilfeCodeList.toArray(new ElternmithilfeCode[elternmithilfeCodeList.size()]);
+        return elternmithilfeCodeList.toArray(new ElternmithilfeCode[0]);
     }
 
     @Override
@@ -425,7 +428,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
     private final StringModelAttribute zusatzattributModelAttribute = new StringModelAttribute(
             this,
             Field.ZUSATZATTRIBUT_MAERCHEN, 1, 30,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return maercheneinteilung.getZusatzattribut();
@@ -451,7 +454,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
     private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(
             this,
             Field.BEMERKUNGEN, 2, 100,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return maercheneinteilung.getBemerkungen();
@@ -489,23 +492,23 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
     @Override
     public boolean checkIfElternmithilfeHasEmail(SchuelerDatenblattModel schuelerDatenblattModel) {
         Schueler schueler = schuelerDatenblattModel.getSchueler();
-        if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER && !checkNotEmpty(schueler.getMutter().getEmail())) {
+        if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER
+                && !checkNotEmpty(schueler.getMutter().getEmail())) {
             return false;
-        } else if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.VATER && !checkNotEmpty(schueler.getVater().getEmail())) {
-            return false;
-        }
-        return true;
+        } else return maercheneinteilung.getElternmithilfe() != Elternmithilfe.VATER
+                || checkNotEmpty(schueler.getVater().getEmail());
     }
 
     @Override
     public boolean checkIfElternmithilfeHasTelefon(SchuelerDatenblattModel schuelerDatenblattModel) {
         Schueler schueler = schuelerDatenblattModel.getSchueler();
-        if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER && !checkNotEmpty(schueler.getMutter().getFestnetz()) && !checkNotEmpty(schueler.getMutter().getNatel())) {
+        if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER
+                && !checkNotEmpty(schueler.getMutter().getFestnetz())
+                && !checkNotEmpty(schueler.getMutter().getNatel())) {
             return false;
-        } else if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.VATER && !checkNotEmpty(schueler.getVater().getFestnetz()) && !checkNotEmpty(schueler.getVater().getNatel())) {
-            return false;
-        }
-        return true;
+        } else return maercheneinteilung.getElternmithilfe() != Elternmithilfe.VATER
+                || checkNotEmpty(schueler.getVater().getFestnetz())
+                || checkNotEmpty(schueler.getVater().getNatel());
     }
 
     @Override
@@ -537,6 +540,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
         maercheneinteilungenTableModel.getMaercheneinteilungenTableData().setMaercheneinteilungen(schuelerDatenblattModel.getSchueler().getMaercheneinteilungenAsList());
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void initializeCompleted() {
         if (maercheneinteilungOrigin != null) {
@@ -586,8 +590,8 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
                     setNatel(eltermithilfeDrittpersonOrigin.getNatel());
                     setEmail(eltermithilfeDrittpersonOrigin.getEmail());
                 }
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else {
@@ -636,6 +640,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isSetRolle1() {
         return maercheneinteilung.getRolle1() != null;
     }
@@ -672,9 +677,10 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
         return maercheneinteilung.getElternmithilfe() == Elternmithilfe.DRITTPERSON;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isSetAnschriftElternmithilfeDrittperson() {
-        return elternmithilfeDrittperson != null && getAdresse() != null &&
-                elternmithilfeDrittperson.getAnrede() != null
+        return getAdresse() != null
+                && elternmithilfeDrittperson.getAnrede() != null
                 && checkNotEmpty(elternmithilfeDrittperson.getNachname())
                 && checkNotEmpty(elternmithilfeDrittperson.getVorname())
                 && checkNotEmpty(getAdresse().getStrasseHausnummer())

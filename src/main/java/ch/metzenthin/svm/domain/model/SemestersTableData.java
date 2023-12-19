@@ -31,63 +31,34 @@ public class SemestersTableData {
         Semester semester = semesters.get(rowIndex);
         Object value = null;
         switch (COLUMNS[columnIndex]) {
-            case SCHULJAHR:
-                value = semester.getSchuljahr();
-                break;
-            case SEMESTERBEZEICHNUNG:
-                value = semester.getSemesterbezeichnung();
-                break;
-            case SEMESTERBEGINN:
-                value = semester.getSemesterbeginn();
-                break;
-            case SEMESTERENDE:
-                value = semester.getSemesterende();
-                break;
-            case FERIENBEGINN1:
-                value = semester.getFerienbeginn1();
-                break;
-            case FERIENENDE1:
-                value = semester.getFerienende1();
-                break;
-            case FERIENBEGINN2:
-                value = semester.getFerienbeginn2();
-                break;
-            case FERIENENDE2:
-                value = semester.getFerienende2();
-                break;
-            case ANZAHL_SCHULWOCHEN:
-                value = semester.getAnzahlSchulwochen();
-                break;
-            case ANZAHL_KURSE:
-                value = semester.getKurse().size();
-                break;
-            default:
-                break;
+            case SCHULJAHR -> value = semester.getSchuljahr();
+            case SEMESTERBEZEICHNUNG -> value = semester.getSemesterbezeichnung();
+            case SEMESTERBEGINN -> value = semester.getSemesterbeginn();
+            case SEMESTERENDE -> value = semester.getSemesterende();
+            case FERIENBEGINN1 -> value = semester.getFerienbeginn1();
+            case FERIENENDE1 -> value = semester.getFerienende1();
+            case FERIENBEGINN2 -> value = semester.getFerienbeginn2();
+            case FERIENENDE2 -> value = semester.getFerienende2();
+            case ANZAHL_SCHULWOCHEN -> value = semester.getAnzahlSchulwochen();
+            case ANZAHL_KURSE -> value = semester.getKurse().size();
+            default -> {
+            }
         }
         return value;
     }
 
     public Class<?> getColumnClass(int columnIndex) {
-        switch (COLUMNS[columnIndex]) {
-            case SEMESTERBEGINN:
-                return Calendar.class;
-            case SEMESTERENDE:
-                return Calendar.class;
-            case FERIENBEGINN1:
-                return Calendar.class;
-            case FERIENENDE1:
-                return Calendar.class;
-            case FERIENBEGINN2:
-                return Calendar.class;
-            case FERIENENDE2:
-                return Calendar.class;
-            case ANZAHL_SCHULWOCHEN:
-                return Integer.class;
-            case ANZAHL_KURSE:
-                return Integer.class;
-            default:
-                return String.class;
-        }
+        return switch (COLUMNS[columnIndex]) {
+            case SEMESTERBEGINN,
+                    SEMESTERENDE,
+                    FERIENBEGINN1,
+                    FERIENENDE1,
+                    FERIENBEGINN2,
+                    FERIENENDE2 -> Calendar.class;
+            case ANZAHL_SCHULWOCHEN,
+                    ANZAHL_KURSE -> Integer.class;
+            default -> String.class;
+        };
     }
 
     public String getColumnName(int column) {

@@ -8,6 +8,8 @@ import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
  * @author Martin Schraner
  */
 public interface SemestersModel {
+
     SemesterErfassenModel getSemesterErfassenModel(SvmContext svmContext, int indexBearbeiten);
+
     DeleteSemesterCommand.Result semesterLoeschen(SvmContext svmContext, SemestersTableModel semestersTableModel, int indexSemesterToBeRemoved);
 }

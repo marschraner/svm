@@ -34,7 +34,8 @@ public class MaerchensModelImpl extends AbstractModel implements MaerchensModel 
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 
     @Override
     public boolean isCompleted() {

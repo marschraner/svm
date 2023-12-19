@@ -23,18 +23,28 @@ public interface MitarbeiterSuchenModel extends Model {
     }
 
     String getNachname();
+
     String getVorname();
+
     MitarbeiterCode getMitarbeiterCode();
+
     LehrkraftJaNeinSelected getLehrkraftJaNeinSelected();
+
     StatusSelected getStatusSelected();
 
     void setNachname(String nachname) throws SvmValidationException;
+
     void setVorname(String vorname) throws SvmValidationException;
+
     void setMitarbeiterCode(MitarbeiterCode mitarbeiterCode);
+
     void setLehrkraftJaNeinSelected(LehrkraftJaNeinSelected lehrkraftJaNeinSelected);
+
     void setStatusSelected(StatusSelected statusSelected);
 
     MitarbeiterCode[] getSelectableMitarbeiterCodes(SvmModel svmModel);
+
     boolean isSuchkriterienSelected();
+
     MitarbeitersTableData suchen();
 }

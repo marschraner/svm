@@ -84,6 +84,7 @@ public class PreisModelAttribute {
     /**
      * Achtung: Neuer Wert wird nicht geprüft!
      */
+    @SuppressWarnings("SameParameterValue")
     void initValue(String newValue) {
         String oldValue = getValueAsString();
         BigDecimal newValueAsBigDecimal = null;
@@ -99,14 +100,14 @@ public class PreisModelAttribute {
     }
 
     private void checkMinValidValue(BigDecimal newValueAsBigDecimal) throws SvmValidationException {
-        if (newValueAsBigDecimal.compareTo(minValidValue) == -1) {
+        if (newValueAsBigDecimal.compareTo(minValidValue) < 0) {
             modelAttributeListener.invalidate();
             throw new SvmValidationException(1301, "Wert darf nicht kleiner als " + minValidValue + " sein", field);
         }
     }
 
     private void checkMaxValidValue(BigDecimal newValueAsBigDecimal) throws SvmValidationException {
-        if (newValueAsBigDecimal.compareTo(maxValidValue) == 1) {
+        if (newValueAsBigDecimal.compareTo(maxValidValue) > 0) {
             modelAttributeListener.invalidate();
             throw new SvmValidationException(1302, "Wert darf nicht grösser als " + maxValidValue + " sein", field);
         }

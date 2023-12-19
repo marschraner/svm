@@ -382,13 +382,9 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
                 if (!isKursToBeDisplayed(kurs, previousSemester, currentSemester, nextSemester)) {
                     continue;
                 }
-                boolean gleichesSemester = false;
-                //noinspection PointlessNullCheck
-                if (previousSchuljahr != null && previousSemesterbezeichnung != null
+                boolean gleichesSemester = previousSemesterbezeichnung != null
                         && kurs.getSemester().getSchuljahr().equals(previousSchuljahr)
-                        && kurs.getSemester().getSemesterbezeichnung() == previousSemesterbezeichnung) {
-                    gleichesSemester = true;
-                }
+                        && kurs.getSemester().getSemesterbezeichnung() == previousSemesterbezeichnung;
                 if (gleichesSemester || kurseSb.length() <= 6) {
                     kurseSb.append("<p>");
                 } else {
@@ -519,10 +515,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         return aktuelleMaercheneinteilung.getBemerkungen();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private Maercheneinteilung determineAktuelleMaercheneinteilung(List<Maercheneinteilung> maercheneinteilungen) {
         Calendar today = new GregorianCalendar();
         int schuljahr1;
-        if (today.get(Calendar.MONTH) <= Calendar.JANUARY) {
+        if (today.get(Calendar.MONTH) == Calendar.JANUARY) {
             schuljahr1 = today.get(Calendar.YEAR) - 1;
         } else {
             schuljahr1 = today.get(Calendar.YEAR);

@@ -24,7 +24,7 @@ public class RechnungsdatumErfassenModelImpl extends AbstractModel implements Re
     private final CalendarModelAttribute rechnungsdatumModelAttribute = new CalendarModelAttribute(
             this,
             Field.RECHNUNGSDATUM, getNYearsBeforeNow(10), getNMonthsAfterNow(2),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return rechnungsdatum;
@@ -65,5 +65,6 @@ public class RechnungsdatumErfassenModelImpl extends AbstractModel implements Re
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 }

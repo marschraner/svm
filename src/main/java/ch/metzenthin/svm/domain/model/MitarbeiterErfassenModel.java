@@ -12,27 +12,46 @@ import java.util.Set;
  * @author Martin Schraner
  */
 public interface MitarbeiterErfassenModel extends PersonModel {
+
     String getAhvNummer();
+
     String getIbanNummer();
+
     Boolean isLehrkraft();
+
     String getVertretungsmoeglichkeiten();
+
     String getBemerkungen();
+
     Boolean isAktiv();
+
     Mitarbeiter getMitarbeiter();
 
     void setMitarbeiterOrigin(Mitarbeiter mitarbeiterOrigin);
+
     void setAhvNummer(String ahvNummer) throws SvmValidationException;
+
     void setIbanNummer(String ibanNummer) throws SvmValidationException;
+
     void setLehrkraft(Boolean isSelected);
+
     void setVertretungsmoeglichkeiten(String vertretungsmoeglichkeiten) throws SvmValidationException;
+
     void setBemerkungen(String bemerkungen) throws SvmValidationException;
+
     void setAktiv(Boolean isSelected);
 
     Set<MitarbeiterCode> getMitarbeiterCodes();
+
     List<MitarbeiterCode> getMitarbeiterCodesAsList();
+
     CodesTableData getCodesTableData();
+
     String getCodesAsStr();
+
     String getCodesBearbeitenTitle();
+
     boolean checkMitarbeiterBereitsErfasst(SvmModel svmModel);
+
     void speichern(SvmModel svmModel, MitarbeitersTableModel mitarbeitersTableModel);
 }

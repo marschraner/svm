@@ -12,8 +12,8 @@ import java.util.List;
 public class CodesTableData {
 
     private List<? extends Code> codes;
-    private boolean isCodesSpecific;
-    private List<Field> columns = new ArrayList<>();
+    private final boolean isCodesSpecific;
+    private final List<Field> columns = new ArrayList<>();
 
     public CodesTableData(List<? extends Code> codes, boolean isCodesSpecific) {
         this.codes = codes;
@@ -41,26 +41,17 @@ public class CodesTableData {
         Code code = codes.get(rowIndex);
         Object value = null;
         switch (columns.get(columnIndex)) {
-            case KUERZEL:
-                value = code.getKuerzel();
-                break;
-            case BESCHREIBUNG:
-                value = code.getBeschreibung();
-                break;
-            case SELEKTIERBAR:
-                value = (code.getSelektierbar() ? "ja" : "nein");
-                break;
-            default:
-                break;
+            case KUERZEL -> value = code.getKuerzel();
+            case BESCHREIBUNG -> value = code.getBeschreibung();
+            case SELEKTIERBAR -> value = (code.getSelektierbar() ? "ja" : "nein");
+            default -> {
+            }
         }
         return value;
     }
 
-    public Class<?> getColumnClass(int columnIndex) {
-        switch (columns.get(columnIndex)) {
-            default:
-                return String.class;
-        }
+    public Class<?> getColumnClass() {
+        return String.class;
     }
 
     public void setCodes(List<? extends Code> codes) {

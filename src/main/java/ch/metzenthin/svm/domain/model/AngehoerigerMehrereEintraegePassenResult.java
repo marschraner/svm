@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,7 +11,7 @@ import java.util.List;
 public class AngehoerigerMehrereEintraegePassenResult extends SchuelerErfassenSaveResult {
 
     private final ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt;
-    private List<Angehoeriger> angehoerigeFound = new ArrayList<>();
+    private final List<Angehoeriger> angehoerigeFound;
 
     public AngehoerigerMehrereEintraegePassenResult(List<Angehoeriger> angehoerigeFound, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
         super(result);

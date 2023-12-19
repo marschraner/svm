@@ -62,7 +62,8 @@ public class KurseModelImpl extends AbstractModel implements KurseModel {
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 
     @Override
     public boolean isCompleted() {

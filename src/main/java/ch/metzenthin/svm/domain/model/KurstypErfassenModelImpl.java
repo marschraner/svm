@@ -7,13 +7,17 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateKurstypCommand;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Martin Schraner
  */
 public class KurstypErfassenModelImpl extends AbstractModel implements KurstypErfassenModel {
 
-    private Kurstyp kurstyp = new Kurstyp();
+    private static final Logger LOGGER = LogManager.getLogger(KurstypErfassenModelImpl.class);
+
+    private final Kurstyp kurstyp = new Kurstyp();
     private Kurstyp kurstypOrigin;
 
     @Override
@@ -29,7 +33,7 @@ public class KurstypErfassenModelImpl extends AbstractModel implements KurstypEr
     private final StringModelAttribute bezeichnungModelAttribute = new StringModelAttribute(
             this,
             Field.BEZEICHNUNG, 2, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return kurstyp.getBezeichnung();
@@ -81,6 +85,7 @@ public class KurstypErfassenModelImpl extends AbstractModel implements KurstypEr
         kurstypenTableModel.getKurstypenTableData().setKurstypen(svmModel.getKurstypenAll());
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void initializeCompleted() {
         if (kurstypOrigin != null) {
@@ -89,8 +94,8 @@ public class KurstypErfassenModelImpl extends AbstractModel implements KurstypEr
                 setBezeichnung(kurstypOrigin.getBezeichnung());
                 setSelektierbar(!kurstypOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
                 setSelektierbar(kurstypOrigin.getSelektierbar());
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else {
@@ -104,5 +109,6 @@ public class KurstypErfassenModelImpl extends AbstractModel implements KurstypEr
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 }

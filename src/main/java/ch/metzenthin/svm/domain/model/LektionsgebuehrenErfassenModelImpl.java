@@ -7,6 +7,8 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateLektionsgebuehrenCommand;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 
@@ -15,7 +17,9 @@ import java.math.BigDecimal;
  */
 public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements LektionsgebuehrenErfassenModel {
 
-    private Lektionsgebuehren lektionsgebuehren = new Lektionsgebuehren();
+    private static final Logger LOGGER = LogManager.getLogger(LektionsgebuehrenErfassenModelImpl.class);
+
+    private final Lektionsgebuehren lektionsgebuehren = new Lektionsgebuehren();
     private Lektionsgebuehren lektionsgebuehrenOrigin;
 
     @Override
@@ -31,7 +35,7 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
     private final IntegerModelAttribute lektionslaengeModelAttribute = new IntegerModelAttribute(
             this,
             Field.LEKTIONSLAENGE, 10, 200,
-            new AttributeAccessor<Integer>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Integer getValue() {
                     return lektionsgebuehren.getLektionslaenge();
@@ -57,7 +61,7 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
     private final PreisModelAttribute betrag1KindModelAttribute = new PreisModelAttribute(
             this,
             Field.BETRAG_1_KIND, new BigDecimal("0.00"), new BigDecimal("999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return lektionsgebuehren.getBetrag1Kind();
@@ -83,7 +87,7 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
     private final PreisModelAttribute betrag2KinderModelAttribute = new PreisModelAttribute(
             this,
             Field.BETRAG_2_KINDER, new BigDecimal("0.00"), new BigDecimal("999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return lektionsgebuehren.getBetrag2Kinder();
@@ -109,7 +113,7 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
     private final PreisModelAttribute betrag3KinderModelAttribute = new PreisModelAttribute(
             this,
             Field.BETRAG_3_KINDER, new BigDecimal("0.00"), new BigDecimal("999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return lektionsgebuehren.getBetrag3Kinder();
@@ -135,7 +139,7 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
     private final PreisModelAttribute betrag4KinderModelAttribute = new PreisModelAttribute(
             this,
             Field.BETRAG_4_KINDER, new BigDecimal("0.00"), new BigDecimal("999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return lektionsgebuehren.getBetrag4Kinder();
@@ -161,7 +165,7 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
     private final PreisModelAttribute betrag5KinderModelAttribute = new PreisModelAttribute(
             this,
             Field.BETRAG_5_KINDER, new BigDecimal("0.00"), new BigDecimal("999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return lektionsgebuehren.getBetrag5Kinder();
@@ -187,7 +191,7 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
     private final PreisModelAttribute betrag6KinderModelAttribute = new PreisModelAttribute(
             this,
             Field.BETRAG_6_KINDER, new BigDecimal("0.00"), new BigDecimal("999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return lektionsgebuehren.getBetrag6Kinder();
@@ -240,8 +244,8 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
                 setBetrag4Kinder(lektionsgebuehrenOrigin.getBetrag4Kinder().toString());
                 setBetrag5Kinder(lektionsgebuehrenOrigin.getBetrag5Kinder().toString());
                 setBetrag6Kinder(lektionsgebuehrenOrigin.getBetrag6Kinder().toString());
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else {
@@ -255,5 +259,6 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 }

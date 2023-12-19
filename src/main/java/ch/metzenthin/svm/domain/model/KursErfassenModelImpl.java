@@ -59,7 +59,7 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     private final StringModelAttribute altersbereichModelAttribute = new StringModelAttribute(
             this,
             Field.ALTERSBEREICH, 2, 20,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return kurs.getAltersbereich();
@@ -85,7 +85,7 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     private final StringModelAttribute stufeModelAttribute = new StringModelAttribute(
             this,
             Field.STUFE, 2, 30,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return kurs.getStufe();
@@ -111,7 +111,7 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     private final TimeModelAttribute zeitBeginnModelAttribute = new TimeModelAttribute(
             this,
             Field.ZEIT_BEGINN,
-            new AttributeAccessor<Time>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Time getValue() {
                     return kurs.getZeitBeginn();
@@ -142,7 +142,7 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     private final TimeModelAttribute zeitEndeModelAttribute = new TimeModelAttribute(
             this,
             Field.ZEIT_ENDE,
-            new AttributeAccessor<Time>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Time getValue() {
                     return kurs.getZeitEnde();
@@ -310,7 +310,7 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(
             this,
             Field.BEMERKUNGEN, 2, 100,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return kurs.getBemerkungen();
@@ -337,7 +337,7 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     public boolean checkKursBereitsErfasst(KurseTableModel kurseTableModel, KurseSemesterwahlModel kurseSemesterwahlModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
         CheckKursBereitsErfasstCommand checkKursBereitsErfasstCommand
-            = new CheckKursBereitsErfasstCommand(
+                = new CheckKursBereitsErfasstCommand(
                 kurs, kurseSemesterwahlModel.getSemester(), mitarbeiter1, mitarbeiter2, kursOrigin, kurseTableModel.getKurse());
         commandInvoker.executeCommand(checkKursBereitsErfasstCommand);
         return checkKursBereitsErfasstCommand.isBereitsErfasst();

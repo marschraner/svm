@@ -57,7 +57,7 @@ class KursanmeldungenModelImpl extends AbstractModel implements KursanmeldungenM
     }
 
     private List<Kursanmeldung> getKursanmeldungenNeustesSemester(Collection<Kursanmeldung> kursanmeldungen, Semester neustesSemester) {
-        List <Kursanmeldung> kursanmeldungenNeustesSemester = new ArrayList<>();
+        List<Kursanmeldung> kursanmeldungenNeustesSemester = new ArrayList<>();
         for (Kursanmeldung kursanmeldung : kursanmeldungen) {
             if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(neustesSemester.getSemesterId())) {
                 kursanmeldungenNeustesSemester.add(kursanmeldung);
@@ -90,7 +90,8 @@ class KursanmeldungenModelImpl extends AbstractModel implements KursanmeldungenM
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 
     @Override
     public boolean isCompleted() {

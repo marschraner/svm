@@ -159,10 +159,6 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
         completedListeners.add(completedListener);
     }
 
-    public void removeCompletedListener(CompletedListener completedListener) {
-        completedListeners.remove(completedListener);
-    }
-
     void fireCompleted(boolean completed) {
         for (CompletedListener completedListener : completedListeners) {
             completedListener.completed(completed);
@@ -191,8 +187,6 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
 
     /**
      * Template Method für die Validierung des Models.
-     *
-     * @throws SvmValidationException
      */
     @Override
     public void validate() throws SvmValidationException {
@@ -211,8 +205,6 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
     /**
      * Subklassen prüfen ihren Teil des Models und schmeissen eine von SvmValidationException abgeleitete Exception
      * bei Fehler. Die Invalidierung des Models erfolgt in der Template Method.
-     *
-     * @throws SvmValidationException
      */
     abstract void doValidate() throws SvmValidationException;
 

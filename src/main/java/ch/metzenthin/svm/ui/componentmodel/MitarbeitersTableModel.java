@@ -57,7 +57,7 @@ public class MitarbeitersTableModel extends AbstractTableModel {
     }
 
     public List<Mitarbeiter> getMitarbeiters() {
-        return mitarbeitersTableData.getMitarbeiters();
+        return mitarbeitersTableData.mitarbeiters();
     }
 
     public MitarbeitersTableData getMitarbeitersTableData() {

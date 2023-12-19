@@ -47,7 +47,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     private final StringModelAttribute nachnameModelAttribute = new StringModelAttribute(
             this,
             Field.NACHNAME, 1, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return getPerson().getNachname();
@@ -74,7 +74,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     private final StringModelAttribute vornameModelAttribute = new StringModelAttribute(
             this,
             Field.VORNAME, 1, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return getPerson().getVorname();
@@ -101,7 +101,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     private final StringModelAttribute natelModelAttribute = new StringModelAttribute(
             this,
             Field.NATEL, 13, 20,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return getPerson().getNatel();
@@ -127,7 +127,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     final StringModelAttribute emailModelAttribute = new StringModelAttribute(
             this,
             Field.EMAIL, 1, 150,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return getPerson().getEmail();
@@ -159,8 +159,8 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     }
 
     private boolean isEmailValid(String email) {
-        // emailAdresse enthält möglicherweise mehrere, durch Komma getrennte Emails
-        String[] emailAdressenSplitted = email.split("[,;]\\p{Blank}*");
+        // emailAdresse enthält möglicherweise mehrere, durch Komma getrennte E-Mails
+        String[] emailAdressenSplitted = email.split("[,;][ \\t]*");
         for (String emailAdresseSplitted : emailAdressenSplitted) {
             if (!emailValidator.isValid(emailAdresseSplitted.trim())) {
                 return false;
@@ -180,7 +180,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     private final CalendarModelAttribute geburtsdatumModelAttribute = new CalendarModelAttribute(
             this,
             Field.GEBURTSDATUM, getEarliestValidDateGeburtstag(), getLatestValidDateGeburtstag(),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return getPerson().getGeburtsdatum();
@@ -206,7 +206,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     private final StringModelAttribute strasseHausnummerModelAttribute = new StringModelAttribute(
             this,
             Field.STRASSE_HAUSNUMMER, 1, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     if (!checkNotEmpty(adresse.getStrasse()) && !checkNotEmpty(adresse.getHausnummer())) {
@@ -242,7 +242,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     private final StringModelAttribute plzModelAttribute = new StringModelAttribute(
             this,
             Field.PLZ, 4, 10,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return adresse.getPlz();
@@ -268,7 +268,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     private final StringModelAttribute ortModelAttribute = new StringModelAttribute(
             this,
             Field.ORT, 1, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return adresse.getOrt();
@@ -295,7 +295,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
     private final StringModelAttribute festnetzModelAttribute = new StringModelAttribute(
             this,
             Field.FESTNETZ, 13, 20,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return getPerson().getFestnetz();

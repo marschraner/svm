@@ -61,6 +61,7 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
         firePropertyChange(Field.BLINDKOPIEN, oldValue, blindkopien);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public CallDefaultEmailClientCommand.Result callEmailClient(SemesterrechnungenTableModel semesterrechnungenTableModel) {
 
@@ -76,7 +77,7 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
                 emailAdressenSemesterrechnung.add(rechnungsempfaenger.getEmail());
             }
 
-            // Mutter und/oder Vater (ODER Rechnungsempfänger ohne Email -> Mutter und/oder Vater)
+            // Mutter und/oder Vater (ODER Rechnungsempfänger ohne E-Mail -> Mutter und/oder Vater)
             if (mutterUndOderVaterSelected || (rechnungsempfaengerSelected && emailAdressenSemesterrechnung.isEmpty())) {
                 Set<Schueler> schuelerRechnungempfaenger = rechnungsempfaenger.getSchuelerRechnungsempfaenger();
 
@@ -110,7 +111,7 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
                 }
             }
 
-            // Mutter, Vater und Rechnungsempfänger ohne Email -> Schüler
+            // Mutter, Vater und Rechnungsempfänger ohne E-Mail -> Schüler
             if ((rechnungsempfaengerSelected || mutterUndOderVaterSelected)
                     && emailAdressenSemesterrechnung.isEmpty()) {
                 Set<Schueler> schuelerRechnungempfaenger = rechnungsempfaenger.getSchuelerRechnungsempfaenger();

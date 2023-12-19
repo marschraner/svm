@@ -89,6 +89,4 @@ public class SemesterrechnungenModelImpl extends AbstractModel implements Semest
     public boolean isCompleted() {
         return true;
     }
-
-    
 }

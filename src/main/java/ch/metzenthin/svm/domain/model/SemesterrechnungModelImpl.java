@@ -14,7 +14,7 @@ import java.util.GregorianCalendar;
 /**
  * @author Martin Schraner
  */
-abstract class SemesterrechnungModelImpl extends AbstractModel implements SemesterrechnungModel  {
+abstract class SemesterrechnungModelImpl extends AbstractModel implements SemesterrechnungModel {
 
     protected Semesterrechnung semesterrechnung = new Semesterrechnung();
     protected SemesterrechnungCode semesterrechnungCode = new SemesterrechnungCode();
@@ -68,10 +68,10 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
         firePropertyChange(Field.GRATISKINDER, oldValue, semesterrechnung.getGratiskinder());
     }
 
-    private CalendarModelAttribute rechnungsdatumVorrechnungModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute rechnungsdatumVorrechnungModelAttribute = new CalendarModelAttribute(
             this,
             Field.RECHNUNGSDATUM_VORRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return semesterrechnung.getRechnungsdatumVorrechnung();
@@ -97,7 +97,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final PreisModelAttribute ermaessigungVorrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.ERMAESSIGUNG_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return semesterrechnung.getErmaessigungVorrechnung();
@@ -123,7 +123,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final StringModelAttribute ermaessigungsgrundVorrechnungModelAttribute = new StringModelAttribute(
             this,
             Field.ERMAESSIGUNGSGRUND_VORRECHNUNG, 5, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return semesterrechnung.getErmaessigungsgrundVorrechnung();
@@ -149,7 +149,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final PreisModelAttribute zuschlagVorrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.ZUSCHLAG_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return semesterrechnung.getZuschlagVorrechnung();
@@ -175,7 +175,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final StringModelAttribute zuschlagsgrundVorrechnungModelAttribute = new StringModelAttribute(
             this,
             Field.ZUSCHLAGSGRUND_VORRECHNUNG, 5, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return semesterrechnung.getZuschlagsgrundVorrechnung();
@@ -201,7 +201,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final IntegerModelAttribute anzahlWochenVorrechnungModelAttribute = new IntegerModelAttribute(
             this,
             Field.ANZAHL_WOCHEN_VORRECHNUNG, 1, 50,
-            new AttributeAccessor<Integer>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Integer getValue() {
                     return semesterrechnung.getAnzahlWochenVorrechnung();
@@ -227,7 +227,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final PreisModelAttribute wochenbetragVorrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.WOCHENBETRAG_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return semesterrechnung.getWochenbetragVorrechnung();
@@ -250,10 +250,10 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
         wochenbetragVorrechnungModelAttribute.setNewValue(false, wochenbetragVorrechnung, isBulkUpdate());
     }
 
-    private CalendarModelAttribute datumZahlung1VorrechnungModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute datumZahlung1VorrechnungModelAttribute = new CalendarModelAttribute(
             this,
             Field.DATUM_ZAHLUNG_1_VORRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return semesterrechnung.getDatumZahlung1Vorrechnung();
@@ -279,7 +279,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final PreisModelAttribute betragZahlung1VorrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.BETRAG_ZAHLUNG_1_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return semesterrechnung.getBetragZahlung1Vorrechnung();
@@ -302,10 +302,10 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
         betragZahlung1VorrechnungModelAttribute.setNewValue(false, betragZahlung1Vorrechnung, isBulkUpdate());
     }
 
-    private CalendarModelAttribute datumZahlung2VorrechnungModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute datumZahlung2VorrechnungModelAttribute = new CalendarModelAttribute(
             this,
-            Field.DATUM_ZAHLUNG_2_VORRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 2), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 32),
-            new AttributeAccessor<Calendar>() {
+            Field.DATUM_ZAHLUNG_2_VORRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 2), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return semesterrechnung.getDatumZahlung2Vorrechnung();
@@ -331,7 +331,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final PreisModelAttribute betragZahlung2VorrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.BETRAG_ZAHLUNG_2_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return semesterrechnung.getBetragZahlung2Vorrechnung();
@@ -354,10 +354,10 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
         betragZahlung2VorrechnungModelAttribute.setNewValue(false, betragZahlung2Vorrechnung, isBulkUpdate());
     }
 
-    private CalendarModelAttribute datumZahlung3VorrechnungModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute datumZahlung3VorrechnungModelAttribute = new CalendarModelAttribute(
             this,
-            Field.DATUM_ZAHLUNG_3_VORRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 3), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 33),
-            new AttributeAccessor<Calendar>() {
+            Field.DATUM_ZAHLUNG_3_VORRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 3), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return semesterrechnung.getDatumZahlung3Vorrechnung();
@@ -383,7 +383,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final PreisModelAttribute betragZahlung3VorrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.BETRAG_ZAHLUNG_3_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return semesterrechnung.getBetragZahlung3Vorrechnung();
@@ -406,10 +406,10 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
         betragZahlung3VorrechnungModelAttribute.setNewValue(false, betragZahlung3Vorrechnung, isBulkUpdate());
     }
 
-    private CalendarModelAttribute rechnungsdatumNachrechnungModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute rechnungsdatumNachrechnungModelAttribute = new CalendarModelAttribute(
             this,
             Field.RECHNUNGSDATUM_NACHRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return semesterrechnung.getRechnungsdatumNachrechnung();
@@ -435,7 +435,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final PreisModelAttribute ermaessigungNachrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.ERMAESSIGUNG_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return semesterrechnung.getErmaessigungNachrechnung();
@@ -461,7 +461,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final StringModelAttribute ermaessigungsgrundNachrechnungModelAttribute = new StringModelAttribute(
             this,
             Field.ERMAESSIGUNGSGRUND_NACHRECHNUNG, 5, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return semesterrechnung.getErmaessigungsgrundNachrechnung();
@@ -487,7 +487,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final PreisModelAttribute zuschlagNachrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.ZUSCHLAG_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return semesterrechnung.getZuschlagNachrechnung();
@@ -513,7 +513,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final StringModelAttribute zuschlagsgrundNachrechnungModelAttribute = new StringModelAttribute(
             this,
             Field.ZUSCHLAGSGRUND_NACHRECHNUNG, 5, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return semesterrechnung.getZuschlagsgrundNachrechnung();
@@ -539,7 +539,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final IntegerModelAttribute anzahlWochenNachrechnungModelAttribute = new IntegerModelAttribute(
             this,
             Field.ANZAHL_WOCHEN_NACHRECHNUNG, 1, 50,
-            new AttributeAccessor<Integer>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Integer getValue() {
                     return semesterrechnung.getAnzahlWochenNachrechnung();
@@ -565,7 +565,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final PreisModelAttribute wochenbetragNachrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.WOCHENBETRAG_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return semesterrechnung.getWochenbetragNachrechnung();
@@ -588,10 +588,10 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
         wochenbetragNachrechnungModelAttribute.setNewValue(false, wochenbetragNachrechnung, isBulkUpdate());
     }
 
-    private CalendarModelAttribute datumZahlung1NachrechnungModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute datumZahlung1NachrechnungModelAttribute = new CalendarModelAttribute(
             this,
             Field.DATUM_ZAHLUNG_1_NACHRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return semesterrechnung.getDatumZahlung1Nachrechnung();
@@ -617,7 +617,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final PreisModelAttribute betragZahlung1NachrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.BETRAG_ZAHLUNG_1_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return semesterrechnung.getBetragZahlung1Nachrechnung();
@@ -640,10 +640,10 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
         betragZahlung1NachrechnungModelAttribute.setNewValue(false, betragZahlung1Nachrechnung, isBulkUpdate());
     }
 
-    private CalendarModelAttribute datumZahlung2NachrechnungModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute datumZahlung2NachrechnungModelAttribute = new CalendarModelAttribute(
             this,
-            Field.DATUM_ZAHLUNG_2_NACHRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 2), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 32),
-            new AttributeAccessor<Calendar>() {
+            Field.DATUM_ZAHLUNG_2_NACHRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 2), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return semesterrechnung.getDatumZahlung2Nachrechnung();
@@ -669,7 +669,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final PreisModelAttribute betragZahlung2NachrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.BETRAG_ZAHLUNG_2_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return semesterrechnung.getBetragZahlung2Nachrechnung();
@@ -692,10 +692,10 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
         betragZahlung2NachrechnungModelAttribute.setNewValue(false, betragZahlung2Nachrechnung, isBulkUpdate());
     }
 
-    private CalendarModelAttribute datumZahlung3NachrechnungModelAttribute = new CalendarModelAttribute(
+    private final CalendarModelAttribute datumZahlung3NachrechnungModelAttribute = new CalendarModelAttribute(
             this,
-            Field.DATUM_ZAHLUNG_3_NACHRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 3), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 33),
-            new AttributeAccessor<Calendar>() {
+            Field.DATUM_ZAHLUNG_3_NACHRECHNUNG, new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 3), new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MAX, Calendar.DECEMBER, 31),
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return semesterrechnung.getDatumZahlung3Nachrechnung();
@@ -721,7 +721,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final PreisModelAttribute betragZahlung3NachrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.BETRAG_ZAHLUNG_3_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return semesterrechnung.getBetragZahlung3Nachrechnung();
@@ -747,7 +747,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
     private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(
             this,
             Field.BEMERKUNGEN, 0, 1000,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return semesterrechnung.getBemerkungen();
@@ -780,6 +780,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
         rechnungsdatumNachrechnungModelAttribute.initValue(null);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void invalidateAll() {
         setSemesterrechnungCode(null);

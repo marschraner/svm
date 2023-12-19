@@ -40,7 +40,7 @@ public class DispensationenTableModel extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return dispensationenTableData.getColumnClass(columnIndex);
+        return dispensationenTableData.getColumnClass();
     }
 
     public DispensationenTableData getDispensationenTableData() {

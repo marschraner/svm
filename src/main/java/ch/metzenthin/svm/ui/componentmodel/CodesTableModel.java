@@ -41,7 +41,7 @@ public class CodesTableModel extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return codesTableData.getColumnClass(columnIndex);
+        return codesTableData.getColumnClass();
     }
 
     public CodesTableData getCodesTableData() {

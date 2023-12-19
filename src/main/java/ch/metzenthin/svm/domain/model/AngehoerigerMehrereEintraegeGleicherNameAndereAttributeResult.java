@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,12 +11,10 @@ import java.util.List;
 public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult extends SchuelerErfassenSaveResult {
 
     private final ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt;
-    private Angehoeriger angehoerigerErfasst;
-    private List<Angehoeriger> angehoerigeFoundInDatabase = new ArrayList<>();
+    private final List<Angehoeriger> angehoerigeFoundInDatabase;
 
-    public AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(Angehoeriger angehoerigerErfasst, List<Angehoeriger> angehoerigeFoundInDatabase, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
+    public AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(List<Angehoeriger> angehoerigeFoundInDatabase, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
         super(result);
-        this.angehoerigerErfasst = angehoerigerErfasst;
         this.angehoerigeFoundInDatabase = angehoerigeFoundInDatabase;
         this.angehoerigenArt = angehoerigenArt;
 
@@ -30,10 +27,6 @@ public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult exten
 
     public ValidateSchuelerCommand.AngehoerigenArt getAngehoerigenArt() {
         return angehoerigenArt;
-    }
-
-    public Angehoeriger getAngehoerigerErfasst() {
-        return angehoerigerErfasst;
     }
 
     public List<Angehoeriger> getAngehoerigeFoundInDatabase() {

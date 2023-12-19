@@ -34,7 +34,8 @@ public class SemestersModelImpl extends AbstractModel implements SemestersModel 
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 
     @Override
     public boolean isCompleted() {

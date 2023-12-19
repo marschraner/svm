@@ -7,7 +7,7 @@ import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
  */
 public abstract class SchuelerErfassenSaveResult {
 
-    private ValidateSchuelerCommand.Result result;
+    private final ValidateSchuelerCommand.Result result;
 
     public SchuelerErfassenSaveResult(ValidateSchuelerCommand.Result result) {
         this.result = result;

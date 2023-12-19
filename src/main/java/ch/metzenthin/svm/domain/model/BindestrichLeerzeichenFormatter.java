@@ -13,7 +13,7 @@ public class BindestrichLeerzeichenFormatter implements Formatter<String> {
         }
 
         // Leerzeichen um Bindestriche entfernen
-        name = name.replaceAll("\\s*\\-\\s*", "-");
+        name = name.replaceAll("\\s*-\\s*", "-");
 
         // Mehr als ein Leerzeichen durch eines ersetzen
         return name.replaceAll("\\s+", " ");

@@ -8,6 +8,8 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  * @author Martin Schraner
  */
 final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImpl implements SemesterrechnungBearbeitenModel {
+
+    private static final Logger LOGGER = LogManager.getLogger(SemesterrechnungBearbeitenModelImpl.class);
 
     private Semesterrechnung semesterrechnungOrigin;
     private Semester previousSemester;
@@ -150,7 +154,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
 
     @Override
     public String getRestbetragVorrechnung() {
-        return (semesterrechnung.getRestbetragVorrechnung() == null ? "-" :  semesterrechnung.getRestbetragVorrechnung().toString());
+        return (semesterrechnung.getRestbetragVorrechnung() == null ? "-" : semesterrechnung.getRestbetragVorrechnung().toString());
     }
 
     @Override
@@ -214,7 +218,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
 
     @Override
     public String getRestbetragNachrechnung() {
-        return (semesterrechnung.getRestbetragNachrechnung() == null ? "-" :  semesterrechnung.getRestbetragNachrechnung().toString());
+        return (semesterrechnung.getRestbetragNachrechnung() == null ? "-" : semesterrechnung.getRestbetragNachrechnung().toString());
     }
 
     @Override
@@ -229,6 +233,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private String getRechnungsempfaengerSchuelers(Rechnungstyp rechnungstyp) {
         List<Schueler> schuelersRechnungsempfaenger = new ArrayList<>(semesterrechnung.getRechnungsempfaenger().getSchuelerRechnungsempfaenger());
         if (schuelersRechnungsempfaenger.isEmpty()) {
@@ -275,6 +280,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         return "-";
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private String getRechnungsempfaengerKurse(Rechnungstyp rechnungstyp) {
         List<Schueler> schuelersRechnungsempfaenger = new ArrayList<>(semesterrechnung.getRechnungsempfaenger().getSchuelerRechnungsempfaenger());
         if (schuelersRechnungsempfaenger.isEmpty()) {
@@ -300,9 +306,9 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
                     kurseSb.append("<p style='margin-top:12'>");
                 }
                 if (rechnungstyp == Rechnungstyp.VORRECHNUNG) {
-                    kurseSb.append(kurs.toString());
+                    kurseSb.append(kurs);
                 } else {
-                    kurseSb.append(kursanmeldung.toString());
+                    kurseSb.append(kursanmeldung);
                 }
                 neuerSchueler = false;
             }
@@ -376,7 +382,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         if (codesList.isEmpty() || !codesList.get(0).isIdenticalWith(SEMESTERRECHNUNG_CODE_KEINER)) {
             codesList.add(0, SEMESTERRECHNUNG_CODE_KEINER);
         }
-        return codesList.toArray(new SemesterrechnungCode[codesList.size()]);
+        return codesList.toArray(new SemesterrechnungCode[0]);
     }
 
     @Override
@@ -424,12 +430,8 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         }
         try {
             switch (rechnungstyp) {
-                case VORRECHNUNG:
-                    setWochenbetragVorrechnung(wochenbetrag == null ? null : wochenbetrag.toString());
-                    break;
-                case NACHRECHNUNG:
-                    setWochenbetragNachrechnung(wochenbetrag == null ? null : wochenbetrag.toString());
-                    break;
+                case VORRECHNUNG -> setWochenbetragVorrechnung(wochenbetrag.toString());
+                case NACHRECHNUNG -> setWochenbetragNachrechnung(wochenbetrag.toString());
             }
         } catch (SvmValidationException ignore) {
         }
@@ -475,8 +477,8 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
             setBetragZahlung3Nachrechnung(semesterrechnungOrigin.getBetragZahlung3Nachrechnung() == null ? null : semesterrechnungOrigin.getBetragZahlung3Nachrechnung().toString());
             setDatumZahlung3Nachrechnung(semesterrechnungOrigin.getDatumZahlung3Nachrechnung() == null ? null : asString(semesterrechnungOrigin.getDatumZahlung3Nachrechnung()));
             setBemerkungen(semesterrechnungOrigin.getBemerkungen());
-        } catch (SvmValidationException ignore) {
-            ignore.printStackTrace();
+        } catch (SvmValidationException e) {
+            LOGGER.error(e.getMessage());
         }
         setBulkUpdate(false);
     }

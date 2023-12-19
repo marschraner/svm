@@ -8,6 +8,8 @@ import ch.metzenthin.svm.domain.commands.DetermineNaechstesNochNichtErfasstesSch
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateMaerchenCommand;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.ui.componentmodel.MaerchensTableModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -17,7 +19,9 @@ import java.util.GregorianCalendar;
  */
 public class MaerchenErfassenModelImpl extends AbstractModel implements MaerchenErfassenModel {
 
-    private Maerchen maerchen = new Maerchen();
+    private static final Logger LOGGER = LogManager.getLogger(MaerchenErfassenModelImpl.class);
+
+    private final Maerchen maerchen = new Maerchen();
     private Maerchen maerchenOrigin;
 
     @Override
@@ -33,7 +37,7 @@ public class MaerchenErfassenModelImpl extends AbstractModel implements Maerchen
     private final StringModelAttribute schuljahrModelAttribute = new StringModelAttribute(
             this,
             Field.SCHULJAHR, 9, 9,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return maerchen.getSchuljahr();
@@ -56,10 +60,10 @@ public class MaerchenErfassenModelImpl extends AbstractModel implements Maerchen
         schuljahrModelAttribute.setNewValue(true, schuljahr, isBulkUpdate());
     }
 
-    private StringModelAttribute bezeichnungModelAttribute = new StringModelAttribute(
+    private final StringModelAttribute bezeichnungModelAttribute = new StringModelAttribute(
             this,
             Field.BEZEICHNUNG, 2, 30,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return maerchen.getBezeichnung();
@@ -82,10 +86,10 @@ public class MaerchenErfassenModelImpl extends AbstractModel implements Maerchen
         bezeichnungModelAttribute.setNewValue(true, bezeichnung, isBulkUpdate());
     }
 
-    private IntegerModelAttribute anzahlVorstellungenModelAttribute = new IntegerModelAttribute(
+    private final IntegerModelAttribute anzahlVorstellungenModelAttribute = new IntegerModelAttribute(
             this,
             Field.ANZAHL_VORSTELLUNGEN, 1, 9,
-            new AttributeAccessor<Integer>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Integer getValue() {
                     return maerchen.getAnzahlVorstellungen();
@@ -116,9 +120,9 @@ public class MaerchenErfassenModelImpl extends AbstractModel implements Maerchen
                 setSchuljahr(maerchenOrigin.getSchuljahr());
                 setBezeichnung(maerchenOrigin.getBezeichnung());
                 setAnzahlVorstellungen(Integer.toString(maerchenOrigin.getAnzahlVorstellungen()));
-                
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else {
@@ -170,6 +174,7 @@ public class MaerchenErfassenModelImpl extends AbstractModel implements Maerchen
     }
 
     @Override
-    void doValidate() throws SvmValidationException {}
+    void doValidate() throws SvmValidationException {
+    }
 
 }

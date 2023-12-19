@@ -17,7 +17,7 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 public class KurseTableData {
 
     private List<Kurs> kurse;
-    private List<Field> columns = new ArrayList<>();
+    private final List<Field> columns = new ArrayList<>();
 
     KurseTableData(List<Kurs> kurse) {
         this.kurse = kurse;
@@ -45,36 +45,20 @@ public class KurseTableData {
         Kurs kurs = kurse.get(rowIndex);
         Object value = null;
         switch (columns.get(columnIndex)) {
-            case SCHULJAHR:
-                value = kurs.getSemester().getSchuljahr();
-                break;
-            case SEMESTERBEZEICHNUNG:
-                value = kurs.getSemester().getSemesterbezeichnung();
-                break;
-            case KURSTYP_BEZEICHNUNG:
-                value = kurs.getKurstyp().getBezeichnung();
-                break;
-            case ALTERSBEREICH:
+            case SCHULJAHR -> value = kurs.getSemester().getSchuljahr();
+            case SEMESTERBEZEICHNUNG -> value = kurs.getSemester().getSemesterbezeichnung();
+            case KURSTYP_BEZEICHNUNG -> value = kurs.getKurstyp().getBezeichnung();
+            case ALTERSBEREICH ->
                 // Korrekte Sortierung
-                value = new StringNumber(kurs.getAltersbereich());
-                break;
-            case STUFE:
+                    value = new StringNumber(kurs.getAltersbereich());
+            case STUFE ->
                 // Korrekte Sortierung
-                value = new StringNumber(kurs.getStufe());
-                break;
-            case TAG:
-                value = kurs.getWochentag();
-                break;
-            case ZEIT_BEGINN:
-                value = asString(kurs.getZeitBeginn());
-                break;
-            case ZEIT_ENDE:
-                value = asString(kurs.getZeitEnde());
-                break;
-            case ORT:
-                value = kurs.getKursort().getBezeichnung();
-                break;
-            case LEITUNG:
+                    value = new StringNumber(kurs.getStufe());
+            case TAG -> value = kurs.getWochentag();
+            case ZEIT_BEGINN -> value = asString(kurs.getZeitBeginn());
+            case ZEIT_ENDE -> value = asString(kurs.getZeitEnde());
+            case ORT -> value = kurs.getKursort().getBezeichnung();
+            case LEITUNG -> {
                 StringBuilder leitung = new StringBuilder();
                 for (Mitarbeiter mitarbeiter : kurs.getLehrkraefte()) {
                     if (leitung.length() > 0) {
@@ -83,32 +67,22 @@ public class KurseTableData {
                     leitung.append(mitarbeiter.getVorname()).append(" ").append(mitarbeiter.getNachname());
                 }
                 value = leitung.toString();
-                break;
-            case BEMERKUNGEN:
-                value = kurs.getBemerkungen();
-                break;
-            case ANZAHL_SCHUELER:
-                value = kurs.getKursanmeldungen().size();
-                break;
-            default:
-                break;
+            }
+            case BEMERKUNGEN -> value = kurs.getBemerkungen();
+            case ANZAHL_SCHUELER -> value = kurs.getKursanmeldungen().size();
+            default -> {
+            }
         }
         return value;
     }
 
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columns.get(columnIndex)) {
-            case TAG:
-                return Wochentag.class;
-            case ANZAHL_SCHUELER:
-                return Integer.class;
-            case ALTERSBEREICH:
-                return StringNumber.class;
-            case STUFE:
-                return StringNumber.class;
-            default:
-                return String.class;
-        }
+        return switch (columns.get(columnIndex)) {
+            case TAG -> Wochentag.class;
+            case ANZAHL_SCHUELER -> Integer.class;
+            case ALTERSBEREICH, STUFE -> StringNumber.class;
+            default -> String.class;
+        };
     }
 
     public void setKurse(List<Kurs> kurse) {
@@ -134,9 +108,4 @@ public class KurseTableData {
         }
         return anzahlSchueler;
     }
-
-    public Kurs getKursAt(int rowIndex) {
-        return kurse.get(rowIndex);
-    }
-
 }

@@ -15,8 +15,8 @@ public class ValidateSchuelerSummaryResult extends SchuelerErfassenSaveResult {
     private final Angehoeriger mutter;
     private final Angehoeriger vater;
     private final Angehoeriger rechnungsempfaenger;
-    private boolean isRechnungsempfaengerMutter;
-    private boolean isRechnungsempfaengerVater;
+    private final boolean isRechnungsempfaengerMutter;
+    private final boolean isRechnungsempfaengerVater;
     private final List<Schueler> geschwister;
     private final List<Schueler> andereSchueler;
     private final String identischeAdressen;

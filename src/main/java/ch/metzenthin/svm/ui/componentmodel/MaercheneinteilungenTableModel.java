@@ -41,7 +41,7 @@ public class MaercheneinteilungenTableModel extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return maercheneinteilungenTableData.getColumnClass(columnIndex);
+        return maercheneinteilungenTableData.getColumnClass();
     }
 
     public Maercheneinteilung getMaercheneinteilungSelected(int rowIndex) {

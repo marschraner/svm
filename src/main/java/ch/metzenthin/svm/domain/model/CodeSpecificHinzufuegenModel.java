@@ -14,5 +14,6 @@ public interface CodeSpecificHinzufuegenModel extends Model {
     void setCode(Code code) throws SvmRequiredException;
 
     void schuelerCodeHinzufuegen(CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel);
+
     void mitarbeiterCodeHinzufuegen(CodesTableModel codesTableModel, MitarbeiterErfassenModel mitarbeiterErfassenModel);
 }

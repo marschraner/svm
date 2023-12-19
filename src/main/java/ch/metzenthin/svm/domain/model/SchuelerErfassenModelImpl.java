@@ -5,19 +5,25 @@ import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
-import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.persistence.entities.Adresse;
+import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
+import ch.metzenthin.svm.persistence.entities.Schueler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 import static ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand.Entry.NEU_ERFASSTEN_SCHUELER_VALIDIEREN;
 
 /**
- * Dieses Model ist eigentlich Model und Controller (verwaltet die Submodels Schüler, Mutter, Vater, Rechnungsempfänger).
+ * Dieses Model ist eigentlich Model und Controller (verwaltet die Submodels Schüler, Mutter, Vater,
+ * Rechnungsempfänger).
  *
  * @author Hans Stamm
  */
@@ -94,81 +100,41 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     @Override
     public void setSchuelerModel(SchuelerModel schuelerModel) {
         this.schuelerModel = schuelerModel;
-        this.schuelerModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onSchuelerModelCompleted(completed);
-            }
-        });
-        this.schuelerModel.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                onSchuelerModelPropertyChange(evt);
-            }
-        });
+        this.schuelerModel.addCompletedListener(this::onSchuelerModelCompleted);
+        this.schuelerModel.addPropertyChangeListener(this::onSchuelerModelPropertyChange);
     }
 
     @Override
     public void setMutterModel(AngehoerigerModel mutterModel) {
         this.mutterModel = mutterModel;
-        this.mutterModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onMutterModelCompleted(completed);
-            }
-        });
-        this.mutterModel.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                onMutterModelPropertyChange(evt);
-            }
-        });
+        this.mutterModel.addCompletedListener(this::onMutterModelCompleted);
+        this.mutterModel.addPropertyChangeListener(this::onMutterModelPropertyChange);
     }
 
     @Override
     public void setVaterModel(AngehoerigerModel vaterModel) {
         this.vaterModel = vaterModel;
-        this.vaterModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onVaterModelCompleted(completed);
-            }
-        });
-        this.vaterModel.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                onVaterModelPropertyChange(evt);
-            }
-        });
+        this.vaterModel.addCompletedListener(this::onVaterModelCompleted);
+        this.vaterModel.addPropertyChangeListener(this::onVaterModelPropertyChange);
     }
 
     @Override
     public void setDrittempfaengerModel(AngehoerigerModel drittempfaengerModel) {
         this.drittempfaengerModel = drittempfaengerModel;
-        this.drittempfaengerModel.addCompletedListener(new CompletedListener() {
-            @Override
-            public void completed(boolean completed) {
-                onDrittempfaengerModelCompleted(completed);
-            }
-        });
-        this.drittempfaengerModel.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                onDrittempfaengerModelPropertyChange(evt);
-            }
-        });
+        this.drittempfaengerModel.addCompletedListener(this::onDrittempfaengerModelCompleted);
+        this.drittempfaengerModel.addPropertyChangeListener(this::onDrittempfaengerModelPropertyChange);
     }
 
     @Override
     public boolean isEmptyNachnameMutter() {
         return mutterModel.getAngehoeriger() == null
-            || !checkNotEmpty(mutterModel.getAngehoeriger().getNachname());
+                || !checkNotEmpty(mutterModel.getAngehoeriger().getNachname());
     }
 
     @Override
     public boolean isEmptyNachnameVater() {
         return vaterModel.getAngehoeriger() == null
-            || !checkNotEmpty(vaterModel.getAngehoeriger().getNachname());
+                || !checkNotEmpty(vaterModel.getAngehoeriger().getNachname());
     }
 
     private void onSchuelerModelPropertyChange(PropertyChangeEvent evt) {
@@ -356,7 +322,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             angehoerigerModel.setStrasseHausnummer(schuelerModel.getStrasseHausnummer());
         } catch (SvmRequiredException e) {
             LOGGER.trace("SchuelerErfassenController replaceByStrasseHausnummerSchueler RequiredException=" + e.getMessage());
-            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
         } catch (SvmValidationException e) {
             // Tritt nie ein, da Validierung bereits beim Schüler
         }
@@ -367,7 +333,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             angehoerigerModel.setPlz(schuelerModel.getPlz());
         } catch (SvmRequiredException e) {
             LOGGER.trace("SchuelerErfassenController replaceByPlzSchueler RequiredException=" + e.getMessage());
-            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
         } catch (SvmValidationException e) {
             // Tritt nie ein, da Validierung bereits beim Schüler
         }
@@ -378,7 +344,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             angehoerigerModel.setOrt(schuelerModel.getOrt());
         } catch (SvmRequiredException e) {
             LOGGER.trace("SchuelerErfassenController replaceByOrtSchueler RequiredException=" + e.getMessage());
-            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
         } catch (SvmValidationException e) {
             // Tritt nie ein, da Validierung bereits beim Schüler
         }
@@ -389,7 +355,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
             angehoerigerModel.setFestnetz(schuelerModel.getFestnetz());
         } catch (SvmRequiredException e) {
             LOGGER.trace("SchuelerErfassenController replaceByFestnetzSchueler RequiredException=" + e.getMessage());
-            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut nachdem alle Field-Prüfungen bestanden sind.
+            // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
         } catch (SvmValidationException e) {
             // Tritt nie ein, da Validierung bereits beim Schüler
         }
@@ -573,8 +539,8 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
 
     @Override
     public SchuelerSuchenTableData getSchuelerSuchenTableData() {
-        return new SchuelerSuchenTableData(Collections.singletonList(getSchueler()), new HashMap<Schueler, List<Kurs>>(),
-                null, null, null, null, null, null, new HashMap<Schueler, Maercheneinteilung>(), null, null, null, false, false, false, null, false);
+        return new SchuelerSuchenTableData(Collections.singletonList(getSchueler()), new HashMap<>(),
+                null, null, null, null, null, null, new HashMap<>(), null, null, null, false, false, false, null, false);
     }
 
 }

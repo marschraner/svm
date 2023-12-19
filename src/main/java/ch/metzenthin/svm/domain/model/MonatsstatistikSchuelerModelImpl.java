@@ -24,7 +24,7 @@ public class MonatsstatistikSchuelerModelImpl extends AbstractModel implements M
     private final CalendarModelAttribute monatJahrModelAttribute = new CalendarModelAttribute(
             this,
             Field.MONAT_JAHR, new GregorianCalendar(2000, Calendar.JANUARY, 1), getNMonthsAfterNow(12),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return monatJahr;
@@ -110,6 +110,7 @@ public class MonatsstatistikSchuelerModelImpl extends AbstractModel implements M
         return findKurseMapSchuelerSemesterCommand.getKurseMap();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private Maerchen determineMaerchenTableData(SvmModel svmModel, Semester semesterTableData) {
         if (semesterTableData == null) {
             return null;
@@ -127,7 +128,7 @@ public class MonatsstatistikSchuelerModelImpl extends AbstractModel implements M
         return null;
     }
 
-    private Map<Schueler,Maercheneinteilung> determineMaercheneinteilungenMapTableData(List<Schueler> schuelerList, Maerchen maerchen) {
+    private Map<Schueler, Maercheneinteilung> determineMaercheneinteilungenMapTableData(List<Schueler> schuelerList, Maerchen maerchen) {
         FindMaercheneinteilungenMapSchuelerSemesterCommand findMaercheneinteilungenMapSchuelerSemesterCommand = new FindMaercheneinteilungenMapSchuelerSemesterCommand(schuelerList, maerchen);
         findMaercheneinteilungenMapSchuelerSemesterCommand.execute();
         return findMaercheneinteilungenMapSchuelerSemesterCommand.getMaercheneinteilungenMap();

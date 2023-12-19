@@ -26,8 +26,8 @@ public class GeschwisterOhneWuenschtEmailsResult extends SchuelerErfassenSaveRes
     public String getErrorMessage() {
         String mutterOderVater = (gemeinsameMutter) ? "die Mutter" : "den Vater";
         return "Bitte \"Wünscht E-Mails\" für " + mutterOderVater + " selektieren!\n\n" +
-            "Wäre \"Wünscht E-Mails\" nicht selektiert, hätte dies zur Folge, dass für das " +
-            "Geschwister " + geschwister.getVorname() + " " + geschwister.getNachname() + "\nfür " +
-            "keinen Elternteil \"Wünscht E-Mails\" selektiert ist, was nicht zulässig ist.";
+                "Wäre \"Wünscht E-Mails\" nicht selektiert, hätte dies zur Folge, dass für das " +
+                "Geschwister " + geschwister.getVorname() + " " + geschwister.getNachname() + "\nfür " +
+                "keinen Elternteil \"Wünscht E-Mails\" selektiert ist, was nicht zulässig ist.";
     }
 }

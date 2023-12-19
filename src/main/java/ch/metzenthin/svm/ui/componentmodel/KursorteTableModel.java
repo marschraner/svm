@@ -40,7 +40,7 @@ public class KursorteTableModel extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return kursorteTableData.getColumnClass(columnIndex);
+        return kursorteTableData.getColumnClass();
     }
 
     public KursorteTableData getKursorteTableData() {

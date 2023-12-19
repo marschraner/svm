@@ -8,6 +8,8 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.persistence.entities.Schueler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
 
@@ -19,6 +21,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotNull;
  * @author Hans Stamm
  */
 final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
+
+    private static final Logger LOGGER = LogManager.getLogger(SchuelerModelImpl.class);
 
     private final Schueler schueler;
     private Schueler schuelerOrigin;
@@ -57,11 +61,6 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     }
 
     @Override
-    protected Calendar getLatestValidDateGeburtstag() {
-        return getNYearsBeforeNow(2);
-    }
-
-    @Override
     public void setGeburtsdatum(String geburtsdatum) throws SvmValidationException {
         if (!isBulkUpdate() && !checkNotEmpty(geburtsdatum)) {
             invalidate();
@@ -73,7 +72,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     private final CalendarModelAttribute anmeldedatumModelAttribute = new CalendarModelAttribute(
             this,
             Field.ANMELDEDATUM, getNYearsBeforeNow(20), getNMonthsAfterNow(1),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return anmeldung.getAnmeldedatum();
@@ -99,7 +98,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     private final CalendarModelAttribute abmeldedatumModelAttribute = new CalendarModelAttribute(
             this,
             Field.ABMELDEDATUM, getNYearsBeforeNow(20), getNMonthsAfterNow(12),
-            new AttributeAccessor<Calendar>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Calendar getValue() {
                     return anmeldung.getAbmeldedatum();
@@ -125,7 +124,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     private final StringModelAttribute bemerkungenModelAttribute = new StringModelAttribute(
             this,
             Field.BEMERKUNGEN, 0, 1000,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return schueler.getBemerkungen();
@@ -197,8 +196,8 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
                 setBemerkungen(schuelerOrigin.getBemerkungen());
                 setAnmeldedatum(asString(schuelerOrigin.getAnmeldungen().get(0).getAnmeldedatum()));
                 setAbmeldedatum(asString(schuelerOrigin.getAnmeldungen().get(0).getAbmeldedatum()));
-            } catch (SvmValidationException ignore) {
-                ignore.printStackTrace();
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else {
@@ -213,6 +212,7 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
     /**
      * Für Schüler ist die Adresse obligatorisch.
+     *
      * @return true
      */
     @Override

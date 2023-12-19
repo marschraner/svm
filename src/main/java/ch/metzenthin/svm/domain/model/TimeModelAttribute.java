@@ -9,9 +9,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Time;
 import java.text.ParseException;
 
-import static ch.metzenthin.svm.common.utils.Converter.asString;
-import static ch.metzenthin.svm.common.utils.Converter.toTime;
-import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
+import static ch.metzenthin.svm.common.utils.Converter.*;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 
@@ -71,6 +69,7 @@ public class TimeModelAttribute {
     /**
      * Achtung: Neuer Wert wird nicht geprüft!
      */
+    @SuppressWarnings("unused")
     void initValue(String newValue) {
         String oldValue = getValueAsString();
         Time newValueAsTime = null;

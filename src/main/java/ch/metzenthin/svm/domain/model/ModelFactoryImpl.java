@@ -4,7 +4,7 @@ package ch.metzenthin.svm.domain.model;
  * @author Hans Stamm
  */
 public class ModelFactoryImpl implements ModelFactory {
-    
+
     @Override
     public SvmModel createSvmModel() {
         return new SvmModelImpl();

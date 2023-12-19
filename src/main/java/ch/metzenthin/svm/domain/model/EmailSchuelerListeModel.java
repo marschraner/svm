@@ -12,13 +12,18 @@ import java.util.Set;
 public interface EmailSchuelerListeModel extends Model {
 
     EmailSchuelerListeEmpfaengerGruppe getEmailSchuelerListeEmpfaengerGruppe();
+
     boolean isBlindkopien();
 
     void setEmailSchuelerListeEmpfaengerGruppe(EmailSchuelerListeEmpfaengerGruppe emailSchuelerListeEmpfaengerGruppe);
+
     void setBlindkopien(boolean selected);
 
     EmailSchuelerListeEmpfaengerGruppe[] getSelectableEmailSchuelerListeEmpfaengerGruppen(SchuelerSuchenTableModel schuelerSuchenTableModel);
+
     CallDefaultEmailClientCommand.Result callEmailClient(SchuelerSuchenTableModel schuelerSuchenTableModel);
+
     Set<String> getFehlendeEmailAdressen();
+
     Set<String> getUngueltigeEmailAdressen();
 }

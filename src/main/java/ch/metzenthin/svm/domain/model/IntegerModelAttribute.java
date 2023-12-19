@@ -74,6 +74,7 @@ public class IntegerModelAttribute {
     /**
      * Achtung: Neuer Wert wird nicht geprüft!
      */
+    @SuppressWarnings("SameParameterValue")
     void initValue(String newValue) {
         String oldValue = getValueAsString();
         Integer newValueAsInteger = null;

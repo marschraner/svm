@@ -21,7 +21,6 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     private Angehoeriger angehoerigerOrigin;
     private boolean isRechnungsempfaengerOrigin;
     private boolean isGleicheAdresseWieSchuelerOrigin;
-
     private boolean isGleicheAdresseWieSchueler;
     private boolean isRechnungsempfaenger;
 
@@ -56,6 +55,7 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
 
     /**
      * Für Angehörige ist die Adresse obligatorisch, falls er Rechnungsempfänger ist.
+     *
      * @return true, falls der Angehörige Rechnungsempfänger ist
      */
     @Override
@@ -90,8 +90,9 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     }
 
     @Override
-    public void setAngehoeriger(Angehoeriger angehoeriger, boolean isGleicheAdresseWieSchueler,
-            boolean isRechnungsempfaenger) {
+    public void setAngehoeriger(Angehoeriger angehoeriger,
+                                boolean isGleicheAdresseWieSchueler,
+                                boolean isRechnungsempfaenger) {
         angehoerigerOrigin = angehoeriger;
         isGleicheAdresseWieSchuelerOrigin = isGleicheAdresseWieSchueler;
         isRechnungsempfaengerOrigin = isRechnungsempfaenger;
@@ -100,7 +101,8 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     @Override
     public boolean isCompleted() {
         if (isSetName() && angehoeriger.getWuenschtEmails() != null
-            && angehoeriger.getWuenschtEmails() && !checkNotEmpty(angehoeriger.getEmail())) {
+                && angehoeriger.getWuenschtEmails()
+                && !checkNotEmpty(angehoeriger.getEmail())) {
             return false;
         }
         return super.isCompleted();
@@ -109,14 +111,15 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
     @Override
     public void doValidate() throws SvmValidationException {
         if (angehoeriger.getWuenschtEmails() != null && angehoeriger.getWuenschtEmails()
-            && !checkNotEmpty(angehoeriger.getEmail())) {
+                && !checkNotEmpty(angehoeriger.getEmail())) {
             throw new SvmValidationException(2010,
-                "Wenn \"Wünscht E-Mails\" selektiert ist, darf die E-Mail nicht leer sein",
-                Field.EMAIL);
+                    "Wenn \"Wünscht E-Mails\" selektiert ist, darf die E-Mail nicht leer sein",
+                    Field.EMAIL);
         }
         super.doValidate();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void initializeCompleted() {
         if (angehoerigerOrigin != null) {

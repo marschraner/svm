@@ -76,7 +76,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private final StringModelAttribute nachnameModelAttribute = new StringModelAttribute(
             this,
             Field.NACHNAME, 1, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return nachname;
@@ -102,7 +102,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private final StringModelAttribute vornameModelAttribute = new StringModelAttribute(
             this,
             Field.VORNAME, 1, 50,
-            new AttributeAccessor<String>() {
+            new AttributeAccessor<>() {
                 @Override
                 public String getValue() {
                     return vorname;
@@ -152,7 +152,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private final TimeModelAttribute zeitBeginnModelAttribute = new TimeModelAttribute(
             this,
             Field.ZEIT_BEGINN,
-            new AttributeAccessor<Time>() {
+            new AttributeAccessor<>() {
                 @Override
                 public Time getValue() {
                     return zeitBeginn;
@@ -296,7 +296,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private final PreisModelAttribute rechnungsbetragVorrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.RECHNUNGSBETRAG_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return rechnungsbetragVorrechnung;
@@ -332,7 +332,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private final PreisModelAttribute restbetragVorrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.RESTBETRAG_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return restbetragVorrechnung;
@@ -452,7 +452,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private final PreisModelAttribute rechnungsbetragNachrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.RECHNUNGSBETRAG_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return rechnungsbetragNachrechnung;
@@ -488,7 +488,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private final PreisModelAttribute restbetragNachrechnungModelAttribute = new PreisModelAttribute(
             this,
             Field.RESTBETRAG_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return restbetragNachrechnung;
@@ -536,7 +536,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
     private final PreisModelAttribute differenzSchulgeldModelAttribute = new PreisModelAttribute(
             this,
             Field.DIFFERENZ_SCHULGELD, new BigDecimal("0.00"), new BigDecimal("9999.95"),
-            new AttributeAccessor<BigDecimal>() {
+            new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
                     return differenzSchulgeld;
@@ -576,7 +576,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         List<Mitarbeiter> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
         // Lehrkraft alle auch erlaubt
         lehrkraefteList.add(0, MITARBEITER_ALLE);
-        return lehrkraefteList.toArray(new Mitarbeiter[lehrkraefteList.size()]);
+        return lehrkraefteList.toArray(new Mitarbeiter[0]);
     }
 
     @Override
@@ -586,7 +586,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
         if (codesList.isEmpty() || !codesList.get(0).isIdenticalWith(SEMESTERRECHNUNG_CODE_ALLE)) {
             codesList.add(0, SEMESTERRECHNUNG_CODE_ALLE);
         }
-        return codesList.toArray(new SemesterrechnungCode[codesList.size()]);
+        return codesList.toArray(new SemesterrechnungCode[0]);
     }
 
     @Override
