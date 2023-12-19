@@ -14,7 +14,7 @@ public class SplitStringIntoMultipleLinesCommand implements Command {
     private final int maxLines;
 
     // Output
-    private List<String> lines = new ArrayList<>();
+    private final List<String> lines = new ArrayList<>();
 
     SplitStringIntoMultipleLinesCommand(String string, int maxLength, int maxLines) {
         this.string = string;
@@ -34,34 +34,34 @@ public class SplitStringIntoMultipleLinesCommand implements Command {
         // Alle "/" durch "/ " ersetzen, damit Leerschlag-Trennung wirksam wird
         stringTmp = stringTmp.replaceAll("/", "/ ");
 
-        String[] stringSpl = stringTmp.split("[\\s]");
-        String line = "";
+        String[] stringSpl = stringTmp.split("\\s");
+        StringBuilder line = new StringBuilder();
         int length = 0;
         int j = 0;
         for (int i = 0; i < stringSpl.length; i++) {
-            if (line.isEmpty()) {
-                line = stringSpl[i];
+            if (line.length() == 0) {
+                line = new StringBuilder(stringSpl[i]);
             } else {
-                line = line + " " + stringSpl[i];
+                line.append(" ").append(stringSpl[i]);
             }
             length += stringSpl[i].length() + 1;   // + 1 wegen Leerzeichen
-            if (i == stringSpl.length - 1 || length + stringSpl[i+1].length() > maxLength) {
+            if (i == stringSpl.length - 1 || length + stringSpl[i + 1].length() > maxLength) {
                 // Maximal zulässige Anzahl Zeilen erreicht -> den Rest auch rausschreiben
                 if (j == maxLines - 1) {
                     for (int ii = i + 1; ii < stringSpl.length; ii++) {
-                        line = line + " " + stringSpl[ii];
+                        line.append(" ").append(stringSpl[ii]);
                     }
                 }
                 // Alle "- " wieder durch "-" ersetzen
-                line = line.replaceAll("- ", "-");
+                line = new StringBuilder(line.toString().replaceAll("- ", "-"));
                 // Alle "/ " wieder durch "/" ersetzen
-                line = line.replaceAll("/ ", "/");
+                line = new StringBuilder(line.toString().replaceAll("/ ", "/"));
                 // Jetzige Zeile schreiben und neue Zeile beginnen
-                lines.add(line);
+                lines.add(line.toString());
                 if (j == maxLines - 1) {
                     return;
                 }
-                line = "";
+                line = new StringBuilder();
                 length = 0;
                 j++;
             }

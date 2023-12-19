@@ -15,7 +15,7 @@ public class FindKurseMapSchuelerSemesterCommand implements Command {
     private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
 
     // input
-    private List<Schueler> schuelerList;
+    private final List<Schueler> schuelerList;
     private final Semester semester;
     private final Wochentag wochentag;  // nullable
     private final Time zeitBeginn;      // nullable
@@ -26,7 +26,7 @@ public class FindKurseMapSchuelerSemesterCommand implements Command {
     private final Calendar abmeldemonat;  // nullable
 
     // output
-    private Map<Schueler, List<Kurs>> kurseMap = new HashMap<>();
+    private final Map<Schueler, List<Kurs>> kurseMap = new HashMap<>();
 
     public FindKurseMapSchuelerSemesterCommand(List<Schueler> schuelerList, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar stichtagSchuelerSuchen, boolean keineAbgemeldetenKurseAnzeigen, Calendar anmeldemonat, Calendar abmeldemonat) {
         this.schuelerList = schuelerList;

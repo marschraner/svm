@@ -15,15 +15,14 @@ public class SaveOrUpdateKursCommand implements Command {
     private final KursDao kursDao = new KursDao();
 
     // input
-    private Kurs kurs;
+    private final Kurs kurs;
     private final Semester semester;
     private final Kurstyp kurstyp;
     private final Kursort kursort;
     private final Mitarbeiter mitarbeiter1;
     private final Mitarbeiter mitarbeiter2;
-    private Kurs kursOrigin;
-    private List<Kurs> bereitsErfassteKurse;
-
+    private final Kurs kursOrigin;
+    private final List<Kurs> bereitsErfassteKurse;
 
     public SaveOrUpdateKursCommand(Kurs kurs, Semester semester, Kurstyp kurstyp, Kursort kursort, Mitarbeiter mitarbeiter1, Mitarbeiter mitarbeiter2, Kurs kursOrigin, List<Kurs> bereitsErfassteKurse) {
         this.kurs = kurs;

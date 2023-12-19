@@ -17,8 +17,8 @@ public class UpdateWochenbetragUndAnzWochenCommand implements Command {
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
-    private Angehoeriger rechnungsempfaenger;
-    private Semester currentSemester;
+    private final Angehoeriger rechnungsempfaenger;
+    private final Semester currentSemester;
 
     // output
     private CalculateAnzWochenCommand.Result result;

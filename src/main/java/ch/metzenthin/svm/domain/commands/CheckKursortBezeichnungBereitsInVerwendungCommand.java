@@ -10,9 +10,9 @@ import java.util.List;
 public class CheckKursortBezeichnungBereitsInVerwendungCommand implements Command {
 
     // input
-    private Kursort kursort;
-    private Kursort kursortOrigin;
-    private List<Kursort> bereitsErfassteKursorte;
+    private final Kursort kursort;
+    private final Kursort kursortOrigin;
+    private final List<Kursort> bereitsErfassteKursorte;
 
     // output
     private boolean bereitsInVerwendung;

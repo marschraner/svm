@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.persistence.DB;
@@ -147,8 +146,6 @@ public class ValidateSchuelerCommand implements Command {
 
     private final DB db = DBFactory.getInstance();
 
-    // input
-    private final SvmContext svmContext;
     private final Schueler schueler;
     private final Adresse adresseSchueler;
     private final Anmeldung anmeldung;
@@ -162,7 +159,7 @@ public class ValidateSchuelerCommand implements Command {
     private final Adresse adresseRechnungsempfaengerDrittperson;
     private Entry entry;
 
-    // Original Schüler von Datenbank (Schüler bearbeiten). Wenn null, isBearbeiten() returns true
+    // Originaler Schüler von Datenbank (Schüler bearbeiten). Wenn null, isBearbeiten() returns true
     private final Schueler schuelerOrigin;
     private final Angehoeriger mutterOrigin;
     private final Angehoeriger vaterOrigin;
@@ -186,7 +183,7 @@ public class ValidateSchuelerCommand implements Command {
     private boolean skipCheckRechungsempfaengerDrittpersonBereitsInDatenbank = false;
     private boolean skipPrepareSummary = false;
 
-    public ValidateSchuelerCommand(ValidateSchuelerModel validateSchuelerModel, SvmContext svmContext) {
+    public ValidateSchuelerCommand(ValidateSchuelerModel validateSchuelerModel) {
         this.schueler = validateSchuelerModel.getSchueler();
         this.adresseSchueler = validateSchuelerModel.getAdresseSchueler();
         this.anmeldung = validateSchuelerModel.getAnmeldung();
@@ -202,7 +199,6 @@ public class ValidateSchuelerCommand implements Command {
         this.mutterOrigin = (this.schuelerOrigin == null ? null : this.schuelerOrigin.getMutter());
         this.vaterOrigin = (this.schuelerOrigin == null ? null : this.schuelerOrigin.getVater());
         this.rechnungsempfaengerOrigin = (this.schuelerOrigin == null ? null : this.schuelerOrigin.getRechnungsempfaenger());
-        this.svmContext = svmContext;
     }
 
     private boolean isBearbeiten() {

@@ -12,14 +12,14 @@ public class RemoveMitarbeiterCodeFromMitarbeiterCommand implements Command {
     private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
 
     // input
-    private MitarbeiterCode mitarbeiterCodeToBeDeleted;
-    private Mitarbeiter mitarbeiter;
+    private final MitarbeiterCode mitarbeiterCodeToBeDeleted;
+    private final Mitarbeiter mitarbeiter;
 
     // output
     private Mitarbeiter mitarbeiterUpdated;
 
-    RemoveMitarbeiterCodeFromMitarbeiterCommand(MitarbeiterCode mitarbeiterCodeToBeDeleleted, Mitarbeiter mitarbeiter) {
-        this.mitarbeiterCodeToBeDeleted = mitarbeiterCodeToBeDeleleted;
+    RemoveMitarbeiterCodeFromMitarbeiterCommand(MitarbeiterCode mitarbeiterCodeToBeDeleted, Mitarbeiter mitarbeiter) {
+        this.mitarbeiterCodeToBeDeleted = mitarbeiterCodeToBeDeleted;
         this.mitarbeiter = mitarbeiter;
     }
 

@@ -13,7 +13,7 @@ import java.util.List;
 public class DetermineMaerchenInitCommand implements Command {
 
     // input
-    private List<Maerchen> selectableMaerchens;
+    private final List<Maerchen> selectableMaerchens;
 
     // output
     private Maerchen maerchenInit;
@@ -26,11 +26,12 @@ public class DetermineMaerchenInitCommand implements Command {
         this.selectableMaerchens = selectableMaerchens;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute() {
         Calendar today = new GregorianCalendar();
         int schuljahr1;
-        if (today.get(Calendar.MONTH) <= Calendar.JANUARY) {
+        if (today.get(Calendar.MONTH) == Calendar.JANUARY) {
             schuljahr1 = today.get(Calendar.YEAR) - 1;
         } else {
             schuljahr1 = today.get(Calendar.YEAR);

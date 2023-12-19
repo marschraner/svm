@@ -10,9 +10,9 @@ import java.util.List;
 public class CheckLektionslaengeBereitsErfasstCommand implements Command {
 
     // input
-    private Lektionsgebuehren lektionsgebuehren;
-    private Lektionsgebuehren lektionsgebuehrenOrigin;
-    private List<Lektionsgebuehren> bereitsErfassteLektionsgebuehren;
+    private final Lektionsgebuehren lektionsgebuehren;
+    private final Lektionsgebuehren lektionsgebuehrenOrigin;
+    private final List<Lektionsgebuehren> bereitsErfassteLektionsgebuehren;
 
     // output
     private boolean bereitsErfasst;

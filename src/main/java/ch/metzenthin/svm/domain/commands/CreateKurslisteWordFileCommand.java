@@ -26,13 +26,14 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
         this.outputFile = outputFile;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute() {
 
         // Spaltenbreiten
         // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein (bei linkem Default-Rand von 600)!
         //          Bei > 11200 hinten schmalerer Rand!
-        //          Bei > 11500 Spaltenbreite durch Inhalt beieinflusst!!!
+        //          Bei > 11500 Spaltenbreite durch Inhalt beeinflusst!!!
         List<Integer> columnWidths = new ArrayList<>();
         columnWidths.add(0);  // entspricht 500
         columnWidths.add(2100);
@@ -177,7 +178,7 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
         String schuljahrSemester = "";
         if (kurse.size() > 0) {
             Semester semester = kurse.get(0).getSemester();
-            schuljahrSemester = (semester == null) ?  "" : "Schuljahr " + semester.getSchuljahr() + ", " + semester.getSemesterbezeichnung();
+            schuljahrSemester = (semester == null) ? "" : "Schuljahr " + semester.getSchuljahr() + ", " + semester.getSemesterbezeichnung();
         }
         String titel1 = "Kinder- und Jugendtheater Metzenthin AG                              " + schuljahrSemester;
         CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile);

@@ -5,6 +5,7 @@ import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
 import ch.metzenthin.svm.persistence.entities.Person;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
 public class CreateAdressenCsvFileCommand extends CreateListeCommand {
 
     // input
-    private List<? extends Person> personList;
+    private final List<? extends Person> personList;
     private final File outputFile;
 
     public CreateAdressenCsvFileCommand(List<? extends Person> personList, File outputFile) {
@@ -21,6 +22,7 @@ public class CreateAdressenCsvFileCommand extends CreateListeCommand {
         this.outputFile = outputFile;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute() {
 
@@ -29,7 +31,7 @@ public class CreateAdressenCsvFileCommand extends CreateListeCommand {
         NachnameGratiskindFormatter nachnameGratiskindFormatter = new NachnameGratiskindFormatter();
 
         try {
-            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "8859_1"));
+            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), StandardCharsets.ISO_8859_1));
 
             // Header
             out.write("Anrede");

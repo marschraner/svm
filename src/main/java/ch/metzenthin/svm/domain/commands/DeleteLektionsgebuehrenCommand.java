@@ -13,8 +13,8 @@ public class DeleteLektionsgebuehrenCommand implements Command {
     private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
 
     // input
-    private List<Lektionsgebuehren> lektionsgebuehren;
-    private int indexLektionsgebuehrenToBeDeleted;
+    private final List<Lektionsgebuehren> lektionsgebuehren;
+    private final int indexLektionsgebuehrenToBeDeleted;
 
     public DeleteLektionsgebuehrenCommand(List<Lektionsgebuehren> lektionsgebuehren, int indexLektionsgebuehrenToBeDeleted) {
         this.lektionsgebuehren = lektionsgebuehren;

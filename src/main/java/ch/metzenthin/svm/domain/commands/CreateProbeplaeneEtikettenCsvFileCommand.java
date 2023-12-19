@@ -6,6 +6,7 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -18,7 +19,7 @@ public class CreateProbeplaeneEtikettenCsvFileCommand extends CreateListeCommand
     private final MaercheneinteilungenSorter maercheneinteilungenSorter = new MaercheneinteilungenSorter();
 
     // input
-    private SchuelerSuchenTableModel schuelerSuchenTableModel;
+    private final SchuelerSuchenTableModel schuelerSuchenTableModel;
     private final File outputFile;
 
     public CreateProbeplaeneEtikettenCsvFileCommand(SchuelerSuchenTableModel schuelerSuchenTableModel, File outputFile) {
@@ -26,13 +27,14 @@ public class CreateProbeplaeneEtikettenCsvFileCommand extends CreateListeCommand
         this.outputFile = outputFile;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute() {
 
         char separator = ';';
 
         try {
-            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "8859_1"));
+            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), StandardCharsets.ISO_8859_1));
 
             // Header
             out.write("Vorname");

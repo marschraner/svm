@@ -17,9 +17,9 @@ public class SaveOrUpdateKursanmeldungCommand implements Command {
     private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
 
     // input
-    private Kursanmeldung kursanmeldung;
-    private Kursanmeldung kursanmeldungOrigin;
-    private List<Kursanmeldung> bereitsErfassteKursanmeldungen;
+    private final Kursanmeldung kursanmeldung;
+    private final Kursanmeldung kursanmeldungOrigin;
+    private final List<Kursanmeldung> bereitsErfassteKursanmeldungen;
 
     // output
     private CalculateAnzWochenCommand.Result result;

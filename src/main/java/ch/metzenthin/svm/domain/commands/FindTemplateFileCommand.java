@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.common.dataTypes.Listentyp;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.persistence.entities.Semester;
 
 import java.io.File;
@@ -21,9 +21,9 @@ public class FindTemplateFileCommand implements Command {
     }
 
     // input
-    private Listentyp listentyp;
-    private Semester semester;
-    private Wochentag wochentag;
+    private final Listentyp listentyp;
+    private final Semester semester;
+    private final Wochentag wochentag;
 
     // output
     private File templateFile;

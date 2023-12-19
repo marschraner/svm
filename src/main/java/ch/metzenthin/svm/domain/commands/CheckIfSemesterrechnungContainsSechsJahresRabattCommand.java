@@ -9,9 +9,9 @@ import ch.metzenthin.svm.persistence.entities.*;
 public class CheckIfSemesterrechnungContainsSechsJahresRabattCommand implements Command {
 
     // input
-    private Semesterrechnung semesterrechnung;
-    private Semester previousSemester;
-    private Rechnungstyp rechnungstyp;
+    private final Semesterrechnung semesterrechnung;
+    private final Semester previousSemester;
+    private final Rechnungstyp rechnungstyp;
 
     // output
     private boolean semesterrechnungContainsSechsJahresRabatt = false;

@@ -13,8 +13,8 @@ public class SaveAngehoerigeCommand implements Command {
 
     private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
 
-    private List<Angehoeriger> angehoerige;
-    private List<Angehoeriger> savedAngehoerige = new ArrayList<>();
+    private final List<Angehoeriger> angehoerige;
+    private final List<Angehoeriger> savedAngehoerige = new ArrayList<>();
 
     SaveAngehoerigeCommand(List<Angehoeriger> angehoerige) {
         this.angehoerige = angehoerige;

@@ -14,10 +14,9 @@ public class SaveOrUpdateSemesterrechnungCodeCommand implements Command {
     private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();
 
     // input
-    private SemesterrechnungCode semesterrechnungCode;
-    private SemesterrechnungCode semesterrechnungCodeOrigin;
-    private List<SemesterrechnungCode> bereitsErfassteSemesterrechnungCodes;
-
+    private final SemesterrechnungCode semesterrechnungCode;
+    private final SemesterrechnungCode semesterrechnungCodeOrigin;
+    private final List<SemesterrechnungCode> bereitsErfassteSemesterrechnungCodes;
 
     public SaveOrUpdateSemesterrechnungCodeCommand(SemesterrechnungCode semesterrechnungCode, SemesterrechnungCode semesterrechnungCodeOrigin, List<SemesterrechnungCode> bereitsErfassteSemesterrechnungCodes) {
         this.semesterrechnungCode = semesterrechnungCode;

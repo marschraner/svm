@@ -14,7 +14,7 @@ public class FindSemesterrechnungenSemesterCommand implements Command {
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
-    private Semester semester;
+    private final Semester semester;
 
     // output
     private List<Semesterrechnung> semesterrechnungenFound;

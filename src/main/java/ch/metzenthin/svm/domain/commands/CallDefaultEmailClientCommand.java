@@ -50,8 +50,8 @@ public class CallDefaultEmailClientCommand implements Command {
 
         // Validierung
         for (String emailAdresse : emailAdressen) {
-            // emailAdresse enthält möglicherweise mehrere, durch Komma getrennte Emails
-            String[] emailAdressenSplitted = emailAdresse.split("[,;]\\p{Blank}*");
+            // emailAdresse enthält möglicherweise mehrere, durch Komma getrennte E-Mails
+            String[] emailAdressenSplitted = emailAdresse.split("[,;][ \\t]*");
             for (String emailAdresseSplitted : emailAdressenSplitted) {
                 if (emailValidator.isValid(emailAdresseSplitted.trim())) {
                     gueltigeEmailAdressen.add(emailAdresseSplitted.trim());
@@ -72,7 +72,7 @@ public class CallDefaultEmailClientCommand implements Command {
             emailClientMultipleMailsSeparator = ";";
         }
 
-        // Zusammensetzen zu einzigem String mit durch ";" (oder anderem Separator gemäss .svm-Konfiguration) getrennten Emails
+        // Zusammensetzen zu einzigem String mit durch ";" (oder anderem Separator gemäss .svm-Konfiguration) getrennten E-Mails
         StringBuilder emailAdressenAsSingleStringSb = new StringBuilder();
         for (String emailAdresse : gueltigeEmailAdressen) {
             emailAdressenAsSingleStringSb.append(emailAdresse);

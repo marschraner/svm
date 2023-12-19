@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -13,9 +14,9 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
 
     // input
-    private List<? extends Mitarbeiter> mitarbeiterList;
+    private final List<? extends Mitarbeiter> mitarbeiterList;
     private final File outputFile;
-    private boolean nameEinspaltig;
+    private final boolean nameEinspaltig;
 
     public CreateMitarbeiterlisteCsvFileCommand(List<? extends Mitarbeiter> mitarbeiterList, File outputFile, boolean nameEinspaltig) {
         this.mitarbeiterList = mitarbeiterList;
@@ -29,7 +30,7 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
         char separator = ';';
 
         try {
-            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "8859_1"));
+            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), StandardCharsets.ISO_8859_1));
 
             // Header
             if (nameEinspaltig) {

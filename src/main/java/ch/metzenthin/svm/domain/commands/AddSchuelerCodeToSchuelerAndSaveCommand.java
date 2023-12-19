@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.SchuelerCodeDao;
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 
 /**
  * @author Martin Schraner
@@ -12,8 +12,8 @@ public class AddSchuelerCodeToSchuelerAndSaveCommand implements Command {
     private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
 
     // input
-    private SchuelerCode schuelerCode;
-    private Schueler schueler;
+    private final SchuelerCode schuelerCode;
+    private final Schueler schueler;
 
     // output
     private Schueler schuelerUpdated;

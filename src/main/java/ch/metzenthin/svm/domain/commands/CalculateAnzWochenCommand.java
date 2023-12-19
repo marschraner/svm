@@ -22,8 +22,8 @@ public class CalculateAnzWochenCommand implements Command {
     }
 
     // input
-    private Semester semester;
-    private Collection<Schueler> schuelerRechnungsempfaenger;
+    private final Semester semester;
+    private final Collection<Schueler> schuelerRechnungsempfaenger;
 
     // output
     private int anzahlWochen;
@@ -152,7 +152,7 @@ public class CalculateAnzWochenCommand implements Command {
 
             // Wochentag des Abmeldedatums vor Wochentag des Kurses oder ein Sonntag?
             if (abmeldedatum.get(Calendar.DAY_OF_WEEK) < kursanmeldung.getKurs().getWochentag().getDayOfWeekCalendar()) {
-                    // Sonntag schon dabei, da DAY_OF_WEEK von Sonntag ist 1!
+                // Sonntag schon dabei, da DAY_OF_WEEK von Sonntag ist 1!
                 anzahlWochenKursanmeldung--;
             }
         }

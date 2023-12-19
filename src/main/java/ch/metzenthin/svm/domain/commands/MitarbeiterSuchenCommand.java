@@ -23,11 +23,11 @@ public class MitarbeiterSuchenCommand implements Command {
     private final DB db = DBFactory.getInstance();
 
     // input
-    private String nachname;
-    private String vorname;
-    private MitarbeiterCode mitarbeiterCode;
-    private MitarbeiterSuchenModel.LehrkraftJaNeinSelected lehrkraftJaNeinSelected;
-    private MitarbeiterSuchenModel.StatusSelected statusSelected;
+    private final String nachname;
+    private final String vorname;
+    private final MitarbeiterCode mitarbeiterCode;
+    private final MitarbeiterSuchenModel.LehrkraftJaNeinSelected lehrkraftJaNeinSelected;
+    private final MitarbeiterSuchenModel.StatusSelected statusSelected;
     private StringBuilder selectStatementSb;
     private TypedQuery<Mitarbeiter> typedQuery;
 
@@ -44,7 +44,7 @@ public class MitarbeiterSuchenCommand implements Command {
 
     @Override
     public void execute() {
-        
+
         selectStatementSb = new StringBuilder("select distinct m from Mitarbeiter m");
 
         // Inner-Joins erzeugen
@@ -67,7 +67,7 @@ public class MitarbeiterSuchenCommand implements Command {
         // Sortierung
         selectStatementSb.append(" order by m.nachname, m.vorname, m.geburtsdatum");
 
-        LOGGER.trace("JPQL Select-Statement: " + selectStatementSb.toString());
+        LOGGER.trace("JPQL Select-Statement: " + selectStatementSb);
 
         typedQuery = db.getCurrentEntityManager().createQuery(
                 selectStatementSb.toString(), Mitarbeiter.class);
@@ -92,7 +92,7 @@ public class MitarbeiterSuchenCommand implements Command {
             selectStatementSb.append(" lower(m.vorname) like :vorname and");
         }
         if (mitarbeiterCode != null) {
-                selectStatementSb.append(" c.codeId = :codeId and");
+            selectStatementSb.append(" c.codeId = :codeId and");
         }
         switch (lehrkraftJaNeinSelected) {
             case JA:

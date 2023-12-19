@@ -20,10 +20,10 @@ public class CalculateWochenbetragCommand implements Command {
     }
 
     // input
-    private Semesterrechnung semesterrechnung;
-    private Semester relevantesSemester;
-    private Rechnungstyp rechnungstyp;
-    private Map<Integer, BigDecimal[]> lektionsgebuehrenMap;
+    private final Semesterrechnung semesterrechnung;
+    private final Semester relevantesSemester;
+    private final Rechnungstyp rechnungstyp;
+    private final Map<Integer, BigDecimal[]> lektionsgebuehrenMap;
 
     // output
     private Result result;

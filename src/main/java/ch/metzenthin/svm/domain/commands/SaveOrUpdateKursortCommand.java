@@ -14,10 +14,9 @@ public class SaveOrUpdateKursortCommand implements Command {
     private final KursortDao kursortDao = new KursortDao();
 
     // input
-    private Kursort kursort;
-    private Kursort kursortOrigin;
-    private List<Kursort> bereitsErfassteKursorte;
-
+    private final Kursort kursort;
+    private final Kursort kursortOrigin;
+    private final List<Kursort> bereitsErfassteKursorte;
 
     public SaveOrUpdateKursortCommand(Kursort kursort, Kursort kursortOrigin, List<Kursort> bereitsErfassteKursorte) {
         this.kursort = kursort;

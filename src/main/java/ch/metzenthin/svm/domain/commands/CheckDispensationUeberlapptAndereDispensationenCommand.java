@@ -12,9 +12,9 @@ import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.checkIfTwoPeriodsO
 public class CheckDispensationUeberlapptAndereDispensationenCommand implements Command {
 
     // input
-    private Dispensation dispensation;
-    private Dispensation dispensationOrigin;
-    private List<Dispensation> bereitsErfassteDispensationen;
+    private final Dispensation dispensation;
+    private final Dispensation dispensationOrigin;
+    private final List<Dispensation> bereitsErfassteDispensationen;
 
     // output
     private boolean ueberlappt;

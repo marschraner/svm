@@ -13,8 +13,8 @@ import java.util.List;
 public class DetermineSemesterInitCommand implements Command {
 
     // input
-    private List<Semester> selectableSemesters;
-    private int daysBeforeSemesterEndToShowNextSemester;
+    private final List<Semester> selectableSemesters;
+    private final int daysBeforeSemesterEndToShowNextSemester;
 
     // output
     private Semester semesterInit;
@@ -49,7 +49,7 @@ public class DetermineSemesterInitCommand implements Command {
             semesterInit = selectableSemesters.get(0);
         }
     }
-    
+
     public Semester getSemesterInit() {
         return semesterInit;
     }

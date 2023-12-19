@@ -8,6 +8,7 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -34,7 +35,7 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
         NachnameGratiskindFormatter nachnameGratiskindFormatter = new NachnameGratiskindFormatter();
 
         try {
-            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "8859_1"));
+            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), StandardCharsets.ISO_8859_1));
 
             // Header
             out.write("Nachname");

@@ -18,8 +18,8 @@ public class DeleteElternmithilfeCodeCommand implements Command {
     private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
 
     // input
-    private List<ElternmithilfeCode> elternmithilfeCodes;
-    private int indexCodeToBeDeleted;
+    private final List<ElternmithilfeCode> elternmithilfeCodes;
+    private final int indexCodeToBeDeleted;
 
     // output
     private Result result;

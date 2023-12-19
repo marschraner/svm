@@ -13,8 +13,8 @@ public class DeleteMaercheneinteilungCommand implements Command {
     private final MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
 
     // input
-    private List<Maercheneinteilung> maercheneinteilungen;
-    private int indexMaercheneinteilungToBeDeleted;
+    private final List<Maercheneinteilung> maercheneinteilungen;
+    private final int indexMaercheneinteilungToBeDeleted;
 
     public DeleteMaercheneinteilungCommand(List<Maercheneinteilung> maercheneinteilungen, int indexMaercheneinteilungToBeDeleted) {
         this.maercheneinteilungen = maercheneinteilungen;
@@ -27,5 +27,5 @@ public class DeleteMaercheneinteilungCommand implements Command {
         maercheneinteilungDao.remove(maercheneinteilungToBeDeleted);
         maercheneinteilungen.remove(indexMaercheneinteilungToBeDeleted);
     }
-    
+
 }

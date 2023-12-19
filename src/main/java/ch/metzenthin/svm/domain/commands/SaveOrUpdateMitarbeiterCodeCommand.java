@@ -14,10 +14,9 @@ public class SaveOrUpdateMitarbeiterCodeCommand implements Command {
     private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
 
     // input
-    private MitarbeiterCode mitarbeiterCode;
-    private MitarbeiterCode mitarbeiterCodeOrigin;
-    private List<MitarbeiterCode> bereitsErfassteMitarbeiterCodes;
-
+    private final MitarbeiterCode mitarbeiterCode;
+    private final MitarbeiterCode mitarbeiterCodeOrigin;
+    private final List<MitarbeiterCode> bereitsErfassteMitarbeiterCodes;
 
     public SaveOrUpdateMitarbeiterCodeCommand(MitarbeiterCode mitarbeiterCode, MitarbeiterCode mitarbeiterCodeOrigin, List<MitarbeiterCode> bereitsErfassteMitarbeiterCodes) {
         this.mitarbeiterCode = mitarbeiterCode;

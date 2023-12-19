@@ -14,10 +14,9 @@ public class SaveOrUpdateLektionsgebuehrenCommand implements Command {
     private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
 
     // input
-    private Lektionsgebuehren lektionsgebuehren;
-    private Lektionsgebuehren lektionsgebuehrenOrigin;
-    private List<Lektionsgebuehren> bereitsErfassteLektionsgebuehren;
-
+    private final Lektionsgebuehren lektionsgebuehren;
+    private final Lektionsgebuehren lektionsgebuehrenOrigin;
+    private final List<Lektionsgebuehren> bereitsErfassteLektionsgebuehren;
 
     public SaveOrUpdateLektionsgebuehrenCommand(Lektionsgebuehren lektionsgebuehren, Lektionsgebuehren lektionsgebuehrenOrigin, List<Lektionsgebuehren> bereitsErfassteLektionsgebuehren) {
         this.lektionsgebuehren = lektionsgebuehren;

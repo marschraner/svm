@@ -21,11 +21,10 @@ public class SaveOrUpdateSemesterrechnungCommand implements Command {
     private final SemesterDao semesterDao = new SemesterDao();
 
     // input
-    private Semesterrechnung semesterrechnung;
+    private final Semesterrechnung semesterrechnung;
     private final SemesterrechnungCode semesterrechnungCode;
-    private Semesterrechnung semesterrechnungOrigin;
-    private List<Semesterrechnung> bereitsErfassteSemesterrechnungen;
-
+    private final Semesterrechnung semesterrechnungOrigin;
+    private final List<Semesterrechnung> bereitsErfassteSemesterrechnungen;
 
     public SaveOrUpdateSemesterrechnungCommand(Semesterrechnung semesterrechnung, SemesterrechnungCode semesterrechnungCode, Semesterrechnung semesterrechnungOrigin, List<Semesterrechnung> bereitsErfassteSemesterrechnungen) {
         this.semesterrechnung = semesterrechnung;

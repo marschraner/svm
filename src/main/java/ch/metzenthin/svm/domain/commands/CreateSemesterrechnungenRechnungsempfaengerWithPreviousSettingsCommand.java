@@ -20,8 +20,8 @@ public class CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsComm
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
-    private List<Angehoeriger> rechnungsempfaengers;
-    private Semester currentSemester;
+    private final List<Angehoeriger> rechnungsempfaengers;
+    private final Semester currentSemester;
 
     public CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsCommand(List<Angehoeriger> rechnungsempfaengers, Semester currentSemester) {
         this.rechnungsempfaengers = rechnungsempfaengers;

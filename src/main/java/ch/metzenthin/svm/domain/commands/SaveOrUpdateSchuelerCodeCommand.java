@@ -14,10 +14,9 @@ public class SaveOrUpdateSchuelerCodeCommand implements Command {
     private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
 
     // input
-    private SchuelerCode schuelerCode;
-    private SchuelerCode schuelerCodeOrigin;
-    private List<SchuelerCode> bereitsErfassteSchuelerCodes;
-
+    private final SchuelerCode schuelerCode;
+    private final SchuelerCode schuelerCodeOrigin;
+    private final List<SchuelerCode> bereitsErfassteSchuelerCodes;
 
     public SaveOrUpdateSchuelerCodeCommand(SchuelerCode schuelerCode, SchuelerCode schuelerCodeOrigin, List<SchuelerCode> bereitsErfassteSchuelerCodes) {
         this.schuelerCode = schuelerCode;

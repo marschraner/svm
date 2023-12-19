@@ -14,10 +14,9 @@ public class SaveOrUpdateSemesterCommand implements Command {
     private final SemesterDao semesterDao = new SemesterDao();
 
     // input
-    private Semester semester;
-    private Semester semesterOrigin;
-    private List<Semester> bereitsErfassteSemester;
-
+    private final Semester semester;
+    private final Semester semesterOrigin;
+    private final List<Semester> bereitsErfassteSemester;
 
     public SaveOrUpdateSemesterCommand(Semester semester, Semester semesterOrigin, List<Semester> bereitsErfassteSemester) {
         this.semester = semester;

@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
@@ -13,7 +14,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 public class CreateKurslisteCsvFileCommand extends CreateListeCommand {
 
     // input
-    private List<? extends Kurs> kursList;
+    private final List<? extends Kurs> kursList;
     private final File outputFile;
 
     public CreateKurslisteCsvFileCommand(List<? extends Kurs> kursList, File outputFile) {
@@ -27,7 +28,7 @@ public class CreateKurslisteCsvFileCommand extends CreateListeCommand {
         char separator = ';';
 
         try {
-            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "8859_1"));
+            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), StandardCharsets.ISO_8859_1));
 
             // Header
             out.write("Kurstyp");

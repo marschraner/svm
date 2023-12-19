@@ -10,9 +10,9 @@ import java.util.List;
 public class CheckMaerchenBereitsErfasstCommand implements Command {
 
     // input
-    private Maerchen maerchen;
-    private Maerchen maerchenOrigin;
-    private List<Maerchen> bereitsErfassteMaerchens;
+    private final Maerchen maerchen;
+    private final Maerchen maerchenOrigin;
+    private final List<Maerchen> bereitsErfassteMaerchens;
 
     // output
     private boolean bereitsErfasst;

@@ -13,7 +13,7 @@ import java.util.List;
 public class DetermineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand implements Command {
 
     // input
-    private List<Maerchen> bereitsErfassteMaerchens;
+    private final List<Maerchen> bereitsErfassteMaerchens;
 
     // output
     private String naechstesNochNichtErfasstesSchuljahrMaerchen;
@@ -22,6 +22,7 @@ public class DetermineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand implem
         this.bereitsErfassteMaerchens = bereitsErfassteMaerchens;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute() {
         Calendar today = new GregorianCalendar();
@@ -32,18 +33,18 @@ public class DetermineNaechstesNochNichtErfasstesSchuljahrMaerchenCommand implem
             schuljahr1 = today.get(Calendar.YEAR);
         }
         int schuljahr2 = schuljahr1 + 1;
-        String naechtesSchuljahr = schuljahr1 + "/" + schuljahr2;
-        while (isMaerchenBereitsErfasst(naechtesSchuljahr) && schuljahr1 < Schuljahre.SCHULJAHR_VALID_MAX) {
+        String naechstesSchuljahr = schuljahr1 + "/" + schuljahr2;
+        while (isMaerchenBereitsErfasst(naechstesSchuljahr) && schuljahr1 < Schuljahre.SCHULJAHR_VALID_MAX) {
             schuljahr1++;
             schuljahr2++;
-            naechtesSchuljahr = schuljahr1 + "/" + schuljahr2;
+            naechstesSchuljahr = schuljahr1 + "/" + schuljahr2;
         }
-        naechstesNochNichtErfasstesSchuljahrMaerchen = naechtesSchuljahr;
+        naechstesNochNichtErfasstesSchuljahrMaerchen = naechstesSchuljahr;
     }
 
-    private boolean isMaerchenBereitsErfasst(String naechtesSchuljahr) {
+    private boolean isMaerchenBereitsErfasst(String naechstesSchuljahr) {
         for (Maerchen bereitsErfasstesMaerchen : bereitsErfassteMaerchens) {
-            if (bereitsErfasstesMaerchen.getSchuljahr().equals(naechtesSchuljahr)) {
+            if (bereitsErfasstesMaerchen.getSchuljahr().equals(naechstesSchuljahr)) {
                 return true;
             }
         }

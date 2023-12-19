@@ -10,9 +10,9 @@ import java.util.List;
 public class CheckCodeKuerzelBereitsInVerwendungCommand implements Command {
 
     // input
-    private String kuerzel;
-    private Code codeOrigin;
-    private List<? extends Code> bereitsErfassteCodes;
+    private final String kuerzel;
+    private final Code codeOrigin;
+    private final List<? extends Code> bereitsErfassteCodes;
 
     // output
     private boolean bereitsInVerwendung;

@@ -49,7 +49,7 @@ public class MonatsstatistikKurseModelImpl extends AbstractModel implements Mona
         CommandInvoker commandInvoker = getCommandInvoker();
         CalculateMonatsstatistikKurseCommand calculateMonatsstatistikKurseCommand = new CalculateMonatsstatistikKurseCommand(monatJahr);
         commandInvoker.executeCommand(calculateMonatsstatistikKurseCommand);
-        return new int[]{calculateMonatsstatistikKurseCommand.getAnzahlAnmeldungen(), calculateMonatsstatistikKurseCommand.getAnzahlAbmeldungen(), calculateMonatsstatistikKurseCommand.getAnzahllLektionen()};
+        return new int[]{calculateMonatsstatistikKurseCommand.getAnzahlAnmeldungen(), calculateMonatsstatistikKurseCommand.getAnzahlAbmeldungen(), calculateMonatsstatistikKurseCommand.getAnzahlLektionen()};
     }
 
     @Override

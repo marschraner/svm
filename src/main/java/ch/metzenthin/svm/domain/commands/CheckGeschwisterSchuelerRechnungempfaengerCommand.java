@@ -12,16 +12,16 @@ import java.util.List;
 public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Command {
 
     // input
-    private Schueler schueler;
+    private final Schueler schueler;
     private final boolean isRechnungsempfaengerDrittperson;
     private final Angehoeriger mutter;
     private final Angehoeriger vater;
     private final Angehoeriger rechnungsempfaenger;
 
     // output
-    private List<Schueler> geschwisterList = new ArrayList<>();
-    private List<Schueler> angemeldeteGeschwisterList = new ArrayList<>();
-    private List<Schueler> andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList = new ArrayList<>();
+    private final List<Schueler> geschwisterList = new ArrayList<>();
+    private final List<Schueler> angemeldeteGeschwisterList = new ArrayList<>();
+    private final List<Schueler> andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList = new ArrayList<>();
 
     public CheckGeschwisterSchuelerRechnungempfaengerCommand(Schueler schueler) {
         this(schueler, null, null, null, false);
@@ -76,7 +76,7 @@ public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Comman
     private void determineAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaenger() {
         // Mutter
         if (mutter != null) {
-           for (Schueler schueler1 : mutter.getSchuelerRechnungsempfaenger()) {
+            for (Schueler schueler1 : mutter.getSchuelerRechnungsempfaenger()) {
                 // Nicht nochmals aufnehmen, falls schon in Geschwister-Liste!
                 if (!schueler1.isIdenticalWith(schueler) && schueler1.isAngemeldet() && !checkIfSchuelerAlreadyInList(schueler1, angemeldeteGeschwisterList)) {
                     andereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList.add(schueler1);

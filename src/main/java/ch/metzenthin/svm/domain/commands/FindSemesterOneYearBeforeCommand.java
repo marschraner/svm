@@ -11,7 +11,7 @@ import java.util.List;
 class FindSemesterOneYearBeforeCommand implements Command {
 
     // input
-    private Semester currentSemester;
+    private final Semester currentSemester;
 
     // output
     private Semester semesterOneYearBefore;

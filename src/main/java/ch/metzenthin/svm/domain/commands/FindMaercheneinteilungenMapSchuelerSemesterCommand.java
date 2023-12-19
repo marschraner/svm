@@ -14,11 +14,11 @@ import java.util.Map;
 public class FindMaercheneinteilungenMapSchuelerSemesterCommand implements Command {
 
     // input
-    private List<Schueler> schuelerList;
-    private Maerchen maerchen;
+    private final List<Schueler> schuelerList;
+    private final Maerchen maerchen;
 
     // output
-    private Map<Schueler, Maercheneinteilung> maercheneinteilungenMap = new HashMap<>();
+    private final Map<Schueler, Maercheneinteilung> maercheneinteilungenMap = new HashMap<>();
 
     public FindMaercheneinteilungenMapSchuelerSemesterCommand(List<Schueler> schuelerList, Maerchen maerchen) {
         this.schuelerList = schuelerList;

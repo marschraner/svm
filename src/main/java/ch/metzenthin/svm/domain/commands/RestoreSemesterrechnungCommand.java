@@ -13,8 +13,8 @@ public class RestoreSemesterrechnungCommand implements Command {
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
-    private List<Semesterrechnung> semesterrechnungen;
-    private int indexSemesterrechnungToBeRestored;
+    private final List<Semesterrechnung> semesterrechnungen;
+    private final int indexSemesterrechnungToBeRestored;
 
     public RestoreSemesterrechnungCommand(List<Semesterrechnung> semesterrechnungen, int indexSemesterrechnungToBeRestored) {
         this.semesterrechnungen = semesterrechnungen;
@@ -28,5 +28,4 @@ public class RestoreSemesterrechnungCommand implements Command {
         semesterrechnungDao.save(semesterrechnungToBeDeletedLogically);
         semesterrechnungen.remove(indexSemesterrechnungToBeRestored);
     }
-    
 }

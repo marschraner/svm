@@ -17,12 +17,12 @@ public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand implements 
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
-    private List<Semesterrechnung> semesterrechnungen;
-    private Rechnungstyp rechnungstyp;
-    private Calendar rechnungsdatum;
+    private final List<Semesterrechnung> semesterrechnungen;
+    private final Rechnungstyp rechnungstyp;
+    private final Calendar rechnungsdatum;
 
     // output
-    private Set<Semesterrechnung> updatedSemesterrechnungen = new HashSet<>();
+    private final Set<Semesterrechnung> updatedSemesterrechnungen = new HashSet<>();
 
     public ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand(List<Semesterrechnung> semesterrechnungen, Rechnungstyp rechnungstyp, Calendar rechnungsdatum) {
         this.semesterrechnungen = semesterrechnungen;
@@ -37,12 +37,8 @@ public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand implements 
 
             // 5. Semesterrechnung mit neuem Rechnungsdatum aktualisieren
             switch (rechnungstyp) {
-
-                case VORRECHNUNG:
-                    semesterrechnung.setRechnungsdatumVorrechnung(rechnungsdatum);
-                    break;
-
-                case NACHRECHNUNG:
+                case VORRECHNUNG -> semesterrechnung.setRechnungsdatumVorrechnung(rechnungsdatum);
+                case NACHRECHNUNG -> {
                     semesterrechnung.setRechnungsdatumNachrechnung(rechnungsdatum);
 
                     // Beträge der Vorrechnung kopieren (analog
@@ -73,7 +69,7 @@ public class ReplaceRechnungsdatumAndUpdateSemesterrechnungenCommand implements 
                             && semesterrechnung.getDatumZahlung3Vorrechnung() != null) {
                         semesterrechnung.setDatumZahlung3Nachrechnung(semesterrechnung.getDatumZahlung3Vorrechnung());
                     }
-                    break;
+                }
             }
 
             Semesterrechnung updatedSemesterrechnung = semesterrechnungDao.save(semesterrechnung);

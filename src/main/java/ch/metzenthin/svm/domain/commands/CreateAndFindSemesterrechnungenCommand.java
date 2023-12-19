@@ -7,7 +7,6 @@ import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungSortByAktiveSchuelerComparator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
 public class CreateAndFindSemesterrechnungenCommand implements Command {
 
     // input
-    private SemesterrechnungenSuchenModel semesterrechnungenSuchenModel;
+    private final SemesterrechnungenSuchenModel semesterrechnungenSuchenModel;
 
     // output
     private List<Semesterrechnung> semesterrechnungenFound = new ArrayList<>();
@@ -68,7 +67,7 @@ public class CreateAndFindSemesterrechnungenCommand implements Command {
         Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
         Comparator<Semesterrechnung> semesterrechnungSortByAktiveSchuelerComparator
                 = new SemesterrechnungSortByAktiveSchuelerComparator(previousSemester);
-        Collections.sort(semesterrechnungenFound, semesterrechnungSortByAktiveSchuelerComparator);
+        semesterrechnungenFound.sort(semesterrechnungSortByAktiveSchuelerComparator);
     }
 
     public List<Semesterrechnung> getSemesterrechnungenFound() {

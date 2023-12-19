@@ -16,10 +16,10 @@ public class ImportKurseFromPreviousSemesterCommand implements Command {
     private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
 
     // input / output
-    private List<Kurs> kurseCurrentSemester;
+    private final List<Kurs> kurseCurrentSemester;
 
     // input
-    private Semester currentSemester;
+    private final Semester currentSemester;
 
     public ImportKurseFromPreviousSemesterCommand(List<Kurs> kurseCurrentSemester, Semester currentSemester) {
         this.kurseCurrentSemester = kurseCurrentSemester;
@@ -38,7 +38,7 @@ public class ImportKurseFromPreviousSemesterCommand implements Command {
             oldSemester = findSemesterOneYearBeforeCommand.getSemesterOneYearBefore();
         }
 
-        // 2. Semester (oder Kurse vom 1. Semester vor einem Jahr nicht vorhanden) -> Kurse und Schüler vom 1. Semster importieren
+        // 2. Semester (oder Kurse vom 1. Semester vor einem Jahr nicht vorhanden) -> Kurse und Schüler vom 1. Semester importieren
         if (currentSemester.getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER || oldSemester == null) {
             FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(currentSemester);
             findPreviousSemesterCommand.execute();

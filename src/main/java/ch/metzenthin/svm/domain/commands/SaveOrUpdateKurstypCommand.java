@@ -14,10 +14,9 @@ public class SaveOrUpdateKurstypCommand implements Command {
     private final KurstypDao kurstypDao = new KurstypDao();
 
     // input
-    private Kurstyp kurstyp;
-    private Kurstyp kurstypOrigin;
-    private List<Kurstyp> bereitsErfassteKurstypen;
-
+    private final Kurstyp kurstyp;
+    private final Kurstyp kurstypOrigin;
+    private final List<Kurstyp> bereitsErfassteKurstypen;
 
     public SaveOrUpdateKurstypCommand(Kurstyp kurstyp, Kurstyp kurstypOrigin, List<Kurstyp> bereitsErfassteKurstypen) {
         this.kurstyp = kurstyp;
@@ -32,8 +31,8 @@ public class SaveOrUpdateKurstypCommand implements Command {
             kurstypOrigin.copyAttributesFrom(kurstyp);
             kurstypDao.save(kurstypOrigin);
         } else {
-            Kurstyp kurstypenaved = kurstypDao.save(kurstyp);
-            bereitsErfassteKurstypen.add(kurstypenaved);
+            Kurstyp kurstypenSaved = kurstypDao.save(kurstyp);
+            bereitsErfassteKurstypen.add(kurstypenSaved);
         }
         Collections.sort(bereitsErfassteKurstypen);
     }

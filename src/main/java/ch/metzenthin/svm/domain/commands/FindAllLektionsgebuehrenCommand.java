@@ -17,7 +17,7 @@ public class FindAllLektionsgebuehrenCommand implements Command {
 
     // output
     private List<Lektionsgebuehren> lektionsgebuehrenAllList;
-    private Map<Integer, BigDecimal[]> lektionsgebuehrenAllMap = new HashMap<>();
+    private final Map<Integer, BigDecimal[]> lektionsgebuehrenAllMap = new HashMap<>();
 
     @Override
     public void execute() {

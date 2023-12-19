@@ -12,7 +12,7 @@ import java.util.List;
 public class FindNextSemesterCommand implements Command {
 
     // input
-    private Semester currentSemester;
+    private final Semester currentSemester;
 
     // output
     private Semester nextSemester;

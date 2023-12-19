@@ -14,10 +14,9 @@ public class SaveOrUpdateMaerchenCommand implements Command {
     private final MaerchenDao maerchenDao = new MaerchenDao();
 
     // input
-    private Maerchen maerchen;
-    private Maerchen maerchenOrigin;
-    private List<Maerchen> bereitsErfassteMaerchen;
-
+    private final Maerchen maerchen;
+    private final Maerchen maerchenOrigin;
+    private final List<Maerchen> bereitsErfassteMaerchen;
 
     public SaveOrUpdateMaerchenCommand(Maerchen maerchen, Maerchen maerchenOrigin, List<Maerchen> bereitsErfassteMaerchen) {
         this.maerchen = maerchen;

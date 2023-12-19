@@ -18,8 +18,8 @@ public class DeleteKursortCommand implements Command {
     private final KursortDao kursortDao = new KursortDao();
 
     // input
-    private List<Kursort> kursorte;
-    private int indexKursortToBeDeleted;
+    private final List<Kursort> kursorte;
+    private final int indexKursortToBeDeleted;
 
     // output
     private Result result;

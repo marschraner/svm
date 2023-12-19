@@ -14,8 +14,8 @@ import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNumberOfDaysOfP
 public class CheckIfAnmeldungsdauerErlaubtSechsJahresRabattCommand implements Command {
 
     // input
-    private Schueler schueler;
-    private Calendar semesterBeginn;
+    private final Schueler schueler;
+    private final Calendar semesterBeginn;
 
     // output
     private boolean anmeldungsdauerErlaubtSechsJahresRabatt;
@@ -29,7 +29,7 @@ public class CheckIfAnmeldungsdauerErlaubtSechsJahresRabattCommand implements Co
     public void execute() {
 
         int anmeldungsdauer = 0;
-        for (Anmeldung anmeldung : schueler.getAnmeldungen())  {
+        for (Anmeldung anmeldung : schueler.getAnmeldungen()) {
 
             if (anmeldung.getAnmeldedatum().after(semesterBeginn)) {
                 continue;

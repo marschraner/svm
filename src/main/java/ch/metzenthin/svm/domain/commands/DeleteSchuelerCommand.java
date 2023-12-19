@@ -18,7 +18,7 @@ public class DeleteSchuelerCommand implements Command {
     private final SchuelerDao schuelerDao = new SchuelerDao();
 
     // input
-    private Schueler schueler;
+    private final Schueler schueler;
 
     // output
     private Result result;

@@ -30,15 +30,16 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         this.outputFile = outputFile;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute() {
 
         // Spaltenbreiten
         // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein!
         //          Bei > 11200 hinten schmalerer Rand!
-        //          Bei > 11500 Spaltenbreite durch Inhalt beieinflusst!!!
+        //          Bei > 11500 Spaltenbreite durch Inhalt beeinflusst!!!
         List<Integer> columnWidths = new ArrayList<>();
-        columnWidths.add(0);  // enspricht einer Breite von max 550 (wenn 3-stellig)
+        columnWidths.add(0);  // entspricht einer Breite von max. 550 (wenn 3-stellig)
         columnWidths.add(2300);
         columnWidths.add(2500);
         columnWidths.add(1400);
@@ -237,7 +238,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
                 cellsRow3.add("");
                 cellsRow3.add("");
                 String email = "";
-                // Wenn vorhanden Email des Schülers, sonst der Mutter, sonst des Vaters; andernfalls leer
+                // Wenn vorhanden E-Mail des Schülers, sonst der Mutter, sonst des Vaters; andernfalls leer
                 if (checkNotEmpty(schueler.getEmail())) {
                     email = schueler.getEmailToBeDisplayedInWord();
                 } else if (schueler.getMutter() != null && checkNotEmpty(schueler.getMutter().getEmail())) {
@@ -270,7 +271,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
 
         // Tabelle erzeugen
         Semester semester = schuelerSuchenTableModel.getSemester();
-        String schuljahrSemester = (semester == null) ?  "" : "Schuljahr " + semester.getSchuljahr() + ", " + semester.getSemesterbezeichnung();
+        String schuljahrSemester = (semester == null) ? "" : "Schuljahr " + semester.getSchuljahr() + ", " + semester.getSemesterbezeichnung();
         String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                 " + schuljahrSemester;
         CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile);
         createWordTableCommand.execute();

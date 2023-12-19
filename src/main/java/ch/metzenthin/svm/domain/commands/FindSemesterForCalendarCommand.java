@@ -13,8 +13,8 @@ import java.util.List;
 public class FindSemesterForCalendarCommand implements Command {
 
     // input
-    private Calendar calendar;
-    private List<Semester> erfassteSemester;
+    private final Calendar calendar;
+    private final List<Semester> erfassteSemester;
 
     // output
     private Semester currentSemester;   // null, falls calendar in den Ferien zwischen zwei Semestern

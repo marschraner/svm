@@ -18,7 +18,7 @@ public class DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand imp
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
-    private List<Semesterrechnung> semesterrechnungen;
+    private final List<Semesterrechnung> semesterrechnungen;
 
     DeleteSemesterrechnungenMitVerwaistemRechnungsempfaengerCommand(List<Semesterrechnung> semesterrechnungen) {
         this.semesterrechnungen = semesterrechnungen;

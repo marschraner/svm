@@ -18,8 +18,8 @@ public class DeleteSemesterrechnungCodeCommand implements Command {
     private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();
 
     // input
-    private List<SemesterrechnungCode> semesterrechnungCodes;
-    private int indexCodeToBeDeleted;
+    private final List<SemesterrechnungCode> semesterrechnungCodes;
+    private final int indexCodeToBeDeleted;
 
     // output
     private Result result;

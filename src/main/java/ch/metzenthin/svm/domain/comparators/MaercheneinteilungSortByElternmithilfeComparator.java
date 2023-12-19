@@ -30,8 +30,8 @@ public class MaercheneinteilungSortByElternmithilfeComparator implements Compara
         int result = personComparator.compare(elternmithilfe1, elternmithilfe2);
 
         if (result == 0) {
-           // 2. Sortierung nach Gruppe
-           result =  maercheneinteilung1.getGruppe().name().compareTo(maercheneinteilung2.getGruppe().name());
+            // 2. Sortierung nach Gruppe
+            result = maercheneinteilung1.getGruppe().name().compareTo(maercheneinteilung2.getGruppe().name());
         }
 
         if (result == 0) {
@@ -49,9 +49,9 @@ public class MaercheneinteilungSortByElternmithilfeComparator implements Compara
         if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER) {
             return maercheneinteilung.getSchueler().getMutter();
         } else if (maercheneinteilung.getElternmithilfe() == Elternmithilfe.VATER) {
-            return  maercheneinteilung.getSchueler().getVater();
+            return maercheneinteilung.getSchueler().getVater();
         } else {
-            return  maercheneinteilung.getElternmithilfeDrittperson();
+            return maercheneinteilung.getElternmithilfeDrittperson();
         }
     }
 }

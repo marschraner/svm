@@ -18,8 +18,8 @@ public class DeleteSemesterCommand implements Command {
     private final SemesterDao semesterDao = new SemesterDao();
 
     // input
-    private List<Semester> semesters;
-    private int indexSemesterToBeDeleted;
+    private final List<Semester> semesters;
+    private final int indexSemesterToBeDeleted;
 
     // output
     private Result result;

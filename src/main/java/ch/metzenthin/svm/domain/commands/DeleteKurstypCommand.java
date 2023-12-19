@@ -18,8 +18,8 @@ public class DeleteKurstypCommand implements Command {
     private final KurstypDao kurstypDao = new KurstypDao();
 
     // input
-    private List<Kurstyp> kurstypen;
-    private int indexKurstypToBeDeleted;
+    private final List<Kurstyp> kurstypen;
+    private final int indexKurstypToBeDeleted;
 
     // output
     private Result result;

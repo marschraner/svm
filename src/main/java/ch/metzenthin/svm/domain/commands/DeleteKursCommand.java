@@ -19,8 +19,8 @@ public class DeleteKursCommand implements Command {
     private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
 
     // input
-    private List<Kurs> kurse;
-    private int indexKursToBeDeleted;
+    private final List<Kurs> kurse;
+    private final int indexKursToBeDeleted;
 
     public DeleteKursCommand(List<Kurs> kurse, int indexKursToBeDeleted) {
         this.kurse = kurse;

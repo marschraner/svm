@@ -22,7 +22,7 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
     private final MitarbeitersTableModel mitarbeitersTableModel;
     private final String titel;
     private final File outputFile;
-    private Listentyp listentyp;
+    private final Listentyp listentyp;
 
     public CreateMitarbeiterAdresslisteCommand(MitarbeitersTableModel mitarbeitersTableModel, String titel, File outputFile, Listentyp listentyp) {
         this.mitarbeitersTableModel = mitarbeitersTableModel;
@@ -31,15 +31,16 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
         this.listentyp = listentyp;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute() {
 
         // Spaltenbreiten
         // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein!
         //          Bei > 11200 hinten schmalerer Rand!
-        //          Bei > 11500 Spaltenbreite durch Inhalt beieinflusst!!!
+        //          Bei > 11500 Spaltenbreite durch Inhalt beeinflusst!!!
         List<Integer> columnWidths = new ArrayList<>();
-        columnWidths.add(0);  // enspricht einer Breite von max 550 (wenn 3-stellig)
+        columnWidths.add(0);  // entspricht einer Breite von max. 550 (wenn 3-stellig)
         columnWidths.add(2700);
         columnWidths.add(2900);
         columnWidths.add(1700);
@@ -152,7 +153,7 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
             List<String> cellsRow2 = new ArrayList<>();
             cellsRow2.add("");
             cellsRow2.add(mitarbeiter.getAdresse() == null ? "" : nullAsEmptyString(mitarbeiter.getAdresse().getStrHausnummer()));
-            cellsRow2.add(mitarbeiter.getAdresse() == null ? "" : nullAsEmptyString(mitarbeiter.getAdresse().getPlz() + " " + mitarbeiter.getAdresse().getOrt()));
+            cellsRow2.add(mitarbeiter.getAdresse() == null ? "" : mitarbeiter.getAdresse().getPlz() + " " + mitarbeiter.getAdresse().getOrt());
             cellsRow2.add(nullAsEmptyString(mitarbeiter.getNatel()));
             value = "";
             if (listentyp == Listentyp.MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM) {

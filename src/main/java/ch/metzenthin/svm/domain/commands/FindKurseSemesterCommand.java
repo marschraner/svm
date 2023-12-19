@@ -14,7 +14,7 @@ public class FindKurseSemesterCommand implements Command {
     private final KursDao kursDao = new KursDao();
 
     // input
-    private Semester semester;
+    private final Semester semester;
 
     // output
     private List<Kurs> kurseFound;

@@ -12,7 +12,7 @@ import java.util.List;
 public class FindPreviousSemesterCommand implements Command {
 
     // input
-    private Semester currentSemester;
+    private final Semester currentSemester;
 
     // output
     private Semester previousSemester;
@@ -21,6 +21,7 @@ public class FindPreviousSemesterCommand implements Command {
         this.currentSemester = currentSemester;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute() {
         if (currentSemester == null) {

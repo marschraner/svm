@@ -14,10 +14,9 @@ public class SaveOrUpdateElternmithilfeCodeCommand implements Command {
     private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
 
     // input
-    private ElternmithilfeCode elternmithilfeCode;
-    private ElternmithilfeCode elternmithilfeCodeOrigin;
-    private List<ElternmithilfeCode> bereitsErfassteElternmithilfeCodes;
-
+    private final ElternmithilfeCode elternmithilfeCode;
+    private final ElternmithilfeCode elternmithilfeCodeOrigin;
+    private final List<ElternmithilfeCode> bereitsErfassteElternmithilfeCodes;
 
     public SaveOrUpdateElternmithilfeCodeCommand(ElternmithilfeCode elternmithilfeCode, ElternmithilfeCode elternmithilfeCodeOrigin, List<ElternmithilfeCode> bereitsErfassteElternmithilfeCodes) {
         this.elternmithilfeCode = elternmithilfeCode;

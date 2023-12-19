@@ -3,14 +3,16 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
 import ch.metzenthin.svm.domain.comparators.MaercheneinteilungSortByElternmithilfeComparator;
 import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
-import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
+import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
 
@@ -30,6 +32,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         this.outputFile = outputFile;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute() {
 
@@ -38,7 +41,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         // Spaltenbreiten
         // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein!
         //          Bei > 11200 hinten schmalerer Rand!
-        //          Bei > 11500 Spaltenbreite durch Inhalt beieinflusst!!!
+        //          Bei > 11500 Spaltenbreite durch Inhalt beeinflusst!!!
         List<Integer> columnWidths = new ArrayList<>();
         columnWidths.add(2700);
         columnWidths.add(2900);
@@ -46,7 +49,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         columnWidths.add(2100);
         columnWidths.add(900);
 
-        // Bold / horiz. merged (Anzahl zu mergende Zellen; 0: kein Merging)::
+        // Bold / horiz. merged (Anzahl zu mergende Zellen; 0: kein Merging):
         List<List<Boolean>> boldCells = new ArrayList<>();
         List<List<Integer>> mergedCells = new ArrayList<>();
         // 1. Zeile
@@ -169,7 +172,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
             } else {
                 elternmithilfe = maercheneinteilung.getElternmithilfeDrittperson();
             }
-            // Falls Elternteil nach Erfassen der Eltern-Mithilfe gelöscht wurde, kann Elternmithilfe null sein.
+            // Falls Elternteil nach Erfassen der Elternmithilfe gelöscht wurde, kann Elternmithilfe null sein.
             if (elternmithilfe != null) {
                 maercheneinteilungenMitElternmithilfe.add(maercheneinteilung);
             }
@@ -177,8 +180,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
 
         // Sortierung der Märcheneinteilungen mit Elternmithilfe nach Nach- und Vorname der
         // Elternmithilfe
-        Collections.sort(maercheneinteilungenMitElternmithilfe,
-                new MaercheneinteilungSortByElternmithilfeComparator());
+        maercheneinteilungenMitElternmithilfe.sort(new MaercheneinteilungSortByElternmithilfeComparator());
 
         List<List<List<String>>> datasets = new ArrayList<>();
         for (Maercheneinteilung maercheneinteilung : maercheneinteilungenMitElternmithilfe) {
@@ -252,7 +254,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
 
         // Tabelle erzeugen
         Semester semester = schuelerSuchenTableModel.getSemester();
-        String maerchenspielSchuljahr = (semester == null) ?  "" : "Märchenspiel " + semester.getSchuljahr();
+        String maerchenspielSchuljahr = (semester == null) ? "" : "Märchenspiel " + semester.getSchuljahr();
         String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                      " + maerchenspielSchuljahr;
         CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile, 850, 1, 1000, 1, 0, 0);
         createWordTableCommand.execute();

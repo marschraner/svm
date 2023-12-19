@@ -17,19 +17,19 @@ public class CalculateMonatsstatistikKurseCommand implements Command {
     private final DB db = DBFactory.getInstance();
 
     // input
-    private Calendar monatJahr;
+    private final Calendar monatJahr;
 
     // output
     private int anzahlAnmeldungen;
     private int anzahlAbmeldungen;
-    private int anzahllLektionen;
+    private int anzahlLektionen;
 
     private Calendar statistikMonatBeginn;
     private Calendar statistikMonatEnde;
     private List<Semester> semestersAll;
-    private Set<Integer> schuelerIdsAll = new HashSet<>();
-    private Map<Integer, Integer> schuelerIdsAnzahlAnmeldungen = new HashMap<>();
-    private Map<Integer, Integer> schuelerIdsAnzahlAbmeldungen = new HashMap<>();
+    private final Set<Integer> schuelerIdsAll = new HashSet<>();
+    private final Map<Integer, Integer> schuelerIdsAnzahlAnmeldungen = new HashMap<>();
+    private final Map<Integer, Integer> schuelerIdsAnzahlAbmeldungen = new HashMap<>();
 
     public CalculateMonatsstatistikKurseCommand(Calendar monatJahr) {
         this.monatJahr = monatJahr;
@@ -56,7 +56,7 @@ public class CalculateMonatsstatistikKurseCommand implements Command {
     private void calculateAnzahlLektionen(EntityManager entityManager) {
         Semester relevantesSemester = getRelevantesSemester(semestersAll);
         if (relevantesSemester == null) {
-            anzahllLektionen = 0;
+            anzahlLektionen = 0;
             return;
         }
         Query query = entityManager.createQuery("select count(k) from Kursanmeldung k where k.kurs.semester.semesterId = :semesterId and" +
@@ -64,9 +64,10 @@ public class CalculateMonatsstatistikKurseCommand implements Command {
                 " (k.abmeldedatum is null or k.abmeldedatum >= :statistikMonatEnde)");
         query.setParameter("semesterId", relevantesSemester.getSemesterId());
         query.setParameter("statistikMonatEnde", statistikMonatEnde);
-        anzahllLektionen = (int) (long) query.getSingleResult();
+        anzahlLektionen = (int) (long) query.getSingleResult();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void calculateAnzahlAnmeldungenSchueler(EntityManager entityManager) {
         TypedQuery<Object[]> typedQuery = entityManager.createQuery("select k.schueler.personId, count(k) from Kursanmeldung k where" +
                 " (k.anmeldedatum >= :statistikMonatBeginn and k.anmeldedatum <= :statistikMonatEnde) group by k.schueler.personId", Object[].class);
@@ -79,6 +80,7 @@ public class CalculateMonatsstatistikKurseCommand implements Command {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void calculateAnzahlAbmeldungenSchueler(EntityManager entityManager) {
         TypedQuery<Object[]> typedQuery = entityManager.createQuery("select k.schueler.personId, count(k) from Kursanmeldung k where" +
                 " (k.abmeldedatum >= :statistikMonatBeginn and k.abmeldedatum <= :statistikMonatEnde) group by k.schueler.personId", Object[].class);
@@ -113,7 +115,7 @@ public class CalculateMonatsstatistikKurseCommand implements Command {
                 if (netto > 0) {
                     anzahlAnmeldungen += netto;
                 } else if (netto < 0) {
-                    anzahlAbmeldungen += -netto;
+                    anzahlAbmeldungen -= netto;
                 }
             } else if (schuelerIdsAnzahlAnmeldungen.containsKey(schuelerId)) {
                 anzahlAnmeldungen += schuelerIdsAnzahlAnmeldungen.get(schuelerId);
@@ -127,6 +129,7 @@ public class CalculateMonatsstatistikKurseCommand implements Command {
         statistikMonatBeginn = new GregorianCalendar(monatJahr.get(Calendar.YEAR), monatJahr.get(Calendar.MONTH), 1);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void determineStatistikMonatEnde() {
         if (monatJahr.get(Calendar.MONTH) == Calendar.DECEMBER) {
             statistikMonatEnde = new GregorianCalendar(monatJahr.get(Calendar.YEAR) + 1, Calendar.JANUARY, 1);
@@ -145,8 +148,7 @@ public class CalculateMonatsstatistikKurseCommand implements Command {
         if (currentSemester != null) {
             // Innerhalb Semester
             return currentSemester;
-        }
-        else {
+        } else {
             // Semesterferien (-> vorhergehendes Semester)
             return previousSemester;
         }
@@ -163,7 +165,7 @@ public class CalculateMonatsstatistikKurseCommand implements Command {
         for (int i = 0; i < semestersAll.size(); i++) {
             if (!semestersAll.get(i).getSemesterbeginn().before(statistikMonatBeginn) && !semestersAll.get(i).getSemesterbeginn().after(statistikMonatEnde)) {
                 if (i < semestersAll.size() - 1) {
-                    return semestersAll.get(i+1);  // vorhergehendes Semester
+                    return semestersAll.get(i + 1);  // vorhergehendes Semester
                 } else {
                     return null;
                 }
@@ -180,8 +182,8 @@ public class CalculateMonatsstatistikKurseCommand implements Command {
         return anzahlAbmeldungen;
     }
 
-    public int getAnzahllLektionen() {
-        return anzahllLektionen;
+    public int getAnzahlLektionen() {
+        return anzahlLektionen;
     }
 
 }

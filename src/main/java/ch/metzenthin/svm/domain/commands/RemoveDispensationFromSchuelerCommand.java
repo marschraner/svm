@@ -12,7 +12,7 @@ public class RemoveDispensationFromSchuelerCommand implements Command {
 
     // input
     private final int indexDispensationToBeDeleted;
-    private Schueler schueler;
+    private final Schueler schueler;
 
     // output
     private Schueler schuelerUpdated;

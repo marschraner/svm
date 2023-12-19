@@ -13,8 +13,8 @@ public class DeleteSemesterrechnungLogicallyCommand implements Command {
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
-    private List<Semesterrechnung> semesterrechnungen;
-    private int indexSemesterrechnungToBeDeletedLogically;
+    private final List<Semesterrechnung> semesterrechnungen;
+    private final int indexSemesterrechnungToBeDeletedLogically;
 
     public DeleteSemesterrechnungLogicallyCommand(List<Semesterrechnung> semesterrechnungen, int indexSemesterrechnungToBeDeletedLogically) {
         this.semesterrechnungen = semesterrechnungen;
@@ -28,5 +28,4 @@ public class DeleteSemesterrechnungLogicallyCommand implements Command {
         semesterrechnungDao.save(semesterrechnungToBeDeletedLogically);
         semesterrechnungen.remove(indexSemesterrechnungToBeDeletedLogically);
     }
-    
 }

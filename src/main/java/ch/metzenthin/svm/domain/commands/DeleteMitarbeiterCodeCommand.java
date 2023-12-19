@@ -18,8 +18,8 @@ public class DeleteMitarbeiterCodeCommand implements Command {
     private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
 
     // input
-    private List<MitarbeiterCode> mitarbeiterCodes;
-    private int indexCodeToBeDeleted;
+    private final List<MitarbeiterCode> mitarbeiterCodes;
+    private final int indexCodeToBeDeleted;
 
     // output
     private Result result;

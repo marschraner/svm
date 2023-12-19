@@ -10,9 +10,9 @@ import java.util.List;
 public class CheckMitarbeiterBereitsErfasstCommand implements Command {
 
     // input
-    private Mitarbeiter mitarbeiter;
-    private Mitarbeiter mitarbeiterOrigin;
-    private List<Mitarbeiter> bereitsErfassteLehrkraefte;
+    private final Mitarbeiter mitarbeiter;
+    private final Mitarbeiter mitarbeiterOrigin;
+    private final List<Mitarbeiter> bereitsErfassteLehrkraefte;
 
     // output
     private boolean bereitsErfasst;

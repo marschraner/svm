@@ -33,10 +33,10 @@ public class CreateWordTableCommand implements Command {
     private final String title1;
     private final String title2;
     private final File outputFile;
-    private int topMargin;
-    private int bottomMargin;
-    private int leftMargin;
-    private int rightMargin;
+    private final int topMargin;
+    private final int bottomMargin;
+    private final int leftMargin;
+    private final int rightMargin;
     private int numberOfDatasetsFirstPage;
     private int numberOfDatasetsNormalPage;
 
@@ -128,6 +128,7 @@ public class CreateWordTableCommand implements Command {
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void addTitle(String fontSize) {
         P paragraph = objectFactory.createP();
         R run = objectFactory.createR();
@@ -266,7 +267,7 @@ public class CreateWordTableCommand implements Command {
             valign.setVal(STVerticalJc.TOP);
             tcpr.setVAlign(valign);
             org.docx4j.wml.TcPrInner.GridSpan gspan = objectFactory.createTcPrInnerGridSpan();
-            gspan.setVal(new BigInteger("" + mergedCells));
+            gspan.setVal(new BigInteger(String.valueOf(mergedCells)));
             tcpr.setGridSpan(gspan);
         }
         // Paragraph der Zelle hinzufügen
@@ -276,9 +277,9 @@ public class CreateWordTableCommand implements Command {
     }
 
     /**
-     *  In this method we create a table cell properties object and a table width
-     *  object. We set the given width on the width object and then add it to
-     *  the properties object. Finally we set the properties on the table cell.
+     * In this method we create a table cell properties object and a table width
+     * object. We set the given width on the width object and then add it to
+     * the properties object. Finally, we set the properties on the table cell.
      */
     private void setCellWidth(Tc tableCell, int width) {
         TcPr tableCellProperties = new TcPr();
@@ -290,10 +291,10 @@ public class CreateWordTableCommand implements Command {
     }
 
     /**
-     *  In this method we're going to add the font size information to the run
-     *  properties. First we'll create a half-point measurement. Then we'll
-     *  set the fontSize as the value of this measurement. Finally we'll set
-     *  the non-complex and complex script font sizes, sz and szCs respectively.
+     * In this method we're going to add the font size information to the run
+     * properties. First we'll create a half-point measurement. Then we'll
+     * set the fontSize as the value of this measurement. Finally, we'll set
+     * the non-complex and complex script font sizes, sz and szCs respectively.
      */
     private void setFontSize(RPr runProperties, String fontSize) {
         HpsMeasure size = new HpsMeasure();
@@ -303,10 +304,10 @@ public class CreateWordTableCommand implements Command {
     }
 
     /**
-     *  In this method we'll add the bold property to the run properties.
-     *  BooleanDefaultTrue is the Docx4j object for the b property.
-     *  Technically we wouldn't have to set the value to true, as this is
-     *  the default.
+     * In this method we'll add the bold property to the run properties.
+     * BooleanDefaultTrue is the Docx4j object for the b property.
+     * Technically we wouldn't have to set the value to true, as this is
+     * the default.
      */
     private void addBoldStyle(RPr runProperties) {
         BooleanDefaultTrue b = new BooleanDefaultTrue();
@@ -315,12 +316,11 @@ public class CreateWordTableCommand implements Command {
     }
 
     /**
-     *  Change the font of the given run properties to Calibri.
-     *
-     *  A run font specifies the fonts which shall be used to display the contents
-     *  of the run. Of the four possible types of content, we change the styling of
-     *  two of them: ASCII and High ANSI.
-     *  Finally we add the run font to the run properties
+     * Change the font of the given run properties to Calibri.
+     * A run font specifies the fonts which shall be used to display the contents
+     * of the run. Of the four possible types of content, we change the styling of
+     * two of them: ASCII and High ANSI.
+     * Finally, we add the run font to the run properties
      */
     private void changeFontToCalibri(RPr runProperties) {
         RFonts runFont = new RFonts();
@@ -343,14 +343,12 @@ public class CreateWordTableCommand implements Command {
     }
 
     /**
-     *  This method alters the default style sheet that is part of each document.
-     *
-     *  To do this, we first retrieve the style sheet from the package and then
-     *  get the Styles object from it. From this object, we get the list of actual
-     *  styles and iterate over them.
-     *  We check against all styles we want to alter and apply the alterations if
-     *  applicable.
-     *
+     * This method alters the default style sheet that is part of each document.
+     * To do this, we first retrieve the style sheet from the package and then
+     * get the Styles object from it. From this object, we get the list of actual
+     * styles and iterate over them.
+     * We check against all styles we want to alter and apply the alterations if
+     * applicable.
      */
     private void alterStyleSheet() {
         StyleDefinitionsPart styleDefinitionsPart = wordMLPackage.getMainDocumentPart().getStyleDefinitionsPart();
@@ -360,7 +358,7 @@ public class CreateWordTableCommand implements Command {
         } catch (Docx4JException e) {
             throw new RuntimeException(e);
         }
-        List<Style>  stylesList = styles.getStyle();
+        List<Style> stylesList = styles.getStyle();
         for (Style style : stylesList) {
             if (style.getStyleId().equals("Normal")) {
                 alterNormalStyle(style);
@@ -371,10 +369,10 @@ public class CreateWordTableCommand implements Command {
     }
 
     /**
-     *  First we create a run properties object as we want to remove nearly all of
-     *  the existing styling. Then we change the font and font size and set the
-     *  run properties on the given style. As in previous examples, the font size
-     *  is defined to be in half-point size.
+     * First we create a run properties object as we want to remove nearly all
+     * the existing styling. Then we change the font and font size and set the
+     * run properties on the given style. As in previous examples, the font size
+     * is defined to be in half-point size.
      */
     private void alterNormalStyle(Style style) {
         // we want to change (or remove) almost all the run properties of the
@@ -387,8 +385,8 @@ public class CreateWordTableCommand implements Command {
 
     /**
      * Change the font size of the given run properties to the given value.
-     *
      */
+    @SuppressWarnings("SameParameterValue")
     private void changeFontSize(RPr runProperties, int fontSize) {
         HpsMeasure size = new HpsMeasure();
         size.setVal(BigInteger.valueOf(fontSize));

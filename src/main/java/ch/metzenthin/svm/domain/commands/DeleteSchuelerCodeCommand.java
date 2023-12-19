@@ -18,8 +18,8 @@ public class DeleteSchuelerCodeCommand implements Command {
     private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
 
     // input
-    private List<SchuelerCode> schuelerCodes;
-    private int indexCodeToBeDeleted;
+    private final List<SchuelerCode> schuelerCodes;
+    private final int indexCodeToBeDeleted;
 
     // output
     private Result result;

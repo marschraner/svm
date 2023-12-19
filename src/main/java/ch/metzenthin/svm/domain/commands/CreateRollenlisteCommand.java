@@ -32,13 +32,14 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
         this.outputFile = outputFile;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute() {
 
         // Spaltenbreiten
         // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein!
         //          Bei > 11200 hinten schmalerer Rand!
-        //          Bei > 11500 Spaltenbreite durch Inhalt beieinflusst!!!
+        //          Bei > 11500 Spaltenbreite durch Inhalt beeinflusst!!!
         List<Integer> columnWidths = new ArrayList<>();
         columnWidths.add(2300);
         columnWidths.add(2500);
@@ -267,7 +268,7 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
             List<String> cellsRow3 = new ArrayList<>();
             cellsRow3.add("");
             String email = "";
-            // Wenn vorhanden Email des Schülers, sonst der Elternmithilfe (falls nicht Drittperson), sonst der Mutter, sonst des Vaters, sonst Elternmithilfe Drittperson; andernfalls leer
+            // Wenn vorhanden E-Mail des Schülers, sonst der Elternmithilfe (falls nicht Drittperson), sonst der Mutter, sonst des Vaters, sonst Elternmithilfe Drittperson; andernfalls leer
             Angehoeriger elternmithilfe = null;
             if (maercheneinteilung.getElternmithilfe() != null && maercheneinteilung.getElternmithilfe() != Elternmithilfe.DRITTPERSON) {
                 elternmithilfe = (maercheneinteilung.getElternmithilfe() == Elternmithilfe.MUTTER ? schueler.getMutter() : schueler.getVater());
@@ -312,7 +313,7 @@ public class CreateRollenlisteCommand extends CreateListeCommand {
 
         // Tabelle erzeugen
         Semester semester = schuelerSuchenTableModel.getSemester();
-        String maerchenspielSchuljahr = (semester == null) ?  "" : "Märchenspiel " + semester.getSchuljahr();
+        String maerchenspielSchuljahr = (semester == null) ? "" : "Märchenspiel " + semester.getSchuljahr();
         String titel1 = "Kinder- und Jugendtheater Metzenthin AG                                             " + maerchenspielSchuljahr;
         CreateWordTableCommand createWordTableCommand = new CreateWordTableCommand(header, datasets, columnWidths, boldCells, mergedCells, maxLengths, titel1, titel, outputFile);
         createWordTableCommand.execute();

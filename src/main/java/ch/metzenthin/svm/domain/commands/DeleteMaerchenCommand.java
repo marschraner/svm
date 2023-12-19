@@ -18,8 +18,8 @@ public class DeleteMaerchenCommand implements Command {
     private final MaerchenDao maerchenDao = new MaerchenDao();
 
     // input
-    private List<Maerchen> maerchens;
-    private int indexMaerchenToBeDeleted;
+    private final List<Maerchen> maerchens;
+    private final int indexMaerchenToBeDeleted;
 
     // output
     private Result result;

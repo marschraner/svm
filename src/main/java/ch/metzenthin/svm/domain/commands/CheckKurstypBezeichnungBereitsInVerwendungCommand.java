@@ -10,9 +10,9 @@ import java.util.List;
 public class CheckKurstypBezeichnungBereitsInVerwendungCommand implements Command {
 
     // input
-    private Kurstyp kurstyp;
-    private Kurstyp kurstypOrigin;
-    private List<Kurstyp> bereitsErfassteKurstypen;
+    private final Kurstyp kurstyp;
+    private final Kurstyp kurstypOrigin;
+    private final List<Kurstyp> bereitsErfassteKurstypen;
 
     // output
     private boolean bereitsInVerwendung;

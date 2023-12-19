@@ -14,7 +14,7 @@ public class FindKursanmeldungenSchuelerCommand implements Command {
     private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
 
     // input
-    private Schueler schueler;
+    private final Schueler schueler;
 
     // output
     private List<Kursanmeldung> kursanmeldungenFound;

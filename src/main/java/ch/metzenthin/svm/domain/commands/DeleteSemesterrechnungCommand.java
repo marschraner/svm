@@ -13,8 +13,8 @@ public class DeleteSemesterrechnungCommand implements Command {
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
-    private List<Semesterrechnung> semesterrechnungen;
-    private int indexSemesterrechnungToBeDeleted;
+    private final List<Semesterrechnung> semesterrechnungen;
+    private final int indexSemesterrechnungToBeDeleted;
 
     public DeleteSemesterrechnungCommand(List<Semesterrechnung> semesterrechnungen, int indexSemesterrechnungToBeDeleted) {
         this.semesterrechnungen = semesterrechnungen;
@@ -27,5 +27,4 @@ public class DeleteSemesterrechnungCommand implements Command {
         semesterrechnungDao.remove(semesterrechnungToBeDeleted);
         semesterrechnungen.remove(indexSemesterrechnungToBeDeleted);
     }
-    
 }

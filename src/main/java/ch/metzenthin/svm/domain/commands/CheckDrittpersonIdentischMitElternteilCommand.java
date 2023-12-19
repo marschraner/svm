@@ -32,29 +32,31 @@ public class CheckDrittpersonIdentischMitElternteilCommand implements Command {
         if (rechnungsempfaengerDrittperson == null || rechnungsempfaengerDrittperson.isEmpty()) {
             identical = false;
             errorMessage = "";
-        }
-
-        else if (mutter != null && mutter.getVorname() != null && !mutter.getVorname().trim().isEmpty() && mutter.isIdenticalWith(rechnungsempfaengerDrittperson)) {
+        } else if (mutter != null
+                && mutter.getVorname() != null
+                && !mutter.getVorname().trim().isEmpty()
+                && mutter.isIdenticalWith(rechnungsempfaengerDrittperson)) {
             identical = true;
             errorMessage = ERROR_IDENTISCH_MIT_MUTTER;
-        }
-
-        else if (mutter != null && mutter.getVorname() != null && !mutter.getVorname().trim().isEmpty() && mutter.isPartOf(rechnungsempfaengerDrittperson)) {
+        } else if (mutter != null
+                && mutter.getVorname() != null
+                && !mutter.getVorname().trim().isEmpty()
+                && mutter.isPartOf(rechnungsempfaengerDrittperson)) {
             identical = true;
             errorMessage = ERROR_WAHRSCHEINLICH_IDENTISCH_MIT_MUTTER;
-        }
-
-        else if (vater != null && vater.getVorname() != null && !vater.getVorname().trim().isEmpty() && vater.isIdenticalWith(rechnungsempfaengerDrittperson)) {
+        } else if (vater != null
+                && vater.getVorname() != null
+                && !vater.getVorname().trim().isEmpty()
+                && vater.isIdenticalWith(rechnungsempfaengerDrittperson)) {
             identical = true;
             errorMessage = ERROR_IDENTISCH_MIT_VATER;
-        }
-
-        else if (vater != null && vater.getVorname() != null && !vater.getVorname().trim().isEmpty() && vater.isPartOf(rechnungsempfaengerDrittperson)) {
+        } else if (vater != null
+                && vater.getVorname() != null
+                && !vater.getVorname().trim().isEmpty()
+                && vater.isPartOf(rechnungsempfaengerDrittperson)) {
             identical = true;
             errorMessage = ERROR_WAHRSCHEINLICH_IDENTISCH_MIT_VATER;
-        }
-
-        else {
+        } else {
             identical = false;
             errorMessage = "";
         }

@@ -10,7 +10,7 @@ public class SaveSchuelerCommand implements Command {
 
     private final SchuelerDao schuelerDao = new SchuelerDao();
 
-    private Schueler schueler;
+    private final Schueler schueler;
     private Schueler savedSchueler;
 
     public SaveSchuelerCommand(Schueler schueler) {

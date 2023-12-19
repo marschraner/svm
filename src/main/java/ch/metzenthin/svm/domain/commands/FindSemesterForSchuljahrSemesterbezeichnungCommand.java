@@ -11,9 +11,9 @@ import java.util.List;
 public class FindSemesterForSchuljahrSemesterbezeichnungCommand implements Command {
 
     // input
-    private String schuljahr;
-    private Semesterbezeichnung semesterbezeichnung;
-    private List<Semester> erfassteSemesters;
+    private final String schuljahr;
+    private final Semesterbezeichnung semesterbezeichnung;
+    private final List<Semester> erfassteSemesters;
 
     // output
     private Semester semesterFound;
@@ -27,7 +27,8 @@ public class FindSemesterForSchuljahrSemesterbezeichnungCommand implements Comma
     @Override
     public void execute() {
         for (Semester erfasstesSemester : erfassteSemesters) {
-            if (erfasstesSemester.getSchuljahr().equals(schuljahr) && erfasstesSemester.getSemesterbezeichnung().equals(semesterbezeichnung) ) {
+            if (erfasstesSemester.getSchuljahr().equals(schuljahr)
+                    && erfasstesSemester.getSemesterbezeichnung().equals(semesterbezeichnung)) {
                 semesterFound = erfasstesSemester;
                 return;
             }

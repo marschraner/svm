@@ -46,14 +46,16 @@ public class CreateListeFromTemplateCommand extends CreateListeCommand {
         findTemplateFileCommand.execute();
         templateFile = findTemplateFileCommand.getTemplateFile();
         switch (findTemplateFileCommand.getResult()) {
-            case TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR:
+            case TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR -> {
                 result = Result.TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR;
                 return;
-            case FEHLER_BEIM_LESEN_DES_PROPERTY_FILE:
+            }
+            case FEHLER_BEIM_LESEN_DES_PROPERTY_FILE -> {
                 result = Result.FEHLER_BEIM_LESEN_DES_PROPERTY_FILE;
                 return;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
 
         // Platzhalter in Template-File ersetzen

@@ -395,7 +395,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
     public SchuelerErfassenSaveResult validieren(SvmContext svmContext) {
         LOGGER.trace("SchuelerErfassenModel validieren");
 
-        validateSchuelerCommand = new ValidateSchuelerCommand(this, svmContext);
+        validateSchuelerCommand = new ValidateSchuelerCommand(this);
         validateSchuelerCommand.setEntry(NEU_ERFASSTEN_SCHUELER_VALIDIEREN);
         return executeCommandWithinSession();
     }

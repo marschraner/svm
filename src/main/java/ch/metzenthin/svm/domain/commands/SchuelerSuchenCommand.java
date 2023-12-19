@@ -30,29 +30,29 @@ public class SchuelerSuchenCommand implements Command {
     private final DB db = DBFactory.getInstance();
 
     // input
-    private PersonSuchen person;
-    private Adresse adresse;
-    private SchuelerSuchenModel.RolleSelected rolle;
-    private SchuelerSuchenModel.AnmeldestatusSelected anmeldestatus;
-    private SchuelerSuchenModel.DispensationSelected dispensation;
-    private SchuelerSuchenModel.GeschlechtSelected geschlecht;
-    private Calendar geburtsdatumSuchperiodeBeginn;
-    private Calendar geburtsdatumSuchperiodeEnde;
-    private String geburtsdatumSuchperiodeDateFormatString;
-    private Calendar stichtag;
-    private SchuelerCode schuelerCode;
-    private Semester semesterKurs;
-    private Wochentag wochentag;
-    private Time zeitBeginn;
-    private Mitarbeiter mitarbeiter;
-    private boolean kursFuerSucheBeruecksichtigen;
-    private Maerchen maerchen;
-    private Gruppe gruppe;
-    private String rollen;
-    private ElternmithilfeCode elternmithilfeCode;
-    private Integer kuchenVorstellung;
-    private String zusatzattributMaerchen;
-    private boolean maerchenFuerSucheBeruecksichtigen;
+    private final PersonSuchen person;
+    private final Adresse adresse;
+    private final SchuelerSuchenModel.RolleSelected rolle;
+    private final SchuelerSuchenModel.AnmeldestatusSelected anmeldestatus;
+    private final SchuelerSuchenModel.DispensationSelected dispensation;
+    private final SchuelerSuchenModel.GeschlechtSelected geschlecht;
+    private final Calendar geburtsdatumSuchperiodeBeginn;
+    private final Calendar geburtsdatumSuchperiodeEnde;
+    private final String geburtsdatumSuchperiodeDateFormatString;
+    private final Calendar stichtag;
+    private final SchuelerCode schuelerCode;
+    private final Semester semesterKurs;
+    private final Wochentag wochentag;
+    private final Time zeitBeginn;
+    private final Mitarbeiter mitarbeiter;
+    private final boolean kursFuerSucheBeruecksichtigen;
+    private final Maerchen maerchen;
+    private final Gruppe gruppe;
+    private final String rollen;
+    private final ElternmithilfeCode elternmithilfeCode;
+    private final Integer kuchenVorstellung;
+    private final String zusatzattributMaerchen;
+    private final boolean maerchenFuerSucheBeruecksichtigen;
     private StringBuilder selectStatementSb;
     private TypedQuery<Schueler> typedQuery;
 
@@ -85,11 +85,12 @@ public class SchuelerSuchenCommand implements Command {
         this.maerchenFuerSucheBeruecksichtigen = schuelerSuchenModel.isMaerchenFuerSucheBeruecksichtigen();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute() {
 
         selectStatementSb = new StringBuilder("select distinct s from Schueler s");
-        
+
         // Inner-Joins erzeugen
         createJoinSchuelerCode();
         createJoinKurs();
@@ -163,14 +164,14 @@ public class SchuelerSuchenCommand implements Command {
     private void createWhereSelectionsStammdatenOhneGeburtsdatumSuchperiode() {
         if (person == null ||
                 (!checkNotEmpty(person.getVorname()) &&
-                !checkNotEmpty(person.getNachname()) &&
-                !checkNotEmpty(adresse.getStrasse()) &&
-                !checkNotEmpty(adresse.getHausnummer()) &&
-                !checkNotEmpty(adresse.getPlz()) &&
-                !checkNotEmpty(adresse.getOrt()) &&
-                !checkNotEmpty(person.getFestnetz()) &&
-                !checkNotEmpty(person.getNatel()) &&
-                !checkNotEmpty(person.getEmail()))) {
+                        !checkNotEmpty(person.getNachname()) &&
+                        !checkNotEmpty(adresse.getStrasse()) &&
+                        !checkNotEmpty(adresse.getHausnummer()) &&
+                        !checkNotEmpty(adresse.getPlz()) &&
+                        !checkNotEmpty(adresse.getOrt()) &&
+                        !checkNotEmpty(person.getFestnetz()) &&
+                        !checkNotEmpty(person.getNatel()) &&
+                        !checkNotEmpty(person.getEmail()))) {
             return;
         }
         if (rolle == SchuelerSuchenModel.RolleSelected.SCHUELER) {
@@ -413,7 +414,7 @@ public class SchuelerSuchenCommand implements Command {
             }
             if (checkNotEmpty(rollen)) {
                 selectStatementSb.append(" (");
-                for (int i = 0; i < rollen.split("[,;]").length; i ++) {
+                for (int i = 0; i < rollen.split("[,;]").length; i++) {
                     selectStatementSb.append(" lower(trim(mae.rolle1)) = :maerchenrolleEq").append(i).append(" or");
                     selectStatementSb.append(" lower(trim(mae.rolle1)) like :maerchenrolleL1").append(i).append(" or");
                     selectStatementSb.append(" lower(trim(mae.rolle1)) like :maerchenrolleL2").append(i).append(" or");
@@ -442,35 +443,17 @@ public class SchuelerSuchenCommand implements Command {
             }
             if (kuchenVorstellung != null) {
                 switch (kuchenVorstellung) {
-                    case (1):
-                        selectStatementSb.append(" mae.kuchenVorstellung1 = 1 and");
-                        break;
-                    case (2):
-                        selectStatementSb.append(" mae.kuchenVorstellung2 = 1 and");
-                        break;
-                    case (3):
-                        selectStatementSb.append(" mae.kuchenVorstellung3 = 1 and");
-                        break;
-                    case (4):
-                        selectStatementSb.append(" mae.kuchenVorstellung4 = 1 and");
-                        break;
-                    case (5):
-                        selectStatementSb.append(" mae.kuchenVorstellung5 = 1 and");
-                        break;
-                    case (6):
-                        selectStatementSb.append(" mae.kuchenVorstellung6 = 1 and");
-                        break;
-                    case (7):
-                        selectStatementSb.append(" mae.kuchenVorstellung7 = 1 and");
-                        break;
-                    case (8):
-                        selectStatementSb.append(" mae.kuchenVorstellung8 = 1 and");
-                        break;
-                    case (9):
-                        selectStatementSb.append(" mae.kuchenVorstellung9 = 1 and");
-                        break;
-                    default:
-                        break;
+                    case (1) -> selectStatementSb.append(" mae.kuchenVorstellung1 = 1 and");
+                    case (2) -> selectStatementSb.append(" mae.kuchenVorstellung2 = 1 and");
+                    case (3) -> selectStatementSb.append(" mae.kuchenVorstellung3 = 1 and");
+                    case (4) -> selectStatementSb.append(" mae.kuchenVorstellung4 = 1 and");
+                    case (5) -> selectStatementSb.append(" mae.kuchenVorstellung5 = 1 and");
+                    case (6) -> selectStatementSb.append(" mae.kuchenVorstellung6 = 1 and");
+                    case (7) -> selectStatementSb.append(" mae.kuchenVorstellung7 = 1 and");
+                    case (8) -> selectStatementSb.append(" mae.kuchenVorstellung8 = 1 and");
+                    case (9) -> selectStatementSb.append(" mae.kuchenVorstellung9 = 1 and");
+                    default -> {
+                    }
                 }
             }
             if (checkNotEmpty(zusatzattributMaerchen)) {
@@ -509,6 +492,7 @@ public class SchuelerSuchenCommand implements Command {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void setParameterGeburtsdatumSuchperiode() {
         if (selectStatementSb.toString().contains(":geburtsdatumSuchperiodeBeginn")) {
             typedQuery.setParameter("geburtsdatumSuchperiodeBeginn", geburtsdatumSuchperiodeBeginn);
@@ -544,6 +528,7 @@ public class SchuelerSuchenCommand implements Command {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void setParameterKurs() {
         if (selectStatementSb.toString().contains(":semesterKursId")) {
             typedQuery.setParameter("semesterKursId", semesterKurs.getSemesterId());

@@ -5,7 +5,7 @@ package ch.metzenthin.svm.domain;
  */
 public class SvmException extends Exception {
 
-    private int errorId;
+    private final int errorId;
 
     public SvmException(int errorId, String errorMsg) {
         super(errorMsg);

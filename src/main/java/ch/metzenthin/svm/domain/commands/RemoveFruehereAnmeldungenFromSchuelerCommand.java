@@ -16,7 +16,7 @@ public class RemoveFruehereAnmeldungenFromSchuelerCommand implements Command {
     private final AnmeldungDao anmeldungDao = new AnmeldungDao();
 
     // input
-    private Schueler schueler;
+    private final Schueler schueler;
 
     public RemoveFruehereAnmeldungenFromSchuelerCommand(Schueler schueler) {
         this.schueler = schueler;
@@ -36,5 +36,4 @@ public class RemoveFruehereAnmeldungenFromSchuelerCommand implements Command {
             anmeldungDao.removeFromSchuelerAndUpdate(anmeldungToBeDeleted, schueler);
         }
     }
-    
 }

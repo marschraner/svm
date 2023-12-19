@@ -14,7 +14,7 @@ public class FindMaercheneinteilungenSchuelerCommand implements Command {
     private final MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
 
     // input
-    private Schueler schueler;
+    private final Schueler schueler;
 
     // output
     private List<Maercheneinteilung> maercheneinteilungenFound;

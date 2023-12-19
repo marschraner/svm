@@ -18,7 +18,7 @@ public class FindRechnungsempfaengerOhneSemesterrechnungenCommand implements Com
     private final DB db = DBFactory.getInstance();
 
     // input
-    private Semester currentSemester;
+    private final Semester currentSemester;
 
     // output
     private List<Angehoeriger> rechnungsempfaengersFound = new ArrayList<>();

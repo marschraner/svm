@@ -22,11 +22,11 @@ public class SaveOrUpdateMitarbeiterCommand implements Command {
     private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
 
     // input
-    private Mitarbeiter mitarbeiter;
-    private Adresse adresse;
-    private Set<MitarbeiterCode> mitarbeiterCodes;
-    private Mitarbeiter mitarbeiterOrigin;
-    private List<Mitarbeiter> bereitsErfassteMitarbeiter;
+    private final Mitarbeiter mitarbeiter;
+    private final Adresse adresse;
+    private final Set<MitarbeiterCode> mitarbeiterCodes;
+    private final Mitarbeiter mitarbeiterOrigin;
+    private final List<Mitarbeiter> bereitsErfassteMitarbeiter;
 
     // output
     private Mitarbeiter mitarbeiterSaved;
@@ -124,9 +124,5 @@ public class SaveOrUpdateMitarbeiterCommand implements Command {
     private boolean isSetAdresse() {
         return checkNotEmpty(adresse.getPlz())
                 && checkNotEmpty(adresse.getOrt());
-    }
-
-    public Mitarbeiter getMitarbeiterSaved() {
-        return mitarbeiterSaved;
     }
 }

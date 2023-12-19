@@ -21,10 +21,10 @@ public class FindKursCommand implements Command {
     private final KursDao kursDao = new KursDao();
 
     // input
-    private Semester semester;
-    private Wochentag wochentag;
-    private Time zeitBeginn;
-    private Mitarbeiter mitarbeiter;
+    private final Semester semester;
+    private final Wochentag wochentag;
+    private final Time zeitBeginn;
+    private final Mitarbeiter mitarbeiter;
 
     // output
     private Result result;

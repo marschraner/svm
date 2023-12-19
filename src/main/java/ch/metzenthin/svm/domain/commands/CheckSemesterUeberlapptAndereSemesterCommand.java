@@ -12,9 +12,9 @@ import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.checkIfTwoPeriodsO
 public class CheckSemesterUeberlapptAndereSemesterCommand implements Command {
 
     // input
-    private Semester semester;
-    private Semester semesterOrigin;
-    private List<Semester> bereitsErfassteSemester;
+    private final Semester semester;
+    private final Semester semesterOrigin;
+    private final List<Semester> bereitsErfassteSemester;
 
     // output
     private boolean ueberlappt;

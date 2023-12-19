@@ -28,15 +28,16 @@ public class CreateVertretungslisteCommand extends CreateListeCommand {
         this.outputFile = outputFile;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute() {
 
         // Spaltenbreiten
         // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein!
         //          Bei > 11200 hinten schmalerer Rand!
-        //          Bei > 11500 Spaltenbreite durch Inhalt beieinflusst!!!
+        //          Bei > 11500 Spaltenbreite durch Inhalt beeinflusst!!!
         List<Integer> columnWidths = new ArrayList<>();
-        columnWidths.add(0);  // enspricht einer Breite von max 550 (wenn 3-stellig)
+        columnWidths.add(0);  // entspricht einer Breite von max. 550 (wenn 3-stellig)
         columnWidths.add(2700);
         columnWidths.add(2900);
         columnWidths.add(1700);
@@ -172,7 +173,7 @@ public class CreateVertretungslisteCommand extends CreateListeCommand {
             List<String> cellsRow2 = new ArrayList<>();
             cellsRow2.add("");
             cellsRow2.add(mitarbeiter.getAdresse() == null ? "" : nullAsEmptyString(mitarbeiter.getAdresse().getStrHausnummer()));
-            cellsRow2.add(mitarbeiter.getAdresse() == null ? "" : nullAsEmptyString(mitarbeiter.getAdresse().getPlz() + " " + mitarbeiter.getAdresse().getOrt()));
+            cellsRow2.add(mitarbeiter.getAdresse() == null ? "" : mitarbeiter.getAdresse().getPlz() + " " + mitarbeiter.getAdresse().getOrt());
             cellsRow2.add(nullAsEmptyString(mitarbeiter.getNatel()));
             if (vertretungsmoeglichkeitenLines.size() > 1) {
                 cellsRow2.add(vertretungsmoeglichkeitenLines.get(1));

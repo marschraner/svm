@@ -12,8 +12,8 @@ public class AddMitarbeiterCodeToMitarbeiterAndSaveCommand implements Command {
     private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
 
     // input
-    private MitarbeiterCode mitarbeiterCode;
-    private Mitarbeiter mitarbeiter;
+    private final MitarbeiterCode mitarbeiterCode;
+    private final Mitarbeiter mitarbeiter;
 
     // output
     private Mitarbeiter mitarbeiterUpdated;

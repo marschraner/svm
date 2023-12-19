@@ -14,9 +14,9 @@ public class AddDispensationToSchuelerAndSaveCommand implements Command {
     private final DispensationDao dispensationDao = new DispensationDao();
 
     // input
-    private Dispensation dispensation;
-    private Dispensation dispensationOrigin;
-    private Schueler schueler;
+    private final Dispensation dispensation;
+    private final Dispensation dispensationOrigin;
+    private final Schueler schueler;
 
     // output
     private Schueler schuelerUpdated;

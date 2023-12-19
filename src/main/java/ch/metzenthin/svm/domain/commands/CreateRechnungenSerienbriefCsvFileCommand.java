@@ -8,6 +8,7 @@ import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
@@ -30,6 +31,7 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
         this.outputFile = outputFile;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute() {
 
@@ -38,7 +40,7 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
         NachnameGratiskindFormatter nachnameGratiskindFormatter = new NachnameGratiskindFormatter();
 
         try {
-            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "8859_1"));
+            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), StandardCharsets.ISO_8859_1));
 
             // Header
             out.write("Anrede");

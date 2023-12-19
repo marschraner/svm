@@ -23,8 +23,8 @@ public class CheckKursBereitsErfasstCommand implements Command {
     private boolean bereitsErfasst;
 
     public CheckKursBereitsErfasstCommand(
-        Kurs kurs, Semester semester, Mitarbeiter mitarbeiter1, Mitarbeiter mitarbeiter2,
-        Kurs kursOrigin, List<Kurs> bereitsErfassteKurse) {
+            Kurs kurs, Semester semester, Mitarbeiter mitarbeiter1, Mitarbeiter mitarbeiter2,
+            Kurs kursOrigin, List<Kurs> bereitsErfassteKurse) {
         this.kurs = kurs;
         this.semester = semester;
         this.mitarbeiter1 = mitarbeiter1;
@@ -44,7 +44,7 @@ public class CheckKursBereitsErfasstCommand implements Command {
         }
         for (Kurs bereitsErfassteKurs : bereitsErfassteKurse) {
             if (!bereitsErfassteKurs.isIdenticalWith(kursOrigin)
-                && bereitsErfassteKurs.isIdenticalWith(kursWithSemesterAndLehrkraefte)) {
+                    && bereitsErfassteKurs.isIdenticalWith(kursWithSemesterAndLehrkraefte)) {
                 bereitsErfasst = true;
                 return;
             }

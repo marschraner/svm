@@ -9,17 +9,30 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
  * @author Hans Stamm
  */
 public interface ValidateSchuelerModel {
+
     Schueler getSchueler();
+
     Schueler getSchuelerOrigin();
+
     Anmeldung getAnmeldung();
+
     Adresse getAdresseSchueler();
+
     Angehoeriger getMutter();
+
     Adresse getAdresseMutter();
+
     boolean isRechnungsempfaengerMutter();
+
     Angehoeriger getVater();
+
     Adresse getAdresseVater();
+
     boolean isRechnungsempfaengerVater();
+
     Angehoeriger getRechnungsempfaengerDrittperson();
+
     Adresse getAdresseRechnungsempfaengerDrittperson();
+
     boolean isRechnungsempfaengerDrittperson();
 }

@@ -1,7 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungDao;
-import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 
 import java.util.Collection;
 
@@ -13,8 +14,8 @@ public class UpdateAnzWochenSemesterrechnungenCommand implements Command {
     private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
     // input
-    private Collection<Semesterrechnung> semesterrechnungen;
-    private Semester semester;
+    private final Collection<Semesterrechnung> semesterrechnungen;
+    private final Semester semester;
 
 
     public UpdateAnzWochenSemesterrechnungenCommand(Collection<Semesterrechnung> semesterrechnungen, Semester semester) {

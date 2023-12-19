@@ -14,7 +14,7 @@ import java.util.List;
 public class DetermineNaechstesNochNichtErfasstesSemesterCommand implements Command {
 
     // input
-    private List<Semester> bereitsErfassteSemesters;
+    private final List<Semester> bereitsErfassteSemesters;
 
     // output
     private Semester naechstesNochNichtErfasstesSemester;
@@ -23,6 +23,7 @@ public class DetermineNaechstesNochNichtErfasstesSemesterCommand implements Comm
         this.bereitsErfassteSemesters = bereitsErfassteSemesters;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void execute() {
         Calendar today = new GregorianCalendar();
@@ -33,29 +34,29 @@ public class DetermineNaechstesNochNichtErfasstesSemesterCommand implements Comm
             schuljahr1 = today.get(Calendar.YEAR);
         }
         int schuljahr2 = schuljahr1 + 1;
-        String naechtesSchuljahr = schuljahr1 + "/" + schuljahr2;
+        String naechstesSchuljahr = schuljahr1 + "/" + schuljahr2;
         Semesterbezeichnung naechsteSemesterbezeichnung;
         if (today.get(Calendar.MONTH) >= Calendar.FEBRUARY && today.get(Calendar.MONTH) <= Calendar.MAY) {
             naechsteSemesterbezeichnung = Semesterbezeichnung.ZWEITES_SEMESTER;
         } else {
             naechsteSemesterbezeichnung = Semesterbezeichnung.ERSTES_SEMESTER;
         }
-        while (isSemesterBereitsErfasst(naechtesSchuljahr, naechsteSemesterbezeichnung) && schuljahr1 < Schuljahre.SCHULJAHR_VALID_MAX) {
+        while (isSemesterBereitsErfasst(naechstesSchuljahr, naechsteSemesterbezeichnung) && schuljahr1 < Schuljahre.SCHULJAHR_VALID_MAX) {
             if (naechsteSemesterbezeichnung == Semesterbezeichnung.ERSTES_SEMESTER) {
                 naechsteSemesterbezeichnung = Semesterbezeichnung.ZWEITES_SEMESTER;
             } else {
                 naechsteSemesterbezeichnung = Semesterbezeichnung.ERSTES_SEMESTER;
                 schuljahr1++;
                 schuljahr2++;
-                naechtesSchuljahr = schuljahr1 + "/" + schuljahr2;
+                naechstesSchuljahr = schuljahr1 + "/" + schuljahr2;
             }
         }
-        naechstesNochNichtErfasstesSemester = new Semester(naechtesSchuljahr, naechsteSemesterbezeichnung, null, null, null, null, null, null);
+        naechstesNochNichtErfasstesSemester = new Semester(naechstesSchuljahr, naechsteSemesterbezeichnung, null, null, null, null, null, null);
     }
 
-    private boolean isSemesterBereitsErfasst(String naechtesSchuljahr, Semesterbezeichnung naechsteSemesterbezeichnung) {
+    private boolean isSemesterBereitsErfasst(String naechstesSchuljahr, Semesterbezeichnung naechsteSemesterbezeichnung) {
         for (Semester bereitsErfasstesSemester : bereitsErfassteSemesters) {
-            if (bereitsErfasstesSemester.getSchuljahr().equals(naechtesSchuljahr) && bereitsErfasstesSemester.getSemesterbezeichnung().equals(naechsteSemesterbezeichnung)) {
+            if (bereitsErfasstesSemester.getSchuljahr().equals(naechstesSchuljahr) && bereitsErfasstesSemester.getSemesterbezeichnung().equals(naechsteSemesterbezeichnung)) {
                 return true;
             }
         }

@@ -12,17 +12,16 @@ import java.util.List;
  */
 public class SaveOrUpdateMaercheneinteilungCommand implements Command {
 
-    private final  MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
+    private final MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
     private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
 
     // input
-    private Maercheneinteilung maercheneinteilung;
+    private final Maercheneinteilung maercheneinteilung;
     private final ElternmithilfeCode elternmithilfeCode;
-    private ElternmithilfeDrittperson elternmithilfeDrittperson;
-    private Adresse elternmithilfeDrittpersonAdresse;
-    private Maercheneinteilung maercheneinteilungOrigin;
-    private List<Maercheneinteilung> bereitsErfassteMaercheneinteilungen;
-
+    private final ElternmithilfeDrittperson elternmithilfeDrittperson;
+    private final Adresse elternmithilfeDrittpersonAdresse;
+    private final Maercheneinteilung maercheneinteilungOrigin;
+    private final List<Maercheneinteilung> bereitsErfassteMaercheneinteilungen;
 
     public SaveOrUpdateMaercheneinteilungCommand(Maercheneinteilung maercheneinteilung, ElternmithilfeCode elternmithilfeCode, ElternmithilfeDrittperson elternmithilfeDrittperson, Adresse elternmithilfeDrittpersonAdresse, Maercheneinteilung maercheneinteilungOrigin, List<Maercheneinteilung> bereitsErfassteMaercheneinteilungen) {
         this.maercheneinteilung = maercheneinteilung;
