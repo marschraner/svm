@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class AnmeldungTest {
 
     @Test
-    public void testCompareTo() throws Exception {
+    public void testCompareTo() {
         List<Anmeldung> anmeldungen = new ArrayList<>();
         anmeldungen.add(new Anmeldung(new GregorianCalendar(2014, Calendar.JULY, 1), new GregorianCalendar(2014, Calendar.DECEMBER, 31)));
         anmeldungen.add(new Anmeldung(new GregorianCalendar(2013, Calendar.MAY, 1), new GregorianCalendar(2014, Calendar.AUGUST, 31)));
@@ -27,7 +27,7 @@ public class AnmeldungTest {
     }
 
     @Test
-    public void testCopyFieldValuesFrom() throws Exception{
+    public void testCopyFieldValuesFrom() throws Exception {
         Anmeldung to = new Anmeldung(toCalendar("01.01.2015"), null);
         Anmeldung from = new Anmeldung(toCalendar("01.02.2015"), toCalendar("31.12.2015"));
         to.copyFieldValuesFrom(from);
@@ -36,25 +36,25 @@ public class AnmeldungTest {
     }
 
     @Test
-    public void testIsInPast_NoAbmeldung() throws Exception{
+    public void testIsInPast_NoAbmeldung() throws Exception {
         Anmeldung anmeldung = new Anmeldung(toCalendar("01.01.2015"), null);
         assertFalse(anmeldung.isInPast());
     }
 
     @Test
-    public void testIsInPast_AbmeldungInFuture() throws Exception{
+    public void testIsInPast_AbmeldungInFuture() throws Exception {
         Anmeldung anmeldung = new Anmeldung(toCalendar("01.01.2015"), toCalendar("31.12.2115"));
         assertFalse(anmeldung.isInPast());
     }
 
     @Test
-    public void testIsInPast_True() throws Exception{
+    public void testIsInPast_True() throws Exception {
         Anmeldung anmeldung = new Anmeldung(toCalendar("01.01.2015"), toCalendar("30.06.2015"));
         assertTrue(anmeldung.isInPast());
     }
 
     @Test
-    public void testIsInPast_AnmeldungInFuture() throws Exception{
+    public void testIsInPast_AnmeldungInFuture() throws Exception {
         Anmeldung anmeldung = new Anmeldung(toCalendar("01.01.2116"), toCalendar("30.06.2116"));
         assertFalse(anmeldung.isInPast());
     }

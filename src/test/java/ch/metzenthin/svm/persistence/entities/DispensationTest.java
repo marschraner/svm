@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Martin Schraner
@@ -24,7 +24,7 @@ public class DispensationTest {
     }
 
     @Test
-    public void testCompareTo() throws Exception {
+    public void testCompareTo() {
         List<Dispensation> dispensationen = new ArrayList<>();
         dispensationen.add(new Dispensation(new GregorianCalendar(2014, Calendar.JUNE, 2), new GregorianCalendar(2014, Calendar.AUGUST, 31), null, "Beinbruch"));
         dispensationen.add(new Dispensation(new GregorianCalendar(2014, Calendar.JULY, 1), new GregorianCalendar(2014, Calendar.JULY, 31), null, "Auslandaufenthalt Italien"));

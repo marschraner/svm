@@ -34,7 +34,7 @@ import static org.junit.Assert.*;
  *     Bevorzugt gemäss Buch (siehe Kapitel 11.3.2) wäre: pre-insert.
  *         Dann führt Hibernate den Insert so spät wie möglich aus.
  *         Bei EntityManager.persist(...) wird nur der Identifier generiert (ohne Insert)
- *
+ * <p>
  * Fehlerhaftes Verhalten von EntityManager:
  * - Ausgangslage: Erzeugen von zwei EM-Instanzen. Mit der ersten Instanz: modifizieren einer Entität, Commit. Danach
  *   Lesen der modifizierten Instanz mit der zweiten Instanz.
@@ -44,7 +44,7 @@ import static org.junit.Assert.*;
  *   Mit einer neueren Version von Hibernate (5.2.9) ist das fehlerhafte Verhalten weg.
  *   - Änderungen sind schon nach clear und erneutem Lesen sichtbar
  *   - Refresh verhält sich jetzt auch wie erwartet und wie im Buch Java Persistence with Hibernate beschrieben.
- *
+ * </p>
  * Warnung sichtbar durch: log4j.logger.org.hibernate=INFO
  * WARN DriverManagerConnectionProviderImpl:93 - HHH000402: Using Hibernate built-in connection pool (not for production use!)
  * Lösung: Verwendung eines anderen Connection Pools, z.B. c3p0 oder Bitronix (wie im Buch Java Persistence with Hibernate)
@@ -56,7 +56,7 @@ public class EntityManagerTest {
     private EntityManagerFactory entityManagerFactory;
     private SchuelerCode detachedInitialSchuelerCode;
 
-    private List<String> createdCodes = new ArrayList<>();
+    private final List<String> createdCodes = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception {
@@ -146,6 +146,7 @@ public class EntityManagerTest {
     /**
      * Modification in unsynchronised mode followed by a transaction (begin..commit) has effect
      */
+    @SuppressWarnings("CommentedOutCode")
     @Test
     public void testUnsynchronizedModifySchuelerCodeAndJoinTransaction() {
         EntityManager em = entityManagerFactory.createEntityManager();
@@ -172,6 +173,7 @@ public class EntityManagerTest {
     /**
      * New instance in unsynchronised mode followed by a transaction (begin..commit) has effect
      */
+    @SuppressWarnings("CommentedOutCode")
     @Test
     public void testUnsynchronizedNewSchuelerCodeAndJoinTransaction() {
         EntityManager em = entityManagerFactory.createEntityManager();
@@ -737,20 +739,17 @@ public class EntityManagerTest {
     @Test
     public void testBeginTransactionBeforeCommit() {
         EntityManager em = entityManagerFactory.createEntityManager();
-        em.getTransaction().begin();
-        assertTrue(em.getTransaction().isActive());
+        try (em) {
+            em.getTransaction().begin();
+            assertTrue(em.getTransaction().isActive());
 /*      This would result in a timeout exception trying to restart transaction and acquiring a lock.
         SchuelerCode schuelerCodeA = getInitialSchuelerCode(em);
         schuelerCodeA.setBeschreibung("Test Beschreibung");
-        em.flush();
-*/
-        try {
+        em.flush(); */
             em.getTransaction().begin();
             fail("IllegalStateException expected");
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            em.close();
         }
     }
 
@@ -868,7 +867,7 @@ public class EntityManagerTest {
     }
 
     private boolean isTransient(EntityManager em, SchuelerCode schuelerCode) {
-        return  !isPersisted(em, schuelerCode) && !isDatabasePersistent(schuelerCode);
+        return !isPersisted(em, schuelerCode) && !isDatabasePersistent(schuelerCode);
     }
 
     private boolean isDetached(EntityManager em, SchuelerCode schuelerCode) {

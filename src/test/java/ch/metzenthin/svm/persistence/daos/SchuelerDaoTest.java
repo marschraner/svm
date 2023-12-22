@@ -153,7 +153,7 @@ public class SchuelerDaoTest {
             // Erzwingen, dass von DB gelesen wird
             entityManager.refresh(schuelerFound);
 
-             // Anmeldungen
+            // Anmeldungen
             anmeldungen = schuelerFound.getAnmeldungen();
             assertEquals("2 Anmeldungen erwartet", 2, anmeldungen.size());
             assertEquals("Falsches Anmeldedatum", new GregorianCalendar(2015, Calendar.FEBRUARY, 1), anmeldungen.get(0).getAnmeldedatum());  // neuste zuerst
@@ -171,8 +171,8 @@ public class SchuelerDaoTest {
             }
 
             // Arm gebrochen löschen
-            int indexArmgebrochen = (neusteZuoberst ? 0 : 1);
-            schuelerFound.deleteDispensation(dispensationen.get(indexArmgebrochen));
+            int indexArmGebrochen = (neusteZuoberst ? 0 : 1);
+            schuelerFound.deleteDispensation(dispensationen.get(indexArmGebrochen));
 
             List<Dispensation> dispensationen2 = schuelerFound.getDispensationen();
             assertEquals("1 Dispensation erwartet", 1, dispensationen2.size());
@@ -369,7 +369,7 @@ public class SchuelerDaoTest {
             assertNotNull("Schüler nicht gefunden", schuelerFound2);
 
             // Anmeldung: Reihenfolge prüfen:
-            List<Anmeldung> anmeldungen= schuelerFound2.getAnmeldungen();
+            List<Anmeldung> anmeldungen = schuelerFound2.getAnmeldungen();
             assertEquals("2 Anmeldungen erwartet", 2, anmeldungen.size());
             assertEquals("Falsches Anmeldedatum", new GregorianCalendar(2015, Calendar.JANUARY, 1), anmeldungen.get(0).getAnmeldedatum());   // neuste zuerst
             assertEquals("Falsches Abmeldedatum", new GregorianCalendar(2014, Calendar.JANUARY, 15), anmeldungen.get(1).getAbmeldedatum());
@@ -389,7 +389,7 @@ public class SchuelerDaoTest {
             entityManager.refresh(schuelerFound2);
 
             // Anmeldung: Reihenfolge prüfen:
-            anmeldungen= schuelerFound2.getAnmeldungen();
+            anmeldungen = schuelerFound2.getAnmeldungen();
             assertEquals("2 Anmeldungen erwartet", 2, anmeldungen.size());
             assertEquals("Falsches Anmeldedatum", new GregorianCalendar(2015, Calendar.JANUARY, 1), anmeldungen.get(0).getAnmeldedatum());   // neuste zuerst
             assertEquals("Falsches Abmeldedatum", new GregorianCalendar(2014, Calendar.JANUARY, 15), anmeldungen.get(1).getAbmeldedatum());

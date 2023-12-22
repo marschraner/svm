@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
  */
 public class MaercheneinteilungDaoTest {
 
-    private MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
+    private final MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
 
     private DB db;
     private boolean neusteZuoberst;

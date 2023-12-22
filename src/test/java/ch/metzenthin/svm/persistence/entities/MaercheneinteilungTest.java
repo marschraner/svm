@@ -2,7 +2,7 @@ package ch.metzenthin.svm.persistence.entities;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Martin Schraner
@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class MaercheneinteilungTest {
 
     @Test
-    public void getRolle1WithoutSorterCharacters() throws Exception {
+    public void getRolle1WithoutSorterCharacters() {
         Maercheneinteilung maercheneinteilung = new Maercheneinteilung();
 
         maercheneinteilung.setRolle1("Hund 2");

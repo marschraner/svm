@@ -138,7 +138,7 @@ public class AngehoerigerDaoTest {
 
             tx.commit();
 
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             if (tx != null)
                 tx.rollback();
         }
@@ -195,7 +195,7 @@ public class AngehoerigerDaoTest {
 
             tx.commit();
 
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             if (tx != null)
                 tx.rollback();
         }
