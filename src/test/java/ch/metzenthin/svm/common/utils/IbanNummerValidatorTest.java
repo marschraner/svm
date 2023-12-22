@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class IbanNummerValidatorTest {
 
-    private IbanNummerValidator ibanNummerValidator = new IbanNummerValidator();
+    private final IbanNummerValidator ibanNummerValidator = new IbanNummerValidator();
 
     @Test
     public void testIsValid_Ch() {

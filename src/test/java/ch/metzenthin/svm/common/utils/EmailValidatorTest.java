@@ -12,7 +12,7 @@ public class EmailValidatorTest {
 
     // Source: http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/
 
-    private EmailValidator emailValidator = new EmailValidator();
+    private final EmailValidator emailValidator = new EmailValidator();
 
     @Test
     public void testValidate_validEmails() {

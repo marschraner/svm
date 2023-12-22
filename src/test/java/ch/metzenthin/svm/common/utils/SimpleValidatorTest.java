@@ -3,12 +3,9 @@ package ch.metzenthin.svm.common.utils;
 import org.junit.Test;
 
 import java.sql.Time;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.*;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -32,21 +29,25 @@ public class SimpleValidatorTest {
         assertTrue("True erwartet (not empty)", checkNotEmpty("abc"));
     }
 
+    @SuppressWarnings("ConstantValue")
     @Test
     public void testCheckNotNull_Null() {
         assertFalse("False erwartet (null)", checkNotNull(null));
     }
 
+    @SuppressWarnings("ConstantValue")
     @Test
     public void testCheckNotNull_NotNullString() {
         assertTrue("True erwartet (String)", checkNotNull("xx"));
     }
 
+    @SuppressWarnings("ConstantValue")
     @Test
     public void testCheckNotNull_NotNullEmptyString() {
         assertTrue("True erwartet (empty string)", checkNotNull(""));
     }
 
+    @SuppressWarnings("ConstantValue")
     @Test
     public void testCheckNotNull_NotNullDate() {
         assertTrue("True erwartet (Date)", checkNotNull(new Date()));
@@ -73,37 +74,38 @@ public class SimpleValidatorTest {
     }
 
     @Test
-    public void testEqualsNullSafe_Equals() throws Exception {
+    public void testEqualsNullSafe_Equals() {
         assertTrue(equalsNullSafe("1", "1"));
     }
 
     @Test
-    public void testEqualsNullSafe_EqualsNullStrings() throws Exception {
+    public void testEqualsNullSafe_EqualsNullStrings() {
         assertTrue(equalsNullSafe("", ""));
     }
 
     @Test
-    public void testEqualsNullSafe_NotEquals() throws Exception {
+    public void testEqualsNullSafe_NotEquals() {
         assertFalse(equalsNullSafe("1", "2"));
     }
 
     @Test
-    public void testEqualsNullSafe_NotEqualsDifferentObjects() throws Exception {
+    public void testEqualsNullSafe_NotEqualsDifferentObjects() {
         assertFalse(equalsNullSafe("1", 1));
     }
 
+    @SuppressWarnings("ConstantValue")
     @Test
-    public void testEqualsNullSafe_NotEqualsFirstNull() throws Exception {
+    public void testEqualsNullSafe_NotEqualsFirstNull() {
         assertFalse(equalsNullSafe(null, "2"));
     }
 
     @Test
-    public void testEqualsNullSafe_NotEqualsSecondNull() throws Exception {
+    public void testEqualsNullSafe_NotEqualsSecondNull() {
         assertFalse(equalsNullSafe("1", null));
     }
 
     @Test
-    public void testEqualsNullSafe_EqualsBothNull() throws Exception {
+    public void testEqualsNullSafe_EqualsBothNull() {
         assertTrue(equalsNullSafe(null, null));
     }
 
@@ -118,7 +120,7 @@ public class SimpleValidatorTest {
     }
 
     @Test
-    public void testEqualsNullSafe_NotEqualsStringEqualsNull() throws Exception {
+    public void testEqualsNullSafe_NotEqualsStringEqualsNull() {
         assertFalse(equalsNullSafe("01.01.2015", null));
     }
 

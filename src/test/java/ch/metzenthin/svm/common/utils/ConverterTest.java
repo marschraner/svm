@@ -65,24 +65,24 @@ public class ConverterTest {
         assertEquals("\"01.01.2015\" erwartet", "01.01.2015", asString(calendar));
     }
 
-   @Test(expected = ParseException.class)
+    @Test(expected = ParseException.class)
     public void test_Lenient_Order() throws ParseException {
         toCalendar("2015.01.01");
     }
 
-   @Test(expected = ParseException.class)
+    @Test(expected = ParseException.class)
     public void test_Lenient_Month() throws ParseException {
         toCalendar("31.04.2001");
     }
 
-   @Test
+    @Test
     public void test_Lenient_Year_Zweistellig_1900() throws ParseException {
-       assertEquals("30.04.1941", asString(toCalendar("30.04.41")));
+        assertEquals("30.04.1941", asString(toCalendar("30.04.41")));
     }
 
-   @Test
+    @Test
     public void test_Lenient_Year_Zweistellig_2000() throws ParseException {
-       assertEquals("30.04.2015", asString(toCalendar("30.04.15")));
+        assertEquals("30.04.2015", asString(toCalendar("30.04.15")));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class ConverterTest {
 
     @Test
     public void test_MM_YYYY() throws ParseException {
-        assertEquals("11.2011", asString(toCalendar("11.2011", "MM.yyyy"),"MM.yyyy"));
+        assertEquals("11.2011", asString(toCalendar("11.2011", "MM.yyyy"), "MM.yyyy"));
     }
 
     @Test
