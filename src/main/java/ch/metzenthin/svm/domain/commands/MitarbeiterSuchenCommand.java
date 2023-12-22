@@ -96,20 +96,20 @@ public class MitarbeiterSuchenCommand implements Command {
         }
         switch (lehrkraftJaNeinSelected) {
             case JA:
-                selectStatementSb.append(" m.lehrkraft = 1 and");
+                selectStatementSb.append(" m.lehrkraft = true and");
                 break;
             case NEIN:
-                selectStatementSb.append(" m.lehrkraft = 0 and");
+                selectStatementSb.append(" m.lehrkraft = false and");
                 break;
             case ALLE:
                 break;
         }
         switch (statusSelected) {
             case AKTIV:
-                selectStatementSb.append(" m.aktiv = 1 and");
+                selectStatementSb.append(" m.aktiv = true and");
                 break;
             case NICHT_AKTIV:
-                selectStatementSb.append(" m.aktiv = 0 and");
+                selectStatementSb.append(" m.aktiv = false and");
                 break;
             case ALLE:
                 break;

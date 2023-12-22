@@ -443,15 +443,15 @@ public class SchuelerSuchenCommand implements Command {
             }
             if (kuchenVorstellung != null) {
                 switch (kuchenVorstellung) {
-                    case (1) -> selectStatementSb.append(" mae.kuchenVorstellung1 = 1 and");
-                    case (2) -> selectStatementSb.append(" mae.kuchenVorstellung2 = 1 and");
-                    case (3) -> selectStatementSb.append(" mae.kuchenVorstellung3 = 1 and");
-                    case (4) -> selectStatementSb.append(" mae.kuchenVorstellung4 = 1 and");
-                    case (5) -> selectStatementSb.append(" mae.kuchenVorstellung5 = 1 and");
-                    case (6) -> selectStatementSb.append(" mae.kuchenVorstellung6 = 1 and");
-                    case (7) -> selectStatementSb.append(" mae.kuchenVorstellung7 = 1 and");
-                    case (8) -> selectStatementSb.append(" mae.kuchenVorstellung8 = 1 and");
-                    case (9) -> selectStatementSb.append(" mae.kuchenVorstellung9 = 1 and");
+                    case (1) -> selectStatementSb.append(" mae.kuchenVorstellung1 = true and");
+                    case (2) -> selectStatementSb.append(" mae.kuchenVorstellung2 = true and");
+                    case (3) -> selectStatementSb.append(" mae.kuchenVorstellung3 = true and");
+                    case (4) -> selectStatementSb.append(" mae.kuchenVorstellung4 = true and");
+                    case (5) -> selectStatementSb.append(" mae.kuchenVorstellung5 = true and");
+                    case (6) -> selectStatementSb.append(" mae.kuchenVorstellung6 = true and");
+                    case (7) -> selectStatementSb.append(" mae.kuchenVorstellung7 = true and");
+                    case (8) -> selectStatementSb.append(" mae.kuchenVorstellung8 = true and");
+                    case (9) -> selectStatementSb.append(" mae.kuchenVorstellung9 = true and");
                     default -> {
                     }
                 }
