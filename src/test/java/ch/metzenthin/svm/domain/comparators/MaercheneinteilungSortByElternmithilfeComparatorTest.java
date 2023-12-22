@@ -7,9 +7,12 @@ import ch.metzenthin.svm.common.dataTypes.Gruppe;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Martin Schraner
@@ -55,7 +58,7 @@ public class MaercheneinteilungSortByElternmithilfeComparatorTest {
         maercheneinteilungList.add(maercheneinteilung2);
         maercheneinteilungList.add(maercheneinteilung3);
 
-        Collections.sort(maercheneinteilungList, new MaercheneinteilungSortByElternmithilfeComparator());
+        maercheneinteilungList.sort(new MaercheneinteilungSortByElternmithilfeComparator());
 
         assertEquals(maercheneinteilung2, maercheneinteilungList.get(0));
         assertEquals(maercheneinteilung3, maercheneinteilungList.get(1));

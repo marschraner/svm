@@ -73,7 +73,7 @@ public class SaveOrUpdateMitarbeiterCommandTest {
         assertTrue(checkIfMitarbeiterAvailable("RoosTest", "Noémie", "nroos@gmx.ch", "Rebwiesenstrasse"));
         assertTrue(checkIfMitarbeiterAvailable("DelleyTest", "Nathalie", "ndelley@sunrise.ch", "Im Schilf"));
 
-        // Mitarbeiter bearbeiten (neue Email, neue Strasse)
+        // Mitarbeiter bearbeiten (neue E-Mail, neue Strasse)
         Mitarbeiter mitarbeiter1Modif = new Mitarbeiter(Anrede.FRAU, "Noémie", "RoosTest", new GregorianCalendar(1994, Calendar.MARCH, 18), "043 111 11 11", "076 384 45 35", "nroos@gmail.com", "756.3943.8722.22", "CH31 8123 9000 0012 4568 9", true, "Mi, Fr, Sa", null, true);
         Adresse adresse1Modif = new Adresse("Rebwiesenweg", "3", "8702", "Zollikon");
         mitarbeiter1.setAdresse(adresse1Modif);

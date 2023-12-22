@@ -9,15 +9,15 @@ import static org.junit.Assert.assertEquals;
  */
 public class BindestrichLeerzeichenFormatterTest {
 
-    private BindestrichLeerzeichenFormatter bindestrichLeerzeichenFormatter = new BindestrichLeerzeichenFormatter();
+    private final BindestrichLeerzeichenFormatter bindestrichLeerzeichenFormatter = new BindestrichLeerzeichenFormatter();
 
     @Test
-    public void testFormatStr1() throws Exception {
+    public void testFormatStr1() {
         assertEquals("Müller-Meier", bindestrichLeerzeichenFormatter.format("Müller - Meier"));
     }
 
     @Test
-    public void testFormatStr2() throws Exception {
+    public void testFormatStr2() {
         assertEquals("Müller Meier", bindestrichLeerzeichenFormatter.format("Müller   Meier"));
     }
 }

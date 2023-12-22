@@ -66,11 +66,11 @@ public class FindAllKursorteCommandTest {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
-        Kursort kursorteaved = kursortDao.save(new Kursort("Saal Test1", true));
-        kursorteTestdata.add(kursorteaved);
+        Kursort kursorteSaved = kursortDao.save(new Kursort("Saal Test1", true));
+        kursorteTestdata.add(kursorteSaved);
 
-        kursorteaved = kursortDao.save(new Kursort("Saal Test2", true));
-        kursorteTestdata.add(kursorteaved);
+        kursorteSaved = kursortDao.save(new Kursort("Saal Test2", true));
+        kursorteTestdata.add(kursorteSaved);
 
         entityManager.getTransaction().commit();
         db.closeSession();

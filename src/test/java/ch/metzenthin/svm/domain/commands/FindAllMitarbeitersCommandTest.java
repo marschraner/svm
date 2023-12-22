@@ -44,7 +44,7 @@ public class FindAllMitarbeitersCommandTest {
     @Test
     public void testExecute() {
         FindAllMitarbeitersCommand findAllMitarbeitersCommand = new FindAllMitarbeitersCommand();
-            commandInvoker.executeCommand(findAllMitarbeitersCommand);
+        commandInvoker.executeCommand(findAllMitarbeitersCommand);
 
         List<Mitarbeiter> lehrkraefteFound = findAllMitarbeitersCommand.getMitarbeitersAll();
         assertTrue(lehrkraefteFound.size() >= 2);

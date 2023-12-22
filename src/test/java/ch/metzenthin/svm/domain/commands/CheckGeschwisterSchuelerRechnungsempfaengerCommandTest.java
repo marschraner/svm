@@ -163,8 +163,7 @@ public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
             for (Schueler schueler1 : geschwister) {
                 System.out.println(schueler1);
             }
-        }
-        else {
+        } else {
             System.out.println(schueler.getVorname() + " " + schueler.getNachname() + " hat keine angemeldeten Geschwister.");
         }
 

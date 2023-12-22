@@ -3,7 +3,8 @@ package ch.metzenthin.svm.domain.model;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Hans Stamm
@@ -18,23 +19,22 @@ public class StrasseFormatterTest {
     }
 
     @Test
-    public void testFormatStr1() throws Exception {
+    public void testFormatStr1() {
         assertEquals("Austrasse 5", strasseFormatter.format("Austr. 5"));
     }
 
     @Test
-    public void testFormatStr2() throws Exception {
+    public void testFormatStr2() {
         assertEquals("Au-Strasse 5", strasseFormatter.format("Au-Str. 5"));
     }
 
     @Test
-    public void testFormat_Null() throws Exception {
+    public void testFormat_Null() {
         assertNull(strasseFormatter.format(null));
     }
 
     @Test
-    public void testFormat_Nullstring() throws Exception {
+    public void testFormat_Nullstring() {
         assertEquals("", strasseFormatter.format(""));
     }
-
 }

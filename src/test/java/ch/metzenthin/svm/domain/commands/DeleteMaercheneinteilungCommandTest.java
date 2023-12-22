@@ -99,7 +99,7 @@ public class DeleteMaercheneinteilungCommandTest {
 
         assertFalse(checkIfMaercheneinteilungAvailable(schueler1, maerchen1, Gruppe.A, Elternmithilfe.VATER, elternmithilfeCode1, "Komödiant 1", "1, 2"));
         assertFalse(checkIfMaercheneinteilungAvailable(schueler2, maerchen2, Gruppe.B, Elternmithilfe.MUTTER, elternmithilfeCode2, "Komödiant 2", "1, 3"));
-        
+
         // 2 Maercheneinteilungen erfassen
         Maercheneinteilung maercheneinteilung1 = new Maercheneinteilung(schueler1, maerchen1, Gruppe.A, "Komödiant 1", "1, 2", "Hase 1", "2, 3", "Frosch 1", "3, 4", Elternmithilfe.VATER,
                 true, true, true, false, false, false, false, false, false, null, null);

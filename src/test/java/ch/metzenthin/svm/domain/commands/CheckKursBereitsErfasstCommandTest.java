@@ -43,7 +43,7 @@ public class CheckKursBereitsErfasstCommandTest {
     @Test
     public void testExecute_KursBereitsErfasst() {
         Kurs kurs = new Kurs("2-3 J", "Vorkindergarten", Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), Time.valueOf("10:50:00"), "Dies ist ein Test.");
-        CheckKursBereitsErfasstCommand checkKursBereitsErfasstCommand = new CheckKursBereitsErfasstCommand(kurs, semester1, mitarbeiter1, null,null, bereitsErfassteKurse);
+        CheckKursBereitsErfasstCommand checkKursBereitsErfasstCommand = new CheckKursBereitsErfasstCommand(kurs, semester1, mitarbeiter1, null, null, bereitsErfassteKurse);
         commandInvoker.executeCommand(checkKursBereitsErfasstCommand);
         assertTrue(checkKursBereitsErfasstCommand.isBereitsErfasst());
     }

@@ -11,7 +11,7 @@ import org.junit.Test;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Martin Schraner

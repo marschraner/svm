@@ -44,7 +44,7 @@ public class FindAllMaerchensCommandTest {
     @Test
     public void testExecute() {
         FindAllMaerchensCommand findAllMaerchensCommand = new FindAllMaerchensCommand();
-            commandInvoker.executeCommand(findAllMaerchensCommand);
+        commandInvoker.executeCommand(findAllMaerchensCommand);
 
         List<Maerchen> maerchenFound = findAllMaerchensCommand.getMaerchensAll();
         assertTrue(maerchenFound.size() >= 2);

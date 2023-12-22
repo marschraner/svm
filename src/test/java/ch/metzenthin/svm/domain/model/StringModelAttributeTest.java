@@ -6,9 +6,7 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * @author Hans Stamm
@@ -23,7 +21,7 @@ public class StringModelAttributeTest {
     }
 
     @Test
-    public void testGetValue_Null() throws Exception {
+    public void testGetValue_Null() {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
                 Field.NACHNAME, 0, 8,
@@ -33,7 +31,7 @@ public class StringModelAttributeTest {
     }
 
     @Test
-    public void testGetValue_NotNull() throws Exception {
+    public void testGetValue_NotNull() {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
                 Field.NACHNAME, 0, 8,
@@ -43,7 +41,7 @@ public class StringModelAttributeTest {
     }
 
     @Test
-    public void testGetValue_Empty() throws Exception {
+    public void testGetValue_Empty() {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
                 Field.NACHNAME, 0, 8,
@@ -52,7 +50,7 @@ public class StringModelAttributeTest {
         assertEquals("", stringModelAttribute.getValue());
     }
 
-    @Test (expected = SvmRequiredException.class)
+    @Test(expected = SvmRequiredException.class)
     public void testSetNewValue_IsRequired_Null() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
@@ -81,7 +79,7 @@ public class StringModelAttributeTest {
         assertEquals(1, testModelAttributeListener.getFireCounter());
     }
 
-    @Test (expected = SvmRequiredException.class)
+    @Test(expected = SvmRequiredException.class)
     public void testSetNewValue_IsRequired_Empty() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
@@ -146,7 +144,7 @@ public class StringModelAttributeTest {
         assertEquals(1, testModelAttributeListener.getFireCounter());
     }
 
-    @Test (expected = SvmValidationException.class)
+    @Test(expected = SvmValidationException.class)
     public void testSetNewValue_MinLength_Greater() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
@@ -199,7 +197,7 @@ public class StringModelAttributeTest {
         assertEquals(1, testModelAttributeListener.getFireCounter());
     }
 
-    @Test (expected = SvmValidationException.class)
+    @Test(expected = SvmValidationException.class)
     public void testSetNewValue_MaxLength_Lesser() throws SvmValidationException {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
@@ -242,7 +240,7 @@ public class StringModelAttributeTest {
 
     @Test
     public void testSetNewValue_Trim() throws SvmValidationException {
-        TestAttributeAccessor  testAttributeAccessor = new TestAttributeAccessor(null);
+        TestAttributeAccessor testAttributeAccessor = new TestAttributeAccessor(null);
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
                 Field.NACHNAME, 0, 10,
@@ -255,8 +253,8 @@ public class StringModelAttributeTest {
     }
 
     @Test
-    public void testInitValue_Null() throws SvmValidationException {
-        TestAttributeAccessor  testAttributeAccessor = new TestAttributeAccessor("TestValue");
+    public void testInitValue_Null() {
+        TestAttributeAccessor testAttributeAccessor = new TestAttributeAccessor("TestValue");
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
                 Field.NACHNAME, 0, 10,
@@ -269,8 +267,8 @@ public class StringModelAttributeTest {
     }
 
     @Test
-    public void testInitValue_Value() throws SvmValidationException {
-        TestAttributeAccessor  testAttributeAccessor = new TestAttributeAccessor("TestValue");
+    public void testInitValue_Value() {
+        TestAttributeAccessor testAttributeAccessor = new TestAttributeAccessor("TestValue");
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
                 Field.NACHNAME, 0, 10,
@@ -285,7 +283,7 @@ public class StringModelAttributeTest {
     @Test
     public void testSetNewValue_NoFormatter() throws SvmValidationException {
         String strasse = "Austrasse 5";
-        TestAttributeAccessor  testAttributeAccessor = new TestAttributeAccessor(strasse);
+        TestAttributeAccessor testAttributeAccessor = new TestAttributeAccessor(strasse);
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
                 Field.STRASSE_HAUSNUMMER, 0, 50,
@@ -303,7 +301,7 @@ public class StringModelAttributeTest {
     @Test
     public void testSetNewValue_FormatterChanged() throws SvmValidationException {
         String strasse = "Austrasse 5";
-        TestAttributeAccessor  testAttributeAccessor = new TestAttributeAccessor(strasse);
+        TestAttributeAccessor testAttributeAccessor = new TestAttributeAccessor(strasse);
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
                 Field.STRASSE_HAUSNUMMER, 0, 50,
@@ -322,7 +320,7 @@ public class StringModelAttributeTest {
     @Test
     public void testSetNewValue_FormatterUnchanged() throws SvmValidationException {
         String strasse = "Austrasse 5";
-        TestAttributeAccessor  testAttributeAccessor = new TestAttributeAccessor(strasse);
+        TestAttributeAccessor testAttributeAccessor = new TestAttributeAccessor(strasse);
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
                 Field.STRASSE_HAUSNUMMER, 0, 50,
@@ -370,9 +368,11 @@ public class StringModelAttributeTest {
     private static class TestAttributeAccessor implements AttributeAccessor<String> {
         private String getValue;
         private String settedValue;
+
         private TestAttributeAccessor(String getValue) {
             this.getValue = getValue;
         }
+
         @Override
         public String getValue() {
             return getValue;

@@ -14,7 +14,8 @@ import java.util.GregorianCalendar;
 import java.util.Properties;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Hans Stamm

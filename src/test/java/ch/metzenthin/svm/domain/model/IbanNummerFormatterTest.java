@@ -18,8 +18,7 @@ public class IbanNummerFormatterTest {
     }
 
     @Test
-    public void testFormat()  {
+    public void testFormat() {
         assertEquals("CH31 8123 9000 0012 4568 9", ibanNummerFormatter.format("CH3181239000001245689"));
     }
-
 }

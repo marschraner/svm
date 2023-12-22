@@ -98,11 +98,11 @@ public class FindAllLektionsgebuehrenCommandTest {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();
 
-        Lektionsgebuehren lektionsgebuehrenaved = lektionsgebuehrenDao.save(new Lektionsgebuehren(57, new BigDecimal("22.50"), new BigDecimal("21.00"), new BigDecimal("19.00"), new BigDecimal("18.00"), new BigDecimal("17.00"), new BigDecimal("16.00")));
-        lektionsgebuehrenTestdata.add(lektionsgebuehrenaved);
+        Lektionsgebuehren lektionsgebuehrenSaved = lektionsgebuehrenDao.save(new Lektionsgebuehren(57, new BigDecimal("22.50"), new BigDecimal("21.00"), new BigDecimal("19.00"), new BigDecimal("18.00"), new BigDecimal("17.00"), new BigDecimal("16.00")));
+        lektionsgebuehrenTestdata.add(lektionsgebuehrenSaved);
 
-        lektionsgebuehrenaved = lektionsgebuehrenDao.save(new Lektionsgebuehren(67, new BigDecimal("24.50"), new BigDecimal("23.00"), new BigDecimal("21.00"), new BigDecimal("20.00"), new BigDecimal("19.00"), new BigDecimal("18.00")));
-        lektionsgebuehrenTestdata.add(lektionsgebuehrenaved);
+        lektionsgebuehrenSaved = lektionsgebuehrenDao.save(new Lektionsgebuehren(67, new BigDecimal("24.50"), new BigDecimal("23.00"), new BigDecimal("21.00"), new BigDecimal("20.00"), new BigDecimal("19.00"), new BigDecimal("18.00")));
+        lektionsgebuehrenTestdata.add(lektionsgebuehrenSaved);
 
         entityManager.getTransaction().commit();
         db.closeSession();

@@ -6,10 +6,9 @@ import ch.metzenthin.svm.persistence.entities.Person;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Martin Schraner
@@ -26,7 +25,7 @@ public class PersonComparatorTest {
         persons.add(person2);
         persons.add(person3);
 
-        Collections.sort(persons, new PersonComparator());
+        persons.sort(new PersonComparator());
 
         assertEquals(person3, persons.get(0));
         assertEquals(person2, persons.get(1));

@@ -9,25 +9,25 @@ import static org.junit.Assert.assertEquals;
  */
 public class NachnameGratiskindFormatterTest {
 
-    private NachnameGratiskindFormatter nachnameGratiskindFormatter = new NachnameGratiskindFormatter();
+    private final NachnameGratiskindFormatter nachnameGratiskindFormatter = new NachnameGratiskindFormatter();
 
     @Test
-    public void testFormatStr1() throws Exception {
+    public void testFormatStr1() {
         assertEquals("Sonja", nachnameGratiskindFormatter.format("Sonja Gratiskind"));
     }
 
     @Test
-    public void testFormatStr2() throws Exception {
+    public void testFormatStr2() {
         assertEquals("Sonja", nachnameGratiskindFormatter.format("Sonja nicht gratis"));
     }
 
     @Test
-    public void testFormatStr3() throws Exception {
+    public void testFormatStr3() {
         assertEquals("Sonja", nachnameGratiskindFormatter.format("Sonja Nicht Gratis"));
     }
 
     @Test
-    public void testFormatStr4() throws Exception {
+    public void testFormatStr4() {
         assertEquals("Sonja nicht", nachnameGratiskindFormatter.format("Sonja nicht"));
     }
 }

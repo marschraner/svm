@@ -4,7 +4,10 @@ import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Field;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.persistence.entities.Adresse;
+import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Schueler;
+import ch.metzenthin.svm.persistence.entities.Semester;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,7 +42,7 @@ public class SchuelerSuchenTableDataTest {
         Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.FRAU, "V3A", "N3A", "Festnetz3A", "Natel3A", "Email3A", true);
         schueler3.setRechnungsempfaenger(angehoeriger3);
         Semester semester = new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), new GregorianCalendar(2011, Calendar.OCTOBER, 5), new GregorianCalendar(2011, Calendar.OCTOBER, 17), new GregorianCalendar(2011, Calendar.DECEMBER, 21), new GregorianCalendar(2012, Calendar.JANUARY, 2));
-        schuelerSuchenTableData = new SchuelerSuchenTableData(schuelerList, new HashMap<Schueler, List<Kurs>>(), semester, null, null, null, null, null, new HashMap<Schueler, Maercheneinteilung>(), null, null, null, false, false, false, null, false);
+        schuelerSuchenTableData = new SchuelerSuchenTableData(schuelerList, new HashMap<>(), semester, null, null, null, null, null, new HashMap<>(), null, null, null, false, false, false, null, false);
     }
 
     @Test
