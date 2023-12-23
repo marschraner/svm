@@ -93,7 +93,7 @@ public class SchuelerErfassenController extends AbstractController {
         // Anrede auf Frau setzen (Anrede anzeigen für Möglichkeit zur Erfassung gleichgeschlechtlicher Paare)
         try {
             mutterModel.setAnrede(Anrede.FRAU);
-            // Default Rechungsempfängerin
+            // Default Rechnungsempfängerin
             mutterModel.setIsRechnungsempfaenger(true);
         } catch (SvmValidationException ignore) {
         }

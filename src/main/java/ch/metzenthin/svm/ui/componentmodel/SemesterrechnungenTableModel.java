@@ -59,7 +59,7 @@ public class SemesterrechnungenTableModel extends AbstractTableModel {
     }
 
     public Semester getSemester() {
-        return semesterrechnungenTableData.getSememester();
+        return semesterrechnungenTableData.getSemester();
     }
 
     public List<Semesterrechnung> getSemesterrechnungen() {

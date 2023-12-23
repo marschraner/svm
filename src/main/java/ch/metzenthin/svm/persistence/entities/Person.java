@@ -238,10 +238,10 @@ public abstract class Person implements Comparable<Person> {
         // Maximal zugelassene Zeichen für Anzeige
         int maxLength = 38;
 
-        // emailAdresse enthält möglicherweise mehrere, durch Komma getrennte Email-Adressen
+        // emailAdresse enthält möglicherweise mehrere, durch Komma getrennte E-Mail-Adressen
         String[] emailAdressenSplitted = email.split("[,;][ \\t]*");
 
-        // Erste Email wird immer angezeigt
+        // Erste E-Mail wird immer angezeigt
         StringBuilder emailToBeDisplayed = new StringBuilder(emailAdressenSplitted[0]);
         int length = emailAdressenSplitted[0].length();
 

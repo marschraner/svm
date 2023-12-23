@@ -29,7 +29,7 @@ public class CreateWordTableCommand implements Command {
     private final List<Integer> columnWidths;
     private final List<List<Boolean>> boldCells;
     private final List<List<Integer>> mergedCells;
-    private final List<List<int[]>> maxLenghts;
+    private final List<List<int[]>> maxLengths;
     private final String title1;
     private final String title2;
     private final File outputFile;
@@ -40,13 +40,13 @@ public class CreateWordTableCommand implements Command {
     private int numberOfDatasetsFirstPage;
     private int numberOfDatasetsNormalPage;
 
-    CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLenghts, String title1, String title2, File outputFile, int topMargin, int bottomMargin, int leftMargin, int rightMargin, int numberOfDatasetsFirstPage, int numberOfDatasetsNormalPage) {
+    CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLengths, String title1, String title2, File outputFile, int topMargin, int bottomMargin, int leftMargin, int rightMargin, int numberOfDatasetsFirstPage, int numberOfDatasetsNormalPage) {
         this.headerRows = headerRows;
         this.datasets = datasets;
         this.columnWidths = columnWidths;
         this.boldCells = boldCells;
         this.mergedCells = mergedCells;
-        this.maxLenghts = maxLenghts;
+        this.maxLengths = maxLengths;
         this.title1 = title1;
         this.title2 = title2;
         this.outputFile = outputFile;
@@ -58,8 +58,8 @@ public class CreateWordTableCommand implements Command {
         this.numberOfDatasetsNormalPage = numberOfDatasetsNormalPage;
     }
 
-    CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLenghts, String title1, String title2, File outputFile) {
-        this(headerRows, datasets, columnWidths, boldCells, mergedCells, maxLenghts, title1, title2, outputFile, 850, 1, 580, 1, 0, 0);
+    CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLengths, String title1, String title2, File outputFile) {
+        this(headerRows, datasets, columnWidths, boldCells, mergedCells, maxLengths, title1, title2, outputFile, 850, 1, 580, 1, 0, 0);
     }
 
     @Override
@@ -195,7 +195,7 @@ public class CreateWordTableCommand implements Command {
                 List<String> datasetRow = datasetRows.get(i);
                 List<Boolean> boldsRow = boldCells.get(i);
                 List<Integer> mergedRow = mergedCells.get(i);
-                List<int[]> maxLenghtsRow = maxLenghts.get(i);
+                List<int[]> maxLengthsRow = maxLengths.get(i);
 
                 // Abstand am Ende eines Datensatzes
                 boolean verticalSpace = (i == datasetRows.size() - 1);
@@ -205,7 +205,7 @@ public class CreateWordTableCommand implements Command {
 
                     // Fontsize je nach Textlänge
                     int k = 0;
-                    int[] maxLengthsCell = maxLenghtsRow.get(j);
+                    int[] maxLengthsCell = maxLengthsRow.get(j);
                     String fontSize = FONT_SIZE_CELLS[0];
                     while (k < maxLengthsCell.length && k < FONT_SIZE_CELLS.length - 1 && maxLengthsCell[k] > 0 && datasetRow.get(j).length() > maxLengthsCell[k]) {
                         fontSize = FONT_SIZE_CELLS[k + 1];
@@ -266,9 +266,9 @@ public class CreateWordTableCommand implements Command {
             CTVerticalJc valign = objectFactory.createCTVerticalJc();
             valign.setVal(STVerticalJc.TOP);
             tcpr.setVAlign(valign);
-            org.docx4j.wml.TcPrInner.GridSpan gspan = objectFactory.createTcPrInnerGridSpan();
-            gspan.setVal(new BigInteger(String.valueOf(mergedCells)));
-            tcpr.setGridSpan(gspan);
+            org.docx4j.wml.TcPrInner.GridSpan gridSpan = objectFactory.createTcPrInnerGridSpan();
+            gridSpan.setVal(new BigInteger(String.valueOf(mergedCells)));
+            tcpr.setGridSpan(gridSpan);
         }
         // Paragraph der Zelle hinzufügen
         tableCell.getContent().add(paragraph);

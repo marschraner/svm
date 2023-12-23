@@ -114,11 +114,11 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
         return schuelerSuchenTableData.getMitarbeiter();
     }
 
-    public Calendar getAnmledemonat() {
+    public Calendar getAnmeldemonat() {
         return schuelerSuchenTableData.getAnmeldemonat();
     }
 
-    public Calendar getAbmledemonat() {
+    public Calendar getAbmeldemonat() {
         return schuelerSuchenTableData.getAbmeldemonat();
     }
 

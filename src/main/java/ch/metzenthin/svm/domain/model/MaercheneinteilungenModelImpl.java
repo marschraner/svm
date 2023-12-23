@@ -29,7 +29,7 @@ class MaercheneinteilungenModelImpl extends AbstractModel implements Maerchenein
         CommandInvoker commandInvoker = getCommandInvoker();
         DeleteMaercheneinteilungCommand deleteMaercheneinteilungCommand = new DeleteMaercheneinteilungCommand(schuelerDatenblattModel.getSchueler().getMaercheneinteilungenAsList(), rowSelected);
         commandInvoker.executeCommandAsTransaction(deleteMaercheneinteilungCommand);
-        // TableData mit von der Datenbank upgedateter Maercheneinteilung updaten
+        // TableData mit von der Datenbank upgedateter Märcheneinteilung updaten
         maercheneinteilungenTableModel.getMaercheneinteilungenTableData().setMaercheneinteilungen(schuelerDatenblattModel.getSchueler().getMaercheneinteilungenAsList());
     }
 

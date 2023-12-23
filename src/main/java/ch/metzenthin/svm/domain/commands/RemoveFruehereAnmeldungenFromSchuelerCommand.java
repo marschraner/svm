@@ -28,7 +28,7 @@ public class RemoveFruehereAnmeldungenFromSchuelerCommand implements Command {
         for (int i = 1; i < schueler.getAnmeldungen().size(); i++) {
             fruehereAnmeldungen.add(schueler.getAnmeldungen().get(i));
         }
-        // Loeschen
+        // Löschen
         Iterator<Anmeldung> it = fruehereAnmeldungen.iterator();
         while (it.hasNext()) {
             Anmeldung anmeldungToBeDeleted = it.next();

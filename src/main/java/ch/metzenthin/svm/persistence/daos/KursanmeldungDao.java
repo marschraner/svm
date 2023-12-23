@@ -44,6 +44,7 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         return kurseinteilungenFound;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public List<Kursanmeldung> findKursanmeldungen(Schueler schueler, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat, boolean keineAbgemeldetenKurseAnzeigen, Calendar stichtagSchuelerSuchen) {
 
         StringBuilder selectStatementSb = new StringBuilder("select k from Kursanmeldung k");
@@ -118,6 +119,7 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         return new GregorianCalendar(monatJahr.get(Calendar.YEAR), monatJahr.get(Calendar.MONTH), 1);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private Calendar getMonatEnde(Calendar monatJahr) {
         Calendar statistikMonatEnde;
         if (monatJahr.get(Calendar.MONTH) == Calendar.DECEMBER) {

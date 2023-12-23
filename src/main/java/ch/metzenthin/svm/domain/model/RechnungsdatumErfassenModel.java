@@ -13,7 +13,7 @@ public interface RechnungsdatumErfassenModel extends Model {
 
     Calendar getRechnungsdatum();
 
-    void setRechnungsdatum(String rechnungdatum) throws SvmValidationException;
+    void setRechnungsdatum(String rechnungsdatum) throws SvmValidationException;
 
     void replaceRechnungsdatumAndUpdateSemesterrechnung(SemesterrechnungenTableModel semesterrechnungenTableModel, Rechnungstyp rechnungstyp);
 }

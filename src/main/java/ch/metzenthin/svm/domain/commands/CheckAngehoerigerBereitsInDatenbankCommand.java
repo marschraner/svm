@@ -16,17 +16,17 @@ public class CheckAngehoerigerBereitsInDatenbankCommand implements Command {
         EINTRAG_WIRD_MUTIERT,                   // Angehöriger (Origin) wird mutiert (nur bei Bearbeiten möglich)
         NICHT_IN_DATENBANK,                     // Angehöriger wird neu erfasst (noch nicht in Datenbank)
         EIN_EINTRAG_PASST,                      // In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben passt: ...
-        // - Diesen Eintrag übernehmen (-> Angehoerigen ersetzen)
+        // - Diesen Eintrag übernehmen (-> Angehörigen ersetzen)
         // - Abbrechen (-> Eingabe-GUI)
         MEHRERE_EINTRAEGE_PASSEN,               // In der Datenbank wurden mehrere Einträge gefunden, die auf die erfassten Angaben passen: ...
         // Angehöriger muss genauer erfasst werden
         // - Eingaben korrigieren (-> Eingabe-GUI)
         EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE,  // In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben teilweise übereinstimmt: ...
-        // - Diesen Eintrag übernehmen (-> Angehoerigen ersetzen)
-        // - Nicht diesen Eintrag verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen  (-> bisherigen Angehoerigen verwenden)
+        // - Diesen Eintrag übernehmen (-> Angehörigen ersetzen)
+        // - Nicht diesen Eintrag verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen  (-> bisherigen Angehörigen verwenden)
         // - Abbrechen (-> Eingabe-GUI)
         MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE,     // In der Datenbank wurden mehrere Einträge gefunden, die mit den erfassten Angaben teilweise übereinstimmen: ...
-        // - Keinen dieser Einträge verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen  (-> bisherigen Angehoerigen verwenden)
+        // - Keinen dieser Einträge verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen  (-> bisherigen Angehörigen verwenden)
         // - Abbrechen (-> Eingabe-GUI)
     }
 

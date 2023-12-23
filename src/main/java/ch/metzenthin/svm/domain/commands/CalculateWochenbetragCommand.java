@@ -55,7 +55,7 @@ public class CalculateWochenbetragCommand implements Command {
                 }
             }
         }
-        // Nur Rabatte bis Lektionsgebuehren.MAX_KINDER
+        // Nur Rabatte bis Lektionsgebühren.MAX_KINDER
         if (anzahlKurseRechnungsempfaenger > Lektionsgebuehren.MAX_KINDER) {
             anzahlKurseRechnungsempfaenger = Lektionsgebuehren.MAX_KINDER;
         }

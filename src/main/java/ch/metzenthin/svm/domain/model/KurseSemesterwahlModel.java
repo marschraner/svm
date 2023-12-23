@@ -9,7 +9,7 @@ public interface KurseSemesterwahlModel extends Model {
 
     Semester getSemester();
 
-    void setSemester(Semester semesterg);
+    void setSemester(Semester semester);
 
     Semester getInitSemester(SvmModel svmModel);
 

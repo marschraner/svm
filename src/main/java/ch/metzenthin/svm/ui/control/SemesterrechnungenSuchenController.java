@@ -807,10 +807,10 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         semesterrechnungenSuchenModel.setSechsJahresRabattJaNeinVorrechnungSelected(SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.ALLE);
     }
 
-    public void setRadioBtnGroupRechungsdatumGesetztNachrechnung(JRadioButton radioBtnRechnungsdatumGesetztNachrechnung, JRadioButton radioBtnRechnungsdatumNichtGesetztNachrechnung, JRadioButton radioBtnRechungsdatumGesetztAlleNachrechnung) {
+    public void setRadioBtnGroupRechnungsdatumGesetztNachrechnung(JRadioButton radioBtnRechnungsdatumGesetztNachrechnung, JRadioButton radioBtnRechnungsdatumNichtGesetztNachrechnung, JRadioButton radioBtnRechnungsdatumGesetztAlleNachrechnung) {
         this.radioBtnRechnungsdatumGesetztNachrechnung = radioBtnRechnungsdatumGesetztNachrechnung;
         this.radioBtnRechnungsdatumNichtGesetztNachrechnung = radioBtnRechnungsdatumNichtGesetztNachrechnung;
-        this.radioBtnRechnungsdatumGesetztAlleNachrechnung = radioBtnRechungsdatumGesetztAlleNachrechnung;
+        this.radioBtnRechnungsdatumGesetztAlleNachrechnung = radioBtnRechnungsdatumGesetztAlleNachrechnung;
         // Action Commands
         this.radioBtnRechnungsdatumGesetztNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.GESETZT.toString());
         this.radioBtnRechnungsdatumNichtGesetztNachrechnung.setActionCommand(SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.NICHT_GESETZT.toString());
@@ -1054,14 +1054,14 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
             enableStipendium();
         }
         if (semesterrechnungenSuchenModel.getRechnungsdatumGesetztVorrechnungSelected() != null && semesterrechnungenSuchenModel.getRechnungsdatumGesetztVorrechnungSelected() != SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.GESETZT) {
-            disableRechungsdatumVorrechnung();
+            disableRechnungsdatumVorrechnung();
         } else {
-            enableRechungsdatumVorrechnung();
+            enableRechnungsdatumVorrechnung();
         }
         if (semesterrechnungenSuchenModel.getRechnungsdatumGesetztNachrechnungSelected() != null && semesterrechnungenSuchenModel.getRechnungsdatumGesetztNachrechnungSelected() != SemesterrechnungenSuchenModel.RechnungsdatumGesetztNachrechnungSelected.GESETZT) {
-            disableRechungsdatumNachrechnung();
+            disableRechnungsdatumNachrechnung();
         } else {
-            enableRechungsdatumNachrechnung();
+            enableRechnungsdatumNachrechnung();
         }
     }
 
@@ -1081,11 +1081,11 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         semesterrechnungenSuchenModel.disableFields(getStipendiumFields());
     }
 
-    private void enableRechungsdatumVorrechnung() {
+    private void enableRechnungsdatumVorrechnung() {
         semesterrechnungenSuchenModel.enableFields(getRechnungsdatumVorrechnungFields());
     }
 
-    private void disableRechungsdatumVorrechnung() {
+    private void disableRechnungsdatumVorrechnung() {
         semesterrechnungenSuchenModel.disableFields(getRechnungsdatumVorrechnungFields());
         semesterrechnungenSuchenModel.makeErrorLabelsInvisible(getRechnungsdatumVorrechnungFields());
         // Textfeld in jedem Fall leeren, auch wenn Model-Wert noch null und damit von
@@ -1094,11 +1094,11 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         semesterrechnungenSuchenModel.invalidateRechnungsdatumVorrechnung();
     }
 
-    private void enableRechungsdatumNachrechnung() {
+    private void enableRechnungsdatumNachrechnung() {
         semesterrechnungenSuchenModel.enableFields(getRechnungsdatumNachrechnungFields());
     }
 
-    private void disableRechungsdatumNachrechnung() {
+    private void disableRechnungsdatumNachrechnung() {
         semesterrechnungenSuchenModel.disableFields(getRechnungsdatumNachrechnungFields());
         semesterrechnungenSuchenModel.makeErrorLabelsInvisible(getRechnungsdatumNachrechnungFields());
         // Textfeld in jedem Fall leeren, auch wenn Model-Wert noch null und damit von
@@ -1108,9 +1108,9 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     }
 
     private Set<Field> getSemesterrechnungCodeFields() {
-        Set<Field> semesterrechungCodeComboBoxFields = new HashSet<>();
-        semesterrechungCodeComboBoxFields.add(Field.SEMESTERRECHNUNG_CODE);
-        return semesterrechungCodeComboBoxFields;
+        Set<Field> semesterrechnungCodeComboBoxFields = new HashSet<>();
+        semesterrechnungCodeComboBoxFields.add(Field.SEMESTERRECHNUNG_CODE);
+        return semesterrechnungCodeComboBoxFields;
     }
 
     private Set<Field> getStipendiumFields() {
@@ -1140,7 +1140,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private void setWaitCursorAllComponents() {
         Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         mainPanel.setCursor(waitCursor);
-        // Textfields müssen separat gesetzt werden
+        // TextFields müssen separat gesetzt werden
         // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
         txtNachname.setCursor(waitCursor);
         txtVorname.setCursor(waitCursor);
@@ -1164,7 +1164,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
 
     private void resetCursorAllComponents() {
         mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        // Textfields müssen separat gesetzt werden
+        // TextFields müssen separat gesetzt werden
         // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
         Cursor textCursor = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
         txtNachname.setCursor(textCursor);
@@ -1574,7 +1574,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     private class RadioBtnGroupRechnungsdatumGesetztVorrechnungListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            LOGGER.trace("SemesterrechnungenSuchenController RechungsdatumGesetztVorrechnung Event");
+            LOGGER.trace("SemesterrechnungenSuchenController RechnungsdatumGesetztVorrechnung Event");
             semesterrechnungenSuchenModel.setRechnungsdatumGesetztVorrechnungSelected(SemesterrechnungenSuchenModel.RechnungsdatumGesetztVorrechnungSelected.valueOf(e.getActionCommand()));
         }
     }

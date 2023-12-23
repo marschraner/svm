@@ -157,7 +157,7 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
                 SemesterrechnungCode semesterrechnungCode = new SemesterrechnungCode(kuerzel, beschreibung, selektierbar);
                 SaveOrUpdateSemesterrechnungCodeCommand saveOrUpdateSemesterrechnungCodeCommand = new SaveOrUpdateSemesterrechnungCodeCommand(semesterrechnungCode, semesterrechnungCodeOrigin, svmModel.getSemesterrechnungCodesAll());
                 commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterrechnungCodeCommand);
-                // TableData mit von der Datenbank upgedateten SemesterrrechnungCodes updaten
+                // TableData mit von der Datenbank upgedateten SemesterrechnungCodes updaten
                 codesTableModel.getCodesTableData().setCodes(svmModel.getSemesterrechnungCodesAll());
             }
         }

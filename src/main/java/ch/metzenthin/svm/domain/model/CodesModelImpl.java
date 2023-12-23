@@ -54,7 +54,7 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
         CommandInvoker commandInvoker = getCommandInvoker();
         DeleteSemesterrechnungCodeCommand deleteSemesterrechnungCodeCommand = new DeleteSemesterrechnungCodeCommand(semesterrechnungCodes, indexCodeToBeRemoved);
         commandInvoker.executeCommandAsTransaction(deleteSemesterrechnungCodeCommand);
-        // TableData mit von der Datenbank upgedateten SemesterrrechnungCodes updaten
+        // TableData mit von der Datenbank upgedateten SemesterrechnungCodes updaten
         codesTableModel.getCodesTableData().setCodes(svmContext.getSvmModel().getSemesterrechnungCodesAll());
         return deleteSemesterrechnungCodeCommand.getResult();
     }

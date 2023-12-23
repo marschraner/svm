@@ -122,7 +122,7 @@ public class SchuelerSuchenCommand implements Command {
         typedQuery = db.getCurrentEntityManager().createQuery(
                 selectStatementSb.toString(), Schueler.class);
 
-        // Maximale Anzahl zurückzuliefernde Werte
+        // Maximale Anzahl zurück zu liefernde Werte
         typedQuery.setMaxResults(MAX_RESULTS);
 
         // Suchparameter setzen
@@ -227,7 +227,7 @@ public class SchuelerSuchenCommand implements Command {
         if (person != null && checkNotEmpty(person.getEmail())) {
             selectStatementSb.append(" lower(s.email) like :email and");
         }
-        selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' loeschen
+        selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' löschen
     }
 
     private void createWhereSelectionsStammdatenMutter() {
@@ -261,7 +261,7 @@ public class SchuelerSuchenCommand implements Command {
         if (person != null && checkNotEmpty(person.getEmail())) {
             selectStatementSb.append(" (lower(s.email) like :email or exists (select s1 from Schueler s1 where lower(s1.mutter.email) like :email and s1.personId = s.personId)) and");
         }
-        selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' loeschen
+        selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' löschen
     }
 
     private void createWhereSelectionsStammdatenVater() {
@@ -292,7 +292,7 @@ public class SchuelerSuchenCommand implements Command {
         if (person != null && checkNotEmpty(person.getEmail())) {
             selectStatementSb.append(" (lower(s.email) like :email or exists (select s1 from Schueler s1 where lower(s1.vater.email) like :email and s1.personId = s.personId)) and");
         }
-        selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' loeschen
+        selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' löschen
     }
 
     private void createWhereSelectionsStammdatenRechnungsempfaenger() {
@@ -323,7 +323,7 @@ public class SchuelerSuchenCommand implements Command {
         if (person != null && checkNotEmpty(person.getEmail())) {
             selectStatementSb.append(" lower(s.rechnungsempfaenger.email) like :email and");
         }
-        selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' loeschen
+        selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' löschen
     }
 
     private void createWhereSelectionsGeburtsdatumSuchperiode() {

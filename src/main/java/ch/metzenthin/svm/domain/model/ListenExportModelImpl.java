@@ -105,7 +105,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
             case VORRECHNUNGEN_SERIENBRIEF:
                 if (!checkIfRechnungsdatumVorrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
                     String listenErstellenWarningMessage = "Die Rechnungsauswahl enthält Vorrechnungen ohne Rechnungsdatum. \n" +
-                            "Es werden nur Rechnungen mit gesetztem Rechnungsdatum exportiert. Forfahren?";
+                            "Es werden nur Rechnungen mit gesetztem Rechnungsdatum exportiert. Fortfahren?";
                     String listenErstellenWarningTitle = "Rechnungsdatum nicht überall gesetzt";
                     listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
                 }
@@ -113,7 +113,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
             case NACHRECHNUNGEN_SERIENBRIEF:
                 if (!checkIfRechnungsdatumNachrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
                     String listenErstellenWarningMessage = "Die Rechnungsauswahl enthält Nachrechnungen ohne Rechnungsdatum. \n" +
-                            "Es werden nur Rechnungen mit gesetztem Rechnungsdatum exportiert. Forfahren?";
+                            "Es werden nur Rechnungen mit gesetztem Rechnungsdatum exportiert. Fortfahren?";
                     String listenErstellenWarningTitle = "Rechnungsdatum nicht überall gesetzt";
                     listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
                 }
@@ -121,7 +121,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
             case MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF:
                 if (!checkIfRechnungsdatumVorrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
                     String listenErstellenWarningMessage = "Die Rechnungsauswahl enthält Vorrechnungen ohne Rechnungsdatum. \n" +
-                            "Es werden nur Rechnungen mit gesetztem Rechnungsdatum als Mahnung exportiert. Forfahren?";
+                            "Es werden nur Rechnungen mit gesetztem Rechnungsdatum als Mahnung exportiert. Fortfahren?";
                     String listenErstellenWarningTitle = "Rechnungsdatum nicht überall gesetzt";
                     listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
                 }
@@ -129,7 +129,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
             case MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF:
                 if (!checkIfRechnungsdatumNachrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
                     String listenErstellenWarningMessage = "Die Rechnungsauswahl enthält Nachrechnungen ohne Rechnungsdatum. \n" +
-                            "Es werden nur Rechnungen mit gesetztem Rechnungsdatum als Mahnung exportiert. Forfahren?";
+                            "Es werden nur Rechnungen mit gesetztem Rechnungsdatum als Mahnung exportiert. Fortfahren?";
                     String listenErstellenWarningTitle = "Rechnungsdatum nicht überall gesetzt";
                     listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
                 }

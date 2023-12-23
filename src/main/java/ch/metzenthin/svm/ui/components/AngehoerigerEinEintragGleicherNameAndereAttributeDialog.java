@@ -70,7 +70,7 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends Sch
 
     @SuppressWarnings("DuplicatedCode")
     private void setLabels(Angehoeriger angehoeriger) {
-        lblBeschreibung.setText("In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben für " + angehoerigerEinEintragGleicherNameAndereAttributeResult.getAngehoerigenArt() + " teilsweise übereinstimmt:");
+        lblBeschreibung.setText("In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben für " + angehoerigerEinEintragGleicherNameAndereAttributeResult.getAngehoerigenArt() + " teilweise übereinstimmt:");
         lblAngehoerigerValue.setText(angehoeriger.toString());
         Set<Schueler> schuelerList = new HashSet<>();
         if (angehoeriger.getKinderMutter().size() > 0) {

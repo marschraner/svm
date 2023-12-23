@@ -33,10 +33,10 @@ public class EmailDialog extends JDialog {
         if (DEFAULT_BUTTON_ENABLED) {
             getRootPane().setDefaultButton(btnOk);
         }
-        createemailController(svmContext, schuelerDatenblattModel);
+        createEmailController(svmContext, schuelerDatenblattModel);
     }
 
-    private void createemailController(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel) {
+    private void createEmailController(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel) {
         EmailModel emailModel = svmContext.getModelFactory().createEmailModel();
         EmailController emailController = new EmailController(emailModel, schuelerDatenblattModel);
         emailController.setEmailDialog(this);

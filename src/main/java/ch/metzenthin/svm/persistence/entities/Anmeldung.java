@@ -111,8 +111,8 @@ public class Anmeldung implements Comparable<Anmeldung> {
         return anmeldedatum;
     }
 
-    public void setAnmeldedatum(Calendar anmeldungbeginn) {
-        this.anmeldedatum = anmeldungbeginn;
+    public void setAnmeldedatum(Calendar anmeldedatum) {
+        this.anmeldedatum = anmeldedatum;
     }
 
     public Calendar getAbmeldedatum() {

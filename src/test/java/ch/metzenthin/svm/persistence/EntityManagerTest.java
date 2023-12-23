@@ -663,7 +663,7 @@ public class EntityManagerTest {
         schuelerCodeB.setBeschreibung("xxx");
         emB.refresh(schuelerCodeB);
 
-        // emB sieht Änderung von emA auch nach close von emA und refresh nicht
+        // emB sieht Änderung von emA auch nach close von emA und refresh nicht.
         // Dies widerspricht dem Kapitel 10.2.6. Refreshing data auf Seite 241 in Java Persistence with Hibernate Second Edition
         // Aber mit Repeatable Read lässt sich das erklären?
 /* Folgendes stimmt nicht ab Hibernate 5.2.9.

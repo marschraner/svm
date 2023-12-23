@@ -886,7 +886,7 @@ public class SchuelerSuchenController extends PersonController {
     private void setWaitCursorAllComponents() {
         Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         mainPanel.setCursor(waitCursor);
-        // Textfields müssen separat gesetzt werden
+        // TextFields müssen separat gesetzt werden
         // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
         txtNachname.setCursor(waitCursor);
         txtVorname.setCursor(waitCursor);
@@ -907,7 +907,7 @@ public class SchuelerSuchenController extends PersonController {
     @SuppressWarnings("DuplicatedCode")
     private void resetCursorAllComponents() {
         mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        // Textfields müssen separat gesetzt werden
+        // TextFields müssen separat gesetzt werden
         // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
         Cursor textCursor = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
         txtNachname.setCursor(textCursor);

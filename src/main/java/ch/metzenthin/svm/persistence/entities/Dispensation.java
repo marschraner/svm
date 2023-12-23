@@ -160,8 +160,8 @@ public class Dispensation implements Comparable<Dispensation> {
         return dispensationsbeginn;
     }
 
-    public void setDispensationsbeginn(Calendar dispensationbeginn) {
-        this.dispensationsbeginn = dispensationbeginn;
+    public void setDispensationsbeginn(Calendar dispensationsbeginn) {
+        this.dispensationsbeginn = dispensationsbeginn;
     }
 
     public Calendar getDispensationsende() {

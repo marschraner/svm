@@ -52,7 +52,7 @@ public class SchuelerDatenblattController {
     private JLabel labelDispensationsgrundValue;
     private JLabel labelFruehereDispensationenValue;
     private JLabel labelSchuelerCodesValue;
-    private JLabel labelSemesterkurseValue;
+    private JLabel labelSemesterKurseValue;
     private JLabel labelMaerchenValue;
     private JLabel labelKurseValue;
     private JLabel labelGruppe;
@@ -432,13 +432,13 @@ public class SchuelerDatenblattController {
         labelSchuelerCodesValue.setText(schuelerDatenblattModel.getSchuelerCodesAsString());
     }
 
-    public void setLabelSemesterKurseValue(JLabel labelSemesterkurseValue) {
-        this.labelSemesterkurseValue = labelSemesterkurseValue;
+    public void setLabelSemesterKurseValue(JLabel labelSemesterKurseValue) {
+        this.labelSemesterKurseValue = labelSemesterKurseValue;
         setLabelSemesterKurseValue();
     }
 
     private void setLabelSemesterKurseValue() {
-        labelSemesterkurseValue.setText(schuelerDatenblattModel.getSemesterKurseAsString(svmContext.getSvmModel()));
+        labelSemesterKurseValue.setText(schuelerDatenblattModel.getSemesterKurseAsString(svmContext.getSvmModel()));
     }
 
     public void setLabelKurseValue(JLabel labelKurseValue) {

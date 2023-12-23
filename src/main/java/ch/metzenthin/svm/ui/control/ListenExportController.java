@@ -161,7 +161,7 @@ public class ListenExportController extends AbstractController {
                     comboBoxListentyp.setSelectedItem(Listentyp.SCHUELER_ADRESSLISTE);
                 }
             }
-            // Keine Schülerliste und keine Rechungsempfänger-Adressetiketten, falls nach Märchen gesucht
+            // Keine Schülerliste und keine Rechnungsempfänger-Adressetiketten, falls nach Märchen gesucht
             if (schuelerSuchenTableModel.isMaerchenFuerSucheBeruecksichtigen() && !schuelerSuchenTableModel.isKursFuerSucheBeruecksichtigen()) {
                 comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
                 comboBoxListentyp.removeItem(Listentyp.RECHNUNGSEMPFAENGER_ADRESSETIKETTEN);

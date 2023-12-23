@@ -72,7 +72,7 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
             kursanmeldungDao.remove(kursanmeldung);
         }
 
-        // Lösche zugewiesene Maercheneinteilungen
+        // Lösche zugewiesene Märcheneinteilungen
         List<Maercheneinteilung> maercheneinteilungenSchueler = maercheneinteilungDao.findMaercheneinteilungenSchueler(schueler);
         for (Maercheneinteilung maercheneinteilung : new ArrayList<>(maercheneinteilungenSchueler)) {
             maercheneinteilungDao.remove(maercheneinteilung);
@@ -82,7 +82,7 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
         entityManager.remove(schueler);
 
         // Lösche Vater, Mutter und Rechnungsempfänger aus DB, falls diese nicht mehr referenziert werden
-        // Achtung: dies muss NACH dem Löschen des Schülers erfolgen!
+        // Achtung: Dies muss NACH dem Löschen des Schülers erfolgen!
         if (vater != null && entityManager.contains(vater) && vater.getKinderVater().size() == 0 && vater.getSchuelerRechnungsempfaenger().size() == 0 && (!isAngehoerigerInSemesterrechnung(vater))) {
             angehoerigerDao.remove(vater);
         }
@@ -98,7 +98,7 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isAngehoerigerInSemesterrechnung(Angehoeriger angehoeriger) {
-        // Kommt Angehoeriger als Rechnungsempfänger in irgend einer (früheren) Semesterrechnung vor?
+        // Kommt Angehoeriger als Rechnungsempfänger in irgendeiner (früheren) Semesterrechnung vor?
         TypedQuery<Long> typedQuery = db.getCurrentEntityManager().createQuery(
                 "select count(s) from Semesterrechnung s where s.rechnungsempfaenger.personId = :angehoerigerPersonId", Long.class);
         typedQuery.setParameter("angehoerigerPersonId", angehoeriger.getPersonId());

@@ -37,7 +37,7 @@ public class MaercheneinteilungDao extends GenericDao<Maercheneinteilung, Maerch
                 "select m from Maercheneinteilung m where m.schueler.personId = :personId", Maercheneinteilung.class);
         typedQuery.setParameter("personId", schueler.getPersonId());
         List<Maercheneinteilung> maercheneinteilungenFound = typedQuery.getResultList();
-        // Sortieren gemäss compareTo in Maercheneinteilungen
+        // Sortieren gemäss compareTo in Märcheneinteilungen
         Collections.sort(maercheneinteilungenFound);
         return maercheneinteilungenFound;
     }

@@ -86,7 +86,7 @@ public interface SemesterrechnungModel extends Model {
 
     void setErmaessigungVorrechnung(String ermaessigungVorrechnung) throws SvmValidationException;
 
-    void setErmaessigungsgrundVorrechnung(String ermaessigunsgrundVorrechnung) throws SvmValidationException;
+    void setErmaessigungsgrundVorrechnung(String ermaessigungsgrundVorrechnung) throws SvmValidationException;
 
     void setZuschlagVorrechnung(String zuschlagVorrechnung) throws SvmValidationException;
 
@@ -112,7 +112,7 @@ public interface SemesterrechnungModel extends Model {
 
     void setErmaessigungNachrechnung(String ermaessigungNachrechnung) throws SvmValidationException;
 
-    void setErmaessigungsgrundNachrechnung(String ermaessigunsgrundNachrechnung) throws SvmValidationException;
+    void setErmaessigungsgrundNachrechnung(String ermaessigungsgrundNachrechnung) throws SvmValidationException;
 
     void setZuschlagNachrechnung(String zuschlagNachrechnung) throws SvmValidationException;
 

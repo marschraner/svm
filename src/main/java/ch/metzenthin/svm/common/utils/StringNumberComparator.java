@@ -21,14 +21,14 @@ public class StringNumberComparator implements Comparator<String>, Serializable 
         String[] spl1 = string1.split("(\\W)+");
         String[] spl2 = string2.split("(\\W)+");
 
-        // Wortweiser Vergleich
+        // Wort weiser Vergleich
         int i = 0;
         while (i < spl1.length && i < spl2.length) {
             String ws1 = spl1[i];
             String ws2 = spl2[i];
             int res;
             if (isInt(ws1) && isInt(ws2)) {
-                // Zahlen vergleichen wenn möglich
+                // Zahlen vergleichen, wenn möglich
                 res = asInt(ws1) - asInt(ws2);
             } else if (isInt(ws1)) {
                 // Zahlen sollen nach Buchstaben stehen

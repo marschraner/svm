@@ -91,6 +91,7 @@ public class KursErfassenDialog extends JDialog {
         kursErfassenController.constructionDone();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void initializeErrLbls() {
         errLblKurstyp.setVisible(false);
         errLblKurstyp.setForeground(Color.RED);

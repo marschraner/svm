@@ -180,7 +180,7 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
                     } else {
                         elternmithilfe = maercheneinteilung.getElternmithilfeDrittperson();
                     }
-                    // Falls Elternteil nach Erfassen der Eltern-Mithilfe gelöscht wurde, kann Elternmithilfe null sein.
+                    // Falls Elternteil nach Erfassen der Elternmithilfe gelöscht wurde, kann Elternmithilfe null sein.
                     if (elternmithilfe != null) {
                         elternmithilfen.add(elternmithilfe);
                     }

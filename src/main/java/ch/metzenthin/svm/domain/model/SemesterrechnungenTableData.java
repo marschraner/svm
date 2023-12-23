@@ -203,7 +203,7 @@ public class SemesterrechnungenTableData {
         return columns.get(columnIndex).toString();
     }
 
-    public Semester getSememester() {
+    public Semester getSemester() {
         return semester;
     }
 

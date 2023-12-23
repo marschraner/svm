@@ -611,8 +611,8 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         Mitarbeiter mitarbeiter = schuelerSuchenTableModel.getLehrkraft();
         Calendar stichtag = schuelerSuchenTableModel.getStichtag();
         boolean keineAbgemeldetenKurseAnzeigen = schuelerSuchenTableModel.isKeineAbgemeldetenKurseAnzeigen();
-        Calendar anmeldemonat = schuelerSuchenTableModel.getAnmledemonat();
-        Calendar abmeldemonat = schuelerSuchenTableModel.getAbmledemonat();
+        Calendar anmeldemonat = schuelerSuchenTableModel.getAnmeldemonat();
+        Calendar abmeldemonat = schuelerSuchenTableModel.getAbmeldemonat();
         FindKurseMapSchuelerSemesterCommand findKurseMapSchuelerSemesterCommand = new FindKurseMapSchuelerSemesterCommand(schuelerList, semester, wochentag, zeitBeginn, mitarbeiter, stichtag, keineAbgemeldetenKurseAnzeigen, anmeldemonat, abmeldemonat);
         commandInvoker.executeCommand(findKurseMapSchuelerSemesterCommand);
         schuelerSuchenTableModel.getSchuelerSuchenTableData().setKurse(findKurseMapSchuelerSemesterCommand.getKurseMap());

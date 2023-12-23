@@ -3,7 +3,7 @@ package ch.metzenthin.svm.common.utils;
 import java.util.Comparator;
 
 /**
- * Für Strings, bei denen Zahlen numerisch Sortiert werden sollen.
+ * Für Strings, bei denen Zahlen numerisch sortiert werden sollen.
  *
  * @author Martin Schraner
  */

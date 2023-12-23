@@ -161,7 +161,7 @@ public class MitarbeiterCodeDaoTest {
             Mitarbeiter mitarbeiterFound = mitarbeiterDao.findById(mitarbeiterSaved.getPersonId());
             entityManager.refresh(mitarbeiterFound);
             assertEquals(2, mitarbeiterFound.getMitarbeiterCodes().size());
-            // Alphatbetisch geordnet?
+            // Alphabetisch geordnet?
             assertEquals("ht", mitarbeiterFound.getMitarbeiterCodesAsList().get(0).getKuerzel());
             assertEquals("vt", mitarbeiterFound.getMitarbeiterCodesAsList().get(1).getKuerzel());
 

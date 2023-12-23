@@ -153,8 +153,8 @@ public class Semester implements Comparable<Semester> {
         return semesterbeginn;
     }
 
-    public void setSemesterbeginn(Calendar dispensationbeginn) {
-        this.semesterbeginn = dispensationbeginn;
+    public void setSemesterbeginn(Calendar semesterbeginn) {
+        this.semesterbeginn = semesterbeginn;
     }
 
     public Calendar getSemesterende() {
