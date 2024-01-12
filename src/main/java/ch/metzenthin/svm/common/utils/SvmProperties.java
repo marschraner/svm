@@ -16,6 +16,7 @@ public class SvmProperties {
     static final String KEY_DB_URL_HOSTNAME = "db_url_hostname";
     static final String KEY_DB_URL_PORT = "db_url_port";
     static final String KEY_DB_URL_OPTIONS = "db_url_options";
+    static final String KEY_DB_SVM_PASSWORD = "db_svm_password";
     public static final String KEY_TEMPLATES_DIRECTORY = "templates_directory";
     public static final String KEY_DEFAULT_OUTPUT_DIRECTORY = "default_output_directory";
     public static final String KEY_ABSENZENLISTEN_TEMPLATE_GANZES_SEMESTER = "absenzenlisten_template_ganzes_semester";
@@ -48,6 +49,7 @@ public class SvmProperties {
             prop.setProperty(KEY_DB_URL_HOSTNAME, "localhost");
             prop.setProperty(KEY_DB_URL_PORT, "3306");
             prop.setProperty(KEY_DB_URL_OPTIONS, "");   // optional
+            prop.setProperty(KEY_DB_SVM_PASSWORD, "svm");
             prop.setProperty(KEY_TEMPLATES_DIRECTORY, System.getProperty("user.home") + File.separator + "svm" + File.separator + "Listen-Templates");
             prop.setProperty(KEY_DEFAULT_OUTPUT_DIRECTORY, System.getProperty("user.home") + File.separator + "Desktop");
             prop.setProperty(KEY_ABSENZENLISTEN_TEMPLATE_GANZES_SEMESTER, "<Schuljahr>" + File.separator + "Semester_<Semester>" + File.separator + "Absenzenlisten-Template_<Schuljahr>_<Semester>_<Wochentag>.docx");
