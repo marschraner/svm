@@ -19,6 +19,9 @@
         <Logger name="org.hibernate.boot.model.internal.EntityBinder" level="error"/>
         <!-- Ignore warning HHH10001002: Using built-in connection pool (not intended for production use) -->
         <Logger name="org.hibernate.orm.connections.pooling" level="error"/>
+        <!-- Verhindern von Info-Messages und Warnungen von Docx4j im Log -->
+        <Logger name="org.docx4j" level="warn"/>
+        <Logger name="org.docx4j.XmlUtils" level="error"/>
         <Root level="info">
             <AppenderRef ref="ConsoleAppender" />
             <AppenderRef ref="FileAppender"/>
