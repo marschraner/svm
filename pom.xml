@@ -82,6 +82,17 @@
 			<version>11.4.9</version>
 		</dependency>
 
+		<!-- https://www.docx4java.org/docx4j/Docx4j_GettingStarted.pdf:  -->
+		<!-- There are 2 significant changes in docx4j 8.0.0: -->
+        <!-- 1. The project is now structured as a Maven multi-module project -->
+        <!-- 2. You'll need one and only one of the docx4j-JAXB-[Internal|MOXy|ReferenceImpl] -->
+        <!--    artifacts and its deps -->
+		<dependency>
+			<groupId>org.docx4j</groupId>
+			<artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
+			<version>11.4.9</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.apple</groupId>
 			<artifactId>AppleJavaExtensions</artifactId>
@@ -153,6 +164,7 @@
 								<ignoredUnusedDeclaredDependency>javax.xml.bind:jaxb-api:jar</ignoredUnusedDeclaredDependency>
 								<ignoredUnusedDeclaredDependency>org.apache.logging.log4j:log4j-core:jar</ignoredUnusedDeclaredDependency>
 								<ignoredUnusedDeclaredDependency>org.apache.logging.log4j:log4j-slf4j2-impl:jar</ignoredUnusedDeclaredDependency>
+								<ignoredUnusedDeclaredDependency>org.docx4j:docx4j-JAXB-ReferenceImpl:jar</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
