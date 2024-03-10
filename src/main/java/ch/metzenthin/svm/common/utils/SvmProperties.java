@@ -17,12 +17,17 @@ public class SvmProperties {
     static final String KEY_DB_URL_PORT = "db_url_port";
     static final String KEY_DB_URL_OPTIONS = "db_url_options";
     static final String KEY_DB_SVM_PASSWORD = "db_svm_password";
+    static final String KEY_RECHNUNGSVERSAND_SMTP_SERVER = "rechnungsversand_smtp_server";
+    static final String KEY_RECHNUNGSVERSAND_SMTP_PORT = "rechnungsversand_smtp_port";
+    public static final String KEY_RECHNUNGSVERSAND_EMAIL = "rechnungsversand_email";
+    public static final String KEY_RECHNUNGSVERSAND_EMAIL_ODER_APP_PASSWORT = "rechnungsversand_email_oder_app_passwort";
+    public static final String KEY_RECHNUNGSVERSAND_TEST_EMPFAENGER = "rechnungsversand_test_empfaenger";
     public static final String KEY_TEMPLATES_DIRECTORY = "templates_directory";
     public static final String KEY_DEFAULT_OUTPUT_DIRECTORY = "default_output_directory";
     public static final String KEY_ABSENZENLISTEN_TEMPLATE_GANZES_SEMESTER = "absenzenlisten_template_ganzes_semester";
     public static final String KEY_ABSENZENLISTEN_TEMPLATE_OKTOBER_FEBRUAR = "absenzenlisten_template_oktober_februar";
     public static final String KEY_SPEZIELLES_ABSENZENLISTEN_TEMPLATE = "spezielles_absenzenlisten_template";
-    public static final String KEY_EMAIL_CLIENT_MULTIPLE_MAILS_SEPARATOR ="email_client_multiple_mails_separator";
+    public static final String KEY_EMAIL_CLIENT_MULTIPLE_MAILS_SEPARATOR = "email_client_multiple_mails_separator";
     public static final String KEY_NEUSTE_ZUOBERST = "neuste_zuoberst";
     public static final String KEY_PREFERRED_LOOK_AND_FEEL = "preferred_look_and_feel";
 
@@ -50,6 +55,11 @@ public class SvmProperties {
             prop.setProperty(KEY_DB_URL_PORT, "3306");
             prop.setProperty(KEY_DB_URL_OPTIONS, "");   // optional
             prop.setProperty(KEY_DB_SVM_PASSWORD, "svm");
+            prop.setProperty(KEY_RECHNUNGSVERSAND_SMTP_SERVER, "");   // kein Default-Wert
+            prop.setProperty(KEY_RECHNUNGSVERSAND_SMTP_PORT, "587");
+            prop.setProperty(KEY_RECHNUNGSVERSAND_EMAIL, "");   // kein Default-Wert
+            prop.setProperty(KEY_RECHNUNGSVERSAND_EMAIL_ODER_APP_PASSWORT, "");   // kein Default-Wert
+            prop.setProperty(KEY_RECHNUNGSVERSAND_TEST_EMPFAENGER, "");   // kein Default-Wert
             prop.setProperty(KEY_TEMPLATES_DIRECTORY, System.getProperty("user.home") + File.separator + "svm" + File.separator + "Listen-Templates");
             prop.setProperty(KEY_DEFAULT_OUTPUT_DIRECTORY, System.getProperty("user.home") + File.separator + "Desktop");
             prop.setProperty(KEY_ABSENZENLISTEN_TEMPLATE_GANZES_SEMESTER, "<Schuljahr>" + File.separator + "Semester_<Semester>" + File.separator + "Absenzenlisten-Template_<Schuljahr>_<Semester>_<Wochentag>.docx");
