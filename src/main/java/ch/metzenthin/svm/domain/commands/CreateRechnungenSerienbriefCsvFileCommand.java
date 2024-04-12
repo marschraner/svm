@@ -55,6 +55,8 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
             out.write(separator);
             out.write("Ort");
             out.write(separator);
+            out.write("E-Mail");
+            out.write(separator);
             out.write("Rechnungsdatum");
             out.write(separator);
             out.write("Bemerkungen");
@@ -104,6 +106,10 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
                 out.write(rechnungsempfaenger.getAdresse().getPlz());
                 out.write(separator);
                 out.write(rechnungsempfaenger.getAdresse().getOrt());
+                out.write(separator);
+                if (rechnungsempfaenger.getEmail() != null) {
+                    out.write(rechnungsempfaenger.getEmail());
+                }
                 out.write(separator);
                 if (rechnungstyp == Rechnungstyp.VORRECHNUNG) {
                     if (semesterrechnung.getRechnungsdatumVorrechnung() != null) {
