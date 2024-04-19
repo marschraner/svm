@@ -17,7 +17,7 @@ public class AngehoerigerDao extends GenericDao<Angehoeriger, Integer> {
      * @param angehoeriger (not null)
      * @return angehoerigeFound
      */
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
     public List<Angehoeriger> findAngehoerige(Angehoeriger angehoeriger) {
 
         StringBuilder selectStatementSb = new StringBuilder("select a from Angehoeriger a where");

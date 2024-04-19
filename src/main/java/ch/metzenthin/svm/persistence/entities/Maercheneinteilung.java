@@ -386,7 +386,7 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
         if (kuchenVorstellung9) {
             vorstellungenKuchenSb.append("9, ");
         }
-        if (vorstellungenKuchenSb.length() > 0) {
+        if (!vorstellungenKuchenSb.isEmpty()) {
             // Letztes ", " löschen
             vorstellungenKuchenSb.setLength(vorstellungenKuchenSb.length() - 2);
         }

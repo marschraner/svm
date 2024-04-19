@@ -57,7 +57,7 @@ public abstract class Code implements Comparable<Code> {
 
     @Override
     public String toString() {
-        if (kuerzel == null || kuerzel.equals("")) {
+        if (kuerzel == null || kuerzel.isEmpty()) {
             return "";
         }
         return kuerzel + " (" + beschreibung + ")";

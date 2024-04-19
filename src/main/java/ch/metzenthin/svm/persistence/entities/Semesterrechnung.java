@@ -179,6 +179,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.deleted = deleted;
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Override
     public int compareTo(Semesterrechnung otherSemesterrechnung) {
         // aufsteigend nach Rechnungsempfänger-Schülern und absteigend nach Semester sortieren

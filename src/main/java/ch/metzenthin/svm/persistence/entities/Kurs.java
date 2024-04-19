@@ -134,7 +134,7 @@ public class Kurs implements Comparable<Kurs> {
                 && semester.equals(otherKurs.semester)
                 && wochentag.equals(otherKurs.wochentag)
                 && zeitBeginn.equals(otherKurs.zeitBeginn)
-                && commonLehrkraefte.size() > 0;
+                && !commonLehrkraefte.isEmpty();
     }
 
     public void copyAttributesFrom(Kurs otherKurs) {

@@ -83,15 +83,25 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
 
         // Lösche Vater, Mutter und Rechnungsempfänger aus DB, falls diese nicht mehr referenziert werden
         // Achtung: Dies muss NACH dem Löschen des Schülers erfolgen!
-        if (vater != null && entityManager.contains(vater) && vater.getKinderVater().size() == 0 && vater.getSchuelerRechnungsempfaenger().size() == 0 && (!isAngehoerigerInSemesterrechnung(vater))) {
+        if (vater != null && entityManager.contains(vater)
+                && vater.getKinderVater().isEmpty()
+                && vater.getSchuelerRechnungsempfaenger().isEmpty()
+                && (!isAngehoerigerInSemesterrechnung(vater))) {
             angehoerigerDao.remove(vater);
         }
 
-        if (mutter != null && entityManager.contains(mutter) && mutter.getKinderMutter().size() == 0 && mutter.getSchuelerRechnungsempfaenger().size() == 0 && (!isAngehoerigerInSemesterrechnung(mutter))) {
+        if (mutter != null && entityManager.contains(mutter)
+                && mutter.getKinderMutter().isEmpty()
+                && mutter.getSchuelerRechnungsempfaenger().isEmpty()
+                && (!isAngehoerigerInSemesterrechnung(mutter))) {
             angehoerigerDao.remove(mutter);
         }
 
-        if (entityManager.contains(rechnungsempfaenger) && rechnungsempfaenger.getKinderVater().size() == 0 && rechnungsempfaenger.getKinderMutter().size() == 0 && rechnungsempfaenger.getSchuelerRechnungsempfaenger().size() == 0  && (!isAngehoerigerInSemesterrechnung(rechnungsempfaenger))) {
+        if (entityManager.contains(rechnungsempfaenger)
+                && rechnungsempfaenger.getKinderVater().isEmpty()
+                && rechnungsempfaenger.getKinderMutter().isEmpty()
+                && rechnungsempfaenger.getSchuelerRechnungsempfaenger().isEmpty()
+                && (!isAngehoerigerInSemesterrechnung(rechnungsempfaenger))) {
             angehoerigerDao.remove(rechnungsempfaenger);
         }
     }
@@ -112,7 +122,7 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
      * @param schueler (not null)
      * @return schuelerFound
      */
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
     public List<Schueler> findSchueler(Schueler schueler) {
 
         StringBuilder selectStatementSb = new StringBuilder("select s from Schueler s where");
