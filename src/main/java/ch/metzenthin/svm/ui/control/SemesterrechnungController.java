@@ -22,6 +22,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public abstract class SemesterrechnungController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(SemesterrechnungController.class);
@@ -112,7 +113,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     }
 
     private void onSemesterrechnungCodeSelected() {
-        LOGGER.trace("SemesterrechnungSuchenController Event SemesterrechnungCode selected=" + comboBoxSemesterrechnungCode.getSelectedItem());
+        LOGGER.trace("SemesterrechnungSuchenController Event SemesterrechnungCode selected={}", comboBoxSemesterrechnungCode.getSelectedItem());
         setModelSemesterrechnungCode();
     }
 
@@ -130,7 +131,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     }
 
     private void onStipendiumSelected() {
-        LOGGER.trace("SemesterrechnungController Event Stipendium selected=" + comboBoxStipendium.getSelectedItem());
+        LOGGER.trace("SemesterrechnungController Event Stipendium selected={}", comboBoxStipendium.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxStipendium.getSelectedItem(), semesterrechnungModel.getStipendium());
         setModelStipendium();
         if (equalFieldAndModelValue && isModelValidationMode()) {
@@ -156,7 +157,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     }
 
     private void onGratiskinderEvent() {
-        LOGGER.trace("SemesterrechnungController Event Gratiskinder. Selected=" + checkBoxGratiskinder.isSelected());
+        LOGGER.trace("SemesterrechnungController Event Gratiskinder. Selected={}", checkBoxGratiskinder.isSelected());
         setModelGratiskinder();
     }
 
@@ -197,7 +198,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setRechnungsdatumVorrechnung(txtRechnungsdatumVorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelRechnungsdatumVorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelRechnungsdatumVorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -236,7 +237,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setErmaessigungVorrechnung(txtErmaessigungVorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelErmaessigungVorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelErmaessigungVorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -275,7 +276,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setErmaessigungsgrundVorrechnung(txtErmaessigungsgrundVorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelErmaessigungsgrundVorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelErmaessigungsgrundVorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -314,7 +315,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setZuschlagVorrechnung(txtZuschlagVorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelZuschlagVorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelZuschlagVorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -353,7 +354,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setZuschlagsgrundVorrechnung(txtZuschlagsgrundVorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelZuschlagsgrundVorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelZuschlagsgrundVorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -392,7 +393,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setAnzahlWochenVorrechnung(txtAnzahlWochenVorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelAnzahlWochenVorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelAnzahlWochenVorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -431,7 +432,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setWochenbetragVorrechnung(txtWochenbetragVorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelWochenbetragVorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelWochenbetragVorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -470,7 +471,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setDatumZahlung1Vorrechnung(txtDatumZahlung1Vorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelDatumZahlung1Vorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelDatumZahlung1Vorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -509,7 +510,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setBetragZahlung1Vorrechnung(txtBetragZahlung1Vorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelBetragZahlung1Vorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelBetragZahlung1Vorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -548,7 +549,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setDatumZahlung2Vorrechnung(txtDatumZahlung2Vorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelDatumZahlung2Vorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelDatumZahlung2Vorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -587,7 +588,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setBetragZahlung2Vorrechnung(txtBetragZahlung2Vorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelBetragZahlung2Vorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelBetragZahlung2Vorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -626,7 +627,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setDatumZahlung3Vorrechnung(txtDatumZahlung3Vorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelDatumZahlung3Vorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelDatumZahlung3Vorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -665,7 +666,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setBetragZahlung3Vorrechnung(txtBetragZahlung3Vorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelBetragZahlung3Vorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelBetragZahlung3Vorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -704,7 +705,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setRechnungsdatumNachrechnung(txtRechnungsdatumNachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelRechnungsdatumNachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelRechnungsdatumNachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -743,7 +744,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setErmaessigungNachrechnung(txtErmaessigungNachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelErmaessigungNachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelErmaessigungNachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -782,7 +783,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setErmaessigungsgrundNachrechnung(txtErmaessigungsgrundNachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelErmaessigungsgrundNachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelErmaessigungsgrundNachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -821,7 +822,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setZuschlagNachrechnung(txtZuschlagNachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelZuschlagNachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelZuschlagNachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -860,7 +861,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setZuschlagsgrundNachrechnung(txtZuschlagsgrundNachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelZuschlagsgrundNachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelZuschlagsgrundNachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -899,7 +900,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setAnzahlWochenNachrechnung(txtAnzahlWochenNachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelAnzahlWochenNachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelAnzahlWochenNachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -938,7 +939,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setWochenbetragNachrechnung(txtWochenbetragNachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelWochenbetragNachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelWochenbetragNachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -977,7 +978,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setDatumZahlung1Nachrechnung(txtDatumZahlung1Nachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelDatumZahlung1Nachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelDatumZahlung1Nachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -1016,7 +1017,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setBetragZahlung1Nachrechnung(txtBetragZahlung1Nachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelBetragZahlung1Nachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelBetragZahlung1Nachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -1055,7 +1056,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setDatumZahlung2Nachrechnung(txtDatumZahlung2Nachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelDatumZahlung2Nachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelDatumZahlung2Nachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -1094,7 +1095,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setBetragZahlung2Nachrechnung(txtBetragZahlung2Nachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelBetragZahlung2Nachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelBetragZahlung2Nachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -1133,7 +1134,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setDatumZahlung3Nachrechnung(txtDatumZahlung3Nachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelDatumZahlung3Nachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelDatumZahlung3Nachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -1172,7 +1173,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setBetragZahlung3Nachrechnung(txtBetragZahlung3Nachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelBetragZahlung3Nachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelBetragZahlung3Nachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -1210,7 +1211,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         try {
             semesterrechnungModel.setBemerkungen(textAreaBemerkungen.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungController setModelBemerkungen Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungController setModelBemerkungen Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }

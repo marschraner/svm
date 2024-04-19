@@ -51,7 +51,7 @@ public class AngehoerigerController extends PersonController {
     }
 
     public void onGleicheAdresseWieSchuelerEvent() {
-        LOGGER.trace("AngehoerigerController Event GleicheAdresseWieSchueler. Selected=" + checkBoxGleicheAdresseWieSchueler.isSelected());
+        LOGGER.trace("AngehoerigerController Event GleicheAdresseWieSchueler. Selected={}", checkBoxGleicheAdresseWieSchueler.isSelected());
         setModelGleicheAdresseWieSchueler();
     }
 
@@ -64,7 +64,7 @@ public class AngehoerigerController extends PersonController {
     }
 
     private void onWuenschtEmailsEvent() {
-        LOGGER.trace("AngehoerigerController Event WuenschtEmails. Selected=" + checkBoxWuenschtEmails.isSelected());
+        LOGGER.trace("AngehoerigerController Event WuenschtEmails. Selected={}", checkBoxWuenschtEmails.isSelected());
         setModelWuenschtEmails();
     }
 
@@ -77,7 +77,7 @@ public class AngehoerigerController extends PersonController {
     }
 
     private void onRechnungsempfaengerEvent() {
-        LOGGER.trace("AngehoerigerController Event Rechnungsempfaenger. Selected=" + checkBoxRechnungsempfaenger.isSelected());
+        LOGGER.trace("AngehoerigerController Event Rechnungsempfaenger. Selected={}", checkBoxRechnungsempfaenger.isSelected());
         setModelRechnungsempfaenger();
     }
 
@@ -99,7 +99,7 @@ public class AngehoerigerController extends PersonController {
 
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
-        LOGGER.trace("AngehoerigerController PropertyChangeEvent '" + evt.getPropertyName() + "', oldValue='" + evt.getOldValue() + "', newValue='" + evt.getNewValue() + "'");
+        LOGGER.trace("AngehoerigerController PropertyChangeEvent '{}', oldValue='{}', newValue='{}'", evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
         if (checkIsFieldChange(Field.GLEICHE_ADRESSE_WIE_SCHUELER, evt)) {
             checkBoxGleicheAdresseWieSchueler.setSelected(angehoerigerModel.isGleicheAdresseWieSchueler());
         } else if (checkIsFieldChange(Field.WUENSCHT_EMAILS, evt) && checkBoxWuenschtEmails.isVisible()) {

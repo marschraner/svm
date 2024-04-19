@@ -23,6 +23,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public class MitarbeiterErfassenController extends PersonController {
 
     private static final Logger LOGGER = LogManager.getLogger(MitarbeiterErfassenController.class);
@@ -118,7 +119,7 @@ public class MitarbeiterErfassenController extends PersonController {
         try {
             mitarbeiterErfassenModel.setAhvNummer(txtAhvNummer.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("MitarbeiterErfassenController setModelAhvNummer RequiredException=" + e.getMessage());
+            LOGGER.trace("MitarbeiterErfassenController setModelAhvNummer RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtAhvNummer.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -127,7 +128,7 @@ public class MitarbeiterErfassenController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("MitarbeiterErfassenController setModelAhvNummer Exception=" + e.getMessage());
+            LOGGER.trace("MitarbeiterErfassenController setModelAhvNummer Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -166,7 +167,7 @@ public class MitarbeiterErfassenController extends PersonController {
         try {
             mitarbeiterErfassenModel.setIbanNummer(txtIbanNummer.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("MitarbeiterErfassenController setModelIbanNummer RequiredException=" + e.getMessage());
+            LOGGER.trace("MitarbeiterErfassenController setModelIbanNummer RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtIbanNummer.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -175,7 +176,7 @@ public class MitarbeiterErfassenController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("MitarbeiterErfassenController setModelIbanNummer Exception=" + e.getMessage());
+            LOGGER.trace("MitarbeiterErfassenController setModelIbanNummer Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -195,7 +196,7 @@ public class MitarbeiterErfassenController extends PersonController {
     }
 
     private void onLehrkraftEvent() {
-        LOGGER.trace("MitarbeiterErfassenController Event Lehrkraft. Selected=" + checkBoxLehrkraft.isSelected());
+        LOGGER.trace("MitarbeiterErfassenController Event Lehrkraft. Selected={}", checkBoxLehrkraft.isSelected());
         setModelLehrkraft();
     }
 
@@ -231,7 +232,7 @@ public class MitarbeiterErfassenController extends PersonController {
         try {
             mitarbeiterErfassenModel.setVertretungsmoeglichkeiten(textAreaVertretungsmoeglichkeiten.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("MitarbeiterErfassenController setModelVertretungsmoeglichkeiten Exception=" + e.getMessage());
+            LOGGER.trace("MitarbeiterErfassenController setModelVertretungsmoeglichkeiten Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -269,7 +270,7 @@ public class MitarbeiterErfassenController extends PersonController {
         try {
             mitarbeiterErfassenModel.setBemerkungen(textAreaBemerkungen.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("MitarbeiterErfassenController setModelBemerkungen Exception=" + e.getMessage());
+            LOGGER.trace("MitarbeiterErfassenController setModelBemerkungen Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -289,7 +290,7 @@ public class MitarbeiterErfassenController extends PersonController {
     }
 
     private void onAktivEvent() {
-        LOGGER.trace("MitarbeiterErfassenController Event Aktiv. Selected=" + checkBoxAktiv.isSelected());
+        LOGGER.trace("MitarbeiterErfassenController Event Aktiv. Selected={}", checkBoxAktiv.isSelected());
         setModelAktiv();
     }
 
@@ -367,7 +368,7 @@ public class MitarbeiterErfassenController extends PersonController {
     }
 
     private void onMitarbeiterErfassenModelCompleted(boolean completed) {
-        LOGGER.trace("MitarbeiterErfassenModel completed=" + completed);
+        LOGGER.trace("MitarbeiterErfassenModel completed={}", completed);
         if (completed) {
             btnSpeichern.setToolTipText(null);
             btnSpeichern.setEnabled(true);

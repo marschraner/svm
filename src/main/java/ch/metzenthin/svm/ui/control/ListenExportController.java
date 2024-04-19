@@ -27,6 +27,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public class ListenExportController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(ListenExportController.class);
@@ -93,7 +94,7 @@ public class ListenExportController extends AbstractController {
     }
 
     private void onListentypSelected() {
-        LOGGER.trace("ListenExportController Event Listentyp selected=" + comboBoxListentyp.getSelectedItem());
+        LOGGER.trace("ListenExportController Event Listentyp selected={}", comboBoxListentyp.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxListentyp.getSelectedItem(), listenExportModel.getListentyp());
         try {
             setModelListentyp();
@@ -112,7 +113,7 @@ public class ListenExportController extends AbstractController {
         try {
             listenExportModel.setListentyp((Listentyp) comboBoxListentyp.getSelectedItem());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("KursErfassenController setModelListentyp RequiredException=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelListentyp RequiredException={}", e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxListentyp.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -142,7 +143,7 @@ public class ListenExportController extends AbstractController {
                 comboBoxListentyp.removeItem(Listentyp.ELTERNMITHILFE_ADRESSETIKETTEN);
                 comboBoxListentyp.removeItem(Listentyp.PROBEPLAENE_ETIKETTEN);
             }
-            if (schuelerSuchenTableModel.getSchuelerList().size() == 0) {
+            if (schuelerSuchenTableModel.getSchuelerList().isEmpty()) {
                 // Keine Adressliste und Etiketten, falls keine Schüler (bei leerer Kurstabelle)
                 comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSLISTE);
                 comboBoxListentyp.removeItem(Listentyp.SCHUELER_ADRESSETIKETTEN);
@@ -265,7 +266,7 @@ public class ListenExportController extends AbstractController {
         try {
             listenExportModel.setTitel(txtTitel.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("ListenExportController setModelTitel RequiredException=" + e.getMessage());
+            LOGGER.trace("ListenExportController setModelTitel RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtTitel.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -274,7 +275,7 @@ public class ListenExportController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("ListenExportController setModelTitel Exception=" + e.getMessage());
+            LOGGER.trace("ListenExportController setModelTitel Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -374,7 +375,7 @@ public class ListenExportController extends AbstractController {
                 try {
                     result = get();
                 } catch (InterruptedException | ExecutionException e) {
-                    LOGGER.warn("Die Liste konnte nicht erstellt werden:" + e.getMessage());
+                    LOGGER.warn("Die Liste konnte nicht erstellt werden:{}", e.getMessage());
                     JOptionPane.showMessageDialog(listenExportDialog, "Die Liste konnte nicht erstellt werden.", "Liste nicht erfolgreich erstellt", JOptionPane.ERROR_MESSAGE);
                 }
                 if (result != null) {
@@ -424,7 +425,7 @@ public class ListenExportController extends AbstractController {
     }
 
     private void onListenExportModelCompleted(boolean completed) {
-        LOGGER.trace("ListenExportModel completed=" + completed);
+        LOGGER.trace("ListenExportModel completed={}", completed);
         if (completed) {
             btnOk.setToolTipText(null);
             btnOk.setEnabled(true);

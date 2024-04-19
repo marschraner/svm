@@ -74,7 +74,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
     }
 
     private void onMutterUndOderVaterEvent() {
-        LOGGER.trace("EmailSemesterrechnungenController Event MutterUndOderVater. Selected=" + checkBoxMutterUndOderVater.isSelected());
+        LOGGER.trace("EmailSemesterrechnungenController Event MutterUndOderVater. Selected={}", checkBoxMutterUndOderVater.isSelected());
         setModelMutterUndOderVater();
     }
 
@@ -88,7 +88,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
     }
 
     private void onRechnungsempfaengerEvent() {
-        LOGGER.trace("EmailSemesterrechnungenController Event Rechnungsempfaenger. Selected=" + checkBoxRechnungsempfaenger.isSelected());
+        LOGGER.trace("EmailSemesterrechnungenController Event Rechnungsempfaenger. Selected={}", checkBoxRechnungsempfaenger.isSelected());
         setModelRechnungsempfaenger();
     }
 
@@ -102,7 +102,7 @@ public class EmailSemesterrechnungenController extends AbstractController {
     }
 
     private void onBlindkopienEvent() {
-        LOGGER.trace("EmailSemesterrechnungenController Event Blindkopien. Selected=" + checkBoxBlindkopien.isSelected());
+        LOGGER.trace("EmailSemesterrechnungenController Event Blindkopien. Selected={}", checkBoxBlindkopien.isSelected());
         setModelBlindkopien();
     }
 

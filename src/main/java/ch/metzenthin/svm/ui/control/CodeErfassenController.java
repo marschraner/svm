@@ -20,6 +20,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public class CodeErfassenController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(CodeErfassenController.class);
@@ -109,7 +110,7 @@ public class CodeErfassenController extends AbstractController {
         try {
             codeErfassenModel.setKuerzel(txtKuerzel.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("CodeErfassenController setModelKuerzel RequiredException=" + e.getMessage());
+            LOGGER.trace("CodeErfassenController setModelKuerzel RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtKuerzel.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -118,7 +119,7 @@ public class CodeErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("CodeErfassenController setModelKuerzel Exception=" + e.getMessage());
+            LOGGER.trace("CodeErfassenController setModelKuerzel Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -157,7 +158,7 @@ public class CodeErfassenController extends AbstractController {
         try {
             codeErfassenModel.setBeschreibung(txtBeschreibung.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("CodeErfassenController setModelBeschreibung RequiredException=" + e.getMessage());
+            LOGGER.trace("CodeErfassenController setModelBeschreibung RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBeschreibung.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -166,7 +167,7 @@ public class CodeErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("CodeErfassenController setModelBeschreibung Exception=" + e.getMessage());
+            LOGGER.trace("CodeErfassenController setModelBeschreibung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -186,7 +187,7 @@ public class CodeErfassenController extends AbstractController {
     }
 
     private void onSelektierbarEvent() {
-        LOGGER.trace("AngehoerigerController Event Selektierbar. Selected=" + checkBoxSelektierbar.isSelected());
+        LOGGER.trace("AngehoerigerController Event Selektierbar. Selected={}", checkBoxSelektierbar.isSelected());
         setModelSelektierbar();
     }
 
@@ -229,7 +230,7 @@ public class CodeErfassenController extends AbstractController {
     }
 
     private void onCodeErfassenModelCompleted(boolean completed) {
-        LOGGER.trace("CodeErfassenModel completed=" + completed);
+        LOGGER.trace("CodeErfassenModel completed={}", completed);
         if (completed) {
             btnSpeichern.setToolTipText(null);
             btnSpeichern.setEnabled(true);

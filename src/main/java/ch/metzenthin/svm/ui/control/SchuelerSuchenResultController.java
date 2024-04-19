@@ -84,6 +84,7 @@ public class SchuelerSuchenResultController {
         setLblTotal();
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     private void setLblTotal() {
         if (schuelerSuchenTableModel.getSemester() == null) {
             lblTotal.setText("Semester nicht erfasst.");

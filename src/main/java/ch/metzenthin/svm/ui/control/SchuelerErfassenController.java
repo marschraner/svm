@@ -62,7 +62,7 @@ public class SchuelerErfassenController extends AbstractController {
     }
 
     private void onSchuelerErfassenModelCompleted(boolean completed) {
-        LOGGER.trace("SchuelerErfassenController completed=" + completed);
+        LOGGER.trace("SchuelerErfassenController completed={}", completed);
         if (completed) {
             btnSpeichern.setToolTipText(null);
             btnSpeichern.setEnabled(true);
@@ -297,7 +297,7 @@ public class SchuelerErfassenController extends AbstractController {
             drittempfaengerController.validateWithThrowException();
             validateWithThrowException();
         } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerErfassenPanel validateOnSpeichern Exception: " + e.getMessageLong());
+            LOGGER.trace("SchuelerErfassenPanel validateOnSpeichern Exception: {}", e.getMessageLong());
             return false;
         }
         return true;

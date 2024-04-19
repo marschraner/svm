@@ -73,13 +73,13 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends Sch
         lblBeschreibung.setText("In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben für " + angehoerigerEinEintragGleicherNameAndereAttributeResult.getAngehoerigenArt() + " teilweise übereinstimmt:");
         lblAngehoerigerValue.setText(angehoeriger.toString());
         Set<Schueler> schuelerList = new HashSet<>();
-        if (angehoeriger.getKinderMutter().size() > 0) {
+        if (!angehoeriger.getKinderMutter().isEmpty()) {
             lblAngehoeriger.setText("Mutter:");
             schuelerList = angehoeriger.getKinderMutter();
-        } else if (angehoeriger.getKinderVater().size() > 0) {
+        } else if (!angehoeriger.getKinderVater().isEmpty()) {
             lblAngehoeriger.setText("Vater:");
             schuelerList = angehoeriger.getKinderVater();
-        } else if (angehoeriger.getSchuelerRechnungsempfaenger().size() > 0) {
+        } else if (!angehoeriger.getSchuelerRechnungsempfaenger().isEmpty()) {
             if (angehoeriger.getAnrede() == Anrede.FRAU) {
                 lblAngehoeriger.setText("Rechnungsempfängerin:");
                 lblSchuelerRechnungsempfaenger1.setText("Schüler mit dieser");
@@ -92,7 +92,7 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends Sch
             schuelerList = angehoeriger.getSchuelerRechnungsempfaenger();
         }
         String schuelerAsStr = "-";
-        if (schuelerList.size() > 0) {
+        if (!schuelerList.isEmpty()) {
             StringBuilder schuelerStb = new StringBuilder("<html>");
             for (Schueler schueler : schuelerList) {
                 if (schuelerStb.length() > 6) {
@@ -103,12 +103,12 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends Sch
             schuelerStb.append("</html>");
             schuelerAsStr = schuelerStb.toString();
         }
-        if (angehoeriger.getKinderMutter().size() > 0 || angehoeriger.getKinderVater().size() > 0) {
+        if (!angehoeriger.getKinderMutter().isEmpty() || !angehoeriger.getKinderVater().isEmpty()) {
             lblKinderValue.setText(schuelerAsStr);
             lblSchuelerRechnungsempfaenger1.setVisible(false);
             lblSchuelerRechnungsempfaenger2.setVisible(false);
             lblSchuelerRechnungsempfaengerValue.setVisible(false);
-        } else if (angehoeriger.getSchuelerRechnungsempfaenger().size() > 0) {
+        } else if (!angehoeriger.getSchuelerRechnungsempfaenger().isEmpty()) {
             lblSchuelerRechnungsempfaengerValue.setText(schuelerAsStr);
             lblKinder.setVisible(false);
             lblKinderValue.setVisible(false);

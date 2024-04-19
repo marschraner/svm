@@ -20,6 +20,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public class DispensationErfassenController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(DispensationErfassenController.class);
@@ -108,7 +109,7 @@ public class DispensationErfassenController extends AbstractController {
         try {
             dispensationErfassenModel.setDispensationsbeginn(txtDispensationsbeginn.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("DispensationErfassenController setModelDispensationsbeginn RequiredException=" + e.getMessage());
+            LOGGER.trace("DispensationErfassenController setModelDispensationsbeginn RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtDispensationsbeginn.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -117,7 +118,7 @@ public class DispensationErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("DispensationErfassenController setModelDispensationsbeginn Exception=" + e.getMessage());
+            LOGGER.trace("DispensationErfassenController setModelDispensationsbeginn Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -156,7 +157,7 @@ public class DispensationErfassenController extends AbstractController {
         try {
             dispensationErfassenModel.setDispensationsende(txtDispensationsende.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("DispensationErfassenController setModelDispensationsende RequiredException=" + e.getMessage());
+            LOGGER.trace("DispensationErfassenController setModelDispensationsende RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtDispensationsende.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -165,7 +166,7 @@ public class DispensationErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("DispensationErfassenController setModelDispensationsende Exception=" + e.getMessage());
+            LOGGER.trace("DispensationErfassenController setModelDispensationsende Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -204,7 +205,7 @@ public class DispensationErfassenController extends AbstractController {
         try {
             dispensationErfassenModel.setVoraussichtlicheDauer(txtVoraussichtlicheDauer.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("DispensationErfassenController setModelVoraussichtlicheDauer RequiredException=" + e.getMessage());
+            LOGGER.trace("DispensationErfassenController setModelVoraussichtlicheDauer RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtVoraussichtlicheDauer.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -213,7 +214,7 @@ public class DispensationErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("DispensationErfassenController setModelVoraussichtlicheDauer Exception=" + e.getMessage());
+            LOGGER.trace("DispensationErfassenController setModelVoraussichtlicheDauer Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -252,7 +253,7 @@ public class DispensationErfassenController extends AbstractController {
         try {
             dispensationErfassenModel.setGrund(txtGrund.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("DispensationErfassenController setModelGrund RequiredException=" + e.getMessage());
+            LOGGER.trace("DispensationErfassenController setModelGrund RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtGrund.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -261,7 +262,7 @@ public class DispensationErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("DispensationErfassenController setModelGrund Exception=" + e.getMessage());
+            LOGGER.trace("DispensationErfassenController setModelGrund Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -314,7 +315,7 @@ public class DispensationErfassenController extends AbstractController {
     }
 
     private void onDispensationErfassenModelCompleted(boolean completed) {
-        LOGGER.trace("DispensationErfassenModel completed=" + completed);
+        LOGGER.trace("DispensationErfassenModel completed={}", completed);
         if (completed) {
             btnSpeichern.setToolTipText(null);
             btnSpeichern.setEnabled(true);

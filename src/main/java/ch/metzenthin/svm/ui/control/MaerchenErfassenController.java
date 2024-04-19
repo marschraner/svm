@@ -19,6 +19,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public class MaerchenErfassenController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(MaerchenErfassenController.class);
@@ -91,7 +92,7 @@ public class MaerchenErfassenController extends AbstractController {
 
     @SuppressWarnings("DuplicatedCode")
     private void onSchuljahrSelected() {
-        LOGGER.trace("PersonController Event Schuljahre selected =" + spinnerSchuljahre.getValue());
+        LOGGER.trace("PersonController Event Schuljahre selected ={}", spinnerSchuljahre.getValue());
         boolean equalFieldAndModelValue = equalsNullSafe(spinnerSchuljahre.getValue(), maerchenErfassenModel.getSchuljahr());
         try {
             setModelSchuljahr();
@@ -110,7 +111,7 @@ public class MaerchenErfassenController extends AbstractController {
         try {
             maerchenErfassenModel.setSchuljahr((String) spinnerSchuljahre.getValue());
         } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelSchuljahr Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelSchuljahr Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -149,7 +150,7 @@ public class MaerchenErfassenController extends AbstractController {
         try {
             maerchenErfassenModel.setBezeichnung(txtBezeichnung.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("MaerchenErfassenController setModelBezeichnung RequiredException=" + e.getMessage());
+            LOGGER.trace("MaerchenErfassenController setModelBezeichnung RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBezeichnung.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -158,7 +159,7 @@ public class MaerchenErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("MaerchenErfassenController setModelBezeichnung Exception=" + e.getMessage());
+            LOGGER.trace("MaerchenErfassenController setModelBezeichnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -197,7 +198,7 @@ public class MaerchenErfassenController extends AbstractController {
         try {
             maerchenErfassenModel.setAnzahlVorstellungen(txtAnzahlVorstellungen.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("MaerchenErfassenController setModelAnzahlVorstellungen RequiredException=" + e.getMessage());
+            LOGGER.trace("MaerchenErfassenController setModelAnzahlVorstellungen RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtAnzahlVorstellungen.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -206,7 +207,7 @@ public class MaerchenErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("MaerchenErfassenController setModelAnzahlVorstellungen Exception=" + e.getMessage());
+            LOGGER.trace("MaerchenErfassenController setModelAnzahlVorstellungen Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -266,7 +267,7 @@ public class MaerchenErfassenController extends AbstractController {
     }
 
     private void onMaerchenErfassenModelCompleted(boolean completed) {
-        LOGGER.trace("MaerchenErfassenModel completed=" + completed);
+        LOGGER.trace("MaerchenErfassenModel completed={}", completed);
         if (completed) {
             btnSpeichern.setToolTipText(null);
             btnSpeichern.setEnabled(true);

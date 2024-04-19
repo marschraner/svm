@@ -29,6 +29,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public class SemesterrechnungenSuchenController extends SemesterrechnungController {
 
     private static final Logger LOGGER = LogManager.getLogger(SemesterrechnungenSuchenController.class);
@@ -167,7 +168,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     }
 
     private void onSemesterSelected() {
-        LOGGER.trace("SemesterrechnungenSuchenController Event Semester selected =" + spinnerSemester.getValue());
+        LOGGER.trace("SemesterrechnungenSuchenController Event Semester selected ={}", spinnerSemester.getValue());
         boolean equalFieldAndModelValue = equalsNullSafe(spinnerSemester.getValue(), semesterrechnungenSuchenModel.getSemester());
         setModelSemester();
         if (equalFieldAndModelValue && isModelValidationMode()) {
@@ -215,7 +216,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         try {
             semesterrechnungenSuchenModel.setNachname(txtNachname.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungenSuchenController setModelNachname Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungenSuchenController setModelNachname Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -254,7 +255,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         try {
             semesterrechnungenSuchenModel.setVorname(txtVorname.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungenSuchenController setModelVorname Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungenSuchenController setModelVorname Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -270,7 +271,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     }
 
     private void onWochentagSelected() {
-        LOGGER.trace("KurseSemesterwahlController Event Wochentag selected=" + comboBoxWochentag.getSelectedItem());
+        LOGGER.trace("KurseSemesterwahlController Event Wochentag selected={}", comboBoxWochentag.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxWochentag.getSelectedItem(), semesterrechnungenSuchenModel.getWochentag());
         setModelWochentag();
         if (equalFieldAndModelValue && isModelValidationMode()) {
@@ -318,7 +319,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         try {
             semesterrechnungenSuchenModel.setZeitBeginn(txtZeitBeginn.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungenSuchenController setModelZeitBeginn Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungenSuchenController setModelZeitBeginn Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -334,7 +335,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     }
 
     private void onLehrkraftSelected() {
-        LOGGER.trace("SemesterrechnungenSuchenController Event Lehrkraft selected=" + comboBoxLehrkraft.getSelectedItem());
+        LOGGER.trace("SemesterrechnungenSuchenController Event Lehrkraft selected={}", comboBoxLehrkraft.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft.getSelectedItem(), semesterrechnungenSuchenModel.getMitarbeiter());
         try {
             setModelLehrkraft();
@@ -387,7 +388,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         try {
             semesterrechnungenSuchenModel.setRechnungsbetragVorrechnung(txtRechnungsbetragVorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungenSuchenController setModelRechnungsbetragVorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungenSuchenController setModelRechnungsbetragVorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -426,7 +427,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         try {
             semesterrechnungenSuchenModel.setRestbetragVorrechnung(txtRestbetragVorrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungenSuchenController setModelRestbetragVorrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungenSuchenController setModelRestbetragVorrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -465,7 +466,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         try {
             semesterrechnungenSuchenModel.setRechnungsbetragNachrechnung(txtRechnungsbetragNachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungenSuchenController setModelRechnungsbetragNachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungenSuchenController setModelRechnungsbetragNachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -504,7 +505,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         try {
             semesterrechnungenSuchenModel.setRestbetragNachrechnung(txtRestbetragNachrechnung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungenSuchenController setModelRestbetragNachrechnung Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungenSuchenController setModelRestbetragNachrechnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -543,7 +544,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
         try {
             semesterrechnungenSuchenModel.setDifferenzSchulgeld(txtDifferenzSchulgeld.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterrechnungenSuchenController setModelDifferenzSchulgeld Exception=" + e.getMessage());
+            LOGGER.trace("SemesterrechnungenSuchenController setModelDifferenzSchulgeld Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -560,7 +561,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     }
 
     private void onGeloeschtEvent() {
-        LOGGER.trace("SemesterrechnungController Event Geloescht. Selected=" + checkBoxGeloescht.isSelected());
+        LOGGER.trace("SemesterrechnungController Event Geloescht. Selected={}", checkBoxGeloescht.isSelected());
         setModelGeloescht();
     }
 
@@ -1020,7 +1021,7 @@ public class SemesterrechnungenSuchenController extends SemesterrechnungControll
     }
 
     private void onSemesterrechnungenSuchenModelCompleted(boolean completed) {
-        LOGGER.trace("SemesterrechnungenSuchenModel completed=" + completed);
+        LOGGER.trace("SemesterrechnungenSuchenModel completed={}", completed);
         if (completed) {
             btnSuchen.setToolTipText(null);
             btnSuchen.setEnabled(true);

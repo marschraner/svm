@@ -68,7 +68,7 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
         try {
             validateWithThrowException();
         } catch (SvmValidationException e) {
-            LOGGER.trace("AbstractController validateOnSpeichern Exception: " + e.getMessageLong());
+            LOGGER.trace("AbstractController validateOnSpeichern Exception: {}", e.getMessageLong());
             return false;
         }
         return true;
@@ -92,7 +92,7 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
         try {
             model.validate();
         } catch (SvmValidationException e) {
-            LOGGER.trace("AbstractController model.validate " + e.getMessageLong());
+            LOGGER.trace("AbstractController model.validate {}", e.getMessageLong());
             showErrMsgAsToolTip(e);
         }
     }
@@ -101,7 +101,7 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
         try {
             model.validate();
         } catch (SvmValidationException e) {
-            LOGGER.trace("AbstractController model.validateModelWithThrowException " + e.getMessageLong());
+            LOGGER.trace("AbstractController model.validateModelWithThrowException {}", e.getMessageLong());
             showErrMsg(e);
             throw e;
         }

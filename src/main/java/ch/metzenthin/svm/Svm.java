@@ -55,9 +55,11 @@ public class Svm {
 
         if (svmPropertyPreferredLookAndFeel != null && !svmPropertyPreferredLookAndFeel.isEmpty()
                 && !svmPropertyPreferredLookAndFeel.equalsIgnoreCase(selectedLookAndFeel)) {
-            LOGGER.warn("'" + svmPropertyPreferredLookAndFeel + "' ist kein gültiger Wert für SVM-Property '" +
-                    SvmProperties.KEY_PREFERRED_LOOK_AND_FEEL + "'. Verwende stattdessen Default-Look and Feel '" +
-                    selectedLookAndFeel + "'.");
+            LOGGER.warn("'{}' ist kein gültiger Wert für SVM-Property '{}'. Verwende stattdessen " +
+                            "Default-Look and Feel '{}'.",
+                    svmPropertyPreferredLookAndFeel,
+                    SvmProperties.KEY_PREFERRED_LOOK_AND_FEEL,
+                    selectedLookAndFeel);
         }
 
         // Notwendige Workarounds für einige Look-And-Feels
@@ -67,7 +69,7 @@ public class Svm {
 
         // Create and set up the window.
         SvmDesktop svmDesktop = new SvmDesktop(svmContext);
-       ((SwingExceptionHandler) Thread.getDefaultUncaughtExceptionHandler()).setSvmDesktop(svmDesktop);
+        ((SwingExceptionHandler) Thread.getDefaultUncaughtExceptionHandler()).setSvmDesktop(svmDesktop);
         LOGGER.info("Svm wurde gestartet.");
     }
 

@@ -901,6 +901,7 @@ public class SchuelerDatenblattController {
         btnKurseBearbeiten.addActionListener(e -> onKurseBearbeiten());
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     private void onKurseBearbeiten() {
         KursanmeldungenTableModel kursanmeldungenTableModel = new KursanmeldungenTableModel(schuelerDatenblattModel.getKurseinteilungenTableData());
         String titel = "Kurse " + schuelerDatenblattModel.getSchuelerVorname() + " " + schuelerDatenblattModel.getSchuelerNachname();
@@ -915,6 +916,7 @@ public class SchuelerDatenblattController {
         btnMaerchenBearbeiten.addActionListener(e -> onMaerchenBearbeiten());
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     private void onMaerchenBearbeiten() {
         MaercheneinteilungenTableModel maercheneinteilungenTableModel = new MaercheneinteilungenTableModel(schuelerDatenblattModel.getMaercheneinteilungenTableData());
         String titel = "Märcheneinteilungen " + schuelerDatenblattModel.getSchuelerVorname() + " " + schuelerDatenblattModel.getSchuelerNachname();

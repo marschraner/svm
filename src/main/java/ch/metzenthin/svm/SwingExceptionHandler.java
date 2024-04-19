@@ -29,7 +29,7 @@ public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
                 Thread.currentThread().interrupt();
             } catch (InvocationTargetException ite) {
                 // not much more we can do here except log the exception
-                ite.getCause().printStackTrace();
+                LOGGER.error(ite.getMessage());
             }
         }
     }

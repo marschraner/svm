@@ -25,6 +25,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public class KursErfassenController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(KursErfassenController.class);
@@ -104,7 +105,7 @@ public class KursErfassenController extends AbstractController {
     }
 
     private void onKurstypSelected() {
-        LOGGER.trace("PersonController Event Kurstyp selected=" + comboBoxKurstyp.getSelectedItem());
+        LOGGER.trace("PersonController Event Kurstyp selected={}", comboBoxKurstyp.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxKurstyp.getSelectedItem(), kursErfassenModel.getKurstyp());
         try {
             setModelKurstyp();
@@ -123,7 +124,7 @@ public class KursErfassenController extends AbstractController {
         try {
             kursErfassenModel.setKurstyp((Kurstyp) comboBoxKurstyp.getSelectedItem());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("KursErfassenController setModelKurstyp RequiredException=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelKurstyp RequiredException={}", e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxKurstyp.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -167,7 +168,7 @@ public class KursErfassenController extends AbstractController {
         try {
             kursErfassenModel.setAltersbereich(txtAltersbereich.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("KursErfassenController setModelAltersbereich RequiredException=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelAltersbereich RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtAltersbereich.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -176,7 +177,7 @@ public class KursErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("KursErfassenController setModelAltersbereich Exception=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelAltersbereich Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -215,7 +216,7 @@ public class KursErfassenController extends AbstractController {
         try {
             kursErfassenModel.setStufe(txtStufe.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("KursErfassenController setModelStufe RequiredException=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelStufe RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtStufe.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -224,7 +225,7 @@ public class KursErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("KursErfassenController setModelStufe Exception=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelStufe Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -241,7 +242,7 @@ public class KursErfassenController extends AbstractController {
     }
 
     private void onWochentagSelected() {
-        LOGGER.trace("KursErfassenController Event Wochentag selected=" + comboBoxWochentag.getSelectedItem());
+        LOGGER.trace("KursErfassenController Event Wochentag selected={}", comboBoxWochentag.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxWochentag.getSelectedItem(), kursErfassenModel.getWochentag());
         try {
             setModelWochentag();
@@ -261,7 +262,7 @@ public class KursErfassenController extends AbstractController {
         try {
             kursErfassenModel.setWochentag((Wochentag) comboBoxWochentag.getSelectedItem());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("KursErfassenController setModelWochentag RequiredException=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelWochentag RequiredException={}", e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxWochentag.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -305,7 +306,7 @@ public class KursErfassenController extends AbstractController {
         try {
             kursErfassenModel.setZeitBeginn(txtZeitBeginn.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("KursErfassenController setModelZeitBeginn RequiredException=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelZeitBeginn RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtZeitBeginn.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -314,7 +315,7 @@ public class KursErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("KursErfassenController setModelZeitBeginn Exception=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelZeitBeginn Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -353,7 +354,7 @@ public class KursErfassenController extends AbstractController {
         try {
             kursErfassenModel.setZeitEnde(txtZeitEnde.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("KursErfassenController setModelZeitEnde RequiredException=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelZeitEnde RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtZeitEnde.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -362,7 +363,7 @@ public class KursErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("KursErfassenController setModelZeitEnde Exception=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelZeitEnde Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -378,7 +379,7 @@ public class KursErfassenController extends AbstractController {
     }
 
     private void onKursortSelected() {
-        LOGGER.trace("KursErfassenController Event Kursort selected=" + comboBoxKursort.getSelectedItem());
+        LOGGER.trace("KursErfassenController Event Kursort selected={}", comboBoxKursort.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxKursort.getSelectedItem(), kursErfassenModel.getKursort());
         try {
             setModelKursort();
@@ -397,7 +398,7 @@ public class KursErfassenController extends AbstractController {
         try {
             kursErfassenModel.setKursort((Kursort) comboBoxKursort.getSelectedItem());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("KursErfassenController setModelKursort RequiredException=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelKursort RequiredException={}", e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxKursort.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -418,7 +419,7 @@ public class KursErfassenController extends AbstractController {
     }
 
     private void onLehrkraft1Selected() {
-        LOGGER.trace("KursErfassenController Event Lehrkraft1 selected=" + comboBoxLehrkraft1.getSelectedItem());
+        LOGGER.trace("KursErfassenController Event Lehrkraft1 selected={}", comboBoxLehrkraft1.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft1.getSelectedItem(), kursErfassenModel.getMitarbeiter1());
         try {
             setModelLehrkraft1();
@@ -437,7 +438,7 @@ public class KursErfassenController extends AbstractController {
         try {
             kursErfassenModel.setMitarbeiter1((Mitarbeiter) comboBoxLehrkraft1.getSelectedItem());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("KursErfassenController setModelLehrkraft1 RequiredException=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelLehrkraft1 RequiredException={}", e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxLehrkraft1.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -458,7 +459,7 @@ public class KursErfassenController extends AbstractController {
     }
 
     private void onLehrkraft2Selected() {
-        LOGGER.trace("KursErfassenController Event Lehrkraft2 selected=" + comboBoxLehrkraft2.getSelectedItem());
+        LOGGER.trace("KursErfassenController Event Lehrkraft2 selected={}", comboBoxLehrkraft2.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft2.getSelectedItem(), kursErfassenModel.getMitarbeiter2());
         setModelLehrkraft2();
         if (equalFieldAndModelValue && isModelValidationMode()) {
@@ -506,7 +507,7 @@ public class KursErfassenController extends AbstractController {
         try {
             kursErfassenModel.setBemerkungen(txtBemerkungen.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("KursErfassenController setModelBemerkungen RequiredException=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelBemerkungen RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBemerkungen.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -515,7 +516,7 @@ public class KursErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("KursErfassenController setModelBemerkungen Exception=" + e.getMessage());
+            LOGGER.trace("KursErfassenController setModelBemerkungen Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -599,7 +600,7 @@ public class KursErfassenController extends AbstractController {
     }
 
     private void onKursErfassenModelCompleted(boolean completed) {
-        LOGGER.trace("KursErfassenModel completed=" + completed);
+        LOGGER.trace("KursErfassenModel completed={}", completed);
         if (completed) {
             btnSpeichern.setToolTipText(null);
             btnSpeichern.setEnabled(true);

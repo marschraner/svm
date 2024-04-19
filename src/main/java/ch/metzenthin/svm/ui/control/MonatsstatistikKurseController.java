@@ -113,7 +113,7 @@ public class MonatsstatistikKurseController extends AbstractController {
         try {
             monatsstatistikKurseModel.setMonatJahr(txtMonatJahr.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("MonatsstatistikController setModelMonatJahr RequiredException=" + e.getMessage());
+            LOGGER.trace("MonatsstatistikController setModelMonatJahr RequiredException={}", e.getMessage());
             if (isModelValidationMode()) {
                 txtMonatJahr.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -122,7 +122,7 @@ public class MonatsstatistikKurseController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("MonatsstatistikController setModelMonatJahr Exception=" + e.getMessage());
+            LOGGER.trace("MonatsstatistikController setModelMonatJahr Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -149,7 +149,7 @@ public class MonatsstatistikKurseController extends AbstractController {
     }
 
     private void onMonatsstatistikModelCompleted(boolean completed) {
-        LOGGER.trace("MonatsstatistikModel completed=" + completed);
+        LOGGER.trace("MonatsstatistikModel completed={}", completed);
         if (completed) {
             btnSuchen.setToolTipText(null);
             btnSuchen.setEnabled(true);

@@ -104,7 +104,7 @@ public class KursortErfassenController extends AbstractController {
         try {
             kursortErfassenModel.setBezeichnung(txtBezeichnung.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("KursortErfassenController setModelBezeichnung RequiredException=" + e.getMessage());
+            LOGGER.trace("KursortErfassenController setModelBezeichnung RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBezeichnung.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -113,7 +113,7 @@ public class KursortErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("KursortErfassenController setModelBezeichnung Exception=" + e.getMessage());
+            LOGGER.trace("KursortErfassenController setModelBezeichnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -133,7 +133,7 @@ public class KursortErfassenController extends AbstractController {
     }
 
     private void onSelektierbarEvent() {
-        LOGGER.trace("AngehoerigerController Event Selektierbar. Selected=" + checkBoxSelektierbar.isSelected());
+        LOGGER.trace("AngehoerigerController Event Selektierbar. Selected={}", checkBoxSelektierbar.isSelected());
         setModelSelektierbar();
     }
 
@@ -172,7 +172,7 @@ public class KursortErfassenController extends AbstractController {
     }
 
     private void onKursortErfassenModelCompleted(boolean completed) {
-        LOGGER.trace("KursortErfassenModel completed=" + completed);
+        LOGGER.trace("KursortErfassenModel completed={}", completed);
         if (completed) {
             btnSpeichern.setToolTipText(null);
             btnSpeichern.setEnabled(true);

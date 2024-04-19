@@ -33,6 +33,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public class SchuelerSuchenController extends PersonController {
 
     private static final Logger LOGGER = LogManager.getLogger(SchuelerSuchenController.class);
@@ -133,7 +134,7 @@ public class SchuelerSuchenController extends PersonController {
         try {
             schuelerSuchenModel.setGeburtsdatumSuchperiode(txtGeburtsdatumSuchperiode.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("SchuelerSuchenController setModelGeburtsdatum RequiredException=" + e.getMessage());
+            LOGGER.trace("SchuelerSuchenController setModelGeburtsdatum RequiredException={}", e.getMessage());
             if (isModelValidationMode()) {
                 txtGeburtsdatumSuchperiode.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -142,7 +143,7 @@ public class SchuelerSuchenController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelGeburtsdatum Exception=" + e.getMessage());
+            LOGGER.trace("SchuelerSuchenController setModelGeburtsdatum Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -186,7 +187,7 @@ public class SchuelerSuchenController extends PersonController {
         try {
             schuelerSuchenModel.setStichtag(txtStichtag.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("SchuelerSuchenController setModelStichtag RequiredException=" + e.getMessage());
+            LOGGER.trace("SchuelerSuchenController setModelStichtag RequiredException={}", e.getMessage());
             if (isModelValidationMode()) {
                 txtStichtag.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -195,7 +196,7 @@ public class SchuelerSuchenController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelStichtag Exception=" + e.getMessage());
+            LOGGER.trace("SchuelerSuchenController setModelStichtag Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -211,7 +212,7 @@ public class SchuelerSuchenController extends PersonController {
     }
 
     private void onSchuelerCodeSelected() {
-        LOGGER.trace("SchuelerSuchenController Event SchuelerCode selected=" + comboBoxSchuelerCode.getSelectedItem());
+        LOGGER.trace("SchuelerSuchenController Event SchuelerCode selected={}", comboBoxSchuelerCode.getSelectedItem());
         setModelSchuelerCode();
     }
 
@@ -237,7 +238,7 @@ public class SchuelerSuchenController extends PersonController {
     }
 
     private void onSemesterKursSelected() {
-        LOGGER.trace("SchuelerSuchenController Event Semester selected =" + spinnerSemesterKurs.getValue());
+        LOGGER.trace("SchuelerSuchenController Event Semester selected ={}", spinnerSemesterKurs.getValue());
         boolean equalFieldAndModelValue = equalsNullSafe(spinnerSemesterKurs.getValue(), schuelerSuchenModel.getSemesterKurs());
         setModelSemesterKurs();
         if (equalFieldAndModelValue && isModelValidationMode()) {
@@ -262,7 +263,7 @@ public class SchuelerSuchenController extends PersonController {
     }
 
     private void onWochentagSelected() {
-        LOGGER.trace("KurseSemesterwahlController Event Wochentag selected=" + comboBoxWochentag.getSelectedItem());
+        LOGGER.trace("KurseSemesterwahlController Event Wochentag selected={}", comboBoxWochentag.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxWochentag.getSelectedItem(), schuelerSuchenModel.getWochentag());
         setModelWochentag();
         if (equalFieldAndModelValue && isModelValidationMode()) {
@@ -310,7 +311,7 @@ public class SchuelerSuchenController extends PersonController {
         try {
             schuelerSuchenModel.setZeitBeginn(txtZeitBeginn.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelZeitBeginn Exception=" + e.getMessage());
+            LOGGER.trace("SchuelerSuchenController setModelZeitBeginn Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -326,7 +327,7 @@ public class SchuelerSuchenController extends PersonController {
     }
 
     private void onLehrkraftSelected() {
-        LOGGER.trace("SchuelerSuchenController Event Lehrkraft selected=" + comboBoxLehrkraft.getSelectedItem());
+        LOGGER.trace("SchuelerSuchenController Event Lehrkraft selected={}", comboBoxLehrkraft.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft.getSelectedItem(), schuelerSuchenModel.getMitarbeiter());
         try {
             setModelLehrkraft();
@@ -356,7 +357,7 @@ public class SchuelerSuchenController extends PersonController {
     }
 
     private void onKursFuerSucheBeruecksichtigenEvent() {
-        LOGGER.trace("SchuelerSuchenController Event KursFuerSucheBeruecksichtigen. Selected=" + checkBoxKursFuerSucheBeruecksichtigen.isSelected());
+        LOGGER.trace("SchuelerSuchenController Event KursFuerSucheBeruecksichtigen. Selected={}", checkBoxKursFuerSucheBeruecksichtigen.isSelected());
         setModelKursFuerSucheBeruecksichtigen();
     }
 
@@ -382,7 +383,7 @@ public class SchuelerSuchenController extends PersonController {
     }
 
     private void onMaerchenSelected() {
-        LOGGER.trace("KurseSemesterwahlController Event Maerchen selected =" + spinnerMaerchen.getValue());
+        LOGGER.trace("KurseSemesterwahlController Event Maerchen selected ={}", spinnerMaerchen.getValue());
         boolean equalFieldAndModelValue = equalsNullSafe(spinnerMaerchen.getValue(), schuelerSuchenModel.getMaerchen());
         setModelMaerchen();
         if (equalFieldAndModelValue && isModelValidationMode()) {
@@ -406,7 +407,7 @@ public class SchuelerSuchenController extends PersonController {
     }
 
     private void onGruppeSelected() {
-        LOGGER.trace("SchuelerSuchenController Event Gruppe selected=" + comboBoxGruppe.getSelectedItem());
+        LOGGER.trace("SchuelerSuchenController Event Gruppe selected={}", comboBoxGruppe.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxGruppe.getSelectedItem(), schuelerSuchenModel.getGruppe());
         setModelGruppe();
         if (equalFieldAndModelValue && isModelValidationMode()) {
@@ -453,7 +454,7 @@ public class SchuelerSuchenController extends PersonController {
         try {
             schuelerSuchenModel.setRollen(txtAreaRollen.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelRollen Exception=" + e.getMessage());
+            LOGGER.trace("SchuelerSuchenController setModelRollen Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -469,7 +470,7 @@ public class SchuelerSuchenController extends PersonController {
     }
 
     private void onElternmithilfeCodeSelected() {
-        LOGGER.trace("ElternmithilfeSuchenController Event ElternmithilfeCode selected=" + comboBoxElternmithilfeCode.getSelectedItem());
+        LOGGER.trace("ElternmithilfeSuchenController Event ElternmithilfeCode selected={}", comboBoxElternmithilfeCode.getSelectedItem());
         setModelElternmithilfeCode();
     }
 
@@ -510,7 +511,7 @@ public class SchuelerSuchenController extends PersonController {
         try {
             schuelerSuchenModel.setKuchenVorstellung(txtKuchenVorstellung.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelKuchenVorstellung Exception=" + e.getMessage());
+            LOGGER.trace("SchuelerSuchenController setModelKuchenVorstellung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -549,7 +550,7 @@ public class SchuelerSuchenController extends PersonController {
         try {
             schuelerSuchenModel.setZusatzattributMaerchen(txtZusatzattributMaerchen.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerSuchenController setModelZusatzattributMaerchen Exception=" + e.getMessage());
+            LOGGER.trace("SchuelerSuchenController setModelZusatzattributMaerchen Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -566,7 +567,7 @@ public class SchuelerSuchenController extends PersonController {
     }
 
     private void onMaerchenFuerSucheBeruecksichtigenEvent() {
-        LOGGER.trace("SchuelerSuchenController Event MaerchenFuerSucheBeruecksichtigen. Selected=" + checkBoxMaerchenFuerSucheBeruecksichtigen.isSelected());
+        LOGGER.trace("SchuelerSuchenController Event MaerchenFuerSucheBeruecksichtigen. Selected={}", checkBoxMaerchenFuerSucheBeruecksichtigen.isSelected());
         setModelMaerchenFuerSucheBeruecksichtigen();
     }
 
@@ -743,7 +744,7 @@ public class SchuelerSuchenController extends PersonController {
     }
 
     private void onSchuelerSuchenModelCompleted(boolean completed) {
-        LOGGER.trace("SchuelerSuchenModel completed=" + completed);
+        LOGGER.trace("SchuelerSuchenModel completed={}", completed);
         if (completed) {
             btnSuchen.setToolTipText(null);
             btnSuchen.setEnabled(true);

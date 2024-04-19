@@ -336,7 +336,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
     private void onNextPanelAvailable(Object eventSource) {
         startWaitCursor();
         Object[] eventSourceArray = (Object[]) eventSource;
-        LOGGER.trace("Next panel " + eventSourceArray[1] + " aufgerufen");
+        LOGGER.trace("Next panel {} aufgerufen", eventSourceArray[1]);
         if (eventSourceArray.length > 2) {
             Object thirdElement = eventSourceArray[2];
             if ((thirdElement instanceof Boolean)) {

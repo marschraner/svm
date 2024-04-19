@@ -77,7 +77,7 @@ public class KurseSemesterwahlController extends AbstractController {
     }
 
     private void onSemesterSelected() {
-        LOGGER.trace("KurseSemesterwahlController Event Semester selected =" + spinnerSemester.getValue());
+        LOGGER.trace("KurseSemesterwahlController Event Semester selected ={}", spinnerSemester.getValue());
         boolean equalFieldAndModelValue = equalsNullSafe(spinnerSemester.getValue(), kurseSemesterwahlModel.getSemester());
         setModelSemester();
         if (equalFieldAndModelValue && isModelValidationMode()) {
@@ -127,7 +127,7 @@ public class KurseSemesterwahlController extends AbstractController {
     }
 
     private void onKurseSuchenModelCompleted(boolean completed) {
-        LOGGER.trace("KurseSemesterwahlModel completed=" + completed);
+        LOGGER.trace("KurseSemesterwahlModel completed={}", completed);
         if (completed) {
             btnOk.setToolTipText(null);
             btnOk.setEnabled(true);

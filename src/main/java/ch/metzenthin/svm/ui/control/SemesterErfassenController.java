@@ -21,6 +21,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public class SemesterErfassenController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(SemesterErfassenController.class);
@@ -102,7 +103,7 @@ public class SemesterErfassenController extends AbstractController {
 
     @SuppressWarnings("DuplicatedCode")
     private void onSchuljahrSelected() {
-        LOGGER.trace("PersonController Event Schuljahre selected =" + spinnerSchuljahre.getValue());
+        LOGGER.trace("PersonController Event Schuljahre selected ={}", spinnerSchuljahre.getValue());
         boolean equalFieldAndModelValue = equalsNullSafe(spinnerSchuljahre.getValue(), semesterErfassenModel.getSchuljahr());
         try {
             setModelSchuljahr();
@@ -121,7 +122,7 @@ public class SemesterErfassenController extends AbstractController {
         try {
             semesterErfassenModel.setSchuljahr((String) spinnerSchuljahre.getValue());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterErfassenController setModelSchuljahr Exception=" + e.getMessage());
+            LOGGER.trace("SemesterErfassenController setModelSchuljahr Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -145,7 +146,7 @@ public class SemesterErfassenController extends AbstractController {
     }
 
     private void onSemesterbezeichnungSelected() {
-        LOGGER.trace("SemesterErfassenController Event Semesterbezeichnung selected=" + comboBoxSemesterbezeichnung.getSelectedItem());
+        LOGGER.trace("SemesterErfassenController Event Semesterbezeichnung selected={}", comboBoxSemesterbezeichnung.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxSemesterbezeichnung.getSelectedItem(), semesterErfassenModel.getSemesterbezeichnung());
         try {
             setModelSemesterbezeichnung();
@@ -164,7 +165,7 @@ public class SemesterErfassenController extends AbstractController {
         try {
             semesterErfassenModel.setSemesterbezeichnung((Semesterbezeichnung) comboBoxSemesterbezeichnung.getSelectedItem());
         } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelSemesterbezeichnung Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelSemesterbezeichnung Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -203,7 +204,7 @@ public class SemesterErfassenController extends AbstractController {
         try {
             semesterErfassenModel.setSemesterbeginn(txtSemesterbeginn.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("SemesterErfassenController setModelSemesterbeginn RequiredException=" + e.getMessage());
+            LOGGER.trace("SemesterErfassenController setModelSemesterbeginn RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtSemesterbeginn.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -212,7 +213,7 @@ public class SemesterErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterErfassenController setModelSemesterbeginn Exception=" + e.getMessage());
+            LOGGER.trace("SemesterErfassenController setModelSemesterbeginn Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -251,7 +252,7 @@ public class SemesterErfassenController extends AbstractController {
         try {
             semesterErfassenModel.setSemesterende(txtSemesterende.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("SemesterErfassenController setModelSemesterende RequiredException=" + e.getMessage());
+            LOGGER.trace("SemesterErfassenController setModelSemesterende RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtSemesterende.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -260,7 +261,7 @@ public class SemesterErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterErfassenController setModelSemesterende Exception=" + e.getMessage());
+            LOGGER.trace("SemesterErfassenController setModelSemesterende Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -299,7 +300,7 @@ public class SemesterErfassenController extends AbstractController {
         try {
             semesterErfassenModel.setFerienbeginn1(txtFerienbeginn1.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("SemesterErfassenController setModelFerienbeginn1 RequiredException=" + e.getMessage());
+            LOGGER.trace("SemesterErfassenController setModelFerienbeginn1 RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtFerienbeginn1.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -308,7 +309,7 @@ public class SemesterErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterErfassenController setModelFerienbeginn1 Exception=" + e.getMessage());
+            LOGGER.trace("SemesterErfassenController setModelFerienbeginn1 Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -347,7 +348,7 @@ public class SemesterErfassenController extends AbstractController {
         try {
             semesterErfassenModel.setFerienende1(txtFerienende1.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("SemesterErfassenController setModelFerienende1 RequiredException=" + e.getMessage());
+            LOGGER.trace("SemesterErfassenController setModelFerienende1 RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtFerienende1.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -356,7 +357,7 @@ public class SemesterErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterErfassenController setModelFerienende1 Exception=" + e.getMessage());
+            LOGGER.trace("SemesterErfassenController setModelFerienende1 Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -395,7 +396,7 @@ public class SemesterErfassenController extends AbstractController {
         try {
             semesterErfassenModel.setFerienbeginn2(txtFerienbeginn2.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("SemesterErfassenController setModelFerienbeginn2 RequiredException=" + e.getMessage());
+            LOGGER.trace("SemesterErfassenController setModelFerienbeginn2 RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtFerienbeginn2.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -404,7 +405,7 @@ public class SemesterErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterErfassenController setModelFerienbeginn2 Exception=" + e.getMessage());
+            LOGGER.trace("SemesterErfassenController setModelFerienbeginn2 Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -443,7 +444,7 @@ public class SemesterErfassenController extends AbstractController {
         try {
             semesterErfassenModel.setFerienende2(txtFerienende2.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("SemesterErfassenController setModelFerienende2 RequiredException=" + e.getMessage());
+            LOGGER.trace("SemesterErfassenController setModelFerienende2 RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtFerienende2.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -452,7 +453,7 @@ public class SemesterErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("SemesterErfassenController setModelFerienende2 Exception=" + e.getMessage());
+            LOGGER.trace("SemesterErfassenController setModelFerienende2 Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -537,7 +538,7 @@ public class SemesterErfassenController extends AbstractController {
     }
 
     private void onSemesterErfassenModelCompleted(boolean completed) {
-        LOGGER.trace("SemesterErfassenModel completed=" + completed);
+        LOGGER.trace("SemesterErfassenModel completed={}", completed);
         if (completed) {
             btnSpeichern.setToolTipText(null);
             btnSpeichern.setEnabled(true);

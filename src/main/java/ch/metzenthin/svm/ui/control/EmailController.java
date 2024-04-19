@@ -79,7 +79,7 @@ public class EmailController extends AbstractController {
     }
 
     private void onEmailEmpfaengerSelected() {
-        LOGGER.trace("EmailController Event EmailEmpfaenger selected=" + comboBoxEmailEmpfaenger.getSelectedItem());
+        LOGGER.trace("EmailController Event EmailEmpfaenger selected={}", comboBoxEmailEmpfaenger.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxEmailEmpfaenger.getSelectedItem(), emailModel.getEmailEmpfaenger());
         try {
             setModelEmailEmpfaenger();
@@ -131,7 +131,7 @@ public class EmailController extends AbstractController {
     }
 
     private void onEmailModelCompleted(boolean completed) {
-        LOGGER.trace("EmailModel completed=" + completed);
+        LOGGER.trace("EmailModel completed={}", completed);
         if (completed) {
             btnOk.setToolTipText(null);
             btnOk.setEnabled(true);

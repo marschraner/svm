@@ -30,6 +30,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public class MaercheneinteilungErfassenController extends PersonController {
 
     private static final Logger LOGGER = LogManager.getLogger(MaercheneinteilungErfassenController.class);
@@ -212,7 +213,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void onMaerchenSelected() {
-        LOGGER.trace("MaercheneinteilungErfassenController Event Maerchen selected =" + spinnerMaerchen.getValue());
+        LOGGER.trace("MaercheneinteilungErfassenController Event Maerchen selected ={}", spinnerMaerchen.getValue());
         boolean equalFieldAndModelValue = equalsNullSafe(spinnerMaerchen.getValue(), maercheneinteilungErfassenModel.getMaerchen());
         setModelMaerchen();
         if (equalFieldAndModelValue && isModelValidationMode()) {
@@ -238,7 +239,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void onGruppeSelected() {
-        LOGGER.trace("MaercheneinteilungErfassenController Event Gruppe selected=" + comboBoxGruppe.getSelectedItem());
+        LOGGER.trace("MaercheneinteilungErfassenController Event Gruppe selected={}", comboBoxGruppe.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxGruppe.getSelectedItem(), maercheneinteilungErfassenModel.getGruppe());
         try {
             setModelGruppe();
@@ -257,7 +258,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         try {
             maercheneinteilungErfassenModel.setGruppe((Gruppe) comboBoxGruppe.getSelectedItem());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelGruppe RequiredException=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelGruppe RequiredException={}", e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxGruppe.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -301,7 +302,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         try {
             maercheneinteilungErfassenModel.setRolle1(txtRolle1.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelRolle1 RequiredException=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelRolle1 RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtRolle1.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -310,7 +311,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelRolle1 Exception=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelRolle1 Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -349,7 +350,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         try {
             maercheneinteilungErfassenModel.setBilderRolle1(txtBilderRolle1.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle1 RequiredException=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle1 RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBilderRolle1.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -358,7 +359,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle1 Exception=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle1 Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -397,7 +398,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         try {
             maercheneinteilungErfassenModel.setRolle2(txtRolle2.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelRolle2 RequiredException=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelRolle2 RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtRolle2.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -406,7 +407,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelRolle2 Exception=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelRolle2 Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -445,7 +446,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         try {
             maercheneinteilungErfassenModel.setBilderRolle2(txtBilderRolle2.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle2 RequiredException=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle2 RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBilderRolle2.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -454,7 +455,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle2 Exception=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle2 Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -493,7 +494,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         try {
             maercheneinteilungErfassenModel.setRolle3(txtRolle3.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelRolle3 RequiredException=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelRolle3 RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtRolle3.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -502,7 +503,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelRolle3 Exception=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelRolle3 Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -541,7 +542,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         try {
             maercheneinteilungErfassenModel.setBilderRolle3(txtBilderRolle3.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle3 RequiredException=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle3 RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBilderRolle3.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -550,7 +551,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle3 Exception=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelBilderRolle3 Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -566,7 +567,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void onElternmithilfeSelected() {
-        LOGGER.trace("MaercheneinteilungErfassenController Event Elternmithilfe selected=" + comboBoxElternmithilfe.getSelectedItem());
+        LOGGER.trace("MaercheneinteilungErfassenController Event Elternmithilfe selected={}", comboBoxElternmithilfe.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxElternmithilfe.getSelectedItem(), maercheneinteilungErfassenModel.getElternmithilfe());
         setModelElternmithilfe();
         if (equalFieldAndModelValue && isModelValidationMode()) {
@@ -591,7 +592,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void onElternmithilfeCodeSelected() {
-        LOGGER.trace("MaercheneinteilungErfassenController Event ElternmithilfeCode selected=" + comboBoxElternmithilfeCode.getSelectedItem());
+        LOGGER.trace("MaercheneinteilungErfassenController Event ElternmithilfeCode selected={}", comboBoxElternmithilfeCode.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxElternmithilfeCode.getSelectedItem(), maercheneinteilungErfassenModel.getElternmithilfeCode());
         setModelElternmithilfeCode();
         if (equalFieldAndModelValue && isModelValidationMode()) {
@@ -620,7 +621,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void onKuchenVorstellung1Event() {
-        LOGGER.trace("AngehoerigerController Event KuchenVorstellung1. Selected=" + checkBoxKuchenVorstellung1.isSelected());
+        LOGGER.trace("AngehoerigerController Event KuchenVorstellung1. Selected={}", checkBoxKuchenVorstellung1.isSelected());
         setModelKuchenVorstellung1();
     }
 
@@ -638,7 +639,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void onKuchenVorstellung2Event() {
-        LOGGER.trace("AngehoerigerController Event KuchenVorstellung2. Selected=" + checkBoxKuchenVorstellung2.isSelected());
+        LOGGER.trace("AngehoerigerController Event KuchenVorstellung2. Selected={}", checkBoxKuchenVorstellung2.isSelected());
         setModelKuchenVorstellung2();
     }
 
@@ -656,7 +657,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void onKuchenVorstellung3Event() {
-        LOGGER.trace("AngehoerigerController Event KuchenVorstellung3. Selected=" + checkBoxKuchenVorstellung3.isSelected());
+        LOGGER.trace("AngehoerigerController Event KuchenVorstellung3. Selected={}", checkBoxKuchenVorstellung3.isSelected());
         setModelKuchenVorstellung3();
     }
 
@@ -674,7 +675,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void onKuchenVorstellung4Event() {
-        LOGGER.trace("AngehoerigerController Event KuchenVorstellung4. Selected=" + checkBoxKuchenVorstellung4.isSelected());
+        LOGGER.trace("AngehoerigerController Event KuchenVorstellung4. Selected={}", checkBoxKuchenVorstellung4.isSelected());
         setModelKuchenVorstellung4();
     }
 
@@ -692,7 +693,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void onKuchenVorstellung5Event() {
-        LOGGER.trace("AngehoerigerController Event KuchenVorstellung5. Selected=" + checkBoxKuchenVorstellung5.isSelected());
+        LOGGER.trace("AngehoerigerController Event KuchenVorstellung5. Selected={}", checkBoxKuchenVorstellung5.isSelected());
         setModelKuchenVorstellung5();
     }
 
@@ -710,7 +711,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void onKuchenVorstellung6Event() {
-        LOGGER.trace("AngehoerigerController Event KuchenVorstellung6. Selected=" + checkBoxKuchenVorstellung6.isSelected());
+        LOGGER.trace("AngehoerigerController Event KuchenVorstellung6. Selected={}", checkBoxKuchenVorstellung6.isSelected());
         setModelKuchenVorstellung6();
     }
 
@@ -728,7 +729,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void onKuchenVorstellung7Event() {
-        LOGGER.trace("AngehoerigerController Event KuchenVorstellung7. Selected=" + checkBoxKuchenVorstellung7.isSelected());
+        LOGGER.trace("AngehoerigerController Event KuchenVorstellung7. Selected={}", checkBoxKuchenVorstellung7.isSelected());
         setModelKuchenVorstellung7();
     }
 
@@ -746,7 +747,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void onKuchenVorstellung8Event() {
-        LOGGER.trace("AngehoerigerController Event KuchenVorstellung8. Selected=" + checkBoxKuchenVorstellung8.isSelected());
+        LOGGER.trace("AngehoerigerController Event KuchenVorstellung8. Selected={}", checkBoxKuchenVorstellung8.isSelected());
         setModelKuchenVorstellung8();
     }
 
@@ -764,7 +765,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void onKuchenVorstellung9Event() {
-        LOGGER.trace("AngehoerigerController Event KuchenVorstellung9. Selected=" + checkBoxKuchenVorstellung9.isSelected());
+        LOGGER.trace("AngehoerigerController Event KuchenVorstellung9. Selected={}", checkBoxKuchenVorstellung9.isSelected());
         setModelKuchenVorstellung9();
     }
 
@@ -801,7 +802,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         try {
             maercheneinteilungErfassenModel.setZusatzattribut(txtZusatzattribut.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelZusatzattribut RequiredException=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelZusatzattribut RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtZusatzattribut.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -810,7 +811,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelZusatzattribut Exception=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelZusatzattribut Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -850,7 +851,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         try {
             maercheneinteilungErfassenModel.setBemerkungen(txtBemerkungen.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelBemerkungen RequiredException=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelBemerkungen RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBemerkungen.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -859,7 +860,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("MaercheneinteilungErfassenController setModelBemerkungen Exception=" + e.getMessage());
+            LOGGER.trace("MaercheneinteilungErfassenController setModelBemerkungen Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -960,7 +961,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
     }
 
     private void onMaercheneinteilungErfassenModelCompleted(boolean completed) {
-        LOGGER.trace("MaercheneinteilungErfassenModel completed=" + completed);
+        LOGGER.trace("MaercheneinteilungErfassenModel completed={}", completed);
         if (completed) {
             btnSpeichern.setToolTipText(null);
             btnSpeichern.setEnabled(true);

@@ -20,6 +20,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Hans Stamm
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public abstract class PersonController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(PersonController.class);
@@ -182,7 +183,7 @@ public abstract class PersonController extends AbstractController {
     }
 
     private void onAnredeSelected() {
-        LOGGER.trace("PersonController Event Anrede selected=" + comboBoxAnrede.getSelectedItem());
+        LOGGER.trace("PersonController Event Anrede selected={}", comboBoxAnrede.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxAnrede.getSelectedItem(), personModel.getAnrede());
         try {
             setModelAnrede();
@@ -201,7 +202,7 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setAnrede((Anrede) comboBoxAnrede.getSelectedItem());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("PersonController setModelAnrede RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelAnrede RequiredException={}", e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxAnrede.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -232,7 +233,7 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setNachname(txtNachname.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("PersonController setModelNachname RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelNachname RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtNachname.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -241,7 +242,7 @@ public abstract class PersonController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelNachname Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelNachname Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -267,7 +268,7 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setVorname(txtVorname.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("PersonController setModelVorname RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelVorname RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtVorname.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -276,7 +277,7 @@ public abstract class PersonController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelVorname Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelVorname Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -302,7 +303,7 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setStrasseHausnummer(txtStrasseHausnummer.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("PersonController setModelStrasseHausnummer RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelStrasseHausnummer RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtStrasseHausnummer.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -311,7 +312,7 @@ public abstract class PersonController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelStrasseHausnummer Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelStrasseHausnummer Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -337,7 +338,7 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setPlz(txtPlz.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("PersonController setModelPlz RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelPlz RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtPlz.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -346,7 +347,7 @@ public abstract class PersonController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelPlz Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelPlz Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -372,7 +373,7 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setOrt(txtOrt.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("PersonController setModelOrt RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelOrt RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtOrt.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -381,7 +382,7 @@ public abstract class PersonController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelOrt Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelOrt Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -407,7 +408,7 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setFestnetz(txtFestnetz.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("PersonController setModelFestnetz RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelFestnetz RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtFestnetz.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -416,7 +417,7 @@ public abstract class PersonController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelFestnetz Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelFestnetz Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -442,7 +443,7 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setNatel(txtNatel.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("PersonController setModelNatel RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelNatel RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtNatel.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -451,7 +452,7 @@ public abstract class PersonController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelNatel Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelNatel Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -477,7 +478,7 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setEmail(txtEmail.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("PersonController setModelEmail RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelEmail RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtEmail.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -486,7 +487,7 @@ public abstract class PersonController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelEmail Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelEmail Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -512,7 +513,7 @@ public abstract class PersonController extends AbstractController {
         try {
             personModel.setGeburtsdatum(txtGeburtsdatum.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("PersonController setModelGeburtsdatum RequiredException=" + e.getMessage());
+            LOGGER.trace("PersonController setModelGeburtsdatum RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtGeburtsdatum.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -521,7 +522,7 @@ public abstract class PersonController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("PersonController setModelGeburtsdatum Exception=" + e.getMessage());
+            LOGGER.trace("PersonController setModelGeburtsdatum Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }

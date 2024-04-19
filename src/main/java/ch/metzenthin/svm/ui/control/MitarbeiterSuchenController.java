@@ -25,6 +25,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public class MitarbeiterSuchenController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(MitarbeiterSuchenController.class);
@@ -102,7 +103,7 @@ public class MitarbeiterSuchenController extends AbstractController {
         try {
             mitarbeiterSuchenModel.setNachname(txtNachname.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("MitarbeitersSuchenController setModelNachname Exception=" + e.getMessage());
+            LOGGER.trace("MitarbeitersSuchenController setModelNachname Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -141,7 +142,7 @@ public class MitarbeiterSuchenController extends AbstractController {
         try {
             mitarbeiterSuchenModel.setVorname(txtVorname.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("MitarbeitersSuchenController setModelVorname Exception=" + e.getMessage());
+            LOGGER.trace("MitarbeitersSuchenController setModelVorname Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -157,7 +158,7 @@ public class MitarbeiterSuchenController extends AbstractController {
     }
 
     private void onMitarbeiterCodeSelected() {
-        LOGGER.trace("MitarbeiterSuchenController Event MitarbeiterCode selected=" + comboBoxMitarbeiterCode.getSelectedItem());
+        LOGGER.trace("MitarbeiterSuchenController Event MitarbeiterCode selected={}", comboBoxMitarbeiterCode.getSelectedItem());
         setModelMitarbeiterCode();
     }
 
@@ -249,7 +250,7 @@ public class MitarbeiterSuchenController extends AbstractController {
     }
 
     private void onMitarbeitersSuchenModelCompleted(boolean completed) {
-        LOGGER.trace("MitarbeitersSuchenModel completed=" + completed);
+        LOGGER.trace("MitarbeitersSuchenModel completed={}", completed);
         if (completed) {
             btnSuchen.setToolTipText(null);
             btnSuchen.setEnabled(true);

@@ -111,7 +111,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
         try {
             rechnungsdatumErfassenModel.setRechnungsdatum(txtRechnungsdatum.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("RechnungsdatumErfassenController setModelRechnungsdatum RequiredException=" + e.getMessage());
+            LOGGER.trace("RechnungsdatumErfassenController setModelRechnungsdatum RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtRechnungsdatum.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -120,7 +120,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("RechnungsdatumErfassenController setModelRechnungsdatum Exception=" + e.getMessage());
+            LOGGER.trace("RechnungsdatumErfassenController setModelRechnungsdatum Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -229,7 +229,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
     }
 
     private void onRechnungsdatumErfassenModelCompleted(boolean completed) {
-        LOGGER.trace("RechnungsdatumErfassenModel completed=" + completed);
+        LOGGER.trace("RechnungsdatumErfassenModel completed={}", completed);
         if (completed) {
             btnOk.setToolTipText(null);
             btnOk.setEnabled(true);

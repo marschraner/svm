@@ -92,7 +92,7 @@ public class CodeSpecificHinzufuegenController extends AbstractController {
     }
 
     private void onCodeSelected() {
-        LOGGER.trace("xCodeXHinzufuegenController Event SchuelerCode selected=" + comboBoxCode.getSelectedItem());
+        LOGGER.trace("xCodeXHinzufuegenController Event SchuelerCode selected={}", comboBoxCode.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxCode.getSelectedItem(), codeSpecificHinzufuegenModel.getCode());
         try {
             setModelCode();
@@ -110,7 +110,7 @@ public class CodeSpecificHinzufuegenController extends AbstractController {
         try {
             codeSpecificHinzufuegenModel.setCode((Code) comboBoxCode.getSelectedItem());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("xCodeXHinzufuegenController setModelCode RequiredException=" + e.getMessage());
+            LOGGER.trace("xCodeXHinzufuegenController setModelCode RequiredException={}", e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxCode.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.

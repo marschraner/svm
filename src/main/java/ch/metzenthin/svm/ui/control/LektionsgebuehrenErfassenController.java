@@ -19,6 +19,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public class LektionsgebuehrenErfassenController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(LektionsgebuehrenErfassenController.class);
@@ -119,7 +120,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         try {
             lektionsgebuehrenErfassenModel.setLektionslaenge(txtLektionslaenge.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("LektionsgebuehrenErfassenController setModelLektionslaenge RequiredException=" + e.getMessage());
+            LOGGER.trace("LektionsgebuehrenErfassenController setModelLektionslaenge RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtLektionslaenge.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -128,7 +129,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("LektionsgebuehrenErfassenController setModelLektionslaenge Exception=" + e.getMessage());
+            LOGGER.trace("LektionsgebuehrenErfassenController setModelLektionslaenge Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -167,7 +168,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         try {
             lektionsgebuehrenErfassenModel.setBetrag1Kind(txtBetrag1Kind.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag1Kind RequiredException=" + e.getMessage());
+            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag1Kind RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBetrag1Kind.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -176,7 +177,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag1Kind Exception=" + e.getMessage());
+            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag1Kind Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -215,7 +216,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         try {
             lektionsgebuehrenErfassenModel.setBetrag2Kinder(txtBetrag2Kinder.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag2Kinder RequiredException=" + e.getMessage());
+            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag2Kinder RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBetrag2Kinder.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -224,7 +225,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag2Kinder Exception=" + e.getMessage());
+            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag2Kinder Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -263,7 +264,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         try {
             lektionsgebuehrenErfassenModel.setBetrag3Kinder(txtBetrag3Kinder.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag3Kinder RequiredException=" + e.getMessage());
+            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag3Kinder RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBetrag3Kinder.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -272,7 +273,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag3Kinder Exception=" + e.getMessage());
+            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag3Kinder Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -311,7 +312,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         try {
             lektionsgebuehrenErfassenModel.setBetrag4Kinder(txtBetrag4Kinder.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag4Kinder RequiredException=" + e.getMessage());
+            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag4Kinder RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBetrag4Kinder.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -320,7 +321,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag4Kinder Exception=" + e.getMessage());
+            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag4Kinder Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -359,7 +360,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         try {
             lektionsgebuehrenErfassenModel.setBetrag5Kinder(txtBetrag5Kinder.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag5Kinder RequiredException=" + e.getMessage());
+            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag5Kinder RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBetrag5Kinder.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -368,7 +369,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag5Kinder Exception=" + e.getMessage());
+            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag5Kinder Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -407,7 +408,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         try {
             lektionsgebuehrenErfassenModel.setBetrag6Kinder(txtBetrag6Kinder.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag6Kinder RequiredException=" + e.getMessage());
+            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag6Kinder RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtBetrag6Kinder.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -416,7 +417,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag6Kinder Exception=" + e.getMessage());
+            LOGGER.trace("LektionsgebuehrenErfassenController setModelBetrag6Kinder Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -481,7 +482,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     }
 
     private void onLektionsgebuehrenErfassenModelCompleted(boolean completed) {
-        LOGGER.trace("LektionsgebuehrenErfassenModel completed=" + completed);
+        LOGGER.trace("LektionsgebuehrenErfassenModel completed={}", completed);
         if (completed) {
             btnSpeichern.setToolTipText(null);
             btnSpeichern.setEnabled(true);

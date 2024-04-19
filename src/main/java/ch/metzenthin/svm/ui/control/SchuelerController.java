@@ -21,6 +21,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 /**
  * @author Hans Stamm
  */
+@SuppressWarnings("LoggingSimilarMessage")
 public class SchuelerController extends PersonController {
 
     private static final Logger LOGGER = LogManager.getLogger(SchuelerController.class);
@@ -91,7 +92,7 @@ public class SchuelerController extends PersonController {
     }
 
     private void onGeschlechtSelected() {
-        LOGGER.trace("SchuelerController Event Geschlecht selected=" + comboBoxGeschlecht.getSelectedItem());
+        LOGGER.trace("SchuelerController Event Geschlecht selected={}", comboBoxGeschlecht.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxGeschlecht.getSelectedItem(), schuelerModel.getGeschlecht());
         try {
             setModelGeschlecht();
@@ -110,7 +111,7 @@ public class SchuelerController extends PersonController {
         try {
             schuelerModel.setGeschlecht((Geschlecht) comboBoxGeschlecht.getSelectedItem());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("SchuelerController setModelGeschlecht RequiredException=" + e.getMessage());
+            LOGGER.trace("SchuelerController setModelGeschlecht RequiredException={}", e.getMessage());
             if (isModelValidationMode()) {
                 comboBoxGeschlecht.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -141,7 +142,7 @@ public class SchuelerController extends PersonController {
         try {
             schuelerModel.setAnmeldedatum(txtAnmeldedatum.getText());
         } catch (SvmRequiredException e) {
-            LOGGER.trace("SchuelerController setModelAnmeldedatum RequiredException=" + e.getMessage());
+            LOGGER.trace("SchuelerController setModelAnmeldedatum RequiredException={}", e.getMessage());
             if (isModelValidationMode() || !showRequiredErrMsg) {
                 txtAnmeldedatum.setToolTipText(e.getMessage());
                 // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
@@ -150,7 +151,7 @@ public class SchuelerController extends PersonController {
             }
             throw e;
         } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerController setModelAnmeldedatum Exception=" + e.getMessage());
+            LOGGER.trace("SchuelerController setModelAnmeldedatum Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -176,7 +177,7 @@ public class SchuelerController extends PersonController {
         try {
             schuelerModel.setAbmeldedatum(txtAbmeldedatum.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerController setModelAbmeldedatum Exception=" + e.getMessage());
+            LOGGER.trace("SchuelerController setModelAbmeldedatum Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -202,7 +203,7 @@ public class SchuelerController extends PersonController {
         try {
             schuelerModel.setBemerkungen(textAreaBemerkungen.getText());
         } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerController setModelBemerkungen Exception=" + e.getMessage());
+            LOGGER.trace("SchuelerController setModelBemerkungen Exception={}", e.getMessage());
             showErrMsg(e);
             throw e;
         }
@@ -226,7 +227,7 @@ public class SchuelerController extends PersonController {
 
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
-        LOGGER.trace("SchuelerController PropertyChangeEvent '" + evt.getPropertyName() + "', oldValue='" + evt.getOldValue() + "', newValue='" + evt.getNewValue() + "'");
+        LOGGER.trace("SchuelerController PropertyChangeEvent '{}', oldValue='{}', newValue='{}'", evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
         if (checkIsFieldChange(Field.GESCHLECHT, evt)) {
             comboBoxGeschlecht.setSelectedItem(schuelerModel.getGeschlecht());
         } else if (checkIsFieldChange(Field.BEMERKUNGEN, evt)) {

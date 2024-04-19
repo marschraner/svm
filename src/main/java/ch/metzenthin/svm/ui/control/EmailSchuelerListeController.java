@@ -78,7 +78,7 @@ public class EmailSchuelerListeController extends AbstractController {
     }
 
     private void onEmailSchuelerListeEmpfaengerGruppeSelected() {
-        LOGGER.trace("EmailSchuelerListeController Event SchuelerListeEmpfaengerGruppe selected=" + comboBoxEmailSchuelerListeEmpfaengerGruppe.getSelectedItem());
+        LOGGER.trace("EmailSchuelerListeController Event SchuelerListeEmpfaengerGruppe selected={}", comboBoxEmailSchuelerListeEmpfaengerGruppe.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxEmailSchuelerListeEmpfaengerGruppe.getSelectedItem(), emailSchuelerListeModel.getEmailSchuelerListeEmpfaengerGruppe());
         setModelEmailSchuelerListeEmpfaengerGruppe();
         if (equalFieldAndModelValue && isModelValidationMode()) {
@@ -100,7 +100,7 @@ public class EmailSchuelerListeController extends AbstractController {
     }
 
     private void onBlindkopienEvent() {
-        LOGGER.trace("EmailSchuelerListeController Event Blindkopien. Selected=" + checkBoxBlindkopien.isSelected());
+        LOGGER.trace("EmailSchuelerListeController Event Blindkopien. Selected={}", checkBoxBlindkopien.isSelected());
         setModelBlindkopien();
     }
 
