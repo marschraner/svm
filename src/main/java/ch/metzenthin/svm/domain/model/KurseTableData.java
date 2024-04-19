@@ -61,7 +61,7 @@ public class KurseTableData {
             case LEITUNG -> {
                 StringBuilder leitung = new StringBuilder();
                 for (Mitarbeiter mitarbeiter : kurs.getLehrkraefte()) {
-                    if (leitung.length() > 0) {
+                    if (!leitung.isEmpty()) {
                         leitung.append(" / ");
                     }
                     leitung.append(mitarbeiter.getVorname()).append(" ").append(mitarbeiter.getNachname());

@@ -5,6 +5,7 @@ import ch.metzenthin.svm.common.dataTypes.Anrede;
 import ch.metzenthin.svm.common.dataTypes.Geschlecht;
 import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -299,8 +300,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     private boolean isDispensationToBeDisplayed(Dispensation dispensation) {
         int MAX_MONTHS_IN_PAST = 48;
-        Calendar minSemesterEnde = new GregorianCalendar();
-        minSemesterEnde.add(Calendar.MONTH, -MAX_MONTHS_IN_PAST);
+        Calendar minSemesterEnde = Converter.getNMonthsBeforeNow(MAX_MONTHS_IN_PAST);
         return minSemesterEnde.before(dispensation.getDispensationsende()) || minSemesterEnde.equals(dispensation.getDispensationsende());
     }
 
@@ -600,6 +600,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         return schueler;
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Override
     public void refreshSchuelerSuchenTableData(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel) {
         // Kurse-Map neu setzen

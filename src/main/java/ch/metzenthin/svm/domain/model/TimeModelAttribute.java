@@ -61,7 +61,7 @@ public class TimeModelAttribute {
             // Der Wert wurde formatiert und das Resultat entspricht dem alten Wert. Dann wird kein PropertyChangeEvent
             // ausgelöst. Damit trotzdem ein Event ausgelöst wird, wird der alte Wert auf den nicht formatierten Wert gesetzt.
             oldValue = newValueTrimmed;
-            LOGGER.trace("setNewValue: Alten Wert auf Eingabewert gesetzt, damit PropertyChangeEvent ausgelöst wird. Alter Wert=" + oldValue + ", neuer Wert=" + getValue());
+            LOGGER.trace("setNewValue: Alten Wert auf Eingabewert gesetzt, damit PropertyChangeEvent ausgelöst wird. Alter Wert={}, neuer Wert={}", oldValue, getValue());
         }
         modelAttributeListener.firePropertyChange(field, oldValue, getValueAsString());
     }

@@ -43,7 +43,7 @@ public class KurseModelImpl extends AbstractModel implements KurseModel {
     @Override
     public boolean checkIfKursHasKursanmeldungen(KurseTableModel kurseTableModel, int indexKursToBeRemoved) {
         Kurs kurs = kurseTableModel.getKurse().get(indexKursToBeRemoved);
-        return kurs.getKursanmeldungen().size() > 0;
+        return !kurs.getKursanmeldungen().isEmpty();
     }
 
     @Override

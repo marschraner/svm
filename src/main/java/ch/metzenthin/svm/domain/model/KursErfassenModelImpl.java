@@ -285,7 +285,7 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
     public Mitarbeiter[] getSelectableLehrkraefte2(SvmModel svmModel) {
         List<Mitarbeiter> lehrkraefteList = svmModel.getAktiveLehrkraefteAll();
         // Lehrkraft2 kann auch leer sein
-        if (lehrkraefteList.size() == 0 || !lehrkraefteList.get(0).isIdenticalWith(MITARBEITER_KEINE)) {
+        if (lehrkraefteList.isEmpty() || !lehrkraefteList.get(0).isIdenticalWith(MITARBEITER_KEINE)) {
             lehrkraefteList.add(0, MITARBEITER_KEINE);
         }
         addInaktiveLehrkraefteOrigin(lehrkraefteList);
@@ -379,8 +379,7 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
                     setMitarbeiter2(kursOrigin.getLehrkraefte().get(1));
                 }
                 setBemerkungen(kursOrigin.getBemerkungen());
-            } catch (SvmValidationException e) {
-                e.printStackTrace();
+            } catch (SvmValidationException ignore) {
             }
             setBulkUpdate(false);
         } else {
