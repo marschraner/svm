@@ -42,6 +42,7 @@ public class CallDefaultEmailClientCommand implements Command {
         this.blindkopien = blindkopien;
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Override
     public void execute() {
 
@@ -97,7 +98,7 @@ public class CallDefaultEmailClientCommand implements Command {
             desktop.mail(uri);
             result = Result.EMAIL_CLIENT_ERFOLGREICH_AUFGERUFEN;
         } catch (Exception e) {
-            LOGGER.trace("CallDefaultEmailClientCommand IO-Exception: " + e.getMessage());
+            LOGGER.trace("CallDefaultEmailClientCommand IO-Exception: {}", e.getMessage());
             result = Result.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT;
         }
     }

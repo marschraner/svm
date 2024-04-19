@@ -206,7 +206,7 @@ public class ValidateSchuelerCommand implements Command {
     }
 
     @Override
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
     public void execute() {
 
         determineHowToProceed();

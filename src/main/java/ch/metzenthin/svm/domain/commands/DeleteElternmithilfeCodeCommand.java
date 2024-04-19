@@ -32,7 +32,7 @@ public class DeleteElternmithilfeCodeCommand implements Command {
     @Override
     public void execute() {
         ElternmithilfeCode elternmithilfeCodeToBeDeleted = elternmithilfeCodes.get(indexCodeToBeDeleted);
-        if (elternmithilfeCodeToBeDeleted.getMaercheneinteilungen().size() > 0) {
+        if (!elternmithilfeCodeToBeDeleted.getMaercheneinteilungen().isEmpty()) {
             result = Result.CODE_VON_MAERCHENEINTEILUNGEN_REFERENZIERT;
             return;
         }

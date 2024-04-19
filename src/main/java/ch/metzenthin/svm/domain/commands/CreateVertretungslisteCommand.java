@@ -28,7 +28,7 @@ public class CreateVertretungslisteCommand extends CreateListeCommand {
         this.outputFile = outputFile;
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
     @Override
     public void execute() {
 

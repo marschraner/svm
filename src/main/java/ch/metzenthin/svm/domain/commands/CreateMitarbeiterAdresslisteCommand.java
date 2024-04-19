@@ -31,7 +31,7 @@ public class CreateMitarbeiterAdresslisteCommand extends CreateListeCommand {
         this.listentyp = listentyp;
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
     @Override
     public void execute() {
 

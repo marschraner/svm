@@ -39,7 +39,7 @@ public class SplitStringIntoMultipleLinesCommand implements Command {
         int length = 0;
         int j = 0;
         for (int i = 0; i < stringSpl.length; i++) {
-            if (line.length() == 0) {
+            if (line.isEmpty()) {
                 line = new StringBuilder(stringSpl[i]);
             } else {
                 line.append(" ").append(stringSpl[i]);

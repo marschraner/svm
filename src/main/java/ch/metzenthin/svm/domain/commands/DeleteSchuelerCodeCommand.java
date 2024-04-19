@@ -32,7 +32,7 @@ public class DeleteSchuelerCodeCommand implements Command {
     @Override
     public void execute() {
         SchuelerCode schuelerCodeToBeDeleted = schuelerCodes.get(indexCodeToBeDeleted);
-        if (schuelerCodeToBeDeleted.getSchueler().size() > 0) {
+        if (!schuelerCodeToBeDeleted.getSchueler().isEmpty()) {
             result = Result.CODE_VON_SCHUELER_REFERENZIERT;
             return;
         }

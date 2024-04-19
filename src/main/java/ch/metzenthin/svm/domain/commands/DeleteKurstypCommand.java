@@ -32,7 +32,7 @@ public class DeleteKurstypCommand implements Command {
     @Override
     public void execute() {
         Kurstyp kurstypToBeDeleted = kurstypen.get(indexKurstypToBeDeleted);
-        if (kurstypToBeDeleted.getKurse().size() > 0) {
+        if (!kurstypToBeDeleted.getKurse().isEmpty()) {
             result = Result.KURSTYP_VON_KURS_REFERENZIERT;
             return;
         }

@@ -32,7 +32,7 @@ public class DeleteKursortCommand implements Command {
     @Override
     public void execute() {
         Kursort kursortToBeDeleted = kursorte.get(indexKursortToBeDeleted);
-        if (kursortToBeDeleted.getKurse().size() > 0) {
+        if (!kursortToBeDeleted.getKurse().isEmpty()) {
             result = Result.KURSORT_VON_KURS_REFERENZIERT;
             return;
         }

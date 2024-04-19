@@ -117,7 +117,7 @@ public class SchuelerSuchenCommand implements Command {
             selectStatementSb.setLength(selectStatementSb.length() - 5);
         }
 
-        LOGGER.trace("JPQL Select-Statement: " + selectStatementSb.toString());
+        LOGGER.trace("JPQL Select-Statement: {}", selectStatementSb.toString());
 
         typedQuery = db.getCurrentEntityManager().createQuery(
                 selectStatementSb.toString(), Schueler.class);

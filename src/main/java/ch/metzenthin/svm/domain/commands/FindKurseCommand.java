@@ -41,7 +41,7 @@ public class FindKurseCommand implements Command {
     @Override
     public void execute() {
         kurseFound = kursDao.findKurse(semester, wochentag, zeitBeginn, mitarbeiter);
-        if (kurseFound.size() == 0) {
+        if (kurseFound.isEmpty()) {
             result = Result.KEINE_KURSE_GEFUNDEN;
         } else {
             result = Result.KURSE_GEFUNDEN;

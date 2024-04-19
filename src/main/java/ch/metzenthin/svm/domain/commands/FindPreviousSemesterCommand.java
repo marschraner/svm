@@ -21,7 +21,7 @@ public class FindPreviousSemesterCommand implements Command {
         this.currentSemester = currentSemester;
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
     @Override
     public void execute() {
         if (currentSemester == null) {

@@ -32,7 +32,7 @@ public class DeleteSemesterrechnungCodeCommand implements Command {
     @Override
     public void execute() {
         SemesterrechnungCode semesterrechnungCodeToBeDeleted = semesterrechnungCodes.get(indexCodeToBeDeleted);
-        if (semesterrechnungCodeToBeDeleted.getSemesterrechnungen().size() > 0) {
+        if (!semesterrechnungCodeToBeDeleted.getSemesterrechnungen().isEmpty()) {
             result = Result.CODE_VON_SEMESTERRECHNUNGEN_REFERENZIERT;
             return;
         }

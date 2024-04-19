@@ -25,6 +25,7 @@ public class CreateAndFindSemesterrechnungenCommand implements Command {
         this.semesterrechnungenSuchenModel = semesterrechnungenSuchenModel;
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Override
     public void execute() {
 

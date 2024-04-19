@@ -26,7 +26,7 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
         this.outputFile = outputFile;
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
     @Override
     public void execute() {
 
@@ -176,7 +176,7 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
 
         // Tabelle erzeugen
         String schuljahrSemester = "";
-        if (kurse.size() > 0) {
+        if (!kurse.isEmpty()) {
             Semester semester = kurse.get(0).getSemester();
             schuljahrSemester = (semester == null) ? "" : "Schuljahr " + semester.getSchuljahr() + ", " + semester.getSemesterbezeichnung();
         }

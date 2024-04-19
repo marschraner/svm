@@ -32,6 +32,7 @@ public class SetWordPageMarginsCommand implements Command {
         this.right = right;
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Override
     public void execute() {
         MainDocumentPart mainDocumentPart = wordMLPackage.getMainDocumentPart();

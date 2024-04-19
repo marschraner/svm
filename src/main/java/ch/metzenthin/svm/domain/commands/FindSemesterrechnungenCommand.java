@@ -158,7 +158,7 @@ public class FindSemesterrechnungenCommand implements Command {
             selectStatementSb.setLength(selectStatementSb.length() - 4);
         }
 
-        LOGGER.trace("JPQL Select-Statement: " + selectStatementSb.toString());
+        LOGGER.trace("JPQL Select-Statement: {}", selectStatementSb.toString());
 
         typedQuery = db.getCurrentEntityManager().createQuery(
                 selectStatementSb.toString(), Semesterrechnung.class);

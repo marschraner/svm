@@ -21,6 +21,7 @@ public class FindNextSemesterCommand implements Command {
         this.currentSemester = currentSemester;
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Override
     public void execute() {
         String schuljahrNextSemester;

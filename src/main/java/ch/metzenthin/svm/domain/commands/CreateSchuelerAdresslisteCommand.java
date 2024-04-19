@@ -30,7 +30,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         this.outputFile = outputFile;
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
     @Override
     public void execute() {
 
@@ -196,7 +196,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
                     cellsRow1.add("");
                 }
                 String lehrkraft2 = "";
-                if (schuelerKurse != null && schuelerKurse.size() > 0) {
+                if (schuelerKurse != null && !schuelerKurse.isEmpty()) {
                     Kurs kurs = schuelerKurse.get(j);
                     String lehrkraft1 = kurs.getLehrkraefte().get(0).toStringShort();
                     if (kurs.getLehrkraefte().size() == 2) {
@@ -221,7 +221,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
                 } else {
                     cellsRow2.add("");
                 }
-                if (schuelerKurse != null && schuelerKurse.size() > 0) {
+                if (schuelerKurse != null && !schuelerKurse.isEmpty()) {
                     Kurs kurs = schuelerKurse.get(j);
                     if (!lehrkraft2.isEmpty()) {
                         cellsRow2.add(lehrkraft2);
@@ -249,7 +249,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
                 cellsRow3.add(email);
                 cellsRow3.add("");
                 cellsRow3.add(nullAsEmptyString(schueler.getNatel()));
-                if (schuelerKurse != null && schuelerKurse.size() > 0) {
+                if (schuelerKurse != null && !schuelerKurse.isEmpty()) {
                     Kurs kurs = schuelerKurse.get(j);
                     String kursDauer = asString(kurs.getZeitBeginn()) + " - " + asString(kurs.getZeitEnde());
                     if (!lehrkraft2.isEmpty()) {

@@ -67,7 +67,7 @@ public class MitarbeiterSuchenCommand implements Command {
         // Sortierung
         selectStatementSb.append(" order by m.nachname, m.vorname, m.geburtsdatum");
 
-        LOGGER.trace("JPQL Select-Statement: " + selectStatementSb);
+        LOGGER.trace("JPQL Select-Statement: {}", selectStatementSb);
 
         typedQuery = db.getCurrentEntityManager().createQuery(
                 selectStatementSb.toString(), Mitarbeiter.class);

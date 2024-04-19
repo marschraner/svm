@@ -32,7 +32,7 @@ public class DeleteSemesterCommand implements Command {
     @Override
     public void execute() {
         Semester semesterToBeDeleted = semesters.get(indexSemesterToBeDeleted);
-        if (semesterToBeDeleted.getKurse().size() > 0) {
+        if (!semesterToBeDeleted.getKurse().isEmpty()) {
             result = Result.SEMESTER_VON_KURS_REFERENZIERT;
             return;
         }

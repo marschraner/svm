@@ -32,7 +32,7 @@ public class DeleteMitarbeiterCodeCommand implements Command {
     @Override
     public void execute() {
         MitarbeiterCode mitarbeiterCodeToBeDeleted = mitarbeiterCodes.get(indexCodeToBeDeleted);
-        if (mitarbeiterCodeToBeDeleted.getMitarbeiters().size() > 0) {
+        if (!mitarbeiterCodeToBeDeleted.getMitarbeiters().isEmpty()) {
             result = Result.CODE_VON_MITARBEITER_REFERENZIERT;
             return;
         }

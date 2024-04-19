@@ -32,7 +32,7 @@ public class DeleteMitarbeiterCommand implements Command {
     @Override
     public void execute() {
         Mitarbeiter mitarbeiterToBeDeleted = mitarbeiters.get(indexMitarbeiterToBeDeleted);
-        if (mitarbeiterToBeDeleted.getKurse().size() > 0) {
+        if (!mitarbeiterToBeDeleted.getKurse().isEmpty()) {
             result = Result.MITARBEITER_VON_KURS_REFERENZIERT;
             return;
         }

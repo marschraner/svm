@@ -29,15 +29,15 @@ public class DeleteSchuelerCommand implements Command {
 
     @Override
     public void execute() {
-        if (schueler.getKursanmeldungen().size() > 0) {
+        if (!schueler.getKursanmeldungen().isEmpty()) {
             result = Result.SCHUELER_IN_KURSE_EINGESCHRIEBEN;
             return;
         }
-        if (schueler.getMaercheneinteilungen().size() > 0) {
+        if (!schueler.getMaercheneinteilungen().isEmpty()) {
             result = Result.SCHUELER_IN_MAERCHEN_EINGETEILT;
             return;
         }
-        if (schueler.getRechnungsempfaenger().getSemesterrechnungen().size() > 0 && schueler.getRechnungsempfaenger().getSchuelerRechnungsempfaenger().size() == 1) {
+        if (!schueler.getRechnungsempfaenger().getSemesterrechnungen().isEmpty() && schueler.getRechnungsempfaenger().getSchuelerRechnungsempfaenger().size() == 1) {
             result = Result.RECHNUNGSEMPFAENGER_HAT_SEMESTERRECHNUNGEN;
             return;
         }

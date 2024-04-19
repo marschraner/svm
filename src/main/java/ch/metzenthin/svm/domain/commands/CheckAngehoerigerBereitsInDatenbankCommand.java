@@ -101,7 +101,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommand implements Command {
         return angehoerigerFound;
     }
 
-    public Result getResult() {
+    Result getResult() {
         return result;
     }
 
