@@ -46,6 +46,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         db.closeSession();
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Test
     public void testExecute_NICHT_IN_DATENBANK() {
 
@@ -63,6 +64,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         assertNull(checkSchuelerBereitsInDatenbankCommand.getSchuelerFound(null));
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Test
     public void testExecute_IN_DATENBANK() {
         Schueler schueler = new Schueler("Carla", "Bruggisser", new GregorianCalendar(2000, Calendar.JANUARY, 20), "056 426 77 15", null, null, Geschlecht.W, null);
@@ -90,6 +92,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
         assertNull(schuelerFound);
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     private void createTestdata() {
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.getTransaction().begin();

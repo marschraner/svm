@@ -437,6 +437,7 @@ public class EntityManagerTest {
         // und auch nach close von emA ist die Änderung natürlich sichtbar
         schuelerCodeB = getInitialSchuelerCode(emB);
         assertEquals(beschreibungNew, schuelerCodeB.getBeschreibung());
+        emB.close();
     }
 
     @Test
@@ -707,16 +708,18 @@ public class EntityManagerTest {
 
     @Test
     public void testBeginTransactionCloseEntityManagerNewEntityManager() {
-        EntityManager em = entityManagerFactory.createEntityManager();
-        em.getTransaction().begin();
-        assertTrue(em.getTransaction().isActive());
-        SchuelerCode schuelerCodeA = getInitialSchuelerCode(em);
+        EntityManager em1 = entityManagerFactory.createEntityManager();
+        em1.getTransaction().begin();
+        assertTrue(em1.getTransaction().isActive());
+        SchuelerCode schuelerCodeA = getInitialSchuelerCode(em1);
         schuelerCodeA.setBeschreibung("Test Beschreibung");
-        em.close();
-        em = entityManagerFactory.createEntityManager();
-        schuelerCodeA = getInitialSchuelerCode(em);
+        em1.close();
+        EntityManager em2 = entityManagerFactory.createEntityManager();
+        schuelerCodeA = getInitialSchuelerCode(em2);
         assertEquals("Rollback expected", detachedInitialSchuelerCode.getBeschreibung(), schuelerCodeA.getBeschreibung());
-        em.close();
+        em2.close();
+        // Ohne rollback kommt es im Log zu einem "Connection leak detected"-Fehler
+        em1.getTransaction().rollback(); // rollbacks transaction even when EntityManager is closed!
     }
 
     @Test
@@ -749,7 +752,11 @@ public class EntityManagerTest {
             em.getTransaction().begin();
             fail("IllegalStateException expected");
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
+        } finally {
+            // Ohne rollback kommt es im Log zu einem "Connection leak detected"-Fehler
+            em.getTransaction().rollback();
+            em.close();
         }
     }
 
@@ -923,7 +930,7 @@ public class EntityManagerTest {
         try {
             Thread.sleep(1000L);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
 

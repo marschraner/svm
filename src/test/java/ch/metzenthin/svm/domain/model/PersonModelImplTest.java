@@ -427,7 +427,7 @@ public class PersonModelImplTest {
             personModel.validate();
             assertNull("Keine SvmValidationException erwartet mit FehlerId " + expectedErrorId, expectedErrorId);
         } catch (SvmValidationException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
             assertNotNull("SvmValidationException erwartet", expectedErrorId);
             assertEquals("SvmValidationException erwartet mit FehlerId " + expectedErrorId, expectedErrorId, (Integer) e.getErrorId());
         } catch (Throwable e) {

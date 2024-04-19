@@ -66,7 +66,7 @@ public class AngehoerigerModelImplTest {
         try {
             angehoerigerModel.validate();
         } catch (SvmValidationException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             fail("Keine Exception erwartet");
         }
         assertEquals("Aufruf von CompletedListener einmal erwartet", 1, testCompletedListener.getCounter());
@@ -84,7 +84,7 @@ public class AngehoerigerModelImplTest {
         try {
             angehoerigerModel.setStrasseHausnummer("StrasseHausnummer");
         } catch (SvmValidationException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             fail("Keine Exception erwartet");
         }
         assertFalse("IsCompleted false erwartet", angehoerigerModel.isCompleted());
@@ -92,7 +92,7 @@ public class AngehoerigerModelImplTest {
             angehoerigerModel.validate();
             fail("Exception erwartet");
         } catch (SvmValidationException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
         assertEquals("Aufruf von CompletedListener einmal erwartet", 1, testCompletedListener.getCounter());
     }

@@ -80,6 +80,7 @@ public class SchuelerDaoTest {
 
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Test
     public void testSave() {
         EntityManager entityManager = db.getCurrentEntityManager();

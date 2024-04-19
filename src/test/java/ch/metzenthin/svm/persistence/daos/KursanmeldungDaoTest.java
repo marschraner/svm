@@ -46,6 +46,7 @@ public class KursanmeldungDaoTest {
         db.closeSession();
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Test
     public void testFindById() {
         EntityManager entityManager = db.getCurrentEntityManager();
@@ -99,6 +100,7 @@ public class KursanmeldungDaoTest {
         }
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Test
     public void testSave() {
         EntityManager entityManager = db.getCurrentEntityManager();
@@ -153,6 +155,7 @@ public class KursanmeldungDaoTest {
         }
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Test
     public void testRemove() {
         EntityManager entityManager = db.getCurrentEntityManager();

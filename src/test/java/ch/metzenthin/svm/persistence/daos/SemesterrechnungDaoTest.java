@@ -41,6 +41,7 @@ public class SemesterrechnungDaoTest {
         db.closeSession();
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Test
     public void testFindById() {
         EntityManager entityManager = db.getCurrentEntityManager();
@@ -128,6 +129,7 @@ public class SemesterrechnungDaoTest {
         }
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Test
     public void testSave() {
         EntityManager entityManager = db.getCurrentEntityManager();
@@ -199,6 +201,7 @@ public class SemesterrechnungDaoTest {
         }
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Test
     public void testRemove() {
         EntityManager entityManager = db.getCurrentEntityManager();
@@ -278,6 +281,7 @@ public class SemesterrechnungDaoTest {
 
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Test
     public void testFindSemesterrechnungenRechnungsempfaenger() {
         EntityManager entityManager = db.getCurrentEntityManager();

@@ -135,6 +135,7 @@ public class SchuelerCodeDaoTest {
 
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Test
     public void testAddToSchuelerAndSave() {
         EntityManager entityManager = db.getCurrentEntityManager();
@@ -183,6 +184,7 @@ public class SchuelerCodeDaoTest {
         }
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Test
     public void testRemoveFromSchuelerAndUpdate() {
         EntityManager entityManager = db.getCurrentEntityManager();

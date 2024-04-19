@@ -61,7 +61,7 @@ public class SchuelerErfassenModelImplTest {
                 mutterModel.validate();
                 fail("Exception erwarten");
             } catch (SvmValidationException e) {
-                e.printStackTrace();
+                e.printStackTrace(System.out);
             }
             mutterModel.setNachname("Nachname");
             mutterModel.setVorname("Vorname");
@@ -70,7 +70,7 @@ public class SchuelerErfassenModelImplTest {
             mutterModel.setOrt("Ort");
             mutterModel.validate();
         } catch (SvmValidationException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             fail("Keine Exception erwartet");
         }
         assertTrue("IsCompleted true erwartet", schuelerErfassenModel.isCompleted());

@@ -39,6 +39,7 @@ public class SaveAngehoerigeCommandTest {
         db.closeSession();
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     @Test
     public void testExecute() throws Exception {
 

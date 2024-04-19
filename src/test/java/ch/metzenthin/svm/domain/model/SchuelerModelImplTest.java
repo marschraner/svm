@@ -144,7 +144,7 @@ public class SchuelerModelImplTest {
         try {
             schuelerModel.validate();
         } catch (SvmValidationException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             fail("Keine Exception erwartet");
         }
         assertEquals("Aufruf von CompletedListener einmal erwartet", 1, testCompletedListener.getCounter());
