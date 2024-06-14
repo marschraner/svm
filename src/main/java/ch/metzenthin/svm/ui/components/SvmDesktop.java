@@ -194,6 +194,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
         menuItem.addActionListener(this);
         menuSemesterrechnungen.add(menuItem);
 
+        menuItem = new JMenuItem("Rechungsversand");
+        menuItem.setMnemonic(KeyEvent.VK_M);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_DOWN_MASK));
+        menuItem.setActionCommand("Rechnungsversand");
+        menuItem.addActionListener(this);
+        menuSemesterrechnungen.add(menuItem);
+
         menuItem = new JMenuItem("Semesterrechnung-Codes verwalten");
         menuItem.setMnemonic(KeyEvent.VK_O);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.ALT_DOWN_MASK));
@@ -298,14 +305,20 @@ public class SvmDesktop extends JFrame implements ActionListener {
             semesterrechnungenSuchenPanel.addNextPanelListener(e13 -> onNextPanelAvailable(e13.getSource()));
             setAndShowActivePanel(semesterrechnungenSuchenPanel.$$$getRootComponent$$$(), "Semesterrechnungen suchen");
 
+        } else if ("Rechnungsversand".equals(e.getActionCommand())) {
+            AuswahlRechnungsdateienPanel auswahlRechnungsdateienPanel = new AuswahlRechnungsdateienPanel(svmContext);
+            auswahlRechnungsdateienPanel.addCloseListener(e13 -> onFrameAbbrechen());
+            auswahlRechnungsdateienPanel.addNextPanelListener(e13 -> onNextPanelAvailable(e13.getSource()));
+            setAndShowActivePanel(auswahlRechnungsdateienPanel.$$$getRootComponent$$$(), "Rechnungsversand: Auswahl Rechnungsdateien");
+
         } else if ("semesterrechnungCodesVerwalten".equals(e.getActionCommand())) {
             CodesPanel codesPanel = new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.SEMESTERRECHNUNG);
-            codesPanel.addCloseListener(e14 -> onFrameAbbrechen());
+            codesPanel.addCloseListener(e15 -> onFrameAbbrechen());
             setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Semesterrechnung-Codes verwalten");
 
         } else if ("lektionsgebuehrenVerwalten".equals(e.getActionCommand())) {
             LektionsgebuehrenPanel lektionsgebuehrenPanel = new LektionsgebuehrenPanel(svmContext);
-            lektionsgebuehrenPanel.addCloseListener(e15 -> onFrameAbbrechen());
+            lektionsgebuehrenPanel.addCloseListener(e16 -> onFrameAbbrechen());
             setAndShowActivePanel(lektionsgebuehrenPanel.$$$getRootComponent$$$(), "Lektionsgebühren verwalten");
 
         } else { // beenden

@@ -200,6 +200,8 @@ public enum Field {
     SECHS_JAHRES_RABATT_NACHRECHNUNG("6-Jahres-Rabatt N"),
     RECHNUNGSDATUM("Rechnungsdatum"),
     SEMESTERRECHNUNG_CODE_JA_NEIN("Semesterrechnung-Code ja/nein"),
+    SERIENBRIEF_CSV_DATEI("Serienbrief csv-Datei"),
+    AUS_SERIENBRIEF_GENERIERTE_RECHNUNGEN_PDF_DATEI("Aus Serienbrief generierte Rechnungen pdf-Datei"),
     STIPENDIUM_JA_NEIN("Stipendium ja/nein"),
     CODES("Codes"),
     MITARBEITER_CODE("Code"),

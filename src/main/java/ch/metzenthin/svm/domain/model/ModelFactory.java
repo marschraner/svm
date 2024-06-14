@@ -84,4 +84,6 @@ public interface ModelFactory {
     EmailSchuelerListeModel createEmailSchuelerListeModel();
 
     EmailSemesterrechnungenModel createEmailSemesterrechnungenModel();
+
+    AuswahlRechnungsdateienModel createAuswahlRechnungsdateienModel();
 }

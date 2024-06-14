@@ -205,4 +205,8 @@ public class ModelFactoryImpl implements ModelFactory {
         return new EmailSemesterrechnungenModelImpl();
     }
 
+    @Override
+    public AuswahlRechnungsdateienModel createAuswahlRechnungsdateienModel() {
+        return new AuswahlRechnungsdateienModelImpl();
+    }
 }
