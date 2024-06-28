@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.dataTypes.*;
+import ch.metzenthin.svm.common.datatypes.*;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;

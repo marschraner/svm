@@ -1,9 +1,9 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Gruppe;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Gruppe;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CheckElternmithilfeBereitsBeiGeschwisterErfasstCommand;

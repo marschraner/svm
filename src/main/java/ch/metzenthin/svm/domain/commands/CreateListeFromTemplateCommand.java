@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Listentyp;
+import ch.metzenthin.svm.common.datatypes.Listentyp;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import org.apache.logging.log4j.LogManager;

@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;

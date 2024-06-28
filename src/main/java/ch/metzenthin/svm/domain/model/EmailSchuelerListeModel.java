@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.EmailSchuelerListeEmpfaengerGruppe;
+import ch.metzenthin.svm.common.datatypes.EmailSchuelerListeEmpfaengerGruppe;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 

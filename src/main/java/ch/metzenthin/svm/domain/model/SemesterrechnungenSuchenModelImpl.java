@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Stipendium;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Stipendium;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.CreateAndFindSemesterrechnungenCommand;

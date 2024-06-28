@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 
 import java.math.BigDecimal;

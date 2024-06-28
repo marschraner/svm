@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.utils.SvmStringUtils;
 import jakarta.persistence.*;
 

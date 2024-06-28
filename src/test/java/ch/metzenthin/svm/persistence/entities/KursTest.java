@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import org.junit.Test;
 
 import static ch.metzenthin.svm.common.utils.Converter.toCalendar;

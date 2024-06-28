@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.datatypes.ListenExportTyp;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.EmailSchuelerListeDialog;
 import ch.metzenthin.svm.ui.components.ListenExportDialog;

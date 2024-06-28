@@ -1,9 +1,9 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.common.dataTypes.Gruppe;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Gruppe;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.Test;
 

@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Listentyp;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Listentyp;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.persistence.entities.Semester;
 

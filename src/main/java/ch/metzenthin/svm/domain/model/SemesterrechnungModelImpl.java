@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Schuljahre;
-import ch.metzenthin.svm.common.dataTypes.Stipendium;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Schuljahre;
+import ch.metzenthin.svm.common.datatypes.Stipendium;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;

@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.domain.model.AngehoerigerEinEintragPasstResult;
 import ch.metzenthin.svm.domain.model.SchuelerErfassenModel;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;

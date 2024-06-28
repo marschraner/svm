@@ -1,15 +1,16 @@
-package ch.metzenthin.svm.common.dataTypes;
+package ch.metzenthin.svm.common.datatypes;
 
 /**
  * @author Martin Schraner
  */
-public enum Rechnungstyp {
-    VORRECHNUNG("Vorrechnung"),
-    NACHRECHNUNG("Nachrechnung");
+public enum Gruppe {
+    ALLE(""),
+    A("A"),
+    B("B");
 
     private final String name;
 
-    Rechnungstyp(String name) {
+    Gruppe(String name) {
         this.name = name;
     }
 

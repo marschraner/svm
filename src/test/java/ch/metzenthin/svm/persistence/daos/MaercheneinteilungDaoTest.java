@@ -1,9 +1,9 @@
 package ch.metzenthin.svm.persistence.daos;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.common.dataTypes.Gruppe;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Gruppe;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;

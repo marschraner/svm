@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;

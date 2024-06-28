@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
+import ch.metzenthin.svm.common.datatypes.Rechnungstyp;
 import ch.metzenthin.svm.persistence.entities.*;
 
 import java.math.BigDecimal;

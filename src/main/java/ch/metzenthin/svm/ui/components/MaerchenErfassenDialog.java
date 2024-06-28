@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Schuljahre;
+import ch.metzenthin.svm.common.datatypes.Schuljahre;
 import ch.metzenthin.svm.domain.model.MaerchenErfassenModel;
 import ch.metzenthin.svm.domain.model.MaerchensModel;
 import ch.metzenthin.svm.ui.componentmodel.MaerchensTableModel;

@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
 import ch.metzenthin.svm.domain.model.MitarbeitersModel;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;

@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import org.apache.logging.log4j.LogManager;

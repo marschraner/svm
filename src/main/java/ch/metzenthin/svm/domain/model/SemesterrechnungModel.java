@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Stipendium;
+import ch.metzenthin.svm.common.datatypes.Stipendium;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 

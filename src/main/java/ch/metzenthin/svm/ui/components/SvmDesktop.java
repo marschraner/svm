@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Codetyp;
+import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import com.apple.eawt.Application;
