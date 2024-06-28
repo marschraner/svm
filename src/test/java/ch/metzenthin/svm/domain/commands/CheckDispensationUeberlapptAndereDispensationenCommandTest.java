@@ -15,6 +15,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S5976")
 public class CheckDispensationUeberlapptAndereDispensationenCommandTest {
 
     private final CommandInvoker commandInvoker = new CommandInvokerImpl();

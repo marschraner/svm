@@ -33,7 +33,7 @@ public class SchuelerDaoTest {
     private boolean neusteZuoberst;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
         Properties svmProperties = SvmProperties.getSvmProperties();
@@ -41,7 +41,7 @@ public class SchuelerDaoTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         db.closeSession();
     }
 
@@ -80,7 +80,7 @@ public class SchuelerDaoTest {
 
     }
 
-    @SuppressWarnings("ExtractMethodRecommender")
+    @SuppressWarnings({"ExtractMethodRecommender", "java:S5961"})
     @Test
     public void testSave() {
         EntityManager entityManager = db.getCurrentEntityManager();
@@ -193,6 +193,7 @@ public class SchuelerDaoTest {
 
     }
 
+    @SuppressWarnings("java:S5961")
     @Test
     public void testRemove() {
         EntityManager entityManager = db.getCurrentEntityManager();

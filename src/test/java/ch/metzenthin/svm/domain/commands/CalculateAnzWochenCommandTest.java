@@ -23,6 +23,7 @@ public class CalculateAnzWochenCommandTest {
     private final CalculateAnzWochenCommand calculateAnzWochenCommandErstesSemester = new CalculateAnzWochenCommand(null, erstesSemester);
     private final CalculateAnzWochenCommand calculateAnzWochenCommandZweitesSemester = new CalculateAnzWochenCommand(null, zweitesSemester);
 
+    @SuppressWarnings("java:S5961")
     @Test
     public void testCalculateAnzWochenKursanmeldung_MittwochKurs() {
 

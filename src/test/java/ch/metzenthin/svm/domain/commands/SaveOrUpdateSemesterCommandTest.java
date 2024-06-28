@@ -29,19 +29,20 @@ public class SaveOrUpdateSemesterCommandTest {
     private CommandInvoker commandInvoker;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
         commandInvoker = new CommandInvokerImpl();
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         db.closeSession();
     }
 
+    @SuppressWarnings("java:S5961")
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
 
         // Vor Transaktionen
         assertFalse(checkIfSemesterAvailable("1912/1913", Semesterbezeichnung.ZWEITES_SEMESTER, new GregorianCalendar(1913, Calendar.FEBRUARY, 20), new GregorianCalendar(1913, Calendar.JULY, 10), new GregorianCalendar(1912, Calendar.APRIL, 25), new GregorianCalendar(1912, Calendar.MAY, 7), null, null));

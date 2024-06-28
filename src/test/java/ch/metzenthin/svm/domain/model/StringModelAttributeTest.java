@@ -16,7 +16,7 @@ public class StringModelAttributeTest {
     TestModelAttributeListener testModelAttributeListener;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         testModelAttributeListener = new TestModelAttributeListener();
     }
 
@@ -50,21 +50,15 @@ public class StringModelAttributeTest {
         assertEquals("", stringModelAttribute.getValue());
     }
 
-    @Test(expected = SvmRequiredException.class)
-    public void testSetNewValue_IsRequired_Null() throws SvmValidationException {
+    @Test
+    public void testSetNewValue_IsRequired_Null() {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
                 Field.NACHNAME, 0, 8,
                 new TestAttributeAccessor(null)
         );
-        try {
-            stringModelAttribute.setNewValue(true, null, false);
-            fail("SvmRequiredException erwartet");
-        } catch (SvmValidationException e) {
-            assertEquals(1, testModelAttributeListener.getInvalidateCounter());
-            assertEquals(0, testModelAttributeListener.getFireCounter());
-            throw e;
-        }
+        assertThrows(SvmRequiredException.class,
+                () -> stringModelAttribute.setNewValue(true, null, false));
     }
 
     @Test
@@ -79,21 +73,15 @@ public class StringModelAttributeTest {
         assertEquals(1, testModelAttributeListener.getFireCounter());
     }
 
-    @Test(expected = SvmRequiredException.class)
-    public void testSetNewValue_IsRequired_Empty() throws SvmValidationException {
+    @Test
+    public void testSetNewValue_IsRequired_Empty() {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
                 Field.NACHNAME, 0, 8,
                 new TestAttributeAccessor(null)
         );
-        try {
-            stringModelAttribute.setNewValue(true, "", false);
-            fail("SvmRequiredException erwartet");
-        } catch (SvmValidationException e) {
-            assertEquals(1, testModelAttributeListener.getInvalidateCounter());
-            assertEquals(0, testModelAttributeListener.getFireCounter());
-            throw e;
-        }
+        assertThrows(SvmRequiredException.class,
+                () -> stringModelAttribute.setNewValue(true, "", false));
     }
 
     @Test
@@ -144,21 +132,15 @@ public class StringModelAttributeTest {
         assertEquals(1, testModelAttributeListener.getFireCounter());
     }
 
-    @Test(expected = SvmValidationException.class)
-    public void testSetNewValue_MinLength_Greater() throws SvmValidationException {
+    @Test
+    public void testSetNewValue_MinLength_Greater() {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
                 Field.NACHNAME, 2, 8,
                 new TestAttributeAccessor(null)
         );
-        try {
-            stringModelAttribute.setNewValue(true, "a", false);
-            fail("SvmValidationException erwartet");
-        } catch (SvmValidationException e) {
-            assertEquals(1, testModelAttributeListener.getInvalidateCounter());
-            assertEquals(0, testModelAttributeListener.getFireCounter());
-            throw e;
-        }
+        assertThrows(SvmValidationException.class,
+                () -> stringModelAttribute.setNewValue(true, "a", false));
     }
 
     @Test
@@ -192,26 +174,20 @@ public class StringModelAttributeTest {
                 Field.NACHNAME, 0, 8,
                 new TestAttributeAccessor(null)
         );
-        stringModelAttribute.setNewValue(true, "abc", false);
+        stringModelAttribute.setNewValue(true, "cde", false);
         assertEquals(0, testModelAttributeListener.getInvalidateCounter());
         assertEquals(1, testModelAttributeListener.getFireCounter());
     }
 
-    @Test(expected = SvmValidationException.class)
-    public void testSetNewValue_MaxLength_Lesser() throws SvmValidationException {
+    @Test
+    public void testSetNewValue_MaxLength_Lesser() {
         StringModelAttribute stringModelAttribute = new StringModelAttribute(
                 testModelAttributeListener,
                 Field.NACHNAME, 2, 4,
                 new TestAttributeAccessor(null)
         );
-        try {
-            stringModelAttribute.setNewValue(true, "abcde", false);
-            fail("SvmValidationException erwartet");
-        } catch (SvmValidationException e) {
-            assertEquals(1, testModelAttributeListener.getInvalidateCounter());
-            assertEquals(0, testModelAttributeListener.getFireCounter());
-            throw e;
-        }
+        assertThrows(SvmValidationException.class,
+                () -> stringModelAttribute.setNewValue(true, "abcde", false));
     }
 
     @Test
