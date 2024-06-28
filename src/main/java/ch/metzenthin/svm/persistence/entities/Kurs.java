@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.common.utils.StringNumberComparator;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import jakarta.persistence.*;

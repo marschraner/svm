@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
-import ch.metzenthin.svm.common.dataTypes.Listentyp;
+import ch.metzenthin.svm.common.datatypes.ListenExportTyp;
+import ch.metzenthin.svm.common.datatypes.Listentyp;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;

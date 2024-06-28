@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.*;

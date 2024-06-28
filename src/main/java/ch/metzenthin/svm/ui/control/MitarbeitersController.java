@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
+import ch.metzenthin.svm.common.datatypes.ListenExportTyp;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.domain.commands.DeleteMitarbeiterCommand;
 import ch.metzenthin.svm.domain.model.MitarbeitersModel;

@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;

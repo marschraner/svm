@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import ch.metzenthin.svm.persistence.entities.Semester;

@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

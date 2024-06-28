@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.daos;
 
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.persistence.entities.*;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;

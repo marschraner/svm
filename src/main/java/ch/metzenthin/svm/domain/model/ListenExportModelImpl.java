@@ -1,9 +1,9 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Listentyp;
-import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
+import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Listentyp;
+import ch.metzenthin.svm.common.datatypes.Rechnungstyp;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;

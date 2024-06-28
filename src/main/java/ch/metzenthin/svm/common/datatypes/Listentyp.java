@@ -1,4 +1,4 @@
-package ch.metzenthin.svm.common.dataTypes;
+package ch.metzenthin.svm.common.datatypes;
 
 import ch.metzenthin.svm.common.utils.SvmProperties;
 

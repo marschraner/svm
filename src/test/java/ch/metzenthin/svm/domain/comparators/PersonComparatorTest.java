@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.comparators;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Person;
 import org.junit.Test;

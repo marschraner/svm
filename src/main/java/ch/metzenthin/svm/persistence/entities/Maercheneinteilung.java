@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
-import ch.metzenthin.svm.common.dataTypes.Gruppe;
+import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
+import ch.metzenthin.svm.common.datatypes.Gruppe;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import jakarta.persistence.*;
 

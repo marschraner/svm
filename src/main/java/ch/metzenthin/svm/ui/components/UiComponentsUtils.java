@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.common.utils.StringNumber;
 import ch.metzenthin.svm.ui.componentmodel.*;
 

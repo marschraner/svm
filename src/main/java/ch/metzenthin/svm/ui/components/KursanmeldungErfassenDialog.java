@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.model.KursanmeldungErfassenModel;
 import ch.metzenthin.svm.domain.model.KursanmeldungenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;

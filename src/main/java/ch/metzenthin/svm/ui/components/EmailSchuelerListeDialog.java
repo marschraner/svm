@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.EmailSchuelerListeEmpfaengerGruppe;
+import ch.metzenthin.svm.common.datatypes.EmailSchuelerListeEmpfaengerGruppe;
 import ch.metzenthin.svm.domain.model.EmailSchuelerListeModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.control.EmailSchuelerListeController;

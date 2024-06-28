@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Stipendium;
+import ch.metzenthin.svm.common.datatypes.Stipendium;
 import ch.metzenthin.svm.domain.model.SemesterrechnungBearbeitenModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenModel;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;

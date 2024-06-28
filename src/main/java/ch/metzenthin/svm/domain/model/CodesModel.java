@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Codetyp;
+import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.domain.commands.DeleteElternmithilfeCodeCommand;
 import ch.metzenthin.svm.domain.commands.DeleteMitarbeiterCodeCommand;
 import ch.metzenthin.svm.domain.commands.DeleteSchuelerCodeCommand;

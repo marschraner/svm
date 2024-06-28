@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
 import ch.metzenthin.svm.persistence.entities.Person;
 

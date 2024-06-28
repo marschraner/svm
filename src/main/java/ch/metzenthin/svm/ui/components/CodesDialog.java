@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Codetyp;
+import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.control.CodesController;

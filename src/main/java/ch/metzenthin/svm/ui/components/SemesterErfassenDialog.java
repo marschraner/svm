@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Schuljahre;
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.datatypes.Schuljahre;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.model.SemesterErfassenModel;
 import ch.metzenthin.svm.domain.model.SemestersModel;
 import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;

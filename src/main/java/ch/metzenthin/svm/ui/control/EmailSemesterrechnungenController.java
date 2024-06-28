@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.domain.model.EmailSemesterrechnungenModel;

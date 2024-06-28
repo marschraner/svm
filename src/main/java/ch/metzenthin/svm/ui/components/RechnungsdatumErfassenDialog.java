@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
+import ch.metzenthin.svm.common.datatypes.Rechnungstyp;
 import ch.metzenthin.svm.domain.model.RechnungsdatumErfassenModel;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 import ch.metzenthin.svm.ui.control.RechnungsdatumErfassenController;

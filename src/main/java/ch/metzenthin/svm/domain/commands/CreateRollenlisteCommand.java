@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
+import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
 import ch.metzenthin.svm.common.utils.MaercheneinteilungenSorter;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;

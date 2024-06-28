@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.daos;
 
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Semester;

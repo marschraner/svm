@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Gruppe;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Gruppe;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;

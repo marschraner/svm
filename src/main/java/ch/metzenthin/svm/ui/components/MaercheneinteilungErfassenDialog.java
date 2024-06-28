@@ -1,9 +1,9 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
-import ch.metzenthin.svm.common.dataTypes.Gruppe;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
+import ch.metzenthin.svm.common.datatypes.Gruppe;
 import ch.metzenthin.svm.domain.model.MaercheneinteilungErfassenModel;
 import ch.metzenthin.svm.domain.model.MaercheneinteilungenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
