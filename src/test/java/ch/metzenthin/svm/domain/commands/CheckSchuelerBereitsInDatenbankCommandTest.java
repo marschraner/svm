@@ -33,7 +33,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
     private Schueler schuelerTestdata;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
         commandInvoker = new CommandInvokerImpl();
@@ -41,7 +41,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         deleteTestdata();
         db.closeSession();
     }

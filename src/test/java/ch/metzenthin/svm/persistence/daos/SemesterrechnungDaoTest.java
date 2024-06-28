@@ -31,13 +31,13 @@ public class SemesterrechnungDaoTest {
     private DB db;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         db.closeSession();
     }
 

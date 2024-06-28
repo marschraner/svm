@@ -33,7 +33,7 @@ public class MaercheneinteilungDaoTest {
     private boolean neusteZuoberst;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
         Properties svmProperties = SvmProperties.getSvmProperties();
@@ -41,7 +41,7 @@ public class MaercheneinteilungDaoTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         db.closeSession();
     }
 

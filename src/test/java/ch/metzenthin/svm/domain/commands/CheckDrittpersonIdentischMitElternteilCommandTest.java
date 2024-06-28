@@ -50,7 +50,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
         commandInvoker.executeCommand(checkDrittpersonIdentischMitElternteilCommand);
         assertTrue(checkDrittpersonIdentischMitElternteilCommand.isIdentical());
         String errorMessage = checkDrittpersonIdentischMitElternteilCommand.getErrorMessage();
-        assertEquals(errorMessage, CheckDrittpersonIdentischMitElternteilCommand.ERROR_IDENTISCH_MIT_MUTTER);
+        assertEquals(CheckDrittpersonIdentischMitElternteilCommand.ERROR_IDENTISCH_MIT_MUTTER, errorMessage);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
         commandInvoker.executeCommand(checkDrittpersonIdentischMitElternteilCommand);
         assertTrue(checkDrittpersonIdentischMitElternteilCommand.isIdentical());
         String errorMessage = checkDrittpersonIdentischMitElternteilCommand.getErrorMessage();
-        assertEquals(errorMessage, CheckDrittpersonIdentischMitElternteilCommand.ERROR_IDENTISCH_MIT_VATER);
+        assertEquals(CheckDrittpersonIdentischMitElternteilCommand.ERROR_IDENTISCH_MIT_VATER, errorMessage);
     }
 
     @Test

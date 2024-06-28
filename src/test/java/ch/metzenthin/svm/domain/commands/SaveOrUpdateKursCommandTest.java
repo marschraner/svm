@@ -37,19 +37,19 @@ public class SaveOrUpdateKursCommandTest {
     private CommandInvoker commandInvoker;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
         commandInvoker = new CommandInvokerImpl();
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         db.closeSession();
     }
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
 
         List<Semester> erfassteSemester = new ArrayList<>();
         List<Kurstyp> erfassteKurstypen = new ArrayList<>();

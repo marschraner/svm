@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 public class CheckElternmithilfeBereitsBeiGeschwisterErfasstCommandTest {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
 
         // Geschwister 1, Märchen, ElternmithilfeCode erzeugen
         Schueler geschwister1 = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");

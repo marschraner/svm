@@ -17,7 +17,7 @@ public class DispensationTest {
     private boolean neusteZuoberst;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         Properties svmProperties = SvmProperties.getSvmProperties();
         neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");

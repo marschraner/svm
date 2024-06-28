@@ -23,6 +23,7 @@ public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
     private final CommandInvoker commandInvoker = new CommandInvokerImpl();
 
     // 1.
+    @SuppressWarnings("java:S5961")
     @Test
     public void testExecute() {
 
