@@ -8,6 +8,9 @@ import java.util.List;
  */
 public class SvmListUtils {
 
+    private SvmListUtils() {
+    }
+
     /**
      * Replaces list elements of listToBeUpdated by elements of updatedSublist.
      *
