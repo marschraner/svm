@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
 import ch.metzenthin.svm.persistence.entities.Person;
@@ -72,7 +73,7 @@ public class CreateAdressenCsvFileCommand extends CreateListeCommand {
             result = Result.LISTE_ERFOLGREICH_ERSTELLT;
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new SvmRuntimeException("Fehler beim Erstellen der csv-Datei", e);
         }
 
     }

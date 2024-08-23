@@ -22,6 +22,7 @@ public class CheckIfSemesterrechnungContainsSechsJahresRabattCommand implements 
         this.rechnungstyp = rechnungstyp;
     }
 
+    @SuppressWarnings({"java:S3776", "java:S135"})
     @Override
     public void execute() {
 

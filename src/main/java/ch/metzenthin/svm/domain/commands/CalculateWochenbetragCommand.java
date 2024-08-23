@@ -36,7 +36,7 @@ public class CalculateWochenbetragCommand implements Command {
         this.lektionsgebuehrenMap = lektionsgebuehrenMap;
     }
 
-    @SuppressWarnings("ExtractMethodRecommender")
+    @SuppressWarnings({"ExtractMethodRecommender", "java:S3776"})
     @Override
     public void execute() {
 

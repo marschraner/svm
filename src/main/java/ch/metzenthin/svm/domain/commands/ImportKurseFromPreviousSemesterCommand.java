@@ -26,7 +26,7 @@ public class ImportKurseFromPreviousSemesterCommand implements Command {
         this.currentSemester = currentSemester;
     }
 
-    @SuppressWarnings("ExtractMethodRecommender")
+    @SuppressWarnings({"ExtractMethodRecommender", "java:S1119", "java:S3776"})
     @Override
     public void execute() {
 

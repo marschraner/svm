@@ -28,6 +28,7 @@ public class UpdateWochenbetragUndAnzWochenCommand implements Command {
         this.currentSemester = currentSemester;
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void execute() {
 

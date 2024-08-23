@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.common.datatypes.Listentyp;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
@@ -39,31 +40,28 @@ public class CreateListeFromTemplateCommand extends CreateListeCommand {
         this.outputFile = outputFile;
     }
 
+    @SuppressWarnings({"java:S3776", "java:S6541"})
     @Override
     public void execute() {
         // Template-File suchen
         FindTemplateFileCommand findTemplateFileCommand = new FindTemplateFileCommand(listentyp, schuelerSuchenTableModel.getSemester(), schuelerSuchenTableModel.getWochentag());
         findTemplateFileCommand.execute();
         templateFile = findTemplateFileCommand.getTemplateFile();
-        switch (findTemplateFileCommand.getResult()) {
-            case TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR -> {
-                result = Result.TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR;
-                return;
-            }
-            case FEHLER_BEIM_LESEN_DES_PROPERTY_FILE -> {
-                result = Result.FEHLER_BEIM_LESEN_DES_PROPERTY_FILE;
-                return;
-            }
-            default -> {
-            }
+
+        if (findTemplateFileCommand.getResult()
+                == FindTemplateFileCommand.Result.TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR) {
+            result = Result.TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR;
+            return;
+        } else if (findTemplateFileCommand.getResult()
+                == FindTemplateFileCommand.Result.FEHLER_BEIM_LESEN_DES_PROPERTY_FILE) {
+            result = Result.FEHLER_BEIM_LESEN_DES_PROPERTY_FILE;
+            return;
         }
 
         // Platzhalter in Template-File ersetzen
         List<Schueler> schuelerList = schuelerSuchenTableModel.getSelektierteSchuelerList();
-        XWPFDocument doc;
         int maxRows = 50;
-        try {
-            doc = new XWPFDocument(OPCPackage.open(templateFile));
+        try (XWPFDocument doc = new XWPFDocument(OPCPackage.open(templateFile))) {
             for (XWPFParagraph p : doc.getParagraphs()) {
                 List<XWPFRun> runs = p.getRuns();
                 if (runs != null) {
@@ -82,7 +80,7 @@ public class CreateListeFromTemplateCommand extends CreateListeCommand {
                         for (XWPFParagraph p : cell.getParagraphs()) {
                             for (XWPFRun r : p.getRuns()) {
                                 String text = r.getText(0);
-                                LOGGER.debug("CreateListeFromTemplateCommand: text =" + text);
+                                LOGGER.debug("CreateListeFromTemplateCommand: text = {}", text);
                                 for (int i = 0; i < maxRows; i++) {
                                     String ip = Integer.toString(i + 1);
                                     // 01, 02,...
@@ -96,7 +94,14 @@ public class CreateListeFromTemplateCommand extends CreateListeCommand {
                                     } else if (text.contains("NameS" + ip)) {
                                         text = text.replace("NameS" + ip, (schuelerList.size() > i ? schuelerList.get(i).getNachname() : ""));
                                     } else if (text.contains("GebS" + ip)) {
-                                        text = text.replace("GebS" + ip, (schuelerList.size() > i ? calendarToDdMmYy(schuelerList.get(i).getGeburtsdatum()) : ""));
+                                        String geburtsdatumAsString;
+                                        if (schuelerList.size() > i) {
+                                            String ddMmYy = calendarToDdMmYy(schuelerList.get(i).getGeburtsdatum());
+                                            geburtsdatumAsString = (ddMmYy != null) ? ddMmYy : "";
+                                        } else {
+                                            geburtsdatumAsString = "";
+                                        }
+                                        text = text.replace("GebS" + ip, geburtsdatumAsString);
                                     }
                                     r.setText(text, 0);
                                 }
@@ -111,7 +116,7 @@ public class CreateListeFromTemplateCommand extends CreateListeCommand {
             result = Result.LISTE_ERFOLGREICH_ERSTELLT;
 
         } catch (InvalidFormatException | IOException e) {
-            throw new RuntimeException(e);
+            throw new SvmRuntimeException("Fehler beim Erstellen des Template-Files", e);
         }
     }
 

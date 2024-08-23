@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.datatypes.Rechnungstyp;
 import ch.metzenthin.svm.common.datatypes.Stipendium;
 import ch.metzenthin.svm.common.datatypes.Wochentag;
+import ch.metzenthin.svm.domain.model.SemesterrechnungModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenSuchenModel;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
@@ -158,7 +159,7 @@ public class FindSemesterrechnungenCommand implements Command {
             selectStatementSb.setLength(selectStatementSb.length() - 4);
         }
 
-        LOGGER.trace("JPQL Select-Statement: {}", selectStatementSb.toString());
+        LOGGER.trace("JPQL Select-Statement: {}", selectStatementSb);
 
         typedQuery = db.getCurrentEntityManager().createQuery(
                 selectStatementSb.toString(), Semesterrechnung.class);
@@ -187,7 +188,7 @@ public class FindSemesterrechnungenCommand implements Command {
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "java:S3776", "java:S6541"})
     private void createWhereSelections() {
 
         if (checkNotEmpty(vorname)) {
@@ -227,32 +228,30 @@ public class FindSemesterrechnungenCommand implements Command {
             selectStatementSb.append(" lkr.personId = :lehrkraftPersonId and");
         }
         switch (semesterrechnungCodeJaNeinSelected) {
-            case JA:
-                if (semesterrechnungCode != null && semesterrechnungCode != SemesterrechnungenSuchenModel.SEMESTERRECHNUNG_CODE_ALLE) {
+            case JA -> {
+                if (semesterrechnungCode != null && semesterrechnungCode != SemesterrechnungModel.SEMESTERRECHNUNG_CODE_ALLE) {
                     selectStatementSb.append(" semre.semesterrechnungCode.codeId = :semesterrechnungCodeId and");
                 } else {
                     selectStatementSb.append(" semre.semesterrechnungCode is not null and");
                 }
-                break;
-            case NEIN:
-                selectStatementSb.append(" semre.semesterrechnungCode is null and");
-                break;
-            case ALLE:
-                break;
+            }
+            case NEIN -> selectStatementSb.append(" semre.semesterrechnungCode is null and");
+            case ALLE -> {
+                // Nothing to do
+            }
         }
         switch (stipendiumJaNeinSelected) {
-            case JA:
+            case JA -> {
                 if (stipendium != null && stipendium != Stipendium.ALLE) {
                     selectStatementSb.append(" semre.stipendium = :stipendium and");
                 } else {
                     selectStatementSb.append(" semre.stipendium is not null and");
                 }
-                break;
-            case NEIN:
-                selectStatementSb.append(" semre.stipendium is null and");
-                break;
-            case ALLE:
-                break;
+            }
+            case NEIN -> selectStatementSb.append(" semre.stipendium is null and");
+            case ALLE -> {
+                // Nothing to do
+            }
         }
         if (gratiskinder == null || !gratiskinder) {
             selectStatementSb.append(" semre.gratiskinder = false and");
@@ -260,7 +259,7 @@ public class FindSemesterrechnungenCommand implements Command {
             selectStatementSb.append(" semre.gratiskinder = true and");
         }
         switch (rechnungsdatumGesetztVorrechnungSelected) {
-            case GESETZT:
+            case GESETZT -> {
                 if (rechnungsdatumVorrechnung != null) {
                     switch (praezisierungRechnungsdatumVorrechnungSelected) {
                         case AM ->
@@ -273,12 +272,11 @@ public class FindSemesterrechnungenCommand implements Command {
                 } else {
                     selectStatementSb.append(" semre.rechnungsdatumVorrechnung is not null and");
                 }
-                break;
-            case NICHT_GESETZT:
-                selectStatementSb.append(" semre.rechnungsdatumVorrechnung is null and");
-                break;
-            case ALLE:
-                break;
+            }
+            case NICHT_GESETZT -> selectStatementSb.append(" semre.rechnungsdatumVorrechnung is null and");
+            case ALLE -> {
+                // Nothing to do
+            }
         }
         if (ermaessigungVorrechnung != null) {
             switch (praezisierungErmaessigungVorrechnungSelected) {
@@ -318,7 +316,7 @@ public class FindSemesterrechnungenCommand implements Command {
             }
         }
         switch (rechnungsdatumGesetztNachrechnungSelected) {
-            case GESETZT:
+            case GESETZT -> {
                 if (rechnungsdatumNachrechnung != null) {
                     switch (praezisierungRechnungsdatumNachrechnungSelected) {
                         case AM ->
@@ -331,12 +329,11 @@ public class FindSemesterrechnungenCommand implements Command {
                 } else {
                     selectStatementSb.append(" semre.rechnungsdatumNachrechnung is not null and");
                 }
-                break;
-            case NICHT_GESETZT:
-                selectStatementSb.append(" semre.rechnungsdatumNachrechnung is null and");
-                break;
-            case ALLE:
-                break;
+            }
+            case NICHT_GESETZT -> selectStatementSb.append(" semre.rechnungsdatumNachrechnung is null and");
+            case ALLE -> {
+                // Nothing to do
+            }
         }
         if (ermaessigungNachrechnung != null) {
             switch (praezisierungErmaessigungNachrechnungSelected) {
@@ -378,7 +375,7 @@ public class FindSemesterrechnungenCommand implements Command {
 
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "java:S3776"})
     private void setSelectionParameters() {
         typedQuery.setParameter("semesterId", semester.getSemesterId());
         typedQuery.setParameter("deleted", geloescht);
@@ -442,6 +439,7 @@ public class FindSemesterrechnungenCommand implements Command {
         filterDifferenzSchulgeld();
     }
 
+    @SuppressWarnings({"java:S6541", "java:S3776"})
     private void filterRechnungsbetrag() {
         if (rechnungsbetragVorrechnung != null) {
             Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
@@ -509,6 +507,7 @@ public class FindSemesterrechnungenCommand implements Command {
         }
     }
 
+    @SuppressWarnings({"java:S3776", "java:S6541"})
     private void filterRestbetrag() {
         if (restbetragVorrechnung != null) {
             Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
@@ -576,56 +575,53 @@ public class FindSemesterrechnungenCommand implements Command {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     private void filterSechsJahresRabatt() {
         if (sechsJahresRabattJaNeinVorrechnungSelected != SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.ALLE) {
             FindPreviousSemesterCommand findPreviousSemesterCommand = new FindPreviousSemesterCommand(semester);
             findPreviousSemesterCommand.execute();
             Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
             Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
-            switch (sechsJahresRabattJaNeinVorrechnungSelected) {
-                case JA -> {
-                    while (it.hasNext()) {
-                        Semesterrechnung semesterrechnungIt = it.next();
-                        CheckIfSemesterrechnungContainsSechsJahresRabattCommand checkIfSemesterrechnungContainsSechsJahresRabattCommand = new CheckIfSemesterrechnungContainsSechsJahresRabattCommand(semesterrechnungIt, previousSemester, Rechnungstyp.VORRECHNUNG);
-                        checkIfSemesterrechnungContainsSechsJahresRabattCommand.execute();
-                        if (!checkIfSemesterrechnungContainsSechsJahresRabattCommand.isSemesterrechnungContainsSechsJahresRabatt()) {
-                            it.remove();
-                        }
+            if (sechsJahresRabattJaNeinVorrechnungSelected
+                    == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.JA) {
+                while (it.hasNext()) {
+                    Semesterrechnung semesterrechnungIt = it.next();
+                    CheckIfSemesterrechnungContainsSechsJahresRabattCommand checkIfSemesterrechnungContainsSechsJahresRabattCommand = new CheckIfSemesterrechnungContainsSechsJahresRabattCommand(semesterrechnungIt, previousSemester, Rechnungstyp.VORRECHNUNG);
+                    checkIfSemesterrechnungContainsSechsJahresRabattCommand.execute();
+                    if (!checkIfSemesterrechnungContainsSechsJahresRabattCommand.isSemesterrechnungContainsSechsJahresRabatt()) {
+                        it.remove();
                     }
                 }
-                case NEIN -> {
-                    while (it.hasNext()) {
-                        Semesterrechnung semesterrechnungIt = it.next();
-                        CheckIfSemesterrechnungContainsSechsJahresRabattCommand checkIfSemesterrechnungContainsSechsJahresRabattCommand = new CheckIfSemesterrechnungContainsSechsJahresRabattCommand(semesterrechnungIt, previousSemester, Rechnungstyp.VORRECHNUNG);
-                        checkIfSemesterrechnungContainsSechsJahresRabattCommand.execute();
-                        if (checkIfSemesterrechnungContainsSechsJahresRabattCommand.isSemesterrechnungContainsSechsJahresRabatt()) {
-                            it.remove();
-                        }
+            } else if (sechsJahresRabattJaNeinVorrechnungSelected
+                    == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinVorrechnungSelected.NEIN) {
+                while (it.hasNext()) {
+                    Semesterrechnung semesterrechnungIt = it.next();
+                    CheckIfSemesterrechnungContainsSechsJahresRabattCommand checkIfSemesterrechnungContainsSechsJahresRabattCommand = new CheckIfSemesterrechnungContainsSechsJahresRabattCommand(semesterrechnungIt, previousSemester, Rechnungstyp.VORRECHNUNG);
+                    checkIfSemesterrechnungContainsSechsJahresRabattCommand.execute();
+                    if (checkIfSemesterrechnungContainsSechsJahresRabattCommand.isSemesterrechnungContainsSechsJahresRabatt()) {
+                        it.remove();
                     }
                 }
             }
         }
         if (sechsJahresRabattJaNeinNachrechnungSelected != SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.ALLE) {
             Iterator<Semesterrechnung> it = semesterrechnungenFound.iterator();
-            switch (sechsJahresRabattJaNeinNachrechnungSelected) {
-                case JA -> {
-                    while (it.hasNext()) {
-                        Semesterrechnung semesterrechnungIt = it.next();
-                        CheckIfSemesterrechnungContainsSechsJahresRabattCommand checkIfSemesterrechnungContainsSechsJahresRabattCommand = new CheckIfSemesterrechnungContainsSechsJahresRabattCommand(semesterrechnungIt, semester, Rechnungstyp.NACHRECHNUNG);
-                        checkIfSemesterrechnungContainsSechsJahresRabattCommand.execute();
-                        if (!checkIfSemesterrechnungContainsSechsJahresRabattCommand.isSemesterrechnungContainsSechsJahresRabatt()) {
-                            it.remove();
-                        }
+            if (sechsJahresRabattJaNeinNachrechnungSelected == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.JA) {
+                while (it.hasNext()) {
+                    Semesterrechnung semesterrechnungIt = it.next();
+                    CheckIfSemesterrechnungContainsSechsJahresRabattCommand checkIfSemesterrechnungContainsSechsJahresRabattCommand = new CheckIfSemesterrechnungContainsSechsJahresRabattCommand(semesterrechnungIt, semester, Rechnungstyp.NACHRECHNUNG);
+                    checkIfSemesterrechnungContainsSechsJahresRabattCommand.execute();
+                    if (!checkIfSemesterrechnungContainsSechsJahresRabattCommand.isSemesterrechnungContainsSechsJahresRabatt()) {
+                        it.remove();
                     }
                 }
-                case NEIN -> {
-                    while (it.hasNext()) {
-                        Semesterrechnung semesterrechnungIt = it.next();
-                        CheckIfSemesterrechnungContainsSechsJahresRabattCommand checkIfSemesterrechnungContainsSechsJahresRabattCommand = new CheckIfSemesterrechnungContainsSechsJahresRabattCommand(semesterrechnungIt, semester, Rechnungstyp.NACHRECHNUNG);
-                        checkIfSemesterrechnungContainsSechsJahresRabattCommand.execute();
-                        if (checkIfSemesterrechnungContainsSechsJahresRabattCommand.isSemesterrechnungContainsSechsJahresRabatt()) {
-                            it.remove();
-                        }
+            } else if (sechsJahresRabattJaNeinNachrechnungSelected == SemesterrechnungenSuchenModel.SechsJahresRabattJaNeinNachrechnungSelected.NEIN) {
+                while (it.hasNext()) {
+                    Semesterrechnung semesterrechnungIt = it.next();
+                    CheckIfSemesterrechnungContainsSechsJahresRabattCommand checkIfSemesterrechnungContainsSechsJahresRabattCommand = new CheckIfSemesterrechnungContainsSechsJahresRabattCommand(semesterrechnungIt, semester, Rechnungstyp.NACHRECHNUNG);
+                    checkIfSemesterrechnungContainsSechsJahresRabattCommand.execute();
+                    if (checkIfSemesterrechnungContainsSechsJahresRabattCommand.isSemesterrechnungContainsSechsJahresRabatt()) {
+                        it.remove();
                     }
                 }
             }
@@ -633,6 +629,7 @@ public class FindSemesterrechnungenCommand implements Command {
 
     }
 
+    @SuppressWarnings("java:S3776")
     private void filterDifferenzSchulgeld() {
         if (differenzSchulgeld == null) {
             return;

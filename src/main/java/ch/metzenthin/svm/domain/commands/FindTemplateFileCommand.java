@@ -50,10 +50,11 @@ public class FindTemplateFileCommand implements Command {
             String templatesDirectory = prop.getProperty(SvmProperties.KEY_TEMPLATES_DIRECTORY);
             String templateFileName = prop.getProperty(listentyp.getSvmPropertiesKey());
             if (templatesDirectory == null || templateFileName == null) {
-                throw new RuntimeException();
+                result = Result.FEHLER_BEIM_LESEN_DES_PROPERTY_FILE;
+                return;
             }
             templateFileAsStr = templatesDirectory + File.separator + templateFileName;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             result = Result.FEHLER_BEIM_LESEN_DES_PROPERTY_FILE;
             return;
         }
@@ -61,10 +62,10 @@ public class FindTemplateFileCommand implements Command {
         // Schuljahr, Semester und Wochentag ersetzen
         String schuljahrStr = semester.getSchuljahr().substring(0, 4) + "_" + semester.getSchuljahr().substring(5, 9);
         String semesterbezeichnungStr = semester.getSemesterbezeichnung().getKuerzelInTemplateFile();
-        templateFileAsStr = templateFileAsStr.replaceAll("<Schuljahr>", schuljahrStr);
-        templateFileAsStr = templateFileAsStr.replaceAll("<Semester>", semesterbezeichnungStr);
+        templateFileAsStr = templateFileAsStr.replace("<Schuljahr>", schuljahrStr);
+        templateFileAsStr = templateFileAsStr.replace("<Semester>", semesterbezeichnungStr);
         if (wochentag != null) {
-            templateFileAsStr = templateFileAsStr.replaceAll("<Wochentag>", wochentag.toString().substring(0, 2));
+            templateFileAsStr = templateFileAsStr.replace("<Wochentag>", wochentag.toString().substring(0, 2));
         }
 
         // Prüfen, ob File existiert

@@ -26,6 +26,7 @@ public class CheckElternmithilfeBereitsBeiGeschwisterErfasstCommand implements C
         this.maerchen = maerchen;
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void execute() {
 
