@@ -15,6 +15,8 @@ import java.util.List;
  */
 public class KursDao extends GenericDao<Kurs, Integer> {
 
+    private static final String SEMESTER_ID = "semesterId";
+
     @Override
     public void remove(Kurs kurs) {
 
@@ -40,7 +42,7 @@ public class KursDao extends GenericDao<Kurs, Integer> {
     public List<Kurs> findKurseSemester(Semester semester) {
         TypedQuery<Kurs> typedQuery = db.getCurrentEntityManager().createQuery(
                 "select k from Kurs k where k.semester.semesterId = :semesterId", Kurs.class);
-        typedQuery.setParameter("semesterId", semester.getSemesterId());
+        typedQuery.setParameter(SEMESTER_ID, semester.getSemesterId());
         List<Kurs> kurseFound = typedQuery.getResultList();
         // Sortieren gemäss compareTo in Kurs
         Collections.sort(kurseFound);
@@ -78,7 +80,7 @@ public class KursDao extends GenericDao<Kurs, Integer> {
         TypedQuery<Kurs> typedQuery = db.getCurrentEntityManager().createQuery(
                 selectStatementSb.toString(), Kurs.class);
         if (semester != null) {
-            typedQuery.setParameter("semesterId", semester.getSemesterId());
+            typedQuery.setParameter(SEMESTER_ID, semester.getSemesterId());
         }
         if (wochentag != null) {
             typedQuery.setParameter("wochentag", wochentag);
@@ -102,7 +104,7 @@ public class KursDao extends GenericDao<Kurs, Integer> {
                     "select k from Kurs k join k.lehrkraefte lk " +
                     " where k.semester.semesterId = :semesterId and k.wochentag = :wochentag and k.zeitBeginn = :zeitBeginn " +
                     " and lk.personId = :lehrkraftPersonId", Kurs.class);
-            typedQuery.setParameter("semesterId", semester.getSemesterId());
+            typedQuery.setParameter(SEMESTER_ID, semester.getSemesterId());
             typedQuery.setParameter("wochentag", wochentag);
             typedQuery.setParameter("zeitBeginn", zeitBeginn);
             typedQuery.setParameter("lehrkraftPersonId", mitarbeiter.getPersonId());

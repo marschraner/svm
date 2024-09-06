@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 /**
  * @author Martin Schraner
@@ -67,6 +68,19 @@ public class Lektionsgebuehren implements Comparable<Lektionsgebuehren> {
         this.betrag4Kinder = otherLektionslaengen.betrag4Kinder;
         this.betrag5Kinder = otherLektionslaengen.betrag5Kinder;
         this.betrag6Kinder = otherLektionslaengen.betrag6Kinder;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Lektionsgebuehren that = (Lektionsgebuehren) o;
+        return Objects.equals(lektionslaenge, that.lektionslaenge);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(lektionslaenge);
     }
 
     @Override

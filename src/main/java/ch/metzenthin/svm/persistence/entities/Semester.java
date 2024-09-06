@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNumberOfWeeksBetween;
@@ -67,6 +68,7 @@ public class Semester implements Comparable<Semester> {
     public Semester() {
     }
 
+    @SuppressWarnings("java:S107")
     public Semester(String schuljahr, Semesterbezeichnung semesterbezeichnung, Calendar semesterbeginn, Calendar semesterende, Calendar ferienbeginn1, Calendar ferienende1, Calendar ferienbeginn2, Calendar ferienende2) {
         this.schuljahr = schuljahr;
         this.semesterbezeichnung = semesterbezeichnung;
@@ -98,8 +100,17 @@ public class Semester implements Comparable<Semester> {
     }
 
     @Override
-    public String toString() {
-        return schuljahr + ", " + semesterbezeichnung;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Semester semester = (Semester) o;
+        return Objects.equals(schuljahr, semester.schuljahr)
+                && semesterbezeichnung == semester.semesterbezeichnung;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(schuljahr, semesterbezeichnung);
     }
 
     @Override
@@ -116,6 +127,11 @@ public class Semester implements Comparable<Semester> {
             }
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return schuljahr + ", " + semesterbezeichnung;
     }
 
     @Transient

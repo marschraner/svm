@@ -5,6 +5,9 @@ package ch.metzenthin.svm.persistence;
  */
 public class DBFactory {
 
+    private DBFactory() {
+    }
+
     public static DB getInstance() {
         return DBImpl.getInstance();
     }

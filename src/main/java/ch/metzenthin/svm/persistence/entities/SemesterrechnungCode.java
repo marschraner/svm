@@ -11,6 +11,7 @@ import java.util.Set;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S2160")  // equals / hash definiert für Code
 @Entity
 @Table(name = "SemesterrechnungCode")
 @DiscriminatorValue("Semesterrechnung")

@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.text.Collator;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -53,11 +54,16 @@ public class Kurstyp implements Comparable<Kurstyp> {
     }
 
     @Override
-    public String toString() {
-        if (bezeichnung.equals("alle")) {
-            return "alle";
-        }
-        return bezeichnung;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Kurstyp kurstyp = (Kurstyp) o;
+        return Objects.equals(bezeichnung, kurstyp.bezeichnung);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(bezeichnung);
     }
 
     @Override
@@ -66,6 +72,14 @@ public class Kurstyp implements Comparable<Kurstyp> {
         Collator collator = Collator.getInstance(Locale.GERMAN);
         collator.setStrength(Collator.SECONDARY);// a == A, a < Ä
         return collator.compare(bezeichnung, otherKurstyp.bezeichnung);
+    }
+
+    @Override
+    public String toString() {
+        if (bezeichnung.equals("alle")) {
+            return "alle";
+        }
+        return bezeichnung;
     }
 
     public Integer getKurstypId() {

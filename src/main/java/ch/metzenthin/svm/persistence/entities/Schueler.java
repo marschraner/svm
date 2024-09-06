@@ -10,6 +10,7 @@ import java.util.*;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S2160")  // equals / hash definiert für Person
 @Entity
 @Table(name = "Schueler")
 @DiscriminatorValue("Schueler")
@@ -61,12 +62,14 @@ public class Schueler extends Person {
     public Schueler() {
     }
 
+    @SuppressWarnings("java:S107")
     public Schueler(String vorname, String nachname, Calendar geburtsdatum, String festnetz, String natel, String email, Geschlecht geschlecht, String bemerkungen) {
         super(Anrede.KEINE, vorname, nachname, geburtsdatum, festnetz, natel, email);
         this.geschlecht = geschlecht;
         this.bemerkungen = bemerkungen;
     }
 
+    @Override
     public boolean isEmpty() {
         return super.isEmpty()
                 && (bemerkungen == null || bemerkungen.trim().isEmpty());

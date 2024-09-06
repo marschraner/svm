@@ -146,9 +146,31 @@ public class Kurs implements Comparable<Kurs> {
         this.bemerkungen = otherKurs.getBemerkungen();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Kurs kurs = (Kurs) o;
+        return Objects.equals(semester, kurs.semester)
+                && Objects.equals(kurstyp, kurs.kurstyp)
+                && Objects.equals(altersbereich, kurs.altersbereich)
+                && Objects.equals(stufe, kurs.stufe)
+                && wochentag == kurs.wochentag
+                && Objects.equals(zeitBeginn, kurs.zeitBeginn)
+                && Objects.equals(zeitEnde, kurs.zeitEnde)
+                && Objects.equals(kursort, kurs.kursort);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                semester, kurstyp, altersbereich, stufe, wochentag, zeitBeginn, zeitEnde, kursort);
+    }
+
     /**
      * Note: this class has a natural ordering that is inconsistent with equals.
      */
+    @SuppressWarnings("java:S3776")
     @Override
     public int compareTo(Kurs otherKurs) {
         Comparator<String> stringNumberComparator = new StringNumberComparator();

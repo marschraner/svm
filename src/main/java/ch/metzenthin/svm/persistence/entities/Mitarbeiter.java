@@ -9,6 +9,7 @@ import java.util.*;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S2160")  // equals / hash definiert für Person
 @Entity
 @Table(name = "Mitarbeiter")
 @DiscriminatorValue("Mitarbeiter")
@@ -47,6 +48,7 @@ public class Mitarbeiter extends Person {
     public Mitarbeiter() {
     }
 
+    @SuppressWarnings("java:S107")
     public Mitarbeiter(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String festnetz,
                        String natel, String email, String ahvNummer, String ibanNummer, boolean lehrkraft,
                        String vertretungsmoeglichkeiten, String bemerkungen, Boolean aktiv) {

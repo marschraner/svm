@@ -8,6 +8,7 @@ import java.util.*;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S2160")  // equals / hash definiert für Person
 @Entity
 @Table(name = "Angehoeriger")
 @DiscriminatorValue("Angehoeriger")
@@ -42,10 +43,6 @@ public class Angehoeriger extends Person {
 
     public boolean isPartOf(Angehoeriger otherAngehoeriger) {
         return (super.isPartOf(otherAngehoeriger));
-    }
-
-    public boolean isEmpty() {
-        return super.isEmpty();
     }
 
     public void copyFieldValuesFrom(Angehoeriger angehoerigerFrom) {
