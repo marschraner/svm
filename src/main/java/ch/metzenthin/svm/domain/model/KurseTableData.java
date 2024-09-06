@@ -71,6 +71,7 @@ public class KurseTableData {
             case BEMERKUNGEN -> value = kurs.getBemerkungen();
             case ANZAHL_SCHUELER -> value = kurs.getKursanmeldungen().size();
             default -> {
+                // Nothing to do
             }
         }
         return value;

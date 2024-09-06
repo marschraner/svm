@@ -35,6 +35,7 @@ public class SemestersModelImpl extends AbstractModel implements SemestersModel 
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

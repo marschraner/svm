@@ -66,5 +66,6 @@ public class RechnungsdatumErfassenModelImpl extends AbstractModel implements Re
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 }

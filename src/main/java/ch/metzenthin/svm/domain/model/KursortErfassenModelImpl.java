@@ -110,5 +110,6 @@ public class KursortErfassenModelImpl extends AbstractModel implements KursortEr
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 }

@@ -39,6 +39,7 @@ public class MaerchensTableData {
             case ANZAHL_VORSTELLUNGEN -> value = maerchen.getAnzahlVorstellungen();
             case ANZAHL_KINDER -> value = maerchen.getMaercheneinteilungen().size();
             default -> {
+                // Nothing to do
             }
         }
         return value;

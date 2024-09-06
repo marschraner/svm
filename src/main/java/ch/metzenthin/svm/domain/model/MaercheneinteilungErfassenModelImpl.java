@@ -29,6 +29,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
 
     private static final Logger LOGGER = LogManager.getLogger(MaercheneinteilungErfassenModelImpl.class);
     private static final ElternmithilfeCode ELTERNMITHILFE_CODE_KEINER = new ElternmithilfeCode();
+    private static final String ROLLE_NICHT_GESETZT = "Rolle nicht gesetzt";
 
     private final Maercheneinteilung maercheneinteilung = new Maercheneinteilung();
     private Maercheneinteilung maercheneinteilungOrigin;
@@ -289,8 +290,8 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
         if (maercheneinteilungOrigin != null && maercheneinteilungOrigin.getElternmithilfeCode() != null) {
             // Beim Bearbeiten muss ggf auch ein nicht mehr selektierbarer Elternmithilfe-Code angezeigt werden können
             boolean found = false;
-            for (ElternmithilfeCode elternmithilfeCode : elternmithilfeCodeList) {
-                if (maercheneinteilungOrigin.getElternmithilfeCode().isIdenticalWith(elternmithilfeCode)) {
+            for (ElternmithilfeCode elternmithilfeCode1 : elternmithilfeCodeList) {
+                if (maercheneinteilungOrigin.getElternmithilfeCode().isIdenticalWith(elternmithilfeCode1)) {
                     found = true;
                     break;
                 }
@@ -611,23 +612,24 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
                 && !(isSetElternmithilfeDrittperson() && !isSetAnschriftElternmithilfeDrittperson());
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void doValidate() throws SvmValidationException {
         super.doValidate();
         if (isSetBilderRolle1() && !isSetRolle1()) {
-            throw new SvmValidationException(3001, "Rolle nicht gesetzt", Field.ROLLE1);
+            throw new SvmValidationException(3001, ROLLE_NICHT_GESETZT, Field.ROLLE1);
         }
         if (isSetBilderRolle2() && !isSetRolle2()) {
-            throw new SvmValidationException(3002, "Rolle nicht gesetzt", Field.ROLLE2);
+            throw new SvmValidationException(3002, ROLLE_NICHT_GESETZT, Field.ROLLE2);
         }
         if (isSetBilderRolle3() && !isSetRolle3()) {
-            throw new SvmValidationException(3003, "Rolle nicht gesetzt", Field.ROLLE3);
+            throw new SvmValidationException(3003, ROLLE_NICHT_GESETZT, Field.ROLLE3);
         }
         if (isSetRolle3() && !isSetRolle2()) {
-            throw new SvmValidationException(3004, "Rolle nicht gesetzt", Field.ROLLE2);
+            throw new SvmValidationException(3004, ROLLE_NICHT_GESETZT, Field.ROLLE2);
         }
         if (isSetRolle2() && !isSetRolle1()) {
-            throw new SvmValidationException(3005, "Rolle nicht gesetzt", Field.ROLLE1);
+            throw new SvmValidationException(3005, ROLLE_NICHT_GESETZT, Field.ROLLE1);
         }
         if (isSetElternmithilfe() && !isSetElternmithilfeCode()) {
             throw new SvmValidationException(3007, "Kein Eltern-Mithilfe-Code ausgewählt", Field.ELTERNMITHILFE_CODE);

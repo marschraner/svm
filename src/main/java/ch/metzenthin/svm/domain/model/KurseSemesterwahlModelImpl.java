@@ -47,6 +47,7 @@ public class KurseSemesterwahlModelImpl extends AbstractModel implements KurseSe
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

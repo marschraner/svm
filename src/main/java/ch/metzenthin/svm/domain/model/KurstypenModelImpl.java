@@ -35,6 +35,7 @@ public class KurstypenModelImpl extends AbstractModel implements KurstypenModel 
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

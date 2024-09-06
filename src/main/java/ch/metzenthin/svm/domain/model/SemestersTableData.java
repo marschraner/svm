@@ -42,6 +42,7 @@ public class SemestersTableData {
             case ANZAHL_SCHULWOCHEN -> value = semester.getAnzahlSchulwochen();
             case ANZAHL_KURSE -> value = semester.getKurse().size();
             default -> {
+                // Nothing to do
             }
         }
         return value;
@@ -50,13 +51,13 @@ public class SemestersTableData {
     public Class<?> getColumnClass(int columnIndex) {
         return switch (COLUMNS[columnIndex]) {
             case SEMESTERBEGINN,
-                    SEMESTERENDE,
-                    FERIENBEGINN1,
-                    FERIENENDE1,
-                    FERIENBEGINN2,
-                    FERIENENDE2 -> Calendar.class;
+                 SEMESTERENDE,
+                 FERIENBEGINN1,
+                 FERIENENDE1,
+                 FERIENBEGINN2,
+                 FERIENENDE2 -> Calendar.class;
             case ANZAHL_SCHULWOCHEN,
-                    ANZAHL_KURSE -> Integer.class;
+                 ANZAHL_KURSE -> Integer.class;
             default -> String.class;
         };
     }

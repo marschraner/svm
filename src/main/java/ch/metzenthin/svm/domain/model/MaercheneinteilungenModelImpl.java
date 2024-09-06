@@ -56,6 +56,7 @@ class MaercheneinteilungenModelImpl extends AbstractModel implements Maerchenein
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

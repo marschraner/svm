@@ -110,5 +110,6 @@ public class KurstypErfassenModelImpl extends AbstractModel implements KurstypEr
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 }

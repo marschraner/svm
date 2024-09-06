@@ -16,6 +16,9 @@ import java.util.GregorianCalendar;
  */
 abstract class SemesterrechnungModelImpl extends AbstractModel implements SemesterrechnungModel {
 
+    private static final BigDecimal MIN_VALID_VALUE = new BigDecimal("0.00");
+    private static final BigDecimal MAX_VALID_VALUE = new BigDecimal("9999.95");
+
     protected Semesterrechnung semesterrechnung = new Semesterrechnung();
     protected SemesterrechnungCode semesterrechnungCode = new SemesterrechnungCode();
 
@@ -96,7 +99,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     private final PreisModelAttribute ermaessigungVorrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.ERMAESSIGUNG_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.ERMAESSIGUNG_VORRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -148,7 +151,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     private final PreisModelAttribute zuschlagVorrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.ZUSCHLAG_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.ZUSCHLAG_VORRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -226,7 +229,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     private final PreisModelAttribute wochenbetragVorrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.WOCHENBETRAG_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.WOCHENBETRAG_VORRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -278,7 +281,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     private final PreisModelAttribute betragZahlung1VorrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_ZAHLUNG_1_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.BETRAG_ZAHLUNG_1_VORRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -330,7 +333,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     private final PreisModelAttribute betragZahlung2VorrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_ZAHLUNG_2_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.BETRAG_ZAHLUNG_2_VORRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -382,7 +385,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     private final PreisModelAttribute betragZahlung3VorrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_ZAHLUNG_3_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.BETRAG_ZAHLUNG_3_VORRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -434,7 +437,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     private final PreisModelAttribute ermaessigungNachrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.ERMAESSIGUNG_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.ERMAESSIGUNG_NACHRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -486,7 +489,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     private final PreisModelAttribute zuschlagNachrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.ZUSCHLAG_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.ZUSCHLAG_NACHRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -564,7 +567,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     private final PreisModelAttribute wochenbetragNachrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.WOCHENBETRAG_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.WOCHENBETRAG_NACHRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -616,7 +619,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     private final PreisModelAttribute betragZahlung1NachrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_ZAHLUNG_1_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.BETRAG_ZAHLUNG_1_NACHRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -668,7 +671,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     private final PreisModelAttribute betragZahlung2NachrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_ZAHLUNG_2_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.BETRAG_ZAHLUNG_2_NACHRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -720,7 +723,7 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
     private final PreisModelAttribute betragZahlung3NachrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_ZAHLUNG_3_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.BETRAG_ZAHLUNG_3_NACHRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {

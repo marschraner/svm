@@ -131,6 +131,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         return false;
     }
 
+    @SuppressWarnings("java:S1192")
     @Override
     public String getGeschwisterAsString() {
         CheckGeschwisterSchuelerRechnungempfaengerCommand command = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler, isRechnungsempfaengerDrittperson());
@@ -167,11 +168,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         List<Schueler> schuelerList = command.getAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList();
         if (!schuelerList.isEmpty()) {
             StringBuilder infoSchuelerGleicherRechnungsempfaenger = new StringBuilder("<html>");
-            for (Schueler schueler : schuelerList) {
+            for (Schueler schueler1 : schuelerList) {
                 if (infoSchuelerGleicherRechnungsempfaenger.length() > 6) {
                     infoSchuelerGleicherRechnungsempfaenger.append("<br>");
                 }
-                infoSchuelerGleicherRechnungsempfaenger.append(schueler.toString());
+                infoSchuelerGleicherRechnungsempfaenger.append(schueler1.toString());
             }
             infoSchuelerGleicherRechnungsempfaenger.append("</html>");
             return infoSchuelerGleicherRechnungsempfaenger.toString();
@@ -187,10 +188,8 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     @Override
     public String getAnmeldedatumAsString() {
         List<Anmeldung> anmeldungen = schueler.getAnmeldungen();
-        if (!anmeldungen.isEmpty()) {
-            if (anmeldungen.get(0).getAnmeldedatum() != null) {
-                return asString(anmeldungen.get(0).getAnmeldedatum());
-            }
+        if (!anmeldungen.isEmpty() && anmeldungen.get(0).getAnmeldedatum() != null) {
+            return asString(anmeldungen.get(0).getAnmeldedatum());
         }
         return "-";
     }
@@ -198,14 +197,13 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     @Override
     public String getAbmeldedatumAsString() {
         List<Anmeldung> anmeldungen = schueler.getAnmeldungen();
-        if (!anmeldungen.isEmpty()) {
-            if (anmeldungen.get(0).getAbmeldedatum() != null) {
-                return asString(anmeldungen.get(0).getAbmeldedatum());
-            }
+        if (!anmeldungen.isEmpty() && anmeldungen.get(0).getAbmeldedatum() != null) {
+            return asString(anmeldungen.get(0).getAbmeldedatum());
         }
         return "";
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public String getFruehereAnmeldungenAsString() {
         List<Anmeldung> anmeldungen = schueler.getAnmeldungen();
@@ -241,6 +239,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public String getDispensationsdauerAsString() {
         List<Dispensation> dispensationen = schueler.getDispensationen();
@@ -299,8 +298,8 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     }
 
     private boolean isDispensationToBeDisplayed(Dispensation dispensation) {
-        int MAX_MONTHS_IN_PAST = 48;
-        Calendar minSemesterEnde = Converter.getNMonthsBeforeNow(MAX_MONTHS_IN_PAST);
+        int maxMonthsInPast = 48;
+        Calendar minSemesterEnde = Converter.getNMonthsBeforeNow(maxMonthsInPast);
         return minSemesterEnde.before(dispensation.getDispensationsende()) || minSemesterEnde.equals(dispensation.getDispensationsende());
     }
 
@@ -322,6 +321,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         return "-";
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public String getSemesterKurseAsString(SvmModel svmModel) {
         if (!schueler.getKursanmeldungen().isEmpty()) {
@@ -568,7 +568,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     @Override
     public SchuelerModel getSchuelerModel(SvmContext svmContext) {
         SchuelerModel schuelerModel = svmContext.getModelFactory().createSchuelerModel();
-        schuelerModel.setSchueler(schueler);
+        schuelerModel.setSchuelerOrigin(schueler);
         return schuelerModel;
     }
 

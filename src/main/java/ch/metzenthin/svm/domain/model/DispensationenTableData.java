@@ -41,6 +41,7 @@ public class DispensationenTableData {
             case VORAUSSICHTLICHE_DAUER -> value = dispensation.getVoraussichtlicheDauer();
             case GRUND -> value = dispensation.getGrund();
             default -> {
+                // Nothing to do
             }
         }
         return value;

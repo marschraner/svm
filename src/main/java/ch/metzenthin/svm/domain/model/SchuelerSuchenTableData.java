@@ -34,6 +34,7 @@ public class SchuelerSuchenTableData {
     private final boolean keineAbgemeldetenKurseAnzeigen;
     private final List<Field> columns = new ArrayList<>();
 
+    @SuppressWarnings("java:S107")
     public SchuelerSuchenTableData(List<Schueler> schuelerList, Map<Schueler, List<Kurs>> kurse, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat, Map<Schueler, Maercheneinteilung> maercheneinteilungen, Maerchen maerchen, Gruppe gruppe, ElternmithilfeCode elternmithilfeCode, boolean kursFuerSucheBeruecksichtigen, boolean maerchenFuerSucheBeruecksichtigen, boolean nachRollenGesucht, Calendar stichtag, boolean keineAbgemeldetenKurseAnzeigen) {
         this.schuelerList = schuelerList;
         this.kurse = kurse;
@@ -96,6 +97,7 @@ public class SchuelerSuchenTableData {
         return anzSelektiert;
     }
 
+    @SuppressWarnings("java:S3776")
     public Object getValueAt(int rowIndex, int columnIndex) {
         Schueler schueler = schuelerList.get(rowIndex);
         List<Kurs> kurseOfSchueler = kurse.get(schueler);
@@ -140,6 +142,7 @@ public class SchuelerSuchenTableData {
                 }
             }
             default -> {
+                // Nothing to do
             }
         }
         return value;
@@ -280,8 +283,10 @@ public class SchuelerSuchenTableData {
 
     public int getAnzZuExportierendeMaercheneinteilungen() {
         int anzZuExportierendeMaercheneinteilungen = 0;
-        for (Schueler schueler : maercheneinteilungen.keySet()) {
-            if (schueler.isSelektiert() && maercheneinteilungen.get(schueler) != null) {
+        for (Map.Entry<Schueler, Maercheneinteilung> mearcheneinteilungEntry : maercheneinteilungen.entrySet()) {
+            Schueler schueler = mearcheneinteilungEntry.getKey();
+            Maercheneinteilung maercheneinteilung = mearcheneinteilungEntry.getValue();
+            if (schueler.isSelektiert() && maercheneinteilung != null) {
                 anzZuExportierendeMaercheneinteilungen++;
             }
         }

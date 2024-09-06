@@ -518,9 +518,9 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
             return null;
         }
         List<Maerchen> erfassteMaerchen = svmModel.getMaerchensAll();
-        for (Maerchen maerchen : erfassteMaerchen) {
-            if (maerchen.getSchuljahr().equals(semesterTableData.getSchuljahr())) {
-                return maerchen;
+        for (Maerchen maerchen1 : erfassteMaerchen) {
+            if (maerchen1.getSchuljahr().equals(semesterTableData.getSchuljahr())) {
+                return maerchen1;
             }
         }
         return null;

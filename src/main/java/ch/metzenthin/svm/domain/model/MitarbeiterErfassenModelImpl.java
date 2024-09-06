@@ -25,7 +25,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements MitarbeiterErfassenModel {
 
-    private static final Logger LOGGER = LogManager.getLogger(MaerchenErfassenModelImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(MitarbeiterErfassenModelImpl.class);
     private static final IbanNummerValidator IBAN_NUMMER_VALIDATOR = new IbanNummerValidator();
 
     private final Mitarbeiter mitarbeiter = new Mitarbeiter();
@@ -291,16 +291,6 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl implements Mit
         } else {
             super.initializeCompleted();
         }
-    }
-
-    @Override
-    public boolean isCompleted() {
-        return super.isCompleted();
-    }
-
-    @Override
-    public void doValidate() throws SvmValidationException {
-        super.doValidate();
     }
 
     @Override

@@ -43,6 +43,7 @@ public class SemesterrechnungenModelImpl extends AbstractModel implements Semest
         commandInvoker.executeCommandAsTransaction(restoreSemesterrechnungCommand);
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public boolean hasSemesterrechnungKurse(SemesterrechnungenTableModel semesterrechnungenTableModel, int rowSelected) {
         Semesterrechnung semesterrechnung = semesterrechnungenTableModel.getSemesterrechnungen().get(rowSelected);
@@ -83,6 +84,7 @@ public class SemesterrechnungenModelImpl extends AbstractModel implements Semest
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

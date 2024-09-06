@@ -53,6 +53,7 @@ public class CodeSpecificHinzufuegenModelImpl extends AbstractModel implements C
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

@@ -18,6 +18,8 @@ import java.math.BigDecimal;
 public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements LektionsgebuehrenErfassenModel {
 
     private static final Logger LOGGER = LogManager.getLogger(LektionsgebuehrenErfassenModelImpl.class);
+    private static final BigDecimal MIN_VALID_VALUE = new BigDecimal("0.00");
+    private static final BigDecimal MAX_VALID_VALUE = new BigDecimal("999.95");
 
     private final Lektionsgebuehren lektionsgebuehren = new Lektionsgebuehren();
     private Lektionsgebuehren lektionsgebuehrenOrigin;
@@ -60,7 +62,7 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
 
     private final PreisModelAttribute betrag1KindModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_1_KIND, new BigDecimal("0.00"), new BigDecimal("999.95"),
+            Field.BETRAG_1_KIND, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -86,7 +88,7 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
 
     private final PreisModelAttribute betrag2KinderModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_2_KINDER, new BigDecimal("0.00"), new BigDecimal("999.95"),
+            Field.BETRAG_2_KINDER, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -112,7 +114,7 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
 
     private final PreisModelAttribute betrag3KinderModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_3_KINDER, new BigDecimal("0.00"), new BigDecimal("999.95"),
+            Field.BETRAG_3_KINDER, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -138,7 +140,7 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
 
     private final PreisModelAttribute betrag4KinderModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_4_KINDER, new BigDecimal("0.00"), new BigDecimal("999.95"),
+            Field.BETRAG_4_KINDER, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -164,7 +166,7 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
 
     private final PreisModelAttribute betrag5KinderModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_5_KINDER, new BigDecimal("0.00"), new BigDecimal("999.95"),
+            Field.BETRAG_5_KINDER, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -190,7 +192,7 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
 
     private final PreisModelAttribute betrag6KinderModelAttribute = new PreisModelAttribute(
             this,
-            Field.BETRAG_6_KINDER, new BigDecimal("0.00"), new BigDecimal("999.95"),
+            Field.BETRAG_6_KINDER, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -260,5 +262,6 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel implements
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 }

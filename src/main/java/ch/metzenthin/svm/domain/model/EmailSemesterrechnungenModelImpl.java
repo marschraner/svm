@@ -61,7 +61,7 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
         firePropertyChange(Field.BLINDKOPIEN, oldValue, blindkopien);
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "java:S3776"})
     @Override
     public CallDefaultEmailClientCommand.Result callEmailClient(SemesterrechnungenTableModel semesterrechnungenTableModel) {
 
@@ -85,14 +85,14 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
                 for (Schueler schueler : schuelerRechnungempfaenger) {
                     if (schueler.getMutter() != null
                             && checkNotEmpty(schueler.getMutter().getEmail())
-                            && schueler.getMutter().getWuenschtEmails() != null
-                            && schueler.getMutter().getWuenschtEmails()) {
+                            && (schueler.getMutter().getWuenschtEmails() != null
+                            && schueler.getMutter().getWuenschtEmails())) {
                         emailAdressenSemesterrechnung.add(schueler.getMutter().getEmail());
                     }
                     if (schueler.getVater() != null
                             && checkNotEmpty(schueler.getVater().getEmail())
-                            && schueler.getVater().getWuenschtEmails() != null
-                            && schueler.getVater().getWuenschtEmails()) {
+                            && (schueler.getVater().getWuenschtEmails() != null
+                            && schueler.getVater().getWuenschtEmails())) {
                         emailAdressenSemesterrechnung.add(schueler.getVater().getEmail());
                     }
                 }
@@ -148,15 +148,12 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
     }
 
     @Override
-    public void initializeCompleted() {
-    }
-
-    @Override
     public boolean isCompleted() {
         return true;
     }
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 }

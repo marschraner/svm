@@ -35,5 +35,5 @@ public interface SchuelerModel extends PersonModel {
 
     void setBemerkungen(String bemerkungen) throws SvmValidationException;
 
-    void setSchueler(Schueler schueler);
+    void setSchuelerOrigin(Schueler schueler);
 }

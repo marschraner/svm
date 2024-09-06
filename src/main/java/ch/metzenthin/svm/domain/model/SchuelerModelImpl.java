@@ -148,17 +148,15 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     }
 
     @Override
-    public boolean isCompleted() {
-        return super.isCompleted();
-    }
-
-    @Override
     public void doValidate() throws SvmValidationException {
         super.doValidate();
-        if (checkNotNull(getAnmeldedatum()) && checkNotNull(getAbmeldedatum())) {
-            if (!getAbmeldedatum().after(getAnmeldedatum())) {
-                throw new SvmValidationException(2101, "Abmeldedatum muss nach Anmeldedatum sein", Field.ANMELDEDATUM, Field.ABMELDEDATUM);
-            }
+        if (checkNotNull(getAnmeldedatum()) && checkNotNull(getAbmeldedatum())
+                && !getAbmeldedatum().after(getAnmeldedatum())) {
+            throw new SvmValidationException(
+                    2101,
+                    "Abmeldedatum muss nach Anmeldedatum sein",
+                    Field.ANMELDEDATUM,
+                    Field.ABMELDEDATUM);
         }
     }
 
@@ -173,8 +171,8 @@ final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
     }
 
     @Override
-    public void setSchueler(Schueler schueler) {
-        schuelerOrigin = schueler;
+    public void setSchuelerOrigin(Schueler schuelerOrigin) {
+        this.schuelerOrigin = schuelerOrigin;
     }
 
     @Override

@@ -222,5 +222,6 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 }

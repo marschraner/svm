@@ -66,8 +66,8 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
         return selectableSchuelerListeEmpfaengerGruppe.toArray(new EmailSchuelerListeEmpfaengerGruppe[0]);
     }
 
+    @SuppressWarnings({"DuplicatedCode", "java:S3776", "java:S6541"})
     @Override
-    @SuppressWarnings("DuplicatedCode")
     public CallDefaultEmailClientCommand.Result callEmailClient(SchuelerSuchenTableModel schuelerSuchenTableModel) {
 
         Set<String> emailAdressen = new LinkedHashSet<>();
@@ -216,14 +216,14 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
         // Mutter und/oder Vater mit wuenschtEmails selektiert
         if (schueler.getMutter() != null
                 && checkNotEmpty(schueler.getMutter().getEmail())
-                && schueler.getMutter().getWuenschtEmails() != null
-                && schueler.getMutter().getWuenschtEmails()) {
+                && (schueler.getMutter().getWuenschtEmails() != null
+                && schueler.getMutter().getWuenschtEmails())) {
             emailAdressenForSchueler.add(schueler.getMutter().getEmail());
         }
         if (schueler.getVater() != null
                 && checkNotEmpty(schueler.getVater().getEmail())
-                && schueler.getVater().getWuenschtEmails() != null
-                && schueler.getVater().getWuenschtEmails()) {
+                && (schueler.getVater().getWuenschtEmails() != null
+                && schueler.getVater().getWuenschtEmails())) {
             emailAdressenForSchueler.add(schueler.getVater().getEmail());
         }
 
@@ -250,15 +250,12 @@ public class EmailSchuelerListeModelImpl extends AbstractModel implements EmailS
     }
 
     @Override
-    public void initializeCompleted() {
-    }
-
-    @Override
     public boolean isCompleted() {
         return true;
     }
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 }

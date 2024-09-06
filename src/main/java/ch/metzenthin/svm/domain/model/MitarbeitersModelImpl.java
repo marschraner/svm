@@ -76,6 +76,7 @@ public class MitarbeitersModelImpl extends AbstractModel implements Mitarbeiters
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

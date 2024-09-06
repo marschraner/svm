@@ -130,6 +130,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
         return anmeldedatumModelAttribute.getValue();
     }
 
+    @SuppressWarnings("java:S1192")
     @Override
     public void setAnmeldedatum(String anmeldedatum) throws SvmValidationException {
         anmeldedatumModelAttribute.setNewValue(true, anmeldedatum, isBulkUpdate());
@@ -289,10 +290,10 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
             semesterbezeichnungPreviousSemester = Semesterbezeichnung.ERSTES_SEMESTER;
         }
         List<Kursanmeldung> kursanmeldungen = kursanmeldungenTableModel.getKursanmeldungenTableData().getKursanmeldungen();
-        for (Kursanmeldung kursanmeldung : kursanmeldungen) {
-            if (kursanmeldung.getKurs().getSemester().getSchuljahr().equals(schuljahrPreviousSemester)
-                    && kursanmeldung.getKurs().getSemester().getSemesterbezeichnung() == semesterbezeichnungPreviousSemester
-                    && kursanmeldung.getAbmeldedatum() == null) {
+        for (Kursanmeldung kursanmeldung1 : kursanmeldungen) {
+            if (kursanmeldung1.getKurs().getSemester().getSchuljahr().equals(schuljahrPreviousSemester)
+                    && kursanmeldung1.getKurs().getSemester().getSemesterbezeichnung() == semesterbezeichnungPreviousSemester
+                    && kursanmeldung1.getAbmeldedatum() == null) {
                 return kursanmeldungInit;
             }
         }
@@ -315,8 +316,8 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
     @Override
     public boolean checkIfKursBereitsErfasst(SchuelerDatenblattModel schuelerDatenblattModel) {
         Schueler schueler = schuelerDatenblattModel.getSchueler();
-        for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungen()) {
-            if (kursanmeldung.getKurs().isIdenticalWith(kurs)) {
+        for (Kursanmeldung kursanmeldung1 : schueler.getKursanmeldungen()) {
+            if (kursanmeldung1.getKurs().isIdenticalWith(kurs)) {
                 return true;
             }
         }
@@ -372,5 +373,6 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 }

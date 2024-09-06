@@ -25,6 +25,7 @@ public class ValidateSchuelerSummaryResult extends SchuelerErfassenSaveResult {
     private final boolean isVaterNeu;
     private final boolean isRechnungsempfaengerNeu;
 
+    @SuppressWarnings("java:S107")
     public ValidateSchuelerSummaryResult(Schueler schueler, Angehoeriger mutterFoundInDatabase, Angehoeriger vaterFoundInDatabase, Angehoeriger rechnungsempfaengerFoundInDatabase, boolean isRechnungsempfaengerMutter, boolean isRechnungsempfaengerVater, List<Schueler> geschwister, List<Schueler> andereSchueler, String identischeAdressen, String abweichendeAdressen, boolean isMutterNeu, boolean isVaterNeu, boolean isRechnungsempfaengerNeu) {
         super(ValidateSchuelerCommand.Result.CHECK_GESCHWISTER_SCHUELER_RECHNUGSEMFPAENGER_COMMAND_FINISHED);
         this.schueler = schueler;

@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -137,6 +138,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
                 || !checkNotEmpty(vaterModel.getAngehoeriger().getNachname());
     }
 
+    @SuppressWarnings("java:S3776")
     private void onSchuelerModelPropertyChange(PropertyChangeEvent evt) {
         if (isStrasseHausnummerPropertyChange(evt)) {
             if (mutterModel.isGleicheAdresseWieSchueler()) {
@@ -426,7 +428,7 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         try {
             commandInvoker.executeCommandAsTransaction(validateSchuelerCommand);
             return validateSchuelerCommand.getResult();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             // Rollback wurde bereits in CommandInvoker durchgeführt
             return new SchuelerErfassenUnerwarteterFehlerResult(ValidateSchuelerCommand.Result.UNERWARTETER_FEHLER, e);
         } finally {
@@ -441,9 +443,9 @@ public class SchuelerErfassenModelImpl extends AbstractModel implements Schueler
         try {
             commandInvoker.executeCommandAsTransaction(deleteSchuelerCommand);
             return deleteSchuelerCommand.getResult();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             // Rollback wurde bereits in CommandInvoker durchgeführt
-            throw new RuntimeException(e);
+            throw new SvmRuntimeException("Fehler beim Schüler löschen", e);
         }
     }
 

@@ -88,15 +88,12 @@ public class EmailModelImpl extends AbstractModel implements EmailModel {
     }
 
     @Override
-    public void initializeCompleted() {
-    }
-
-    @Override
     public boolean isCompleted() {
         return true;
     }
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 }

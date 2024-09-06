@@ -64,6 +64,7 @@ public class MaercheneinteilungenTableData {
             case ZUSATZATTRIBUT_MAERCHEN -> value = maercheneinteilung.getZusatzattribut();
             case BEMERKUNGEN -> value = maercheneinteilung.getBemerkungen();
             default -> {
+                // Nothing to do
             }
         }
         return value;

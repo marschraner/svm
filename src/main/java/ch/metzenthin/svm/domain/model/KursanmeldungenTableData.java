@@ -71,6 +71,7 @@ public class KursanmeldungenTableData {
                     value = (kursanmeldung.getAbmeldedatum() == null ? "" : asString(kursanmeldung.getAbmeldedatum()));
             case BEMERKUNGEN -> value = kursanmeldung.getBemerkungen();
             default -> {
+                // Nothing to do
             }
         }
         return value;

@@ -344,6 +344,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         return (!isSetAnyNameElement() || isSetName()) && (!isSetAnyAdresseElement() || (isSetName() && isSetAdresse()));
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void doValidate() throws SvmValidationException {
         if (isAdresseRequired()) {

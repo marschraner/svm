@@ -91,6 +91,7 @@ class KursanmeldungenModelImpl extends AbstractModel implements KursanmeldungenM
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

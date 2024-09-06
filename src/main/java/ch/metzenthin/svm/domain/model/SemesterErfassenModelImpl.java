@@ -21,6 +21,7 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 public class SemesterErfassenModelImpl extends AbstractModel implements SemesterErfassenModel {
 
     private static final Logger LOGGER = LogManager.getLogger(SemesterErfassenModelImpl.class);
+    private static final String KEINE_GUELTIGE_PERIODE = "Keine gültige Periode";
 
     private final Semester semester = new Semester();
     private Semester semesterOrigin;
@@ -105,7 +106,7 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         if (!isBulkUpdate() && semester.getSemesterbeginn() != null && semester.getSemesterende() != null && semester.getSemesterbeginn().after(semester.getSemesterende())) {
             semester.setSemesterbeginn(null);
             invalidate();
-            throw new SvmValidationException(2022, "Keine gültige Periode", Field.SEMESTERBEGINN);
+            throw new SvmValidationException(2022, KEINE_GUELTIGE_PERIODE, Field.SEMESTERBEGINN);
         }
     }
 
@@ -141,7 +142,7 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         if (!isBulkUpdate() && semester.getSemesterbeginn() != null && semester.getSemesterende() != null && semester.getSemesterbeginn().after(semester.getSemesterende())) {
             semester.setSemesterende(null);
             invalidate();
-            throw new SvmValidationException(2024, "Keine gültige Periode", Field.SEMESTERENDE);
+            throw new SvmValidationException(2024, KEINE_GUELTIGE_PERIODE, Field.SEMESTERENDE);
         }
     }
 
@@ -177,7 +178,7 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         if (!isBulkUpdate() && semester.getFerienbeginn1() != null && semester.getFerienende1() != null && semester.getFerienbeginn1().after(semester.getFerienende1())) {
             semester.setFerienbeginn1(null);
             invalidate();
-            throw new SvmValidationException(2025, "Keine gültige Periode", Field.FERIENBEGINN1);
+            throw new SvmValidationException(2025, KEINE_GUELTIGE_PERIODE, Field.FERIENBEGINN1);
         }
     }
 
@@ -213,7 +214,7 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         if (!isBulkUpdate() && semester.getFerienbeginn1() != null && semester.getFerienende1() != null && semester.getFerienbeginn1().after(semester.getFerienende1())) {
             semester.setFerienende1(null);
             invalidate();
-            throw new SvmValidationException(2026, "Keine gültige Periode", Field.FERIENENDE1);
+            throw new SvmValidationException(2026, KEINE_GUELTIGE_PERIODE, Field.FERIENENDE1);
         }
     }
 
@@ -249,7 +250,7 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         if (!isBulkUpdate() && semester.getFerienbeginn2() != null && semester.getFerienende2() != null && semester.getFerienbeginn2().after(semester.getFerienende2())) {
             semester.setFerienbeginn2(null);
             invalidate();
-            throw new SvmValidationException(2027, "Keine gültige Periode", Field.FERIENBEGINN2);
+            throw new SvmValidationException(2027, KEINE_GUELTIGE_PERIODE, Field.FERIENBEGINN2);
         }
     }
 
@@ -285,7 +286,7 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
         if (!isBulkUpdate() && semester.getFerienbeginn2() != null && semester.getFerienende2() != null && semester.getFerienbeginn2().after(semester.getFerienende2())) {
             semester.setFerienende2(null);
             invalidate();
-            throw new SvmValidationException(2028, "Keine gültige Periode", Field.FERIENENDE2);
+            throw new SvmValidationException(2028, KEINE_GUELTIGE_PERIODE, Field.FERIENENDE2);
         }
     }
 

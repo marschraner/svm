@@ -175,6 +175,7 @@ public class MaerchenErfassenModelImpl extends AbstractModel implements Maerchen
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
 }
