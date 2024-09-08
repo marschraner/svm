@@ -18,10 +18,11 @@ import java.util.Locale;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 
+@SuppressWarnings({"java:S100", "java:S1171", "java:S1192", "java:S1450"})
 public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
 
-    private final ValidateSchuelerSummaryResult validateSchuelerSummaryResult;
-    private final SchuelerErfassenModel schuelerErfassenModel;
+    private final transient ValidateSchuelerSummaryResult validateSchuelerSummaryResult;
+    private final transient SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
     private JButton buttonSpeichern;
     private JButton buttonAbbrechen;
@@ -75,6 +76,7 @@ public class ValidateSchuelerSummaryDialog extends SchuelerErfassenDialog {
         // call onAbbrechen() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 onAbbrechen();
             }

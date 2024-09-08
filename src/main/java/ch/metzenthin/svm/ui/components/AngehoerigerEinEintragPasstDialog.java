@@ -18,10 +18,14 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+@SuppressWarnings({"java:S100", "java:S1171", "java:S1192"})
 public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
 
-    private final AngehoerigerEinEintragPasstResult angehoerigerEinEintragPasstResult;
-    private final SchuelerErfassenModel schuelerErfassenModel;
+    private static final String RECHNUNGSEMPFAENGER_DOPPELPUNKT = "Rechnungsempfänger:";
+    private static final String RECHNUNGSEMPFAENGERIN_DOPPELPUNKT = "Rechnungsempfängerin:";
+
+    private final transient AngehoerigerEinEintragPasstResult angehoerigerEinEintragPasstResult;
+    private final transient SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
     private JButton buttonUebernehmen;
     private JButton buttonKorrigieren;
@@ -53,6 +57,7 @@ public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
         // call onZurueck() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 onZurueck();
             }
@@ -62,7 +67,7 @@ public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
         contentPane.registerKeyboardAction(e -> onZurueck(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "java:S3776"})
     private void setLabels(Angehoeriger angehoeriger) {
         lblBeschreibung.setText("In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben von " + angehoerigerEinEintragPasstResult.getAngehoerigenArt() + " passt:");
         lblAngehoerigerValue.setText(angehoeriger.toString());
@@ -75,13 +80,13 @@ public class AngehoerigerEinEintragPasstDialog extends SchuelerErfassenDialog {
             schuelerList = angehoeriger.getKinderVater();
         } else if (!angehoeriger.getSchuelerRechnungsempfaenger().isEmpty()) {
             if (angehoeriger.getAnrede() == Anrede.FRAU) {
-                lblAngehoeriger.setText("Rechnungsempfängerin:");
+                lblAngehoeriger.setText(RECHNUNGSEMPFAENGERIN_DOPPELPUNKT);
                 lblSchuelerRechnungsempfaenger1.setText("Schüler mit dieser");
-                lblSchuelerRechnungsempfaenger2.setText("Rechnungsempfängerin:");
+                lblSchuelerRechnungsempfaenger2.setText(RECHNUNGSEMPFAENGERIN_DOPPELPUNKT);
             } else {
-                lblAngehoeriger.setText("Rechnungsempfänger:");
+                lblAngehoeriger.setText(RECHNUNGSEMPFAENGER_DOPPELPUNKT);
                 lblSchuelerRechnungsempfaenger1.setText("Schüler mit diesem");
-                lblSchuelerRechnungsempfaenger2.setText("Rechnungsempfänger:");
+                lblSchuelerRechnungsempfaenger2.setText(RECHNUNGSEMPFAENGER_DOPPELPUNKT);
             }
             schuelerList = angehoeriger.getSchuelerRechnungsempfaenger();
         }

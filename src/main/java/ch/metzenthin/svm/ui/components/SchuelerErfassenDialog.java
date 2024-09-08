@@ -9,7 +9,7 @@ import javax.swing.*;
  */
 public abstract class SchuelerErfassenDialog extends JDialog {
 
-    private SchuelerErfassenSaveResult result;
+    private transient SchuelerErfassenSaveResult result;
     private boolean isAbbrechen = false;
 
     public SchuelerErfassenSaveResult getResult() {

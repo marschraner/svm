@@ -11,6 +11,7 @@ import java.awt.*;
 /**
  * @author Hans Stamm
  */
+@SuppressWarnings("java:S100")
 public class SchuelerPanel {
 
     private JPanel panel;

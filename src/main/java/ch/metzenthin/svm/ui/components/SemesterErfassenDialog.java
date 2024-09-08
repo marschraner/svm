@@ -15,6 +15,7 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.util.Locale;
 
+@SuppressWarnings({"java:S100", "java:S1450"})
 public class SemesterErfassenDialog extends JDialog {
 
     // Schalter zur Aktivierung des Default-Button (nicht dynamisch)

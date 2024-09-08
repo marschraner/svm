@@ -15,6 +15,9 @@ import java.util.Calendar;
  */
 public class UiComponentsUtils {
 
+    private UiComponentsUtils() {
+    }
+
     /**
      * Source: <a href="https://kahdev.wordpress.com/2011/10/30/java-specifying-the-column-widths-of-a-jtable-as-percentages/">...</a>
      * <p>

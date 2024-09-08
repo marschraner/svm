@@ -21,6 +21,7 @@ import java.util.Locale;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings({"java:S100", "java:S1192", "java:S1450"})
 public class SemesterrechnungBearbeitenPanel {
 
     private static final boolean DEFAULT_BUTTON_ENABLED = false;

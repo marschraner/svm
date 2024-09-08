@@ -19,6 +19,7 @@ import java.util.Locale;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
 public class MaercheneinteilungenPanel {
 
     private JPanel panel1;
@@ -34,6 +35,7 @@ public class MaercheneinteilungenPanel {
     private JTable maercheneinteilungenTable;
     private MaercheneinteilungenController maercheneinteilungenController;
 
+    @SuppressWarnings("java:S107")
     public MaercheneinteilungenPanel(SvmContext svmContext, MaercheneinteilungenTableModel maercheneinteilungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isFromSchuelerSuchenResult, String titel) {
         lblTitel.setText(titel);
         createUIComponents();

@@ -20,6 +20,7 @@ import java.util.Map;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings({"java:S100", "java:S1450"})
 public class SemesterrechnungenPanel {
 
     private JPanel panel1;

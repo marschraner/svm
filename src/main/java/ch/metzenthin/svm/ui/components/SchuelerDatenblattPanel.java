@@ -17,6 +17,7 @@ import java.util.Locale;
 /**
  * @author Hans Stamm
  */
+@SuppressWarnings({"java:S100", "java:S1171", "java:S1192", "java:S1450"})
 public class SchuelerDatenblattPanel {
 
     private JPanel panel;
