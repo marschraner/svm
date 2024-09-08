@@ -13,7 +13,7 @@ public class KurseTableModel extends AbstractTableModel {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final KurseTableData kurseTableData;
+    private final transient KurseTableData kurseTableData;
 
     public KurseTableModel(KurseTableData kurseTableData) {
         super();

@@ -19,7 +19,7 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final SchuelerSuchenTableData schuelerSuchenTableData;
+    private final transient SchuelerSuchenTableData schuelerSuchenTableData;
 
     public SchuelerSuchenTableModel(SchuelerSuchenTableData schuelerSuchenTableData) {
         super();
