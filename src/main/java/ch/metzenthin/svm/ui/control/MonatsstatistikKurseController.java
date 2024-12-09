@@ -70,7 +70,8 @@ public class MonatsstatistikKurseController extends AbstractController {
         monatJahrInit.add(Calendar.MONTH, -1);
         try {
             monatsstatistikKurseModel.setMonatJahr(asString(monatJahrInit, MONAT_JAHR_DATE_FORMAT_STRING));
-        } catch (SvmValidationException ignore) {
+        } catch (SvmValidationException e) {
+            LOGGER.error(e);
         }
     }
 
@@ -204,6 +205,7 @@ public class MonatsstatistikKurseController extends AbstractController {
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
+        // Keine zu deaktivierenden Felder
     }
 
 }

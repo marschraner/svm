@@ -54,6 +54,7 @@ public class SchuelerSuchenResultController {
             onListSelection();
         });
         schuelerSuchenResultTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     onDatenblatt();

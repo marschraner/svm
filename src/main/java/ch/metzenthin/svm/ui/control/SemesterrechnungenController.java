@@ -92,6 +92,7 @@ public class SemesterrechnungenController {
             onListSelection();
         });
         semesterrechnungenTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (!nachGeloeschtenGesucht && me.getClickCount() == 2) {
                     onDetailsBearbeiten();
@@ -208,7 +209,7 @@ public class SemesterrechnungenController {
         btnExportieren.addActionListener(e -> onExportieren());
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "java:S1192"})
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
         int anzSelektiert = semesterrechnungenTableModel.getAnzSelektiert();

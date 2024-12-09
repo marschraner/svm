@@ -29,7 +29,7 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
      */
     private boolean modelValidationMode = true;
 
-    public AbstractController(Model model) {
+    protected AbstractController(Model model) {
         this.model = model;
     }
 

@@ -166,22 +166,27 @@ public class KurseSemesterwahlController extends AbstractController {
 
     @Override
     void validateFields() throws SvmValidationException {
+        // Keine zu validierenden Felder
     }
 
     @Override
     void showErrMsg(SvmValidationException e) {
+        // Keine Fehlermeldungen
     }
 
     @Override
     void showErrMsgAsToolTip(SvmValidationException e) {
+        // Keine Fehlermeldungen
     }
 
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
+        // Keine Fehlermeldungen
     }
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
+        // Keine zu deaktivierenden Felder
     }
 
 }

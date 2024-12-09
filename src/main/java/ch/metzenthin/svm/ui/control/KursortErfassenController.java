@@ -60,6 +60,7 @@ public class KursortErfassenController extends AbstractController {
         this.kursortErfassenDialog = kursortErfassenDialog;
         kursortErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         kursortErfassenDialog.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 onAbbrechen();
             }
@@ -225,6 +226,7 @@ public class KursortErfassenController extends AbstractController {
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
+        // Keine zu validierenden Felder
     }
 
 

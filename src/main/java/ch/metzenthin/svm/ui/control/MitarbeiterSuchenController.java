@@ -367,6 +367,7 @@ public class MitarbeiterSuchenController extends AbstractController {
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
+        // Keine zu deaktivierenden Felder
     }
 
     private class RadioBtnGroupLehrkraftJaNeinListener implements ActionListener {

@@ -26,6 +26,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 public abstract class SemesterrechnungController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(SemesterrechnungController.class);
+    private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE
+            = "Validierung wegen equalFieldAndModelValue";
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
@@ -92,7 +94,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     private final boolean defaultButtonEnabled;
     private final SvmContext svmContext;
 
-    public SemesterrechnungController(SvmContext svmContext, SemesterrechnungModel semesterrechnungModel, boolean defaultButtonEnabled) {
+    protected SemesterrechnungController(SvmContext svmContext, SemesterrechnungModel semesterrechnungModel, boolean defaultButtonEnabled) {
         super(semesterrechnungModel);
         this.svmContext = svmContext;
         this.semesterrechnungModel = semesterrechnungModel;
@@ -136,7 +138,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         setModelStipendium();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -188,7 +190,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -227,7 +229,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -266,7 +268,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -305,7 +307,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -344,7 +346,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -383,7 +385,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -422,7 +424,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -461,7 +463,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -500,7 +502,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -539,7 +541,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -578,7 +580,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -617,7 +619,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -656,7 +658,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -695,7 +697,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -734,7 +736,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -773,7 +775,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -812,7 +814,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -851,7 +853,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -890,7 +892,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -929,7 +931,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -968,7 +970,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -1007,7 +1009,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -1046,7 +1048,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -1085,7 +1087,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -1124,7 +1126,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -1163,7 +1165,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -1201,7 +1203,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -1329,6 +1331,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         this.errLblBemerkungen = errLblBemerkungen;
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         super.doPropertyChange(evt);
@@ -1395,6 +1398,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     void validateFields() throws SvmValidationException {
         if (txtRechnungsdatumVorrechnung != null && txtRechnungsdatumVorrechnung.isEnabled()) {
@@ -1507,6 +1511,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     void showErrMsg(SvmValidationException e) {
         if (e.getAffectedFields().contains(Field.RECHNUNGSDATUM_VORRECHNUNG)) {
@@ -1623,6 +1628,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     void showErrMsgAsToolTip(SvmValidationException e) {
         if (e.getAffectedFields().contains(Field.RECHNUNGSDATUM_VORRECHNUNG)) {
@@ -1708,6 +1714,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         if (fields.contains(Field.ALLE) || fields.contains(Field.RECHNUNGSDATUM_VORRECHNUNG)) {
@@ -1936,6 +1943,7 @@ public abstract class SemesterrechnungController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
         if (comboBoxSemesterrechnungCode != null && (fields.contains(Field.ALLE) || fields.contains(Field.SEMESTERRECHNUNG_CODE))) {

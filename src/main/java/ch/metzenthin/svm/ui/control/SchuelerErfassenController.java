@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
@@ -27,6 +28,7 @@ import java.util.Set;
 public class SchuelerErfassenController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(SchuelerErfassenController.class);
+    private static final String FEHLER = "Fehler";
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
@@ -95,7 +97,8 @@ public class SchuelerErfassenController extends AbstractController {
             mutterModel.setAnrede(Anrede.FRAU);
             // Default Rechnungsempfängerin
             mutterModel.setIsRechnungsempfaenger(true);
-        } catch (SvmValidationException ignore) {
+        } catch (SvmValidationException e) {
+            LOGGER.error(e.getMessage());
         }
         // Gleiche Adresse wie Schüler
         if (isBearbeiten) {
@@ -131,7 +134,8 @@ public class SchuelerErfassenController extends AbstractController {
         // Anrede auf Herr setzen (Anrede anzeigen für Möglichkeit zur Erfassung gleichgeschlechtlicher Paare)
         try {
             vaterModel.setAnrede(Anrede.HERR);
-        } catch (SvmValidationException ignore) {
+        } catch (SvmValidationException e) {
+            LOGGER.error(e.getMessage());
         }
         // Gleiche Adresse wie Schüler
         if (isBearbeiten) {
@@ -164,7 +168,8 @@ public class SchuelerErfassenController extends AbstractController {
         // Anrede: Default Frau
         try {
             drittempfaengerModel.setAnrede(Anrede.FRAU);
-        } catch (SvmRequiredException ignore) {
+        } catch (SvmRequiredException e) {
+            LOGGER.error(e.getMessage());
         }
         // Default deaktiviert
         drittempfaengerModel.disableFields();
@@ -219,9 +224,11 @@ public class SchuelerErfassenController extends AbstractController {
         Object[] options = {"Ja", "Nein"};
         String dialogText;
         if (!isBearbeiten) {
-            dialogText = "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. Allfällige Eingaben werden nicht gespeichert. Fortfahren?";
+            dialogText = "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. " +
+                    "Allfällige Eingaben werden nicht gespeichert. Fortfahren?";
         } else {
-            dialogText = "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. Allfällige getätigte Änderungen werden nicht gespeichert. Fortfahren?";
+            dialogText = "Durch Drücken des Ja-Buttons wird die Eingabemaske geschlossen. " +
+                    "Allfällige getätigte Änderungen werden nicht gespeichert. Fortfahren?";
         }
         int n = JOptionPane.showOptionDialog(
                 null,
@@ -248,7 +255,8 @@ public class SchuelerErfassenController extends AbstractController {
             return;
         }
         SchuelerErfassenDialog dialog;
-        SchuelerErfassenSaveResult schuelerErfassenSaveResult = schuelerErfassenModel.validieren(svmContext);
+        SchuelerErfassenSaveResult schuelerErfassenSaveResult
+                = schuelerErfassenModel.validieren(svmContext);
         while (schuelerErfassenSaveResult != null) { // Wenn null: kein weiterer Dialog
             dialog = createDialog(schuelerErfassenSaveResult);
             if (dialog == null) {
@@ -297,7 +305,9 @@ public class SchuelerErfassenController extends AbstractController {
             drittempfaengerController.validateWithThrowException();
             validateWithThrowException();
         } catch (SvmValidationException e) {
-            LOGGER.trace("SchuelerErfassenPanel validateOnSpeichern Exception: {}", e.getMessageLong());
+            LOGGER.trace(
+                    "SchuelerErfassenPanel validateOnSpeichern Exception: {}",
+                    e.getMessageLong());
             return false;
         }
         return true;
@@ -344,7 +354,8 @@ public class SchuelerErfassenController extends AbstractController {
         Object[] options = {"Ja", "Nein"};
         int n = JOptionPane.showOptionDialog(
                 null,
-                "Durch Drücken des Ja-Buttons wird der Schüler unwiderruflich aus der Datenbank gelöscht. Fortfahren?",
+                "Durch Drücken des Ja-Buttons wird der Schüler unwiderruflich aus der Datenbank " +
+                        "gelöscht. Fortfahren?",
                 "Schüler löschen",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
@@ -355,15 +366,27 @@ public class SchuelerErfassenController extends AbstractController {
             DeleteSchuelerCommand.Result result = schuelerErfassenModel.schuelerLoeschen();
             switch (result) {
                 case SCHUELER_IN_KURSE_EINGESCHRIEBEN -> {
-                    JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einen Kurs eingeschrieben und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Der Schüler ist in mindestens einen Kurs eingeschrieben und kann " +
+                                    "nicht gelöscht werden.",
+                            FEHLER, JOptionPane.ERROR_MESSAGE);
                     btnSchuelerLoeschen.setFocusPainted(false);
                 }
                 case SCHUELER_IN_MAERCHEN_EINGETEILT -> {
-                    JOptionPane.showMessageDialog(null, "Der Schüler ist in mindestens einem Märchen eingeteilt und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Der Schüler ist in mindestens einem Märchen eingeteilt und kann " +
+                                    "nicht gelöscht werden.",
+                            FEHLER, JOptionPane.ERROR_MESSAGE);
                     btnSchuelerLoeschen.setFocusPainted(false);
                 }
                 case RECHNUNGSEMPFAENGER_HAT_SEMESTERRECHNUNGEN -> {
-                    JOptionPane.showMessageDialog(null, "Der Rechnungsempfänger des Schülers hat mindestens eine Semesterrechnung. Der Schüler kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Der Rechnungsempfänger des Schülers hat mindestens eine " +
+                                    "Semesterrechnung. Der Schüler kann nicht gelöscht werden.",
+                            FEHLER, JOptionPane.ERROR_MESSAGE);
                     btnSchuelerLoeschen.setFocusPainted(false);
                 }
                 case LOESCHEN_ERFOLGREICH -> {
@@ -433,7 +456,7 @@ public class SchuelerErfassenController extends AbstractController {
                 JOptionPane.showMessageDialog(
                         null,
                         schuelerBereitsInDatenbankResult.getErrorMessage(),
-                        "Fehler",
+                        FEHLER,
                         JOptionPane.ERROR_MESSAGE);
                 schuelerErfassenModel.abbrechen();
                 dialog[0] = null;
@@ -457,7 +480,9 @@ public class SchuelerErfassenController extends AbstractController {
 
             @Override
             public void visit(SchuelerErfassenUnerwarteterFehlerResult schuelerErfassenUnerwarteterFehlerResult) {
-                throw new RuntimeException(schuelerErfassenUnerwarteterFehlerResult.getFehler());
+                throw new SvmRuntimeException(
+                        "Fehler beim Erfassen eines Schülers",
+                        schuelerErfassenUnerwarteterFehlerResult.getFehler());
             }
 
             @Override
@@ -465,7 +490,7 @@ public class SchuelerErfassenController extends AbstractController {
                 JOptionPane.showMessageDialog(
                         null,
                         drittpersonIdentischMitElternteilResult.getErrorMessage(),
-                        "Fehler",
+                        FEHLER,
                         JOptionPane.ERROR_MESSAGE);
                 schuelerErfassenModel.abbrechen();
                 dialog[0] = null;

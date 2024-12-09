@@ -23,6 +23,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 public class LektionsgebuehrenErfassenController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(LektionsgebuehrenErfassenController.class);
+    private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE =
+            "Validierung wegen equalFieldAndModelValue";
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
@@ -72,6 +74,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         this.lektionsgebuehrenErfassenDialog = lektionsgebuehrenErfassenDialog;
         lektionsgebuehrenErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         lektionsgebuehrenErfassenDialog.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 onAbbrechen();
             }
@@ -110,7 +113,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -158,7 +161,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -206,7 +209,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -254,7 +257,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -302,7 +305,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -350,7 +353,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -398,7 +401,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -492,6 +495,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         super.doPropertyChange(evt);
@@ -635,6 +639,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
+        // Keine zu deaktivierenden Felder
     }
 
 }

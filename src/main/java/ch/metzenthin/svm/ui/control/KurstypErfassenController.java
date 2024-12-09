@@ -60,6 +60,7 @@ public class KurstypErfassenController extends AbstractController {
         this.kurstypErfassenDialog = kurstypErfassenDialog;
         kurstypErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         kurstypErfassenDialog.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 onAbbrechen();
             }
@@ -226,6 +227,7 @@ public class KurstypErfassenController extends AbstractController {
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
+        // Keine zu deaktivierenden Felder
     }
 
 }

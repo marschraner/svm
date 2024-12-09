@@ -75,6 +75,7 @@ public class ListenExportController extends AbstractController {
         this.listenExportDialog = listenExportDialog;
         listenExportDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         listenExportDialog.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 onAbbrechen();
             }
@@ -124,6 +125,7 @@ public class ListenExportController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     private void initComboBoxListentyp() {
         if (listenExportTyp == ListenExportTyp.SCHUELER) {
             if (!schuelerSuchenTableModel.isKursFuerSucheBeruecksichtigen() || schuelerSuchenTableModel.getWochentag() == null || schuelerSuchenTableModel.getZeitBeginn() == null || schuelerSuchenTableModel.getLehrkraft() == null) {
@@ -297,6 +299,7 @@ public class ListenExportController extends AbstractController {
         this.btnOk.addActionListener(e -> onOk());
     }
 
+    @SuppressWarnings("java:S3776")
     private void onOk() {
         if (!isModelValidationMode() && !validateOnSpeichern()) {
             btnOk.setFocusPainted(false);
@@ -376,21 +379,45 @@ public class ListenExportController extends AbstractController {
                     result = get();
                 } catch (InterruptedException | ExecutionException e) {
                     LOGGER.warn("Die Liste konnte nicht erstellt werden:{}", e.getMessage());
-                    JOptionPane.showMessageDialog(listenExportDialog, "Die Liste konnte nicht erstellt werden.", "Liste nicht erfolgreich erstellt", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                            listenExportDialog,
+                            "Die Liste konnte nicht erstellt werden.",
+                            "Liste nicht erfolgreich erstellt",
+                            JOptionPane.ERROR_MESSAGE);
+                    if (e instanceof InterruptedException) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
                 if (result != null) {
                     switch (result) {
                         case TEMPLATE_FILE_EXISTIERT_NICHT_ODER_NICHT_LESBAR ->
-                                JOptionPane.showMessageDialog(listenExportDialog, "Template-Datei '" + listenExportModel.getTemplateFile() + "' nicht gefunden." +
-                                        "\nBitte Template-Datei erstellen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(
+                                        listenExportDialog,
+                                        "Template-Datei '" +
+                                                listenExportModel.getTemplateFile() +
+                                                "' nicht gefunden." +
+                                        "\nBitte Template-Datei erstellen.",
+                                        "Fehler", JOptionPane.ERROR_MESSAGE);
                         case FEHLER_BEIM_LESEN_DES_PROPERTY_FILE ->
-                                JOptionPane.showMessageDialog(listenExportDialog, "Fehler beim Lesen der Svm-Property-Datei '" + SvmProperties.SVM_PROPERTIES_FILE_NAME
-                                        + "'. \nDie Datei existiert nicht oder der Eintrag für die Template-Datei fehlt. Bitte Datei überprüfen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(
+                                        listenExportDialog,
+                                        "Fehler beim Lesen der Svm-Property-Datei '" +
+                                                SvmProperties.SVM_PROPERTIES_FILE_NAME +
+                                                "'. \nDie Datei existiert nicht oder der Eintrag für die Template-Datei fehlt. Bitte Datei überprüfen.",
+                                        "Fehler", JOptionPane.ERROR_MESSAGE);
                         case LISTE_ERFOLGREICH_ERSTELLT ->
-                                JOptionPane.showMessageDialog(listenExportDialog, "Die Liste wurde erfolgreich erstellt.", "Liste erfolgreich erstellt", JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.showMessageDialog(
+                                        listenExportDialog,
+                                        "Die Liste wurde erfolgreich erstellt.",
+                                        "Liste erfolgreich erstellt",
+                                        JOptionPane.INFORMATION_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(listenExportDialog, "Die Liste konnte nicht erstellt werden.", "Es konnte kein Resultat ermittelt werden.", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                            listenExportDialog,
+                            "Die Liste konnte nicht erstellt werden.",
+                            "Es konnte kein Resultat ermittelt werden.",
+                            JOptionPane.ERROR_MESSAGE);
                 }
                 listenExportDialog.dispose();
             }
@@ -484,18 +511,15 @@ public class ListenExportController extends AbstractController {
 
     @Override
     void showErrMsg(SvmValidationException e) {
-        if (e.getAffectedFields().contains(Field.LISTENTYP)) {
-            if (errLblListentyp != null) {
+        if (e.getAffectedFields().contains(Field.LISTENTYP) && errLblListentyp != null) {
                 errLblListentyp.setVisible(true);
                 errLblListentyp.setText(e.getMessage());
             }
-        }
-        if (e.getAffectedFields().contains(Field.TITEL)) {
-            if (errLblTitel != null) {
+
+        if (e.getAffectedFields().contains(Field.TITEL) && errLblTitel != null) {
                 errLblTitel.setVisible(true);
                 errLblTitel.setText(e.getMessage());
             }
-        }
     }
 
     @Override

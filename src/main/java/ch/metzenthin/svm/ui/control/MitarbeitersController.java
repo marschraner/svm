@@ -60,6 +60,7 @@ public class MitarbeitersController {
             onListSelection();
         });
         mitarbeitersTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     onBearbeiten();
@@ -223,21 +224,26 @@ public class MitarbeitersController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteMitarbeiterCommand.Result result = mitarbeitersModel.mitarbeiterLoeschen(mitarbeitersTableModel, mitarbeitersTable.convertRowIndexToModel(mitarbeitersTable.getSelectedRow()));
-            switch (result) {
-                case MITARBEITER_VON_KURS_REFERENZIERT -> {
-                    JOptionPane.showMessageDialog(null, "Der Mitarbeiter wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                    btnLoeschen.setFocusPainted(false);
-                }
-                case LOESCHEN_ERFOLGREICH -> {
-                    mitarbeitersTableModel.fireTableDataChanged();
-                    mitarbeitersTable.addNotify();
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Der Mitarbeiter wurde erfolgreich aus der Datenbank gelöscht.",
-                            "Löschen erfolgreich",
-                            JOptionPane.INFORMATION_MESSAGE);
-                }
+            DeleteMitarbeiterCommand.Result result =
+                    mitarbeitersModel.mitarbeiterLoeschen(
+                            mitarbeitersTableModel,
+                            mitarbeitersTable.convertRowIndexToModel(mitarbeitersTable.getSelectedRow()));
+            if (result == DeleteMitarbeiterCommand.Result.MITARBEITER_VON_KURS_REFERENZIERT) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Der Mitarbeiter wird durch mindestens einen Kurs referenziert " +
+                                "und kann nicht gelöscht werden.",
+                        "Fehler",
+                        JOptionPane.ERROR_MESSAGE);
+                btnLoeschen.setFocusPainted(false);
+            } else if (result == DeleteMitarbeiterCommand.Result.LOESCHEN_ERFOLGREICH) {
+                mitarbeitersTableModel.fireTableDataChanged();
+                mitarbeitersTable.addNotify();
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Der Mitarbeiter wurde erfolgreich aus der Datenbank gelöscht.",
+                        "Löschen erfolgreich",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         }
         setLblTotal();

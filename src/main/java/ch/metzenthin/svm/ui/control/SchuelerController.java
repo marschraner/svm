@@ -25,6 +25,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 public class SchuelerController extends PersonController {
 
     private static final Logger LOGGER = LogManager.getLogger(SchuelerController.class);
+    private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE =
+            "Validierung wegen equalFieldAndModelValue";
 
     private JTextField txtAnmeldedatum;
     private JTextField txtAbmeldedatum;
@@ -101,7 +103,7 @@ public class SchuelerController extends PersonController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -132,7 +134,7 @@ public class SchuelerController extends PersonController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -167,7 +169,7 @@ public class SchuelerController extends PersonController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -193,7 +195,7 @@ public class SchuelerController extends PersonController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }

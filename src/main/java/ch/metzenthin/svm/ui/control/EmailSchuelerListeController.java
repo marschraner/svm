@@ -55,6 +55,7 @@ public class EmailSchuelerListeController extends AbstractController {
         this.emailDialog = emailDialog;
         emailDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         emailDialog.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 onAbbrechen();
             }
@@ -171,22 +172,27 @@ public class EmailSchuelerListeController extends AbstractController {
 
     @Override
     void validateFields() throws SvmValidationException {
+        // Keine zu validierenden Felder
     }
 
     @Override
     void showErrMsg(SvmValidationException e) {
+        // Keine Fehlermeldungen
     }
 
     @Override
     void showErrMsgAsToolTip(SvmValidationException e) {
+        // Keine Fehlermeldungen
     }
 
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
+        // Keine Fehlermeldungen
     }
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
+        // Keine zu deaktivierenden Felder
     }
 
 }

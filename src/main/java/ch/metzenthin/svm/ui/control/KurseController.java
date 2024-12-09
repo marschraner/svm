@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.common.datatypes.ListenExportTyp;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.model.KurseModel;
@@ -57,6 +58,7 @@ public class KurseController {
             onListSelection();
         });
         kurseTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     onBearbeiten();
@@ -229,7 +231,9 @@ public class KurseController {
                     // SwingExceptionHandler nicht aufgerufen und kein Fehlerdialog angezeigt wird!
                     // (vgl. https://stackoverflow.com/questions/6523623/graceful-exception-handling-in-swing-worker)
                     if (swingWorkerException != null) {
-                        throw new RuntimeException(swingWorkerException);
+                        throw new SvmRuntimeException(
+                                "Fehler beim Importieren der Kurse des vorhergehenden Semesters!",
+                                swingWorkerException);
                     }
                     kurseTableModel.fireTableDataChanged();
                     lblTotal.setText(kurseModel.getTotal(kurseTableModel));
