@@ -22,10 +22,6 @@ public class SvmValidationException extends SvmException {
         return affectedFields;
     }
 
-    public String getMessage() {
-        return super.getMessage();
-    }
-
     public String getMessageLong() {
         String msg = super.getMessage();
         if ((getAffectedFields() != null) && !getAffectedFields().isEmpty()) {

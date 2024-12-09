@@ -52,7 +52,7 @@ public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
         textArea.setWrapStyleWord(true);
         scrollPane.setPreferredSize(new Dimension(1000, 500));
         String leaveMessage = (svmDesktop == null) ? "Die Applikation wird beendet." : "Die Applikation wird neu initialisiert.";
-        if ((e instanceof SvmRuntimeException) || ((e.getCause() != null) && (e.getCause() instanceof SvmRuntimeException))) {
+        if ((e instanceof SvmRuntimeException) || (e.getCause() instanceof SvmRuntimeException)) {
             JOptionPane.showMessageDialog(findActiveOrVisibleFrame(),
                     (e instanceof SvmRuntimeException) ? e.getMessage() : e.getCause().getMessage() + " " + leaveMessage,
                     "Fehler",
@@ -77,7 +77,7 @@ public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
      * We look for an active frame and attach ourselves to that.
      */
     private Frame findActiveOrVisibleFrame() {
-        Frame[] frames = JFrame.getFrames();
+        Frame[] frames = Frame.getFrames();
         for (Frame frame : frames) {
             if (frame.isActive()) {
                 return frame;
