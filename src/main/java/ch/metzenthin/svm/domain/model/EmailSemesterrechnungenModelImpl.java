@@ -10,6 +10,7 @@ import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
@@ -79,7 +80,8 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
 
             // Mutter und/oder Vater (ODER Rechnungsempfänger ohne E-Mail -> Mutter und/oder Vater)
             if (mutterUndOderVaterSelected || (rechnungsempfaengerSelected && emailAdressenSemesterrechnung.isEmpty())) {
-                Set<Schueler> schuelerRechnungempfaenger = rechnungsempfaenger.getSchuelerRechnungsempfaenger();
+                List<Schueler> schuelerRechnungempfaenger
+                        = rechnungsempfaenger.getSchuelerRechnungsempfaenger();
 
                 // Mutter und/oder Vater mit wuenschtEmails selektiert
                 for (Schueler schueler : schuelerRechnungempfaenger) {
@@ -114,7 +116,8 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
             // Mutter, Vater und Rechnungsempfänger ohne E-Mail -> Schüler
             if ((rechnungsempfaengerSelected || mutterUndOderVaterSelected)
                     && emailAdressenSemesterrechnung.isEmpty()) {
-                Set<Schueler> schuelerRechnungempfaenger = rechnungsempfaenger.getSchuelerRechnungsempfaenger();
+                List<Schueler> schuelerRechnungempfaenger
+                        = rechnungsempfaenger.getSchuelerRechnungsempfaenger();
                 for (Schueler schueler : schuelerRechnungempfaenger) {
                     if (checkNotEmpty(schueler.getEmail())) {
                         emailAdressenSemesterrechnung.add(schueler.getEmail());

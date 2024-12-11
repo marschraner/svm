@@ -67,7 +67,7 @@ public class Kurs implements Comparable<Kurs> {
     private String bemerkungen;
 
     @OneToMany(mappedBy = "kurs")
-    private final Set<Kursanmeldung> kursanmeldungen = new HashSet<>();
+    private final List<Kursanmeldung> kursanmeldungen = new ArrayList<>();
 
     @Transient
     private final boolean neusteZuoberst;
@@ -324,7 +324,7 @@ public class Kurs implements Comparable<Kurs> {
         this.bemerkungen = bemerkungen;
     }
 
-    public Set<Kursanmeldung> getKursanmeldungen() {
+    public List<Kursanmeldung> getKursanmeldungen() {
         return kursanmeldungen;
     }
 

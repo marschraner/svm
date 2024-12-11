@@ -5,8 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Martin Schraner
@@ -18,7 +18,7 @@ import java.util.Set;
 public class SchuelerCode extends Code {
 
     @ManyToMany(mappedBy = "schuelerCodes")
-    private final Set<Schueler> schueler = new HashSet<>();
+    private final List<Schueler> schueler = new ArrayList<>();
 
     public SchuelerCode() {
     }
@@ -27,7 +27,7 @@ public class SchuelerCode extends Code {
         super(kuerzel, beschreibung, selektierbar);
     }
 
-    public Set<Schueler> getSchueler() {
+    public List<Schueler> getSchueler() {
         return schueler;
     }
 

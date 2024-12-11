@@ -28,10 +28,14 @@ class KursanmeldungenModelImpl extends AbstractModel implements KursanmeldungenM
     @Override
     public void kursanmeldungLoeschen(KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int rowSelected) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        DeleteKursanmeldungCommand deleteKursanmeldungCommand = new DeleteKursanmeldungCommand(schuelerDatenblattModel.getSchueler().getKursanmeldungenAsList(), rowSelected);
+        DeleteKursanmeldungCommand deleteKursanmeldungCommand
+                = new DeleteKursanmeldungCommand(
+                        schuelerDatenblattModel.getSchueler().getSortedKursanmeldungen(),
+                rowSelected);
         commandInvoker.executeCommandAsTransaction(deleteKursanmeldungCommand);
         // TableData mit von der Datenbank upgedateter Kursanmeldung updaten
-        kursanmeldungenTableModel.getKursanmeldungenTableData().setKursanmeldungen(schuelerDatenblattModel.getSchueler().getKursanmeldungenAsList());
+        kursanmeldungenTableModel.getKursanmeldungenTableData().setKursanmeldungen(
+                schuelerDatenblattModel.getSchueler().getSortedKursanmeldungen());
     }
 
     /*
@@ -39,7 +43,8 @@ class KursanmeldungenModelImpl extends AbstractModel implements KursanmeldungenM
      */
     @Override
     public Calendar getSpaetestesAbmeldedatumKurseNeustesSemester(SchuelerDatenblattModel schuelerDatenblattModel) {
-        Set<Kursanmeldung> kursanmeldungen = schuelerDatenblattModel.getSchueler().getKursanmeldungen();
+        List<Kursanmeldung> kursanmeldungen
+                = schuelerDatenblattModel.getSchueler().getKursanmeldungen();
         Semester neustesSemester = getNeustesSemester(kursanmeldungen);
         List<Kursanmeldung> kursanmeldungenNeustesSemester = getKursanmeldungenNeustesSemester(kursanmeldungen, neustesSemester);
         if (kursanmeldungenNeustesSemester.isEmpty()) {

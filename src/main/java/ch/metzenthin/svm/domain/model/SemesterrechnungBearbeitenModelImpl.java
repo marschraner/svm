@@ -249,7 +249,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         StringBuilder schuelersSb = new StringBuilder("<html>");
         boolean neuerSchueler = true;
         for (Schueler schueler : schuelersRechnungsempfaenger) {
-            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getSortedKursanmeldungen()) {
                 Kurs kurs = kursanmeldung.getKurs();
                 if (!kurs.getSemester().getSemesterId().equals(relevantesSemester.getSemesterId()) || (rechnungstyp == Rechnungstyp.VORRECHNUNG && kursanmeldung.getAbmeldedatum() != null)) {
                     // Nicht passendes Semester oder abgemeldeter Kurs bei einer Vorrechnung
@@ -296,7 +296,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         StringBuilder kurseSb = new StringBuilder("<html>");
         boolean neuerSchueler = true;
         for (Schueler schueler : schuelersRechnungsempfaenger) {
-            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getSortedKursanmeldungen()) {
                 Kurs kurs = kursanmeldung.getKurs();
                 if (!kurs.getSemester().getSemesterId().equals(relevantesSemester.getSemesterId()) || (rechnungstyp == Rechnungstyp.VORRECHNUNG && kursanmeldung.getAbmeldedatum() != null)) {
                     // Nicht passendes Semester oder abgemeldeter Kurs bei einer Vorrechnung
@@ -370,7 +370,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
             return false;
         }
         for (Schueler schueler : schuelersRechnungsempfaenger) {
-            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getSortedKursanmeldungen()) {
                 if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(previousSemester.getSemesterId()) && kursanmeldung.getAbmeldedatum() == null) {
                     return true;
                 }

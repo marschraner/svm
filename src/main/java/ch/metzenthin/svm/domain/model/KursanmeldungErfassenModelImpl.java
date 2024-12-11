@@ -336,10 +336,14 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel implements Kur
         kursanmeldung.setKurs(kurs);
         kursanmeldung.setSchueler(schuelerDatenblattModel.getSchueler());
         CommandInvoker commandInvoker = getCommandInvoker();
-        SaveOrUpdateKursanmeldungCommand saveOrUpdateKursanmeldungCommand = new SaveOrUpdateKursanmeldungCommand(kursanmeldung, kursanmeldungOrigin, schuelerDatenblattModel.getSchueler().getKursanmeldungenAsList());
+        SaveOrUpdateKursanmeldungCommand saveOrUpdateKursanmeldungCommand
+                = new SaveOrUpdateKursanmeldungCommand(kursanmeldung,
+                kursanmeldungOrigin,
+                schuelerDatenblattModel.getSchueler().getSortedKursanmeldungen());
         commandInvoker.executeCommandAsTransaction(saveOrUpdateKursanmeldungCommand);
         // TableData mit von der Datenbank upgedateter Kursanmeldung updaten
-        kursanmeldungenTableModel.getKursanmeldungenTableData().setKursanmeldungen(schuelerDatenblattModel.getSchueler().getKursanmeldungenAsList());
+        kursanmeldungenTableModel.getKursanmeldungenTableData().setKursanmeldungen(
+                schuelerDatenblattModel.getSchueler().getSortedKursanmeldungen());
 
         return saveOrUpdateKursanmeldungCommand.getResult();
     }

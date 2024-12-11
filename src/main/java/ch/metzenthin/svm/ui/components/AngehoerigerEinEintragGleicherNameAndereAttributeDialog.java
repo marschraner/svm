@@ -14,9 +14,9 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 @SuppressWarnings({"java:S100", "java:S1171", "java:S1192"})
 public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends SchuelerErfassenDialog {
@@ -77,7 +77,7 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends Sch
     private void setLabels(Angehoeriger angehoeriger) {
         lblBeschreibung.setText("In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben für " + angehoerigerEinEintragGleicherNameAndereAttributeResult.getAngehoerigenArt() + " teilweise übereinstimmt:");
         lblAngehoerigerValue.setText(angehoeriger.toString());
-        Set<Schueler> schuelerList = new HashSet<>();
+        List<Schueler> schuelerList = new ArrayList<>();
         if (!angehoeriger.getKinderMutter().isEmpty()) {
             lblAngehoeriger.setText("Mutter:");
             schuelerList = angehoeriger.getKinderMutter();
