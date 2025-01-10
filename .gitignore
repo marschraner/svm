@@ -28,5 +28,7 @@ log/
 .idea/google-java-format.xml
 .idea/runConfigurations.xml
 
+svm.iml
+
 # fillData
 sql/fillData.sql
