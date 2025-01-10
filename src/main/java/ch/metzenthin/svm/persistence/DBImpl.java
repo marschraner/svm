@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Singelton zur Verwaltung der EntityManagerFactory (global) und des EntityManager (Thread-basiert).
+ * Singleton zur Verwaltung der EntityManagerFactory (global) und des EntityManager (Thread-basiert).
  *
  * @author Martin Schraner
  */
@@ -16,14 +16,15 @@ public class DBImpl implements DB {
 
     private static final Logger LOGGER = LogManager.getLogger(DBImpl.class);
 
-    private volatile static DBImpl instance;
-    private static EntityManagerFactory entityManagerFactory;
+    private static final EntityManagerFactory ENTITY_MANAGER_FACTORY;
+
+    private static DBImpl instance = new DBImpl();
 
     private final ThreadLocal<ThreadLocalData> threadLocal = new ThreadLocal<>();
 
-    private DBImpl() {
+    static {
         try {
-            entityManagerFactory = Persistence.createEntityManagerFactory(
+            ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory(
                     "svm", PersistenceProperties.getPersistenceProperties());
         } catch (Exception e) {
             LOGGER.error("", e);
@@ -31,13 +32,12 @@ public class DBImpl implements DB {
         }
     }
 
-    static DBImpl getInstance() {
+    private DBImpl() {
+    }
+
+    static synchronized DBImpl getInstance() {
         if (instance == null) {
-            synchronized (DBImpl.class) {
-                if (instance == null) {
-                    instance = new DBImpl();
-                }
-            }
+            instance = new DBImpl();
         }
         return instance;
     }
@@ -82,7 +82,7 @@ public class DBImpl implements DB {
 
         EntityManager getEntityManager(boolean createIfNecessary) {
             if (entityManager == null && createIfNecessary) {
-                entityManager = entityManagerFactory.createEntityManager();
+                entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
                 LOGGER.trace("Opened session");
             }
             return entityManager;
