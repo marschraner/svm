@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Schuljahre;
+import ch.metzenthin.svm.common.datatypes.Schuljahre;
 import ch.metzenthin.svm.domain.model.MaerchenErfassenModel;
 import ch.metzenthin.svm.domain.model.MaerchensModel;
 import ch.metzenthin.svm.ui.componentmodel.MaerchensTableModel;
@@ -14,6 +14,7 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.util.Locale;
 
+@SuppressWarnings({"java:S100", "java:S1450"})
 public class MaerchenErfassenDialog extends JDialog {
 
     // Schalter zur Aktivierung des Default-Button (nicht dynamisch)

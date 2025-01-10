@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.componentmodel;
 
-import ch.metzenthin.svm.common.dataTypes.Gruppe;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Gruppe;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -19,7 +19,7 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final SchuelerSuchenTableData schuelerSuchenTableData;
+    private final transient SchuelerSuchenTableData schuelerSuchenTableData;
 
     public SchuelerSuchenTableModel(SchuelerSuchenTableData schuelerSuchenTableData) {
         super();

@@ -84,7 +84,7 @@ public class SaveOrUpdateMitarbeiterCommand implements Command {
         if (mitarbeiterCodes == null) {
             return;
         }
-        Set<MitarbeiterCode> mitarbeiterCodesOrigin = mitarbeiterOrigin.getMitarbeiterCodes();
+        List<MitarbeiterCode> mitarbeiterCodesOrigin = mitarbeiterOrigin.getMitarbeiterCodes();
         for (MitarbeiterCode mitarbeiterCode : mitarbeiterCodes) {
             boolean found = false;
             for (MitarbeiterCode mitarbeiterCodeOrigin : mitarbeiterCodesOrigin) {
@@ -103,7 +103,7 @@ public class SaveOrUpdateMitarbeiterCommand implements Command {
         if (mitarbeiterCodes == null) {
             return;
         }
-        Set<MitarbeiterCode> mitarbeiterCodesOrigin = mitarbeiterOrigin.getMitarbeiterCodes();
+        List<MitarbeiterCode> mitarbeiterCodesOrigin = mitarbeiterOrigin.getMitarbeiterCodes();
         Iterator<MitarbeiterCode> it = mitarbeiterCodesOrigin.iterator();
         while (it.hasNext()) {
             boolean found = false;

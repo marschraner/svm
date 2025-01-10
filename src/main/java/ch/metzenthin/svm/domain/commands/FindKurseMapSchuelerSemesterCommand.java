@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.persistence.daos.KursanmeldungDao;
 import ch.metzenthin.svm.persistence.entities.*;
 
@@ -28,6 +28,7 @@ public class FindKurseMapSchuelerSemesterCommand implements Command {
     // output
     private final Map<Schueler, List<Kurs>> kurseMap = new HashMap<>();
 
+    @SuppressWarnings("java:S107")
     public FindKurseMapSchuelerSemesterCommand(List<Schueler> schuelerList, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar stichtagSchuelerSuchen, boolean keineAbgemeldetenKurseAnzeigen, Calendar anmeldemonat, Calendar abmeldemonat) {
         this.schuelerList = schuelerList;
         this.semester = semester;

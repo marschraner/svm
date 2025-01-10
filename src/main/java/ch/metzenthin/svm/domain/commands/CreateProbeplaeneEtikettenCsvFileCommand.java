@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.common.utils.MaercheneinteilungenSorter;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
@@ -92,7 +93,7 @@ public class CreateProbeplaeneEtikettenCsvFileCommand extends CreateListeCommand
             result = Result.LISTE_ERFOLGREICH_ERSTELLT;
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new SvmRuntimeException("Fehler beim Erstellen der csv-Datei", e);
         }
 
     }

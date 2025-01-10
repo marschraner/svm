@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.DisableFieldsListener;
 import ch.metzenthin.svm.domain.model.MakeErrorLabelsInvisibleListener;
@@ -29,7 +29,7 @@ public abstract class AbstractController implements PropertyChangeListener, Disa
      */
     private boolean modelValidationMode = true;
 
-    public AbstractController(Model model) {
+    protected AbstractController(Model model) {
         this.model = model;
     }
 

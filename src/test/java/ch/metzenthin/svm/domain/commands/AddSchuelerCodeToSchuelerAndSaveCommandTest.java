@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SchuelerCodeDao;
@@ -32,19 +32,19 @@ public class AddSchuelerCodeToSchuelerAndSaveCommandTest {
     private CommandInvoker commandInvoker;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
         commandInvoker = new CommandInvokerImpl();
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         db.closeSession();
     }
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
 
         List<SchuelerCode> erfassteSchuelerCodes = new ArrayList<>();
 
@@ -81,7 +81,7 @@ public class AddSchuelerCodeToSchuelerAndSaveCommandTest {
         schuelerSaved = addSchuelerCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
 
         assertEquals(1, schuelerSaved.getSchuelerCodes().size());
-        assertEquals("zt", schuelerSaved.getSchuelerCodesAsList().get(0).getKuerzel());
+        assertEquals("zt", schuelerSaved.getSortedSchuelerCodes().get(0).getKuerzel());
 
 
         // Weiteren SchuelerCode hinzufügen:
@@ -91,8 +91,8 @@ public class AddSchuelerCodeToSchuelerAndSaveCommandTest {
 
         assertEquals(2, schuelerSaved.getSchuelerCodes().size());
         // Alphabetisch geordnet?
-        assertEquals("jt", schuelerSaved.getSchuelerCodesAsList().get(0).getKuerzel());
-        assertEquals("zt", schuelerSaved.getSchuelerCodesAsList().get(1).getKuerzel());
+        assertEquals("jt", schuelerSaved.getSortedSchuelerCodes().get(0).getKuerzel());
+        assertEquals("zt", schuelerSaved.getSortedSchuelerCodes().get(1).getKuerzel());
 
 
         // Testdaten löschen

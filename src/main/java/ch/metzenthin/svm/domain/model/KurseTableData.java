@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.common.utils.StringNumber;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
@@ -71,6 +71,7 @@ public class KurseTableData {
             case BEMERKUNGEN -> value = kurs.getBemerkungen();
             case ANZAHL_SCHUELER -> value = kurs.getKursanmeldungen().size();
             default -> {
+                // Nothing to do
             }
         }
         return value;

@@ -9,17 +9,17 @@ import java.lang.reflect.ParameterizedType;
 /**
  * @author hans
  */
-public abstract class GenericDao<T, ID> {
+public abstract class GenericDao<T, U> {
 
     private final Class<T> persistentClass;
     protected final DB db = DBFactory.getInstance();
 
     @SuppressWarnings("unchecked")
-    public GenericDao() {
+    protected GenericDao() {
         persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    public T findById(ID id) {
+    public T findById(U id) {
         return db.getCurrentEntityManager().find(persistentClass, id);
     }
 

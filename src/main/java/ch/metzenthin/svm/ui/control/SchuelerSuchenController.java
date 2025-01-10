@@ -1,9 +1,9 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Gruppe;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Gruppe;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.SchuelerSuchenCommand;
@@ -37,6 +37,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 public class SchuelerSuchenController extends PersonController {
 
     private static final Logger LOGGER = LogManager.getLogger(SchuelerSuchenController.class);
+    private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE
+            = "Validierung wegen equalFieldAndModelValue";
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
@@ -124,7 +126,7 @@ public class SchuelerSuchenController extends PersonController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -163,7 +165,8 @@ public class SchuelerSuchenController extends PersonController {
         // Initialisieren mit heute
         try {
             schuelerSuchenModel.setStichtag(asString(new GregorianCalendar()));
-        } catch (SvmValidationException ignore) {
+        } catch (SvmValidationException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -177,7 +180,7 @@ public class SchuelerSuchenController extends PersonController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -243,7 +246,7 @@ public class SchuelerSuchenController extends PersonController {
         setModelSemesterKurs();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -268,7 +271,7 @@ public class SchuelerSuchenController extends PersonController {
         setModelWochentag();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -301,7 +304,7 @@ public class SchuelerSuchenController extends PersonController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -329,19 +332,15 @@ public class SchuelerSuchenController extends PersonController {
     private void onLehrkraftSelected() {
         LOGGER.trace("SchuelerSuchenController Event Lehrkraft selected={}", comboBoxLehrkraft.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxLehrkraft.getSelectedItem(), schuelerSuchenModel.getMitarbeiter());
-        try {
-            setModelLehrkraft();
-        } catch (SvmValidationException e) {
-            return;
-        }
+        setModelLehrkraft();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
 
-    private void setModelLehrkraft() throws SvmValidationException {
+    private void setModelLehrkraft() {
         makeErrorLabelInvisible(Field.LEHRKRAFT);
         schuelerSuchenModel.setMitarbeiter((Mitarbeiter) comboBoxLehrkraft.getSelectedItem());
     }
@@ -388,7 +387,7 @@ public class SchuelerSuchenController extends PersonController {
         setModelMaerchen();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -412,7 +411,7 @@ public class SchuelerSuchenController extends PersonController {
         setModelGruppe();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -444,7 +443,7 @@ public class SchuelerSuchenController extends PersonController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -501,7 +500,7 @@ public class SchuelerSuchenController extends PersonController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -540,7 +539,7 @@ public class SchuelerSuchenController extends PersonController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -927,6 +926,7 @@ public class SchuelerSuchenController extends PersonController {
         txtAreaRollen.setCursor(textCursor);
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     void doPropertyChange(PropertyChangeEvent evt) {
         enableDisableFields();
@@ -1071,6 +1071,7 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         super.makeErrorLabelsInvisible(fields);
@@ -1124,6 +1125,7 @@ public class SchuelerSuchenController extends PersonController {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
         super.disableFields(disable, fields);

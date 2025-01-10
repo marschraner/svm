@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 /**
  * @author Hans Stamm
  */
+@SuppressWarnings("java:S6539")
 public class ModelFactoryImpl implements ModelFactory {
 
     @Override

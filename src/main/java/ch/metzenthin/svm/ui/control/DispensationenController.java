@@ -37,7 +37,16 @@ public class DispensationenController {
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
 
-    public DispensationenController(DispensationenModel dispensationenModel, SvmContext svmContext, DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isFromSchuelerSuchenResult) {
+    @SuppressWarnings("java:S107")
+    public DispensationenController(
+            DispensationenModel dispensationenModel,
+            SvmContext svmContext,
+            DispensationenTableModel dispensationenTableModel,
+            SchuelerDatenblattModel schuelerDatenblattModel,
+            SchuelerSuchenTableModel schuelerSuchenTableModel,
+            JTable schuelerSuchenResultTable,
+            int selectedRow,
+            boolean isFromSchuelerSuchenResult) {
         this.dispensationenModel = dispensationenModel;
         this.svmContext = svmContext;
         this.dispensationenTableModel = dispensationenTableModel;
@@ -60,6 +69,7 @@ public class DispensationenController {
             onListSelection();
         });
         dispensationenTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     onBearbeiten();

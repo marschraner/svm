@@ -20,6 +20,7 @@ import java.util.Map;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
 public class MitarbeitersPanel {
 
     private JPanel panel1;

@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.MitarbeiterCodeDao;
@@ -33,19 +33,19 @@ public class RemoveMitarbeiterCodeFromMitarbeiterCommandTest {
     private CommandInvoker commandInvoker;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
         commandInvoker = new CommandInvokerImpl();
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         db.closeSession();
     }
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
 
         List<MitarbeiterCode> erfassteMitarbeiterCodes = new ArrayList<>();
         List<Mitarbeiter> mitarbeitersSaved = new ArrayList<>();
@@ -74,19 +74,19 @@ public class RemoveMitarbeiterCodeFromMitarbeiterCommandTest {
         Mitarbeiter mitarbeiterUpdated = addMitarbeiterCodeToMitarbeiterAndSaveCommand.getMitarbeiterUpdated();
 
         assertEquals(2, mitarbeiterUpdated.getMitarbeiterCodes().size());
-        assertEquals("ht", mitarbeiterUpdated.getMitarbeiterCodesAsList().get(0).getKuerzel());
-        assertEquals("vt", mitarbeiterUpdated.getMitarbeiterCodesAsList().get(1).getKuerzel());
+        assertEquals("ht", mitarbeiterUpdated.getSortedMitarbeiterCodes().get(0).getKuerzel());
+        assertEquals("vt", mitarbeiterUpdated.getSortedMitarbeiterCodes().get(1).getKuerzel());
 
         // 2. MitarbeiterCode von Schüler löschen
-        RemoveMitarbeiterCodeFromMitarbeiterCommand removeMitarbeiterCodeFromMitarbeiterCommand = new RemoveMitarbeiterCodeFromMitarbeiterCommand(mitarbeiterUpdated.getMitarbeiterCodesAsList().get(1), mitarbeiterUpdated);
+        RemoveMitarbeiterCodeFromMitarbeiterCommand removeMitarbeiterCodeFromMitarbeiterCommand = new RemoveMitarbeiterCodeFromMitarbeiterCommand(mitarbeiterUpdated.getSortedMitarbeiterCodes().get(1), mitarbeiterUpdated);
         commandInvoker.executeCommandAsTransaction(removeMitarbeiterCodeFromMitarbeiterCommand);
 
         mitarbeiterUpdated = removeMitarbeiterCodeFromMitarbeiterCommand.getMitarbeiterUpdated();
         assertEquals(1, mitarbeiterUpdated.getMitarbeiterCodes().size());
-        assertEquals("ht", mitarbeiterUpdated.getMitarbeiterCodesAsList().get(0).getKuerzel());
+        assertEquals("ht", mitarbeiterUpdated.getSortedMitarbeiterCodes().get(0).getKuerzel());
 
         // 1. MitarbeiterCode von Schüler löschen
-        removeMitarbeiterCodeFromMitarbeiterCommand = new RemoveMitarbeiterCodeFromMitarbeiterCommand(mitarbeiterUpdated.getMitarbeiterCodesAsList().get(0), mitarbeiterUpdated);
+        removeMitarbeiterCodeFromMitarbeiterCommand = new RemoveMitarbeiterCodeFromMitarbeiterCommand(mitarbeiterUpdated.getSortedMitarbeiterCodes().get(0), mitarbeiterUpdated);
         commandInvoker.executeCommandAsTransaction(removeMitarbeiterCodeFromMitarbeiterCommand);
 
         mitarbeiterUpdated = removeMitarbeiterCodeFromMitarbeiterCommand.getMitarbeiterUpdated();

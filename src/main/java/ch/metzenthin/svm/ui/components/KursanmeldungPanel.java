@@ -19,6 +19,7 @@ import java.util.Locale;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
 public class KursanmeldungPanel {
 
     private JPanel panel1;
@@ -34,6 +35,7 @@ public class KursanmeldungPanel {
     private JTable kurseinteilungenTable;
     private KursanmeldungenController kursanmeldungenController;
 
+    @SuppressWarnings("java:S107")
     public KursanmeldungPanel(SvmContext svmContext, KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isFromSchuelerSuchenResult, String titel) {
         lblTitel.setText(titel);
         createUIComponents();

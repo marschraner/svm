@@ -9,7 +9,7 @@ public abstract class SchuelerErfassenSaveResult {
 
     private final ValidateSchuelerCommand.Result result;
 
-    public SchuelerErfassenSaveResult(ValidateSchuelerCommand.Result result) {
+    protected SchuelerErfassenSaveResult(ValidateSchuelerCommand.Result result) {
         this.result = result;
     }
 

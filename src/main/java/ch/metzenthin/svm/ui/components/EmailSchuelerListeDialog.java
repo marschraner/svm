@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.EmailSchuelerListeEmpfaengerGruppe;
+import ch.metzenthin.svm.common.datatypes.EmailSchuelerListeEmpfaengerGruppe;
 import ch.metzenthin.svm.domain.model.EmailSchuelerListeModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.control.EmailSchuelerListeController;
@@ -13,6 +13,7 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.util.Locale;
 
+@SuppressWarnings({"java:S100", "java:S1450"})
 public class EmailSchuelerListeDialog extends JDialog {
 
     // Schalter zur Aktivierung des Default-Button (nicht dynamisch)

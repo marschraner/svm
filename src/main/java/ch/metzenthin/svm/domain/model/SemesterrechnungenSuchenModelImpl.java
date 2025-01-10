@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Stipendium;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Stipendium;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.CreateAndFindSemesterrechnungenCommand;
@@ -19,7 +19,11 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S6539")
 final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl implements SemesterrechnungenSuchenModel {
+
+    private static final BigDecimal MIN_VALID_VALUE = new BigDecimal("0.00");
+    private static final BigDecimal MAX_VALID_VALUE = new BigDecimal("9999.95");
 
     private Semester semester;
     private String nachname;
@@ -295,7 +299,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
 
     private final PreisModelAttribute rechnungsbetragVorrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.RECHNUNGSBETRAG_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.RECHNUNGSBETRAG_VORRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -331,7 +335,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
 
     private final PreisModelAttribute restbetragVorrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.RESTBETRAG_VORRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.RESTBETRAG_VORRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -451,7 +455,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
 
     private final PreisModelAttribute rechnungsbetragNachrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.RECHNUNGSBETRAG_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.RECHNUNGSBETRAG_NACHRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -487,7 +491,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
 
     private final PreisModelAttribute restbetragNachrechnungModelAttribute = new PreisModelAttribute(
             this,
-            Field.RESTBETRAG_NACHRECHNUNG, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.RESTBETRAG_NACHRECHNUNG, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -535,7 +539,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
 
     private final PreisModelAttribute differenzSchulgeldModelAttribute = new PreisModelAttribute(
             this,
-            Field.DIFFERENZ_SCHULGELD, new BigDecimal("0.00"), new BigDecimal("9999.95"),
+            Field.DIFFERENZ_SCHULGELD, MIN_VALID_VALUE, MAX_VALID_VALUE,
             new AttributeAccessor<>() {
                 @Override
                 public BigDecimal getValue() {
@@ -622,6 +626,7 @@ final class SemesterrechnungenSuchenModelImpl extends SemesterrechnungModelImpl 
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

@@ -18,6 +18,7 @@ import java.util.Locale;
 /**
  * @author Hans Stamm
  */
+@SuppressWarnings({"java:S100", "java:S1450"})
 public class SchuelerErfassenPanel {
 
     // Schalter zur Aktivierung des Default-Button (nicht dynamisch)

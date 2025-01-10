@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.common.utils.StringNumber;
 import ch.metzenthin.svm.ui.componentmodel.*;
 
@@ -14,6 +14,9 @@ import java.util.Calendar;
  * @author Martin Schraner
  */
 public class UiComponentsUtils {
+
+    private UiComponentsUtils() {
+    }
 
     /**
      * Source: <a href="https://kahdev.wordpress.com/2011/10/30/java-specifying-the-column-widths-of-a-jtable-as-percentages/">...</a>

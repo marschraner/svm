@@ -26,6 +26,7 @@ public class CheckDrittpersonIdentischMitElternteilCommand implements Command {
         this.rechnungsempfaengerDrittperson = rechnungsempfaengerDrittperson;
     }
 
+    @SuppressWarnings("java:S1871")
     @Override
     public void execute() {
 

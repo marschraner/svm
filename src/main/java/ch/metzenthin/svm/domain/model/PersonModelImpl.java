@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.utils.EmailValidator;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -344,6 +344,7 @@ abstract class PersonModelImpl extends AbstractModel implements PersonModel {
         return (!isSetAnyNameElement() || isSetName()) && (!isSetAnyAdresseElement() || (isSetName() && isSetAdresse()));
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void doValidate() throws SvmValidationException {
         if (isAdresseRequired()) {

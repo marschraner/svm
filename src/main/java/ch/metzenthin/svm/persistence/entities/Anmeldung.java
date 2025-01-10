@@ -44,33 +44,28 @@ public class Anmeldung implements Comparable<Anmeldung> {
         this.abmeldedatum = abmeldedatum;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder anmeldungSb = new StringBuilder();
-        anmeldungSb.append(String.format("%1$td.%1$tm.%1$tY", anmeldedatum));
-        if (abmeldedatum != null) {
-            // Eine Anmeldung dauert bis und mit Abmeldedatum
-            anmeldungSb.append(" - ").append(String.format("%1$td.%1$tm.%1$tY", abmeldedatum));
-        }
-        return anmeldungSb.toString();
+    public void copyFieldValuesFrom(Anmeldung anmeldungFrom) {
+        anmeldedatum = anmeldungFrom.getAnmeldedatum();
+        abmeldedatum = anmeldungFrom.getAbmeldedatum();
+    }
+
+    public boolean isInPast() {
+        return (abmeldedatum != null) && new GregorianCalendar().after(abmeldedatum);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Anmeldung anmeldung)) return false;
-
-        return anmeldedatum.equals(anmeldung.anmeldedatum)
+        if (o == null || getClass() != o.getClass()) return false;
+        Anmeldung anmeldung = (Anmeldung) o;
+        return Objects.equals(anmeldedatum, anmeldung.anmeldedatum)
                 && Objects.equals(abmeldedatum, anmeldung.abmeldedatum)
-                && schueler.equals(anmeldung.schueler);
+                && Objects.equals(schueler, anmeldung.schueler);
     }
 
     @Override
     public int hashCode() {
-        int result = anmeldedatum.hashCode();
-        result = 31 * result + (abmeldedatum != null ? abmeldedatum.hashCode() : 0);
-        result = 31 * result + schueler.hashCode();
-        return result;
+        return Objects.hash(anmeldedatum, abmeldedatum, schueler);
     }
 
     @Override
@@ -89,13 +84,15 @@ public class Anmeldung implements Comparable<Anmeldung> {
         return result;
     }
 
-    public void copyFieldValuesFrom(Anmeldung anmeldungFrom) {
-        anmeldedatum = anmeldungFrom.getAnmeldedatum();
-        abmeldedatum = anmeldungFrom.getAbmeldedatum();
-    }
-
-    public boolean isInPast() {
-        return (abmeldedatum != null) && new GregorianCalendar().after(abmeldedatum);
+    @Override
+    public String toString() {
+        StringBuilder anmeldungSb = new StringBuilder();
+        anmeldungSb.append(String.format("%1$td.%1$tm.%1$tY", anmeldedatum));
+        if (abmeldedatum != null) {
+            // Eine Anmeldung dauert bis und mit Abmeldedatum
+            anmeldungSb.append(" - ").append(String.format("%1$td.%1$tm.%1$tY", abmeldedatum));
+        }
+        return anmeldungSb.toString();
     }
 
     public Integer getAnmeldungId() {

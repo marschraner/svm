@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import org.junit.Before;
 import org.junit.Test;
@@ -102,9 +102,9 @@ public class FindSemesterForCalendarCommandTest {
 
     @Test
     public void testExecute_ErfassteSemesterNurEinSemester_WaehrendSemester() {
-        List<Semester> erfassteSemester = new ArrayList<>();
-        erfassteSemester.add(new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), new GregorianCalendar(2011, Calendar.OCTOBER, 5), new GregorianCalendar(2011, Calendar.OCTOBER, 17), new GregorianCalendar(2011, Calendar.DECEMBER, 21), new GregorianCalendar(2012, Calendar.JANUARY, 2)));
-        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(new GregorianCalendar(2011, Calendar.AUGUST, 21), erfassteSemester);
+        List<Semester> erfassteSemester1 = new ArrayList<>();
+        erfassteSemester1.add(new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), new GregorianCalendar(2011, Calendar.OCTOBER, 5), new GregorianCalendar(2011, Calendar.OCTOBER, 17), new GregorianCalendar(2011, Calendar.DECEMBER, 21), new GregorianCalendar(2012, Calendar.JANUARY, 2)));
+        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(new GregorianCalendar(2011, Calendar.AUGUST, 21), erfassteSemester1);
         commandInvoker.executeCommand(findSemesterForCalendarCommand);
         assertNull(findSemesterForCalendarCommand.getPreviousSemester());
         assertEquals(new GregorianCalendar(2011, Calendar.AUGUST, 20), findSemesterForCalendarCommand.getCurrentSemester().getSemesterbeginn());
@@ -113,9 +113,9 @@ public class FindSemesterForCalendarCommandTest {
 
     @Test
     public void testExecute_ErfassteSemesterNurEinSemester_VorSemester() {
-        List<Semester> erfassteSemester = new ArrayList<>();
-        erfassteSemester.add(new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), new GregorianCalendar(2011, Calendar.OCTOBER, 5), new GregorianCalendar(2011, Calendar.OCTOBER, 17), new GregorianCalendar(2011, Calendar.DECEMBER, 21), new GregorianCalendar(2012, Calendar.JANUARY, 2)));
-        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(new GregorianCalendar(2011, Calendar.AUGUST, 19), erfassteSemester);
+        List<Semester> erfassteSemester1 = new ArrayList<>();
+        erfassteSemester1.add(new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), new GregorianCalendar(2011, Calendar.OCTOBER, 5), new GregorianCalendar(2011, Calendar.OCTOBER, 17), new GregorianCalendar(2011, Calendar.DECEMBER, 21), new GregorianCalendar(2012, Calendar.JANUARY, 2)));
+        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(new GregorianCalendar(2011, Calendar.AUGUST, 19), erfassteSemester1);
         commandInvoker.executeCommand(findSemesterForCalendarCommand);
         assertNull(findSemesterForCalendarCommand.getPreviousSemester());
         assertNull(findSemesterForCalendarCommand.getCurrentSemester());
@@ -124,9 +124,9 @@ public class FindSemesterForCalendarCommandTest {
 
     @Test
     public void testExecute_ErfassteSemesterNurEinSemester_NachSemester() {
-        List<Semester> erfassteSemester = new ArrayList<>();
-        erfassteSemester.add(new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), new GregorianCalendar(2011, Calendar.OCTOBER, 5), new GregorianCalendar(2011, Calendar.OCTOBER, 17), new GregorianCalendar(2011, Calendar.DECEMBER, 21), new GregorianCalendar(2012, Calendar.JANUARY, 2)));
-        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(new GregorianCalendar(2012, Calendar.FEBRUARY, 11), erfassteSemester);
+        List<Semester> erfassteSemester1 = new ArrayList<>();
+        erfassteSemester1.add(new Semester("2011/2012", Semesterbezeichnung.ERSTES_SEMESTER, new GregorianCalendar(2011, Calendar.AUGUST, 20), new GregorianCalendar(2012, Calendar.FEBRUARY, 10), new GregorianCalendar(2011, Calendar.OCTOBER, 5), new GregorianCalendar(2011, Calendar.OCTOBER, 17), new GregorianCalendar(2011, Calendar.DECEMBER, 21), new GregorianCalendar(2012, Calendar.JANUARY, 2)));
+        FindSemesterForCalendarCommand findSemesterForCalendarCommand = new FindSemesterForCalendarCommand(new GregorianCalendar(2012, Calendar.FEBRUARY, 11), erfassteSemester1);
         commandInvoker.executeCommand(findSemesterForCalendarCommand);
         assertEquals(new GregorianCalendar(2011, Calendar.AUGUST, 20), findSemesterForCalendarCommand.getPreviousSemester().getSemesterbeginn());
         assertNull(findSemesterForCalendarCommand.getCurrentSemester());

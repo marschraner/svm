@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 
 import java.util.List;
@@ -26,13 +26,18 @@ public class KursorteTableData {
         return kursorte.size();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public Object getValueAt(int rowIndex, int columnIndex) {
         Kursort kursort = kursorte.get(rowIndex);
         Object value = null;
         switch (COLUMNS[columnIndex]) {
             case BEZEICHNUNG -> value = kursort.getBezeichnung();
-            case SELEKTIERBAR -> value = (kursort.getSelektierbar() ? "ja" : "nein");
+            case SELEKTIERBAR -> value =
+                    (kursort.getSelektierbar() != null && kursort.getSelektierbar())
+                            ? "ja"
+                            : "nein";
             default -> {
+                // Nothing to do
             }
         }
         return value;

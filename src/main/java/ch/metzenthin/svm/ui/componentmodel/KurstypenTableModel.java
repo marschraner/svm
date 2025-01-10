@@ -11,7 +11,7 @@ public class KurstypenTableModel extends AbstractTableModel {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final KurstypenTableData kurstypenTableData;
+    private final transient KurstypenTableData kurstypenTableData;
 
     public KurstypenTableModel(KurstypenTableData kurstypenTableData) {
         super();

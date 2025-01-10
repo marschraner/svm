@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 
 import java.util.List;
@@ -39,6 +39,7 @@ public class MaerchensTableData {
             case ANZAHL_VORSTELLUNGEN -> value = maerchen.getAnzahlVorstellungen();
             case ANZAHL_KINDER -> value = maerchen.getMaercheneinteilungen().size();
             default -> {
+                // Nothing to do
             }
         }
         return value;

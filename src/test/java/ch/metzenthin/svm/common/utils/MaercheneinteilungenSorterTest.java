@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.common.utils;
 
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.common.dataTypes.Gruppe;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Gruppe;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import org.junit.Test;

@@ -1,10 +1,12 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Person;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +18,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  * @author Hans Stamm
  */
 public class AngehoerigerModelImpl extends PersonModelImpl implements AngehoerigerModel {
+
+    private static final Logger LOGGER = LogManager.getLogger(AngehoerigerModelImpl.class);
 
     private final Angehoeriger angehoeriger;
     private Angehoeriger angehoerigerOrigin;
@@ -58,6 +62,7 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
      *
      * @return true, falls der Angehörige Rechnungsempfänger ist
      */
+    @SuppressWarnings("java:S4144")
     @Override
     public boolean isAdresseRequired() {
         return isRechnungsempfaenger;
@@ -100,8 +105,8 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
 
     @Override
     public boolean isCompleted() {
-        if (isSetName() && angehoeriger.getWuenschtEmails() != null
-                && angehoeriger.getWuenschtEmails()
+        if (isSetName() && (angehoeriger.getWuenschtEmails() != null
+                && angehoeriger.getWuenschtEmails())
                 && !checkNotEmpty(angehoeriger.getEmail())) {
             return false;
         }
@@ -145,7 +150,8 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
                     setWuenschtEmails(!angehoerigerOrigin.getWuenschtEmails()); // damit PropertyChange ausgelöst wird!
                 }
                 setWuenschtEmails(angehoerigerOrigin.getWuenschtEmails());
-            } catch (SvmValidationException ignore) {
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else {
@@ -171,7 +177,7 @@ public class AngehoerigerModelImpl extends PersonModelImpl implements Angehoerig
             setEmail("");
             setGeburtsdatum("");
         } catch (SvmValidationException e) {
-            throw new RuntimeException("Keine SvmValidationException erwartet: ", e);
+            LOGGER.error(e.getMessage());
         }
         setBulkUpdate(false);
     }

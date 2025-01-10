@@ -30,7 +30,7 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         this.outputFile = outputFile;
     }
 
-    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
+    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender", "java:S3776", "java:S6541"})
     @Override
     public void execute() {
 

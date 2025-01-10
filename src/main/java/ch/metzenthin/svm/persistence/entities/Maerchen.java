@@ -3,8 +3,7 @@ package ch.metzenthin.svm.persistence.entities;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Martin Schraner
@@ -33,7 +32,7 @@ public class Maerchen implements Comparable<Maerchen> {
     private Integer anzahlVorstellungen;
 
     @OneToMany(mappedBy = "maerchen")
-    private final Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
+    private final List<Maercheneinteilung> maercheneinteilungen = new ArrayList<>();
 
     public Maerchen() {
     }
@@ -58,14 +57,28 @@ public class Maerchen implements Comparable<Maerchen> {
     }
 
     @Override
-    public String toString() {
-        return bezeichnung + " (" + schuljahr + ")";
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Maerchen maerchen = (Maerchen) o;
+        return Objects.equals(schuljahr, maerchen.schuljahr)
+                && Objects.equals(bezeichnung, maerchen.bezeichnung);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(schuljahr, bezeichnung);
     }
 
     @Override
     public int compareTo(Maerchen otherMaerchen) {
         // absteigend nach Schuljahr sortieren, d.h. neuste Einträge zuoberst
         return otherMaerchen.schuljahr.compareTo(schuljahr);
+    }
+
+    @Override
+    public String toString() {
+        return bezeichnung + " (" + schuljahr + ")";
     }
 
     public Integer getMaerchenId() {
@@ -101,7 +114,7 @@ public class Maerchen implements Comparable<Maerchen> {
         this.anzahlVorstellungen = anzahlVorstellungen;
     }
 
-    public Set<Maercheneinteilung> getMaercheneinteilungen() {
+    public List<Maercheneinteilung> getMaercheneinteilungen() {
         return maercheneinteilungen;
     }
 }

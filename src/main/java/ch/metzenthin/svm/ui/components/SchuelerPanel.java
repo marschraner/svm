@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
 import ch.metzenthin.svm.domain.model.SchuelerModel;
 import ch.metzenthin.svm.ui.control.SchuelerController;
 
@@ -11,6 +11,7 @@ import java.awt.*;
 /**
  * @author Hans Stamm
  */
+@SuppressWarnings("java:S100")
 public class SchuelerPanel {
 
     private JPanel panel;

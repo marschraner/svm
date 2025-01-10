@@ -12,7 +12,7 @@ public class MaercheneinteilungenTableModel extends AbstractTableModel {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final MaercheneinteilungenTableData maercheneinteilungenTableData;
+    private final transient MaercheneinteilungenTableData maercheneinteilungenTableData;
 
     public MaercheneinteilungenTableModel(MaercheneinteilungenTableData maercheneinteilungenTableData) {
         super();

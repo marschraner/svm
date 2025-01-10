@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
@@ -23,6 +23,7 @@ public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
     private final CommandInvoker commandInvoker = new CommandInvokerImpl();
 
     // 1.
+    @SuppressWarnings("java:S5961")
     @Test
     public void testExecute() {
 

@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.SvmRuntimeException;
 import org.docx4j.jaxb.Context;
 import org.docx4j.model.structure.PageSizePaper;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
@@ -19,6 +20,7 @@ public class CreateWordTableCommand implements Command {
 
     private static final String[] FONT_SIZE_CELLS = {"20", "19", "18", "17", "16", "14", "12", "10"};  // Calibri Font size: 10, 9.5, 9, 8.5, 8, 7, 6, 5
     private static final String FONT_SIZE_TITLE = "28";
+    private static final String FEHLER_BEIM_ERSTELLEN_DER_DOCX_DATEI = "Fehler beim Erstellen der docx-Datei";
 
     private WordprocessingMLPackage wordMLPackage;
     private ObjectFactory objectFactory;
@@ -40,6 +42,7 @@ public class CreateWordTableCommand implements Command {
     private int numberOfDatasetsFirstPage;
     private int numberOfDatasetsNormalPage;
 
+    @SuppressWarnings({"java:S107", "java:S3776"})
     CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLengths, String title1, String title2, File outputFile, int topMargin, int bottomMargin, int leftMargin, int rightMargin, int numberOfDatasetsFirstPage, int numberOfDatasetsNormalPage) {
         this.headerRows = headerRows;
         this.datasets = datasets;
@@ -58,6 +61,7 @@ public class CreateWordTableCommand implements Command {
         this.numberOfDatasetsNormalPage = numberOfDatasetsNormalPage;
     }
 
+    @SuppressWarnings("java:S107")
     CreateWordTableCommand(List<List<String>> headerRows, List<List<List<String>>> datasets, List<Integer> columnWidths, List<List<Boolean>> boldCells, List<List<Integer>> mergedCells, List<List<int[]>> maxLengths, String title1, String title2, File outputFile) {
         this(headerRows, datasets, columnWidths, boldCells, mergedCells, maxLengths, title1, title2, outputFile, 850, 1, 580, 1, 0, 0);
     }
@@ -73,7 +77,7 @@ public class CreateWordTableCommand implements Command {
         try {
             wordMLPackage = WordprocessingMLPackage.createPackage(PageSizePaper.A4, false);
         } catch (InvalidFormatException e) {
-            throw new RuntimeException(e);
+            throw new SvmRuntimeException(FEHLER_BEIM_ERSTELLEN_DER_DOCX_DATEI, e);
         }
         objectFactory = Context.getWmlObjectFactory();
 
@@ -110,7 +114,7 @@ public class CreateWordTableCommand implements Command {
         try {
             wordMLPackage.save(outputFile);
         } catch (Docx4JException e) {
-            throw new RuntimeException(e);
+            throw new SvmRuntimeException(FEHLER_BEIM_ERSTELLEN_DER_DOCX_DATEI, e);
         }
 
     }
@@ -158,6 +162,7 @@ public class CreateWordTableCommand implements Command {
         wordMLPackage.getMainDocumentPart().addObject(paragraph);
     }
 
+    @SuppressWarnings("java:S3776")
     private void addTable(int datasetNumberStart, int numberOfDatasetsPerPage, boolean header) {
         // Tabelle
         Tbl table = objectFactory.createTbl();
@@ -171,11 +176,13 @@ public class CreateWordTableCommand implements Command {
                 List<Integer> mergedRow = mergedCells.get(i);
                 boolean verticalSpace = (i == headerRows.size() - 1);
                 // Iteration über Spalten
-                for (int j = 0; j < headerRow.size(); j++) {
+                int j = 0;
+                while (j < headerRow.size()) {
                     addTableCell(tableRow, headerRow.get(j), columnWidths.get(j), true, mergedRow.get(j), FONT_SIZE_CELLS[0], verticalSpace);
                     if (mergedRow.get(j) > 0) {
                         j += mergedRow.get(j) - 1;
                     }
+                    j++;
                 }
                 table.getContent().add(tableRow);
             }
@@ -201,8 +208,8 @@ public class CreateWordTableCommand implements Command {
                 boolean verticalSpace = (i == datasetRows.size() - 1);
 
                 // Iteration über Spalten
-                for (int j = 0; j < datasetRow.size(); j++) {
-
+                int j = 0;
+                while (j < datasetRow.size()) {
                     // Fontsize je nach Textlänge
                     int k = 0;
                     int[] maxLengthsCell = maxLengthsRow.get(j);
@@ -216,6 +223,7 @@ public class CreateWordTableCommand implements Command {
                     if (mergedRow.get(j) > 0) {
                         j += mergedRow.get(j) - 1;
                     }
+                    j++;
                 }
                 table.getContent().add(tableRow);
             }
@@ -356,7 +364,7 @@ public class CreateWordTableCommand implements Command {
         try {
             styles = styleDefinitionsPart.getContents();
         } catch (Docx4JException e) {
-            throw new RuntimeException(e);
+            throw new SvmRuntimeException(FEHLER_BEIM_ERSTELLEN_DER_DOCX_DATEI, e);
         }
         List<Style> stylesList = styles.getStyle();
         for (Style style : stylesList) {

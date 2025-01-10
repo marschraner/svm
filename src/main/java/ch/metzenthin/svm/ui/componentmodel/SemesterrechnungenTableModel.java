@@ -15,7 +15,7 @@ public class SemesterrechnungenTableModel extends AbstractTableModel {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final SemesterrechnungenTableData semesterrechnungenTableData;
+    private final transient SemesterrechnungenTableData semesterrechnungenTableData;
 
     public SemesterrechnungenTableModel(SemesterrechnungenTableData semesterrechnungenTableData) {
         super();

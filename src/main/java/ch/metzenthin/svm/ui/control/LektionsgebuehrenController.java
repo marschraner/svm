@@ -47,6 +47,7 @@ public class LektionsgebuehrenController {
             onListSelection();
         });
         lektionsgebuehrenTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     onBearbeiten();

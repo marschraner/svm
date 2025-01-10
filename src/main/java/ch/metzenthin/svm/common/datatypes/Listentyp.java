@@ -1,10 +1,11 @@
-package ch.metzenthin.svm.common.dataTypes;
+package ch.metzenthin.svm.common.datatypes;
 
 import ch.metzenthin.svm.common.utils.SvmProperties;
 
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S1192")
 public enum Listentyp {
     SCHUELER_ADRESSLISTE("Schüler-Adressliste", "Schüler-Adressliste", Filetyp.DOCX, null),
     ABSENZENLISTE_GANZES_SEMESTER("Absenzenliste ganzes Semester", "Absenzenliste", Filetyp.DOCX, SvmProperties.KEY_ABSENZENLISTEN_TEMPLATE_GANZES_SEMESTER),

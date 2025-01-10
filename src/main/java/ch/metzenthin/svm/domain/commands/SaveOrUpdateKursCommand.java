@@ -24,6 +24,7 @@ public class SaveOrUpdateKursCommand implements Command {
     private final Kurs kursOrigin;
     private final List<Kurs> bereitsErfassteKurse;
 
+    @SuppressWarnings("java:S107")
     public SaveOrUpdateKursCommand(Kurs kurs, Semester semester, Kurstyp kurstyp, Kursort kursort, Mitarbeiter mitarbeiter1, Mitarbeiter mitarbeiter2, Kurs kursOrigin, List<Kurs> bereitsErfassteKurse) {
         this.kurs = kurs;
         this.semester = semester;

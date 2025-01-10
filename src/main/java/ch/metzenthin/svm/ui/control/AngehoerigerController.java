@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.AngehoerigerModel;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +17,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
  */
 public class AngehoerigerController extends PersonController {
 
-    private static final Logger LOGGER = LogManager.getLogger(AbstractController.class);
+    private static final Logger LOGGER = LogManager.getLogger(AngehoerigerController.class);
 
     private JCheckBox checkBoxGleicheAdresseWieSchueler;
     private JCheckBox checkBoxRechnungsempfaenger;
@@ -130,12 +130,11 @@ public class AngehoerigerController extends PersonController {
             errLblGleicheAdresseWieSchueler.setText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.WUENSCHT_EMAILS)
-                && checkBoxWuenschtEmails.isVisible()) {
+                && checkBoxWuenschtEmails.isVisible()
+                && (e.getErrorId() != 3001 || checkNotEmpty(angehoerigerModel.getNachname()))) {
             // Error 3001 nur anzeigen, falls Nachname nicht leer (d.h. Person wurde erfasst)
-            if (e.getErrorId() != 3001 || checkNotEmpty(angehoerigerModel.getNachname())) {
-                errLblWuenschtEmails.setVisible(true);
-                errLblWuenschtEmails.setText(e.getMessage());
-            }
+            errLblWuenschtEmails.setVisible(true);
+            errLblWuenschtEmails.setText(e.getMessage());
         }
         if (e.getAffectedFields().contains(Field.RECHNUNGSEMPFAENGER)) {
             errLblRechnungsempfaenger.setVisible(true);

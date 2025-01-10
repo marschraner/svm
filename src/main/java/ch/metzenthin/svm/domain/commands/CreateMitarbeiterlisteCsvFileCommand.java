@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 
 import java.io.*;
@@ -24,6 +25,7 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
         this.nameEinspaltig = nameEinspaltig;
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void execute() {
 
@@ -122,7 +124,7 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
                     out.write(mitarbeiter.getBemerkungenLineBreaksReplacedByCommaOrPeriod().replace(";", ","));
                 }
                 out.write(separator);
-                out.write(mitarbeiter.getAktiv() ? "ja" : "nein");
+                out.write(mitarbeiter.getAktiv() != null && mitarbeiter.getAktiv() ? "ja" : "nein");
                 out.write('\n');
             }
 
@@ -131,7 +133,7 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
             result = Result.LISTE_ERFOLGREICH_ERSTELLT;
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new SvmRuntimeException("Fehler beim Erstellen der csv-Datei", e);
         }
 
     }

@@ -12,6 +12,9 @@ public class SvmStringUtils {
     private static final Pattern NO_PERIOD_LINE_BREAK_LOWER_CASE_PATTERN = Pattern.compile("([^.,:;!?\\s])([ \\t]*)(\\n+)([ \\t]*)([a-zäöüéè])");
     private static final Pattern NO_PERIOD_LINE_BREAK_UPPER_CASE_PATTERN = Pattern.compile("([^.,:;!?\\s])([ \\t]*)(\\n+)([ \\t]*)([0-9A-ZÄÖÜÉÈ\\p{Punct}])");
 
+    private SvmStringUtils() {
+    }
+
     public static String replaceLineBreaksBySemicolonOrPeriod(String text) {
         return replaceLineBreaksByCharsOrPeriod(text, ";");
     }

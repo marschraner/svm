@@ -1,8 +1,9 @@
-package ch.metzenthin.svm.common.dataTypes;
+package ch.metzenthin.svm.common.datatypes;
 
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S1192")
 public enum Field {
     SELEKTIERT(""),
     ALLE("Alle"),

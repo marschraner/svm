@@ -1,16 +1,15 @@
-package ch.metzenthin.svm.common.dataTypes;
+package ch.metzenthin.svm.common.datatypes;
 
 /**
  * @author Martin Schraner
  */
-public enum Gruppe {
-    ALLE(""),
-    A("A"),
-    B("B");
+public enum Geschlecht {
+    W("weiblich"),
+    M("männlich");
 
     private final String name;
 
-    Gruppe(String name) {
+    Geschlecht(String name) {
         this.name = name;
     }
 

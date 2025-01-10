@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.SvmRuntimeException;
 import org.docx4j.model.structure.PageDimensions;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
@@ -40,7 +41,7 @@ public class SetWordPageMarginsCommand implements Command {
         try {
             body = mainDocumentPart.getContents().getBody();
         } catch (Docx4JException e) {
-            throw new RuntimeException(e);
+            throw new SvmRuntimeException("Fehler beim Erstellen der docx-Datei", e);
         }
         PageDimensions page = new PageDimensions();
         SectPr.PgMar pgMar = page.getPgMar();

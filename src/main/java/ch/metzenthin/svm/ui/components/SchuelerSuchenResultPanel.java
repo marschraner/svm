@@ -20,6 +20,7 @@ import java.util.Map;
 /**
  * @author Hans Stamm
  */
+@SuppressWarnings({"java:S100", "java:S1450"})
 public class SchuelerSuchenResultPanel {
 
     private JTable schuelerSuchenResultTable;

@@ -46,6 +46,7 @@ public class MaerchensController {
             onListSelection();
         });
         maerchensTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     onBearbeiten();
@@ -118,16 +119,20 @@ public class MaerchensController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteMaerchenCommand.Result result = maerchensModel.maerchenLoeschen(svmContext, maerchensTableModel, maerchensTable.getSelectedRow());
-            switch (result) {
-                case MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT -> {
-                    JOptionPane.showMessageDialog(null, "Das Maerchen wird durch mindestens eine Märcheneinteilung referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                    btnLoeschen.setFocusPainted(false);
-                }
-                case LOESCHEN_ERFOLGREICH -> {
-                    maerchensTableModel.fireTableDataChanged();
-                    maerchensTable.addNotify();
-                }
+            DeleteMaerchenCommand.Result result =
+                    maerchensModel.maerchenLoeschen(
+                            svmContext, maerchensTableModel, maerchensTable.getSelectedRow());
+            if (result == DeleteMaerchenCommand.Result.MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Das Maerchen wird durch mindestens eine Märcheneinteilung " +
+                                "referenziert und kann nicht gelöscht werden.",
+                        "Fehler",
+                        JOptionPane.ERROR_MESSAGE);
+                btnLoeschen.setFocusPainted(false);
+            } else if (result == DeleteMaerchenCommand.Result.LOESCHEN_ERFOLGREICH) {
+                maerchensTableModel.fireTableDataChanged();
+                maerchensTable.addNotify();
             }
         }
         btnLoeschen.setFocusPainted(false);

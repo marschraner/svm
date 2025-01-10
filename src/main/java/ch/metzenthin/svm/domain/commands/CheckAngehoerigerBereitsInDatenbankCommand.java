@@ -94,7 +94,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommand implements Command {
             return;
         }
         angehoerigeFound.removeIf(
-                angehoeriger -> angehoerigerToBeExcluded.getPersonId().equals(angehoeriger.getPersonId()));
+                angehoeriger1 -> angehoerigerToBeExcluded.getPersonId().equals(angehoeriger1.getPersonId()));
     }
 
     Angehoeriger getAngehoerigerFound() {

@@ -11,10 +11,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+@SuppressWarnings({"java:S100", "java:S1171"})
 public class AngehoerigerMehrereEintraegePassenDialog extends SchuelerErfassenDialog {
 
-    private final AngehoerigerMehrereEintraegePassenResult angehoerigerMehrereEintraegePassenResult;
-    private final SchuelerErfassenModel schuelerErfassenModel;
+    private final transient AngehoerigerMehrereEintraegePassenResult angehoerigerMehrereEintraegePassenResult;
+    private final transient SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
     private JButton buttonOk;
     private JLabel lblBeschreibung1;
@@ -41,6 +42,7 @@ public class AngehoerigerMehrereEintraegePassenDialog extends SchuelerErfassenDi
         // call onOk() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 onOk();
             }

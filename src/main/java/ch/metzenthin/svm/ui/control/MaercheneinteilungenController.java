@@ -37,7 +37,16 @@ public class MaercheneinteilungenController {
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
 
-    public MaercheneinteilungenController(MaercheneinteilungenModel maercheneinteilungenModel, SvmContext svmContext, MaercheneinteilungenTableModel maercheneinteilungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isFromSchuelerSuchenResult) {
+    @SuppressWarnings("java:S107")
+    public MaercheneinteilungenController(
+            MaercheneinteilungenModel maercheneinteilungenModel,
+            SvmContext svmContext,
+            MaercheneinteilungenTableModel maercheneinteilungenTableModel,
+            SchuelerDatenblattModel schuelerDatenblattModel,
+            SchuelerSuchenTableModel schuelerSuchenTableModel,
+            JTable schuelerSuchenResultTable,
+            int selectedRow,
+            boolean isFromSchuelerSuchenResult) {
         this.maercheneinteilungenModel = maercheneinteilungenModel;
         this.maercheneinteilungenTableModel = maercheneinteilungenTableModel;
         this.svmContext = svmContext;
@@ -61,6 +70,7 @@ public class MaercheneinteilungenController {
             onListSelection();
         });
         maercheneinteilungenTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     onBearbeiten();

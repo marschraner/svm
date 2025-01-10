@@ -7,6 +7,9 @@ import java.util.Properties;
  */
 public class PersistenceProperties {
 
+    private PersistenceProperties() {
+    }
+
     public static Properties getPersistenceProperties() {
         Properties svmProperties = SvmProperties.getSvmProperties();
         String dbUrlHostname = svmProperties.getProperty(SvmProperties.KEY_DB_URL_HOSTNAME);

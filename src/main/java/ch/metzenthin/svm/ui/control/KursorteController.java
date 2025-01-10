@@ -50,6 +50,7 @@ public class KursorteController {
             onListSelection();
         });
         kursorteTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     onBearbeiten();
@@ -114,16 +115,19 @@ public class KursorteController {
                 options,  //the titles of buttons
                 options[1]); //default button title
         if (n == 0) {
-            DeleteKursortCommand.Result result = kursorteModel.eintragLoeschen(svmContext, kursorteTableModel, kursorteTable.getSelectedRow());
-            switch (result) {
-                case KURSORT_VON_KURS_REFERENZIERT -> {
-                    JOptionPane.showMessageDialog(null, "Der Kursort wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                    btnLoeschen.setFocusPainted(false);
-                }
-                case LOESCHEN_ERFOLGREICH -> {
-                    kursorteTableModel.fireTableDataChanged();
-                    kursorteTable.addNotify();
-                }
+            DeleteKursortCommand.Result result =
+                    kursorteModel.eintragLoeschen(svmContext, kursorteTableModel, kursorteTable.getSelectedRow());
+            if (result == DeleteKursortCommand.Result.KURSORT_VON_KURS_REFERENZIERT) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Der Kursort wird durch mindestens einen Kurs referenziert und " +
+                                "kann nicht gelöscht werden.",
+                        "Fehler",
+                        JOptionPane.ERROR_MESSAGE);
+                btnLoeschen.setFocusPainted(false);
+            } else if (result == DeleteKursortCommand.Result.LOESCHEN_ERFOLGREICH) {
+                kursorteTableModel.fireTableDataChanged();
+                kursorteTable.addNotify();
             }
         }
         btnLoeschen.setFocusPainted(false);

@@ -1,9 +1,9 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Gruppe;
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Gruppe;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -518,9 +518,9 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
             return null;
         }
         List<Maerchen> erfassteMaerchen = svmModel.getMaerchensAll();
-        for (Maerchen maerchen : erfassteMaerchen) {
-            if (maerchen.getSchuljahr().equals(semesterTableData.getSchuljahr())) {
-                return maerchen;
+        for (Maerchen maerchen1 : erfassteMaerchen) {
+            if (maerchen1.getSchuljahr().equals(semesterTableData.getSchuljahr())) {
+                return maerchen1;
             }
         }
         return null;

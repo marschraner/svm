@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence.daos;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
@@ -33,7 +33,7 @@ public class SchuelerDaoTest {
     private boolean neusteZuoberst;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
         Properties svmProperties = SvmProperties.getSvmProperties();
@@ -41,7 +41,7 @@ public class SchuelerDaoTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         db.closeSession();
     }
 
@@ -80,7 +80,7 @@ public class SchuelerDaoTest {
 
     }
 
-    @SuppressWarnings("ExtractMethodRecommender")
+    @SuppressWarnings({"ExtractMethodRecommender", "java:S5961"})
     @Test
     public void testSave() {
         EntityManager entityManager = db.getCurrentEntityManager();
@@ -193,6 +193,7 @@ public class SchuelerDaoTest {
 
     }
 
+    @SuppressWarnings("java:S5961")
     @Test
     public void testRemove() {
         EntityManager entityManager = db.getCurrentEntityManager();
@@ -263,7 +264,7 @@ public class SchuelerDaoTest {
             schuelerCodeDao.save(schuelerCode2);
             schuelerCodeDao.addToSchuelerAndSave(schuelerCode2, schueler2);
 
-            Set<SchuelerCode> schuelerCodes = schueler2Saved.getSchuelerCodes();
+            List<SchuelerCode> schuelerCodes = schueler2Saved.getSchuelerCodes();
             assertEquals(2, schuelerCodes.size());
 
             entityManager.flush();

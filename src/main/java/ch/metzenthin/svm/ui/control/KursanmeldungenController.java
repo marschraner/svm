@@ -39,7 +39,16 @@ public class KursanmeldungenController {
     private ActionListener closeListener;
     private ActionListener zurueckZuSchuelerSuchenListener;
 
-    public KursanmeldungenController(KursanmeldungenModel kursanmeldungenModel, SvmContext svmContext, KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isFromSchuelerSuchenResult) {
+    @SuppressWarnings("java:S107")
+    public KursanmeldungenController(
+            KursanmeldungenModel kursanmeldungenModel,
+            SvmContext svmContext,
+            KursanmeldungenTableModel kursanmeldungenTableModel,
+            SchuelerDatenblattModel schuelerDatenblattModel,
+            SchuelerSuchenTableModel schuelerSuchenTableModel,
+            JTable schuelerSuchenResultTable,
+            int selectedRow,
+            boolean isFromSchuelerSuchenResult) {
         this.kursanmeldungenModel = kursanmeldungenModel;
         this.kursanmeldungenTableModel = kursanmeldungenTableModel;
         this.svmContext = svmContext;
@@ -63,6 +72,7 @@ public class KursanmeldungenController {
             onListSelection();
         });
         kursanmeldungenTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     onBearbeiten();

@@ -12,7 +12,7 @@ public class CodesTableModel extends AbstractTableModel {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final CodesTableData codesTableData;
+    private final transient CodesTableData codesTableData;
 
     public CodesTableModel(CodesTableData codesTableData) {
         super();

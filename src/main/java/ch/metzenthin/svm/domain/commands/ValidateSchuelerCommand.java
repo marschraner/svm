@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.domain.model.*;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
@@ -206,7 +206,7 @@ public class ValidateSchuelerCommand implements Command {
     }
 
     @Override
-    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
+    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender", "java:S3776", "java:S6541"})
     public void execute() {
 
         determineHowToProceed();
@@ -285,25 +285,28 @@ public class ValidateSchuelerCommand implements Command {
             CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getMutter(), (isBearbeiten()) ? schuelerOrigin.getMutter() : null);
             checkAngehoerigerBereitsInDatenbankCommand.execute();
             switch (checkAngehoerigerBereitsInDatenbankCommand.getResult()) {
-                case EINTRAG_WIRD_MUTIERT:
-                    break;
-                case NICHT_IN_DATENBANK:
-                    isMutterNeu = true;
-                    break;
-                case EIN_EINTRAG_PASST:
+                case EINTRAG_WIRD_MUTIERT, VORNAME_NACHNAME_FEHLEN -> {
+                    // Nothing to do
+                }
+                case NICHT_IN_DATENBANK -> isMutterNeu = true;
+                case EIN_EINTRAG_PASST -> {
                     mutterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     result = new AngehoerigerEinEintragPasstResult(mutterFoundInDatabase, AngehoerigenArt.MUTTER, Result.MUTTER_EIN_EINTRAG_PASST);
                     return;
-                case MEHRERE_EINTRAEGE_PASSEN:
+                }
+                case MEHRERE_EINTRAEGE_PASSEN -> {
                     result = new AngehoerigerMehrereEintraegePassenResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.MUTTER, Result.MUTTER_MEHRERE_EINTRAEGE_PASSEN);
                     return;
-                case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
+                }
+                case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE -> {
                     mutterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(mutterFoundInDatabase, AngehoerigenArt.MUTTER, Result.MUTTER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
-                case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
+                }
+                case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE -> {
                     result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.MUTTER, Result.MUTTER_MEHRERE_EINTAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
+                }
             }
         }
 
@@ -313,25 +316,28 @@ public class ValidateSchuelerCommand implements Command {
             CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getVater(), (isBearbeiten()) ? schuelerOrigin.getVater() : null);
             checkAngehoerigerBereitsInDatenbankCommand.execute();
             switch (checkAngehoerigerBereitsInDatenbankCommand.getResult()) {
-                case EINTRAG_WIRD_MUTIERT:
-                    break;
-                case NICHT_IN_DATENBANK:
-                    isVaterNeu = true;
-                    break;
-                case EIN_EINTRAG_PASST:
+                case EINTRAG_WIRD_MUTIERT, VORNAME_NACHNAME_FEHLEN -> {
+                    // Nothing to do
+                }
+                case NICHT_IN_DATENBANK -> isVaterNeu = true;
+                case EIN_EINTRAG_PASST -> {
                     vaterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     result = new AngehoerigerEinEintragPasstResult(vaterFoundInDatabase, AngehoerigenArt.VATER, Result.VATER_EIN_EINTRAG_PASST);
                     return;
-                case MEHRERE_EINTRAEGE_PASSEN:
+                }
+                case MEHRERE_EINTRAEGE_PASSEN -> {
                     result = new AngehoerigerMehrereEintraegePassenResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.VATER, Result.VATER_MEHRERE_EINTRAEGE_PASSEN);
                     return;
-                case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
+                }
+                case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE -> {
                     vaterFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(vaterFoundInDatabase, AngehoerigenArt.VATER, Result.VATER_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
-                case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
+                }
+                case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE -> {
                     result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.VATER, Result.VATER_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
+                }
             }
         }
 
@@ -341,25 +347,28 @@ public class ValidateSchuelerCommand implements Command {
             CheckAngehoerigerBereitsInDatenbankCommand checkAngehoerigerBereitsInDatenbankCommand = new CheckAngehoerigerBereitsInDatenbankCommand(schueler.getRechnungsempfaenger(), (isBearbeiten()) ? schuelerOrigin.getRechnungsempfaenger() : null);
             checkAngehoerigerBereitsInDatenbankCommand.execute();
             switch (checkAngehoerigerBereitsInDatenbankCommand.getResult()) {
-                case EINTRAG_WIRD_MUTIERT:
-                    break;
-                case NICHT_IN_DATENBANK:
-                    isRechnungsempfaengerDrittpersonNeu = true;
-                    break;
-                case EIN_EINTRAG_PASST:
+                case EINTRAG_WIRD_MUTIERT, VORNAME_NACHNAME_FEHLEN -> {
+                    // Nothing to do
+                }
+                case NICHT_IN_DATENBANK -> isRechnungsempfaengerDrittpersonNeu = true;
+                case EIN_EINTRAG_PASST -> {
                     rechnungsempfaengerDrittpersonFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     result = new AngehoerigerEinEintragPasstResult(rechnungsempfaengerDrittpersonFoundInDatabase, AngehoerigenArt.RECHNUNGSEMPFAENGER_DRITTPERSON, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_PASST);
                     return;
-                case MEHRERE_EINTRAEGE_PASSEN:
+                }
+                case MEHRERE_EINTRAEGE_PASSEN -> {
                     result = new AngehoerigerMehrereEintraegePassenResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.RECHNUNGSEMPFAENGER_DRITTPERSON, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_PASSEN);
                     return;
-                case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE:
+                }
+                case EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE -> {
                     rechnungsempfaengerDrittpersonFoundInDatabase = checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
                     result = new AngehoerigerEinEintragGleicherNameAndereAttributeResult(rechnungsempfaengerDrittpersonFoundInDatabase, AngehoerigenArt.RECHNUNGSEMPFAENGER_DRITTPERSON, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
-                case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE:
+                }
+                case MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE -> {
                     result = new AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult(checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList(), AngehoerigenArt.RECHNUNGSEMPFAENGER_DRITTPERSON, Result.RECHNUNGSEMPFAENGER_DRITTPERSON_MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE);
                     return;
+                }
             }
         }
 
@@ -501,21 +510,19 @@ public class ValidateSchuelerCommand implements Command {
 
         // 10. Sollen Adress- und Festnetzänderungen auch auf Geschwister angewendet werden?
         boolean isAdressaenderungenAufGeschwisterAnwenden = false;
-        if (isBearbeiten() && hasAdresseOrFestnetzChanged()) {
-            if (!geschwisterList.isEmpty()) {
-                Object[] options = {"Ja", "Nein"};
-                int n = JOptionPane.showOptionDialog(
-                        null,
-                        "Soll die Adress- und/oder Festnetzänderung auch für Geschwister angewendet werden?",
-                        "Adress- und/oder Festnetzänderung auch für Geschwister anwenden?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        options,  //the titles of buttons
-                        options[0]); //default button title
-                if (n == 0) {
-                    isAdressaenderungenAufGeschwisterAnwenden = true;
-                }
+        if (isBearbeiten() && hasAdresseOrFestnetzChanged() && !geschwisterList.isEmpty()) {
+            Object[] options = {"Ja", "Nein"};
+            int n = JOptionPane.showOptionDialog(
+                    null,
+                    "Soll die Adress- und/oder Festnetzänderung auch für Geschwister angewendet werden?",
+                    "Adress- und/oder Festnetzänderung auch für Geschwister anwenden?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,  //the titles of buttons
+                    options[0]); //default button title
+            if (n == 0) {
+                isAdressaenderungenAufGeschwisterAnwenden = true;
             }
         }
 
@@ -645,8 +652,8 @@ public class ValidateSchuelerCommand implements Command {
         Angehoeriger mutterGeschwisterNeu = getMutterGeschwisterNeu(geschwister, gemeinsameMutterOderBeideOhneMutter);
         Angehoeriger vaterGeschwisterNeu = getVaterGeschwisterNeu(geschwister, gemeinsamenVaterOderBeideOhneVater);
 
-        if (mutterGeschwisterNeu != null && mutterGeschwisterNeu.getWuenschtEmails() != null
-                && mutterGeschwisterNeu.getWuenschtEmails()) {
+        if (mutterGeschwisterNeu != null && (mutterGeschwisterNeu.getWuenschtEmails() != null
+                && mutterGeschwisterNeu.getWuenschtEmails())) {
             return true;
         }
 
@@ -664,6 +671,7 @@ public class ValidateSchuelerCommand implements Command {
      *
      * @return zu speichernder Schüler
      */
+    @SuppressWarnings("java:S3776")
     private Schueler prepareSchuelerForSave() {
         if (!isBearbeiten()) {
             setMutterFoundInDatabase(schueler);
@@ -704,16 +712,16 @@ public class ValidateSchuelerCommand implements Command {
                     schuelerOrigin.setRechnungsempfaenger(schuelerOrigin.getVater());
                 }
             } else {
-                Angehoeriger rechnungsempfaengerOrigin;
+                Angehoeriger rechnungsempfaengerOrigin1;
                 if (isRechnungsempfaenger(schuelerOrigin, schuelerOrigin.getMutter()) || isRechnungsempfaenger(schuelerOrigin, schuelerOrigin.getVater())) {
                     // ... oder Drittperson ist neuer Rechnungsempfänger
-                    rechnungsempfaengerOrigin = null;
+                    rechnungsempfaengerOrigin1 = null;
                 } else {
                     // ... oder Drittperson war schon Rechnungsempfänger
-                    rechnungsempfaengerOrigin = schuelerOrigin.getRechnungsempfaenger();
+                    rechnungsempfaengerOrigin1 = schuelerOrigin.getRechnungsempfaenger();
                 }
                 // ... oder Drittperson kopieren
-                Angehoeriger rechnungsempfaengerDrittpersonPrepared = prepareAngehoerigerForSave(rechnungsempfaengerOrigin, rechnungsempfaengerDrittperson);
+                Angehoeriger rechnungsempfaengerDrittpersonPrepared = prepareAngehoerigerForSave(rechnungsempfaengerOrigin1, rechnungsempfaengerDrittperson);
                 if (schuelerOrigin.getRechnungsempfaenger() != rechnungsempfaengerDrittpersonPrepared) {
                     schuelerOrigin.setRechnungsempfaenger(rechnungsempfaengerDrittpersonPrepared);
                 }
@@ -735,6 +743,7 @@ public class ValidateSchuelerCommand implements Command {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     private static Angehoeriger prepareAngehoerigerForSave(Angehoeriger angehoerigerOrigin, Angehoeriger angehoerigerNew) {
         Angehoeriger angehoerigerPrepared = angehoerigerOrigin;
         if (angehoerigerOrigin != null) {
@@ -805,50 +814,24 @@ public class ValidateSchuelerCommand implements Command {
     /**
      * Aktionen, die am Beginn durchgeführt werden sollen, abhängig vom Wert von entry.
      */
-    @SuppressWarnings("DuplicateBranchesInSwitch")
+    @SuppressWarnings("java:S112")
     private void determineHowToProceed() {
         if (entry == null) {
             throw new RuntimeException("Eintrittspunkt nicht gesetzt!");
         }
 
         switch (entry) {
-
-            case NEU_ERFASSTEN_SCHUELER_VALIDIEREN:
-                break;
-
-            case BEARBEITETEN_SCHUELER_VALIDIEREN:
-                skipCheckSchuelerBereitsInDatenbank = true;
-                break;
-
-            case MUTTER_AUS_DATENBANK_UEBERNEHMEN:
-                mutter = null;
-                break;
-
-            case MIT_BISHERIGER_MUTTER_WEITERFAHREN:
-                mutterFoundInDatabase = null;
-                break;
-
-            case VATER_AUS_DATENBANK_UEBERNEHMEN:
-                vater = null;
-                break;
-
-            case MIT_BISHERIGEM_VATER_WEITERFAHREN:
-                vaterFoundInDatabase = null;
-                break;
-
-            case RECHNUNGSEMPFAENGER_DRITTPERSON_AUS_DATENBANK_UEBERNEHMEN:
-                rechnungsempfaengerDrittperson = null;
-                break;
-
-            case MIT_BISHERIGEM_RECHNUNGSEMPFAENGER_DRITTPERSON_WEITERFAHREN:
-                rechnungsempfaengerDrittpersonFoundInDatabase = null;
-                break;
-
-            case SUMMARY_BESTAETIGT:
-                break;
-
-            default:
-                throw new RuntimeException("Verhalten des Eintrittspunkts " + entry + " nicht definiert.");
+            case NEU_ERFASSTEN_SCHUELER_VALIDIEREN, SUMMARY_BESTAETIGT -> {
+                // Nothing to do
+            }
+            case BEARBEITETEN_SCHUELER_VALIDIEREN -> skipCheckSchuelerBereitsInDatenbank = true;
+            case MUTTER_AUS_DATENBANK_UEBERNEHMEN -> mutter = null;
+            case MIT_BISHERIGER_MUTTER_WEITERFAHREN -> mutterFoundInDatabase = null;
+            case VATER_AUS_DATENBANK_UEBERNEHMEN -> vater = null;
+            case MIT_BISHERIGEM_VATER_WEITERFAHREN -> vaterFoundInDatabase = null;
+            case RECHNUNGSEMPFAENGER_DRITTPERSON_AUS_DATENBANK_UEBERNEHMEN -> rechnungsempfaengerDrittperson = null;
+            case MIT_BISHERIGEM_RECHNUNGSEMPFAENGER_DRITTPERSON_WEITERFAHREN ->
+                    rechnungsempfaengerDrittpersonFoundInDatabase = null;
         }
     }
 

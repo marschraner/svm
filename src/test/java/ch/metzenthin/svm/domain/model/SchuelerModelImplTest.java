@@ -1,12 +1,15 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import org.junit.Before;
 import org.junit.Test;
 import test.TestCompletedListener;
 import test.TestPropertyChangeListener;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import static org.junit.Assert.*;
 
@@ -89,7 +92,12 @@ public class SchuelerModelImplTest {
     @Test
     public void testSetGeburtsdatum() {
         try {
-            schuelerModel.setGeburtsdatum("12.06.1999");
+            Calendar cal = new GregorianCalendar();
+            cal.add(Calendar.YEAR, -10);
+            int year = cal.get(Calendar.YEAR);
+            String yearAsString = String.valueOf(year);
+            String datum = "12.06." + yearAsString;
+            schuelerModel.setGeburtsdatum(datum);
         } catch (SvmValidationException e) {
             e.printStackTrace(System.err);
             fail("Keine Exception erwartet");
@@ -99,7 +107,12 @@ public class SchuelerModelImplTest {
     @Test
     public void testSetGeburtsdatum_BadFormatNoException() {
         try {
-            schuelerModel.setGeburtsdatum("12.06.1999");
+            Calendar cal = new GregorianCalendar();
+            cal.add(Calendar.YEAR, -10);
+            int year = cal.get(Calendar.YEAR);
+            String yearAsString = String.valueOf(year);
+            String datum = "24.07." + yearAsString;
+            schuelerModel.setGeburtsdatum(datum);
         } catch (SvmValidationException e) {
             e.printStackTrace(System.err);
             fail("Keine Exception erwartet");

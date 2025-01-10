@@ -1,12 +1,13 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.text.Collator;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
@@ -56,10 +57,10 @@ public abstract class Person implements Comparable<Person> {
     @JoinColumn(name = "adresse_id")
     private Adresse adresse;
 
-    public Person() {
+    protected Person() {
     }
 
-    public Person(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String festnetz, String natel, String email) {
+    protected Person(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String festnetz, String natel, String email) {
         this.anrede = anrede;
         this.vorname = vorname;
         this.nachname = nachname;
@@ -110,6 +111,27 @@ public abstract class Person implements Comparable<Person> {
         festnetz = personFrom.getFestnetz();
         natel = personFrom.getNatel();
         email = personFrom.getEmail();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return anrede == person.anrede
+                && Objects.equals(vorname, person.vorname)
+                && Objects.equals(nachname, person.nachname)
+                && Objects.equals(geburtsdatum, person.geburtsdatum)
+                && Objects.equals(festnetz, person.festnetz)
+                && Objects.equals(natel, person.natel)
+                && Objects.equals(email, person.email)
+                && Objects.equals(adresse, person.adresse);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                anrede, vorname, nachname, geburtsdatum, festnetz, natel, email, adresse);
     }
 
     @Override

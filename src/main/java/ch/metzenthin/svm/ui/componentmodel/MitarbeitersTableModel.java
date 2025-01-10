@@ -13,7 +13,7 @@ public class MitarbeitersTableModel extends AbstractTableModel {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final MitarbeitersTableData mitarbeitersTableData;
+    private final transient MitarbeitersTableData mitarbeitersTableData;
 
     public MitarbeitersTableModel(MitarbeitersTableData mitarbeitersTableData) {
         super();

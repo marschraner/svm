@@ -5,19 +5,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S2160")  // equals / hash definiert für Code
 @Entity
 @Table(name = "ElternmithilfeCode")
 @DiscriminatorValue("Elternmithilfe")
 public class ElternmithilfeCode extends Code {
 
     @OneToMany(mappedBy = "elternmithilfeCode")
-    private final Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
+    private final List<Maercheneinteilung> maercheneinteilungen = new ArrayList<>();
 
     public ElternmithilfeCode() {
     }
@@ -26,7 +27,7 @@ public class ElternmithilfeCode extends Code {
         super(kuerzel, beschreibung, selektierbar);
     }
 
-    public Set<Maercheneinteilung> getMaercheneinteilungen() {
+    public List<Maercheneinteilung> getMaercheneinteilungen() {
         return maercheneinteilungen;
     }
 }

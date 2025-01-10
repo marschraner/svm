@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.DetermineSemesterInitCommand;
@@ -47,6 +47,7 @@ public class KurseSemesterwahlModelImpl extends AbstractModel implements KurseSe
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

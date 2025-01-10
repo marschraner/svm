@@ -13,8 +13,6 @@ public class NachnameGratiskindFormatter implements Formatter<String> {
         }
 
         // Gratiskind oder (nicht) gratis weglassen
-        //name = name.replaceAll("\\s+Gratiskind", "");
-
         return name.replaceAll("\\s+([Nn]icht\\s+)?[Gg]ratis(kind|kinder)?", "");
     }
 

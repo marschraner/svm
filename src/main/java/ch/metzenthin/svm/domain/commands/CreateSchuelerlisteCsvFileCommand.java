@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
+import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Kurs;
@@ -27,6 +28,7 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
         this.outputFile = outputFile;
     }
 
+    @SuppressWarnings({"java:S3776", "java:S6541"})
     @Override
     public void execute() {
 
@@ -89,8 +91,8 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
                     out.write(nachnameGratiskindFormatter.format(schueler.getMutter().getNachname()) + " " + schueler.getMutter().getVorname());
                 }
                 out.write(separator);
-                if (schueler.getMutter() != null && schueler.getMutter().getWuenschtEmails() != null
-                        && schueler.getMutter().getWuenschtEmails() && schueler.getMutter().getEmail() != null) {
+                if (schueler.getMutter() != null && (schueler.getMutter().getWuenschtEmails() != null
+                        && schueler.getMutter().getWuenschtEmails()) && schueler.getMutter().getEmail() != null) {
                     out.write(schueler.getMutter().getEmail());
                 }
                 out.write(separator);
@@ -98,8 +100,8 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
                     out.write(nachnameGratiskindFormatter.format(schueler.getVater().getNachname()) + " " + schueler.getVater().getVorname());
                 }
                 out.write(separator);
-                if (schueler.getVater() != null && schueler.getVater().getWuenschtEmails() != null
-                        && schueler.getVater().getWuenschtEmails() && schueler.getVater().getEmail() != null) {
+                if (schueler.getVater() != null && (schueler.getVater().getWuenschtEmails() != null
+                        && schueler.getVater().getWuenschtEmails()) && schueler.getVater().getEmail() != null) {
                     out.write(schueler.getVater().getEmail());
                 }
                 out.write(separator);
@@ -131,7 +133,7 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
             result = Result.LISTE_ERFOLGREICH_ERSTELLT;
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new SvmRuntimeException("Fehler beim Erstellen der csv-Datei", e);
         }
 
     }

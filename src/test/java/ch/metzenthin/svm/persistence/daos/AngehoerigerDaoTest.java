@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.daos;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -27,13 +27,13 @@ public class AngehoerigerDaoTest {
     private DB db;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         db.closeSession();
     }
 
@@ -169,7 +169,7 @@ public class AngehoerigerDaoTest {
             List<Angehoeriger> angehoerigeFound2 = angehoerigerDao.findAngehoerige(angehoeriger2);
             assertEquals("Mehr als 1 Angehörigen gefunden", 1, angehoerigeFound2.size());
 
-            // Ditto, aber ohne Adresse;
+            // Ditto, aber ohne Adresse
             Angehoeriger angehoeriger3 = new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null, false);
 
             List<Angehoeriger> angehoerigeFound3 = angehoerigerDao.findAngehoerige(angehoeriger3);

@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.PersonModel;
@@ -24,6 +24,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 public abstract class PersonController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(PersonController.class);
+    private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE =
+            "Validierung wegen equalFieldAndModelValue";
 
     private JComboBox<Anrede> comboBoxAnrede;
     protected JTextField txtNachname;
@@ -49,7 +51,7 @@ public abstract class PersonController extends AbstractController {
     private final PersonModel personModel;
     private final boolean defaultButtonEnabled;
 
-    public PersonController(PersonModel personModel, boolean defaultButtonEnabled) {
+    protected PersonController(PersonModel personModel, boolean defaultButtonEnabled) {
         super(personModel);
         this.personModel = personModel;
         this.defaultButtonEnabled = defaultButtonEnabled;
@@ -192,7 +194,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -223,7 +225,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -258,7 +260,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -293,7 +295,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -328,7 +330,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -363,7 +365,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -398,7 +400,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -433,7 +435,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -468,7 +470,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -503,7 +505,7 @@ public abstract class PersonController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -592,11 +594,9 @@ public abstract class PersonController extends AbstractController {
             txtNatel.setText(personModel.getNatel());
         } else if (checkIsFieldChange(Field.EMAIL, evt)) {
             txtEmail.setText(personModel.getEmail());
-        } else if (checkIsFieldChange(Field.ANREDE, evt)) {
+        } else if (checkIsFieldChange(Field.ANREDE, evt) && comboBoxAnrede != null) {
             // nicht alle Subklassen von Person haben eine Anrede
-            if (comboBoxAnrede != null) {
-                comboBoxAnrede.setSelectedItem(personModel.getAnrede());
-            }
+            comboBoxAnrede.setSelectedItem(personModel.getAnrede());
         }
     }
 
@@ -722,6 +722,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
         if ((fields.contains(Field.ALLE) || fields.contains(Field.ANREDE)) && errLblAnrede != null && comboBoxAnrede != null) {
@@ -766,6 +767,7 @@ public abstract class PersonController extends AbstractController {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
         if (comboBoxAnrede != null && (fields.contains(Field.ALLE) || fields.contains(Field.ANREDE))) {

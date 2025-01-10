@@ -1,9 +1,9 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Listentyp;
-import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
+import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Listentyp;
+import ch.metzenthin.svm.common.datatypes.Rechnungstyp;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -23,6 +23,9 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
  * @author Martin Schraner
  */
 class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
+
+    private static final String RECHNUNGSDATUM_NICHT_UEBERALL_GESETZT
+            = "Rechnungsdatum nicht überall gesetzt";
 
     private Listentyp listentyp;
     private String titel;
@@ -79,61 +82,41 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
     public String[] getListenErstellenWarning(SemesterrechnungenTableModel semesterrechnungenTableModel) {
         String[] listenErstellenWarning = null;
         switch (listentyp) {
-            case SCHUELER_ADRESSLISTE,
-                    ABSENZENLISTE_GANZES_SEMESTER,
-                    ABSENZENLISTE_OKTOBER_FEBRUAR,
-                    SPEZIELLE_ABSENZENLISTE,
-                    ROLLENLISTE,
-                    ELTERNMITHILFE_LISTE,
-                    SCHUELER_ADRESSETIKETTEN,
-                    RECHNUNGSEMPFAENGER_ADRESSETIKETTEN,
-                    MUTTER_ODER_VATER_ADRESSETIKETTEN,
-                    ELTERNMITHILFE_ADRESSETIKETTEN,
-                    PROBEPLAENE_ETIKETTEN, SCHUELERLISTE_CSV,
-                    MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM,
-                    MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM,
-                    VERTRETUNGSLISTE,
-                    MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN,
-                    MITARBEITER_ADRESSETIKETTEN,
-                    MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV,
-                    MITARBEITER_LISTE_NAME_EINSPALTIG_CSV,
-                    KURSLISTE_WORD,
-                    KURSLISTE_CSV,
-                    SEMESTERRECHNUNGEN_ADRESSETIKETTEN,
-                    RECHNUNGSLISTE:
-                break;
-            case VORRECHNUNGEN_SERIENBRIEF:
+            case VORRECHNUNGEN_SERIENBRIEF -> {
                 if (!checkIfRechnungsdatumVorrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
                     String listenErstellenWarningMessage = "Die Rechnungsauswahl enthält Vorrechnungen ohne Rechnungsdatum. \n" +
                             "Es werden nur Rechnungen mit gesetztem Rechnungsdatum exportiert. Fortfahren?";
-                    String listenErstellenWarningTitle = "Rechnungsdatum nicht überall gesetzt";
-                    listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
+                    listenErstellenWarning = new String[]{
+                            listenErstellenWarningMessage, RECHNUNGSDATUM_NICHT_UEBERALL_GESETZT};
                 }
-                break;
-            case NACHRECHNUNGEN_SERIENBRIEF:
+            }
+            case NACHRECHNUNGEN_SERIENBRIEF -> {
                 if (!checkIfRechnungsdatumNachrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
                     String listenErstellenWarningMessage = "Die Rechnungsauswahl enthält Nachrechnungen ohne Rechnungsdatum. \n" +
                             "Es werden nur Rechnungen mit gesetztem Rechnungsdatum exportiert. Fortfahren?";
-                    String listenErstellenWarningTitle = "Rechnungsdatum nicht überall gesetzt";
-                    listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
+                    listenErstellenWarning = new String[]{
+                            listenErstellenWarningMessage, RECHNUNGSDATUM_NICHT_UEBERALL_GESETZT};
                 }
-                break;
-            case MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF:
+            }
+            case MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF -> {
                 if (!checkIfRechnungsdatumVorrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
                     String listenErstellenWarningMessage = "Die Rechnungsauswahl enthält Vorrechnungen ohne Rechnungsdatum. \n" +
                             "Es werden nur Rechnungen mit gesetztem Rechnungsdatum als Mahnung exportiert. Fortfahren?";
-                    String listenErstellenWarningTitle = "Rechnungsdatum nicht überall gesetzt";
-                    listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
+                    listenErstellenWarning = new String[]{
+                            listenErstellenWarningMessage, RECHNUNGSDATUM_NICHT_UEBERALL_GESETZT};
                 }
-                break;
-            case MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF:
+            }
+            case MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF -> {
                 if (!checkIfRechnungsdatumNachrechnungUeberallGesetzt(semesterrechnungenTableModel)) {
                     String listenErstellenWarningMessage = "Die Rechnungsauswahl enthält Nachrechnungen ohne Rechnungsdatum. \n" +
                             "Es werden nur Rechnungen mit gesetztem Rechnungsdatum als Mahnung exportiert. Fortfahren?";
-                    String listenErstellenWarningTitle = "Rechnungsdatum nicht überall gesetzt";
-                    listenErstellenWarning = new String[]{listenErstellenWarningMessage, listenErstellenWarningTitle};
+                    listenErstellenWarning = new String[]{
+                            listenErstellenWarningMessage, RECHNUNGSDATUM_NICHT_UEBERALL_GESETZT};
                 }
-                break;
+            }
+            default -> {
+                // Nothing to do
+            }
         }
         return listenErstellenWarning;
     }
@@ -151,12 +134,13 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
         String outputFile = listentyp.getFilenameOhneFileExtension() + "." + listentyp.getFiletyp().getFileExtension();
         outputFile = outputFile.replaceAll(",[ \\t]", "_");
         outputFile = outputFile.replaceAll("[ \\t]", "_");
-        outputFile = outputFile.replaceAll("ä", "ae");
-        outputFile = outputFile.replaceAll("ö", "oe");
-        outputFile = outputFile.replaceAll("ü", "ue");
+        outputFile = outputFile.replace("ä", "ae");
+        outputFile = outputFile.replace("ö", "oe");
+        outputFile = outputFile.replace("ü", "ue");
         return new File(listenDirectoryInit.getAbsolutePath() + File.separator + outputFile);
     }
 
+    @SuppressWarnings({"java:S3776", "java:S6541", "ExtractMethodRecommender"})
     @Override
     public CreateListeCommand.Result createListenFile(File outputFile, SchuelerSuchenTableModel schuelerSuchenTableModel, MitarbeitersTableModel mitarbeitersTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel) {
         CommandInvoker commandInvoker = getCommandInvoker();
@@ -167,7 +151,9 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 commandInvoker.executeCommand(createSchuelerAdresslisteCommand);
                 result = createSchuelerAdresslisteCommand.getResult();
             }
-            case ABSENZENLISTE_GANZES_SEMESTER, ABSENZENLISTE_OKTOBER_FEBRUAR, SPEZIELLE_ABSENZENLISTE -> {
+            case ABSENZENLISTE_GANZES_SEMESTER,
+                 ABSENZENLISTE_OKTOBER_FEBRUAR,
+                 SPEZIELLE_ABSENZENLISTE -> {
                 CreateListeFromTemplateCommand createListeFromTemplateCommand = new CreateListeFromTemplateCommand(schuelerSuchenTableModel, titel, listentyp, outputFile);
                 commandInvoker.executeCommand(createListeFromTemplateCommand);
                 templateFile = createListeFromTemplateCommand.getTemplateFile();
@@ -219,8 +205,9 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
             case ELTERNMITHILFE_ADRESSETIKETTEN -> {
                 Set<Person> elternmithilfeSet = new HashSet<>();
                 Map<Schueler, Maercheneinteilung> maercheneinteilungen = schuelerSuchenTableModel.getMaercheneinteilungen();
-                for (Schueler schueler : maercheneinteilungen.keySet()) {
-                    Maercheneinteilung maercheneinteilung = maercheneinteilungen.get(schueler);
+                for (Map.Entry<Schueler, Maercheneinteilung> maercheneinteilungenEntry : maercheneinteilungen.entrySet()) {
+                    Schueler schueler = maercheneinteilungenEntry.getKey();
+                    Maercheneinteilung maercheneinteilung = maercheneinteilungenEntry.getValue();
                     if (maercheneinteilung == null || maercheneinteilung.getElternmithilfe() == null || !schueler.isSelektiert()) {
                         continue;
                     }
@@ -251,7 +238,7 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 result = createSchuelerlisteCsvFileCommand.getResult();
             }
             case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM,
-                    MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM -> {
+                 MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM -> {
                 CreateMitarbeiterAdresslisteCommand createMitarbeiterAdresslisteMitGeburtsdatumCommand = new CreateMitarbeiterAdresslisteCommand(mitarbeitersTableModel, titel, outputFile, listentyp);
                 commandInvoker.executeCommand(createMitarbeiterAdresslisteMitGeburtsdatumCommand);
                 result = createMitarbeiterAdresslisteMitGeburtsdatumCommand.getResult();
@@ -350,25 +337,24 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
     public String getTitleInit(SchuelerSuchenTableModel schuelerSuchenTableModel) {
         String titleInit = "";
         switch (listentyp) {
-            case SCHUELER_ADRESSLISTE:
+            case SCHUELER_ADRESSLISTE -> {
                 if (schuelerSuchenTableModel.isKursFuerSucheBeruecksichtigen() && schuelerSuchenTableModel.getLehrkraft() != null) {
                     titleInit = getTitleSpecificKurs(schuelerSuchenTableModel);
                 } else {
                     titleInit = "Adressliste";
                 }
-                break;
-            case ABSENZENLISTE_GANZES_SEMESTER:
-            case ABSENZENLISTE_OKTOBER_FEBRUAR:
-            case SPEZIELLE_ABSENZENLISTE:
-                titleInit = getTitleSpecificKurs(schuelerSuchenTableModel);
-                break;
-            case ROLLENLISTE:
+            }
+            case ABSENZENLISTE_GANZES_SEMESTER,
+                 ABSENZENLISTE_OKTOBER_FEBRUAR,
+                 SPEZIELLE_ABSENZENLISTE ->
+                    titleInit = getTitleSpecificKurs(schuelerSuchenTableModel);
+            case ROLLENLISTE -> {
                 titleInit = getTitleMaerchen(schuelerSuchenTableModel) + ": Rollenliste";
                 if (schuelerSuchenTableModel.getGruppe() != null) {
                     titleInit = titleInit + " Gruppe " + schuelerSuchenTableModel.getGruppe().toString();
                 }
-                break;
-            case ELTERNMITHILFE_LISTE:
+            }
+            case ELTERNMITHILFE_LISTE -> {
                 titleInit = getTitleMaerchen(schuelerSuchenTableModel) + ": Eltern-Mithilfe";
                 if (schuelerSuchenTableModel.getElternmithilfeCode() != null) {
                     titleInit = titleInit + " " + schuelerSuchenTableModel.getElternmithilfeCode().getBeschreibung();
@@ -376,33 +362,16 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
                 if (schuelerSuchenTableModel.getGruppe() != null) {
                     titleInit = titleInit + " Gruppe " + schuelerSuchenTableModel.getGruppe().toString();
                 }
-                break;
-            case SCHUELER_ADRESSETIKETTEN,
-                    RECHNUNGSEMPFAENGER_ADRESSETIKETTEN,
-                    MUTTER_ODER_VATER_ADRESSETIKETTEN,
-                    ELTERNMITHILFE_ADRESSETIKETTEN,
-                    PROBEPLAENE_ETIKETTEN,
-                    KURSLISTE_CSV,
-                    MITARBEITER_ADRESSETIKETTEN,
-                    MITARBEITER_LISTE_NAME_ZWEISPALTIG_CSV,
-                    MITARBEITER_LISTE_NAME_EINSPALTIG_CSV,
-                    VORRECHNUNGEN_SERIENBRIEF, NACHRECHNUNGEN_SERIENBRIEF,
-                    MAHNUNGEN_VORRECHNUNGEN_SERIENBRIEF,
-                    MAHNUNGEN_NACHRECHNUNGEN_SERIENBRIEF,
-                    SEMESTERRECHNUNGEN_ADRESSETIKETTEN,
-                    RECHNUNGSLISTE:
-                break;
+            }
             case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM,
-                    MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM,
-                    MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN:
-                titleInit = "Mitarbeitende";
-                break;
-            case VERTRETUNGSLISTE:
-                titleInit = "Vertretungsliste";
-                break;
-            case KURSLISTE_WORD:
-                titleInit = "Kurse";
-                break;
+                 MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM,
+                 MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN ->
+                    titleInit = "Mitarbeitende";
+            case VERTRETUNGSLISTE -> titleInit = "Vertretungsliste";
+            case KURSLISTE_WORD -> titleInit = "Kurse";
+            default -> {
+                // Nothing to do
+            }
         }
         return titleInit;
     }
@@ -454,5 +423,6 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 }

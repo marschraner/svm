@@ -15,6 +15,8 @@ import java.util.Properties;
 @Table(name = "Dispensation")
 public class Dispensation implements Comparable<Dispensation> {
 
+    private static final String DD_MM_YY_FORMAT = "%1$td.%1$tm.%1$tY";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dispensation_id")
@@ -77,46 +79,24 @@ public class Dispensation implements Comparable<Dispensation> {
     }
 
     @Override
-    public String toString() {
-        StringBuilder dispensationSb = new StringBuilder();
-        if (dispensationsende == null) {
-            dispensationSb.append("Seit ").append(String.format("%1$td.%1$tm.%1$tY", dispensationsbeginn));
-        } else {
-            dispensationSb.append(String.format("%1$td.%1$tm.%1$tY", dispensationsbeginn));
-            dispensationSb.append(" - ").append(String.format("%1$td.%1$tm.%1$tY", dispensationsende));
-        }
-        if (voraussichtlicheDauer != null) {
-            dispensationSb.append(", voraussichtliche Dauer: ").append(voraussichtlicheDauer);
-        }
-        dispensationSb.append(", Grund: ").append(grund);
-        return dispensationSb.toString();
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Dispensation that = (Dispensation) o;
-
-        if (!dispensationsbeginn.equals(that.dispensationsbeginn)) return false;
-        if (!Objects.equals(dispensationsende, that.dispensationsende))
-            return false;
-        if (!Objects.equals(voraussichtlicheDauer, that.voraussichtlicheDauer))
-            return false;
-        return grund.equals(that.grund);
-
+        return Objects.equals(dispensationsbeginn, that.dispensationsbeginn)
+                && Objects.equals(dispensationsende, that.dispensationsende)
+                && Objects.equals(voraussichtlicheDauer, that.voraussichtlicheDauer)
+                && Objects.equals(grund, that.grund)
+                && Objects.equals(schueler, that.schueler);
     }
 
     @Override
     public int hashCode() {
-        int result = dispensationsbeginn.hashCode();
-        result = 31 * result + (dispensationsende != null ? dispensationsende.hashCode() : 0);
-        result = 31 * result + (voraussichtlicheDauer != null ? voraussichtlicheDauer.hashCode() : 0);
-        result = 31 * result + grund.hashCode();
-        return result;
+        return Objects.hash(
+                dispensationsbeginn, dispensationsende, voraussichtlicheDauer, grund, schueler);
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public int compareTo(Dispensation otherDispensation) {
         // absteigend nach Dispensationsbeginn und Dispensationsende sortieren, d.h. neuste Einträge zuoberst
@@ -145,6 +125,22 @@ public class Dispensation implements Comparable<Dispensation> {
             }
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder dispensationSb = new StringBuilder();
+        if (dispensationsende == null) {
+            dispensationSb.append("Seit ").append(String.format(DD_MM_YY_FORMAT, dispensationsbeginn));
+        } else {
+            dispensationSb.append(String.format(DD_MM_YY_FORMAT, dispensationsbeginn));
+            dispensationSb.append(" - ").append(String.format(DD_MM_YY_FORMAT, dispensationsende));
+        }
+        if (voraussichtlicheDauer != null) {
+            dispensationSb.append(", voraussichtliche Dauer: ").append(voraussichtlicheDauer);
+        }
+        dispensationSb.append(", Grund: ").append(grund);
+        return dispensationSb.toString();
     }
 
     public Integer getDispensationId() {

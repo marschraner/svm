@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Objects;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
@@ -46,21 +47,11 @@ public class Kursanmeldung implements Comparable<Kursanmeldung> {
     }
 
     public Kursanmeldung(Schueler schueler, Kurs kurs, Calendar anmeldedatum, Calendar abmeldedatum, String bemerkungen) {
-        this.kurs = kurs;
         this.schueler = schueler;
+        this.kurs = kurs;
         this.anmeldedatum = anmeldedatum;
         this.abmeldedatum = abmeldedatum;
         this.bemerkungen = bemerkungen;
-    }
-
-    @Override
-    public int compareTo(Kursanmeldung otherKursanmeldung) {
-        // aufsteigend nach Schüler und Kursen sortieren
-        int result = this.schueler.compareTo(otherKursanmeldung.schueler);
-        if (result == 0) {
-            result = this.kurs.compareTo(otherKursanmeldung.kurs);
-        }
-        return result;
     }
 
     public boolean isIdenticalWith(Kursanmeldung otherKursanmeldung) {
@@ -73,6 +64,32 @@ public class Kursanmeldung implements Comparable<Kursanmeldung> {
         this.anmeldedatum = otherKursanmeldung.getAnmeldedatum();
         this.abmeldedatum = otherKursanmeldung.getAbmeldedatum();
         this.bemerkungen = otherKursanmeldung.getBemerkungen();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Kursanmeldung that = (Kursanmeldung) o;
+        return Objects.equals(schueler, that.schueler)
+                && Objects.equals(kurs, that.kurs)
+                && Objects.equals(anmeldedatum, that.anmeldedatum)
+                && Objects.equals(abmeldedatum, that.abmeldedatum);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(schueler, kurs, anmeldedatum, abmeldedatum);
+    }
+
+    @Override
+    public int compareTo(Kursanmeldung otherKursanmeldung) {
+        // aufsteigend nach Schüler und Kursen sortieren
+        int result = this.schueler.compareTo(otherKursanmeldung.schueler);
+        if (result == 0) {
+            result = this.kurs.compareTo(otherKursanmeldung.kurs);
+        }
+        return result;
     }
 
     @Override

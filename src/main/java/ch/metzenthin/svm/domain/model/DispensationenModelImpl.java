@@ -33,6 +33,7 @@ public class DispensationenModelImpl extends AbstractModel implements Dispensati
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

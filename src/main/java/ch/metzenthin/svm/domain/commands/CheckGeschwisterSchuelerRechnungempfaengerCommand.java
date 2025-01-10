@@ -45,6 +45,7 @@ public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Comman
         determineAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaenger();
     }
 
+    @SuppressWarnings("java:S3776")
     private void determineGeschwister() {
         // Kinder der Mutter
         if (mutter != null) {
@@ -73,6 +74,7 @@ public class CheckGeschwisterSchuelerRechnungempfaengerCommand implements Comman
         }
     }
 
+    @SuppressWarnings("java:S3776")
     private void determineAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaenger() {
         // Mutter
         if (mutter != null) {

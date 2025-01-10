@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.daos;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -30,13 +30,13 @@ public class MitarbeiterCodeDaoTest {
     private DB db;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         db.closeSession();
     }
 
@@ -162,8 +162,8 @@ public class MitarbeiterCodeDaoTest {
             entityManager.refresh(mitarbeiterFound);
             assertEquals(2, mitarbeiterFound.getMitarbeiterCodes().size());
             // Alphabetisch geordnet?
-            assertEquals("ht", mitarbeiterFound.getMitarbeiterCodesAsList().get(0).getKuerzel());
-            assertEquals("vt", mitarbeiterFound.getMitarbeiterCodesAsList().get(1).getKuerzel());
+            assertEquals("ht", mitarbeiterFound.getSortedMitarbeiterCodes().get(0).getKuerzel());
+            assertEquals("vt", mitarbeiterFound.getSortedMitarbeiterCodes().get(1).getKuerzel());
 
             // MitarbeiterCode prüfen
             MitarbeiterCode mitarbeiterCode1Found = mitarbeiterCodeDao.findById(mitarbeiterCode1.getCodeId());
@@ -205,8 +205,8 @@ public class MitarbeiterCodeDaoTest {
             Mitarbeiter mitarbeiterFound = mitarbeiterDao.findById(mitarbeiterSaved.getPersonId());
             entityManager.refresh(mitarbeiterFound);
             assertEquals(2, mitarbeiterFound.getMitarbeiterCodes().size());
-            assertEquals("ht", mitarbeiterFound.getMitarbeiterCodesAsList().get(0).getKuerzel());
-            assertEquals("vt", mitarbeiterFound.getMitarbeiterCodesAsList().get(1).getKuerzel());
+            assertEquals("ht", mitarbeiterFound.getSortedMitarbeiterCodes().get(0).getKuerzel());
+            assertEquals("vt", mitarbeiterFound.getSortedMitarbeiterCodes().get(1).getKuerzel());
 
             // Codes prüfen
             MitarbeiterCode mitarbeiterCode1Found = mitarbeiterCodeDao.findById(mitarbeiterCode1.getCodeId());
@@ -223,7 +223,7 @@ public class MitarbeiterCodeDaoTest {
             mitarbeiterFound = mitarbeiterDao.findById(mitarbeiterUpdated.getPersonId());
             entityManager.refresh(mitarbeiterFound);
             assertEquals(1, mitarbeiterFound.getMitarbeiterCodes().size());
-            assertEquals("vt", mitarbeiterFound.getMitarbeiterCodesAsList().get(0).getKuerzel());
+            assertEquals("vt", mitarbeiterFound.getSortedMitarbeiterCodes().get(0).getKuerzel());
 
             assertEquals(0, mitarbeiterCode1Found.getMitarbeiters().size());
             assertEquals(1, mitarbeiterCode2Found.getMitarbeiters().size());

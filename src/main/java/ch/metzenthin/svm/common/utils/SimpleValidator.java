@@ -11,6 +11,9 @@ import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
  */
 public class SimpleValidator {
 
+    private SimpleValidator() {
+    }
+
     public static boolean checkNotNull(Object o) {
         return (o != null);
     }
@@ -25,6 +28,7 @@ public class SimpleValidator {
                 Integer.valueOf(s);
                 return true;
             } catch (NumberFormatException ignore) {
+                return false;
             }
         }
         return false;

@@ -1,7 +1,8 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
+import ch.metzenthin.svm.common.SvmRuntimeException;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Rechnungstyp;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.RechnungsdatumErfassenModel;
@@ -62,6 +63,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
         this.rechnungsdatumErfassenDialog = rechnungsdatumErfassenDialog;
         rechnungsdatumErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         rechnungsdatumErfassenDialog.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 onAbbrechen();
             }
@@ -87,7 +89,8 @@ public class RechnungsdatumErfassenController extends AbstractController {
         // Initialisierung mit heutigem Datum
         try {
             rechnungsdatumErfassenModel.setRechnungsdatum(asString(new GregorianCalendar()));
-        } catch (SvmValidationException ignore) {
+        } catch (SvmValidationException e) {
+            LOGGER.error(e);
         }
     }
 
@@ -143,11 +146,13 @@ public class RechnungsdatumErfassenController extends AbstractController {
         // Warnung
         Object[] optionsWarnung = {"Fortfahren", "Abbrechen"};
         String warningMessage = switch (rechnungstyp) {
-            case VORRECHNUNG -> "Allfällige frühere Vorrechnungsdatum-Einträge werden \n" +
-                    "mit dem neuen Rechnungsdatum überschrieben. Fortfahren?";
-            case NACHRECHNUNG -> "Allfällige frühere Nachrechnungsdatum-Einträge werden mit dem neuen \n" +
-                    "Rechnungsdatum überschrieben und bereits getätigte Zahlungen der \n" +
-                    "Vorrechnungen in die Nachrechnungen kopiert. Fortfahren?";
+            case VORRECHNUNG -> """
+                    Allfällige frühere Vorrechnungsdatum-Einträge werden
+                    mit dem neuen Rechnungsdatum überschrieben. Fortfahren?""";
+            case NACHRECHNUNG -> """
+                    Allfällige frühere Nachrechnungsdatum-Einträge werden mit dem neuen
+                    Rechnungsdatum überschrieben und bereits getätigte Zahlungen der
+                    Vorrechnungen in die Nachrechnungen kopiert. Fortfahren?""";
         };
         int n = JOptionPane.showOptionDialog(
                 null,
@@ -204,7 +209,9 @@ public class RechnungsdatumErfassenController extends AbstractController {
                     // SwingExceptionHandler nicht aufgerufen und kein Fehlerdialog angezeigt wird!
                     // (vgl. https://stackoverflow.com/questions/6523623/graceful-exception-handling-in-swing-worker)
                     if (swingWorkerException != null) {
-                        throw new RuntimeException(swingWorkerException);
+                        throw new SvmRuntimeException(
+                                "Fehler beim Setzen des Rechnungsdatums / Kopieren der Zahlungen",
+                                swingWorkerException);
                     }
                     // Die durch den Swing-Worker veränderten Semesterrechnungen befinden sich nach dem Schliessen der
                     // DB-Session des Swing-Workers nicht mehr in dessen Persistenzkontext, welcher mitgelöscht wird.
@@ -280,6 +287,7 @@ public class RechnungsdatumErfassenController extends AbstractController {
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
+        // Keine zu deaktivierenden Felder
     }
 
 

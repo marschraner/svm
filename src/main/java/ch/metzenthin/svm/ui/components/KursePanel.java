@@ -18,6 +18,7 @@ import java.util.Locale;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
 public class KursePanel {
 
     private JPanel panel1;

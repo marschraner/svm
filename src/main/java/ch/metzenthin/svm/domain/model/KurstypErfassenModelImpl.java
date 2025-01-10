@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CheckKurstypBezeichnungBereitsInVerwendungCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
@@ -110,5 +110,6 @@ public class KurstypErfassenModelImpl extends AbstractModel implements KurstypEr
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 }

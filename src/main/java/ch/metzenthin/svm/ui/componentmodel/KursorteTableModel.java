@@ -11,7 +11,7 @@ public class KursorteTableModel extends AbstractTableModel {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final KursorteTableData kursorteTableData;
+    private final transient KursorteTableData kursorteTableData;
 
     public KursorteTableModel(KursorteTableData kursorteTableData) {
         super();

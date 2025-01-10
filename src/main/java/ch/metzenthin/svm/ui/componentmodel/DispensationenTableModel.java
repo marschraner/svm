@@ -11,7 +11,7 @@ public class DispensationenTableModel extends AbstractTableModel {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final DispensationenTableData dispensationenTableData;
+    private final transient DispensationenTableData dispensationenTableData;
 
     public DispensationenTableModel(DispensationenTableData dispensationenTableData) {
         super();

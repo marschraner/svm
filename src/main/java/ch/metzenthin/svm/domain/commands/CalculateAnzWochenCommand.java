@@ -34,6 +34,7 @@ public class CalculateAnzWochenCommand implements Command {
         this.schuelerRechnungsempfaenger = schuelerRechnungsempfaenger;
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void execute() {
 
@@ -69,7 +70,7 @@ public class CalculateAnzWochenCommand implements Command {
         }
     }
 
-
+    @SuppressWarnings("java:S3776")
     int calculateAnzWochenKursanmeldung(Kursanmeldung kursanmeldung) {
 
         int anzahlWochenKursanmeldung = semester.getAnzahlSchulwochen();

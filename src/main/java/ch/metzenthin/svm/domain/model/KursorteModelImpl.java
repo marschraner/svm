@@ -35,6 +35,7 @@ public class KursorteModelImpl extends AbstractModel implements KursorteModel {
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

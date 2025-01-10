@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SchuelerCodeDao;
@@ -32,19 +32,19 @@ public class RemoveSchuelerCodeFromSchuelerCommandTest {
     private CommandInvoker commandInvoker;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
         commandInvoker = new CommandInvokerImpl();
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         db.closeSession();
     }
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
 
         List<SchuelerCode> erfassteSchuelerCodes = new ArrayList<>();
 
@@ -82,19 +82,19 @@ public class RemoveSchuelerCodeFromSchuelerCommandTest {
         schuelerSaved = addSchuelerCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
 
         assertEquals(2, schuelerSaved.getSchuelerCodes().size());
-        assertEquals("jt", schuelerSaved.getSchuelerCodesAsList().get(0).getKuerzel());
-        assertEquals("zt", schuelerSaved.getSchuelerCodesAsList().get(1).getKuerzel());
+        assertEquals("jt", schuelerSaved.getSortedSchuelerCodes().get(0).getKuerzel());
+        assertEquals("zt", schuelerSaved.getSortedSchuelerCodes().get(1).getKuerzel());
 
         // 2. SchuelerCode von Schüler löschen
-        RemoveSchuelerCodeFromSchuelerCommand removeSchuelerCodeFromSchuelerCommand = new RemoveSchuelerCodeFromSchuelerCommand(schuelerSaved.getSchuelerCodesAsList().get(1), schuelerSaved);
+        RemoveSchuelerCodeFromSchuelerCommand removeSchuelerCodeFromSchuelerCommand = new RemoveSchuelerCodeFromSchuelerCommand(schuelerSaved.getSortedSchuelerCodes().get(1), schuelerSaved);
         commandInvoker.executeCommandAsTransaction(removeSchuelerCodeFromSchuelerCommand);
 
         Schueler schuelerUpdated = removeSchuelerCodeFromSchuelerCommand.getSchuelerUpdated();
         assertEquals(1, schuelerUpdated.getSchuelerCodes().size());
-        assertEquals("jt", schuelerUpdated.getSchuelerCodesAsList().get(0).getKuerzel());
+        assertEquals("jt", schuelerUpdated.getSortedSchuelerCodes().get(0).getKuerzel());
 
         // 1. SchuelerCode von Schüler löschen
-        removeSchuelerCodeFromSchuelerCommand = new RemoveSchuelerCodeFromSchuelerCommand(schuelerUpdated.getSchuelerCodesAsList().get(0), schuelerSaved);
+        removeSchuelerCodeFromSchuelerCommand = new RemoveSchuelerCodeFromSchuelerCommand(schuelerUpdated.getSortedSchuelerCodes().get(0), schuelerSaved);
         commandInvoker.executeCommandAsTransaction(removeSchuelerCodeFromSchuelerCommand);
 
         schuelerUpdated = removeSchuelerCodeFromSchuelerCommand.getSchuelerUpdated();

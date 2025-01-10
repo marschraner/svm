@@ -22,6 +22,7 @@ public class SplitStringIntoMultipleLinesCommand implements Command {
         this.maxLines = maxLines;
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void execute() {
 
@@ -30,9 +31,9 @@ public class SplitStringIntoMultipleLinesCommand implements Command {
         }
 
         // Alle "-" durch "- " ersetzen, damit Leerschlag-Trennung wirksam wird
-        String stringTmp = string.replaceAll("-", "- ");
+        String stringTmp = string.replace("-", "- ");
         // Alle "/" durch "/ " ersetzen, damit Leerschlag-Trennung wirksam wird
-        stringTmp = stringTmp.replaceAll("/", "/ ");
+        stringTmp = stringTmp.replace("/", "/ ");
 
         String[] stringSpl = stringTmp.split("\\s");
         StringBuilder line = new StringBuilder();
@@ -53,9 +54,9 @@ public class SplitStringIntoMultipleLinesCommand implements Command {
                     }
                 }
                 // Alle "- " wieder durch "-" ersetzen
-                line = new StringBuilder(line.toString().replaceAll("- ", "-"));
+                line = new StringBuilder(line.toString().replace("- ", "-"));
                 // Alle "/ " wieder durch "/" ersetzen
-                line = new StringBuilder(line.toString().replaceAll("/ ", "/"));
+                line = new StringBuilder(line.toString().replace("/ ", "/"));
                 // Jetzige Zeile schreiben und neue Zeile beginnen
                 lines.add(line.toString());
                 if (j == maxLines - 1) {

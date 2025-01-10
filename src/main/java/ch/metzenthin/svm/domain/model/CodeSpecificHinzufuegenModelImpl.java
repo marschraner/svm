@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.AddSchuelerCodeToSchuelerAndSaveCommand;
@@ -40,7 +40,7 @@ public class CodeSpecificHinzufuegenModelImpl extends AbstractModel implements C
         Schueler schuelerUpdated = addSchuelerCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
         // TableData mit von der Datenbank upgedatetem Schüler updaten
         if (schuelerUpdated != null) {
-            codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getSchuelerCodesAsList());
+            codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getSortedSchuelerCodes());
         }
     }
 
@@ -53,6 +53,7 @@ public class CodeSpecificHinzufuegenModelImpl extends AbstractModel implements C
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

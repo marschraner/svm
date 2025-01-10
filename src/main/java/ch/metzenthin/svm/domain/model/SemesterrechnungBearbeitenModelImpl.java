@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
-import ch.metzenthin.svm.common.dataTypes.Stipendium;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Rechnungstyp;
+import ch.metzenthin.svm.common.datatypes.Stipendium;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
@@ -26,6 +26,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImpl implements SemesterrechnungBearbeitenModel {
 
     private static final Logger LOGGER = LogManager.getLogger(SemesterrechnungBearbeitenModelImpl.class);
+    private static final String DATUM_NICHT_GESETZT = "Datum nicht gesetzt";
+    private static final String BETRAG_NICHT_GESETZT = "Betrag nicht gesetzt";
 
     private Semesterrechnung semesterrechnungOrigin;
     private Semester previousSemester;
@@ -233,7 +235,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "java:S3776"})
     private String getRechnungsempfaengerSchuelers(Rechnungstyp rechnungstyp) {
         List<Schueler> schuelersRechnungsempfaenger = new ArrayList<>(semesterrechnung.getRechnungsempfaenger().getSchuelerRechnungsempfaenger());
         if (schuelersRechnungsempfaenger.isEmpty()) {
@@ -247,7 +249,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         StringBuilder schuelersSb = new StringBuilder("<html>");
         boolean neuerSchueler = true;
         for (Schueler schueler : schuelersRechnungsempfaenger) {
-            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getSortedKursanmeldungen()) {
                 Kurs kurs = kursanmeldung.getKurs();
                 if (!kurs.getSemester().getSemesterId().equals(relevantesSemester.getSemesterId()) || (rechnungstyp == Rechnungstyp.VORRECHNUNG && kursanmeldung.getAbmeldedatum() != null)) {
                     // Nicht passendes Semester oder abgemeldeter Kurs bei einer Vorrechnung
@@ -280,7 +282,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         return "-";
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "java:S3776"})
     private String getRechnungsempfaengerKurse(Rechnungstyp rechnungstyp) {
         List<Schueler> schuelersRechnungsempfaenger = new ArrayList<>(semesterrechnung.getRechnungsempfaenger().getSchuelerRechnungsempfaenger());
         if (schuelersRechnungsempfaenger.isEmpty()) {
@@ -294,7 +296,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         StringBuilder kurseSb = new StringBuilder("<html>");
         boolean neuerSchueler = true;
         for (Schueler schueler : schuelersRechnungsempfaenger) {
-            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getSortedKursanmeldungen()) {
                 Kurs kurs = kursanmeldung.getKurs();
                 if (!kurs.getSemester().getSemesterId().equals(relevantesSemester.getSemesterId()) || (rechnungstyp == Rechnungstyp.VORRECHNUNG && kursanmeldung.getAbmeldedatum() != null)) {
                     // Nicht passendes Semester oder abgemeldeter Kurs bei einer Vorrechnung
@@ -321,6 +323,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         return "-";
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void copyZahlungenVorrechnungToZahlungenNachrechnung() throws SvmValidationException {
         // Das Kopieren der Zahlungen geschieht einmalig, wenn das Rechnungsdatum der Nachrechnung gesetzt wird,
@@ -347,6 +350,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         }
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public boolean isVorrechnungEnabled() {
         // Nur enablen, falls
@@ -366,7 +370,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
             return false;
         }
         for (Schueler schueler : schuelersRechnungsempfaenger) {
-            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getSortedKursanmeldungen()) {
                 if (kursanmeldung.getKurs().getSemester().getSemesterId().equals(previousSemester.getSemesterId()) && kursanmeldung.getAbmeldedatum() == null) {
                     return true;
                 }
@@ -429,11 +433,13 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
             }
         }
         try {
-            switch (rechnungstyp) {
-                case VORRECHNUNG -> setWochenbetragVorrechnung(wochenbetrag.toString());
-                case NACHRECHNUNG -> setWochenbetragNachrechnung(wochenbetrag.toString());
+            if (rechnungstyp == Rechnungstyp.VORRECHNUNG) {
+                setWochenbetragVorrechnung(wochenbetrag.toString());
+            } else if (rechnungstyp == Rechnungstyp.NACHRECHNUNG) {
+                setWochenbetragNachrechnung(wochenbetrag.toString());
             }
-        } catch (SvmValidationException ignore) {
+        } catch (SvmValidationException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -443,6 +449,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
         getCommandInvoker().executeCommandAsTransaction(saveOrUpdateSemesterrechnungCommand);
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void initializeCompleted() {
         setBulkUpdate(true);
@@ -500,43 +507,44 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
                 !(isSetStipendium() && isSetGratiskinder());
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     void doValidate() throws SvmValidationException {
         if (isSetBetragZahlung1Vorrechnung() && !isSetDatumZahlung1Vorrechnung()) {
-            throw new SvmValidationException(3051, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_1_VORRECHNUNG);
+            throw new SvmValidationException(3051, DATUM_NICHT_GESETZT, Field.DATUM_ZAHLUNG_1_VORRECHNUNG);
         }
         if (!isSetBetragZahlung1Vorrechnung() && isSetDatumZahlung1Vorrechnung()) {
-            throw new SvmValidationException(3052, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_1_VORRECHNUNG);
+            throw new SvmValidationException(3052, BETRAG_NICHT_GESETZT, Field.BETRAG_ZAHLUNG_1_VORRECHNUNG);
         }
         if (isSetBetragZahlung2Vorrechnung() && !isSetDatumZahlung2Vorrechnung()) {
-            throw new SvmValidationException(3053, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_2_VORRECHNUNG);
+            throw new SvmValidationException(3053, DATUM_NICHT_GESETZT, Field.DATUM_ZAHLUNG_2_VORRECHNUNG);
         }
         if (!isSetBetragZahlung2Vorrechnung() && isSetDatumZahlung2Vorrechnung()) {
-            throw new SvmValidationException(3054, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_2_VORRECHNUNG);
+            throw new SvmValidationException(3054, BETRAG_NICHT_GESETZT, Field.BETRAG_ZAHLUNG_2_VORRECHNUNG);
         }
         if (isSetBetragZahlung3Vorrechnung() && !isSetDatumZahlung3Vorrechnung()) {
-            throw new SvmValidationException(3055, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_3_VORRECHNUNG);
+            throw new SvmValidationException(3055, DATUM_NICHT_GESETZT, Field.DATUM_ZAHLUNG_3_VORRECHNUNG);
         }
         if (!isSetBetragZahlung3Vorrechnung() && isSetDatumZahlung3Vorrechnung()) {
-            throw new SvmValidationException(3056, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_3_VORRECHNUNG);
+            throw new SvmValidationException(3056, BETRAG_NICHT_GESETZT, Field.BETRAG_ZAHLUNG_3_VORRECHNUNG);
         }
         if (isSetBetragZahlung1Nachrechnung() && !isSetDatumZahlung1Nachrechnung()) {
-            throw new SvmValidationException(3057, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_1_NACHRECHNUNG);
+            throw new SvmValidationException(3057, DATUM_NICHT_GESETZT, Field.DATUM_ZAHLUNG_1_NACHRECHNUNG);
         }
         if (!isSetBetragZahlung1Nachrechnung() && isSetDatumZahlung1Nachrechnung()) {
-            throw new SvmValidationException(3058, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_1_NACHRECHNUNG);
+            throw new SvmValidationException(3058, BETRAG_NICHT_GESETZT, Field.BETRAG_ZAHLUNG_1_NACHRECHNUNG);
         }
         if (isSetBetragZahlung2Nachrechnung() && !isSetDatumZahlung2Nachrechnung()) {
-            throw new SvmValidationException(3059, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_2_NACHRECHNUNG);
+            throw new SvmValidationException(3059, DATUM_NICHT_GESETZT, Field.DATUM_ZAHLUNG_2_NACHRECHNUNG);
         }
         if (!isSetBetragZahlung2Nachrechnung() && isSetDatumZahlung2Nachrechnung()) {
-            throw new SvmValidationException(3060, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_2_NACHRECHNUNG);
+            throw new SvmValidationException(3060, BETRAG_NICHT_GESETZT, Field.BETRAG_ZAHLUNG_2_NACHRECHNUNG);
         }
         if (isSetBetragZahlung3Nachrechnung() && !isSetDatumZahlung3Nachrechnung()) {
-            throw new SvmValidationException(3061, "Datum nicht gesetzt", Field.DATUM_ZAHLUNG_3_NACHRECHNUNG);
+            throw new SvmValidationException(3061, DATUM_NICHT_GESETZT, Field.DATUM_ZAHLUNG_3_NACHRECHNUNG);
         }
         if (!isSetBetragZahlung3Nachrechnung() && isSetDatumZahlung3Nachrechnung()) {
-            throw new SvmValidationException(3062, "Betrag nicht gesetzt", Field.BETRAG_ZAHLUNG_3_NACHRECHNUNG);
+            throw new SvmValidationException(3062, BETRAG_NICHT_GESETZT, Field.BETRAG_ZAHLUNG_3_NACHRECHNUNG);
         }
         if (isSetStipendium() && isSetGratiskinder()) {
             throw new SvmValidationException(3063, "Stipendium und Gratiskinder können nicht gleichzeitig gesetzt sein", Field.STIPENDIUM);

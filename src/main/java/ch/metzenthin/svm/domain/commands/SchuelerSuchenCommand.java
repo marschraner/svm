@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Gruppe;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Gruppe;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
@@ -117,7 +117,7 @@ public class SchuelerSuchenCommand implements Command {
             selectStatementSb.setLength(selectStatementSb.length() - 5);
         }
 
-        LOGGER.trace("JPQL Select-Statement: {}", selectStatementSb.toString());
+        LOGGER.trace("JPQL Select-Statement: {}", selectStatementSb);
 
         typedQuery = db.getCurrentEntityManager().createQuery(
                 selectStatementSb.toString(), Schueler.class);
@@ -161,6 +161,7 @@ public class SchuelerSuchenCommand implements Command {
         }
     }
 
+    @SuppressWarnings("java:S1192")
     private void createWhereSelectionsStammdatenOhneGeburtsdatumSuchperiode() {
         if (person == null ||
                 (!checkNotEmpty(person.getVorname()) &&
@@ -199,6 +200,7 @@ public class SchuelerSuchenCommand implements Command {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     private void createWhereSelectionsStammdatenSchuelerOhneGeburtsdatumSuchperiode() {
         if (person != null && checkNotEmpty(person.getVorname())) {
             selectStatementSb.append(" lower(s.vorname) like :vorname and");
@@ -230,6 +232,7 @@ public class SchuelerSuchenCommand implements Command {
         selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' löschen
     }
 
+    @SuppressWarnings("java:S3776")
     private void createWhereSelectionsStammdatenMutter() {
         // Einfache or-Abfrage für Eltern / alle (where s.vorname = :vorname or s.mutter.vorname = :vorname or s.vater.vorname = :vorname)
         // schlägt fehl, wenn mutter oder vater nicht existiert, auch wenn ein anderes or-Element, z.B. s.vorname = :vorname erfüllt wäre. Bug?
@@ -264,6 +267,7 @@ public class SchuelerSuchenCommand implements Command {
         selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' löschen
     }
 
+    @SuppressWarnings("java:S3776")
     private void createWhereSelectionsStammdatenVater() {
         if (person != null && checkNotEmpty(person.getVorname())) {
             selectStatementSb.append(" exists (select s1 from Schueler s1 where lower(s1.vater.vorname) like :vorname and s1.personId = s.personId) and");
@@ -295,6 +299,7 @@ public class SchuelerSuchenCommand implements Command {
         selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' löschen
     }
 
+    @SuppressWarnings("java:S3776")
     private void createWhereSelectionsStammdatenRechnungsempfaenger() {
         if (person != null && checkNotEmpty(person.getVorname())) {
             selectStatementSb.append(" lower(s.rechnungsempfaenger.vorname) like :vorname and");
@@ -326,6 +331,7 @@ public class SchuelerSuchenCommand implements Command {
         selectStatementSb.setLength(selectStatementSb.length() - 4);  // letztes ' and' löschen
     }
 
+    @SuppressWarnings("java:S3776")
     private void createWhereSelectionsGeburtsdatumSuchperiode() {
         if (geburtsdatumSuchperiodeBeginn == null && geburtsdatumSuchperiodeEnde == null) {
             return;
@@ -406,6 +412,7 @@ public class SchuelerSuchenCommand implements Command {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     private void createWhereSelectionsMaerchen() {
         if (maerchenFuerSucheBeruecksichtigen) {
             selectStatementSb.append(" mae.maerchen.maerchenId = :maerchenId and");
@@ -453,6 +460,7 @@ public class SchuelerSuchenCommand implements Command {
                     case (8) -> selectStatementSb.append(" mae.kuchenVorstellung8 = true and");
                     case (9) -> selectStatementSb.append(" mae.kuchenVorstellung9 = true and");
                     default -> {
+                        // Nothing to do
                     }
                 }
             }
@@ -554,14 +562,14 @@ public class SchuelerSuchenCommand implements Command {
         if (selectStatementSb.toString().contains(":maerchenrolle")) {
             String[] rollenSplitted = rollen.split("[,;]");
             for (int i = 0; i < rollenSplitted.length; i++) {
-                String rolle = rollenSplitted[i].trim().toLowerCase();
-                typedQuery.setParameter("maerchenrolleEq" + i, rolle);
+                String rolle1 = rollenSplitted[i].trim().toLowerCase();
+                typedQuery.setParameter("maerchenrolleEq" + i, rolle1);
                 // Like soll nur eigenständige Wörter finden
-                typedQuery.setParameter("maerchenrolleL1" + i, rolle + " %");
-                typedQuery.setParameter("maerchenrolleL2" + i, "% " + rolle);
-                typedQuery.setParameter("maerchenrolleL3" + i, "% " + rolle + " %");
-                typedQuery.setParameter("maerchenrolleL4" + i, rolle + ": %");
-                typedQuery.setParameter("maerchenrolleL5" + i, "% " + rolle + ": %");
+                typedQuery.setParameter("maerchenrolleL1" + i, rolle1 + " %");
+                typedQuery.setParameter("maerchenrolleL2" + i, "% " + rolle1);
+                typedQuery.setParameter("maerchenrolleL3" + i, "% " + rolle1 + " %");
+                typedQuery.setParameter("maerchenrolleL4" + i, rolle1 + ": %");
+                typedQuery.setParameter("maerchenrolleL5" + i, "% " + rolle1 + ": %");
             }
         }
         if (selectStatementSb.toString().contains(":elternmithilfeCodeId")) {

@@ -24,19 +24,19 @@ public class DeleteMaerchenCommand implements Command {
     // output
     private Result result;
 
-    public DeleteMaerchenCommand(List<Maerchen> Maerchens, int indexMaerchenToBeDeleted) {
-        this.maerchens = Maerchens;
+    public DeleteMaerchenCommand(List<Maerchen> maerchens, int indexMaerchenToBeDeleted) {
+        this.maerchens = maerchens;
         this.indexMaerchenToBeDeleted = indexMaerchenToBeDeleted;
     }
 
     @Override
     public void execute() {
-        Maerchen MaerchenToBeDeleted = maerchens.get(indexMaerchenToBeDeleted);
-        if (!MaerchenToBeDeleted.getMaercheneinteilungen().isEmpty()) {
+        Maerchen maerchenToBeDeleted = maerchens.get(indexMaerchenToBeDeleted);
+        if (!maerchenToBeDeleted.getMaercheneinteilungen().isEmpty()) {
             result = Result.MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT;
             return;
         }
-        maerchenDao.remove(MaerchenToBeDeleted);
+        maerchenDao.remove(maerchenToBeDeleted);
         maerchens.remove(indexMaerchenToBeDeleted);
         result = Result.LOESCHEN_ERFOLGREICH;
     }

@@ -3,6 +3,7 @@ package ch.metzenthin.svm.persistence.entities;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
@@ -77,6 +78,22 @@ public class Adresse {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Adresse adresse = (Adresse) o;
+        return Objects.equals(strasse, adresse.strasse)
+                && Objects.equals(hausnummer, adresse.hausnummer)
+                && Objects.equals(plz, adresse.plz)
+                && Objects.equals(ort, adresse.ort);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(strasse, hausnummer, plz, ort);
+    }
+
+    @Override
     public String toString() {
         StringBuilder adresseSb = new StringBuilder();
         if (strasse != null && !strasse.trim().isEmpty()) {
@@ -146,8 +163,8 @@ public class Adresse {
     public String getStrHausnummer() {
         String strHausnummer = getStrasseHausnummer();
         if (checkNotEmpty(strHausnummer)) {
-            strHausnummer = strHausnummer.replaceAll("strasse", "str.");
-            strHausnummer = strHausnummer.replaceAll("Strasse", "Str.");
+            strHausnummer = strHausnummer.replace("strasse", "str.");
+            strHausnummer = strHausnummer.replace("Strasse", "Str.");
         }
         return nullAsEmptyString(strHausnummer);
     }

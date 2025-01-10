@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.text.Collator;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Martin Schraner
@@ -32,7 +30,7 @@ public class Kursort implements Comparable<Kursort> {
     private Boolean selektierbar;
 
     @OneToMany(mappedBy = "kursort")
-    private final Set<Kurs> kurse = new HashSet<>();
+    private final List<Kurs> kurse = new ArrayList<>();
 
     public Kursort() {
     }
@@ -44,7 +42,8 @@ public class Kursort implements Comparable<Kursort> {
 
     public boolean isIdenticalWith(Kursort otherCode) {
         return otherCode != null
-                && ((bezeichnung == null && otherCode.getBezeichnung() == null) || (bezeichnung != null && bezeichnung.equals(otherCode.getBezeichnung())));
+                && ((bezeichnung == null && otherCode.getBezeichnung() == null)
+                || (bezeichnung != null && bezeichnung.equals(otherCode.getBezeichnung())));
     }
 
     public void copyAttributesFrom(Kursort otherKursort) {
@@ -53,11 +52,16 @@ public class Kursort implements Comparable<Kursort> {
     }
 
     @Override
-    public String toString() {
-        if (bezeichnung.equals("alle")) {
-            return "alle";
-        }
-        return bezeichnung;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Kursort kursort = (Kursort) o;
+        return Objects.equals(bezeichnung, kursort.bezeichnung);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(bezeichnung);
     }
 
     @Override
@@ -66,6 +70,14 @@ public class Kursort implements Comparable<Kursort> {
         Collator collator = Collator.getInstance(Locale.GERMAN);
         collator.setStrength(Collator.SECONDARY);// a == A, a < Ä
         return collator.compare(bezeichnung, otherKursort.bezeichnung);
+    }
+
+    @Override
+    public String toString() {
+        if (bezeichnung.equals("alle")) {
+            return "alle";
+        }
+        return bezeichnung;
     }
 
     public Integer getKursortId() {
@@ -93,7 +105,7 @@ public class Kursort implements Comparable<Kursort> {
         this.selektierbar = selektierbar;
     }
 
-    public Set<Kurs> getKurse() {
+    public List<Kurs> getKurse() {
         return kurse;
     }
 }

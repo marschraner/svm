@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 
 import java.util.List;
@@ -64,6 +64,7 @@ public class MaercheneinteilungenTableData {
             case ZUSATZATTRIBUT_MAERCHEN -> value = maercheneinteilung.getZusatzattribut();
             case BEMERKUNGEN -> value = maercheneinteilung.getBemerkungen();
             default -> {
+                // Nothing to do
             }
         }
         return value;

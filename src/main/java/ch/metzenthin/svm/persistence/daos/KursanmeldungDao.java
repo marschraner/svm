@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.daos;
 
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.persistence.entities.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -44,7 +44,7 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
         return kurseinteilungenFound;
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "java:S107", "java:S3776"})
     public List<Kursanmeldung> findKursanmeldungen(Schueler schueler, Semester semester, Wochentag wochentag, Time zeitBeginn, Mitarbeiter mitarbeiter, Calendar anmeldemonat, Calendar abmeldemonat, boolean keineAbgemeldetenKurseAnzeigen, Calendar stichtagSchuelerSuchen) {
 
         StringBuilder selectStatementSb = new StringBuilder("select k from Kursanmeldung k");
