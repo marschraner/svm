@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.MaerchenDao;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
-
 import java.util.List;
 
 /**
@@ -10,18 +9,17 @@ import java.util.List;
  */
 public class FindAllMaerchensCommand implements Command {
 
-    private final MaerchenDao maerchenDao = new MaerchenDao();
+  private final MaerchenDao maerchenDao = new MaerchenDao();
 
-    // output
-    private List<Maerchen> maerchensAll;
+  // output
+  private List<Maerchen> maerchensAll;
 
-    @Override
-    public void execute() {
-        maerchensAll = maerchenDao.findAll();
-    }
+  @Override
+  public void execute() {
+    maerchensAll = maerchenDao.findAll();
+  }
 
-    public List<Maerchen> getMaerchensAll() {
-        return maerchensAll;
-    }
-
+  public List<Maerchen> getMaerchensAll() {
+    return maerchensAll;
+  }
 }

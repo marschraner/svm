@@ -7,13 +7,12 @@ import static ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand.Result.A
  */
 public class AbbrechenResult extends SchuelerErfassenSaveResult {
 
-    public AbbrechenResult() {
-        super(ABBRECHEN);
-    }
+  public AbbrechenResult() {
+    super(ABBRECHEN);
+  }
 
-    @Override
-    public void accept(SchuelerErfassenSaveResultVisitor visitor) {
-        visitor.visit(this);
-    }
-
+  @Override
+  public void accept(SchuelerErfassenSaveResultVisitor visitor) {
+    visitor.visit(this);
+  }
 }

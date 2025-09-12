@@ -6,260 +6,282 @@ import ch.metzenthin.svm.domain.model.CodeErfassenModel;
 import ch.metzenthin.svm.domain.model.CodesModel;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.control.CodeErfassenController;
-
+import java.awt.*;
+import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
-import java.awt.*;
-import java.util.Locale;
 
 @SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
 public class CodeErfassenDialog extends JDialog {
 
-    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
-    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+  // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+  private static final boolean DEFAULT_BUTTON_ENABLED = false;
 
-    private JPanel contentPane;
-    private JPanel datenPanel;
-    private JTextField txtKuerzel;
-    private JTextField txtBeschreibung;
-    private JCheckBox checkBoxSelektierbar;
-    private JLabel errLblKuerzel;
-    private JLabel errLblBeschreibung;
-    private JButton btnSpeichern;
-    private JPanel buttonPanel;
-    private JButton btnAbbrechen;
+  private JPanel contentPane;
+  private JPanel datenPanel;
+  private JTextField txtKuerzel;
+  private JTextField txtBeschreibung;
+  private JCheckBox checkBoxSelektierbar;
+  private JLabel errLblKuerzel;
+  private JLabel errLblBeschreibung;
+  private JButton btnSpeichern;
+  private JPanel buttonPanel;
+  private JButton btnAbbrechen;
 
-    public CodeErfassenDialog(SvmContext svmContext, CodesTableModel codesTableModel, CodesModel codesModel, int indexBearbeiten, boolean isBearbeiten, String title, Codetyp codetyp) {
-        setContentPane(contentPane);
-        setModal(true);
-        setTitle(title);
-        initializeErrLbls();
-        if (DEFAULT_BUTTON_ENABLED) {
-            getRootPane().setDefaultButton(btnSpeichern);
-        }
-        createCodeErfassenController(svmContext, codesTableModel, codesModel, indexBearbeiten, isBearbeiten, codetyp);
+  public CodeErfassenDialog(
+      SvmContext svmContext,
+      CodesTableModel codesTableModel,
+      CodesModel codesModel,
+      int indexBearbeiten,
+      boolean isBearbeiten,
+      String title,
+      Codetyp codetyp) {
+    setContentPane(contentPane);
+    setModal(true);
+    setTitle(title);
+    initializeErrLbls();
+    if (DEFAULT_BUTTON_ENABLED) {
+      getRootPane().setDefaultButton(btnSpeichern);
     }
+    createCodeErfassenController(
+        svmContext, codesTableModel, codesModel, indexBearbeiten, isBearbeiten, codetyp);
+  }
 
-    private void createCodeErfassenController(SvmContext svmContext, CodesTableModel codesTableModel, CodesModel codesModel, int indexBearbeiten, boolean isBearbeiten, Codetyp codetyp) {
-        CodeErfassenModel codeErfassenModel = (isBearbeiten ? codesModel.getCodeErfassenModel(svmContext, indexBearbeiten, codetyp) : svmContext.getModelFactory().createCodeErfassenModel());
-        CodeErfassenController codeErfassenController = new CodeErfassenController(svmContext, codesTableModel, codeErfassenModel, codetyp, isBearbeiten, DEFAULT_BUTTON_ENABLED);
-        codeErfassenController.setCodeErfassenDialog(this);
-        codeErfassenController.setContentPane(contentPane);
-        codeErfassenController.setTxtKuerzel(txtKuerzel);
-        codeErfassenController.setTxtBeschreibung(txtBeschreibung);
-        codeErfassenController.setCheckBoxSelektierbar(checkBoxSelektierbar);
-        codeErfassenController.setBtnSpeichern(btnSpeichern);
-        codeErfassenController.setBtnAbbrechen(btnAbbrechen);
-        codeErfassenController.setErrLblKuerzel(errLblKuerzel);
-        codeErfassenController.setErrLblBeschreibung(errLblBeschreibung);
-        codeErfassenController.constructionDone();
-    }
+  private void createCodeErfassenController(
+      SvmContext svmContext,
+      CodesTableModel codesTableModel,
+      CodesModel codesModel,
+      int indexBearbeiten,
+      boolean isBearbeiten,
+      Codetyp codetyp) {
+    CodeErfassenModel codeErfassenModel =
+        (isBearbeiten
+            ? codesModel.getCodeErfassenModel(svmContext, indexBearbeiten, codetyp)
+            : svmContext.getModelFactory().createCodeErfassenModel());
+    CodeErfassenController codeErfassenController =
+        new CodeErfassenController(
+            svmContext,
+            codesTableModel,
+            codeErfassenModel,
+            codetyp,
+            isBearbeiten,
+            DEFAULT_BUTTON_ENABLED);
+    codeErfassenController.setCodeErfassenDialog(this);
+    codeErfassenController.setContentPane(contentPane);
+    codeErfassenController.setTxtKuerzel(txtKuerzel);
+    codeErfassenController.setTxtBeschreibung(txtBeschreibung);
+    codeErfassenController.setCheckBoxSelektierbar(checkBoxSelektierbar);
+    codeErfassenController.setBtnSpeichern(btnSpeichern);
+    codeErfassenController.setBtnAbbrechen(btnAbbrechen);
+    codeErfassenController.setErrLblKuerzel(errLblKuerzel);
+    codeErfassenController.setErrLblBeschreibung(errLblBeschreibung);
+    codeErfassenController.constructionDone();
+  }
 
-    private void initializeErrLbls() {
-        errLblKuerzel.setVisible(false);
-        errLblKuerzel.setForeground(Color.RED);
-        errLblBeschreibung.setVisible(false);
-        errLblBeschreibung.setForeground(Color.RED);
-    }
+  private void initializeErrLbls() {
+    errLblKuerzel.setVisible(false);
+    errLblKuerzel.setForeground(Color.RED);
+    errLblBeschreibung.setVisible(false);
+    errLblBeschreibung.setForeground(Color.RED);
+  }
 
-    {
+  {
 // GUI initializer generated by IntelliJ IDEA GUI Designer
 // >>> IMPORTANT!! <<<
 // DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
+    $$$setupUI$$$();
+  }
 
-    /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
-     */
-    private void $$$setupUI$$$() {
-        contentPane = new JPanel();
-        contentPane.setLayout(new BorderLayout(0, 0));
-        datenPanel = new JPanel();
-        datenPanel.setLayout(new GridBagLayout());
-        contentPane.add(datenPanel, BorderLayout.CENTER);
-        final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridBagLayout());
-        GridBagConstraints gbc;
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(10, 10, 10, 10);
-        datenPanel.add(panel1, gbc);
-        panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Code", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel1.getFont()), null));
-        final JLabel label1 = new JLabel();
-        label1.setText("Kürzel");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel1.add(label1, gbc);
-        final JPanel spacer1 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel1.add(spacer1, gbc);
-        final JPanel spacer2 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel1.add(spacer2, gbc);
-        final JPanel spacer3 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel1.add(spacer3, gbc);
-        final JPanel spacer4 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel1.add(spacer4, gbc);
-        final JPanel spacer5 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 300;
-        panel1.add(spacer5, gbc);
-        txtKuerzel = new JTextField();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel1.add(txtKuerzel, gbc);
-        errLblKuerzel = new JLabel();
-        errLblKuerzel.setText("errLblKuerzel");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel1.add(errLblKuerzel, gbc);
-        final JLabel label2 = new JLabel();
-        label2.setText("Beschreibung");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 0, 0, 15);
-        panel1.add(label2, gbc);
-        txtBeschreibung = new JTextField();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 4;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel1.add(txtBeschreibung, gbc);
-        errLblBeschreibung = new JLabel();
-        errLblBeschreibung.setText("errLblBeschreibung");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel1.add(errLblBeschreibung, gbc);
-        final JPanel spacer6 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 7;
-        gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel1.add(spacer6, gbc);
-        final JPanel spacer7 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 5;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel1.add(spacer7, gbc);
-        final JLabel label3 = new JLabel();
-        label3.setText("Selektierbar");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 6;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel1.add(label3, gbc);
-        checkBoxSelektierbar = new JCheckBox();
-        checkBoxSelektierbar.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 6;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel1.add(checkBoxSelektierbar, gbc);
-        buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridBagLayout());
-        contentPane.add(buttonPanel, BorderLayout.SOUTH);
-        btnSpeichern = new JButton();
-        btnSpeichern.setMaximumSize(new Dimension(114, 29));
-        btnSpeichern.setMinimumSize(new Dimension(114, 29));
-        btnSpeichern.setPreferredSize(new Dimension(114, 29));
-        btnSpeichern.setText("Speichern");
-        btnSpeichern.setMnemonic('S');
-        btnSpeichern.setDisplayedMnemonicIndex(0);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5, 5, 10, 5);
-        buttonPanel.add(btnSpeichern, gbc);
-        btnAbbrechen = new JButton();
-        btnAbbrechen.setMaximumSize(new Dimension(114, 29));
-        btnAbbrechen.setMinimumSize(new Dimension(114, 29));
-        btnAbbrechen.setPreferredSize(new Dimension(114, 29));
-        btnAbbrechen.setText("Abbrechen");
-        btnAbbrechen.setMnemonic('A');
-        btnAbbrechen.setDisplayedMnemonicIndex(0);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5, 5, 10, 5);
-        buttonPanel.add(btnAbbrechen, gbc);
-        label1.setLabelFor(txtKuerzel);
-        label2.setLabelFor(txtBeschreibung);
-    }
+  /** Method generated by IntelliJ IDEA GUI Designer
+   * >>> IMPORTANT!! <<<
+   * DO NOT edit this method OR call it in your code!
+   * @noinspection ALL
+   */
+  private void $$$setupUI$$$() {
+    contentPane = new JPanel();
+    contentPane.setLayout(new BorderLayout(0, 0));
+    datenPanel = new JPanel();
+    datenPanel.setLayout(new GridBagLayout());
+    contentPane.add(datenPanel, BorderLayout.CENTER);
+    final JPanel panel1 = new JPanel();
+    panel1.setLayout(new GridBagLayout());
+    GridBagConstraints gbc;
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.BOTH;
+    gbc.insets = new Insets(10, 10, 10, 10);
+    datenPanel.add(panel1, gbc);
+    panel1.setBorder(
+        BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Code", TitledBorder.DEFAULT_JUSTIFICATION,
+            TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel1.getFont()), null));
+    final JLabel label1 = new JLabel();
+    label1.setText("Kürzel");
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 2;
+    gbc.gridwidth = 2;
+    gbc.anchor = GridBagConstraints.WEST;
+    panel1.add(label1, gbc);
+    final JPanel spacer1 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 4;
+    gbc.gridy = 2;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel1.add(spacer1, gbc);
+    final JPanel spacer2 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 3;
+    gbc.gridwidth = 2;
+    gbc.fill = GridBagConstraints.VERTICAL;
+    panel1.add(spacer2, gbc);
+    final JPanel spacer3 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 2;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel1.add(spacer3, gbc);
+    final JPanel spacer4 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.VERTICAL;
+    panel1.add(spacer4, gbc);
+    final JPanel spacer5 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 3;
+    gbc.gridy = 0;
+    gbc.weightx = 1.0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.ipadx = 300;
+    panel1.add(spacer5, gbc);
+    txtKuerzel = new JTextField();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 3;
+    gbc.gridy = 2;
+    gbc.anchor = GridBagConstraints.WEST;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel1.add(txtKuerzel, gbc);
+    errLblKuerzel = new JLabel();
+    errLblKuerzel.setText("errLblKuerzel");
+    gbc = new GridBagConstraints();
+    gbc.gridx = 3;
+    gbc.gridy = 1;
+    gbc.anchor = GridBagConstraints.WEST;
+    panel1.add(errLblKuerzel, gbc);
+    final JLabel label2 = new JLabel();
+    label2.setText("Beschreibung");
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 4;
+    gbc.gridwidth = 2;
+    gbc.anchor = GridBagConstraints.WEST;
+    gbc.insets = new Insets(0, 0, 0, 15);
+    panel1.add(label2, gbc);
+    txtBeschreibung = new JTextField();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 3;
+    gbc.gridy = 4;
+    gbc.anchor = GridBagConstraints.WEST;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel1.add(txtBeschreibung, gbc);
+    errLblBeschreibung = new JLabel();
+    errLblBeschreibung.setText("errLblBeschreibung");
+    gbc = new GridBagConstraints();
+    gbc.gridx = 3;
+    gbc.gridy = 3;
+    gbc.anchor = GridBagConstraints.WEST;
+    panel1.add(errLblBeschreibung, gbc);
+    final JPanel spacer6 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 7;
+    gbc.gridwidth = 2;
+    gbc.fill = GridBagConstraints.VERTICAL;
+    panel1.add(spacer6, gbc);
+    final JPanel spacer7 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 5;
+    gbc.fill = GridBagConstraints.VERTICAL;
+    panel1.add(spacer7, gbc);
+    final JLabel label3 = new JLabel();
+    label3.setText("Selektierbar");
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 6;
+    gbc.gridwidth = 2;
+    gbc.anchor = GridBagConstraints.WEST;
+    panel1.add(label3, gbc);
+    checkBoxSelektierbar = new JCheckBox();
+    checkBoxSelektierbar.setText("");
+    gbc = new GridBagConstraints();
+    gbc.gridx = 3;
+    gbc.gridy = 6;
+    gbc.anchor = GridBagConstraints.WEST;
+    panel1.add(checkBoxSelektierbar, gbc);
+    buttonPanel = new JPanel();
+    buttonPanel.setLayout(new GridBagLayout());
+    contentPane.add(buttonPanel, BorderLayout.SOUTH);
+    btnSpeichern = new JButton();
+    btnSpeichern.setMaximumSize(new Dimension(114, 29));
+    btnSpeichern.setMinimumSize(new Dimension(114, 29));
+    btnSpeichern.setPreferredSize(new Dimension(114, 29));
+    btnSpeichern.setText("Speichern");
+    btnSpeichern.setMnemonic('S');
+    btnSpeichern.setDisplayedMnemonicIndex(0);
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.insets = new Insets(5, 5, 10, 5);
+    buttonPanel.add(btnSpeichern, gbc);
+    btnAbbrechen = new JButton();
+    btnAbbrechen.setMaximumSize(new Dimension(114, 29));
+    btnAbbrechen.setMinimumSize(new Dimension(114, 29));
+    btnAbbrechen.setPreferredSize(new Dimension(114, 29));
+    btnAbbrechen.setText("Abbrechen");
+    btnAbbrechen.setMnemonic('A');
+    btnAbbrechen.setDisplayedMnemonicIndex(0);
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.insets = new Insets(5, 5, 10, 5);
+    buttonPanel.add(btnAbbrechen, gbc);
+    label1.setLabelFor(txtKuerzel);
+    label2.setLabelFor(txtBeschreibung);
+  }
 
-    /**
-     * @noinspection ALL
-     */
-    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
-        if (currentFont == null) return null;
-        String resultName;
-        if (fontName == null) {
-            resultName = currentFont.getName();
-        } else {
-            Font testFont = new Font(fontName, Font.PLAIN, 10);
-            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
-                resultName = fontName;
-            } else {
-                resultName = currentFont.getName();
-            }
-        }
-        Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
-        boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
-        Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
-        return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
+  /** @noinspection ALL */
+  private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+    if (currentFont == null)
+      return null;
+    String resultName;
+    if (fontName == null) {
+      resultName = currentFont.getName();
+    } else {
+      Font testFont = new Font(fontName, Font.PLAIN, 10);
+      if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+        resultName = fontName;
+      } else {
+        resultName = currentFont.getName();
+      }
     }
+    Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(),
+        size >= 0 ? size : currentFont.getSize());
+    boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
+    Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize())
+        : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
+    return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
+  }
 
-    /**
-     * @noinspection ALL
-     */
-    public JComponent $$$getRootComponent$$$() {
-        return contentPane;
-    }
+  /** @noinspection ALL */
+  public JComponent $$$getRootComponent$$$() {
+    return contentPane;
+  }
 
 }

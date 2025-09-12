@@ -4,20 +4,20 @@ package ch.metzenthin.svm.common.datatypes;
  * @author Martin Schraner
  */
 public enum EmailEmpfaenger {
-    MUTTER("Mutter"),
-    MUTTER_UND_VATER("Mutter und Vater"),
-    VATER("Vater"),
-    RECHNUNGSEMPFAENGER("Rechnungsempfänger"),
-    SCHUELER("Schüler");
+  MUTTER("Mutter"),
+  MUTTER_UND_VATER("Mutter und Vater"),
+  VATER("Vater"),
+  RECHNUNGSEMPFAENGER("Rechnungsempfänger"),
+  SCHUELER("Schüler");
 
-    private final String name;
+  private final String name;
 
-    EmailEmpfaenger(String name) {
-        this.name = name;
-    }
+  EmailEmpfaenger(String name) {
+    this.name = name;
+  }
 
-    @Override
-    public String toString() {
-        return name;
-    }
+  @Override
+  public String toString() {
+    return name;
+  }
 }

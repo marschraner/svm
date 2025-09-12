@@ -12,33 +12,47 @@ import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
  */
 public class DispensationenModelImpl extends AbstractModel implements DispensationenModel {
 
-    @Override
-    public void eintragLoeschen(DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexDispensationToBeDeleted) {
-        CommandInvoker commandInvoker = getCommandInvoker();
-        RemoveDispensationFromSchuelerCommand removeDispensationFromSchuelerCommand = new RemoveDispensationFromSchuelerCommand(indexDispensationToBeDeleted, schuelerDatenblattModel.getSchueler());
-        commandInvoker.executeCommandAsTransaction(removeDispensationFromSchuelerCommand);
-        Schueler schuelerUpdated = removeDispensationFromSchuelerCommand.getSchuelerUpdated();
-        // TableData mit von der Datenbank upgedatetem Schüler updaten
-        if (schuelerUpdated != null) {
-            dispensationenTableModel.getDispensationenTableData().setDispensationen(schuelerUpdated.getDispensationen());
-        }
+  @Override
+  public void eintragLoeschen(
+      DispensationenTableModel dispensationenTableModel,
+      SchuelerDatenblattModel schuelerDatenblattModel,
+      int indexDispensationToBeDeleted) {
+    CommandInvoker commandInvoker = getCommandInvoker();
+    RemoveDispensationFromSchuelerCommand removeDispensationFromSchuelerCommand =
+        new RemoveDispensationFromSchuelerCommand(
+            indexDispensationToBeDeleted, schuelerDatenblattModel.getSchueler());
+    commandInvoker.executeCommandAsTransaction(removeDispensationFromSchuelerCommand);
+    Schueler schuelerUpdated = removeDispensationFromSchuelerCommand.getSchuelerUpdated();
+    // TableData mit von der Datenbank upgedatetem Schüler updaten
+    if (schuelerUpdated != null) {
+      dispensationenTableModel
+          .getDispensationenTableData()
+          .setDispensationen(schuelerUpdated.getDispensationen());
     }
+  }
 
-    @Override
-    public DispensationErfassenModel getDispensationErfassenModel(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel, int indexDispensationToBeModified) {
-        DispensationErfassenModel dispensationErfassenModel = svmContext.getModelFactory().createDispensationErfassenModel();
-        dispensationErfassenModel.setDispensationOrigin(schuelerDatenblattModel.getSchueler().getDispensationen().get(indexDispensationToBeModified));
-        return dispensationErfassenModel;
-    }
+  @Override
+  public DispensationErfassenModel getDispensationErfassenModel(
+      SvmContext svmContext,
+      SchuelerDatenblattModel schuelerDatenblattModel,
+      int indexDispensationToBeModified) {
+    DispensationErfassenModel dispensationErfassenModel =
+        svmContext.getModelFactory().createDispensationErfassenModel();
+    dispensationErfassenModel.setDispensationOrigin(
+        schuelerDatenblattModel
+            .getSchueler()
+            .getDispensationen()
+            .get(indexDispensationToBeModified));
+    return dispensationErfassenModel;
+  }
 
-    @Override
-    void doValidate() throws SvmValidationException {
-        // Keine feldübergreifende Validierung notwendig
-    }
+  @Override
+  void doValidate() throws SvmValidationException {
+    // Keine feldübergreifende Validierung notwendig
+  }
 
-    @Override
-    public boolean isCompleted() {
-        return true;
-    }
-
+  @Override
+  public boolean isCompleted() {
+    return true;
+  }
 }

@@ -6,14 +6,13 @@ import ch.metzenthin.svm.ui.control.SchuelerErfassenController;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.util.Locale;
 
 /**
  * @author Hans Stamm
@@ -21,430 +20,476 @@ import java.util.Locale;
 @SuppressWarnings({"java:S100", "java:S1450"})
 public class SchuelerErfassenPanel {
 
-    // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
-    private static final boolean DEFAULT_BUTTON_ENABLED = false;
+  // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+  private static final boolean DEFAULT_BUTTON_ENABLED = false;
 
-    private JPanel panel;
-    private SchuelerPanel schuelerPanel;
-    private AngehoerigerPanel mutterPanel;
-    private AngehoerigerPanel vaterPanel;
-    private AngehoerigerPanel drittempfaengerPanel;
-    private JButton btnSpeichern;
-    private JButton btnAbbrechen;
-    private JPanel titelPanel;
-    private JPanel buttonPanel;
-    private JLabel lblTitel;
-    private JPanel datenPanel;
-    private JButton btnSchuelerLoeschen;
-    private JButton btnFruehereAnmeldungenLoeschen;
-    private SchuelerErfassenController schuelerErfassenController;
+  private JPanel panel;
+  private SchuelerPanel schuelerPanel;
+  private AngehoerigerPanel mutterPanel;
+  private AngehoerigerPanel vaterPanel;
+  private AngehoerigerPanel drittempfaengerPanel;
+  private JButton btnSpeichern;
+  private JButton btnAbbrechen;
+  private JPanel titelPanel;
+  private JPanel buttonPanel;
+  private JLabel lblTitel;
+  private JPanel datenPanel;
+  private JButton btnSchuelerLoeschen;
+  private JButton btnFruehereAnmeldungenLoeschen;
+  private SchuelerErfassenController schuelerErfassenController;
 
-    public SchuelerErfassenPanel(SvmContext svmContext) {
-        this(svmContext, null);
+  public SchuelerErfassenPanel(SvmContext svmContext) {
+    this(svmContext, null);
+  }
+
+  public SchuelerErfassenPanel(
+      SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel) {
+    $$$setupUI$$$();
+    initTitel(schuelerDatenblattModel);
+    if (DEFAULT_BUTTON_ENABLED) {
+      svmContext.getRootPaneJFrame().setDefaultButton(btnSpeichern);
     }
+    createSchuelerErfassenController(svmContext, schuelerDatenblattModel);
+  }
 
-    public SchuelerErfassenPanel(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel) {
-        $$$setupUI$$$();
-        initTitel(schuelerDatenblattModel);
-        if (DEFAULT_BUTTON_ENABLED) {
-            svmContext.getRootPaneJFrame().setDefaultButton(btnSpeichern);
-        }
-        createSchuelerErfassenController(svmContext, schuelerDatenblattModel);
-    }
+  private void createSchuelerErfassenController(
+      SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel) {
+    schuelerErfassenController =
+        new SchuelerErfassenController(
+            svmContext,
+            svmContext.getModelFactory().createSchuelerErfassenModel(),
+            (schuelerDatenblattModel != null),
+            DEFAULT_BUTTON_ENABLED);
+    schuelerErfassenController.setSchuelerPanel(
+        schuelerPanel,
+        (schuelerDatenblattModel == null)
+            ? svmContext.getModelFactory().createSchuelerModel()
+            : schuelerDatenblattModel.getSchuelerModel(svmContext));
+    schuelerErfassenController.setMutterPanel(
+        mutterPanel,
+        (schuelerDatenblattModel == null)
+            ? svmContext.getModelFactory().createAngehoerigerModel()
+            : schuelerDatenblattModel.getMutterModel(svmContext));
+    schuelerErfassenController.setVaterPanel(
+        vaterPanel,
+        (schuelerDatenblattModel == null)
+            ? svmContext.getModelFactory().createAngehoerigerModel()
+            : schuelerDatenblattModel.getVaterModel(svmContext));
+    schuelerErfassenController.setDrittempfaengerPanel(
+        drittempfaengerPanel,
+        (schuelerDatenblattModel == null)
+            ? svmContext.getModelFactory().createAngehoerigerModel()
+            : schuelerDatenblattModel.getRechnungsempfaengerModel(svmContext));
+    schuelerErfassenController.setBtnSpeichern(btnSpeichern);
+    schuelerErfassenController.setBtnAbbrechen(btnAbbrechen);
+    schuelerErfassenController.setBtnSchuelerLoeschen(btnSchuelerLoeschen);
+    schuelerErfassenController.setBtnFruehereAnmeldungenLoeschen(btnFruehereAnmeldungenLoeschen);
+    schuelerErfassenController.constructionDone();
+  }
 
-    private void createSchuelerErfassenController(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel) {
-        schuelerErfassenController = new SchuelerErfassenController(svmContext, svmContext.getModelFactory().createSchuelerErfassenModel(), (schuelerDatenblattModel != null), DEFAULT_BUTTON_ENABLED);
-        schuelerErfassenController.setSchuelerPanel(schuelerPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createSchuelerModel() : schuelerDatenblattModel.getSchuelerModel(svmContext));
-        schuelerErfassenController.setMutterPanel(mutterPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createAngehoerigerModel() : schuelerDatenblattModel.getMutterModel(svmContext));
-        schuelerErfassenController.setVaterPanel(vaterPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createAngehoerigerModel() : schuelerDatenblattModel.getVaterModel(svmContext));
-        schuelerErfassenController.setDrittempfaengerPanel(drittempfaengerPanel, (schuelerDatenblattModel == null) ? svmContext.getModelFactory().createAngehoerigerModel() : schuelerDatenblattModel.getRechnungsempfaengerModel(svmContext));
-        schuelerErfassenController.setBtnSpeichern(btnSpeichern);
-        schuelerErfassenController.setBtnAbbrechen(btnAbbrechen);
-        schuelerErfassenController.setBtnSchuelerLoeschen(btnSchuelerLoeschen);
-        schuelerErfassenController.setBtnFruehereAnmeldungenLoeschen(btnFruehereAnmeldungenLoeschen);
-        schuelerErfassenController.constructionDone();
+  private void initTitel(SchuelerDatenblattModel schuelerDatenblattModel) {
+    if (schuelerDatenblattModel != null) {
+      lblTitel.setText(
+          "Stammdaten "
+              + schuelerDatenblattModel.getSchueler().getVorname()
+              + " "
+              + schuelerDatenblattModel.getSchueler().getNachname());
+    } else {
+      lblTitel.setText("Neuen Schüler erfassen");
     }
+  }
 
-    private void initTitel(SchuelerDatenblattModel schuelerDatenblattModel) {
-        if (schuelerDatenblattModel != null) {
-            lblTitel.setText("Stammdaten " + schuelerDatenblattModel.getSchueler().getVorname() + " " + schuelerDatenblattModel.getSchueler().getNachname());
-        } else {
-            lblTitel.setText("Neuen Schüler erfassen");
-        }
-    }
+  public void addCloseListener(ActionListener actionListener) {
+    schuelerErfassenController.addCloseListener(actionListener);
+  }
 
-    public void addCloseListener(ActionListener actionListener) {
-        schuelerErfassenController.addCloseListener(actionListener);
-    }
+  public void addNextPanelListener(ActionListener nextPanelListener) {
+    schuelerErfassenController.addNextPanelListener(nextPanelListener);
+  }
 
-    public void addNextPanelListener(ActionListener nextPanelListener) {
-        schuelerErfassenController.addNextPanelListener(nextPanelListener);
-    }
+  public void addZurueckZuDatenblattListener(ActionListener zurueckZuDatenblattListener) {
+    schuelerErfassenController.addZurueckZuDatenblattListener(zurueckZuDatenblattListener);
+  }
 
-    public void addZurueckZuDatenblattListener(ActionListener zurueckZuDatenblattListener) {
-        schuelerErfassenController.addZurueckZuDatenblattListener(zurueckZuDatenblattListener);
-    }
+  /** Method generated by IntelliJ IDEA GUI Designer
+   * >>> IMPORTANT!! <<<
+   * DO NOT edit this method OR call it in your code!
+   * @noinspection ALL
+   */
+  private void $$$setupUI$$$() {
+    panel = new JPanel();
+    panel.setLayout(new BorderLayout(0, 0));
+    final JPanel panel1 = new JPanel();
+    panel1.setLayout(new GridBagLayout());
+    panel.add(panel1, BorderLayout.CENTER);
+    titelPanel = new JPanel();
+    titelPanel.setLayout(new GridBagLayout());
+    GridBagConstraints gbc;
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.anchor = GridBagConstraints.NORTH;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.insets = new Insets(10, 10, 20, 10);
+    panel1.add(titelPanel, gbc);
+    lblTitel = new JLabel();
+    Font lblTitelFont = this.$$$getFont$$$(null, -1, 36, lblTitel.getFont());
+    if (lblTitelFont != null)
+      lblTitel.setFont(lblTitelFont);
+    lblTitel.setText("Neuen Schüler erfassen");
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.anchor = GridBagConstraints.WEST;
+    titelPanel.add(lblTitel, gbc);
+    final JPanel spacer1 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    gbc.weightx = 1.0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    titelPanel.add(spacer1, gbc);
+    datenPanel = new JPanel();
+    datenPanel.setLayout(new GridBagLayout());
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    gbc.weightx = 1.0;
+    gbc.weighty = 1.0;
+    gbc.fill = GridBagConstraints.BOTH;
+    panel1.add(datenPanel, gbc);
+    final JScrollPane scrollPane1 = new JScrollPane();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.weightx = 1.0;
+    gbc.weighty = 1.0;
+    gbc.fill = GridBagConstraints.BOTH;
+    datenPanel.add(scrollPane1, gbc);
+    final JPanel panel2 = new JPanel();
+    panel2.setLayout(new GridLayoutManager(1, 2, new Insets(10, 10, 10, 10), -1, -1, true, false));
+    scrollPane1.setViewportView(panel2);
+    final JPanel panel3 = new JPanel();
+    panel3.setLayout(new GridBagLayout());
+    panel2.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+    final JPanel panel4 = new JPanel();
+    panel4.setLayout(new GridBagLayout());
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.weightx = 0.5;
+    gbc.anchor = GridBagConstraints.NORTH;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.insets = new Insets(0, 0, 10, 0);
+    panel3.add(panel4, gbc);
+    panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schüler",
+        TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION,
+        this.$$$getFont$$$(null, Font.BOLD, -1, panel4.getFont()), new Color(-16777216)));
+    schuelerPanel = new SchuelerPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    gbc.weightx = 0.5;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel4.add(schuelerPanel.$$$getRootComponent$$$(), gbc);
+    final JPanel spacer2 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 2;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel4.add(spacer2, gbc);
+    final JPanel spacer3 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 1;
+    gbc.fill = GridBagConstraints.VERTICAL;
+    panel4.add(spacer3, gbc);
+    final JPanel spacer4 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel4.add(spacer4, gbc);
+    final JPanel spacer5 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 2;
+    gbc.weighty = 1.0;
+    gbc.fill = GridBagConstraints.VERTICAL;
+    panel3.add(spacer5, gbc);
+    final JPanel panel5 = new JPanel();
+    panel5.setLayout(new GridBagLayout());
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    gbc.weightx = 0.5;
+    gbc.anchor = GridBagConstraints.NORTH;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel3.add(panel5, gbc);
+    panel5.setBorder(
+        BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Rechnungsempfänger Drittperson",
+            TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION,
+            this.$$$getFont$$$(null, Font.BOLD, -1, panel5.getFont()), new Color(-16777216)));
+    drittempfaengerPanel = new AngehoerigerPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    gbc.weightx = 0.5;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel5.add(drittempfaengerPanel.$$$getRootComponent$$$(), gbc);
+    final JPanel spacer6 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 2;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel5.add(spacer6, gbc);
+    final JPanel spacer7 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel5.add(spacer7, gbc);
+    final JPanel panel6 = new JPanel();
+    panel6.setLayout(new GridBagLayout());
+    panel2.add(panel6, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+    final JPanel panel7 = new JPanel();
+    panel7.setLayout(new GridBagLayout());
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.gridwidth = 3;
+    gbc.weightx = 0.5;
+    gbc.anchor = GridBagConstraints.NORTH;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.insets = new Insets(0, 0, 10, 0);
+    panel6.add(panel7, gbc);
+    panel7.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mutter",
+        TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION,
+        this.$$$getFont$$$(null, Font.BOLD, -1, panel7.getFont()), new Color(-16777216)));
+    final JPanel spacer8 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 1;
+    gbc.fill = GridBagConstraints.VERTICAL;
+    panel7.add(spacer8, gbc);
+    final JPanel spacer9 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 2;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel7.add(spacer9, gbc);
+    mutterPanel = new AngehoerigerPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    gbc.weightx = 0.5;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel7.add(mutterPanel.$$$getRootComponent$$$(), gbc);
+    final JPanel spacer10 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel7.add(spacer10, gbc);
+    final JPanel spacer11 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 2;
+    gbc.gridwidth = 2;
+    gbc.weighty = 1.0;
+    gbc.fill = GridBagConstraints.VERTICAL;
+    panel6.add(spacer11, gbc);
+    final JPanel panel8 = new JPanel();
+    panel8.setLayout(new GridBagLayout());
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    gbc.gridwidth = 3;
+    gbc.weightx = 0.5;
+    gbc.anchor = GridBagConstraints.NORTH;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel6.add(panel8, gbc);
+    panel8.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Vater",
+        TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION,
+        this.$$$getFont$$$(null, Font.BOLD, -1, panel8.getFont()), new Color(-16777216)));
+    vaterPanel = new AngehoerigerPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    gbc.weightx = 0.5;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel8.add(vaterPanel.$$$getRootComponent$$$(), gbc);
+    final JPanel spacer12 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 2;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel8.add(spacer12, gbc);
+    final JPanel spacer13 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel8.add(spacer13, gbc);
+    buttonPanel = new JPanel();
+    buttonPanel.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1, true, false));
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 2;
+    gbc.fill = GridBagConstraints.BOTH;
+    panel1.add(buttonPanel, gbc);
+    final JPanel panel9 = new JPanel();
+    panel9.setLayout(new GridBagLayout());
+    buttonPanel.add(panel9, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+    btnAbbrechen = new JButton();
+    btnAbbrechen.setMaximumSize(new Dimension(114, 29));
+    btnAbbrechen.setMinimumSize(new Dimension(114, 29));
+    btnAbbrechen.setPreferredSize(new Dimension(114, 29));
+    btnAbbrechen.setText("Abbrechen");
+    btnAbbrechen.setMnemonic('A');
+    btnAbbrechen.setDisplayedMnemonicIndex(0);
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 1;
+    gbc.insets = new Insets(0, 0, 0, 10);
+    panel9.add(btnAbbrechen, gbc);
+    final JPanel spacer14 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    gbc.weightx = 1.0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel9.add(spacer14, gbc);
+    final JPanel spacer15 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.VERTICAL;
+    panel9.add(spacer15, gbc);
+    final JPanel spacer16 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 2;
+    gbc.fill = GridBagConstraints.VERTICAL;
+    panel9.add(spacer16, gbc);
+    final Spacer spacer17 = new Spacer();
+    buttonPanel.add(spacer17,
+        new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1,
+            GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+    final JPanel panel10 = new JPanel();
+    panel10.setLayout(new GridBagLayout());
+    buttonPanel.add(panel10, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+    final JPanel spacer18 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 4;
+    gbc.gridy = 1;
+    gbc.weightx = 1.0;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel10.add(spacer18, gbc);
+    final JPanel spacer19 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 2;
+    gbc.fill = GridBagConstraints.VERTICAL;
+    panel10.add(spacer19, gbc);
+    final JPanel spacer20 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.VERTICAL;
+    panel10.add(spacer20, gbc);
+    btnFruehereAnmeldungenLoeschen = new JButton();
+    btnFruehereAnmeldungenLoeschen.setMaximumSize(new Dimension(252, 29));
+    btnFruehereAnmeldungenLoeschen.setMinimumSize(new Dimension(252, 29));
+    btnFruehereAnmeldungenLoeschen.setPreferredSize(new Dimension(252, 29));
+    btnFruehereAnmeldungenLoeschen.setText("Frühere Anmeldungen löschen");
+    gbc = new GridBagConstraints();
+    gbc.gridx = 3;
+    gbc.gridy = 1;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel10.add(btnFruehereAnmeldungenLoeschen, gbc);
+    final JPanel spacer21 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 2;
+    gbc.gridy = 1;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel10.add(spacer21, gbc);
+    btnSchuelerLoeschen = new JButton();
+    btnSchuelerLoeschen.setMaximumSize(new Dimension(148, 29));
+    btnSchuelerLoeschen.setMinimumSize(new Dimension(148, 29));
+    btnSchuelerLoeschen.setPreferredSize(new Dimension(148, 29));
+    btnSchuelerLoeschen.setText("Schüler löschen");
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 1;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel10.add(btnSchuelerLoeschen, gbc);
+    final JPanel panel11 = new JPanel();
+    panel11.setLayout(new GridBagLayout());
+    buttonPanel.add(panel11, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+    btnSpeichern = new JButton();
+    btnSpeichern.setMaximumSize(new Dimension(114, 29));
+    btnSpeichern.setMinimumSize(new Dimension(114, 29));
+    btnSpeichern.setPreferredSize(new Dimension(114, 29));
+    btnSpeichern.setSelected(true);
+    btnSpeichern.setText("Speichern");
+    btnSpeichern.setMnemonic('S');
+    btnSpeichern.setDisplayedMnemonicIndex(0);
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    panel11.add(btnSpeichern, gbc);
+    final JPanel spacer22 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 2;
+    gbc.fill = GridBagConstraints.VERTICAL;
+    panel11.add(spacer22, gbc);
+    final JPanel spacer23 = new JPanel();
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.fill = GridBagConstraints.VERTICAL;
+    panel11.add(spacer23, gbc);
+  }
 
-    /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
-     */
-    private void $$$setupUI$$$() {
-        panel = new JPanel();
-        panel.setLayout(new BorderLayout(0, 0));
-        final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridBagLayout());
-        panel.add(panel1, BorderLayout.CENTER);
-        titelPanel = new JPanel();
-        titelPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbc;
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 10, 20, 10);
-        panel1.add(titelPanel, gbc);
-        lblTitel = new JLabel();
-        Font lblTitelFont = this.$$$getFont$$$(null, -1, 36, lblTitel.getFont());
-        if (lblTitelFont != null) lblTitel.setFont(lblTitelFont);
-        lblTitel.setText("Neuen Schüler erfassen");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
-        titelPanel.add(lblTitel, gbc);
-        final JPanel spacer1 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        titelPanel.add(spacer1, gbc);
-        datenPanel = new JPanel();
-        datenPanel.setLayout(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        panel1.add(datenPanel, gbc);
-        final JScrollPane scrollPane1 = new JScrollPane();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        datenPanel.add(scrollPane1, gbc);
-        final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridLayoutManager(1, 2, new Insets(10, 10, 10, 10), -1, -1, true, false));
-        scrollPane1.setViewportView(panel2);
-        final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridBagLayout());
-        panel2.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final JPanel panel4 = new JPanel();
-        panel4.setLayout(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 0.5;
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(0, 0, 10, 0);
-        panel3.add(panel4, gbc);
-        panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Schüler", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel4.getFont()), new Color(-16777216)));
-        schuelerPanel = new SchuelerPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 0.5;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel4.add(schuelerPanel.$$$getRootComponent$$$(), gbc);
-        final JPanel spacer2 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel4.add(spacer2, gbc);
-        final JPanel spacer3 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel4.add(spacer3, gbc);
-        final JPanel spacer4 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel4.add(spacer4, gbc);
-        final JPanel spacer5 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel3.add(spacer5, gbc);
-        final JPanel panel5 = new JPanel();
-        panel5.setLayout(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.weightx = 0.5;
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel3.add(panel5, gbc);
-        panel5.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Rechnungsempfänger Drittperson", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel5.getFont()), new Color(-16777216)));
-        drittempfaengerPanel = new AngehoerigerPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 0.5;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel5.add(drittempfaengerPanel.$$$getRootComponent$$$(), gbc);
-        final JPanel spacer6 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel5.add(spacer6, gbc);
-        final JPanel spacer7 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel5.add(spacer7, gbc);
-        final JPanel panel6 = new JPanel();
-        panel6.setLayout(new GridBagLayout());
-        panel2.add(panel6, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final JPanel panel7 = new JPanel();
-        panel7.setLayout(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 3;
-        gbc.weightx = 0.5;
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(0, 0, 10, 0);
-        panel6.add(panel7, gbc);
-        panel7.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mutter", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel7.getFont()), new Color(-16777216)));
-        final JPanel spacer8 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel7.add(spacer8, gbc);
-        final JPanel spacer9 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel7.add(spacer9, gbc);
-        mutterPanel = new AngehoerigerPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 0.5;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel7.add(mutterPanel.$$$getRootComponent$$$(), gbc);
-        final JPanel spacer10 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel7.add(spacer10, gbc);
-        final JPanel spacer11 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel6.add(spacer11, gbc);
-        final JPanel panel8 = new JPanel();
-        panel8.setLayout(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 3;
-        gbc.weightx = 0.5;
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel6.add(panel8, gbc);
-        panel8.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Vater", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, Font.BOLD, -1, panel8.getFont()), new Color(-16777216)));
-        vaterPanel = new AngehoerigerPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 0.5;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel8.add(vaterPanel.$$$getRootComponent$$$(), gbc);
-        final JPanel spacer12 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel8.add(spacer12, gbc);
-        final JPanel spacer13 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel8.add(spacer13, gbc);
-        buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1, true, false));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.BOTH;
-        panel1.add(buttonPanel, gbc);
-        final JPanel panel9 = new JPanel();
-        panel9.setLayout(new GridBagLayout());
-        buttonPanel.add(panel9, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        btnAbbrechen = new JButton();
-        btnAbbrechen.setMaximumSize(new Dimension(114, 29));
-        btnAbbrechen.setMinimumSize(new Dimension(114, 29));
-        btnAbbrechen.setPreferredSize(new Dimension(114, 29));
-        btnAbbrechen.setText("Abbrechen");
-        btnAbbrechen.setMnemonic('A');
-        btnAbbrechen.setDisplayedMnemonicIndex(0);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.insets = new Insets(0, 0, 0, 10);
-        panel9.add(btnAbbrechen, gbc);
-        final JPanel spacer14 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.weightx = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel9.add(spacer14, gbc);
-        final JPanel spacer15 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel9.add(spacer15, gbc);
-        final JPanel spacer16 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel9.add(spacer16, gbc);
-        final Spacer spacer17 = new Spacer();
-        buttonPanel.add(spacer17, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        final JPanel panel10 = new JPanel();
-        panel10.setLayout(new GridBagLayout());
-        buttonPanel.add(panel10, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final JPanel spacer18 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 1;
-        gbc.weightx = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel10.add(spacer18, gbc);
-        final JPanel spacer19 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel10.add(spacer19, gbc);
-        final JPanel spacer20 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel10.add(spacer20, gbc);
-        btnFruehereAnmeldungenLoeschen = new JButton();
-        btnFruehereAnmeldungenLoeschen.setMaximumSize(new Dimension(252, 29));
-        btnFruehereAnmeldungenLoeschen.setMinimumSize(new Dimension(252, 29));
-        btnFruehereAnmeldungenLoeschen.setPreferredSize(new Dimension(252, 29));
-        btnFruehereAnmeldungenLoeschen.setText("Frühere Anmeldungen löschen");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel10.add(btnFruehereAnmeldungenLoeschen, gbc);
-        final JPanel spacer21 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel10.add(spacer21, gbc);
-        btnSchuelerLoeschen = new JButton();
-        btnSchuelerLoeschen.setMaximumSize(new Dimension(148, 29));
-        btnSchuelerLoeschen.setMinimumSize(new Dimension(148, 29));
-        btnSchuelerLoeschen.setPreferredSize(new Dimension(148, 29));
-        btnSchuelerLoeschen.setText("Schüler löschen");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel10.add(btnSchuelerLoeschen, gbc);
-        final JPanel panel11 = new JPanel();
-        panel11.setLayout(new GridBagLayout());
-        buttonPanel.add(panel11, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        btnSpeichern = new JButton();
-        btnSpeichern.setMaximumSize(new Dimension(114, 29));
-        btnSpeichern.setMinimumSize(new Dimension(114, 29));
-        btnSpeichern.setPreferredSize(new Dimension(114, 29));
-        btnSpeichern.setSelected(true);
-        btnSpeichern.setText("Speichern");
-        btnSpeichern.setMnemonic('S');
-        btnSpeichern.setDisplayedMnemonicIndex(0);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel11.add(btnSpeichern, gbc);
-        final JPanel spacer22 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel11.add(spacer22, gbc);
-        final JPanel spacer23 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        panel11.add(spacer23, gbc);
+  /** @noinspection ALL */
+  private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+    if (currentFont == null)
+      return null;
+    String resultName;
+    if (fontName == null) {
+      resultName = currentFont.getName();
+    } else {
+      Font testFont = new Font(fontName, Font.PLAIN, 10);
+      if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+        resultName = fontName;
+      } else {
+        resultName = currentFont.getName();
+      }
     }
+    Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(),
+        size >= 0 ? size : currentFont.getSize());
+    boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
+    Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize())
+        : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
+    return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
+  }
 
-    /**
-     * @noinspection ALL
-     */
-    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
-        if (currentFont == null) return null;
-        String resultName;
-        if (fontName == null) {
-            resultName = currentFont.getName();
-        } else {
-            Font testFont = new Font(fontName, Font.PLAIN, 10);
-            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
-                resultName = fontName;
-            } else {
-                resultName = currentFont.getName();
-            }
-        }
-        Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
-        boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
-        Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
-        return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
-    }
-
-    /**
-     * @noinspection ALL
-     */
-    public JComponent $$$getRootComponent$$$() {
-        return panel;
-    }
+  /** @noinspection ALL */
+  public JComponent $$$getRootComponent$$$() {
+    return panel;
+  }
 
 }

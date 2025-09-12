@@ -9,7 +9,6 @@ import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.KursanmeldungenTableModel;
-
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.List;
@@ -19,51 +18,53 @@ import java.util.List;
  */
 public interface KursanmeldungErfassenModel extends Model {
 
-    void setKursanmeldungOrigin(Kursanmeldung kursanmeldungOrigin);
+  void setKursanmeldungOrigin(Kursanmeldung kursanmeldungOrigin);
 
-    Semester getSemester();
+  Semester getSemester();
 
-    Wochentag getWochentag();
+  Wochentag getWochentag();
 
-    Time getZeitBeginn();
+  Time getZeitBeginn();
 
-    Mitarbeiter getMitarbeiter();
+  Mitarbeiter getMitarbeiter();
 
-    Calendar getAnmeldedatum();
+  Calendar getAnmeldedatum();
 
-    Calendar getAbmeldedatum();
+  Calendar getAbmeldedatum();
 
-    String getBemerkungen();
+  String getBemerkungen();
 
-    void setSemester(Semester semester);
+  void setSemester(Semester semester);
 
-    void setWochentag(Wochentag wochentag) throws SvmRequiredException;
+  void setWochentag(Wochentag wochentag) throws SvmRequiredException;
 
-    void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
+  void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
 
-    void setMitarbeiter(Mitarbeiter mitarbeiter) throws SvmRequiredException;
+  void setMitarbeiter(Mitarbeiter mitarbeiter) throws SvmRequiredException;
 
-    void setAnmeldedatum(String anmeldedatum) throws SvmValidationException;
+  void setAnmeldedatum(String anmeldedatum) throws SvmValidationException;
 
-    void setAbmeldedatum(String abmeldedatum) throws SvmValidationException;
+  void setAbmeldedatum(String abmeldedatum) throws SvmValidationException;
 
-    void setBemerkungen(String bemerkungen) throws SvmValidationException;
+  void setBemerkungen(String bemerkungen) throws SvmValidationException;
 
-    Semester[] getSelectableSemesterKursanmeldungOrigin();
+  Semester[] getSelectableSemesterKursanmeldungOrigin();
 
-    Mitarbeiter[] getSelectableLehrkraftKursanmeldungOrigin();
+  Mitarbeiter[] getSelectableLehrkraftKursanmeldungOrigin();
 
-    Semester getInitSemester(List<Semester> semesterList);
+  Semester getInitSemester(List<Semester> semesterList);
 
-    boolean checkIfSemesterIsInPast();
+  boolean checkIfSemesterIsInPast();
 
-    Calendar getInitAnmeldedatum(KursanmeldungenTableModel kursanmeldungenTableModel);
+  Calendar getInitAnmeldedatum(KursanmeldungenTableModel kursanmeldungenTableModel);
 
-    FindKursCommand.Result findKurs();
+  FindKursCommand.Result findKurs();
 
-    boolean checkIfKursBereitsErfasst(SchuelerDatenblattModel schuelerDatenblattModel);
+  boolean checkIfKursBereitsErfasst(SchuelerDatenblattModel schuelerDatenblattModel);
 
-    boolean checkIfSchuelerIsAngemeldet(SchuelerDatenblattModel schuelerDatenblattModel);
+  boolean checkIfSchuelerIsAngemeldet(SchuelerDatenblattModel schuelerDatenblattModel);
 
-    CalculateAnzWochenCommand.Result speichern(KursanmeldungenTableModel kursanmeldungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel);
+  CalculateAnzWochenCommand.Result speichern(
+      KursanmeldungenTableModel kursanmeldungenTableModel,
+      SchuelerDatenblattModel schuelerDatenblattModel);
 }

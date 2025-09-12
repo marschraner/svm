@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.SchuelerCodeDao;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
-
 import java.util.List;
 
 /**
@@ -10,18 +9,17 @@ import java.util.List;
  */
 public class FindAllSchuelerCodesCommand implements Command {
 
-    private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
+  private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
 
-    // output
-    private List<SchuelerCode> schuelerCodesAll;
+  // output
+  private List<SchuelerCode> schuelerCodesAll;
 
-    @Override
-    public void execute() {
-        schuelerCodesAll = schuelerCodeDao.findAll();
-    }
+  @Override
+  public void execute() {
+    schuelerCodesAll = schuelerCodeDao.findAll();
+  }
 
-    public List<SchuelerCode> getSchuelerCodesAll() {
-        return schuelerCodesAll;
-    }
-
+  public List<SchuelerCode> getSchuelerCodesAll() {
+    return schuelerCodesAll;
+  }
 }

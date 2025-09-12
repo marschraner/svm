@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Set;
@@ -12,37 +11,39 @@ import java.util.Set;
  */
 public interface Model {
 
-    void addPropertyChangeListener(PropertyChangeListener listener);
+  void addPropertyChangeListener(PropertyChangeListener listener);
 
-    void addCompletedListener(CompletedListener listener);
+  void addCompletedListener(CompletedListener listener);
 
-    void removePropertyChangeListener(PropertyChangeListener listener);
+  void removePropertyChangeListener(PropertyChangeListener listener);
 
-    boolean checkIsFieldChange(Field field, PropertyChangeEvent evt);
+  boolean checkIsFieldChange(Field field, PropertyChangeEvent evt);
 
-    void addDisableFieldsListener(DisableFieldsListener listener);
+  void addDisableFieldsListener(DisableFieldsListener listener);
 
-    void removeDisableFieldsListener(DisableFieldsListener listener);
+  void removeDisableFieldsListener(DisableFieldsListener listener);
 
-    void disableFields();
+  void disableFields();
 
-    void disableFields(Set<Field> fields);
+  void disableFields(Set<Field> fields);
 
-    void enableFields();
+  void enableFields();
 
-    void enableFields(Set<Field> fields);
+  void enableFields(Set<Field> fields);
 
-    void addMakeErrorLabelsInvisibleListener(MakeErrorLabelsInvisibleListener makeErrorLabelsInvisibleListener);
+  void addMakeErrorLabelsInvisibleListener(
+      MakeErrorLabelsInvisibleListener makeErrorLabelsInvisibleListener);
 
-    void removeMakeErrorLabelsInvisibleListener(MakeErrorLabelsInvisibleListener makeErrorLabelsInvisibleListener);
+  void removeMakeErrorLabelsInvisibleListener(
+      MakeErrorLabelsInvisibleListener makeErrorLabelsInvisibleListener);
 
-    void makeErrorLabelsInvisible(Set<Field> fields);
+  void makeErrorLabelsInvisible(Set<Field> fields);
 
-    void initializeCompleted();
+  void initializeCompleted();
 
-    boolean isCompleted();
+  boolean isCompleted();
 
-    void validate() throws SvmValidationException;
+  void validate() throws SvmValidationException;
 
-    void setModelValidationMode(boolean modelValidationMode);
+  void setModelValidationMode(boolean modelValidationMode);
 }

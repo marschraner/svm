@@ -8,43 +8,43 @@ import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
  */
 public interface MitarbeiterSuchenModel extends Model {
 
-    MitarbeiterCode MITARBEITER_CODE_ALLE = new MitarbeiterCode();
+  MitarbeiterCode MITARBEITER_CODE_ALLE = new MitarbeiterCode();
 
-    enum LehrkraftJaNeinSelected {
-        JA,
-        NEIN,
-        ALLE
-    }
+  enum LehrkraftJaNeinSelected {
+    JA,
+    NEIN,
+    ALLE
+  }
 
-    enum StatusSelected {
-        AKTIV,
-        NICHT_AKTIV,
-        ALLE
-    }
+  enum StatusSelected {
+    AKTIV,
+    NICHT_AKTIV,
+    ALLE
+  }
 
-    String getNachname();
+  String getNachname();
 
-    String getVorname();
+  String getVorname();
 
-    MitarbeiterCode getMitarbeiterCode();
+  MitarbeiterCode getMitarbeiterCode();
 
-    LehrkraftJaNeinSelected getLehrkraftJaNeinSelected();
+  LehrkraftJaNeinSelected getLehrkraftJaNeinSelected();
 
-    StatusSelected getStatusSelected();
+  StatusSelected getStatusSelected();
 
-    void setNachname(String nachname) throws SvmValidationException;
+  void setNachname(String nachname) throws SvmValidationException;
 
-    void setVorname(String vorname) throws SvmValidationException;
+  void setVorname(String vorname) throws SvmValidationException;
 
-    void setMitarbeiterCode(MitarbeiterCode mitarbeiterCode);
+  void setMitarbeiterCode(MitarbeiterCode mitarbeiterCode);
 
-    void setLehrkraftJaNeinSelected(LehrkraftJaNeinSelected lehrkraftJaNeinSelected);
+  void setLehrkraftJaNeinSelected(LehrkraftJaNeinSelected lehrkraftJaNeinSelected);
 
-    void setStatusSelected(StatusSelected statusSelected);
+  void setStatusSelected(StatusSelected statusSelected);
 
-    MitarbeiterCode[] getSelectableMitarbeiterCodes(SvmModel svmModel);
+  MitarbeiterCode[] getSelectableMitarbeiterCodes(SvmModel svmModel);
 
-    boolean isSuchkriterienSelected();
+  boolean isSuchkriterienSelected();
 
-    MitarbeitersTableData suchen();
+  MitarbeitersTableData suchen();
 }

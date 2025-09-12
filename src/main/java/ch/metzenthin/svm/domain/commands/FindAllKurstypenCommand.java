@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.KurstypDao;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
-
 import java.util.List;
 
 /**
@@ -10,18 +9,17 @@ import java.util.List;
  */
 public class FindAllKurstypenCommand implements Command {
 
-    private final KurstypDao kurstypDao = new KurstypDao();
+  private final KurstypDao kurstypDao = new KurstypDao();
 
-    // output
-    private List<Kurstyp> kurstypenAll;
+  // output
+  private List<Kurstyp> kurstypenAll;
 
-    @Override
-    public void execute() {
-        kurstypenAll = kurstypDao.findAll();
-    }
+  @Override
+  public void execute() {
+    kurstypenAll = kurstypDao.findAll();
+  }
 
-    public List<Kurstyp> getKurstypenAll() {
-        return kurstypenAll;
-    }
-
+  public List<Kurstyp> getKurstypenAll() {
+    return kurstypenAll;
+  }
 }

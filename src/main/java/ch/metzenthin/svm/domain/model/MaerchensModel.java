@@ -9,7 +9,9 @@ import ch.metzenthin.svm.ui.componentmodel.MaerchensTableModel;
  */
 public interface MaerchensModel extends Model {
 
-    MaerchenErfassenModel getMaerchenErfassenModel(SvmContext svmContext, int indexMaerchenToBeModified);
+  MaerchenErfassenModel getMaerchenErfassenModel(
+      SvmContext svmContext, int indexMaerchenToBeModified);
 
-    DeleteMaerchenCommand.Result maerchenLoeschen(SvmContext svmContext, MaerchensTableModel maerchensTableModel, int indexMaerchenToBeRemoved);
+  DeleteMaerchenCommand.Result maerchenLoeschen(
+      SvmContext svmContext, MaerchensTableModel maerchensTableModel, int indexMaerchenToBeRemoved);
 }

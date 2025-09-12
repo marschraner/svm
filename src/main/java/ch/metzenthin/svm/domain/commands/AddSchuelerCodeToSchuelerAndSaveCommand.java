@@ -9,28 +9,28 @@ import ch.metzenthin.svm.persistence.entities.SchuelerCode;
  */
 public class AddSchuelerCodeToSchuelerAndSaveCommand implements Command {
 
-    private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
+  private final SchuelerCodeDao schuelerCodeDao = new SchuelerCodeDao();
 
-    // input
-    private final SchuelerCode schuelerCode;
-    private final Schueler schueler;
+  // input
+  private final SchuelerCode schuelerCode;
+  private final Schueler schueler;
 
-    // output
-    private Schueler schuelerUpdated;
+  // output
+  private Schueler schuelerUpdated;
 
-    public AddSchuelerCodeToSchuelerAndSaveCommand(SchuelerCode schuelerCode, Schueler schueler) {
-        this.schuelerCode = schuelerCode;
-        this.schueler = schueler;
-    }
+  public AddSchuelerCodeToSchuelerAndSaveCommand(SchuelerCode schuelerCode, Schueler schueler) {
+    this.schuelerCode = schuelerCode;
+    this.schueler = schueler;
+  }
 
-    @Override
-    public void execute() {
-        // SchuelerCode nachladen wegen Lazy-Loading
-        SchuelerCode schuelerCodeToBeAdded = schuelerCodeDao.findById(schuelerCode.getCodeId());
-        schuelerUpdated = schuelerCodeDao.addToSchuelerAndSave(schuelerCodeToBeAdded, schueler);
-    }
+  @Override
+  public void execute() {
+    // SchuelerCode nachladen wegen Lazy-Loading
+    SchuelerCode schuelerCodeToBeAdded = schuelerCodeDao.findById(schuelerCode.getCodeId());
+    schuelerUpdated = schuelerCodeDao.addToSchuelerAndSave(schuelerCodeToBeAdded, schueler);
+  }
 
-    public Schueler getSchuelerUpdated() {
-        return schuelerUpdated;
-    }
+  public Schueler getSchuelerUpdated() {
+    return schuelerUpdated;
+  }
 }

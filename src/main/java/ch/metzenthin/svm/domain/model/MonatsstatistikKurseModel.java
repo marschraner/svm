@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
-
 import java.util.Calendar;
 
 /**
@@ -9,12 +8,11 @@ import java.util.Calendar;
  */
 public interface MonatsstatistikKurseModel extends Model {
 
-    String MONAT_JAHR_DATE_FORMAT_STRING = "MM.yyyy";
+  String MONAT_JAHR_DATE_FORMAT_STRING = "MM.yyyy";
 
-    Calendar getMonatJahr();
+  Calendar getMonatJahr();
 
-    void setMonatJahr(String anAbmeldemonat) throws SvmValidationException;
+  void setMonatJahr(String anAbmeldemonat) throws SvmValidationException;
 
-    int[] calculateMonatsstatistik();
-
+  int[] calculateMonatsstatistik();
 }

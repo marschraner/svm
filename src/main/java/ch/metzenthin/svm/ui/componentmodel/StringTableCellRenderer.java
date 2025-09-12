@@ -8,9 +8,8 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class StringTableCellRenderer extends DefaultTableCellRenderer {
 
-    public StringTableCellRenderer() {
-        super();
-        setHorizontalAlignment(SwingConstants.LEFT);
-    }
-
+  public StringTableCellRenderer() {
+    super();
+    setHorizontalAlignment(SwingConstants.LEFT);
+  }
 }

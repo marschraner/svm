@@ -5,7 +5,6 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
-
 import java.util.Calendar;
 
 /**
@@ -13,27 +12,27 @@ import java.util.Calendar;
  */
 public interface SchuelerModel extends PersonModel {
 
-    Geschlecht getGeschlecht();
+  Geschlecht getGeschlecht();
 
-    Calendar getAnmeldedatum();
+  Calendar getAnmeldedatum();
 
-    Calendar getAbmeldedatum();
+  Calendar getAbmeldedatum();
 
-    String getBemerkungen();
+  String getBemerkungen();
 
-    Schueler getSchueler();
+  Schueler getSchueler();
 
-    Schueler getSchuelerOrigin();
+  Schueler getSchuelerOrigin();
 
-    Anmeldung getAnmeldung();
+  Anmeldung getAnmeldung();
 
-    void setGeschlecht(Geschlecht geschlecht) throws SvmRequiredException;
+  void setGeschlecht(Geschlecht geschlecht) throws SvmRequiredException;
 
-    void setAnmeldedatum(String anmeldedatum) throws SvmValidationException;
+  void setAnmeldedatum(String anmeldedatum) throws SvmValidationException;
 
-    void setAbmeldedatum(String abmeldedatum) throws SvmValidationException;
+  void setAbmeldedatum(String abmeldedatum) throws SvmValidationException;
 
-    void setBemerkungen(String bemerkungen) throws SvmValidationException;
+  void setBemerkungen(String bemerkungen) throws SvmValidationException;
 
-    void setSchuelerOrigin(Schueler schueler);
+  void setSchuelerOrigin(Schueler schueler);
 }

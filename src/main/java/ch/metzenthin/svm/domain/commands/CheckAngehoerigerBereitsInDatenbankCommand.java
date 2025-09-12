@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,101 +10,120 @@ import java.util.List;
  */
 public class CheckAngehoerigerBereitsInDatenbankCommand implements Command {
 
-    enum Result {
-        VORNAME_NACHNAME_FEHLEN,
-        EINTRAG_WIRD_MUTIERT,                   // Angehöriger (Origin) wird mutiert (nur bei Bearbeiten möglich)
-        NICHT_IN_DATENBANK,                     // Angehöriger wird neu erfasst (noch nicht in Datenbank)
-        EIN_EINTRAG_PASST,                      // In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben passt: ...
-        // - Diesen Eintrag übernehmen (-> Angehörigen ersetzen)
-        // - Abbrechen (-> Eingabe-GUI)
-        MEHRERE_EINTRAEGE_PASSEN,               // In der Datenbank wurden mehrere Einträge gefunden, die auf die erfassten Angaben passen: ...
-        // Angehöriger muss genauer erfasst werden
-        // - Eingaben korrigieren (-> Eingabe-GUI)
-        EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE,  // In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben teilweise übereinstimmt: ...
-        // - Diesen Eintrag übernehmen (-> Angehörigen ersetzen)
-        // - Nicht diesen Eintrag verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen  (-> bisherigen Angehörigen verwenden)
-        // - Abbrechen (-> Eingabe-GUI)
-        MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE,     // In der Datenbank wurden mehrere Einträge gefunden, die mit den erfassten Angaben teilweise übereinstimmen: ...
-        // - Keinen dieser Einträge verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten Angaben erzeugen  (-> bisherigen Angehörigen verwenden)
-        // - Abbrechen (-> Eingabe-GUI)
+  enum Result {
+    VORNAME_NACHNAME_FEHLEN,
+    EINTRAG_WIRD_MUTIERT, // Angehöriger (Origin) wird mutiert (nur bei Bearbeiten möglich)
+    NICHT_IN_DATENBANK, // Angehöriger wird neu erfasst (noch nicht in Datenbank)
+    EIN_EINTRAG_PASST, // In der Datenbank wurde ein Eintrag gefunden, der auf die erfassten Angaben
+    // passt: ...
+    // - Diesen Eintrag übernehmen (-> Angehörigen ersetzen)
+    // - Abbrechen (-> Eingabe-GUI)
+    MEHRERE_EINTRAEGE_PASSEN, // In der Datenbank wurden mehrere Einträge gefunden, die auf die
+    // erfassten Angaben passen: ...
+    // Angehöriger muss genauer erfasst werden
+    // - Eingaben korrigieren (-> Eingabe-GUI)
+    EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE, // In der Datenbank wurde ein Eintrag gefunden, der
+    // mit den erfassten Angaben teilweise
+    // übereinstimmt: ...
+    // - Diesen Eintrag übernehmen (-> Angehörigen ersetzen)
+    // - Nicht diesen Eintrag verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten
+    // Angaben erzeugen  (-> bisherigen Angehörigen verwenden)
+    // - Abbrechen (-> Eingabe-GUI)
+    MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE, // In der Datenbank wurden mehrere Einträge
+    // gefunden, die mit den erfassten Angaben
+    // teilweise übereinstimmen: ...
+    // - Keinen dieser Einträge verwenden und einen neuen Datenbank-Eintrag gemäss der erfassten
+    // Angaben erzeugen  (-> bisherigen Angehörigen verwenden)
+    // - Abbrechen (-> Eingabe-GUI)
+  }
+
+  private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
+
+  // input
+  private final Angehoeriger angehoeriger;
+  private final Angehoeriger angehoerigerToBeExcluded;
+
+  // output
+  private Result result;
+  private List<Angehoeriger> angehoerigerFoundList;
+  private Angehoeriger angehoerigerFound;
+
+  CheckAngehoerigerBereitsInDatenbankCommand(Angehoeriger angehoeriger) {
+    this(angehoeriger, null);
+  }
+
+  CheckAngehoerigerBereitsInDatenbankCommand(
+      Angehoeriger angehoeriger, Angehoeriger angehoerigerToBeExcluded) {
+    this.angehoeriger = angehoeriger;
+    this.angehoerigerToBeExcluded = angehoerigerToBeExcluded;
+  }
+
+  @Override
+  public void execute() {
+
+    // Abbruch, falls Vor- und/oder Nachname nicht gesetzt
+    if (angehoeriger.getVorname() == null
+        || angehoeriger.getVorname().trim().isEmpty()
+        || angehoeriger.getNachname() == null
+        || angehoeriger.getNachname().trim().isEmpty()) {
+      result = Result.VORNAME_NACHNAME_FEHLEN;
+      return;
     }
 
-    private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
-
-    // input
-    private final Angehoeriger angehoeriger;
-    private final Angehoeriger angehoerigerToBeExcluded;
-
-    // output
-    private Result result;
-    private List<Angehoeriger> angehoerigerFoundList;
-    private Angehoeriger angehoerigerFound;
-
-    CheckAngehoerigerBereitsInDatenbankCommand(Angehoeriger angehoeriger) {
-        this(angehoeriger, null);
+    // Suche mit allen gesetzten Attributen
+    angehoerigerFoundList = new ArrayList<>(angehoerigerDao.findAngehoerige(angehoeriger));
+    removeAngehoerigerToBeExcluded(angehoerigerFoundList);
+    if (angehoerigerFoundList.size() == 1) {
+      angehoerigerFound = angehoerigerFoundList.get(0);
+      result = Result.EIN_EINTRAG_PASST;
+      return;
+    } else if (angehoerigerFoundList.size() > 1) {
+      result = Result.MEHRERE_EINTRAEGE_PASSEN;
+      return;
     }
 
-    CheckAngehoerigerBereitsInDatenbankCommand(Angehoeriger angehoeriger, Angehoeriger angehoerigerToBeExcluded) {
-        this.angehoeriger = angehoeriger;
-        this.angehoerigerToBeExcluded = angehoerigerToBeExcluded;
+    // Suche nur mit Vorname und Nachname
+    Angehoeriger angehoerigerNurVornameNachname =
+        new Angehoeriger(
+            null, angehoeriger.getVorname(), angehoeriger.getNachname(), null, null, null, null);
+
+    angehoerigerFoundList =
+        new ArrayList<>(angehoerigerDao.findAngehoerige(angehoerigerNurVornameNachname));
+    removeAngehoerigerToBeExcluded(angehoerigerFoundList);
+    if (angehoerigerFoundList.size() == 1) {
+      angehoerigerFound = angehoerigerFoundList.get(0);
+      result = Result.EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE;
+      return;
+    } else if (angehoerigerFoundList.size() > 1) {
+      result = Result.MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE;
+      return;
     }
 
-    @Override
-    public void execute() {
+    // Nicht gefunden
+    result =
+        (angehoerigerToBeExcluded != null)
+            ? Result.EINTRAG_WIRD_MUTIERT
+            : Result.NICHT_IN_DATENBANK;
+  }
 
-        // Abbruch, falls Vor- und/oder Nachname nicht gesetzt
-        if (angehoeriger.getVorname() == null || angehoeriger.getVorname().trim().isEmpty() || angehoeriger.getNachname() == null || angehoeriger.getNachname().trim().isEmpty()) {
-            result = Result.VORNAME_NACHNAME_FEHLEN;
-            return;
-        }
-
-        // Suche mit allen gesetzten Attributen
-        angehoerigerFoundList = new ArrayList<>(angehoerigerDao.findAngehoerige(angehoeriger));
-        removeAngehoerigerToBeExcluded(angehoerigerFoundList);
-        if (angehoerigerFoundList.size() == 1) {
-            angehoerigerFound = angehoerigerFoundList.get(0);
-            result = Result.EIN_EINTRAG_PASST;
-            return;
-        } else if (angehoerigerFoundList.size() > 1) {
-            result = Result.MEHRERE_EINTRAEGE_PASSEN;
-            return;
-        }
-
-        // Suche nur mit Vorname und Nachname
-        Angehoeriger angehoerigerNurVornameNachname = new Angehoeriger(null, angehoeriger.getVorname(), angehoeriger.getNachname(), null, null, null, null);
-
-        angehoerigerFoundList = new ArrayList<>(angehoerigerDao.findAngehoerige(angehoerigerNurVornameNachname));
-        removeAngehoerigerToBeExcluded(angehoerigerFoundList);
-        if (angehoerigerFoundList.size() == 1) {
-            angehoerigerFound = angehoerigerFoundList.get(0);
-            result = Result.EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE;
-            return;
-        } else if (angehoerigerFoundList.size() > 1) {
-            result = Result.MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE;
-            return;
-        }
-
-        // Nicht gefunden
-        result = (angehoerigerToBeExcluded != null) ? Result.EINTRAG_WIRD_MUTIERT : Result.NICHT_IN_DATENBANK;
+  private void removeAngehoerigerToBeExcluded(List<Angehoeriger> angehoerigeFound) {
+    if (angehoerigerToBeExcluded == null) {
+      return;
     }
+    angehoerigeFound.removeIf(
+        angehoeriger1 ->
+            angehoerigerToBeExcluded.getPersonId().equals(angehoeriger1.getPersonId()));
+  }
 
-    private void removeAngehoerigerToBeExcluded(List<Angehoeriger> angehoerigeFound) {
-        if (angehoerigerToBeExcluded == null) {
-            return;
-        }
-        angehoerigeFound.removeIf(
-                angehoeriger1 -> angehoerigerToBeExcluded.getPersonId().equals(angehoeriger1.getPersonId()));
-    }
+  Angehoeriger getAngehoerigerFound() {
+    return angehoerigerFound;
+  }
 
-    Angehoeriger getAngehoerigerFound() {
-        return angehoerigerFound;
-    }
+  Result getResult() {
+    return result;
+  }
 
-    Result getResult() {
-        return result;
-    }
-
-    List<Angehoeriger> getAngehoerigerFoundList() {
-        return angehoerigerFoundList;
-    }
+  List<Angehoeriger> getAngehoerigerFoundList() {
+    return angehoerigerFoundList;
+  }
 }

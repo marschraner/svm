@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.MitarbeiterCodeDao;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
-
 import java.util.List;
 
 /**
@@ -10,18 +9,17 @@ import java.util.List;
  */
 public class FindAllMitarbeiterCodesCommand implements Command {
 
-    private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
+  private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
 
-    // output
-    private List<MitarbeiterCode> mitarbeiterCodesAll;
+  // output
+  private List<MitarbeiterCode> mitarbeiterCodesAll;
 
-    @Override
-    public void execute() {
-        mitarbeiterCodesAll = mitarbeiterCodeDao.findAll();
-    }
+  @Override
+  public void execute() {
+    mitarbeiterCodesAll = mitarbeiterCodeDao.findAll();
+  }
 
-    public List<MitarbeiterCode> getMitarbeiterCodesAll() {
-        return mitarbeiterCodesAll;
-    }
-
+  public List<MitarbeiterCode> getMitarbeiterCodesAll() {
+    return mitarbeiterCodesAll;
+  }
 }

@@ -2,7 +2,6 @@ package ch.metzenthin.svm.persistence.daos;
 
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import jakarta.persistence.TypedQuery;
-
 import java.util.List;
 
 /**
@@ -10,10 +9,12 @@ import java.util.List;
  */
 public class LektionsgebuehrenDao extends GenericDao<Lektionsgebuehren, Integer> {
 
-    public List<Lektionsgebuehren> findAll() {
-        TypedQuery<Lektionsgebuehren> typedQuery = db.getCurrentEntityManager().createQuery(
-                "select l from Lektionsgebuehren l order by l.lektionslaenge", Lektionsgebuehren.class);
-        return typedQuery.getResultList();
-    }
-
+  public List<Lektionsgebuehren> findAll() {
+    TypedQuery<Lektionsgebuehren> typedQuery =
+        db.getCurrentEntityManager()
+            .createQuery(
+                "select l from Lektionsgebuehren l order by l.lektionslaenge",
+                Lektionsgebuehren.class);
+    return typedQuery.getResultList();
+  }
 }

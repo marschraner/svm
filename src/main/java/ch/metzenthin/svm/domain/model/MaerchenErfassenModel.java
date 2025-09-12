@@ -9,27 +9,27 @@ import ch.metzenthin.svm.ui.componentmodel.MaerchensTableModel;
  */
 public interface MaerchenErfassenModel extends Model {
 
-    String getSchuljahr();
+  String getSchuljahr();
 
-    String getBezeichnung();
+  String getBezeichnung();
 
-    Integer getAnzahlVorstellungen();
+  Integer getAnzahlVorstellungen();
 
-    Maerchen getMaerchen();
+  Maerchen getMaerchen();
 
-    void setSchuljahr(String schuljahr) throws SvmValidationException;
+  void setSchuljahr(String schuljahr) throws SvmValidationException;
 
-    void setBezeichnung(String maerchenbeginn) throws SvmValidationException;
+  void setBezeichnung(String maerchenbeginn) throws SvmValidationException;
 
-    void setAnzahlVorstellungen(String anzahlVorstellungen) throws SvmValidationException;
+  void setAnzahlVorstellungen(String anzahlVorstellungen) throws SvmValidationException;
 
-    void setMaerchenOrigin(Maerchen maerchenOrigin);
+  void setMaerchenOrigin(Maerchen maerchenOrigin);
 
-    boolean checkMaerchenBereitsErfasst(SvmModel svmModel);
+  boolean checkMaerchenBereitsErfasst(SvmModel svmModel);
 
-    String getNaechstesNochNichtErfasstesSchuljahrMaerchen(SvmModel svmModel);
+  String getNaechstesNochNichtErfasstesSchuljahrMaerchen(SvmModel svmModel);
 
-    boolean checkIfMaerchenIsInPast();
+  boolean checkIfMaerchenIsInPast();
 
-    void speichern(SvmModel svmModel, MaerchensTableModel maerchensTableModel);
+  void speichern(SvmModel svmModel, MaerchensTableModel maerchensTableModel);
 }

@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.datatypes.Rechnungstyp;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
-
 import java.util.Calendar;
 
 /**
@@ -11,9 +10,10 @@ import java.util.Calendar;
  */
 public interface RechnungsdatumErfassenModel extends Model {
 
-    Calendar getRechnungsdatum();
+  Calendar getRechnungsdatum();
 
-    void setRechnungsdatum(String rechnungsdatum) throws SvmValidationException;
+  void setRechnungsdatum(String rechnungsdatum) throws SvmValidationException;
 
-    void replaceRechnungsdatumAndUpdateSemesterrechnung(SemesterrechnungenTableModel semesterrechnungenTableModel, Rechnungstyp rechnungstyp);
+  void replaceRechnungsdatumAndUpdateSemesterrechnung(
+      SemesterrechnungenTableModel semesterrechnungenTableModel, Rechnungstyp rechnungstyp);
 }

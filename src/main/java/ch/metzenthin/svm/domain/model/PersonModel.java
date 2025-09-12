@@ -4,7 +4,6 @@ import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Adresse;
-
 import java.util.Calendar;
 
 /**
@@ -12,38 +11,38 @@ import java.util.Calendar;
  */
 public interface PersonModel extends AdresseModel {
 
-    Anrede getAnrede();
+  Anrede getAnrede();
 
-    String getNachname();
+  String getNachname();
 
-    String getVorname();
+  String getVorname();
 
-    String getNatel();
+  String getNatel();
 
-    String getEmail();
+  String getEmail();
 
-    Calendar getGeburtsdatum();
+  Calendar getGeburtsdatum();
 
-    boolean isAdresseRequired();
+  boolean isAdresseRequired();
 
-    Adresse getAdresse();
+  Adresse getAdresse();
 
-    boolean isEmpty();
+  boolean isEmpty();
 
-    void setAnrede(Anrede anrede) throws SvmRequiredException;
+  void setAnrede(Anrede anrede) throws SvmRequiredException;
 
-    void setNachname(String nachname) throws SvmValidationException;
+  void setNachname(String nachname) throws SvmValidationException;
 
-    void setVorname(String vorname) throws SvmValidationException;
+  void setVorname(String vorname) throws SvmValidationException;
 
-    void setNatel(String natel) throws SvmValidationException;
+  void setNatel(String natel) throws SvmValidationException;
 
-    void setEmail(String email) throws SvmValidationException;
+  void setEmail(String email) throws SvmValidationException;
 
-    void setGeburtsdatum(String geburtsdatum) throws SvmValidationException;
+  void setGeburtsdatum(String geburtsdatum) throws SvmValidationException;
 
-    /**
-     * @param adresseModel Wenn null werden die Adressfelder mit null initialisiert
-     */
-    void initAdresse(AdresseModel adresseModel);
+  /**
+   * @param adresseModel Wenn null werden die Adressfelder mit null initialisiert
+   */
+  void initAdresse(AdresseModel adresseModel);
 }
