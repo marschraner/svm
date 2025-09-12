@@ -8,22 +8,21 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
  */
 public class SaveSchuelerCommand implements Command {
 
-    private final SchuelerDao schuelerDao = new SchuelerDao();
+  private final SchuelerDao schuelerDao = new SchuelerDao();
 
-    private final Schueler schueler;
-    private Schueler savedSchueler;
+  private final Schueler schueler;
+  private Schueler savedSchueler;
 
-    public SaveSchuelerCommand(Schueler schueler) {
-        this.schueler = schueler;
-    }
+  public SaveSchuelerCommand(Schueler schueler) {
+    this.schueler = schueler;
+  }
 
-    Schueler getSavedSchueler() {
-        return savedSchueler;
-    }
+  Schueler getSavedSchueler() {
+    return savedSchueler;
+  }
 
-    @Override
-    public void execute() {
-        savedSchueler = schuelerDao.save(schueler);
-    }
-
+  @Override
+  public void execute() {
+    savedSchueler = schuelerDao.save(schueler);
+  }
 }

@@ -8,7 +8,6 @@ import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
-
 import java.io.File;
 
 /**
@@ -16,21 +15,26 @@ import java.io.File;
  */
 public interface ListenExportModel extends Model {
 
-    Listentyp getListentyp();
+  Listentyp getListentyp();
 
-    String getTitel();
+  String getTitel();
 
-    File getTemplateFile();
+  File getTemplateFile();
 
-    void setListentyp(Listentyp listentyp) throws SvmRequiredException;
+  void setListentyp(Listentyp listentyp) throws SvmRequiredException;
 
-    void setTitel(String titel) throws SvmValidationException;
+  void setTitel(String titel) throws SvmValidationException;
 
-    String[] getListenErstellenWarning(SemesterrechnungenTableModel semesterrechnungenTableModel);
+  String[] getListenErstellenWarning(SemesterrechnungenTableModel semesterrechnungenTableModel);
 
-    File getSaveFileInit();
+  File getSaveFileInit();
 
-    CreateListeCommand.Result createListenFile(File outputFile, SchuelerSuchenTableModel schuelerSuchenTableModel, MitarbeitersTableModel mitarbeitersTableModel, KurseTableModel kurseTableModel, SemesterrechnungenTableModel semesterrechnungenTableModel);
+  CreateListeCommand.Result createListenFile(
+      File outputFile,
+      SchuelerSuchenTableModel schuelerSuchenTableModel,
+      MitarbeitersTableModel mitarbeitersTableModel,
+      KurseTableModel kurseTableModel,
+      SemesterrechnungenTableModel semesterrechnungenTableModel);
 
-    String getTitleInit(SchuelerSuchenTableModel schuelerSuchenTableModel);
+  String getTitleInit(SchuelerSuchenTableModel schuelerSuchenTableModel);
 }

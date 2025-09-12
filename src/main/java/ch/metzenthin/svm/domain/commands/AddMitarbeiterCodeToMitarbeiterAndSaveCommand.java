@@ -9,28 +9,31 @@ import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
  */
 public class AddMitarbeiterCodeToMitarbeiterAndSaveCommand implements Command {
 
-    private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
+  private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
 
-    // input
-    private final MitarbeiterCode mitarbeiterCode;
-    private final Mitarbeiter mitarbeiter;
+  // input
+  private final MitarbeiterCode mitarbeiterCode;
+  private final Mitarbeiter mitarbeiter;
 
-    // output
-    private Mitarbeiter mitarbeiterUpdated;
+  // output
+  private Mitarbeiter mitarbeiterUpdated;
 
-    AddMitarbeiterCodeToMitarbeiterAndSaveCommand(MitarbeiterCode mitarbeiterCode, Mitarbeiter mitarbeiter) {
-        this.mitarbeiterCode = mitarbeiterCode;
-        this.mitarbeiter = mitarbeiter;
-    }
+  AddMitarbeiterCodeToMitarbeiterAndSaveCommand(
+      MitarbeiterCode mitarbeiterCode, Mitarbeiter mitarbeiter) {
+    this.mitarbeiterCode = mitarbeiterCode;
+    this.mitarbeiter = mitarbeiter;
+  }
 
-    @Override
-    public void execute() {
-        // MitarbeiterCode nachladen wegen Lazy-Loading
-        MitarbeiterCode mitarbeiterCodeToBeAdded = mitarbeiterCodeDao.findById(mitarbeiterCode.getCodeId());
-        mitarbeiterUpdated = mitarbeiterCodeDao.addToMitarbeiterAndSave(mitarbeiterCodeToBeAdded, mitarbeiter);
-    }
+  @Override
+  public void execute() {
+    // MitarbeiterCode nachladen wegen Lazy-Loading
+    MitarbeiterCode mitarbeiterCodeToBeAdded =
+        mitarbeiterCodeDao.findById(mitarbeiterCode.getCodeId());
+    mitarbeiterUpdated =
+        mitarbeiterCodeDao.addToMitarbeiterAndSave(mitarbeiterCodeToBeAdded, mitarbeiter);
+  }
 
-    Mitarbeiter getMitarbeiterUpdated() {
-        return mitarbeiterUpdated;
-    }
+  Mitarbeiter getMitarbeiterUpdated() {
+    return mitarbeiterUpdated;
+  }
 }

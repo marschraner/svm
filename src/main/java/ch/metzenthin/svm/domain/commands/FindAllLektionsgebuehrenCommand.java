@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.LektionsgebuehrenDao;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
-
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -13,28 +12,34 @@ import java.util.Map;
  */
 public class FindAllLektionsgebuehrenCommand implements Command {
 
-    private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
+  private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
 
-    // output
-    private List<Lektionsgebuehren> lektionsgebuehrenAllList;
-    private final Map<Integer, BigDecimal[]> lektionsgebuehrenAllMap = new HashMap<>();
+  // output
+  private List<Lektionsgebuehren> lektionsgebuehrenAllList;
+  private final Map<Integer, BigDecimal[]> lektionsgebuehrenAllMap = new HashMap<>();
 
-    @Override
-    public void execute() {
-        lektionsgebuehrenAllList = lektionsgebuehrenDao.findAll();
-        for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenAllList) {
-            BigDecimal[] lektionsgebuehrenArray = new BigDecimal[]{lektionsgebuehren.getBetrag1Kind(), lektionsgebuehren.getBetrag2Kinder(),
-                    lektionsgebuehren.getBetrag3Kinder(), lektionsgebuehren.getBetrag4Kinder(), lektionsgebuehren.getBetrag5Kinder(), lektionsgebuehren.getBetrag6Kinder()};
-            lektionsgebuehrenAllMap.put(lektionsgebuehren.getLektionslaenge(), lektionsgebuehrenArray);
-        }
+  @Override
+  public void execute() {
+    lektionsgebuehrenAllList = lektionsgebuehrenDao.findAll();
+    for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenAllList) {
+      BigDecimal[] lektionsgebuehrenArray =
+          new BigDecimal[] {
+            lektionsgebuehren.getBetrag1Kind(),
+            lektionsgebuehren.getBetrag2Kinder(),
+            lektionsgebuehren.getBetrag3Kinder(),
+            lektionsgebuehren.getBetrag4Kinder(),
+            lektionsgebuehren.getBetrag5Kinder(),
+            lektionsgebuehren.getBetrag6Kinder()
+          };
+      lektionsgebuehrenAllMap.put(lektionsgebuehren.getLektionslaenge(), lektionsgebuehrenArray);
     }
+  }
 
-    public List<Lektionsgebuehren> getLektionsgebuehrenAllList() {
-        return lektionsgebuehrenAllList;
-    }
+  public List<Lektionsgebuehren> getLektionsgebuehrenAllList() {
+    return lektionsgebuehrenAllList;
+  }
 
-    public Map<Integer, BigDecimal[]> getLektionsgebuehrenAllMap() {
-        return lektionsgebuehrenAllMap;
-    }
-
+  public Map<Integer, BigDecimal[]> getLektionsgebuehrenAllMap() {
+    return lektionsgebuehrenAllMap;
+  }
 }

@@ -8,14 +8,13 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class WochentagTableCellRenderer extends DefaultTableCellRenderer {
 
-    public WochentagTableCellRenderer() {
-        super();
-        setHorizontalAlignment(SwingConstants.LEFT);
-    }
+  public WochentagTableCellRenderer() {
+    super();
+    setHorizontalAlignment(SwingConstants.LEFT);
+  }
 
-    @Override
-    public void setValue(Object value) {
-        setText(value.toString());
-    }
-
+  @Override
+  public void setValue(Object value) {
+    setText(value.toString());
+  }
 }

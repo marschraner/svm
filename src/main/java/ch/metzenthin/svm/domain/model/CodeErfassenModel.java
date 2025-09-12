@@ -13,27 +13,27 @@ import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
  */
 public interface CodeErfassenModel extends Model {
 
-    void setSchuelerCodeOrigin(SchuelerCode schuelerCodeOrigin);
+  void setSchuelerCodeOrigin(SchuelerCode schuelerCodeOrigin);
 
-    void setMitarbeiterCodeOrigin(MitarbeiterCode mitarbeiterCodeOrigin);
+  void setMitarbeiterCodeOrigin(MitarbeiterCode mitarbeiterCodeOrigin);
 
-    void setElternmithilfeCodeOrigin(ElternmithilfeCode elternmithilfeCodeOrigin);
+  void setElternmithilfeCodeOrigin(ElternmithilfeCode elternmithilfeCodeOrigin);
 
-    void setSemesterrechnungCodeOrigin(SemesterrechnungCode semesterrechnungCodeOrigin);
+  void setSemesterrechnungCodeOrigin(SemesterrechnungCode semesterrechnungCodeOrigin);
 
-    String getKuerzel();
+  String getKuerzel();
 
-    String getBeschreibung();
+  String getBeschreibung();
 
-    Boolean isSelektierbar();
+  Boolean isSelektierbar();
 
-    void setKuerzel(String kuerzel) throws SvmValidationException;
+  void setKuerzel(String kuerzel) throws SvmValidationException;
 
-    void setBeschreibung(String beschreibung) throws SvmValidationException;
+  void setBeschreibung(String beschreibung) throws SvmValidationException;
 
-    void setSelektierbar(Boolean isSelected);
+  void setSelektierbar(Boolean isSelected);
 
-    boolean checkCodeKuerzelBereitsInVerwendung(SvmModel svmModel, Codetyp codetyp);
+  boolean checkCodeKuerzelBereitsInVerwendung(SvmModel svmModel, Codetyp codetyp);
 
-    void speichern(SvmModel svmModel, CodesTableModel codesTableModel, Codetyp codetyp);
+  void speichern(SvmModel svmModel, CodesTableModel codesTableModel, Codetyp codetyp);
 }

@@ -4,7 +4,6 @@ import ch.metzenthin.svm.common.datatypes.Gruppe;
 import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.*;
-
 import java.sql.Time;
 import java.util.Calendar;
 
@@ -13,134 +12,134 @@ import java.util.Calendar;
  */
 public interface SchuelerSuchenModel extends PersonModel {
 
-    Mitarbeiter MITARBEITER_ALLE = new Mitarbeiter();
-    SchuelerCode SCHUELER_CODE_ALLE = new SchuelerCode();
-    ElternmithilfeCode ELTERNMITHILFE_CODE_ALLE = new ElternmithilfeCode();
+  Mitarbeiter MITARBEITER_ALLE = new Mitarbeiter();
+  SchuelerCode SCHUELER_CODE_ALLE = new SchuelerCode();
+  ElternmithilfeCode ELTERNMITHILFE_CODE_ALLE = new ElternmithilfeCode();
 
-    enum RolleSelected {
-        SCHUELER,
-        ELTERN,
-        RECHNUNGSEMPFAENGER,
-        ALLE
-    }
+  enum RolleSelected {
+    SCHUELER,
+    ELTERN,
+    RECHNUNGSEMPFAENGER,
+    ALLE
+  }
 
-    enum AnmeldestatusSelected {
-        ANGEMELDET,
-        ABGEMELDET,
-        ALLE
-    }
+  enum AnmeldestatusSelected {
+    ANGEMELDET,
+    ABGEMELDET,
+    ALLE
+  }
 
-    enum DispensationSelected {
-        DISPENSIERT,
-        NICHT_DISPENSIERT,
-        ALLE
-    }
+  enum DispensationSelected {
+    DISPENSIERT,
+    NICHT_DISPENSIERT,
+    ALLE
+  }
 
-    enum GeschlechtSelected {
-        WEIBLICH,
-        MAENNLICH,
-        ALLE
-    }
+  enum GeschlechtSelected {
+    WEIBLICH,
+    MAENNLICH,
+    ALLE
+  }
 
-    String getGeburtsdatumSuchperiode();
+  String getGeburtsdatumSuchperiode();
 
-    Calendar getGeburtsdatumSuchperiodeBeginn();
+  Calendar getGeburtsdatumSuchperiodeBeginn();
 
-    Calendar getGeburtsdatumSuchperiodeEnde();
+  Calendar getGeburtsdatumSuchperiodeEnde();
 
-    String getGeburtsdatumSuchperiodeDateFormatString();
+  String getGeburtsdatumSuchperiodeDateFormatString();
 
-    GeschlechtSelected getGeschlecht();
+  GeschlechtSelected getGeschlecht();
 
-    RolleSelected getRolle();
+  RolleSelected getRolle();
 
-    AnmeldestatusSelected getAnmeldestatus();
+  AnmeldestatusSelected getAnmeldestatus();
 
-    DispensationSelected getDispensation();
+  DispensationSelected getDispensation();
 
-    Calendar getStichtag();
+  Calendar getStichtag();
 
-    SchuelerCode getSchuelerCode();
+  SchuelerCode getSchuelerCode();
 
-    Semester getSemesterKurs();
+  Semester getSemesterKurs();
 
-    Wochentag getWochentag();
+  Wochentag getWochentag();
 
-    Time getZeitBeginn();
+  Time getZeitBeginn();
 
-    Mitarbeiter getMitarbeiter();
+  Mitarbeiter getMitarbeiter();
 
-    boolean isKursFuerSucheBeruecksichtigen();
+  boolean isKursFuerSucheBeruecksichtigen();
 
-    Maerchen getMaerchen();
+  Maerchen getMaerchen();
 
-    Gruppe getGruppe();
+  Gruppe getGruppe();
 
-    String getRollen();
+  String getRollen();
 
-    ElternmithilfeCode getElternmithilfeCode();
+  ElternmithilfeCode getElternmithilfeCode();
 
-    Integer getKuchenVorstellung();
+  Integer getKuchenVorstellung();
 
-    String getZusatzattributMaerchen();
+  String getZusatzattributMaerchen();
 
-    boolean isMaerchenFuerSucheBeruecksichtigen();
+  boolean isMaerchenFuerSucheBeruecksichtigen();
 
-    PersonSuchen getPerson();
+  PersonSuchen getPerson();
 
-    void setGeburtsdatumSuchperiode(String geburtsdatumSuchperiode) throws SvmValidationException;
+  void setGeburtsdatumSuchperiode(String geburtsdatumSuchperiode) throws SvmValidationException;
 
-    void setGeschlecht(GeschlechtSelected geschlecht);
+  void setGeschlecht(GeschlechtSelected geschlecht);
 
-    void setRolle(RolleSelected rolle);
+  void setRolle(RolleSelected rolle);
 
-    void setAnmeldestatus(AnmeldestatusSelected anmeldestatus);
+  void setAnmeldestatus(AnmeldestatusSelected anmeldestatus);
 
-    void setDispensation(DispensationSelected dispensation);
+  void setDispensation(DispensationSelected dispensation);
 
-    void setStichtag(String stichtag) throws SvmValidationException;
+  void setStichtag(String stichtag) throws SvmValidationException;
 
-    void setSemesterKurs(Semester semesterKurs);
+  void setSemesterKurs(Semester semesterKurs);
 
-    void setWochentag(Wochentag wochentag);
+  void setWochentag(Wochentag wochentag);
 
-    void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
+  void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
 
-    void setMitarbeiter(Mitarbeiter mitarbeiter);
+  void setMitarbeiter(Mitarbeiter mitarbeiter);
 
-    void setKursFuerSucheBeruecksichtigen(boolean isSelected);
+  void setKursFuerSucheBeruecksichtigen(boolean isSelected);
 
-    void setSchuelerCode(SchuelerCode schuelerCode);
+  void setSchuelerCode(SchuelerCode schuelerCode);
 
-    void setMaerchen(Maerchen maerchen);
+  void setMaerchen(Maerchen maerchen);
 
-    void setGruppe(Gruppe gruppe);
+  void setGruppe(Gruppe gruppe);
 
-    void setRollen(String rollen) throws SvmValidationException;
+  void setRollen(String rollen) throws SvmValidationException;
 
-    void setElternmithilfeCode(ElternmithilfeCode elternmithilfeCode);
+  void setElternmithilfeCode(ElternmithilfeCode elternmithilfeCode);
 
-    void setKuchenVorstellung(String kuchenVorstellung) throws SvmValidationException;
+  void setKuchenVorstellung(String kuchenVorstellung) throws SvmValidationException;
 
-    void setZusatzattributMaerchen(String zusatzattributMaerchen) throws SvmValidationException;
+  void setZusatzattributMaerchen(String zusatzattributMaerchen) throws SvmValidationException;
 
-    void setMaerchenFuerSucheBeruecksichtigen(boolean isSelected);
+  void setMaerchenFuerSucheBeruecksichtigen(boolean isSelected);
 
-    boolean searchForSpecificKurs();
+  boolean searchForSpecificKurs();
 
-    boolean checkIfKurseExist();
+  boolean checkIfKurseExist();
 
-    SchuelerSuchenTableData suchen(SvmModel svmModel);
+  SchuelerSuchenTableData suchen(SvmModel svmModel);
 
-    void invalidateGeburtsdatumSuchperiode();
+  void invalidateGeburtsdatumSuchperiode();
 
-    Mitarbeiter[] getSelectableLehrkraefte(SvmModel svmModel);
+  Mitarbeiter[] getSelectableLehrkraefte(SvmModel svmModel);
 
-    SchuelerCode[] getSelectableSchuelerCodes(SvmModel svmModel);
+  SchuelerCode[] getSelectableSchuelerCodes(SvmModel svmModel);
 
-    ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel);
+  ElternmithilfeCode[] getSelectableElternmithilfeCodes(SvmModel svmModel);
 
-    Semester getSemesterInit(SvmModel svmModel);
+  Semester getSemesterInit(SvmModel svmModel);
 
-    Maerchen getMaerchenInit(SvmModel svmModel);
+  Maerchen getMaerchenInit(SvmModel svmModel);
 }
