@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.ElternmithilfeCodeDao;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -11,30 +10,32 @@ import java.util.List;
  */
 public class SaveOrUpdateElternmithilfeCodeCommand implements Command {
 
-    private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
+  private final ElternmithilfeCodeDao elternmithilfeCodeDao = new ElternmithilfeCodeDao();
 
-    // input
-    private final ElternmithilfeCode elternmithilfeCode;
-    private final ElternmithilfeCode elternmithilfeCodeOrigin;
-    private final List<ElternmithilfeCode> bereitsErfassteElternmithilfeCodes;
+  // input
+  private final ElternmithilfeCode elternmithilfeCode;
+  private final ElternmithilfeCode elternmithilfeCodeOrigin;
+  private final List<ElternmithilfeCode> bereitsErfassteElternmithilfeCodes;
 
-    public SaveOrUpdateElternmithilfeCodeCommand(ElternmithilfeCode elternmithilfeCode, ElternmithilfeCode elternmithilfeCodeOrigin, List<ElternmithilfeCode> bereitsErfassteElternmithilfeCodes) {
-        this.elternmithilfeCode = elternmithilfeCode;
-        this.elternmithilfeCodeOrigin = elternmithilfeCodeOrigin;
-        this.bereitsErfassteElternmithilfeCodes = bereitsErfassteElternmithilfeCodes;
+  public SaveOrUpdateElternmithilfeCodeCommand(
+      ElternmithilfeCode elternmithilfeCode,
+      ElternmithilfeCode elternmithilfeCodeOrigin,
+      List<ElternmithilfeCode> bereitsErfassteElternmithilfeCodes) {
+    this.elternmithilfeCode = elternmithilfeCode;
+    this.elternmithilfeCodeOrigin = elternmithilfeCodeOrigin;
+    this.bereitsErfassteElternmithilfeCodes = bereitsErfassteElternmithilfeCodes;
+  }
+
+  @Override
+  public void execute() {
+    if (elternmithilfeCodeOrigin != null) {
+      // Update von elternmithilfeCodeOrigin mit Werten von elternmithilfeCode
+      elternmithilfeCodeOrigin.copyAttributesFrom(elternmithilfeCode);
+      elternmithilfeCodeDao.save(elternmithilfeCodeOrigin);
+    } else {
+      ElternmithilfeCode elternmithilfeCodeSaved = elternmithilfeCodeDao.save(elternmithilfeCode);
+      bereitsErfassteElternmithilfeCodes.add(elternmithilfeCodeSaved);
     }
-
-    @Override
-    public void execute() {
-        if (elternmithilfeCodeOrigin != null) {
-            // Update von elternmithilfeCodeOrigin mit Werten von elternmithilfeCode
-            elternmithilfeCodeOrigin.copyAttributesFrom(elternmithilfeCode);
-            elternmithilfeCodeDao.save(elternmithilfeCodeOrigin);
-        } else {
-            ElternmithilfeCode elternmithilfeCodeSaved = elternmithilfeCodeDao.save(elternmithilfeCode);
-            bereitsErfassteElternmithilfeCodes.add(elternmithilfeCodeSaved);
-        }
-        Collections.sort(bereitsErfassteElternmithilfeCodes);
-    }
-
+    Collections.sort(bereitsErfassteElternmithilfeCodes);
+  }
 }

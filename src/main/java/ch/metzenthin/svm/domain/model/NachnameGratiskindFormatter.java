@@ -5,15 +5,14 @@ package ch.metzenthin.svm.domain.model;
  */
 public class NachnameGratiskindFormatter implements Formatter<String> {
 
-    @Override
-    public String format(String name) {
+  @Override
+  public String format(String name) {
 
-        if (name == null) {
-            return null;
-        }
-
-        // Gratiskind oder (nicht) gratis weglassen
-        return name.replaceAll("\\s+([Nn]icht\\s+)?[Gg]ratis(kind|kinder)?", "");
+    if (name == null) {
+      return null;
     }
 
+    // Gratiskind oder (nicht) gratis weglassen
+    return name.replaceAll("\\s+([Nn]icht\\s+)?[Gg]ratis(kind|kinder)?", "");
+  }
 }

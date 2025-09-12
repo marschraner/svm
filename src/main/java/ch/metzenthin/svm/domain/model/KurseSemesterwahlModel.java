@@ -7,11 +7,11 @@ import ch.metzenthin.svm.persistence.entities.Semester;
  */
 public interface KurseSemesterwahlModel extends Model {
 
-    Semester getSemester();
+  Semester getSemester();
 
-    void setSemester(Semester semester);
+  void setSemester(Semester semester);
 
-    Semester getInitSemester(SvmModel svmModel);
+  Semester getInitSemester(SvmModel svmModel);
 
-    KurseTableData suchen();
+  KurseTableData suchen();
 }

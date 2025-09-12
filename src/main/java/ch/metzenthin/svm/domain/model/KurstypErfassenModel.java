@@ -9,19 +9,19 @@ import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
  */
 public interface KurstypErfassenModel extends Model {
 
-    void setKurstypOrigin(Kurstyp kurstypOrigin);
+  void setKurstypOrigin(Kurstyp kurstypOrigin);
 
-    String getBezeichnung();
+  String getBezeichnung();
 
-    Boolean isSelektierbar();
+  Boolean isSelektierbar();
 
-    Kurstyp getKurstyp();
+  Kurstyp getKurstyp();
 
-    void setBezeichnung(String bezeichnung) throws SvmValidationException;
+  void setBezeichnung(String bezeichnung) throws SvmValidationException;
 
-    void setSelektierbar(Boolean isSelected);
+  void setSelektierbar(Boolean isSelected);
 
-    boolean checkKurstypBezeichnungBereitsInVerwendung(SvmModel svmModel);
+  boolean checkKurstypBezeichnungBereitsInVerwendung(SvmModel svmModel);
 
-    void speichern(SvmModel svmModel, KurstypenTableModel kurstypenTableModel);
+  void speichern(SvmModel svmModel, KurstypenTableModel kurstypenTableModel);
 }

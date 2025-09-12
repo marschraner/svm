@@ -7,19 +7,19 @@ import ch.metzenthin.svm.domain.SvmValidationException;
  */
 public interface AdresseModel extends Model {
 
-    String getStrasseHausnummer();
+  String getStrasseHausnummer();
 
-    String getPlz();
+  String getPlz();
 
-    String getOrt();
+  String getOrt();
 
-    String getFestnetz();
+  String getFestnetz();
 
-    void setStrasseHausnummer(String strasseHausnummer) throws SvmValidationException;
+  void setStrasseHausnummer(String strasseHausnummer) throws SvmValidationException;
 
-    void setPlz(String plz) throws SvmValidationException;
+  void setPlz(String plz) throws SvmValidationException;
 
-    void setOrt(String ort) throws SvmValidationException;
+  void setOrt(String ort) throws SvmValidationException;
 
-    void setFestnetz(String festnetz) throws SvmValidationException;
+  void setFestnetz(String festnetz) throws SvmValidationException;
 }

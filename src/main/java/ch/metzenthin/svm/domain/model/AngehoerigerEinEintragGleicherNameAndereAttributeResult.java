@@ -6,27 +6,31 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 /**
  * @author Hans Stamm
  */
-public class AngehoerigerEinEintragGleicherNameAndereAttributeResult extends SchuelerErfassenSaveResult {
+public class AngehoerigerEinEintragGleicherNameAndereAttributeResult
+    extends SchuelerErfassenSaveResult {
 
-    private final Angehoeriger angehoerigerFoundInDatabase;
-    private final ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt;
+  private final Angehoeriger angehoerigerFoundInDatabase;
+  private final ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt;
 
-    public AngehoerigerEinEintragGleicherNameAndereAttributeResult(Angehoeriger angehoerigerFoundInDatabase, ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt, ValidateSchuelerCommand.Result result) {
-        super(result);
-        this.angehoerigerFoundInDatabase = angehoerigerFoundInDatabase;
-        this.angehoerigenArt = angehoerigenArt;
-    }
+  public AngehoerigerEinEintragGleicherNameAndereAttributeResult(
+      Angehoeriger angehoerigerFoundInDatabase,
+      ValidateSchuelerCommand.AngehoerigenArt angehoerigenArt,
+      ValidateSchuelerCommand.Result result) {
+    super(result);
+    this.angehoerigerFoundInDatabase = angehoerigerFoundInDatabase;
+    this.angehoerigenArt = angehoerigenArt;
+  }
 
-    @Override
-    public void accept(SchuelerErfassenSaveResultVisitor visitor) {
-        visitor.visit(this);
-    }
+  @Override
+  public void accept(SchuelerErfassenSaveResultVisitor visitor) {
+    visitor.visit(this);
+  }
 
-    public Angehoeriger getAngehoerigerFoundInDatabase() {
-        return angehoerigerFoundInDatabase;
-    }
+  public Angehoeriger getAngehoerigerFoundInDatabase() {
+    return angehoerigerFoundInDatabase;
+  }
 
-    public ValidateSchuelerCommand.AngehoerigenArt getAngehoerigenArt() {
-        return angehoerigenArt;
-    }
+  public ValidateSchuelerCommand.AngehoerigenArt getAngehoerigenArt() {
+    return angehoerigenArt;
+  }
 }

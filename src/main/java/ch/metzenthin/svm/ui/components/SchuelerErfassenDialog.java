@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.domain.model.SchuelerErfassenSaveResult;
-
 import javax.swing.*;
 
 /**
@@ -9,24 +8,23 @@ import javax.swing.*;
  */
 public abstract class SchuelerErfassenDialog extends JDialog {
 
-    private transient SchuelerErfassenSaveResult result;
-    private boolean isAbbrechen = false;
+  private transient SchuelerErfassenSaveResult result;
+  private boolean isAbbrechen = false;
 
-    public SchuelerErfassenSaveResult getResult() {
-        return result;
-    }
+  public SchuelerErfassenSaveResult getResult() {
+    return result;
+  }
 
-    protected void setResult(SchuelerErfassenSaveResult result) {
-        this.result = result;
-    }
+  protected void setResult(SchuelerErfassenSaveResult result) {
+    this.result = result;
+  }
 
-    public boolean isAbbrechen() {
-        return isAbbrechen;
-    }
+  public boolean isAbbrechen() {
+    return isAbbrechen;
+  }
 
-    protected void abbrechen() {
-        result = null;
-        isAbbrechen = true;
-    }
-
+  protected void abbrechen() {
+    result = null;
+    isAbbrechen = true;
+  }
 }

@@ -5,7 +5,7 @@ package ch.metzenthin.svm.domain.commands;
  */
 public interface CommandInvoker {
 
-    Command executeCommand(Command command);
+  Command executeCommand(Command command);
 
-    Command executeCommandAsTransaction(Command command);
+  Command executeCommandAsTransaction(Command command);
 }

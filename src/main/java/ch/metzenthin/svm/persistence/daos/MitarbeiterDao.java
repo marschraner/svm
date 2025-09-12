@@ -4,7 +4,6 @@ import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-
 import java.util.HashSet;
 import java.util.List;
 
@@ -13,32 +12,34 @@ import java.util.List;
  */
 public class MitarbeiterDao extends GenericDao<Mitarbeiter, Integer> {
 
-    @Override
-    public Mitarbeiter save(Mitarbeiter mitarbeiter) {
-        super.save(mitarbeiter);
-        if (mitarbeiter.getAdresse() != null) {
-            db.getCurrentEntityManager().refresh(mitarbeiter.getAdresse());
-        }
-        return mitarbeiter;
+  @Override
+  public Mitarbeiter save(Mitarbeiter mitarbeiter) {
+    super.save(mitarbeiter);
+    if (mitarbeiter.getAdresse() != null) {
+      db.getCurrentEntityManager().refresh(mitarbeiter.getAdresse());
+    }
+    return mitarbeiter;
+  }
+
+  @Override
+  public void remove(Mitarbeiter mitarbeiter) {
+    // Lösche zugewiesene Codes
+    EntityManager entityManager = db.getCurrentEntityManager();
+    for (MitarbeiterCode mitarbeiterCode : new HashSet<>(mitarbeiter.getMitarbeiterCodes())) {
+      mitarbeiter.deleteCode(mitarbeiterCode);
+      entityManager.refresh(mitarbeiterCode);
     }
 
-    @Override
-    public void remove(Mitarbeiter mitarbeiter) {
-        // Lösche zugewiesene Codes
-        EntityManager entityManager = db.getCurrentEntityManager();
-        for (MitarbeiterCode mitarbeiterCode : new HashSet<>(mitarbeiter.getMitarbeiterCodes())) {
-            mitarbeiter.deleteCode(mitarbeiterCode);
-            entityManager.refresh(mitarbeiterCode);
-        }
+    // Lösche Mitarbeiter aus DB
+    entityManager.remove(mitarbeiter);
+  }
 
-        // Lösche Mitarbeiter aus DB
-        entityManager.remove(mitarbeiter);
-    }
-
-    public List<Mitarbeiter> findAll() {
-        TypedQuery<Mitarbeiter> typedQuery = db.getCurrentEntityManager().createQuery(
-                "select m from Mitarbeiter m order by m.nachname, m.vorname, m.geburtsdatum", Mitarbeiter.class);
-        return typedQuery.getResultList();
-    }
-
+  public List<Mitarbeiter> findAll() {
+    TypedQuery<Mitarbeiter> typedQuery =
+        db.getCurrentEntityManager()
+            .createQuery(
+                "select m from Mitarbeiter m order by m.nachname, m.vorname, m.geburtsdatum",
+                Mitarbeiter.class);
+    return typedQuery.getResultList();
+  }
 }

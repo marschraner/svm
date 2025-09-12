@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.persistence.entities.Code;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,63 +10,60 @@ import java.util.List;
  */
 public class CodesTableData {
 
-    private List<? extends Code> codes;
-    private final boolean isCodesSpecific;
-    private final List<Field> columns = new ArrayList<>();
+  private List<? extends Code> codes;
+  private final boolean isCodesSpecific;
+  private final List<Field> columns = new ArrayList<>();
 
-    public CodesTableData(List<? extends Code> codes, boolean isCodesSpecific) {
-        this.codes = codes;
-        this.isCodesSpecific = isCodesSpecific;
-        initColumns();
+  public CodesTableData(List<? extends Code> codes, boolean isCodesSpecific) {
+    this.codes = codes;
+    this.isCodesSpecific = isCodesSpecific;
+    initColumns();
+  }
+
+  private void initColumns() {
+    columns.add(Field.KUERZEL);
+    columns.add(Field.BESCHREIBUNG);
+    if (!isCodesSpecific) {
+      columns.add(Field.SELEKTIERBAR);
     }
+  }
 
-    private void initColumns() {
-        columns.add(Field.KUERZEL);
-        columns.add(Field.BESCHREIBUNG);
-        if (!isCodesSpecific) {
-            columns.add(Field.SELEKTIERBAR);
-        }
+  public int getColumnCount() {
+    return columns.size();
+  }
+
+  public int size() {
+    return codes.size();
+  }
+
+  public Object getValueAt(int rowIndex, int columnIndex) {
+    Code code = codes.get(rowIndex);
+    Object value = null;
+    switch (columns.get(columnIndex)) {
+      case KUERZEL -> value = code.getKuerzel();
+      case BESCHREIBUNG -> value = code.getBeschreibung();
+      case SELEKTIERBAR ->
+          value = (code.getSelektierbar() != null && code.getSelektierbar()) ? "ja" : "nein";
+      default -> {
+        // Nothing to do
+      }
     }
+    return value;
+  }
 
-    public int getColumnCount() {
-        return columns.size();
-    }
+  public Class<?> getColumnClass() {
+    return String.class;
+  }
 
-    public int size() {
-        return codes.size();
-    }
+  public void setCodes(List<? extends Code> codes) {
+    this.codes = codes;
+  }
 
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        Code code = codes.get(rowIndex);
-        Object value = null;
-        switch (columns.get(columnIndex)) {
-            case KUERZEL -> value = code.getKuerzel();
-            case BESCHREIBUNG -> value = code.getBeschreibung();
-            case SELEKTIERBAR -> value =
-                    (code.getSelektierbar() != null && code.getSelektierbar())
-                            ? "ja"
-                            : "nein";
-            default -> {
-                // Nothing to do
-            }
-        }
-        return value;
-    }
+  public String getColumnName(int column) {
+    return columns.get(column).toString();
+  }
 
-    public Class<?> getColumnClass() {
-        return String.class;
-    }
-
-    public void setCodes(List<? extends Code> codes) {
-        this.codes = codes;
-    }
-
-    public String getColumnName(int column) {
-        return columns.get(column).toString();
-    }
-
-    public Code getCodeAt(int rowIndex) {
-        return codes.get(rowIndex);
-    }
-
+  public Code getCodeAt(int rowIndex) {
+    return codes.get(rowIndex);
+  }
 }

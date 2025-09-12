@@ -15,101 +15,107 @@ import org.apache.logging.log4j.Logger;
  */
 public class KursortErfassenModelImpl extends AbstractModel implements KursortErfassenModel {
 
-    private static final Logger LOGGER = LogManager.getLogger(KursortErfassenModelImpl.class);
+  private static final Logger LOGGER = LogManager.getLogger(KursortErfassenModelImpl.class);
 
-    private final Kursort kursort = new Kursort();
-    private Kursort kursortOrigin;
+  private final Kursort kursort = new Kursort();
+  private Kursort kursortOrigin;
 
-    @Override
-    public Kursort getKursort() {
-        return kursort;
-    }
+  @Override
+  public Kursort getKursort() {
+    return kursort;
+  }
 
-    @Override
-    public void setKursortOrigin(Kursort kursortOrigin) {
-        this.kursortOrigin = kursortOrigin;
-    }
+  @Override
+  public void setKursortOrigin(Kursort kursortOrigin) {
+    this.kursortOrigin = kursortOrigin;
+  }
 
-    private final StringModelAttribute bezeichnungModelAttribute = new StringModelAttribute(
-            this,
-            Field.BEZEICHNUNG, 2, 50,
-            new AttributeAccessor<>() {
-                @Override
-                public String getValue() {
-                    return kursort.getBezeichnung();
-                }
-
-                @Override
-                public void setValue(String value) {
-                    kursort.setBezeichnung(value);
-                }
+  private final StringModelAttribute bezeichnungModelAttribute =
+      new StringModelAttribute(
+          this,
+          Field.BEZEICHNUNG,
+          2,
+          50,
+          new AttributeAccessor<>() {
+            @Override
+            public String getValue() {
+              return kursort.getBezeichnung();
             }
-    );
 
-    @Override
-    public String getBezeichnung() {
-        return bezeichnungModelAttribute.getValue();
-    }
-
-    @Override
-    public void setBezeichnung(String bezeichnung) throws SvmValidationException {
-        bezeichnungModelAttribute.setNewValue(true, bezeichnung, isBulkUpdate());
-    }
-
-    @Override
-    public void setSelektierbar(Boolean isSelected) {
-        Boolean oldValue = kursort.getSelektierbar();
-        kursort.setSelektierbar(isSelected);
-        firePropertyChange(Field.SELEKTIERBAR, oldValue, isSelected);
-    }
-
-    @Override
-    public Boolean isSelektierbar() {
-        return kursort.getSelektierbar();
-    }
-
-    @Override
-    public boolean checkKursortBezeichnungBereitsInVerwendung(SvmModel svmModel) {
-        CommandInvoker commandInvoker = getCommandInvoker();
-        CheckKursortBezeichnungBereitsInVerwendungCommand checkKursortBezeichnungBereitsInVerwendungCommand = new CheckKursortBezeichnungBereitsInVerwendungCommand(kursort, kursortOrigin, svmModel.getKursorteAll());
-        commandInvoker.executeCommand(checkKursortBezeichnungBereitsInVerwendungCommand);
-        return checkKursortBezeichnungBereitsInVerwendungCommand.isBereitsInVerwendung();
-    }
-
-    @Override
-    public void speichern(SvmModel svmModel, KursorteTableModel kursorteTableModel) {
-        CommandInvoker commandInvoker = getCommandInvoker();
-        SaveOrUpdateKursortCommand saveOrUpdateKursortCommand = new SaveOrUpdateKursortCommand(kursort, kursortOrigin, svmModel.getKursorteAll());
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
-        // TableData mit von der Datenbank upgedateten Kursorten updaten
-        kursorteTableModel.getKursorteTableData().setKursorte(svmModel.getKursorteAll());
-    }
-
-    @SuppressWarnings("DuplicatedCode")
-    @Override
-    public void initializeCompleted() {
-        if (kursortOrigin != null) {
-            setBulkUpdate(true);
-            try {
-                setBezeichnung(kursortOrigin.getBezeichnung());
-                setSelektierbar(!kursortOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
-                setSelektierbar(kursortOrigin.getSelektierbar());
-            } catch (SvmValidationException e) {
-                LOGGER.error(e.getMessage());
+            @Override
+            public void setValue(String value) {
+              kursort.setBezeichnung(value);
             }
-            setBulkUpdate(false);
-        } else {
-            super.initializeCompleted();
-        }
-    }
+          });
 
-    @Override
-    public boolean isCompleted() {
-        return true;
-    }
+  @Override
+  public String getBezeichnung() {
+    return bezeichnungModelAttribute.getValue();
+  }
 
-    @Override
-    void doValidate() throws SvmValidationException {
-        // Keine feldübergreifende Validierung notwendig
+  @Override
+  public void setBezeichnung(String bezeichnung) throws SvmValidationException {
+    bezeichnungModelAttribute.setNewValue(true, bezeichnung, isBulkUpdate());
+  }
+
+  @Override
+  public void setSelektierbar(Boolean isSelected) {
+    Boolean oldValue = kursort.getSelektierbar();
+    kursort.setSelektierbar(isSelected);
+    firePropertyChange(Field.SELEKTIERBAR, oldValue, isSelected);
+  }
+
+  @Override
+  public Boolean isSelektierbar() {
+    return kursort.getSelektierbar();
+  }
+
+  @Override
+  public boolean checkKursortBezeichnungBereitsInVerwendung(SvmModel svmModel) {
+    CommandInvoker commandInvoker = getCommandInvoker();
+    CheckKursortBezeichnungBereitsInVerwendungCommand
+        checkKursortBezeichnungBereitsInVerwendungCommand =
+            new CheckKursortBezeichnungBereitsInVerwendungCommand(
+                kursort, kursortOrigin, svmModel.getKursorteAll());
+    commandInvoker.executeCommand(checkKursortBezeichnungBereitsInVerwendungCommand);
+    return checkKursortBezeichnungBereitsInVerwendungCommand.isBereitsInVerwendung();
+  }
+
+  @Override
+  public void speichern(SvmModel svmModel, KursorteTableModel kursorteTableModel) {
+    CommandInvoker commandInvoker = getCommandInvoker();
+    SaveOrUpdateKursortCommand saveOrUpdateKursortCommand =
+        new SaveOrUpdateKursortCommand(kursort, kursortOrigin, svmModel.getKursorteAll());
+    commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
+    // TableData mit von der Datenbank upgedateten Kursorten updaten
+    kursorteTableModel.getKursorteTableData().setKursorte(svmModel.getKursorteAll());
+  }
+
+  @SuppressWarnings("DuplicatedCode")
+  @Override
+  public void initializeCompleted() {
+    if (kursortOrigin != null) {
+      setBulkUpdate(true);
+      try {
+        setBezeichnung(kursortOrigin.getBezeichnung());
+        setSelektierbar(!kursortOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
+        setSelektierbar(kursortOrigin.getSelektierbar());
+      } catch (SvmValidationException e) {
+        LOGGER.error(e.getMessage());
+      }
+      setBulkUpdate(false);
+    } else {
+      super.initializeCompleted();
     }
+  }
+
+  @Override
+  public boolean isCompleted() {
+    return true;
+  }
+
+  @Override
+  void doValidate() throws SvmValidationException {
+    // Keine feldübergreifende Validierung notwendig
+  }
 }

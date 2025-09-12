@@ -7,19 +7,19 @@ import static ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand.Result.D
  */
 public class DrittpersonIdentischMitElternteilResult extends SchuelerErfassenSaveResult {
 
-    private final String errorMessage;
+  private final String errorMessage;
 
-    public DrittpersonIdentischMitElternteilResult(String errorMessage) {
-        super(DRITTPERSON_IDENTISCH_MIT_ELTERNTEIL);
-        this.errorMessage = errorMessage;
-    }
+  public DrittpersonIdentischMitElternteilResult(String errorMessage) {
+    super(DRITTPERSON_IDENTISCH_MIT_ELTERNTEIL);
+    this.errorMessage = errorMessage;
+  }
 
-    @Override
-    public void accept(SchuelerErfassenSaveResultVisitor visitor) {
-        visitor.visit(this);
-    }
+  @Override
+  public void accept(SchuelerErfassenSaveResultVisitor visitor) {
+    visitor.visit(this);
+  }
 
-    public String getErrorMessage() {
-        return errorMessage;
-    }
+  public String getErrorMessage() {
+    return errorMessage;
+  }
 }

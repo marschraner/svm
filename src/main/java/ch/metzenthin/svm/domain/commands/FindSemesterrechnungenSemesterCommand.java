@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungDao;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
-
 import java.util.List;
 
 /**
@@ -11,24 +10,24 @@ import java.util.List;
  */
 public class FindSemesterrechnungenSemesterCommand implements Command {
 
-    private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
+  private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
-    // input
-    private final Semester semester;
+  // input
+  private final Semester semester;
 
-    // output
-    private List<Semesterrechnung> semesterrechnungenFound;
+  // output
+  private List<Semesterrechnung> semesterrechnungenFound;
 
-    FindSemesterrechnungenSemesterCommand(Semester semester) {
-        this.semester = semester;
-    }
+  FindSemesterrechnungenSemesterCommand(Semester semester) {
+    this.semester = semester;
+  }
 
-    @Override
-    public void execute() {
-        semesterrechnungenFound = semesterrechnungDao.findSemesterrechnungenSemester(semester);
-    }
+  @Override
+  public void execute() {
+    semesterrechnungenFound = semesterrechnungDao.findSemesterrechnungenSemester(semester);
+  }
 
-    List<Semesterrechnung> getSemesterrechnungenFound() {
-        return semesterrechnungenFound;
-    }
+  List<Semesterrechnung> getSemesterrechnungenFound() {
+    return semesterrechnungenFound;
+  }
 }

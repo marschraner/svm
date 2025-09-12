@@ -5,83 +5,83 @@ package ch.metzenthin.svm.domain.model;
  */
 public interface ModelFactory {
 
-    SvmModel createSvmModel();
+  SvmModel createSvmModel();
 
-    SchuelerModel createSchuelerModel();
+  SchuelerModel createSchuelerModel();
 
-    AngehoerigerModel createAngehoerigerModel();
+  AngehoerigerModel createAngehoerigerModel();
 
-    SchuelerErfassenModel createSchuelerErfassenModel();
+  SchuelerErfassenModel createSchuelerErfassenModel();
 
-    SchuelerSuchenModel createSchuelerSuchenModel();
+  SchuelerSuchenModel createSchuelerSuchenModel();
 
-    MonatsstatistikSchuelerModel createMonatsstatistikSchuelerModel();
+  MonatsstatistikSchuelerModel createMonatsstatistikSchuelerModel();
 
-    MonatsstatistikKurseModel createMonatsstatistikKurseModel();
+  MonatsstatistikKurseModel createMonatsstatistikKurseModel();
 
-    DispensationenModel createDispensationenModel();
+  DispensationenModel createDispensationenModel();
 
-    DispensationErfassenModel createDispensationErfassenModel();
+  DispensationErfassenModel createDispensationErfassenModel();
 
-    CodesModel createCodesModel();
+  CodesModel createCodesModel();
 
-    CodeErfassenModel createCodeErfassenModel();
+  CodeErfassenModel createCodeErfassenModel();
 
-    CodeSpecificHinzufuegenModel createCodeSchuelerHinzufuegenModel();
+  CodeSpecificHinzufuegenModel createCodeSchuelerHinzufuegenModel();
 
-    MitarbeitersModel createLehrkraefteModel();
+  MitarbeitersModel createLehrkraefteModel();
 
-    MitarbeiterErfassenModel createMitarbeiterErfassenModel();
+  MitarbeiterErfassenModel createMitarbeiterErfassenModel();
 
-    KursorteModel createKursorteModel();
+  KursorteModel createKursorteModel();
 
-    KursortErfassenModel createKursortErfassenModel();
+  KursortErfassenModel createKursortErfassenModel();
 
-    KurstypenModel createKurstypenModel();
+  KurstypenModel createKurstypenModel();
 
-    KurstypErfassenModel createKurstypErfassenModel();
+  KurstypErfassenModel createKurstypErfassenModel();
 
-    SemestersModel createSemestersModel();
+  SemestersModel createSemestersModel();
 
-    SemesterErfassenModel createSemesterErfassenModel();
+  SemesterErfassenModel createSemesterErfassenModel();
 
-    KurseSemesterwahlModel createKurseSemesterwahlModel();
+  KurseSemesterwahlModel createKurseSemesterwahlModel();
 
-    KurseModel createKurseModel();
+  KurseModel createKurseModel();
 
-    KursErfassenModel createKursErfassenModel();
+  KursErfassenModel createKursErfassenModel();
 
-    KursanmeldungenModel createKursanmeldungenModel();
+  KursanmeldungenModel createKursanmeldungenModel();
 
-    KursanmeldungErfassenModel createKursanmeldungErfassenModel();
+  KursanmeldungErfassenModel createKursanmeldungErfassenModel();
 
-    ListenExportModel createListenExportModel();
+  ListenExportModel createListenExportModel();
 
-    MaerchensModel createMaerchensModel();
+  MaerchensModel createMaerchensModel();
 
-    MaerchenErfassenModel createMaerchenErfassenModel();
+  MaerchenErfassenModel createMaerchenErfassenModel();
 
-    MaercheneinteilungenModel createMaercheneinteilungenModel();
+  MaercheneinteilungenModel createMaercheneinteilungenModel();
 
-    MaercheneinteilungErfassenModel createMaercheneinteilungErfassenModel();
+  MaercheneinteilungErfassenModel createMaercheneinteilungErfassenModel();
 
-    EmailModel createEmailModel();
+  EmailModel createEmailModel();
 
-    LektionsgebuehrenModel createLektionsgebuehrenModel();
+  LektionsgebuehrenModel createLektionsgebuehrenModel();
 
-    LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel();
+  LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel();
 
-    SemesterrechnungenSuchenModel createSemesterrechnungenSuchenModel();
+  SemesterrechnungenSuchenModel createSemesterrechnungenSuchenModel();
 
-    SemesterrechnungenModel createSemesterrechnungenModel();
+  SemesterrechnungenModel createSemesterrechnungenModel();
 
-    SemesterrechnungBearbeitenModel createSemesterrechnungBearbeitenModel();
+  SemesterrechnungBearbeitenModel createSemesterrechnungBearbeitenModel();
 
-    RechnungsdatumErfassenModel createRechnungsdatumErfassenModel();
+  RechnungsdatumErfassenModel createRechnungsdatumErfassenModel();
 
-    MitarbeiterSuchenModel createMitarbeitersSuchenModel();
+  MitarbeiterSuchenModel createMitarbeitersSuchenModel();
 
-    EmailSchuelerListeModel createEmailSchuelerListeModel();
+  EmailSchuelerListeModel createEmailSchuelerListeModel();
 
-    EmailSemesterrechnungenModel createEmailSemesterrechnungenModel();
+  EmailSemesterrechnungenModel createEmailSemesterrechnungenModel();
 }

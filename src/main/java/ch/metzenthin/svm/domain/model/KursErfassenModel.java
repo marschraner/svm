@@ -8,7 +8,6 @@ import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
-
 import java.sql.Time;
 
 /**
@@ -16,61 +15,65 @@ import java.sql.Time;
  */
 public interface KursErfassenModel extends Model {
 
-    Kurstyp getKurstyp();
+  Kurstyp getKurstyp();
 
-    String getAltersbereich();
+  String getAltersbereich();
 
-    String getStufe();
+  String getStufe();
 
-    Wochentag getWochentag();
+  Wochentag getWochentag();
 
-    Time getZeitBeginn();
+  Time getZeitBeginn();
 
-    Time getZeitEnde();
+  Time getZeitEnde();
 
-    Kursort getKursort();
+  Kursort getKursort();
 
-    Mitarbeiter getMitarbeiter1();
+  Mitarbeiter getMitarbeiter1();
 
-    Mitarbeiter getMitarbeiter2();
+  Mitarbeiter getMitarbeiter2();
 
-    String getBemerkungen();
+  String getBemerkungen();
 
-    Kurs getKurs();
+  Kurs getKurs();
 
-    void setKursOrigin(Kurs kursOrigin);
+  void setKursOrigin(Kurs kursOrigin);
 
-    void setKurstyp(Kurstyp kurstyp) throws SvmRequiredException;
+  void setKurstyp(Kurstyp kurstyp) throws SvmRequiredException;
 
-    void setAltersbereich(String altersbereich) throws SvmValidationException;
+  void setAltersbereich(String altersbereich) throws SvmValidationException;
 
-    void setStufe(String stufe) throws SvmValidationException;
+  void setStufe(String stufe) throws SvmValidationException;
 
-    void setWochentag(Wochentag wochentag) throws SvmRequiredException;
+  void setWochentag(Wochentag wochentag) throws SvmRequiredException;
 
-    void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
+  void setZeitBeginn(String zeitBeginn) throws SvmValidationException;
 
-    void setZeitEnde(String zeitEnde) throws SvmValidationException;
+  void setZeitEnde(String zeitEnde) throws SvmValidationException;
 
-    void setKursort(Kursort kursort) throws SvmRequiredException;
+  void setKursort(Kursort kursort) throws SvmRequiredException;
 
-    void setMitarbeiter1(Mitarbeiter mitarbeiter1) throws SvmRequiredException;
+  void setMitarbeiter1(Mitarbeiter mitarbeiter1) throws SvmRequiredException;
 
-    void setMitarbeiter2(Mitarbeiter mitarbeiter2);
+  void setMitarbeiter2(Mitarbeiter mitarbeiter2);
 
-    void setBemerkungen(String bemerkungen) throws SvmValidationException;
+  void setBemerkungen(String bemerkungen) throws SvmValidationException;
 
-    Kurstyp[] getSelectableKurstypen(SvmModel svmModel);
+  Kurstyp[] getSelectableKurstypen(SvmModel svmModel);
 
-    Kursort[] getSelectableKursorte(SvmModel svmModel);
+  Kursort[] getSelectableKursorte(SvmModel svmModel);
 
-    Mitarbeiter[] getSelectableLehrkraefte1(SvmModel svmModel);
+  Mitarbeiter[] getSelectableLehrkraefte1(SvmModel svmModel);
 
-    Mitarbeiter[] getSelectableLehrkraefte2(SvmModel svmModel);
+  Mitarbeiter[] getSelectableLehrkraefte2(SvmModel svmModel);
 
-    boolean checkKursBereitsErfasst(KurseTableModel kurseTableModel, KurseSemesterwahlModel kurseSemesterwahlModel);
+  boolean checkKursBereitsErfasst(
+      KurseTableModel kurseTableModel, KurseSemesterwahlModel kurseSemesterwahlModel);
 
-    boolean checkIfLektionsgebuehrenErfasst(SvmModel svmModel);
+  boolean checkIfLektionsgebuehrenErfasst(SvmModel svmModel);
 
-    void speichern(SvmModel svmModel, KurseSemesterwahlModel kurseSemesterwahlModel, KurseTableModel kurseTableModel);
+  void speichern(
+      SvmModel svmModel,
+      KurseSemesterwahlModel kurseSemesterwahlModel,
+      KurseTableModel kurseTableModel);
 }

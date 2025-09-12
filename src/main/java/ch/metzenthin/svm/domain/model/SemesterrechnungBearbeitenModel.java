@@ -11,57 +11,57 @@ import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
  */
 public interface SemesterrechnungBearbeitenModel extends SemesterrechnungModel {
 
-    String getRechnungsempfaengerAnrede();
+  String getRechnungsempfaengerAnrede();
 
-    String getRechnungsempfaengerNachname();
+  String getRechnungsempfaengerNachname();
 
-    String getRechnungsempfaengerStrasseNr();
+  String getRechnungsempfaengerStrasseNr();
 
-    String getRechnungsempfaengerNatel();
+  String getRechnungsempfaengerNatel();
 
-    String getRechnungsempfaengerFestnetz();
+  String getRechnungsempfaengerFestnetz();
 
-    String getRechnungsempfaengerPlz();
+  String getRechnungsempfaengerPlz();
 
-    String getRechnungsempfaengerVorname();
+  String getRechnungsempfaengerVorname();
 
-    String getRechnungsempfaengerOrt();
+  String getRechnungsempfaengerOrt();
 
-    String getRechnungsempfaengerEmail();
+  String getRechnungsempfaengerEmail();
 
-    String getRechnungsempfaengerSchuelersVorrechnung();
+  String getRechnungsempfaengerSchuelersVorrechnung();
 
-    String getRechnungsempfaengerKurseVorrechnung();
+  String getRechnungsempfaengerKurseVorrechnung();
 
-    String getSechsJahresRabattVorrechnung();
+  String getSechsJahresRabattVorrechnung();
 
-    String getRabattFaktor();
+  String getRabattFaktor();
 
-    String getRechnungsbetragVorrechnung();
+  String getRechnungsbetragVorrechnung();
 
-    String getRestbetragVorrechnung();
+  String getRestbetragVorrechnung();
 
-    String getRechnungsempfaengerSchuelersNachrechnung();
+  String getRechnungsempfaengerSchuelersNachrechnung();
 
-    String getRechnungsempfaengerKurseNachrechnung();
+  String getRechnungsempfaengerKurseNachrechnung();
 
-    String getSechsJahresRabattNachrechnung();
+  String getSechsJahresRabattNachrechnung();
 
-    String getRechnungsbetragNachrechnung();
+  String getRechnungsbetragNachrechnung();
 
-    String getRestbetragNachrechnung();
+  String getRestbetragNachrechnung();
 
-    void setSemesterrechnungOrigin(Semesterrechnung semesterrechnungOrigin);
+  void setSemesterrechnungOrigin(Semesterrechnung semesterrechnungOrigin);
 
-    void copyZahlungenVorrechnungToZahlungenNachrechnung() throws SvmValidationException;
+  void copyZahlungenVorrechnungToZahlungenNachrechnung() throws SvmValidationException;
 
-    boolean isVorrechnungEnabled();
+  boolean isVorrechnungEnabled();
 
-    boolean checkIfRechnungsempfaengerHasEmail();
+  boolean checkIfRechnungsempfaengerHasEmail();
 
-    CallDefaultEmailClientCommand.Result callEmailClient();
+  CallDefaultEmailClientCommand.Result callEmailClient();
 
-    void calculateWochenbetrag(Rechnungstyp rechnungstyp);
+  void calculateWochenbetrag(Rechnungstyp rechnungstyp);
 
-    void speichern(SemesterrechnungenTableModel semesterrechnungenTableModel);
+  void speichern(SemesterrechnungenTableModel semesterrechnungenTableModel);
 }

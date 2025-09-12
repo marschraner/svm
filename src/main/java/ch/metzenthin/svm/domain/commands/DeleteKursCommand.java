@@ -6,7 +6,6 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import ch.metzenthin.svm.persistence.entities.Semester;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,37 +14,39 @@ import java.util.List;
  */
 public class DeleteKursCommand implements Command {
 
-    private final KursDao kursDao = new KursDao();
-    private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
+  private final KursDao kursDao = new KursDao();
+  private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
 
-    // input
-    private final List<Kurs> kurse;
-    private final int indexKursToBeDeleted;
+  // input
+  private final List<Kurs> kurse;
+  private final int indexKursToBeDeleted;
 
-    public DeleteKursCommand(List<Kurs> kurse, int indexKursToBeDeleted) {
-        this.kurse = kurse;
-        this.indexKursToBeDeleted = indexKursToBeDeleted;
+  public DeleteKursCommand(List<Kurs> kurse, int indexKursToBeDeleted) {
+    this.kurse = kurse;
+    this.indexKursToBeDeleted = indexKursToBeDeleted;
+  }
+
+  @Override
+  public void execute() {
+    Kurs kursToBeDeleted = kurse.get(indexKursToBeDeleted);
+    Semester semester = kursToBeDeleted.getSemester();
+
+    // Kursanmeldungen löschen
+    Iterator<Kursanmeldung> it = kursToBeDeleted.getKursanmeldungen().iterator();
+    while (it.hasNext()) {
+      Kursanmeldung kursanmeldungToBeDeleted = it.next();
+      Angehoeriger rechnungsempfaenger =
+          kursanmeldungToBeDeleted.getSchueler().getRechnungsempfaenger();
+      it.remove();
+      kursanmeldungDao.remove(kursanmeldungToBeDeleted);
+
+      // Semesterrechnung aktualisieren
+      UpdateWochenbetragUndAnzWochenCommand updateWochenbetragUndAnzWochenCommand =
+          new UpdateWochenbetragUndAnzWochenCommand(rechnungsempfaenger, semester);
+      updateWochenbetragUndAnzWochenCommand.execute();
     }
 
-    @Override
-    public void execute() {
-        Kurs kursToBeDeleted = kurse.get(indexKursToBeDeleted);
-        Semester semester = kursToBeDeleted.getSemester();
-
-        // Kursanmeldungen löschen
-        Iterator<Kursanmeldung> it = kursToBeDeleted.getKursanmeldungen().iterator();
-        while (it.hasNext()) {
-            Kursanmeldung kursanmeldungToBeDeleted = it.next();
-            Angehoeriger rechnungsempfaenger = kursanmeldungToBeDeleted.getSchueler().getRechnungsempfaenger();
-            it.remove();
-            kursanmeldungDao.remove(kursanmeldungToBeDeleted);
-
-            // Semesterrechnung aktualisieren
-            UpdateWochenbetragUndAnzWochenCommand updateWochenbetragUndAnzWochenCommand = new UpdateWochenbetragUndAnzWochenCommand(rechnungsempfaenger, semester);
-            updateWochenbetragUndAnzWochenCommand.execute();
-        }
-
-        kursDao.remove(kursToBeDeleted);
-        kurse.remove(indexKursToBeDeleted);
-    }
+    kursDao.remove(kursToBeDeleted);
+    kurse.remove(indexKursToBeDeleted);
+  }
 }
