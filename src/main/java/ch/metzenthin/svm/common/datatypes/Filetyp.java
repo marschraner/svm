@@ -4,22 +4,22 @@ package ch.metzenthin.svm.common.datatypes;
  * @author Martin Schraner
  */
 public enum Filetyp {
-    DOCX("Microsoft Word", "docx"),
-    CSV("CSV", "csv");
+  DOCX("Microsoft Word", "docx"),
+  CSV("CSV", "csv");
 
-    private final String bezeichnung;
-    private final String fileExtension;
+  private final String bezeichnung;
+  private final String fileExtension;
 
-    Filetyp(String bezeichnung, String fileExtension) {
-        this.bezeichnung = bezeichnung;
-        this.fileExtension = fileExtension;
-    }
+  Filetyp(String bezeichnung, String fileExtension) {
+    this.bezeichnung = bezeichnung;
+    this.fileExtension = fileExtension;
+  }
 
-    public String getBezeichnung() {
-        return bezeichnung;
-    }
+  public String getBezeichnung() {
+    return bezeichnung;
+  }
 
-    public String getFileExtension() {
-        return fileExtension;
-    }
+  public String getFileExtension() {
+    return fileExtension;
+  }
 }

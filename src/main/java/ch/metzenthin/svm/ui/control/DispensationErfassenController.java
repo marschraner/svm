@@ -1,21 +1,20 @@
 package ch.metzenthin.svm.ui.control;
 
+import static ch.metzenthin.svm.common.utils.Converter.asString;
+import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
+
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.DispensationErfassenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import javax.swing.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
-
-import static ch.metzenthin.svm.common.utils.Converter.asString;
-import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
+import javax.swing.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Martin Schraner
@@ -23,404 +22,450 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 @SuppressWarnings("LoggingSimilarMessage")
 public class DispensationErfassenController extends AbstractController {
 
-    private static final Logger LOGGER = LogManager.getLogger(DispensationErfassenController.class);
-    private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE =
-            "Validierung wegen equalFieldAndModelValue";
+  private static final Logger LOGGER = LogManager.getLogger(DispensationErfassenController.class);
+  private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE =
+      "Validierung wegen equalFieldAndModelValue";
 
-    // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
-    private static final boolean MODEL_VALIDATION_MODE = false;
+  // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
+  private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private final DispensationErfassenModel dispensationErfassenModel;
-    private final boolean defaultButtonEnabled;
-    private final DispensationenTableModel dispensationenTableModel;
-    private final SchuelerDatenblattModel schuelerDatenblattModel;
-    private JDialog dispensationErfassenDialog;
-    private JTextField txtDispensationsbeginn;
-    private JTextField txtDispensationsende;
-    private JTextField txtVoraussichtlicheDauer;
-    private JTextField txtGrund;
-    private JLabel errLblDispensationsbeginn;
-    private JLabel errLblDispensationsende;
-    private JLabel errLblGrund;
-    private JLabel errLblVoraussichtlicheDauer;
-    private JButton btnSpeichern;
+  private final DispensationErfassenModel dispensationErfassenModel;
+  private final boolean defaultButtonEnabled;
+  private final DispensationenTableModel dispensationenTableModel;
+  private final SchuelerDatenblattModel schuelerDatenblattModel;
+  private JDialog dispensationErfassenDialog;
+  private JTextField txtDispensationsbeginn;
+  private JTextField txtDispensationsende;
+  private JTextField txtVoraussichtlicheDauer;
+  private JTextField txtGrund;
+  private JLabel errLblDispensationsbeginn;
+  private JLabel errLblDispensationsende;
+  private JLabel errLblGrund;
+  private JLabel errLblVoraussichtlicheDauer;
+  private JButton btnSpeichern;
 
-    public DispensationErfassenController(DispensationenTableModel dispensationenTableModel, DispensationErfassenModel dispensationErfassenModel, SchuelerDatenblattModel schuelerDatenblattModel, boolean defaultButtonEnabled) {
-        super(dispensationErfassenModel);
-        this.dispensationenTableModel = dispensationenTableModel;
-        this.schuelerDatenblattModel = schuelerDatenblattModel;
-        this.dispensationErfassenModel = dispensationErfassenModel;
-        this.defaultButtonEnabled = defaultButtonEnabled;
-        this.dispensationErfassenModel.addPropertyChangeListener(this);
-        this.dispensationErfassenModel.addDisableFieldsListener(this);
-        this.dispensationErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.dispensationErfassenModel.addCompletedListener(this::onDispensationErfassenModelCompleted);
-        this.setModelValidationMode(MODEL_VALIDATION_MODE);
-    }
+  public DispensationErfassenController(
+      DispensationenTableModel dispensationenTableModel,
+      DispensationErfassenModel dispensationErfassenModel,
+      SchuelerDatenblattModel schuelerDatenblattModel,
+      boolean defaultButtonEnabled) {
+    super(dispensationErfassenModel);
+    this.dispensationenTableModel = dispensationenTableModel;
+    this.schuelerDatenblattModel = schuelerDatenblattModel;
+    this.dispensationErfassenModel = dispensationErfassenModel;
+    this.defaultButtonEnabled = defaultButtonEnabled;
+    this.dispensationErfassenModel.addPropertyChangeListener(this);
+    this.dispensationErfassenModel.addDisableFieldsListener(this);
+    this.dispensationErfassenModel.addMakeErrorLabelsInvisibleListener(this);
+    this.dispensationErfassenModel.addCompletedListener(this::onDispensationErfassenModelCompleted);
+    this.setModelValidationMode(MODEL_VALIDATION_MODE);
+  }
 
-    public void constructionDone() {
-        dispensationErfassenModel.initializeCompleted();
-    }
+  public void constructionDone() {
+    dispensationErfassenModel.initializeCompleted();
+  }
 
-    public void setDispensationErfassenDialog(JDialog dispensationErfassenDialog) {
-        // call onCancel() when cross is clicked
-        this.dispensationErfassenDialog = dispensationErfassenDialog;
-        dispensationErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        dispensationErfassenDialog.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                onAbbrechen();
-            }
+  public void setDispensationErfassenDialog(JDialog dispensationErfassenDialog) {
+    // call onCancel() when cross is clicked
+    this.dispensationErfassenDialog = dispensationErfassenDialog;
+    dispensationErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    dispensationErfassenDialog.addWindowListener(
+        new WindowAdapter() {
+          @Override
+          public void windowClosing(WindowEvent e) {
+            onAbbrechen();
+          }
         });
-    }
+  }
 
-    public void setContentPane(JPanel contentPane) {
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    }
+  public void setContentPane(JPanel contentPane) {
+    // call onCancel() on ESCAPE
+    contentPane.registerKeyboardAction(
+        e -> onAbbrechen(),
+        KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+  }
 
-    public void setTxtDispensationsbeginn(JTextField txtDispensationsbeginn) {
-        this.txtDispensationsbeginn = txtDispensationsbeginn;
-        if (!defaultButtonEnabled) {
-            this.txtDispensationsbeginn.addActionListener(e -> onDispensationsbeginnEvent(true));
-        }
-        this.txtDispensationsbeginn.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onDispensationsbeginnEvent(false);
-            }
+  public void setTxtDispensationsbeginn(JTextField txtDispensationsbeginn) {
+    this.txtDispensationsbeginn = txtDispensationsbeginn;
+    if (!defaultButtonEnabled) {
+      this.txtDispensationsbeginn.addActionListener(e -> onDispensationsbeginnEvent(true));
+    }
+    this.txtDispensationsbeginn.addFocusListener(
+        new FocusAdapter() {
+          @Override
+          public void focusLost(FocusEvent e) {
+            onDispensationsbeginnEvent(false);
+          }
         });
-    }
+  }
 
-    private void onDispensationsbeginnEvent(boolean showRequiredErrMsg) {
-        LOGGER.trace("DispensationErfassenController Event Dispensationsbeginn");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtDispensationsbeginn.getText(), dispensationErfassenModel.getDispensationsbeginn());
-        try {
-            setModelDispensationsbeginn(showRequiredErrMsg);
-        } catch (Exception e) {
-            return;
-        }
-        if (equalFieldAndModelValue && isModelValidationMode()) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
-            validate();
-        }
+  private void onDispensationsbeginnEvent(boolean showRequiredErrMsg) {
+    LOGGER.trace("DispensationErfassenController Event Dispensationsbeginn");
+    boolean equalFieldAndModelValue =
+        equalsNullSafe(
+            txtDispensationsbeginn.getText(), dispensationErfassenModel.getDispensationsbeginn());
+    try {
+      setModelDispensationsbeginn(showRequiredErrMsg);
+    } catch (Exception e) {
+      return;
     }
-
-    private void setModelDispensationsbeginn(boolean showRequiredErrMsg) throws SvmValidationException {
-        makeErrorLabelInvisible(Field.DISPENSATIONSBEGINN);
-        try {
-            dispensationErfassenModel.setDispensationsbeginn(txtDispensationsbeginn.getText());
-        } catch (SvmRequiredException e) {
-            LOGGER.trace("DispensationErfassenController setModelDispensationsbeginn RequiredException={}", e.getMessage());
-            if (isModelValidationMode() || !showRequiredErrMsg) {
-                txtDispensationsbeginn.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
-            } else {
-                showErrMsg(e);
-            }
-            throw e;
-        } catch (SvmValidationException e) {
-            LOGGER.trace("DispensationErfassenController setModelDispensationsbeginn Exception={}", e.getMessage());
-            showErrMsg(e);
-            throw e;
-        }
+    if (equalFieldAndModelValue && isModelValidationMode()) {
+      // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb
+      // muss hier die Validierung angestossen werden.
+      LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
+      validate();
     }
+  }
 
-    public void setTxtDispensationsende(JTextField txtDispensationsende) {
-        this.txtDispensationsende = txtDispensationsende;
-        if (!defaultButtonEnabled) {
-            this.txtDispensationsende.addActionListener(e -> onDispensationsendeEvent(true));
-        }
-        this.txtDispensationsende.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onDispensationsendeEvent(false);
-            }
+  private void setModelDispensationsbeginn(boolean showRequiredErrMsg)
+      throws SvmValidationException {
+    makeErrorLabelInvisible(Field.DISPENSATIONSBEGINN);
+    try {
+      dispensationErfassenModel.setDispensationsbeginn(txtDispensationsbeginn.getText());
+    } catch (SvmRequiredException e) {
+      LOGGER.trace(
+          "DispensationErfassenController setModelDispensationsbeginn RequiredException={}",
+          e.getMessage());
+      if (isModelValidationMode() || !showRequiredErrMsg) {
+        txtDispensationsbeginn.setToolTipText(e.getMessage());
+        // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
+        // bestanden sind.
+      } else {
+        showErrMsg(e);
+      }
+      throw e;
+    } catch (SvmValidationException e) {
+      LOGGER.trace(
+          "DispensationErfassenController setModelDispensationsbeginn Exception={}",
+          e.getMessage());
+      showErrMsg(e);
+      throw e;
+    }
+  }
+
+  public void setTxtDispensationsende(JTextField txtDispensationsende) {
+    this.txtDispensationsende = txtDispensationsende;
+    if (!defaultButtonEnabled) {
+      this.txtDispensationsende.addActionListener(e -> onDispensationsendeEvent(true));
+    }
+    this.txtDispensationsende.addFocusListener(
+        new FocusAdapter() {
+          @Override
+          public void focusLost(FocusEvent e) {
+            onDispensationsendeEvent(false);
+          }
         });
-    }
+  }
 
-    private void onDispensationsendeEvent(boolean showRequiredErrMsg) {
-        LOGGER.trace("DispensationErfassenController Event Dispensationsende");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtDispensationsende.getText(), dispensationErfassenModel.getDispensationsende());
-        try {
-            setModelDispensationsende(showRequiredErrMsg);
-        } catch (SvmValidationException e) {
-            return;
-        }
-        if (equalFieldAndModelValue && isModelValidationMode()) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
-            validate();
-        }
+  private void onDispensationsendeEvent(boolean showRequiredErrMsg) {
+    LOGGER.trace("DispensationErfassenController Event Dispensationsende");
+    boolean equalFieldAndModelValue =
+        equalsNullSafe(
+            txtDispensationsende.getText(), dispensationErfassenModel.getDispensationsende());
+    try {
+      setModelDispensationsende(showRequiredErrMsg);
+    } catch (SvmValidationException e) {
+      return;
     }
-
-    private void setModelDispensationsende(boolean showRequiredErrMsg) throws SvmValidationException {
-        makeErrorLabelInvisible(Field.DISPENSATIONSENDE);
-        try {
-            dispensationErfassenModel.setDispensationsende(txtDispensationsende.getText());
-        } catch (SvmRequiredException e) {
-            LOGGER.trace("DispensationErfassenController setModelDispensationsende RequiredException={}", e.getMessage());
-            if (isModelValidationMode() || !showRequiredErrMsg) {
-                txtDispensationsende.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
-            } else {
-                showErrMsg(e);
-            }
-            throw e;
-        } catch (SvmValidationException e) {
-            LOGGER.trace("DispensationErfassenController setModelDispensationsende Exception={}", e.getMessage());
-            showErrMsg(e);
-            throw e;
-        }
+    if (equalFieldAndModelValue && isModelValidationMode()) {
+      // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb
+      // muss hier die Validierung angestossen werden.
+      LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
+      validate();
     }
+  }
 
-    public void setTxtVoraussichtlicheDauer(JTextField txtVoraussichtlicheDauer) {
-        this.txtVoraussichtlicheDauer = txtVoraussichtlicheDauer;
-        if (!defaultButtonEnabled) {
-            this.txtVoraussichtlicheDauer.addActionListener(e -> onVoraussichtlicheDauerEvent(true));
-        }
-        this.txtVoraussichtlicheDauer.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onVoraussichtlicheDauerEvent(false);
-            }
+  private void setModelDispensationsende(boolean showRequiredErrMsg) throws SvmValidationException {
+    makeErrorLabelInvisible(Field.DISPENSATIONSENDE);
+    try {
+      dispensationErfassenModel.setDispensationsende(txtDispensationsende.getText());
+    } catch (SvmRequiredException e) {
+      LOGGER.trace(
+          "DispensationErfassenController setModelDispensationsende RequiredException={}",
+          e.getMessage());
+      if (isModelValidationMode() || !showRequiredErrMsg) {
+        txtDispensationsende.setToolTipText(e.getMessage());
+        // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
+        // bestanden sind.
+      } else {
+        showErrMsg(e);
+      }
+      throw e;
+    } catch (SvmValidationException e) {
+      LOGGER.trace(
+          "DispensationErfassenController setModelDispensationsende Exception={}", e.getMessage());
+      showErrMsg(e);
+      throw e;
+    }
+  }
+
+  public void setTxtVoraussichtlicheDauer(JTextField txtVoraussichtlicheDauer) {
+    this.txtVoraussichtlicheDauer = txtVoraussichtlicheDauer;
+    if (!defaultButtonEnabled) {
+      this.txtVoraussichtlicheDauer.addActionListener(e -> onVoraussichtlicheDauerEvent(true));
+    }
+    this.txtVoraussichtlicheDauer.addFocusListener(
+        new FocusAdapter() {
+          @Override
+          public void focusLost(FocusEvent e) {
+            onVoraussichtlicheDauerEvent(false);
+          }
         });
-    }
+  }
 
-    private void onVoraussichtlicheDauerEvent(boolean showRequiredErrMsg) {
-        LOGGER.trace("DispensationErfassenController Event VoraussichtlicheDauer");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtVoraussichtlicheDauer.getText(), dispensationErfassenModel.getVoraussichtlicheDauer());
-        try {
-            setModelVoraussichtlicheDauer(showRequiredErrMsg);
-        } catch (SvmValidationException e) {
-            return;
-        }
-        if (equalFieldAndModelValue && isModelValidationMode()) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
-            validate();
-        }
+  private void onVoraussichtlicheDauerEvent(boolean showRequiredErrMsg) {
+    LOGGER.trace("DispensationErfassenController Event VoraussichtlicheDauer");
+    boolean equalFieldAndModelValue =
+        equalsNullSafe(
+            txtVoraussichtlicheDauer.getText(),
+            dispensationErfassenModel.getVoraussichtlicheDauer());
+    try {
+      setModelVoraussichtlicheDauer(showRequiredErrMsg);
+    } catch (SvmValidationException e) {
+      return;
     }
-
-    private void setModelVoraussichtlicheDauer(boolean showRequiredErrMsg) throws SvmValidationException {
-        makeErrorLabelInvisible(Field.VORAUSSICHTLICHE_DAUER);
-        try {
-            dispensationErfassenModel.setVoraussichtlicheDauer(txtVoraussichtlicheDauer.getText());
-        } catch (SvmRequiredException e) {
-            LOGGER.trace("DispensationErfassenController setModelVoraussichtlicheDauer RequiredException={}", e.getMessage());
-            if (isModelValidationMode() || !showRequiredErrMsg) {
-                txtVoraussichtlicheDauer.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
-            } else {
-                showErrMsg(e);
-            }
-            throw e;
-        } catch (SvmValidationException e) {
-            LOGGER.trace("DispensationErfassenController setModelVoraussichtlicheDauer Exception={}", e.getMessage());
-            showErrMsg(e);
-            throw e;
-        }
+    if (equalFieldAndModelValue && isModelValidationMode()) {
+      // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb
+      // muss hier die Validierung angestossen werden.
+      LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
+      validate();
     }
+  }
 
-    public void setTxtGrund(JTextField txtGrund) {
-        this.txtGrund = txtGrund;
-        if (!defaultButtonEnabled) {
-            this.txtGrund.addActionListener(e -> onGrundEvent(true));
-        }
-        this.txtGrund.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                onGrundEvent(false);
-            }
+  private void setModelVoraussichtlicheDauer(boolean showRequiredErrMsg)
+      throws SvmValidationException {
+    makeErrorLabelInvisible(Field.VORAUSSICHTLICHE_DAUER);
+    try {
+      dispensationErfassenModel.setVoraussichtlicheDauer(txtVoraussichtlicheDauer.getText());
+    } catch (SvmRequiredException e) {
+      LOGGER.trace(
+          "DispensationErfassenController setModelVoraussichtlicheDauer RequiredException={}",
+          e.getMessage());
+      if (isModelValidationMode() || !showRequiredErrMsg) {
+        txtVoraussichtlicheDauer.setToolTipText(e.getMessage());
+        // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
+        // bestanden sind.
+      } else {
+        showErrMsg(e);
+      }
+      throw e;
+    } catch (SvmValidationException e) {
+      LOGGER.trace(
+          "DispensationErfassenController setModelVoraussichtlicheDauer Exception={}",
+          e.getMessage());
+      showErrMsg(e);
+      throw e;
+    }
+  }
+
+  public void setTxtGrund(JTextField txtGrund) {
+    this.txtGrund = txtGrund;
+    if (!defaultButtonEnabled) {
+      this.txtGrund.addActionListener(e -> onGrundEvent(true));
+    }
+    this.txtGrund.addFocusListener(
+        new FocusAdapter() {
+          @Override
+          public void focusLost(FocusEvent e) {
+            onGrundEvent(false);
+          }
         });
-    }
+  }
 
-    private void onGrundEvent(boolean showRequiredErrMsg) {
-        LOGGER.trace("DispensationErfassenController Event Grund");
-        boolean equalFieldAndModelValue = equalsNullSafe(txtGrund.getText(), dispensationErfassenModel.getGrund());
-        try {
-            setModelGrund(showRequiredErrMsg);
-        } catch (SvmValidationException e) {
-            return;
-        }
-        if (equalFieldAndModelValue && isModelValidationMode()) {
-            // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
-            validate();
-        }
+  private void onGrundEvent(boolean showRequiredErrMsg) {
+    LOGGER.trace("DispensationErfassenController Event Grund");
+    boolean equalFieldAndModelValue =
+        equalsNullSafe(txtGrund.getText(), dispensationErfassenModel.getGrund());
+    try {
+      setModelGrund(showRequiredErrMsg);
+    } catch (SvmValidationException e) {
+      return;
     }
-
-    private void setModelGrund(boolean showRequiredErrMsg) throws SvmValidationException {
-        makeErrorLabelInvisible(Field.GRUND);
-        try {
-            dispensationErfassenModel.setGrund(txtGrund.getText());
-        } catch (SvmRequiredException e) {
-            LOGGER.trace("DispensationErfassenController setModelGrund RequiredException={}", e.getMessage());
-            if (isModelValidationMode() || !showRequiredErrMsg) {
-                txtGrund.setToolTipText(e.getMessage());
-                // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen bestanden sind.
-            } else {
-                showErrMsg(e);
-            }
-            throw e;
-        } catch (SvmValidationException e) {
-            LOGGER.trace("DispensationErfassenController setModelGrund Exception={}", e.getMessage());
-            showErrMsg(e);
-            throw e;
-        }
+    if (equalFieldAndModelValue && isModelValidationMode()) {
+      // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb
+      // muss hier die Validierung angestossen werden.
+      LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
+      validate();
     }
+  }
 
-    public void setErrLblDispensationsbeginn(JLabel errLblDispensationsbeginn) {
-        this.errLblDispensationsbeginn = errLblDispensationsbeginn;
+  private void setModelGrund(boolean showRequiredErrMsg) throws SvmValidationException {
+    makeErrorLabelInvisible(Field.GRUND);
+    try {
+      dispensationErfassenModel.setGrund(txtGrund.getText());
+    } catch (SvmRequiredException e) {
+      LOGGER.trace(
+          "DispensationErfassenController setModelGrund RequiredException={}", e.getMessage());
+      if (isModelValidationMode() || !showRequiredErrMsg) {
+        txtGrund.setToolTipText(e.getMessage());
+        // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
+        // bestanden sind.
+      } else {
+        showErrMsg(e);
+      }
+      throw e;
+    } catch (SvmValidationException e) {
+      LOGGER.trace("DispensationErfassenController setModelGrund Exception={}", e.getMessage());
+      showErrMsg(e);
+      throw e;
     }
+  }
 
-    public void setErrLblDispensationsende(JLabel errLblDispensationsende) {
-        this.errLblDispensationsende = errLblDispensationsende;
+  public void setErrLblDispensationsbeginn(JLabel errLblDispensationsbeginn) {
+    this.errLblDispensationsbeginn = errLblDispensationsbeginn;
+  }
+
+  public void setErrLblDispensationsende(JLabel errLblDispensationsende) {
+    this.errLblDispensationsende = errLblDispensationsende;
+  }
+
+  public void setErrLblGrund(JLabel errLblGrund) {
+    this.errLblGrund = errLblGrund;
+  }
+
+  public void setErrLblVoraussichtlicheDauer(JLabel errLblVoraussichtlicheDauer) {
+    this.errLblVoraussichtlicheDauer = errLblVoraussichtlicheDauer;
+  }
+
+  public void setBtnSpeichern(JButton btnSpeichern) {
+    this.btnSpeichern = btnSpeichern;
+    if (isModelValidationMode()) {
+      btnSpeichern.setEnabled(false);
     }
+    this.btnSpeichern.addActionListener(e -> onSpeichern());
+  }
 
-    public void setErrLblGrund(JLabel errLblGrund) {
-        this.errLblGrund = errLblGrund;
+  private void onSpeichern() {
+    if (!isModelValidationMode() && !validateOnSpeichern()) {
+      btnSpeichern.setFocusPainted(false);
+      return;
     }
-
-    public void setErrLblVoraussichtlicheDauer(JLabel errLblVoraussichtlicheDauer) {
-        this.errLblVoraussichtlicheDauer = errLblVoraussichtlicheDauer;
+    if (dispensationErfassenModel.checkDispensationUeberlapptAndereDispensationen(
+        schuelerDatenblattModel)) {
+      JOptionPane.showMessageDialog(
+          dispensationErfassenDialog,
+          "Dispensationen dürfen sich nicht überlappen.",
+          "Fehler",
+          JOptionPane.ERROR_MESSAGE);
+      btnSpeichern.setFocusPainted(false);
+    } else {
+      dispensationErfassenModel.speichern(dispensationenTableModel, schuelerDatenblattModel);
+      dispensationErfassenDialog.dispose();
     }
+  }
 
-    public void setBtnSpeichern(JButton btnSpeichern) {
-        this.btnSpeichern = btnSpeichern;
-        if (isModelValidationMode()) {
-            btnSpeichern.setEnabled(false);
-        }
-        this.btnSpeichern.addActionListener(e -> onSpeichern());
+  public void setBtnAbbrechen(JButton btnAbbrechen) {
+    btnAbbrechen.addActionListener(e -> onAbbrechen());
+  }
+
+  private void onAbbrechen() {
+    dispensationErfassenDialog.dispose();
+  }
+
+  private void onDispensationErfassenModelCompleted(boolean completed) {
+    LOGGER.trace("DispensationErfassenModel completed={}", completed);
+    if (completed) {
+      btnSpeichern.setToolTipText(null);
+      btnSpeichern.setEnabled(true);
+    } else {
+      btnSpeichern.setToolTipText("Bitte Eingabedaten vervollständigen");
+      btnSpeichern.setEnabled(false);
     }
+  }
 
-    private void onSpeichern() {
-        if (!isModelValidationMode() && !validateOnSpeichern()) {
-            btnSpeichern.setFocusPainted(false);
-            return;
-        }
-        if (dispensationErfassenModel.checkDispensationUeberlapptAndereDispensationen(schuelerDatenblattModel)) {
-            JOptionPane.showMessageDialog(dispensationErfassenDialog, "Dispensationen dürfen sich nicht überlappen.", "Fehler", JOptionPane.ERROR_MESSAGE);
-            btnSpeichern.setFocusPainted(false);
-        } else {
-            dispensationErfassenModel.speichern(dispensationenTableModel, schuelerDatenblattModel);
-            dispensationErfassenDialog.dispose();
-        }
+  @Override
+  void doPropertyChange(PropertyChangeEvent evt) {
+    super.doPropertyChange(evt);
+    if (checkIsFieldChange(Field.DISPENSATIONSBEGINN, evt)) {
+      txtDispensationsbeginn.setText(asString(dispensationErfassenModel.getDispensationsbeginn()));
+    } else if (checkIsFieldChange(Field.DISPENSATIONSENDE, evt)) {
+      txtDispensationsende.setText(asString(dispensationErfassenModel.getDispensationsende()));
+    } else if (checkIsFieldChange(Field.VORAUSSICHTLICHE_DAUER, evt)) {
+      txtVoraussichtlicheDauer.setText(dispensationErfassenModel.getVoraussichtlicheDauer());
+    } else if (checkIsFieldChange(Field.GRUND, evt)) {
+      txtGrund.setText(dispensationErfassenModel.getGrund());
     }
+  }
 
-    public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(e -> onAbbrechen());
+  @Override
+  void validateFields() throws SvmValidationException {
+    if (txtDispensationsbeginn.isEnabled()) {
+      LOGGER.trace("Validate field Dispensationsbeginn");
+      setModelDispensationsbeginn(true);
     }
-
-    private void onAbbrechen() {
-        dispensationErfassenDialog.dispose();
+    if (txtDispensationsende.isEnabled()) {
+      LOGGER.trace("Validate field Dispensationsende");
+      setModelDispensationsende(true);
     }
-
-    private void onDispensationErfassenModelCompleted(boolean completed) {
-        LOGGER.trace("DispensationErfassenModel completed={}", completed);
-        if (completed) {
-            btnSpeichern.setToolTipText(null);
-            btnSpeichern.setEnabled(true);
-        } else {
-            btnSpeichern.setToolTipText("Bitte Eingabedaten vervollständigen");
-            btnSpeichern.setEnabled(false);
-        }
+    if (txtVoraussichtlicheDauer.isEnabled()) {
+      LOGGER.trace("Validate field Voraussichtliche Dauer");
+      setModelVoraussichtlicheDauer(true);
     }
-
-    @Override
-    void doPropertyChange(PropertyChangeEvent evt) {
-        super.doPropertyChange(evt);
-        if (checkIsFieldChange(Field.DISPENSATIONSBEGINN, evt)) {
-            txtDispensationsbeginn.setText(asString(dispensationErfassenModel.getDispensationsbeginn()));
-        } else if (checkIsFieldChange(Field.DISPENSATIONSENDE, evt)) {
-            txtDispensationsende.setText(asString(dispensationErfassenModel.getDispensationsende()));
-        } else if (checkIsFieldChange(Field.VORAUSSICHTLICHE_DAUER, evt)) {
-            txtVoraussichtlicheDauer.setText(dispensationErfassenModel.getVoraussichtlicheDauer());
-        } else if (checkIsFieldChange(Field.GRUND, evt)) {
-            txtGrund.setText(dispensationErfassenModel.getGrund());
-        }
+    if (txtGrund.isEnabled()) {
+      LOGGER.trace("Validate field Grund");
+      setModelGrund(true);
     }
+  }
 
-    @Override
-    void validateFields() throws SvmValidationException {
-        if (txtDispensationsbeginn.isEnabled()) {
-            LOGGER.trace("Validate field Dispensationsbeginn");
-            setModelDispensationsbeginn(true);
-        }
-        if (txtDispensationsende.isEnabled()) {
-            LOGGER.trace("Validate field Dispensationsende");
-            setModelDispensationsende(true);
-        }
-        if (txtVoraussichtlicheDauer.isEnabled()) {
-            LOGGER.trace("Validate field Voraussichtliche Dauer");
-            setModelVoraussichtlicheDauer(true);
-        }
-        if (txtGrund.isEnabled()) {
-            LOGGER.trace("Validate field Grund");
-            setModelGrund(true);
-        }
+  @Override
+  void showErrMsg(SvmValidationException e) {
+    if (e.getAffectedFields().contains(Field.DISPENSATIONSBEGINN)) {
+      errLblDispensationsbeginn.setVisible(true);
+      errLblDispensationsbeginn.setText(e.getMessage());
     }
-
-    @Override
-    void showErrMsg(SvmValidationException e) {
-        if (e.getAffectedFields().contains(Field.DISPENSATIONSBEGINN)) {
-            errLblDispensationsbeginn.setVisible(true);
-            errLblDispensationsbeginn.setText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.DISPENSATIONSENDE)) {
-            errLblDispensationsende.setVisible(true);
-            errLblDispensationsende.setText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.VORAUSSICHTLICHE_DAUER)) {
-            errLblVoraussichtlicheDauer.setVisible(true);
-            errLblVoraussichtlicheDauer.setText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.GRUND)) {
-            errLblGrund.setVisible(true);
-            errLblGrund.setText(e.getMessage());
-        }
+    if (e.getAffectedFields().contains(Field.DISPENSATIONSENDE)) {
+      errLblDispensationsende.setVisible(true);
+      errLblDispensationsende.setText(e.getMessage());
     }
-
-    @Override
-    void showErrMsgAsToolTip(SvmValidationException e) {
-        if (e.getAffectedFields().contains(Field.DISPENSATIONSBEGINN)) {
-            txtDispensationsbeginn.setToolTipText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.DISPENSATIONSENDE)) {
-            txtDispensationsende.setToolTipText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.VORAUSSICHTLICHE_DAUER)) {
-            txtVoraussichtlicheDauer.setToolTipText(e.getMessage());
-        }
-        if (e.getAffectedFields().contains(Field.GRUND)) {
-            txtGrund.setToolTipText(e.getMessage());
-        }
+    if (e.getAffectedFields().contains(Field.VORAUSSICHTLICHE_DAUER)) {
+      errLblVoraussichtlicheDauer.setVisible(true);
+      errLblVoraussichtlicheDauer.setText(e.getMessage());
     }
-
-    @Override
-    public void makeErrorLabelsInvisible(Set<Field> fields) {
-        if (fields.contains(Field.ALLE) || fields.contains(Field.DISPENSATIONSBEGINN)) {
-            errLblDispensationsbeginn.setVisible(false);
-            txtDispensationsbeginn.setToolTipText(null);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.DISPENSATIONSENDE)) {
-            errLblDispensationsende.setVisible(false);
-            txtDispensationsende.setToolTipText(null);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.VORAUSSICHTLICHE_DAUER)) {
-            errLblVoraussichtlicheDauer.setVisible(false);
-            txtVoraussichtlicheDauer.setToolTipText(null);
-        }
-        if (fields.contains(Field.ALLE) || fields.contains(Field.GRUND)) {
-            errLblGrund.setVisible(false);
-            txtGrund.setToolTipText(null);
-        }
+    if (e.getAffectedFields().contains(Field.GRUND)) {
+      errLblGrund.setVisible(true);
+      errLblGrund.setText(e.getMessage());
     }
+  }
 
-    @Override
-    public void disableFields(boolean disable, Set<Field> fields) {
-        // Keine zu deaktivierenden Felder
+  @Override
+  void showErrMsgAsToolTip(SvmValidationException e) {
+    if (e.getAffectedFields().contains(Field.DISPENSATIONSBEGINN)) {
+      txtDispensationsbeginn.setToolTipText(e.getMessage());
     }
+    if (e.getAffectedFields().contains(Field.DISPENSATIONSENDE)) {
+      txtDispensationsende.setToolTipText(e.getMessage());
+    }
+    if (e.getAffectedFields().contains(Field.VORAUSSICHTLICHE_DAUER)) {
+      txtVoraussichtlicheDauer.setToolTipText(e.getMessage());
+    }
+    if (e.getAffectedFields().contains(Field.GRUND)) {
+      txtGrund.setToolTipText(e.getMessage());
+    }
+  }
 
+  @Override
+  public void makeErrorLabelsInvisible(Set<Field> fields) {
+    if (fields.contains(Field.ALLE) || fields.contains(Field.DISPENSATIONSBEGINN)) {
+      errLblDispensationsbeginn.setVisible(false);
+      txtDispensationsbeginn.setToolTipText(null);
+    }
+    if (fields.contains(Field.ALLE) || fields.contains(Field.DISPENSATIONSENDE)) {
+      errLblDispensationsende.setVisible(false);
+      txtDispensationsende.setToolTipText(null);
+    }
+    if (fields.contains(Field.ALLE) || fields.contains(Field.VORAUSSICHTLICHE_DAUER)) {
+      errLblVoraussichtlicheDauer.setVisible(false);
+      txtVoraussichtlicheDauer.setToolTipText(null);
+    }
+    if (fields.contains(Field.ALLE) || fields.contains(Field.GRUND)) {
+      errLblGrund.setVisible(false);
+      txtGrund.setToolTipText(null);
+    }
+  }
+
+  @Override
+  public void disableFields(boolean disable, Set<Field> fields) {
+    // Keine zu deaktivierenden Felder
+  }
 }

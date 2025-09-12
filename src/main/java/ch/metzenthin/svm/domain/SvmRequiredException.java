@@ -7,8 +7,7 @@ import ch.metzenthin.svm.common.datatypes.Field;
  */
 public class SvmRequiredException extends SvmValidationException {
 
-    public SvmRequiredException(Field affectedField) {
-        super(1000, "Eintrag ist obligatorisch", affectedField);
-    }
-
+  public SvmRequiredException(Field affectedField) {
+    super(1000, "Eintrag ist obligatorisch", affectedField);
+  }
 }

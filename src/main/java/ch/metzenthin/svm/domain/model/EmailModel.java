@@ -8,11 +8,12 @@ import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
  */
 public interface EmailModel extends Model {
 
-    EmailEmpfaenger getEmailEmpfaenger();
+  EmailEmpfaenger getEmailEmpfaenger();
 
-    void setEmailEmpfaenger(EmailEmpfaenger emailEmpfaenger);
+  void setEmailEmpfaenger(EmailEmpfaenger emailEmpfaenger);
 
-    EmailEmpfaenger[] getSelectableEmailEmpfaengers(SchuelerDatenblattModel schuelerDatenblattModel);
+  EmailEmpfaenger[] getSelectableEmailEmpfaengers(SchuelerDatenblattModel schuelerDatenblattModel);
 
-    CallDefaultEmailClientCommand.Result callEmailClient(SchuelerDatenblattModel schuelerDatenblattModel);
+  CallDefaultEmailClientCommand.Result callEmailClient(
+      SchuelerDatenblattModel schuelerDatenblattModel);
 }

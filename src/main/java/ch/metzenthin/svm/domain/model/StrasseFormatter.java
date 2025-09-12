@@ -5,13 +5,12 @@ package ch.metzenthin.svm.domain.model;
  */
 public class StrasseFormatter implements Formatter<String> {
 
-    @Override
-    public String format(String strasse) {
-        if (strasse == null) {
-            return null;
-        }
-        strasse = strasse.replace("str.", "strasse");
-        return strasse.replace("Str.", "Strasse");
+  @Override
+  public String format(String strasse) {
+    if (strasse == null) {
+      return null;
     }
-
+    strasse = strasse.replace("str.", "strasse");
+    return strasse.replace("Str.", "Strasse");
+  }
 }

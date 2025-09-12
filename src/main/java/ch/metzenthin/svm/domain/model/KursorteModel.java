@@ -9,7 +9,8 @@ import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
  */
 public interface KursorteModel extends Model {
 
-    DeleteKursortCommand.Result eintragLoeschen(SvmContext svmContext, KursorteTableModel kursorteTableModel, int indexKursortToBeRemoved);
+  DeleteKursortCommand.Result eintragLoeschen(
+      SvmContext svmContext, KursorteTableModel kursorteTableModel, int indexKursortToBeRemoved);
 
-    KursortErfassenModel getKursortErfassenModel(SvmContext svmContext, int indexBearbeiten);
+  KursortErfassenModel getKursortErfassenModel(SvmContext svmContext, int indexBearbeiten);
 }

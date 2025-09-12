@@ -7,22 +7,24 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
  */
 public interface AngehoerigerModel extends PersonModel {
 
-    Angehoeriger getAngehoeriger();
+  Angehoeriger getAngehoeriger();
 
-    boolean isGleicheAdresseWieSchueler();
+  boolean isGleicheAdresseWieSchueler();
 
-    Boolean getWuenschtEmails();
+  Boolean getWuenschtEmails();
 
-    boolean isRechnungsempfaenger();
+  boolean isRechnungsempfaenger();
 
-    void setIsGleicheAdresseWieSchueler(boolean isSelected);
+  void setIsGleicheAdresseWieSchueler(boolean isSelected);
 
-    void setWuenschtEmails(Boolean isSelected);
+  void setWuenschtEmails(Boolean isSelected);
 
-    void setIsRechnungsempfaenger(boolean isSelected);
+  void setIsRechnungsempfaenger(boolean isSelected);
 
-    void setAngehoeriger(Angehoeriger angehoeriger, boolean isGleicheAdresseWieSchueler,
-                         boolean isRechnungsempfaenger);
+  void setAngehoeriger(
+      Angehoeriger angehoeriger,
+      boolean isGleicheAdresseWieSchueler,
+      boolean isRechnungsempfaenger);
 
-    void clear();
+  void clear();
 }

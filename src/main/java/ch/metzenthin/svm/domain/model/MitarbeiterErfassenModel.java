@@ -4,7 +4,6 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
-
 import java.util.List;
 import java.util.Set;
 
@@ -13,45 +12,45 @@ import java.util.Set;
  */
 public interface MitarbeiterErfassenModel extends PersonModel {
 
-    String getAhvNummer();
+  String getAhvNummer();
 
-    String getIbanNummer();
+  String getIbanNummer();
 
-    Boolean isLehrkraft();
+  Boolean isLehrkraft();
 
-    String getVertretungsmoeglichkeiten();
+  String getVertretungsmoeglichkeiten();
 
-    String getBemerkungen();
+  String getBemerkungen();
 
-    Boolean isAktiv();
+  Boolean isAktiv();
 
-    Mitarbeiter getMitarbeiter();
+  Mitarbeiter getMitarbeiter();
 
-    void setMitarbeiterOrigin(Mitarbeiter mitarbeiterOrigin);
+  void setMitarbeiterOrigin(Mitarbeiter mitarbeiterOrigin);
 
-    void setAhvNummer(String ahvNummer) throws SvmValidationException;
+  void setAhvNummer(String ahvNummer) throws SvmValidationException;
 
-    void setIbanNummer(String ibanNummer) throws SvmValidationException;
+  void setIbanNummer(String ibanNummer) throws SvmValidationException;
 
-    void setLehrkraft(Boolean isSelected);
+  void setLehrkraft(Boolean isSelected);
 
-    void setVertretungsmoeglichkeiten(String vertretungsmoeglichkeiten) throws SvmValidationException;
+  void setVertretungsmoeglichkeiten(String vertretungsmoeglichkeiten) throws SvmValidationException;
 
-    void setBemerkungen(String bemerkungen) throws SvmValidationException;
+  void setBemerkungen(String bemerkungen) throws SvmValidationException;
 
-    void setAktiv(Boolean isSelected);
+  void setAktiv(Boolean isSelected);
 
-    Set<MitarbeiterCode> getMitarbeiterCodes();
+  Set<MitarbeiterCode> getMitarbeiterCodes();
 
-    List<MitarbeiterCode> getMitarbeiterCodesAsList();
+  List<MitarbeiterCode> getMitarbeiterCodesAsList();
 
-    CodesTableData getCodesTableData();
+  CodesTableData getCodesTableData();
 
-    String getCodesAsStr();
+  String getCodesAsStr();
 
-    String getCodesBearbeitenTitle();
+  String getCodesBearbeitenTitle();
 
-    boolean checkMitarbeiterBereitsErfasst(SvmModel svmModel);
+  boolean checkMitarbeiterBereitsErfasst(SvmModel svmModel);
 
-    void speichern(SvmModel svmModel, MitarbeitersTableModel mitarbeitersTableModel);
+  void speichern(SvmModel svmModel, MitarbeitersTableModel mitarbeitersTableModel);
 }

@@ -15,21 +15,34 @@ import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
  */
 public interface CodesModel {
 
-    DeleteSchuelerCodeCommand.Result eintragLoeschenSchuelerCodesVerwalten(SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved);
+  DeleteSchuelerCodeCommand.Result eintragLoeschenSchuelerCodesVerwalten(
+      SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved);
 
-    DeleteMitarbeiterCodeCommand.Result eintragLoeschenMitarbeiterCodesVerwalten(SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved);
+  DeleteMitarbeiterCodeCommand.Result eintragLoeschenMitarbeiterCodesVerwalten(
+      SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved);
 
-    DeleteElternmithilfeCodeCommand.Result eintragLoeschenElternmithilfeCodesVerwalten(SvmContext svmContext, CodesTableModel codesTableModel, int selectedRow);
+  DeleteElternmithilfeCodeCommand.Result eintragLoeschenElternmithilfeCodesVerwalten(
+      SvmContext svmContext, CodesTableModel codesTableModel, int selectedRow);
 
-    DeleteSemesterrechnungCodeCommand.Result eintragLoeschenSemesterrechnungCodesVerwalten(SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved);
+  DeleteSemesterrechnungCodeCommand.Result eintragLoeschenSemesterrechnungCodesVerwalten(
+      SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved);
 
-    void eintragLoeschenSchuelerCodesSchueler(CodesTableModel codesTableModel, SchuelerCode schuelerCodeToBeRemoved, SchuelerDatenblattModel schuelerDatenblattModel);
+  void eintragLoeschenSchuelerCodesSchueler(
+      CodesTableModel codesTableModel,
+      SchuelerCode schuelerCodeToBeRemoved,
+      SchuelerDatenblattModel schuelerDatenblattModel);
 
-    void eintragLoeschenMitarbeiterCodesMitarbeiter(CodesTableModel codesTableModel, MitarbeiterCode mitarbeiterCodeToBeRemoved, MitarbeiterErfassenModel mitarbeiterErfassenModel);
+  void eintragLoeschenMitarbeiterCodesMitarbeiter(
+      CodesTableModel codesTableModel,
+      MitarbeiterCode mitarbeiterCodeToBeRemoved,
+      MitarbeiterErfassenModel mitarbeiterErfassenModel);
 
-    CodeErfassenModel getCodeErfassenModel(SvmContext svmContext, int indexCodeToBeModified, Codetyp codetyp);
+  CodeErfassenModel getCodeErfassenModel(
+      SvmContext svmContext, int indexCodeToBeModified, Codetyp codetyp);
 
-    SchuelerCode[] getSelectableSchuelerCodes(SvmModel svmModel, SchuelerDatenblattModel schuelerDatenblattModel);
+  SchuelerCode[] getSelectableSchuelerCodes(
+      SvmModel svmModel, SchuelerDatenblattModel schuelerDatenblattModel);
 
-    MitarbeiterCode[] getSelectableMitarbeiterCodes(SvmModel svmModel, MitarbeiterErfassenModel mitarbeiterErfassenModel);
+  MitarbeiterCode[] getSelectableMitarbeiterCodes(
+      SvmModel svmModel, MitarbeiterErfassenModel mitarbeiterErfassenModel);
 }

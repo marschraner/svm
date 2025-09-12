@@ -8,33 +8,35 @@ import ch.metzenthin.svm.domain.commands.DeleteSchuelerCommand;
  */
 public interface SchuelerErfassenModel extends Model {
 
-    void setSchuelerModel(SchuelerModel schuelerModel);
+  void setSchuelerModel(SchuelerModel schuelerModel);
 
-    void setMutterModel(AngehoerigerModel mutterModel);
+  void setMutterModel(AngehoerigerModel mutterModel);
 
-    void setVaterModel(AngehoerigerModel vaterModel);
+  void setVaterModel(AngehoerigerModel vaterModel);
 
-    void setDrittempfaengerModel(AngehoerigerModel drittempfaengerModel);
+  void setDrittempfaengerModel(AngehoerigerModel drittempfaengerModel);
 
-    boolean isEmptyNachnameMutter();
+  boolean isEmptyNachnameMutter();
 
-    boolean isEmptyNachnameVater();
+  boolean isEmptyNachnameVater();
 
-    SchuelerErfassenSaveResult validieren(SvmContext svmContext);
+  SchuelerErfassenSaveResult validieren(SvmContext svmContext);
 
-    SchuelerErfassenSaveResult speichern(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
+  SchuelerErfassenSaveResult speichern(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
 
-    SchuelerErfassenSaveResult proceedUebernehmen(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
+  SchuelerErfassenSaveResult proceedUebernehmen(
+      SchuelerErfassenSaveResult schuelerErfassenSaveResult);
 
-    SchuelerErfassenSaveResult proceedWeiterfahren(SchuelerErfassenSaveResult schuelerErfassenSaveResult);
+  SchuelerErfassenSaveResult proceedWeiterfahren(
+      SchuelerErfassenSaveResult schuelerErfassenSaveResult);
 
-    DeleteSchuelerCommand.Result schuelerLoeschen();
+  DeleteSchuelerCommand.Result schuelerLoeschen();
 
-    void fruehereAnmeldungenLoeschen();
+  void fruehereAnmeldungenLoeschen();
 
-    boolean hasFruehereAnmeldungen();
+  boolean hasFruehereAnmeldungen();
 
-    void abbrechen();
+  void abbrechen();
 
-    SchuelerSuchenTableData getSchuelerSuchenTableData();
+  SchuelerSuchenTableData getSchuelerSuchenTableData();
 }

@@ -9,11 +9,13 @@ import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
  */
 public interface CodeSpecificHinzufuegenModel extends Model {
 
-    Code getCode();
+  Code getCode();
 
-    void setCode(Code code) throws SvmRequiredException;
+  void setCode(Code code) throws SvmRequiredException;
 
-    void schuelerCodeHinzufuegen(CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel);
+  void schuelerCodeHinzufuegen(
+      CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel);
 
-    void mitarbeiterCodeHinzufuegen(CodesTableModel codesTableModel, MitarbeiterErfassenModel mitarbeiterErfassenModel);
+  void mitarbeiterCodeHinzufuegen(
+      CodesTableModel codesTableModel, MitarbeiterErfassenModel mitarbeiterErfassenModel);
 }
