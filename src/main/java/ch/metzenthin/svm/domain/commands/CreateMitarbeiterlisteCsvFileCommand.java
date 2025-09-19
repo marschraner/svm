@@ -115,7 +115,7 @@ public class CreateMitarbeiterlisteCsvFileCommand extends CreateListeCommand {
           out.write(mitarbeiter.getIbanNummer());
         }
         out.write(separator);
-        out.write(mitarbeiter.getLehrkraft() ? "ja" : "nein");
+        out.write(mitarbeiter.isLehrkraft() ? "ja" : "nein");
         out.write(separator);
         out.write(mitarbeiter.getMitarbeiterCodesAsStr());
         out.write(separator);

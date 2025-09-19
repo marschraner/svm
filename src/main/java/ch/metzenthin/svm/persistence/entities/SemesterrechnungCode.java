@@ -6,6 +6,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
@@ -14,6 +16,8 @@ import java.util.List;
 @Entity
 @Table(name = "SemesterrechnungCode")
 @DiscriminatorValue("Semesterrechnung")
+@Getter
+@Setter
 public class SemesterrechnungCode extends Code {
 
   @OneToMany(mappedBy = "semesterrechnungCode")
@@ -23,9 +27,5 @@ public class SemesterrechnungCode extends Code {
 
   public SemesterrechnungCode(String kuerzel, String beschreibung, Boolean selektierbar) {
     super(kuerzel, beschreibung, selektierbar);
-  }
-
-  public List<Semesterrechnung> getSemesterrechnungen() {
-    return semesterrechnungen;
   }
 }

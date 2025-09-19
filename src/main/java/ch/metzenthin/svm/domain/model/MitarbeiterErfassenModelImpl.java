@@ -153,14 +153,14 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl
 
   @Override
   public void setLehrkraft(Boolean isSelected) {
-    Boolean oldValue = mitarbeiter.getLehrkraft();
+    Boolean oldValue = mitarbeiter.isLehrkraft();
     mitarbeiter.setLehrkraft(isSelected);
     firePropertyChange(Field.LEHRKRAFT, oldValue, isSelected);
   }
 
   @Override
   public Boolean isLehrkraft() {
-    return mitarbeiter.getLehrkraft();
+    return mitarbeiter.isLehrkraft();
   }
 
   private final StringModelAttribute vertretungsmoeglichkeitenModelAttribute =
@@ -298,8 +298,8 @@ public class MitarbeiterErfassenModelImpl extends PersonModelImpl
         setGeburtsdatum(asString(mitarbeiterOrigin.getGeburtsdatum()));
         setAhvNummer(mitarbeiterOrigin.getAhvNummer());
         setIbanNummer(mitarbeiterOrigin.getIbanNummer());
-        setLehrkraft(!mitarbeiterOrigin.getLehrkraft()); // damit PropertyChange ausgelöst wird!
-        setLehrkraft(mitarbeiterOrigin.getLehrkraft());
+        setLehrkraft(!mitarbeiterOrigin.isLehrkraft()); // damit PropertyChange ausgelöst wird!
+        setLehrkraft(mitarbeiterOrigin.isLehrkraft());
         setVertretungsmoeglichkeiten(mitarbeiterOrigin.getVertretungsmoeglichkeiten());
         setBemerkungen(mitarbeiterOrigin.getBemerkungen());
         setAktiv(!mitarbeiterOrigin.getAktiv()); // damit PropertyChange ausgelöst wird!
