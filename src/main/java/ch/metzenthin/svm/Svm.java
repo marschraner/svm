@@ -6,15 +6,21 @@ import ch.metzenthin.svm.domain.model.ModelFactory;
 import ch.metzenthin.svm.domain.model.ModelFactoryImpl;
 import ch.metzenthin.svm.domain.model.SvmModel;
 import ch.metzenthin.svm.ui.components.SvmDesktop;
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.SplashScreen;
 import java.util.Properties;
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /*
  * SVM Applikation
  */
+@SpringBootApplication
 public class Svm {
 
   private static final Logger LOGGER = LogManager.getLogger(Svm.class);
@@ -23,6 +29,7 @@ public class Svm {
     try {
       LOGGER.info("Svm wird gestartet ...");
       splashScreenInit();
+      SpringApplication.run(Svm.class, args);
       SvmProperties.createSvmPropertiesFileDefault();
       ModelFactory modelFactory = new ModelFactoryImpl();
       SvmModel svmModel = modelFactory.createSvmModel();
