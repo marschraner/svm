@@ -122,7 +122,7 @@ public class SchuelerDao extends GenericDao<Schueler, Integer> {
      * @param schueler (not null)
      * @return schuelerFound
      */
-    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
+    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender", "java:S3776"})
     public List<Schueler> findSchueler(Schueler schueler) {
 
         StringBuilder selectStatementSb = new StringBuilder("select s from Schueler s where");

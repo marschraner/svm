@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
+import ch.metzenthin.svm.common.SvmRuntimeException;
+import ch.metzenthin.svm.common.datatypes.Rechnungstyp;
 import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -31,7 +32,7 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
         this.outputFile = outputFile;
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "java:S135", "java:S3776", "java:S6541"})
     @Override
     public void execute() {
 
@@ -186,7 +187,7 @@ public class CreateRechnungenSerienbriefCsvFileCommand extends CreateListeComman
             result = Result.LISTE_ERFOLGREICH_ERSTELLT;
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new SvmRuntimeException("Fehler beim Erstellen der csv-Datei", e);
         }
 
     }

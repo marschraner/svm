@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Codetyp;
+import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -66,7 +66,7 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
         commandInvoker.executeCommandAsTransaction(removeSchuelerCodeFromSchuelerCommand);
         Schueler schuelerUpdated = removeSchuelerCodeFromSchuelerCommand.getSchuelerUpdated();
         // TableData mit von der Datenbank upgedateten SchülerCodes updaten
-        codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getSchuelerCodesAsList());
+        codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getSortedSchuelerCodes());
     }
 
     @Override
@@ -134,6 +134,7 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

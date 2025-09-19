@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -23,6 +23,7 @@ public class CalculateAnzWochenCommandTest {
     private final CalculateAnzWochenCommand calculateAnzWochenCommandErstesSemester = new CalculateAnzWochenCommand(null, erstesSemester);
     private final CalculateAnzWochenCommand calculateAnzWochenCommandZweitesSemester = new CalculateAnzWochenCommand(null, zweitesSemester);
 
+    @SuppressWarnings("java:S5961")
     @Test
     public void testCalculateAnzWochenKursanmeldung_MittwochKurs() {
 

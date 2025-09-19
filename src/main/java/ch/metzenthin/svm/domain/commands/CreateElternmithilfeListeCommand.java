@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
+import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
 import ch.metzenthin.svm.domain.comparators.MaercheneinteilungSortByElternmithilfeComparator;
 import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
@@ -32,7 +32,7 @@ public class CreateElternmithilfeListeCommand extends CreateListeCommand {
         this.outputFile = outputFile;
     }
 
-    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
+    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender", "java:S3776"})
     @Override
     public void execute() {
 

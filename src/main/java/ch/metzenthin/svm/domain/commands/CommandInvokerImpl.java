@@ -35,9 +35,9 @@ public class CommandInvokerImpl implements CommandInvoker {
             command.execute();
             entityManager.getTransaction().commit();
             LOGGER.trace("executeCommandAsTransaction durchgeführt");
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOGGER.error("Fehler in executeCommandAsTransaction(Command)", e);
-            if ((entityManager != null) && entityManager.isOpen() && entityManager.getTransaction().isActive()) {
+            if (entityManager.isOpen() && entityManager.getTransaction().isActive()) {
                 LOGGER.trace("Rollback wird durchgeführt executeCommandAsTransaction(Command)", e);
                 entityManager.getTransaction().rollback();
                 LOGGER.trace("Rollback ist durchgeführt executeCommandAsTransaction(Command)", e);

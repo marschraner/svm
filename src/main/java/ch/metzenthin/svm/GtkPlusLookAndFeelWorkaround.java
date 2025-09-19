@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -46,12 +47,17 @@ public class GtkPlusLookAndFeelWorkaround {
      */
     private static final Logger LOGGER = LogManager.getLogger(GtkPlusLookAndFeelWorkaround.class);
 
+    private GtkPlusLookAndFeelWorkaround() {
+    }
+
+    @SuppressWarnings({"java:S1872", "java:S3011"})
     public static void installGtkPopupBugWorkaround() {
         // Get current look-and-feel implementation class
         LookAndFeel laf = UIManager.getLookAndFeel();
         Class<?> lafClass = laf.getClass();
 
         // Do nothing when not using the problematic LaF
+        // GTKLookAndFeel nicht immer installiert → Verwendung von instanceOf nicht möglich!
         if (!lafClass.getName().equals(
                 "com.sun.java.swing.plaf.gtk.GTKLookAndFeel")) return;
 
@@ -81,16 +87,17 @@ public class GtkPlusLookAndFeelWorkaround {
                     "gestartet werden!");
         }
     }
+
     /**
      * Called internally by installGtkPopupBugWorkaround to fix the thickness
      * of a GTK style field by setting it to a minimum value of 1.
      *
      * @param style     The GTK style object.
      * @param fieldName The field name.
-     * @throws Exception When reflection fails.
      */
+    @SuppressWarnings("java:S3011")
     private static void fixGtkThickness(Object style, String fieldName)
-            throws Exception {
+            throws NoSuchFieldException, IllegalAccessException {
         Field field = style.getClass().getDeclaredField(fieldName);
         field.setAccessible(true);
         field.setInt(style, Math.max(1, field.getInt(style)));
@@ -105,10 +112,12 @@ public class GtkPlusLookAndFeelWorkaround {
      * @param component    The target component of the style.
      * @param regionName   The name of the target region of the style.
      * @return The GTK style.
-     * @throws Exception When reflection fails.
      */
+    @SuppressWarnings("java:S3011")
     private static Object getGtkStyle(Object styleFactory,
-                                      JComponent component, String regionName) throws Exception {
+                                      JComponent component, String regionName)
+            throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException,
+            NoSuchMethodException, InvocationTargetException {
         // Create the region object
         Class<?> regionClass = Class.forName("javax.swing.plaf.synth.Region");
         Field field = regionClass.getField(regionName);

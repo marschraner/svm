@@ -11,7 +11,7 @@ public class MaerchensTableModel extends AbstractTableModel {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final MaerchensTableData maerchensTableData;
+    private final transient MaerchensTableData maerchensTableData;
 
     public MaerchensTableModel(MaerchensTableData maerchensTableData) {
         super();

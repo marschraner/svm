@@ -1,9 +1,9 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Schueler;
@@ -23,7 +23,7 @@ public class SchuelerSuchenTableDataTest {
     private SchuelerSuchenTableData schuelerSuchenTableData;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         List<Schueler> schuelerList = new ArrayList<>();
         Schueler schueler1 = new Schueler("V1", "N1", new GregorianCalendar(2001, Calendar.APRIL, 11), "Festnetz1", "Natel1", "Email1", Geschlecht.W, null);
         schuelerList.add(schueler1);
@@ -96,6 +96,7 @@ public class SchuelerSuchenTableDataTest {
         assertNotNull(schuelerSuchenTableData.getSchuelerDatenblattModel(2));
     }
 
+    @SuppressWarnings("UnreachableCode")
     private int getColumnIndex(String column) {
         for (int i = 0; i < schuelerSuchenTableData.getColumnCount(); i++) {
             if (column.equals(schuelerSuchenTableData.getColumnName(i))) {

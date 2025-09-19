@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
+import ch.metzenthin.svm.common.datatypes.Rechnungstyp;
 import ch.metzenthin.svm.persistence.daos.SemesterDao;
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungDao;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
@@ -59,7 +59,8 @@ public class CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsComm
 
             // 4. SemesterrechnungCode, Stipendium und Gratiskind von früher
             if (!rechnungsempfaenger.getSemesterrechnungen().isEmpty()) {
-                Semesterrechnung previousSemesterrechnung = rechnungsempfaenger.getSemesterrechnungenAsList().get(0);
+                Semesterrechnung previousSemesterrechnung
+                        = rechnungsempfaenger.getSortedSemesterrechnungen().get(0);
                 semesterrechnung.setStipendium(previousSemesterrechnung.getStipendium());
                 semesterrechnung.setGratiskinder(previousSemesterrechnung.getGratiskinder());
                 semesterrechnung.setSemesterrechnungCode(previousSemesterrechnung.getSemesterrechnungCode());

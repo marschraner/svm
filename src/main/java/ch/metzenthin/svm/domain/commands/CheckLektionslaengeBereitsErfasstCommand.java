@@ -12,21 +12,25 @@ public class CheckLektionslaengeBereitsErfasstCommand implements Command {
     // input
     private final Lektionsgebuehren lektionsgebuehren;
     private final Lektionsgebuehren lektionsgebuehrenOrigin;
-    private final List<Lektionsgebuehren> bereitsErfassteLektionsgebuehren;
+    private final List<Lektionsgebuehren> bereitsErfassteLektionsgebuehrenListe;
 
     // output
     private boolean bereitsErfasst;
 
-    public CheckLektionslaengeBereitsErfasstCommand(Lektionsgebuehren lektionsgebuehren, Lektionsgebuehren lektionsgebuehrenOrigin, List<Lektionsgebuehren> bereitsErfassteLektionsgebuehren) {
+    public CheckLektionslaengeBereitsErfasstCommand(
+            Lektionsgebuehren lektionsgebuehren,
+            Lektionsgebuehren lektionsgebuehrenOrigin,
+            List<Lektionsgebuehren> bereitsErfassteLektionsgebuehrenListe) {
         this.lektionsgebuehren = lektionsgebuehren;
         this.lektionsgebuehrenOrigin = lektionsgebuehrenOrigin;
-        this.bereitsErfassteLektionsgebuehren = bereitsErfassteLektionsgebuehren;
+        this.bereitsErfassteLektionsgebuehrenListe = bereitsErfassteLektionsgebuehrenListe;
     }
 
     @Override
     public void execute() {
-        for (Lektionsgebuehren bereitsErfassteLektionsgebuehren : this.bereitsErfassteLektionsgebuehren) {
-            if (!bereitsErfassteLektionsgebuehren.isIdenticalWith(lektionsgebuehrenOrigin) && bereitsErfassteLektionsgebuehren.getLektionslaenge().equals(lektionsgebuehren.getLektionslaenge())) {
+        for (Lektionsgebuehren bereitsErfassteLektionsgebuehren : bereitsErfassteLektionsgebuehrenListe) {
+            if (!bereitsErfassteLektionsgebuehren.isIdenticalWith(lektionsgebuehrenOrigin)
+                    && bereitsErfassteLektionsgebuehren.getLektionslaenge().equals(lektionsgebuehren.getLektionslaenge())) {
                 bereitsErfasst = true;
                 return;
             }

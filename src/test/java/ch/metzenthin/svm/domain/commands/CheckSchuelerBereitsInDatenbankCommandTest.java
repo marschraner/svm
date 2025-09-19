@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.SchuelerDao;
@@ -33,7 +33,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
     private Schueler schuelerTestdata;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
         commandInvoker = new CommandInvokerImpl();
@@ -41,7 +41,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         deleteTestdata();
         db.closeSession();
     }

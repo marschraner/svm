@@ -1,16 +1,15 @@
-package ch.metzenthin.svm.common.dataTypes;
+package ch.metzenthin.svm.common.datatypes;
 
 /**
  * @author Martin Schraner
  */
-public enum Anrede {
-    FRAU("Frau"),
-    HERR("Herr"),
-    KEINE("Keine");
+public enum Rechnungstyp {
+    VORRECHNUNG("Vorrechnung"),
+    NACHRECHNUNG("Nachrechnung");
 
     private final String name;
 
-    Anrede(String name) {
+    Rechnungstyp(String name) {
         this.name = name;
     }
 

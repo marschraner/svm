@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Stipendium;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Stipendium;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenSuchenModel;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
@@ -22,6 +22,7 @@ import java.util.Locale;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings({"java:S100", "java:S1192", "java:S1450"})
 public class SemesterrechnungenSuchenPanel {
 
     // Schalter zur Aktivierung des Default-Button (nicht dynamisch)

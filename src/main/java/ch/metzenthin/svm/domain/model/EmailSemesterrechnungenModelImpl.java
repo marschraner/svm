@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.domain.commands.CommandInvoker;
@@ -10,6 +10,7 @@ import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
@@ -61,7 +62,7 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
         firePropertyChange(Field.BLINDKOPIEN, oldValue, blindkopien);
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "java:S3776"})
     @Override
     public CallDefaultEmailClientCommand.Result callEmailClient(SemesterrechnungenTableModel semesterrechnungenTableModel) {
 
@@ -79,20 +80,21 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
 
             // Mutter und/oder Vater (ODER Rechnungsempfänger ohne E-Mail -> Mutter und/oder Vater)
             if (mutterUndOderVaterSelected || (rechnungsempfaengerSelected && emailAdressenSemesterrechnung.isEmpty())) {
-                Set<Schueler> schuelerRechnungempfaenger = rechnungsempfaenger.getSchuelerRechnungsempfaenger();
+                List<Schueler> schuelerRechnungempfaenger
+                        = rechnungsempfaenger.getSchuelerRechnungsempfaenger();
 
                 // Mutter und/oder Vater mit wuenschtEmails selektiert
                 for (Schueler schueler : schuelerRechnungempfaenger) {
                     if (schueler.getMutter() != null
                             && checkNotEmpty(schueler.getMutter().getEmail())
-                            && schueler.getMutter().getWuenschtEmails() != null
-                            && schueler.getMutter().getWuenschtEmails()) {
+                            && (schueler.getMutter().getWuenschtEmails() != null
+                            && schueler.getMutter().getWuenschtEmails())) {
                         emailAdressenSemesterrechnung.add(schueler.getMutter().getEmail());
                     }
                     if (schueler.getVater() != null
                             && checkNotEmpty(schueler.getVater().getEmail())
-                            && schueler.getVater().getWuenschtEmails() != null
-                            && schueler.getVater().getWuenschtEmails()) {
+                            && (schueler.getVater().getWuenschtEmails() != null
+                            && schueler.getVater().getWuenschtEmails())) {
                         emailAdressenSemesterrechnung.add(schueler.getVater().getEmail());
                     }
                 }
@@ -114,7 +116,8 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
             // Mutter, Vater und Rechnungsempfänger ohne E-Mail -> Schüler
             if ((rechnungsempfaengerSelected || mutterUndOderVaterSelected)
                     && emailAdressenSemesterrechnung.isEmpty()) {
-                Set<Schueler> schuelerRechnungempfaenger = rechnungsempfaenger.getSchuelerRechnungsempfaenger();
+                List<Schueler> schuelerRechnungempfaenger
+                        = rechnungsempfaenger.getSchuelerRechnungsempfaenger();
                 for (Schueler schueler : schuelerRechnungempfaenger) {
                     if (checkNotEmpty(schueler.getEmail())) {
                         emailAdressenSemesterrechnung.add(schueler.getEmail());
@@ -148,15 +151,12 @@ public class EmailSemesterrechnungenModelImpl extends AbstractModel implements E
     }
 
     @Override
-    public void initializeCompleted() {
-    }
-
-    @Override
     public boolean isCompleted() {
         return true;
     }
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 }

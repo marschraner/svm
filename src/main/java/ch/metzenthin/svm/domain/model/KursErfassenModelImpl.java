@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CheckKursBereitsErfasstCommand;
@@ -9,6 +9,8 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.SaveOrUpdateKursCommand;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Time;
 import java.util.List;
@@ -21,6 +23,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.isTimePeriodValid;
  */
 public class KursErfassenModelImpl extends AbstractModel implements KursErfassenModel {
 
+    private static final Logger LOGGER = LogManager.getLogger(KursErfassenModelImpl.class);
     private static final Mitarbeiter MITARBEITER_KEINE = new Mitarbeiter();
 
     private final Kurs kurs = new Kurs();
@@ -208,8 +211,8 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
         if (kursOrigin != null) {
             // Beim Bearbeiten muss ggf auch ein nicht mehr selektierbarer Kurstyp angezeigt werden können
             boolean found = false;
-            for (Kurstyp kurstyp : kurstypenList) {
-                if (kursOrigin.getKurstyp().isIdenticalWith(kurstyp)) {
+            for (Kurstyp kurstyp1 : kurstypenList) {
+                if (kursOrigin.getKurstyp().isIdenticalWith(kurstyp1)) {
                     found = true;
                     break;
                 }
@@ -227,8 +230,8 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
         if (kursOrigin != null) {
             // Beim Bearbeiten muss ggf auch ein nicht mehr selektierbarer Kursort angezeigt werden können
             boolean found = false;
-            for (Kursort kursort : kursorteList) {
-                if (kursOrigin.getKursort().isIdenticalWith(kursort)) {
+            for (Kursort kursort1 : kursorteList) {
+                if (kursOrigin.getKursort().isIdenticalWith(kursort1)) {
                     found = true;
                     break;
                 }
@@ -379,7 +382,8 @@ public class KursErfassenModelImpl extends AbstractModel implements KursErfassen
                     setMitarbeiter2(kursOrigin.getLehrkraefte().get(1));
                 }
                 setBemerkungen(kursOrigin.getBemerkungen());
-            } catch (SvmValidationException ignore) {
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
             setBulkUpdate(false);
         } else {

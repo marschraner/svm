@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.common.utils.StringNumberComparator;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import jakarta.persistence.*;
@@ -67,7 +67,7 @@ public class Kurs implements Comparable<Kurs> {
     private String bemerkungen;
 
     @OneToMany(mappedBy = "kurs")
-    private final Set<Kursanmeldung> kursanmeldungen = new HashSet<>();
+    private final List<Kursanmeldung> kursanmeldungen = new ArrayList<>();
 
     @Transient
     private final boolean neusteZuoberst;
@@ -146,9 +146,31 @@ public class Kurs implements Comparable<Kurs> {
         this.bemerkungen = otherKurs.getBemerkungen();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Kurs kurs = (Kurs) o;
+        return Objects.equals(semester, kurs.semester)
+                && Objects.equals(kurstyp, kurs.kurstyp)
+                && Objects.equals(altersbereich, kurs.altersbereich)
+                && Objects.equals(stufe, kurs.stufe)
+                && wochentag == kurs.wochentag
+                && Objects.equals(zeitBeginn, kurs.zeitBeginn)
+                && Objects.equals(zeitEnde, kurs.zeitEnde)
+                && Objects.equals(kursort, kurs.kursort);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                semester, kurstyp, altersbereich, stufe, wochentag, zeitBeginn, zeitEnde, kursort);
+    }
+
     /**
      * Note: this class has a natural ordering that is inconsistent with equals.
      */
+    @SuppressWarnings("java:S3776")
     @Override
     public int compareTo(Kurs otherKurs) {
         Comparator<String> stringNumberComparator = new StringNumberComparator();
@@ -191,7 +213,7 @@ public class Kurs implements Comparable<Kurs> {
         if (this.semester != null) {
             deleteSemester(this.semester);
         }
-        if (semester != null) {
+        if (semester != null && !semester.getKurse().contains(this)) {
             semester.getKurse().add(this);
         }
         this.semester = semester;
@@ -210,7 +232,7 @@ public class Kurs implements Comparable<Kurs> {
         if (this.kurstyp != null) {
             deleteKurstyp(this.kurstyp);
         }
-        if (kurstyp != null) {
+        if (kurstyp != null && !kurstyp.getKurse().contains(this)) {
             kurstyp.getKurse().add(this);
         }
         this.kurstyp = kurstyp;
@@ -269,7 +291,7 @@ public class Kurs implements Comparable<Kurs> {
         if (this.kursort != null) {
             deleteKursort(this.kursort);
         }
-        if (kursort != null) {
+        if (kursort != null && !kursort.getKurse().contains(this)) {
             kursort.getKurse().add(this);
         }
         this.kursort = kursort;
@@ -285,8 +307,12 @@ public class Kurs implements Comparable<Kurs> {
     }
 
     public void addLehrkraft(Mitarbeiter mitarbeiter) {
-        mitarbeiter.getKurse().add(this);
-        lehrkraefte.add(mitarbeiter);
+        if (!mitarbeiter.getKurse().contains(this)) {
+            mitarbeiter.getKurse().add(this);
+        }
+        if (!lehrkraefte.contains(mitarbeiter)) {
+            lehrkraefte.add(mitarbeiter);
+        }
     }
 
     public void deleteLehrkraft(Mitarbeiter mitarbeiter) {
@@ -302,7 +328,7 @@ public class Kurs implements Comparable<Kurs> {
         this.bemerkungen = bemerkungen;
     }
 
-    public Set<Kursanmeldung> getKursanmeldungen() {
+    public List<Kursanmeldung> getKursanmeldungen() {
         return kursanmeldungen;
     }
 

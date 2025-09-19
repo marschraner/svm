@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Gruppe;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Gruppe;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
@@ -23,6 +23,7 @@ import java.util.Locale;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings({"java:S100", "java:S1450"})
 public class SchuelerSuchenPanel {
 
     // Schalter zur Aktivierung des Default-Button (nicht dynamisch)

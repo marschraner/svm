@@ -49,6 +49,7 @@ public class LektionsgebuehrenModelImpl extends AbstractModel implements Lektion
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

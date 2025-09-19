@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 
@@ -71,6 +71,7 @@ public class KursanmeldungenTableData {
                     value = (kursanmeldung.getAbmeldedatum() == null ? "" : asString(kursanmeldung.getAbmeldedatum()));
             case BEMERKUNGEN -> value = kursanmeldung.getBemerkungen();
             default -> {
+                // Nothing to do
             }
         }
         return value;

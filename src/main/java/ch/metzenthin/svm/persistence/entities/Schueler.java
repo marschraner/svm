@@ -1,15 +1,19 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
 import ch.metzenthin.svm.common.utils.SvmStringUtils;
 import jakarta.persistence.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S2160")  // equals / hash definiert für Person
 @Entity
 @Table(name = "Schueler")
 @DiscriminatorValue("Schueler")
@@ -50,23 +54,25 @@ public class Schueler extends Person {
     @JoinTable(name = "Schueler_SchuelerCode",
             joinColumns = {@JoinColumn(name = "person_id")},
             inverseJoinColumns = {@JoinColumn(name = "code_id")})
-    private final Set<SchuelerCode> schuelerCodes = new HashSet<>();
+    private final List<SchuelerCode> schuelerCodes = new ArrayList<>();
 
     @OneToMany(mappedBy = "schueler")
-    private final Set<Kursanmeldung> kursanmeldungen = new HashSet<>();
+    private final List<Kursanmeldung> kursanmeldungen = new ArrayList<>();
 
     @OneToMany(mappedBy = "schueler")
-    private final Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
+    private final List<Maercheneinteilung> maercheneinteilungen = new ArrayList<>();
 
     public Schueler() {
     }
 
+    @SuppressWarnings("java:S107")
     public Schueler(String vorname, String nachname, Calendar geburtsdatum, String festnetz, String natel, String email, Geschlecht geschlecht, String bemerkungen) {
         super(Anrede.KEINE, vorname, nachname, geburtsdatum, festnetz, natel, email);
         this.geschlecht = geschlecht;
         this.bemerkungen = bemerkungen;
     }
 
+    @Override
     public boolean isEmpty() {
         return super.isEmpty()
                 && (bemerkungen == null || bemerkungen.trim().isEmpty());
@@ -125,7 +131,7 @@ public class Schueler extends Person {
         if (this.vater != null) {
             deleteVater(this.vater);
         }
-        if (vater != null) {
+        if (vater != null && !vater.getKinderVater().contains(this)) {
             vater.getKinderVater().add(this);
         }
         this.vater = vater;
@@ -144,7 +150,7 @@ public class Schueler extends Person {
         if (this.mutter != null) {
             deleteMutter(this.mutter);
         }
-        if (mutter != null) {
+        if (mutter != null && !mutter.getKinderMutter().contains(this)) {
             mutter.getKinderMutter().add(this);
         }
         this.mutter = mutter;
@@ -163,7 +169,8 @@ public class Schueler extends Person {
         if (this.rechnungsempfaenger != null) {
             deleteRechnungsempfaenger(this.rechnungsempfaenger);
         }
-        if (rechnungsempfaenger != null) {
+        if (rechnungsempfaenger != null
+                && !rechnungsempfaenger.getSchuelerRechnungsempfaenger().contains(this)) {
             rechnungsempfaenger.getSchuelerRechnungsempfaenger().add(this);
         }
         this.rechnungsempfaenger = rechnungsempfaenger;
@@ -204,19 +211,24 @@ public class Schueler extends Person {
         dispensationen.remove(dispensation);
     }
 
-    public Set<SchuelerCode> getSchuelerCodes() {
+    public List<SchuelerCode> getSchuelerCodes() {
         return schuelerCodes;
     }
 
-    public List<SchuelerCode> getSchuelerCodesAsList() {
-        List<SchuelerCode> schuelerCodesAsList = new ArrayList<>(schuelerCodes);
-        Collections.sort(schuelerCodesAsList);
-        return schuelerCodesAsList;
+    @Transient
+    public List<SchuelerCode> getSortedSchuelerCodes() {
+        List<SchuelerCode> sortedSchuelerCodes = new ArrayList<>(schuelerCodes);
+        Collections.sort(sortedSchuelerCodes);
+        return sortedSchuelerCodes;
     }
 
     public void addCode(SchuelerCode schuelerCode) {
-        schuelerCode.getSchueler().add(this);
-        schuelerCodes.add(schuelerCode);
+        if (!schuelerCode.getSchueler().contains(this)) {
+            schuelerCode.getSchueler().add(this);
+        }
+        if (!schuelerCodes.contains(schuelerCode)) {
+            schuelerCodes.add(schuelerCode);
+        }
     }
 
     public void deleteCode(SchuelerCode schuelerCode) {
@@ -230,31 +242,33 @@ public class Schueler extends Person {
         if (schuelerCodes.isEmpty()) {
             return "";
         }
-        StringBuilder schuelerCodesAsStr = new StringBuilder(getSchuelerCodesAsList().get(0).getKuerzel());
-        for (int i = 1; i < getSchuelerCodesAsList().size(); i++) {
-            schuelerCodesAsStr.append(", ").append(getSchuelerCodesAsList().get(i).getKuerzel());
+        StringBuilder schuelerCodesAsStr = new StringBuilder(getSortedSchuelerCodes().get(0).getKuerzel());
+        for (int i = 1; i < getSortedSchuelerCodes().size(); i++) {
+            schuelerCodesAsStr.append(", ").append(getSortedSchuelerCodes().get(i).getKuerzel());
         }
         return schuelerCodesAsStr.toString();
     }
 
-    public Set<Kursanmeldung> getKursanmeldungen() {
+    public List<Kursanmeldung> getKursanmeldungen() {
         return kursanmeldungen;
     }
 
-    public List<Kursanmeldung> getKursanmeldungenAsList() {
-        List<Kursanmeldung> kursanmeldungenAsList = new ArrayList<>(kursanmeldungen);
-        Collections.sort(kursanmeldungenAsList);
-        return kursanmeldungenAsList;
+    @Transient
+    public List<Kursanmeldung> getSortedKursanmeldungen() {
+        List<Kursanmeldung> sortedKursanmeldungen = new ArrayList<>(kursanmeldungen);
+        Collections.sort(sortedKursanmeldungen);
+        return sortedKursanmeldungen;
     }
 
-    public Set<Maercheneinteilung> getMaercheneinteilungen() {
+    public List<Maercheneinteilung> getMaercheneinteilungen() {
         return maercheneinteilungen;
     }
 
-    public List<Maercheneinteilung> getMaercheneinteilungenAsList() {
-        List<Maercheneinteilung> maercheneinteilungenAsList = new ArrayList<>(maercheneinteilungen);
-        Collections.sort(maercheneinteilungenAsList);
-        return maercheneinteilungenAsList;
+    @Transient
+    public List<Maercheneinteilung> getSortedMaercheneinteilungen() {
+        List<Maercheneinteilung> sortedMaercheneinteilungen = new ArrayList<>(maercheneinteilungen);
+        Collections.sort(sortedMaercheneinteilungen);
+        return sortedMaercheneinteilungen;
     }
 
     @Transient

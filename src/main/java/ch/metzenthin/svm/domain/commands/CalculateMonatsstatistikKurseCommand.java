@@ -14,6 +14,9 @@ import java.util.*;
  */
 public class CalculateMonatsstatistikKurseCommand implements Command {
 
+    private static final String STATISTIK_MONAT_BEGINN = "statistikMonatBeginn";
+    private static final String STATISTIK_MONAT_ENDE = "statistikMonatEnde";
+
     private final DB db = DBFactory.getInstance();
 
     // input
@@ -63,7 +66,7 @@ public class CalculateMonatsstatistikKurseCommand implements Command {
                 " k.anmeldedatum <= :statistikMonatEnde and" +
                 " (k.abmeldedatum is null or k.abmeldedatum >= :statistikMonatEnde)");
         query.setParameter("semesterId", relevantesSemester.getSemesterId());
-        query.setParameter("statistikMonatEnde", statistikMonatEnde);
+        query.setParameter(STATISTIK_MONAT_ENDE, statistikMonatEnde);
         anzahlLektionen = (int) (long) query.getSingleResult();
     }
 
@@ -71,8 +74,8 @@ public class CalculateMonatsstatistikKurseCommand implements Command {
     private void calculateAnzahlAnmeldungenSchueler(EntityManager entityManager) {
         TypedQuery<Object[]> typedQuery = entityManager.createQuery("select k.schueler.personId, count(k) from Kursanmeldung k where" +
                 " (k.anmeldedatum >= :statistikMonatBeginn and k.anmeldedatum <= :statistikMonatEnde) group by k.schueler.personId", Object[].class);
-        typedQuery.setParameter("statistikMonatBeginn", statistikMonatBeginn);
-        typedQuery.setParameter("statistikMonatEnde", statistikMonatEnde);
+        typedQuery.setParameter(STATISTIK_MONAT_BEGINN, statistikMonatBeginn);
+        typedQuery.setParameter(STATISTIK_MONAT_ENDE, statistikMonatEnde);
         for (Object[] result : typedQuery.getResultList()) {
             Integer schuelerId = (Integer) result[0];
             schuelerIdsAnzahlAnmeldungen.put(schuelerId, (int) (long) result[1]);
@@ -84,8 +87,8 @@ public class CalculateMonatsstatistikKurseCommand implements Command {
     private void calculateAnzahlAbmeldungenSchueler(EntityManager entityManager) {
         TypedQuery<Object[]> typedQuery = entityManager.createQuery("select k.schueler.personId, count(k) from Kursanmeldung k where" +
                 " (k.abmeldedatum >= :statistikMonatBeginn and k.abmeldedatum <= :statistikMonatEnde) group by k.schueler.personId", Object[].class);
-        typedQuery.setParameter("statistikMonatBeginn", statistikMonatBeginn);
-        typedQuery.setParameter("statistikMonatEnde", statistikMonatEnde);
+        typedQuery.setParameter(STATISTIK_MONAT_BEGINN, statistikMonatBeginn);
+        typedQuery.setParameter(STATISTIK_MONAT_ENDE, statistikMonatEnde);
         for (Object[] result : typedQuery.getResultList()) {
             Integer schuelerId = (Integer) result[0];
             schuelerIdsAnzahlAbmeldungen.put(schuelerId, (int) (long) result[1]);

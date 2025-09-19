@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
-import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
+import ch.metzenthin.svm.common.datatypes.ListenExportTyp;
+import ch.metzenthin.svm.common.datatypes.Rechnungstyp;
 import ch.metzenthin.svm.domain.model.SemesterrechnungBearbeitenModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenModel;
 import ch.metzenthin.svm.ui.componentmodel.*;
@@ -92,6 +92,7 @@ public class SemesterrechnungenController {
             onListSelection();
         });
         semesterrechnungenTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (!nachGeloeschtenGesucht && me.getClickCount() == 2) {
                     onDetailsBearbeiten();
@@ -208,7 +209,7 @@ public class SemesterrechnungenController {
         btnExportieren.addActionListener(e -> onExportieren());
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "java:S1192"})
     private void onExportieren() {
         btnExportieren.setFocusPainted(true);
         int anzSelektiert = semesterrechnungenTableModel.getAnzSelektiert();

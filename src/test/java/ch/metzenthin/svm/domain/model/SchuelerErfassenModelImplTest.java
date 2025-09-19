@@ -21,7 +21,7 @@ public class SchuelerErfassenModelImplTest {
     private AngehoerigerModel mutterModel;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         schuelerErfassenModel = new SchuelerErfassenModelImpl();
         validateSchuelerModel = (ValidateSchuelerModel) schuelerErfassenModel;
         schuelerModel = new SchuelerModelImpl();

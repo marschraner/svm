@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.daos.KursDao;
 import ch.metzenthin.svm.persistence.daos.KursanmeldungDao;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -26,7 +26,7 @@ public class ImportKurseFromPreviousSemesterCommand implements Command {
         this.currentSemester = currentSemester;
     }
 
-    @SuppressWarnings("ExtractMethodRecommender")
+    @SuppressWarnings({"ExtractMethodRecommender", "java:S1119", "java:S3776"})
     @Override
     public void execute() {
 

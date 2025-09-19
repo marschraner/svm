@@ -15,6 +15,9 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNumber;
  */
 public class Converter {
 
+    private Converter() {
+    }
+
     public static final String DD_MM_YYYY_DATE_FORMAT_STRING = "dd.MM.yyyy";
 
     public static Integer toIntegerOrNull(String s) {
@@ -43,7 +46,7 @@ public class Converter {
             throw new ParseException(errMsg, 0);
         }
         // Akzeptiere 00 als Kürzel für 2000 (führt sonst zu ParseException)
-        s = s.replaceAll("\\.00", ".2000");
+        s = s.replace(".00", ".2000");
         // Schärfere Prüfung, ob Datenformat korrekt, als mit formatter möglich
         try {
             determineDateFormatString(s);
@@ -80,12 +83,11 @@ public class Converter {
         if (!checkNotEmpty(s)) {
             return null;
         }
-        Calendar calendar = null;
         try {
-            calendar = toCalendar(s);
+            return toCalendar(s);
         } catch (ParseException ignore) {
+            return null;
         }
-        return calendar;
     }
 
     public static String determineDateFormatString(String dateAsString) throws ParseException {
@@ -99,10 +101,10 @@ public class Converter {
             return "MM.yyyy";
         }
         if (dateAsString.matches("\\d{1,2}\\.\\d{1,2}\\.\\d{2}")) {
-            return "dd.MM.yyyy";
+            return DD_MM_YYYY_DATE_FORMAT_STRING;
         }
         if (dateAsString.matches("\\d{1,2}\\.\\d{1,2}\\.\\d{4}")) {
-            return "dd.MM.yyyy";
+            return DD_MM_YYYY_DATE_FORMAT_STRING;
         }
         if (dateAsString.matches("\\d{4}")) {
             return "yyyy";
@@ -161,7 +163,7 @@ public class Converter {
 
     public static String calendarToDdMmYy(Calendar calendar) {
         String ddMmYy = asString(calendar, DD_MM_YYYY_DATE_FORMAT_STRING);
-        return ddMmYy.substring(0,6) + ddMmYy.substring(8,10);
+        return (ddMmYy == null) ? null : ddMmYy.substring(0,6) + ddMmYy.substring(8,10);
     }
 
     public static String emptyStringAsNull(String s) {
@@ -180,7 +182,7 @@ public class Converter {
 
     private static String[] splitStrasseHausnummer(String strasseHausnummer) {
         if (strasseHausnummer == null) {
-            return null;
+            return new String[]{};
         }
         String[] splitted = strasseHausnummer.trim().split("\\s+");
         // Prüfen, ob mindestens 2 Felder und ob letztes mit Zahlen beginnt
@@ -196,19 +198,24 @@ public class Converter {
     }
 
     public static String strasseHausnummerGetStrasse(String strasseHausnummer) {
-        return (splitStrasseHausnummer(strasseHausnummer) == null ? null : splitStrasseHausnummer(strasseHausnummer)[0]);
+        String[] splittedStrasseHausnummer = splitStrasseHausnummer(strasseHausnummer);
+        return (splittedStrasseHausnummer.length == 0) ? null : splittedStrasseHausnummer[0];
     }
 
     public static String strasseHausnummerGetHausnummer(String strasseHausnummer) {
-        if (splitStrasseHausnummer(strasseHausnummer) == null) {
+        String[] splittedStrasseHausnummer = splitStrasseHausnummer(strasseHausnummer);
+        if (splittedStrasseHausnummer.length == 0) {
             return null;
+        } else if (splittedStrasseHausnummer.length == 1) {
+            return "";
+        } else {
+            return splittedStrasseHausnummer[1];
         }
-        return (splitStrasseHausnummer(strasseHausnummer).length > 1 ? splitStrasseHausnummer(strasseHausnummer)[1] : "");
     }
 
     private static String[] splitPeriode(String periode) throws ParseException {
         if (!checkNotEmpty(periode)) {
-            return null;
+            return new String[]{};
         }
         if (getCharacterOccurrencesInString(periode, '-') > 1) {
             throw new ParseException("Ungültige Periode: mehr als ein '-'-Zeichen", 0);
@@ -235,27 +242,18 @@ public class Converter {
     }
 
     public static String getPeriodeBeginn(String periode) throws ParseException {
-        if (splitPeriode(periode) == null) {
-            return "";
-        }
-        //noinspection ConstantConditions
-        return splitPeriode(periode)[0];
+        String[] splittedPeriode = splitPeriode(periode);
+        return splittedPeriode.length == 0 ? "" : splittedPeriode[0];
     }
 
     public static String getPeriodeEnde(String periode) throws ParseException {
-        if (splitPeriode(periode) == null) {
-            return "";
-        }
-        //noinspection ConstantConditions
-        return ((splitPeriode(periode).length > 2) ? splitPeriode(periode)[1] : "");
+        String[] splittedPeriode = splitPeriode(periode);
+        return splittedPeriode.length <= 1 ? "" : splittedPeriode[1];
     }
 
     public static String getPeriodeDateFormatString(String periode) throws ParseException {
-        if (splitPeriode(periode) == null) {
-            return null;
-        }
-        //noinspection ConstantConditions
-        return splitPeriode(periode)[splitPeriode(periode).length - 1];
+        String[] splittedPeriode = splitPeriode(periode);
+        return splittedPeriode.length == 0 ? null : splittedPeriode[splittedPeriode.length - 1];
     }
 
     public static Calendar getNYearsBeforeNow(int n) {

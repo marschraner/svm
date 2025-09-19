@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
@@ -35,5 +35,5 @@ public interface SchuelerModel extends PersonModel {
 
     void setBemerkungen(String bemerkungen) throws SvmValidationException;
 
-    void setSchueler(Schueler schueler);
+    void setSchuelerOrigin(Schueler schueler);
 }

@@ -47,6 +47,7 @@ public class SemestersController {
             onListSelection();
         });
         semestersTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     onBearbeiten();
@@ -69,7 +70,8 @@ public class SemestersController {
 
     private void onNeu() {
         btnNeu.setFocusPainted(true);
-        SemesterErfassenDialog semesterErfassenDialog = new SemesterErfassenDialog(svmContext, semestersTableModel, semestersModel, 0, false, "Neues Semester");
+        SemesterErfassenDialog semesterErfassenDialog = new SemesterErfassenDialog(
+                svmContext, semestersTableModel, semestersModel, 0, false, "Neues Semester");
         semesterErfassenDialog.pack();
         semesterErfassenDialog.setVisible(true);
         semestersTableModel.fireTableDataChanged();
@@ -88,7 +90,8 @@ public class SemestersController {
 
     private void onBearbeiten() {
         btnBearbeiten.setFocusPainted(true);
-        SemesterErfassenDialog semesterErfassenDialog = new SemesterErfassenDialog(svmContext, semestersTableModel, semestersModel, semestersTable.getSelectedRow(), true, "Semester bearbeiten");
+        SemesterErfassenDialog semesterErfassenDialog = new SemesterErfassenDialog(
+                svmContext, semestersTableModel, semestersModel, semestersTable.getSelectedRow(), true, "Semester bearbeiten");
         semesterErfassenDialog.pack();
         semesterErfassenDialog.setVisible(true);
         semestersTableModel.fireTableDataChanged();
@@ -138,16 +141,18 @@ public class SemestersController {
                         options[1]); //default button title
             }
             if (n1 == 0) {
-                DeleteSemesterCommand.Result result = semestersModel.semesterLoeschen(svmContext, semestersTableModel, semestersTable.getSelectedRow());
-                switch (result) {
-                    case SEMESTER_VON_KURS_REFERENZIERT -> {
-                        JOptionPane.showMessageDialog(null, "Das Semester wird durch mindestens einen Kurs referenziert und kann nicht gelöscht werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                        btnLoeschen.setFocusPainted(false);
-                    }
-                    case LOESCHEN_ERFOLGREICH -> {
-                        semestersTableModel.fireTableDataChanged();
-                        semestersTable.addNotify();
-                    }
+                DeleteSemesterCommand.Result result = semestersModel.semesterLoeschen(
+                        svmContext, semestersTableModel, semestersTable.getSelectedRow());
+                if (result == DeleteSemesterCommand.Result.SEMESTER_VON_KURS_REFERENZIERT) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Das Semester wird durch mindestens einen Kurs referenziert und kann " +
+                                    "nicht gelöscht werden.",
+                            "Fehler", JOptionPane.ERROR_MESSAGE);
+                    btnLoeschen.setFocusPainted(false);
+                } else if (result == DeleteSemesterCommand.Result.LOESCHEN_ERFOLGREICH) {
+                    semestersTableModel.fireTableDataChanged();
+                    semestersTable.addNotify();
                 }
             }
         }

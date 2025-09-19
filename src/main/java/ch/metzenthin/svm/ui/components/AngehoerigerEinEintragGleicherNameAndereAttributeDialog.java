@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.domain.model.AngehoerigerEinEintragGleicherNameAndereAttributeResult;
 import ch.metzenthin.svm.domain.model.SchuelerErfassenModel;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
@@ -14,14 +14,18 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
+@SuppressWarnings({"java:S100", "java:S1171", "java:S1192"})
 public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends SchuelerErfassenDialog {
+
+    private static final String RECHNUNGSEMPFAENGER_DOPPELPUNKT = "Rechnungsempfänger:";
+    private static final String RECHNUNGSEMPFAENGERIN_DOPPELPUNKT = "Rechnungsempfängerin:";
     
-    private final AngehoerigerEinEintragGleicherNameAndereAttributeResult angehoerigerEinEintragGleicherNameAndereAttributeResult;
-    private final SchuelerErfassenModel schuelerErfassenModel;
+    private final transient AngehoerigerEinEintragGleicherNameAndereAttributeResult angehoerigerEinEintragGleicherNameAndereAttributeResult;
+    private final transient SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
     private JButton buttonDbUebernehmen;
     private JButton buttonAbbrechen;
@@ -59,6 +63,7 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends Sch
         // call onAbbrechen() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 onAbbrechen();
             }
@@ -72,7 +77,7 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends Sch
     private void setLabels(Angehoeriger angehoeriger) {
         lblBeschreibung.setText("In der Datenbank wurde ein Eintrag gefunden, der mit den erfassten Angaben für " + angehoerigerEinEintragGleicherNameAndereAttributeResult.getAngehoerigenArt() + " teilweise übereinstimmt:");
         lblAngehoerigerValue.setText(angehoeriger.toString());
-        Set<Schueler> schuelerList = new HashSet<>();
+        List<Schueler> schuelerList = new ArrayList<>();
         if (!angehoeriger.getKinderMutter().isEmpty()) {
             lblAngehoeriger.setText("Mutter:");
             schuelerList = angehoeriger.getKinderMutter();
@@ -81,13 +86,13 @@ public class AngehoerigerEinEintragGleicherNameAndereAttributeDialog extends Sch
             schuelerList = angehoeriger.getKinderVater();
         } else if (!angehoeriger.getSchuelerRechnungsempfaenger().isEmpty()) {
             if (angehoeriger.getAnrede() == Anrede.FRAU) {
-                lblAngehoeriger.setText("Rechnungsempfängerin:");
+                lblAngehoeriger.setText(RECHNUNGSEMPFAENGERIN_DOPPELPUNKT);
                 lblSchuelerRechnungsempfaenger1.setText("Schüler mit dieser");
-                lblSchuelerRechnungsempfaenger2.setText("Rechnungsempfängerin:");
+                lblSchuelerRechnungsempfaenger2.setText(RECHNUNGSEMPFAENGERIN_DOPPELPUNKT);
             } else {
-                lblAngehoeriger.setText("Rechnungsempfänger:");
+                lblAngehoeriger.setText(RECHNUNGSEMPFAENGER_DOPPELPUNKT);
                 lblSchuelerRechnungsempfaenger1.setText("Schüler mit diesem");
-                lblSchuelerRechnungsempfaenger2.setText("Rechnungsempfänger:");
+                lblSchuelerRechnungsempfaenger2.setText(RECHNUNGSEMPFAENGER_DOPPELPUNKT);
             }
             schuelerList = angehoeriger.getSchuelerRechnungsempfaenger();
         }

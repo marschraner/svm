@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.comparators;
 
-import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
+import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.persistence.entities.Person;
 

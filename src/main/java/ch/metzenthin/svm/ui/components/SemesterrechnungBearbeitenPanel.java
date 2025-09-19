@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Stipendium;
+import ch.metzenthin.svm.common.datatypes.Stipendium;
 import ch.metzenthin.svm.domain.model.SemesterrechnungBearbeitenModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenModel;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
@@ -21,6 +21,7 @@ import java.util.Locale;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings({"java:S100", "java:S1192", "java:S1450"})
 public class SemesterrechnungBearbeitenPanel {
 
     private static final boolean DEFAULT_BUTTON_ENABLED = false;

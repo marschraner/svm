@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Codetyp;
+import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import com.apple.eawt.Application;
@@ -23,9 +23,10 @@ public class SvmDesktop extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = LogManager.getLogger(SvmDesktop.class);
+    private static final String SCHUELER_SUCHEN = "Schüler suchen";
 
-    private final DB db = DBFactory.getInstance();
-    private final SvmContext svmContext;
+    private final transient DB db = DBFactory.getInstance();
+    private final transient SvmContext svmContext;
     private JComponent activeComponent;
 
     public SvmDesktop(SvmContext svmContext) {
@@ -40,10 +41,10 @@ public class SvmDesktop extends JFrame implements ActionListener {
         // Set up the GUI.
         setJMenuBar(createMenuBar());
 
-        // setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         // call quit() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 quit();
             }
@@ -61,7 +62,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
         // RootPane für Setzen des Default-Buttons in den UIs
         svmContext.setRootPaneJFrame(getRootPane());
 
-        setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), "Schüler suchen");
+        setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), SCHUELER_SUCHEN);
 
         // Display the window.
         setVisible(true);
@@ -218,6 +219,8 @@ public class SvmDesktop extends JFrame implements ActionListener {
     }
 
     // React to menu selections.
+    @SuppressWarnings("java:S3776")
+    @Override
     public void actionPerformed(ActionEvent e) {
         startWaitCursor();
         if ((activeComponent != null) && !"beenden".equals(e.getActionCommand())) {
@@ -226,7 +229,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
         }
 
         if ("schuelerSuchen".equals(e.getActionCommand())) {
-            setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), "Schüler suchen");
+            setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), SCHUELER_SUCHEN);
 
         } else if ("schuelerErfassen".equals(e.getActionCommand())) {
             SchuelerErfassenPanel schuelerErfassenPanel = new SchuelerErfassenPanel(svmContext);
@@ -339,13 +342,12 @@ public class SvmDesktop extends JFrame implements ActionListener {
         LOGGER.trace("Next panel {} aufgerufen", eventSourceArray[1]);
         if (eventSourceArray.length > 2) {
             Object thirdElement = eventSourceArray[2];
-            if ((thirdElement instanceof Boolean)) {
-                boolean closeSession = (Boolean) thirdElement;
-                if (closeSession) {
-                    LOGGER.trace("Next panel mit close session aufgerufen");
-                    db.closeSession();
-                }
+            if (thirdElement instanceof Boolean thirdElementBoolean
+                    && Boolean.TRUE.equals(thirdElementBoolean)) {
+                LOGGER.trace("Next panel mit close session aufgerufen");
+                db.closeSession();
             }
+
         }
         JComponent nextComponent = (JComponent) eventSourceArray[0];
         activeComponent.setVisible(false);
@@ -361,7 +363,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
             activeComponent.setVisible(false);
             getContentPane().remove(activeComponent);
         }
-        setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), "Schüler suchen");
+        setAndShowActivePanel(createSchuelerSuchenPanel().$$$getRootComponent$$$(), SCHUELER_SUCHEN);
         stopWaitCursor();
     }
 

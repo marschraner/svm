@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.ListenExportTyp;
-import ch.metzenthin.svm.common.dataTypes.Listentyp;
+import ch.metzenthin.svm.common.datatypes.ListenExportTyp;
+import ch.metzenthin.svm.common.datatypes.Listentyp;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
@@ -16,6 +16,7 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.util.Locale;
 
+@SuppressWarnings({"java:S100", "java:S1450"})
 public class ListenExportDialog extends JDialog {
 
     // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
@@ -25,7 +26,7 @@ public class ListenExportDialog extends JDialog {
     private JPanel datenPanel;
     private JLabel txtListentyp;
     private JComboBox<Listentyp> comboBoxListentyp;
-    private JLabel Titel;
+    private JLabel titel;
     private JTextField txtTitel;
     private JLabel errLblListentyp;
     private JLabel errLblTitel;
@@ -130,13 +131,13 @@ public class ListenExportDialog extends JDialog {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(spacer4, gbc);
-        Titel = new JLabel();
-        Titel.setText("Titel");
+        titel = new JLabel();
+        titel.setText("Titel");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
-        panel1.add(Titel, gbc);
+        panel1.add(titel, gbc);
         txtTitel = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
@@ -222,7 +223,7 @@ public class ListenExportDialog extends JDialog {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         buttonPanel.add(btnAbbrechen, gbc);
-        Titel.setLabelFor(txtTitel);
+        titel.setLabelFor(txtTitel);
     }
 
     /**

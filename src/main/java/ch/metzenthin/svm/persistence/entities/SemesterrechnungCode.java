@@ -5,19 +5,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S2160")  // equals / hash definiert für Code
 @Entity
 @Table(name = "SemesterrechnungCode")
 @DiscriminatorValue("Semesterrechnung")
 public class SemesterrechnungCode extends Code {
 
     @OneToMany(mappedBy = "semesterrechnungCode")
-    private final Set<Semesterrechnung> semesterrechnungen = new HashSet<>();
+    private final List<Semesterrechnung> semesterrechnungen = new ArrayList<>();
 
     public SemesterrechnungCode() {
     }
@@ -26,7 +27,7 @@ public class SemesterrechnungCode extends Code {
         super(kuerzel, beschreibung, selektierbar);
     }
 
-    public Set<Semesterrechnung> getSemesterrechnungen() {
+    public List<Semesterrechnung> getSemesterrechnungen() {
         return semesterrechnungen;
     }
 }

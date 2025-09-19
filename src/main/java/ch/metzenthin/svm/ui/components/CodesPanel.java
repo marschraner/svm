@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Codetyp;
+import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
@@ -20,6 +20,7 @@ import java.util.Locale;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings({"java:S100", "java:S1450"})
 public class CodesPanel {
 
     private JPanel panel1;
@@ -35,11 +36,13 @@ public class CodesPanel {
     private JPanel titelPanel;
     private CodesController codesController;
 
+    @SuppressWarnings("java:S107")
     public CodesPanel(SvmContext svmContext, CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isCodesSpecificSchueler, boolean isFromSchuelerSuchenResult, Codetyp codetyp) {
         $$$setupUI$$$();
         createCodesController(svmContext, codesTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, schuelerSuchenResultTable, selectedRow, isCodesSpecificSchueler, isFromSchuelerSuchenResult, codetyp);
     }
 
+    @SuppressWarnings("java:S107")
     private void createCodesController(SvmContext svmContext, CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel, SchuelerSuchenTableModel schuelerSuchenTableModel, JTable schuelerSuchenResultTable, int selectedRow, boolean isCodesSpecificSchueler, boolean isFromSchuelerSuchenResult, Codetyp codetyp) {
         codesController = new CodesController(svmContext.getModelFactory().createCodesModel(), svmContext, codesTableModel, schuelerDatenblattModel, schuelerSuchenTableModel, schuelerSuchenResultTable, null, selectedRow, isCodesSpecificSchueler, isFromSchuelerSuchenResult, false, false, codetyp);
         codesController.setCodesTable(codesTable);

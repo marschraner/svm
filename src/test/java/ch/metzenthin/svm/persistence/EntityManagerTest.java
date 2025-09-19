@@ -51,6 +51,7 @@ import static org.junit.Assert.*;
  *
  * @author Hans Stamm
  */
+@SuppressWarnings("java:S125")
 public class EntityManagerTest {
 
     private EntityManagerFactory entityManagerFactory;
@@ -59,8 +60,7 @@ public class EntityManagerTest {
     private final List<String> createdCodes = new ArrayList<>();
 
     @Before
-    public void setUp() throws Exception {
-        // createSvmPropertiesFileDefault();
+    public void setUp(){
         entityManagerFactory = createEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         SchuelerCode schuelerCode = createSchuelerCode("ini", "initial test insert");
@@ -76,7 +76,7 @@ public class EntityManagerTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         EntityManager em = entityManagerFactory.createEntityManager(); // starts persistence context
         em.getTransaction().begin();
         for (String kuerzel : createdCodes) {
@@ -173,7 +173,6 @@ public class EntityManagerTest {
     /**
      * New instance in unsynchronised mode followed by a transaction (begin..commit) has effect
      */
-    @SuppressWarnings("CommentedOutCode")
     @Test
     public void testUnsynchronizedNewSchuelerCodeAndJoinTransaction() {
         EntityManager em = entityManagerFactory.createEntityManager();
@@ -183,8 +182,6 @@ public class EntityManagerTest {
         assertFalse(em.isJoinedToTransaction());
         em.getTransaction().begin(); // Note: begin() seems to join to transaction
         assertTrue(em.isJoinedToTransaction());
-//        em.joinTransaction(); // Note: has no effect when not using JTA (see begin() above)
-//        assertTrue(em.isJoinedToTransaction());
         em.getTransaction().commit(); // persists modification made outside of transaction
         em.close();
 
@@ -925,7 +922,7 @@ public class EntityManagerTest {
         return typedQuery.getResultList();
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "java:S2925"})
     private void sleepOneSecond() {
         try {
             Thread.sleep(1000L);

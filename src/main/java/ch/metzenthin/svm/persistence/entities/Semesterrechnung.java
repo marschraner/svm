@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.common.dataTypes.Stipendium;
+import ch.metzenthin.svm.common.datatypes.Stipendium;
 import ch.metzenthin.svm.common.utils.SvmStringUtils;
 import jakarta.persistence.*;
 
@@ -142,6 +142,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     public Semesterrechnung() {
     }
 
+    @SuppressWarnings("java:S107")
     public Semesterrechnung(Semester semester, Angehoeriger rechnungsempfaenger, Stipendium stipendium, Boolean gratiskinder,
                             Calendar rechnungsdatumVorrechnung, BigDecimal ermaessigungVorrechnung, String ermaessigungsgrundVorrechnung, BigDecimal zuschlagVorrechnung, String zuschlagsgrundVorrechnung, Integer anzahlWochenVorrechnung, BigDecimal wochenbetragVorrechnung, Calendar datumZahlung1Vorrechnung, BigDecimal betragZahlung1Vorrechnung, Calendar datumZahlung2Vorrechnung, BigDecimal betragZahlung2Vorrechnung, Calendar datumZahlung3Vorrechnung, BigDecimal betragZahlung3Vorrechnung,
                             Calendar rechnungsdatumNachrechnung, BigDecimal ermaessigungNachrechnung, String ermaessigungsgrundNachrechnung, BigDecimal zuschlagNachrechnung, String zuschlagsgrundNachrechnung, Integer anzahlWochenNachrechnung, BigDecimal wochenbetragNachrechnung, Calendar datumZahlung1Nachrechnung, BigDecimal betragZahlung1Nachrechnung, Calendar datumZahlung2Nachrechnung, BigDecimal betragZahlung2Nachrechnung, Calendar datumZahlung3Nachrechnung, BigDecimal betragZahlung3Nachrechnung, String bemerkungen, Boolean deleted) {
@@ -177,22 +178,6 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.betragZahlung3Nachrechnung = betragZahlung3Nachrechnung;
         this.bemerkungen = bemerkungen;
         this.deleted = deleted;
-    }
-
-    @SuppressWarnings("ExtractMethodRecommender")
-    @Override
-    public int compareTo(Semesterrechnung otherSemesterrechnung) {
-        // aufsteigend nach Rechnungsempfänger-Schülern und absteigend nach Semester sortieren
-        // Im Falle von Rechnungsempfängerwechseln kann ein Rechnungsempfänger keine Schüler haben
-        List<Schueler> angemeldeteSchuelerRechnungsempfaenger = this.rechnungsempfaenger.getAngemeldeteSchuelerRechnungsempfaengerAsList();
-        Person person = (angemeldeteSchuelerRechnungsempfaenger.isEmpty() ? this.rechnungsempfaenger : angemeldeteSchuelerRechnungsempfaenger.get(0));
-        List<Schueler> angemeldeteSchuelerOtherRechnungsempfaenger = otherSemesterrechnung.rechnungsempfaenger.getAngemeldeteSchuelerRechnungsempfaengerAsList();
-        Person otherPerson = angemeldeteSchuelerOtherRechnungsempfaenger.isEmpty() ? otherSemesterrechnung.rechnungsempfaenger : angemeldeteSchuelerOtherRechnungsempfaenger.get(0);
-        int result = person.compareTo(otherPerson);
-        if (result == 0) {
-            result = this.semester.compareTo(otherSemesterrechnung.semester);
-        }
-        return result;
     }
 
     public boolean isIdenticalWith(Semesterrechnung otherSemesterrechnung) {
@@ -232,6 +217,36 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         this.betragZahlung3Nachrechnung = otherSemesterrechnung.betragZahlung3Nachrechnung;
         this.bemerkungen = otherSemesterrechnung.getBemerkungen();
         this.deleted = otherSemesterrechnung.getDeleted();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Semesterrechnung that = (Semesterrechnung) o;
+        return Objects.equals(semester, that.semester)
+                && Objects.equals(rechnungsempfaenger, that.rechnungsempfaenger);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(semester, rechnungsempfaenger);
+    }
+
+    @SuppressWarnings("ExtractMethodRecommender")
+    @Override
+    public int compareTo(Semesterrechnung otherSemesterrechnung) {
+        // aufsteigend nach Rechnungsempfänger-Schülern und absteigend nach Semester sortieren
+        // Im Falle von Rechnungsempfängerwechseln kann ein Rechnungsempfänger keine Schüler haben
+        List<Schueler> angemeldeteSchuelerRechnungsempfaenger = this.rechnungsempfaenger.getAngemeldeteSchuelerRechnungsempfaenger();
+        Person person = (angemeldeteSchuelerRechnungsempfaenger.isEmpty() ? this.rechnungsempfaenger : angemeldeteSchuelerRechnungsempfaenger.get(0));
+        List<Schueler> angemeldeteSchuelerOtherRechnungsempfaenger = otherSemesterrechnung.rechnungsempfaenger.getAngemeldeteSchuelerRechnungsempfaenger();
+        Person otherPerson = angemeldeteSchuelerOtherRechnungsempfaenger.isEmpty() ? otherSemesterrechnung.rechnungsempfaenger : angemeldeteSchuelerOtherRechnungsempfaenger.get(0);
+        int result = person.compareTo(otherPerson);
+        if (result == 0) {
+            result = this.semester.compareTo(otherSemesterrechnung.semester);
+        }
+        return result;
     }
 
     public Semester getSemester() {
@@ -482,7 +497,8 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         if (this.semesterrechnungCode != null) {
             deleteSemesterrechnungCode(this.semesterrechnungCode);
         }
-        if (semesterrechnungCode != null) {
+        if (semesterrechnungCode != null
+                && !semesterrechnungCode.getSemesterrechnungen().contains(this)) {
             semesterrechnungCode.getSemesterrechnungen().add(this);
         }
         this.semesterrechnungCode = semesterrechnungCode;
@@ -673,7 +689,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         }
     }
 
-    @SuppressWarnings({"BooleanMethodIsAlwaysInverted", "DuplicatedCode"})
+    @SuppressWarnings({"BooleanMethodIsAlwaysInverted", "DuplicatedCode", "java:S3776"})
     @Transient
     public boolean isNullrechnung() {
         return (ermaessigungVorrechnung == null || ermaessigungVorrechnung.compareTo(BigDecimal.ZERO) == 0) &&
@@ -690,6 +706,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
                 (betragZahlung3Nachrechnung == null || betragZahlung3Nachrechnung.compareTo(BigDecimal.ZERO) == 0);
     }
 
+    @SuppressWarnings("java:S3776")
     @Transient
     public List<Schueler> getAktiveSchuelerRechnungsempfaenger(Semester previousSemester) {
         List<Schueler> schuelersRechnungsempfaenger = new ArrayList<>(rechnungsempfaenger.getSchuelerRechnungsempfaenger());
@@ -697,7 +714,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         List<Schueler> aktiveSchueler = new ArrayList<>();
         for (Schueler schueler : schuelersRechnungsempfaenger) {
             boolean aktiverSchueler = false;
-            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getSortedKursanmeldungen()) {
                 Kurs kurs = kursanmeldung.getKurs();
                 // 1. Anmeldung für aktuelles Semester
                 if (kurs.getSemester().getSemesterId().equals(semester.getSemesterId())
@@ -738,21 +755,4 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         }
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!this.getClass().isInstance(obj)) {
-            return false;
-        }
-        Semesterrechnung that = (Semesterrechnung) obj;
-        return semester.getSemesterId().equals(that.semester.getSemesterId()) &&
-                rechnungsempfaenger.getPersonId().equals(that.rechnungsempfaenger.getPersonId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(semester.getSemesterId(), rechnungsempfaenger.getPersonId());
-    }
 }

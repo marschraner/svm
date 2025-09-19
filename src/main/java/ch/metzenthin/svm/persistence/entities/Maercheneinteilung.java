@@ -1,11 +1,12 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
-import ch.metzenthin.svm.common.dataTypes.Gruppe;
+import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
+import ch.metzenthin.svm.common.datatypes.Gruppe;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -106,6 +107,7 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
         neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
     }
 
+    @SuppressWarnings("java:S107")
     public Maercheneinteilung(Schueler schueler, Maerchen maerchen, Gruppe gruppe, String rolle1, String bilderRolle1, String rolle2, String bilderRolle2, String rolle3, String bilderRolle3, Elternmithilfe elternmithilfe,
                               Boolean kuchenVorstellung1, Boolean kuchenVorstellung2, Boolean kuchenVorstellung3, Boolean kuchenVorstellung4, Boolean kuchenVorstellung5,
                               Boolean kuchenVorstellung6, Boolean kuchenVorstellung7, Boolean kuchenVorstellung8, Boolean kuchenVorstellung9, String zusatzattribut, String bemerkungen) {
@@ -133,11 +135,7 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
         this.bemerkungen = bemerkungen;
     }
 
-    @Override
-    public int compareTo(Maercheneinteilung otherMaercheneinteilung) {
-        return (neusteZuoberst ? otherMaercheneinteilung.getMaerchen().getSchuljahr().compareTo(maerchen.getSchuljahr()) : maerchen.getSchuljahr().compareTo(otherMaercheneinteilung.getMaerchen().getSchuljahr()));
-    }
-
+    @SuppressWarnings("java:S3776")
     public boolean isIdenticalWith(Maercheneinteilung otherMaercheneinteilung) {
         return otherMaercheneinteilung != null
                 && schueler.isIdenticalWith(otherMaercheneinteilung.getSchueler())
@@ -184,6 +182,25 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
         this.kuchenVorstellung9 = otherMaercheneinteilung.getKuchenVorstellung9();
         this.zusatzattribut = otherMaercheneinteilung.getZusatzattribut();
         this.bemerkungen = otherMaercheneinteilung.getBemerkungen();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Maercheneinteilung that = (Maercheneinteilung) o;
+        return Objects.equals(schueler, that.schueler)
+                && Objects.equals(maerchen, that.maerchen);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(schueler, maerchen);
+    }
+
+    @Override
+    public int compareTo(Maercheneinteilung otherMaercheneinteilung) {
+        return (neusteZuoberst ? otherMaercheneinteilung.getMaerchen().getSchuljahr().compareTo(maerchen.getSchuljahr()) : maerchen.getSchuljahr().compareTo(otherMaercheneinteilung.getMaerchen().getSchuljahr()));
     }
 
     public Schueler getSchueler() {
@@ -274,7 +291,8 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
         if (this.elternmithilfeCode != null) {
             deleteElternmithilfeCode(this.elternmithilfeCode);
         }
-        if (elternmithilfeCode != null) {
+        if (elternmithilfeCode != null
+                && !elternmithilfeCode.getMaercheneinteilungen().contains(this)) {
             elternmithilfeCode.getMaercheneinteilungen().add(this);
         }
         this.elternmithilfeCode = elternmithilfeCode;
@@ -357,33 +375,34 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
         this.kuchenVorstellung9 = kuchenVorstellung9;
     }
 
+    @SuppressWarnings("java:S3776")
     public String getKuchenVorstellungenAsString() {
         StringBuilder vorstellungenKuchenSb = new StringBuilder();
-        if (kuchenVorstellung1) {
+        if (kuchenVorstellung1 != null && kuchenVorstellung1) {
             vorstellungenKuchenSb.append("1, ");
         }
-        if (kuchenVorstellung2) {
+        if (kuchenVorstellung2 != null && kuchenVorstellung2) {
             vorstellungenKuchenSb.append("2, ");
         }
-        if (kuchenVorstellung3) {
+        if (kuchenVorstellung3 != null && kuchenVorstellung3) {
             vorstellungenKuchenSb.append("3, ");
         }
-        if (kuchenVorstellung4) {
+        if (kuchenVorstellung4 != null && kuchenVorstellung4) {
             vorstellungenKuchenSb.append("4, ");
         }
-        if (kuchenVorstellung5) {
+        if (kuchenVorstellung5 != null && kuchenVorstellung5) {
             vorstellungenKuchenSb.append("5, ");
         }
-        if (kuchenVorstellung6) {
+        if (kuchenVorstellung6 != null && kuchenVorstellung6) {
             vorstellungenKuchenSb.append("6, ");
         }
-        if (kuchenVorstellung7) {
+        if (kuchenVorstellung7 != null && kuchenVorstellung7) {
             vorstellungenKuchenSb.append("7, ");
         }
-        if (kuchenVorstellung8) {
+        if (kuchenVorstellung8 != null && kuchenVorstellung8) {
             vorstellungenKuchenSb.append("8, ");
         }
-        if (kuchenVorstellung9) {
+        if (kuchenVorstellung9 != null && kuchenVorstellung9) {
             vorstellungenKuchenSb.append("9, ");
         }
         if (!vorstellungenKuchenSb.isEmpty()) {
@@ -420,7 +439,7 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
     @Transient
     public String getRolle1WithoutSorterCharacters() {
         // "x Hund 2", "x 3 Hund 2", "xx 3 Hund 2", "X Hund 2", "X 3 Hund 2" und "XX 3 Hund 2" durch "Hund 2" ersetzen
-        return rolle1.replaceFirst("^([A-Z]{1,2}|[a-z]{1,2})[ \\t]+[0-9]*[ \\t]*", "");
+        return rolle1.replaceFirst("^([A-Z]{1,2}|[a-z]{1,2})[ \\t]+\\d*[ \\t]*", "");
     }
 
     @Transient

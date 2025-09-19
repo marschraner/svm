@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.MitarbeiterSuchenCommand;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
@@ -137,6 +137,7 @@ final class MitarbeiterSuchenModelImpl extends AbstractModel implements Mitarbei
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 
     @Override

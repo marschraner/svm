@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.common.utils.DateAndTimeUtils;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
@@ -33,6 +33,9 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 public class KursanmeldungErfassenController extends AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(KursanmeldungErfassenController.class);
+    private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE =
+            "Validierung wegen equalFieldAndModelValue";
+    private static final String FEHLER = "Fehler";
 
     // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
     private static final boolean MODEL_VALIDATION_MODE = false;
@@ -83,6 +86,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         this.kursanmeldungErfassenDialog = kursanmeldungErfassenDialog;
         kursanmeldungErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         kursanmeldungErfassenDialog.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 onAbbrechen();
             }
@@ -125,7 +129,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         setModelSemester();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -161,7 +165,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -210,7 +214,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -266,7 +270,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -310,7 +314,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -358,7 +362,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -407,7 +411,7 @@ public class KursanmeldungErfassenController extends AbstractController {
         }
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
-            LOGGER.trace("Validierung wegen equalFieldAndModelValue");
+            LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
             validate();
         }
     }
@@ -485,20 +489,32 @@ public class KursanmeldungErfassenController extends AbstractController {
         if (n == 0) {
             // Existiert der Kurs?
             if (!isBearbeiten && kursanmeldungErfassenModel.findKurs() == FindKursCommand.Result.KURS_EXISTIERT_NICHT) {
-                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs existiert nicht.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(
+                        kursanmeldungErfassenDialog,
+                        "Kurs existiert nicht.",
+                        FEHLER,
+                        JOptionPane.ERROR_MESSAGE);
                 btnOk.setFocusPainted(false);
                 return;
             }
             // Kurs bereits erfasst
             if (!isBearbeiten && kursanmeldungErfassenModel.checkIfKursBereitsErfasst(schuelerDatenblattModel)) {
-                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Kurs bereits erfasst.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(
+                        kursanmeldungErfassenDialog,
+                        "Kurs bereits erfasst.",
+                        FEHLER,
+                        JOptionPane.ERROR_MESSAGE);
                 btnOk.setFocusPainted(false);
                 return;
             }
             // Schüler angemeldet?
             if (!kursanmeldungErfassenModel.checkIfSchuelerIsAngemeldet(schuelerDatenblattModel)) {
-                JOptionPane.showMessageDialog(kursanmeldungErfassenDialog, "Die Kursanmeldung kann nicht erfasst werden, weil der Schüler für das\n" +
-                        "Semester nicht mehr beim Kindertheater angemeldet ist.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(
+                        kursanmeldungErfassenDialog,
+                        "Die Kursanmeldung kann nicht erfasst werden, weil der Schüler für das\n" +
+                        "Semester nicht mehr beim Kindertheater angemeldet ist.",
+                        FEHLER,
+                        JOptionPane.ERROR_MESSAGE);
                 btnOk.setFocusPainted(false);
                 return;
             }
@@ -538,7 +554,8 @@ public class KursanmeldungErfassenController extends AbstractController {
         if (anmeldedatumInit != null) {
             try {
                 kursanmeldungErfassenModel.setAnmeldedatum(DateAndTimeUtils.getCalendarAsDDMMYYYY(anmeldedatumInit));
-            } catch (SvmValidationException ignore) {
+            } catch (SvmValidationException e) {
+                LOGGER.error(e.getMessage());
             }
         }
     }
@@ -681,6 +698,7 @@ public class KursanmeldungErfassenController extends AbstractController {
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
+        // Keine zu deaktivierenden Felder
     }
 
 }

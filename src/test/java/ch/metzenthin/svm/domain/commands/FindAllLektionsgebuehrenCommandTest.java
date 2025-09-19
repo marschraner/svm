@@ -30,7 +30,7 @@ public class FindAllLektionsgebuehrenCommandTest {
     private CommandInvoker commandInvoker;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
         commandInvoker = new CommandInvokerImpl();
@@ -38,7 +38,7 @@ public class FindAllLektionsgebuehrenCommandTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         deleteTestdata();
         db.closeSession();
     }

@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 
 import java.util.ArrayList;
@@ -51,6 +51,7 @@ public record MitarbeitersTableData(List<Mitarbeiter> mitarbeiters) {
         return anzSelektiert;
     }
 
+    @SuppressWarnings("java:S3776")
     public Object getValueAt(int rowIndex, int columnIndex) {
         Mitarbeiter mitarbeiter = mitarbeiters.get(rowIndex);
         Object value = null;
@@ -70,12 +71,16 @@ public record MitarbeitersTableData(List<Mitarbeiter> mitarbeiters) {
             case IBAN_NUMMER ->
                     value = (!checkNotEmpty(mitarbeiter.getIbanNummer()) ? "" : mitarbeiter.getIbanNummer());
             case LEHRKRAFT -> value = (mitarbeiter.getLehrkraft() ? "ja" : "nein");
-            case AKTIV -> value = (mitarbeiter.getAktiv() ? "ja" : "nein");
+            case AKTIV -> value =
+                    (mitarbeiter.getAktiv() != null && mitarbeiter.getAktiv())
+                            ? "ja"
+                            : "nein";
             case CODES -> value = mitarbeiter.getMitarbeiterCodesAsStr();
             case VERTRETUNGSMOEGLICHKEITEN ->
                     value = mitarbeiter.getVertretungsmoeglichkeitenLineBreaksReplacedBySemicolonOrPeriod();
             case BEMERKUNGEN -> value = mitarbeiter.getBemerkungenLineBreaksReplacedBySemicolonOrPeriod();
             default -> {
+                // Nothing to do
             }
         }
         return value;

@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import org.junit.Before;
@@ -50,7 +50,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
         commandInvoker.executeCommand(checkDrittpersonIdentischMitElternteilCommand);
         assertTrue(checkDrittpersonIdentischMitElternteilCommand.isIdentical());
         String errorMessage = checkDrittpersonIdentischMitElternteilCommand.getErrorMessage();
-        assertEquals(errorMessage, CheckDrittpersonIdentischMitElternteilCommand.ERROR_IDENTISCH_MIT_MUTTER);
+        assertEquals(CheckDrittpersonIdentischMitElternteilCommand.ERROR_IDENTISCH_MIT_MUTTER, errorMessage);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
         commandInvoker.executeCommand(checkDrittpersonIdentischMitElternteilCommand);
         assertTrue(checkDrittpersonIdentischMitElternteilCommand.isIdentical());
         String errorMessage = checkDrittpersonIdentischMitElternteilCommand.getErrorMessage();
-        assertEquals(errorMessage, CheckDrittpersonIdentischMitElternteilCommand.ERROR_IDENTISCH_MIT_VATER);
+        assertEquals(CheckDrittpersonIdentischMitElternteilCommand.ERROR_IDENTISCH_MIT_VATER, errorMessage);
     }
 
     @Test

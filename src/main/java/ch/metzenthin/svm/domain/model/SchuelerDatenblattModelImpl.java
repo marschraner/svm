@@ -1,10 +1,10 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.commands.*;
@@ -28,7 +28,8 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     public SchuelerDatenblattModelImpl(Schueler schueler) {
         this.schueler = schueler;
-        this.aktuelleMaercheneinteilung = determineAktuelleMaercheneinteilung(schueler.getMaercheneinteilungenAsList());
+        this.aktuelleMaercheneinteilung = determineAktuelleMaercheneinteilung(
+                schueler.getSortedMaercheneinteilungen());
         Properties svmProperties = SvmProperties.getSvmProperties();
         neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
     }
@@ -131,6 +132,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         return false;
     }
 
+    @SuppressWarnings("java:S1192")
     @Override
     public String getGeschwisterAsString() {
         CheckGeschwisterSchuelerRechnungempfaengerCommand command = new CheckGeschwisterSchuelerRechnungempfaengerCommand(schueler, isRechnungsempfaengerDrittperson());
@@ -167,11 +169,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         List<Schueler> schuelerList = command.getAndereSchuelerMitVaterMutterOderDrittpersonAlsRechnungsempfaengerList();
         if (!schuelerList.isEmpty()) {
             StringBuilder infoSchuelerGleicherRechnungsempfaenger = new StringBuilder("<html>");
-            for (Schueler schueler : schuelerList) {
+            for (Schueler schueler1 : schuelerList) {
                 if (infoSchuelerGleicherRechnungsempfaenger.length() > 6) {
                     infoSchuelerGleicherRechnungsempfaenger.append("<br>");
                 }
-                infoSchuelerGleicherRechnungsempfaenger.append(schueler.toString());
+                infoSchuelerGleicherRechnungsempfaenger.append(schueler1.toString());
             }
             infoSchuelerGleicherRechnungsempfaenger.append("</html>");
             return infoSchuelerGleicherRechnungsempfaenger.toString();
@@ -187,10 +189,8 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     @Override
     public String getAnmeldedatumAsString() {
         List<Anmeldung> anmeldungen = schueler.getAnmeldungen();
-        if (!anmeldungen.isEmpty()) {
-            if (anmeldungen.get(0).getAnmeldedatum() != null) {
-                return asString(anmeldungen.get(0).getAnmeldedatum());
-            }
+        if (!anmeldungen.isEmpty() && anmeldungen.get(0).getAnmeldedatum() != null) {
+            return asString(anmeldungen.get(0).getAnmeldedatum());
         }
         return "-";
     }
@@ -198,14 +198,13 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     @Override
     public String getAbmeldedatumAsString() {
         List<Anmeldung> anmeldungen = schueler.getAnmeldungen();
-        if (!anmeldungen.isEmpty()) {
-            if (anmeldungen.get(0).getAbmeldedatum() != null) {
-                return asString(anmeldungen.get(0).getAbmeldedatum());
-            }
+        if (!anmeldungen.isEmpty() && anmeldungen.get(0).getAbmeldedatum() != null) {
+            return asString(anmeldungen.get(0).getAbmeldedatum());
         }
         return "";
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public String getFruehereAnmeldungenAsString() {
         List<Anmeldung> anmeldungen = schueler.getAnmeldungen();
@@ -241,6 +240,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public String getDispensationsdauerAsString() {
         List<Dispensation> dispensationen = schueler.getDispensationen();
@@ -299,8 +299,8 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     }
 
     private boolean isDispensationToBeDisplayed(Dispensation dispensation) {
-        int MAX_MONTHS_IN_PAST = 48;
-        Calendar minSemesterEnde = Converter.getNMonthsBeforeNow(MAX_MONTHS_IN_PAST);
+        int maxMonthsInPast = 48;
+        Calendar minSemesterEnde = Converter.getNMonthsBeforeNow(maxMonthsInPast);
         return minSemesterEnde.before(dispensation.getDispensationsende()) || minSemesterEnde.equals(dispensation.getDispensationsende());
     }
 
@@ -308,7 +308,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     public String getSchuelerCodesAsString() {
         if (!schueler.getSchuelerCodes().isEmpty()) {
             StringBuilder codesSb = new StringBuilder("<html>");
-            for (SchuelerCode schuelerCode : schueler.getSchuelerCodesAsList()) {
+            for (SchuelerCode schuelerCode : schueler.getSortedSchuelerCodes()) {
                 if (codesSb.length() > 6) {
                     codesSb.append("<br>");
                 }
@@ -322,6 +322,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
         return "-";
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public String getSemesterKurseAsString(SvmModel svmModel) {
         if (!schueler.getKursanmeldungen().isEmpty()) {
@@ -334,7 +335,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
             String previousSchuljahr = null;
             Semesterbezeichnung previousSemesterbezeichnung = null;
             boolean gleichesSemester = false;
-            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getSortedKursanmeldungen()) {
                 Kurs kurs = kursanmeldung.getKurs();
                 if (!isKursToBeDisplayed(kurs, previousSemester, currentSemester, nextSemester)) {
                     continue;
@@ -377,7 +378,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
             String previousSchuljahr = null;
             Semesterbezeichnung previousSemesterbezeichnung = null;
             StringBuilder kurseSb = new StringBuilder("<html>");
-            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getSortedKursanmeldungen()) {
                 Kurs kurs = kursanmeldung.getKurs();
                 if (!isKursToBeDisplayed(kurs, previousSemester, currentSemester, nextSemester)) {
                     continue;
@@ -548,12 +549,12 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     @Override
     public KursanmeldungenTableData getKurseinteilungenTableData() {
-        return new KursanmeldungenTableData(schueler.getKursanmeldungenAsList());
+        return new KursanmeldungenTableData(schueler.getSortedKursanmeldungen());
     }
 
     @Override
     public MaercheneinteilungenTableData getMaercheneinteilungenTableData() {
-        return new MaercheneinteilungenTableData(schueler.getMaercheneinteilungenAsList());
+        return new MaercheneinteilungenTableData(schueler.getSortedMaercheneinteilungen());
     }
 
     private boolean isDispensationAktuell(Dispensation dispensation) {
@@ -568,7 +569,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     @Override
     public SchuelerModel getSchuelerModel(SvmContext svmContext) {
         SchuelerModel schuelerModel = svmContext.getModelFactory().createSchuelerModel();
-        schuelerModel.setSchueler(schueler);
+        schuelerModel.setSchuelerOrigin(schueler);
         return schuelerModel;
     }
 

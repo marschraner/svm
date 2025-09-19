@@ -16,8 +16,12 @@ public class MaercheneinteilungDao extends GenericDao<Maercheneinteilung, Maerch
 
     @Override
     public Maercheneinteilung save(Maercheneinteilung maercheneinteilung) {
-        maercheneinteilung.getSchueler().getMaercheneinteilungen().add(maercheneinteilung);
-        maercheneinteilung.getMaerchen().getMaercheneinteilungen().add(maercheneinteilung);
+        if (!maercheneinteilung.getSchueler().getMaercheneinteilungen().contains(maercheneinteilung)) {
+          maercheneinteilung.getSchueler().getMaercheneinteilungen().add(maercheneinteilung);
+        }
+        if (!maercheneinteilung.getMaerchen().getMaercheneinteilungen().contains(maercheneinteilung)) {
+          maercheneinteilung.getMaerchen().getMaercheneinteilungen().add(maercheneinteilung);
+        }
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.persist(maercheneinteilung);
         entityManager.flush();

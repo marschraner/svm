@@ -1,8 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.dataTypes.EmailEmpfaenger;
-import ch.metzenthin.svm.common.dataTypes.Field;
-import ch.metzenthin.svm.domain.SvmRequiredException;
+import ch.metzenthin.svm.common.datatypes.EmailEmpfaenger;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.domain.model.EmailModel;
@@ -56,6 +55,7 @@ public class EmailController extends AbstractController {
         this.emailDialog = emailDialog;
         emailDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         emailDialog.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 onAbbrechen();
             }
@@ -81,11 +81,7 @@ public class EmailController extends AbstractController {
     private void onEmailEmpfaengerSelected() {
         LOGGER.trace("EmailController Event EmailEmpfaenger selected={}", comboBoxEmailEmpfaenger.getSelectedItem());
         boolean equalFieldAndModelValue = equalsNullSafe(comboBoxEmailEmpfaenger.getSelectedItem(), emailModel.getEmailEmpfaenger());
-        try {
-            setModelEmailEmpfaenger();
-        } catch (SvmValidationException e) {
-            return;
-        }
+        setModelEmailEmpfaenger();
         if (equalFieldAndModelValue && isModelValidationMode()) {
             // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb muss hier die Validierung angestossen werden.
             LOGGER.trace("Validierung wegen equalFieldAndModelValue");
@@ -93,7 +89,7 @@ public class EmailController extends AbstractController {
         }
     }
 
-    private void setModelEmailEmpfaenger() throws SvmRequiredException {
+    private void setModelEmailEmpfaenger() {
         emailModel.setEmailEmpfaenger((EmailEmpfaenger) comboBoxEmailEmpfaenger.getSelectedItem());
     }
 
@@ -151,22 +147,27 @@ public class EmailController extends AbstractController {
 
     @Override
     void validateFields() throws SvmValidationException {
+        // Keine zu validierenden Felder
     }
 
     @Override
     void showErrMsg(SvmValidationException e) {
+        // Keine Fehlermeldungen
     }
 
     @Override
     void showErrMsgAsToolTip(SvmValidationException e) {
+        // Keine Fehlermeldungen
     }
 
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
+        // Keine Fehlermeldungen
     }
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
+        // Keine zu deaktivierenden Felder
     }
 
 }

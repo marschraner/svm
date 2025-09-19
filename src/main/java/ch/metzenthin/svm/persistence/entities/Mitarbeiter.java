@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.utils.SvmStringUtils;
 import jakarta.persistence.*;
 
@@ -9,6 +9,7 @@ import java.util.*;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S2160")  // equals / hash definiert für Person
 @Entity
 @Table(name = "Mitarbeiter")
 @DiscriminatorValue("Mitarbeiter")
@@ -39,14 +40,15 @@ public class Mitarbeiter extends Person {
     @JoinTable(name = "Mitarbeiter_MitarbeiterCode",
             joinColumns = {@JoinColumn(name = "person_id")},
             inverseJoinColumns = {@JoinColumn(name = "code_id")})
-    private final Set<MitarbeiterCode> mitarbeiterCodes = new HashSet<>();
+    private final List<MitarbeiterCode> mitarbeiterCodes = new ArrayList<>();
 
     @ManyToMany(mappedBy = "lehrkraefte")
-    private final Set<Kurs> kurse = new HashSet<>();
+    private final List<Kurs> kurse = new ArrayList<>();
 
     public Mitarbeiter() {
     }
 
+    @SuppressWarnings("java:S107")
     public Mitarbeiter(Anrede anrede, String vorname, String nachname, Calendar geburtsdatum, String festnetz,
                        String natel, String email, String ahvNummer, String ibanNummer, boolean lehrkraft,
                        String vertretungsmoeglichkeiten, String bemerkungen, Boolean aktiv) {
@@ -169,19 +171,23 @@ public class Mitarbeiter extends Person {
         this.selektiert = selektiert;
     }
 
-    public Set<MitarbeiterCode> getMitarbeiterCodes() {
+    public List<MitarbeiterCode> getMitarbeiterCodes() {
         return mitarbeiterCodes;
     }
 
-    public List<MitarbeiterCode> getMitarbeiterCodesAsList() {
-        List<MitarbeiterCode> mitarbeitercodesAsList = new ArrayList<>(mitarbeiterCodes);
-        Collections.sort(mitarbeitercodesAsList);
-        return mitarbeitercodesAsList;
+    public List<MitarbeiterCode> getSortedMitarbeiterCodes() {
+        List<MitarbeiterCode> sortedMitarbeitercodes = new ArrayList<>(mitarbeiterCodes);
+        Collections.sort(sortedMitarbeitercodes);
+        return sortedMitarbeitercodes;
     }
 
     public void addCode(MitarbeiterCode mitarbeiterCode) {
-        mitarbeiterCode.getMitarbeiters().add(this);
-        mitarbeiterCodes.add(mitarbeiterCode);
+        if (!mitarbeiterCode.getMitarbeiters().contains(this)) {
+            mitarbeiterCode.getMitarbeiters().add(this);
+        }
+        if (!mitarbeiterCodes.contains(mitarbeiterCode)) {
+            mitarbeiterCodes.add(mitarbeiterCode);
+        }
     }
 
     public void deleteCode(MitarbeiterCode mitarbeiterCode) {
@@ -195,14 +201,14 @@ public class Mitarbeiter extends Person {
         if (mitarbeiterCodes.isEmpty()) {
             return "";
         }
-        StringBuilder mitarbeiterCodesAsStr = new StringBuilder(getMitarbeiterCodesAsList().get(0).getKuerzel());
-        for (int i = 1; i < getMitarbeiterCodesAsList().size(); i++) {
-            mitarbeiterCodesAsStr.append(", ").append(getMitarbeiterCodesAsList().get(i).getKuerzel());
+        StringBuilder mitarbeiterCodesAsStr = new StringBuilder(getSortedMitarbeiterCodes().get(0).getKuerzel());
+        for (int i = 1; i < getSortedMitarbeiterCodes().size(); i++) {
+            mitarbeiterCodesAsStr.append(", ").append(getSortedMitarbeiterCodes().get(i).getKuerzel());
         }
         return mitarbeiterCodesAsStr.toString();
     }
 
-    public Set<Kurs> getKurse() {
+    public List<Kurs> getKurse() {
         return kurse;
     }
 

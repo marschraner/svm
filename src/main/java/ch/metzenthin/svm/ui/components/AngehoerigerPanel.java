@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.domain.model.AngehoerigerModel;
 import ch.metzenthin.svm.ui.control.AngehoerigerController;
 
@@ -10,6 +10,7 @@ import java.awt.*;
 /**
  * @author Hans Stamm
  */
+@SuppressWarnings({"java:S100", "java:S1450"})
 public class AngehoerigerPanel {
 
     private JPanel panel;

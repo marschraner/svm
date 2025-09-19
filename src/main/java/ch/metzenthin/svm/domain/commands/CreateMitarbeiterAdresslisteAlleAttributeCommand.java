@@ -28,7 +28,7 @@ public class CreateMitarbeiterAdresslisteAlleAttributeCommand extends CreateList
         this.outputFile = outputFile;
     }
 
-    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
+    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender", "java:S3776"})
     @Override
     public void execute() {
 

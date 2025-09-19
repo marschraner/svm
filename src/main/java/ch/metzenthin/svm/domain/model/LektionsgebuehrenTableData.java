@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 
 import java.math.BigDecimal;
@@ -46,6 +46,7 @@ public class LektionsgebuehrenTableData {
             case BETRAG_5_KINDER -> value = lektionsgebuehren.getBetrag5Kinder();
             case BETRAG_6_KINDER -> value = lektionsgebuehren.getBetrag6Kinder();
             default -> {
+                // Nothing to do
             }
         }
         return value;
@@ -55,11 +56,11 @@ public class LektionsgebuehrenTableData {
         return switch (COLUMNS[columnIndex]) {
             case LEKTIONSLAENGE -> Integer.class;
             case BETRAG_1_KIND,
-                    BETRAG_2_KINDER,
-                    BETRAG_3_KINDER,
-                    BETRAG_4_KINDER,
-                    BETRAG_5_KINDER,
-                    BETRAG_6_KINDER -> BigDecimal.class;
+                 BETRAG_2_KINDER,
+                 BETRAG_3_KINDER,
+                 BETRAG_4_KINDER,
+                 BETRAG_5_KINDER,
+                 BETRAG_6_KINDER -> BigDecimal.class;
             default -> String.class;
         };
     }

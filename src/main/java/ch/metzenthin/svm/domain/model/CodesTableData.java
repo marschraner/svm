@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.persistence.entities.Code;
 
 import java.util.ArrayList;
@@ -43,8 +43,12 @@ public class CodesTableData {
         switch (columns.get(columnIndex)) {
             case KUERZEL -> value = code.getKuerzel();
             case BESCHREIBUNG -> value = code.getBeschreibung();
-            case SELEKTIERBAR -> value = (code.getSelektierbar() ? "ja" : "nein");
+            case SELEKTIERBAR -> value =
+                    (code.getSelektierbar() != null && code.getSelektierbar())
+                            ? "ja"
+                            : "nein";
             default -> {
+                // Nothing to do
             }
         }
         return value;

@@ -1,9 +1,9 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Elternmithilfe;
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
-import ch.metzenthin.svm.common.dataTypes.Gruppe;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Gruppe;
 import ch.metzenthin.svm.persistence.entities.*;
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 public class CheckElternmithilfeBereitsBeiGeschwisterErfasstCommandTest {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
 
         // Geschwister 1, Märchen, ElternmithilfeCode erzeugen
         Schueler geschwister1 = new Schueler("Jana", "Rösle", new GregorianCalendar(2012, Calendar.JULY, 24), "044 491 69 33", null, null, Geschlecht.W, "Schwester von Valentin");

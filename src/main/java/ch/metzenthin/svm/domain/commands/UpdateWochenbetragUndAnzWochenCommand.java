@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Rechnungstyp;
+import ch.metzenthin.svm.common.datatypes.Rechnungstyp;
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungDao;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -28,6 +28,7 @@ public class UpdateWochenbetragUndAnzWochenCommand implements Command {
         this.currentSemester = currentSemester;
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void execute() {
 

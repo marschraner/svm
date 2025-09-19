@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Wochentag;
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.model.KursanmeldungErfassenModel;
 import ch.metzenthin.svm.domain.model.KursanmeldungenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
@@ -16,6 +16,7 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.util.Locale;
 
+@SuppressWarnings({"java:S100", "java:S1450"})
 public class KursanmeldungErfassenDialog extends JDialog {
 
     // Schalter zur Aktivierung des Default-Button (nicht dynamisch)

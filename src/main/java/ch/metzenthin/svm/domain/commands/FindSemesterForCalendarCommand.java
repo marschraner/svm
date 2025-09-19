@@ -36,6 +36,7 @@ public class FindSemesterForCalendarCommand implements Command {
         this.erfassteSemester = erfassteSemester;
     }
 
+    @SuppressWarnings("java:S3776")
     @Override
     public void execute() {
         if (erfassteSemester.isEmpty()) {

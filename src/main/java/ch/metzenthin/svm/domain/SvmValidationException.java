@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -20,10 +20,6 @@ public class SvmValidationException extends SvmException {
 
     public Set<Field> getAffectedFields() {
         return affectedFields;
-    }
-
-    public String getMessage() {
-        return super.getMessage();
     }
 
     public String getMessageLong() {

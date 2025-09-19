@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -8,6 +8,7 @@ import java.util.*;
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S2160")  // equals / hash definiert für Person
 @Entity
 @Table(name = "Angehoeriger")
 @DiscriminatorValue("Angehoeriger")
@@ -17,16 +18,16 @@ public class Angehoeriger extends Person {
     private Boolean wuenschtEmails;
 
     @OneToMany(mappedBy = "vater")
-    private final Set<Schueler> kinderVater = new HashSet<>();
+    private final List<Schueler> kinderVater = new ArrayList<>();
 
     @OneToMany(mappedBy = "mutter")
-    private final Set<Schueler> kinderMutter = new HashSet<>();
+    private final List<Schueler> kinderMutter = new ArrayList<>();
 
     @OneToMany(mappedBy = "rechnungsempfaenger")
-    private final Set<Schueler> schuelerRechnungsempfaenger = new HashSet<>();
+    private final List<Schueler> schuelerRechnungsempfaenger = new ArrayList<>();
 
     @OneToMany(mappedBy = "rechnungsempfaenger")
-    private final Set<Semesterrechnung> semesterrechnungen = new HashSet<>();
+    private final List<Semesterrechnung> semesterrechnungen = new ArrayList<>();
 
     public Angehoeriger() {
     }
@@ -42,10 +43,6 @@ public class Angehoeriger extends Person {
 
     public boolean isPartOf(Angehoeriger otherAngehoeriger) {
         return (super.isPartOf(otherAngehoeriger));
-    }
-
-    public boolean isEmpty() {
-        return super.isEmpty();
     }
 
     public void copyFieldValuesFrom(Angehoeriger angehoerigerFrom) {
@@ -82,38 +79,39 @@ public class Angehoeriger extends Person {
         this.wuenschtEmails = wuenschtEmails;
     }
 
-    public Set<Schueler> getKinderVater() {
+    public List<Schueler> getKinderVater() {
         return kinderVater;
     }
 
-    public Set<Schueler> getKinderMutter() {
+    public List<Schueler> getKinderMutter() {
         return kinderMutter;
     }
 
-    public Set<Schueler> getSchuelerRechnungsempfaenger() {
+    public List<Schueler> getSchuelerRechnungsempfaenger() {
         return schuelerRechnungsempfaenger;
     }
 
     @Transient
-    public List<Schueler> getAngemeldeteSchuelerRechnungsempfaengerAsList() {
-        List<Schueler> angemeldeteSchuelerRechnungsempfaengerAsList = new ArrayList<>();
+    public List<Schueler> getAngemeldeteSchuelerRechnungsempfaenger() {
+        List<Schueler> angemeldeteSchuelerRechnungsempfaenger = new ArrayList<>();
         for (Schueler schueler : schuelerRechnungsempfaenger) {
-            if (schueler.isAngemeldet()) {
-                angemeldeteSchuelerRechnungsempfaengerAsList.add(schueler);
+            if (schueler.isAngemeldet()
+                    && !angemeldeteSchuelerRechnungsempfaenger.contains(schueler)) {
+                angemeldeteSchuelerRechnungsempfaenger.add(schueler);
             }
         }
-        Collections.sort(angemeldeteSchuelerRechnungsempfaengerAsList);
-        return angemeldeteSchuelerRechnungsempfaengerAsList;
+        Collections.sort(angemeldeteSchuelerRechnungsempfaenger);
+        return angemeldeteSchuelerRechnungsempfaenger;
     }
 
-    public Set<Semesterrechnung> getSemesterrechnungen() {
+    public List<Semesterrechnung> getSemesterrechnungen() {
         return semesterrechnungen;
     }
 
     @Transient
-    public List<Semesterrechnung> getSemesterrechnungenAsList() {
-        List<Semesterrechnung> semesterrechnungenAsList = new ArrayList<>(semesterrechnungen);
-        Collections.sort(semesterrechnungenAsList);
-        return semesterrechnungenAsList;
+    public List<Semesterrechnung> getSortedSemesterrechnungen() {
+        List<Semesterrechnung> sortedSemesterrechnungen = new ArrayList<>(semesterrechnungen);
+        Collections.sort(sortedSemesterrechnungen);
+        return sortedSemesterrechnungen;
     }
 }

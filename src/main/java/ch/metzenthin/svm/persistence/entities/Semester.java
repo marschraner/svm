@@ -1,12 +1,10 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import ch.metzenthin.svm.common.dataTypes.Semesterbezeichnung;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNumberOfWeeksBetween;
 
@@ -59,14 +57,15 @@ public class Semester implements Comparable<Semester> {
     private Calendar ferienende2;
 
     @OneToMany(mappedBy = "semester")
-    private final Set<Kurs> kurse = new HashSet<>();
+    private final List<Kurs> kurse = new ArrayList<>();
 
     @OneToMany(mappedBy = "semester", cascade = CascadeType.REMOVE)
-    private final Set<Semesterrechnung> semesterrechnungen = new HashSet<>();
+    private final List<Semesterrechnung> semesterrechnungen = new ArrayList<>();
 
     public Semester() {
     }
 
+    @SuppressWarnings("java:S107")
     public Semester(String schuljahr, Semesterbezeichnung semesterbezeichnung, Calendar semesterbeginn, Calendar semesterende, Calendar ferienbeginn1, Calendar ferienende1, Calendar ferienbeginn2, Calendar ferienende2) {
         this.schuljahr = schuljahr;
         this.semesterbezeichnung = semesterbezeichnung;
@@ -98,8 +97,17 @@ public class Semester implements Comparable<Semester> {
     }
 
     @Override
-    public String toString() {
-        return schuljahr + ", " + semesterbezeichnung;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Semester semester = (Semester) o;
+        return Objects.equals(schuljahr, semester.schuljahr)
+                && semesterbezeichnung == semester.semesterbezeichnung;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(schuljahr, semesterbezeichnung);
     }
 
     @Override
@@ -116,6 +124,11 @@ public class Semester implements Comparable<Semester> {
             }
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return schuljahr + ", " + semesterbezeichnung;
     }
 
     @Transient
@@ -210,11 +223,11 @@ public class Semester implements Comparable<Semester> {
         return anzahlSchulwochen - anzFerienWochen;
     }
 
-    public Set<Kurs> getKurse() {
+    public List<Kurs> getKurse() {
         return kurse;
     }
 
-    public Set<Semesterrechnung> getSemesterrechnungen() {
+    public List<Semesterrechnung> getSemesterrechnungen() {
         return semesterrechnungen;
     }
 

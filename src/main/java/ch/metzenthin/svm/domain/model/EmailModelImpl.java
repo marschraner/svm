@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.EmailEmpfaenger;
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.EmailEmpfaenger;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
@@ -88,15 +88,12 @@ public class EmailModelImpl extends AbstractModel implements EmailModel {
     }
 
     @Override
-    public void initializeCompleted() {
-    }
-
-    @Override
     public boolean isCompleted() {
         return true;
     }
 
     @Override
     void doValidate() throws SvmValidationException {
+        // Keine feldübergreifende Validierung notwendig
     }
 }

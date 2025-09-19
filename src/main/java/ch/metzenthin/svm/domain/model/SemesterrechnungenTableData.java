@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.utils.SvmListUtils;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -78,7 +78,7 @@ public class SemesterrechnungenTableData {
         return anzSelektiert;
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @SuppressWarnings({"DuplicatedCode", "java:S3776"})
     public Object getValueAt(int rowIndex, int columnIndex) {
         Semesterrechnung semesterrechnung = semesterrechnungen.get(rowIndex);
         Object value = null;
@@ -157,6 +157,7 @@ public class SemesterrechnungenTableData {
             case RESTBETRAG_NACHRECHNUNG -> value = semesterrechnung.getRestbetragNachrechnung();
             case DIFFERENZ_SCHULGELD -> value = semesterrechnung.getDifferenzSchulgeld();
             default -> {
+                // Nothing to do
             }
         }
         return value;
@@ -179,22 +180,22 @@ public class SemesterrechnungenTableData {
         return switch (columns.get(columnIndex)) {
             case SELEKTIERT -> Boolean.class;
             case RECHNUNGSDATUM_VORRECHNUNG,
-                    RECHNUNGSDATUM_NACHRECHNUNG -> Calendar.class;
+                 RECHNUNGSDATUM_NACHRECHNUNG -> Calendar.class;
             case ANZAHL_WOCHEN_VORRECHNUNG,
-                    ANZAHL_WOCHEN_NACHRECHNUNG -> Integer.class;
+                 ANZAHL_WOCHEN_NACHRECHNUNG -> Integer.class;
             case WOCHENBETRAG_VORRECHNUNG,
-                    ERMAESSIGUNG_VORRECHNUNG,
-                    ZUSCHLAG_VORRECHNUNG,
-                    ERMAESSIGUNG_STIPENDIUM_VORRECHNUNG,
-                    RECHNUNGSBETRAG_VORRECHNUNG,
-                    RESTBETRAG_VORRECHNUNG,
-                    WOCHENBETRAG_NACHRECHNUNG,
-                    ERMAESSIGUNG_NACHRECHNUNG,
-                    ZUSCHLAG_NACHRECHNUNG,
-                    ERMAESSIGUNG_STIPENDIUM_NACHRECHNUNG,
-                    RECHNUNGSBETRAG_NACHRECHNUNG,
-                    RESTBETRAG_NACHRECHNUNG,
-                    DIFFERENZ_SCHULGELD -> BigDecimal.class;
+                 ERMAESSIGUNG_VORRECHNUNG,
+                 ZUSCHLAG_VORRECHNUNG,
+                 ERMAESSIGUNG_STIPENDIUM_VORRECHNUNG,
+                 RECHNUNGSBETRAG_VORRECHNUNG,
+                 RESTBETRAG_VORRECHNUNG,
+                 WOCHENBETRAG_NACHRECHNUNG,
+                 ERMAESSIGUNG_NACHRECHNUNG,
+                 ZUSCHLAG_NACHRECHNUNG,
+                 ERMAESSIGUNG_STIPENDIUM_NACHRECHNUNG,
+                 RECHNUNGSBETRAG_NACHRECHNUNG,
+                 RESTBETRAG_NACHRECHNUNG,
+                 DIFFERENZ_SCHULGELD -> BigDecimal.class;
             default -> String.class;
         };
     }

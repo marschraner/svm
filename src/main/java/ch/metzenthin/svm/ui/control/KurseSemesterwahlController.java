@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
 import ch.metzenthin.svm.domain.model.KurseTableData;
@@ -166,22 +166,27 @@ public class KurseSemesterwahlController extends AbstractController {
 
     @Override
     void validateFields() throws SvmValidationException {
+        // Keine zu validierenden Felder
     }
 
     @Override
     void showErrMsg(SvmValidationException e) {
+        // Keine Fehlermeldungen
     }
 
     @Override
     void showErrMsgAsToolTip(SvmValidationException e) {
+        // Keine Fehlermeldungen
     }
 
     @Override
     public void makeErrorLabelsInvisible(Set<Field> fields) {
+        // Keine Fehlermeldungen
     }
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
+        // Keine zu deaktivierenden Felder
     }
 
 }

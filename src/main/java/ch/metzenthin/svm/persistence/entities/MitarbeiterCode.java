@@ -5,19 +5,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S2160")  // equals / hash definiert für Code
 @Entity
 @Table(name = "MitarbeiterCode")
 @DiscriminatorValue("Mitarbeiter")
 public class MitarbeiterCode extends Code {
 
     @ManyToMany(mappedBy = "mitarbeiterCodes")
-    private final Set<Mitarbeiter> mitarbeiters = new HashSet<>();
+    private final List<Mitarbeiter> mitarbeiters = new ArrayList<>();
 
     public MitarbeiterCode() {
     }
@@ -26,7 +27,7 @@ public class MitarbeiterCode extends Code {
         super(kuerzel, beschreibung, selektierbar);
     }
 
-    public Set<Mitarbeiter> getMitarbeiters() {
+    public List<Mitarbeiter> getMitarbeiters() {
         return mitarbeiters;
     }
 

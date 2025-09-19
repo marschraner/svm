@@ -13,10 +13,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Locale;
 
+@SuppressWarnings({"java:S100", "java:S1171"})
 public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog extends SchuelerErfassenDialog {
 
-    private final AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult;
-    private final SchuelerErfassenModel schuelerErfassenModel;
+    private final transient AngehoerigerMehrereEintraegeGleicherNameAndereAttributeResult angehoerigerMehrereEintraegeGleicherNameAndereAttributeResult;
+    private final transient SchuelerErfassenModel schuelerErfassenModel;
     private JPanel contentPane;
     private JButton buttonNeuErfasstenEintragVerwenden;
     private JButton buttonKorrigieren;
@@ -45,6 +46,7 @@ public class AngehoerigerMehrereEintraegeGleicherNameAndereAttributeDialog exten
         // call onKorrigieren() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 onKorrigieren();
             }

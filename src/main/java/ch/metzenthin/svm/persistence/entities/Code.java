@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.text.Collator;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * @author Martin Schraner
@@ -34,10 +35,10 @@ public abstract class Code implements Comparable<Code> {
     @Column(name = "selektierbar", nullable = false)
     private Boolean selektierbar;
 
-    public Code() {
+    protected Code() {
     }
 
-    public Code(String kuerzel, String beschreibung, Boolean selektierbar) {
+    protected Code(String kuerzel, String beschreibung, Boolean selektierbar) {
         this.kuerzel = kuerzel;
         this.beschreibung = beschreibung;
         this.selektierbar = selektierbar;
@@ -56,11 +57,17 @@ public abstract class Code implements Comparable<Code> {
     }
 
     @Override
-    public String toString() {
-        if (kuerzel == null || kuerzel.isEmpty()) {
-            return "";
-        }
-        return kuerzel + " (" + beschreibung + ")";
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Code code = (Code) o;
+        return Objects.equals(kuerzel, code.kuerzel)
+                && Objects.equals(beschreibung, code.beschreibung);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(kuerzel, beschreibung);
     }
 
     @Override
@@ -69,6 +76,14 @@ public abstract class Code implements Comparable<Code> {
         Collator collator = Collator.getInstance(Locale.GERMAN);
         collator.setStrength(Collator.SECONDARY);// a == A, a < Ä
         return collator.compare(kuerzel, otherDispensation.kuerzel);
+    }
+
+    @Override
+    public String toString() {
+        if (kuerzel == null || kuerzel.isEmpty()) {
+            return "";
+        }
+        return kuerzel + " (" + beschreibung + ")";
     }
 
     public Integer getCodeId() {

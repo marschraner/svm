@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.dataTypes.Codetyp;
-import ch.metzenthin.svm.common.dataTypes.Field;
+import ch.metzenthin.svm.common.datatypes.Codetyp;
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CodeSpecificHinzufuegenModel;
@@ -63,6 +63,7 @@ public class CodeSpecificHinzufuegenController extends AbstractController {
         this.codeSpecificHinzufuegenDialog = codeSpecificHinzufuegenDialog;
         codeSpecificHinzufuegenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         codeSpecificHinzufuegenDialog.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 onAbbrechen();
             }
@@ -83,6 +84,7 @@ public class CodeSpecificHinzufuegenController extends AbstractController {
             case MITARBEITER ->
                     selectableCodes = codesModel.getSelectableMitarbeiterCodes(svmContext.getSvmModel(), mitarbeiterErfassenModel);
             default -> {
+                // Nothing to do
             }
         }
         comboBoxCode.setModel(new DefaultComboBoxModel<>(selectableCodes));
@@ -132,6 +134,7 @@ public class CodeSpecificHinzufuegenController extends AbstractController {
                 case SCHUELER -> onSchuelerCodeHinzufuegen();
                 case MITARBEITER -> onMitarbeiterCodeHinzufuegen();
                 default -> {
+                    // Nothing to do
                 }
             }
         });
@@ -203,6 +206,7 @@ public class CodeSpecificHinzufuegenController extends AbstractController {
 
     @Override
     public void disableFields(boolean disable, Set<Field> fields) {
+        // Keine zu deaktivierenden Felder
     }
 
 }

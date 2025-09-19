@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.text.Collator;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Martin Schraner
@@ -32,7 +30,7 @@ public class Kurstyp implements Comparable<Kurstyp> {
     private Boolean selektierbar;
 
     @OneToMany(mappedBy = "kurstyp")
-    private final Set<Kurs> kurse = new HashSet<>();
+    private final List<Kurs> kurse = new ArrayList<>();
 
     public Kurstyp() {
     }
@@ -53,11 +51,16 @@ public class Kurstyp implements Comparable<Kurstyp> {
     }
 
     @Override
-    public String toString() {
-        if (bezeichnung.equals("alle")) {
-            return "alle";
-        }
-        return bezeichnung;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Kurstyp kurstyp = (Kurstyp) o;
+        return Objects.equals(bezeichnung, kurstyp.bezeichnung);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(bezeichnung);
     }
 
     @Override
@@ -66,6 +69,14 @@ public class Kurstyp implements Comparable<Kurstyp> {
         Collator collator = Collator.getInstance(Locale.GERMAN);
         collator.setStrength(Collator.SECONDARY);// a == A, a < Ä
         return collator.compare(bezeichnung, otherKurstyp.bezeichnung);
+    }
+
+    @Override
+    public String toString() {
+        if (bezeichnung.equals("alle")) {
+            return "alle";
+        }
+        return bezeichnung;
     }
 
     public Integer getKurstypId() {
@@ -93,7 +104,7 @@ public class Kurstyp implements Comparable<Kurstyp> {
         this.selektierbar = selektierbar;
     }
 
-    public Set<Kurs> getKurse() {
+    public List<Kurs> getKurse() {
         return kurse;
     }
 }

@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence.daos;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
-import ch.metzenthin.svm.common.dataTypes.Geschlecht;
+import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Geschlecht;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -32,13 +32,13 @@ public class SchuelerCodeDaoTest {
     private DB db;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         db.closeSession();
     }
 
@@ -169,8 +169,8 @@ public class SchuelerCodeDaoTest {
             entityManager.refresh(schuelerFound);
             assertEquals(2, schuelerFound.getSchuelerCodes().size());
             // Alphabetisch geordnet?
-            assertEquals("r6", schuelerFound.getSchuelerCodesAsList().get(0).getKuerzel());
-            assertEquals("z", schuelerFound.getSchuelerCodesAsList().get(1).getKuerzel());
+            assertEquals("r6", schuelerFound.getSortedSchuelerCodes().get(0).getKuerzel());
+            assertEquals("z", schuelerFound.getSortedSchuelerCodes().get(1).getKuerzel());
 
             // SchuelerCode prüfen
             SchuelerCode schuelerCode1Found = schuelerCodeDao.findById(schuelerCode1.getCodeId());
@@ -217,8 +217,8 @@ public class SchuelerCodeDaoTest {
             Schueler schuelerFound = schuelerDao.findById(schuelerSaved.getPersonId());
             entityManager.refresh(schuelerFound);
             assertEquals(2, schuelerFound.getSchuelerCodes().size());
-            assertEquals("r6", schuelerFound.getSchuelerCodesAsList().get(0).getKuerzel());
-            assertEquals("z", schuelerFound.getSchuelerCodesAsList().get(1).getKuerzel());
+            assertEquals("r6", schuelerFound.getSortedSchuelerCodes().get(0).getKuerzel());
+            assertEquals("z", schuelerFound.getSortedSchuelerCodes().get(1).getKuerzel());
 
             // Codes prüfen
             SchuelerCode schuelerCode1Found = schuelerCodeDao.findById(schuelerCode1.getCodeId());
@@ -235,7 +235,7 @@ public class SchuelerCodeDaoTest {
             schuelerFound = schuelerDao.findById(schuelerUpdated.getPersonId());
             entityManager.refresh(schuelerFound);
             assertEquals(1, schuelerFound.getSchuelerCodes().size());
-            assertEquals("r6", schuelerFound.getSchuelerCodesAsList().get(0).getKuerzel());
+            assertEquals("r6", schuelerFound.getSortedSchuelerCodes().get(0).getKuerzel());
 
             assertEquals(0, schuelerCode1Found.getSchueler().size());
             assertEquals(1, schuelerCode2Found.getSchueler().size());

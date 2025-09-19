@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import ch.metzenthin.svm.common.dataTypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.daos.AngehoerigerDao;
@@ -31,7 +31,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
     private Angehoeriger angehoerigerTestdata2;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createSvmPropertiesFileDefault();
         db = DBFactory.getInstance();
         commandInvoker = new CommandInvokerImpl();
@@ -39,7 +39,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         deleteTestdata();
         db.closeSession();
     }
