@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.persistence.entities.*;
-
 import java.util.List;
 
 /**
@@ -9,37 +8,37 @@ import java.util.List;
  */
 public interface SvmModel {
 
-    List<SchuelerCode> getSchuelerCodesAll();
+  List<SchuelerCode> getSchuelerCodesAll();
 
-    List<SchuelerCode> getSelektierbareSchuelerCodesAll();
+  List<SchuelerCode> getSelektierbareSchuelerCodesAll();
 
-    List<MitarbeiterCode> getMitarbeiterCodesAll();
+  List<MitarbeiterCode> getMitarbeiterCodesAll();
 
-    List<MitarbeiterCode> getSelektierbareMitarbeiterCodesAll();
+  List<MitarbeiterCode> getSelektierbareMitarbeiterCodesAll();
 
-    List<ElternmithilfeCode> getElternmithilfeCodesAll();
+  List<ElternmithilfeCode> getElternmithilfeCodesAll();
 
-    List<ElternmithilfeCode> getSelektierbareElternmithilfeCodesAll();
+  List<ElternmithilfeCode> getSelektierbareElternmithilfeCodesAll();
 
-    List<SemesterrechnungCode> getSemesterrechnungCodesAll();
+  List<SemesterrechnungCode> getSemesterrechnungCodesAll();
 
-    List<SemesterrechnungCode> getSelektierbareSemesterrechnungCodesAll();
+  List<SemesterrechnungCode> getSelektierbareSemesterrechnungCodesAll();
 
-    List<Mitarbeiter> getMitarbeitersAll();
+  List<Mitarbeiter> getMitarbeitersAll();
 
-    List<Mitarbeiter> getAktiveLehrkraefteAll();
+  List<Mitarbeiter> getAktiveLehrkraefteAll();
 
-    List<Kursort> getKursorteAll();
+  List<Kursort> getKursorteAll();
 
-    List<Kursort> getSelektierbareKursorteAll();
+  List<Kursort> getSelektierbareKursorteAll();
 
-    List<Kurstyp> getKurstypenAll();
+  List<Kurstyp> getKurstypenAll();
 
-    List<Kurstyp> getSelektierbareKurstypenAll();
+  List<Kurstyp> getSelektierbareKurstypenAll();
 
-    List<Semester> getSemestersAll();
+  List<Semester> getSemestersAll();
 
-    List<Maerchen> getMaerchensAll();
+  List<Maerchen> getMaerchensAll();
 
-    List<Lektionsgebuehren> getLektionsgebuehrenAllList();
+  List<Lektionsgebuehren> getLektionsgebuehrenAllList();
 }

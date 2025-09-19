@@ -14,50 +14,57 @@ import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 /**
  * @author Martin Schraner
  */
-public class CodeSpecificHinzufuegenModelImpl extends AbstractModel implements CodeSpecificHinzufuegenModel {
+public class CodeSpecificHinzufuegenModelImpl extends AbstractModel
+    implements CodeSpecificHinzufuegenModel {
 
-    private Code code;
+  private Code code;
 
-    @Override
-    public Code getCode() {
-        return code;
+  @Override
+  public Code getCode() {
+    return code;
+  }
+
+  @Override
+  public void setCode(Code code) throws SvmRequiredException {
+    this.code = code;
+    if (code == null) {
+      invalidate();
+      throw new SvmRequiredException(Field.CODE);
     }
+  }
 
-    @Override
-    public void setCode(Code code) throws SvmRequiredException {
-        this.code = code;
-        if (code == null) {
-            invalidate();
-            throw new SvmRequiredException(Field.CODE);
-        }
+  @Override
+  public void schuelerCodeHinzufuegen(
+      CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
+    AddSchuelerCodeToSchuelerAndSaveCommand addSchuelerCodeToSchuelerAndSaveCommand =
+        new AddSchuelerCodeToSchuelerAndSaveCommand(
+            (SchuelerCode) code, schuelerDatenblattModel.getSchueler());
+    CommandInvoker commandInvoker = getCommandInvoker();
+    commandInvoker.executeCommandAsTransaction(addSchuelerCodeToSchuelerAndSaveCommand);
+    Schueler schuelerUpdated = addSchuelerCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
+    // TableData mit von der Datenbank upgedatetem Schüler updaten
+    if (schuelerUpdated != null) {
+      codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getSortedSchuelerCodes());
     }
+  }
 
-    @Override
-    public void schuelerCodeHinzufuegen(CodesTableModel codesTableModel, SchuelerDatenblattModel schuelerDatenblattModel) {
-        AddSchuelerCodeToSchuelerAndSaveCommand addSchuelerCodeToSchuelerAndSaveCommand = new AddSchuelerCodeToSchuelerAndSaveCommand((SchuelerCode) code, schuelerDatenblattModel.getSchueler());
-        CommandInvoker commandInvoker = getCommandInvoker();
-        commandInvoker.executeCommandAsTransaction(addSchuelerCodeToSchuelerAndSaveCommand);
-        Schueler schuelerUpdated = addSchuelerCodeToSchuelerAndSaveCommand.getSchuelerUpdated();
-        // TableData mit von der Datenbank upgedatetem Schüler updaten
-        if (schuelerUpdated != null) {
-            codesTableModel.getCodesTableData().setCodes(schuelerUpdated.getSortedSchuelerCodes());
-        }
-    }
+  @Override
+  public void mitarbeiterCodeHinzufuegen(
+      CodesTableModel codesTableModel, MitarbeiterErfassenModel mitarbeiterErfassenModel) {
+    mitarbeiterErfassenModel.getMitarbeiterCodes().add((MitarbeiterCode) code);
+    // TableData updaten
+    codesTableModel
+        .getCodesTableData()
+        .setCodes(mitarbeiterErfassenModel.getMitarbeiterCodesAsList());
+  }
 
-    @Override
-    public void mitarbeiterCodeHinzufuegen(CodesTableModel codesTableModel, MitarbeiterErfassenModel mitarbeiterErfassenModel) {
-        mitarbeiterErfassenModel.getMitarbeiterCodes().add((MitarbeiterCode) code);
-        // TableData updaten
-        codesTableModel.getCodesTableData().setCodes(mitarbeiterErfassenModel.getMitarbeiterCodesAsList());
-    }
+  @Override
+  void doValidate() throws SvmValidationException {
+    // Keine feldübergreifende Validierung notwendig
+  }
 
-    @Override
-    void doValidate() throws SvmValidationException {
-        // Keine feldübergreifende Validierung notwendig
-    }
-
-    @Override
-    public boolean isCompleted() {
-        return true;
-    }
+  @Override
+  public boolean isCompleted() {
+    return true;
+  }
 }

@@ -5,15 +5,14 @@ package ch.metzenthin.svm.domain;
  */
 public class SvmException extends Exception {
 
-    private final int errorId;
+  private final int errorId;
 
-    public SvmException(int errorId, String errorMsg) {
-        super(errorMsg);
-        this.errorId = errorId;
-    }
+  public SvmException(int errorId, String errorMsg) {
+    super(errorMsg);
+    this.errorId = errorId;
+  }
 
-    public int getErrorId() {
-        return errorId;
-    }
-
+  public int getErrorId() {
+    return errorId;
+  }
 }
