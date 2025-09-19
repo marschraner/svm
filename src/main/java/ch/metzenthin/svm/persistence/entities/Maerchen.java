@@ -3,9 +3,7 @@ package ch.metzenthin.svm.persistence.entities;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Martin Schraner
@@ -34,7 +32,7 @@ public class Maerchen implements Comparable<Maerchen> {
     private Integer anzahlVorstellungen;
 
     @OneToMany(mappedBy = "maerchen")
-    private final Set<Maercheneinteilung> maercheneinteilungen = new HashSet<>();
+    private final List<Maercheneinteilung> maercheneinteilungen = new ArrayList<>();
 
     public Maerchen() {
     }
@@ -116,7 +114,7 @@ public class Maerchen implements Comparable<Maerchen> {
         this.anzahlVorstellungen = anzahlVorstellungen;
     }
 
-    public Set<Maercheneinteilung> getMaercheneinteilungen() {
+    public List<Maercheneinteilung> getMaercheneinteilungen() {
         return maercheneinteilungen;
     }
 }

@@ -291,7 +291,8 @@ public class Maercheneinteilung implements Comparable<Maercheneinteilung> {
         if (this.elternmithilfeCode != null) {
             deleteElternmithilfeCode(this.elternmithilfeCode);
         }
-        if (elternmithilfeCode != null) {
+        if (elternmithilfeCode != null
+                && !elternmithilfeCode.getMaercheneinteilungen().contains(this)) {
             elternmithilfeCode.getMaercheneinteilungen().add(this);
         }
         this.elternmithilfeCode = elternmithilfeCode;

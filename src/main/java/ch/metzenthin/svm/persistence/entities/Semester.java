@@ -4,10 +4,7 @@ import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNumberOfWeeksBetween;
 
@@ -60,10 +57,10 @@ public class Semester implements Comparable<Semester> {
     private Calendar ferienende2;
 
     @OneToMany(mappedBy = "semester")
-    private final Set<Kurs> kurse = new HashSet<>();
+    private final List<Kurs> kurse = new ArrayList<>();
 
     @OneToMany(mappedBy = "semester", cascade = CascadeType.REMOVE)
-    private final Set<Semesterrechnung> semesterrechnungen = new HashSet<>();
+    private final List<Semesterrechnung> semesterrechnungen = new ArrayList<>();
 
     public Semester() {
     }
@@ -226,11 +223,11 @@ public class Semester implements Comparable<Semester> {
         return anzahlSchulwochen - anzFerienWochen;
     }
 
-    public Set<Kurs> getKurse() {
+    public List<Kurs> getKurse() {
         return kurse;
     }
 
-    public Set<Semesterrechnung> getSemesterrechnungen() {
+    public List<Semesterrechnung> getSemesterrechnungen() {
         return semesterrechnungen;
     }
 

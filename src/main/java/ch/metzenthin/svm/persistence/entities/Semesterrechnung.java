@@ -238,9 +238,9 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     public int compareTo(Semesterrechnung otherSemesterrechnung) {
         // aufsteigend nach Rechnungsempfänger-Schülern und absteigend nach Semester sortieren
         // Im Falle von Rechnungsempfängerwechseln kann ein Rechnungsempfänger keine Schüler haben
-        List<Schueler> angemeldeteSchuelerRechnungsempfaenger = this.rechnungsempfaenger.getAngemeldeteSchuelerRechnungsempfaengerAsList();
+        List<Schueler> angemeldeteSchuelerRechnungsempfaenger = this.rechnungsempfaenger.getAngemeldeteSchuelerRechnungsempfaenger();
         Person person = (angemeldeteSchuelerRechnungsempfaenger.isEmpty() ? this.rechnungsempfaenger : angemeldeteSchuelerRechnungsempfaenger.get(0));
-        List<Schueler> angemeldeteSchuelerOtherRechnungsempfaenger = otherSemesterrechnung.rechnungsempfaenger.getAngemeldeteSchuelerRechnungsempfaengerAsList();
+        List<Schueler> angemeldeteSchuelerOtherRechnungsempfaenger = otherSemesterrechnung.rechnungsempfaenger.getAngemeldeteSchuelerRechnungsempfaenger();
         Person otherPerson = angemeldeteSchuelerOtherRechnungsempfaenger.isEmpty() ? otherSemesterrechnung.rechnungsempfaenger : angemeldeteSchuelerOtherRechnungsempfaenger.get(0);
         int result = person.compareTo(otherPerson);
         if (result == 0) {
@@ -497,7 +497,8 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         if (this.semesterrechnungCode != null) {
             deleteSemesterrechnungCode(this.semesterrechnungCode);
         }
-        if (semesterrechnungCode != null) {
+        if (semesterrechnungCode != null
+                && !semesterrechnungCode.getSemesterrechnungen().contains(this)) {
             semesterrechnungCode.getSemesterrechnungen().add(this);
         }
         this.semesterrechnungCode = semesterrechnungCode;
@@ -713,7 +714,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
         List<Schueler> aktiveSchueler = new ArrayList<>();
         for (Schueler schueler : schuelersRechnungsempfaenger) {
             boolean aktiverSchueler = false;
-            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getSortedKursanmeldungen()) {
                 Kurs kurs = kursanmeldung.getKurs();
                 // 1. Anmeldung für aktuelles Semester
                 if (kurs.getSemester().getSemesterId().equals(semester.getSemesterId())

@@ -54,7 +54,7 @@ public class SemesterrechnungenModelImpl extends AbstractModel implements Semest
         // aktuelles Semester
         Semester currentSemester = semesterrechnung.getSemester();
         for (Schueler schueler : schuelersRechnungsempfaenger) {
-            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getSortedKursanmeldungen()) {
                 Kurs kurs = kursanmeldung.getKurs();
                 if (!kurs.getSemester().getSemesterId().equals(currentSemester.getSemesterId())) {
                     // Nicht passendes Semester
@@ -69,7 +69,7 @@ public class SemesterrechnungenModelImpl extends AbstractModel implements Semest
         Semester previousSemester = findPreviousSemesterCommand.getPreviousSemester();
         if (previousSemester != null) {
             for (Schueler schueler : schuelersRechnungsempfaenger) {
-                for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+                for (Kursanmeldung kursanmeldung : schueler.getSortedKursanmeldungen()) {
                     Kurs kurs = kursanmeldung.getKurs();
                     if (!kurs.getSemester().getSemesterId().equals(previousSemester.getSemesterId()) || kursanmeldung.getAbmeldedatum() != null) {
                         // Nicht passendes Semester oder abgemeldet

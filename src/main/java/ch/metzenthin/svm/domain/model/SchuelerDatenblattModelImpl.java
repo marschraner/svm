@@ -28,7 +28,8 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     public SchuelerDatenblattModelImpl(Schueler schueler) {
         this.schueler = schueler;
-        this.aktuelleMaercheneinteilung = determineAktuelleMaercheneinteilung(schueler.getMaercheneinteilungenAsList());
+        this.aktuelleMaercheneinteilung = determineAktuelleMaercheneinteilung(
+                schueler.getSortedMaercheneinteilungen());
         Properties svmProperties = SvmProperties.getSvmProperties();
         neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
     }
@@ -307,7 +308,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     public String getSchuelerCodesAsString() {
         if (!schueler.getSchuelerCodes().isEmpty()) {
             StringBuilder codesSb = new StringBuilder("<html>");
-            for (SchuelerCode schuelerCode : schueler.getSchuelerCodesAsList()) {
+            for (SchuelerCode schuelerCode : schueler.getSortedSchuelerCodes()) {
                 if (codesSb.length() > 6) {
                     codesSb.append("<br>");
                 }
@@ -334,7 +335,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
             String previousSchuljahr = null;
             Semesterbezeichnung previousSemesterbezeichnung = null;
             boolean gleichesSemester = false;
-            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getSortedKursanmeldungen()) {
                 Kurs kurs = kursanmeldung.getKurs();
                 if (!isKursToBeDisplayed(kurs, previousSemester, currentSemester, nextSemester)) {
                     continue;
@@ -377,7 +378,7 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
             String previousSchuljahr = null;
             Semesterbezeichnung previousSemesterbezeichnung = null;
             StringBuilder kurseSb = new StringBuilder("<html>");
-            for (Kursanmeldung kursanmeldung : schueler.getKursanmeldungenAsList()) {
+            for (Kursanmeldung kursanmeldung : schueler.getSortedKursanmeldungen()) {
                 Kurs kurs = kursanmeldung.getKurs();
                 if (!isKursToBeDisplayed(kurs, previousSemester, currentSemester, nextSemester)) {
                     continue;
@@ -548,12 +549,12 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
     @Override
     public KursanmeldungenTableData getKurseinteilungenTableData() {
-        return new KursanmeldungenTableData(schueler.getKursanmeldungenAsList());
+        return new KursanmeldungenTableData(schueler.getSortedKursanmeldungen());
     }
 
     @Override
     public MaercheneinteilungenTableData getMaercheneinteilungenTableData() {
-        return new MaercheneinteilungenTableData(schueler.getMaercheneinteilungenAsList());
+        return new MaercheneinteilungenTableData(schueler.getSortedMaercheneinteilungen());
     }
 
     private boolean isDispensationAktuell(Dispensation dispensation) {

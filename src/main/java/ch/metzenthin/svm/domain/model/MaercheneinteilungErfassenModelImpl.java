@@ -535,10 +535,17 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl impleme
             elternmithilfeAdresseToBeSaved = null;
         }
         CommandInvoker commandInvoker = getCommandInvoker();
-        SaveOrUpdateMaercheneinteilungCommand saveOrUpdateMaercheneinteilungCommand = new SaveOrUpdateMaercheneinteilungCommand(maercheneinteilung, elternmithilfeCodeToBeSaved, elternmithilfeDrittpersonToBeSaved, elternmithilfeAdresseToBeSaved, maercheneinteilungOrigin, schuelerDatenblattModel.getSchueler().getMaercheneinteilungenAsList());
+        SaveOrUpdateMaercheneinteilungCommand saveOrUpdateMaercheneinteilungCommand
+                = new SaveOrUpdateMaercheneinteilungCommand(maercheneinteilung,
+                elternmithilfeCodeToBeSaved,
+                elternmithilfeDrittpersonToBeSaved,
+                elternmithilfeAdresseToBeSaved,
+                maercheneinteilungOrigin,
+                schuelerDatenblattModel.getSchueler().getSortedMaercheneinteilungen());
         commandInvoker.executeCommandAsTransaction(saveOrUpdateMaercheneinteilungCommand);
         // TableData mit von der Datenbank upgedateter Maercheneinteilung updaten
-        maercheneinteilungenTableModel.getMaercheneinteilungenTableData().setMaercheneinteilungen(schuelerDatenblattModel.getSchueler().getMaercheneinteilungenAsList());
+        maercheneinteilungenTableModel.getMaercheneinteilungenTableData().setMaercheneinteilungen(
+                schuelerDatenblattModel.getSchueler().getSortedMaercheneinteilungen());
     }
 
     @SuppressWarnings("DuplicatedCode")

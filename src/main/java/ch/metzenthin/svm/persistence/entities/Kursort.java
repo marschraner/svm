@@ -4,10 +4,7 @@ import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.text.Collator;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Martin Schraner
@@ -33,7 +30,7 @@ public class Kursort implements Comparable<Kursort> {
     private Boolean selektierbar;
 
     @OneToMany(mappedBy = "kursort")
-    private final Set<Kurs> kurse = new HashSet<>();
+    private final List<Kurs> kurse = new ArrayList<>();
 
     public Kursort() {
     }
@@ -108,7 +105,7 @@ public class Kursort implements Comparable<Kursort> {
         this.selektierbar = selektierbar;
     }
 
-    public Set<Kurs> getKurse() {
+    public List<Kurs> getKurse() {
         return kurse;
     }
 }

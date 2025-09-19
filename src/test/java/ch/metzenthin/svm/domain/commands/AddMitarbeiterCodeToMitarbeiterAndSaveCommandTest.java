@@ -72,7 +72,7 @@ public class AddMitarbeiterCodeToMitarbeiterAndSaveCommandTest {
         Mitarbeiter mitarbeiterSaved = addMitarbeiterCodeToMitarbeiterAndSaveCommand.getMitarbeiterUpdated();
 
         assertEquals(1, mitarbeiterSaved.getMitarbeiterCodes().size());
-        assertEquals("vt", mitarbeiterSaved.getMitarbeiterCodesAsList().get(0).getKuerzel());
+        assertEquals("vt", mitarbeiterSaved.getSortedMitarbeiterCodes().get(0).getKuerzel());
 
         // Weiteren MitarbeiterCode hinzufügen:
         addMitarbeiterCodeToMitarbeiterAndSaveCommand = new AddMitarbeiterCodeToMitarbeiterAndSaveCommand(mitarbeiterCode2, mitarbeiterSaved);
@@ -81,8 +81,8 @@ public class AddMitarbeiterCodeToMitarbeiterAndSaveCommandTest {
 
         assertEquals(2, mitarbeiterSaved.getMitarbeiterCodes().size());
         // Alphabetisch geordnet?
-        assertEquals("ht", mitarbeiterSaved.getMitarbeiterCodesAsList().get(0).getKuerzel());
-        assertEquals("vt", mitarbeiterSaved.getMitarbeiterCodesAsList().get(1).getKuerzel());
+        assertEquals("ht", mitarbeiterSaved.getSortedMitarbeiterCodes().get(0).getKuerzel());
+        assertEquals("vt", mitarbeiterSaved.getSortedMitarbeiterCodes().get(1).getKuerzel());
 
         // Testdaten löschen
         EntityManager entityManager = db.getCurrentEntityManager();

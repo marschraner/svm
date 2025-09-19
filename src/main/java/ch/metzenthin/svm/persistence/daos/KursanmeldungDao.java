@@ -18,8 +18,12 @@ public class KursanmeldungDao extends GenericDao<Kursanmeldung, KursanmeldungId>
 
     @Override
     public Kursanmeldung save(Kursanmeldung kursanmeldung) {
-        kursanmeldung.getSchueler().getKursanmeldungen().add(kursanmeldung);
-        kursanmeldung.getKurs().getKursanmeldungen().add(kursanmeldung);
+        if (!kursanmeldung.getSchueler().getKursanmeldungen().contains(kursanmeldung)) {
+            kursanmeldung.getSchueler().getKursanmeldungen().add(kursanmeldung);
+        }
+        if (!kursanmeldung.getKurs().getKursanmeldungen().contains(kursanmeldung)) {
+            kursanmeldung.getKurs().getKursanmeldungen().add(kursanmeldung);
+        }
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.persist(kursanmeldung);
         entityManager.flush();

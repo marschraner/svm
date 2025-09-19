@@ -264,7 +264,7 @@ public class SchuelerDaoTest {
             schuelerCodeDao.save(schuelerCode2);
             schuelerCodeDao.addToSchuelerAndSave(schuelerCode2, schueler2);
 
-            Set<SchuelerCode> schuelerCodes = schueler2Saved.getSchuelerCodes();
+            List<SchuelerCode> schuelerCodes = schueler2Saved.getSchuelerCodes();
             assertEquals(2, schuelerCodes.size());
 
             entityManager.flush();

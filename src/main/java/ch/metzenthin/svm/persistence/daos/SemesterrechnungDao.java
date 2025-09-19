@@ -16,8 +16,15 @@ public class SemesterrechnungDao extends GenericDao<Semesterrechnung, Semesterre
 
     @Override
     public Semesterrechnung save(Semesterrechnung semesterrechnung) {
-        semesterrechnung.getSemester().getSemesterrechnungen().add(semesterrechnung);
-        semesterrechnung.getRechnungsempfaenger().getSemesterrechnungen().add(semesterrechnung);
+        if (!semesterrechnung.getSemester().getSemesterrechnungen().contains(semesterrechnung)) {
+            semesterrechnung.getSemester().getSemesterrechnungen().add(semesterrechnung);
+        }
+        if (!semesterrechnung
+            .getRechnungsempfaenger()
+            .getSemesterrechnungen()
+            .contains(semesterrechnung)) {
+          semesterrechnung.getRechnungsempfaenger().getSemesterrechnungen().add(semesterrechnung);
+        }
         EntityManager entityManager = db.getCurrentEntityManager();
         entityManager.persist(semesterrechnung);
         entityManager.flush();

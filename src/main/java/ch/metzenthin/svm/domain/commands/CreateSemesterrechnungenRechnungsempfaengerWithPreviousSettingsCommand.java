@@ -59,7 +59,8 @@ public class CreateSemesterrechnungenRechnungsempfaengerWithPreviousSettingsComm
 
             // 4. SemesterrechnungCode, Stipendium und Gratiskind von früher
             if (!rechnungsempfaenger.getSemesterrechnungen().isEmpty()) {
-                Semesterrechnung previousSemesterrechnung = rechnungsempfaenger.getSemesterrechnungenAsList().get(0);
+                Semesterrechnung previousSemesterrechnung
+                        = rechnungsempfaenger.getSortedSemesterrechnungen().get(0);
                 semesterrechnung.setStipendium(previousSemesterrechnung.getStipendium());
                 semesterrechnung.setGratiskinder(previousSemesterrechnung.getGratiskinder());
                 semesterrechnung.setSemesterrechnungCode(previousSemesterrechnung.getSemesterrechnungCode());

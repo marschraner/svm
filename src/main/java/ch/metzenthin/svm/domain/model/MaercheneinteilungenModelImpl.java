@@ -27,10 +27,14 @@ class MaercheneinteilungenModelImpl extends AbstractModel implements Maerchenein
     @Override
     public void maercheneinteilungLoeschen(MaercheneinteilungenTableModel maercheneinteilungenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int rowSelected) {
         CommandInvoker commandInvoker = getCommandInvoker();
-        DeleteMaercheneinteilungCommand deleteMaercheneinteilungCommand = new DeleteMaercheneinteilungCommand(schuelerDatenblattModel.getSchueler().getMaercheneinteilungenAsList(), rowSelected);
+        DeleteMaercheneinteilungCommand deleteMaercheneinteilungCommand
+                = new DeleteMaercheneinteilungCommand(
+                        schuelerDatenblattModel.getSchueler().getSortedMaercheneinteilungen(),
+                rowSelected);
         commandInvoker.executeCommandAsTransaction(deleteMaercheneinteilungCommand);
         // TableData mit von der Datenbank upgedateter Märcheneinteilung updaten
-        maercheneinteilungenTableModel.getMaercheneinteilungenTableData().setMaercheneinteilungen(schuelerDatenblattModel.getSchueler().getMaercheneinteilungenAsList());
+        maercheneinteilungenTableModel.getMaercheneinteilungenTableData().setMaercheneinteilungen(
+                schuelerDatenblattModel.getSchueler().getSortedMaercheneinteilungen());
     }
 
     @Override
