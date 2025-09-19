@@ -1,50 +1,54 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.4.1</version>
+	</parent>
+
   <groupId>ch.metzenthin.svm</groupId>
   <artifactId>svm</artifactId>
-  <packaging>jar</packaging>
-  <version>2.0</version>
+	<version>2.0</version>
+
   <name>svm</name>
-  <url>https://maven.apache.org</url>
+  <url>https://metzenthin.ch</url>
+
+	<properties>
+		<java.version>17</java.version>
+		<spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
+	</properties>
+
 	<!-- Check dependency-updates: versions:display-dependency-updates (unter Plugins, versions) -->
 	<!-- Check dependency-conflicts: dependency:tree (Execute Maven Goal, Command line) -->
 	<dependencies>
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.28</version>
 			<scope>provided</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<!-- maven-dependency-plugin:analyze-only reports this dependency as unused declared, but it is needed! -->
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
-			<version>3.3.1</version>
 			<scope>runtime</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate.orm</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>6.2.13.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jakarta.persistence</groupId>
-			<artifactId>jakarta.persistence-api</artifactId>
-			<version>3.1.0</version>
-		</dependency>
-
 		<!-- Verhinderung der Warnung "Unknown enum constant javax.xml.bind.annotation.XmlAccessType.FIELD beim Builden, siehe" -->
 		<!-- https://stackoverflow.com/questions/68892633/package-javax-xml-bind-annotation-does-not-exist-error -->
 		<dependency>
@@ -52,43 +56,21 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.3.1</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>2.22.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>2.22.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j2-impl</artifactId>
-			<version>2.22.0</version>
-		</dependency>
-
 		<dependency>
 			<groupId>com.intellij</groupId>
 			<artifactId>forms_rt</artifactId>
 			<version>7.0.3</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 			<version>5.2.4</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.docx4j</groupId>
 			<artifactId>docx4j-core</artifactId>
 			<version>11.4.9</version>
 		</dependency>
-
 		<!-- https://www.docx4java.org/docx4j/Docx4j_GettingStarted.pdf:  -->
 		<!-- There are 2 significant changes in docx4j 8.0.0: -->
         <!-- 1. The project is now structured as a Maven multi-module project -->
@@ -99,27 +81,24 @@
 			<artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
 			<version>11.4.9</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.apple</groupId>
 			<artifactId>AppleJavaExtensions</artifactId>
 			<version>1.4</version>
 		</dependency>
-
 	</dependencies>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 
 	<build>
 		<plugins>
-
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
 			<!-- Formatierung -->
 			<plugin>
 				<groupId>com.diffplug.spotless</groupId>
 				<artifactId>spotless-maven-plugin</artifactId>
-				<version>2.43.0</version>
+				<version>${spotless-maven-plugin.version}</version>
 				<configuration>
 					<java>
             <excludes>
@@ -131,230 +110,6 @@
 						</googleJavaFormat>
 					</java>
 				</configuration>
-			</plugin>
-
-
-			<!-- version-Plugin: The Versions Maven Plugin is used when you want to manage the -->
-			<!-- versions of artifacts in a project's POM. -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>versions-maven-plugin</artifactId>
-				<version>2.16.2</version>
-				<configuration>
-					<generateBackupPoms>false</generateBackupPoms>
-				</configuration>
-			</plugin>
-			<!-- clean-Plugin: The Maven Clean Plugin is a plugin that removes files generated -->
-			<!-- at build-time in a project's directory.  -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>3.3.2</version>
-				<executions>
-					<execution>
-						<id>auto-clean</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>clean</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-            <!-- analyze-Plugin: analyzes dependencies ("used but undeclared" and "declared but unused"). -->
-            <!-- Lifecycle phase: verify -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.6.1</version>
-                <executions>
-                    <execution>
-                        <id>analyze</id>
-                        <goals>
-                            <goal>analyze-only</goal>
-                        </goals>
-                        <configuration>
-                            <failOnWarning>true</failOnWarning>
-
-                            <!-- ignore jsr305 for both "used but undeclared" and "declared but unused" -->
-                            <ignoredDependencies>
-                                <!--ignoredDependency>com.google.code.findbugs:jsr305</ignoredDependency-->
-                            </ignoredDependencies>
-
-                            <!-- ignore annotations for "used but undeclared" warnings -->
-                            <ignoredUsedUndeclaredDependencies>
-                                <ignoredUsedUndeclaredDependency>org.docx4j:docx4j-openxml-objects:jar</ignoredUsedUndeclaredDependency>
-                            </ignoredUsedUndeclaredDependencies>
-
-                            <!-- ignore annotations for "unused but declared" warnings -->
-                            <ignoredUnusedDeclaredDependencies>
-                                <ignoredUnusedDeclaredDependency>org.mariadb.jdbc:mariadb-java-client:jar</ignoredUnusedDeclaredDependency>
-								<ignoredUnusedDeclaredDependency>javax.xml.bind:jaxb-api:jar</ignoredUnusedDeclaredDependency>
-								<ignoredUnusedDeclaredDependency>org.apache.logging.log4j:log4j-core:jar</ignoredUnusedDeclaredDependency>
-								<ignoredUnusedDeclaredDependency>org.apache.logging.log4j:log4j-slf4j2-impl:jar</ignoredUnusedDeclaredDependency>
-								<ignoredUnusedDeclaredDependency>org.docx4j:docx4j-JAXB-ReferenceImpl:jar</ignoredUnusedDeclaredDependency>
-                            </ignoredUnusedDeclaredDependencies>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-			<!-- deploy-Plugin: Uploads the project artifacts to the internal remote repository.  -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>3.1.1</version>
-			</plugin>
-			<!-- install-Plugin: Copies the project artifacts to the user's local repository.  -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-install-plugin</artifactId>
-				<version>3.1.1</version>
-			</plugin>
-			<!-- jar-Plugin: Builds a Java Archive (JAR) file from the compiled project classes and resources. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.3.0</version>
-			</plugin>
-			<!-- site-Plugin: The Maven Site Plugin is a plugin that generates a site for the current project. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>4.0.0-M12</version>
-			</plugin>
-			<!-- surefire-Plugin: The Surefire Plugin is used during the test phase of the build -->
-			<!-- lifecycle to execute the unit tests of an application. It generates reports in -->
-			<!-- two different file formats, plain text files (*.txt) and XML files (*.xml). -->
-			<!-- By default, these files are generated in ${basedir}/target/surefire-reports/TEST-*.xml. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.2.2</version>
-				<configuration>
-					<argLine>
-						--add-opens java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED
-					</argLine>
-				</configuration>
-			</plugin>
-			<!-- compiler-Plugin: The Compiler Plugin is used to compile the sources of your project. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.11.0</version>
-				<configuration>
-					<source>17</source>
-					<target>17</target>
-					<encoding>UTF-8</encoding>
-					<compilerArgs>
-						<arg>-Xlint:deprecation</arg>
-						<arg>-Xlint:unchecked</arg>
-					</compilerArgs>
-				</configuration>
-			</plugin>
-<!--			<plugin>-->
-<!--				<groupId>org.codehaus.mojo</groupId>-->
-<!--				<artifactId>findbugs-maven-plugin</artifactId>-->
-<!--				<version>3.0.5</version>-->
-<!--				<configuration>-->
-<!--					<findbugsXmlOutput>true</findbugsXmlOutput>-->
-<!--					<xmlOutput>true</xmlOutput>-->
-<!--				</configuration>-->
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<phase>package</phase>-->
-<!--						<goals>-->
-<!--							<goal>findbugs</goal>-->
-<!--						</goals>-->
-<!--					</execution>-->
-<!--				</executions>-->
-<!--			</plugin>-->
-			<!-- jococo-Plugin: The JaCoCo Maven Plugin provides the JaCoCo runtime agent to -->
-			<!-- your tests and allows basic report creation. -->
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.11</version>
-				<executions>
-					<execution>
-						<id>default-prepare-agent</id>
-						<goals><goal>prepare-agent</goal></goals>
-					</execution>
-					<execution>
-						<id>default-report</id>
-						<phase>prepare-package</phase>
-						<goals><goal>report</goal></goals>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- resources-Plugin: The Resources Plugin handles the copying of project resources -->
-			<!-- to the output directory. There are two different kinds of resources: main -->
-			<!-- resources and test resources. The difference is that the main resources are the -->
-			<!-- resources associated with the main source code while the test resources are -->
-			<!-- associated with the test source code. Thus, this allows the separation of -->
-			<!-- resources for the main source code and its unit tests. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.3.1</version>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<!-- here the phase you need -->
-						<phase>process-resources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.basedir}/target/bin</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.basedir}/bin</directory>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- assembly-Plugin: A Maven plugin to create archives of your project's sources, -->
-			<!-- classes, dependencies etc. from flexible assembly descriptors. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.6.0</version>
-				<executions>
-					<execution>
-						<id>make-assembly</id> <!-- this is used for inheritance merges -->
-						<phase>package</phase> <!-- bind to the packaging phase -->
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<archive>
-								<manifest>
-									<mainClass>ch.metzenthin.svm.Svm</mainClass>
-								</manifest>
-								<manifestEntries>
-									<SplashScreen-Image>images/buehne.gif</SplashScreen-Image>
-								</manifestEntries>
-							</archive>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-						</configuration>
-					</execution>
-					<execution>
-						<id>create-archive</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<descriptors>
-								<descriptor>src/assembly/dep.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
