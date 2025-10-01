@@ -120,15 +120,15 @@ public class MaercheneinteilungDaoTest {
       assertEquals("3, 4", maercheneinteilungFound.getBilderRolle3());
       assertEquals(Elternmithilfe.VATER, maercheneinteilungFound.getElternmithilfe());
       assertEquals("f", maercheneinteilung.getElternmithilfeCode().getKuerzel());
-      assertTrue(maercheneinteilung.getKuchenVorstellung1());
-      assertTrue(maercheneinteilung.getKuchenVorstellung2());
-      assertTrue(maercheneinteilung.getKuchenVorstellung3());
-      assertFalse(maercheneinteilung.getKuchenVorstellung4());
-      assertFalse(maercheneinteilung.getKuchenVorstellung5());
-      assertFalse(maercheneinteilung.getKuchenVorstellung6());
-      assertFalse(maercheneinteilung.getKuchenVorstellung7());
-      assertFalse(maercheneinteilung.getKuchenVorstellung8());
-      assertFalse(maercheneinteilung.getKuchenVorstellung9());
+      assertTrue(maercheneinteilung.isKuchenVorstellung1());
+      assertTrue(maercheneinteilung.isKuchenVorstellung2());
+      assertTrue(maercheneinteilung.isKuchenVorstellung3());
+      assertFalse(maercheneinteilung.isKuchenVorstellung4());
+      assertFalse(maercheneinteilung.isKuchenVorstellung5());
+      assertFalse(maercheneinteilung.isKuchenVorstellung6());
+      assertFalse(maercheneinteilung.isKuchenVorstellung7());
+      assertFalse(maercheneinteilung.isKuchenVorstellung8());
+      assertFalse(maercheneinteilung.isKuchenVorstellung9());
     } finally {
       if (tx != null) {
         tx.rollback();

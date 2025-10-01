@@ -31,8 +31,7 @@ public class KurstypenTableData {
     Object value = null;
     switch (COLUMNS[columnIndex]) {
       case BEZEICHNUNG -> value = kurstyp.getBezeichnung();
-      case SELEKTIERBAR ->
-          value = (kurstyp.getSelektierbar() != null && kurstyp.getSelektierbar()) ? "ja" : "nein";
+      case SELEKTIERBAR -> value = (kurstyp.isSelektierbar()) ? "ja" : "nein";
       default -> {
         // Nothing to do
       }

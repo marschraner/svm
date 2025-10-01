@@ -60,14 +60,14 @@ abstract class SemesterrechnungModelImpl extends AbstractModel implements Semest
 
   @Override
   public Boolean isGratiskinder() {
-    return semesterrechnung.getGratiskinder();
+    return semesterrechnung.isGratiskinder();
   }
 
   @Override
   public void setGratiskinder(Boolean gratiskinder) {
-    Boolean oldValue = semesterrechnung.getGratiskinder();
+    Boolean oldValue = semesterrechnung.isGratiskinder();
     semesterrechnung.setGratiskinder(gratiskinder);
-    firePropertyChange(Field.GRATISKINDER, oldValue, semesterrechnung.getGratiskinder());
+    firePropertyChange(Field.GRATISKINDER, oldValue, semesterrechnung.isGratiskinder());
   }
 
   private final CalendarModelAttribute rechnungsdatumVorrechnungModelAttribute =

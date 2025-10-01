@@ -23,7 +23,7 @@ public class SvmModelImpl implements SvmModel {
   public List<SchuelerCode> getSelektierbareSchuelerCodesAll() {
     List<SchuelerCode> selektierbareSchuelerCodesAll = new ArrayList<>();
     for (SchuelerCode schuelerCode : getSchuelerCodesAll()) {
-      if (schuelerCode.getSelektierbar() != null && schuelerCode.getSelektierbar()) {
+      if (schuelerCode.isSelektierbar()) {
         selektierbareSchuelerCodesAll.add(schuelerCode);
       }
     }
@@ -42,7 +42,7 @@ public class SvmModelImpl implements SvmModel {
   public List<MitarbeiterCode> getSelektierbareMitarbeiterCodesAll() {
     List<MitarbeiterCode> selektierbareMitarbeiterCodesAll = new ArrayList<>();
     for (MitarbeiterCode mitarbeiterCode : getMitarbeiterCodesAll()) {
-      if (mitarbeiterCode.getSelektierbar() != null && mitarbeiterCode.getSelektierbar()) {
+      if (mitarbeiterCode.isSelektierbar()) {
         selektierbareMitarbeiterCodesAll.add(mitarbeiterCode);
       }
     }
@@ -61,7 +61,7 @@ public class SvmModelImpl implements SvmModel {
   public List<ElternmithilfeCode> getSelektierbareElternmithilfeCodesAll() {
     List<ElternmithilfeCode> selektierbareElternmithilfeCodesAll = new ArrayList<>();
     for (ElternmithilfeCode elternmithilfeCode : getElternmithilfeCodesAll()) {
-      if (elternmithilfeCode.getSelektierbar() != null && elternmithilfeCode.getSelektierbar()) {
+      if (elternmithilfeCode.isSelektierbar()) {
         selektierbareElternmithilfeCodesAll.add(elternmithilfeCode);
       }
     }
@@ -80,8 +80,7 @@ public class SvmModelImpl implements SvmModel {
   public List<SemesterrechnungCode> getSelektierbareSemesterrechnungCodesAll() {
     List<SemesterrechnungCode> selektierbareSemesterrechnungCodesAll = new ArrayList<>();
     for (SemesterrechnungCode semesterrechnungCode : getSemesterrechnungCodesAll()) {
-      if (semesterrechnungCode.getSelektierbar() != null
-          && semesterrechnungCode.getSelektierbar()) {
+      if (semesterrechnungCode.isSelektierbar()) {
         selektierbareSemesterrechnungCodesAll.add(semesterrechnungCode);
       }
     }
@@ -99,7 +98,7 @@ public class SvmModelImpl implements SvmModel {
   public List<Mitarbeiter> getAktiveLehrkraefteAll() {
     List<Mitarbeiter> aktiveLehrkraefteAll = new ArrayList<>();
     for (Mitarbeiter mitarbeiter : getMitarbeitersAll()) {
-      if (mitarbeiter.getAktiv() != null && mitarbeiter.getAktiv() && mitarbeiter.getLehrkraft()) {
+      if (mitarbeiter.isAktiv() && mitarbeiter.isLehrkraft()) {
         aktiveLehrkraefteAll.add(mitarbeiter);
       }
     }
@@ -117,7 +116,7 @@ public class SvmModelImpl implements SvmModel {
   public List<Kursort> getSelektierbareKursorteAll() {
     List<Kursort> selektierbareKursorteAll = new ArrayList<>();
     for (Kursort kursort : getKursorteAll()) {
-      if (kursort.getSelektierbar() != null && kursort.getSelektierbar()) {
+      if (kursort.isSelektierbar()) {
         selektierbareKursorteAll.add(kursort);
       }
     }
@@ -135,7 +134,7 @@ public class SvmModelImpl implements SvmModel {
   public List<Kurstyp> getSelektierbareKurstypenAll() {
     List<Kurstyp> selektierbareKurstypenAll = new ArrayList<>();
     for (Kurstyp kurstyp : getKurstypenAll()) {
-      if (kurstyp.getSelektierbar() != null && kurstyp.getSelektierbar()) {
+      if (kurstyp.isSelektierbar()) {
         selektierbareKurstypenAll.add(kurstyp);
       }
     }

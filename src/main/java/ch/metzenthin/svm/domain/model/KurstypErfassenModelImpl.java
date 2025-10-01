@@ -60,14 +60,14 @@ public class KurstypErfassenModelImpl extends AbstractModel implements KurstypEr
 
   @Override
   public void setSelektierbar(Boolean isSelected) {
-    Boolean oldValue = kurstyp.getSelektierbar();
+    Boolean oldValue = kurstyp.isSelektierbar();
     kurstyp.setSelektierbar(isSelected);
     firePropertyChange(Field.SELEKTIERBAR, oldValue, isSelected);
   }
 
   @Override
   public Boolean isSelektierbar() {
-    return kurstyp.getSelektierbar();
+    return kurstyp.isSelektierbar();
   }
 
   @Override
@@ -98,8 +98,8 @@ public class KurstypErfassenModelImpl extends AbstractModel implements KurstypEr
       setBulkUpdate(true);
       try {
         setBezeichnung(kurstypOrigin.getBezeichnung());
-        setSelektierbar(!kurstypOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
-        setSelektierbar(kurstypOrigin.getSelektierbar());
+        setSelektierbar(!kurstypOrigin.isSelektierbar()); // damit PropertyChange ausgelöst wird!
+        setSelektierbar(kurstypOrigin.isSelektierbar());
       } catch (SvmValidationException e) {
         LOGGER.error(e.getMessage());
       }
