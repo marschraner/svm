@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/svmtest
+    username: svmtest
+    password: svmtest
+  test:
+    database:
+      replace: none
+  jpa:
+    hibernate:
+      naming:
+        # Prevents error `ERROR: column allow_to_leave does not exist`
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate.connection.url: ${spring.datasource.url}
+      hibernate.connection.username: ${spring.datasource.username}
+      hibernate.connection.password: ${spring.datasource.password}
+      hibernate.cache.use_query_cache: false
+      hibernate.cache.use_second_level_cache: false

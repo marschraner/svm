@@ -1,14 +1,24 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.service.KursortService;
+import org.springframework.stereotype.Component;
+
 /**
  * @author Hans Stamm
  */
 @SuppressWarnings("java:S6539")
+@Component
 public class ModelFactoryImpl implements ModelFactory {
+
+  private final KursortService kursortService;
+
+  public ModelFactoryImpl(KursortService kursortService) {
+    this.kursortService = kursortService;
+  }
 
   @Override
   public SvmModel createSvmModel() {
-    return new SvmModelImpl();
+    return new SvmModelImpl(kursortService);
   }
 
   @Override
@@ -83,7 +93,7 @@ public class ModelFactoryImpl implements ModelFactory {
 
   @Override
   public KursortErfassenModel createKursortErfassenModel() {
-    return new KursortErfassenModelImpl();
+    return new KursortErfassenModelImpl(kursortService);
   }
 
   @Override

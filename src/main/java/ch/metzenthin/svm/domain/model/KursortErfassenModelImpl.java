@@ -2,10 +2,8 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CheckKursortBezeichnungBereitsInVerwendungCommand;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.SaveOrUpdateKursortCommand;
 import ch.metzenthin.svm.persistence.entities.Kursort;
+import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,8 +15,15 @@ public class KursortErfassenModelImpl extends AbstractModel implements KursortEr
 
   private static final Logger LOGGER = LogManager.getLogger(KursortErfassenModelImpl.class);
 
+  private final KursortService kursortService;
+
   private final Kursort kursort = new Kursort();
+
   private Kursort kursortOrigin;
+
+  public KursortErfassenModelImpl(KursortService kursortService) {
+    this.kursortService = kursortService;
+  }
 
   @Override
   public Kursort getKursort() {
@@ -72,21 +77,18 @@ public class KursortErfassenModelImpl extends AbstractModel implements KursortEr
 
   @Override
   public boolean checkKursortBezeichnungBereitsInVerwendung(SvmModel svmModel) {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    CheckKursortBezeichnungBereitsInVerwendungCommand
-        checkKursortBezeichnungBereitsInVerwendungCommand =
-            new CheckKursortBezeichnungBereitsInVerwendungCommand(
-                kursort, kursortOrigin, svmModel.getKursorteAll());
-    commandInvoker.executeCommand(checkKursortBezeichnungBereitsInVerwendungCommand);
-    return checkKursortBezeichnungBereitsInVerwendungCommand.isBereitsInVerwendung();
+    return kursortService.checkIfAlreadyExists(kursort);
   }
 
   @Override
   public void speichern(SvmModel svmModel, KursorteTableModel kursorteTableModel) {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    SaveOrUpdateKursortCommand saveOrUpdateKursortCommand =
-        new SaveOrUpdateKursortCommand(kursort, kursortOrigin, svmModel.getKursorteAll());
-    commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
+    if (kursortOrigin != null) {
+      // Update von kursortOrigin mit Werten von kursort
+      kursortOrigin.copyAttributesFrom(kursort);
+      kursortService.saveKursort(kursortOrigin);
+    } else {
+      kursortService.saveKursort(kursort);
+    }
     // TableData mit von der Datenbank upgedateten Kursorten updaten
     kursorteTableModel.getKursorteTableData().setKursorte(svmModel.getKursorteAll());
   }
