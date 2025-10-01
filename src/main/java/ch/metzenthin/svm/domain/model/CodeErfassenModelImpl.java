@@ -193,8 +193,8 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
         setKuerzel(schuelerCodeOrigin.getKuerzel());
         setBeschreibung(schuelerCodeOrigin.getBeschreibung());
         setSelektierbar(
-            !schuelerCodeOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
-        setSelektierbar(schuelerCodeOrigin.getSelektierbar());
+            !schuelerCodeOrigin.isSelektierbar()); // damit PropertyChange ausgelöst wird!
+        setSelektierbar(schuelerCodeOrigin.isSelektierbar());
       } catch (SvmValidationException e) {
         LOGGER.error(e.getMessage());
       }
@@ -205,8 +205,8 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
         setKuerzel(mitarbeiterCodeOrigin.getKuerzel());
         setBeschreibung(mitarbeiterCodeOrigin.getBeschreibung());
         setSelektierbar(
-            !mitarbeiterCodeOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
-        setSelektierbar(mitarbeiterCodeOrigin.getSelektierbar());
+            !mitarbeiterCodeOrigin.isSelektierbar()); // damit PropertyChange ausgelöst wird!
+        setSelektierbar(mitarbeiterCodeOrigin.isSelektierbar());
       } catch (SvmValidationException e) {
         LOGGER.error(e.getMessage());
       }
@@ -217,8 +217,8 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
         setKuerzel(elternmithilfeCodeOrigin.getKuerzel());
         setBeschreibung(elternmithilfeCodeOrigin.getBeschreibung());
         setSelektierbar(
-            !elternmithilfeCodeOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
-        setSelektierbar(elternmithilfeCodeOrigin.getSelektierbar());
+            !elternmithilfeCodeOrigin.isSelektierbar()); // damit PropertyChange ausgelöst wird!
+        setSelektierbar(elternmithilfeCodeOrigin.isSelektierbar());
       } catch (SvmValidationException e) {
         LOGGER.error(e.getMessage());
       }
@@ -229,8 +229,8 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
         setKuerzel(semesterrechnungCodeOrigin.getKuerzel());
         setBeschreibung(semesterrechnungCodeOrigin.getBeschreibung());
         setSelektierbar(
-            !semesterrechnungCodeOrigin.getSelektierbar()); // damit PropertyChange ausgelöst wird!
-        setSelektierbar(semesterrechnungCodeOrigin.getSelektierbar());
+            !semesterrechnungCodeOrigin.isSelektierbar()); // damit PropertyChange ausgelöst wird!
+        setSelektierbar(semesterrechnungCodeOrigin.isSelektierbar());
       } catch (SvmValidationException e) {
         LOGGER.error(e.getMessage());
       }

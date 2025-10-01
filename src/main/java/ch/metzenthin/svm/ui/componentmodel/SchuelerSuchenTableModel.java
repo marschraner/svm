@@ -11,7 +11,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import javax.swing.table.AbstractTableModel;
+import lombok.Getter;
 
+@Getter
 public class SchuelerSuchenTableModel extends AbstractTableModel {
 
   @Serial private static final long serialVersionUID = 1L;
@@ -117,10 +119,6 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
 
   public Calendar getAbmeldemonat() {
     return schuelerSuchenTableData.getAbmeldemonat();
-  }
-
-  public SchuelerSuchenTableData getSchuelerSuchenTableData() {
-    return schuelerSuchenTableData;
   }
 
   public Map<Schueler, List<Kurs>> getKurse() {

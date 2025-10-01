@@ -6,6 +6,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
@@ -14,6 +16,8 @@ import java.util.List;
 @Entity
 @Table(name = "ElternmithilfeCode")
 @DiscriminatorValue("Elternmithilfe")
+@Getter
+@Setter
 public class ElternmithilfeCode extends Code {
 
   @OneToMany(mappedBy = "elternmithilfeCode")
@@ -21,11 +25,7 @@ public class ElternmithilfeCode extends Code {
 
   public ElternmithilfeCode() {}
 
-  public ElternmithilfeCode(String kuerzel, String beschreibung, Boolean selektierbar) {
+  public ElternmithilfeCode(String kuerzel, String beschreibung, boolean selektierbar) {
     super(kuerzel, beschreibung, selektierbar);
-  }
-
-  public List<Maercheneinteilung> getMaercheneinteilungen() {
-    return maercheneinteilungen;
   }
 }

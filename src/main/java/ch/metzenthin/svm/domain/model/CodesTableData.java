@@ -4,10 +4,12 @@ import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.persistence.entities.Code;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
  */
+@Setter
 public class CodesTableData {
 
   private List<? extends Code> codes;
@@ -42,8 +44,7 @@ public class CodesTableData {
     switch (columns.get(columnIndex)) {
       case KUERZEL -> value = code.getKuerzel();
       case BESCHREIBUNG -> value = code.getBeschreibung();
-      case SELEKTIERBAR ->
-          value = (code.getSelektierbar() != null && code.getSelektierbar()) ? "ja" : "nein";
+      case SELEKTIERBAR -> value = (code.isSelektierbar()) ? "ja" : "nein";
       default -> {
         // Nothing to do
       }
@@ -53,10 +54,6 @@ public class CodesTableData {
 
   public Class<?> getColumnClass() {
     return String.class;
-  }
-
-  public void setCodes(List<? extends Code> codes) {
-    this.codes = codes;
   }
 
   public String getColumnName(int column) {

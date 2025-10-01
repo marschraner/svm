@@ -31,8 +31,7 @@ public class KursorteTableData {
     Object value = null;
     switch (COLUMNS[columnIndex]) {
       case BEZEICHNUNG -> value = kursort.getBezeichnung();
-      case SELEKTIERBAR ->
-          value = (kursort.getSelektierbar() != null && kursort.getSelektierbar()) ? "ja" : "nein";
+      case SELEKTIERBAR -> value = (kursort.isSelektierbar()) ? "ja" : "nein";
       default -> {
         // Nothing to do
       }

@@ -4,6 +4,8 @@ import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.utils.SvmStringUtils;
 import jakarta.persistence.*;
 import java.util.*;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
@@ -12,6 +14,8 @@ import java.util.*;
 @Entity
 @Table(name = "Mitarbeiter")
 @DiscriminatorValue("Mitarbeiter")
+@Getter
+@Setter
 public class Mitarbeiter extends Person {
 
   @Column(name = "ahvnummer")
@@ -30,7 +34,7 @@ public class Mitarbeiter extends Person {
   private String bemerkungen;
 
   @Column(name = "aktiv", nullable = false)
-  private Boolean aktiv;
+  private boolean aktiv;
 
   @Transient private boolean selektiert = true;
 
@@ -60,7 +64,7 @@ public class Mitarbeiter extends Person {
       boolean lehrkraft,
       String vertretungsmoeglichkeiten,
       String bemerkungen,
-      Boolean aktiv) {
+      boolean aktiv) {
     super(anrede, vorname, nachname, geburtsdatum, festnetz, natel, email);
     this.ahvNummer = ahvNummer;
     this.ibanNummer = ibanNummer;
@@ -83,10 +87,10 @@ public class Mitarbeiter extends Person {
     super.copyAttributesFrom(mitarbeiterFrom);
     ahvNummer = mitarbeiterFrom.getAhvNummer();
     ibanNummer = mitarbeiterFrom.getIbanNummer();
-    lehrkraft = mitarbeiterFrom.getLehrkraft();
+    lehrkraft = mitarbeiterFrom.isLehrkraft();
     vertretungsmoeglichkeiten = mitarbeiterFrom.getVertretungsmoeglichkeiten();
     bemerkungen = mitarbeiterFrom.getBemerkungen();
-    aktiv = mitarbeiterFrom.getAktiv();
+    aktiv = mitarbeiterFrom.isAktiv();
   }
 
   @Override
@@ -106,34 +110,6 @@ public class Mitarbeiter extends Person {
     }
   }
 
-  public String getAhvNummer() {
-    return ahvNummer;
-  }
-
-  public void setAhvNummer(String ahvNummer) {
-    this.ahvNummer = ahvNummer;
-  }
-
-  public String getIbanNummer() {
-    return ibanNummer;
-  }
-
-  public void setIbanNummer(String ibanNummer) {
-    this.ibanNummer = ibanNummer;
-  }
-
-  public boolean getLehrkraft() {
-    return lehrkraft;
-  }
-
-  public void setLehrkraft(boolean lehrkraft) {
-    this.lehrkraft = lehrkraft;
-  }
-
-  public String getVertretungsmoeglichkeiten() {
-    return vertretungsmoeglichkeiten;
-  }
-
   @Transient
   public String getVertretungsmoeglichkeitenLineBreaksReplacedBySemicolonOrPeriod() {
     return SvmStringUtils.replaceLineBreaksBySemicolonOrPeriod(vertretungsmoeglichkeiten);
@@ -144,14 +120,6 @@ public class Mitarbeiter extends Person {
     return SvmStringUtils.replaceLineBreaksByCommaOrPeriod(vertretungsmoeglichkeiten);
   }
 
-  public void setVertretungsmoeglichkeiten(String vertretungsmoeglichkeiten) {
-    this.vertretungsmoeglichkeiten = vertretungsmoeglichkeiten;
-  }
-
-  public String getBemerkungen() {
-    return bemerkungen;
-  }
-
   @Transient
   public String getBemerkungenLineBreaksReplacedBySemicolonOrPeriod() {
     return SvmStringUtils.replaceLineBreaksBySemicolonOrPeriod(bemerkungen);
@@ -160,30 +128,6 @@ public class Mitarbeiter extends Person {
   @Transient
   public String getBemerkungenLineBreaksReplacedByCommaOrPeriod() {
     return SvmStringUtils.replaceLineBreaksByCommaOrPeriod(bemerkungen);
-  }
-
-  public void setBemerkungen(String bemerkungen) {
-    this.bemerkungen = bemerkungen;
-  }
-
-  public Boolean getAktiv() {
-    return aktiv;
-  }
-
-  public void setAktiv(Boolean aktiv) {
-    this.aktiv = aktiv;
-  }
-
-  public boolean isSelektiert() {
-    return selektiert;
-  }
-
-  public void setSelektiert(boolean selektiert) {
-    this.selektiert = selektiert;
-  }
-
-  public List<MitarbeiterCode> getMitarbeiterCodes() {
-    return mitarbeiterCodes;
   }
 
   public List<MitarbeiterCode> getSortedMitarbeiterCodes() {
@@ -219,9 +163,5 @@ public class Mitarbeiter extends Person {
       mitarbeiterCodesAsStr.append(", ").append(getSortedMitarbeiterCodes().get(i).getKuerzel());
     }
     return mitarbeiterCodesAsStr.toString();
-  }
-
-  public List<Kurs> getKurse() {
-    return kurse;
   }
 }
