@@ -4,14 +4,8 @@
 -- Als svm auszuführen.
 
 -- mysql -u svm -p
--- mysql> source createTables.sql
-
--- Auf Jenkins-Server (Immer durchführen wenn DB ändert, damit Tests durchlaufen!):
--- ssh root@sinv-56059.edu.hsr.ch
--- cd /var/lib/jenkins/workspace/SVM/
--- mysql -u svm -p < sql/createTables.sql
-
-USE svm;
+-- mysql> use svm;
+-- mysql> source create_svm_tables.sql
 
 
 -- Engine auf InnoDB setzen
@@ -66,8 +60,6 @@ CREATE TABLE IF NOT EXISTS Lektionsgebuehren (
     creation_date              TIMESTAMP     NOT NULL,
     last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (id));
-     
-DESCRIBE Lektionsgebuehren;
 
 
 -- Adresse
@@ -83,8 +75,6 @@ CREATE TABLE IF NOT EXISTS Adresse (
     creation_date              TIMESTAMP     NOT NULL,
     last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (adresse_id));
-     
-DESCRIBE Adresse;
 
 
 -- Person
@@ -105,9 +95,7 @@ CREATE TABLE IF NOT EXISTS Person (
     creation_date              TIMESTAMP     NOT NULL,
     last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id),
-    FOREIGN KEY (adresse_id)   REFERENCES Adresse (adresse_id)); 
-
-DESCRIBE Person;
+    FOREIGN KEY (adresse_id)   REFERENCES Adresse (adresse_id));
 
 
 -- Angehoeriger
@@ -119,8 +107,6 @@ CREATE TABLE IF NOT EXISTS Angehoeriger (
     PRIMARY KEY (person_id),
     FOREIGN KEY (person_id)    REFERENCES Person (person_id));
 
-DESCRIBE Angehoeriger;
-
 
 -- ElternmithilfeDrittperson
 -- *************************
@@ -129,8 +115,6 @@ CREATE TABLE IF NOT EXISTS ElternmithilfeDrittperson (
     person_id                  INT           NOT NULL,
     PRIMARY KEY (person_id),
     FOREIGN KEY (person_id)    REFERENCES Person (person_id));
-
-DESCRIBE ElternmithilfeDrittperson;
 
 
 -- Schueler
@@ -149,8 +133,6 @@ CREATE TABLE IF NOT EXISTS Schueler (
     FOREIGN KEY (mutter_id)    REFERENCES Angehoeriger (person_id),
     FOREIGN KEY (rechnungsempfaenger_id) REFERENCES Angehoeriger (person_id));
 
-DESCRIBE Schueler;
-
 
 -- Mitarbeiter
 -- ***********
@@ -166,8 +148,6 @@ CREATE TABLE IF NOT EXISTS Mitarbeiter (
     PRIMARY KEY (person_id),
     FOREIGN KEY (person_id)    REFERENCES Person (person_id));
 
-DESCRIBE Mitarbeiter;
-
 
 -- Anmeldung
 -- *********
@@ -182,8 +162,6 @@ CREATE TABLE IF NOT EXISTS Anmeldung (
     last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (anmeldung_id),
     FOREIGN KEY (schueler_id)  REFERENCES Schueler (person_id));
-
-DESCRIBE Anmeldung;
 
 
 -- Dispensation
@@ -202,8 +180,6 @@ CREATE TABLE IF NOT EXISTS Dispensation (
     PRIMARY KEY (dispensation_id),
     FOREIGN KEY (schueler_id)  REFERENCES Schueler (person_id));
 
-DESCRIBE Dispensation;
-
 
 -- Code
 -- ****
@@ -219,8 +195,6 @@ CREATE TABLE IF NOT EXISTS Code (
     last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (code_id));
 
-DESCRIBE Code;
-
 
 -- SchuelerCode
 -- ************
@@ -229,8 +203,6 @@ CREATE TABLE IF NOT EXISTS SchuelerCode (
     code_id                    INT           NOT NULL,
     PRIMARY KEY (code_id),
     FOREIGN KEY (code_id)      REFERENCES Code (code_id));
-
-DESCRIBE SchuelerCode;
 
 
 -- Schueler_SchuelerCode
@@ -244,8 +216,6 @@ CREATE TABLE IF NOT EXISTS Schueler_SchuelerCode (
     FOREIGN KEY (person_id)    REFERENCES Schueler (person_id),
     FOREIGN KEY (code_id)      REFERENCES SchuelerCode (code_id));
 
-DESCRIBE Schueler_SchuelerCode;
-
 
 -- MitarbeiterCode
 -- ***************
@@ -254,8 +224,6 @@ CREATE TABLE IF NOT EXISTS MitarbeiterCode (
     code_id                    INT           NOT NULL,
     PRIMARY KEY (code_id),
     FOREIGN KEY (code_id)      REFERENCES Code (code_id));
-
-DESCRIBE MitarbeiterCode;
 
 
 -- Mitarbeiter_MitarbeiterCode
@@ -269,8 +237,6 @@ CREATE TABLE IF NOT EXISTS Mitarbeiter_MitarbeiterCode (
     FOREIGN KEY (person_id)    REFERENCES Mitarbeiter (person_id),
     FOREIGN KEY (code_id)      REFERENCES MitarbeiterCode (code_id));
 
-DESCRIBE Mitarbeiter_MitarbeiterCode;
-
 
 -- ElternmithilfeCode
 -- ******************
@@ -280,8 +246,6 @@ CREATE TABLE IF NOT EXISTS ElternmithilfeCode (
     PRIMARY KEY (code_id),
     FOREIGN KEY (code_id)      REFERENCES Code (code_id));
 
-DESCRIBE ElternmithilfeCode;
-
 
 -- SemesterrechnungCode
 -- ********************
@@ -290,8 +254,6 @@ CREATE TABLE IF NOT EXISTS SemesterrechnungCode (
     code_id                    INT           NOT NULL,
     PRIMARY KEY (code_id),
     FOREIGN KEY (code_id)      REFERENCES Code (code_id));
-
-DESCRIBE SemesterrechnungCode;
 
 
 -- Kurstyp
@@ -306,8 +268,6 @@ CREATE TABLE IF NOT EXISTS Kurstyp (
     last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (kurstyp_id));
 
-DESCRIBE Kurstyp;
-
 
 -- Kursort
 -- *******
@@ -320,8 +280,6 @@ CREATE TABLE IF NOT EXISTS Kursort (
     creation_date              TIMESTAMP     NOT NULL,
     last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (kursort_id));
-
-DESCRIBE Kursort;
 
 
 -- Semester
@@ -341,8 +299,6 @@ CREATE TABLE IF NOT EXISTS Semester (
     creation_date              TIMESTAMP     NOT NULL,
     last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (semester_id));
-
-DESCRIBE Semester;
 
 
 -- Kurs
@@ -367,8 +323,6 @@ CREATE TABLE IF NOT EXISTS Kurs (
     FOREIGN KEY (kurstyp_id)   REFERENCES Kurstyp (kurstyp_id),
     FOREIGN KEY (kursort_id)   REFERENCES Kursort (kursort_id));
 
-DESCRIBE Kurs;
-
 
 -- Kurs_Lehrkraft
 -- **************
@@ -381,8 +335,6 @@ CREATE TABLE IF NOT EXISTS Kurs_Lehrkraft (
     PRIMARY KEY (kurs_id, person_id),
     FOREIGN KEY (kurs_id)      REFERENCES Kurs (kurs_id),
     FOREIGN KEY (person_id)    REFERENCES Mitarbeiter (person_id));
-
-DESCRIBE Kurs_Lehrkraft;
 
 
 -- Kursanmeldung
@@ -401,8 +353,6 @@ CREATE TABLE IF NOT EXISTS Kursanmeldung (
     FOREIGN KEY (person_id)    REFERENCES Schueler (person_id),
     FOREIGN KEY (kurs_id)      REFERENCES Kurs (kurs_id));
 
-DESCRIBE Kursanmeldung;
-
 
 -- Maerchen
 -- ********
@@ -416,8 +366,6 @@ CREATE TABLE IF NOT EXISTS Maerchen (
     creation_date              TIMESTAMP     NOT NULL,
     last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (maerchen_id));
-
-DESCRIBE Maerchen;
 
 
 -- Maercheneinteilung
@@ -455,8 +403,6 @@ CREATE TABLE IF NOT EXISTS Maercheneinteilung (
     FOREIGN KEY (maerchen_id)  REFERENCES Maerchen (maerchen_id),
     FOREIGN KEY (code_id)      REFERENCES ElternmithilfeCode (code_id),
     FOREIGN KEY (drittperson_id) REFERENCES ElternmithilfeDrittperson (person_id));
-
-DESCRIBE Maercheneinteilung;
 
 
 -- Semesterrechnung
@@ -503,5 +449,3 @@ CREATE TABLE IF NOT EXISTS Semesterrechnung (
     FOREIGN KEY (semester_id)  REFERENCES Semester (semester_id),
     FOREIGN KEY (person_id)    REFERENCES Angehoeriger (person_id),
     FOREIGN KEY (code_id)      REFERENCES SemesterrechnungCode (code_id));
-
-DESCRIBE Semesterrechnung;
