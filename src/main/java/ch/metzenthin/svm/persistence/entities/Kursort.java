@@ -1,39 +1,37 @@
 package ch.metzenthin.svm.persistence.entities;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
 import java.text.Collator;
 import java.util.*;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
  */
 @Entity
 @Table(name = "Kursort")
-public class Kursort implements Comparable<Kursort> {
+@Setter
+@Getter
+public class Kursort extends AbstractEntity implements Comparable<Kursort> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "kursort_id")
   private Integer kursortId;
 
-  @SuppressWarnings("unused")
-  @Version
-  @Column(name = "last_updated")
-  private Timestamp version;
-
   @Column(name = "bezeichnung", nullable = false)
   private String bezeichnung;
 
   @Column(name = "selektierbar", nullable = false)
-  private Boolean selektierbar;
+  private boolean selektierbar;
 
   @OneToMany(mappedBy = "kursort")
   private final List<Kurs> kurse = new ArrayList<>();
 
   public Kursort() {}
 
-  public Kursort(String bezeichnung, Boolean selektierbar) {
+  public Kursort(String bezeichnung, boolean selektierbar) {
     this.bezeichnung = bezeichnung;
     this.selektierbar = selektierbar;
   }
@@ -46,7 +44,7 @@ public class Kursort implements Comparable<Kursort> {
 
   public void copyAttributesFrom(Kursort otherKursort) {
     this.bezeichnung = otherKursort.getBezeichnung();
-    this.selektierbar = otherKursort.getSelektierbar();
+    this.selektierbar = otherKursort.isSelektierbar();
   }
 
   @Override
@@ -77,34 +75,5 @@ public class Kursort implements Comparable<Kursort> {
       return "alle";
     }
     return bezeichnung;
-  }
-
-  public Integer getKursortId() {
-    return kursortId;
-  }
-
-  @SuppressWarnings("unused")
-  public void setKursortId(Integer kursortId) {
-    this.kursortId = kursortId;
-  }
-
-  public String getBezeichnung() {
-    return bezeichnung;
-  }
-
-  public void setBezeichnung(String kursort) {
-    this.bezeichnung = kursort;
-  }
-
-  public Boolean getSelektierbar() {
-    return selektierbar;
-  }
-
-  public void setSelektierbar(Boolean selektierbar) {
-    this.selektierbar = selektierbar;
-  }
-
-  public List<Kurs> getKurse() {
-    return kurse;
   }
 }

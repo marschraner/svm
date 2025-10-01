@@ -3,26 +3,30 @@ package ch.metzenthin.svm.persistence.entities;
 import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
-import jakarta.persistence.*;
-import java.sql.Timestamp;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
  */
 @Entity
 @Table(name = "Adresse")
-public class Adresse {
+@Getter
+@Setter
+public class Adresse extends AbstractEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "adresse_id")
   private Integer adresseId;
-
-  @SuppressWarnings("unused")
-  @Version
-  @Column(name = "last_updated")
-  private Timestamp version;
 
   @Column(name = "strasse")
   private String strasse;
@@ -115,47 +119,6 @@ public class Adresse {
       adresseSb.append(" ").append(ort);
     }
     return adresseSb.toString();
-  }
-
-  public Integer getAdresseId() {
-    return adresseId;
-  }
-
-  @SuppressWarnings("unused")
-  public void setAdresseId(Integer adresseId) {
-    this.adresseId = adresseId;
-  }
-
-  public String getStrasse() {
-    return strasse;
-  }
-
-  public void setStrasse(String strasse) {
-    this.strasse = strasse;
-  }
-
-  public String getHausnummer() {
-    return hausnummer;
-  }
-
-  public void setHausnummer(String hausnummer) {
-    this.hausnummer = hausnummer;
-  }
-
-  public String getPlz() {
-    return plz;
-  }
-
-  public void setPlz(String plz) {
-    this.plz = plz;
-  }
-
-  public String getOrt() {
-    return ort;
-  }
-
-  public void setOrt(String ort) {
-    this.ort = ort;
   }
 
   public String getStrasseHausnummer() {

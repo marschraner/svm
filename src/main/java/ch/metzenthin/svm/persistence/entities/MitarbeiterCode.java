@@ -6,6 +6,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
@@ -14,6 +16,8 @@ import java.util.List;
 @Entity
 @Table(name = "MitarbeiterCode")
 @DiscriminatorValue("Mitarbeiter")
+@Getter
+@Setter
 public class MitarbeiterCode extends Code {
 
   @ManyToMany(mappedBy = "mitarbeiterCodes")
@@ -21,11 +25,7 @@ public class MitarbeiterCode extends Code {
 
   public MitarbeiterCode() {}
 
-  public MitarbeiterCode(String kuerzel, String beschreibung, Boolean selektierbar) {
+  public MitarbeiterCode(String kuerzel, String beschreibung, boolean selektierbar) {
     super(kuerzel, beschreibung, selektierbar);
-  }
-
-  public List<Mitarbeiter> getMitarbeiters() {
-    return mitarbeiters;
   }
 }

@@ -5,8 +5,9 @@ import ch.metzenthin.svm.common.utils.SvmStringUtils;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Timestamp;
 import java.util.*;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
@@ -14,7 +15,9 @@ import java.util.*;
 @Entity
 @Table(name = "Semesterrechnung")
 @IdClass(SemesterrechnungId.class)
-public class Semesterrechnung implements Comparable<Semesterrechnung> {
+@Setter
+@Getter
+public class Semesterrechnung extends AbstractEntity implements Comparable<Semesterrechnung> {
 
   @Id
   @ManyToOne(optional = false)
@@ -26,17 +29,12 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
   @JoinColumn(name = "person_id")
   private Angehoeriger rechnungsempfaenger;
 
-  @SuppressWarnings("unused")
-  @Version
-  @Column(name = "last_updated")
-  private Timestamp version;
-
   @Enumerated(EnumType.STRING)
   @Column(name = "stipendium")
   private Stipendium stipendium;
 
   @Column(name = "gratiskinder", nullable = false)
-  private Boolean gratiskinder;
+  private boolean gratiskinder;
 
   @Temporal(TemporalType.DATE)
   @Column(name = "rechnungsdatum_vorrechnung")
@@ -135,7 +133,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
   private String bemerkungen;
 
   @Column(name = "deleted", nullable = false)
-  private Boolean deleted;
+  private boolean deleted;
 
   public Semesterrechnung() {}
 
@@ -144,7 +142,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
       Semester semester,
       Angehoeriger rechnungsempfaenger,
       Stipendium stipendium,
-      Boolean gratiskinder,
+      boolean gratiskinder,
       Calendar rechnungsdatumVorrechnung,
       BigDecimal ermaessigungVorrechnung,
       String ermaessigungsgrundVorrechnung,
@@ -172,7 +170,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
       Calendar datumZahlung3Nachrechnung,
       BigDecimal betragZahlung3Nachrechnung,
       String bemerkungen,
-      Boolean deleted) {
+      boolean deleted) {
     this.semester = semester;
     this.rechnungsempfaenger = rechnungsempfaenger;
     this.stipendium = stipendium;
@@ -243,7 +241,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     this.datumZahlung3Nachrechnung = otherSemesterrechnung.datumZahlung3Nachrechnung;
     this.betragZahlung3Nachrechnung = otherSemesterrechnung.betragZahlung3Nachrechnung;
     this.bemerkungen = otherSemesterrechnung.getBemerkungen();
-    this.deleted = otherSemesterrechnung.getDeleted();
+    this.deleted = otherSemesterrechnung.isDeleted();
   }
 
   @Override
@@ -284,250 +282,6 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     return result;
   }
 
-  public Semester getSemester() {
-    return semester;
-  }
-
-  public void setSemester(Semester semester) {
-    this.semester = semester;
-  }
-
-  public Angehoeriger getRechnungsempfaenger() {
-    return rechnungsempfaenger;
-  }
-
-  public void setRechnungsempfaenger(Angehoeriger rechnungsempfaenger) {
-    this.rechnungsempfaenger = rechnungsempfaenger;
-  }
-
-  public Stipendium getStipendium() {
-    return stipendium;
-  }
-
-  public void setStipendium(Stipendium stipendium) {
-    this.stipendium = stipendium;
-  }
-
-  public Boolean getGratiskinder() {
-    return gratiskinder;
-  }
-
-  public void setGratiskinder(Boolean gratiskinder) {
-    this.gratiskinder = gratiskinder;
-  }
-
-  public Calendar getRechnungsdatumVorrechnung() {
-    return rechnungsdatumVorrechnung;
-  }
-
-  public void setRechnungsdatumVorrechnung(Calendar rechnungsdatumVorrechnung) {
-    this.rechnungsdatumVorrechnung = rechnungsdatumVorrechnung;
-  }
-
-  public BigDecimal getErmaessigungVorrechnung() {
-    return ermaessigungVorrechnung;
-  }
-
-  public void setErmaessigungVorrechnung(BigDecimal ermaessigungVorrechnung) {
-    this.ermaessigungVorrechnung = ermaessigungVorrechnung;
-  }
-
-  public String getErmaessigungsgrundVorrechnung() {
-    return ermaessigungsgrundVorrechnung;
-  }
-
-  public void setErmaessigungsgrundVorrechnung(String ermaessigungsgrundVorrechnung) {
-    this.ermaessigungsgrundVorrechnung = ermaessigungsgrundVorrechnung;
-  }
-
-  public BigDecimal getZuschlagVorrechnung() {
-    return zuschlagVorrechnung;
-  }
-
-  public void setZuschlagVorrechnung(BigDecimal zuschlagVorrechnung) {
-    this.zuschlagVorrechnung = zuschlagVorrechnung;
-  }
-
-  public String getZuschlagsgrundVorrechnung() {
-    return zuschlagsgrundVorrechnung;
-  }
-
-  public void setZuschlagsgrundVorrechnung(String zuschlagsgrundVorrechnung) {
-    this.zuschlagsgrundVorrechnung = zuschlagsgrundVorrechnung;
-  }
-
-  public Integer getAnzahlWochenVorrechnung() {
-    return anzahlWochenVorrechnung;
-  }
-
-  public void setAnzahlWochenVorrechnung(Integer anzahlWochenVorrechnung) {
-    this.anzahlWochenVorrechnung = anzahlWochenVorrechnung;
-  }
-
-  public BigDecimal getWochenbetragVorrechnung() {
-    return wochenbetragVorrechnung;
-  }
-
-  public void setWochenbetragVorrechnung(BigDecimal wochenbetragVorrechnung) {
-    this.wochenbetragVorrechnung = wochenbetragVorrechnung;
-  }
-
-  public Calendar getDatumZahlung1Vorrechnung() {
-    return datumZahlung1Vorrechnung;
-  }
-
-  public void setDatumZahlung1Vorrechnung(Calendar datumZahlung1Vorrechnung) {
-    this.datumZahlung1Vorrechnung = datumZahlung1Vorrechnung;
-  }
-
-  public BigDecimal getBetragZahlung1Vorrechnung() {
-    return betragZahlung1Vorrechnung;
-  }
-
-  public void setBetragZahlung1Vorrechnung(BigDecimal betragZahlung1Vorrechnung) {
-    this.betragZahlung1Vorrechnung = betragZahlung1Vorrechnung;
-  }
-
-  public Calendar getDatumZahlung2Vorrechnung() {
-    return datumZahlung2Vorrechnung;
-  }
-
-  public void setDatumZahlung2Vorrechnung(Calendar datumZahlung2Vorrechnung) {
-    this.datumZahlung2Vorrechnung = datumZahlung2Vorrechnung;
-  }
-
-  public BigDecimal getBetragZahlung2Vorrechnung() {
-    return betragZahlung2Vorrechnung;
-  }
-
-  public void setBetragZahlung2Vorrechnung(BigDecimal betragZahlung2Vorrechnung) {
-    this.betragZahlung2Vorrechnung = betragZahlung2Vorrechnung;
-  }
-
-  public Calendar getDatumZahlung3Vorrechnung() {
-    return datumZahlung3Vorrechnung;
-  }
-
-  public void setDatumZahlung3Vorrechnung(Calendar datumZahlung3Vorrechnung) {
-    this.datumZahlung3Vorrechnung = datumZahlung3Vorrechnung;
-  }
-
-  public BigDecimal getBetragZahlung3Vorrechnung() {
-    return betragZahlung3Vorrechnung;
-  }
-
-  public void setBetragZahlung3Vorrechnung(BigDecimal betragZahlung3Vorrechnung) {
-    this.betragZahlung3Vorrechnung = betragZahlung3Vorrechnung;
-  }
-
-  public Calendar getRechnungsdatumNachrechnung() {
-    return rechnungsdatumNachrechnung;
-  }
-
-  public void setRechnungsdatumNachrechnung(Calendar rechnungsdatumNachrechnung) {
-    this.rechnungsdatumNachrechnung = rechnungsdatumNachrechnung;
-  }
-
-  public BigDecimal getErmaessigungNachrechnung() {
-    return ermaessigungNachrechnung;
-  }
-
-  public void setErmaessigungNachrechnung(BigDecimal ermaessigungNachrechnung) {
-    this.ermaessigungNachrechnung = ermaessigungNachrechnung;
-  }
-
-  public String getErmaessigungsgrundNachrechnung() {
-    return ermaessigungsgrundNachrechnung;
-  }
-
-  public void setErmaessigungsgrundNachrechnung(String ermaessigungsgrundNachrechnung) {
-    this.ermaessigungsgrundNachrechnung = ermaessigungsgrundNachrechnung;
-  }
-
-  public BigDecimal getZuschlagNachrechnung() {
-    return zuschlagNachrechnung;
-  }
-
-  public void setZuschlagNachrechnung(BigDecimal zuschlagNachrechnung) {
-    this.zuschlagNachrechnung = zuschlagNachrechnung;
-  }
-
-  public String getZuschlagsgrundNachrechnung() {
-    return zuschlagsgrundNachrechnung;
-  }
-
-  public void setZuschlagsgrundNachrechnung(String zuschlagsgrundNachrechnung) {
-    this.zuschlagsgrundNachrechnung = zuschlagsgrundNachrechnung;
-  }
-
-  public Integer getAnzahlWochenNachrechnung() {
-    return anzahlWochenNachrechnung;
-  }
-
-  public void setAnzahlWochenNachrechnung(Integer anzahlWochenNachrechnung) {
-    this.anzahlWochenNachrechnung = anzahlWochenNachrechnung;
-  }
-
-  public BigDecimal getWochenbetragNachrechnung() {
-    return wochenbetragNachrechnung;
-  }
-
-  public void setWochenbetragNachrechnung(BigDecimal wochenbetragNachrechnung) {
-    this.wochenbetragNachrechnung = wochenbetragNachrechnung;
-  }
-
-  public Calendar getDatumZahlung1Nachrechnung() {
-    return datumZahlung1Nachrechnung;
-  }
-
-  public void setDatumZahlung1Nachrechnung(Calendar datumZahlung1Nachrechnung) {
-    this.datumZahlung1Nachrechnung = datumZahlung1Nachrechnung;
-  }
-
-  public BigDecimal getBetragZahlung1Nachrechnung() {
-    return betragZahlung1Nachrechnung;
-  }
-
-  public void setBetragZahlung1Nachrechnung(BigDecimal betragZahlung1Nachrechnung) {
-    this.betragZahlung1Nachrechnung = betragZahlung1Nachrechnung;
-  }
-
-  public Calendar getDatumZahlung2Nachrechnung() {
-    return datumZahlung2Nachrechnung;
-  }
-
-  public void setDatumZahlung2Nachrechnung(Calendar datumZahlung2Nachrechnung) {
-    this.datumZahlung2Nachrechnung = datumZahlung2Nachrechnung;
-  }
-
-  public BigDecimal getBetragZahlung2Nachrechnung() {
-    return betragZahlung2Nachrechnung;
-  }
-
-  public void setBetragZahlung2Nachrechnung(BigDecimal betragZahlung2Nachrechnung) {
-    this.betragZahlung2Nachrechnung = betragZahlung2Nachrechnung;
-  }
-
-  public Calendar getDatumZahlung3Nachrechnung() {
-    return datumZahlung3Nachrechnung;
-  }
-
-  public void setDatumZahlung3Nachrechnung(Calendar datumZahlung3Nachrechnung) {
-    this.datumZahlung3Nachrechnung = datumZahlung3Nachrechnung;
-  }
-
-  public BigDecimal getBetragZahlung3Nachrechnung() {
-    return betragZahlung3Nachrechnung;
-  }
-
-  public void setBetragZahlung3Nachrechnung(BigDecimal betragZahlung3Nachrechnung) {
-    this.betragZahlung3Nachrechnung = betragZahlung3Nachrechnung;
-  }
-
-  public SemesterrechnungCode getSemesterrechnungCode() {
-    return semesterrechnungCode;
-  }
-
   public void setSemesterrechnungCode(SemesterrechnungCode semesterrechnungCode) {
     if (this.semesterrechnungCode != null) {
       deleteSemesterrechnungCode(this.semesterrechnungCode);
@@ -544,33 +298,9 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
     this.semesterrechnungCode = null;
   }
 
-  public String getBemerkungen() {
-    return bemerkungen;
-  }
-
   @Transient
   public String getBemerkungenLineBreaksReplacedByCommaOrPeriod() {
     return SvmStringUtils.replaceLineBreaksByCommaOrPeriod(bemerkungen);
-  }
-
-  public void setBemerkungen(String bemerkungen) {
-    this.bemerkungen = bemerkungen;
-  }
-
-  public Boolean getDeleted() {
-    return deleted;
-  }
-
-  public void setDeleted(Boolean deleted) {
-    this.deleted = deleted;
-  }
-
-  public boolean isSelektiert() {
-    return selektiert;
-  }
-
-  public void setSelektiert(boolean selektiert) {
-    this.selektiert = selektiert;
   }
 
   @Transient
@@ -613,7 +343,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
           rechnungsbetragVorrechnung.subtract(getErmaessigungStipendiumVorrechnung());
     }
     // Gratiskinder
-    if (gratiskinder != null && gratiskinder) {
+    if (gratiskinder) {
       rechnungsbetragVorrechnung = new BigDecimal("0.00");
     }
     // Zuschlag / Ermässigung
@@ -686,7 +416,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
           rechnungsbetragNachrechnung.subtract(getErmaessigungStipendiumNachrechnung());
     }
     // Gratiskinder
-    if (gratiskinder != null && gratiskinder) {
+    if (gratiskinder) {
       rechnungsbetragNachrechnung = new BigDecimal("0.00");
     }
     // Zuschlag / Ermässigung
@@ -782,8 +512,7 @@ public class Semesterrechnung implements Comparable<Semesterrechnung> {
                 // ...und 2.1 nicht abgemeldet
                 && (kursanmeldung.getAbmeldedatum() == null
                     // ...oder 2.2.1 abgemeldet und Abmeldedatum nach Rechnungsdatum Vorrechnung
-                    || (kursanmeldung.getAbmeldedatum() != null
-                        && rechnungsdatumVorrechnung != null
+                    || (rechnungsdatumVorrechnung != null
                         && !kursanmeldung.getAbmeldedatum().before(rechnungsdatumVorrechnung))
                     // ...oder 2.2.2 abgemeldet und Wochenbetrag Vorrechnung gleich null (d.h. keine
                     // Kurse mehr) und Ermässigung oder Zuschlag Vorrechnung ungleich null

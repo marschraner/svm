@@ -556,7 +556,7 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
     for (Semesterrechnung semesterrechnung : semesterrechnungenRechnungsempfaenger) {
       if (semesterrechnung.getRechnungsempfaenger().equals(rechnungsempfaenger)
           && semesterrechnung.getStipendium().equals(stipendium)
-          && semesterrechnung.getGratiskinder().equals(gratiskinder)
+          && semesterrechnung.isGratiskinder() == gratiskinder
           && semesterrechnung.getRechnungsdatumVorrechnung().equals(rechnungsdatumVorrechnung)
           && semesterrechnung.getErmaessigungVorrechnung().compareTo(ermaessigungVorrechnung) == 0
           && semesterrechnung
@@ -595,7 +595,7 @@ public class SaveOrUpdateSemesterrechnungCommandTest {
               == 0
           && semesterrechnung.getBemerkungen().equals(bemerkungen)
           && semesterrechnung.getSemesterrechnungCode().isIdenticalWith(semesterrechnungCode)
-          && semesterrechnung.getDeleted().equals(deleted)) {
+          && semesterrechnung.isDeleted() == deleted) {
         return true;
       }
     }

@@ -4,7 +4,9 @@ import ch.metzenthin.svm.domain.model.KursanmeldungenTableData;
 import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import java.io.Serial;
 import javax.swing.table.AbstractTableModel;
+import lombok.Getter;
 
+@Getter
 public class KursanmeldungenTableModel extends AbstractTableModel {
 
   @Serial private static final long serialVersionUID = 1L;
@@ -43,9 +45,5 @@ public class KursanmeldungenTableModel extends AbstractTableModel {
 
   public Kursanmeldung getKursanmeldungSelected(int rowIndex) {
     return kursanmeldungenTableData.getKursanmeldungSelected(rowIndex);
-  }
-
-  public KursanmeldungenTableData getKursanmeldungenTableData() {
-    return kursanmeldungenTableData;
   }
 }

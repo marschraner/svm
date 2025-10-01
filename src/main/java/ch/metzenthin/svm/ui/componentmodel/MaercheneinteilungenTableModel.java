@@ -4,7 +4,9 @@ import ch.metzenthin.svm.domain.model.MaercheneinteilungenTableData;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import java.io.Serial;
 import javax.swing.table.AbstractTableModel;
+import lombok.Getter;
 
+@Getter
 public class MaercheneinteilungenTableModel extends AbstractTableModel {
 
   @Serial private static final long serialVersionUID = 1L;
@@ -44,9 +46,5 @@ public class MaercheneinteilungenTableModel extends AbstractTableModel {
 
   public Maercheneinteilung getMaercheneinteilungSelected(int rowIndex) {
     return maercheneinteilungenTableData.getMaercheneinteilungSelected(rowIndex);
-  }
-
-  public MaercheneinteilungenTableData getMaercheneinteilungenTableData() {
-    return maercheneinteilungenTableData;
   }
 }

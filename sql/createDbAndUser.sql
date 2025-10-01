@@ -3,7 +3,7 @@
 
 -- Als root auszuführen.
 
--- hans@mars:.../svm/sql$ mysql -u root -p
+-- hans@mars:.../svm/sql$ mysql -u admin -p
 -- Enter password: 
 -- mysql> source createDbAndUser.sql
 

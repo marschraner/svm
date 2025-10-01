@@ -3,11 +3,27 @@ package ch.metzenthin.svm.persistence.entities;
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Geschlecht;
 import ch.metzenthin.svm.common.utils.SvmStringUtils;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
@@ -16,6 +32,8 @@ import java.util.List;
 @Entity
 @Table(name = "Schueler")
 @DiscriminatorValue("Schueler")
+@Getter
+@Setter
 public class Schueler extends Person {
 
   @Enumerated(EnumType.STRING)
@@ -99,37 +117,9 @@ public class Schueler extends Person {
     return super.toString() + abgemeldetInfo;
   }
 
-  public Geschlecht getGeschlecht() {
-    return geschlecht;
-  }
-
-  public void setGeschlecht(Geschlecht geschlecht) {
-    this.geschlecht = geschlecht;
-  }
-
-  public String getBemerkungen() {
-    return bemerkungen;
-  }
-
   @Transient
   public String getBemerkungenLineBreaksReplacedByHtmlBr() {
     return SvmStringUtils.replaceLineBreaksByHtmlBr(bemerkungen);
-  }
-
-  public void setBemerkungen(String bemerkungen) {
-    this.bemerkungen = bemerkungen;
-  }
-
-  public boolean isSelektiert() {
-    return selektiert;
-  }
-
-  public void setSelektiert(boolean selektiert) {
-    this.selektiert = selektiert;
-  }
-
-  public Angehoeriger getVater() {
-    return vater;
   }
 
   public void setVater(Angehoeriger vater) {
@@ -147,10 +137,6 @@ public class Schueler extends Person {
     this.vater = null;
   }
 
-  public Angehoeriger getMutter() {
-    return mutter;
-  }
-
   public void setMutter(Angehoeriger mutter) {
     if (this.mutter != null) {
       deleteMutter(this.mutter);
@@ -164,10 +150,6 @@ public class Schueler extends Person {
   public void deleteMutter(Angehoeriger mutter) {
     mutter.getKinderMutter().remove(this);
     this.mutter = null;
-  }
-
-  public Angehoeriger getRechnungsempfaenger() {
-    return rechnungsempfaenger;
   }
 
   public void setRechnungsempfaenger(Angehoeriger rechnungsempfaenger) {
@@ -216,10 +198,6 @@ public class Schueler extends Person {
     dispensationen.remove(dispensation);
   }
 
-  public List<SchuelerCode> getSchuelerCodes() {
-    return schuelerCodes;
-  }
-
   @Transient
   public List<SchuelerCode> getSortedSchuelerCodes() {
     List<SchuelerCode> sortedSchuelerCodes = new ArrayList<>(schuelerCodes);
@@ -255,19 +233,11 @@ public class Schueler extends Person {
     return schuelerCodesAsStr.toString();
   }
 
-  public List<Kursanmeldung> getKursanmeldungen() {
-    return kursanmeldungen;
-  }
-
   @Transient
   public List<Kursanmeldung> getSortedKursanmeldungen() {
     List<Kursanmeldung> sortedKursanmeldungen = new ArrayList<>(kursanmeldungen);
     Collections.sort(sortedKursanmeldungen);
     return sortedKursanmeldungen;
-  }
-
-  public List<Maercheneinteilung> getMaercheneinteilungen() {
-    return maercheneinteilungen;
   }
 
   @Transient

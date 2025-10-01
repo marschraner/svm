@@ -2,15 +2,18 @@ package ch.metzenthin.svm.persistence.entities;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
  */
 @Entity
 @Table(name = "Lektionsgebuehren")
-public class Lektionsgebuehren implements Comparable<Lektionsgebuehren> {
+@Setter
+@Getter
+public class Lektionsgebuehren extends AbstractEntity implements Comparable<Lektionsgebuehren> {
 
   public static final int MAX_KINDER = 6;
   public static final int MIN_ANZAHL_TAGE_SECHS_JAHRES_RABATT = 2125; // 5 Jahre und 10 Monate
@@ -18,11 +21,6 @@ public class Lektionsgebuehren implements Comparable<Lektionsgebuehren> {
   @Id
   @Column(name = "lektionslaenge")
   private Integer lektionslaenge;
-
-  @SuppressWarnings("unused")
-  @Version
-  @Column(name = "last_updated")
-  private Timestamp version;
 
   @Column(name = "betrag_1_kind", nullable = false)
   private BigDecimal betrag1Kind;
@@ -91,61 +89,5 @@ public class Lektionsgebuehren implements Comparable<Lektionsgebuehren> {
   @Override
   public int compareTo(Lektionsgebuehren otherLektionsgebuehren) {
     return lektionslaenge.compareTo(otherLektionsgebuehren.getLektionslaenge());
-  }
-
-  public Integer getLektionslaenge() {
-    return lektionslaenge;
-  }
-
-  public void setLektionslaenge(Integer lektionslaenge) {
-    this.lektionslaenge = lektionslaenge;
-  }
-
-  public BigDecimal getBetrag1Kind() {
-    return betrag1Kind;
-  }
-
-  public void setBetrag1Kind(BigDecimal betrag1Kind) {
-    this.betrag1Kind = betrag1Kind;
-  }
-
-  public BigDecimal getBetrag2Kinder() {
-    return betrag2Kinder;
-  }
-
-  public void setBetrag2Kinder(BigDecimal betrag2Kinder) {
-    this.betrag2Kinder = betrag2Kinder;
-  }
-
-  public BigDecimal getBetrag3Kinder() {
-    return betrag3Kinder;
-  }
-
-  public void setBetrag3Kinder(BigDecimal betrag3Kinder) {
-    this.betrag3Kinder = betrag3Kinder;
-  }
-
-  public BigDecimal getBetrag4Kinder() {
-    return betrag4Kinder;
-  }
-
-  public void setBetrag4Kinder(BigDecimal betrag4Kinder) {
-    this.betrag4Kinder = betrag4Kinder;
-  }
-
-  public BigDecimal getBetrag5Kinder() {
-    return betrag5Kinder;
-  }
-
-  public void setBetrag5Kinder(BigDecimal betrag5Kinder) {
-    this.betrag5Kinder = betrag5Kinder;
-  }
-
-  public BigDecimal getBetrag6Kinder() {
-    return betrag6Kinder;
-  }
-
-  public void setBetrag6Kinder(BigDecimal betrag6Kinder) {
-    this.betrag6Kinder = betrag6Kinder;
   }
 }
