@@ -39,7 +39,8 @@ public interface ModelFactory {
 
   KursorteModel createKursorteModel();
 
-  KursortErfassenModel createKursortErfassenModel(Optional<Kursort> kursortToBeModifiedOptional);
+  CreateOrUpdateKursortModel createCreateOrUpdateKursortModel(
+      Optional<Kursort> kursortToBeModifiedOptional);
 
   KurstypenModel createKurstypenModel();
 

@@ -2,10 +2,10 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.DialogClosedListener;
-import ch.metzenthin.svm.domain.model.KursortErfassenModel;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateKursortModel;
 import ch.metzenthin.svm.domain.model.KursorteModel;
 import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
-import ch.metzenthin.svm.ui.control.KursortErfassenController;
+import ch.metzenthin.svm.ui.control.CreateOrUpdateKursortController;
 import java.awt.*;
 import java.util.Locale;
 import javax.swing.*;
@@ -14,7 +14,7 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 
 @SuppressWarnings({"java:S100", "java:S1171", "java:S1450", "FieldCanBeLocal"})
-public class KursortErfassenDialog extends JDialog {
+public class CreateOrUpdateKursortDialog extends JDialog {
 
   // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
   private static final boolean DEFAULT_BUTTON_ENABLED = false;
@@ -28,7 +28,7 @@ public class KursortErfassenDialog extends JDialog {
   private JButton btnAbbrechen;
   private JLabel errLblBezeichnung;
 
-  public KursortErfassenDialog(
+  public CreateOrUpdateKursortDialog(
       SvmContext svmContext,
       KursorteTableModel kursorteTableModel,
       KursorteModel kursorteModel,
@@ -43,7 +43,7 @@ public class KursortErfassenDialog extends JDialog {
     if (DEFAULT_BUTTON_ENABLED) {
       getRootPane().setDefaultButton(btnSpeichern);
     }
-    createKursortErfassenController(
+    createOrUpdateKursortController(
         svmContext,
         kursorteTableModel,
         kursorteModel,
@@ -52,32 +52,32 @@ public class KursortErfassenDialog extends JDialog {
         dialogClosedListener);
   }
 
-  private void createKursortErfassenController(
+  private void createOrUpdateKursortController(
       SvmContext svmContext,
       KursorteTableModel kursorteTableModel,
       KursorteModel kursorteModel,
       int indexBearbeiten,
       boolean isBearbeiten,
       DialogClosedListener dialogClosedListener) {
-    KursortErfassenModel kursortErfassenModel =
+    CreateOrUpdateKursortModel createOrUpdateKursortModel =
         (isBearbeiten)
-            ? kursorteModel.createKursortErfassenModel(
+            ? kursorteModel.createOrUpdateKursortModel(
                 svmContext, kursorteTableModel, indexBearbeiten)
-            : kursorteModel.createKursortErfassenModel(svmContext, kursorteTableModel);
-    KursortErfassenController kursortErfassenController =
-        new KursortErfassenController(
-            kursortErfassenModel,
+            : kursorteModel.createOrUpdateKursortModel(svmContext, kursorteTableModel);
+    CreateOrUpdateKursortController createOrUpdateKursortController =
+        new CreateOrUpdateKursortController(
+            createOrUpdateKursortModel,
             isBearbeiten,
             DEFAULT_BUTTON_ENABLED,
             dialogClosedListener);
-    kursortErfassenController.setKursortErfassenDialog(this);
-    kursortErfassenController.setContentPane(contentPane);
-    kursortErfassenController.setTxtBezeichnung(txtBezeichnung);
-    kursortErfassenController.setCheckBoxSelektierbar(checkBoxSelektierbar);
-    kursortErfassenController.setBtnSpeichern(btnSpeichern);
-    kursortErfassenController.setBtnAbbrechen(btnAbbrechen);
-    kursortErfassenController.setErrLblBezeichnung(errLblBezeichnung);
-    kursortErfassenController.constructionDone();
+    createOrUpdateKursortController.setCreateOrUpdateKursortDialog(this);
+    createOrUpdateKursortController.setContentPane(contentPane);
+    createOrUpdateKursortController.setTxtBezeichnung(txtBezeichnung);
+    createOrUpdateKursortController.setCheckBoxSelektierbar(checkBoxSelektierbar);
+    createOrUpdateKursortController.setBtnSpeichern(btnSpeichern);
+    createOrUpdateKursortController.setBtnAbbrechen(btnAbbrechen);
+    createOrUpdateKursortController.setErrLblBezeichnung(errLblBezeichnung);
+    createOrUpdateKursortController.constructionDone();
   }
 
   private void initializeErrLbls() {

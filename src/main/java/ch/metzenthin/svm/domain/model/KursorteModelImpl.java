@@ -39,18 +39,18 @@ public class KursorteModelImpl extends AbstractModel implements KursorteModel {
   }
 
   @Override
-  public KursortErfassenModel createKursortErfassenModel(
+  public CreateOrUpdateKursortModel createOrUpdateKursortModel(
       SvmContext svmContext, KursorteTableModel kursorteTableModel) {
-    return svmContext.getModelFactory().createKursortErfassenModel(Optional.empty());
+    return svmContext.getModelFactory().createCreateOrUpdateKursortModel(Optional.empty());
   }
 
   @Override
-  public KursortErfassenModel createKursortErfassenModel(
+  public CreateOrUpdateKursortModel createOrUpdateKursortModel(
       SvmContext svmContext, KursorteTableModel kursorteTableModel, int indexKursortToBeModified) {
     Kursort kursortToBeModified = getSelectedKursort(kursorteTableModel, indexKursortToBeModified);
     return svmContext
         .getModelFactory()
-        .createKursortErfassenModel(Optional.of(kursortToBeModified));
+        .createCreateOrUpdateKursortModel(Optional.of(kursortToBeModified));
   }
 
   private static Kursort getSelectedKursort(

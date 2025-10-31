@@ -5,8 +5,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateKursortModel;
 import ch.metzenthin.svm.domain.model.DialogClosedListener;
-import ch.metzenthin.svm.domain.model.KursortErfassenModel;
 import ch.metzenthin.svm.service.result.SaveKursortResult;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -19,49 +19,50 @@ import org.apache.logging.log4j.Logger;
 /**
  * @author Martin Schraner
  */
-public class KursortErfassenController extends AbstractController {
+public class CreateOrUpdateKursortController extends AbstractController {
 
-  private static final Logger LOGGER = LogManager.getLogger(KursortErfassenController.class);
+  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateKursortController.class);
 
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
   private static final boolean MODEL_VALIDATION_MODE = false;
 
-  private final KursortErfassenModel kursortErfassenModel;
+  private final CreateOrUpdateKursortModel createOrUpdateKursortModel;
   private final boolean isBearbeiten;
   private final boolean defaultButtonEnabled;
   private final DialogClosedListener dialogClosedListener;
-  private JDialog kursortErfassenDialog;
+  private JDialog createOrUpdateKursortDialog;
   private JTextField txtBezeichnung;
   private JCheckBox checkBoxSelektierbar;
   @Setter private JLabel errLblBezeichnung;
   private JButton btnSpeichern;
 
-  public KursortErfassenController(
-      KursortErfassenModel kursortErfassenModel,
+  public CreateOrUpdateKursortController(
+      CreateOrUpdateKursortModel createOrUpdateKursortModel,
       boolean isBearbeiten,
       boolean defaultButtonEnabled,
       DialogClosedListener dialogClosedListener) {
-    super(kursortErfassenModel);
-    this.kursortErfassenModel = kursortErfassenModel;
+    super(createOrUpdateKursortModel);
+    this.createOrUpdateKursortModel = createOrUpdateKursortModel;
     this.isBearbeiten = isBearbeiten;
     this.defaultButtonEnabled = defaultButtonEnabled;
     this.dialogClosedListener = dialogClosedListener;
-    this.kursortErfassenModel.addPropertyChangeListener(this);
-    this.kursortErfassenModel.addDisableFieldsListener(this);
-    this.kursortErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-    this.kursortErfassenModel.addCompletedListener(this::onKursortErfassenModelCompleted);
+    this.createOrUpdateKursortModel.addPropertyChangeListener(this);
+    this.createOrUpdateKursortModel.addDisableFieldsListener(this);
+    this.createOrUpdateKursortModel.addMakeErrorLabelsInvisibleListener(this);
+    this.createOrUpdateKursortModel.addCompletedListener(
+        this::onCreateOrUpdateKursortModelCompleted);
     this.setModelValidationMode(MODEL_VALIDATION_MODE);
   }
 
   public void constructionDone() {
-    kursortErfassenModel.initializeCompleted();
+    createOrUpdateKursortModel.initializeCompleted();
   }
 
-  public void setKursortErfassenDialog(JDialog kursortErfassenDialog) {
+  public void setCreateOrUpdateKursortDialog(JDialog createOrUpdateKursortDialog) {
     // call onCancel() when cross is clicked
-    this.kursortErfassenDialog = kursortErfassenDialog;
-    kursortErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    kursortErfassenDialog.addWindowListener(
+    this.createOrUpdateKursortDialog = createOrUpdateKursortDialog;
+    createOrUpdateKursortDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    createOrUpdateKursortDialog.addWindowListener(
         new WindowAdapter() {
           @Override
           public void windowClosing(WindowEvent e) {
@@ -93,9 +94,9 @@ public class KursortErfassenController extends AbstractController {
   }
 
   private void onBezeichnungEvent(boolean showRequiredErrMsg) {
-    LOGGER.trace("KursortErfassenController Event Bezeichnung");
+    LOGGER.trace("CreateOrUpdateKursortController Event Bezeichnung");
     boolean equalFieldAndModelValue =
-        equalsNullSafe(txtBezeichnung.getText(), kursortErfassenModel.getBezeichnung());
+        equalsNullSafe(txtBezeichnung.getText(), createOrUpdateKursortModel.getBezeichnung());
     try {
       setModelBezeichnung(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -112,10 +113,11 @@ public class KursortErfassenController extends AbstractController {
   private void setModelBezeichnung(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.BEZEICHNUNG);
     try {
-      kursortErfassenModel.setBezeichnung(txtBezeichnung.getText());
+      createOrUpdateKursortModel.setBezeichnung(txtBezeichnung.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "KursortErfassenController setModelBezeichnung RequiredException={}", e.getMessage());
+          "CreateOrUpdateKursortController setModelBezeichnung RequiredException={}",
+          e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtBezeichnung.setToolTipText(e.getMessage());
         // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
@@ -125,7 +127,8 @@ public class KursortErfassenController extends AbstractController {
       }
       throw e;
     } catch (SvmValidationException e) {
-      LOGGER.trace("KursortErfassenController setModelBezeichnung Exception={}", e.getMessage());
+      LOGGER.trace(
+          "CreateOrUpdateKursortController setModelBezeichnung Exception={}", e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -135,13 +138,13 @@ public class KursortErfassenController extends AbstractController {
     this.checkBoxSelektierbar = checkBoxSelektierbar;
     // Selektierbar als Default-Wert
     if (!isBearbeiten) {
-      kursortErfassenModel.setSelektierbar(true);
+      createOrUpdateKursortModel.setSelektierbar(true);
     }
     this.checkBoxSelektierbar.addItemListener(e -> onSelektierbarEvent());
   }
 
   private void setModelSelektierbar() {
-    kursortErfassenModel.setSelektierbar(checkBoxSelektierbar.isSelected());
+    createOrUpdateKursortModel.setSelektierbar(checkBoxSelektierbar.isSelected());
   }
 
   private void onSelektierbarEvent() {
@@ -165,11 +168,11 @@ public class KursortErfassenController extends AbstractController {
       return;
     }
 
-    SaveKursortResult saveKursortResult = kursortErfassenModel.speichern();
+    SaveKursortResult saveKursortResult = createOrUpdateKursortModel.speichern();
     switch (saveKursortResult) {
       case KURSORT_BEREITS_ERFASST -> {
         JOptionPane.showMessageDialog(
-            kursortErfassenDialog,
+            createOrUpdateKursortDialog,
             "Bezeichnung bereits in Verwendung.",
             "Fehler",
             JOptionPane.ERROR_MESSAGE);
@@ -178,7 +181,7 @@ public class KursortErfassenController extends AbstractController {
       case KURSORT_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
         closeDialog();
         JOptionPane.showMessageDialog(
-            kursortErfassenDialog,
+            createOrUpdateKursortDialog,
             "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
                 + "einen anderen Benutzer verändert oder gelöscht wurde.",
             "Fehler",
@@ -197,12 +200,12 @@ public class KursortErfassenController extends AbstractController {
   }
 
   private void closeDialog() {
-    kursortErfassenDialog.dispose();
+    createOrUpdateKursortDialog.dispose();
     dialogClosedListener.onDialogClosed();
   }
 
-  private void onKursortErfassenModelCompleted(boolean completed) {
-    LOGGER.trace("KursortErfassenModel completed={}", completed);
+  private void onCreateOrUpdateKursortModelCompleted(boolean completed) {
+    LOGGER.trace("CreateOrUpdateKursortModel completed={}", completed);
     if (completed) {
       btnSpeichern.setToolTipText(null);
       btnSpeichern.setEnabled(true);
@@ -216,9 +219,9 @@ public class KursortErfassenController extends AbstractController {
   void doPropertyChange(PropertyChangeEvent evt) {
     super.doPropertyChange(evt);
     if (checkIsFieldChange(Field.BEZEICHNUNG, evt)) {
-      txtBezeichnung.setText(kursortErfassenModel.getBezeichnung());
+      txtBezeichnung.setText(createOrUpdateKursortModel.getBezeichnung());
     } else if (checkIsFieldChange(Field.SELEKTIERBAR, evt)) {
-      checkBoxSelektierbar.setSelected(kursortErfassenModel.isSelektierbar());
+      checkBoxSelektierbar.setSelected(createOrUpdateKursortModel.isSelektierbar());
     }
   }
 

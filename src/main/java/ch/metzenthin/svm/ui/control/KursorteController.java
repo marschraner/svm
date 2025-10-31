@@ -9,7 +9,7 @@ import ch.metzenthin.svm.domain.model.KursorteModel;
 import ch.metzenthin.svm.domain.model.KursorteTableData;
 import ch.metzenthin.svm.service.result.DeleteKursortResult;
 import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
-import ch.metzenthin.svm.ui.components.KursortErfassenDialog;
+import ch.metzenthin.svm.ui.components.CreateOrUpdateKursortDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -71,11 +71,11 @@ public class KursorteController implements DialogClosedListener {
 
   private void onNeu() {
     btnNeu.setFocusPainted(true);
-    KursortErfassenDialog kursortErfassenDialog =
-        new KursortErfassenDialog(
+    CreateOrUpdateKursortDialog createOrUpdateKursortDialog =
+        new CreateOrUpdateKursortDialog(
             svmContext, kursorteTableModel, kursorteModel, 0, false, "Neuer Kursort", this);
-    kursortErfassenDialog.pack();
-    kursortErfassenDialog.setVisible(true);
+    createOrUpdateKursortDialog.pack();
+    createOrUpdateKursortDialog.setVisible(true);
     kursorteTableModel.fireTableDataChanged();
     btnNeu.setFocusPainted(false);
   }
@@ -92,8 +92,8 @@ public class KursorteController implements DialogClosedListener {
 
   private void onBearbeiten() {
     btnBearbeiten.setFocusPainted(true);
-    KursortErfassenDialog kursortErfassenDialog =
-        new KursortErfassenDialog(
+    CreateOrUpdateKursortDialog createOrUpdateKursortDialog =
+        new CreateOrUpdateKursortDialog(
             svmContext,
             kursorteTableModel,
             kursorteModel,
@@ -101,8 +101,8 @@ public class KursorteController implements DialogClosedListener {
             true,
             "Kursort bearbeiten",
             this);
-    kursortErfassenDialog.pack();
-    kursortErfassenDialog.setVisible(true);
+    createOrUpdateKursortDialog.pack();
+    createOrUpdateKursortDialog.setVisible(true);
     kursorteTableModel.fireTableDataChanged();
     btnBearbeiten.setFocusPainted(false);
   }

@@ -6,7 +6,7 @@ import ch.metzenthin.svm.service.result.SaveKursortResult;
 /**
  * @author Martin Schraner
  */
-public interface KursortErfassenModel extends Model {
+public interface CreateOrUpdateKursortModel extends Model {
 
   String getBezeichnung();
 

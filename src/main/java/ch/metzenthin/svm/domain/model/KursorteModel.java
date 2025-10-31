@@ -12,9 +12,9 @@ public interface KursorteModel extends Model {
   DeleteKursortResult eintragLoeschen(
       KursorteTableModel kursorteTableModel, int indexKursortToBeRemoved);
 
-  KursortErfassenModel createKursortErfassenModel(
+  CreateOrUpdateKursortModel createOrUpdateKursortModel(
       SvmContext svmContext, KursorteTableModel kursorteTableModel);
 
-  KursortErfassenModel createKursortErfassenModel(
+  CreateOrUpdateKursortModel createOrUpdateKursortModel(
       SvmContext svmContext, KursorteTableModel kursorteTableModel, int indexBearbeiten);
 }

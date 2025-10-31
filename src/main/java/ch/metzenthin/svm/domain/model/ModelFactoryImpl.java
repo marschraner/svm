@@ -94,9 +94,9 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
-  public KursortErfassenModel createKursortErfassenModel(
+  public CreateOrUpdateKursortModel createCreateOrUpdateKursortModel(
       Optional<Kursort> kursortToBeModifiedOptional) {
-    return new KursortErfassenModelImpl(kursortToBeModifiedOptional, kursortService);
+    return new CreateOrUpdateKursortModelImpl(kursortToBeModifiedOptional, kursortService);
   }
 
   @Override
