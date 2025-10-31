@@ -2,16 +2,17 @@ package ch.metzenthin.svm.ui.control;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.KursortErfassenModel;
-import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
+import ch.metzenthin.svm.service.result.SaveKursortResult;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 import javax.swing.*;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,29 +26,26 @@ public class KursortErfassenController extends AbstractController {
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
   private static final boolean MODEL_VALIDATION_MODE = false;
 
-  private final KursorteTableModel kursorteTableModel;
   private final KursortErfassenModel kursortErfassenModel;
   private final boolean isBearbeiten;
   private final boolean defaultButtonEnabled;
-  private final SvmContext svmContext;
+  private final DialogClosedListener dialogClosedListener;
   private JDialog kursortErfassenDialog;
   private JTextField txtBezeichnung;
   private JCheckBox checkBoxSelektierbar;
-  private JLabel errLblBezeichnung;
+  @Setter private JLabel errLblBezeichnung;
   private JButton btnSpeichern;
 
   public KursortErfassenController(
-      SvmContext svmContext,
-      KursorteTableModel kursorteTableModel,
       KursortErfassenModel kursortErfassenModel,
       boolean isBearbeiten,
-      boolean defaultButtonEnabled) {
+      boolean defaultButtonEnabled,
+      DialogClosedListener dialogClosedListener) {
     super(kursortErfassenModel);
-    this.svmContext = svmContext;
-    this.kursorteTableModel = kursorteTableModel;
     this.kursortErfassenModel = kursortErfassenModel;
     this.isBearbeiten = isBearbeiten;
     this.defaultButtonEnabled = defaultButtonEnabled;
+    this.dialogClosedListener = dialogClosedListener;
     this.kursortErfassenModel.addPropertyChangeListener(this);
     this.kursortErfassenModel.addDisableFieldsListener(this);
     this.kursortErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -153,10 +151,6 @@ public class KursortErfassenController extends AbstractController {
     setModelSelektierbar();
   }
 
-  public void setErrLblBezeichnung(JLabel errLblBezeichnung) {
-    this.errLblBezeichnung = errLblBezeichnung;
-  }
-
   public void setBtnSpeichern(JButton btnSpeichern) {
     this.btnSpeichern = btnSpeichern;
     if (isModelValidationMode()) {
@@ -170,16 +164,27 @@ public class KursortErfassenController extends AbstractController {
       btnSpeichern.setFocusPainted(false);
       return;
     }
-    if (kursortErfassenModel.checkKursortBezeichnungBereitsInVerwendung(svmContext.getSvmModel())) {
-      JOptionPane.showMessageDialog(
-          kursortErfassenDialog,
-          "Bezeichnung bereits in Verwendung.",
-          "Fehler",
-          JOptionPane.ERROR_MESSAGE);
-      btnSpeichern.setFocusPainted(false);
-    } else {
-      kursortErfassenModel.speichern(svmContext.getSvmModel(), kursorteTableModel);
-      kursortErfassenDialog.dispose();
+
+    SaveKursortResult saveKursortResult = kursortErfassenModel.speichern();
+    switch (saveKursortResult) {
+      case KURSORT_BEREITS_ERFASST -> {
+        JOptionPane.showMessageDialog(
+            kursortErfassenDialog,
+            "Bezeichnung bereits in Verwendung.",
+            "Fehler",
+            JOptionPane.ERROR_MESSAGE);
+        btnSpeichern.setFocusPainted(false);
+      }
+      case KURSORT_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+        closeDialog();
+        JOptionPane.showMessageDialog(
+            kursortErfassenDialog,
+            "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
+                + "einen anderen Benutzer verändert oder gelöscht wurde.",
+            "Fehler",
+            JOptionPane.ERROR_MESSAGE);
+      }
+      case SPEICHERN_ERFOLGREICH -> closeDialog();
     }
   }
 
@@ -188,7 +193,12 @@ public class KursortErfassenController extends AbstractController {
   }
 
   private void onAbbrechen() {
+    closeDialog();
+  }
+
+  private void closeDialog() {
     kursortErfassenDialog.dispose();
+    dialogClosedListener.onDialogClosed();
   }
 
   private void onKursortErfassenModelCompleted(boolean completed) {

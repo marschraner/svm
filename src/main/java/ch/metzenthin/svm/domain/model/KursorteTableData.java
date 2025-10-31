@@ -50,4 +50,8 @@ public class KursorteTableData {
   public void setKursorte(List<Kursort> kursorte) {
     this.kursorte = kursorte;
   }
+
+  public List<Kursort> getKursorte() {
+    return kursorte;
+  }
 }

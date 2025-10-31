@@ -1,8 +1,12 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.persistence.entities.Kursort;
+import java.util.Optional;
+
 /**
  * @author Hans Stamm
  */
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public interface ModelFactory {
 
   SvmModel createSvmModel();
@@ -35,7 +39,7 @@ public interface ModelFactory {
 
   KursorteModel createKursorteModel();
 
-  KursortErfassenModel createKursortErfassenModel();
+  KursortErfassenModel createKursortErfassenModel(Optional<Kursort> kursortToBeModifiedOptional);
 
   KurstypenModel createKurstypenModel();
 

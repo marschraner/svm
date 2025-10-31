@@ -55,6 +55,12 @@ public class StringModelAttribute {
 
   void setNewValue(boolean isRequired, String newValue, boolean isBulkUpdate)
       throws SvmValidationException {
+    setNewValue(isRequired, newValue, isBulkUpdate, false);
+  }
+
+  void setNewValue(
+      boolean isRequired, String newValue, boolean isBulkUpdate, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
     String newValueTrimmed = (newValue != null) ? newValue.trim() : "";
     if (!isBulkUpdate) {
       checkRequired(isRequired, newValueTrimmed);
@@ -69,7 +75,7 @@ public class StringModelAttribute {
         checkMaxLength(newValueFormatted);
       }
     }
-    String oldValue = getValue();
+    String oldValue = (enforcePropertyChangeEvent) ? "" : getValue();
     attributeAccessor.setValue(emptyStringAsNull(newValueFormatted));
     if (!equalsNullSafe(newValueTrimmed, newValueFormatted)
         && equalsNullSafe(oldValue, getValue())) {

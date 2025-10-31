@@ -1,14 +1,26 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.persistence.entities.Kursort;
+import ch.metzenthin.svm.service.KursortService;
+import java.util.Optional;
+import org.springframework.stereotype.Component;
+
 /**
  * @author Hans Stamm
  */
 @SuppressWarnings("java:S6539")
+@Component
 public class ModelFactoryImpl implements ModelFactory {
+
+  private final KursortService kursortService;
+
+  public ModelFactoryImpl(KursortService kursortService) {
+    this.kursortService = kursortService;
+  }
 
   @Override
   public SvmModel createSvmModel() {
-    return new SvmModelImpl();
+    return new SvmModelImpl(kursortService);
   }
 
   @Override
@@ -78,12 +90,13 @@ public class ModelFactoryImpl implements ModelFactory {
 
   @Override
   public KursorteModel createKursorteModel() {
-    return new KursorteModelImpl();
+    return new KursorteModelImpl(kursortService);
   }
 
   @Override
-  public KursortErfassenModel createKursortErfassenModel() {
-    return new KursortErfassenModelImpl();
+  public KursortErfassenModel createKursortErfassenModel(
+      Optional<Kursort> kursortToBeModifiedOptional) {
+    return new KursortErfassenModelImpl(kursortToBeModifiedOptional, kursortService);
   }
 
   @Override

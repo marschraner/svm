@@ -1,33 +1,32 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CheckKursortBezeichnungBereitsInVerwendungCommand;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.SaveOrUpdateKursortCommand;
 import ch.metzenthin.svm.persistence.entities.Kursort;
-import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
+import ch.metzenthin.svm.service.KursortService;
+import ch.metzenthin.svm.service.result.SaveKursortResult;
+import jakarta.persistence.OptimisticLockException;
+import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class KursortErfassenModelImpl extends AbstractModel implements KursortErfassenModel {
 
   private static final Logger LOGGER = LogManager.getLogger(KursortErfassenModelImpl.class);
 
-  private final Kursort kursort = new Kursort();
-  private Kursort kursortOrigin;
+  private final Kursort kursort;
+  private final KursortService kursortService;
 
-  @Override
-  public Kursort getKursort() {
-    return kursort;
-  }
-
-  @Override
-  public void setKursortOrigin(Kursort kursortOrigin) {
-    this.kursortOrigin = kursortOrigin;
+  public KursortErfassenModelImpl(
+      Optional<Kursort> kursortToBeModifiedOptional, KursortService kursortService) {
+    this.kursort = kursortToBeModifiedOptional.orElseGet(Kursort::new);
+    this.kursortService = kursortService;
   }
 
   private final StringModelAttribute bezeichnungModelAttribute =
@@ -55,12 +54,22 @@ public class KursortErfassenModelImpl extends AbstractModel implements KursortEr
 
   @Override
   public void setBezeichnung(String bezeichnung) throws SvmValidationException {
-    bezeichnungModelAttribute.setNewValue(true, bezeichnung, isBulkUpdate());
+    setBezeichnung(bezeichnung, false);
+  }
+
+  private void setBezeichnung(String bezeichnung, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    bezeichnungModelAttribute.setNewValue(
+        true, bezeichnung, isBulkUpdate(), enforcePropertyChangeEvent);
   }
 
   @Override
   public void setSelektierbar(Boolean isSelected) {
-    Boolean oldValue = kursort.isSelektierbar();
+    setSelektierbar(isSelected, false);
+  }
+
+  private void setSelektierbar(Boolean isSelected, boolean enforcePropertyChangeEvent) {
+    Boolean oldValue = (enforcePropertyChangeEvent) ? !isSelected : kursort.isSelektierbar();
     kursort.setSelektierbar(isSelected);
     firePropertyChange(Field.SELEKTIERBAR, oldValue, isSelected);
   }
@@ -71,35 +80,27 @@ public class KursortErfassenModelImpl extends AbstractModel implements KursortEr
   }
 
   @Override
-  public boolean checkKursortBezeichnungBereitsInVerwendung(SvmModel svmModel) {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    CheckKursortBezeichnungBereitsInVerwendungCommand
-        checkKursortBezeichnungBereitsInVerwendungCommand =
-            new CheckKursortBezeichnungBereitsInVerwendungCommand(
-                kursort, kursortOrigin, svmModel.getKursorteAll());
-    commandInvoker.executeCommand(checkKursortBezeichnungBereitsInVerwendungCommand);
-    return checkKursortBezeichnungBereitsInVerwendungCommand.isBereitsInVerwendung();
-  }
-
-  @Override
-  public void speichern(SvmModel svmModel, KursorteTableModel kursorteTableModel) {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    SaveOrUpdateKursortCommand saveOrUpdateKursortCommand =
-        new SaveOrUpdateKursortCommand(kursort, kursortOrigin, svmModel.getKursorteAll());
-    commandInvoker.executeCommandAsTransaction(saveOrUpdateKursortCommand);
-    // TableData mit von der Datenbank upgedateten Kursorten updaten
-    kursorteTableModel.getKursorteTableData().setKursorte(svmModel.getKursorteAll());
+  public SaveKursortResult speichern() {
+    SaveKursortResult saveKursortResult;
+    try {
+      kursortService.saveKursort(kursort);
+      saveKursortResult = SaveKursortResult.SPEICHERN_ERFOLGREICH;
+    } catch (EntityAlreadyExistsException e) {
+      saveKursortResult = SaveKursortResult.KURSORT_BEREITS_ERFASST;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      saveKursortResult = SaveKursortResult.KURSORT_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+    return saveKursortResult;
   }
 
   @SuppressWarnings("DuplicatedCode")
   @Override
   public void initializeCompleted() {
-    if (kursortOrigin != null) {
+    if (kursort.getKursortId() != null) {
       setBulkUpdate(true);
       try {
-        setBezeichnung(kursortOrigin.getBezeichnung());
-        setSelektierbar(!kursortOrigin.isSelektierbar()); // damit PropertyChange ausgelöst wird!
-        setSelektierbar(kursortOrigin.isSelektierbar());
+        setBezeichnung(kursort.getBezeichnung(), true);
+        setSelektierbar(kursort.isSelektierbar(), true);
       } catch (SvmValidationException e) {
         LOGGER.error(e.getMessage());
       }

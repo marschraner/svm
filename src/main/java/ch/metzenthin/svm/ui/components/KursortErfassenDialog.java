@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.KursortErfassenModel;
 import ch.metzenthin.svm.domain.model.KursorteModel;
 import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
@@ -12,7 +13,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 
-@SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
+@SuppressWarnings({"java:S100", "java:S1171", "java:S1450", "FieldCanBeLocal"})
 public class KursortErfassenDialog extends JDialog {
 
   // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
@@ -33,7 +34,8 @@ public class KursortErfassenDialog extends JDialog {
       KursorteModel kursorteModel,
       int indexBearbeiten,
       boolean isBearbeiten,
-      String title) {
+      String title,
+      DialogClosedListener dialogClosedListener) {
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
@@ -42,7 +44,12 @@ public class KursortErfassenDialog extends JDialog {
       getRootPane().setDefaultButton(btnSpeichern);
     }
     createKursortErfassenController(
-        svmContext, kursorteTableModel, kursorteModel, indexBearbeiten, isBearbeiten);
+        svmContext,
+        kursorteTableModel,
+        kursorteModel,
+        indexBearbeiten,
+        isBearbeiten,
+        dialogClosedListener);
   }
 
   private void createKursortErfassenController(
@@ -50,18 +57,19 @@ public class KursortErfassenDialog extends JDialog {
       KursorteTableModel kursorteTableModel,
       KursorteModel kursorteModel,
       int indexBearbeiten,
-      boolean isBearbeiten) {
+      boolean isBearbeiten,
+      DialogClosedListener dialogClosedListener) {
     KursortErfassenModel kursortErfassenModel =
-        (isBearbeiten
-            ? kursorteModel.getKursortErfassenModel(svmContext, indexBearbeiten)
-            : svmContext.getModelFactory().createKursortErfassenModel());
+        (isBearbeiten)
+            ? kursorteModel.createKursortErfassenModel(
+                svmContext, kursorteTableModel, indexBearbeiten)
+            : kursorteModel.createKursortErfassenModel(svmContext, kursorteTableModel);
     KursortErfassenController kursortErfassenController =
         new KursortErfassenController(
-            svmContext,
-            kursorteTableModel,
             kursortErfassenModel,
             isBearbeiten,
-            DEFAULT_BUTTON_ENABLED);
+            DEFAULT_BUTTON_ENABLED,
+            dialogClosedListener);
     kursortErfassenController.setKursortErfassenDialog(this);
     kursortErfassenController.setContentPane(contentPane);
     kursortErfassenController.setTxtBezeichnung(txtBezeichnung);

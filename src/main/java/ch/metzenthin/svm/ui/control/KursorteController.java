@@ -4,9 +4,10 @@ import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRen
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAsPercentages;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.commands.DeleteKursortCommand;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.KursorteModel;
 import ch.metzenthin.svm.domain.model.KursorteTableData;
+import ch.metzenthin.svm.service.result.DeleteKursortResult;
 import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
 import ch.metzenthin.svm.ui.components.KursortErfassenDialog;
 import java.awt.event.ActionEvent;
@@ -18,7 +19,7 @@ import javax.swing.*;
 /**
  * @author Martin Schraner
  */
-public class KursorteController {
+public class KursorteController implements DialogClosedListener {
   private final SvmContext svmContext;
   private final KursorteModel kursorteModel;
   private KursorteTableModel kursorteTableModel;
@@ -72,7 +73,7 @@ public class KursorteController {
     btnNeu.setFocusPainted(true);
     KursortErfassenDialog kursortErfassenDialog =
         new KursortErfassenDialog(
-            svmContext, kursorteTableModel, kursorteModel, 0, false, "Neuer Kursort");
+            svmContext, kursorteTableModel, kursorteModel, 0, false, "Neuer Kursort", this);
     kursortErfassenDialog.pack();
     kursortErfassenDialog.setVisible(true);
     kursorteTableModel.fireTableDataChanged();
@@ -98,7 +99,8 @@ public class KursorteController {
             kursorteModel,
             kursorteTable.getSelectedRow(),
             true,
-            "Kursort bearbeiten");
+            "Kursort bearbeiten",
+            this);
     kursortErfassenDialog.pack();
     kursortErfassenDialog.setVisible(true);
     kursorteTableModel.fireTableDataChanged();
@@ -129,20 +131,28 @@ public class KursorteController {
             options, // the titles of buttons
             options[1]); // default button title
     if (n == 0) {
-      DeleteKursortCommand.Result result =
-          kursorteModel.eintragLoeschen(
-              svmContext, kursorteTableModel, kursorteTable.getSelectedRow());
-      if (result == DeleteKursortCommand.Result.KURSORT_VON_KURS_REFERENZIERT) {
-        JOptionPane.showMessageDialog(
-            null,
-            "Der Kursort wird durch mindestens einen Kurs referenziert und "
-                + "kann nicht gelöscht werden.",
-            "Fehler",
-            JOptionPane.ERROR_MESSAGE);
-        btnLoeschen.setFocusPainted(false);
-      } else if (result == DeleteKursortCommand.Result.LOESCHEN_ERFOLGREICH) {
-        kursorteTableModel.fireTableDataChanged();
-        kursorteTable.addNotify();
+      DeleteKursortResult result =
+          kursorteModel.eintragLoeschen(kursorteTableModel, kursorteTable.getSelectedRow());
+      switch (result) {
+        case KURSORT_VON_KURS_REFERENZIERT -> {
+          JOptionPane.showMessageDialog(
+              null,
+              "Der Kursort wird durch mindestens einen Kurs referenziert und "
+                  + "kann nicht gelöscht werden.",
+              "Fehler",
+              JOptionPane.ERROR_MESSAGE);
+          btnLoeschen.setFocusPainted(false);
+        }
+        case KURSORT_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+          JOptionPane.showMessageDialog(
+              null,
+              "Der Kursort konnte nicht gelöscht werden, da der Eintrag unterdessen \n"
+                  + "durch einen anderen Benutzer verändert oder gelöscht wurde.",
+              "Fehler",
+              JOptionPane.ERROR_MESSAGE);
+          reloadTableModel();
+        }
+        case LOESCHEN_ERFOLGREICH -> reloadTableModel();
       }
     }
     btnLoeschen.setFocusPainted(false);
@@ -168,5 +178,19 @@ public class KursorteController {
 
   public void addCloseListener(ActionListener closeListener) {
     this.closeListener = closeListener;
+  }
+
+  @Override
+  public void onDialogClosed() {
+    reloadTableModel();
+  }
+
+  private void reloadTableModel() {
+    // TableData mit von der Datenbank upgedateten Kursorte updaten
+    kursorteTableModel
+        .getKursorteTableData()
+        .setKursorte(svmContext.getSvmModel().getKursorteAll());
+    kursorteTableModel.fireTableDataChanged();
+    kursorteTable.addNotify();
   }
 }
