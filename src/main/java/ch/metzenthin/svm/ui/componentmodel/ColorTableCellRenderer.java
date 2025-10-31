@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.ui.componentmodel;
 
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
-import java.awt.*;
 
 /**
  * @author Martin Schraner
@@ -12,18 +12,20 @@ import java.awt.*;
 
 public class ColorTableCellRenderer extends DefaultTableCellRenderer {
 
-    private final Color schriftfarbe;
+  private final Color schriftfarbe;
 
-    public ColorTableCellRenderer(Color schriftfarbe) {
-        super();
-        this.schriftfarbe = schriftfarbe;
-    }
+  public ColorTableCellRenderer(Color schriftfarbe) {
+    super();
+    this.schriftfarbe = schriftfarbe;
+  }
 
-    @Override
-    public Component getTableCellRendererComponent (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+  @Override
+  public Component getTableCellRendererComponent(
+      JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
-        Component cell = super.getTableCellRendererComponent (table, value, isSelected, hasFocus, row, column);
-        cell.setForeground(schriftfarbe);
-        return cell;
-    }
+    Component cell =
+        super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    cell.setForeground(schriftfarbe);
+    return cell;
+  }
 }

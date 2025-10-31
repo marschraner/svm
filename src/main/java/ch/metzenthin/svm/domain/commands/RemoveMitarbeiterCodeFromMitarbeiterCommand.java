@@ -9,26 +9,28 @@ import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
  */
 public class RemoveMitarbeiterCodeFromMitarbeiterCommand implements Command {
 
-    private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
+  private final MitarbeiterCodeDao mitarbeiterCodeDao = new MitarbeiterCodeDao();
 
-    // input
-    private final MitarbeiterCode mitarbeiterCodeToBeDeleted;
-    private final Mitarbeiter mitarbeiter;
+  // input
+  private final MitarbeiterCode mitarbeiterCodeToBeDeleted;
+  private final Mitarbeiter mitarbeiter;
 
-    // output
-    private Mitarbeiter mitarbeiterUpdated;
+  // output
+  private Mitarbeiter mitarbeiterUpdated;
 
-    RemoveMitarbeiterCodeFromMitarbeiterCommand(MitarbeiterCode mitarbeiterCodeToBeDeleted, Mitarbeiter mitarbeiter) {
-        this.mitarbeiterCodeToBeDeleted = mitarbeiterCodeToBeDeleted;
-        this.mitarbeiter = mitarbeiter;
-    }
+  RemoveMitarbeiterCodeFromMitarbeiterCommand(
+      MitarbeiterCode mitarbeiterCodeToBeDeleted, Mitarbeiter mitarbeiter) {
+    this.mitarbeiterCodeToBeDeleted = mitarbeiterCodeToBeDeleted;
+    this.mitarbeiter = mitarbeiter;
+  }
 
-    @Override
-    public void execute() {
-        mitarbeiterUpdated = mitarbeiterCodeDao.removeFromMitarbeiterAndUpdate(mitarbeiterCodeToBeDeleted, mitarbeiter);
-    }
+  @Override
+  public void execute() {
+    mitarbeiterUpdated =
+        mitarbeiterCodeDao.removeFromMitarbeiterAndUpdate(mitarbeiterCodeToBeDeleted, mitarbeiter);
+  }
 
-    Mitarbeiter getMitarbeiterUpdated() {
-        return mitarbeiterUpdated;
-    }
+  Mitarbeiter getMitarbeiterUpdated() {
+    return mitarbeiterUpdated;
+  }
 }

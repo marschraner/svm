@@ -8,18 +8,17 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class NumberTableCellRenderer extends DefaultTableCellRenderer {
 
-    public NumberTableCellRenderer() {
-        super();
-        setHorizontalAlignment(SwingConstants.RIGHT);
-    }
+  public NumberTableCellRenderer() {
+    super();
+    setHorizontalAlignment(SwingConstants.RIGHT);
+  }
 
-    @Override
-    public void setValue(Object value) {
-        if (value != null) {
-            setText(value.toString());
-        } else {
-            setText(null);
-        }
+  @Override
+  public void setValue(Object value) {
+    if (value != null) {
+      setText(value.toString());
+    } else {
+      setText(null);
     }
-
+  }
 }

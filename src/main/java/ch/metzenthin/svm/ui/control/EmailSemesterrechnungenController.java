@@ -5,196 +5,225 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.domain.model.EmailSemesterrechnungenModel;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
+import javax.swing.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Martin Schraner
  */
 public class EmailSemesterrechnungenController extends AbstractController {
 
-    private static final Logger LOGGER = LogManager.getLogger(EmailSemesterrechnungenController.class);
+  private static final Logger LOGGER =
+      LogManager.getLogger(EmailSemesterrechnungenController.class);
 
-    // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
-    private static final boolean MODEL_VALIDATION_MODE = false;
+  // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
+  private static final boolean MODEL_VALIDATION_MODE = false;
 
-    private final EmailSemesterrechnungenModel emailSemesterrechnungenModel;
-    private final SemesterrechnungenTableModel semesterrechnungenTableModel;
-    private JDialog emailDialog;
-    private JCheckBox checkBoxMutterUndOderVater;
-    private JCheckBox checkBoxRechnungsempfaenger;
-    private JCheckBox checkBoxBlindkopien;
-    private JButton btnOk;
+  private final EmailSemesterrechnungenModel emailSemesterrechnungenModel;
+  private final SemesterrechnungenTableModel semesterrechnungenTableModel;
+  private JDialog emailDialog;
+  private JCheckBox checkBoxMutterUndOderVater;
+  private JCheckBox checkBoxRechnungsempfaenger;
+  private JCheckBox checkBoxBlindkopien;
+  private JButton btnOk;
 
-    public EmailSemesterrechnungenController(EmailSemesterrechnungenModel emailSemesterrechnungenModel,
-                                             SemesterrechnungenTableModel semesterrechnungenTableModel) {
-        super(emailSemesterrechnungenModel);
-        this.emailSemesterrechnungenModel = emailSemesterrechnungenModel;
-        this.semesterrechnungenTableModel = semesterrechnungenTableModel;
-        this.emailSemesterrechnungenModel.addPropertyChangeListener(this);
-        this.emailSemesterrechnungenModel.addDisableFieldsListener(this);
-        this.emailSemesterrechnungenModel.addMakeErrorLabelsInvisibleListener(this);
-        this.setModelValidationMode(MODEL_VALIDATION_MODE);
-    }
+  public EmailSemesterrechnungenController(
+      EmailSemesterrechnungenModel emailSemesterrechnungenModel,
+      SemesterrechnungenTableModel semesterrechnungenTableModel) {
+    super(emailSemesterrechnungenModel);
+    this.emailSemesterrechnungenModel = emailSemesterrechnungenModel;
+    this.semesterrechnungenTableModel = semesterrechnungenTableModel;
+    this.emailSemesterrechnungenModel.addPropertyChangeListener(this);
+    this.emailSemesterrechnungenModel.addDisableFieldsListener(this);
+    this.emailSemesterrechnungenModel.addMakeErrorLabelsInvisibleListener(this);
+    this.setModelValidationMode(MODEL_VALIDATION_MODE);
+  }
 
-    public void constructionDone() {
-        // Initialisierung
-        emailSemesterrechnungenModel.setMutterUndOderVaterSelected(true);
-        emailSemesterrechnungenModel.setRechnungsempfaengerSelected(false);
-        emailSemesterrechnungenModel.setBlindkopien(true);
-        emailSemesterrechnungenModel.initializeCompleted();
-    }
+  public void constructionDone() {
+    // Initialisierung
+    emailSemesterrechnungenModel.setMutterUndOderVaterSelected(true);
+    emailSemesterrechnungenModel.setRechnungsempfaengerSelected(false);
+    emailSemesterrechnungenModel.setBlindkopien(true);
+    emailSemesterrechnungenModel.initializeCompleted();
+  }
 
-    public void setEmailSemesterrechnungenDialog(JDialog emailDialog) {
-        // call onCancel() when cross is clicked
-        this.emailDialog = emailDialog;
-        emailDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        emailDialog.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                onAbbrechen();
-            }
+  public void setEmailSemesterrechnungenDialog(JDialog emailDialog) {
+    // call onCancel() when cross is clicked
+    this.emailDialog = emailDialog;
+    emailDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    emailDialog.addWindowListener(
+        new WindowAdapter() {
+          @Override
+          public void windowClosing(WindowEvent e) {
+            onAbbrechen();
+          }
         });
-    }
+  }
 
-    public void setContentPane(JPanel contentPane) {
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(e -> onAbbrechen(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    }
+  public void setContentPane(JPanel contentPane) {
+    // call onCancel() on ESCAPE
+    contentPane.registerKeyboardAction(
+        e -> onAbbrechen(),
+        KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+  }
 
-    public void setCheckBoxMutterUndOderVater(JCheckBox checkBoxMutterUndOderVater) {
-        this.checkBoxMutterUndOderVater = checkBoxMutterUndOderVater;
-        this.checkBoxMutterUndOderVater.addItemListener(e -> onMutterUndOderVaterEvent());
-    }
+  public void setCheckBoxMutterUndOderVater(JCheckBox checkBoxMutterUndOderVater) {
+    this.checkBoxMutterUndOderVater = checkBoxMutterUndOderVater;
+    this.checkBoxMutterUndOderVater.addItemListener(e -> onMutterUndOderVaterEvent());
+  }
 
-    private void onMutterUndOderVaterEvent() {
-        LOGGER.trace("EmailSemesterrechnungenController Event MutterUndOderVater. Selected={}", checkBoxMutterUndOderVater.isSelected());
-        setModelMutterUndOderVater();
-    }
+  private void onMutterUndOderVaterEvent() {
+    LOGGER.trace(
+        "EmailSemesterrechnungenController Event MutterUndOderVater. Selected={}",
+        checkBoxMutterUndOderVater.isSelected());
+    setModelMutterUndOderVater();
+  }
 
-    private void setModelMutterUndOderVater() {
-        emailSemesterrechnungenModel.setMutterUndOderVaterSelected(checkBoxMutterUndOderVater.isSelected());
-    }
+  private void setModelMutterUndOderVater() {
+    emailSemesterrechnungenModel.setMutterUndOderVaterSelected(
+        checkBoxMutterUndOderVater.isSelected());
+  }
 
-    public void setCheckBoxRechnungsempfaenger(JCheckBox checkBoxRechnungsempfaenger) {
-        this.checkBoxRechnungsempfaenger = checkBoxRechnungsempfaenger;
-        this.checkBoxRechnungsempfaenger.addItemListener(e -> onRechnungsempfaengerEvent());
-    }
+  public void setCheckBoxRechnungsempfaenger(JCheckBox checkBoxRechnungsempfaenger) {
+    this.checkBoxRechnungsempfaenger = checkBoxRechnungsempfaenger;
+    this.checkBoxRechnungsempfaenger.addItemListener(e -> onRechnungsempfaengerEvent());
+  }
 
-    private void onRechnungsempfaengerEvent() {
-        LOGGER.trace("EmailSemesterrechnungenController Event Rechnungsempfaenger. Selected={}", checkBoxRechnungsempfaenger.isSelected());
-        setModelRechnungsempfaenger();
-    }
+  private void onRechnungsempfaengerEvent() {
+    LOGGER.trace(
+        "EmailSemesterrechnungenController Event Rechnungsempfaenger. Selected={}",
+        checkBoxRechnungsempfaenger.isSelected());
+    setModelRechnungsempfaenger();
+  }
 
-    private void setModelRechnungsempfaenger() {
-        emailSemesterrechnungenModel.setRechnungsempfaengerSelected(checkBoxRechnungsempfaenger.isSelected());
-    }
+  private void setModelRechnungsempfaenger() {
+    emailSemesterrechnungenModel.setRechnungsempfaengerSelected(
+        checkBoxRechnungsempfaenger.isSelected());
+  }
 
-    public void setCheckBoxBlindkopien(JCheckBox checkBoxBlindkopien) {
-        this.checkBoxBlindkopien = checkBoxBlindkopien;
-        this.checkBoxBlindkopien.addItemListener(e -> onBlindkopienEvent());
-    }
+  public void setCheckBoxBlindkopien(JCheckBox checkBoxBlindkopien) {
+    this.checkBoxBlindkopien = checkBoxBlindkopien;
+    this.checkBoxBlindkopien.addItemListener(e -> onBlindkopienEvent());
+  }
 
-    private void onBlindkopienEvent() {
-        LOGGER.trace("EmailSemesterrechnungenController Event Blindkopien. Selected={}", checkBoxBlindkopien.isSelected());
-        setModelBlindkopien();
-    }
+  private void onBlindkopienEvent() {
+    LOGGER.trace(
+        "EmailSemesterrechnungenController Event Blindkopien. Selected={}",
+        checkBoxBlindkopien.isSelected());
+    setModelBlindkopien();
+  }
 
-    private void setModelBlindkopien() {
-        emailSemesterrechnungenModel.setBlindkopien(checkBoxBlindkopien.isSelected());
-    }
+  private void setModelBlindkopien() {
+    emailSemesterrechnungenModel.setBlindkopien(checkBoxBlindkopien.isSelected());
+  }
 
-    public void setBtnOk(JButton btnOk) {
-        this.btnOk = btnOk;
-        this.btnOk.addActionListener(e -> onOk());
-    }
+  public void setBtnOk(JButton btnOk) {
+    this.btnOk = btnOk;
+    this.btnOk.addActionListener(e -> onOk());
+  }
 
-    @SuppressWarnings("DuplicatedCode")
-    private void onOk() {
-        if (!isModelValidationMode() && !validateOnSpeichern()) {
-            btnOk.setFocusPainted(false);
-            return;
-        }
-        CallDefaultEmailClientCommand.Result result = emailSemesterrechnungenModel.callEmailClient(semesterrechnungenTableModel);
-        if (result == CallDefaultEmailClientCommand.Result.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT) {
-            JOptionPane.showMessageDialog(emailDialog, "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE);
-        }
-        if (!emailSemesterrechnungenModel.getFehlendeEmailAdressen().isEmpty()) {
-            StringBuilder fehlend = new StringBuilder();
-            for (String emailAdresse : emailSemesterrechnungenModel.getFehlendeEmailAdressen()) {
-                fehlend.append(emailAdresse);
-                fehlend.append("\n");
-            }
-            fehlend.setLength(fehlend.length() - 1);
-            JOptionPane.showMessageDialog(emailDialog, "Für folgende Semesterrechnung(en) ist keine E-Mail-Adresse erfasst:\n" + fehlend, "Warnung", JOptionPane.WARNING_MESSAGE);
-        }
-        if (!emailSemesterrechnungenModel.getUngueltigeEmailAdressen().isEmpty()) {
-            StringBuilder ungueltig = new StringBuilder();
-            for (String emailAdresse : emailSemesterrechnungenModel.getUngueltigeEmailAdressen()) {
-                ungueltig.append(emailAdresse);
-                ungueltig.append("\n");
-            }
-            ungueltig.setLength(ungueltig.length() - 1);
-            JOptionPane.showMessageDialog(emailDialog, "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig und wurde(n) ignoriert:\n" + ungueltig, "Warnung", JOptionPane.WARNING_MESSAGE);
-        }
-        emailDialog.dispose();
+  @SuppressWarnings("DuplicatedCode")
+  private void onOk() {
+    if (!isModelValidationMode() && !validateOnSpeichern()) {
+      btnOk.setFocusPainted(false);
+      return;
     }
-
-    public void setBtnAbbrechen(JButton btnAbbrechen) {
-        btnAbbrechen.addActionListener(e -> onAbbrechen());
+    CallDefaultEmailClientCommand.Result result =
+        emailSemesterrechnungenModel.callEmailClient(semesterrechnungenTableModel);
+    if (result == CallDefaultEmailClientCommand.Result.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT) {
+      JOptionPane.showMessageDialog(
+          emailDialog,
+          "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.",
+          "Fehler",
+          JOptionPane.ERROR_MESSAGE);
     }
-
-    private void onAbbrechen() {
-        emailDialog.dispose();
+    if (!emailSemesterrechnungenModel.getFehlendeEmailAdressen().isEmpty()) {
+      StringBuilder fehlend = new StringBuilder();
+      for (String emailAdresse : emailSemesterrechnungenModel.getFehlendeEmailAdressen()) {
+        fehlend.append(emailAdresse);
+        fehlend.append("\n");
+      }
+      fehlend.setLength(fehlend.length() - 1);
+      JOptionPane.showMessageDialog(
+          emailDialog,
+          "Für folgende Semesterrechnung(en) ist keine E-Mail-Adresse erfasst:\n" + fehlend,
+          "Warnung",
+          JOptionPane.WARNING_MESSAGE);
     }
-
-    @Override
-    void doPropertyChange(PropertyChangeEvent evt) {
-        super.doPropertyChange(evt);
-        if (checkIsFieldChange(Field.RECHNUNGSEMPFAENGER, evt)) {
-            checkBoxRechnungsempfaenger.setSelected(emailSemesterrechnungenModel.isRechnungsempfaengerSelected());
-        } else if (checkIsFieldChange(Field.MUTTER_ODER_VATER, evt)) {
-            checkBoxMutterUndOderVater.setSelected(emailSemesterrechnungenModel.isMutterUndOderVaterSelected());
-        } else if (checkIsFieldChange(Field.BLINDKOPIEN, evt)) {
-            checkBoxBlindkopien.setSelected(emailSemesterrechnungenModel.isBlindkopien());
-        }
-        enableOrDisableOkButton();
+    if (!emailSemesterrechnungenModel.getUngueltigeEmailAdressen().isEmpty()) {
+      StringBuilder ungueltig = new StringBuilder();
+      for (String emailAdresse : emailSemesterrechnungenModel.getUngueltigeEmailAdressen()) {
+        ungueltig.append(emailAdresse);
+        ungueltig.append("\n");
+      }
+      ungueltig.setLength(ungueltig.length() - 1);
+      JOptionPane.showMessageDialog(
+          emailDialog,
+          "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig und wurde(n) ignoriert:\n"
+              + ungueltig,
+          "Warnung",
+          JOptionPane.WARNING_MESSAGE);
     }
+    emailDialog.dispose();
+  }
 
-    private void enableOrDisableOkButton() {
-        btnOk.setEnabled(checkBoxRechnungsempfaenger.isSelected() || checkBoxMutterUndOderVater.isSelected());
+  public void setBtnAbbrechen(JButton btnAbbrechen) {
+    btnAbbrechen.addActionListener(e -> onAbbrechen());
+  }
+
+  private void onAbbrechen() {
+    emailDialog.dispose();
+  }
+
+  @Override
+  void doPropertyChange(PropertyChangeEvent evt) {
+    super.doPropertyChange(evt);
+    if (checkIsFieldChange(Field.RECHNUNGSEMPFAENGER, evt)) {
+      checkBoxRechnungsempfaenger.setSelected(
+          emailSemesterrechnungenModel.isRechnungsempfaengerSelected());
+    } else if (checkIsFieldChange(Field.MUTTER_ODER_VATER, evt)) {
+      checkBoxMutterUndOderVater.setSelected(
+          emailSemesterrechnungenModel.isMutterUndOderVaterSelected());
+    } else if (checkIsFieldChange(Field.BLINDKOPIEN, evt)) {
+      checkBoxBlindkopien.setSelected(emailSemesterrechnungenModel.isBlindkopien());
     }
+    enableOrDisableOkButton();
+  }
 
-    @Override
-    void validateFields() throws SvmValidationException {
-        // Keine zu validierenden Felder
-    }
+  private void enableOrDisableOkButton() {
+    btnOk.setEnabled(
+        checkBoxRechnungsempfaenger.isSelected() || checkBoxMutterUndOderVater.isSelected());
+  }
 
-    @Override
-    void showErrMsg(SvmValidationException e) {
-        // Keine Fehlermeldungen
-    }
+  @Override
+  void validateFields() throws SvmValidationException {
+    // Keine zu validierenden Felder
+  }
 
-    @Override
-    void showErrMsgAsToolTip(SvmValidationException e) {
-        // Keine Fehlermeldungen
-    }
+  @Override
+  void showErrMsg(SvmValidationException e) {
+    // Keine Fehlermeldungen
+  }
 
-    @Override
-    public void makeErrorLabelsInvisible(Set<Field> fields) {
-        // Keine Fehlermeldungen
-    }
+  @Override
+  void showErrMsgAsToolTip(SvmValidationException e) {
+    // Keine Fehlermeldungen
+  }
 
-    @Override
-    public void disableFields(boolean disable, Set<Field> fields) {
-        // Keine zu deaktivierenden Felder
-    }
+  @Override
+  public void makeErrorLabelsInvisible(Set<Field> fields) {
+    // Keine Fehlermeldungen
+  }
 
+  @Override
+  public void disableFields(boolean disable, Set<Field> fields) {
+    // Keine zu deaktivierenden Felder
+  }
 }

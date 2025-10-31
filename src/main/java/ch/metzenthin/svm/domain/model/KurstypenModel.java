@@ -9,7 +9,8 @@ import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
  */
 public interface KurstypenModel extends Model {
 
-    DeleteKurstypCommand.Result eintragLoeschen(SvmContext svmContext, KurstypenTableModel kurstypenTableModel, int indexKurstypToBeRemoved);
+  DeleteKurstypCommand.Result eintragLoeschen(
+      SvmContext svmContext, KurstypenTableModel kurstypenTableModel, int indexKurstypToBeRemoved);
 
-    KurstypErfassenModel getKurstypErfassenModel(SvmContext svmContext, int indexBearbeiten);
+  KurstypErfassenModel getKurstypErfassenModel(SvmContext svmContext, int indexBearbeiten);
 }

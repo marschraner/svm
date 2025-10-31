@@ -7,16 +7,15 @@ import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
  */
 public abstract class SchuelerErfassenSaveResult {
 
-    private final ValidateSchuelerCommand.Result result;
+  private final ValidateSchuelerCommand.Result result;
 
-    protected SchuelerErfassenSaveResult(ValidateSchuelerCommand.Result result) {
-        this.result = result;
-    }
+  protected SchuelerErfassenSaveResult(ValidateSchuelerCommand.Result result) {
+    this.result = result;
+  }
 
-    public ValidateSchuelerCommand.Result getResult() {
-        return result;
-    }
+  public ValidateSchuelerCommand.Result getResult() {
+    return result;
+  }
 
-    public abstract void accept(SchuelerErfassenSaveResultVisitor visitor);
-
+  public abstract void accept(SchuelerErfassenSaveResultVisitor visitor);
 }

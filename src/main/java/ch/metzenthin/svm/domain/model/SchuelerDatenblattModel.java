@@ -9,97 +9,98 @@ import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
  */
 public interface SchuelerDatenblattModel {
 
-    String getSchuelerNachname();
+  String getSchuelerNachname();
 
-    String getSchuelerVorname();
+  String getSchuelerVorname();
 
-    String getLabelSchueler();
+  String getLabelSchueler();
 
-    String getSchuelerAsString();
+  String getSchuelerAsString();
 
-    String getMutterAsString();
+  String getMutterAsString();
 
-    String getVaterAsString();
+  String getVaterAsString();
 
-    String getLabelRechnungsempfaenger();
+  String getLabelRechnungsempfaenger();
 
-    String getRechnungsempfaengerAsString();
+  String getRechnungsempfaengerAsString();
 
-    String getGeschwisterAsString();
+  String getGeschwisterAsString();
 
-    String getLabelSchuelerGleicherRechnungsempfaenger1();
+  String getLabelSchuelerGleicherRechnungsempfaenger1();
 
-    String getLabelSchuelerGleicherRechnungsempfaenger2();
+  String getLabelSchuelerGleicherRechnungsempfaenger2();
 
-    String getSchuelerGleicherRechnungsempfaengerAsString();
+  String getSchuelerGleicherRechnungsempfaengerAsString();
 
-    String getSchuelerGeburtsdatumAsString();
+  String getSchuelerGeburtsdatumAsString();
 
-    String getAnmeldedatumAsString();
+  String getAnmeldedatumAsString();
 
-    String getAbmeldedatumAsString();
+  String getAbmeldedatumAsString();
 
-    String getFruehereAnmeldungenAsString();
+  String getFruehereAnmeldungenAsString();
 
-    String getBemerkungen();
+  String getBemerkungen();
 
-    String getDispensationsdauerAsString();
+  String getDispensationsdauerAsString();
 
-    String getDispensationsgrund();
+  String getDispensationsgrund();
 
-    String getFruehereDispensationenAsString();
+  String getFruehereDispensationenAsString();
 
-    String getSchuelerCodesAsString();
+  String getSchuelerCodesAsString();
 
-    String getSemesterKurseAsString(SvmModel svmModel);
+  String getSemesterKurseAsString(SvmModel svmModel);
 
-    String getKurseAsString(SvmModel svmModel);
+  String getKurseAsString(SvmModel svmModel);
 
-    String getMaerchen();
+  String getMaerchen();
 
-    String getGruppe();
+  String getGruppe();
 
-    String getRolle1();
+  String getRolle1();
 
-    String getBilderRolle1();
+  String getBilderRolle1();
 
-    String getRolle2();
+  String getRolle2();
 
-    String getBilderRolle2();
+  String getBilderRolle2();
 
-    String getRolle3();
+  String getRolle3();
 
-    String getBilderRolle3();
+  String getBilderRolle3();
 
-    String getElternmithilfe();
+  String getElternmithilfe();
 
-    String getElternmithilfeCode();
+  String getElternmithilfeCode();
 
-    String getKuchenVorstellungenAsString();
+  String getKuchenVorstellungenAsString();
 
-    String getZusatzattribut();
+  String getZusatzattribut();
 
-    String getBemerkungenMaerchen();
+  String getBemerkungenMaerchen();
 
-    DispensationenTableData getDispensationenTableData();
+  DispensationenTableData getDispensationenTableData();
 
-    CodesTableData getCodesTableData();
+  CodesTableData getCodesTableData();
 
-    KursanmeldungenTableData getKurseinteilungenTableData();
+  KursanmeldungenTableData getKurseinteilungenTableData();
 
-    MaercheneinteilungenTableData getMaercheneinteilungenTableData();
+  MaercheneinteilungenTableData getMaercheneinteilungenTableData();
 
-    SchuelerModel getSchuelerModel(SvmContext svmContext);
+  SchuelerModel getSchuelerModel(SvmContext svmContext);
 
-    AngehoerigerModel getMutterModel(SvmContext svmContext);
+  AngehoerigerModel getMutterModel(SvmContext svmContext);
 
-    AngehoerigerModel getVaterModel(SvmContext svmContext);
+  AngehoerigerModel getVaterModel(SvmContext svmContext);
 
-    AngehoerigerModel getRechnungsempfaengerModel(SvmContext svmContext);
+  AngehoerigerModel getRechnungsempfaengerModel(SvmContext svmContext);
 
-    Schueler getSchueler();
+  Schueler getSchueler();
 
-    void refreshSchuelerSuchenTableData(SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel);
+  void refreshSchuelerSuchenTableData(
+      SvmContext svmContext, SchuelerSuchenTableModel schuelerSuchenTableModel);
 
-    boolean checkIfStammdatenMitEmail();
+  boolean checkIfStammdatenMitEmail();
 }

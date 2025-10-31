@@ -9,34 +9,32 @@ import jakarta.persistence.EntityManager;
  */
 public class DispensationDao extends GenericDao<Dispensation, Integer> {
 
-    @Override
-    public Dispensation save(Dispensation dispensation) {
-        throw new NullPointerException("Operation not supported");
-    }
+  @Override
+  public Dispensation save(Dispensation dispensation) {
+    throw new NullPointerException("Operation not supported");
+  }
 
-    @Override
-    public void remove(Dispensation dispensation) {
-        throw new NullPointerException("Operation not supported");
-    }
+  @Override
+  public void remove(Dispensation dispensation) {
+    throw new NullPointerException("Operation not supported");
+  }
 
-    public Schueler addToSchuelerAndSave(Dispensation dispensation, Schueler schueler) {
-        schueler.addDispensation(dispensation);
-        EntityManager entityManager = db.getCurrentEntityManager();
-        entityManager.persist(schueler);
-        entityManager.flush();
-        entityManager.refresh(dispensation);
-        entityManager.refresh(schueler);
-        return schueler;
-    }
+  public Schueler addToSchuelerAndSave(Dispensation dispensation, Schueler schueler) {
+    schueler.addDispensation(dispensation);
+    EntityManager entityManager = db.getCurrentEntityManager();
+    entityManager.persist(schueler);
+    entityManager.flush();
+    entityManager.refresh(dispensation);
+    entityManager.refresh(schueler);
+    return schueler;
+  }
 
-    public Schueler removeFromSchuelerAndUpdate(Dispensation dispensation, Schueler schueler) {
-        schueler.deleteDispensation(dispensation);
-        EntityManager entityManager = db.getCurrentEntityManager();
-        entityManager.persist(schueler);
-        entityManager.flush();
-        entityManager.refresh(schueler);
-        return schueler;
-    }
-
+  public Schueler removeFromSchuelerAndUpdate(Dispensation dispensation, Schueler schueler) {
+    schueler.deleteDispensation(dispensation);
+    EntityManager entityManager = db.getCurrentEntityManager();
+    entityManager.persist(schueler);
+    entityManager.flush();
+    entityManager.refresh(schueler);
+    return schueler;
+  }
 }
-

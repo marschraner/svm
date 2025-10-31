@@ -7,19 +7,20 @@ import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
  */
 public class SchuelerErfassenUnerwarteterFehlerResult extends SchuelerErfassenSaveResult {
 
-    private final Throwable e;
+  private final Throwable e;
 
-    public SchuelerErfassenUnerwarteterFehlerResult(ValidateSchuelerCommand.Result result, Throwable e) {
-        super(result);
-        this.e = e;
-    }
+  public SchuelerErfassenUnerwarteterFehlerResult(
+      ValidateSchuelerCommand.Result result, Throwable e) {
+    super(result);
+    this.e = e;
+  }
 
-    @Override
-    public void accept(SchuelerErfassenSaveResultVisitor visitor) {
-        visitor.visit(this);
-    }
+  @Override
+  public void accept(SchuelerErfassenSaveResultVisitor visitor) {
+    visitor.visit(this);
+  }
 
-    public Throwable getFehler() {
-        return e;
-    }
+  public Throwable getFehler() {
+    return e;
+  }
 }

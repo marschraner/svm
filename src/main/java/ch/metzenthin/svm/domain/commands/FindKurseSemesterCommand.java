@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.persistence.daos.KursDao;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Semester;
-
 import java.util.List;
 
 /**
@@ -11,24 +10,24 @@ import java.util.List;
  */
 public class FindKurseSemesterCommand implements Command {
 
-    private final KursDao kursDao = new KursDao();
+  private final KursDao kursDao = new KursDao();
 
-    // input
-    private final Semester semester;
+  // input
+  private final Semester semester;
 
-    // output
-    private List<Kurs> kurseFound;
+  // output
+  private List<Kurs> kurseFound;
 
-    public FindKurseSemesterCommand(Semester semester) {
-        this.semester = semester;
-    }
+  public FindKurseSemesterCommand(Semester semester) {
+    this.semester = semester;
+  }
 
-    @Override
-    public void execute() {
-        kurseFound = kursDao.findKurseSemester(semester);
-    }
+  @Override
+  public void execute() {
+    kurseFound = kursDao.findKurseSemester(semester);
+  }
 
-    public List<Kurs> getKurseFound() {
-        return kurseFound;
-    }
+  public List<Kurs> getKurseFound() {
+    return kurseFound;
+  }
 }

@@ -7,7 +7,6 @@ import ch.metzenthin.svm.domain.commands.DetermineSemesterInitCommand;
 import ch.metzenthin.svm.domain.commands.FindKurseSemesterCommand;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Semester;
-
 import java.util.List;
 
 /**
@@ -15,43 +14,44 @@ import java.util.List;
  */
 public class KurseSemesterwahlModelImpl extends AbstractModel implements KurseSemesterwahlModel {
 
-    private Semester semester;
+  private Semester semester;
 
-    @Override
-    public Semester getSemester() {
-        return semester;
-    }
+  @Override
+  public Semester getSemester() {
+    return semester;
+  }
 
-    @Override
-    public void setSemester(Semester semester) {
-        Semester oldValue = this.semester;
-        this.semester = semester;
-        firePropertyChange(Field.SEMESTER, oldValue, this.semester);
-    }
+  @Override
+  public void setSemester(Semester semester) {
+    Semester oldValue = this.semester;
+    this.semester = semester;
+    firePropertyChange(Field.SEMESTER, oldValue, this.semester);
+  }
 
-    @Override
-    public Semester getInitSemester(SvmModel svmModel) {
-        DetermineSemesterInitCommand determineSemesterInitCommand = new DetermineSemesterInitCommand(svmModel, 40);
-        determineSemesterInitCommand.execute();
-        return determineSemesterInitCommand.getSemesterInit();
-    }
+  @Override
+  public Semester getInitSemester(SvmModel svmModel) {
+    DetermineSemesterInitCommand determineSemesterInitCommand =
+        new DetermineSemesterInitCommand(svmModel, 40);
+    determineSemesterInitCommand.execute();
+    return determineSemesterInitCommand.getSemesterInit();
+  }
 
-    @Override
-    public KurseTableData suchen() {
-        CommandInvoker commandInvoker = getCommandInvoker();
-        FindKurseSemesterCommand findKurseSemesterCommand = new FindKurseSemesterCommand(semester);
-        commandInvoker.executeCommand(findKurseSemesterCommand);
-        List<Kurs> kurseFound = findKurseSemesterCommand.getKurseFound();
-        return new KurseTableData(kurseFound);
-    }
+  @Override
+  public KurseTableData suchen() {
+    CommandInvoker commandInvoker = getCommandInvoker();
+    FindKurseSemesterCommand findKurseSemesterCommand = new FindKurseSemesterCommand(semester);
+    commandInvoker.executeCommand(findKurseSemesterCommand);
+    List<Kurs> kurseFound = findKurseSemesterCommand.getKurseFound();
+    return new KurseTableData(kurseFound);
+  }
 
-    @Override
-    void doValidate() throws SvmValidationException {
-        // Keine feldübergreifende Validierung notwendig
-    }
+  @Override
+  void doValidate() throws SvmValidationException {
+    // Keine feldübergreifende Validierung notwendig
+  }
 
-    @Override
-    public boolean isCompleted() {
-        return true;
-    }
+  @Override
+  public boolean isCompleted() {
+    return true;
+  }
 }

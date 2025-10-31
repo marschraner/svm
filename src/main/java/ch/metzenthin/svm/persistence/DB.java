@@ -7,7 +7,7 @@ import jakarta.persistence.EntityManager;
  */
 public interface DB {
 
-    EntityManager getCurrentEntityManager();
+  EntityManager getCurrentEntityManager();
 
-    void closeSession();
+  void closeSession();
 }

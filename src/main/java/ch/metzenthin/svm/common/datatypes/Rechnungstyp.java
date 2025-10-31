@@ -4,17 +4,17 @@ package ch.metzenthin.svm.common.datatypes;
  * @author Martin Schraner
  */
 public enum Rechnungstyp {
-    VORRECHNUNG("Vorrechnung"),
-    NACHRECHNUNG("Nachrechnung");
+  VORRECHNUNG("Vorrechnung"),
+  NACHRECHNUNG("Nachrechnung");
 
-    private final String name;
+  private final String name;
 
-    Rechnungstyp(String name) {
-        this.name = name;
-    }
+  Rechnungstyp(String name) {
+    this.name = name;
+  }
 
-    @Override
-    public String toString() {
-        return name;
-    }
+  @Override
+  public String toString() {
+    return name;
+  }
 }

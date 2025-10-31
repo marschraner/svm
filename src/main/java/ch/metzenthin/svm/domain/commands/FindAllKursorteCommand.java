@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.KursortDao;
 import ch.metzenthin.svm.persistence.entities.Kursort;
-
 import java.util.List;
 
 /**
@@ -10,18 +9,17 @@ import java.util.List;
  */
 public class FindAllKursorteCommand implements Command {
 
-    private final KursortDao kursortDao = new KursortDao();
+  private final KursortDao kursortDao = new KursortDao();
 
-    // output
-    private List<Kursort> kursorteAll;
+  // output
+  private List<Kursort> kursorteAll;
 
-    @Override
-    public void execute() {
-        kursorteAll = kursortDao.findAll();
-    }
+  @Override
+  public void execute() {
+    kursorteAll = kursortDao.findAll();
+  }
 
-    public List<Kursort> getKursorteAll() {
-        return kursorteAll;
-    }
-
+  public List<Kursort> getKursorteAll() {
+    return kursorteAll;
+  }
 }

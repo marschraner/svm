@@ -2,7 +2,6 @@ package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import jakarta.persistence.*;
-
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Objects;
@@ -15,180 +14,191 @@ import java.util.Properties;
 @Table(name = "Dispensation")
 public class Dispensation implements Comparable<Dispensation> {
 
-    private static final String DD_MM_YY_FORMAT = "%1$td.%1$tm.%1$tY";
+  private static final String DD_MM_YY_FORMAT = "%1$td.%1$tm.%1$tY";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "dispensation_id")
-    private Integer dispensationId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "dispensation_id")
+  private Integer dispensationId;
 
-    @SuppressWarnings("unused")
-    @Version
-    @Column(name = "last_updated")
-    private Timestamp version;
+  @SuppressWarnings("unused")
+  @Version
+  @Column(name = "last_updated")
+  private Timestamp version;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "dispensationsbeginn", nullable = false)
-    private Calendar dispensationsbeginn;
+  @Temporal(TemporalType.DATE)
+  @Column(name = "dispensationsbeginn", nullable = false)
+  private Calendar dispensationsbeginn;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "dispensationsende")
-    private Calendar dispensationsende;
+  @Temporal(TemporalType.DATE)
+  @Column(name = "dispensationsende")
+  private Calendar dispensationsende;
 
-    @Lob
-    @Column(name = "voraussichtliche_dauer", columnDefinition = "text")
-    private String voraussichtlicheDauer;
+  @Lob
+  @Column(name = "voraussichtliche_dauer", columnDefinition = "text")
+  private String voraussichtlicheDauer;
 
-    @Lob
-    @Column(name = "grund", columnDefinition = "text", nullable = false)
-    private String grund;
+  @Lob
+  @Column(name = "grund", columnDefinition = "text", nullable = false)
+  private String grund;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "schueler_id", nullable = false)
-    private Schueler schueler;
+  @ManyToOne(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "schueler_id", nullable = false)
+  private Schueler schueler;
 
-    @Transient
-    private final boolean neusteZuoberst;
+  @Transient private final boolean neusteZuoberst;
 
-    public Dispensation() {
-        Properties svmProperties = SvmProperties.getSvmProperties();
-        neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
-    }
+  public Dispensation() {
+    Properties svmProperties = SvmProperties.getSvmProperties();
+    neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
+  }
 
-    public Dispensation(Calendar dispensationsbeginn, Calendar dispensationsende, String voraussichtlicheDauer, String grund) {
-        this();
-        this.dispensationsbeginn = dispensationsbeginn;
-        this.dispensationsende = dispensationsende;
-        this.voraussichtlicheDauer = voraussichtlicheDauer;
-        this.grund = grund;
-    }
+  public Dispensation(
+      Calendar dispensationsbeginn,
+      Calendar dispensationsende,
+      String voraussichtlicheDauer,
+      String grund) {
+    this();
+    this.dispensationsbeginn = dispensationsbeginn;
+    this.dispensationsende = dispensationsende;
+    this.voraussichtlicheDauer = voraussichtlicheDauer;
+    this.grund = grund;
+  }
 
-    public boolean isIdenticalWith(Dispensation otherDispensation) {
-        return otherDispensation != null
-                && ((dispensationsbeginn == null && otherDispensation.getDispensationsbeginn() == null) || (dispensationsbeginn != null && dispensationsbeginn.equals(otherDispensation.getDispensationsbeginn())))
-                && ((dispensationsende == null && otherDispensation.getDispensationsende() == null) || (dispensationsende != null && dispensationsende.equals(otherDispensation.getDispensationsende())))
-                && ((voraussichtlicheDauer == null && otherDispensation.getVoraussichtlicheDauer() == null) || (voraussichtlicheDauer != null && voraussichtlicheDauer.equals(otherDispensation.getVoraussichtlicheDauer())))
-                && ((grund == null && otherDispensation.getGrund() == null) || (grund != null && grund.equals(otherDispensation.getGrund())));
-    }
+  public boolean isIdenticalWith(Dispensation otherDispensation) {
+    return otherDispensation != null
+        && ((dispensationsbeginn == null && otherDispensation.getDispensationsbeginn() == null)
+            || (dispensationsbeginn != null
+                && dispensationsbeginn.equals(otherDispensation.getDispensationsbeginn())))
+        && ((dispensationsende == null && otherDispensation.getDispensationsende() == null)
+            || (dispensationsende != null
+                && dispensationsende.equals(otherDispensation.getDispensationsende())))
+        && ((voraussichtlicheDauer == null && otherDispensation.getVoraussichtlicheDauer() == null)
+            || (voraussichtlicheDauer != null
+                && voraussichtlicheDauer.equals(otherDispensation.getVoraussichtlicheDauer())))
+        && ((grund == null && otherDispensation.getGrund() == null)
+            || (grund != null && grund.equals(otherDispensation.getGrund())));
+  }
 
-    public void copyAttributesFrom(Dispensation otherDispensation) {
-        this.dispensationsbeginn = otherDispensation.getDispensationsbeginn();
-        this.dispensationsende = otherDispensation.getDispensationsende();
-        this.voraussichtlicheDauer = otherDispensation.getVoraussichtlicheDauer();
-        this.grund = otherDispensation.getGrund();
-    }
+  public void copyAttributesFrom(Dispensation otherDispensation) {
+    this.dispensationsbeginn = otherDispensation.getDispensationsbeginn();
+    this.dispensationsende = otherDispensation.getDispensationsende();
+    this.voraussichtlicheDauer = otherDispensation.getVoraussichtlicheDauer();
+    this.grund = otherDispensation.getGrund();
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Dispensation that = (Dispensation) o;
-        return Objects.equals(dispensationsbeginn, that.dispensationsbeginn)
-                && Objects.equals(dispensationsende, that.dispensationsende)
-                && Objects.equals(voraussichtlicheDauer, that.voraussichtlicheDauer)
-                && Objects.equals(grund, that.grund)
-                && Objects.equals(schueler, that.schueler);
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Dispensation that = (Dispensation) o;
+    return Objects.equals(dispensationsbeginn, that.dispensationsbeginn)
+        && Objects.equals(dispensationsende, that.dispensationsende)
+        && Objects.equals(voraussichtlicheDauer, that.voraussichtlicheDauer)
+        && Objects.equals(grund, that.grund)
+        && Objects.equals(schueler, that.schueler);
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(
-                dispensationsbeginn, dispensationsende, voraussichtlicheDauer, grund, schueler);
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+        dispensationsbeginn, dispensationsende, voraussichtlicheDauer, grund, schueler);
+  }
 
-    @SuppressWarnings("java:S3776")
-    @Override
-    public int compareTo(Dispensation otherDispensation) {
-        // absteigend nach Dispensationsbeginn und Dispensationsende sortieren, d.h. neuste Einträge zuoberst
-        int result;
-        if (neusteZuoberst) {
-            result = otherDispensation.dispensationsbeginn.compareTo(dispensationsbeginn);
-            if (result == 0) {
-                if (dispensationsende != null && otherDispensation.dispensationsende != null) {
-                    result = otherDispensation.dispensationsende.compareTo(dispensationsende);
-                } else if (dispensationsende != null) {
-                    result = 1;
-                } else if (otherDispensation.dispensationsende != null) {
-                    result = -1;
-                }
-            }
-        } else {
-            result = dispensationsbeginn.compareTo(otherDispensation.dispensationsbeginn);
-            if (result == 0) {
-                if (dispensationsende != null && otherDispensation.dispensationsende != null) {
-                    result = dispensationsende.compareTo(otherDispensation.dispensationsende);
-                } else if (dispensationsende != null) {
-                    result = -1;
-                } else if (otherDispensation.dispensationsende != null) {
-                    result = 1;
-                }
-            }
+  @SuppressWarnings("java:S3776")
+  @Override
+  public int compareTo(Dispensation otherDispensation) {
+    // absteigend nach Dispensationsbeginn und Dispensationsende sortieren, d.h. neuste Einträge
+    // zuoberst
+    int result;
+    if (neusteZuoberst) {
+      result = otherDispensation.dispensationsbeginn.compareTo(dispensationsbeginn);
+      if (result == 0) {
+        if (dispensationsende != null && otherDispensation.dispensationsende != null) {
+          result = otherDispensation.dispensationsende.compareTo(dispensationsende);
+        } else if (dispensationsende != null) {
+          result = 1;
+        } else if (otherDispensation.dispensationsende != null) {
+          result = -1;
         }
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder dispensationSb = new StringBuilder();
-        if (dispensationsende == null) {
-            dispensationSb.append("Seit ").append(String.format(DD_MM_YY_FORMAT, dispensationsbeginn));
-        } else {
-            dispensationSb.append(String.format(DD_MM_YY_FORMAT, dispensationsbeginn));
-            dispensationSb.append(" - ").append(String.format(DD_MM_YY_FORMAT, dispensationsende));
+      }
+    } else {
+      result = dispensationsbeginn.compareTo(otherDispensation.dispensationsbeginn);
+      if (result == 0) {
+        if (dispensationsende != null && otherDispensation.dispensationsende != null) {
+          result = dispensationsende.compareTo(otherDispensation.dispensationsende);
+        } else if (dispensationsende != null) {
+          result = -1;
+        } else if (otherDispensation.dispensationsende != null) {
+          result = 1;
         }
-        if (voraussichtlicheDauer != null) {
-            dispensationSb.append(", voraussichtliche Dauer: ").append(voraussichtlicheDauer);
-        }
-        dispensationSb.append(", Grund: ").append(grund);
-        return dispensationSb.toString();
+      }
     }
+    return result;
+  }
 
-    public Integer getDispensationId() {
-        return dispensationId;
+  @Override
+  public String toString() {
+    StringBuilder dispensationSb = new StringBuilder();
+    if (dispensationsende == null) {
+      dispensationSb.append("Seit ").append(String.format(DD_MM_YY_FORMAT, dispensationsbeginn));
+    } else {
+      dispensationSb.append(String.format(DD_MM_YY_FORMAT, dispensationsbeginn));
+      dispensationSb.append(" - ").append(String.format(DD_MM_YY_FORMAT, dispensationsende));
     }
+    if (voraussichtlicheDauer != null) {
+      dispensationSb.append(", voraussichtliche Dauer: ").append(voraussichtlicheDauer);
+    }
+    dispensationSb.append(", Grund: ").append(grund);
+    return dispensationSb.toString();
+  }
 
-    @SuppressWarnings("unused")
-    public void setDispensationId(Integer dispensationId) {
-        this.dispensationId = dispensationId;
-    }
+  public Integer getDispensationId() {
+    return dispensationId;
+  }
 
-    public Calendar getDispensationsbeginn() {
-        return dispensationsbeginn;
-    }
+  @SuppressWarnings("unused")
+  public void setDispensationId(Integer dispensationId) {
+    this.dispensationId = dispensationId;
+  }
 
-    public void setDispensationsbeginn(Calendar dispensationsbeginn) {
-        this.dispensationsbeginn = dispensationsbeginn;
-    }
+  public Calendar getDispensationsbeginn() {
+    return dispensationsbeginn;
+  }
 
-    public Calendar getDispensationsende() {
-        return dispensationsende;
-    }
+  public void setDispensationsbeginn(Calendar dispensationsbeginn) {
+    this.dispensationsbeginn = dispensationsbeginn;
+  }
 
-    public void setDispensationsende(Calendar dispensationsende) {
-        this.dispensationsende = dispensationsende;
-    }
+  public Calendar getDispensationsende() {
+    return dispensationsende;
+  }
 
-    public String getVoraussichtlicheDauer() {
-        return voraussichtlicheDauer;
-    }
+  public void setDispensationsende(Calendar dispensationsende) {
+    this.dispensationsende = dispensationsende;
+  }
 
-    public void setVoraussichtlicheDauer(String voraussichtlicheDauer) {
-        this.voraussichtlicheDauer = voraussichtlicheDauer;
-    }
+  public String getVoraussichtlicheDauer() {
+    return voraussichtlicheDauer;
+  }
 
-    public String getGrund() {
-        return grund;
-    }
+  public void setVoraussichtlicheDauer(String voraussichtlicheDauer) {
+    this.voraussichtlicheDauer = voraussichtlicheDauer;
+  }
 
-    public void setGrund(String grund) {
-        this.grund = grund;
-    }
+  public String getGrund() {
+    return grund;
+  }
 
-    public Schueler getSchueler() {
-        return schueler;
-    }
+  public void setGrund(String grund) {
+    this.grund = grund;
+  }
 
-    public void setSchueler(Schueler schueler) {
-        this.schueler = schueler;
-    }
+  public Schueler getSchueler() {
+    return schueler;
+  }
+
+  public void setSchueler(Schueler schueler) {
+    this.schueler = schueler;
+  }
 }

@@ -9,19 +9,19 @@ import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
  */
 public interface KursortErfassenModel extends Model {
 
-    void setKursortOrigin(Kursort kursortOrigin);
+  void setKursortOrigin(Kursort kursortOrigin);
 
-    String getBezeichnung();
+  String getBezeichnung();
 
-    Boolean isSelektierbar();
+  Boolean isSelektierbar();
 
-    Kursort getKursort();
+  Kursort getKursort();
 
-    void setBezeichnung(String bezeichnung) throws SvmValidationException;
+  void setBezeichnung(String bezeichnung) throws SvmValidationException;
 
-    void setSelektierbar(Boolean isSelected);
+  void setSelektierbar(Boolean isSelected);
 
-    boolean checkKursortBezeichnungBereitsInVerwendung(SvmModel svmModel);
+  boolean checkKursortBezeichnungBereitsInVerwendung(SvmModel svmModel);
 
-    void speichern(SvmModel svmModel, KursorteTableModel kursorteTableModel);
+  void speichern(SvmModel svmModel, KursorteTableModel kursorteTableModel);
 }

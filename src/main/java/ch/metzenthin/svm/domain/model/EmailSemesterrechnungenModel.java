@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.commands.CallDefaultEmailClientCommand;
 import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
-
 import java.util.Set;
 
 /**
@@ -10,21 +9,22 @@ import java.util.Set;
  */
 public interface EmailSemesterrechnungenModel extends Model {
 
-    boolean isRechnungsempfaengerSelected();
+  boolean isRechnungsempfaengerSelected();
 
-    boolean isMutterUndOderVaterSelected();
+  boolean isMutterUndOderVaterSelected();
 
-    boolean isBlindkopien();
+  boolean isBlindkopien();
 
-    void setRechnungsempfaengerSelected(boolean selected);
+  void setRechnungsempfaengerSelected(boolean selected);
 
-    void setMutterUndOderVaterSelected(boolean selected);
+  void setMutterUndOderVaterSelected(boolean selected);
 
-    void setBlindkopien(boolean selected);
+  void setBlindkopien(boolean selected);
 
-    CallDefaultEmailClientCommand.Result callEmailClient(SemesterrechnungenTableModel semesterrechnungenTableModel);
+  CallDefaultEmailClientCommand.Result callEmailClient(
+      SemesterrechnungenTableModel semesterrechnungenTableModel);
 
-    Set<String> getFehlendeEmailAdressen();
+  Set<String> getFehlendeEmailAdressen();
 
-    Set<String> getUngueltigeEmailAdressen();
+  Set<String> getUngueltigeEmailAdressen();
 }

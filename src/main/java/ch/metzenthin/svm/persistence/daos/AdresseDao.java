@@ -5,5 +5,4 @@ import ch.metzenthin.svm.persistence.entities.Adresse;
 /**
  * @author Hans Stamm
  */
-class AdresseDao extends GenericDao<Adresse, Integer> {
-}
+class AdresseDao extends GenericDao<Adresse, Integer> {}

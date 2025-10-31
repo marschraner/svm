@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.commands;
 import ch.metzenthin.svm.common.datatypes.Schuljahre;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.entities.Semester;
-
 import java.util.List;
 
 /**
@@ -11,41 +10,44 @@ import java.util.List;
  */
 public class FindPreviousSemesterCommand implements Command {
 
-    // input
-    private final Semester currentSemester;
+  // input
+  private final Semester currentSemester;
 
-    // output
-    private Semester previousSemester;
+  // output
+  private Semester previousSemester;
 
-    public FindPreviousSemesterCommand(Semester currentSemester) {
-        this.currentSemester = currentSemester;
+  public FindPreviousSemesterCommand(Semester currentSemester) {
+    this.currentSemester = currentSemester;
+  }
+
+  @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
+  @Override
+  public void execute() {
+    if (currentSemester == null) {
+      return;
     }
+    String schuljahrPreviousSemester;
+    Semesterbezeichnung semesterbezeichnungPreviousSemester;
+    if (currentSemester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+      schuljahrPreviousSemester = Schuljahre.getPreviousSchuljahr(currentSemester.getSchuljahr());
+      semesterbezeichnungPreviousSemester = Semesterbezeichnung.ZWEITES_SEMESTER;
 
-    @SuppressWarnings({"DuplicatedCode", "ExtractMethodRecommender"})
-    @Override
-    public void execute() {
-        if (currentSemester == null) {
-            return;
-        }
-        String schuljahrPreviousSemester;
-        Semesterbezeichnung semesterbezeichnungPreviousSemester;
-        if (currentSemester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
-            schuljahrPreviousSemester = Schuljahre.getPreviousSchuljahr(currentSemester.getSchuljahr());
-            semesterbezeichnungPreviousSemester = Semesterbezeichnung.ZWEITES_SEMESTER;
-
-        } else {
-            schuljahrPreviousSemester = currentSemester.getSchuljahr();
-            semesterbezeichnungPreviousSemester = Semesterbezeichnung.ERSTES_SEMESTER;
-        }
-        FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
-        findAllSemestersCommand.execute();
-        List<Semester> semestersAll = findAllSemestersCommand.getSemestersAll();
-        FindSemesterForSchuljahrSemesterbezeichnungCommand findSemesterForSchuljahrSemesterbezeichnungCommand = new FindSemesterForSchuljahrSemesterbezeichnungCommand(schuljahrPreviousSemester, semesterbezeichnungPreviousSemester, semestersAll);
-        findSemesterForSchuljahrSemesterbezeichnungCommand.execute();
-        previousSemester = findSemesterForSchuljahrSemesterbezeichnungCommand.getSemesterFound();
+    } else {
+      schuljahrPreviousSemester = currentSemester.getSchuljahr();
+      semesterbezeichnungPreviousSemester = Semesterbezeichnung.ERSTES_SEMESTER;
     }
+    FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
+    findAllSemestersCommand.execute();
+    List<Semester> semestersAll = findAllSemestersCommand.getSemestersAll();
+    FindSemesterForSchuljahrSemesterbezeichnungCommand
+        findSemesterForSchuljahrSemesterbezeichnungCommand =
+            new FindSemesterForSchuljahrSemesterbezeichnungCommand(
+                schuljahrPreviousSemester, semesterbezeichnungPreviousSemester, semestersAll);
+    findSemesterForSchuljahrSemesterbezeichnungCommand.execute();
+    previousSemester = findSemesterForSchuljahrSemesterbezeichnungCommand.getSemesterFound();
+  }
 
-    public Semester getPreviousSemester() {
-        return previousSemester;
-    }
+  public Semester getPreviousSemester() {
+    return previousSemester;
+  }
 }

@@ -8,7 +8,13 @@ import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
  */
 public interface DispensationenModel {
 
-    DispensationErfassenModel getDispensationErfassenModel(SvmContext svmContext, SchuelerDatenblattModel schuelerDatenblattModel, int indexDispensationToBeModified);
+  DispensationErfassenModel getDispensationErfassenModel(
+      SvmContext svmContext,
+      SchuelerDatenblattModel schuelerDatenblattModel,
+      int indexDispensationToBeModified);
 
-    void eintragLoeschen(DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel, int indexDispensationToBeDeleted);
+  void eintragLoeschen(
+      DispensationenTableModel dispensationenTableModel,
+      SchuelerDatenblattModel schuelerDatenblattModel,
+      int indexDispensationToBeDeleted);
 }

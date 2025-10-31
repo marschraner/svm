@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
-
 import java.util.List;
 
 /**
@@ -9,32 +8,34 @@ import java.util.List;
  */
 public class CheckKurstypBezeichnungBereitsInVerwendungCommand implements Command {
 
-    // input
-    private final Kurstyp kurstyp;
-    private final Kurstyp kurstypOrigin;
-    private final List<Kurstyp> bereitsErfassteKurstypen;
+  // input
+  private final Kurstyp kurstyp;
+  private final Kurstyp kurstypOrigin;
+  private final List<Kurstyp> bereitsErfassteKurstypen;
 
-    // output
-    private boolean bereitsInVerwendung;
+  // output
+  private boolean bereitsInVerwendung;
 
-    public CheckKurstypBezeichnungBereitsInVerwendungCommand(Kurstyp kurstyp, Kurstyp kurstypOrigin, List<Kurstyp> bereitsErfassteKurstypen) {
-        this.kurstyp = kurstyp;
-        this.kurstypOrigin = kurstypOrigin;
-        this.bereitsErfassteKurstypen = bereitsErfassteKurstypen;
+  public CheckKurstypBezeichnungBereitsInVerwendungCommand(
+      Kurstyp kurstyp, Kurstyp kurstypOrigin, List<Kurstyp> bereitsErfassteKurstypen) {
+    this.kurstyp = kurstyp;
+    this.kurstypOrigin = kurstypOrigin;
+    this.bereitsErfassteKurstypen = bereitsErfassteKurstypen;
+  }
+
+  @Override
+  public void execute() {
+    for (Kurstyp bereitsErfassterKurstyp : bereitsErfassteKurstypen) {
+      if (!bereitsErfassterKurstyp.isIdenticalWith(kurstypOrigin)
+          && bereitsErfassterKurstyp.getBezeichnung().equals(kurstyp.getBezeichnung())) {
+        bereitsInVerwendung = true;
+        return;
+      }
     }
+    bereitsInVerwendung = false;
+  }
 
-    @Override
-    public void execute() {
-        for (Kurstyp bereitsErfassterKurstyp : bereitsErfassteKurstypen) {
-            if (!bereitsErfassterKurstyp.isIdenticalWith(kurstypOrigin) && bereitsErfassterKurstyp.getBezeichnung().equals(kurstyp.getBezeichnung())) {
-                bereitsInVerwendung = true;
-                return;
-            }
-        }
-        bereitsInVerwendung = false;
-    }
-
-    public boolean isBereitsInVerwendung() {
-        return bereitsInVerwendung;
-    }
+  public boolean isBereitsInVerwendung() {
+    return bereitsInVerwendung;
+  }
 }

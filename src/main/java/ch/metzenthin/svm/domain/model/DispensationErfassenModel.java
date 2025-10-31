@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Dispensation;
 import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
-
 import java.util.Calendar;
 
 /**
@@ -11,27 +10,30 @@ import java.util.Calendar;
  */
 public interface DispensationErfassenModel extends Model {
 
-    void setDispensationOrigin(Dispensation dispensationOrigin);
+  void setDispensationOrigin(Dispensation dispensationOrigin);
 
-    Calendar getDispensationsbeginn();
+  Calendar getDispensationsbeginn();
 
-    Calendar getDispensationsende();
+  Calendar getDispensationsende();
 
-    String getVoraussichtlicheDauer();
+  String getVoraussichtlicheDauer();
 
-    String getGrund();
+  String getGrund();
 
-    Dispensation getDispensation();
+  Dispensation getDispensation();
 
-    void setDispensationsbeginn(String text) throws SvmValidationException;
+  void setDispensationsbeginn(String text) throws SvmValidationException;
 
-    void setDispensationsende(String text) throws SvmValidationException;
+  void setDispensationsende(String text) throws SvmValidationException;
 
-    void setVoraussichtlicheDauer(String text) throws SvmValidationException;
+  void setVoraussichtlicheDauer(String text) throws SvmValidationException;
 
-    void setGrund(String text) throws SvmValidationException;
+  void setGrund(String text) throws SvmValidationException;
 
-    boolean checkDispensationUeberlapptAndereDispensationen(SchuelerDatenblattModel schuelerDatenblattModel);
+  boolean checkDispensationUeberlapptAndereDispensationen(
+      SchuelerDatenblattModel schuelerDatenblattModel);
 
-    void speichern(DispensationenTableModel dispensationenTableModel, SchuelerDatenblattModel schuelerDatenblattModel);
+  void speichern(
+      DispensationenTableModel dispensationenTableModel,
+      SchuelerDatenblattModel schuelerDatenblattModel);
 }

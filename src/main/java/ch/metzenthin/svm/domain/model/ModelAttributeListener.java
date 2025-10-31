@@ -7,7 +7,7 @@ import ch.metzenthin.svm.common.datatypes.Field;
  */
 public interface ModelAttributeListener {
 
-    void invalidate();
+  void invalidate();
 
-    void firePropertyChange(Field field, Object oldValue, Object newValue);
+  void firePropertyChange(Field field, Object oldValue, Object newValue);
 }

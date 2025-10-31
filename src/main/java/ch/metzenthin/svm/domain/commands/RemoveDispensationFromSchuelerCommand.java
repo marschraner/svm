@@ -8,26 +8,29 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
  */
 public class RemoveDispensationFromSchuelerCommand implements Command {
 
-    private final DispensationDao dispensationDao = new DispensationDao();
+  private final DispensationDao dispensationDao = new DispensationDao();
 
-    // input
-    private final int indexDispensationToBeDeleted;
-    private final Schueler schueler;
+  // input
+  private final int indexDispensationToBeDeleted;
+  private final Schueler schueler;
 
-    // output
-    private Schueler schuelerUpdated;
+  // output
+  private Schueler schuelerUpdated;
 
-    public RemoveDispensationFromSchuelerCommand(int indexDispensationToBeDeleted, Schueler schueler) {
-        this.indexDispensationToBeDeleted = indexDispensationToBeDeleted;
-        this.schueler = schueler;
-    }
+  public RemoveDispensationFromSchuelerCommand(
+      int indexDispensationToBeDeleted, Schueler schueler) {
+    this.indexDispensationToBeDeleted = indexDispensationToBeDeleted;
+    this.schueler = schueler;
+  }
 
-    @Override
-    public void execute() {
-        schuelerUpdated = dispensationDao.removeFromSchuelerAndUpdate(schueler.getDispensationen().get(indexDispensationToBeDeleted), schueler);
-    }
+  @Override
+  public void execute() {
+    schuelerUpdated =
+        dispensationDao.removeFromSchuelerAndUpdate(
+            schueler.getDispensationen().get(indexDispensationToBeDeleted), schueler);
+  }
 
-    public Schueler getSchuelerUpdated() {
-        return schuelerUpdated;
-    }
+  public Schueler getSchuelerUpdated() {
+    return schuelerUpdated;
+  }
 }

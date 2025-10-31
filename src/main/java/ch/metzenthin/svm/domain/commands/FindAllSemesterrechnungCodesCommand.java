@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.SemesterrechnungCodeDao;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
-
 import java.util.List;
 
 /**
@@ -10,18 +9,17 @@ import java.util.List;
  */
 public class FindAllSemesterrechnungCodesCommand implements Command {
 
-    private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();
+  private final SemesterrechnungCodeDao semesterrechnungCodeDao = new SemesterrechnungCodeDao();
 
-    // output
-    private List<SemesterrechnungCode> semesterrechnungCodesAll;
+  // output
+  private List<SemesterrechnungCode> semesterrechnungCodesAll;
 
-    @Override
-    public void execute() {
-        semesterrechnungCodesAll = semesterrechnungCodeDao.findAll();
-    }
+  @Override
+  public void execute() {
+    semesterrechnungCodesAll = semesterrechnungCodeDao.findAll();
+  }
 
-    public List<SemesterrechnungCode> getSemesterrechnungCodesAll() {
-        return semesterrechnungCodesAll;
-    }
-
+  public List<SemesterrechnungCode> getSemesterrechnungCodesAll() {
+    return semesterrechnungCodesAll;
+  }
 }

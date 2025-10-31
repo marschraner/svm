@@ -2,7 +2,6 @@ package ch.metzenthin.svm.common;
 
 import ch.metzenthin.svm.domain.model.ModelFactory;
 import ch.metzenthin.svm.domain.model.SvmModel;
-
 import javax.swing.*;
 
 /**
@@ -10,28 +9,28 @@ import javax.swing.*;
  */
 public class SvmContext {
 
-    private final ModelFactory modelFactory;
-    private final SvmModel svmModel;
-    private JRootPane rootPaneJFrame;
+  private final ModelFactory modelFactory;
+  private final SvmModel svmModel;
+  private JRootPane rootPaneJFrame;
 
-    public SvmContext(ModelFactory modelFactory, SvmModel svmModel) {
-        this.modelFactory = modelFactory;
-        this.svmModel = svmModel;
-    }
+  public SvmContext(ModelFactory modelFactory, SvmModel svmModel) {
+    this.modelFactory = modelFactory;
+    this.svmModel = svmModel;
+  }
 
-    public ModelFactory getModelFactory() {
-        return modelFactory;
-    }
+  public ModelFactory getModelFactory() {
+    return modelFactory;
+  }
 
-    public SvmModel getSvmModel() {
-        return svmModel;
-    }
+  public SvmModel getSvmModel() {
+    return svmModel;
+  }
 
-    public JRootPane getRootPaneJFrame() {
-        return rootPaneJFrame;
-    }
+  public JRootPane getRootPaneJFrame() {
+    return rootPaneJFrame;
+  }
 
-    public void setRootPaneJFrame(JRootPane rootPaneJFrame) {
-        this.rootPaneJFrame = rootPaneJFrame;
-    }
+  public void setRootPaneJFrame(JRootPane rootPaneJFrame) {
+    this.rootPaneJFrame = rootPaneJFrame;
+  }
 }

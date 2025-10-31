@@ -10,36 +10,36 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
  */
 public class AddDispensationToSchuelerAndSaveCommand implements Command {
 
-    private final SchuelerDao schuelerDao = new SchuelerDao();
-    private final DispensationDao dispensationDao = new DispensationDao();
+  private final SchuelerDao schuelerDao = new SchuelerDao();
+  private final DispensationDao dispensationDao = new DispensationDao();
 
-    // input
-    private final Dispensation dispensation;
-    private final Dispensation dispensationOrigin;
-    private final Schueler schueler;
+  // input
+  private final Dispensation dispensation;
+  private final Dispensation dispensationOrigin;
+  private final Schueler schueler;
 
-    // output
-    private Schueler schuelerUpdated;
+  // output
+  private Schueler schuelerUpdated;
 
-    public AddDispensationToSchuelerAndSaveCommand(Dispensation dispensation, Dispensation dispensationOrigin, Schueler schueler) {
-        this.dispensation = dispensation;
-        this.dispensationOrigin = dispensationOrigin;
-        this.schueler = schueler;
+  public AddDispensationToSchuelerAndSaveCommand(
+      Dispensation dispensation, Dispensation dispensationOrigin, Schueler schueler) {
+    this.dispensation = dispensation;
+    this.dispensationOrigin = dispensationOrigin;
+    this.schueler = schueler;
+  }
+
+  @Override
+  public void execute() {
+    if (dispensationOrigin != null) {
+      // Update von dispensationOrigin mit Werten von dispensation
+      dispensationOrigin.copyAttributesFrom(dispensation);
+      schuelerUpdated = schuelerDao.save(schueler);
+    } else {
+      schuelerUpdated = dispensationDao.addToSchuelerAndSave(dispensation, schueler);
     }
+  }
 
-    @Override
-    public void execute() {
-        if (dispensationOrigin != null) {
-            // Update von dispensationOrigin mit Werten von dispensation
-            dispensationOrigin.copyAttributesFrom(dispensation);
-            schuelerUpdated = schuelerDao.save(schueler);
-        } else {
-            schuelerUpdated = dispensationDao.addToSchuelerAndSave(dispensation, schueler);
-        }
-
-    }
-
-    public Schueler getSchuelerUpdated() {
-        return schuelerUpdated;
-    }
+  public Schueler getSchuelerUpdated() {
+    return schuelerUpdated;
+  }
 }

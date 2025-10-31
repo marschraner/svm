@@ -7,13 +7,12 @@ import ch.metzenthin.svm.domain.commands.ValidateSchuelerCommand;
  */
 public class SchuelerErfassenSaveOkResult extends SchuelerErfassenSaveResult {
 
-    public SchuelerErfassenSaveOkResult(ValidateSchuelerCommand.Result result) {
-        super(result);
-    }
+  public SchuelerErfassenSaveOkResult(ValidateSchuelerCommand.Result result) {
+    super(result);
+  }
 
-    @Override
-    public void accept(SchuelerErfassenSaveResultVisitor visitor) {
-        visitor.visit(this);
-    }
-
+  @Override
+  public void accept(SchuelerErfassenSaveResultVisitor visitor) {
+    visitor.visit(this);
+  }
 }

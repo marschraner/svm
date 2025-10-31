@@ -6,7 +6,6 @@ import ch.metzenthin.svm.domain.commands.CommandInvoker;
 import ch.metzenthin.svm.domain.commands.DeleteKurstypCommand;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
-
 import java.util.List;
 
 /**
@@ -14,32 +13,38 @@ import java.util.List;
  */
 public class KurstypenModelImpl extends AbstractModel implements KurstypenModel {
 
-    @Override
-    public DeleteKurstypCommand.Result eintragLoeschen(SvmContext svmContext, KurstypenTableModel kurstypenTableModel, int indexKurstypToBeRemoved) {
-        List<Kurstyp> kurstypen = svmContext.getSvmModel().getKurstypenAll();
-        CommandInvoker commandInvoker = getCommandInvoker();
-        DeleteKurstypCommand deleteKurstypCommand = new DeleteKurstypCommand(kurstypen, indexKurstypToBeRemoved);
-        commandInvoker.executeCommandAsTransaction(deleteKurstypCommand);
-        // TableData mit von der Datenbank upgedateten Kurstypen updaten
-        kurstypenTableModel.getKurstypenTableData().setKurstypen(svmContext.getSvmModel().getKurstypenAll());
-        return deleteKurstypCommand.getResult();
-    }
+  @Override
+  public DeleteKurstypCommand.Result eintragLoeschen(
+      SvmContext svmContext, KurstypenTableModel kurstypenTableModel, int indexKurstypToBeRemoved) {
+    List<Kurstyp> kurstypen = svmContext.getSvmModel().getKurstypenAll();
+    CommandInvoker commandInvoker = getCommandInvoker();
+    DeleteKurstypCommand deleteKurstypCommand =
+        new DeleteKurstypCommand(kurstypen, indexKurstypToBeRemoved);
+    commandInvoker.executeCommandAsTransaction(deleteKurstypCommand);
+    // TableData mit von der Datenbank upgedateten Kurstypen updaten
+    kurstypenTableModel
+        .getKurstypenTableData()
+        .setKurstypen(svmContext.getSvmModel().getKurstypenAll());
+    return deleteKurstypCommand.getResult();
+  }
 
-    @Override
-    public KurstypErfassenModel getKurstypErfassenModel(SvmContext svmContext, int indexKurstypToBeModified) {
-        KurstypErfassenModel kurstypErfassenModel = svmContext.getModelFactory().createKurstypErfassenModel();
-        List<Kurstyp> kurstyps = svmContext.getSvmModel().getKurstypenAll();
-        kurstypErfassenModel.setKurstypOrigin(kurstyps.get(indexKurstypToBeModified));
-        return kurstypErfassenModel;
-    }
+  @Override
+  public KurstypErfassenModel getKurstypErfassenModel(
+      SvmContext svmContext, int indexKurstypToBeModified) {
+    KurstypErfassenModel kurstypErfassenModel =
+        svmContext.getModelFactory().createKurstypErfassenModel();
+    List<Kurstyp> kurstyps = svmContext.getSvmModel().getKurstypenAll();
+    kurstypErfassenModel.setKurstypOrigin(kurstyps.get(indexKurstypToBeModified));
+    return kurstypErfassenModel;
+  }
 
-    @Override
-    void doValidate() throws SvmValidationException {
-        // Keine feldübergreifende Validierung notwendig
-    }
+  @Override
+  void doValidate() throws SvmValidationException {
+    // Keine feldübergreifende Validierung notwendig
+  }
 
-    @Override
-    public boolean isCompleted() {
-        return true;
-    }
+  @Override
+  public boolean isCompleted() {
+    return true;
+  }
 }

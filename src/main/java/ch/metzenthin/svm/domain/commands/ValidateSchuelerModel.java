@@ -10,29 +10,29 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
  */
 public interface ValidateSchuelerModel {
 
-    Schueler getSchueler();
+  Schueler getSchueler();
 
-    Schueler getSchuelerOrigin();
+  Schueler getSchuelerOrigin();
 
-    Anmeldung getAnmeldung();
+  Anmeldung getAnmeldung();
 
-    Adresse getAdresseSchueler();
+  Adresse getAdresseSchueler();
 
-    Angehoeriger getMutter();
+  Angehoeriger getMutter();
 
-    Adresse getAdresseMutter();
+  Adresse getAdresseMutter();
 
-    boolean isRechnungsempfaengerMutter();
+  boolean isRechnungsempfaengerMutter();
 
-    Angehoeriger getVater();
+  Angehoeriger getVater();
 
-    Adresse getAdresseVater();
+  Adresse getAdresseVater();
 
-    boolean isRechnungsempfaengerVater();
+  boolean isRechnungsempfaengerVater();
 
-    Angehoeriger getRechnungsempfaengerDrittperson();
+  Angehoeriger getRechnungsempfaengerDrittperson();
 
-    Adresse getAdresseRechnungsempfaengerDrittperson();
+  Adresse getAdresseRechnungsempfaengerDrittperson();
 
-    boolean isRechnungsempfaengerDrittperson();
+  boolean isRechnungsempfaengerDrittperson();
 }
