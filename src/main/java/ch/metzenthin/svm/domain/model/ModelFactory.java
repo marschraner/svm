@@ -45,7 +45,8 @@ public interface ModelFactory {
 
   KurstypenModel createKurstypenModel();
 
-  KurstypErfassenModel createKurstypErfassenModel(Optional<Kurstyp> kurstypToBeModifiedOptional);
+  CreateOrUpdateKurstypModel createCreateOrUpdateKurstypModel(
+      Optional<Kurstyp> kurstypToBeModifiedOptional);
 
   SemestersModel createSemestersModel();
 

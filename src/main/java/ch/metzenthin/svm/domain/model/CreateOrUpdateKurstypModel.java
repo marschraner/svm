@@ -6,7 +6,7 @@ import ch.metzenthin.svm.service.result.SaveKurstypResult;
 /**
  * @author Martin Schraner
  */
-public interface KurstypErfassenModel extends Model {
+public interface CreateOrUpdateKurstypModel extends Model {
 
   String getBezeichnung();
 

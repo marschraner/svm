@@ -109,9 +109,9 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
-  public KurstypErfassenModel createKurstypErfassenModel(
+  public CreateOrUpdateKurstypModel createCreateOrUpdateKurstypModel(
       Optional<Kurstyp> kurstypToBeModifiedOptional) {
-    return new KurstypErfassenModelImpl(kurstypToBeModifiedOptional, kurstypService);
+    return new CreateOrUpdateKurstypModelImpl(kurstypToBeModifiedOptional, kurstypService);
   }
 
   @Override

@@ -16,14 +16,15 @@ import org.springframework.dao.OptimisticLockingFailureException;
  * @author Martin Schraner
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-public class KurstypErfassenModelImpl extends AbstractModel implements KurstypErfassenModel {
+public class CreateOrUpdateKurstypModelImpl extends AbstractModel
+    implements CreateOrUpdateKurstypModel {
 
-  private static final Logger LOGGER = LogManager.getLogger(KurstypErfassenModelImpl.class);
+  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateKurstypModelImpl.class);
 
   private final Kurstyp kurstyp;
   private final KurstypService kurstypService;
 
-  public KurstypErfassenModelImpl(
+  public CreateOrUpdateKurstypModelImpl(
       Optional<Kurstyp> kurstypToBeModifiedOptional, KurstypService kurstypService) {
     this.kurstyp = kurstypToBeModifiedOptional.orElseGet(Kurstyp::new);
     this.kurstypService = kurstypService;

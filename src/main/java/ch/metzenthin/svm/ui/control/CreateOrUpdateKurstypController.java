@@ -6,7 +6,7 @@ import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.DialogClosedListener;
-import ch.metzenthin.svm.domain.model.KurstypErfassenModel;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateKurstypModel;
 import ch.metzenthin.svm.service.result.SaveKurstypResult;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -19,49 +19,50 @@ import org.apache.logging.log4j.Logger;
 /**
  * @author Martin Schraner
  */
-public class KurstypErfassenController extends AbstractController {
+public class CreateOrUpdateKurstypController extends AbstractController {
 
-  private static final Logger LOGGER = LogManager.getLogger(KurstypErfassenController.class);
+  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateKurstypController.class);
 
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
   private static final boolean MODEL_VALIDATION_MODE = false;
 
-  private final KurstypErfassenModel kurstypErfassenModel;
+  private final CreateOrUpdateKurstypModel createOrUpdateKurstypModel;
   private final boolean isBearbeiten;
   private final boolean defaultButtonEnabled;
   private final DialogClosedListener dialogClosedListener;
-  private JDialog kurstypErfassenDialog;
+  private JDialog createOrUpdateKurstypDialog;
   private JTextField txtBezeichnung;
   private JCheckBox checkBoxSelektierbar;
   @Setter private JLabel errLblBezeichnung;
   private JButton btnSpeichern;
 
-  public KurstypErfassenController(
-      KurstypErfassenModel kurstypErfassenModel,
+  public CreateOrUpdateKurstypController(
+      CreateOrUpdateKurstypModel createOrUpdateKurstypModel,
       boolean isBearbeiten,
       boolean defaultButtonEnabled,
       DialogClosedListener dialogClosedListener) {
-    super(kurstypErfassenModel);
-    this.kurstypErfassenModel = kurstypErfassenModel;
+    super(createOrUpdateKurstypModel);
+    this.createOrUpdateKurstypModel = createOrUpdateKurstypModel;
     this.isBearbeiten = isBearbeiten;
     this.defaultButtonEnabled = defaultButtonEnabled;
     this.dialogClosedListener = dialogClosedListener;
-    this.kurstypErfassenModel.addPropertyChangeListener(this);
-    this.kurstypErfassenModel.addDisableFieldsListener(this);
-    this.kurstypErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-    this.kurstypErfassenModel.addCompletedListener(this::onKurstypErfassenModelCompleted);
+    this.createOrUpdateKurstypModel.addPropertyChangeListener(this);
+    this.createOrUpdateKurstypModel.addDisableFieldsListener(this);
+    this.createOrUpdateKurstypModel.addMakeErrorLabelsInvisibleListener(this);
+    this.createOrUpdateKurstypModel.addCompletedListener(
+        this::onCreateOrUpdateKurstypModelCompleted);
     this.setModelValidationMode(MODEL_VALIDATION_MODE);
   }
 
   public void constructionDone() {
-    kurstypErfassenModel.initializeCompleted();
+    createOrUpdateKurstypModel.initializeCompleted();
   }
 
-  public void setKurstypErfassenDialog(JDialog kurstypErfassenDialog) {
+  public void setCreateOrUpdateKurstypDialog(JDialog createOrUpdateKurstypDialog) {
     // call onCancel() when cross is clicked
-    this.kurstypErfassenDialog = kurstypErfassenDialog;
-    kurstypErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    kurstypErfassenDialog.addWindowListener(
+    this.createOrUpdateKurstypDialog = createOrUpdateKurstypDialog;
+    createOrUpdateKurstypDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    createOrUpdateKurstypDialog.addWindowListener(
         new WindowAdapter() {
           @Override
           public void windowClosing(WindowEvent e) {
@@ -93,9 +94,9 @@ public class KurstypErfassenController extends AbstractController {
   }
 
   private void onBezeichnungEvent(boolean showRequiredErrMsg) {
-    LOGGER.trace("KurstypErfassenController Event Bezeichnung");
+    LOGGER.trace("CreateOrUpdateKurstypController Event Bezeichnung");
     boolean equalFieldAndModelValue =
-        equalsNullSafe(txtBezeichnung.getText(), kurstypErfassenModel.getBezeichnung());
+        equalsNullSafe(txtBezeichnung.getText(), createOrUpdateKurstypModel.getBezeichnung());
     try {
       setModelBezeichnung(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -112,10 +113,11 @@ public class KurstypErfassenController extends AbstractController {
   private void setModelBezeichnung(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.BEZEICHNUNG);
     try {
-      kurstypErfassenModel.setBezeichnung(txtBezeichnung.getText());
+      createOrUpdateKurstypModel.setBezeichnung(txtBezeichnung.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "KurstypErfassenController setModelBezeichnung RequiredException={}", e.getMessage());
+          "CreateOrUpdateKurstypController setModelBezeichnung RequiredException={}",
+          e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtBezeichnung.setToolTipText(e.getMessage());
         // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
@@ -125,7 +127,8 @@ public class KurstypErfassenController extends AbstractController {
       }
       throw e;
     } catch (SvmValidationException e) {
-      LOGGER.trace("KurstypErfassenController setModelBezeichnung Exception={}", e.getMessage());
+      LOGGER.trace(
+          "CreateOrUpdateKurstypController setModelBezeichnung Exception={}", e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -135,18 +138,18 @@ public class KurstypErfassenController extends AbstractController {
     this.checkBoxSelektierbar = checkBoxSelektierbar;
     // Selektierbar als Default-Wert
     if (!isBearbeiten) {
-      kurstypErfassenModel.setSelektierbar(true);
+      createOrUpdateKurstypModel.setSelektierbar(true);
     }
     this.checkBoxSelektierbar.addItemListener(e -> onSelektierbarEvent());
   }
 
   private void setModelSelektierbar() {
-    kurstypErfassenModel.setSelektierbar(checkBoxSelektierbar.isSelected());
+    createOrUpdateKurstypModel.setSelektierbar(checkBoxSelektierbar.isSelected());
   }
 
   private void onSelektierbarEvent() {
     LOGGER.trace(
-        "AngehoerigerController Event Selektierbar. Selected={}",
+        "CreateOrUpdateKurstypController Event Selektierbar. Selected={}",
         checkBoxSelektierbar.isSelected());
     setModelSelektierbar();
   }
@@ -166,11 +169,11 @@ public class KurstypErfassenController extends AbstractController {
       return;
     }
 
-    SaveKurstypResult saveKurstypResult = kurstypErfassenModel.speichern();
+    SaveKurstypResult saveKurstypResult = createOrUpdateKurstypModel.speichern();
     switch (saveKurstypResult) {
       case KURSTYP_BEREITS_ERFASST -> {
         JOptionPane.showMessageDialog(
-            kurstypErfassenDialog,
+            createOrUpdateKurstypDialog,
             "Bezeichnung bereits in Verwendung.",
             "Fehler",
             JOptionPane.ERROR_MESSAGE);
@@ -179,7 +182,7 @@ public class KurstypErfassenController extends AbstractController {
       case KURSTYP_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
         closeDialog();
         JOptionPane.showMessageDialog(
-            kurstypErfassenDialog,
+            createOrUpdateKurstypDialog,
             "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
                 + "einen anderen Benutzer verändert oder gelöscht wurde.",
             "Fehler",
@@ -198,12 +201,12 @@ public class KurstypErfassenController extends AbstractController {
   }
 
   private void closeDialog() {
-    kurstypErfassenDialog.dispose();
+    createOrUpdateKurstypDialog.dispose();
     dialogClosedListener.onDialogClosed();
   }
 
-  private void onKurstypErfassenModelCompleted(boolean completed) {
-    LOGGER.trace("KurstypErfassenModel completed={}", completed);
+  private void onCreateOrUpdateKurstypModelCompleted(boolean completed) {
+    LOGGER.trace("CreateOrUpdateKurstypModel completed={}", completed);
     if (completed) {
       btnSpeichern.setToolTipText(null);
       btnSpeichern.setEnabled(true);
@@ -217,9 +220,9 @@ public class KurstypErfassenController extends AbstractController {
   void doPropertyChange(PropertyChangeEvent evt) {
     super.doPropertyChange(evt);
     if (checkIsFieldChange(Field.BEZEICHNUNG, evt)) {
-      txtBezeichnung.setText(kurstypErfassenModel.getBezeichnung());
+      txtBezeichnung.setText(createOrUpdateKurstypModel.getBezeichnung());
     } else if (checkIsFieldChange(Field.SELEKTIERBAR, evt)) {
-      checkBoxSelektierbar.setSelected(kurstypErfassenModel.isSelektierbar());
+      checkBoxSelektierbar.setSelected(createOrUpdateKurstypModel.isSelektierbar());
     }
   }
 

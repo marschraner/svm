@@ -27,20 +27,20 @@ public class KurstypenModelImpl extends AbstractModel implements KurstypenModel 
   }
 
   @Override
-  public KurstypErfassenModel createKurstypErfassenModel(
+  public CreateOrUpdateKurstypModel createCreateOrUpdateKurstypModel(
       SvmContext svmContext, KurstypenTableModel kurstypenTableModel) {
-    return svmContext.getModelFactory().createKurstypErfassenModel(Optional.empty());
+    return svmContext.getModelFactory().createCreateOrUpdateKurstypModel(Optional.empty());
   }
 
   @Override
-  public KurstypErfassenModel createKurstypErfassenModel(
+  public CreateOrUpdateKurstypModel createCreateOrUpdateKurstypModel(
       SvmContext svmContext,
       KurstypenTableModel kurstypenTableModel,
       int indexKurstypToBeModified) {
     Kurstyp kurstypToBeModified = getSelectedKurstyp(kurstypenTableModel, indexKurstypToBeModified);
     return svmContext
         .getModelFactory()
-        .createKurstypErfassenModel(Optional.of(kurstypToBeModified));
+        .createCreateOrUpdateKurstypModel(Optional.of(kurstypToBeModified));
   }
 
   private static Kurstyp getSelectedKurstyp(

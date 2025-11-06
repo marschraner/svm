@@ -12,9 +12,9 @@ public interface KurstypenModel extends Model {
   DeleteKurstypResult eintragLoeschen(
       KurstypenTableModel kurstypenTableModel, int indexKurstypToBeRemoved);
 
-  KurstypErfassenModel createKurstypErfassenModel(
+  CreateOrUpdateKurstypModel createCreateOrUpdateKurstypModel(
       SvmContext svmContext, KurstypenTableModel kurstypenTableModel);
 
-  KurstypErfassenModel createKurstypErfassenModel(
+  CreateOrUpdateKurstypModel createCreateOrUpdateKurstypModel(
       SvmContext svmContext, KurstypenTableModel kurstypenTableModel, int indexKurstypToBeModified);
 }

@@ -9,7 +9,7 @@ import ch.metzenthin.svm.domain.model.KurstypenModel;
 import ch.metzenthin.svm.domain.model.KurstypenTableData;
 import ch.metzenthin.svm.service.result.DeleteKurstypResult;
 import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
-import ch.metzenthin.svm.ui.components.KurstypErfassenDialog;
+import ch.metzenthin.svm.ui.components.CreateOrUpdateKurstypDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -71,11 +71,11 @@ public class KurstypenController implements DialogClosedListener {
 
   private void onNeu() {
     btnNeu.setFocusPainted(true);
-    KurstypErfassenDialog kurstypErfassenDialog =
-        new KurstypErfassenDialog(
+    CreateOrUpdateKurstypDialog createOrUpdateKurstypDialog =
+        new CreateOrUpdateKurstypDialog(
             svmContext, kurstypenTableModel, kurstypenModel, 0, false, "Neuer Kurstyp", this);
-    kurstypErfassenDialog.pack();
-    kurstypErfassenDialog.setVisible(true);
+    createOrUpdateKurstypDialog.pack();
+    createOrUpdateKurstypDialog.setVisible(true);
     kurstypenTableModel.fireTableDataChanged();
     btnNeu.setFocusPainted(false);
   }
@@ -92,8 +92,8 @@ public class KurstypenController implements DialogClosedListener {
 
   private void onBearbeiten() {
     btnBearbeiten.setFocusPainted(true);
-    KurstypErfassenDialog kurstypErfassenDialog =
-        new KurstypErfassenDialog(
+    CreateOrUpdateKurstypDialog createOrUpdateKurstypDialog =
+        new CreateOrUpdateKurstypDialog(
             svmContext,
             kurstypenTableModel,
             kurstypenModel,
@@ -101,8 +101,8 @@ public class KurstypenController implements DialogClosedListener {
             true,
             "Kurstyp bearbeiten",
             this);
-    kurstypErfassenDialog.pack();
-    kurstypErfassenDialog.setVisible(true);
+    createOrUpdateKurstypDialog.pack();
+    createOrUpdateKurstypDialog.setVisible(true);
     kurstypenTableModel.fireTableDataChanged();
     btnBearbeiten.setFocusPainted(false);
   }

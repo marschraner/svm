@@ -1,11 +1,11 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateKurstypModel;
 import ch.metzenthin.svm.domain.model.DialogClosedListener;
-import ch.metzenthin.svm.domain.model.KurstypErfassenModel;
 import ch.metzenthin.svm.domain.model.KurstypenModel;
 import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
-import ch.metzenthin.svm.ui.control.KurstypErfassenController;
+import ch.metzenthin.svm.ui.control.CreateOrUpdateKurstypController;
 import java.awt.*;
 import java.util.Locale;
 import javax.swing.*;
@@ -14,7 +14,7 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 
 @SuppressWarnings({"java:S100", "java:S1171", "java:S1450", "FieldCanBeLocal"})
-public class KurstypErfassenDialog extends JDialog {
+public class CreateOrUpdateKurstypDialog extends JDialog {
 
   // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
   private static final boolean DEFAULT_BUTTON_ENABLED = false;
@@ -28,7 +28,7 @@ public class KurstypErfassenDialog extends JDialog {
   private JButton btnAbbrechen;
   private JLabel errLblBezeichnung;
 
-  public KurstypErfassenDialog(
+  public CreateOrUpdateKurstypDialog(
       SvmContext svmContext,
       KurstypenTableModel kurstypenTableModel,
       KurstypenModel kurstypenModel,
@@ -43,7 +43,7 @@ public class KurstypErfassenDialog extends JDialog {
     if (DEFAULT_BUTTON_ENABLED) {
       getRootPane().setDefaultButton(btnSpeichern);
     }
-    createKurstypErfassenController(
+    createCreateOrUpdateKurstypController(
         svmContext,
         kurstypenTableModel,
         kurstypenModel,
@@ -52,32 +52,32 @@ public class KurstypErfassenDialog extends JDialog {
         dialogClosedListener);
   }
 
-  private void createKurstypErfassenController(
+  private void createCreateOrUpdateKurstypController(
       SvmContext svmContext,
       KurstypenTableModel kurstypenTableModel,
       KurstypenModel kurstypenModel,
       int indexBearbeiten,
       boolean isBearbeiten,
       DialogClosedListener dialogClosedListener) {
-    KurstypErfassenModel kurstypErfassenModel =
+    CreateOrUpdateKurstypModel createOrUpdateKurstypModel =
         (isBearbeiten
-            ? kurstypenModel.createKurstypErfassenModel(
+            ? kurstypenModel.createCreateOrUpdateKurstypModel(
                 svmContext, kurstypenTableModel, indexBearbeiten)
-            : kurstypenModel.createKurstypErfassenModel(svmContext, kurstypenTableModel));
-    KurstypErfassenController kurstypErfassenController =
-        new KurstypErfassenController(
-            kurstypErfassenModel,
+            : kurstypenModel.createCreateOrUpdateKurstypModel(svmContext, kurstypenTableModel));
+    CreateOrUpdateKurstypController createOrUpdateKurstypController =
+        new CreateOrUpdateKurstypController(
+            createOrUpdateKurstypModel,
             isBearbeiten,
             DEFAULT_BUTTON_ENABLED,
             dialogClosedListener);
-    kurstypErfassenController.setKurstypErfassenDialog(this);
-    kurstypErfassenController.setContentPane(contentPane);
-    kurstypErfassenController.setTxtBezeichnung(txtBezeichnung);
-    kurstypErfassenController.setCheckBoxSelektierbar(checkBoxSelektierbar);
-    kurstypErfassenController.setBtnSpeichern(btnSpeichern);
-    kurstypErfassenController.setBtnAbbrechen(btnAbbrechen);
-    kurstypErfassenController.setErrLblBezeichnung(errLblBezeichnung);
-    kurstypErfassenController.constructionDone();
+    createOrUpdateKurstypController.setCreateOrUpdateKurstypDialog(this);
+    createOrUpdateKurstypController.setContentPane(contentPane);
+    createOrUpdateKurstypController.setTxtBezeichnung(txtBezeichnung);
+    createOrUpdateKurstypController.setCheckBoxSelektierbar(checkBoxSelektierbar);
+    createOrUpdateKurstypController.setBtnSpeichern(btnSpeichern);
+    createOrUpdateKurstypController.setBtnAbbrechen(btnAbbrechen);
+    createOrUpdateKurstypController.setErrLblBezeichnung(errLblBezeichnung);
+    createOrUpdateKurstypController.constructionDone();
   }
 
   private void initializeErrLbls() {
