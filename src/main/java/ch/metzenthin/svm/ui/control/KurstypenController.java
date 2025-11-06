@@ -4,9 +4,10 @@ import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRen
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAsPercentages;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.commands.DeleteKurstypCommand;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.KurstypenModel;
 import ch.metzenthin.svm.domain.model.KurstypenTableData;
+import ch.metzenthin.svm.service.result.DeleteKurstypResult;
 import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
 import ch.metzenthin.svm.ui.components.KurstypErfassenDialog;
 import java.awt.event.ActionEvent;
@@ -18,7 +19,7 @@ import javax.swing.*;
 /**
  * @author Martin Schraner
  */
-public class KurstypenController {
+public class KurstypenController implements DialogClosedListener {
   private final SvmContext svmContext;
   private final KurstypenModel kurstypenModel;
   private KurstypenTableModel kurstypenTableModel;
@@ -72,7 +73,7 @@ public class KurstypenController {
     btnNeu.setFocusPainted(true);
     KurstypErfassenDialog kurstypErfassenDialog =
         new KurstypErfassenDialog(
-            svmContext, kurstypenTableModel, kurstypenModel, 0, false, "Neuer Kurstyp");
+            svmContext, kurstypenTableModel, kurstypenModel, 0, false, "Neuer Kurstyp", this);
     kurstypErfassenDialog.pack();
     kurstypErfassenDialog.setVisible(true);
     kurstypenTableModel.fireTableDataChanged();
@@ -98,7 +99,8 @@ public class KurstypenController {
             kurstypenModel,
             kurstypenTable.getSelectedRow(),
             true,
-            "Kurstyp bearbeiten");
+            "Kurstyp bearbeiten",
+            this);
     kurstypErfassenDialog.pack();
     kurstypErfassenDialog.setVisible(true);
     kurstypenTableModel.fireTableDataChanged();
@@ -129,10 +131,9 @@ public class KurstypenController {
             options, // the titles of buttons
             options[1]); // default button title
     if (n == 0) {
-      DeleteKurstypCommand.Result result =
-          kurstypenModel.eintragLoeschen(
-              svmContext, kurstypenTableModel, kurstypenTable.getSelectedRow());
-      if (result == DeleteKurstypCommand.Result.KURSTYP_VON_KURS_REFERENZIERT) {
+      DeleteKurstypResult result =
+          kurstypenModel.eintragLoeschen(kurstypenTableModel, kurstypenTable.getSelectedRow());
+      if (result == DeleteKurstypResult.KURSTYP_VON_KURS_REFERENZIERT) {
         JOptionPane.showMessageDialog(
             null,
             "Der Kurstyp wird durch mindestens einen Kurs referenziert und "
@@ -140,9 +141,8 @@ public class KurstypenController {
             "Fehler",
             JOptionPane.ERROR_MESSAGE);
         btnLoeschen.setFocusPainted(false);
-      } else if (result == DeleteKurstypCommand.Result.LOESCHEN_ERFOLGREICH) {
-        kurstypenTableModel.fireTableDataChanged();
-        kurstypenTable.addNotify();
+      } else if (result == DeleteKurstypResult.LOESCHEN_ERFOLGREICH) {
+        reloadTableModel();
       }
     }
     btnLoeschen.setFocusPainted(false);
@@ -168,5 +168,19 @@ public class KurstypenController {
 
   public void addCloseListener(ActionListener closeListener) {
     this.closeListener = closeListener;
+  }
+
+  @Override
+  public void onDialogClosed() {
+    reloadTableModel();
+  }
+
+  private void reloadTableModel() {
+    // TableData mit von der Datenbank upgedateten Kurstypen updaten
+    kurstypenTableModel
+        .getKurstypenTableData()
+        .setKurstypen(svmContext.getSvmModel().getKurstypenAll());
+    kurstypenTableModel.fireTableDataChanged();
+    kurstypenTable.addNotify();
   }
 }

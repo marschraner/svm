@@ -29,4 +29,13 @@ class KursRepositoryTest {
     numberOfKurse = kursRepository.countByKursortId(9999);
     assertEquals(0, numberOfKurse);
   }
+
+  @Test
+  void testCountByKurstypId() {
+    int numberOfKurse = kursRepository.countByKurstypId(11);
+    assertEquals(1, numberOfKurse);
+
+    numberOfKurse = kursRepository.countByKurstypId(9999);
+    assertEquals(0, numberOfKurse);
+  }
 }

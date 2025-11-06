@@ -162,6 +162,7 @@ public class CreateOrUpdateKursortController extends AbstractController {
     this.btnSpeichern.addActionListener(e -> onSpeichern());
   }
 
+  @SuppressWarnings("DuplicatedCode")
   private void onSpeichern() {
     if (!isModelValidationMode() && !validateOnSpeichern()) {
       btnSpeichern.setFocusPainted(false);

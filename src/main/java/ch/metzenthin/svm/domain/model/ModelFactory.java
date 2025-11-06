@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.persistence.entities.Kursort;
+import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import java.util.Optional;
 
 /**
@@ -44,7 +45,7 @@ public interface ModelFactory {
 
   KurstypenModel createKurstypenModel();
 
-  KurstypErfassenModel createKurstypErfassenModel();
+  KurstypErfassenModel createKurstypErfassenModel(Optional<Kurstyp> kurstypToBeModifiedOptional);
 
   SemestersModel createSemestersModel();
 

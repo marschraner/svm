@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.service.KursortService;
+import ch.metzenthin.svm.service.KurstypService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +15,11 @@ public class SvmModelImpl implements SvmModel {
   private final CommandInvoker commandInvoker = new CommandInvokerImpl();
 
   private final KursortService kursortService;
+  private final KurstypService kurstypService;
 
-  public SvmModelImpl(KursortService kursortService) {
+  public SvmModelImpl(KursortService kursortService, KurstypService kurstypService) {
     this.kursortService = kursortService;
+    this.kurstypService = kurstypService;
   }
 
   @Override
@@ -130,9 +133,7 @@ public class SvmModelImpl implements SvmModel {
 
   @Override
   public List<Kurstyp> getKurstypenAll() {
-    FindAllKurstypenCommand findAllKurstypenCommand = new FindAllKurstypenCommand();
-    commandInvoker.executeCommand(findAllKurstypenCommand);
-    return findAllKurstypenCommand.getKurstypenAll();
+    return kurstypService.findAllKurstypen();
   }
 
   @Override

@@ -2,40 +2,50 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.DeleteKurstypCommand;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
+import ch.metzenthin.svm.service.KurstypService;
+import ch.metzenthin.svm.service.result.DeleteKurstypResult;
 import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Martin Schraner
  */
 public class KurstypenModelImpl extends AbstractModel implements KurstypenModel {
 
-  @Override
-  public DeleteKurstypCommand.Result eintragLoeschen(
-      SvmContext svmContext, KurstypenTableModel kurstypenTableModel, int indexKurstypToBeRemoved) {
-    List<Kurstyp> kurstypen = svmContext.getSvmModel().getKurstypenAll();
-    CommandInvoker commandInvoker = getCommandInvoker();
-    DeleteKurstypCommand deleteKurstypCommand =
-        new DeleteKurstypCommand(kurstypen, indexKurstypToBeRemoved);
-    commandInvoker.executeCommandAsTransaction(deleteKurstypCommand);
-    // TableData mit von der Datenbank upgedateten Kurstypen updaten
-    kurstypenTableModel
-        .getKurstypenTableData()
-        .setKurstypen(svmContext.getSvmModel().getKurstypenAll());
-    return deleteKurstypCommand.getResult();
+  private final KurstypService kurstypService;
+
+  public KurstypenModelImpl(KurstypService kurstypService) {
+    this.kurstypService = kurstypService;
   }
 
   @Override
-  public KurstypErfassenModel getKurstypErfassenModel(
-      SvmContext svmContext, int indexKurstypToBeModified) {
-    KurstypErfassenModel kurstypErfassenModel =
-        svmContext.getModelFactory().createKurstypErfassenModel();
-    List<Kurstyp> kurstyps = svmContext.getSvmModel().getKurstypenAll();
-    kurstypErfassenModel.setKurstypOrigin(kurstyps.get(indexKurstypToBeModified));
-    return kurstypErfassenModel;
+  public DeleteKurstypResult eintragLoeschen(
+      KurstypenTableModel kurstypenTableModel, int indexKurstypToBeRemoved) {
+    Kurstyp kurstypToBeDeleted = getSelectedKurstyp(kurstypenTableModel, indexKurstypToBeRemoved);
+    return kurstypService.deleteKurstyp(kurstypToBeDeleted);
+  }
+
+  @Override
+  public KurstypErfassenModel createKurstypErfassenModel(
+      SvmContext svmContext, KurstypenTableModel kurstypenTableModel) {
+    return svmContext.getModelFactory().createKurstypErfassenModel(Optional.empty());
+  }
+
+  @Override
+  public KurstypErfassenModel createKurstypErfassenModel(
+      SvmContext svmContext,
+      KurstypenTableModel kurstypenTableModel,
+      int indexKurstypToBeModified) {
+    Kurstyp kurstypToBeModified = getSelectedKurstyp(kurstypenTableModel, indexKurstypToBeModified);
+    return svmContext
+        .getModelFactory()
+        .createKurstypErfassenModel(Optional.of(kurstypToBeModified));
+  }
+
+  private static Kurstyp getSelectedKurstyp(
+      KurstypenTableModel kurstypenTableModel, int selectedIndex) {
+    return kurstypenTableModel.getKurstypenTableData().getKurstypen().get(selectedIndex);
   }
 
   @Override

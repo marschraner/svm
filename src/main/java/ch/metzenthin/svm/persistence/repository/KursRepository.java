@@ -14,4 +14,7 @@ public interface KursRepository extends JpaRepository<Kurs, Integer> {
 
   @Query("SELECT COUNT(k) FROM Kurs k WHERE k.kursort.kursortId = :kursortId")
   int countByKursortId(@Param("kursortId") int kursortId);
+
+  @Query("SELECT COUNT(k) FROM Kurs k WHERE k.kurstyp.kurstypId = :kurstypId")
+  int countByKurstypId(@Param("kurstypId") int kurstypId);
 }

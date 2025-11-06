@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.KurstypErfassenModel;
 import ch.metzenthin.svm.domain.model.KurstypenModel;
 import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
@@ -12,7 +13,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 
-@SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
+@SuppressWarnings({"java:S100", "java:S1171", "java:S1450", "FieldCanBeLocal"})
 public class KurstypErfassenDialog extends JDialog {
 
   // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
@@ -23,9 +24,9 @@ public class KurstypErfassenDialog extends JDialog {
   private JPanel buttonPanel;
   private JTextField txtBezeichnung;
   private JCheckBox checkBoxSelektierbar;
-  private JLabel errLblBezeichnung;
   private JButton btnSpeichern;
   private JButton btnAbbrechen;
+  private JLabel errLblBezeichnung;
 
   public KurstypErfassenDialog(
       SvmContext svmContext,
@@ -33,7 +34,8 @@ public class KurstypErfassenDialog extends JDialog {
       KurstypenModel kurstypenModel,
       int indexBearbeiten,
       boolean isBearbeiten,
-      String title) {
+      String title,
+      DialogClosedListener dialogClosedListener) {
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
@@ -42,7 +44,12 @@ public class KurstypErfassenDialog extends JDialog {
       getRootPane().setDefaultButton(btnSpeichern);
     }
     createKurstypErfassenController(
-        svmContext, kurstypenTableModel, kurstypenModel, indexBearbeiten, isBearbeiten);
+        svmContext,
+        kurstypenTableModel,
+        kurstypenModel,
+        indexBearbeiten,
+        isBearbeiten,
+        dialogClosedListener);
   }
 
   private void createKurstypErfassenController(
@@ -50,18 +57,19 @@ public class KurstypErfassenDialog extends JDialog {
       KurstypenTableModel kurstypenTableModel,
       KurstypenModel kurstypenModel,
       int indexBearbeiten,
-      boolean isBearbeiten) {
+      boolean isBearbeiten,
+      DialogClosedListener dialogClosedListener) {
     KurstypErfassenModel kurstypErfassenModel =
         (isBearbeiten
-            ? kurstypenModel.getKurstypErfassenModel(svmContext, indexBearbeiten)
-            : svmContext.getModelFactory().createKurstypErfassenModel());
+            ? kurstypenModel.createKurstypErfassenModel(
+                svmContext, kurstypenTableModel, indexBearbeiten)
+            : kurstypenModel.createKurstypErfassenModel(svmContext, kurstypenTableModel));
     KurstypErfassenController kurstypErfassenController =
         new KurstypErfassenController(
-            svmContext,
-            kurstypenTableModel,
             kurstypErfassenModel,
             isBearbeiten,
-            DEFAULT_BUTTON_ENABLED);
+            DEFAULT_BUTTON_ENABLED,
+            dialogClosedListener);
     kurstypErfassenController.setKurstypErfassenDialog(this);
     kurstypErfassenController.setContentPane(contentPane);
     kurstypErfassenController.setTxtBezeichnung(txtBezeichnung);

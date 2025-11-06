@@ -22,4 +22,10 @@ public class KursServiceImpl implements KursService {
   public boolean existsKurseByKursortId(int kursortId) {
     return kursRepository.countByKursortId(kursortId) > 0;
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public boolean existsKurseByKurstypId(int kurstypId) {
+    return kursRepository.countByKurstypId(kurstypId) > 0;
+  }
 }

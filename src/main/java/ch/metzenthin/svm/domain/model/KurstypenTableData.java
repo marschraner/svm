@@ -50,4 +50,8 @@ public class KurstypenTableData {
   public void setKurstypen(List<Kurstyp> kurstypen) {
     this.kurstypen = kurstypen;
   }
+
+  public List<Kurstyp> getKurstypen() {
+    return kurstypen;
+  }
 }

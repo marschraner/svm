@@ -1,33 +1,32 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CheckKurstypBezeichnungBereitsInVerwendungCommand;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.SaveOrUpdateKurstypCommand;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
-import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
+import ch.metzenthin.svm.service.KurstypService;
+import ch.metzenthin.svm.service.result.SaveKurstypResult;
+import jakarta.persistence.OptimisticLockException;
+import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class KurstypErfassenModelImpl extends AbstractModel implements KurstypErfassenModel {
 
   private static final Logger LOGGER = LogManager.getLogger(KurstypErfassenModelImpl.class);
 
-  private final Kurstyp kurstyp = new Kurstyp();
-  private Kurstyp kurstypOrigin;
+  private final Kurstyp kurstyp;
+  private final KurstypService kurstypService;
 
-  @Override
-  public Kurstyp getKurstyp() {
-    return kurstyp;
-  }
-
-  @Override
-  public void setKurstypOrigin(Kurstyp kurstypOrigin) {
-    this.kurstypOrigin = kurstypOrigin;
+  public KurstypErfassenModelImpl(
+      Optional<Kurstyp> kurstypToBeModifiedOptional, KurstypService kurstypService) {
+    this.kurstyp = kurstypToBeModifiedOptional.orElseGet(Kurstyp::new);
+    this.kurstypService = kurstypService;
   }
 
   private final StringModelAttribute bezeichnungModelAttribute =
@@ -55,12 +54,22 @@ public class KurstypErfassenModelImpl extends AbstractModel implements KurstypEr
 
   @Override
   public void setBezeichnung(String bezeichnung) throws SvmValidationException {
-    bezeichnungModelAttribute.setNewValue(true, bezeichnung, isBulkUpdate());
+    setBezeichnung(bezeichnung, false);
+  }
+
+  private void setBezeichnung(String bezeichnung, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    bezeichnungModelAttribute.setNewValue(
+        true, bezeichnung, isBulkUpdate(), enforcePropertyChangeEvent);
   }
 
   @Override
   public void setSelektierbar(Boolean isSelected) {
-    Boolean oldValue = kurstyp.isSelektierbar();
+    setSelektierbar(isSelected, false);
+  }
+
+  private void setSelektierbar(Boolean isSelected, boolean enforcePropertyChangeEvent) {
+    Boolean oldValue = (enforcePropertyChangeEvent) ? !isSelected : kurstyp.isSelektierbar();
     kurstyp.setSelektierbar(isSelected);
     firePropertyChange(Field.SELEKTIERBAR, oldValue, isSelected);
   }
@@ -71,35 +80,27 @@ public class KurstypErfassenModelImpl extends AbstractModel implements KurstypEr
   }
 
   @Override
-  public boolean checkKurstypBezeichnungBereitsInVerwendung(SvmModel svmModel) {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    CheckKurstypBezeichnungBereitsInVerwendungCommand
-        checkKurstypBezeichnungBereitsInVerwendungCommand =
-            new CheckKurstypBezeichnungBereitsInVerwendungCommand(
-                kurstyp, kurstypOrigin, svmModel.getKurstypenAll());
-    commandInvoker.executeCommand(checkKurstypBezeichnungBereitsInVerwendungCommand);
-    return checkKurstypBezeichnungBereitsInVerwendungCommand.isBereitsInVerwendung();
-  }
-
-  @Override
-  public void speichern(SvmModel svmModel, KurstypenTableModel kurstypenTableModel) {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    SaveOrUpdateKurstypCommand saveOrUpdateKurstypCommand =
-        new SaveOrUpdateKurstypCommand(kurstyp, kurstypOrigin, svmModel.getKurstypenAll());
-    commandInvoker.executeCommandAsTransaction(saveOrUpdateKurstypCommand);
-    // TableData mit von der Datenbank upgedateten Kurstypen updaten
-    kurstypenTableModel.getKurstypenTableData().setKurstypen(svmModel.getKurstypenAll());
+  public SaveKurstypResult speichern() {
+    SaveKurstypResult saveKurstypResult;
+    try {
+      kurstypService.saveKurstyp(kurstyp);
+      saveKurstypResult = SaveKurstypResult.SPEICHERN_ERFOLGREICH;
+    } catch (EntityAlreadyExistsException e) {
+      saveKurstypResult = SaveKurstypResult.KURSTYP_BEREITS_ERFASST;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      saveKurstypResult = SaveKurstypResult.KURSTYP_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+    return saveKurstypResult;
   }
 
   @SuppressWarnings("DuplicatedCode")
   @Override
   public void initializeCompleted() {
-    if (kurstypOrigin != null) {
+    if (kurstyp.getKurstypId() != null) {
       setBulkUpdate(true);
       try {
-        setBezeichnung(kurstypOrigin.getBezeichnung());
-        setSelektierbar(!kurstypOrigin.isSelektierbar()); // damit PropertyChange ausgelöst wird!
-        setSelektierbar(kurstypOrigin.isSelektierbar());
+        setBezeichnung(kurstyp.getBezeichnung(), true);
+        setSelektierbar(kurstyp.isSelektierbar(), true);
       } catch (SvmValidationException e) {
         LOGGER.error(e.getMessage());
       }

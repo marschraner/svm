@@ -1,7 +1,9 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.persistence.entities.Kursort;
+import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.service.KursortService;
+import ch.metzenthin.svm.service.KurstypService;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 
@@ -13,14 +15,16 @@ import org.springframework.stereotype.Component;
 public class ModelFactoryImpl implements ModelFactory {
 
   private final KursortService kursortService;
+  private final KurstypService kurstypService;
 
-  public ModelFactoryImpl(KursortService kursortService) {
+  public ModelFactoryImpl(KursortService kursortService, KurstypService kurstypService) {
     this.kursortService = kursortService;
+    this.kurstypService = kurstypService;
   }
 
   @Override
   public SvmModel createSvmModel() {
-    return new SvmModelImpl(kursortService);
+    return new SvmModelImpl(kursortService, kurstypService);
   }
 
   @Override
@@ -101,12 +105,13 @@ public class ModelFactoryImpl implements ModelFactory {
 
   @Override
   public KurstypenModel createKurstypenModel() {
-    return new KurstypenModelImpl();
+    return new KurstypenModelImpl(kurstypService);
   }
 
   @Override
-  public KurstypErfassenModel createKurstypErfassenModel() {
-    return new KurstypErfassenModelImpl();
+  public KurstypErfassenModel createKurstypErfassenModel(
+      Optional<Kurstyp> kurstypToBeModifiedOptional) {
+    return new KurstypErfassenModelImpl(kurstypToBeModifiedOptional, kurstypService);
   }
 
   @Override

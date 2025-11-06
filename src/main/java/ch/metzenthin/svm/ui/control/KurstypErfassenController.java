@@ -2,16 +2,17 @@ package ch.metzenthin.svm.ui.control;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.KurstypErfassenModel;
-import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
+import ch.metzenthin.svm.service.result.SaveKurstypResult;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 import javax.swing.*;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,29 +26,26 @@ public class KurstypErfassenController extends AbstractController {
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
   private static final boolean MODEL_VALIDATION_MODE = false;
 
-  private final KurstypenTableModel kurstypenTableModel;
   private final KurstypErfassenModel kurstypErfassenModel;
   private final boolean isBearbeiten;
   private final boolean defaultButtonEnabled;
-  private final SvmContext svmContext;
+  private final DialogClosedListener dialogClosedListener;
   private JDialog kurstypErfassenDialog;
   private JTextField txtBezeichnung;
   private JCheckBox checkBoxSelektierbar;
-  private JLabel errLblBezeichnung;
+  @Setter private JLabel errLblBezeichnung;
   private JButton btnSpeichern;
 
   public KurstypErfassenController(
-      SvmContext svmContext,
-      KurstypenTableModel kurstypenTableModel,
       KurstypErfassenModel kurstypErfassenModel,
       boolean isBearbeiten,
-      boolean defaultButtonEnabled) {
+      boolean defaultButtonEnabled,
+      DialogClosedListener dialogClosedListener) {
     super(kurstypErfassenModel);
-    this.svmContext = svmContext;
-    this.kurstypenTableModel = kurstypenTableModel;
     this.kurstypErfassenModel = kurstypErfassenModel;
     this.isBearbeiten = isBearbeiten;
     this.defaultButtonEnabled = defaultButtonEnabled;
+    this.dialogClosedListener = dialogClosedListener;
     this.kurstypErfassenModel.addPropertyChangeListener(this);
     this.kurstypErfassenModel.addDisableFieldsListener(this);
     this.kurstypErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -80,7 +78,6 @@ public class KurstypErfassenController extends AbstractController {
         JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
   }
 
-  @SuppressWarnings("DuplicatedCode")
   public void setTxtBezeichnung(JTextField txtBezeichnung) {
     this.txtBezeichnung = txtBezeichnung;
     if (!defaultButtonEnabled) {
@@ -154,10 +151,6 @@ public class KurstypErfassenController extends AbstractController {
     setModelSelektierbar();
   }
 
-  public void setErrLblBezeichnung(JLabel errLblBezeichnung) {
-    this.errLblBezeichnung = errLblBezeichnung;
-  }
-
   public void setBtnSpeichern(JButton btnSpeichern) {
     this.btnSpeichern = btnSpeichern;
     if (isModelValidationMode()) {
@@ -166,21 +159,33 @@ public class KurstypErfassenController extends AbstractController {
     this.btnSpeichern.addActionListener(e -> onSpeichern());
   }
 
+  @SuppressWarnings("DuplicatedCode")
   private void onSpeichern() {
     if (!isModelValidationMode() && !validateOnSpeichern()) {
       btnSpeichern.setFocusPainted(false);
       return;
     }
-    if (kurstypErfassenModel.checkKurstypBezeichnungBereitsInVerwendung(svmContext.getSvmModel())) {
-      JOptionPane.showMessageDialog(
-          kurstypErfassenDialog,
-          "Bezeichnung bereits in Verwendung.",
-          "Fehler",
-          JOptionPane.ERROR_MESSAGE);
-      btnSpeichern.setFocusPainted(false);
-    } else {
-      kurstypErfassenModel.speichern(svmContext.getSvmModel(), kurstypenTableModel);
-      kurstypErfassenDialog.dispose();
+
+    SaveKurstypResult saveKurstypResult = kurstypErfassenModel.speichern();
+    switch (saveKurstypResult) {
+      case KURSTYP_BEREITS_ERFASST -> {
+        JOptionPane.showMessageDialog(
+            kurstypErfassenDialog,
+            "Bezeichnung bereits in Verwendung.",
+            "Fehler",
+            JOptionPane.ERROR_MESSAGE);
+        btnSpeichern.setFocusPainted(false);
+      }
+      case KURSTYP_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+        closeDialog();
+        JOptionPane.showMessageDialog(
+            kurstypErfassenDialog,
+            "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
+                + "einen anderen Benutzer verändert oder gelöscht wurde.",
+            "Fehler",
+            JOptionPane.ERROR_MESSAGE);
+      }
+      case SPEICHERN_ERFOLGREICH -> closeDialog();
     }
   }
 
@@ -189,7 +194,12 @@ public class KurstypErfassenController extends AbstractController {
   }
 
   private void onAbbrechen() {
+    closeDialog();
+  }
+
+  private void closeDialog() {
     kurstypErfassenDialog.dispose();
+    dialogClosedListener.onDialogClosed();
   }
 
   private void onKurstypErfassenModelCompleted(boolean completed) {
