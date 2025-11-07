@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.service;
 
 import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
+import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
-import ch.metzenthin.svm.service.result.DeleteKurstypResult;
 import java.util.List;
 
 /**
@@ -14,5 +14,5 @@ public interface KurstypService {
 
   void saveKurstyp(Kurstyp kurstyp) throws EntityAlreadyExistsException;
 
-  DeleteKurstypResult deleteKurstyp(Kurstyp kurstyp);
+  void deleteKurstyp(Kurstyp kurstyp) throws EntityStillReferencedException;
 }

@@ -1,12 +1,15 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.service.KurstypService;
 import ch.metzenthin.svm.service.result.DeleteKurstypResult;
 import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
+import jakarta.persistence.OptimisticLockException;
 import java.util.Optional;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
  * @author Martin Schraner
@@ -23,7 +26,16 @@ public class KurstypenModelImpl extends AbstractModel implements KurstypenModel 
   public DeleteKurstypResult eintragLoeschen(
       KurstypenTableModel kurstypenTableModel, int indexKurstypToBeRemoved) {
     Kurstyp kurstypToBeDeleted = getSelectedKurstyp(kurstypenTableModel, indexKurstypToBeRemoved);
-    return kurstypService.deleteKurstyp(kurstypToBeDeleted);
+    DeleteKurstypResult deleteKurstypResult;
+    try {
+      kurstypService.deleteKurstyp(kurstypToBeDeleted);
+      deleteKurstypResult = DeleteKurstypResult.LOESCHEN_ERFOLGREICH;
+    } catch (EntityStillReferencedException e) {
+      deleteKurstypResult = DeleteKurstypResult.KURSTYP_VON_KURS_REFERENZIERT;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      deleteKurstypResult = DeleteKurstypResult.KURSTYP_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+    return deleteKurstypResult;
   }
 
   @Override

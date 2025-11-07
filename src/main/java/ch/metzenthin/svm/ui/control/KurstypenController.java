@@ -133,16 +133,26 @@ public class KurstypenController implements DialogClosedListener {
     if (n == 0) {
       DeleteKurstypResult result =
           kurstypenModel.eintragLoeschen(kurstypenTableModel, kurstypenTable.getSelectedRow());
-      if (result == DeleteKurstypResult.KURSTYP_VON_KURS_REFERENZIERT) {
-        JOptionPane.showMessageDialog(
-            null,
-            "Der Kurstyp wird durch mindestens einen Kurs referenziert und "
-                + "kann nicht gelöscht werden.",
-            "Fehler",
-            JOptionPane.ERROR_MESSAGE);
-        btnLoeschen.setFocusPainted(false);
-      } else if (result == DeleteKurstypResult.LOESCHEN_ERFOLGREICH) {
-        reloadTableModel();
+      switch (result) {
+        case KURSTYP_VON_KURS_REFERENZIERT -> {
+          JOptionPane.showMessageDialog(
+              null,
+              "Der Kurstyp wird durch mindestens einen Kurs referenziert und "
+                  + "kann nicht gelöscht werden.",
+              "Fehler",
+              JOptionPane.ERROR_MESSAGE);
+          btnLoeschen.setFocusPainted(false);
+        }
+        case KURSTYP_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+          reloadTableModel();
+          JOptionPane.showMessageDialog(
+              null,
+              "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
+                  + "einen anderen Benutzer verändert oder gelöscht wurde.",
+              "Fehler",
+              JOptionPane.ERROR_MESSAGE);
+        }
+        case LOESCHEN_ERFOLGREICH -> reloadTableModel();
       }
     }
     btnLoeschen.setFocusPainted(false);
