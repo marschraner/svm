@@ -16,8 +16,8 @@ import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.service.result.DeleteCodeResult;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
-import ch.metzenthin.svm.ui.components.CodeErfassenDialog;
 import ch.metzenthin.svm.ui.components.CodeSpecificHinzufuegenDialog;
+import ch.metzenthin.svm.ui.components.CreateOrUpdateCodeDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 import java.awt.event.*;
 import java.util.List;
@@ -234,11 +234,11 @@ public class CodesController implements DialogClosedListener {
           case ELTERNMITHILFE -> "Neuer Eltern-Mithilfe-Code";
           case SEMESTERRECHNUNG -> "Neuer Semesterrechnung-Code";
         };
-    CodeErfassenDialog codeErfassenDialog =
-        new CodeErfassenDialog(
+    CreateOrUpdateCodeDialog createOrUpdateCodeDialog =
+        new CreateOrUpdateCodeDialog(
             svmContext, codesTableModel, codesModel, 0, false, titel, codetyp, this);
-    codeErfassenDialog.pack();
-    codeErfassenDialog.setVisible(true);
+    createOrUpdateCodeDialog.pack();
+    createOrUpdateCodeDialog.setVisible(true);
     codesTableModel.fireTableDataChanged();
     btnNeu.setFocusPainted(false);
   }
@@ -312,8 +312,8 @@ public class CodesController implements DialogClosedListener {
           case ELTERNMITHILFE -> "Eltern-Mithilfe-Code bearbeiten";
           case SEMESTERRECHNUNG -> "Semesterrechnung-Code bearbeiten";
         };
-    CodeErfassenDialog codeErfassenDialog =
-        new CodeErfassenDialog(
+    CreateOrUpdateCodeDialog createOrUpdateCodeDialog =
+        new CreateOrUpdateCodeDialog(
             svmContext,
             codesTableModel,
             codesModel,
@@ -322,8 +322,8 @@ public class CodesController implements DialogClosedListener {
             titel,
             codetyp,
             this);
-    codeErfassenDialog.pack();
-    codeErfassenDialog.setVisible(true);
+    createOrUpdateCodeDialog.pack();
+    createOrUpdateCodeDialog.setVisible(true);
     codesTableModel.fireTableDataChanged();
     btnBearbeiten.setFocusPainted(false);
   }

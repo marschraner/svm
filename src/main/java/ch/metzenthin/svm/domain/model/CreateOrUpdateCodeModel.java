@@ -6,7 +6,7 @@ import ch.metzenthin.svm.service.result.SaveCodeResult;
 /**
  * @author Martin Schraner
  */
-public interface CodeErfassenModel extends Model {
+public interface CreateOrUpdateCodeModel extends Model {
 
   String getKuerzel();
 

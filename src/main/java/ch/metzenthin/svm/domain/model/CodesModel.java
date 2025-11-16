@@ -33,30 +33,30 @@ public interface CodesModel {
       MitarbeiterCode mitarbeiterCodeToBeRemoved,
       MitarbeiterErfassenModel mitarbeiterErfassenModel);
 
-  SchuelerCodeErfassenModel createSchuelerCodeErfassenModel(
+  CreateOrUpdateSchuelerCodeModel createCreateOrUpdateSchuelerCodeModel(
       SvmContext svmContext, CodesTableModel codesTableModel);
 
-  SchuelerCodeErfassenModel createSchuelerCodeErfassenModel(
+  CreateOrUpdateSchuelerCodeModel createCreateOrUpdateSchuelerCodeModel(
       SvmContext svmContext, CodesTableModel codesTableModel, int indexSchuelerCodeToBeModified);
 
-  MitarbeiterCodeErfassenModel createMitarbeiterCodeErfassenModel(
+  CreateOrUpdateMitarbeiterCodeModel createCreateOrUpdateMitarbeiterCodeModel(
       SvmContext svmContext, CodesTableModel codesTableModel);
 
-  MitarbeiterCodeErfassenModel createMitarbeiterCodeErfassenModel(
+  CreateOrUpdateMitarbeiterCodeModel createCreateOrUpdateMitarbeiterCodeModel(
       SvmContext svmContext, CodesTableModel codesTableModel, int indexMitarbeiterCodeToBeModified);
 
-  ElternmithilfeCodeErfassenModel createElternmithilfeCodeErfassenModel(
+  CreateOrUpdateElternmithilfeCodeModel createCreateOrUpdateElternmithilfeCodeModel(
       SvmContext svmContext, CodesTableModel codesTableModel);
 
-  ElternmithilfeCodeErfassenModel createElternmithilfeCodeErfassenModel(
+  CreateOrUpdateElternmithilfeCodeModel createCreateOrUpdateElternmithilfeCodeModel(
       SvmContext svmContext,
       CodesTableModel codesTableModel,
       int indexElternmithilfeCodeToBeModified);
 
-  SemesterrechnungCodeErfassenModel createSemesterrechnungCodeErfassenModel(
+  CreateOrUpdateSemesterrechnungCodeModel createCreateOrUpdateSemesterrechnungCodeModel(
       SvmContext svmContext, CodesTableModel codesTableModel);
 
-  SemesterrechnungCodeErfassenModel createSemesterrechnungCodeErfassenModel(
+  CreateOrUpdateSemesterrechnungCodeModel createCreateOrUpdateSemesterrechnungCodeModel(
       SvmContext svmContext,
       CodesTableModel codesTableModel,
       int indexSemesterrechnungCodeToBeModified);

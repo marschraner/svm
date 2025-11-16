@@ -8,10 +8,11 @@ import java.util.Optional;
  * @author Hans Stamm
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-public class ElternmithilfeCodeErfassenModelImpl extends CodeErfassenModelImpl<ElternmithilfeCode>
-    implements ElternmithilfeCodeErfassenModel {
+public class CreateOrUpdateElternmithilfeCodeModelImpl
+    extends CreateOrUpdateCodeModelImpl<ElternmithilfeCode>
+    implements CreateOrUpdateElternmithilfeCodeModel {
 
-  public ElternmithilfeCodeErfassenModelImpl(
+  public CreateOrUpdateElternmithilfeCodeModelImpl(
       Optional<ElternmithilfeCode> elternmithilfeCodeToBeModifiedOptional,
       CodeService<ElternmithilfeCode> elternmithilfeCodeService) {
     super(

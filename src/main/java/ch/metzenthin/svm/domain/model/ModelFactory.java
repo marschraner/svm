@@ -34,16 +34,16 @@ public interface ModelFactory {
 
   CodesModel createCodesModel();
 
-  SchuelerCodeErfassenModel createSchuelerCodeErfassenModel(
+  CreateOrUpdateSchuelerCodeModel createCreateOrUpdateSchuelerCodeModel(
       Optional<SchuelerCode> schuelerCodeToBeModifiedOptional);
 
-  MitarbeiterCodeErfassenModel createMitarbeiterCodeErfassenModel(
+  CreateOrUpdateMitarbeiterCodeModel createCreateOrUpdateMitarbeiterCodeModel(
       Optional<MitarbeiterCode> mitarbeiterCodeToBeModifiedOptional);
 
-  ElternmithilfeCodeErfassenModel createElternmithilfeCodeErfassenModel(
+  CreateOrUpdateElternmithilfeCodeModel createCreateOrUpdateElternmithilfeCodeModel(
       Optional<ElternmithilfeCode> elternmithilfeCodeToBeModifiedOptional);
 
-  SemesterrechnungCodeErfassenModel createSemesterrechnungCodeErfassenModel(
+  CreateOrUpdateSemesterrechnungCodeModel createCreateOrUpdateSemesterrechnungCodeModel(
       Optional<SemesterrechnungCode> semesterrechnungCodeToBeModifiedOptional);
 
   CodeSpecificHinzufuegenModel createCodeSchuelerHinzufuegenModel();

@@ -8,11 +8,11 @@ import java.util.Optional;
  * @author Hans Stamm
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-public class SemesterrechnungCodeErfassenModelImpl
-    extends CodeErfassenModelImpl<SemesterrechnungCode>
-    implements SemesterrechnungCodeErfassenModel {
+public class CreateOrUpdateSemesterrechnungCodeModelImpl
+    extends CreateOrUpdateCodeModelImpl<SemesterrechnungCode>
+    implements CreateOrUpdateSemesterrechnungCodeModel {
 
-  public SemesterrechnungCodeErfassenModelImpl(
+  public CreateOrUpdateSemesterrechnungCodeModelImpl(
       Optional<SemesterrechnungCode> semesterrechnungCodeToBeModifiedOptional,
       CodeService<SemesterrechnungCode> semesterrechnungCodeService) {
     super(

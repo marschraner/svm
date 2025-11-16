@@ -14,15 +14,15 @@ import org.springframework.dao.OptimisticLockingFailureException;
 /**
  * @author Martin Schraner
  */
-public abstract class CodeErfassenModelImpl<T extends Code> extends AbstractModel
-    implements CodeErfassenModel {
+public abstract class CreateOrUpdateCodeModelImpl<T extends Code> extends AbstractModel
+    implements CreateOrUpdateCodeModel {
 
-  private static final Logger LOGGER = LogManager.getLogger(CodeErfassenModelImpl.class);
+  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateCodeModelImpl.class);
 
   private final T code;
   private final CodeService<T> codeService;
 
-  protected CodeErfassenModelImpl(T code, CodeService<T> codeService) {
+  protected CreateOrUpdateCodeModelImpl(T code, CodeService<T> codeService) {
     this.code = code;
     this.codeService = codeService;
   }

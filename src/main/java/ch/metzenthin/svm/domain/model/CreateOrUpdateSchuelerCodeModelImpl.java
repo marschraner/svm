@@ -8,10 +8,10 @@ import java.util.Optional;
  * @author Hans Stamm
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-public class SchuelerCodeErfassenModelImpl extends CodeErfassenModelImpl<SchuelerCode>
-    implements SchuelerCodeErfassenModel {
+public class CreateOrUpdateSchuelerCodeModelImpl extends CreateOrUpdateCodeModelImpl<SchuelerCode>
+    implements CreateOrUpdateSchuelerCodeModel {
 
-  public SchuelerCodeErfassenModelImpl(
+  public CreateOrUpdateSchuelerCodeModelImpl(
       Optional<SchuelerCode> schuelerCodeToBeModifiedOptional,
       CodeService<SchuelerCode> schuelerCodeService) {
     super(schuelerCodeToBeModifiedOptional.orElseGet(SchuelerCode::new), schuelerCodeService);

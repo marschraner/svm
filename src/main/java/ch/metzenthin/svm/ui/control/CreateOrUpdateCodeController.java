@@ -5,7 +5,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CodeErfassenModel;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateCodeModel;
 import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.service.result.SaveCodeResult;
 import java.awt.event.*;
@@ -20,18 +20,18 @@ import org.apache.logging.log4j.Logger;
  * @author Martin Schraner
  */
 @SuppressWarnings("LoggingSimilarMessage")
-public class CodeErfassenController extends AbstractController {
+public class CreateOrUpdateCodeController extends AbstractController {
 
-  private static final Logger LOGGER = LogManager.getLogger(CodeErfassenController.class);
+  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateCodeController.class);
 
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
   private static final boolean MODEL_VALIDATION_MODE = false;
 
-  private final CodeErfassenModel codeErfassenModel;
+  private final CreateOrUpdateCodeModel createOrUpdateCodeModel;
   private final boolean isBearbeiten;
   private final boolean defaultButtonEnabled;
   private final DialogClosedListener dialogClosedListener;
-  private JDialog codeErfassenDialog;
+  private JDialog createOrUpdateCodeDialog;
   private JTextField txtKuerzel;
   private JTextField txtBeschreibung;
   private JCheckBox checkBoxSelektierbar;
@@ -39,32 +39,32 @@ public class CodeErfassenController extends AbstractController {
   @Setter private JLabel errLblBeschreibung;
   private JButton btnSpeichern;
 
-  public CodeErfassenController(
-      CodeErfassenModel codeErfassenModel,
+  public CreateOrUpdateCodeController(
+      CreateOrUpdateCodeModel createOrUpdateCodeModel,
       boolean isBearbeiten,
       boolean defaultButtonEnabled,
       DialogClosedListener dialogClosedListener) {
-    super(codeErfassenModel);
-    this.codeErfassenModel = codeErfassenModel;
+    super(createOrUpdateCodeModel);
+    this.createOrUpdateCodeModel = createOrUpdateCodeModel;
     this.isBearbeiten = isBearbeiten;
     this.defaultButtonEnabled = defaultButtonEnabled;
     this.dialogClosedListener = dialogClosedListener;
-    this.codeErfassenModel.addPropertyChangeListener(this);
-    this.codeErfassenModel.addDisableFieldsListener(this);
-    this.codeErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-    this.codeErfassenModel.addCompletedListener(this::onCodeErfassenModelCompleted);
+    this.createOrUpdateCodeModel.addPropertyChangeListener(this);
+    this.createOrUpdateCodeModel.addDisableFieldsListener(this);
+    this.createOrUpdateCodeModel.addMakeErrorLabelsInvisibleListener(this);
+    this.createOrUpdateCodeModel.addCompletedListener(this::onCreateOrUpdateCodeModelCompleted);
     this.setModelValidationMode(MODEL_VALIDATION_MODE);
   }
 
   public void constructionDone() {
-    codeErfassenModel.initializeCompleted();
+    createOrUpdateCodeModel.initializeCompleted();
   }
 
-  public void setCodeErfassenDialog(JDialog codeErfassenDialog) {
+  public void setCreateOrUpdateCodeDialog(JDialog createOrUpdateCodeDialog) {
     // call onCancel() when cross is clicked
-    this.codeErfassenDialog = codeErfassenDialog;
-    codeErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    codeErfassenDialog.addWindowListener(
+    this.createOrUpdateCodeDialog = createOrUpdateCodeDialog;
+    createOrUpdateCodeDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    createOrUpdateCodeDialog.addWindowListener(
         new WindowAdapter() {
           @Override
           public void windowClosing(WindowEvent e) {
@@ -96,9 +96,9 @@ public class CodeErfassenController extends AbstractController {
   }
 
   private void onKuerzelEvent(boolean showRequiredErrMsg) {
-    LOGGER.trace("CodeErfassenController Event Kuerzel");
+    LOGGER.trace("CreateOrUpdateCodeController Event Kuerzel");
     boolean equalFieldAndModelValue =
-        equalsNullSafe(txtKuerzel.getText(), codeErfassenModel.getKuerzel());
+        equalsNullSafe(txtKuerzel.getText(), createOrUpdateCodeModel.getKuerzel());
     try {
       setModelKuerzel(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -115,9 +115,10 @@ public class CodeErfassenController extends AbstractController {
   private void setModelKuerzel(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.KUERZEL);
     try {
-      codeErfassenModel.setKuerzel(txtKuerzel.getText());
+      createOrUpdateCodeModel.setKuerzel(txtKuerzel.getText());
     } catch (SvmRequiredException e) {
-      LOGGER.trace("CodeErfassenController setModelKuerzel RequiredException={}", e.getMessage());
+      LOGGER.trace(
+          "CreateOrUpdateCodeController setModelKuerzel RequiredException={}", e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtKuerzel.setToolTipText(e.getMessage());
         // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
@@ -127,7 +128,7 @@ public class CodeErfassenController extends AbstractController {
       }
       throw e;
     } catch (SvmValidationException e) {
-      LOGGER.trace("CodeErfassenController setModelKuerzel Exception={}", e.getMessage());
+      LOGGER.trace("CreateOrUpdateCodeController setModelKuerzel Exception={}", e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -148,9 +149,9 @@ public class CodeErfassenController extends AbstractController {
   }
 
   private void onBeschreibungEvent(boolean showRequiredErrMsg) {
-    LOGGER.trace("CodeErfassenController Event Beschreibung");
+    LOGGER.trace("CreateOrUpdateCodeController Event Beschreibung");
     boolean equalFieldAndModelValue =
-        equalsNullSafe(txtBeschreibung.getText(), codeErfassenModel.getBeschreibung());
+        equalsNullSafe(txtBeschreibung.getText(), createOrUpdateCodeModel.getBeschreibung());
     try {
       setModelBeschreibung(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -167,10 +168,10 @@ public class CodeErfassenController extends AbstractController {
   private void setModelBeschreibung(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.BESCHREIBUNG);
     try {
-      codeErfassenModel.setBeschreibung(txtBeschreibung.getText());
+      createOrUpdateCodeModel.setBeschreibung(txtBeschreibung.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "CodeErfassenController setModelBeschreibung RequiredException={}", e.getMessage());
+          "CreateOrUpdateCodeController setModelBeschreibung RequiredException={}", e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtBeschreibung.setToolTipText(e.getMessage());
         // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
@@ -180,7 +181,8 @@ public class CodeErfassenController extends AbstractController {
       }
       throw e;
     } catch (SvmValidationException e) {
-      LOGGER.trace("CodeErfassenController setModelBeschreibung Exception={}", e.getMessage());
+      LOGGER.trace(
+          "CreateOrUpdateCodeController setModelBeschreibung Exception={}", e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -190,13 +192,13 @@ public class CodeErfassenController extends AbstractController {
     this.checkBoxSelektierbar = checkBoxSelektierbar;
     // Selektierbar als Default-Wert
     if (!isBearbeiten) {
-      codeErfassenModel.setSelektierbar(true);
+      createOrUpdateCodeModel.setSelektierbar(true);
     }
     this.checkBoxSelektierbar.addItemListener(e -> onSelektierbarEvent());
   }
 
   private void setModelSelektierbar() {
-    codeErfassenModel.setSelektierbar(checkBoxSelektierbar.isSelected());
+    createOrUpdateCodeModel.setSelektierbar(checkBoxSelektierbar.isSelected());
   }
 
   private void onSelektierbarEvent() {
@@ -220,11 +222,11 @@ public class CodeErfassenController extends AbstractController {
       return;
     }
     String messageDialogTitle = "Fehler";
-    SaveCodeResult saveSchuelerCodeResult = codeErfassenModel.speichern();
+    SaveCodeResult saveSchuelerCodeResult = createOrUpdateCodeModel.speichern();
     switch (saveSchuelerCodeResult) {
       case CODE_BEREITS_ERFASST -> {
         JOptionPane.showMessageDialog(
-            codeErfassenDialog,
+            createOrUpdateCodeDialog,
             "Kürzel bereits in Verwendung.",
             messageDialogTitle,
             JOptionPane.ERROR_MESSAGE);
@@ -233,7 +235,7 @@ public class CodeErfassenController extends AbstractController {
       case CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
         closeDialog();
         JOptionPane.showMessageDialog(
-            codeErfassenDialog,
+            createOrUpdateCodeDialog,
             "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
                 + "einen anderen Benutzer verändert oder gelöscht wurde.",
             messageDialogTitle,
@@ -252,12 +254,12 @@ public class CodeErfassenController extends AbstractController {
   }
 
   private void closeDialog() {
-    codeErfassenDialog.dispose();
+    createOrUpdateCodeDialog.dispose();
     dialogClosedListener.onDialogClosed();
   }
 
-  private void onCodeErfassenModelCompleted(boolean completed) {
-    LOGGER.trace("CodeErfassenModel completed={}", completed);
+  private void onCreateOrUpdateCodeModelCompleted(boolean completed) {
+    LOGGER.trace("CreateOrUpdateCodeModel completed={}", completed);
     if (completed) {
       btnSpeichern.setToolTipText(null);
       btnSpeichern.setEnabled(true);
@@ -271,11 +273,11 @@ public class CodeErfassenController extends AbstractController {
   void doPropertyChange(PropertyChangeEvent evt) {
     super.doPropertyChange(evt);
     if (checkIsFieldChange(Field.KUERZEL, evt)) {
-      txtKuerzel.setText(codeErfassenModel.getKuerzel());
+      txtKuerzel.setText(createOrUpdateCodeModel.getKuerzel());
     } else if (checkIsFieldChange(Field.BESCHREIBUNG, evt)) {
-      txtBeschreibung.setText(codeErfassenModel.getBeschreibung());
+      txtBeschreibung.setText(createOrUpdateCodeModel.getBeschreibung());
     } else if (checkIsFieldChange(Field.SELEKTIERBAR, evt)) {
-      checkBoxSelektierbar.setSelected(codeErfassenModel.isSelektierbar());
+      checkBoxSelektierbar.setSelected(createOrUpdateCodeModel.isSelektierbar());
     }
   }
 

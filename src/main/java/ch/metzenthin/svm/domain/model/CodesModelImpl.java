@@ -138,19 +138,19 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
   }
 
   @Override
-  public SchuelerCodeErfassenModel createSchuelerCodeErfassenModel(
+  public CreateOrUpdateSchuelerCodeModel createCreateOrUpdateSchuelerCodeModel(
       SvmContext svmContext, CodesTableModel codesTableModel) {
-    return svmContext.getModelFactory().createSchuelerCodeErfassenModel(Optional.empty());
+    return svmContext.getModelFactory().createCreateOrUpdateSchuelerCodeModel(Optional.empty());
   }
 
   @Override
-  public SchuelerCodeErfassenModel createSchuelerCodeErfassenModel(
+  public CreateOrUpdateSchuelerCodeModel createCreateOrUpdateSchuelerCodeModel(
       SvmContext svmContext, CodesTableModel codesTableModel, int indexSchuelerCodeToBeModified) {
     SchuelerCode schuelerCodeToBeModified =
         getSelectedSchuelerCode(codesTableModel, indexSchuelerCodeToBeModified);
     return svmContext
         .getModelFactory()
-        .createSchuelerCodeErfassenModel(Optional.of(schuelerCodeToBeModified));
+        .createCreateOrUpdateSchuelerCodeModel(Optional.of(schuelerCodeToBeModified));
   }
 
   private SchuelerCode getSelectedSchuelerCode(
@@ -159,13 +159,13 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
   }
 
   @Override
-  public MitarbeiterCodeErfassenModel createMitarbeiterCodeErfassenModel(
+  public CreateOrUpdateMitarbeiterCodeModel createCreateOrUpdateMitarbeiterCodeModel(
       SvmContext svmContext, CodesTableModel codesTableModel) {
-    return svmContext.getModelFactory().createMitarbeiterCodeErfassenModel(Optional.empty());
+    return svmContext.getModelFactory().createCreateOrUpdateMitarbeiterCodeModel(Optional.empty());
   }
 
   @Override
-  public MitarbeiterCodeErfassenModel createMitarbeiterCodeErfassenModel(
+  public CreateOrUpdateMitarbeiterCodeModel createCreateOrUpdateMitarbeiterCodeModel(
       SvmContext svmContext,
       CodesTableModel codesTableModel,
       int indexMitarbeiterCodeToBeModified) {
@@ -173,7 +173,7 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
         getSelectedMitarbeiterCode(codesTableModel, indexMitarbeiterCodeToBeModified);
     return svmContext
         .getModelFactory()
-        .createMitarbeiterCodeErfassenModel(Optional.of(mitarbeiterCodeToBeModified));
+        .createCreateOrUpdateMitarbeiterCodeModel(Optional.of(mitarbeiterCodeToBeModified));
   }
 
   private MitarbeiterCode getSelectedMitarbeiterCode(
@@ -182,13 +182,15 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
   }
 
   @Override
-  public ElternmithilfeCodeErfassenModel createElternmithilfeCodeErfassenModel(
+  public CreateOrUpdateElternmithilfeCodeModel createCreateOrUpdateElternmithilfeCodeModel(
       SvmContext svmContext, CodesTableModel codesTableModel) {
-    return svmContext.getModelFactory().createElternmithilfeCodeErfassenModel(Optional.empty());
+    return svmContext
+        .getModelFactory()
+        .createCreateOrUpdateElternmithilfeCodeModel(Optional.empty());
   }
 
   @Override
-  public ElternmithilfeCodeErfassenModel createElternmithilfeCodeErfassenModel(
+  public CreateOrUpdateElternmithilfeCodeModel createCreateOrUpdateElternmithilfeCodeModel(
       SvmContext svmContext,
       CodesTableModel codesTableModel,
       int indexElternmithilfeCodeToBeModified) {
@@ -196,7 +198,7 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
         getSelectedElternmithilfeCode(codesTableModel, indexElternmithilfeCodeToBeModified);
     return svmContext
         .getModelFactory()
-        .createElternmithilfeCodeErfassenModel(Optional.of(elternmithilfeCodeToBeModified));
+        .createCreateOrUpdateElternmithilfeCodeModel(Optional.of(elternmithilfeCodeToBeModified));
   }
 
   private ElternmithilfeCode getSelectedElternmithilfeCode(
@@ -205,13 +207,15 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
   }
 
   @Override
-  public SemesterrechnungCodeErfassenModel createSemesterrechnungCodeErfassenModel(
+  public CreateOrUpdateSemesterrechnungCodeModel createCreateOrUpdateSemesterrechnungCodeModel(
       SvmContext svmContext, CodesTableModel codesTableModel) {
-    return svmContext.getModelFactory().createSemesterrechnungCodeErfassenModel(Optional.empty());
+    return svmContext
+        .getModelFactory()
+        .createCreateOrUpdateSemesterrechnungCodeModel(Optional.empty());
   }
 
   @Override
-  public SemesterrechnungCodeErfassenModel createSemesterrechnungCodeErfassenModel(
+  public CreateOrUpdateSemesterrechnungCodeModel createCreateOrUpdateSemesterrechnungCodeModel(
       SvmContext svmContext,
       CodesTableModel codesTableModel,
       int indexSemesterrechnungCodeToBeModified) {
@@ -219,7 +223,8 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
         getSelectedSemesterrechnungCode(codesTableModel, indexSemesterrechnungCodeToBeModified);
     return svmContext
         .getModelFactory()
-        .createSemesterrechnungCodeErfassenModel(Optional.of(semesterrechnungCodeToBeModified));
+        .createCreateOrUpdateSemesterrechnungCodeModel(
+            Optional.of(semesterrechnungCodeToBeModified));
   }
 
   private SemesterrechnungCode getSelectedSemesterrechnungCode(

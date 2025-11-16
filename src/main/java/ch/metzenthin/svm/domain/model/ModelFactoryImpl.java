@@ -105,29 +105,30 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
-  public SchuelerCodeErfassenModel createSchuelerCodeErfassenModel(
+  public CreateOrUpdateSchuelerCodeModel createCreateOrUpdateSchuelerCodeModel(
       Optional<SchuelerCode> schuelerCodeToBeModifiedOptional) {
-    return new SchuelerCodeErfassenModelImpl(schuelerCodeToBeModifiedOptional, schuelerCodeService);
+    return new CreateOrUpdateSchuelerCodeModelImpl(
+        schuelerCodeToBeModifiedOptional, schuelerCodeService);
   }
 
   @Override
-  public MitarbeiterCodeErfassenModel createMitarbeiterCodeErfassenModel(
+  public CreateOrUpdateMitarbeiterCodeModel createCreateOrUpdateMitarbeiterCodeModel(
       Optional<MitarbeiterCode> mitarbeiterCodeToBeModifiedOptional) {
-    return new MitarbeiterCodeErfassenModelImpl(
+    return new CreateOrUpdateMitarbeiterCodeModelImpl(
         mitarbeiterCodeToBeModifiedOptional, mitarbeiterCodeService);
   }
 
   @Override
-  public ElternmithilfeCodeErfassenModel createElternmithilfeCodeErfassenModel(
+  public CreateOrUpdateElternmithilfeCodeModel createCreateOrUpdateElternmithilfeCodeModel(
       Optional<ElternmithilfeCode> elternmithilfeCodeToBeModifiedOptional) {
-    return new ElternmithilfeCodeErfassenModelImpl(
+    return new CreateOrUpdateElternmithilfeCodeModelImpl(
         elternmithilfeCodeToBeModifiedOptional, elternmithilfeCodeService);
   }
 
   @Override
-  public SemesterrechnungCodeErfassenModel createSemesterrechnungCodeErfassenModel(
+  public CreateOrUpdateSemesterrechnungCodeModel createCreateOrUpdateSemesterrechnungCodeModel(
       Optional<SemesterrechnungCode> semesterrechnungCodeToBeModifiedOptional) {
-    return new SemesterrechnungCodeErfassenModelImpl(
+    return new CreateOrUpdateSemesterrechnungCodeModelImpl(
         semesterrechnungCodeToBeModifiedOptional, semesterrechnungCodeService);
   }
 
